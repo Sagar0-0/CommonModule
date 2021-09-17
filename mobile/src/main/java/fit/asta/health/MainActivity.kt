@@ -29,15 +29,17 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.auth.FirebaseAuth
 import fit.asta.health.auth.ui.AuthViewModel
+import fit.asta.health.network.TokenProvider
 import fit.asta.health.profile.ui.ProfileActivity
 import fit.asta.health.settings.SettingsActivity
 import fit.asta.health.utils.*
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.core.KoinComponent
 import kotlin.system.exitProcess
-
+import org.koin.core.inject
 
 class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
-    FirebaseAuth.IdTokenListener {
+    FirebaseAuth.IdTokenListener, KoinComponent {
 
     companion object {
         private const val REQUEST_FLEXIBLE_UPDATE: Int = 1369
@@ -48,6 +50,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
     private lateinit var networkConnectivity: NetworkConnectivity
     private var snackBar: Snackbar? = null
     private var profileImgView: ImageView? = null
+    private val tokenProvider: TokenProvider by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -342,7 +345,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
     override fun onIdTokenChanged(auth: FirebaseAuth) {
 
-        // Log.i("IdToken", auth.currentUser?.getIdToken(false)?.result?.token!!)
+        tokenProvider.load(auth.currentUser?.getIdToken(false)?.result?.token!!)
     }
 
     private fun showViewBars() {

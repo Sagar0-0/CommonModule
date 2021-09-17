@@ -8,6 +8,7 @@ import fit.asta.health.utils.NetworkUtil
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import org.koin.experimental.property.inject
 
 class AstaNetwork private constructor() {
 
@@ -17,7 +18,7 @@ class AstaNetwork private constructor() {
 
     class Builder {
         private var cache: Cache? = null
-        private var apiKey: String = ""
+        private var apiKey: TokenProvider?  = null
         private var baseUrl: String = BuildConfig.BASE_URL
         private val interceptors = arrayListOf<Interceptor>()
         private val networkInterceptors = arrayListOf<Interceptor>()
@@ -28,7 +29,7 @@ class AstaNetwork private constructor() {
             this.cache = cache
         }
 
-        fun setApiKey(key: String) = apply {
+        fun setApiKey(key: TokenProvider) = apply {
             apiKey = key
         }
 
@@ -51,7 +52,7 @@ class AstaNetwork private constructor() {
         private fun createClient(): OkHttpClient {
             val certificatePinner = NetworkUtil.buildCertificatePinner(certificates)
             networkInterceptors.add(0,
-                ApiKeyInterceptor(apiKey)
+                ApiKeyInterceptor(apiKey!!)
             )
             return NetworkUtil.getOkHttpClient(
                 interceptors,

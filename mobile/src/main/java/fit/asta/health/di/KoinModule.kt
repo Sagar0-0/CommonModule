@@ -48,6 +48,7 @@ import fit.asta.health.navigation.today.ui.TodayPlanViewImpl
 import fit.asta.health.navigation.today.viewmodel.TodayPlanViewModel
 import fit.asta.health.network.AstaNetwork
 import fit.asta.health.network.Certificate
+import fit.asta.health.network.TokenProvider
 import fit.asta.health.network.interceptor.OfflineInterceptor
 import fit.asta.health.network.interceptor.OnlineInterceptor
 import fit.asta.health.profile.ProfileDataMapper
@@ -100,6 +101,9 @@ val appModule = module {
     single(named("cache")) {
         Cache(androidApplication().filesDir, AstaNetwork.CACHE_SIZE)
     }
+
+    single { TokenProvider() }
+
     single(named("local")) {
 
         val builder = AstaNetwork.Builder()
@@ -120,6 +124,7 @@ val appModule = module {
     single(named("remote")) {
 
         val builder = AstaNetwork.Builder()
+            .setApiKey(get())
             .setCache(cache = get(named("cache")))
             .addInterceptor(OnlineInterceptor(androidApplication()))
 
@@ -135,6 +140,7 @@ val appModule = module {
 }
 
 val homeModule = module {
+
     factory { BannersDataMapper() }
     factory<BannersRepo> { BannersRepoImpl(get(named("remote")), get()) }
     factory<HomeView> { HomeViewImpl() }
