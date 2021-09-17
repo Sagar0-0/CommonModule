@@ -1,0 +1,163 @@
+{
+  "sequence": [
+    {
+      "uid": "1",
+      "name": "Sun Salutation",
+      "sanskrit": "Surya Namaskar",
+      "file": "surya_namaskar",
+      "style": "Ashtanga Yoga",
+      "level": "L1",
+      "duration": 60,
+      "strengths": [
+        "P0",
+        "P3"
+      ],
+      "stretches": [
+        "P0",
+        "P2",
+        "P5"
+      ],
+      "focus": [
+        "F1",
+        "F2",
+        "F13"
+      ],
+      "prep": [
+        ""
+      ],
+      "follow": [
+        ""
+      ]
+    },
+    {
+      "uid": "2",
+      "name": "Extended Side Angle Pose",
+      "sanskrit": "Utthita Parsvakonasan",
+      "file": "utthita_parsvakonasan",
+      "style": "Hatha Yoga",
+      "level": "L1",
+      "duration": 60,
+      "strengths": [
+        "P11"
+      ],
+      "stretches": [
+        "P2",
+        "P8",
+        "P10"
+      ],
+      "focus": [
+        "F1",
+        "F4",
+        "F7"
+      ]
+    },
+    {
+      "uid": "3",
+      "name": "Downward Facing Dog Pose",
+      "sanskrit": "Adho Mukha Svanasan",
+      "file": "adho_mukha_svanasan",
+      "style": "Ashtanga Yoga",
+      "level": "L1",
+      "duration": 60
+    },
+    {
+      "uid": "4",
+      "name": "Upward Face Dog Pose",
+      "sanskrit": "Urdhva Mukha Svanasana",
+      "file": "urdhva_mukha_svanasan",
+      "style": "Vinyasa Yoga",
+      "level": "L1",
+      "duration": 60
+    },
+    {
+      "uid": "5",
+      "name": "Lion Pose",
+      "sanskrit": "Simhasan",
+      "file": "simhasan",
+      "style": "Hatha Yoga",
+      "level": "L1",
+      "duration": 60
+    },
+    {
+      "uid": "6",
+      "name": "Cobra Pose",
+      "sanskrit": "Bhujangasan",
+      "file": "bhujangasan",
+      "style": "Ashtanga Yoga",
+      "level": "L1",
+      "duration": 60
+    },
+    {
+      "uid": "7",
+      "name": "Child Pose",
+      "sanskrit": "Balasan",
+      "file": "balasan",
+      "style": "Vinyasa Yoga",
+      "level": "L1",
+      "duration": 60
+    },
+    {
+      "uid": "8",
+      "name": "Seated Forward BendPose",
+      "sanskrit": "Paschimottanasan",
+      "file": "paschimottanasan",
+      "style": "Hatha Yoga",
+      "level": "L1",
+      "duration": 60
+    },
+    {
+      "uid": "9",
+      "name": "Half Spinal Twist Pose",
+      "sanskrit": "Ardha Matsyendrasan",
+      "file": "ardha_matsyendrasan",
+      "style": "Hatha Yoga",
+      "level": "L1",
+      "duration": 60
+    },
+    {
+      "uid": "10",
+      "name": "Cat Pose",
+      "sanskrit": "Marjariasan",
+      "file": "marjariasan",
+      "style": "Ashtanga Yoga",
+      "level": "L1",
+      "duration": 60
+    },
+    {
+      "uid": "11",
+      "name": "Bow Pose",
+      "sanskrit": "Dhanurasan",
+      "file": "dhanurasan",
+      "style": "Vinyasa Yoga",
+      "level": "L1",
+      "duration": 60
+    },
+    {
+      "uid": "12",
+      "name": "Camel Pose",
+      "sanskrit": "Ustrasan",
+      "file": "ustrasan",
+      "style": "Vinyasa Yoga",
+      "level": "L1",
+      "duration": 60
+    },
+    {
+      "uid": "13",
+      "name": "Fish pose",
+      "sanskrit": "Matsyasan",
+      "file": "matsyasan",
+      "style": "Hatha Yoga",
+      "level": "L1",
+      "duration": 60
+    },
+    {
+      "uid": "14",
+      "name": "Corpse Pose",
+      "sanskrit": "Savasan",
+      "file": "savasan",
+      "style": "Ashtanga Yoga",
+      "level": "L1",
+      "duration": 60
+    }
+  ]
+}

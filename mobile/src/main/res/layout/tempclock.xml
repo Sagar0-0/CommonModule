@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/timeCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardElevation="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <fit.asta.health.utils.CustomTimePicker
+            android:id="@+id/timePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timeCard">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/dimen_10">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/labelTitleChoose"
+                    android:layout_width="@dimen/dimen_0"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/title_choose_the_days"
+                    android:textSize="@dimen/dimen_text_20"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgCalender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen8"
+                    android:layout_marginBottom="@dimen/dimen16"
+                    app:layout_constraintStart_toStartOf="@id/labelTitleChoose"
+                    app:layout_constraintTop_toBottomOf="@id/labelTitleChoose"
+                    app:srcCompat="@drawable/ic_calendar_time" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/labelEveryDay"
+                    android:layout_width="@dimen/dimen_0"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen16"
+                    android:text="@string/title_every_day"
+                    android:textSize="@dimen/dimen_text_16"
+                    app:layout_constraintBottom_toBottomOf="@id/imgCalender"
+                    app:layout_constraintStart_toEndOf="@id/imgCalender"
+                    app:layout_constraintTop_toTopOf="@id/imgCalender" />
+
+                <LinearLayout
+                    android:id="@+id/weekDays"
+                    android:layout_width="@dimen/dimen_0"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen16"
+                    android:layout_marginTop="@dimen/dimen8"
+                    android:layout_marginEnd="@dimen/dimen16"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="7"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/labelEveryDay" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Select the remainder mode"
+                android:textSize="@dimen/dimen_text_20"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+                <RadioButton
+                    android:id="@+id/radioButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Alarm"
+                    android:textColor="@color/text1"
+                    android:textSize="@dimen/dimen_text_16" />
+
+                <RadioButton
+                    android:id="@+id/radioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen52"
+                    android:text="Notification"
+                    android:textColor="@color/text1"
+                    android:textSize="@dimen/dimen_text_16" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/textViewPriority"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen8"
+                android:text="Set the priority"
+                android:textSize="@dimen/dimen_text_20"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/radioGroup" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgPriority"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="@dimen/dimen_10"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewPriority"
+                app:srcCompat="@drawable/ic_new_release" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/labelTitlePriority"
+                android:layout_width="@dimen/dimen_0"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen16"
+                android:text="@string/priority"
+                android:textSize="@dimen/dimenText16"
+                app:layout_constraintBottom_toBottomOf="@id/imgPriority"
+                app:layout_constraintStart_toEndOf="@id/imgPriority"
+                app:layout_constraintTop_toTopOf="@id/imgPriority" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switchPriority"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen16"
+                android:checked="true"
+                app:layout_constraintBottom_toBottomOf="@id/labelTitlePriority"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/labelTitlePriority" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/labelSubTitlePriority"
+                android:layout_width="@dimen/dimen_0"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen8"
+                android:layout_marginBottom="@dimen/dimen16"
+                android:text="@string/setting_priority"
+                android:textSize="@dimen/dimenText16"
+                app:layout_constraintStart_toStartOf="@id/labelTitlePriority"
+                app:layout_constraintTop_toBottomOf="@id/labelTitlePriority" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/labelTitleReminder"
+                android:layout_width="@dimen/dimen_0"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_20"
+                android:text="@string/title_set_a_reminder"
+                android:textSize="@dimen/dimen_text_20"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/labelSubTitlePriority" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgNotification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="@dimen/dimen_10"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/labelTitleReminder"
+                app:srcCompat="@drawable/ic_notifications_time" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/labelTitleReminders"
+                android:layout_width="@dimen/dimen_0"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen16"
+                android:text="@string/title_reminder"
+                android:textSize="@dimen/dimenText16"
+                app:layout_constraintBottom_toBottomOf="@id/imgNotification"
+                app:layout_constraintStart_toEndOf="@id/imgNotification"
+                app:layout_constraintTop_toTopOf="@id/imgNotification" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switchReminders"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen16"
+                android:checked="true"
+                app:layout_constraintBottom_toBottomOf="@id/labelTitleReminders"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/labelTitleReminders" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/labelSubTitleReminders"
+                android:layout_width="@dimen/dimen_0"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen8"
+                android:layout_marginBottom="@dimen/dimen16"
+                android:text="@string/title_notifies_before"
+                android:textSize="@dimen/dimenText16"
+                app:layout_constraintStart_toStartOf="@id/labelTitleReminders"
+                app:layout_constraintTop_toBottomOf="@id/labelTitleReminders" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="OK"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button3"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="Cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

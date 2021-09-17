@@ -1,0 +1,5 @@
+@startuml
+title Trainer SignIn
+Trainer -> Asta: Authentication Request
+Asta -> Trainer: Access to the platform
+@enduml

@@ -1,0 +1,38 @@
+{
+  "pub_date": "",
+  "author": {
+    "name": "",
+    "imgUrl": "",
+    "about": ""
+  },
+  "content": [
+    {
+      "type": 0,
+      "topic": {
+        "title": "",
+        "text": "",
+        "figure": {
+          "type": 0,
+          "url": "",
+          "id": "",
+          "title": ""
+        }
+      },
+      "points": {
+        "type": 0,
+        "topics": [
+          {
+            "title": "",
+            "text": "",
+            "figure": {
+              "type": 0,
+              "url": "",
+              "id": "",
+              "title": ""
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

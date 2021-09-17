@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="fit.asta.health.navigation.home.ui.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/home_fragment" />
+
+    <fragment
+        android:id="@+id/navigation_today"
+        android:name="fit.asta.health.navigation.today.ui.TodayFragment"
+        android:label= "@string/today"
+        tools:layout="@layout/fragment_today" />
+
+    <fragment
+        android:id="@+id/navigation_track"
+        android:name="fit.asta.health.navigation.track.ui.TrackFragment"
+        android:label="@string/track"
+        tools:layout="@layout/track_fragment" />
+
+</navigation>

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "385157150874",
+    "firebase_url": "https://asta-health.firebaseio.com",
+    "project_id": "asta-health",
+    "storage_bucket": "asta-health.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:385157150874:android:05a5032bae69a931984723",
+        "android_client_info": {
+          "package_name": "fit.asta.health"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "385157150874-kjh2ulf5lom9hgisdd4o3mm7k2r7bane.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZdJA2vC4x_4N9imG7V-bqFJsPdyLfQ9c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "385157150874-kjh2ulf5lom9hgisdd4o3mm7k2r7bane.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

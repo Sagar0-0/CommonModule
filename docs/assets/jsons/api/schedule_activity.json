@@ -1,0 +1,69 @@
+{
+  "tags": {
+    "uid": "",
+    "tag": "Water",
+    "urlType": 1,
+    "url": "media/images/today/water.jpg"
+  },
+  "schedule": {
+    "uid": "",
+    "sessions": [
+      {
+        "day": "Sun",
+        "times": [
+          "10AM",
+          "1PM",
+          "5PM"
+        ]
+      },
+      {
+        "day": "Mon",
+        "times": [
+          "10AM",
+          "1PM",
+          "5PM"
+        ]
+      },
+      {
+        "day": "Tue",
+        "times": [
+          "10AM",
+          "1PM",
+          "5PM"
+        ]
+      },
+      {
+        "day": "Wed",
+        "times": [
+          "10AM",
+          "1PM",
+          "5PM"
+        ]
+      },
+      {
+        "day": "Thu",
+        "times": [
+          "10AM",
+          "1PM",
+          "5PM"
+        ]
+      },
+      {
+        "day": "Fri",
+        "times": [
+          "10AM",
+          "1PM",
+          "5PM"
+        ]
+      }
+    ],
+    "startDate": "",
+    "courseDuration": "",
+    "tagId": "",
+    "ttl": "Drink some water",
+    "dsc": "",
+    "remindBefore": 15,
+    "priority": 9,
+    "alertType": 1
+  }
+}

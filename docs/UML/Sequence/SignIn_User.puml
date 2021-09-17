@@ -1,0 +1,5 @@
+@startuml
+title User SignIn
+User -> Asta: Authentication Request
+Asta -> User: Access to the platform
+@enduml

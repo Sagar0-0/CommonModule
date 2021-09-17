@@ -1,0 +1,68 @@
+{
+  "status": {
+    "code": 200,
+    "msg": ""
+  },
+  "data": [
+    {
+      "uid": "1",
+      "cid": "1",
+      "ttl": "Immunity Booster",
+      "dsc": "Regular physical activity can strengthen your immune system.",
+      "url": "media/images/asanas/paschimottanasan.jpg",
+      "lvl": "Beginner I",
+      "int": "Low",
+      "dur": "30 days"
+    },
+    {
+      "uid": "2",
+      "cid": "1",
+      "ttl": "Stress Reduction",
+      "dsc": "Yoga, meditation, and exercise are examples of stress-relieving activities.",
+      "url": "media/images/asanas/utthita_parsvakonasan.jpg",
+      "lvl": "Beginner I",
+      "int": "Medium",
+      "dur": "45 days"
+    },
+    {
+      "uid": "3",
+      "cid": "1",
+      "ttl": "Digestion",
+      "dsc": "Yoga in your regular exercise routine to get things moving at an optimal pace.",
+      "url": "media/images/asanas/dhanurasan.jpg",
+      "lvl": "Intermediate",
+      "int": "Medium",
+      "dur": "60 days"
+    },
+    {
+      "uid": "4",
+      "cid": "1",
+      "ttl": "Core",
+      "dsc": "Abdominal exercises are a type of strength exercise that affect the abdominal muscles.",
+      "url": "media/images/asanas/matsyasan.jpg",
+      "lvl": "Intermediate",
+      "int": "High",
+      "dur": "90 days"
+    },
+    {
+      "uid": "5",
+      "cid": "1",
+      "ttl": "Locomotion",
+      "dsc": "This workout reveal blind spots and keep passion alive.",
+      "url": "media/images/asanas/surya_namaskar.jpg",
+      "lvl": "Advanced",
+      "int": "High",
+      "dur": "60 days"
+    },
+    {
+      "uid": "6",
+      "cid": "1",
+      "ttl": "Cardio",
+      "dsc": "Cardiovascular exercise is exercise that gets your heart rate up.",
+      "url": "media/images/asanas/simhasan.jpg",
+      "lvl": "Beginner I",
+      "int": "High",
+      "dur": "90 days"
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "uid": "",
+  "pubDate": "",
+  "title": "",
+  "subTitle": "",
+  "duration": "",
+  "lang": "",
+  "intro": {
+    "url": "",
+    "desc": "",
+    "keyPoints": [
+      ""
+    ]
+  },
+  "audience": {
+    "ageGroup": {
+      "from": "",
+      "to": ""
+    },
+    "gender": "",
+    "level": "",
+    "preRequisites": [
+      ""
+    ],
+    "notFor": [
+      ""
+    ]
+  },
+  "experts": [
+    {
+      "uid": "",
+      "name": "",
+      "expYears": "",
+      "about": "",
+      "url": ""
+    }
+  ],
+  "modules": [
+    {
+      "intensity": "",
+      "level": "",
+      "calories": "",
+      "title": "",
+      "subTitle": "",
+      "duration": "",
+      "desc": "",
+      "exercises": [
+        {
+          "uid": "",
+          "title": "",
+          "subTitle": "",
+          "style": "",
+          "category": "",
+          "duration": 90,
+          "calories": 25,
+          "level": "",
+          "url": "",
+          "info": {
+            "desc": "",
+            "benefits": [
+              ""
+            ],
+            "caution": [
+              ""
+            ],
+            "avoid": [
+              ""
+            ]
+          },
+          "strengthen": [
+          ],
+          "stretches": [
+          ],
+          "cures": [
+          ],
+          "complimentsWith": [
+          ],
+          "preparatory": [
+          ],
+          "followUp": [
+          ]
+        }
+      ]
+    }
+  ]
+}

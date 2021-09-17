@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/moduleCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/dimen_12"
+    android:layout_marginTop="@dimen/dimen_12"
+    android:layout_marginEnd="@dimen/dimen_12"
+    android:layout_marginBottom="@dimen/dimen4"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    tools:ignore="UnusedAttribute">
+
+    <!--android:layout_marginBottom="@dimen/dimen4"-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/courseModuleFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_24">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtModuleTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:textSize="@dimen/dimen_text_18"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtModuleSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="@dimen/dimen4"
+            android:textSize="@dimen/dimen_text_15"
+            app:layout_constraintStart_toStartOf="@id/txtModuleTitle"
+            app:layout_constraintTop_toBottomOf="@id/txtModuleTitle" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtModuleLevelTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="@dimen/dimen_24"
+            android:layout_marginTop="@dimen/dimen8"
+            android:text="@string/title_level"
+            android:textSize="@dimen/dimen_text_12"
+            app:layout_constraintEnd_toStartOf="@id/txtModuleDurationTitle"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtModuleSubtitle" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtModuleLevel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="@dimen/dimen4"
+            android:textAppearance="?textAppearanceListItem"
+            android:textSize="@dimen/dimen_text_15"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/txtModuleLevelTitle"
+            app:layout_constraintTop_toBottomOf="@id/txtModuleLevelTitle" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtModuleDurationTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:text="@string/title_duration"
+            android:textSize="@dimen/dimen_text_12"
+            app:layout_constraintEnd_toStartOf="@id/txtModuleCaloriesTitle"
+            app:layout_constraintStart_toEndOf="@id/txtModuleLevelTitle"
+            app:layout_constraintTop_toTopOf="@id/txtModuleLevelTitle" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtModuleDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="@dimen/dimen4"
+            android:textAppearance="?textAppearanceListItem"
+            android:textSize="@dimen/dimen_text_15"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/txtModuleDurationTitle"
+            app:layout_constraintTop_toBottomOf="@id/txtModuleDurationTitle" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtModuleCaloriesTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginEnd="@dimen/dimen_24"
+            android:text="@string/title_calories"
+            android:textSize="@dimen/dimen_text_12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/txtModuleDurationTitle"
+            app:layout_constraintTop_toTopOf="@id/txtModuleDurationTitle" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtModuleCalories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="@dimen/dimen4"
+            android:textAppearance="?textAppearanceListItem"
+            android:textSize="@dimen/dimen_text_15"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/txtModuleCaloriesTitle"
+            app:layout_constraintTop_toBottomOf="@id/txtModuleCaloriesTitle" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtModuleIntensityTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="@dimen/dimen8"
+            android:text="@string/title_intensity"
+            android:textSize="@dimen/dimen_text_12"
+            app:layout_constraintStart_toStartOf="@id/txtModuleLevelTitle"
+            app:layout_constraintTop_toBottomOf="@id/txtModuleLevel" />
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/ragingModuleIntensity"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen4"
+            android:progressTint="@color/colorPrimary"
+            app:layout_constraintStart_toStartOf="@id/txtModuleIntensityTitle"
+            app:layout_constraintTop_toBottomOf="@id/txtModuleIntensityTitle" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtModuleStatusTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="@dimen/dimen8"
+            android:text="@string/title_status"
+            android:textSize="@dimen/dimen_text_12"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/txtModuleDurationTitle"
+            app:layout_constraintTop_toBottomOf="@id/txtModuleDuration" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgModuleStatus"
+            android:layout_width="@dimen/dimen_18"
+            android:layout_height="@dimen/dimen_18"
+            android:layout_marginTop="@dimen/dimen4"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/txtModuleStatusTitle"
+            app:layout_constraintStart_toStartOf="@id/txtModuleStatusTitle"
+            app:layout_constraintTop_toBottomOf="@id/txtModuleStatusTitle"
+            app:srcCompat="@drawable/ic_tick_circle" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnModulePlay"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_start"
+            app:icon="@drawable/ic_play_arrow"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/txtModuleIntensityTitle" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtModuleDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="@dimen/dimen4"
+            android:justificationMode="inter_word"
+            android:lineSpacingMultiplier="1.1"
+            android:textSize="@dimen/dimen_text_15"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnModulePlay" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtModulePrecautions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="@dimen/dimen8"
+            android:text="@string/title_precautions"
+            android:textSize="@dimen/dimenText16"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtModuleDesc" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvPrecautions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtModulePrecautions" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

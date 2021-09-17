@@ -1,0 +1,23 @@
+{
+  "notifications": {
+    "reminder": true,
+    "activity_tips": true,
+    "goal_progress_tips": true,
+    "goal_adjustment": true,
+    "completed_goals": true
+  },
+  "units": {
+    "measure_weight": "",
+    "measure_height": "",
+    "energy": ""
+  },
+  "language": "EN",
+  "video_settings": {
+    "sanskrit_name": true,
+    "timeline_visible": true,
+    "count_down_timer": true,
+    "bg_music": "",
+    "quality": "HD"
+  },
+  "ui_theme": "dark"
+}

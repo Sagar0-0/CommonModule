@@ -1,0 +1,40 @@
+{
+  "carousel": [
+    {
+      "uid": "",
+      "type": "",
+      "ttl": "",
+      "desc": "",
+      "url": ""
+    }
+  ],
+  "categories": {
+    "uid": "fit",
+    "ttl": "Library",
+    "list": [
+      {
+        "uid": "asanas",
+        "ttl": "Asanas",
+        "url": "https://img.aws.com/images/1.jpg"
+      },
+      {
+        "uid": "meditation",
+        "ttl": "Meditation",
+        "url": "https://img.aws.com/images/2.jpg"
+      }
+    ]
+  },
+  "testimonials": {
+    "uid": "",
+    "ttl": "Testimonials",
+    "list": [
+      {
+        "url": "",
+        "name": "",
+        "des": "",
+        "org": "",
+        "testimonial": ""
+      }
+    ]
+  }
+}

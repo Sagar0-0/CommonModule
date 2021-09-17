@@ -1,0 +1,45 @@
+[
+  {
+    "type" : 1,
+    "tag": "medicine",
+    "title": "Telma",
+    "subTitle": "After dinner",
+    "time": 11,
+    "status": 1
+  },
+  {
+    "type" : 2,
+    "tag": "Fasting",
+    "title": "Intermittent Fasting",
+    "time": 11,
+    "duration": 12,
+    "status": 0
+  },
+
+  {
+    "type" : 3,
+    "tag": "yoga",
+    "title": "Total Awakening",
+    "subTitle": "Jourey towards a healthy lifestyle",
+    "time": 11,
+    "duration": 12,
+    "progress": 13,
+    "status": 0
+  },
+  {
+    "type" : 4,
+    "tag": "water",
+    "title": "Drink some water",
+    "time": 11,
+    "status": 0
+  },
+  {
+    "type": 5,
+    "tag": "Appointment",
+    "title": "Dr Deepika",
+    "specialization": "Physiotherapist",
+    "time": 11,
+    "imageUrl": "",
+    "status": 0
+  }
+]

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardOffers"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="@dimen/dimen4"
+    app:cardCornerRadius="@dimen/image_corner_radius"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_0"
+            android:foreground="@color/homeBannerBackground"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="H,2:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/offers7" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt5PercentOff"
+            style="@style/robotoMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen24"
+            android:layout_marginTop="@dimen/dimen24"
+            android:text="@string/best_sale"
+            android:textColor="@color/colorOnPrimary"
+            android:textSize="@dimen/dimen_text_22"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/txtOfferEnds"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtOfferEnds"
+            style="@style/robotoReg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen24"
+            android:paddingBottom="@dimen/dimen24"
+            android:singleLine="false"
+            android:text="@string/sale_at"
+            android:textColor="@color/colorOnPrimary"
+            android:textSize="@dimen/dimen_text_18"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- <com.google.android.material.textview.MaterialTextView
+             android:id="@+id/txtOfferEndsTimer"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginStart="@dimen/dimen4"
+             android:paddingBottom="@dimen/dimen24"
+             android:singleLine="false"
+             android:text="@string/timer"
+             android:textSize="@dimen/dimenText13"
+             app:layout_constraintStart_toEndOf="@id/txtOfferEnds"
+             app:layout_constraintTop_toBottomOf="@id/txt5PercentOff" />-->
+
+        <!-- <com.google.android.material.textview.MaterialTextView
+             android:id="@+id/txtTryNow"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginEnd="@dimen/dimen24"
+             android:paddingBottom="@dimen/dimen24"
+             android:singleLine="false"
+             android:text="@string/subscribe_now"
+             android:textColor="@color/colorPrimary"
+             android:textSize="@dimen/dimenText13"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintTop_toBottomOf="@id/txt5PercentOff" />-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
+

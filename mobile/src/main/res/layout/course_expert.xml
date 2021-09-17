@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/expertCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/dimen_12"
+    android:layout_marginTop="@dimen/dimen8"
+    android:layout_marginEnd="@dimen/dimen_12"
+    android:layout_marginBottom="@dimen/dimen8"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    tools:ignore="UnusedAttribute">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/courseExpertFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen16">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgCourseExpert"
+            android:layout_width="@dimen/dimen_120"
+            android:layout_height="@dimen/dimen_120"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_person" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtCourseExpertName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="@dimen/dimen16"
+            android:textAppearance="?textAppearanceListItem"
+            android:textSize="@dimen/dimenText16"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/imgCourseExpert"
+            app:layout_constraintTop_toTopOf="@id/imgCourseExpert" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtCourseExpertExp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:textSize="@dimen/dimen_text_15"
+            app:layout_constraintStart_toStartOf="@id/txtCourseExpertName"
+            app:layout_constraintTop_toBottomOf="@id/txtCourseExpertName" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtCourseExpertPfn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:textSize="@dimen/dimen_text_15"
+            app:layout_constraintStart_toStartOf="@id/txtCourseExpertExp"
+            app:layout_constraintTop_toBottomOf="@id/txtCourseExpertExp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtCourseExpertQlf"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="@dimen/dimen16"
+            android:justificationMode="inter_word"
+            android:singleLine="false"
+            android:textSize="@dimen/dimen_text_15"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imgCourseExpert"
+            app:layout_constraintTop_toBottomOf="@id/txtCourseExpertPfn" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrierImgQlf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="imgCourseExpert,txtCourseExpertQlf"
+            tools:layout_editor_absoluteY="120dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtCourseAboutExpert"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen8"
+            android:justificationMode="inter_word"
+            android:lineSpacingMultiplier="1.1"
+            android:textSize="@dimen/dimen_text_15"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/barrierImgQlf" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

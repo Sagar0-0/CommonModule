@@ -1,0 +1,329 @@
+{
+  "uid": "1",
+  "header": {
+    "date": "10th June 2020",
+    "ttl": "Immunity Booster",
+    "sub": "Improves the immunity",
+    "urlType": 1,
+    "url": "media/images/asanas/paschimottanasan.jpg",
+    "lvl": "L1",
+    "dur": "30 days"
+  },
+  "overview": {
+    "intro": {
+      "url": "media/images/asanas/paschimottanasan.jpg",
+      "ttl": "PLANT A REVOLUTION",
+      "dsc": "In our course, you will start from the beginning by downloading Java JDK and Android Studio. Once you have those installed, you will learn by building real applications like Instagram & Foursquare Clones! We teach you step by step and if you ever have any questions, all you have to do is post in our course discussion to receive help from Atil or Joe! Not only only will you learn with more than 15 hours of HD video, but you will also learn about designing your applications in Sketch. This will give your applications a professional touch and separate your app from all of the others! We also show you step by step how to submit your new app to the Google Play Store!"
+    },
+    "keys": {
+      "ttl": "What you will learn",
+      "pts": [
+        "By the end of our course, you will be able to create professional applications and submit them to the play store from scratch!",
+        "You will also have the skills of a professional developer who can earn thousands of dollars creating applications",
+        "Running Kotlin inside Docker container and Docker Compose",
+        "Use the most popular multithreading frameworks for Android (RxJava, Kotlin Coroutines, etc.)"
+      ]
+    },
+    "audience": {
+      "age": {
+        "frm": "20",
+        "to": "45"
+      },
+      "gen": "M",
+      "lvl": "L1",
+      "preReq": [
+        "Write thread-safe code of any complexity",
+        "Use the most popular multithreading frameworks for Android (RxJava, Kotlin Coroutines, etc.)",
+        "Find subtle thread-safety bugs in code"
+      ],
+      "notFor": [
+        "Keep the user interface responsive at all times",
+        "Prevent memory leaks in your Android applications",
+        "Manage up to hundreds of inter-dependent threads"
+      ]
+    },
+    "experts": [
+      {
+        "uid": "1",
+        "name": "Pallavi Singla",
+        "exp": "7",
+        "prof": "Physiotherapist",
+        "qlf": "MBBS, MS (Obstetrician and a Gynaecologist), Fellowship in Gynae endoscopy, Fellowship in Cosmetic Gynaecology",
+        "abt": "Dr. Pallavi Bansal is an obstetrician and a gynaecologist. She did her medical training from PGIMS, Rohtak followed by Senior Residency from PGI, Chandigarh. She is currently practising as a Consultant Gynaecologist at Mukat Hospital & Heart Institute, Chandigarh. Her areas of interest and expertise include Gynae endoscopy and Cosmetic gynaecology along with routine obstetrics and gynaecological problems of adolescent and young women.",
+        "url": "media/images/experts/pallavi_singla.jpg"
+      }
+    ]
+  },
+  "sessions": [
+    {
+      "lvl": "Beginner 1",
+      "dur": 30,
+      "int": 3.0,
+      "cal": 250,
+      "ttl": "Title comes here",
+      "sub": "Day 1",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Beginner 2",
+      "dur": 40,
+      "int": 3.5,
+      "cal": 300,
+      "ttl": "Title comes here",
+      "sub": "Day 2",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Intermediate",
+      "dur": 60,
+      "int": 4.0,
+      "cal": 350,
+      "ttl": "Title comes here",
+      "sub": "Day 3",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Advanced",
+      "dur": 60,
+      "int": 4.5,
+      "cal": 450,
+      "ttl": "Title comes here",
+      "sub": "Day 4",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Beginner 1",
+      "dur": 30,
+      "int": 3.0,
+      "cal": 250,
+      "ttl": "Title comes here",
+      "sub": "Day 5",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Beginner 2",
+      "dur": 40,
+      "int": 3.5,
+      "cal": 300,
+      "ttl": "Title comes here",
+      "sub": "Day 6",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Intermediate",
+      "dur": 60,
+      "int": 4.0,
+      "cal": 350,
+      "ttl": "Title comes here",
+      "sub": "Day 7",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Advanced",
+      "dur": 60,
+      "int": 4.5,
+      "cal": 450,
+      "ttl": "Title comes here",
+      "sub": "Day 8",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Beginner 1",
+      "dur": 30,
+      "int": 3.0,
+      "cal": 250,
+      "ttl": "Title comes here",
+      "sub": "Day 9",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Beginner 2",
+      "dur": 40,
+      "int": 3.5,
+      "cal": 300,
+      "ttl": "Title comes here",
+      "sub": "Day 10",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Intermediate",
+      "dur": 60,
+      "int": 4.0,
+      "cal": 350,
+      "ttl": "Title comes here",
+      "sub": "Day 11",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Advanced",
+      "dur": 60,
+      "int": 4.5,
+      "cal": 450,
+      "ttl": "Title comes here",
+      "sub": "Day 12",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Beginner 1",
+      "dur": 30,
+      "int": 3.0,
+      "cal": 250,
+      "ttl": "Title comes here",
+      "sub": "Day 13",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Beginner 2",
+      "dur": 40,
+      "int": 3.5,
+      "cal": 300,
+      "ttl": "Title comes here",
+      "sub": "Day 14",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Intermediate",
+      "dur": 60,
+      "int": 4.0,
+      "cal": 350,
+      "ttl": "Title comes here",
+      "sub": "Day 15",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Advanced",
+      "dur": 60,
+      "int": 4.5,
+      "cal": 450,
+      "ttl": "Title comes here",
+      "sub": "Day 16",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Beginner 1",
+      "dur": 30,
+      "int": 3.0,
+      "cal": 250,
+      "ttl": "Title comes here",
+      "sub": "Day 17",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Beginner 2",
+      "dur": 40,
+      "int": 3.5,
+      "cal": 300,
+      "ttl": "Title comes here",
+      "sub": "Day 18",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Intermediate",
+      "dur": 60,
+      "int": 4.0,
+      "cal": 350,
+      "ttl": "Title comes here",
+      "sub": "Day 19",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Advanced",
+      "dur": 60,
+      "int": 4.5,
+      "cal": 450,
+      "ttl": "Title comes here",
+      "sub": "Day 20",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Beginner 1",
+      "dur": 30,
+      "int": 3.0,
+      "cal": 250,
+      "ttl": "Title comes here",
+      "sub": "Day 21",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Beginner 2",
+      "dur": 40,
+      "int": 3.5,
+      "cal": 300,
+      "ttl": "Title comes here",
+      "sub": "Day 22",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Intermediate",
+      "dur": 60,
+      "int": 4.0,
+      "cal": 350,
+      "ttl": "Title comes here",
+      "sub": "Day 23",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Advanced",
+      "dur": 60,
+      "int": 4.5,
+      "cal": 450,
+      "ttl": "Title comes here",
+      "sub": "Day 24",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Beginner 1",
+      "dur": 30,
+      "int": 3.0,
+      "cal": 250,
+      "ttl": "Title comes here",
+      "sub": "Day 25",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Beginner 2",
+      "dur": 40,
+      "int": 3.5,
+      "cal": 300,
+      "ttl": "Title comes here",
+      "sub": "Day 26",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Intermediate",
+      "dur": 60,
+      "int": 4.0,
+      "cal": 350,
+      "ttl": "Title comes here",
+      "sub": "Day 27",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Advanced",
+      "dur": 60,
+      "int": 4.5,
+      "cal": 450,
+      "ttl": "Title comes here",
+      "sub": "Day 28",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Intermediate",
+      "dur": 60,
+      "int": 4.0,
+      "cal": 350,
+      "ttl": "Title comes here",
+      "sub": "Day 29",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    },
+    {
+      "lvl": "Advanced",
+      "dur": 60,
+      "int": 4.5,
+      "cal": 450,
+      "ttl": "Title comes here",
+      "sub": "Day 30",
+      "dsc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints."
+    }
+  ]
+}

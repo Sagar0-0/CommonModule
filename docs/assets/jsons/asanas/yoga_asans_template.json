@@ -1,0 +1,56 @@
+{
+  "asan": {
+    "id": "",
+    "name": "",
+    "style": "",
+    "content": {
+      "introduction": "",
+      "steps": "",
+      "caution": "",
+      "tips": "",
+      "strengthens": [
+        ""
+      ],
+      "stretches": [
+        ""
+      ],
+      "images": [
+        ""
+      ],
+      "video": "",
+      "audio": ""
+    },
+    "preparatory_asans": [
+      ""
+    ],
+    "followup_asans": [
+      ""
+    ],
+    "compliments_with": [
+      ""
+    ],
+    "expertise": [
+      {
+        "level": "",
+        "duration": "",
+        "repetitions": ""
+      },
+      {
+        "level": "",
+        "duration": "",
+        "repetitions": ""
+      }
+    ],
+    "ideal_times": [],
+    "prerequisites": [],
+    "ideal_age": {
+      "from": "",
+      "to": ""
+    },
+    "ideal_personalities": [],
+    "avoid": [],
+    "cures": [],
+    "benefits": [],
+    "play_order": {}
+  }
+}

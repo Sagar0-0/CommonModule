@@ -1,0 +1,26 @@
+[
+  {
+    "uid": "",
+    "tid": "",
+    "type": 2,
+    "ttl": "ASTA",
+    "sub": "Introduction about ASTA",
+    "url": "media/images/banners/aboutAsta.mp4"
+  },
+  {
+    "uid": "",
+    "tid": "1",
+    "type": 1,
+    "ttl": "Popular",
+    "sub": "Majority of the users practicing this course",
+    "url": "media/images/banners/popular.jpg"
+  },
+  {
+    "uid": "",
+    "tid": "1",
+    "type": 1,
+    "ttl": "Recommended",
+    "sub": "This course is recommended course to you!",
+    "url": "media/images/banners/recommended.jpg"
+  }
+]

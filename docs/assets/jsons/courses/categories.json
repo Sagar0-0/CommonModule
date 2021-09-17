@@ -1,0 +1,22 @@
+{
+  "data": [
+    {
+      "uid": "1",
+      "type": "header",
+      "ttl": "Library",
+      "url": ""
+    },
+    {
+      "uid": "2",
+      "type": "card",
+      "ttl": "Asanas",
+      "url": "https://img.aws.com/images/1.jpg"
+    },
+    {
+      "uid": "3",
+      "type": "card",
+      "ttl": "Meditation",
+      "url": "https://img.aws.com/images/1.jpg"
+    }
+  ]
+}

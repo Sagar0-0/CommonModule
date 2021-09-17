@@ -1,0 +1,16 @@
+@startuml
+
+title Profile
+actor Admin
+actor Trainer
+participant Asta
+
+Asta -> Trainer: Profile request
+loop till approved by admin
+note over Trainer: Profile: (Name, Location, \nQualification, Experience, \nProfession, About, Image)
+Trainer -> Asta: Submit the profile
+Asta -> Admin: Send notification for approval
+Admin -> Asta: Verify the documents and approve/reject
+end
+Asta -> Trainer: Access to the platform
+@enduml

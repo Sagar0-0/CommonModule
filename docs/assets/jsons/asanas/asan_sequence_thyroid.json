@@ -1,0 +1,99 @@
+{
+  "yoga_sequence": [
+    {
+      "id": "1",
+      "name": "Neck Exercises",
+      "url": "neck_exercises.mp4"
+    },
+    {
+      "id": "2",
+      "name": "Surya Namaskara (Sun Salutation)",
+      "url": "surya_namaskar_sun_salutation.mp4"
+    },
+    {
+      "id": "3",
+      "name": "Marjariasan (Cat Stretch Pose)",
+      "url": "marjariasan_cat_pose.mp4"
+    },
+    {
+      "id": "4",
+      "name": "Simhasana (Lion Pose)",
+      "url": "sinhasan_lion_pose_lion.mp4"
+    },
+    {
+      "id": "5",
+      "name": "Bhujangasan (Cobra Pose)",
+      "url": "bhujangasana.mp4"
+    },
+    {
+      "id": "6",
+      "name": "Suptha Vajrasan (Thunderbolt Pose)",
+      "url": "supta_vajrasana.mp4"
+    },
+    {
+      "id": "7",
+      "name": "Ardha Matsyendrasan (Half Spinal Twist Pose)",
+      "url": "ardha_matsyendrasana_half_spinal_twist.mp4"
+    },
+    {
+      "id": "8",
+      "name": "Utkatasana (Chair Pose)",
+      "url": "utkatasana_chair_pose.mp4"
+    },
+    {
+      "id": "9",
+      "name": "Dhanurasan (Bow Pose)",
+      "url": "dhanurasana_bow_pose.mp4"
+    },
+    {
+      "id": "10",
+      "name": "Balasan (Child Pose)",
+      "url": "balasana_childs_pose.mp4"
+    },
+    {
+      "id": "11",
+      "name": "Ustrasan (Camel Pose)",
+      "url": "ustrasana_camel_pose.mp4"
+    },
+    {
+      "id": "12",
+      "name": "Sethubandhasan (Bridge Pose)",
+      "url": "setu_bandhasana_bridge_pose.mp4"
+    },
+    {
+      "id": "13",
+      "name": "Janusirsashan (Head-to-Knee Forward Bend)",
+      "url": "janu_sirsasana_revolved_head_to_knee_pose.mp4"
+    },
+    {
+      "id": "14",
+      "name": "Sarvangasan (Shoulder Stand Pose)",
+      "url": "sarvangasana_shoulder_stand.mp4"
+    },
+    {
+      "id": "15",
+      "name": "Halasan (Plow Pose)",
+      "url": "halasan_plow_pose.mp4"
+    },
+    {
+      "id": "16",
+      "name": "Matsyasan (Fish Pose)",
+      "url": "matsyasana_fish_pose.mp4"
+    },
+    {
+      "id": "17",
+      "name": "Viparita Karani (Legs-Up-the-Wall Pose)",
+      "url": "viparita_karani_.mp4"
+    },
+    {
+      "id": "18",
+      "name": "Sirshasan (Head Stand Pose)",
+      "url": "sirsasana_head_stand_yoga_pose.mp4"
+    },
+    {
+      "id": "19",
+      "name": "Savasan (Corpse Pose)",
+      "url": "savasana_corpse_pose.mp4"
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "yoga_sequence": [
+    {
+      "asan": {
+        "id": "1",
+        "name": "Triangle Pose",
+        "sanskrit": "Trikonasan",
+        "style": "Vinyasa",
+        "expertise": [
+          {
+            "level": "Beginner",
+            "duration_sec": "30",
+            "repetitions_min": 3,
+            "repetitions_max": 5
+          }
+        ],
+        "strengthens": [
+          "Ankles",
+          "Thighs",
+          "Knees"
+        ],
+        "stretches": [
+          "Ankles",
+          "Groin",
+          "Thighs",
+          "Shoulders",
+          "Knees",
+          "Hips",
+          "Calves",
+          "Hamstrings",
+          "Thorax",
+          "Vertebral column"
+        ],
+        "preparatory_asans": [
+          {
+            "id": "",
+            "name": "Tadasana"
+          },
+          {
+            "id": "",
+            "name": "Vriksasana"
+          }
+        ],
+        "followup_asans": [
+          {
+            "id": "",
+            "name": ""
+          }
+        ],
+        "compliments_with": [
+          {
+            "id": "",
+            "name": ""
+          }
+        ],
+        "content": {
+          "introduction": "",
+          "steps": [
+            ""
+          ],
+          "benefits": [
+            ""
+          ],
+          "caution": [
+            ""
+          ],
+          "tips": [
+            ""
+          ],
+          "images": [
+            ""
+          ],
+          "video": "",
+          "audio": ""
+        },
+        "ideal_times": [
+        ],
+        "prerequisites": [
+        ],
+        "ideal_age": {
+          "from": "",
+          "to": ""
+        },
+        "ideal_personalities": [],
+        "avoid": [],
+        "cures": [],
+        "play_order": {}
+      }
+    }
+  ]
+}

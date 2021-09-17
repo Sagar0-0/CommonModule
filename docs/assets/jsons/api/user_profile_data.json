@@ -1,0 +1,542 @@
+[
+  {
+    "uid": "10006",
+    "tag": "BODY_TYPE",
+    "values": [
+      {
+        "uid": "F101",
+        "val": "Fat at belly",
+        "url": "media/images/profile/bodyType_F101.jpg"
+      },
+      {
+        "uid": "F102",
+        "val": "Fat at belly and thighs",
+        "url": "media/images/profile/bodyType_F102.jpg"
+      },
+      {
+        "uid": "M201",
+        "val": "Fat at belly",
+        "url": "media/images/profile/bodyType_M201.jpg"
+      },
+      {
+        "uid": "M202",
+        "val": "Fat at belly and thighs",
+        "url": "media/images/profile/bodyType_M202.jpg"
+      }
+    ]
+  },
+  {
+    "uid": "10008",
+    "tag": "WORK_STYLE",
+    "values": [
+      {
+        "uid": "1",
+        "val": "Sitting"
+      },
+      {
+        "uid": "2",
+        "val": "Standing"
+      }
+    ]
+  },
+  {
+    "uid": "10009",
+    "tag": "CURRENT_ACTIVITIES",
+    "values": [
+      {
+        "uid": "1",
+        "val": "Badminton"
+      },
+      {
+        "uid": "2",
+        "val": "Cricket"
+      },
+      {
+        "uid": "3",
+        "val": "Dance"
+      },
+      {
+        "uid": "4",
+        "val": "Meditation"
+      },
+      {
+        "uid": "5",
+        "val": "Walking"
+      },
+      {
+        "uid": "6",
+        "val": "Workouts"
+      },
+      {
+        "uid": "7",
+        "val": "Yoga"
+      }
+    ]
+  },
+  {
+    "uid": "10010",
+    "tag": "PREFERRED_ACTIVITIES",
+    "values": [
+      {
+        "uid": "1",
+        "val": "Badminton"
+      },
+      {
+        "uid": "2",
+        "val": "Cricket"
+      },
+      {
+        "uid": "3",
+        "val": "Dance"
+      },
+      {
+        "uid": "4",
+        "val": "Meditation"
+      },
+      {
+        "uid": "5",
+        "val": "Walking"
+      },
+      {
+        "uid": "6",
+        "val": "Workouts"
+      },
+      {
+        "uid": "7",
+        "val": "Yoga"
+      }
+    ]
+  },
+  {
+    "uid": "10011",
+    "tag": "AILMENTS",
+    "values": [
+      {
+        "uid": "1",
+        "val": "acidity"
+      },
+      {
+        "uid": "2",
+        "val": "anaemia"
+      },
+      {
+        "uid": "3",
+        "val": "ankles"
+      },
+      {
+        "uid": "4",
+        "val": "appendicitis"
+      },
+      {
+        "uid": "5",
+        "val": "arthritis of the lower back"
+      },
+      {
+        "uid": "6",
+        "val": "arthritis of the dorsal region"
+      },
+      {
+        "uid": "7",
+        "val": "arthritis of the shoulder joints"
+      },
+      {
+        "uid": "8",
+        "val": "arms and abdominal organs"
+      },
+      {
+        "uid": "9",
+        "val": "asthma"
+      },
+      {
+        "uid": "10",
+        "val": "backache"
+      },
+      {
+        "uid": "11",
+        "val": "high blood pressure"
+      },
+      {
+        "uid": "12",
+        "val": "loss of memory"
+      },
+      {
+        "uid": "13",
+        "val": "breathlessness"
+      },
+      {
+        "uid": "14",
+        "val": "bronchitis"
+      },
+      {
+        "uid": "15",
+        "val": "broncho pneumonia"
+      },
+      {
+        "uid": "16",
+        "val": "chest"
+      },
+      {
+        "uid": "17",
+        "val": "chill"
+      },
+      {
+        "uid": "18",
+        "val": "coccyx"
+      },
+      {
+        "uid": "19",
+        "val": "cold"
+      },
+      {
+        "uid": "20",
+        "val": "cough"
+      },
+      {
+        "uid": "21",
+        "val": "colic"
+      },
+      {
+        "uid": "22",
+        "val": "colitis"
+      },
+      {
+        "uid": "23",
+        "val": "constipation"
+      },
+      {
+        "uid": "24",
+        "val": "coronary thrombosis"
+      },
+      {
+        "uid": "25",
+        "val": "deformity in legs"
+      },
+      {
+        "uid": "26",
+        "val": "deformity in arms"
+      },
+      {
+        "uid": "27",
+        "val": "diabetes"
+      },
+      {
+        "uid": "28",
+        "val": "diarrhoea"
+      },
+      {
+        "uid": "29",
+        "val": "dilation of heart"
+      },
+      {
+        "uid": "30",
+        "val": "displacement of uterus"
+      },
+      {
+        "uid": "31",
+        "val": "displacement of the spinal discs"
+      },
+      {
+        "uid": "32",
+        "val": "dysentery"
+      },
+      {
+        "uid": "33",
+        "val": "dyspepsia"
+      },
+      {
+        "uid": "34",
+        "val": "epilepsy"
+      },
+      {
+        "uid": "35",
+        "val": "eye-sight"
+      },
+      {
+        "uid": "36",
+        "val": "fatigue"
+      },
+      {
+        "uid": "37",
+        "val": "flat foot"
+      },
+      {
+        "uid": "38",
+        "val": "flatulence"
+      },
+      {
+        "uid": "39",
+        "val": "gall bladder and liver exercises"
+      },
+      {
+        "uid": "40",
+        "val": "gastritis"
+      },
+      {
+        "uid": "41",
+        "val": "giddiness"
+      },
+      {
+        "uid": "42",
+        "val": "gout"
+      },
+      {
+        "uid": "43",
+        "val": "halitosis (bad breath)"
+      },
+      {
+        "uid": "44",
+        "val": "hamstring muscles"
+      },
+      {
+        "uid": "45",
+        "val": "headache"
+      },
+      {
+        "uid": "46",
+        "val": "heart trouble"
+      },
+      {
+        "uid": "47",
+        "val": "heartburn"
+      },
+      {
+        "uid": "48",
+        "val": "heels(pain or spurs)"
+      },
+      {
+        "uid": "49",
+        "val": "hernia(umbilical)"
+      },
+      {
+        "uid": "50",
+        "val": "hernia(inguinal)"
+      },
+      {
+        "uid": "51",
+        "val": "hunch-back"
+      },
+      {
+        "uid": "52",
+        "val": "hydrocele"
+      },
+      {
+        "uid": "53",
+        "val": "hyper-thyroid"
+      },
+      {
+        "uid": "54",
+        "val": "hypo-thyroid"
+      },
+      {
+        "uid": "55",
+        "val": "impotency"
+      },
+      {
+        "uid": "56",
+        "val": "indigestion"
+      },
+      {
+        "uid": "57",
+        "val": "insomnia"
+      },
+      {
+        "uid": "58",
+        "val": "kidneys"
+      },
+      {
+        "uid": "59",
+        "val": "knees"
+      },
+      {
+        "uid": "60",
+        "val": "labour pain"
+      },
+      {
+        "uid": "61",
+        "val": "legs"
+      },
+      {
+        "uid": "62",
+        "val": "liver,spleen,pancreas and intestines"
+      },
+      {
+        "uid": "63",
+        "val": "lumbago"
+      },
+      {
+        "uid": "64",
+        "val": "lungs"
+      },
+      {
+        "uid": "65",
+        "val": "menstrual disorders"
+      },
+      {
+        "uid": "66",
+        "val": "migraine"
+      },
+      {
+        "uid": "67",
+        "val": "nasal catarrh"
+      },
+      {
+        "uid": "68",
+        "val": "nervous debility"
+      },
+      {
+        "uid": "69",
+        "val": "obesity"
+      },
+      {
+        "uid": "70",
+        "val": "ovaries"
+      },
+      {
+        "uid": "71",
+        "val": "palpitation"
+      },
+      {
+        "uid": "72",
+        "val": "polio"
+      },
+      {
+        "uid": "73",
+        "val": "paralysis"
+      },
+      {
+        "uid": "74",
+        "val": "piles"
+      },
+      {
+        "uid": "75",
+        "val": "pleurisy and pneumonia"
+      },
+      {
+        "uid": "76",
+        "val": "prostates"
+      },
+      {
+        "uid": "77",
+        "val": "rheumatic pains"
+      },
+      {
+        "uid": "78",
+        "val": "sciatica"
+      },
+      {
+        "uid": "79",
+        "val": "spermatorrhoea"
+      },
+      {
+        "uid": "80",
+        "val": "sterility"
+      },
+      {
+        "uid": "81",
+        "val": "thrombosis of the legs"
+      },
+      {
+        "uid": "82",
+        "val": "tonsillitis"
+      },
+      {
+        "uid": "83",
+        "val": "tuberculosis"
+      },
+      {
+        "uid": "84",
+        "val": "tumour of the stomach"
+      },
+      {
+        "uid": "85",
+        "val": "ulcer(gastric)"
+      },
+      {
+        "uid": "86",
+        "val": "ulcer(duodenal)"
+      },
+      {
+        "uid": "87",
+        "val": "urine(dribbling or excessive)"
+      },
+      {
+        "uid": "88",
+        "val": "varicose veins"
+      }
+    ]
+  },
+  {
+    "uid": "10012",
+    "tag": "TARGETS",
+    "values": [
+      {
+        "uid": "1",
+        "val": "anxiety"
+      },
+      {
+        "uid": "2",
+        "val": "body-alignments"
+      },
+      {
+        "uid": "3",
+        "val": "body-sculpt"
+      },
+      {
+        "uid": "4",
+        "val": "concentration"
+      },
+      {
+        "uid": "5",
+        "val": "emotion-control"
+      },
+      {
+        "uid": "6",
+        "val": "energy-booster"
+      },
+      {
+        "uid": "7",
+        "val": "flexibility"
+      },
+      {
+        "uid": "8",
+        "val": "good-sleep"
+      },
+      {
+        "uid": "9",
+        "val": "immune-system"
+      },
+      {
+        "uid": "10",
+        "val": "inner-peace"
+      },
+      {
+        "uid": "11",
+        "val": "muscle-tone"
+      },
+      {
+        "uid": "12",
+        "val": "relaxation"
+      },
+      {
+        "uid": "13",
+        "val": "skin-rejuvenation"
+      },
+      {
+        "uid": "14",
+        "val": "stretch-twist-bend"
+      },
+      {
+        "uid": "15",
+        "val": "strength"
+      },
+      {
+        "uid": "16",
+        "val": "stress-reduction"
+      },
+      {
+        "uid": "17",
+        "val": "weight-loss"
+      }
+    ]
+  }
+]

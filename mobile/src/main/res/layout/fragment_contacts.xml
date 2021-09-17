@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgBackgroundProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/img_profile_background" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_110"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/img_profile" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtProfileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lisa_ray"
+        android:textSize="48sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgProfile" />
+
+    <!--android:textColor="@color/text"
+    android:textStyle="bold"-->
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtProfileGmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen8"
+        android:text="@string/lisa_ray_gm"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtProfileName" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtProfilePhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen8"
+        android:text="@string/lisa_ray_ph"
+        android:textSize="@dimen/dimen_text_20"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtProfileGmail" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardProfile1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtProfilePhone">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtProfileLevel1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_24"
+            android:background="@drawable/profile_info"
+            android:paddingTop="@dimen/dimen24"
+            android:text="@string/profile_level"
+            android:textAlignment="center"
+            android:textColor="@color/subscriptionText" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgProfileTop1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="@dimen/dimen8"
+            app:srcCompat="@drawable/profile_top" />
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardProfile2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/cardProfile1"
+        app:layout_constraintTop_toBottomOf="@id/txtProfilePhone">
+
+        <!--android:background="@drawable/profile_info"-->
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtProfileLevel2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_24"
+            android:background="@drawable/profile_info"
+            android:paddingTop="@dimen/dimen24"
+            android:text="@string/profile_level"
+            android:textAlignment="center"
+            android:textColor="@color/subscriptionText" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgProfileTop2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="@dimen/dimen8"
+            app:srcCompat="@drawable/profile_top" />
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardProfile3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/profile_info"
+        app:layout_constraintStart_toEndOf="@id/cardProfile2"
+        app:layout_constraintTop_toBottomOf="@id/txtProfilePhone">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtProfileLeve3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_24"
+            android:background="@drawable/profile_info"
+            android:paddingTop="@dimen/dimen24"
+            android:text="@string/profile_level"
+            android:textAlignment="center"
+            android:textColor="@color/subscriptionText" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgProfileTop3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="@dimen/dimen8"
+            app:srcCompat="@drawable/profile_top" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardProfile4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/profile_info"
+        app:layout_constraintStart_toEndOf="@id/cardProfile3"
+        app:layout_constraintTop_toBottomOf="@id/txtProfilePhone">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtProfileLevel4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_24"
+            android:background="@drawable/profile_info"
+            android:paddingTop="@dimen/dimen24"
+            android:text="@string/profile_level"
+            android:textAlignment="center"
+            android:textColor="@color/subscriptionText" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgProfileTop4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="@dimen/dimen8"
+            app:srcCompat="@drawable/profile_top" />
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <!-- <com.google.android.material.card.MaterialCardView
+         android:id="@+id/cardProfile2"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:background="@drawable/profile_info"
+         app:layout_constraintStart_toEndOf="@id/cardProfile1"
+         app:layout_constraintTop_toBottomOf="@id/txtProfilePhone">
+
+         <androidx.appcompat.widget.AppCompatTextView
+             android:id="@+id/txtProfileGoals"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:background="@drawable/profile_info"
+             android:padding="@dimen/dimen16"
+             android:text="@string/profile_level"
+             android:textAlignment="center"
+             android:textColor="@color/subscriptionText" />
+
+     </com.google.android.material.card.MaterialCardView>
+
+     <com.google.android.material.card.MaterialCardView
+         android:id="@+id/cardProfile3"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:background="@drawable/profile_info"
+         app:layout_constraintStart_toEndOf="@id/cardProfile2"
+         app:layout_constraintTop_toBottomOf="@id/txtProfilePhone">
+
+         <androidx.appcompat.widget.AppCompatTextView
+             android:id="@+id/txtProfilePlan"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:background="@drawable/profile_info"
+             android:padding="@dimen/dimen16"
+             android:text="@string/profile_level"
+             android:textAlignment="center"
+             android:textColor="@color/subscriptionText" />
+
+     </com.google.android.material.card.MaterialCardView>
+
+     <com.google.android.material.card.MaterialCardView
+         android:id="@+id/cardProfile4"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:background="@drawable/profile_info"
+         app:layout_constraintStart_toEndOf="@id/cardProfile3"
+         app:layout_constraintTop_toBottomOf="@id/txtProfilePhone">
+
+         <androidx.appcompat.widget.AppCompatTextView
+             android:id="@+id/txtProfileHealth"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center|bottom"
+             android:background="@drawable/profile_info"
+             android:padding="@dimen/dimen16"
+             android:text="@string/profile_level"
+             android:textAlignment="center"
+             android:textColor="@color/subscriptionText" />
+
+     </com.google.android.material.card.MaterialCardView>-->
+
+    <!--<androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgProfileBase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen48"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtProfilePhone"/-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

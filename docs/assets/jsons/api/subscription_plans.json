@@ -1,0 +1,111 @@
+{
+  "uid": "",
+  "ttl": "Recurring billing, cancel any time",
+  "desc": "By tapping 'Continue', your payment will be charged to your Google Play account, and your subscription will automatically renew for the same package length at the same price until you cancel in settings in the Google Play store. By tapping 'Continue', you agree to our terms.",
+  "types": [
+    {
+      "uid": "101",
+      "type": 1,
+      "ttl": "Premium",
+      "url": "media/images/subscription/premium.jpg",
+      "features": [
+        {
+          "ttl": "",
+          "desc": "Fully personalized courses",
+          "url": "media/images/subscription/feature_10101.jpg"
+        },
+        {
+          "ttl": "",
+          "desc": "100+ Inspired fitness workouts covering fat burn, toning, flexibility, relaxation and so much more",
+          "url": "media/images/subscription/feature_10102.jpg"
+        },
+        {
+          "ttl": "",
+          "desc": "All features of Gold plan",
+          "url": "media/images/subscription/feature_10103.jpg"
+        }
+      ],
+      "plans": [
+        {
+          "uid": "1011",
+          "tag": "Save 53%",
+          "ttl": "Annual Plan",
+          "sub": "7-day free trail",
+          "desc": "then $99.99 billed yearly",
+          "price": "99.99",
+          "default": 1
+        },
+        {
+          "uid": "1012",
+          "tag": "Save 25%",
+          "ttl": "Half yearly Plan",
+          "sub": "7-day free trail",
+          "desc": "then $59.99 billed yearly",
+          "price": "59.99",
+          "default": 0
+        },
+        {
+          "uid": "1013",
+          "tag": "Save 5%",
+          "ttl": "Monthly Plan",
+          "sub": "Start today",
+          "desc": "for $14.99 per month",
+          "price": "14.99",
+          "default": 0
+        }
+      ]
+    },
+    {
+      "uid": "102",
+      "type": 2,
+      "ttl": "Gold",
+      "url": "media/images/subscription/gold.jpg",
+      "features": [
+        {
+          "ttl": "",
+          "desc": "100+ Inspired fitness workouts covering fat burn, toning, flexibility, relaxation and so much more",
+          "url": "media/images/subscription/feature_10201.jpg"
+        },
+        {
+          "ttl": "",
+          "desc": "100+ Inspired fitness workouts covering fat burn, toning, flexibility, relaxation and so much more",
+          "url": "media/images/subscription/feature_10202.jpg"
+        },
+        {
+          "ttl": "",
+          "desc": "100+ Inspired fitness workouts covering fat burn, toning, flexibility, relaxation and so much more",
+          "url": "media/images/subscription/feature_10203.jpg"
+        }
+      ],
+      "plans": [
+        {
+          "uid": "1021",
+          "tag": "Save 53%",
+          "ttl": "Annual Plan",
+          "sub": "7-day free trail",
+          "desc": "then $79.99 billed yearly",
+          "price": "79.99",
+          "default": 0
+        },
+        {
+          "uid": "1022",
+          "tag": "Save 25%",
+          "ttl": "Half yearly Plan",
+          "sub": "7-day free trail",
+          "desc": "then $49.99 billed yearly",
+          "price": "49.99",
+          "default": 0
+        },
+        {
+          "uid": "1023",
+          "tag": "Save 5%",
+          "ttl": "Monthly Plan",
+          "sub": "Start today",
+          "desc": "for $9.99 per month",
+          "price": "9.99",
+          "default": 0
+        }
+      ]
+    }
+  ]
+}

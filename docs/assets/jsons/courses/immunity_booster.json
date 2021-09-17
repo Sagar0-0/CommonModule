@@ -1,0 +1,2560 @@
+{
+  "uid": "1",
+  "pubDate": "10th June 2020",
+  "title": "Immunity Booster",
+  "subTitle": "Improves the immunity",
+  "url": "media/images/asanas/paschimottanasan.jpg",
+  "duration": "30 days",
+  "lang": "en",
+  "intro": {
+    "url": "media/images/asanas/utthita_parsvakonasan.jpg",
+    "title": "PLANT A REVOLUTION",
+    "desc": "In our course, you will start from the beginning by downloading Java JDK and Android Studio. Once you have those installed, you will learn by building real applications like Instagram & Foursquare Clones! We teach you step by step and if you ever have any questions, all you have to do is post in our course discussion to receive help from Atil or Joe! Not only only will you learn with more than 15 hours of HD video, but you will also learn about designing your applications in Sketch. This will give your applications a professional touch and separate your app from all of the others! We also show you step by step how to submit your new app to the Google Play Store!",
+    "keyTitle": "What you will learn",
+    "keyPoints": [
+      "By the end of our course, you will be able to create professional applications and submit them to the play store from scratch!",
+      "You will also have the skills of a professional developer who can earn thousands of dollars creating applications",
+      "Running Kotlin inside Docker container and Docker Compose",
+      "Use the most popular multithreading frameworks for Android (RxJava, Kotlin Coroutines, etc.)"
+    ]
+  },
+  "audience": {
+    "ageGroup": {
+      "from": "20",
+      "to": "45"
+    },
+    "gender": "M",
+    "level": "L1",
+    "preRequisites": [
+      "Write thread-safe code of any complexity",
+      "Use the most popular multithreading frameworks for Android (RxJava, Kotlin Coroutines, etc.)",
+      "Find subtle thread-safety bugs in code"
+    ],
+    "notFor": [
+      "Keep the user interface responsive at all times",
+      "Prevent memory leaks in your Android applications",
+      "Manage up to hundreds of inter-dependent threads"
+    ]
+  },
+  "experts": [
+    {
+      "uid": "1",
+      "name": "Pallavi Singla",
+      "expYears": "7",
+      "profession": "Physiotherapist",
+      "qualification": "MBBS, MS (Obstetrician and a Gynaecologist), Fellowship in Gynae endoscopy, Fellowship in Cosmetic Gynaecology",
+      "about": "Dr. Pallavi Bansal is an obstetrician and a gynaecologist. She did her medical training from PGIMS, Rohtak followed by Senior Residency from PGI, Chandigarh. She is currently practising as a Consultant Gynaecologist at Mukat Hospital & Heart Institute, Chandigarh. Her areas of interest and expertise include Gynae endoscopy and Cosmetic gynaecology along with routine obstetrics and gynaecological problems of adolescent and young women.",
+      "url": "utthita_parsvakonasan"
+    }
+  ],
+  "modules": [
+    {
+      "intensity": "3",
+      "level": "Beginner 1",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 1",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Adho Mukha Svanasan",
+          "subTitle": "Downward Facing Dog Pose",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "asanas/adho_mukha_svanasan",
+          "info": {
+            "desc": "Description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "4",
+      "level": "Beginner 2",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 2",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Surya Namaskaras",
+          "subTitle": "Sun Salutations",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "asanas/surya_namaskar",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "3",
+      "level": "Intermediate",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 3",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Bhujangasan",
+          "subTitle": "Cobra Pose",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "asanas/bhujangasan",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "5",
+      "level": "Advanced",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 4",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Balasan",
+          "subTitle": "Child Pose",
+          "style": "Vinyasa Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "asanas/balasan",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "3",
+      "level": "Beginner 1",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 5",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Adho Mukha Svanasan",
+          "subTitle": "Downward Facing Dog Pose",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "asanas/adho_mukha_svanasan",
+          "info": {
+            "desc": "Description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "4",
+      "level": "Beginner 2",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 6",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Surya Namaskaras",
+          "subTitle": "Sun Salutations",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "asanas/surya_namaskar",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "3",
+      "level": "Intermediate",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 7",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Bhujangasan",
+          "subTitle": "Cobra Pose",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "asanas/bhujangasan",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "5",
+      "level": "Advanced",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 8",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Balasan",
+          "subTitle": "Child Pose",
+          "style": "Vinyasa Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "asanas/balasan",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "3",
+      "level": "Beginner 1",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 9",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Adho Mukha Svanasan",
+          "subTitle": "Downward Facing Dog Pose",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "asanas/adho_mukha_svanasan",
+          "info": {
+            "desc": "Description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "4",
+      "level": "Beginner 2",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 10",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Surya Namaskaras",
+          "subTitle": "Sun Salutations",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "asanas/surya_namaskar",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "3",
+      "level": "Intermediate",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 11",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Bhujangasan",
+          "subTitle": "Cobra Pose",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "asanas/bhujangasan",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "5",
+      "level": "Advanced",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 12",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Balasan",
+          "subTitle": "Child Pose",
+          "style": "Vinyasa Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "asanas/balasan",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "3",
+      "level": "Beginner 1",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 13",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Adho Mukha Svanasan",
+          "subTitle": "Downward Facing Dog Pose",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "asanas/adho_mukha_svanasan",
+          "info": {
+            "desc": "Description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "4",
+      "level": "Beginner 2",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 2",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Surya Namaskaras",
+          "subTitle": "Sun Salutations",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "surya_namaskar",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "3",
+      "level": "Intermediate",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 3",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Bhujangasan",
+          "subTitle": "Cobra Pose",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "bhujangasan",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "5",
+      "level": "Advanced",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 4",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Balasan",
+          "subTitle": "Child Pose",
+          "style": "Vinyasa Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "balasan",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "3",
+      "level": "Beginner 1",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 1",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Adho Mukha Svanasan",
+          "subTitle": "Downward Facing Dog Pose",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "adho_mukha_svanasan",
+          "info": {
+            "desc": "Description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "4",
+      "level": "Beginner 2",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 2",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Surya Namaskaras",
+          "subTitle": "Sun Salutations",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "surya_namaskar",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "3",
+      "level": "Intermediate",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 3",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Bhujangasan",
+          "subTitle": "Cobra Pose",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "bhujangasan",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "5",
+      "level": "Advanced",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 4",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Balasan",
+          "subTitle": "Child Pose",
+          "style": "Vinyasa Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "balasan",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "3",
+      "level": "Beginner 1",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 1",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Adho Mukha Svanasan",
+          "subTitle": "Downward Facing Dog Pose",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "adho_mukha_svanasan",
+          "info": {
+            "desc": "Description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "4",
+      "level": "Beginner 2",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 2",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Surya Namaskaras",
+          "subTitle": "Sun Salutations",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "surya_namaskar",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "3",
+      "level": "Intermediate",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 3",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Bhujangasan",
+          "subTitle": "Cobra Pose",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "bhujangasan",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "5",
+      "level": "Advanced",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 4",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Balasan",
+          "subTitle": "Child Pose",
+          "style": "Vinyasa Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "balasan",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "3",
+      "level": "Beginner 1",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 1",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Adho Mukha Svanasan",
+          "subTitle": "Downward Facing Dog Pose",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "adho_mukha_svanasan",
+          "info": {
+            "desc": "Description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "4",
+      "level": "Beginner 2",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 2",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Surya Namaskaras",
+          "subTitle": "Sun Salutations",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "surya_namaskar",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "3",
+      "level": "Intermediate",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 3",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Bhujangasan",
+          "subTitle": "Cobra Pose",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "bhujangasan",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "5",
+      "level": "Advanced",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 4",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Balasan",
+          "subTitle": "Child Pose",
+          "style": "Vinyasa Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "balasan",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "3",
+      "level": "Beginner 1",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 1",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Adho Mukha Svanasan",
+          "subTitle": "Downward Facing Dog Pose",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "adho_mukha_svanasan",
+          "info": {
+            "desc": "Description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "4",
+      "level": "Beginner 2",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 2",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Surya Namaskaras",
+          "subTitle": "Sun Salutations",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "surya_namaskar",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "3",
+      "level": "Intermediate",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 3",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Bhujangasan",
+          "subTitle": "Cobra Pose",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "bhujangasan",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "5",
+      "level": "Advanced",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 4",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Balasan",
+          "subTitle": "Child Pose",
+          "style": "Vinyasa Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "balasan",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "3",
+      "level": "Beginner 1",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 1",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Adho Mukha Svanasan",
+          "subTitle": "Downward Facing Dog Pose",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "adho_mukha_svanasan",
+          "info": {
+            "desc": "Description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "4",
+      "level": "Beginner 2",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 2",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Surya Namaskaras",
+          "subTitle": "Sun Salutations",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "surya_namaskar",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "3",
+      "level": "Intermediate",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 3",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Bhujangasan",
+          "subTitle": "Cobra Pose",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "bhujangasan",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "5",
+      "level": "Advanced",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 4",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Balasan",
+          "subTitle": "Child Pose",
+          "style": "Vinyasa Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "balasan",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "3",
+      "level": "Beginner 1",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 1",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Adho Mukha Svanasan",
+          "subTitle": "Downward Facing Dog Pose",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "adho_mukha_svanasan",
+          "info": {
+            "desc": "Description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "4",
+      "level": "Beginner 2",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 2",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Surya Namaskaras",
+          "subTitle": "Sun Salutations",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "surya_namaskar",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "3",
+      "level": "Intermediate",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 3",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Bhujangasan",
+          "subTitle": "Cobra Pose",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "bhujangasan",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "5",
+      "level": "Advanced",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 4",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Balasan",
+          "subTitle": "Child Pose",
+          "style": "Vinyasa Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "balasan",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "3",
+      "level": "Beginner 1",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 1",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Adho Mukha Svanasan",
+          "subTitle": "Downward Facing Dog Pose",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "adho_mukha_svanasan",
+          "info": {
+            "desc": "Description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "4",
+      "level": "Beginner 2",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 2",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Surya Namaskaras",
+          "subTitle": "Sun Salutations",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "surya_namaskar",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "3",
+      "level": "Intermediate",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 3",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Bhujangasan",
+          "subTitle": "Cobra Pose",
+          "style": "Ashtanga Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "bhujangasan",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "intensity": "5",
+      "level": "Advanced",
+      "calories": "450",
+      "title": "Title comes here",
+      "subTitle": "Day 4",
+      "duration": 60,
+      "desc": "Creating a chain is really easy, we can click and drag to select views or press ctrl and select views from Component tree. And then right click on selected views in Editor Or Component Tree to apply constraints.",
+      "exercises": [
+        {
+          "uid": "1",
+          "title": "Balasan",
+          "subTitle": "Child Pose",
+          "style": "Vinyasa Yoga",
+          "category": "asanas",
+          "duration": "90",
+          "calories": 25,
+          "level": "L1",
+          "url": "balasan",
+          "info": {
+            "desc": "description....",
+            "benefits": [
+              "benefit 1",
+              "benefit 2",
+              "benefit 3..."
+            ],
+            "caution": [
+              "caution 1",
+              "caution 2",
+              "caution 3"
+            ],
+            "avoid": [
+              "avoid if ..."
+            ]
+          },
+          "strengthen": [
+            "Wrist"
+          ],
+          "stretches": [
+            "Arms",
+            "Chest"
+          ],
+          "cures": [
+            "Blood pressure"
+          ],
+          "complimentsWith": [
+            "1"
+          ],
+          "preparatory": [
+            "0"
+          ],
+          "followUp": [
+            "8"
+          ]
+        }
+      ]
+    }
+  ]
+}

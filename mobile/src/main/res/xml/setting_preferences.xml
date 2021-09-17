@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory>
+        <Preference
+            app:icon="@drawable/ic_notifications"
+            app:key="@string/user_pref_notification_key"
+            app:layout="@layout/custom_preference_arrow"
+            app:title="@string/user_pref_notification_cat_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="@string/user_pref_support_us_cat_key"
+        android:title="@string/user_pref_support_us_cat_title">
+
+        <Preference
+            app:icon="@drawable/ic_share"
+            app:key="@string/user_pref_share_app_key"
+            app:layout="@layout/custom_preference_arrow"
+            app:title="@string/user_pref_share_app_title" />
+
+        <Preference
+            app:icon="@drawable/ic_rate_us"
+            app:key="@string/user_pref_rate_us_key"
+            app:layout="@layout/custom_preference_arrow"
+            app:title="@string/user_pref_rate_us_title" />
+
+        <Preference
+            app:icon="@drawable/ic_feedback"
+            app:key="@string/user_pref_feedback_key"
+            app:layout="@layout/custom_preference_arrow"
+            app:title="@string/user_pref_feedback_title" />
+
+    </PreferenceCategory>
+
+    <!--<PreferenceCategory
+        android:key="@string/user_pref_payment_cat_key"
+        android:title="@string/user_pref_payment_cat_title">
+
+        <Preference
+            app:icon="@drawable/ic_purchase"
+            app:key="@string/user_pref_purchase_key"
+            app:title="@string/user_pref_purchase_title">
+            <intent
+                android:action="android.intent.action.MAIN"
+                android:targetClass="com.example.foo.SomeActivity"
+                android:targetPackage="com.example.foo" />
+        </Preference>
+
+        <Preference
+            app:icon="@drawable/ic_give_gift"
+            app:key="@string/user_pref_give_gift_key"
+            app:title="@string/user_pref_give_gift_title" />
+
+        <Preference
+            app:icon="@drawable/ic_purchase"
+            app:key="@string/user_pref_donate_key"
+            app:layout="@layout/custom_preference_arrow"
+            app:title="@string/user_pref_donate_title" />
+
+    </PreferenceCategory>-->
+
+    <!--<PreferenceCategory
+        android:key="@string/user_pref_unit_cat_key"
+        android:title="@string/user_pref_unit_cat_title">
+
+        <ListPreference
+            android:defaultValue="centimetres"
+            android:dialogTitle="@string/user_pref_unit_height_dlg_title"
+            android:entries="@array/user_pref_unit_height_entries"
+            android:entryValues="@array/user_pref_unit_height_values"
+            android:key="@string/user_pref_unit_height_key"
+            android:title="@string/user_pref_unit_height_title"
+            app:icon="@drawable/ic_unit_height"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            android:defaultValue="kilograms"
+            android:dialogTitle="@string/user_pref_unit_weight_dlg_title"
+            android:entries="@array/user_pref_unit_weight_entries"
+            android:entryValues="@array/user_pref_unit_weight_values"
+            android:key="@string/user_pref_unit_weight_key"
+            android:title="@string/user_pref_unit_weight_title"
+            app:icon="@drawable/ic_unit_weight"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            android:defaultValue="calories"
+            android:dialogTitle="@string/user_pref_unit_energy_dlg_title"
+            android:entries="@array/user_pref_unit_energy_entries"
+            android:entryValues="@array/user_pref_unit_energy_values"
+            android:key="@string/user_pref_unit_energy_key"
+            android:title="@string/user_pref_unit_energy_title"
+            app:icon="@drawable/ic_unit_energy"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            android:defaultValue="kilometres"
+            android:dialogTitle="@string/user_pref_unit_distance_dlg_title"
+            android:entries="@array/user_pref_unit_distance_entries"
+            android:entryValues="@array/user_pref_unit_distance_values"
+            android:key="@string/user_pref_unit_distance_key"
+            android:title="@string/user_pref_unit_distance_title"
+            app:icon="@drawable/ic_unit_distance"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>-->
+
+    <PreferenceCategory
+        android:key="@string/user_pref_display_cat_key"
+        android:title="@string/user_pref_display_cat_title">
+
+        <ListPreference
+            android:defaultValue="system"
+            android:dialogTitle="@string/user_pref_theme_dlg_title"
+            android:entries="@array/user_pref_theme_entries"
+            android:entryValues="@array/user_pref_theme_values"
+            android:key="@string/user_pref_theme_key"
+            android:title="@string/user_pref_theme_title"
+            app:icon="@drawable/ic_theme_settings"
+            app:useSimpleSummaryProvider="true" />
+
+        <!--<ListPreference
+            android:defaultValue="en"
+            android:dialogTitle="@string/user_pref_lang_dlg_title"
+            android:entries="@array/user_pref_lang_entries"
+            android:entryValues="@array/user_pref_lang_values"
+            android:key="@string/user_pref_lang_key"
+            android:title="@string/user_pref_lang_title"
+            app:icon="@drawable/ic_language_settings"
+            app:useSimpleSummaryProvider="true" />-->
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="@string/user_pref_account_cat_key"
+        android:title="@string/user_pref_account_cat_title">
+
+        <Preference
+            app:icon="@drawable/ic_exit_sign_out"
+            app:key="@string/user_pref_sign_out_key"
+            app:layout="@layout/custom_preference_arrow"
+            app:title="@string/user_pref_sign_out_title" />
+
+        <Preference
+            app:icon="@drawable/ic_delete_forever"
+            app:key="@string/user_pref_delete_account_key"
+            app:layout="@layout/custom_preference_arrow"
+            app:summary="@string/user_pref_delete_account_summary"
+            app:title="@string/user_pref_delete_account_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="@string/user_pref_about_cat_key"
+        android:title="@string/user_pref_about_cat_title">
+
+        <!--<Preference
+            app:icon="@drawable/ic_help"
+            app:key="@string/user_pref_help_key"
+            app:layout="@layout/custom_preference_arrow"
+            app:title="@string/user_pref_help_title">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/url_help" />
+        </Preference>-->
+
+        <Preference
+            app:icon="@drawable/ic_bug_report"
+            app:key="@string/user_pref_bug_report_key"
+            app:layout="@layout/custom_preference_arrow"
+            app:title="@string/user_pref_bug_report_title" />
+
+        <Preference
+            app:icon="@drawable/ic_terms_of_use"
+            app:key="@string/user_pref_terms_of_use_key"
+            app:layout="@layout/custom_preference_arrow"
+            app:title="@string/user_pref_terms_of_use_title" />
+
+        <Preference
+            app:icon="@drawable/ic_privacy_policy"
+            app:key="@string/user_pref_privacy_policy_key"
+            app:layout="@layout/custom_preference_arrow"
+            app:title="@string/user_pref_privacy_policy_title" />
+
+        <Preference
+            app:icon="@drawable/ic_build_ver"
+            app:key="@string/user_pref_version_key"
+            app:summary="0.1"
+            app:title="@string/user_pref_version_title" />
+
+        <!--<Preference
+            app:icon="@drawable/ic_contributors"
+            app:layout="@layout/custom_preference_arrow"
+            app:key="@string/user_pref_contributors_key"
+            app:title="@string/user_pref_contributors_title">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/url_contributors" />
+        </Preference>-->
+
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

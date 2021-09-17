@@ -1,0 +1,105 @@
+{
+  "userId": "",
+  "contact": {
+    "picUrl": "",
+    "name": "",
+    "email": "",
+    "phone": ""
+  },
+  "physique": [
+    {
+      "uid": "10001",
+      "type": 1,
+      "url": "",
+      "ttl": "AGE",
+      "val": ""
+    },
+    {
+      "uid": "10002",
+      "type": 1,
+      "url": "",
+      "ttl": "GENDER",
+      "val": ""
+    },
+    {
+      "uid": "10003",
+      "type": 1,
+      "url": "",
+      "ttl": "HEIGHT",
+      "val": "",
+      "unit": ""
+    },
+    {
+      "uid": "10004",
+      "type": 1,
+      "url": "",
+      "ttl": "WEIGHT",
+      "val": "",
+      "unit": ""
+    },
+    {
+      "uid": "10005",
+      "type": 1,
+      "url": "",
+      "ttl": "BMI",
+      "val": "",
+      "unit": ""
+    },
+    {
+      "uid": "10006",
+      "type": 2,
+      "url": "",
+      "ttl": "BODY TYPE",
+      "val": "",
+      "unit": ""
+    }
+  ],
+  "lifestyle": {
+    "schedule": {
+      "uid": "10007",
+      "type": 3,
+      "ttl": "SLEEP SCHEDULE",
+      "bedTime": "",
+      "wakeUp": ""
+    },
+    "plainCard": {
+      "uid": "10008",
+      "type": 1,
+      "url": "",
+      "ttl": "BMI",
+      "val": ""
+    },
+    "chipCards": [
+      {
+        "uid": "10009",
+        "type": 5,
+        "url": "",
+        "ttl": "CURRENT ACTIVITIES",
+        "val": []
+      },
+      {
+        "uid": "10010",
+        "type": 5,
+        "url": "",
+        "ttl": "PREFERRED ACTIVITIES",
+        "val": []
+      }
+    ]
+  },
+  "health": [
+    {
+      "uid": "10011",
+      "type": 5,
+      "url": "",
+      "ttl": "AILMENTS",
+      "val": []
+    },
+    {
+      "uid": "10012",
+      "type": 5,
+      "url": "",
+      "ttl": "TARGETS",
+      "val": []
+    }
+  ]
+}

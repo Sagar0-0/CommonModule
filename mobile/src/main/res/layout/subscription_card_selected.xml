@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constSubs"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardSubscriptionPlan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen16"
+        android:layout_marginTop="@dimen/dimen40"
+        android:layout_marginEnd="@dimen/dimen16"
+        app:cardBackgroundColor="@color/subsAnnualCard"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/subsAnnualStroke"
+        app:strokeWidth="@dimen/dimen4">
+
+        <!--android:background="@drawable/card_subs"-->
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtPaymentTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/dimen_24"
+            android:text="@string/annual_plan"
+            android:textAlignment="center"
+            android:textColor="@color/text"
+            android:textSize="@dimen/dimenText16"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtPaymentSubTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="@dimen/dimen_24"
+            android:paddingBottom="@dimen/dimen16"
+            android:text="@string/day_free_tr"
+            android:textAlignment="center"
+            android:textColor="@color/text"
+            android:textSize="@dimen/dimen_text_20"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtPaymentDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="@dimen/dimen_98"
+            android:paddingBottom="@dimen/dimen_24"
+            android:text="@string/then_99_99_"
+            android:textAlignment="center"
+            android:textColor="@color/text"
+            android:textSize="@dimen/dimen_text_14" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/txtPaymentTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen16"
+        android:background="@drawable/save_subscription"
+        android:gravity="center"
+        android:text="@string/save_subs"
+        android:textColor="@color/subscriptionText"
+        android:textSize="@dimen/dimen_text_14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardSubscriptionPlan"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

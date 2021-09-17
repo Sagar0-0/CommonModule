@@ -1,0 +1,130 @@
+{
+  "sequence": [
+    {
+      "uid": "2",
+      "name": "Neck Exercises",
+      "sanskrit": "",
+      "file": "neck_exercises",
+      "style": "Ashtanga Yoga",
+      "level": "L1",
+      "duration": 60
+    },
+    {
+      "uid": "9",
+      "name": "Sun Salutation",
+      "sanskrit": "Surya Namaskar",
+      "file": "surya_namaskar",
+      "style": "Ashtanga Yoga",
+      "level": "L1",
+      "duration": 300
+    },
+    {
+      "uid": "21",
+      "name": "Camel Pose",
+      "sanskrit": "Ustrasan",
+      "file": "ustrasan",
+      "style": "Vinyasa Yoga",
+      "level": "L1",
+      "duration": 60
+    },
+    {
+      "uid": "22",
+      "name": "Chair Pose",
+      "sanskrit": "Utkatasan",
+      "file": "utkatasan",
+      "style": "Vinyasa Yoga",
+      "level": "L1",
+      "duration": 60
+    },
+    {
+      "uid": "31",
+      "name": "Bow Pose",
+      "sanskrit": "Dhanurasan",
+      "file": "dhanurasan",
+      "style": "Vinyasa Yoga",
+      "level": "L1",
+      "duration": 30
+    },
+    {
+      "uid": "36",
+      "name": "Cobra Pose",
+      "sanskrit": "Bhujangasan",
+      "file": "bhujangasan",
+      "style": "Ashtanga Yoga",
+      "level": "L1",
+      "duration": 30
+    },
+    {
+      "uid": "50",
+      "name": "Lion Pose",
+      "sanskrit": "Simhasan",
+      "file": "simhasan",
+      "style": "Hatha Yoga",
+      "level": "L1",
+      "duration": 30
+    },
+    {
+      "uid": "51",
+      "name": "Child Pose",
+      "sanskrit": "Balasan",
+      "file": "balasan",
+      "style": "Vinyasa Yoga",
+      "level": "L1",
+      "duration": 180
+    },
+    {
+      "uid": "53",
+      "name": "Thunderbolt Pose",
+      "sanskrit": "Supta Vajrasan",
+      "file": "supta_vajrasan",
+      "style": "Hatha Yoga",
+      "level": "L1",
+      "duration": 60
+    },
+    {
+      "uid": "62",
+      "name": "Head Stand Pose",
+      "sanskrit": "Salamba Sirshasan",
+      "file": "salamba_sirshasan",
+      "style": "Vinyasa Yoga",
+      "level": "L1",
+      "duration": 300
+    },
+    {
+      "uid": "71",
+      "name": "Bridge Pose",
+      "sanskrit": "Sethubandhasan",
+      "file": "sethubandhasan",
+      "style": "Vinyasa Yoga",
+      "level": "L1",
+      "duration": 60
+    },
+    {
+      "uid": "76",
+      "name": "Half Spinal Twist Pose",
+      "sanskrit": "Ardha Matsyendrasan",
+      "file": "ardha_matsyendrasan",
+      "style": "Hatha Yoga",
+      "level": "L1",
+      "duration": 60
+    },
+    {
+      "uid": "80",
+      "name": "Cat Pose",
+      "sanskrit": "Marjariasan",
+      "file": "marjariasan",
+      "style": "Ashtanga Yoga",
+      "level": "L1",
+      "duration": 300
+    },
+    {
+      "uid": "83",
+      "name": "Corpse Pose",
+      "sanskrit": "Savasan",
+      "file": "savasan",
+      "style": "Ashtanga Yoga",
+      "level": "L1",
+      "duration": 600
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "uid": "",
+  "type": 1,
+  "url": "",
+  "ttl": "Immunity Booster",
+  "auth": "Raksha Sharma",
+  "day": 2,
+  "prg": 25,
+  "lvl": "Beginner 1",
+  "dur": 60,
+  "int": "Medium",
+  "cal": 200,
+  "exercises": [
+    {
+      "uid": "1",
+      "ttl": "Surya Namaskar",
+      "sub": "Sun Salutation",
+      "sty": "Ashtanga Yoga",
+      "type": 1,
+      "url": "media/videos/asanas/surya_namaskar.mp4",
+      "lvl": "Beginner 1",
+      "dur": 480,
+      "int": "Medium",
+      "cal": 500
+    },
+    {
+      "uid": "2",
+      "ttl": "Adho Mukha Svanasan",
+      "sub": "Downward Facing Dog",
+      "sty": "Ashtanga Yoga",
+      "type": 1,
+      "url": "media/videos/asanas/adho_mukha_svanasan.mp4",
+      "lvl": "Beginner 1",
+      "dur": 180,
+      "int": "Low",
+      "cal": 50
+    }
+  ]
+}

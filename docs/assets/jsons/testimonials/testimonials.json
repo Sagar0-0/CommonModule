@@ -1,0 +1,34 @@
+[
+  {
+    "uid": "1",
+    "url": "media/images/testimonials/gerd.jpg",
+    "tml": "I work in project management and joined this course because I get great courses for less.\\u000D\\nThe instructors are fantastic, interesting, and helpful. I plan to use this for a long time!",
+    "name": "Gerd Hoffner",
+    "des": "CEO",
+    "org": "SIEMENS"
+  },
+  {
+    "uid": "2",
+    "url": "media/images/testimonials/satya.jpg",
+    "tml": "I work in project management and joined this course because I get great courses for less.\\u000D\\nThe instructors are fantastic, interesting, and helpful. I plan to use this for a long time!",
+    "name": "Satya Nadella",
+    "des": "CEO",
+    "org": "Microsoft"
+  },
+  {
+    "uid": "3",
+    "url": "media/images/testimonials/vinita.jpg",
+    "tml": "I work in project management and joined this course because I get great courses for less.\\u000D\\nThe instructors are fantastic, interesting, and helpful. I plan to use this for a long time!",
+    "name": "Vinita D. Gupta",
+    "des": "CEO",
+    "org": "LUPIN PHARMACEUTICALS INC."
+  },
+  {
+    "uid": "4",
+    "url": "media/images/testimonials/kiran.jpg",
+    "tml": "I work in project management and joined this course because I get great courses for less.\\u000D\\nThe instructors are fantastic, interesting, and helpful. I plan to use this for a long time!",
+    "name": "Kiran Mazumdar-Shaw",
+    "des": "CEO",
+    "org": "BIOCON"
+  }
+]

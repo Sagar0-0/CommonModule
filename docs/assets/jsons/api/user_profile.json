@@ -1,0 +1,66 @@
+{
+  "userId": "",
+  "picUrl": "",
+  "name": "",
+  "gender": "M",
+  "physique": {
+    "mensesDate": "",
+    "pregnancyWeek": ""
+  },
+  "age": "",
+  "height": 169,
+  "weight": 70,
+  "bodyType": 2,
+  "physicalActivities": [
+    {
+      "activityName": "walking",
+      "duration": 40,
+      "repetitionPerWeek": "",
+      "regularity": ""
+    },
+    {
+      "activityName": "Yoga",
+      "duration": 40,
+      "repetitionPerWeek": "",
+      "regularity": ""
+    }
+  ],
+  "sleepHours": {
+    "from": "",
+    "to": ""
+  },
+  "location": {
+    "lang": 1.0007,
+    "lat": 2.008,
+    "city": "",
+    "country": ""
+  },
+  "preferredExercise": {
+    "id": "",
+    "name": "",
+    "priorExperience": "L0",
+    "practiceDuration": 30
+  },
+  "workStyle": {
+    "id": "",
+    "name": ""
+  },
+  "ailments": [
+    {
+      "id": "",
+      "name": ""
+    }
+  ],
+  "severity": [
+    {
+      "id": "",
+      "name": ""
+    }
+  ],
+  "targets": [
+    {
+      "id": "",
+      "name": ""
+    }
+  ]
+}

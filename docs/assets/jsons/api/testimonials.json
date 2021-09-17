@@ -1,0 +1,19 @@
+{
+  "status": {
+    "code": 200,
+    "msg": ""
+  },
+  "data": {
+    "uid": "",
+    "ttl": "Testimonials",
+    "list": [
+      {
+        "url": "",
+        "name": "",
+        "des": "CEO",
+        "org": "SIEMENS",
+        "testimonial": ""
+      }
+    ]
+  }
+}

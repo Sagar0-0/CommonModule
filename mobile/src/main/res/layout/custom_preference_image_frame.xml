@@ -1,0 +1,22 @@
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="start|center_vertical"
+    android:minWidth="@dimen/dimen56"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/dimen_0"
+    android:paddingLeft="@dimen/dimen_0"
+    android:paddingTop="@dimen/dimen4"
+    android:paddingEnd="@dimen/dimen8"
+    android:paddingRight="@dimen/dimen8"
+    android:paddingBottom="@dimen/dimen4">
+
+    <androidx.preference.internal.PreferenceImageView
+        android:id="@android:id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:maxHeight="48dp"
+        app:maxWidth="48dp" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

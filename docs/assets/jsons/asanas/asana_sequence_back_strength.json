@@ -1,0 +1,44 @@
+{
+  "sequence": [
+    {
+      "uid": "1",
+      "level": "L1",
+      "name": "Triangle Pose",
+      "sanskrit": "Trikonasan",
+      "style": "Ashtanga Yoga",
+      "file": "trikonasan"
+    },
+    {
+      "uid": "2",
+      "level": "L1",
+      "name": "Warrior Pose",
+      "sanskrit": "Virabhadrasan I",
+      "style": "Ashtanga Yoga",
+      "file": "virabhadrasanI"
+    },
+    {
+      "uid": "3",
+      "level": "L1",
+      "name": "Cat Pose",
+      "sanskrit": "Marjariasan",
+      "style": "Ashtanga Yoga",
+      "file": "marjariasan"
+    },
+    {
+      "uid": "5",
+      "level": "L1",
+      "name": "Cobra Pose",
+      "sanskrit": "Bhujangasan",
+      "style": "Ashtanga Yoga",
+      "file": "bhujangasan"
+    },
+    {
+      "uid": "24",
+      "level": "L1",
+      "name": "Locust Pose",
+      "sanskrit": "Salabhasan",
+      "style": "Ashtanga Yoga",
+      "file": "salabhasan"
+    }
+  ]
+}

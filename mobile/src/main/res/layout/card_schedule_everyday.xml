@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    app:cardElevation="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen16">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/labelTitleChoose"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen16"
+            android:layout_marginTop="@dimen/dimen16"
+            android:text="@string/title_choose_the_days"
+            android:textSize="@dimen/dimen_text_20"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgCalender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen8"
+            android:layout_marginBottom="@dimen/dimen16"
+            app:layout_constraintStart_toStartOf="@id/labelTitleChoose"
+            app:layout_constraintTop_toBottomOf="@id/labelTitleChoose"
+            app:srcCompat="@drawable/ic_calendar_time" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/labelEveryDay"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen16"
+            android:text="@string/title_every_day"
+            android:textSize="@dimen/dimen_text_16"
+            app:layout_constraintBottom_toBottomOf="@id/imgCalender"
+            app:layout_constraintStart_toEndOf="@id/imgCalender"
+            app:layout_constraintTop_toTopOf="@id/imgCalender" />
+
+        <LinearLayout
+            android:id="@+id/weekDays"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen16"
+            android:layout_marginTop="@dimen/dimen8"
+            android:layout_marginEnd="@dimen/dimen16"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/labelEveryDay" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
