@@ -241,7 +241,7 @@ class PrefUtils {
             editor.apply()
         }
 
-        fun setAsanaStretch(set: Set<String>?, context: Context?) {
+        fun setAsanaStretch(set: Set<String>?, context: Context) {
 
             val values = if (set !== null && set.isNotEmpty()) set else setOf("P0")
             val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
@@ -249,13 +249,13 @@ class PrefUtils {
             editor.apply()
         }
 
-        fun getAsanaStretch(context: Context?): Set<String> {
+        fun getAsanaStretch(context: Context): Set<String> {
 
             val preferences = PreferenceManager.getDefaultSharedPreferences(context)
             return preferences.getStringSet("user_pref_asana_stretch", setOf("P0"))!!
         }
 
-        fun setAsanaStrength(set: Set<String>?, context: Context?) {
+        fun setAsanaStrength(set: Set<String>?, context: Context) {
 
             val values = if (set !== null && set.isNotEmpty()) set else setOf("P0")
             val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
@@ -263,13 +263,13 @@ class PrefUtils {
             editor.apply()
         }
 
-        fun getAsanaStrength(context: Context?): Set<String> {
+        fun getAsanaStrength(context: Context): Set<String> {
 
             val preferences = PreferenceManager.getDefaultSharedPreferences(context)
             return preferences.getStringSet("user_pref_asana_strength", setOf("P0"))!!
         }
 
-        fun setAsanaFocus(set: Set<String>?, context: Context?) {
+        fun setAsanaFocus(set: Set<String>?, context: Context) {
 
             val values = if (set !== null && set.isNotEmpty()) set else setOf("F0")
             val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
@@ -277,7 +277,7 @@ class PrefUtils {
             editor.apply()
         }
 
-        fun getAsanaFocus(context: Context?): Set<String> {
+        fun getAsanaFocus(context: Context): Set<String> {
 
             val preferences = PreferenceManager.getDefaultSharedPreferences(context)
             return preferences.getStringSet("user_pref_asana_focus", setOf("F0"))!!

@@ -26,7 +26,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         val prefTheme =
             findPreference<ListPreference>(resources.getString(R.string.user_pref_theme_key))
