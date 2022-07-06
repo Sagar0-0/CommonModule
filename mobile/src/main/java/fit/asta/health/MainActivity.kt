@@ -35,8 +35,8 @@ import fit.asta.health.settings.SettingsActivity
 import fit.asta.health.utils.*
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.core.KoinComponent
-import kotlin.system.exitProcess
 import org.koin.core.inject
+import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
     FirebaseAuth.IdTokenListener, KoinComponent {
@@ -361,19 +361,16 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         behaviorFAB?.slideUp(fab_snack_main)*/
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
 
         menuInflater.inflate(R.menu.main_toolbar_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
 
-        if (menu != null) {
-
-            prepareUserProfileMenuItem(menu)
-            prepareNotifyMenuItem(menu)
-        }
+        prepareUserProfileMenuItem(menu)
+        prepareNotifyMenuItem(menu)
 
         return super.onPrepareOptionsMenu(menu)
     }
