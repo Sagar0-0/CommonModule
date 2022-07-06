@@ -1,4 +1,4 @@
-package fit.asta.health.common.adapter
+package fit.asta.health.common.multiselect.adapter
 
 interface SelectionUpdateListener {
 

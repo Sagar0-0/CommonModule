@@ -9,7 +9,7 @@
     <dist:module dist:instant="true" />
 
     <uses-permission android:name="com.android.vending.BILLING" />
-    <!--     <uses-permission android:name="android.permission.READ_SMS" /> -->
+    <!-- <uses-permission android:name="android.permission.READ_SMS" /> -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -42,19 +42,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="n">
-        <activity android:name="fit.asta.health.schedule.tags.ui.TagsActivity" />
-        <activity android:name="fit.asta.health.testimonials.ui.TestimonialsActivity" />
-        <activity android:name="fit.asta.health.course.session.ui.SessionActivity" />
-        <activity android:name="fit.asta.health.schedule.ui.ScheduleActivity" />
+        <activity android:name=".schedule.tags.ui.TagsActivity" />
+        <activity android:name=".testimonials.ui.TestimonialsActivity" />
+        <activity android:name=".course.session.ui.SessionActivity" />
+        <activity android:name=".schedule.ui.ScheduleActivity" />
         <activity
             android:name=".course.details.CourseDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".settings.WebViewActivity" />
         <activity android:name=".article.ui.ArticleActivity" />
         <activity android:name=".auth.ui.AuthActivity" />
-        <activity android:name="fit.asta.health.subscription.SubscriptionActivity" />
+        <activity android:name=".subscription.SubscriptionActivity" />
         <activity android:name=".BillingActivity" />
-        <activity android:name=".common.ui.MultiSelectActivity" />
+        <activity android:name=".common.multiselect.ui.MultiSelectActivity" />
         <activity
             android:name=".course.listing.ui.CourseListingActivity"
             android:parentActivityName=".MainActivity" />
@@ -71,7 +71,7 @@
             android:value="com.google.android.exoplayer2.ext.cast.DefaultCastOptionsProvider" />
 
         <activity
-            android:name="fit.asta.health.player.VideoPlayerActivity"
+            android:name=".player.VideoPlayerActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:label="@string/app_name"
             android:launchMode="singleTop"

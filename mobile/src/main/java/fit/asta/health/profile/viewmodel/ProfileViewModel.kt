@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fit.asta.health.auth.data.UserRepository
-import fit.asta.health.common.data.FinalSelectedData
+import fit.asta.health.common.multiselect.data.FinalSelectedData
 import fit.asta.health.profile.ProfileData
 import fit.asta.health.profile.ProfileRepo
 import fit.asta.health.profile.adapter.ChipCardItem

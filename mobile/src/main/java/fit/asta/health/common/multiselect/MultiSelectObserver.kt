@@ -1,7 +1,7 @@
-package fit.asta.health.common
+package fit.asta.health.common.multiselect
 
 import androidx.lifecycle.Observer
-import fit.asta.health.common.ui.MultiSelectView
+import fit.asta.health.common.multiselect.ui.MultiSelectView
 
 class MultiSelectObserver(val view: MultiSelectView) : Observer<MultiSelectionAction> {
     override fun onChanged(action: MultiSelectionAction) {

@@ -1,6 +1,6 @@
-package fit.asta.health.common
+package fit.asta.health.common.multiselect
 
-import fit.asta.health.common.data.MultiSelectData
+import fit.asta.health.common.multiselect.data.MultiSelectData
 import fit.asta.health.profile.data.chips.UserInputs
 
 class MultiSelectDataMapper {

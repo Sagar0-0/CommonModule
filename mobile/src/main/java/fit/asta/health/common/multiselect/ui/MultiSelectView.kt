@@ -1,9 +1,9 @@
-package fit.asta.health.common.ui
+package fit.asta.health.common.multiselect.ui
 
 import android.app.Activity
 import android.view.View
-import fit.asta.health.common.adapter.SelectionUpdateListener
-import fit.asta.health.common.data.MultiSelectData
+import fit.asta.health.common.multiselect.adapter.SelectionUpdateListener
+import fit.asta.health.common.multiselect.data.MultiSelectData
 
 interface MultiSelectView {
     fun setContentView(activity: Activity): View?

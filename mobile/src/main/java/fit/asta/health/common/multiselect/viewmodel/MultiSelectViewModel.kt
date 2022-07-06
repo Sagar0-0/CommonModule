@@ -1,10 +1,10 @@
-package fit.asta.health.common.viewmodel
+package fit.asta.health.common.multiselect.viewmodel
 
 import androidx.lifecycle.*
-import fit.asta.health.common.MultiSelectRepo
-import fit.asta.health.common.MultiSelectionAction
-import fit.asta.health.common.data.FinalSelectedData
-import fit.asta.health.common.data.MultiSelectData
+import fit.asta.health.common.multiselect.MultiSelectRepo
+import fit.asta.health.common.multiselect.MultiSelectionAction
+import fit.asta.health.common.multiselect.data.FinalSelectedData
+import fit.asta.health.common.multiselect.data.MultiSelectData
 import fit.asta.health.profile.adapter.ChipCardItem
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

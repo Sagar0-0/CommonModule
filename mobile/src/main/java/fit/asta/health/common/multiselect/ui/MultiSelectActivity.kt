@@ -1,12 +1,12 @@
-package fit.asta.health.common.ui
+package fit.asta.health.common.multiselect.ui
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import fit.asta.health.common.MultiSelectObserver
-import fit.asta.health.common.adapter.SelectionUpdateListenerImpl
-import fit.asta.health.common.viewmodel.MultiSelectViewModel
+import fit.asta.health.common.multiselect.MultiSelectObserver
+import fit.asta.health.common.multiselect.adapter.SelectionUpdateListenerImpl
+import fit.asta.health.common.multiselect.viewmodel.MultiSelectViewModel
 import kotlinx.android.synthetic.main.multi_selection_activity.*
 import org.koin.android.ext.android.inject
 

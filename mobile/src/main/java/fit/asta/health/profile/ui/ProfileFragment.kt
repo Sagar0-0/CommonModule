@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import fit.asta.health.common.data.FinalSelectedData
-import fit.asta.health.common.ui.MultiSelectActivity.Companion.SELECTED_DATA
+import fit.asta.health.common.multiselect.data.FinalSelectedData
+import fit.asta.health.common.multiselect.ui.MultiSelectActivity.Companion.SELECTED_DATA
 import fit.asta.health.profile.adapter.viewholders.ProfileTabType
 import fit.asta.health.profile.listener.OnChipActionListenerImpl
 import fit.asta.health.profile.listener.ProfileWatcher

@@ -3,7 +3,7 @@ package fit.asta.health.profile.listener
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.Fragment
-import fit.asta.health.common.ui.MultiSelectActivity
+import fit.asta.health.common.multiselect.ui.MultiSelectActivity
 import fit.asta.health.profile.adapter.ChipCardItem
 import fit.asta.health.profile.viewmodel.ProfileViewModel
 import fit.asta.health.utils.Constants

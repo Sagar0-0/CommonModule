@@ -1,4 +1,4 @@
-package fit.asta.health.common.ui
+package fit.asta.health.common.multiselect.ui
 
 import android.app.Activity
 import android.view.LayoutInflater
@@ -6,9 +6,9 @@ import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import fit.asta.health.R
-import fit.asta.health.common.adapter.MultiSelectAdapter
-import fit.asta.health.common.adapter.SelectionUpdateListener
-import fit.asta.health.common.data.MultiSelectData
+import fit.asta.health.common.multiselect.adapter.MultiSelectAdapter
+import fit.asta.health.common.multiselect.adapter.SelectionUpdateListener
+import fit.asta.health.common.multiselect.data.MultiSelectData
 import kotlinx.android.synthetic.main.multi_selection_activity.view.*
 
 class MultiSelectViewImpl: MultiSelectView {

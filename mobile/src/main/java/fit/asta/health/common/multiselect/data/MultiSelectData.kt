@@ -1,4 +1,4 @@
-package fit.asta.health.common.data
+package fit.asta.health.common.multiselect.data
 
 import android.os.Parcelable
 import fit.asta.health.profile.adapter.viewholders.ProfileTabType

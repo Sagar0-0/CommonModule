@@ -1,11 +1,11 @@
-package fit.asta.health.common.adapter
+package fit.asta.health.common.multiselect.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import fit.asta.health.R
 import fit.asta.health.common.BaseAdapter
 import fit.asta.health.common.BaseViewHolder
-import fit.asta.health.common.data.MultiSelectData
+import fit.asta.health.common.multiselect.data.MultiSelectData
 import org.koin.core.KoinComponent
 
 class MultiSelectAdapter: BaseAdapter<MultiSelectData>(), KoinComponent {
