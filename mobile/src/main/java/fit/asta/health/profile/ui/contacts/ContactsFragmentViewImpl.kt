@@ -26,6 +26,7 @@ class ContactsFragmentViewImpl: ContactsFragmentView {
             is ProfileView.ProfileState.LoadProfileState -> {
                 state.list
             }
+            else -> { }
         }
     }
 

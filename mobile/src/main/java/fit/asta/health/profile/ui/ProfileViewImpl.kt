@@ -32,6 +32,7 @@ class ProfileViewImpl: ProfileView {
             is ProfileView.ProfileState.LoadProfileState -> {
                 setAdapter(state.list)
             }
+            else -> { }
         }
     }
 

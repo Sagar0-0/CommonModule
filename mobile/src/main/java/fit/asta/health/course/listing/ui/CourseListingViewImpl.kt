@@ -43,6 +43,7 @@ class CourseListingViewImpl : CourseListingView {
         when (state) {
             is CourseListingView.State.LoadCourses -> setAdapter(state.list)
             CourseListingView.State.Empty -> showEmpty()
+            else -> { }
         }
     }
 

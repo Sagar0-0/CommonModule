@@ -31,6 +31,9 @@ class CourseSessionsViewImpl : CourseSessionsView {
             is CourseSessionsView.State.LoadSessions -> {
                 setAdapter(state.listSessions)
             }
+            else -> {
+
+            }
         }
     }
 

@@ -42,6 +42,7 @@ class CourseDetailsViewImpl : CourseDetailsView {
     override fun changeState(state: CourseDetailsView.State) {
         when (state) {
             is CourseDetailsView.State.LoadCourseDetails -> loadCourseDetails(state.course)
+            else -> { }
         }
     }
 

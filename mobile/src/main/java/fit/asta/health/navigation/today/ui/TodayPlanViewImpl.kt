@@ -45,6 +45,7 @@ class TodayPlanViewImpl : TodayPlanView {
         when (state) {
             is TodayPlanView.State.LoadPlan -> setAdapter(state.list)
             TodayPlanView.State.Empty -> showEmpty()
+            else -> { }
         }
     }
 
