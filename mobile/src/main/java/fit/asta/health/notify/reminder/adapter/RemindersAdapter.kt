@@ -12,7 +12,7 @@ import fit.asta.health.ActivityLauncher
 import fit.asta.health.R
 import fit.asta.health.notify.reminder.data.Reminder
 import fit.asta.health.utils.GenericAdapter
-import kotlinx.android.synthetic.main.list_item_reminder.view.*
+import kotlinx.android.synthetic.main.sceduler_reminder_card.view.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import java.text.SimpleDateFormat
@@ -36,7 +36,7 @@ class RemindersAdapter(
     override fun setViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view =
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.list_item_reminder, parent, false)
+                .inflate(R.layout.sceduler_reminder_card, parent, false)
         return ItemViewHolder(view)
     }
 

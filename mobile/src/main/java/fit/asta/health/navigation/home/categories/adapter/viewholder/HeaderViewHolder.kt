@@ -7,7 +7,7 @@ import fit.asta.health.navigation.home.categories.adapter.listeners.OnCategoryCl
 import fit.asta.health.navigation.home.categories.data.CategoryData
 import fit.asta.health.utils.getPublicStorageUrl
 import fit.asta.health.utils.showImageByUrl
-import kotlinx.android.synthetic.main.gallery_category.view.*
+import kotlinx.android.synthetic.main.home_gallery_category_card.view.*
 import java.util.*
 
 

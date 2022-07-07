@@ -44,7 +44,7 @@
 
         <include
             android:id="@+id/includeLibrary"
-            layout="@layout/library_card"
+            layout="@layout/home_rcv_library"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"

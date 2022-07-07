@@ -25,8 +25,8 @@ import com.google.firebase.storage.StorageReference
 import fit.asta.health.R
 import fit.asta.health.course.session.SessionRepo
 import fit.asta.health.course.session.data.Exercise
-import kotlinx.android.synthetic.main.activity_player.*
-import kotlinx.android.synthetic.main.custom_playback_control.*
+import kotlinx.android.synthetic.main.player_activity.*
+import kotlinx.android.synthetic.main.player_custom_control.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -74,7 +74,7 @@ class VideoPlayerActivity : AppCompatActivity(), Player.Listener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_player)
+        setContentView(R.layout.player_activity)
 
         btn_close_video.setOnClickListener {
 

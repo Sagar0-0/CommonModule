@@ -7,7 +7,7 @@ import fit.asta.health.profile.adapter.PlainCardItem
 import fit.asta.health.profile.adapter.ProfileItem
 import fit.asta.health.profile.listener.OnChangeListener
 import fit.asta.health.utils.toEditable
-import kotlinx.android.synthetic.main.plain_card_item.view.*
+import kotlinx.android.synthetic.main.profile_plain_card.view.*
 
 class PlainCardViewHolder(
     itemView: View,

@@ -9,7 +9,7 @@ import fit.asta.health.R
 import fit.asta.health.navigation.today.adapter.TodayPlanAdapter
 import fit.asta.health.navigation.today.adapter.listeners.OnPlanClickListener
 import fit.asta.health.navigation.today.data.TodayPlanItemData
-import kotlinx.android.synthetic.main.fragment_today.view.*
+import kotlinx.android.synthetic.main.today_fragment.view.*
 import java.util.*
 
 
@@ -21,7 +21,7 @@ class TodayPlanViewImpl : TodayPlanView {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        rootView = inflater.inflate(R.layout.fragment_today, container, false)
+        rootView = inflater.inflate(R.layout.today_fragment, container, false)
         setupRecyclerView()
         return rootView
     }

@@ -7,7 +7,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import fit.asta.health.R
-import kotlinx.android.synthetic.main.activity_settings.*
+import kotlinx.android.synthetic.main.settings_activity.*
 
 
 private const val TITLE_TAG = "settingsActivityTitle"
@@ -22,7 +22,7 @@ class SettingsActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        setContentView(R.layout.settings_activity)
 
         val toolbar: Toolbar = findViewById(R.id.settingsToolbar)
         toolbar.setNavigationOnClickListener {

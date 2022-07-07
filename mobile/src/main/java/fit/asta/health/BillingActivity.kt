@@ -16,7 +16,7 @@ class BillingActivity : AppCompatActivity() {
     val PREMIUM_SKU = "premium_subscription"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_billing)
+        setContentView(R.layout.billing_activity)
 
         try {
             billingClient?.startConnection(object : BillingClientStateListener {

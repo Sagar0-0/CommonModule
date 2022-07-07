@@ -16,7 +16,7 @@ class MultiSelectAdapter: BaseAdapter<MultiSelectData>(), KoinComponent {
         parent: ViewGroup,
         viewType: Int
     ): BaseViewHolder<MultiSelectData> {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.multi_select_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.listview_multiselect_item, parent, false)
         return  MultiSelectViewHolder(view, selectionUpdateListener)
     }
 

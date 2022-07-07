@@ -5,7 +5,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import fit.asta.health.R
-import kotlinx.android.synthetic.main.activity_web_view.*
+import kotlinx.android.synthetic.main.webview_activity.*
 
 
 const val WEB_URL = "WebUrl789"
@@ -14,7 +14,7 @@ class WebViewActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_web_view)
+        setContentView(R.layout.webview_activity)
 
         setSupportActionBar(toolbarWebView)
         supportActionBar?.setDisplayShowTitleEnabled(false)

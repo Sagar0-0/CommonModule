@@ -21,7 +21,7 @@ class CategoriesAdapter : BaseAdapter<CategoryData>() {
 
         return HeaderViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.gallery_category, parent, false),
+                .inflate(R.layout.home_gallery_category_card, parent, false),
             onClickListener
         )
     }

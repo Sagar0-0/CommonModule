@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import fit.asta.health.R
 import fit.asta.health.course.details.adapter.ModulesAdapter
 import fit.asta.health.course.details.data.SessionData
-import kotlinx.android.synthetic.main.fragment_sessions.*
+import kotlinx.android.synthetic.main.sessions_fragment.*
 
 
 /**
@@ -64,6 +64,6 @@ class SessionsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sessions, container, false)
+        return inflater.inflate(R.layout.sessions_fragment, container, false)
     }
 }

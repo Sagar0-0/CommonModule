@@ -11,9 +11,9 @@ import fit.asta.health.notify.reminder.data.Reminder
 import fit.asta.health.schedule.tags.data.ScheduleTagData
 import fit.asta.health.schedule.tags.ui.TagsActivity
 import fit.asta.health.schedule.viewmodel.ScheduleViewModel
-import kotlinx.android.synthetic.main.activity_scheduler.*
-import kotlinx.android.synthetic.main.card_schedule_clock.*
-import kotlinx.android.synthetic.main.card_schedule_tag.*
+import kotlinx.android.synthetic.main.schedule_activity.*
+import kotlinx.android.synthetic.main.schedule_clock_card.*
+import kotlinx.android.synthetic.main.schedule_tag_card.*
 import org.koin.android.ext.android.inject
 
 

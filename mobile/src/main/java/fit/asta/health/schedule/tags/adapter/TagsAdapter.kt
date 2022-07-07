@@ -18,7 +18,7 @@ class TagsAdapter : BaseAdapter<ScheduleTagData>() {
         parent: ViewGroup,
         viewType: Int
     ): BaseViewHolder<ScheduleTagData> {
-        val layout = R.layout.tags_card
+        val layout = R.layout.schedule_tags_card
         val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
         return TagsViewHolder(view, tagSelectionListener)
     }

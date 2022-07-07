@@ -3,7 +3,7 @@ package fit.asta.health.common.multiselect.adapter
 import android.view.View
 import fit.asta.health.common.BaseViewHolder
 import fit.asta.health.common.multiselect.data.MultiSelectData
-import kotlinx.android.synthetic.main.multi_select_item.view.*
+import kotlinx.android.synthetic.main.listview_multiselect_item.view.*
 
 class MultiSelectViewHolder(
     val view: View,

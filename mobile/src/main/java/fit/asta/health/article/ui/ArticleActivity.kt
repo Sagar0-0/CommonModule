@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import fit.asta.health.R
 import fit.asta.health.article.adapter.ArticleContentAdapter
 import fit.asta.health.article.data.ArticleSupplier
-import kotlinx.android.synthetic.main.activity_article.*
+import kotlinx.android.synthetic.main.article_activity.*
 
 
 const val ARTICLE_URL = "Article_URL"
@@ -18,7 +18,7 @@ class ArticleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_article)
+        setContentView(R.layout.article_activity)
 
         val toolbar: Toolbar = findViewById(R.id.articleToolbar)
         toolbar.setNavigationOnClickListener {

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fit.asta.health.asanas.ui.MultiSelectActivity">
+    tools:context="fit.asta.health.common.multiselect.ui.MultiSelectActivity">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/backNavigation"

@@ -33,7 +33,7 @@ import fit.asta.health.network.TokenProvider
 import fit.asta.health.profile.ui.ProfileActivity
 import fit.asta.health.settings.SettingsActivity
 import fit.asta.health.utils.*
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.main_activity.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import kotlin.system.exitProcess
@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
     private fun loadAppScreen() {
 
         applicationContext.setAppTheme()
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.main_activity)
         setSupportActionBar(findViewById(R.id.appToolbar))
         supportActionBar?.setDisplayShowTitleEnabled(false)
 

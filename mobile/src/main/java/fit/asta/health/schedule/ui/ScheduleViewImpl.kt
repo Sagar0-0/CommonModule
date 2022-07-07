@@ -12,10 +12,10 @@ import fit.asta.health.notify.reminder.data.Reminder
 import fit.asta.health.schedule.adapter.TimeCyclesAdapter
 import fit.asta.health.schedule.data.ScheduleTimeData
 import fit.asta.health.schedule.tags.data.ScheduleTagData
-import kotlinx.android.synthetic.main.activity_scheduler.view.*
-import kotlinx.android.synthetic.main.card_schedule_clock.view.*
-import kotlinx.android.synthetic.main.card_schedule_everyday.view.*
-import kotlinx.android.synthetic.main.card_schedule_tag.view.*
+import kotlinx.android.synthetic.main.schedule_clock_card.view.*
+import kotlinx.android.synthetic.main.schedule_everyday_card.view.*
+import kotlinx.android.synthetic.main.schedule_tag_card.view.*
+import kotlinx.android.synthetic.main.schedule_activity.view.*
 
 
 class ScheduleViewImpl : ScheduleView {
@@ -36,7 +36,7 @@ class ScheduleViewImpl : ScheduleView {
 
     override fun setContentView(activity: Activity): View? {
 
-        rootView = LayoutInflater.from(activity).inflate(R.layout.activity_scheduler, null, false)
+        rootView = LayoutInflater.from(activity).inflate(R.layout.schedule_activity, null, false)
         buildWeekDays()
         setupTimeCycleRecyclerView()
         /*beforeReminderView =
@@ -84,7 +84,7 @@ class ScheduleViewImpl : ScheduleView {
             val inflater = LayoutInflater.from(view.context)
             for (i in 0..6) {
 
-                val btnDayFrame = inflater.inflate(R.layout.week_day_box, view.weekDays, false)
+                val btnDayFrame = inflater.inflate(R.layout.schedule_weekday, view.weekDays, false)
                 val btnDay = btnDayFrame.findViewById<View>(R.id.btnDay) as CompoundButton
                 btnDay.isChecked =
                     if (mReminder == null) true else mReminder?.days?.any { it == i + 1 } ?: false

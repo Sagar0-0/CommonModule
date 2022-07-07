@@ -5,7 +5,7 @@
     android:id="@+id/schedulerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fit.asta.health.schedule.ui.ScheduleActivity">
+    tools:context=".schedule.ui.ScheduleActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/schedulerAppBarLayout"
@@ -42,7 +42,7 @@
 
             <include
                 android:id="@+id/includeEveryday"
-                layout="@layout/card_schedule_everyday"
+                layout="@layout/schedule_everyday_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dimen16"
@@ -51,7 +51,7 @@
 
             <include
                 android:id="@+id/includeClock"
-                layout="@layout/card_schedule_clock"
+                layout="@layout/schedule_clock_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dimen16"
@@ -60,7 +60,7 @@
 
             <include
                 android:id="@+id/includeTag"
-                layout="@layout/card_schedule_tag"
+                layout="@layout/schedule_tag_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dimen16"
@@ -69,7 +69,7 @@
 
             <include
                 android:id="@+id/includeReminder"
-                layout="@layout/card_schedule_reminder"
+                layout="@layout/schedule_reminder_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dimen16"

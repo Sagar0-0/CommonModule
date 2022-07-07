@@ -11,19 +11,20 @@
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
     android:paddingRight="?android:attr/listPreferredItemPaddingRight">
 
-    <include layout="@layout/custom_preference_image_frame" />
+    <include layout="@layout/preference_custom_image_frame" />
 
     <RelativeLayout
         android:layout_width="@dimen/dimen_0"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:paddingTop="@dimen/dimen16"
-        android:paddingBottom="@dimen/dimen16">
+        android:paddingTop="@dimen/dimen32"
+        android:paddingBottom="@dimen/dimen32">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@android:id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:ellipsize="marquee"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceListItem" />
@@ -42,8 +43,6 @@
             android:textColor="?android:attr/textColorSecondary" />
 
     </RelativeLayout>
-
-    <include layout="@layout/custom_preference_arrow_image_frame" />
 
     <!-- Preference should place its actual preference widget here. -->
     <androidx.appcompat.widget.LinearLayoutCompat

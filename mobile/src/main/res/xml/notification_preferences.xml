@@ -5,7 +5,7 @@
         android:defaultValue="true"
         android:icon="@drawable/ic_notifications"
         android:key="@string/user_pref_master_notification_key"
-        android:layout="@layout/custom_preference_master_switch"
+        android:layout="@layout/preference_custom_master_switch"
         android:title="@string/user_pref_master_notification_title" />
 
     <androidx.preference.PreferenceCategory

@@ -5,7 +5,7 @@ import fit.asta.health.common.BaseViewHolder
 import fit.asta.health.profile.adapter.BodyTypeItem
 import fit.asta.health.profile.adapter.ProfileItem
 import fit.asta.health.profile.listener.OnChangeListener
-import kotlinx.android.synthetic.main.boddtype_card_item.view.*
+import kotlinx.android.synthetic.main.profile_boddtype_card.view.*
 
 
 class BodyTypeViewHolder(

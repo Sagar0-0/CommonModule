@@ -15,7 +15,7 @@ class ContactsFragmentViewImpl: ContactsFragmentView {
     private var rootView: View? = null
     override fun setContentView(activity: Activity, container: ViewGroup?): View? {
         rootView = LayoutInflater.from(activity).inflate(
-                R.layout.fragment_contacts, container,
+                R.layout.profile_contacts_fragment, container,
                 false)
         intializeViews()
         return rootView

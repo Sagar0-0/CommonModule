@@ -5,7 +5,7 @@ import fit.asta.health.R
 import fit.asta.health.common.BaseViewHolder
 import fit.asta.health.course.session.adapter.listeners.OnExerciseClickListener
 import fit.asta.health.course.session.data.Exercise
-import kotlinx.android.synthetic.main.list_item_exercise.view.*
+import kotlinx.android.synthetic.main.course_session_exercise_card.view.*
 
 class ExerciseViewHolder(
     itemView: View,

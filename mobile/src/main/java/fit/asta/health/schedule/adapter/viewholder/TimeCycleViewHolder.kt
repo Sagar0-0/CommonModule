@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.view.View
 import fit.asta.health.common.BaseViewHolder
 import fit.asta.health.schedule.data.ScheduleTimeData
-import kotlinx.android.synthetic.main.timecycle_recyclerview_card.view.*
+import kotlinx.android.synthetic.main.schedule_timecycle_card.view.*
 
 class TimeCycleViewHolder(viewItem: View) : BaseViewHolder<ScheduleTimeData>(viewItem) {
 

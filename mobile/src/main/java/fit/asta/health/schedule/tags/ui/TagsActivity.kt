@@ -10,7 +10,7 @@ import fit.asta.health.schedule.tags.data.ScheduleTagData
 import fit.asta.health.schedule.tags.listner.ClickListenerImpl
 import fit.asta.health.schedule.tags.listner.TagActivityListener
 import fit.asta.health.schedule.tags.viewmodel.TagsViewModel
-import kotlinx.android.synthetic.main.tags_activity.*
+import kotlinx.android.synthetic.main.schedule_tags_activity.*
 import org.koin.android.ext.android.inject
 
 

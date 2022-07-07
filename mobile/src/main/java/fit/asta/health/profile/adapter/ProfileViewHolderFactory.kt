@@ -24,27 +24,27 @@ class ProfileViewHolderFactory {
             ProfileItemType.PlainCard -> {
                 PlainCardViewHolder(
                     LayoutInflater.from(parent.context)
-                        .inflate(R.layout.plain_card_item, parent, false), changeListener
+                        .inflate(R.layout.profile_plain_card, parent, false), changeListener
                 )
             }
             ProfileItemType.BodyTypeCard -> {
                 BodyTypeViewHolder(
                     LayoutInflater.from(parent.context)
-                        .inflate(R.layout.boddtype_card_item, parent, false), changeListener
+                        .inflate(R.layout.profile_boddtype_card, parent, false), changeListener
                 )
             }
             ProfileItemType.SleepScheduleCard -> {
 
                 SleepScheduleViewHolder(
                     LayoutInflater.from(parent.context)
-                        .inflate(R.layout.schedule_card_item, parent, false)
+                        .inflate(R.layout.profile_schedule_card, parent, false)
                 )
             }
             ProfileItemType.ChipsCard -> {
 
                 ChipsCardViewHolder(
                     LayoutInflater.from(parent.context)
-                        .inflate(R.layout.chips_card_item, parent, false), onChipListener
+                        .inflate(R.layout.chips_card, parent, false), onChipListener
                 )
             }
         }

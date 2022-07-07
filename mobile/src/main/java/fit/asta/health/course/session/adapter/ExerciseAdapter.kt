@@ -15,7 +15,7 @@ class ExerciseAdapter(private val isVertical: Boolean = true) : BaseAdapter<Exer
     private var onClickListener: OnExerciseClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Exercise> {
-        val layout = R.layout.list_item_exercise
+        val layout = R.layout.course_session_exercise_card
         val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
         return ExerciseViewHolder(view, onClickListener)
     }

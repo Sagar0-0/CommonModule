@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import fit.asta.health.ActivityLauncher
 import fit.asta.health.R
 import fit.asta.health.notify.reminder.adapter.RemindersAdapter
-import kotlinx.android.synthetic.main.reminder_fragment.*
+import kotlinx.android.synthetic.main.schedule_reminder_fragment.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -27,7 +27,7 @@ class ReminderFragment : Fragment(), KoinComponent {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.reminder_fragment, container, false)
+        return inflater.inflate(R.layout.schedule_reminder_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

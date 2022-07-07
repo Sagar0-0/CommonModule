@@ -3,38 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="fit.asta.health.asanas.ui.DurationActivity">
+    android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/backNavigation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen16"
-        android:tint="@color/colorAccent"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="@dimen/dimen48"
+        android:layout_height="@dimen/dimen48"
+        android:tint="@color/colorPrimary"
+        app:icon="@drawable/ic_arrow_left"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_arrow_left" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/durationTitle"
+        android:id="@+id/singleSelTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/dimen8"
-        android:text="@string/duration_title"
         android:textAppearance="?attr/textAppearanceListItem"
         android:textSize="@dimen/dimenText16"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/durationBlock"
+        app:layout_constraintBottom_toTopOf="@id/levelBlock"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/durationBlock"
+        android:id="@+id/levelBlock"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent=".5"
+        app:layout_constraintHeight_percent=".4"
         app:layout_constraintStart_toStartOf="parent">
 
         <androidx.core.widget.NestedScrollView
@@ -44,7 +42,7 @@
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/durationRcView"
+                android:id="@+id/singleSelRcView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

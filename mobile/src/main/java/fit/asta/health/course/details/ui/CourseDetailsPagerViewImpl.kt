@@ -14,7 +14,7 @@ import fit.asta.health.course.details.CourseDetailsTabsData
 import fit.asta.health.course.details.CourseDetailsView
 import fit.asta.health.course.details.CourseDetailsViewPagerListener
 import fit.asta.health.course.details.adapter.CourseDetailsPagerAdapter
-import kotlinx.android.synthetic.main.activity_profile.view.*
+import kotlinx.android.synthetic.main.profile_activity.view.*
 
 
 class CourseDetailsPagerViewImpl : CourseDetailsPagerView {
@@ -23,7 +23,7 @@ class CourseDetailsPagerViewImpl : CourseDetailsPagerView {
 
     override fun setContentView(activity: Activity): View? {
         rootView = LayoutInflater.from(activity).inflate(
-            R.layout.activity_profile, null,
+            R.layout.profile_activity, null,
             false
         )
         return rootView

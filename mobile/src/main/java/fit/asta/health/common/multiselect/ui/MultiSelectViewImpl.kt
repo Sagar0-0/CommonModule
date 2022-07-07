@@ -9,7 +9,7 @@ import fit.asta.health.R
 import fit.asta.health.common.multiselect.adapter.MultiSelectAdapter
 import fit.asta.health.common.multiselect.adapter.SelectionUpdateListener
 import fit.asta.health.common.multiselect.data.MultiSelectData
-import kotlinx.android.synthetic.main.multi_selection_activity.view.*
+import kotlinx.android.synthetic.main.listview_multiselect_save_activity.view.*
 
 class MultiSelectViewImpl: MultiSelectView {
 
@@ -17,7 +17,7 @@ class MultiSelectViewImpl: MultiSelectView {
 
     override fun setContentView(activity: Activity): View? {
         rootView = LayoutInflater.from(activity).inflate(
-            R.layout.multi_selection_activity,null,false)
+            R.layout.listview_multiselect_save_activity,null,false)
         initializeViews()
         return rootView
     }

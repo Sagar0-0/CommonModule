@@ -26,7 +26,7 @@ import fit.asta.health.navigation.home.testimonials.TestimonialFragment
 import fit.asta.health.testimonials.data.TestimonialData
 import fit.asta.health.utils.showToastMessage
 import kotlinx.android.synthetic.main.home_fragment.view.*
-import kotlinx.android.synthetic.main.library_card.view.*
+import kotlinx.android.synthetic.main.home_rcv_library.view.*
 import retrofit2.HttpException
 import java.io.IOException
 import java.lang.Exception

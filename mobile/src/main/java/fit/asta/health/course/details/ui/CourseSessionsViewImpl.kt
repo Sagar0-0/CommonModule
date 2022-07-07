@@ -9,7 +9,7 @@ import fit.asta.health.R
 import fit.asta.health.course.details.adapter.CourseDetailsTabType
 import fit.asta.health.course.details.adapter.ModulesAdapter
 import fit.asta.health.course.details.data.SessionData
-import kotlinx.android.synthetic.main.fragment_sessions.view.*
+import kotlinx.android.synthetic.main.sessions_fragment.view.*
 
 
 class CourseSessionsViewImpl : CourseSessionsView {
@@ -19,7 +19,7 @@ class CourseSessionsViewImpl : CourseSessionsView {
 
     override fun setContentView(activity: Activity, container: ViewGroup?): View? {
         rootView = LayoutInflater.from(activity).inflate(
-            R.layout.fragment_sessions, container,
+            R.layout.sessions_fragment, container,
             false
         )
 

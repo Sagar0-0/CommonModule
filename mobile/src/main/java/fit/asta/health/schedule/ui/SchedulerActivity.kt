@@ -16,9 +16,9 @@ import fit.asta.health.R
 import fit.asta.health.notify.receiver.AlarmReceiver
 import fit.asta.health.notify.reminder.ReminderViewModel
 import fit.asta.health.notify.reminder.data.Reminder
-import kotlinx.android.synthetic.main.activity_scheduler.*
-import kotlinx.android.synthetic.main.card_schedule_clock.*
-import kotlinx.android.synthetic.main.card_schedule_everyday.*
+import kotlinx.android.synthetic.main.schedule_activity.*
+import kotlinx.android.synthetic.main.schedule_clock_card.*
+import kotlinx.android.synthetic.main.schedule_everyday_card.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -46,7 +46,7 @@ class SchedulerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_scheduler)
+        setContentView(R.layout.schedule_activity)
 
         timePicker.setIs24HourView(true)
 
@@ -86,7 +86,7 @@ class SchedulerActivity : AppCompatActivity() {
         val inflater = LayoutInflater.from(this)
         for (i in 0..6) {
 
-            val btnDayFrame = inflater.inflate(R.layout.week_day_box, weekDays, false)
+            val btnDayFrame = inflater.inflate(R.layout.schedule_weekday, weekDays, false)
             val btnDay = btnDayFrame.findViewById<View>(R.id.btnDay) as CompoundButton
             btnDay.isChecked =
                 if (mReminder == null) true else mReminder?.days?.any { it == i + 1 } ?: false

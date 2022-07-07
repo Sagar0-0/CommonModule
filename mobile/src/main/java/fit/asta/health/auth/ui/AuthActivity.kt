@@ -13,7 +13,7 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.*
 import fit.asta.health.R
 import fit.asta.health.utils.*
-import kotlinx.android.synthetic.main.activity_auth.*
+import kotlinx.android.synthetic.main.auth_activity.*
 import kotlin.system.exitProcess
 
 
@@ -24,7 +24,7 @@ class AuthActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_auth)
+        setContentView(R.layout.auth_activity)
         viewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
 
         if (viewModel.isAuthenticated()) {

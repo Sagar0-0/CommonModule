@@ -8,7 +8,7 @@ import fit.asta.health.schedule.tags.data.ScheduleTagData
 import fit.asta.health.schedule.tags.listner.ClickListener
 import fit.asta.health.utils.getPublicStorageUrl
 import fit.asta.health.utils.showImageByUrl
-import kotlinx.android.synthetic.main.tags_card.view.*
+import kotlinx.android.synthetic.main.schedule_tags_card.view.*
 
 class TagsViewHolder(
     viewItem: View,

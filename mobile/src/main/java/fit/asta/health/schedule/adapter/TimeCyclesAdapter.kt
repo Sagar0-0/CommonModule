@@ -15,7 +15,7 @@ class TimeCyclesAdapter : BaseAdapter<ScheduleTimeData>() {
         parent: ViewGroup,
         viewType: Int
     ): BaseViewHolder<ScheduleTimeData> {
-        val layout = R.layout.timecycle_recyclerview_card
+        val layout = R.layout.schedule_timecycle_card
         val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
         return TimeCycleViewHolder(view)
     }

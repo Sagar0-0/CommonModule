@@ -9,8 +9,8 @@ import fit.asta.health.R
 import fit.asta.health.schedule.tags.adapter.TagsAdapter
 import fit.asta.health.schedule.tags.data.ScheduleTagData
 import fit.asta.health.schedule.tags.listner.ClickListener
-import kotlinx.android.synthetic.main.tags_activity.view.*
-import kotlinx.android.synthetic.main.tags_add.view.*
+import kotlinx.android.synthetic.main.schedule_tags_activity.view.*
+import kotlinx.android.synthetic.main.schedule_tags_add.view.*
 
 
 class TagsViewImpl : TagsView {
@@ -21,7 +21,7 @@ class TagsViewImpl : TagsView {
 
     override fun setContentView(activity: Activity): View? {
         rootView =
-            LayoutInflater.from(activity).inflate(R.layout.tags_activity, null, false)
+            LayoutInflater.from(activity).inflate(R.layout.schedule_tags_activity, null, false)
 
         setupRecyclerView()
         setupTagSheet(activity)
@@ -29,7 +29,7 @@ class TagsViewImpl : TagsView {
     }
 
     private fun setupTagSheet(activity: Activity) {
-        tagCreateView = LayoutInflater.from(activity).inflate(R.layout.tags_add, null)
+        tagCreateView = LayoutInflater.from(activity).inflate(R.layout.schedule_tags_add, null)
         bottomDialog = BottomSheetDialog(activity)
     }
 

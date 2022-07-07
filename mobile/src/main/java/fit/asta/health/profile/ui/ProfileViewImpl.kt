@@ -12,7 +12,7 @@ import fit.asta.health.profile.adapter.ProfileItem
 import fit.asta.health.profile.adapter.viewholders.ProfileTabType
 import fit.asta.health.profile.listener.OnChangeListener
 import fit.asta.health.profile.listener.OnChipActionListener
-import kotlinx.android.synthetic.main.fragment_profile_one.view.*
+import kotlinx.android.synthetic.main.profile_one_fragment.view.*
 
 class ProfileViewImpl: ProfileView {
 
@@ -21,7 +21,7 @@ class ProfileViewImpl: ProfileView {
     private var profileTabType: ProfileTabType = ProfileTabType.NONE
     override fun setContentView(activity: Activity, container: ViewGroup?): View? {
         rootView = LayoutInflater.from(activity).inflate(
-            R.layout.fragment_profile_one, container,
+            R.layout.profile_one_fragment, container,
             false)
         initializeViews()
         return rootView

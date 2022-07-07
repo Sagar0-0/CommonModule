@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import fit.asta.health.common.multiselect.MultiSelectObserver
 import fit.asta.health.common.multiselect.adapter.SelectionUpdateListenerImpl
 import fit.asta.health.common.multiselect.viewmodel.MultiSelectViewModel
-import kotlinx.android.synthetic.main.multi_selection_activity.*
+import kotlinx.android.synthetic.main.listview_multiselect_save_activity.*
 import org.koin.android.ext.android.inject
 
 
