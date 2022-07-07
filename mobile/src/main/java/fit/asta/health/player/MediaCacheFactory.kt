@@ -68,9 +68,9 @@ internal class VideoCacheFactory private constructor(
 
         simpleCache = SimpleCache(cacheFolder, cacheEvictor, databaseProvider)
 
-        val userAgent: String = Util.getUserAgent(context, "userAgentVideo")
+        //val userAgent: String = Util.getUserAgent(context, "userAgentVideo")
         dataSourceFactory = ResolvingDataSource.Factory(
-            DefaultHttpDataSourceFactory(userAgent),
+            DefaultHttpDataSource.Factory(),
             ResolvingDataSource.Resolver { dataSpec: DataSpec ->
                 dataSpec.withUri(
                     addToken(

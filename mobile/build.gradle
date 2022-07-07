@@ -178,8 +178,8 @@ dependencies {
     implementation retrofit.values()
 
     //Exo player
-    implementation 'com.google.android.exoplayer:exoplayer:2.14.0'
-    implementation 'com.google.android.exoplayer:extension-cast:2.14.0'
+    implementation 'com.google.android.exoplayer:exoplayer:2.18.0'
+    implementation 'com.google.android.exoplayer:extension-cast:2.18.0'
 
     //Billing
     implementation "com.android.billingclient:billing:4.0.0"

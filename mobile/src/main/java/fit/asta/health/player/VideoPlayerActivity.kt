@@ -13,9 +13,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.source.TrackGroupArray
+import com.google.android.exoplayer2.Tracks
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.util.Log
 import com.google.android.exoplayer2.util.Util
@@ -29,13 +28,11 @@ import fit.asta.health.course.session.data.Exercise
 import kotlinx.android.synthetic.main.activity_player.*
 import kotlinx.android.synthetic.main.custom_playback_control.*
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import java.util.*
 
 
-class VideoPlayerActivity : AppCompatActivity(), Player.EventListener {
+class VideoPlayerActivity : AppCompatActivity(), Player.Listener {
 
     private val sessionRepo: SessionRepo by inject()
     private val scope = MainScope()
@@ -199,7 +196,10 @@ class VideoPlayerActivity : AppCompatActivity(), Player.EventListener {
                     .setPreferredAudioLanguage("en")
             )
 
-            player = SimpleExoPlayer.Builder(this).setTrackSelector(trackSelector).build()
+            player = SimpleExoPlayer.Builder(this)
+                .setSeekBackIncrementMs(30000)
+                .setSeekForwardIncrementMs(30000)
+                .setTrackSelector(trackSelector).build()
             player?.addListener(this)
         }
 
@@ -310,11 +310,8 @@ class VideoPlayerActivity : AppCompatActivity(), Player.EventListener {
         Log.d(tag, "Changed state to $stateString $playWhenReady: $playbackState")
     }
 
-    override fun onTracksChanged(
-        trackGroups: TrackGroupArray,
-        trackSelections: TrackSelectionArray
-    ) {
-        super.onTracksChanged(trackGroups, trackSelections)
+    override fun onTracksChanged(tracks: Tracks) {
+        super.onTracksChanged(tracks)
 
         val video = videoList[player!!.currentWindowIndex]
         video_title.text = video.title
