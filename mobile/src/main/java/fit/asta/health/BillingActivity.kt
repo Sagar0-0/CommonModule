@@ -5,14 +5,13 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
-import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import com.android.billingclient.api.*
 
 
 class BillingActivity : AppCompatActivity() {
 
-    private var skuDetails: SkuDetails?= null
+    private var skuDetails: SkuDetails? = null
     val BASIC_SKU = "basic_subscription"
     val PREMIUM_SKU = "premium_subscription"
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,8 +39,7 @@ class BillingActivity : AppCompatActivity() {
                     Toast.makeText(this@BillingActivity, "disConnected", Toast.LENGTH_LONG).show()
                 }
             })
-        }
-        catch (e: Exception){
+        } catch (e: Exception) {
             Log.e("BillingActivity", " Error: ${e.message}")
         }
 
@@ -60,13 +58,13 @@ class BillingActivity : AppCompatActivity() {
             val flowParams = BillingFlowParams.newBuilder().setSkuDetails(skuDetails!!).build()
             val responseCode = billingClient?.launchBillingFlow(activity, flowParams)?.responseCode
             Log.e("TAG", "launchBillingFlow: BillingResponse $responseCode")
-        }
-        catch (e: Exception){
+        } catch (e: Exception) {
             Log.e("TAG", "launchBillingFlow: error " + e.message)
         }
 
         return 0
     }
+
     private val purchasesUpdateListener =
         PurchasesUpdatedListener { billingResult, purchases ->
             try {
@@ -76,29 +74,29 @@ class BillingActivity : AppCompatActivity() {
                         0
                     )
                 )
+            } catch (e: Exception) {
             }
-            catch (e: Exception){}
         }
 
     private var billingClient =
-            HealthCareApp.mContext?.let {
-                BillingClient.newBuilder(it)
-                    .setListener(object : PurchasesUpdatedListener {
-                        override fun onPurchasesUpdated(
-                            p0: BillingResult,
-                            p1: MutableList<Purchase>?
-                        ) {
-                            Log.e("BillingActivity","po  "+p0.responseCode+"  p1: "+p1)
-                        }
-                    }).enablePendingPurchases().build()
-            }
+        HealthCareApp.mContext?.let {
+            BillingClient.newBuilder(it)
+                .setListener(object : PurchasesUpdatedListener {
+                    override fun onPurchasesUpdated(
+                        p0: BillingResult,
+                        p1: MutableList<Purchase>?
+                    ) {
+                        Log.e("BillingActivity", "po  " + p0.responseCode + "  p1: " + p1)
+                    }
+                }).enablePendingPurchases().build()
+        }
 
-    private fun querySkuDetails(){
+    private fun querySkuDetails() {
         val params = SkuDetailsParams.newBuilder()
         params.setSkusList(listOf(BASIC_SKU, PREMIUM_SKU)).setType(BillingClient.SkuType.INAPP)
         billingClient?.querySkuDetailsAsync(params.build()) { responseCode, skuDetailsList ->
             //skuDetails = skuDetailsList
-            skuDetailsList?.forEach { skuDetails = it  }
+            skuDetailsList?.forEach { skuDetails = it }
             Log.e("BillingActivity", "skuDetails ${skuDetails}")
             Log.e(
                 "BillingActivity",
@@ -107,21 +105,11 @@ class BillingActivity : AppCompatActivity() {
         }
     }
 
-    fun queryPurchases() {
+    private fun queryPurchases() {
 
-        val result = billingClient?.queryPurchases(BillingClient.SkuType.INAPP)
-        if (result == null) {
-            Log.e("TAG", "queryPurchases: null purchase result")
-            processPurchases(null)
-        } else {
-            if (result.purchasesList == null) {
-                Log.e("TAG", "queryPurchases: null purchase list")
-                processPurchases(null)
-            } else {
-                processPurchases(result.purchasesList)
-                Log.e("TAG", "purchasesList:t" + result.purchasesList)
-            }
-        }
+        billingClient!!.queryPurchasesAsync(
+            BillingClient.SkuType.SUBS
+        ) { _, list -> processPurchases(list) }
     }
 
     private fun processPurchases(purchasesList: List<Purchase>?) {
