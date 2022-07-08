@@ -66,6 +66,7 @@ class ScheduleViewModel(private val scheduleRepo: ScheduleRepo) : ViewModel() {
         scheduleLiveData.observe(lifecycleOwner, observer)
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun addTime(time: ScheduleTimeData) {
 
     }

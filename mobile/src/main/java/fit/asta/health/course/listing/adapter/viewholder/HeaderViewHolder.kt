@@ -24,16 +24,16 @@ class HeaderViewHolder(
         itemView.imgFavouiteAsana?.setOnClickListener(this)
     }
 
-    override fun bindData(courseIndexData: CourseIndexData) {
+    override fun bindData(content: CourseIndexData) {
 
-        currentItem = courseIndexData
+        currentItem = content
 
-        itemView.courseTitle.text = courseIndexData.title
-        itemView.courseSubTitle.text = courseIndexData.subTitle
-        itemView.courseLevel.text = courseIndexData.audienceLevel
-        itemView.txtDurationAsana.text = courseIndexData.duration
+        itemView.courseTitle.text = content.title
+        itemView.courseSubTitle.text = content.subTitle
+        itemView.courseLevel.text = content.audienceLevel
+        itemView.txtDurationAsana.text = content.duration
         itemView.context.showImageByUrl(
-            Uri.parse(getPublicStorageUrl(itemView.context, courseIndexData.url)),
+            Uri.parse(getPublicStorageUrl(itemView.context, content.url)),
             itemView.courseImage
         )
 

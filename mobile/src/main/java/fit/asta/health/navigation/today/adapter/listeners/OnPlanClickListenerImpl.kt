@@ -26,7 +26,7 @@ class OnPlanClickListenerImpl(
     }
 
     override fun onRescheduling(position: Int) {
-        val plan =viewModel.getPlanDetails(position)
+        //val plan =viewModel.getPlanDetails(position)
         launcher.launchSchedulerActivity(context,null)
     }
 }

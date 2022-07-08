@@ -94,6 +94,7 @@ class TagsViewModel(
         dataStore.updateData(tagId, updatedValue)
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun getSelectedData(tagId: String): ScheduleTagData {
         return ScheduleTagData()
     }

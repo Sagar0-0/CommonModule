@@ -78,6 +78,7 @@ class SchedulerActivity : AppCompatActivity() {
         initializeTimePicker(mReminder)
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun buildWeekDays() {
 
         // Build buttons for each day.
@@ -96,13 +97,13 @@ class SchedulerActivity : AppCompatActivity() {
         }
 
         // Day button handlers
-        for (i in btnDays.indices) {
+        /*for (i in btnDays.indices) {
 
             btnDays[i]!!.setOnClickListener { view ->
 
-                val isChecked = (view as CompoundButton).isChecked
+                //val isChecked = (view as CompoundButton).isChecked
             }
-        }
+        }*/
 
     }
 
@@ -233,6 +234,7 @@ class SchedulerActivity : AppCompatActivity() {
         scheduleAlarm(reminder.hour, reminder.minute)
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun removeAlarmReminder(oldReminder: Reminder?) {
 
     }

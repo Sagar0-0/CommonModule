@@ -78,6 +78,7 @@ class SubscriptionPagerViewImpl : SubscriptionPagerView {
         }
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun showError(msg: String) {
 
     }

@@ -26,7 +26,7 @@ class HeaderViewHolder(
 
         currentItem = content
 
-        itemView.galleryTitle.text = content.title.toUpperCase(Locale.getDefault())
+        itemView.galleryTitle.text = content.title.uppercase(Locale.getDefault())
         itemView.context.showImageByUrl(
             Uri.parse(getPublicStorageUrl(itemView.context, content.imgUrl)),
             itemView.categoryImage

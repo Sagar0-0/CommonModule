@@ -32,15 +32,18 @@ class UserRepository {
         return null
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun firebaseSignInWithGoogle(googleAuthCredential: AuthCredential): MutableLiveData<User>? {
 
         return null
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun addUser(user: User) {
 
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun updateUser(user: User) {
 
     }

@@ -67,6 +67,7 @@ class ScheduleViewImpl : ScheduleView {
         }
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun showError(message: String) {
 
     }
@@ -75,6 +76,7 @@ class ScheduleViewImpl : ScheduleView {
         //finish()
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun buildWeekDays() {
 
         // Build buttons for each day.
@@ -95,13 +97,13 @@ class ScheduleViewImpl : ScheduleView {
         }
 
         // Day button handlers
-        for (i in btnDays.indices) {
+        /*for (i in btnDays.indices) {
 
             btnDays[i]!!.setOnClickListener { view ->
 
-                val isChecked = (view as CompoundButton).isChecked
+                //val isChecked = (view as CompoundButton).isChecked
             }
-        }
+        }*/
     }
 
     private fun setupTimeCycleRecyclerView() {

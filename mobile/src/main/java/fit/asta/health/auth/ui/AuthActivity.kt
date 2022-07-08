@@ -130,10 +130,10 @@ class AuthActivity : AppCompatActivity() {
     private fun linkAndMerge(credential: AuthCredential) {
 
         val mAuth = FirebaseAuth.getInstance()
-        val prevUser = FirebaseAuth.getInstance().currentUser
+        //val prevUser = FirebaseAuth.getInstance().currentUser
         mAuth.signInWithCredential(credential)
-            .addOnSuccessListener { result ->
-                val currentUser = result.user
+            .addOnSuccessListener {
+                //val currentUser = it.user
                 // Merge prevUser and currentUser accounts and data
                 // ...
             }
@@ -174,7 +174,7 @@ class AuthActivity : AppCompatActivity() {
 
     private fun buildActionCodeSettings() {
 
-        val actionCodeSettings = ActionCodeSettings.newBuilder()
+        /*val actionCodeSettings = ActionCodeSettings.newBuilder()
             // URL you want to redirect back to. The domain (www.intuminds.com) for this
             // URL must be whitelisted in the Firebase Console.
             .setUrl("https://www.asta.fit/finishSignUp?cartId=1234")
@@ -186,15 +186,16 @@ class AuthActivity : AppCompatActivity() {
                 true,  // installIfNotAvailable
                 "12"  // minimumVersion
             )
-            .build()
+            .build()*/
     }
 
     private fun getGoogleCredentials() {
 
         val googleIdToken = ""
-        val credential = GoogleAuthProvider.getCredential(googleIdToken, null)
+        GoogleAuthProvider.getCredential(googleIdToken, null)
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun updateUI(user: FirebaseUser?) {
         // No-op
     }

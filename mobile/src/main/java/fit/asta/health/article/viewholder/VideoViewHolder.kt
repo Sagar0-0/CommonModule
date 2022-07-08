@@ -3,11 +3,13 @@ package fit.asta.health.article.viewholder
 import android.content.Context
 import android.net.Uri
 import android.view.View
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import fit.asta.health.ActivityLauncher
 import fit.asta.health.article.data.ArticleContent
 import fit.asta.health.common.BaseViewHolder
+import fit.asta.health.course.session.data.Exercise
 import fit.asta.health.player.Video
 import fit.asta.health.utils.getPublicStorageUrl
 import fit.asta.health.utils.showImageByUrl
@@ -58,8 +60,8 @@ class VideoViewHolder(itemView: View) : BaseViewHolder<ArticleContent>(itemView)
         val videoRef = storageRef!!.child(currentItem?.metaData?.vdoLoc + this.currentItem?.text!!)
         videoRef.downloadUrl.addOnSuccessListener { uri ->
 
-            val videoList = arrayListOf(Video("1", this.currentItem?.title ?: "", "", uri))
-            //launcher.launchVideoPlayerActivity(this, videoList)
+            val videoList = arrayListOf(Exercise("1", this.currentItem?.title ?: "", "", 0, uri.toString()))
+            launcher.launchVideoPlayerActivity(context, videoList[0])
         }
     }
 

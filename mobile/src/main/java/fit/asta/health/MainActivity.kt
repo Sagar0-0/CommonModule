@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
@@ -205,6 +206,17 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
     }
 
     private fun signIn() {
+
+        /*val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                // There are no request codes
+                val data: Intent? = result.data
+                doSomeOperations()
+            }
+        }
+
+        val intent = Intent(this, SomeActivity::class.java)
+        resultLauncher.launch(intent)*/
 
         startActivityForResult(
             AuthUI.getInstance()

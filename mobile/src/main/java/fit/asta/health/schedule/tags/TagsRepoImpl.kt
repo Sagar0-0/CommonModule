@@ -18,7 +18,6 @@ class TagsRepoImpl(
             tag?.let {
                 val data = dataMapper.toNetTag(tag)
                 remoteApi.postScheduleTag(data)
-                "successfully posted the data"
             }
         }
     }
@@ -34,7 +33,6 @@ class TagsRepoImpl(
             tag?.let {
                 val data = dataMapper.toNetTag(tag)
                 remoteApi.putScheduleTag(data)
-                "successfully updated the data"
             }
         }
     }

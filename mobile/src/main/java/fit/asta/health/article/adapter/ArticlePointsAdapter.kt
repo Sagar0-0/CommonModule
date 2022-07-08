@@ -3,8 +3,6 @@ package fit.asta.health.article.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
-import android.os.Build
-import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
@@ -254,10 +252,7 @@ class ArticlePointsAdapter(
 
             val text = "<a href=\"${item.text}\">${item.title}</a>"
             itemView.articlePointUrl.text =
-                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M)
-                    Html.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
-                else
-                    Html.fromHtml(text)
+                HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
             itemView.articlePointUrl.movementMethod = LinkMovementMethod.getInstance()
         }

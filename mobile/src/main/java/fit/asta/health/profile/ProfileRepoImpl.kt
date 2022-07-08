@@ -23,7 +23,6 @@ class ProfileRepoImpl(
             profileData?.let {
                 val data = dataMapper.toMap(userId, it)
                 remoteApi.postProfile(data)
-                "successfully posted the data"
             }
         }
     }

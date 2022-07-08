@@ -25,7 +25,6 @@ class ScheduleRepoImpl(
             schedule.let {
                 val data = dataMapper.toRescheduleMap(userId, schedule)
                 remoteApi.postScheduledPlan(data)
-                "successfully posted the data"
             }
         }
     }
@@ -35,7 +34,6 @@ class ScheduleRepoImpl(
             schedule.let {
                 val data = dataMapper.toRescheduleMap(userId, schedule)
                 remoteApi.putRescheduledPlan(data)
-                "successfully posted the data"
             }
         }
     }

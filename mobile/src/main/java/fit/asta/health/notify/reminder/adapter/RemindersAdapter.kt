@@ -102,7 +102,7 @@ class RemindersAdapter(
             date.set(Calendar.HOUR_OF_DAY, reminder.hour)
             date.set(Calendar.MINUTE, reminder.minute)
 
-            return dateFormat.format(date.time).toLowerCase(Locale.getDefault())
+            return dateFormat.format(date.time).lowercase(Locale.getDefault())
         }
 
         private fun selectImage(reminder: Reminder): Drawable? {

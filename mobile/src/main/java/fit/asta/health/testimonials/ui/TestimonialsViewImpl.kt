@@ -69,6 +69,7 @@ class TestimonialsViewImpl : TestimonialsView {
         bottomDialog?.hide()
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun showError(msg: String) {
 
     }

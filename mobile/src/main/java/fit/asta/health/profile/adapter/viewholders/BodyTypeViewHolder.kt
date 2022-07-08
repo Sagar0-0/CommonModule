@@ -7,7 +7,7 @@ import fit.asta.health.profile.adapter.ProfileItem
 import fit.asta.health.profile.listener.OnChangeListener
 import kotlinx.android.synthetic.main.profile_boddtype_card.view.*
 
-
+@Suppress("UNUSED_PARAMETER")
 class BodyTypeViewHolder(
     itemView: View,
     changeListener: OnChangeListener?

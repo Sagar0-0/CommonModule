@@ -12,7 +12,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Tracks
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
@@ -63,7 +63,7 @@ class VideoPlayerActivity : AppCompatActivity(), Player.Listener {
 
     private val tag = VideoPlayerActivity::class.java.name
     private var playerView: PlayerView? = null
-    private var player: SimpleExoPlayer? = null
+    private var player: ExoPlayer? = null
     private var playWhenReady = true
     private var statePlayedAll = false
     private var currentIndex = 0
@@ -196,7 +196,7 @@ class VideoPlayerActivity : AppCompatActivity(), Player.Listener {
                     .setPreferredAudioLanguage("en")
             )
 
-            player = SimpleExoPlayer.Builder(this)
+            player = ExoPlayer.Builder(this)
                 .setSeekBackIncrementMs(30000)
                 .setSeekForwardIncrementMs(30000)
                 .setTrackSelector(trackSelector).build()

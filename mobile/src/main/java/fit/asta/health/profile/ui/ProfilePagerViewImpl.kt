@@ -35,7 +35,7 @@ class ProfilePagerViewImpl : ProfilePagerView {
 
             val profile_pager = it.profile_pager
             val profile_tab_layout = it.profile_tab_layout
-            val nextBtn = it.profileUpdateBtn
+            //val nextBtn = it.profileUpdateBtn
 
             val pagerAdapter = ProfilePagerAdapter(fragmentActivity)
             pagerAdapter.setProfilesList(getProfilePager())

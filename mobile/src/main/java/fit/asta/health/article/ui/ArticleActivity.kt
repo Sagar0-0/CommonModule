@@ -35,8 +35,9 @@ class ArticleActivity : AppCompatActivity() {
 
         articleRcView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
         ArticleSupplier().fetchArticle(urlArticle)
-            .observe(this, Observer { article ->
+            .observe(this, Observer {
 
                 progressArticle.hide()
                 val adapter = ArticleContentAdapter()

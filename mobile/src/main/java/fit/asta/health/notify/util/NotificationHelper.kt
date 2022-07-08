@@ -199,6 +199,7 @@ fun Context.showBigTextNotification(
  * @param summary, summary to display.
  * @param onGoing, Not to closed by the user.
  */
+@Suppress("UNUSED_PARAMETER")
 fun Context.showInboxNotification(
     channelName: String,
     title: String,

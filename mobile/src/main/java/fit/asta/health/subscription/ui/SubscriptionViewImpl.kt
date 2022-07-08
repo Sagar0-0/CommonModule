@@ -72,10 +72,11 @@ class SubscriptionViewImpl : SubscriptionView {
 
             (it.rcv_subscription_payment.adapter as SubscriptionAdapter).updateList(subPlanData.subscriptions)
             it.termsInfo.text = subPlanData.desc
-            TabLayoutMediator(it.tabIndicator, it.sliderViewPager) { tab, position -> }.attach()
+            TabLayoutMediator(it.tabIndicator, it.sliderViewPager) { _, _ -> }.attach()
         }
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun showError(msg: String) {
 
     }

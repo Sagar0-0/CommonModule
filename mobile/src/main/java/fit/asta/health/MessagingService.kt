@@ -53,11 +53,13 @@ class MessagingService : FirebaseMessagingService() {
      *
      * @param token The new token.
      */
+    @Suppress("UNUSED_PARAMETER")
     private fun sendRegistrationToServer(token: String) {
 
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
+        Log.d(TAG, "Refreshed token: $token")
     }
 
     /**
@@ -68,6 +70,7 @@ class MessagingService : FirebaseMessagingService() {
      * @param icon FCM message icon received.
      * @param imageUrl FCM message image url received.
      */
+    @Suppress("UNUSED_PARAMETER")
     private fun sendNotification(title: String, desc: String, icon: String?, imageUrl: Uri?) {
 
         applicationContext.sendNotification(

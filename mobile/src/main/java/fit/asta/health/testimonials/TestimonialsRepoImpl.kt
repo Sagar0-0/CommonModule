@@ -18,7 +18,6 @@ class TestimonialsRepoImpl(
             testimonial?.let {
                 val data = dataMapper.toNetTestimonial(testimonial)
                 remoteApi.postTestimonial(data)
-                "successfully posted the data"
             }
         }
     }
@@ -34,7 +33,6 @@ class TestimonialsRepoImpl(
             testimonial?.let {
                 val data = dataMapper.toNetTestimonial(testimonial)
                 remoteApi.putTestimonial(data)
-                "successfully updated the data"
             }
         }
     }
