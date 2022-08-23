@@ -84,26 +84,26 @@ android {
 
 dependencies {
 
-    def kotlin_version = '1.7.0'
+    def kotlin_version = '1.7.10'
     def koin = "2.1.0"
     def retrofit = "2.6.2"
     def okhttp3 = "4.3.1"
-    def room_version = "2.4.2"
+    def room_version = "2.4.3"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //implementation project(":player-lib")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.appcompat:appcompat:1.5.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     implementation 'androidx.preference:preference-ktx:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.0'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.1'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.1'
     /*implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation 'androidx.annotation:annotation:1.1.0'*/
     implementation 'com.google.code.gson:gson:2.9.0'
@@ -113,23 +113,23 @@ dependencies {
     //Firebase authentication
     /*implementation platform('com.google.firebase:firebase-bom:26.2.0')*/
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
-    implementation 'com.google.firebase:firebase-auth-ktx:21.0.6'
+    implementation 'com.google.firebase:firebase-auth-ktx:21.0.7'
     //implementation 'com.firebaseui:firebase-ui-auth:6.4.0'
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
 
     //Firebase for notifications
-    implementation 'com.google.firebase:firebase-messaging:23.0.6'
+    implementation 'com.google.firebase:firebase-messaging:23.0.7'
 
     //Firebase analytics
-    implementation 'com.google.firebase:firebase-core:21.0.0'
-    implementation 'com.google.firebase:firebase-analytics:21.0.0'
+    implementation 'com.google.firebase:firebase-core:21.1.0'
+    implementation 'com.google.firebase:firebase-analytics:21.1.0'
 
     //Firebase storage for media files
     implementation 'com.google.firebase:firebase-storage:20.0.1'
 
     //Firestore for nosql
-    implementation 'com.google.firebase:firebase-firestore:24.2.0'
-    implementation 'com.google.firebase:firebase-firestore-ktx:24.2.0'
+    implementation 'com.google.firebase:firebase-firestore:24.2.2'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.2.2'
 
     /*implementation 'android.arch.work:work-runtime:1.0.1'
     implementation 'com.google.guava:guava:27.0.1-android'
@@ -178,8 +178,8 @@ dependencies {
     implementation retrofit.values()
 
     //Exo player
-    implementation 'com.google.android.exoplayer:exoplayer:2.18.0'
-    implementation 'com.google.android.exoplayer:extension-cast:2.18.0'
+    implementation 'com.google.android.exoplayer:exoplayer:2.18.1'
+    implementation 'com.google.android.exoplayer:extension-cast:2.18.1'
 
     //Billing
     implementation "com.android.billingclient:billing:5.0.0"
