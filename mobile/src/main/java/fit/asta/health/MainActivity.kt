@@ -357,7 +357,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
     override fun onIdTokenChanged(auth: FirebaseAuth) {
 
-        tokenProvider.load(auth.currentUser?.getIdToken(false)?.result?.token!!)
+        auth.currentUser?.getIdToken(false)?.result?.token?.let { tokenProvider.load(it) }
     }
 
     private fun showViewBars() {
