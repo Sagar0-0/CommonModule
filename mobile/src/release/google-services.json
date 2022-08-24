@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "385157150874-dhihddkgigq09fv56ech49rn4fgjcmdp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fit.asta.health",
+            "certificate_hash": "2c7e51d86b62a782f81cae81b5e034741214677e"
+          }
+        },
+        {
           "client_id": "385157150874-kjh2ulf5lom9hgisdd4o3mm7k2r7bane.apps.googleusercontent.com",
           "client_type": 3
         }
