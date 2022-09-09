@@ -1,16 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimaryDark">#FFFFFF</color>
-    <!--<color name="colorPrimary">#4CAF50</color>
-    <color name="colorSecondary">#E91E63</color>-->
-    <color name="colorPrimary">#4CAF50</color>
-    <color name="colorAccent">#4CAF50</color>
-    <!--<color name="colorAccent">#00796D</color>-->
-    <color name="colorSecondary">#4CAF50</color>
+    <color name="colorPrimary">#007EEC</color>
     <color name="colorOnPrimary">#FFFFFF</color>
-    <color name="colorWindowBackground">#EEEEEE</color>
-    <color name="colorLoginScreen">#00493D</color>
+    <color name="colorPrimaryContainer">#E0F1FF</color>
+    <color name="colorOnPrimaryContainer">#E0F1FF</color>
+    <color name="colorPrimaryInverse">#E0F1FF</color>
 
+    <color name="colorSecondary">#FFFFFF</color>
+    <color name="colorOnSecondary">#FFFFFF</color>
+    <color name="colorSecondaryContainer">#F4F6F8</color>
+    <color name="colorOnSecondaryContainer">#132639</color>
+
+    <color name="colorTertiary">#FFFFFF</color>
+    <color name="colorOnTertiary">#FFFFFF</color>
+    <color name="colorTertiaryContainer">#F4F6F8</color>
+    <color name="colorOnTertiaryContainer">#132639</color>
+
+    <color name="colorError">#B00020</color>
+    <color name="colorOnError">#FFFFFF</color>
+    <color name="colorErrorContainer">#B00020</color>
+    <color name="colorOnErrorContainer">#B00020</color>
+    <color name="colorOutline">#B00020</color>
+
+    <color name="colorWindowBackground">#F4F6F8</color>
+    <color name="colorBackground">#F4F6F8</color>
+    <color name="colorOnBackground">#010101</color>
+    <color name="colorSurface">#F7EBEF</color>
+    <color name="colorOnSurface">#010101</color>
+    <color name="colorSurfaceVariant">#F7EBEF</color>
+    <color name="colorOnSurfaceVariant">#010101</color>
+    <color name="colorSurfaceInverse">#010101</color>
+    <color name="colorOnSurfaceInverse">#010101</color>
+
+    <!--<color name="colorPrimaryDark">#FFFFFF</color>
+    <color name="colorPrimaryVariant">#007EEC</color>
+    <color name="colorSecondaryVariant">#FFFFFF</color>-->
+
+    <color name="colorLoginScreen">#00493D</color>
     <color name="colorCollapsingBar">#FFFFFF</color>
     <color name="colorExitSignOut">#FFFFFFFF</color>
     <color name="colorTransparent">#DDFFFFFF</color>
