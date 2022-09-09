@@ -9,7 +9,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
@@ -357,7 +356,13 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
     override fun onIdTokenChanged(auth: FirebaseAuth) {
 
-        auth.currentUser?.getIdToken(false)?.result?.token?.let { tokenProvider.load(it) }
+        auth.currentUser?.getIdToken(false)?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                task.result.token?.let { tokenProvider.load(it) }
+            } else {
+                Log.d("AuthToken", "Exception: = ${task.exception}")
+            }
+        }
     }
 
     private fun showViewBars() {
