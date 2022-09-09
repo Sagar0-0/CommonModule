@@ -10,7 +10,7 @@ import fit.asta.health.common.BaseViewHolder
 import fit.asta.health.profile.adapter.ChipCardItem
 import fit.asta.health.profile.adapter.ProfileItem
 import fit.asta.health.profile.listener.OnChipActionListener
-import kotlinx.android.synthetic.main.chips_card.view.*
+import kotlinx.android.synthetic.main.profile_chips_card.view.*
 
 
 class ChipsCardViewHolder(itemView: View, val listener: OnChipActionListener?): BaseViewHolder<ProfileItem>(itemView) {
@@ -24,7 +24,7 @@ class ChipsCardViewHolder(itemView: View, val listener: OnChipActionListener?): 
 
             content.value.forEach {
                 val chip = inflater.inflate(
-                    R.layout.chip_layout,
+                    R.layout.profile_chip_layout,
                     itemView.chipGroup, false
                 ) as Chip
                 chip.text = it.value
@@ -39,7 +39,7 @@ class ChipsCardViewHolder(itemView: View, val listener: OnChipActionListener?): 
            }
         }
     private fun incrementChip(content: ChipCardItem) {
-        val addChip = LayoutInflater.from(itemView.context).inflate(R.layout.chip_add,
+        val addChip = LayoutInflater.from(itemView.context).inflate(R.layout.profile_chip_add,
             itemView.chipGroup, false) as Chip
         val view = itemView.chipGroup.findViewById<Chip>(R.id.addedChip)
         if (view == null) {

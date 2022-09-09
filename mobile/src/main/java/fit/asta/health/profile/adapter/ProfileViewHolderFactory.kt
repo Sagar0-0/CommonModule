@@ -44,7 +44,7 @@ class ProfileViewHolderFactory {
 
                 ChipsCardViewHolder(
                     LayoutInflater.from(parent.context)
-                        .inflate(R.layout.chips_card, parent, false), onChipListener
+                        .inflate(R.layout.profile_chips_card, parent, false), onChipListener
                 )
             }
         }
