@@ -15,6 +15,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "305651460242-2gt78rq2lri7d7strtan4ftv29rmme6h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fit.asta.health.dev",
+            "certificate_hash": "c18b1f9990d1fac19e67782dcf237898d08af9aa"
+          }
+        },
+        {
+          "client_id": "305651460242-6kqik5k1auuilk1fancl6mfgnmilqpdn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fit.asta.health.dev",
+            "certificate_hash": "2c7e51d86b62a782f81cae81b5e034741214677e"
+          }
+        },
+        {
+          "client_id": "305651460242-g432pbpb083m4uocfqlq9oqpjbenrdra.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fit.asta.health.dev",
+            "certificate_hash": "88a53a3888a7ce507dbf2e0d391466c308d8f674"
+          }
+        },
+        {
           "client_id": "305651460242-t31bsdliog1dbo7toq3horeihvnl3ff0.apps.googleusercontent.com",
           "client_type": 3
         }
