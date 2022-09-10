@@ -42,7 +42,7 @@
         android:lineSpacingExtra="@dimen/dimen_5"
         android:padding="@dimen/dimen16"
         android:textAlignment="textStart"
-        android:textColor="@color/subscriptionText"
+        android:textColor="@color/colorOnBackground"
         android:textSize="@dimen/dimen_text_18"
         app:layout_constraintBottom_toBottomOf="@id/imgFeature"
         app:layout_constraintStart_toStartOf="@id/imgFeature"

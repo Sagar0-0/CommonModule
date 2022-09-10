@@ -32,15 +32,18 @@
     <color name="colorSurfaceInverse">#010101</color>
     <color name="colorOnSurfaceInverse">#010101</color>
 
+    <color name="colorTransparent">#BB242424</color>
+    <color name="colorGradientStart">#67FF5A</color>
+    <color name="colorGradientEnd">#5AAFFD</color>
+
     <!--<color name="colorPrimaryDark">#242424</color>
     <color name="colorPrimaryVariant">#007EEC</color>
     <color name="colorSecondaryVariant">#FFFFFF</color>-->
 
-    <color name="colorLoginScreen">#242424</color>
+    <!--<color name="colorLoginScreen">#242424</color>
     <color name="settingsBackground">#BB242424</color>
     <color name="colorCollapsingBar">#242424</color>
     <color name="colorExitSignOut">#FF121212</color>
-    <color name="colorTransparent">#BB242424</color>
     <color name="colorSelectedTabText">#DDEEEEEE</color>
     <color name="colorPerson">#558B2F</color>
     <color name="colorImageEnd">#00B8EDE8</color>
@@ -56,5 +59,5 @@
     <color name="progressbarStartColor">#4CAF50</color>
     <color name="progressbarEndColour">#FFFFFF</color>
     <color name="background_subscription">#ffffff</color>
-    <color name="homeBannerBackground">#61000000</color>
+    <color name="homeBannerBackground">#61000000</color>-->
 </resources>

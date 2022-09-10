@@ -37,7 +37,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen16"
             android:text="SLEEP SCHEDULE"
-            android:textColor="@color/text"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -62,7 +61,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen16"
             android:text="Bed Time"
-            android:textColor="@color/text"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/startGuideline"
             app:layout_constraintTop_toBottomOf="@id/imageView" />
@@ -74,7 +72,6 @@
             android:layout_marginTop="@dimen/dimen16"
             android:layout_marginBottom="@dimen/dimen16"
             android:text="11:11 PM"
-            android:textColor="@color/text"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/txtBedTime"
@@ -88,7 +85,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen16"
             android:text="Wake Up"
-            android:textColor="@color/text"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@id/endGuideline"
             app:layout_constraintTop_toBottomOf="@id/imageView" />
@@ -101,7 +97,6 @@
             android:layout_marginBottom="@dimen/dimen16"
             android:paddingBottom="@dimen/dimen8"
             android:text="11:11 AM"
-            android:textColor="@color/text"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/txtWakeupTime"

@@ -22,7 +22,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen16"
             android:text="Body Type"
-            android:textColor="@color/text"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -47,7 +46,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen16"
             android:text="Fat at belly and thighs"
-            android:textColor="@color/text"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

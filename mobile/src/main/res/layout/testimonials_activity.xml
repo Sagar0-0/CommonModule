@@ -26,8 +26,7 @@
             app:layout_collapseMode="pin"
             app:navigationIcon="@drawable/ic_arrow_left"
             app:theme="@style/ToolbarTheme"
-            app:title="@string/testimonials_card"
-            app:titleTextColor="@color/text" />
+            app:title="@string/testimonials_card" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView

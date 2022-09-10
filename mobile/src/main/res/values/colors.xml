@@ -32,21 +32,23 @@
     <color name="colorSurfaceInverse">#010101</color>
     <color name="colorOnSurfaceInverse">#010101</color>
 
+    <color name="colorTransparent">#DDFFFFFF</color>
+    <color name="colorGradientStart">#00D1FF</color>
+    <color name="colorGradientEnd">#0075FF</color>
+
     <!--<color name="colorPrimaryDark">#FFFFFF</color>
     <color name="colorPrimaryVariant">#007EEC</color>
     <color name="colorSecondaryVariant">#FFFFFF</color>-->
 
-    <color name="colorLoginScreen">#00493D</color>
+    <!--<color name="colorLoginScreen">#00493D</color>
     <color name="colorCollapsingBar">#FFFFFF</color>
     <color name="colorExitSignOut">#FFFFFFFF</color>
-    <color name="colorTransparent">#DDFFFFFF</color>
+
     <color name="colorSelectedTabText">#BBEEEEEE</color>
     <color name="colorPerson">#FFFFFF</color>
     <color name="colorImageEnd">#00B8EDE8</color>
     <color name="colorImageCenter">#00E8A0B9</color>
     <color name="colorImageStart">#DFFDFDF9</color>
-    <color name="shareStartColor">#BB242424</color>
-    <color name="shareEndColor">#BB242424</color>
     <color name="courseContinue">#9E9D24</color>
     <color name="circleProgressBarEndColor">#FA5858</color>
     <color name="circleProgressBarStartColor">#0099CC</color>
@@ -82,5 +84,5 @@
     <color name="subsAnnualCard">#CCFFFFFF</color>
     <color name="subsAnnualStroke">#388E3C</color>
     <color name="colorImageGray">#DDDDDDDD</color>
-    <color name="homeBannerBackground">#61000000</color>
+    <color name="homeBannerBackground">#61000000</color>-->
 </resources>

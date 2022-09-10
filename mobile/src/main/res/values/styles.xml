@@ -3,7 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorTransparent</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorSecondary">@color/colorSecondary</item>
         <!--sushi's change-->
@@ -20,7 +20,7 @@
     </style>
 
     <style name="ToolbarTheme" parent="Theme.MaterialComponents.Light">
-        <item name="android:background">@color/colorPrimaryDark</item>
+        <item name="android:background">@color/colorBackground</item>
         <!--<item name="logo">@drawable/ic_toolbar_logo</item>
         <item name="displayOptions">useLogo|showHome</item>-->
     </style>
@@ -75,7 +75,7 @@
         <!--sushi changed-->
         <!--<item name="android:background">@color/colorPrimary</item>-->
         <item name="android:background">@color/colorOnPrimary</item>
-        <item name="android:textColor">@color/text1</item>
+        <!--<item name="android:textColor">@color/text1</item>-->
     </style>
 
     <style name="PrefSummaryTextStyle" parent="PreferenceSummaryTextStyle" />
@@ -113,9 +113,9 @@
 
     </style>
 
-    <style name="profileTxtStyle">
+    <!--<style name="profileTxtStyle">
         <item name="android:textColor">@color/profileTxtColor</item>
-    </style>
+    </style>-->
 
     <!-- styles.xml -->
     <style name="h6">

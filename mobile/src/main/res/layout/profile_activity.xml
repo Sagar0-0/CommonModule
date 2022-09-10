@@ -30,7 +30,7 @@
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
                 app:collapsedTitleTextAppearance="@style/CollapsedText"
-                app:contentScrim="@color/colorCollapsingBar"
+                app:contentScrim="@color/colorBackground"
                 app:expandedTitleGravity="bottom|start"
                 app:expandedTitleMargin="16dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">

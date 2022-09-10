@@ -4,5 +4,5 @@
         android:width="0.5px"
         android:height="1px" />
 
-    <solid android:color="@color/background_subscription" />
+    <solid android:color="@color/colorBackground" />
 </shape>

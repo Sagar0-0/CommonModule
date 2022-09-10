@@ -23,8 +23,7 @@
                 app:contentInsetStartWithNavigation="@dimen/dimen_0"
                 app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
-                app:theme="@style/ToolbarTheme"
-                app:titleTextColor="@color/text" />
+                app:theme="@style/ToolbarTheme" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

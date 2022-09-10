@@ -16,7 +16,6 @@
         android:lineSpacingExtra="@dimen/dimen_line_space_1"
         android:text="@string/library"
         android:textAppearance="@style/h6"
-        android:textColor="@color/textGrey"
         android:textStyle="bold"
         android:textSize="@dimen/dimen_text_20"
         app:layout_constraintStart_toStartOf="parent"

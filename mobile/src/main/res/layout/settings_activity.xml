@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/settingsBackground"
+    android:background="@color/colorSurface"
     android:orientation="vertical"
     tools:context=".settings.SettingsActivity">
 
@@ -21,8 +21,7 @@
             app:layout_scrollFlags="scroll|enterAlways|snap|snapMargins"
             app:navigationIcon="@drawable/ic_arrow_left"
             app:theme="@style/ToolbarTheme"
-            app:title="@string/title_settings"
-            app:titleTextColor="@color/text1" />
+            app:title="@string/title_settings" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

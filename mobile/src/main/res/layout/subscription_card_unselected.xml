@@ -13,7 +13,7 @@
         android:layout_marginTop="@dimen/dimen40"
         android:layout_marginEnd="@dimen/dimen16"
         android:layout_marginBottom="@dimen/dimen16"
-        app:cardBackgroundColor="@color/subsMonthlyCard"
+        app:cardBackgroundColor="@color/colorSurface"
         app:cardCornerRadius="@dimen/card_corner_radius"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +30,7 @@
             android:paddingBottom="@dimen/dimen_24"
             android:text="@string/monthly_plan"
             android:textAlignment="center"
-            android:textColor="@color/subscriptionText"
+            android:textColor="@color/colorOnBackground"
             android:textSize="@dimen/dimenText16"
             android:textStyle="bold" />
 
@@ -43,7 +43,7 @@
             android:paddingBottom="@dimen/dimen16"
             android:text="@string/start_today"
             android:textAlignment="center"
-            android:textColor="@color/subscriptionText"
+            android:textColor="@color/colorOnBackground"
             android:textSize="@dimen/dimen_text_20"
             android:textStyle="bold" />
 
@@ -56,7 +56,7 @@
             android:paddingBottom="@dimen/dimen_24"
             android:text="@string/then_14.99"
             android:textAlignment="center"
-            android:textColor="@color/subscriptionText"
+            android:textColor="@color/colorOnBackground"
             android:textSize="@dimen/dimen_text_14" />
 
     </com.google.android.material.card.MaterialCardView>

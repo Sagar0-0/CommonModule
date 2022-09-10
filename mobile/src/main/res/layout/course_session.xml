@@ -208,7 +208,6 @@
             android:paddingEnd="@dimen/dimen16"
             android:paddingBottom="@dimen/dimen24"
             android:text="@string/start_exercises"
-            android:textColor="@color/text"
             android:textSize="@dimen/dimen_text_22"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="parent"

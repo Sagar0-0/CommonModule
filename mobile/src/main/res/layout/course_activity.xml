@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
-            app:contentScrim="@color/colorCollapsingBar"
+            app:contentScrim="@color/colorBackground"
             app:expandedTitleGravity="top"
             app:expandedTitleMarginStart="@dimen/dimen24"
             app:expandedTitleMarginTop="@dimen/dimen48"
@@ -244,8 +244,7 @@
                 app:contentInsetStartWithNavigation="@dimen/dimen_0"
                 app:layout_collapseMode="pin"
                 app:navigationIcon="@drawable/ic_arrow_left"
-                app:theme="@style/CollapsingTheme"
-                app:titleTextColor="@color/text" />
+                app:theme="@style/CollapsingTheme" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 

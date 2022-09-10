@@ -37,7 +37,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Alarm"
-                android:textColor="@color/text1"
                 android:textSize="@dimen/dimen_text_16" />
 
             <RadioButton
@@ -46,7 +45,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dimen52"
                 android:text="Notification"
-                android:textColor="@color/text1"
                 android:textSize="@dimen/dimen_text_16" />
         </RadioGroup>
 

@@ -41,7 +41,6 @@
             android:layout_marginTop="@dimen/dimen16"
             android:layout_marginBottom="@dimen/dimen16"
             android:text="Double Reminder"
-            android:textColor="@color/text1"
             android:textSize="@dimen/dimen_text_16"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/edtTagName"

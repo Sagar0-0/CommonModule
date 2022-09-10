@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/dimen8"
     android:text="Add"
-    android:textColor="@color/text"
     android:textSize="14sp"
     android:visibility="gone"
     app:closeIcon="@drawable/ic_add"

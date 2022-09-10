@@ -62,7 +62,6 @@
             android:lineSpacingExtra="@dimen/dimen_line_space_1"
             android:text="@string/testimonials"
             android:textAppearance="@style/h6"
-            android:textColor="@color/textGrey"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/includeLibrary" />

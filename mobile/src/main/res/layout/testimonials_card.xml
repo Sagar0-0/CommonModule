@@ -54,7 +54,6 @@
                 android:text="@string/i_work_in_p_one"
                 android:textAlignment="center"
                 android:textAppearance="@style/i_work_in_p"
-                android:textColor="@color/text"
                 android:textSize="@dimen/dimen_text_16"
                 android:textStyle="italic" />
 
@@ -81,7 +80,6 @@
                 android:layout_marginBottom="@dimen/dimen48"
                 android:text="@string/name1"
                 android:textAppearance="@style/name1"
-                android:textColor="@color/text"
                 android:textStyle="bold" />
 
             <!--android:gravity="right|top"-->
@@ -97,8 +95,7 @@
                 android:layout_marginEnd="@dimen/dimen16"
                 android:layout_marginBottom="@dimen/dimen16"
                 android:text="@string/cto_ekohunt"
-                android:textAppearance="@style/cto_ekohunt"
-                android:textColor="@color/text" />
+                android:textAppearance="@style/cto_ekohunt" />
 
         </com.google.android.material.card.MaterialCardView>
 

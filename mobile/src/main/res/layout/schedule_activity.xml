@@ -22,8 +22,7 @@
             app:layout_collapseMode="pin"
             app:navigationIcon="@drawable/ic_arrow_left"
             app:theme="@style/ToolbarTheme"
-            app:title="@string/title_schedule"
-            app:titleTextColor="@color/text1" />
+            app:title="@string/title_schedule" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView

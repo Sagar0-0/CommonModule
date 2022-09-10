@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorSignUpBackground">@color/colorLoginScreen</color>
+    <color name="colorSignUpBackground">@color/colorWindowBackground</color>
     <color name="colorSignUpBtnPhone">@color/colorPrimary</color>
     <color name="colorSignUpBtnTextPhone">@color/colorOnPrimary</color>
     <color name="colorSignUpBtnGoogle">#FFFFFF</color>
