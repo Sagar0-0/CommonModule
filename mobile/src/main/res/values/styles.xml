@@ -20,7 +20,7 @@
     </style>
 
     <style name="ToolbarTheme" parent="Theme.MaterialComponents.Light">
-        <item name="android:background">@color/colorBackground</item>
+        <item name="android:background">@color/colorTransparent</item>
         <!--<item name="logo">@drawable/ic_toolbar_logo</item>
         <item name="displayOptions">useLogo|showHome</item>-->
     </style>
@@ -121,7 +121,7 @@
     <style name="h6">
         <item name="android:textSize">20sp</item>
         <!--<item name="android:letterSpacing">0.01</item>-->
-        <item name="android:textColor">#DE000000</item>
+        <item name="android:textColor">@color/colorOnBackground</item>
     </style>
 
     <style name="total_awake">
