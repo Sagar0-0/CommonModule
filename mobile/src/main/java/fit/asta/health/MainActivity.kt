@@ -2,28 +2,31 @@ package fit.asta.health
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import androidx.activity.addCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.IdpResponse
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
@@ -36,7 +39,6 @@ import fit.asta.health.utils.*
 import kotlinx.android.synthetic.main.main_activity.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
     FirebaseAuth.IdTokenListener, KoinComponent {
@@ -47,6 +49,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
     }
 
     private lateinit var authViewModel: AuthViewModel
+    private var settingsLauncher: ActivityResultLauncher<Intent>? = null
     private lateinit var networkConnectivity: NetworkConnectivity
     private var snackBar: Snackbar? = null
     private var profileImgView: ImageView? = null
@@ -81,6 +84,22 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
             loadAppScreen()
         }
+
+        onBackPressedDispatcher.addCallback(this) {
+
+            if (!authViewModel.isAuthenticated()) {
+
+                finishAndRemoveTask()
+            }
+        }
+
+        settingsLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+
+                if (res.resultCode == Activity.RESULT_OK) {
+                    invalidateOptionsMenu()
+                }
+            }
 
         FirebaseAuth.getInstance().addAuthStateListener(this)
         FirebaseAuth.getInstance().addIdTokenListener(this)
@@ -157,22 +176,6 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         checkUpdate()
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-
-        if (!authViewModel.isAuthenticated()) {
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-                finishAndRemoveTask()
-            } else {
-
-                finish()
-                exitProcess(0)
-            }
-        }
-    }
-
     override fun onDestroy() {
         super.onDestroy()
 
@@ -189,10 +192,10 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         ).setAnchorView(navView)
 
         networkConnectivity = NetworkConnectivity(this)
-        networkConnectivity.observe(this, Observer { status ->
+        networkConnectivity.observe(this) { status ->
 
             showNetworkMessage(status)
-        })
+        }
     }
 
     private fun showNetworkMessage(isConnected: Boolean) {
@@ -204,43 +207,37 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         }
     }
 
+    private fun startUserSettingsActivity() {
+
+        val intent = Intent(applicationContext, SettingsActivity::class.java)
+        settingsLauncher?.launch(intent)
+    }
+
     private fun signIn() {
 
-        /*val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                // There are no request codes
-                val data: Intent? = result.data
-                doSomeOperations()
+        val signInLauncher =
+            registerForActivityResult(FirebaseAuthUIActivityResultContract()) { res ->
+                this.onSignInResult(res)
             }
-        }
 
-        val intent = Intent(this, SomeActivity::class.java)
-        resultLauncher.launch(intent)*/
+        val signInIntent = AuthUI.getInstance()
+            .createSignInIntentBuilder()
+            .setIsSmartLockEnabled(false)
+            .setAvailableProviders(
+                arrayListOf(
+                    AuthUI.IdpConfig.PhoneBuilder().build(),
+                    AuthUI.IdpConfig.GoogleBuilder().build()
+                )
+            )
+            .setLogo(R.mipmap.ic_launcher_foreground)
+            .setTheme(R.style.LoginTheme)
+            .setTosAndPrivacyPolicyUrls(
+                getPublicStorageUrl(this, resources.getString(R.string.url_terms_of_use)),
+                getPublicStorageUrl(this, resources.getString(R.string.url_privacy_policy))
+            )
+            .build()
 
-        startActivityForResult(
-            AuthUI.getInstance()
-                .createSignInIntentBuilder()
-                .setIsSmartLockEnabled(false)
-                .setAvailableProviders(
-                    arrayOf(
-                        AuthUI.IdpConfig.PhoneBuilder().build(),
-                        AuthUI.IdpConfig.GoogleBuilder().build()
-                    ).asList()
-                )
-                .setLogo(R.mipmap.ic_launcher_foreground)
-                .setTheme(R.style.LoginTheme)
-                .setTosAndPrivacyPolicyUrls(
-                    getPublicStorageUrl(
-                        this,
-                        resources.getString(R.string.url_terms_of_use)
-                    ),
-                    getPublicStorageUrl(
-                        this,
-                        resources.getString(R.string.url_privacy_policy)
-                    )
-                )
-                .build(), RC_SIGN_IN
-        )
+        signInLauncher.launch(signInIntent)
     }
 
     /*private fun registerDynamicLinks() {
@@ -261,42 +258,30 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
             }
     }*/
 
+    private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
+
+        if (result.resultCode == Activity.RESULT_CANCELED) {
+
+            finishAndRemoveTask() // User pressed back button, exit the application
+        }
+
+        if (result.resultCode == Activity.RESULT_OK) {
+
+            loadAppScreen()
+
+        } else {
+
+            val response = result.idpResponse
+            if (response?.error?.message != null) {
+
+                this.showToastMessage(response.error?.message!!)
+                Log.d("Error: ", response.error?.toString()!!)
+            }
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == SettingsActivity.NOTIFY_CHANGE) {
-
-            invalidateOptionsMenu()
-        }
-
-        if (requestCode == RC_SIGN_IN) {
-
-            if (resultCode == Activity.RESULT_CANCELED) {
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-                    finishAndRemoveTask() // User pressed back button, exit the application
-                } else {
-
-                    finish()
-                    exitProcess(0)
-                }
-            }
-
-            val response = IdpResponse.fromResultIntent(data)
-            if (resultCode == Activity.RESULT_OK) {
-
-                loadAppScreen()
-
-            } else {
-
-                if (response?.error?.message != null) {
-
-                    this.showToastMessage(response.error?.message!!)
-                    Log.d("Error: ", response.error?.toString()!!)
-                }
-            }
-        }
 
         if (requestCode == REQUEST_IMMEDIATE_UPDATE) {
 
@@ -324,16 +309,20 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
                     appUpdateManager.startUpdateFlowForResult(
                         appUpdateInfo,
-                        AppUpdateType.IMMEDIATE,
                         this,
+                        AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE)
+                            .setAllowAssetPackDeletion(true)
+                            .build(),
                         REQUEST_IMMEDIATE_UPDATE
                     )
                 } else if (appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
 
                     appUpdateManager.startUpdateFlowForResult(
                         appUpdateInfo,
-                        AppUpdateType.FLEXIBLE,
                         this,
+                        AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE)
+                            .setAllowAssetPackDeletion(true)
+                            .build(),
                         REQUEST_FLEXIBLE_UPDATE
                     )
                 }
@@ -341,8 +330,10 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
                 appUpdateManager.startUpdateFlowForResult(
                     appUpdateInfo,
-                    AppUpdateType.IMMEDIATE,
                     this,
+                    AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE)
+                        .setAllowAssetPackDeletion(true)
+                        .build(),
                     REQUEST_IMMEDIATE_UPDATE
                 )
             }
@@ -396,8 +387,8 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
         val profileMenuItem = menu.findItem(R.id.user_profile_menu)
         val rootView = profileMenuItem.actionView
-        rootView.setOnClickListener { onOptionsItemSelected(profileMenuItem) }
-        profileImgView = rootView.findViewById(R.id.app_toolbar_profile_image)
+        rootView?.setOnClickListener { onOptionsItemSelected(profileMenuItem) }
+        profileImgView = rootView?.findViewById(R.id.app_toolbar_profile_image)
 
         showUserImage()
     }
@@ -467,14 +458,6 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         //showImageNotification(getString(R.string.title_reminder), "Test", "Just for fun!", Uri.parse("https://firebasestorage.googleapis.com/v0/b/yogam-91999.appspot.com/o/media%2Fimages%2Fasanas%2Faerobics.jpg?alt=media"))
 
         PrefUtils.setMasterNotification(item.isChecked, applicationContext)
-    }
-
-    private fun startUserSettingsActivity() {
-
-        startActivityForResult(
-            Intent(applicationContext, SettingsActivity::class.java),
-            SettingsActivity.NOTIFY_CHANGE
-        )
     }
 
     private fun startUserProfileActivity() {
