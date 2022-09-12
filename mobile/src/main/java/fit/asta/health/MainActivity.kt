@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
             statusBarColor = Color.TRANSPARENT*/
         }
 
-        authViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
+        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
         if (!authViewModel.isAuthenticated())
             signIn()
         else {
