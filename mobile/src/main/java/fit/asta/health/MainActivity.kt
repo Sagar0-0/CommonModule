@@ -31,6 +31,7 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.auth.ui.AuthViewModel
 import fit.asta.health.network.TokenProvider
 import fit.asta.health.profile.ui.ProfileActivity
@@ -40,6 +41,7 @@ import kotlinx.android.synthetic.main.main_activity.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
     FirebaseAuth.IdTokenListener, KoinComponent {
 
