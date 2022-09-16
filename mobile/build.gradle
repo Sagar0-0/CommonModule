@@ -1,10 +1,10 @@
 plugins {
     id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
     id 'com.google.gms.google-services'
+    id 'com.google.dagger.hilt.android'
     /*id 'kotlin-parcelize'*/
 }
 
@@ -35,7 +35,7 @@ android {
 
             annotationProcessorOptions {
 
-                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
         buildConfigField("String", "BASE_URL", "\"${base_url}\"")
@@ -89,7 +89,6 @@ android {
 
 dependencies {
 
-    def kotlin_version = '1.7.10'
     def koin = "2.1.0"
     def retrofit = "2.6.2"
     def okhttp3 = "4.3.1"
@@ -119,6 +118,7 @@ dependencies {
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation "androidx.compose.ui:ui-tooling:$compose_version"
     implementation "androidx.compose.animation:animation:$compose_version"
+    implementation "androidx.compose.ui:ui-util:$compose_version"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
     implementation 'androidx.activity:activity-compose:1.5.1'
@@ -132,7 +132,7 @@ dependencies {
     implementation "com.google.android.material:compose-theme-adapter:1.1.18"
 
     //In-app updates
-    implementation'com.google.android.play:app-update-ktx:2.0.0'
+    implementation 'com.google.android.play:app-update-ktx:2.0.0'
 
     //In-app reviews
     implementation 'com.google.android.play:review-ktx:2.0.0'
@@ -173,6 +173,11 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
+    //Dagger Hilt
+    implementation "com.google.dagger:hilt-android:$dagger_version"
+    kapt "com.google.dagger:hilt-android-compiler:$dagger_version"
+    //annotationProcessor "com.google.dagger:hilt-compiler:$dagger_version"
+
     // Toothpick
     /*implementation 'com.github.stephanenicolas.toothpick:toothpick-runtime:1.1.3'
     implementation 'com.github.stephanenicolas.toothpick:smoothie:1.1.3'
@@ -211,8 +216,35 @@ dependencies {
     implementation "com.android.billingclient:billing:5.0.0"
     implementation "com.android.billingclient:billing-ktx:5.0.0"
 
+    // Integration with activities
+    implementation 'androidx.activity:activity-compose:1.5.1'
+    // Compose Material Design
+    implementation 'androidx.compose.material:material:1.2.1'
+    // Animations
+    implementation 'androidx.compose.animation:animation:1.2.1'
+    // Tooling support (Previews, etc.)
+    implementation 'androidx.compose.ui:ui-tooling:1.2.1'
+    // Integration with ViewModels
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
+    // UI Tests
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.2.1'
+
+    //Paging Compose
+    implementation "com.google.accompanist:accompanist-pager:0.13.0"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.13.0"
+
+    //turnoff include padding
+    implementation "androidx.compose.foundation:foundation:1.3.0-beta02"
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.2.1'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+}
+
+kapt {
+    correctErrorTypes = true
 }
