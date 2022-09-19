@@ -23,17 +23,19 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.home.view.AutoSlidingTestimonials
 import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.R
 import fit.asta.health.home.view.AutoSliding
+import fit.asta.health.home.view.AutoSlidingTestimonials
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalPagerApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Box(modifier = Modifier.background(color = Color(0xFFFAFCFE)).clip(RoundedCornerShape(16.dp))) {
+            Box(modifier = Modifier
+                .background(color = Color(0xFFFAFCFE))
+                .clip(RoundedCornerShape(16.dp))) {
                 Column(Modifier
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp)
                     .background(color = Color(0xFFFAFCFE))
@@ -722,7 +724,8 @@ fun RateUsCard() {
                     Button(onClick = {},
                         Modifier
                             .clip(RoundedCornerShape(6.dp))
-                            .height(28.dp).background(brush = Brush.linearGradient(colors = listOf(
+                            .height(28.dp)
+                            .background(brush = Brush.linearGradient(colors = listOf(
                                 Color(0xFF0075FF),
                                 Color(0xFF00D1FF)
                             ))),
