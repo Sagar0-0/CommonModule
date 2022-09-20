@@ -42,10 +42,12 @@ class HomeFragment : Fragment() {
                 homeViewModel
             )
         )
+
         homeViewModel.observeHomeViewLiveData(
             viewLifecycleOwner,
             HomeViewObserver(homeView)
         )
+
         homeView.setUpViewPager(this)
         homeView.registerAutoScroll(viewLifecycleOwner.lifecycleScope)
 

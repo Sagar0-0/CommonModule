@@ -34,11 +34,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Box(modifier = Modifier
-                .background(color = Color(0xFFFAFCFE))
+                .background(color = MaterialTheme.colors.background)
                 .clip(RoundedCornerShape(16.dp))) {
                 Column(Modifier
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp)
-                    .background(color = Color(0xFFFAFCFE))
+                    .background(color = MaterialTheme.colors.background)
                     .verticalScroll(rememberScrollState())) {
                     NameAndMoodHomeScreenHeader()
                     Spacer(modifier = Modifier.height(24.dp))
