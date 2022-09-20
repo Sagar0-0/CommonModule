@@ -16,7 +16,7 @@ interface HomeView {
 
     fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View?
 
     fun setAdapterClickListener(listener: OnCategoryClickListener)

@@ -10,7 +10,6 @@ import fit.asta.health.R
 
 
 // Most Commonly used TextStyles versions
-
 val DisplayText = Typography(
     displayLarge = TextStyle(
         fontFamily = FontFamily(Font(R.font.inter_light)),
@@ -50,7 +49,6 @@ val HeadingLine = Typography(
 
 
 // Use titles as Subtitles
-
 val Subtitles = Typography(
     titleLarge = TextStyle(
         fontFamily = FontFamily(Font(R.font.inter_regular)),
@@ -71,7 +69,6 @@ val Subtitles = Typography(
 
 
 // Body
-
 val Body = Typography(
     bodyLarge = TextStyle(
         fontFamily = FontFamily(Font(R.font.inter_regular)),
@@ -91,7 +88,6 @@ val Body = Typography(
 )
 
 // Buttons
-
 val Buttons = Typography(
     labelLarge = TextStyle(
         fontFamily = FontFamily(Font(R.font.inter_medium)),
