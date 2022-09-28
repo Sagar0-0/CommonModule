@@ -3,7 +3,7 @@ package fit.asta.health
 import android.content.Context
 import fit.asta.health.course.listing.data.CourseIndexData
 import fit.asta.health.course.session.data.Exercise
-import fit.asta.health.navigation.home.categories.data.CategoryData
+import fit.asta.health.navigation.home_old.categories.data.CategoryData
 import fit.asta.health.notify.reminder.data.Reminder
 
 interface ActivityLauncher {

@@ -3,8 +3,8 @@ package fit.asta.health.network.api
 import fit.asta.health.course.details.networkdata.CourseDetailsResponse
 import fit.asta.health.course.listing.networkdata.CoursesListNetData
 import fit.asta.health.course.session.networkdata.SessionResponse
-import fit.asta.health.navigation.home.banners.networkdata.BannerResponse
-import fit.asta.health.navigation.home.categories.networkdata.CategoriesNetData
+import fit.asta.health.navigation.home_old.banners.networkdata.BannerResponse
+import fit.asta.health.navigation.home_old.categories.networkdata.CategoriesNetData
 import fit.asta.health.navigation.today.networkdata.TodayPlanNetData
 import fit.asta.health.network.data.Status
 import fit.asta.health.profile.data.chips.UserInputs

@@ -6,7 +6,7 @@ import fit.asta.health.course.listing.data.CourseIndexData
 import fit.asta.health.course.listing.ui.CourseListingActivity
 import fit.asta.health.course.session.data.Exercise
 import fit.asta.health.course.session.ui.SessionActivity
-import fit.asta.health.navigation.home.categories.data.CategoryData
+import fit.asta.health.navigation.home_old.categories.data.CategoryData
 import fit.asta.health.notify.reminder.data.Reminder
 import fit.asta.health.player.VideoPlayerActivity
 import fit.asta.health.schedule.tags.ui.TagsActivity
