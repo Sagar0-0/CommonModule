@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
-import fit.asta.health.navigation.home.presentation.components.*
+import fit.asta.health.navigation.home.ui.components.*
 import fit.asta.health.home.view.AutoSliding
 
 class MainActivity : ComponentActivity() {

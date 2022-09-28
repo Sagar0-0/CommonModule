@@ -1,7 +1,7 @@
 package fit.asta.health.di
 
-import fit.asta.health.navigation.home.network.HealthToolsService
-import fit.asta.health.navigation.home.repository.ToolsHomeDtoMapper
+import fit.asta.health.navigation.home.api.HealthToolsService
+import fit.asta.health.navigation.home.model.ToolsHomeDtoMapper
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides

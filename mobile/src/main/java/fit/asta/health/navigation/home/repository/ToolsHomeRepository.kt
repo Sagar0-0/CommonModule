@@ -1,6 +1,6 @@
 package fit.asta.health.navigation.home.repository
 
-import fit.asta.health.navigation.home.domain.model.ToolsHome
+import fit.asta.health.navigation.home.model.domain.ToolsHome
 
 
 interface ToolsHomeRepository {

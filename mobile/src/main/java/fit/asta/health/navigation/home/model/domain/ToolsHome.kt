@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.home.domain.model
+package fit.asta.health.navigation.home.model.domain
 
 /**
  * See Recipe example:

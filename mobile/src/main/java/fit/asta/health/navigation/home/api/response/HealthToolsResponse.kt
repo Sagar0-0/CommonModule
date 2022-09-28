@@ -1,8 +1,8 @@
-package fit.asta.health.navigation.home.network.response
+package fit.asta.health.navigation.home.api.response
 
 import com.google.gson.annotations.SerializedName
-import fit.asta.health.navigation.home.network.model.Status
-import fit.asta.health.navigation.home.network.model.HealthTools
+import fit.asta.health.navigation.home.model.network.Status
+import fit.asta.health.navigation.home.model.network.HealthTools
 
 data class HealthToolsResponse(
     @SerializedName("status")

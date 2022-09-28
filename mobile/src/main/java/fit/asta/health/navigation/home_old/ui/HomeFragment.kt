@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment
 import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.ActivityLauncher
 import fit.asta.health.R
-import fit.asta.health.navigation.home.presentation.components.*
+import fit.asta.health.navigation.home.ui.components.*
 import fit.asta.health.home.view.AutoSliding
 import fit.asta.health.navigation.home_old.viewmodel.HomeViewModel
 import org.koin.android.ext.android.inject

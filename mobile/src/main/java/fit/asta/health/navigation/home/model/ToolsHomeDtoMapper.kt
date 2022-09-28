@@ -1,8 +1,8 @@
-package fit.asta.health.navigation.home.repository
+package fit.asta.health.navigation.home.model
 
-import fit.asta.health.navigation.home.domain.model.ToolsHome
+import fit.asta.health.navigation.home.model.domain.ToolsHome
 import fit.asta.health.utils.DomainMapper
-import fit.asta.health.navigation.home.network.response.HealthToolsResponse
+import fit.asta.health.navigation.home.api.response.HealthToolsResponse
 
 class ToolsHomeDtoMapper : DomainMapper<HealthToolsResponse, ToolsHome> {
 
