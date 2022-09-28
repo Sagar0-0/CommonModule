@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.home.api.response
+package fit.asta.health.navigation.home.model.network.response
 
 import com.google.gson.annotations.SerializedName
 import fit.asta.health.navigation.home.model.network.Status

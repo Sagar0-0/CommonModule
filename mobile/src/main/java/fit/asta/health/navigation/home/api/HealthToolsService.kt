@@ -1,6 +1,6 @@
 package fit.asta.health.navigation.home.api
 
-import fit.asta.health.navigation.home.api.response.HealthToolsResponse
+import fit.asta.health.navigation.home.model.network.response.HealthToolsResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
