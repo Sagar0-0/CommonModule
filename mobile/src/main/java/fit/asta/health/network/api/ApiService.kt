@@ -51,7 +51,7 @@ interface ApiService {
     @GET("subscription/plan/get")
     suspend fun getSubscriptionPlans(): SubscriptionDataResponse
 
-    @GET("subscription/status/get")
+    @GET("subscription/statusDTO/get")
     suspend fun getSubscriptionStatus(@Query("userId") userId: String): SubscriptionStatusResponse
 
     /*@GET("offer/list/get")

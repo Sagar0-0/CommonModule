@@ -6,6 +6,6 @@ import com.google.gson.annotations.SerializedName
 data class UserInputs(
     @SerializedName("data")
     val `data`: Data = Data(),
-    @SerializedName("status")
+    @SerializedName("statusDTO")
     val status: Status = Status()
 )

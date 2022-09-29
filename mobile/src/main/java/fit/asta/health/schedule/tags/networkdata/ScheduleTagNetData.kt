@@ -17,13 +17,13 @@ data class ScheduleTagNetData(
 data class ScheduleTagResponse(
     @SerializedName("data")
     val `data`: ScheduleTagNetData,
-    @SerializedName("status")
+    @SerializedName("statusDTO")
     val status: Status = Status()
 )
 
 data class ScheduleTagsResponse(
     @SerializedName("data")
     val `data`: List<ScheduleTagNetData> = listOf(),
-    @SerializedName("status")
+    @SerializedName("statusDTO")
     val status: Status = Status()
 )

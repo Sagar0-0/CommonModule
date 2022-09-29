@@ -1,8 +1,8 @@
 package fit.asta.health.navigation.home.repository
 
-import fit.asta.health.navigation.home.model.ToolsHomeDtoMapper
-import fit.asta.health.navigation.home.model.domain.ToolsHome
-import fit.asta.health.navigation.home.api.HealthToolsService
+import fit.asta.health.navigation.home.model.network.model.ToolsHomeDtoMapper
+import fit.asta.health.navigation.home.domain.ToolsHome
+import fit.asta.health.navigation.home.model.network.HealthToolsService
 
 class ToolsHomeRepositoryImpl(
     private val healthToolsService: HealthToolsService,

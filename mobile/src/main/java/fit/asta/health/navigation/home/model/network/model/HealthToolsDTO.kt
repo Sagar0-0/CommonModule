@@ -1,21 +1,21 @@
-package fit.asta.health.navigation.home.model.network
+package fit.asta.health.navigation.home.model.network.model
 
 import com.google.gson.annotations.SerializedName
 
 data class HealthTools(
-    @SerializedName("status")
-    val status: Status,
+    @SerializedName("statusDTO")
+    val statusDTO: StatusDTO,
     @SerializedName("data")
     val data: Data,
 )
 
 data class Data(
     @SerializedName("bnr")
-    val banners: List<Banner>,
+    val bannerDTOS: List<BannerDTO>,
     @SerializedName("tml")
     val testimonials: List<Testimonial>,
     @SerializedName("tool")
-    val tools: List<HealthTool>,
+    val tools: List<HealthToolDTO>,
     @SerializedName("wtr")
     val weather: Weather
 )

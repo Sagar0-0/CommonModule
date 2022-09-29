@@ -6,7 +6,7 @@ import fit.asta.health.network.data.Status
 import kotlinx.android.parcel.Parcelize
 
 data class SessionResponse(
-    @SerializedName("status")
+    @SerializedName("statusDTO")
     val status: Status = Status(),
     @SerializedName("data")
     val `data`: SessionNetData = SessionNetData()

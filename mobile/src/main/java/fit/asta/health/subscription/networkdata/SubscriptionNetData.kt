@@ -70,7 +70,7 @@ data class SubscriptionNetData(
 ) : Parcelable
 
 data class SubscriptionDataResponse(
-    @SerializedName("status")
+    @SerializedName("statusDTO")
     val status: Status = Status(),
     @SerializedName("data")
     val `data`: SubscriptionNetData = SubscriptionNetData()
@@ -107,7 +107,7 @@ data class OfferNetData(
 ) : Parcelable
 
 data class SubscriptionStatusResponse(
-    @SerializedName("status")
+    @SerializedName("statusDTO")
     val status: Status = Status(),
     @SerializedName("data")
     val `data`: SubscriptionStatusNetData = SubscriptionStatusNetData()

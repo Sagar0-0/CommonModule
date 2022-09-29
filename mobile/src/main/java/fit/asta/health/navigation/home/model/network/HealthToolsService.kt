@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.home.api
+package fit.asta.health.navigation.home.model.network
 
 import fit.asta.health.navigation.home.model.network.response.HealthToolsResponse
 import retrofit2.http.GET

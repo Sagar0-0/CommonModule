@@ -57,7 +57,7 @@ class ReminderFragment : Fragment(), KoinComponent {
 
                     viewModel.delete(it) {
 
-                        Log.i("Delete", "status/$it")
+                        Log.i("Delete", "statusDTO/$it")
                     }
                 }
             }

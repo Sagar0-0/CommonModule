@@ -26,13 +26,13 @@ data class TestimonialNetData(
 data class TestimonialResponse(
     @SerializedName("data")
     val `data`: TestimonialNetData = TestimonialNetData(),
-    @SerializedName("status")
+    @SerializedName("statusDTO")
     val status: Status = Status()
 )
 
 data class TestimonialListResponse(
     @SerializedName("data")
     val `data`: List<TestimonialNetData> = listOf(),
-    @SerializedName("status")
+    @SerializedName("statusDTO")
     val status: Status = Status()
 )

@@ -1,12 +1,12 @@
-package fit.asta.health.navigation.home.model.network
+package fit.asta.health.navigation.home.model.network.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Banner(
+data class BannerDTO(
     @SerializedName("dsc")
     val desc: String,
     @SerializedName("id")
-    val id: String,
+    val idBanner: String,
     @SerializedName("tid")
     val tid: String,
     @SerializedName("ttl")
@@ -14,7 +14,7 @@ data class Banner(
     @SerializedName("type")
     val type: Int,
     @SerializedName("url")
-    val url: String,
+    val urlBanner: String,
     @SerializedName("vis")
     val vis: Boolean
 )

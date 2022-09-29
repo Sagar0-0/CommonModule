@@ -1,16 +1,16 @@
-package fit.asta.health.navigation.home.model.network
+package fit.asta.health.navigation.home.model.network.model
 
 import com.google.gson.annotations.SerializedName
 
 data class Testimonial(
     @SerializedName("id")
-    val id: String,
+    val idTestimonials: String,
     @SerializedName("apv")
     val approve: Boolean,
     @SerializedName("rank")
     val rank: Int,
     @SerializedName("ttl")
-    val title: String,
+    val titleTestimonials: String,
     @SerializedName("text")
     val text: String,
     @SerializedName("mda")

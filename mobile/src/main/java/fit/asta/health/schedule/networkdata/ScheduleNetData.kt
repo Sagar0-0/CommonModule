@@ -45,6 +45,6 @@ data class ScheduleNetData(
 data class ScheduleResponse(
     @SerializedName("data")
     val `data`: ScheduleNetData = ScheduleNetData(),
-    @SerializedName("status")
+    @SerializedName("statusDTO")
     val status: Status = Status()
 )

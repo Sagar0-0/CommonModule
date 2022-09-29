@@ -1,7 +1,7 @@
 package fit.asta.health.di
 
-import fit.asta.health.navigation.home.api.HealthToolsService
-import fit.asta.health.navigation.home.model.ToolsHomeDtoMapper
+import fit.asta.health.navigation.home.model.network.HealthToolsService
+import fit.asta.health.navigation.home.model.network.model.ToolsHomeDtoMapper
 import fit.asta.health.navigation.home.repository.ToolsHomeRepository
 import fit.asta.health.navigation.home.repository.ToolsHomeRepositoryImpl
 import dagger.Module

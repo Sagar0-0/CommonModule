@@ -1,10 +1,10 @@
-package fit.asta.health.navigation.home.model.network
+package fit.asta.health.navigation.home.model.network.model
 
 import com.google.gson.annotations.SerializedName
 
 data class Weather(
     @SerializedName("id")
-    val id: String,
+    val idWeather: String,
     @SerializedName("date")
     val date: String,
     @SerializedName("temp")
@@ -16,7 +16,7 @@ data class Weather(
     @SerializedName("set")
     val sunSet: String,
     @SerializedName("url")
-    val url: String,
+    val urlWeather: String,
     @SerializedName("wUrl")
     val wUrl: String,
     @SerializedName("slots")
