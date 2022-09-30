@@ -1,10 +1,10 @@
-package fit.asta.health.navigation.home.model.network.model
+package fit.asta.health.navigation.home.model.network
 
 import com.google.gson.annotations.SerializedName
 
-data class StatusDTO(
+data class Status(
     @SerializedName("code")
-    val codeStatus: Int,
+    val code: Int,
     @SerializedName("msg")
     val msg: String
 )

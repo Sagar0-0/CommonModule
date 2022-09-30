@@ -1,7 +1,7 @@
 package fit.asta.health.di
 
-import fit.asta.health.navigation.home.model.network.HealthToolsService
-import fit.asta.health.navigation.home.model.network.model.ToolsHomeDtoMapper
+import fit.asta.health.navigation.home.api.HealthToolsService
+import fit.asta.health.navigation.home.model.ToolsHomeDataMapper
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -18,8 +18,8 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRecipeMapper(): ToolsHomeDtoMapper {
-        return ToolsHomeDtoMapper()
+    fun provideRecipeMapper(): ToolsHomeDataMapper {
+        return ToolsHomeDataMapper()
     }
 
     @Singleton
