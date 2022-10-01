@@ -21,10 +21,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
+import com.google.accompanist.pager.*
 import fit.asta.health.R
 import fit.asta.health.home.model.slideClientDataList
 import fit.asta.health.home.model.sliderDataList
-import com.google.accompanist.pager.*
 import kotlinx.coroutines.delay
 import kotlin.math.absoluteValue
 
@@ -55,6 +55,16 @@ fun AutoSlidingTestimonials() {
         pagerState.animateScrollToPage(newPosition)
     }
 
+    TestimonialsBanner(pagerState, interExtraBoldFontFamily, interFontFamily)
+}
+
+@ExperimentalPagerApi
+@Composable
+private fun TestimonialsBanner(
+    pagerState: PagerState,
+    interExtraBoldFontFamily: FontFamily,
+    interFontFamily: FontFamily,
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -145,13 +155,13 @@ fun AutoSlidingTestimonials() {
                     }
                 }
             }
+            //Horizontal dot indicator
+            HorizontalPagerIndicator(
+                pagerState = pagerState,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+            )
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        //Horizontal dot indicator
-        HorizontalPagerIndicator(
-            pagerState = pagerState,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-        )
+
     }
 }

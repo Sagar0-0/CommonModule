@@ -14,16 +14,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import com.google.accompanist.pager.*
 import fit.asta.health.R
+import fit.asta.health.home.model.HomeScreenImageSliderData
 import fit.asta.health.home.model.sliderDataList
 import kotlinx.coroutines.delay
 import kotlin.math.absoluteValue
 
 
+@Preview
 @ExperimentalPagerApi
 @Composable
 fun AutoSliding() {
@@ -64,47 +68,58 @@ fun AutoSliding() {
                     .height(236.dp)
             ) {
                 val sliderDataPages = sliderDataList[page]
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-
-                ) {
-                    Image(
-                        painter = painterResource(
-                            id = when (page) {
-                                1 -> R.drawable.first_image
-                                2 -> R.drawable.second_image
-                                else -> R.drawable.third_image
-                            }
-                        ),
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.FillBounds
-                    )
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(horizontal = 54.dp, vertical = 82.dp)
-                    ) {
-                        val interLightFontFamily = FontFamily(
-                            Font(R.font.inter_light, FontWeight.Light)
-                        )
-                        Text(
-                            text = sliderDataPages.description,
-                            fontSize = 20.sp,
-                            fontFamily = interLightFontFamily,
-                            color = Color.White
-                        )
-                    }
-                }
+                Banner(page, sliderDataPages, pagerState)
             }
+        }
+    }
+}
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+private fun Banner(
+    page: Int,
+    sliderDataPages: HomeScreenImageSliderData,
+    pagerState: PagerState,
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+
+    ) {
+        Image(
+            painter = painterResource(
+                id = when (page) {
+                    1 -> R.drawable.first_image
+                    2 -> R.drawable.second_image
+                    else -> R.drawable.third_image
+                }
+            ),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.FillBounds
+        )
+        Box(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(horizontal = 54.dp, vertical = 82.dp)
+        ) {
+            val interLightFontFamily = FontFamily(
+                Font(R.font.inter_light, FontWeight.Light)
+            )
+            Text(
+                text = sliderDataPages.description,
+                fontSize = 20.sp,
+                fontFamily = interLightFontFamily,
+                color = Color.White,
+                textAlign = TextAlign.Center
+            )
         }
         //Horizontal dot indicator
         HorizontalPagerIndicator(
             pagerState = pagerState,
             modifier = Modifier
-                .align(Alignment.CenterHorizontally)
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 16.dp)
         )
     }
 }
-
