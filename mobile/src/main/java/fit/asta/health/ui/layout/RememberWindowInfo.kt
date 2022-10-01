@@ -1,4 +1,4 @@
-package fit.asta.health.home
+package fit.asta.health.ui.layout
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
