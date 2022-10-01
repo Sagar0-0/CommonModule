@@ -1,4 +1,4 @@
-package fit.asta.health.home.model
+package fit.asta.health.navigation.home.model.dummy
 
 import fit.asta.health.R
 

@@ -19,7 +19,8 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.ActivityLauncher
 import fit.asta.health.R
 import fit.asta.health.navigation.home.ui.components.*
-import fit.asta.health.home.view.AutoSliding
+import fit.asta.health.navigation.home.ui.view.BannerAutoSlider
+import fit.asta.health.navigation.home.ui.view.Testimonials
 import fit.asta.health.navigation.home_old.viewmodel.HomeViewModel
 import org.koin.android.ext.android.inject
 
@@ -49,7 +50,7 @@ class HomeFragment : Fragment() {
                     Spacer(modifier = Modifier.height(24.dp))
                     WeatherCardImage()
                     Spacer(modifier = Modifier.height(24.dp))
-                    AutoSliding()
+                    BannerAutoSlider()
                     MyToolsAndViewAll()
                     VerticalImageCards()
                     Testimonials()
