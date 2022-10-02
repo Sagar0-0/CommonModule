@@ -9,6 +9,7 @@ data class Weather(
     val sunSet: String = "",
     val url: String = "",
     val weatherUrl: String = "",
+    val weatherType: WeatherType? = null,
     val sunSlots: List<SunSlot>? = null
 )
 
