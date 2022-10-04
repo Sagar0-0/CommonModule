@@ -218,7 +218,6 @@ fun ProfileDetails(
 fun UpdateButton() {
     Card(modifier = Modifier
         .fillMaxWidth()
-        .padding(horizontal = 16.dp)
         .clip(shape = RectangleShape),
         shape = RoundedCornerShape(5.dp),
         colors = CardDefaults.cardColors(Color(0xff0088FF))) {
