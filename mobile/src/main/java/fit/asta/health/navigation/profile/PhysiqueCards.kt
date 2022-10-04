@@ -31,11 +31,7 @@ fun UserBasicHealthDetail() {
         .padding(vertical = 16.dp, horizontal = 16.dp)
         .verticalScroll(rememberScrollState())) {
 
-        if (USER_GENDER == "Female") {
-            FemaleLayout()
-        } else {
-            MaleLayout()
-        }
+        if (USER_GENDER == "Female") FemaleLayout() else  MaleLayout()
 
         Spacer(modifier = Modifier.height(16.dp))
         UserBodyType(bodyType = "BODY TYPE",
