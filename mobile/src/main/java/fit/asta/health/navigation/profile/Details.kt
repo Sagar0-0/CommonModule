@@ -49,9 +49,11 @@ fun SpiralDesignDetailsPhoto() {
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        UserDetail1()
+                        UserDetail1(userName = "Astha Puri",
+                            userMail = "aasthapuri@gmail.com",
+                            userNumber = "+91 9987654321")
                         Spacer(modifier = Modifier.height(24.dp))
-                        UserDetail2()
+                        UserDetail2(userAddress = "Sheetal, A 1308, Gopalan Lakefront, Veerasandra Main road," + " Electronic City, Bengaluru. ")
                     }
                 }
             }
@@ -96,9 +98,11 @@ fun SpiralDesignDetailsPhoto() {
 
 
 @Composable
-private fun UserDetail2() {
+fun UserDetail2(
+    userAddress: String,
+) {
     Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-        Text(text = "Sheetal, A 1308, Gopalan Lakefront, Veerasandra Main road," + " Electronic City, Bengaluru. ",
+        Text(text = userAddress,
             fontFamily = FontFamily.Default,
             fontWeight = FontWeight.Normal,
             fontSize = 14.sp,
@@ -110,21 +114,25 @@ private fun UserDetail2() {
 
 
 @Composable
-private fun UserDetail1() {
+fun UserDetail1(
+    userName: String,
+    userNumber: String,
+    userMail: String,
+) {
     Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         Column(verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = "Aastha Puri",
+            Text(text = userName,
                 fontFamily = FontFamily.Default,
                 fontSize = 24.sp,
                 textAlign = TextAlign.Center,
                 color = Color.Black)
-            Text(text = "+91 9987654321",
+            Text(text = userNumber,
                 fontFamily = FontFamily.Default,
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center,
                 color = Color(0x99000000))
-            Text(text = "aasthapuri@gmail.com",
+            Text(text = userMail,
                 fontFamily = FontFamily.Default,
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center,
