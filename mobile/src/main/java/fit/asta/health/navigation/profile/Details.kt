@@ -1,9 +1,6 @@
 package fit.asta.health.navigation.profile
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,32 +29,39 @@ import fit.asta.health.R
 fun SpiralDesignDetailsPhoto() {
 
     Column(modifier = Modifier
-        .padding(top = 16.dp)
-        .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally) {
+        .fillMaxWidth()
+        .verticalScroll(rememberScrollState())
+        .background(color = Color.LightGray)) {
 
-        //User Profile Photo with Spiral Design
-        UserProfileImg()
+        Spacer(modifier = Modifier.height(58.dp))
 
-        Spacer(modifier = Modifier.height(30.dp))
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 7.5.dp)) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                //User Profile Photo with Spiral Design
+                UserProfileImg()
 
-        // User Details
-        UserDetails()
+                Spacer(modifier = Modifier.height(10.dp))
+
+                //User's Basic Information
+                Box(Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        UserDetail1()
+                        Spacer(modifier = Modifier.height(24.dp))
+                        UserDetail2()
+                    }
+                }
+            }
+        }
 
         Spacer(modifier = Modifier.height(30.dp))
 
         //User's Achievement
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween) {
-            DetailsCard(scoreBoard = "24/346",
-                cardType = "LeaderBoard",
-                imageID = R.drawable.leaderboard)
-            DetailsCard(scoreBoard = "12",
-                cardType = "Badges Earned",
-                imageID = R.drawable.badgecompleted)
-        }
+
+        UserAchievementLayout()
 
         Spacer(modifier = Modifier.height(30.dp))
 
@@ -87,59 +91,45 @@ fun SpiralDesignDetailsPhoto() {
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        //Update Button
-        UpdateButton()
-
-        Spacer(modifier = Modifier.height(30.dp))
     }
 }
 
 
-// User's Detail Layout
 @Composable
-private fun UserDetails() {
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .padding(start = 32.dp, end = 32.dp),
-        horizontalArrangement = Arrangement.Center) {
-        Box(Modifier.width(305.dp), contentAlignment = Alignment.Center) {
-            Column(verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = "Aastha Puri",
-                    fontFamily = FontFamily.Default,
-                    fontSize = 24.sp,
-                    textAlign = TextAlign.Center,
-                    color = Color.Black)
-                Text(text = "+91 9987654321",
-                    fontFamily = FontFamily.Default,
-                    fontSize = 14.sp,
-                    textAlign = TextAlign.Center,
-                    color = Color(0x99000000))
-                Text(text = "aasthapuri@gmail.com",
-                    fontFamily = FontFamily.Default,
-                    fontSize = 14.sp,
-                    textAlign = TextAlign.Center,
-                    color = Color(0x99000000))
-            }
-        }
-        EditIcon()
+private fun UserDetail2() {
+    Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+        Text(text = "Sheetal, A 1308, Gopalan Lakefront, Veerasandra Main road," + " Electronic City, Bengaluru. ",
+            fontFamily = FontFamily.Default,
+            fontWeight = FontWeight.Normal,
+            fontSize = 14.sp,
+            textAlign = TextAlign.Center,
+            color = Color(0x99000000),
+            lineHeight = 22.4.sp)
     }
+}
 
-    Spacer(modifier = Modifier.height(30.dp))
 
-    Row(modifier = Modifier.padding(horizontal = 32.dp, vertical = 16.dp)) {
-        Box(Modifier
-            .width(305.dp)
-            .padding(end = 16.dp), contentAlignment = Alignment.Center) {
-            Text(text = "Sheetal, A 1308, Gopalan Lakefront, Veerasandra Main road," + " Electronic City, Bengaluru. ",
+@Composable
+private fun UserDetail1() {
+    Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+        Column(verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(text = "Aastha Puri",
                 fontFamily = FontFamily.Default,
-                fontWeight = FontWeight.Normal,
+                fontSize = 24.sp,
+                textAlign = TextAlign.Center,
+                color = Color.Black)
+            Text(text = "+91 9987654321",
+                fontFamily = FontFamily.Default,
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center,
-                color = Color(0x99000000),
-                lineHeight = 22.4.sp)
+                color = Color(0x99000000))
+            Text(text = "aasthapuri@gmail.com",
+                fontFamily = FontFamily.Default,
+                fontSize = 14.sp,
+                textAlign = TextAlign.Center,
+                color = Color(0x99000000))
         }
-        EditIcon()
     }
 }
 
@@ -192,46 +182,11 @@ fun EditIcon() {
         Image(painter = painterResource(id = R.drawable.edit),
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.size(24.dp),
-            alignment = Alignment.TopEnd)
+            modifier = Modifier.size(24.dp))
     }
 }
 
-// User's Achievement Card Layout
-@Composable
-fun DetailsCard(
-    scoreBoard: String,
-    cardType: String,
-    imageID: Int,
-) {
-    Card(elevation = CardDefaults.cardElevation(),
-        colors = CardDefaults.cardColors(Color(0xffffffff)),
-        shape = RoundedCornerShape(8.dp)) {
-        Row(modifier = Modifier.padding(16.dp)) {
-            Image(painter = painterResource(id = imageID),
-                contentDescription = null,
-                modifier = Modifier.size(42.dp))
-            Spacer(modifier = Modifier.width(16.dp))
-            Column {
-                Text(text = scoreBoard,
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Default,
-                    fontWeight = FontWeight.Normal,
-                    color = Color.Black)
-
-                Spacer(modifier = Modifier.height(2.dp))
-
-                Text(text = cardType,
-                    fontSize = 12.sp,
-                    fontFamily = FontFamily.Default,
-                    fontWeight = FontWeight.Normal,
-                    color = Color(0xff8694A9))
-            }
-        }
-    }
-}
-
-
+//User's Profile Details
 @Composable
 fun ProfileDetails(
     imageID: Int,
@@ -258,7 +213,7 @@ fun ProfileDetails(
 }
 
 
-
+//Bottom Update Button
 @Composable
 fun UpdateButton() {
     Card(modifier = Modifier
@@ -277,5 +232,57 @@ fun UpdateButton() {
             modifier = Modifier
                 .align(alignment = Alignment.CenterHorizontally)
                 .padding(vertical = 17.dp))
+    }
+}
+
+//User's Achievements Layout
+@Composable
+private fun UserAchievementLayout() {
+    Row(modifier = Modifier
+        .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly) {
+        Box(Modifier
+            .fillMaxWidth()
+            .weight(1f)) {
+            UserAchievementCard(imageID = R.drawable.leaderboard,
+                userScore = "24/512",
+                cardType = "LeaderBoard")
+        }
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Box(Modifier
+            .fillMaxWidth()
+            .weight(1f)) {
+            UserAchievementCard(imageID = R.drawable.badgecompleted,
+                userScore = "12",
+                cardType = "Badges Earned")
+        }
+    }
+}
+
+
+//User's Achievement Card
+@Composable
+private fun UserAchievementCard(
+    imageID: Int,
+    userScore: String,
+    cardType: String,
+) {
+    androidx.compose.material.Card(modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(8.dp)) {
+        Row(modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp)) {
+            Image(painter = painterResource(id = imageID),
+                contentDescription = null,
+                modifier = Modifier.size(42.dp))
+            Spacer(modifier = Modifier.width(16.dp))
+            Column {
+                Text(text = userScore, fontSize = 20.sp, color = Color.Black)
+
+                Spacer(modifier = Modifier.height(2.dp))
+
+                Text(text = cardType, fontSize = 12.sp, color = Color(0xff8694A9))
+            }
+        }
     }
 }
