@@ -1,4 +1,4 @@
-package fit.asta.health.db
+package fit.asta.health.common.db
 
 import android.content.Context
 import androidx.room.Database

@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.home.ui.view
+package fit.asta.health.navigation.home.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -23,7 +23,7 @@ import com.google.accompanist.pager.*
 import fit.asta.health.R
 import fit.asta.health.navigation.home.model.dummy.slideClientDataList
 import fit.asta.health.navigation.home.model.dummy.sliderDataList
-import fit.asta.health.navigation.home.ui.components.TestimonialTextCard
+import fit.asta.health.navigation.home.view.component.TestimonialTextCard
 import kotlinx.coroutines.delay
 import kotlin.math.absoluteValue
 

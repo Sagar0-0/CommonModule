@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.home.ui.view
+package fit.asta.health.navigation.home.view
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,7 +17,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
 import fit.asta.health.navigation.home.model.dummy.sliderDataList
-import fit.asta.health.navigation.home.ui.components.Banner
+import fit.asta.health.navigation.home.view.component.Banner
 import kotlinx.coroutines.delay
 import kotlin.math.absoluteValue
 

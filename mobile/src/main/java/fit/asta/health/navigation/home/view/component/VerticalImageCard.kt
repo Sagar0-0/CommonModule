@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.home.ui.components
+package fit.asta.health.navigation.home.view.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -12,14 +12,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
 
+@Preview
 @Composable
-fun ExpandedVerticalImageGrid() {
+fun VerticalImageCards() {
     Column(Modifier
         .fillMaxWidth()
-        .padding(vertical = 16.dp, horizontal = 16.dp)
+        .padding(vertical = 16.dp)
     ) {
         Row(modifier = Modifier
             .fillMaxWidth()) {
@@ -91,7 +93,10 @@ fun ExpandedVerticalImageGrid() {
                     }
                 }
             }
-            Spacer(modifier = Modifier.width(16.dp))
+        }
+        Spacer(modifier = Modifier.padding(top = 16.dp))
+        Row(modifier = Modifier
+            .fillMaxWidth()) {
             Box(Modifier
                 .fillMaxWidth()
                 .weight(1f)) {
@@ -126,15 +131,7 @@ fun ExpandedVerticalImageGrid() {
                     }
                 }
             }
-        }
-
-
-        Spacer(modifier = Modifier.padding(top = 16.dp))
-
-
-
-        Row(modifier = Modifier
-            .fillMaxWidth()) {
+            Spacer(modifier = Modifier.width(16.dp))
             Box(Modifier
                 .fillMaxWidth()
                 .weight(1f)) {
@@ -169,7 +166,10 @@ fun ExpandedVerticalImageGrid() {
                     }
                 }
             }
-            Spacer(modifier = Modifier.width(16.dp))
+        }
+        Spacer(modifier = Modifier.padding(top = 16.dp))
+        Row(modifier = Modifier
+            .fillMaxWidth()) {
             Box(Modifier
                 .fillMaxWidth()
                 .weight(1f)) {
