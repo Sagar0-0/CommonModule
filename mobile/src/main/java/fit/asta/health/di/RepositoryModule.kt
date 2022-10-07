@@ -3,8 +3,8 @@ package fit.asta.health.di
 import com.google.gson.GsonBuilder
 import fit.asta.health.navigation.home.api.HealthToolsService
 import fit.asta.health.navigation.home.model.ToolsHomeDataMapper
-import fit.asta.health.navigation.home.repository.ToolsHomeRepository
-import fit.asta.health.navigation.home.repository.ToolsHomeRepositoryImpl
+import fit.asta.health.navigation.home.model.ToolsHomeRepository
+import fit.asta.health.navigation.home.model.ToolsHomeRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,7 +27,7 @@ object RepositoryModule {
     fun provideRecipeRepository(
         healthToolsService: HealthToolsService,
         toolsHomeMapper: ToolsHomeDataMapper,
-    ): ToolsHomeRepository{
+    ): ToolsHomeRepository {
         return ToolsHomeRepositoryImpl(
             healthToolsService = healthToolsService,
             mapper = toolsHomeMapper

@@ -5,7 +5,7 @@ import android.os.Build
 import androidx.core.app.NotificationManagerCompat
 import androidx.multidex.MultiDexApplication
 import dagger.hilt.android.HiltAndroidApp
-import fit.asta.health.db.AppDb
+import fit.asta.health.common.db.AppDb
 import fit.asta.health.di.*
 import fit.asta.health.notify.util.createNotificationChannel
 import fit.asta.health.utils.getUriFromResourceId
