@@ -10,6 +10,7 @@ import fit.asta.health.network.data.Status
 import fit.asta.health.profile.data.chips.UserInputs
 import fit.asta.health.profile.data.userprofile.Data
 import fit.asta.health.profile.data.userprofile.UserProfile
+import fit.asta.health.profilenew.apiData.ProfileDao
 import fit.asta.health.schedule.networkdata.ScheduleNetData
 import fit.asta.health.schedule.networkdata.ScheduleResponse
 import fit.asta.health.schedule.tags.networkdata.ScheduleTagNetData
@@ -81,11 +82,15 @@ interface ApiService {
     @GET("user/profile/get")
     suspend fun getProfile(@Query("userId") userId: String): UserProfile
 
+    @GET("userProfile/get/?")
+    suspend fun getProfileData(@Query("uid") uid:String): ProfileDao
+
     @GET("user/profile/data/get")
     suspend fun getMultiSelectionData(@Query("uid") uid: String): UserInputs
 
     @POST("user/profile/post")
     suspend fun postProfile(@Body body: Data)
+
 
     @POST("schedule/tag/post")
     suspend fun postScheduleTag(@Body schedule: ScheduleTagNetData): Status

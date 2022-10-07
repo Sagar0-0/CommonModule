@@ -26,7 +26,7 @@ class HealthCareApp : MultiDexApplication() {
         super.onCreate()
         mContext = this
         instance = this
-        //startKoin()
+        startKoin()
         setupDb()
 
         /*this.createNotificationChannel(
