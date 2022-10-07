@@ -1,12 +1,12 @@
 package fit.asta.health.di
 
-import fit.asta.health.navigation.home.api.HealthToolsService
-import fit.asta.health.navigation.home.model.ToolsHomeDataMapper
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import fit.asta.health.navigation.home.model.ToolsHomeDataMapper
+import fit.asta.health.network.api.ApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
@@ -24,12 +24,12 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRecipeService(): HealthToolsService {
+    fun provideRecipeService(): ApiService {
         return Retrofit.Builder()
             .baseUrl("https://asta.fit/")
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .build()
-            .create(HealthToolsService::class.java)
+            .create(ApiService::class.java)
     }
 
     /**
