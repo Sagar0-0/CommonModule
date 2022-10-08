@@ -19,22 +19,19 @@ class ToolsHomeDataMapper : DomainMapper<HealthTools, ToolsHome> {
                 )
             },
             weather = Weather(
-                id = networkModel.data.weather.id,
                 date = networkModel.data.weather.date,
-                temperature = networkModel.data.weather.temperature,
-                location = networkModel.data.weather.location,
-                sunRise = networkModel.data.weather.sunRise,
+                /*temperature = networkModel.data.weather.temperature,
+                location = networkModel.data.weather.loc,
+                sunRise = networkModel.data.weather.sunrise,
                 sunSet = networkModel.data.weather.sunSet,
                 url = networkModel.data.weather.url,
-                weatherUrl = networkModel.data.weather.weatherUrl,
-                sunSlots = networkModel.data.weather.sunSlots.map {
-                    SunSlot(
-                        id = it.id,
-                        time = it.time,
-                        temperature = it.temperature
-                    )
-                }
+                weatherUrl = networkModel.data.weather.weatherUrl,*/
             ),
+            /*sunSlots = SunSlot(
+                    id = it.id,
+                    time = it.time,
+                    temperature = it.temperature
+                ),*/
             tools = networkModel.data.tools.map {
                 HealthTool(
                     id = it.id,
@@ -48,6 +45,7 @@ class ToolsHomeDataMapper : DomainMapper<HealthTools, ToolsHome> {
             testimonials = networkModel.data.testimonials.map {
                 Testimonial(
                     id = it.id,
+                    userId = it.userId,
                     title = it.title,
                     text = it.text,
                     rank = it.rank,
@@ -59,7 +57,6 @@ class ToolsHomeDataMapper : DomainMapper<HealthTools, ToolsHome> {
                         )
                     },
                     user = User(
-                        userId = it.user.userId,
                         name = it.user.name,
                         org = it.user.org,
                         role = it.user.role,

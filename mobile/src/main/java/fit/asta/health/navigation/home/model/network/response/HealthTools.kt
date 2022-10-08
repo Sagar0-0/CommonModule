@@ -7,7 +7,7 @@ data class HealthTools(
     @SerializedName("status")
     val status: Status,
     @SerializedName("data")
-    val data: Data? = null,
+    val data: Data
 )
 
 data class Data(

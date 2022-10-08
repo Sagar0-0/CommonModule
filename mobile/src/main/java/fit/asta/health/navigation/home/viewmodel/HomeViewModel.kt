@@ -32,7 +32,15 @@ constructor(
 
     fun loadHomeData() {
         viewModelScope.launch {
-            toolsHomeRepo.getHomeData("62fcd8c098eb9d5ed038b563", "").catch { exception ->
+            toolsHomeRepo.getHomeData(
+                userId = "62fcd8c098eb9d5ed038b563",
+                latitude = "28.6353",
+                longitude = "77.2250",
+                location = "bangalore",
+                startDate = "2022-10-03",
+                endDate = "2022-10-05",
+                time = "2022-10-03%2012%20pm"
+            ).catch { exception ->
                 _uiState.value = HomeState.Error(exception)
             }
                 .collect {

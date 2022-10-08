@@ -10,6 +10,11 @@ interface HealthToolsService {
     @GET("home/get?")
     suspend fun getHomeData(
         @Query("uid") userId: String,
-        @Query("wid") wid: String
+        @Query("lat") latitude: String,
+        @Query("lon") longitude: String,
+        @Query("loc") location: String,
+        @Query("start") startDate: String,
+        @Query("end") endDate: String,
+        @Query("time") time: String
     ): HealthTools
 }
