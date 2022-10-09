@@ -24,16 +24,18 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.accompanist.pager.ExperimentalPagerApi
+import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.navigation.home.intent.HomeState
 import fit.asta.health.navigation.home.view.component.*
 import fit.asta.health.navigation.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-
+@ExperimentalMaterialApi
+@ExperimentalCoroutinesApi
+@AndroidEntryPoint
 @Suppress("DEPRECATION")
 class HomeFragment : Fragment() {
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     private val viewModel: HomeViewModel by viewModels()
 
     @OptIn(ExperimentalCoroutinesApi::class)
