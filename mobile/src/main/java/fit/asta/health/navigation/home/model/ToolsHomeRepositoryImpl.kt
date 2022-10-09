@@ -10,9 +10,29 @@ class ToolsHomeRepositoryImpl(
     private val mapper: ToolsHomeDataMapper,
 ) : ToolsHomeRepository {
 
-    override suspend fun getHomeData(userId: String, wid: String): Flow<ToolsHome> {
+    override suspend fun getHomeData(
+        userId: String,
+        latitude: String,
+        longitude: String,
+        location: String,
+        startDate: String,
+        endDate: String,
+        time: String
+    ): Flow<ToolsHome> {
         return flow {
-            emit(mapper.mapToDomainModel(healthToolsService.getHomeData(userId, wid)))
+            emit(
+                mapper.mapToDomainModel(
+                    healthToolsService.getHomeData(
+                        userId = userId,
+                        latitude = latitude,
+                        longitude = longitude,
+                        location = location,
+                        startDate = startDate,
+                        endDate = endDate,
+                        time = time
+                    )
+                )
+            )
         }
     }
 }

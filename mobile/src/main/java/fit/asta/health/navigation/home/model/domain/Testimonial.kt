@@ -2,6 +2,7 @@ package fit.asta.health.navigation.home.model.domain
 
 data class Testimonial(
     val id: String = "",
+    val userId: String,
     val title: String = "",
     val text: String = "",
     val rank: Int = 0,

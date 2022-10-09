@@ -3,31 +3,59 @@ package fit.asta.health.navigation.home.model.network
 import com.google.gson.annotations.SerializedName
 
 data class Weather(
-    @SerializedName("id")
-    val id: String,
+    @SerializedName("current_weather")
+    val current_weather: CurrentWeather,
+    @SerializedName("daily")
+    val daily: Daily,
+    @SerializedName("daily_units")
+    val daily_units: DailyUnits,
     @SerializedName("date")
     val date: String,
-    @SerializedName("temp")
-    val temperature: String,
+    @SerializedName("elevation")
+    val elevation: Int,
+    @SerializedName("generationtime_ms")
+    val generationtime_ms: Double,
+    @SerializedName("latitude")
+    val latitude: Double,
     @SerializedName("loc")
-    val location: String,
-    @SerializedName("rise")
-    val sunRise: String,
-    @SerializedName("set")
-    val sunSet: String,
-    @SerializedName("url")
-    val url: String,
-    @SerializedName("wUrl")
-    val weatherUrl: String,
-    @SerializedName("slots")
-    val sunSlots: List<SunSlot>
+    val loc: String,
+    @SerializedName("longitude")
+    val longitude: Double,
+    @SerializedName("timezone")
+    val timezone: String,
+    @SerializedName("timezone_abbreviation")
+    val timezone_abbreviation: String,
+    @SerializedName("utc_offset_seconds")
+    val utc_offset_seconds: Int
 )
 
-data class SunSlot(
-    @SerializedName("id")
-    val id: String,
+data class CurrentWeather(
+    @SerializedName("temperature")
+    val temperature: Double,
     @SerializedName("time")
     val time: String,
-    @SerializedName("temp")
-    val temperature: String
+    @SerializedName("weathercode")
+    val weathercode: Int,
+    @SerializedName("winddirection")
+    val winddirection: Int,
+    @SerializedName("windspeed")
+    val windspeed: Int
+)
+
+data class Daily(
+    @SerializedName("sunrise")
+    val sunrise: List<String>,
+    @SerializedName("sunset")
+    val sunset: List<String>,
+    @SerializedName("time")
+    val time: List<String>
+)
+
+data class DailyUnits(
+    @SerializedName("sunrise")
+    val sunrise: String,
+    @SerializedName("sunset")
+    val sunset: String,
+    @SerializedName("time")
+    val time: String
 )

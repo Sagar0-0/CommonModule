@@ -5,5 +5,13 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface ToolsHomeRepository {
-    suspend fun getHomeData(userId: String, wid: String): Flow<ToolsHome>
+    suspend fun getHomeData(
+        userId: String,
+        latitude: String,
+        longitude: String,
+        location: String,
+        startDate: String,
+        endDate: String,
+        time: String
+    ): Flow<ToolsHome>
 }

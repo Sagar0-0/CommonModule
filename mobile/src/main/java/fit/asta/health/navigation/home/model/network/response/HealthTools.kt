@@ -7,16 +7,18 @@ data class HealthTools(
     @SerializedName("status")
     val status: Status,
     @SerializedName("data")
-    val data: Data,
+    val data: Data
 )
 
 data class Data(
     @SerializedName("bnr")
     val banners: List<Banner>,
+    @SerializedName("slot")
+    val sunSlots: SunSlots,
     @SerializedName("tml")
     val testimonials: List<Testimonial>,
     @SerializedName("tool")
     val tools: List<HealthTool>,
     @SerializedName("wtr")
-    val weather: Weather
+    val weather: Weather,
 )

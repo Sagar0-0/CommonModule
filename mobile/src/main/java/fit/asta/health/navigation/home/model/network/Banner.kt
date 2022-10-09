@@ -7,8 +7,6 @@ data class Banner(
     val desc: String,
     @SerializedName("id")
     val id: String,
-    @SerializedName("tid")
-    val tid: String,
     @SerializedName("ttl")
     val title: String,
     @SerializedName("type")

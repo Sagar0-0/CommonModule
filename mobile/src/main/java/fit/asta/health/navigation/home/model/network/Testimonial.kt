@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName
 data class Testimonial(
     @SerializedName("id")
     val id: String,
+    @SerializedName("uid")
+    val userId: String,
     @SerializedName("apv")
     val approve: Boolean,
     @SerializedName("rank")
@@ -29,8 +31,6 @@ data class Media(
 )
 
 data class User(
-    @SerializedName("uid")
-    val userId: String,
     @SerializedName("name")
     val name: String,
     @SerializedName("org")

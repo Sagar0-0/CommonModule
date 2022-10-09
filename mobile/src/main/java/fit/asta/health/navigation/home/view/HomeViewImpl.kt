@@ -11,7 +11,6 @@ import com.google.android.play.core.review.ReviewManager
 import fit.asta.health.R
 import fit.asta.health.common.carousel.CarouselViewPagerAdapter
 import fit.asta.health.navigation.home.model.domain.ToolsHome
-import fit.asta.health.navigation.home_old.banners.ui.BannerFragment
 import fit.asta.health.navigation.home_old.categories.adapter.CategoriesAdapter
 import fit.asta.health.navigation.home_old.categories.data.CategoryData
 import fit.asta.health.navigation.home_old.testimonials.TestimonialFragment
@@ -31,7 +30,7 @@ class HomeViewImpl : HomeView {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
 
         rootView = inflater.inflate(R.layout.home_fragment, container, false)
