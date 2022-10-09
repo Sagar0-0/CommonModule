@@ -31,15 +31,18 @@ fun HealthLayout() {
         .padding(16.dp)) {
         SleepSchedule()
         Spacer(modifier = Modifier.height(16.dp))
-        SelectionCard(cardImg = R.drawable.medications,
+        SelectionCard(
+            cardImg = R.drawable.medications,
             cardType = "MEDICATION",
             cardList = medicationList)
         Spacer(modifier = Modifier.height(16.dp))
-        SelectionCard(cardImg = R.drawable.foodrestrictions,
+        SelectionCard(
+            cardImg = R.drawable.foodrestrictions,
             cardType = "FOOD RESTRICTIONS",
             cardList = foodRestrictionsList)
         Spacer(modifier = Modifier.height(16.dp))
-        SelectionCard(cardImg = R.drawable.ailements,
+        SelectionCard(
+            cardImg = R.drawable.ailements,
             cardType = "AILMENTS",
             cardList = ailmentsList)
         Spacer(modifier = Modifier.height(16.dp))

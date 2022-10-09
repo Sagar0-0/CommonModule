@@ -18,7 +18,7 @@ import com.google.accompanist.flowlayout.FlowRow
 fun SelectionCard(
     cardImg: Int,
     cardType: String,
-    cardList: MutableList<String>,
+    cardList: List<String>,
 ) {
     Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp), elevation = 5.dp) {
         Column(modifier = Modifier

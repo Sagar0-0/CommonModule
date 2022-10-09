@@ -22,14 +22,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
+import fit.asta.health.profilenew.data.MainProfile
 
-@Preview
+
 @Composable
-fun SpiralDesignDetailsPhoto() {
+fun SpiralDesignDetailsPhoto(mainProfile: MainProfile?) {
 
     Column(modifier = Modifier
         .padding(top = 16.dp)
@@ -42,7 +42,9 @@ fun SpiralDesignDetailsPhoto() {
         Spacer(modifier = Modifier.height(30.dp))
 
         // User Details
-        UserDetails()
+        if (mainProfile != null) {
+            UserDetails(mainProfile.name,mainProfile.phoneNumber,mainProfile.email,mainProfile.address)
+        }
 
         Spacer(modifier = Modifier.height(30.dp))
 
@@ -97,7 +99,7 @@ fun SpiralDesignDetailsPhoto() {
 
 // User's Detail Layout
 @Composable
-private fun UserDetails() {
+private fun UserDetails(name: String, phoneNumber: String, email: String, address: String) {
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(start = 32.dp, end = 32.dp),
@@ -105,17 +107,17 @@ private fun UserDetails() {
         Box(Modifier.width(305.dp), contentAlignment = Alignment.Center) {
             Column(verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = "Aastha Puri",
+                Text(text = name,
                     fontFamily = FontFamily.Default,
                     fontSize = 24.sp,
                     textAlign = TextAlign.Center,
                     color = Color.Black)
-                Text(text = "+91 9987654321",
+                Text(text = "+91 $phoneNumber",
                     fontFamily = FontFamily.Default,
                     fontSize = 14.sp,
                     textAlign = TextAlign.Center,
                     color = Color(0x99000000))
-                Text(text = "aasthapuri@gmail.com",
+                Text(text = email,
                     fontFamily = FontFamily.Default,
                     fontSize = 14.sp,
                     textAlign = TextAlign.Center,
@@ -131,7 +133,7 @@ private fun UserDetails() {
         Box(Modifier
             .width(305.dp)
             .padding(end = 16.dp), contentAlignment = Alignment.Center) {
-            Text(text = "Sheetal, A 1308, Gopalan Lakefront, Veerasandra Main road," + " Electronic City, Bengaluru. ",
+            Text(text = address,
                 fontFamily = FontFamily.Default,
                 fontWeight = FontWeight.Normal,
                 fontSize = 14.sp,

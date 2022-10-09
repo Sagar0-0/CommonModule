@@ -25,11 +25,13 @@ fun LifeStyleLayout() {
             cardType = "CURRENT WORK",
             cardValue = "SITTING")
         Spacer(modifier = Modifier.height(16.dp))
-        SelectionCard(cardImg = R.drawable.currentactivities,
+        SelectionCard(
+            cardImg = R.drawable.currentactivities,
             cardType = "CURRENT ACTIVITIES",
             cardList = currentActivitiesList)
         Spacer(modifier = Modifier.height(16.dp))
-        SelectionCard(cardImg = R.drawable.preferredactivities,
+        SelectionCard(
+            cardImg = R.drawable.preferredactivities,
             cardType = "PREFERRED ACTIVITIES",
             cardList = preferredActivitiesList)
     }

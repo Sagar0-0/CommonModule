@@ -15,7 +15,7 @@ data class MainProfile(
     val email:String,
     val phoneNumber:String,
     val dateOfBirth:String,
-    val address:Map<String,String>
+    val address:String
 )
 
 fun networkToString(s:String):String{
