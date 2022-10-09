@@ -8,8 +8,8 @@ data class Weather(
     val location: String = "",
     val date: String = "",
     val imgUrl: String = "",
-    val weatherType: WeatherType,
-    val air: Air
+    val weatherType: WeatherType? = null,
+    val air: Air? = null
 )
 
 data class Air(
