@@ -39,7 +39,7 @@ data class CurrentWeather(
     @SerializedName("winddirection")
     val winddirection: Int,
     @SerializedName("windspeed")
-    val windspeed: Int
+    val windspeed: Double
 )
 
 data class Daily(
