@@ -19,13 +19,13 @@ class ToolsHomeDataMapper : DomainMapper<HealthTools, ToolsHome> {
                 )
             },
             weather = Weather(
-                date = networkModel.data.weather.date,
-                /*temperature = networkModel.data.weather.temperature,
-                location = networkModel.data.weather.loc,
-                sunRise = networkModel.data.weather.sunrise,
-                sunSet = networkModel.data.weather.sunSet,
-                url = networkModel.data.weather.url,
-                weatherUrl = networkModel.data.weather.weatherUrl,*/
+//                date = networkModel.data.weather.date,
+//                temperature = networkModel.data.weather.temperature,
+//                location = networkModel.data.weather.loc,
+//                sunRise = networkModel.data.weather.sunrise,
+//                sunSet = networkModel.data.weather.sunSet,
+//                url = networkModel.data.weather.url,
+//                weatherUrl = networkModel.data.weather.weatherUrl
             ),
             /*sunSlots = SunSlot(
                     id = it.id,

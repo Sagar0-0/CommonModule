@@ -1,14 +1,13 @@
 package fit.asta.health.navigation.home.viewmodel
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.navigation.home.intent.HomeState
 import fit.asta.health.navigation.home.model.ToolsHomeRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,12 +18,15 @@ import javax.inject.Inject
 class HomeViewModel
 @Inject
 constructor(
-    private val toolsHomeRepo: ToolsHomeRepository
+    private val toolsHomeRepo: ToolsHomeRepository,
 ) : ViewModel() {
 
-    private val _uiState: MutableState<HomeState?> = mutableStateOf(HomeState.Loading)
-    val uiState: State<HomeState?>
-        get() = _uiState
+//    private val _uiState: MutableState<HomeState?> = mutableStateOf(HomeState.Loading)
+//    val uiState: State<HomeState?>
+//        get() = _uiState
+
+    private val mutableState = MutableStateFlow<HomeState>(HomeState.Loading)
+    val state = mutableState.asStateFlow()
 
     init {
         loadHomeData()
@@ -41,10 +43,10 @@ constructor(
                 endDate = "2022-10-05",
                 time = "2022-10-03%2012%20pm"
             ).catch { exception ->
-                _uiState.value = HomeState.Error(exception)
+                mutableState.value = HomeState.Error(exception)
             }
                 .collect {
-                    _uiState.value = HomeState.Success(it)
+                    mutableState.value = HomeState.Success(it)
                 }
         }
     }
