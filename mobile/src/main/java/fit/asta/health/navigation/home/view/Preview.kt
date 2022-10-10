@@ -6,6 +6,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import fit.asta.health.navigation.home.intent.HomeState
 import fit.asta.health.navigation.home.model.domain.ToolsHome
+import org.checkerframework.checker.units.qual.Temperature
 
 internal class AlbumStateProvider : PreviewParameterProvider<HomeState> {
     override val values: Sequence<HomeState> = sequenceOf(
@@ -13,10 +14,9 @@ internal class AlbumStateProvider : PreviewParameterProvider<HomeState> {
     )
 }
 
-@Preview(showSystemUi = true)
 @Composable
 fun AlbumScreenPreview(
-    @PreviewParameter(AlbumStateProvider::class) state: HomeState,
-) {
-    Content(state)
+    @PreviewParameter(AlbumStateProvider::class) state: HomeState,temperature: String
+){
+    Content(state, temperature = temperature)
 }

@@ -20,13 +20,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.google.accompanist.pager.*
+import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.R
 import fit.asta.health.navigation.home.model.dummy.slideClientDataList
 import fit.asta.health.navigation.home.model.dummy.sliderDataList
 import fit.asta.health.navigation.home.view.component.TestimonialTextCard
 import kotlinx.coroutines.delay
 import kotlin.math.absoluteValue
-
 
 @Preview(showBackground = true)
 @OptIn(ExperimentalPagerApi::class)

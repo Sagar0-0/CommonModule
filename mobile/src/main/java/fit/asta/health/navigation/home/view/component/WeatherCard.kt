@@ -19,8 +19,7 @@ import androidx.compose.ui.unit.sp
 import fit.asta.health.R
 
 @Composable
-fun WeatherCardImage(
-) {
+fun WeatherCardImage(temperature: String) {
     Box(modifier = Modifier
         .fillMaxWidth()
         .height(151.dp)
@@ -32,14 +31,13 @@ fun WeatherCardImage(
             modifier = Modifier
                 .fillMaxSize()
                 .align(Alignment.TopCenter))
-        TemperatureAndWeather()
+        TemperatureAndWeather(temperature = temperature)
         LocationAndDate()
     }
 }
 
 @Composable
-fun TemperatureAndWeather(
-) {
+fun TemperatureAndWeather(temperature: String) {
 
     val interFontFamily = FontFamily(
         Font(R.font.inter_regular, FontWeight.Normal)
@@ -55,7 +53,7 @@ fun TemperatureAndWeather(
             Row(horizontalArrangement = Arrangement.SpaceBetween) {
                 Box {
                     Text(
-                        text = "18",
+                        text = temperature,
                         fontFamily = interFontFamily,
                         fontSize = 72.sp,
                         color = Color.White,

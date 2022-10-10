@@ -2,6 +2,7 @@ package fit.asta.health.navigation.home.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -36,8 +36,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Suppress("DEPRECATION")
 class HomeFragment : Fragment() {
 
+
     private val viewModel: HomeViewModel by viewModels()
 
+    @SuppressLint("StateFlowValueCalledInComposition")
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,7 +47,12 @@ class HomeFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                Content(viewModel.state.collectAsState().value)
+
+                val list = viewModel.mutableState.value
+
+//                Log.d("MY TAG VIEW","$list")
+//
+//                Content(viewModel.state.collectAsState().value, temperature = list.toString())
             }
         }
     }
@@ -53,7 +60,7 @@ class HomeFragment : Fragment() {
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun Content(state: HomeState) {
+fun Content(state: HomeState, temperature: String) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -71,16 +78,16 @@ fun Content(state: HomeState) {
     ) {
         when (state) {
             is HomeState.Loading -> LoadingAnimation()
-            is HomeState.Success -> ReadyScreen()
+            is HomeState.Success -> ReadyScreen(temperature = temperature)
             is HomeState.Error -> NoInternetLayout()
         }
     }
 }
 
-@Preview
+
 @Composable
 @OptIn(ExperimentalPagerApi::class)
-fun ReadyScreen() {
+fun ReadyScreen(temperature: String) {
     Box(modifier = Modifier
         .background(color = MaterialTheme.colors.background)
         .clip(RoundedCornerShape(16.dp))) {
@@ -90,7 +97,7 @@ fun ReadyScreen() {
             .verticalScroll(rememberScrollState())) {
             NameAndMoodHomeScreenHeader()
             Spacer(modifier = Modifier.height(24.dp))
-            WeatherCardImage()
+            WeatherCardImage(temperature = temperature)
             Spacer(modifier = Modifier.height(24.dp))
             BannerAutoSlider()
             MyToolsAndViewAll()

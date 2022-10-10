@@ -51,5 +51,3 @@ fun HealthLayout() {
         UpdateButton()
     }
 }
-
-

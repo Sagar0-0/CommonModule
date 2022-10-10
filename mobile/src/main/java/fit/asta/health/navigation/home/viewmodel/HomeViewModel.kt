@@ -16,8 +16,7 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class HomeViewModel
-@Inject
-constructor(
+@Inject constructor(
     private val toolsHomeRepo: ToolsHomeRepository,
 ) : ViewModel() {
 
@@ -25,29 +24,26 @@ constructor(
 //    val uiState: State<HomeState?>
 //        get() = _uiState
 
-    private val mutableState = MutableStateFlow<HomeState>(HomeState.Loading)
+    val mutableState = MutableStateFlow<HomeState>(HomeState.Loading)
     val state = mutableState.asStateFlow()
 
     init {
         loadHomeData()
     }
 
-    fun loadHomeData() {
+    private fun loadHomeData() {
         viewModelScope.launch {
-            toolsHomeRepo.getHomeData(
-                userId = "62fcd8c098eb9d5ed038b563",
+            toolsHomeRepo.getHomeData(userId = "62fcd8c098eb9d5ed038b563",
                 latitude = "28.6353",
                 longitude = "77.2250",
                 location = "bangalore",
                 startDate = "2022-10-03",
                 endDate = "2022-10-05",
-                time = "2022-10-03%2012%20pm"
-            ).catch { exception ->
+                time = "2022-10-03%2012%20pm").catch { exception ->
                 mutableState.value = HomeState.Error(exception)
+            }.collect {
+                mutableState.value = HomeState.Success(it)
             }
-                .collect {
-                    mutableState.value = HomeState.Success(it)
-                }
         }
     }
 }
