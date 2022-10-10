@@ -2,7 +2,6 @@ package fit.asta.health.navigation.home.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,7 +36,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Suppress("DEPRECATION")
 class HomeFragment : Fragment() {
 
-
     private val viewModel: HomeViewModel by viewModels()
 
     @SuppressLint("StateFlowValueCalledInComposition")
@@ -48,12 +46,7 @@ class HomeFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-
-                val list = viewModel.mutableState.value
-
-                Log.d("MY TAG VIEW", "$list")
-
-                Content(viewModel.state.collectAsState().value, temperature = ToolsHome())
+                Content(viewModel.state.collectAsState().value)
             }
         }
     }
@@ -61,7 +54,7 @@ class HomeFragment : Fragment() {
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun Content(state: HomeState, temperature: ToolsHome) {
+fun Content(state: HomeState) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -79,7 +72,7 @@ fun Content(state: HomeState, temperature: ToolsHome) {
     ) {
         when (state) {
             is HomeState.Loading -> LoadingAnimation()
-            is HomeState.Success -> ReadyScreen(temperature = temperature)
+            is HomeState.Success -> ReadyScreen(toolsHome = state.toolsHome)
             is HomeState.Error -> NoInternetLayout()
         }
     }
@@ -88,7 +81,7 @@ fun Content(state: HomeState, temperature: ToolsHome) {
 
 @Composable
 @OptIn(ExperimentalPagerApi::class)
-fun ReadyScreen(temperature: ToolsHome) {
+fun ReadyScreen(toolsHome: ToolsHome) {
     Box(modifier = Modifier
         .background(color = MaterialTheme.colors.background)
         .clip(RoundedCornerShape(16.dp))) {
@@ -98,7 +91,7 @@ fun ReadyScreen(temperature: ToolsHome) {
             .verticalScroll(rememberScrollState())) {
             NameAndMoodHomeScreenHeader()
             Spacer(modifier = Modifier.height(24.dp))
-            temperature.weather?.let { WeatherCardImage(temperature = it.temperature) }
+            toolsHome.weather?.let { WeatherCardImage(temperature = it.temperature) }
             Spacer(modifier = Modifier.height(24.dp))
             BannerAutoSlider()
             MyToolsAndViewAll()
