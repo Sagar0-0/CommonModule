@@ -26,6 +26,7 @@ import androidx.fragment.app.viewModels
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.navigation.home.intent.HomeState
+import fit.asta.health.navigation.home.model.domain.ToolsHome
 import fit.asta.health.navigation.home.view.component.*
 import fit.asta.health.navigation.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -50,9 +51,9 @@ class HomeFragment : Fragment() {
 
                 val list = viewModel.mutableState.value
 
-//                Log.d("MY TAG VIEW","$list")
-//
-//                Content(viewModel.state.collectAsState().value, temperature = list.toString())
+                Log.d("MY TAG VIEW", "$list")
+
+                Content(viewModel.state.collectAsState().value, temperature = ToolsHome())
             }
         }
     }
@@ -60,7 +61,7 @@ class HomeFragment : Fragment() {
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun Content(state: HomeState, temperature: String) {
+fun Content(state: HomeState, temperature: ToolsHome) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -87,7 +88,7 @@ fun Content(state: HomeState, temperature: String) {
 
 @Composable
 @OptIn(ExperimentalPagerApi::class)
-fun ReadyScreen(temperature: String) {
+fun ReadyScreen(temperature: ToolsHome) {
     Box(modifier = Modifier
         .background(color = MaterialTheme.colors.background)
         .clip(RoundedCornerShape(16.dp))) {
@@ -97,7 +98,7 @@ fun ReadyScreen(temperature: String) {
             .verticalScroll(rememberScrollState())) {
             NameAndMoodHomeScreenHeader()
             Spacer(modifier = Modifier.height(24.dp))
-            WeatherCardImage(temperature = temperature)
+            temperature.weather?.let { WeatherCardImage(temperature = it.temperature) }
             Spacer(modifier = Modifier.height(24.dp))
             BannerAutoSlider()
             MyToolsAndViewAll()
