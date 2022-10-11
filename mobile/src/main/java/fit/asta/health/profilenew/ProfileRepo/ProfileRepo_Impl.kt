@@ -1,7 +1,6 @@
 package fit.asta.health.profilenew.ProfileRepo
 
 import fit.asta.health.network.api.ApiService
-import fit.asta.health.profile.ProfileData
 import fit.asta.health.profilenew.data.ProileData
 import fit.asta.health.profilenew.ProfileDaoMapper
 

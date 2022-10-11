@@ -66,12 +66,12 @@
             android:name=".course.listing.ui.CourseListingActivity"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".profile.ui.ProfileActivity"
+            android:name=".profile_old.ui.ProfileActivity"
             android:configChanges="orientation|screenSize|screenLayout"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".settings.SettingsActivity"
-            android:parentActivityName=".profile.ui.ProfileActivity" />
+            android:parentActivityName=".profile_old.ui.ProfileActivity" />
 
         <meta-data
             android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"

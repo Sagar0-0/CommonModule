@@ -7,9 +7,9 @@ import fit.asta.health.navigation.home_old.banners.networkdata.BannerResponse
 import fit.asta.health.navigation.home_old.categories.networkdata.CategoriesNetData
 import fit.asta.health.navigation.today.networkdata.TodayPlanNetData
 import fit.asta.health.network.data.Status
-import fit.asta.health.profile.data.chips.UserInputs
-import fit.asta.health.profile.data.userprofile.Data
-import fit.asta.health.profile.data.userprofile.UserProfile
+import fit.asta.health.profile_old.data.chips.UserInputs
+import fit.asta.health.profile_old.data.userprofile.Data
+import fit.asta.health.profile_old.data.userprofile.UserProfile
 import fit.asta.health.schedule.networkdata.ScheduleNetData
 import fit.asta.health.schedule.networkdata.ScheduleResponse
 import fit.asta.health.schedule.tags.networkdata.ScheduleTagNetData

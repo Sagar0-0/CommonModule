@@ -34,7 +34,6 @@ import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.auth.ui.AuthViewModel
 import fit.asta.health.network.TokenProvider
-import fit.asta.health.profile.ui.ProfileActivity
 import fit.asta.health.profilenew.ProfileNewActivity
 import fit.asta.health.settings.SettingsActivity
 import fit.asta.health.utils.*

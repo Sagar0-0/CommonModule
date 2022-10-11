@@ -5,8 +5,7 @@ import fit.asta.health.common.multiselect.MultiSelectRepo
 import fit.asta.health.common.multiselect.MultiSelectionAction
 import fit.asta.health.common.multiselect.data.FinalSelectedData
 import fit.asta.health.common.multiselect.data.MultiSelectData
-import fit.asta.health.profile.adapter.ChipCardItem
-import kotlinx.coroutines.flow.collect
+import fit.asta.health.profile_old.adapter.ChipCardItem
 import kotlinx.coroutines.launch
 
 class MultiSelectViewModel(private val selectRepo: MultiSelectRepo): ViewModel() {
