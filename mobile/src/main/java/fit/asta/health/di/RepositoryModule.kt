@@ -4,11 +4,11 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.navigation.home.api.HealthToolsService
 import fit.asta.health.navigation.home.model.ToolsHomeDataMapper
 import fit.asta.health.navigation.home.model.ToolsHomeRepository
 import fit.asta.health.navigation.home.model.ToolsHomeRepositoryImpl
 import fit.asta.health.network.api.ApiService
+import fit.asta.health.network.api.RemoteApis
 import fit.asta.health.profile.model.ProfileDataMapper
 import fit.asta.health.profile.model.ProfileRepo
 import fit.asta.health.profile.model.ProfileRepoImpl
@@ -22,11 +22,11 @@ object RepositoryModule {
     @Singleton
     @Provides
     fun provideHomeToolsRepository(
-        healthToolsService: HealthToolsService,
+        remoteApi: RemoteApis,
         toolsHomeMapper: ToolsHomeDataMapper,
     ): ToolsHomeRepository {
         return ToolsHomeRepositoryImpl(
-            healthToolsService = healthToolsService,
+            remoteApi = remoteApi,
             mapper = toolsHomeMapper
         )
     }

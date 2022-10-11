@@ -3,6 +3,7 @@ package fit.asta.health.network.api
 import fit.asta.health.course.details.networkdata.CourseDetailsResponse
 import fit.asta.health.course.listing.networkdata.CoursesListNetData
 import fit.asta.health.course.session.networkdata.SessionResponse
+import fit.asta.health.navigation.home.model.network.response.HealthTools
 import fit.asta.health.navigation.home_old.banners.networkdata.BannerResponse
 import fit.asta.health.navigation.home_old.categories.networkdata.CategoriesNetData
 import fit.asta.health.navigation.today.networkdata.TodayPlanNetData
@@ -29,6 +30,26 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
     private val apiService: ApiService = NetworkUtil
         .getRetrofit(baseUrl, client)
         .create(ApiService::class.java)
+
+    override suspend fun getHomeData(
+        userId: String,
+        latitude: String,
+        longitude: String,
+        location: String,
+        startDate: String,
+        endDate: String,
+        time: String
+    ): HealthTools {
+        return apiService.getHomeData(
+            userId,
+            latitude,
+            longitude,
+            location,
+            startDate,
+            endDate,
+            time
+        )
+    }
 
     override suspend fun getBanners(type: String): BannerResponse {
         return apiService.getBanners(type)

@@ -3,6 +3,7 @@ package fit.asta.health.network.api
 import fit.asta.health.course.details.networkdata.CourseDetailsResponse
 import fit.asta.health.course.listing.networkdata.CoursesListNetData
 import fit.asta.health.course.session.networkdata.SessionResponse
+import fit.asta.health.navigation.home.model.network.response.HealthTools
 import fit.asta.health.navigation.home_old.banners.networkdata.BannerResponse
 import fit.asta.health.navigation.home_old.categories.networkdata.CategoriesNetData
 import fit.asta.health.navigation.today.networkdata.TodayPlanNetData
@@ -22,6 +23,17 @@ import fit.asta.health.testimonials.networkdata.TestimonialNetData
 import fit.asta.health.testimonials.networkdata.TestimonialResponse
 
 interface RemoteApis {
+
+    suspend fun getHomeData(
+        userId: String,
+        latitude: String,
+        longitude: String,
+        location: String,
+        startDate: String,
+        endDate: String,
+        time: String
+    ): HealthTools
+
     suspend fun getBanners(type: String): BannerResponse
     suspend fun getCategories(type: String): CategoriesNetData
     suspend fun getCoursesList(categoryId: String, limit: Int, index: Int): CoursesListNetData

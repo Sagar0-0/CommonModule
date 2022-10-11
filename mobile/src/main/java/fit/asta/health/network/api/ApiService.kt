@@ -3,14 +3,15 @@ package fit.asta.health.network.api
 import fit.asta.health.course.details.networkdata.CourseDetailsResponse
 import fit.asta.health.course.listing.networkdata.CoursesListNetData
 import fit.asta.health.course.session.networkdata.SessionResponse
+import fit.asta.health.navigation.home.model.network.response.HealthTools
 import fit.asta.health.navigation.home_old.banners.networkdata.BannerResponse
 import fit.asta.health.navigation.home_old.categories.networkdata.CategoriesNetData
 import fit.asta.health.navigation.today.networkdata.TodayPlanNetData
 import fit.asta.health.network.data.Status
+import fit.asta.health.profile.model.network.ProfileDao
 import fit.asta.health.profile_old.data.chips.UserInputs
 import fit.asta.health.profile_old.data.userprofile.Data
 import fit.asta.health.profile_old.data.userprofile.UserProfile
-import fit.asta.health.profile.model.network.ProfileDao
 import fit.asta.health.schedule.networkdata.ScheduleNetData
 import fit.asta.health.schedule.networkdata.ScheduleResponse
 import fit.asta.health.schedule.tags.networkdata.ScheduleTagNetData
@@ -25,6 +26,17 @@ import retrofit2.http.*
 
 
 interface ApiService {
+
+    @GET("home/get?")
+    suspend fun getHomeData(
+        @Query("uid") userId: String,
+        @Query("lat") latitude: String,
+        @Query("lon") longitude: String,
+        @Query("loc") location: String,
+        @Query("start") startDate: String,
+        @Query("end") endDate: String,
+        @Query("time") time: String
+    ): HealthTools
 
     @GET("banner/list/get")
     suspend fun getBanners(@Query("type") type: String): BannerResponse
@@ -55,7 +67,8 @@ interface ApiService {
     @GET("subscription/statusDTO/get")
     suspend fun getSubscriptionStatus(@Query("userId") userId: String): SubscriptionStatusResponse
 
-    /*@GET("offer/list/get")
+    /*
+    @GET("offer/list/get")
     suspend fun getOffer(@Query("userId") userId: String): OfferNetData
 
     @GET("referral/get")
@@ -91,7 +104,6 @@ interface ApiService {
     @POST("user/profile/post")
     suspend fun postProfile(@Body body: Data)
 
-
     @POST("schedule/tag/post")
     suspend fun postScheduleTag(@Body schedule: ScheduleTagNetData): Status
 
@@ -122,7 +134,8 @@ interface ApiService {
     @GET("schedule/plan/list/get")
     suspend fun getTodayPlan(@Query("userId") userId: String): TodayPlanNetData
 
-    /*@POST("user/preference/favourite")
+    /*
+    @POST("user/preference/favourite")
     suspend fun postUserPreferenceFavourite(@Body body: FavouriteItem)
 
     @POST("user/activity/progress")
@@ -135,5 +148,6 @@ interface ApiService {
     suspend fun getTrackInfo(@Query("userId") userId: String): UserProfile
 
     @GET("user/track/activity")
-    suspend fun getTrackActivity(@Query("userId") userId: String): UserProfile*/
+    suspend fun getTrackActivity(@Query("userId") userId: String): UserProfile
+    */
 }

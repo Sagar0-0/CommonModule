@@ -8,7 +8,6 @@ import fit.asta.health.utils.NetworkUtil
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import org.koin.experimental.property.inject
 
 class AstaNetwork private constructor() {
 

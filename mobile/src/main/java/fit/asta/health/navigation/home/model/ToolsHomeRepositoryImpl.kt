@@ -1,12 +1,12 @@
 package fit.asta.health.navigation.home.model
 
-import fit.asta.health.navigation.home.api.HealthToolsService
 import fit.asta.health.navigation.home.model.domain.ToolsHome
+import fit.asta.health.network.api.RemoteApis
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class ToolsHomeRepositoryImpl(
-    private val healthToolsService: HealthToolsService,
+    private val remoteApi: RemoteApis,
     private val mapper: ToolsHomeDataMapper,
 ) : ToolsHomeRepository {
 
@@ -22,7 +22,7 @@ class ToolsHomeRepositoryImpl(
         return flow {
             emit(
                 mapper.mapToDomainModel(
-                    healthToolsService.getHomeData(
+                    remoteApi.getHomeData(
                         userId = userId,
                         latitude = latitude,
                         longitude = longitude,
