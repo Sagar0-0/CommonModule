@@ -34,7 +34,7 @@ import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.auth.ui.AuthViewModel
 import fit.asta.health.network.TokenProvider
-import fit.asta.health.profilenew.ProfileNewActivity
+import fit.asta.health.profile.UserProfileActivity
 import fit.asta.health.settings.SettingsActivity
 import fit.asta.health.utils.*
 import kotlinx.android.synthetic.main.main_activity.*
@@ -464,6 +464,6 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
     private fun startUserProfileActivity() {
 
-        startActivity(Intent(applicationContext, ProfileNewActivity::class.java))
+        startActivity(Intent(applicationContext, UserProfileActivity::class.java))
     }
 }

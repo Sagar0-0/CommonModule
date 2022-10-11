@@ -42,7 +42,7 @@
         android:theme="@style/AppTheme"
         tools:targetApi="n">
         <activity
-            android:name=".profilenew.ProfileNewActivity"
+            android:name=".profile.UserProfileActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

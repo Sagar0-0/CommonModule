@@ -9,9 +9,9 @@ import fit.asta.health.navigation.home.model.ToolsHomeDataMapper
 import fit.asta.health.navigation.home.model.ToolsHomeRepository
 import fit.asta.health.navigation.home.model.ToolsHomeRepositoryImpl
 import fit.asta.health.network.api.ApiService
-import fit.asta.health.profilenew.ProfileDaoMapper
-import fit.asta.health.profilenew.ProfileRepo.ProfileRepo
-import fit.asta.health.profilenew.ProfileRepo.ProfileRepo_Impl
+import fit.asta.health.profile.model.ProfileDataMapper
+import fit.asta.health.profile.model.ProfileRepo
+import fit.asta.health.profile.model.ProfileRepoImpl
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -33,8 +33,8 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideProfileMapper(): ProfileDaoMapper {
-        return ProfileDaoMapper()
+    fun provideProfileMapper(): ProfileDataMapper {
+        return ProfileDataMapper()
     }
 
     @Singleton
@@ -42,9 +42,9 @@ object RepositoryModule {
     @Named("profile_repository")
     fun provideProfileRepository(
         apiService: ApiService,
-        recipeMapper: ProfileDaoMapper,
+        recipeMapper: ProfileDataMapper,
     ): ProfileRepo {
-        return ProfileRepo_Impl(
+        return ProfileRepoImpl(
             apiService = apiService,
             mapper = recipeMapper
         )

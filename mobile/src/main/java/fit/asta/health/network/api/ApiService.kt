@@ -10,7 +10,7 @@ import fit.asta.health.network.data.Status
 import fit.asta.health.profile_old.data.chips.UserInputs
 import fit.asta.health.profile_old.data.userprofile.Data
 import fit.asta.health.profile_old.data.userprofile.UserProfile
-import fit.asta.health.profilenew.apiData.ProfileDao
+import fit.asta.health.profile.model.network.ProfileDao
 import fit.asta.health.schedule.networkdata.ScheduleNetData
 import fit.asta.health.schedule.networkdata.ScheduleResponse
 import fit.asta.health.schedule.tags.networkdata.ScheduleTagNetData
