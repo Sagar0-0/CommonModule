@@ -1,11 +1,13 @@
 package fit.asta.health.profile.model
 
+import fit.asta.health.profile.model.domain.ProfileItem
 import fit.asta.health.profile.model.domain.UserProfile
-import fit.asta.health.profile.model.network.ProfileDao
+import fit.asta.health.profile.model.network.UserProfileDao
 import fit.asta.health.utils.DomainMapper
 
-class ProfileDataMapper:DomainMapper<ProfileDao,UserProfile> {
-    override fun mapToDomainModel(networkModel: ProfileDao): UserProfile {
+class ProfileDataMapper : DomainMapper<UserProfileDao, UserProfile> {
+    override fun mapToDomainModel(networkModel: UserProfileDao): UserProfile {
+        /*
         return UserProfile(
             uid = networkModel.data["uid"].toString(),
             profileData = networkModel.data["cont"] as Map<String, Any>,
@@ -14,9 +16,85 @@ class ProfileDataMapper:DomainMapper<ProfileDao,UserProfile> {
             health = networkModel.data["hlt"] as Map<String, Any>,
             diet = networkModel.data["diet"] as Map<String, Any>
         )
+        */
+
+        return UserProfile(
+            uid = networkModel.data.uid,
+            contact = arrayListOf<ProfileItem>(),
+            physique = arrayListOf<ProfileItem>(),
+            lifestyle = arrayListOf<ProfileItem>(),
+            health = arrayListOf<ProfileItem>(),
+            diet = arrayListOf<ProfileItem>()
+        )
+
+        /*val contact = arrayListOf<ProfileItem>()
+        val physique = arrayListOf<ProfileItem>()
+        val lifestyle = arrayListOf<ProfileItem>()
+        val health = arrayListOf<ProfileItem>()
+        val data = userProfile.data
+
+        data.physique.forEach {
+            if(it.type == ProfileItemType.PlainCard.value){
+                val plainCardItem = PlainCardItem()
+                plainCardItem.id = it.uid
+                plainCardItem.label = it.ttl
+                plainCardItem.itemValue = it.value
+                plainCardItem.image = it.url
+                plainCardItem.profileTabType = ProfileTabType.PhysiqueTab
+                physique.add(plainCardItem)
+            }
+            else if(it.type == ProfileItemType.BodyTypeCard.value){
+                val bodyTypeItem = BodyTypeItem()
+                bodyTypeItem.id = it.uid
+                bodyTypeItem.label = it.ttl
+                bodyTypeItem.bodyTypeValue = it.value
+                bodyTypeItem.image = it.url
+                bodyTypeItem.profileTabType = ProfileTabType.PhysiqueTab
+                physique.add(bodyTypeItem)
+            }
+        }
+
+        data.lifestyle.let {
+            val schedule = SleepScheduleItem()
+            schedule.label = it.schedule.ttl
+            schedule.bedTime = it.schedule.bedTime
+            schedule.wakeUpTime = it.schedule.wakeUp
+            schedule.profileTabType = ProfileTabType.LifeStyleTab
+            lifestyle.add(schedule)
+            val plainCardItem = PlainCardItem()
+            plainCardItem.id = it.plainCard.uid
+            plainCardItem.label = it.plainCard.ttl
+            plainCardItem.itemValue = it.plainCard.value
+            plainCardItem.image = it.plainCard.url
+            plainCardItem.profileTabType = ProfileTabType.LifeStyleTab
+            lifestyle.add(plainCardItem)
+            it.chipCards.forEach { chip ->
+                val chipCardItem = ChipCardItem()
+                chipCardItem.id = chip.uid
+                chipCardItem.label = chip.ttl
+                chipCardItem.value = chip.value
+                chipCardItem.image = chip.url
+                chipCardItem.profileTabType = ProfileTabType.LifeStyleTab
+                lifestyle.add(chipCardItem)
+            }
+        }
+
+        data.health.forEach {
+
+            val chipCardItem = ChipCardItem()
+            chipCardItem.id = it.uid
+            chipCardItem.label = it.ttl
+            chipCardItem.value = it.value
+            chipCardItem.image = it.url
+            chipCardItem.profileTabType = ProfileTabType.HealthTargetsTab
+            health.add(chipCardItem)
+
+        }
+
+        return ProfileData(physique, lifestyle, health)*/
     }
 
-    override fun mapFromDomainModel(domainModel: UserProfile): ProfileDao {
+    override fun mapFromDomainModel(domainModel: UserProfile): UserProfileDao {
         TODO("Not yet implemented")
     }
 }

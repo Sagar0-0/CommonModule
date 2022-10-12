@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.databinding.ActivityProfileNewBinding
-import fit.asta.health.profile.model.domain.MainProfile
+import fit.asta.health.profile.model.domain.UserProfile
 import fit.asta.health.profile.view.*
 import fit.asta.health.profile.viewmodel.ProfileViewModel
 
@@ -155,9 +155,9 @@ class UserProfileActivity : AppCompatActivity() {
     }
 
     @Composable
-    fun ProfileScreenDetails(mainProfile: MainProfile?) {
+    fun ProfileScreenDetails(mainProfile: UserProfile?) {
         if (mainProfile != null) {
-            Text(text = mainProfile.name)
+            Text(text = mainProfile.contact.toString())
         }
     }
 

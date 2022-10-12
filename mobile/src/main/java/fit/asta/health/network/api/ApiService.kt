@@ -8,7 +8,7 @@ import fit.asta.health.navigation.home_old.banners.networkdata.BannerResponse
 import fit.asta.health.navigation.home_old.categories.networkdata.CategoriesNetData
 import fit.asta.health.navigation.today.networkdata.TodayPlanNetData
 import fit.asta.health.network.data.Status
-import fit.asta.health.profile.model.network.ProfileDao
+import fit.asta.health.profile.model.network.UserProfileDao
 import fit.asta.health.profile_old.data.chips.UserInputs
 import fit.asta.health.profile_old.data.userprofile.Data
 import fit.asta.health.profile_old.data.userprofile.UserProfile
@@ -96,7 +96,7 @@ interface ApiService {
     suspend fun getProfile(@Query("userId") userId: String): UserProfile
 
     @GET("userProfile/get/?")
-    suspend fun getProfileData(@Query("uid") uid:String): ProfileDao
+    suspend fun getUserProfile(@Query("uid") uid: String): UserProfileDao
 
     @GET("user/profile/data/get")
     suspend fun getMultiSelectionData(@Query("uid") uid: String): UserInputs

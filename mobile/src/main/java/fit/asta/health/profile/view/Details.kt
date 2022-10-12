@@ -25,11 +25,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
-import fit.asta.health.profile.model.domain.MainProfile
+import fit.asta.health.profile.model.domain.UserProfile
 
 
 @Composable
-fun SpiralDesignDetailsPhoto(mainProfile: MainProfile?) {
+fun SpiralDesignDetailsPhoto(mainProfile: UserProfile?) {
 
     Column(
         modifier = Modifier
@@ -45,12 +45,12 @@ fun SpiralDesignDetailsPhoto(mainProfile: MainProfile?) {
 
         // User Details
         if (mainProfile != null) {
-            UserDetails(
+            /*UserDetails(
                 mainProfile.name,
                 mainProfile.phoneNumber,
                 mainProfile.email,
                 mainProfile.address
-            )
+            )*/
         }
 
         Spacer(modifier = Modifier.height(30.dp))

@@ -3,12 +3,14 @@ package fit.asta.health.profile.model.network
 import com.google.gson.annotations.SerializedName
 import fit.asta.health.network.data.Status
 
+/*
 data class ProfileDao(
     val status: Status,
     val `data`: Map<String, Any>
 )
+*/
 
-data class UserProfileRes(
+data class UserProfileDao(
     @SerializedName("status")
     val status: Status,
     @SerializedName("data")

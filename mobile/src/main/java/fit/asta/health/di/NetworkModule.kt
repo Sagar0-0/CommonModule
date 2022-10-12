@@ -52,7 +52,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRestApi(@ApplicationContext app: Context): RemoteApis {
+    fun provideRemoteRestApi(@ApplicationContext app: Context): RemoteApis {
 
         val builder = AstaNetwork.Builder()
             .setApiKey(provideTokenProvider())
@@ -68,4 +68,25 @@ object NetworkModule {
 
         return builder.build()
     }
+
+    /*
+    @Singleton
+    @Provides
+    fun provideLocalRestApi(@ApplicationContext app: Context): RemoteApis {
+
+        val builder = AstaNetwork.Builder()
+            .setCache(cache = provideHttpCache(app))
+            .addInterceptor(OfflineInterceptor(app))
+            .addCertificatePinner(Certificate())
+
+        if (BuildConfig.DEBUG) {
+            builder.addNetworkInterceptor(
+                HttpLoggingInterceptor()
+                    .setLevel(HttpLoggingInterceptor.Level.HEADERS)
+            )
+        }
+
+        return builder.build()
+    }
+    */
 }

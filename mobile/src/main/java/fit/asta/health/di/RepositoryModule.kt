@@ -7,7 +7,6 @@ import dagger.hilt.components.SingletonComponent
 import fit.asta.health.navigation.home.model.ToolsHomeDataMapper
 import fit.asta.health.navigation.home.model.ToolsHomeRepository
 import fit.asta.health.navigation.home.model.ToolsHomeRepositoryImpl
-import fit.asta.health.network.api.ApiService
 import fit.asta.health.network.api.RemoteApis
 import fit.asta.health.profile.model.ProfileDataMapper
 import fit.asta.health.profile.model.ProfileRepo
@@ -41,11 +40,11 @@ object RepositoryModule {
     @Provides
     @Named("profile_repository")
     fun provideProfileRepository(
-        apiService: ApiService,
+        remoteApi: RemoteApis,
         recipeMapper: ProfileDataMapper,
     ): ProfileRepo {
         return ProfileRepoImpl(
-            apiService = apiService,
+            remoteApi = remoteApi,
             mapper = recipeMapper
         )
     }
