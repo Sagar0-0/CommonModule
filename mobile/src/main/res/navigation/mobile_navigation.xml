@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="fit.asta.health.navigation.home.view.HomeFragment"
+        android:name="fit.asta.health.navigation.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/home_fragment" />
 

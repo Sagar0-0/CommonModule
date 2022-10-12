@@ -16,5 +16,5 @@ internal class AlbumStateProvider : PreviewParameterProvider<HomeState> {
 fun AlbumScreenPreview(
     @PreviewParameter(AlbumStateProvider::class) state: HomeState
 ) {
-    Content(state)
+    HomeContent(state)
 }

@@ -1,0 +1,38 @@
+package fit.asta.health.navigation.home
+
+import android.annotation.SuppressLint
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.ComposeView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
+import fit.asta.health.navigation.home.view.HomeContent
+import fit.asta.health.navigation.home.viewmodel.HomeViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+
+@ExperimentalMaterialApi
+@ExperimentalCoroutinesApi
+@AndroidEntryPoint
+@Suppress("DEPRECATION")
+class HomeFragment : Fragment() {
+
+    private val viewModel: HomeViewModel by viewModels()
+
+    @SuppressLint("StateFlowValueCalledInComposition")
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setContent {
+                HomeContent(viewModel.state.collectAsState().value)
+            }
+        }
+    }
+}
