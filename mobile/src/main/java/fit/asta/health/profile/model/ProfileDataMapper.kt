@@ -1,12 +1,11 @@
 package fit.asta.health.profile.model
 
-import fit.asta.health.profile.model.domain.ProfileItem
-import fit.asta.health.profile.model.domain.UserProfile
-import fit.asta.health.profile.model.network.UserProfileDao
+import fit.asta.health.profile.model.domain.*
+import fit.asta.health.profile.model.network.UserProfileResponse
 import fit.asta.health.utils.DomainMapper
 
-class ProfileDataMapper : DomainMapper<UserProfileDao, UserProfile> {
-    override fun mapToDomainModel(networkModel: UserProfileDao): UserProfile {
+class ProfileDataMapper : DomainMapper<UserProfileResponse, UserProfile> {
+    override fun mapToDomainModel(networkModel: UserProfileResponse): UserProfile {
         /*
         return UserProfile(
             uid = networkModel.data["uid"].toString(),
@@ -18,30 +17,32 @@ class ProfileDataMapper : DomainMapper<UserProfileDao, UserProfile> {
         )
         */
 
-        return UserProfile(
-            uid = networkModel.data.uid,
-            contact = arrayListOf<ProfileItem>(),
-            physique = arrayListOf<ProfileItem>(),
-            lifestyle = arrayListOf<ProfileItem>(),
-            health = arrayListOf<ProfileItem>(),
-            diet = arrayListOf<ProfileItem>()
+        val userProfileDao = networkModel.userProfile
+
+        val contact = ContactItem(
+            id = userProfileDao.uid,
+            name = userProfileDao.contact.name,
+            email = userProfileDao.contact.email,
+            phone = userProfileDao.contact.ph,
+            imgUrl = userProfileDao.contact.url,
+            address = userProfileDao.contact.address.address
         )
 
-        /*val contact = arrayListOf<ProfileItem>()
         val physique = arrayListOf<ProfileItem>()
         val lifestyle = arrayListOf<ProfileItem>()
         val health = arrayListOf<ProfileItem>()
-        val data = userProfile.data
 
-        data.physique.forEach {
+        val plainCardItem = PlainCardItem()
+        plainCardItem.id = ""
+        plainCardItem.label = "Age"
+        plainCardItem.itemValue = userProfileDao.physique.age.toString()
+        plainCardItem.image = ""
+        plainCardItem.profileTabType = ProfileTabType.PhysiqueTab
+        physique.add(plainCardItem)
+
+        /*data.physique.forEach {
             if(it.type == ProfileItemType.PlainCard.value){
-                val plainCardItem = PlainCardItem()
-                plainCardItem.id = it.uid
-                plainCardItem.label = it.ttl
-                plainCardItem.itemValue = it.value
-                plainCardItem.image = it.url
-                plainCardItem.profileTabType = ProfileTabType.PhysiqueTab
-                physique.add(plainCardItem)
+
             }
             else if(it.type == ProfileItemType.BodyTypeCard.value){
                 val bodyTypeItem = BodyTypeItem()
@@ -80,7 +81,6 @@ class ProfileDataMapper : DomainMapper<UserProfileDao, UserProfile> {
         }
 
         data.health.forEach {
-
             val chipCardItem = ChipCardItem()
             chipCardItem.id = it.uid
             chipCardItem.label = it.ttl
@@ -88,13 +88,19 @@ class ProfileDataMapper : DomainMapper<UserProfileDao, UserProfile> {
             chipCardItem.image = it.url
             chipCardItem.profileTabType = ProfileTabType.HealthTargetsTab
             health.add(chipCardItem)
+        }*/
 
-        }
-
-        return ProfileData(physique, lifestyle, health)*/
+        return UserProfile(
+            uid = userProfileDao.uid,
+            contact = contact,
+            physique = arrayListOf<ProfileItem>(),
+            lifestyle = arrayListOf<ProfileItem>(),
+            health = arrayListOf<ProfileItem>(),
+            diet = arrayListOf<ProfileItem>()
+        )
     }
 
-    override fun mapFromDomainModel(domainModel: UserProfile): UserProfileDao {
+    override fun mapFromDomainModel(domainModel: UserProfile): UserProfileResponse {
         TODO("Not yet implemented")
     }
 }

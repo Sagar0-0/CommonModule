@@ -8,7 +8,7 @@ import fit.asta.health.navigation.home_old.banners.networkdata.BannerResponse
 import fit.asta.health.navigation.home_old.categories.networkdata.CategoriesNetData
 import fit.asta.health.navigation.today.networkdata.TodayPlanNetData
 import fit.asta.health.network.data.Status
-import fit.asta.health.profile.model.network.UserProfileDao
+import fit.asta.health.profile.model.network.UserProfileResponse
 import fit.asta.health.profile_old.data.chips.UserInputs
 import fit.asta.health.profile_old.data.userprofile.Data
 import fit.asta.health.profile_old.data.userprofile.UserProfile
@@ -112,7 +112,7 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
         return apiService.getProfile(userId)
     }
 
-    override suspend fun getUserProfile(userId: String): UserProfileDao {
+    override suspend fun getUserProfile(userId: String): UserProfileResponse {
         return apiService.getUserProfile(userId)
     }
 

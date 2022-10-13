@@ -36,7 +36,7 @@ fun networkToString(s: String): String {
 
 data class UserProfile(
     val uid: String,
-    val contact: ArrayList<ProfileItem>,
+    val contact: ProfileItem,
     val physique: ArrayList<ProfileItem>,
     val lifestyle: ArrayList<ProfileItem>,
     val health: ArrayList<ProfileItem>,
@@ -45,6 +45,7 @@ data class UserProfile(
 
 enum class ProfileItemType(val value: Int) {
 
+    Contact(0),
     PlainCard(1),
     BodyTypeCard(2),
     SleepScheduleCard(3),
@@ -53,10 +54,6 @@ enum class ProfileItemType(val value: Int) {
     companion object {
         fun valueOf(value: Int) = values().first { it.value == value }
     }
-}
-
-interface ProfileItem {
-    var profileType: ProfileItemType
 }
 
 enum class ProfileTabType(val value: Int) {
@@ -76,6 +73,21 @@ data class Value(
     var uid: String = "",
     var value: String = ""
 ) : Parcelable
+
+interface ProfileItem {
+    var profileType: ProfileItemType
+}
+
+class ContactItem(
+    var id: String = "",
+    var name: String = "",
+    var email: String = "",
+    var phone: String = "",
+    var imgUrl: String = "",
+    var address: String = "",
+    var profileTabType: ProfileTabType = ProfileTabType.NONE,
+    override var profileType: ProfileItemType = ProfileItemType.Contact
+) : ProfileItem
 
 class BodyTypeItem(
     var id: String = "",
