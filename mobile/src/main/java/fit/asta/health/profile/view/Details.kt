@@ -42,7 +42,6 @@ fun SpiralDesignDetailsPhoto(mainProfile: UserProfile?) {
         UserProfileImg()
 
         Spacer(modifier = Modifier.height(30.dp))
-
         // User Details
         if (mainProfile != null) {
             /*UserDetails(

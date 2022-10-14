@@ -555,6 +555,7 @@
     <string name="sale_at">Sale starting at 345</string>
 
     <string name="btn_done">DONE</string>
+    <string name="media_url">https://img1.asta.fit</string>
 
 
 </resources>

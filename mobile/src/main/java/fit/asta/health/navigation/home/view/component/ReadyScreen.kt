@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.home.view
+package fit.asta.health.navigation.home.view.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -12,7 +12,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.navigation.home.model.domain.ToolsHome
-import fit.asta.health.navigation.home.view.component.*
+import fit.asta.health.navigation.home.view.BannerAutoSlider
+import fit.asta.health.navigation.home.view.Testimonials
 
 @Composable
 @OptIn(ExperimentalPagerApi::class)
@@ -30,9 +31,9 @@ fun ReadyScreen(toolsHome: ToolsHome) {
         ) {
             NameAndMoodHomeScreenHeader()
             Spacer(modifier = Modifier.height(24.dp))
-            toolsHome.weather?.let { WeatherCardImage(temperature = it.temperature) }
+            toolsHome.weather?.let { WeatherCardImage(temperature = it.temperature, location = it.location) }
             Spacer(modifier = Modifier.height(24.dp))
-            BannerAutoSlider()
+            toolsHome.banners?.let { BannerAutoSlider(bannerList = it) }
             MyToolsAndViewAll()
             VerticalImageCards()
             Testimonials()

@@ -24,7 +24,7 @@ class HomeViewModel
 //    val uiState: State<HomeState?>
 //        get() = _uiState
 
-    val mutableState = MutableStateFlow<HomeState>(HomeState.Loading)
+    private val mutableState = MutableStateFlow<HomeState>(HomeState.Loading)
     val state = mutableState.asStateFlow()
 
     init {
