@@ -1,6 +1,5 @@
 package fit.asta.health.navigation.home.view.component
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,8 +29,6 @@ fun VerticalImageCards(toolsList: List<HealthTool>) {
             .padding(vertical = 16.dp)) {
         for (i in toolsList) {
             val imgUrl = "$domainName${i.url}"
-            Log.d("MYTAG",
-                "domainName ---> $domainName, imgURL ---> $imgUrl, endPoint ---> ${i.url}")
             ToolsCardLayout(cardTitle = i.title, imgUrl = imgUrl)
         }
     }
@@ -42,8 +39,7 @@ private fun ToolsCardLayout(
     imgUrl: String,
     cardTitle: String,
 ) {
-    Box(Modifier
-        .fillMaxWidth()) {
+    Box(Modifier.fillMaxWidth()) {
         Column(verticalArrangement = Arrangement.SpaceBetween) {
             Box {
                 AsyncImage(model = imgUrl,
