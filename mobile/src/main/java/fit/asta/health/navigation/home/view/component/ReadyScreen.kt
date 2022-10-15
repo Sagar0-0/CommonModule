@@ -18,24 +18,24 @@ import fit.asta.health.navigation.home.view.Testimonials
 @Composable
 @OptIn(ExperimentalPagerApi::class)
 fun ReadyScreen(toolsHome: ToolsHome) {
-    Box(
-        modifier = Modifier
+    Box(modifier = Modifier
+        .background(color = MaterialTheme.colors.background)
+        .clip(RoundedCornerShape(16.dp))) {
+        Column(Modifier
+            .padding(start = 16.dp, end = 16.dp, top = 16.dp)
             .background(color = MaterialTheme.colors.background)
-            .clip(RoundedCornerShape(16.dp))
-    ) {
-        Column(
-            Modifier
-                .padding(start = 16.dp, end = 16.dp, top = 16.dp)
-                .background(color = MaterialTheme.colors.background)
-                .verticalScroll(rememberScrollState())
-        ) {
+            .verticalScroll(rememberScrollState())) {
             NameAndMoodHomeScreenHeader()
             Spacer(modifier = Modifier.height(24.dp))
-            toolsHome.weather?.let { WeatherCardImage(temperature = it.temperature, location = it.location) }
+            toolsHome.weather?.let {
+                WeatherCardImage(temperature = it.temperature,
+                    location = it.location,
+                    date = "Friday,24 October")
+            }
             Spacer(modifier = Modifier.height(24.dp))
             toolsHome.banners?.let { BannerAutoSlider(bannerList = it) }
-            MyToolsAndViewAll()
-            VerticalImageCards()
+            MyToolsAndViewAll(myTools = "My Tools", allTools = "All Tools")
+            toolsHome.tools?.let { VerticalImageCards(toolsList = it) }
             Testimonials()
             Spacer(modifier = Modifier.height(24.dp))
             RateUsCard()

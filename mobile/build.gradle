@@ -260,7 +260,6 @@ dependencies {
     def coil_version = "2.2.2"
     implementation "io.coil-kt:coil-compose:$coil_version"
 
-
 }
 
 kapt {
