@@ -55,24 +55,23 @@ sealed class ProfileItem {
 
     class ChipCard(
         var id: String = "",
-        var label: String = "",
-        var image: String = "",
-        var value: ArrayList<HealthProperties> = arrayListOf(),
+        var title: String = "",
+        var icon: Int = 0,
+        var value: List<HealthProperties> = arrayListOf(),
         var profileCardType: ProfileItemType = ProfileItemType.ChipsCard
     ) : ProfileItem()
 
     class PlainCard(
         var id: String = "",
-        var label: String = "",
-        var image: String = "",
-        var itemValue: String = "",
-        var updatedValue: String = "",
+        var title: String = "",
+        var icon: Int = 0,
+        var value: String = "",
         var profileCardType: ProfileItemType = ProfileItemType.PlainCard
     ) : ProfileItem()
 
     class SessionCard(
-        var label: String = "Sleep Schedule",
-        var image: Int = 0,
+        var title: String = "",
+        var icon: Int = 0,
         var startTime: String = "",
         var endTime: String = "",
         var profileCardType: ProfileItemType = ProfileItemType.SessionCard

@@ -22,6 +22,7 @@ import fit.asta.health.navigation.home.model.domain.HealthTool
 @Composable
 fun VerticalImageCards(toolsList: List<HealthTool>) {
     val domainName = stringResource(id = R.string.media_url)
+
     FlowRow(mainAxisSpacing = 8.dp,
         crossAxisSpacing = 16.dp,
         modifier = Modifier
@@ -32,6 +33,7 @@ fun VerticalImageCards(toolsList: List<HealthTool>) {
             ToolsCardLayout(cardTitle = i.title, imgUrl = imgUrl)
         }
     }
+
 }
 
 @Composable

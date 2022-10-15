@@ -24,12 +24,13 @@ import fit.asta.health.profile.view.*
 import fit.asta.health.profile.viewmodel.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class UserProfileActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityProfileNewBinding
-    val viewModel: ProfileViewModel by viewModels()
+    private val viewModel: ProfileViewModel by viewModels()
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,11 +38,11 @@ class UserProfileActivity : AppCompatActivity() {
         binding = ActivityProfileNewBinding.inflate(layoutInflater)
         binding.profileComposeView.setContent {
 
-            //val profileState = viewModel.state.collectAsState().value
-            val mainProfile = viewModel.mainProfile.value
             var content by remember { mutableStateOf(1) }
+            val mainProfile = viewModel.mainProfile.value
             val physique = viewModel.physique.value
             val diet = viewModel.diet.value
+            val profileState = viewModel.state.collectAsState().value
 
             Scaffold(
                 topBar = {
@@ -150,10 +151,9 @@ class UserProfileActivity : AppCompatActivity() {
                         }
                     }
                 }
-
             }
-
         }
+
         setContentView(binding.root)
     }
 
