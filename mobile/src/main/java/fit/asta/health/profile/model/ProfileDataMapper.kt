@@ -1,9 +1,6 @@
 package fit.asta.health.profile.model
 
-import fit.asta.health.profile.model.domain.Contact
-import fit.asta.health.profile.model.domain.Physique
-import fit.asta.health.profile.model.domain.ProfileItem
-import fit.asta.health.profile.model.domain.UserProfile
+import fit.asta.health.profile.model.domain.*
 import fit.asta.health.profile.model.network.*
 import fit.asta.health.utils.DomainMapper
 
@@ -19,23 +16,53 @@ class ProfileDataMapper : DomainMapper<NetUserProfileRes, UserProfile> {
         val health = arrayListOf<ProfileItem>()
         val diet = arrayListOf<ProfileItem>()
 
-        lifestyle.add(mapSessionCard(userProfileDao.lifeStyle.sleep))
-        lifestyle.add(mapSessionCard(userProfileDao.lifeStyle.workingHours))
-        lifestyle.add(mapPlainCard(userProfileDao.lifeStyle.physicalActivity))
-        lifestyle.add(mapPlainCard(userProfileDao.lifeStyle.workStyle))
-        lifestyle.add(mapChipCard(userProfileDao.lifeStyle.curActivities))
-        lifestyle.add(mapChipCard(userProfileDao.lifeStyle.prefActivities))
-        lifestyle.add(mapChipCard(userProfileDao.lifeStyle.targets))
+        lifestyle.add(
+            mapSessionCard(
+                UserPropertyType.SleepSchedule,
+                userProfileDao.lifeStyle.sleep
+            )
+        )
+        lifestyle.add(
+            mapSessionCard(
+                UserPropertyType.WorkSchedule,
+                userProfileDao.lifeStyle.workingHours
+            )
+        )
+        lifestyle.add(
+            mapPlainCard(
+                UserPropertyType.PhysActive,
+                userProfileDao.lifeStyle.physicalActivity
+            )
+        )
+        lifestyle.add(mapPlainCard(UserPropertyType.WorkStyle, userProfileDao.lifeStyle.workStyle))
+        lifestyle.add(
+            mapChipCard(
+                UserPropertyType.CurActivities,
+                userProfileDao.lifeStyle.curActivities
+            )
+        )
+        lifestyle.add(
+            mapChipCard(
+                UserPropertyType.PrefActivities,
+                userProfileDao.lifeStyle.prefActivities
+            )
+        )
+        lifestyle.add(
+            mapChipCard(
+                UserPropertyType.LifeStyleTargets,
+                userProfileDao.lifeStyle.targets
+            )
+        )
 
-        health.add(mapChipCard(userProfileDao.health.ailments))
-        health.add(mapChipCard(userProfileDao.health.medications))
-        health.add(mapInjChipCard(userProfileDao.health.injuries))
-        health.add(mapChipCard(userProfileDao.health.targets))
+        health.add(mapChipCard(UserPropertyType.Ailments, userProfileDao.health.ailments))
+        health.add(mapChipCard(UserPropertyType.Medications, userProfileDao.health.medications))
+        health.add(mapInjChipCard(UserPropertyType.Injuries, userProfileDao.health.injuries))
+        health.add(mapChipCard(UserPropertyType.HealthTargets, userProfileDao.health.targets))
 
-        diet.add(mapPrefPlainCard(userProfileDao.diet.preference))
-        diet.add(mapWeekChipCard(userProfileDao.diet.nonVegDays))
-        diet.add(mapChipCard(userProfileDao.diet.cuisines))
-        diet.add(mapChipCard(userProfileDao.diet.allergies))
+        diet.add(mapPrefPlainCard(UserPropertyType.DietPref, userProfileDao.diet.preference))
+        diet.add(mapWeekChipCard(UserPropertyType.NvDays, userProfileDao.diet.nonVegDays))
+        diet.add(mapChipCard(UserPropertyType.Cuisines, userProfileDao.diet.cuisines))
+        diet.add(mapChipCard(UserPropertyType.FoodAllergies, userProfileDao.diet.allergies))
 
         return UserProfile(
             uid = userProfileDao.uid,
@@ -69,34 +96,62 @@ class ProfileDataMapper : DomainMapper<NetUserProfileRes, UserProfile> {
             weight = physique.weight
         )
 
-    private fun mapChipCard(healthProperties: List<NetHealthProperties>) =
+    private fun mapChipCard(
+        userPropertyType: UserPropertyType,
+        healthProperties: List<NetHealthProperties>
+    ) =
         ProfileItem.ChipCard(
-
+            title = userPropertyType.title,
+            icon = userPropertyType.icon,
+            value = healthProperties.map { mapHealthProperties(it) }
         )
 
-    private fun mapInjChipCard(healthProperties: List<NetInjury>) =
-        ProfileItem.ChipCard(
-
+    private fun mapHealthProperties(netHealthProperties: NetHealthProperties) =
+        HealthProperties(
+            id = netHealthProperties.id,
+            type = netHealthProperties.type,
+            code = netHealthProperties.code,
+            name = netHealthProperties.name,
+            description = netHealthProperties.description
         )
 
-    private fun mapWeekChipCard(healthProperties: List<String>) =
+    private fun mapInjChipCard(userPropertyType: UserPropertyType, injuries: List<NetInjury>) =
         ProfileItem.ChipCard(
-
+            title = userPropertyType.title,
+            icon = userPropertyType.icon,
+            //value = injuries
         )
 
-    private fun mapPlainCard(healthProperties: NetHealthProperties) =
+    private fun mapWeekChipCard(userPropertyType: UserPropertyType, weekDays: List<String>) =
+        ProfileItem.ChipCard(
+            title = userPropertyType.title,
+            icon = userPropertyType.icon,
+            //value = weekDays
+        )
+
+    private fun mapPlainCard(
+        userPropertyType: UserPropertyType,
+        healthProperties: NetHealthProperties
+    ) =
         ProfileItem.PlainCard(
-
+            title = userPropertyType.title,
+            icon = userPropertyType.icon,
+            value = healthProperties.name
         )
 
-    private fun mapPrefPlainCard(healthProperties: Int) =
+    private fun mapPrefPlainCard(userPropertyType: UserPropertyType, healthProperties: Int) =
         ProfileItem.PlainCard(
-
+            title = userPropertyType.title,
+            icon = userPropertyType.icon,
+            value = healthProperties.toString()
         )
 
-    private fun mapSessionCard(healthProperties: NetSession) =
+    private fun mapSessionCard(userPropertyType: UserPropertyType, netSession: NetSession) =
         ProfileItem.SessionCard(
-
+            title = userPropertyType.title,
+            icon = userPropertyType.icon,
+            startTime = netSession.bedTime.toString(),
+            endTime = netSession.wakeTime.toString()
         )
 
     override fun mapFromDomainModel(domainModel: UserProfile): NetUserProfileRes {
