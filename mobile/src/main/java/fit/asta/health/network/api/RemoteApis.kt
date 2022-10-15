@@ -8,7 +8,7 @@ import fit.asta.health.navigation.home_old.banners.networkdata.BannerResponse
 import fit.asta.health.navigation.home_old.categories.networkdata.CategoriesNetData
 import fit.asta.health.navigation.today.networkdata.TodayPlanNetData
 import fit.asta.health.network.data.Status
-import fit.asta.health.profile.model.network.UserProfileResponse
+import fit.asta.health.profile.model.network.NetUserProfileRes
 import fit.asta.health.profile_old.data.chips.UserInputs
 import fit.asta.health.profile_old.data.userprofile.Data
 import fit.asta.health.profile_old.data.userprofile.UserProfile
@@ -47,7 +47,7 @@ interface RemoteApis {
     suspend fun putTestimonial(testimonial: TestimonialNetData): Status
     suspend fun getTestimonialList(limit: Int, index: Int): TestimonialListResponse
     suspend fun getProfile(userId: String): UserProfile
-    suspend fun getUserProfile(userId: String): UserProfileResponse
+    suspend fun getUserProfile(userId: String): NetUserProfileRes
     suspend fun getMultiSelectionData(uid: String): UserInputs
     suspend fun postProfile(data: Data)
 

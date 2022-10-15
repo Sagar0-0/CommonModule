@@ -1,127 +1,80 @@
 package fit.asta.health.profile.model.domain
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
-
-/*data class UserProfile(
-    val uid: String,
-    val profileData: Map<String, Any>,
-    val physic: Map<String, Any>,
-    val health: Map<String, Any>,
-    val lifestyle: Map<String, Any>,
-    val diet: Map<String, Any>
-)
-
-data class MainProfile(
-    val profileUrl: String,
-    val name: String,
-    val email: String,
-    val phoneNumber: String,
-    val dateOfBirth: String,
-    val address: String
-)
-
-fun networkToString(s: String): String {
-    return when (s) {
-        "age" -> "age"
-        "ht" -> "height"
-        "wt" -> "weight"
-        "bmi" -> "BMI"
-        "prg" -> "pregnancy"
-        "prgWk" -> "Pregnancy Week"
-        "bdyType" -> "Body Type"
-        else -> "gender"
-    }
-}*/
 
 data class UserProfile(
     val uid: String,
-    val contact: ProfileItem,
-    val physique: ArrayList<ProfileItem>,
+    val contact: Contact,
+    val physique: Physique,
     val lifestyle: ArrayList<ProfileItem>,
     val health: ArrayList<ProfileItem>,
     val diet: ArrayList<ProfileItem>
 )
 
-enum class ProfileItemType(val value: Int) {
-
-    Contact(0),
-    PlainCard(1),
-    BodyTypeCard(2),
-    SleepScheduleCard(3),
-    ChipsCard(4);
-
-    companion object {
-        fun valueOf(value: Int) = values().first { it.value == value }
-    }
-}
-
-enum class ProfileTabType(val value: Int) {
-
-    NONE(1),
-    PhysiqueTab(2),
-    LifeStyleTab(3),
-    HealthTargetsTab(4);
-
-    companion object {
-        fun valueOf(value: Int) = values().first { it.value == value }
-    }
-}
-
-@Parcelize
-data class Value(
-    var uid: String = "",
-    var value: String = ""
-) : Parcelable
-
-interface ProfileItem {
-    var profileType: ProfileItemType
-}
-
-class ContactItem(
+class Contact(
     var id: String = "",
     var name: String = "",
     var email: String = "",
     var phone: String = "",
     var imgUrl: String = "",
-    var address: String = "",
-    var profileTabType: ProfileTabType = ProfileTabType.NONE,
-    override var profileType: ProfileItemType = ProfileItemType.Contact
-) : ProfileItem
+    var address: String = ""
+)
 
-class BodyTypeItem(
-    var id: String = "",
-    var label: String = "",
-    var image: String = "",
-    var bodyTypeValue: String = "",
-    var profileTabType: ProfileTabType = ProfileTabType.NONE,
-    override var profileType: ProfileItemType = ProfileItemType.BodyTypeCard
-) : ProfileItem
+data class Physique(
+    val age: Int = 0,
+    val bodyType: Int = 0,
+    val bmi: Int = 0,
+    val gender: String = "",
+    val height: Int = 0,
+    val isPregnant: Boolean = false,
+    val pregnancyWeek: Int = 0,
+    val weight: Int = 0,
+)
 
-class ChipCardItem(
-    var id: String = "",
-    var label: String = "",
-    var image: String = "",
-    var value: ArrayList<Value> = arrayListOf(),
-    var profileTabType: ProfileTabType = ProfileTabType.NONE,
-    override var profileType: ProfileItemType = ProfileItemType.ChipsCard
-) : ProfileItem
+data class HealthProperties(
+    val id: String = "",
+    val type: Int = 0,
+    val code: String = "",
+    val name: String = "",
+    val description: String = ""
+)
 
-class PlainCardItem(
-    var id: String = "",
-    var label: String = "",
-    var image: String = "",
-    var itemValue: String = "",
-    var updatedValue: String = "",
-    var profileTabType: ProfileTabType = ProfileTabType.NONE,
-    override var profileType: ProfileItemType = ProfileItemType.PlainCard
-) : ProfileItem
+enum class ProfileItemType(val value: Int) {
 
-class SleepScheduleItem(
-    var label: String = "Sleep Schedule",
-    var image: Int = 0,
-    var bedTime: String = "",
-    var wakeUpTime: String = "",
-    var profileTabType: ProfileTabType = ProfileTabType.NONE,
-    override var profileType: ProfileItemType = ProfileItemType.SleepScheduleCard
-) : ProfileItem
+    Contact(1),
+    PlainCard(2),
+    BodyTypeCard(3),
+    SessionCard(4),
+    ChipsCard(5);
+
+    companion object {
+        fun valueOf(value: Int) = values().first { it.value == value }
+    }
+}
+
+sealed class ProfileItem {
+
+    class ChipCard(
+        var id: String = "",
+        var label: String = "",
+        var image: String = "",
+        var value: ArrayList<HealthProperties> = arrayListOf(),
+        var profileCardType: ProfileItemType = ProfileItemType.ChipsCard
+    ) : ProfileItem()
+
+    class PlainCard(
+        var id: String = "",
+        var label: String = "",
+        var image: String = "",
+        var itemValue: String = "",
+        var updatedValue: String = "",
+        var profileCardType: ProfileItemType = ProfileItemType.PlainCard
+    ) : ProfileItem()
+
+    class SessionCard(
+        var label: String = "Sleep Schedule",
+        var image: Int = 0,
+        var startTime: String = "",
+        var endTime: String = "",
+        var profileCardType: ProfileItemType = ProfileItemType.SessionCard
+    ) : ProfileItem()
+}

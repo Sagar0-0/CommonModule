@@ -3,41 +3,34 @@ package fit.asta.health.profile.model.network
 import com.google.gson.annotations.SerializedName
 import fit.asta.health.network.data.Status
 
-/*
-data class ProfileDao(
-    val status: Status,
-    val `data`: Map<String, Any>
-)
-*/
-
-data class UserProfileResponse(
+data class NetUserProfileRes(
     @SerializedName("status")
     val status: Status,
     @SerializedName("data")
-    val userProfile: UserProfileDao
+    val userProfile: NetUserProfile
 )
 
-data class UserProfileDao(
+data class NetUserProfile(
     @SerializedName("uid")
     val uid: String,
     @SerializedName("cont")
-    val contact: Contact,
+    val contact: NetContact,
     @SerializedName("phq")
-    val physique: Physique,
-    @SerializedName("diet")
-    val diet: Diet,
+    val physique: NetPhysique,
     @SerializedName("hlt")
-    val health: Health,
+    val health: NetHealth,
     @SerializedName("ls")
-    val lifeStyle: LifeStyle
+    val lifeStyle: NetLifeStyle,
+    @SerializedName("diet")
+    val diet: NetDiet,
 )
 
-data class Contact(
+data class NetContact(
     @SerializedName("adr")
-    val address: Address,
+    val address: NetAddress,
     @SerializedName("dob")
     val dob: String,
-    @SerializedName("email")
+    @SerializedName("mail")
     val email: String,
     @SerializedName("name")
     val name: String,
@@ -47,7 +40,7 @@ data class Contact(
     val url: String
 )
 
-data class Address(
+data class NetAddress(
     @SerializedName("adr1")
     val address: String,
     @SerializedName("cnt")
@@ -60,10 +53,10 @@ data class Address(
     val street: String
 )
 
-data class Physique(
+data class NetPhysique(
     @SerializedName("age")
     val age: Int,
-    @SerializedName("bdyType")
+    @SerializedName("bdt")
     val bodyType: Int,
     @SerializedName("bmi")
     val bmi: Int,
@@ -73,80 +66,80 @@ data class Physique(
     val height: Int,
     @SerializedName("prg")
     val isPregnant: Boolean,
-    @SerializedName("prgWk")
+    @SerializedName("pw")
     val pregnancyWeek: Int,
     @SerializedName("wt")
     val weight: Int
 )
 
-data class Diet(
+data class NetDiet(
     @SerializedName("alg")
-    val allergies: List<HealthProperties>,
+    val allergies: List<NetHealthProperties>,
     @SerializedName("cns")
-    val cuisines: List<HealthProperties>,
-    @SerializedName("nVeg")
+    val cuisines: List<NetHealthProperties>,
+    @SerializedName("nv")
     val nonVegDays: List<String>,
     @SerializedName("pref")
     val preference: Int,
-    @SerializedName("rst")
-    val foodRestrictions: List<HealthProperties>
+    @SerializedName("frs")
+    val foodRestrictions: List<NetHealthProperties>
 )
 
-data class Health(
+data class NetHealth(
     @SerializedName("ail")
-    val ailments: List<HealthProperties>,
+    val ailments: List<NetHealthProperties>,
     @SerializedName("med")
-    val medications: List<HealthProperties>,
+    val medications: List<NetHealthProperties>,
     @SerializedName("inj")
-    val injuries: List<Injury>,
-    @SerializedName("tgt")
-    val targets: List<HealthProperties>
+    val injuries: List<NetInjury>,
+    @SerializedName("htg")
+    val targets: List<NetHealthProperties>
 )
 
-data class Injury(
+data class NetInjury(
     @SerializedName("id")
     val id: String,
     @SerializedName("code")
-    val code: Int,
+    val code: String,
     @SerializedName("name")
-    val name: Int,
+    val name: String,
     @SerializedName("dur")
-    val sinceWhen: Long
+    val sinceWhen: Double
 )
 
-data class LifeStyle(
+data class NetLifeStyle(
     @SerializedName("slp")
-    val sleep: Session,
-    @SerializedName("wrkHr")
-    val workingHours: Session,
+    val sleep: NetSession,
+    @SerializedName("whr")
+    val workingHours: NetSession,
     @SerializedName("act")
-    val physicalActivity: HealthProperties,
-    @SerializedName("wrkSty")
-    val workStyle: HealthProperties,
-    @SerializedName("curAct")
-    val curActivities: List<HealthProperties>,
-    @SerializedName("prefAct")
-    val prefActivities: List<HealthProperties>,
-    @SerializedName("tgt")
-    val targets: List<HealthProperties>
+    val physicalActivity: NetHealthProperties,
+    @SerializedName("ws")
+    val workStyle: NetHealthProperties,
+    @SerializedName("cat")
+    val curActivities: List<NetHealthProperties>,
+    @SerializedName("pat")
+    val prefActivities: List<NetHealthProperties>,
+    @SerializedName("lst")
+    val targets: List<NetHealthProperties>
 )
 
-data class Session(
-    @SerializedName("start")
+data class NetSession(
+    @SerializedName("str")
     val bedTime: Double,
     @SerializedName("end")
-    val wakeTime: Int
+    val wakeTime: Double
 )
 
-data class HealthProperties(
+data class NetHealthProperties(
     @SerializedName("id")
     val id: String,
     @SerializedName("type")
-    val type: String,
+    val type: Int,
     @SerializedName("code")
-    val code: Int,
+    val code: String,
     @SerializedName("name")
     val name: String,
     @SerializedName("dsc")
-    val description: String,
+    val description: String
 )

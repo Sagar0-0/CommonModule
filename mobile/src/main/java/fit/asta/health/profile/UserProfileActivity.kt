@@ -22,7 +22,9 @@ import fit.asta.health.databinding.ActivityProfileNewBinding
 import fit.asta.health.profile.model.domain.UserProfile
 import fit.asta.health.profile.view.*
 import fit.asta.health.profile.viewmodel.ProfileViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class UserProfileActivity : AppCompatActivity() {
 
@@ -35,6 +37,7 @@ class UserProfileActivity : AppCompatActivity() {
         binding = ActivityProfileNewBinding.inflate(layoutInflater)
         binding.profileComposeView.setContent {
 
+            //val profileState = viewModel.state.collectAsState().value
             val mainProfile = viewModel.mainProfile.value
             var content by remember { mutableStateOf(1) }
             val physique = viewModel.physique.value

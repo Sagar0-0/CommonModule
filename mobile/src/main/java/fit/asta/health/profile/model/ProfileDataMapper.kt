@@ -1,106 +1,105 @@
 package fit.asta.health.profile.model
 
-import fit.asta.health.profile.model.domain.*
-import fit.asta.health.profile.model.network.UserProfileResponse
+import fit.asta.health.profile.model.domain.Contact
+import fit.asta.health.profile.model.domain.Physique
+import fit.asta.health.profile.model.domain.ProfileItem
+import fit.asta.health.profile.model.domain.UserProfile
+import fit.asta.health.profile.model.network.*
 import fit.asta.health.utils.DomainMapper
 
-class ProfileDataMapper : DomainMapper<UserProfileResponse, UserProfile> {
-    override fun mapToDomainModel(networkModel: UserProfileResponse): UserProfile {
-        /*
-        return UserProfile(
-            uid = networkModel.data["uid"].toString(),
-            profileData = networkModel.data["cont"] as Map<String, Any>,
-            physic = networkModel.data["phq"] as Map<String, Any>,
-            lifestyle = networkModel.data["ls"] as Map<String, Any>,
-            health = networkModel.data["hlt"] as Map<String, Any>,
-            diet = networkModel.data["diet"] as Map<String, Any>
-        )
-        */
+class ProfileDataMapper : DomainMapper<NetUserProfileRes, UserProfile> {
+
+    override fun mapToDomainModel(networkModel: NetUserProfileRes): UserProfile {
 
         val userProfileDao = networkModel.userProfile
+        val contact = mapContact(networkModel.userProfile.uid, userProfileDao.contact)
+        val physique = mapPhysique(userProfileDao.physique)
 
-        val contact = ContactItem(
-            id = userProfileDao.uid,
-            name = userProfileDao.contact.name,
-            email = userProfileDao.contact.email,
-            phone = userProfileDao.contact.ph,
-            imgUrl = userProfileDao.contact.url,
-            address = userProfileDao.contact.address.address
-        )
-
-        val physique = arrayListOf<ProfileItem>()
         val lifestyle = arrayListOf<ProfileItem>()
         val health = arrayListOf<ProfileItem>()
+        val diet = arrayListOf<ProfileItem>()
 
-        val plainCardItem = PlainCardItem()
-        plainCardItem.id = ""
-        plainCardItem.label = "Age"
-        plainCardItem.itemValue = userProfileDao.physique.age.toString()
-        plainCardItem.image = ""
-        plainCardItem.profileTabType = ProfileTabType.PhysiqueTab
-        physique.add(plainCardItem)
+        lifestyle.add(mapSessionCard(userProfileDao.lifeStyle.sleep))
+        lifestyle.add(mapSessionCard(userProfileDao.lifeStyle.workingHours))
+        lifestyle.add(mapPlainCard(userProfileDao.lifeStyle.physicalActivity))
+        lifestyle.add(mapPlainCard(userProfileDao.lifeStyle.workStyle))
+        lifestyle.add(mapChipCard(userProfileDao.lifeStyle.curActivities))
+        lifestyle.add(mapChipCard(userProfileDao.lifeStyle.prefActivities))
+        lifestyle.add(mapChipCard(userProfileDao.lifeStyle.targets))
 
-        /*data.physique.forEach {
-            if(it.type == ProfileItemType.PlainCard.value){
+        health.add(mapChipCard(userProfileDao.health.ailments))
+        health.add(mapChipCard(userProfileDao.health.medications))
+        health.add(mapInjChipCard(userProfileDao.health.injuries))
+        health.add(mapChipCard(userProfileDao.health.targets))
 
-            }
-            else if(it.type == ProfileItemType.BodyTypeCard.value){
-                val bodyTypeItem = BodyTypeItem()
-                bodyTypeItem.id = it.uid
-                bodyTypeItem.label = it.ttl
-                bodyTypeItem.bodyTypeValue = it.value
-                bodyTypeItem.image = it.url
-                bodyTypeItem.profileTabType = ProfileTabType.PhysiqueTab
-                physique.add(bodyTypeItem)
-            }
-        }
-
-        data.lifestyle.let {
-            val schedule = SleepScheduleItem()
-            schedule.label = it.schedule.ttl
-            schedule.bedTime = it.schedule.bedTime
-            schedule.wakeUpTime = it.schedule.wakeUp
-            schedule.profileTabType = ProfileTabType.LifeStyleTab
-            lifestyle.add(schedule)
-            val plainCardItem = PlainCardItem()
-            plainCardItem.id = it.plainCard.uid
-            plainCardItem.label = it.plainCard.ttl
-            plainCardItem.itemValue = it.plainCard.value
-            plainCardItem.image = it.plainCard.url
-            plainCardItem.profileTabType = ProfileTabType.LifeStyleTab
-            lifestyle.add(plainCardItem)
-            it.chipCards.forEach { chip ->
-                val chipCardItem = ChipCardItem()
-                chipCardItem.id = chip.uid
-                chipCardItem.label = chip.ttl
-                chipCardItem.value = chip.value
-                chipCardItem.image = chip.url
-                chipCardItem.profileTabType = ProfileTabType.LifeStyleTab
-                lifestyle.add(chipCardItem)
-            }
-        }
-
-        data.health.forEach {
-            val chipCardItem = ChipCardItem()
-            chipCardItem.id = it.uid
-            chipCardItem.label = it.ttl
-            chipCardItem.value = it.value
-            chipCardItem.image = it.url
-            chipCardItem.profileTabType = ProfileTabType.HealthTargetsTab
-            health.add(chipCardItem)
-        }*/
+        diet.add(mapPrefPlainCard(userProfileDao.diet.preference))
+        diet.add(mapWeekChipCard(userProfileDao.diet.nonVegDays))
+        diet.add(mapChipCard(userProfileDao.diet.cuisines))
+        diet.add(mapChipCard(userProfileDao.diet.allergies))
 
         return UserProfile(
             uid = userProfileDao.uid,
             contact = contact,
-            physique = arrayListOf<ProfileItem>(),
-            lifestyle = arrayListOf<ProfileItem>(),
-            health = arrayListOf<ProfileItem>(),
-            diet = arrayListOf<ProfileItem>()
+            physique = physique,
+            lifestyle = lifestyle,
+            health = health,
+            diet = diet
         )
     }
 
-    override fun mapFromDomainModel(domainModel: UserProfile): UserProfileResponse {
+    private fun mapContact(uid: String, contact: NetContact) =
+        Contact(
+            id = uid,
+            name = contact.name,
+            email = contact.email,
+            phone = contact.ph,
+            imgUrl = contact.url,
+            address = contact.address.address
+        )
+
+    private fun mapPhysique(physique: NetPhysique) =
+        Physique(
+            age = physique.age,
+            bodyType = physique.bodyType,
+            bmi = physique.bmi,
+            gender = physique.gender,
+            height = physique.height,
+            isPregnant = physique.isPregnant,
+            pregnancyWeek = physique.pregnancyWeek,
+            weight = physique.weight
+        )
+
+    private fun mapChipCard(healthProperties: List<NetHealthProperties>) =
+        ProfileItem.ChipCard(
+
+        )
+
+    private fun mapInjChipCard(healthProperties: List<NetInjury>) =
+        ProfileItem.ChipCard(
+
+        )
+
+    private fun mapWeekChipCard(healthProperties: List<String>) =
+        ProfileItem.ChipCard(
+
+        )
+
+    private fun mapPlainCard(healthProperties: NetHealthProperties) =
+        ProfileItem.PlainCard(
+
+        )
+
+    private fun mapPrefPlainCard(healthProperties: Int) =
+        ProfileItem.PlainCard(
+
+        )
+
+    private fun mapSessionCard(healthProperties: NetSession) =
+        ProfileItem.SessionCard(
+
+        )
+
+    override fun mapFromDomainModel(domainModel: UserProfile): NetUserProfileRes {
         TODO("Not yet implemented")
     }
 }
