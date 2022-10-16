@@ -36,7 +36,7 @@ fun ReadyScreen(toolsHome: ToolsHome) {
             toolsHome.banners?.let { BannerAutoSlider(bannerList = it) }
             MyToolsAndViewAll(myTools = "My Tools", allTools = "All Tools")
             toolsHome.tools?.let { VerticalImageCards(toolsList = it) }
-            Testimonials()
+            toolsHome.testimonials?.let { Testimonials(testimonialsList = it) }
             Spacer(modifier = Modifier.height(24.dp))
             RateUsCard()
             Spacer(modifier = Modifier.height(24.dp))

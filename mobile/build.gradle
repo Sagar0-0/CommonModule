@@ -84,7 +84,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion compose_version
+        kotlinCompilerExtensionVersion = compose_version
     }
 }
 
@@ -120,6 +120,8 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.6.0'
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation "androidx.compose.foundation:foundation:1.3.0-rc01"
+
 
     //Material theme components
     implementation 'com.google.android.material:material:1.6.1'
@@ -203,13 +205,11 @@ dependencies {
 
     // Retrofit and OkHttp
     def retrofit = "2.9.0"
-    retrofit = [
-            retrofit               : "com.squareup.retrofit2:retrofit:$retrofit",
-            retrofitRxJavaAdapter  : "com.squareup.retrofit2:adapter-rxjava2:$retrofit",
-            retrofitGsonConverter  : "com.squareup.retrofit2:converter-gson:$retrofit",
-            retrofitScalarConverter: "com.squareup.retrofit2:converter-scalars:$retrofit",
-            retrofitMoshiConverter : "com.squareup.retrofit2:converter-moshi:$retrofit"
-    ]
+    retrofit = [retrofit               : "com.squareup.retrofit2:retrofit:$retrofit",
+                retrofitRxJavaAdapter  : "com.squareup.retrofit2:adapter-rxjava2:$retrofit",
+                retrofitGsonConverter  : "com.squareup.retrofit2:converter-gson:$retrofit",
+                retrofitScalarConverter: "com.squareup.retrofit2:converter-scalars:$retrofit",
+                retrofitMoshiConverter : "com.squareup.retrofit2:converter-moshi:$retrofit"]
 
     def okhttp3 = "5.0.0-alpha.3"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3"

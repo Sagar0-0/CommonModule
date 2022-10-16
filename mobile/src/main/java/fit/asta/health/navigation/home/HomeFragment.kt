@@ -15,6 +15,7 @@ import fit.asta.health.navigation.home.view.HomeContent
 import fit.asta.health.navigation.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+
 @ExperimentalMaterialApi
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
