@@ -8,10 +8,13 @@ import fit.asta.health.navigation.home_old.banners.networkdata.BannerResponse
 import fit.asta.health.navigation.home_old.categories.networkdata.CategoriesNetData
 import fit.asta.health.navigation.today.networkdata.TodayPlanNetData
 import fit.asta.health.network.data.Status
+import fit.asta.health.old_profile.data.chips.UserInputs
+import fit.asta.health.old_profile.data.userprofile.Data
+import fit.asta.health.old_profile.data.userprofile.UserProfile
+import fit.asta.health.old_testimonials.networkdata.TestimonialListResponse
+import fit.asta.health.old_testimonials.networkdata.TestimonialNetData
+import fit.asta.health.old_testimonials.networkdata.TestimonialResponse
 import fit.asta.health.profile.model.network.NetUserProfileRes
-import fit.asta.health.profile_old.data.chips.UserInputs
-import fit.asta.health.profile_old.data.userprofile.Data
-import fit.asta.health.profile_old.data.userprofile.UserProfile
 import fit.asta.health.schedule.networkdata.ScheduleNetData
 import fit.asta.health.schedule.networkdata.ScheduleResponse
 import fit.asta.health.schedule.tags.networkdata.ScheduleTagNetData
@@ -19,9 +22,6 @@ import fit.asta.health.schedule.tags.networkdata.ScheduleTagResponse
 import fit.asta.health.schedule.tags.networkdata.ScheduleTagsResponse
 import fit.asta.health.subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.subscription.networkdata.SubscriptionStatusResponse
-import fit.asta.health.testimonials.networkdata.TestimonialListResponse
-import fit.asta.health.testimonials.networkdata.TestimonialNetData
-import fit.asta.health.testimonials.networkdata.TestimonialResponse
 import fit.asta.health.tools.water.model.network.response.NetWaterToolRes
 import retrofit2.http.*
 

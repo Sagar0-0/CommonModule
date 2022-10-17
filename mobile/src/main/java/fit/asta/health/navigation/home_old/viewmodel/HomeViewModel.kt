@@ -10,7 +10,7 @@ import fit.asta.health.navigation.home_old.banners.BannersRepo
 import fit.asta.health.navigation.home_old.categories.CategoriesDataStoreImpl
 import fit.asta.health.navigation.home_old.categories.CategoriesRepo
 import fit.asta.health.navigation.home_old.categories.data.CategoryData
-import fit.asta.health.testimonials.TestimonialsRepo
+import fit.asta.health.old_testimonials.TestimonialsRepo
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
