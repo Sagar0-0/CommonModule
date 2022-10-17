@@ -3,6 +3,7 @@ package fit.asta.health.network.api
 import fit.asta.health.course.details.networkdata.CourseDetailsResponse
 import fit.asta.health.course.listing.networkdata.CoursesListNetData
 import fit.asta.health.course.session.networkdata.SessionResponse
+import fit.asta.health.feedback.model.network.response.NetFeedbackRes
 import fit.asta.health.navigation.home.model.network.response.HealthTools
 import fit.asta.health.navigation.home_old.banners.networkdata.BannerResponse
 import fit.asta.health.navigation.home_old.categories.networkdata.CategoriesNetData
@@ -143,7 +144,10 @@ interface ApiService {
     suspend fun getTodayPlan(@Query("userId") userId: String): TodayPlanNetData
 
     @GET("tool/water/get")
-    suspend fun getWaterTool(userId: String): NetWaterToolRes
+    suspend fun getWaterTool(@Query("userId") userId: String): NetWaterToolRes
+
+    @GET("feedback/get?")
+    suspend fun getFeedback(@Query("userId") userId: String): NetFeedbackRes
 
     /*
     @POST("user/preference/favourite")

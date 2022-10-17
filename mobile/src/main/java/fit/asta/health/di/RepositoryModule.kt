@@ -4,6 +4,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import fit.asta.health.feedback.model.FeedbackDataMapper
+import fit.asta.health.feedback.model.FeedbackRepo
+import fit.asta.health.feedback.model.FeedbackRepoImpl
 import fit.asta.health.navigation.home.model.ToolsHomeDataMapper
 import fit.asta.health.navigation.home.model.ToolsHomeRepository
 import fit.asta.health.navigation.home.model.ToolsHomeRepositoryImpl
@@ -94,6 +97,24 @@ object RepositoryModule {
         return WaterToolRepositoryImpl(
             remoteApi = remoteApi,
             mapper = waterToolMapper
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideFeedbackDataMapper(): FeedbackDataMapper {
+        return FeedbackDataMapper()
+    }
+
+    @Singleton
+    @Provides
+    fun provideFeedbackRepo(
+        remoteApi: RemoteApis,
+        feedbackMapper: FeedbackDataMapper,
+    ): FeedbackRepo {
+        return FeedbackRepoImpl(
+            remoteApi = remoteApi,
+            mapper = feedbackMapper
         )
     }
 }
