@@ -4,6 +4,6 @@ import fit.asta.health.tools.water.model.domain.WaterTool
 import kotlinx.coroutines.flow.Flow
 
 
-interface WaterToolRepository {
+interface WaterToolRepo {
     suspend fun getWaterTool(userId: String): Flow<WaterTool>
 }

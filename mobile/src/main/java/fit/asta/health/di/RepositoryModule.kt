@@ -17,9 +17,12 @@ import fit.asta.health.profile.model.ProfileRepoImpl
 import fit.asta.health.testimonials.model.TestimonialDataMapper
 import fit.asta.health.testimonials.model.TestimonialRepository
 import fit.asta.health.testimonials.model.TestimonialRepositoryImpl
+import fit.asta.health.tools.sunlight.model.SunlightToolDataMapper
+import fit.asta.health.tools.sunlight.model.SunlightToolRepo
+import fit.asta.health.tools.sunlight.model.SunlightToolRepoImpl
 import fit.asta.health.tools.water.model.WaterToolDataMapper
-import fit.asta.health.tools.water.model.WaterToolRepository
-import fit.asta.health.tools.water.model.WaterToolRepositoryImpl
+import fit.asta.health.tools.water.model.WaterToolRepo
+import fit.asta.health.tools.water.model.WaterToolRepoImpl
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -84,17 +87,35 @@ object RepositoryModule {
 
     @Singleton
     @Provides
+    fun provideSunlightToolDataMapper(): SunlightToolDataMapper {
+        return SunlightToolDataMapper()
+    }
+
+    @Singleton
+    @Provides
+    fun provideSunlightToolRepo(
+        remoteApi: RemoteApis,
+        sunlightToolMapper: SunlightToolDataMapper,
+    ): SunlightToolRepo {
+        return SunlightToolRepoImpl(
+            remoteApi = remoteApi,
+            mapper = sunlightToolMapper
+        )
+    }
+
+    @Singleton
+    @Provides
     fun provideWaterToolDataMapper(): WaterToolDataMapper {
         return WaterToolDataMapper()
     }
 
     @Singleton
     @Provides
-    fun provideWaterToolRepository(
+    fun provideWaterToolRepo(
         remoteApi: RemoteApis,
         waterToolMapper: WaterToolDataMapper,
-    ): WaterToolRepository {
-        return WaterToolRepositoryImpl(
+    ): WaterToolRepo {
+        return WaterToolRepoImpl(
             remoteApi = remoteApi,
             mapper = waterToolMapper
         )

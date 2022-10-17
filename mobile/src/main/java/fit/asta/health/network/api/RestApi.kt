@@ -24,6 +24,7 @@ import fit.asta.health.schedule.tags.networkdata.ScheduleTagsResponse
 import fit.asta.health.subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.subscription.networkdata.SubscriptionStatusResponse
 import fit.asta.health.testimonials.model.network.response.NetTestimonialRes
+import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
 import fit.asta.health.tools.water.model.network.response.NetWaterToolRes
 import fit.asta.health.utils.NetworkUtil
 import okhttp3.OkHttpClient
@@ -157,6 +158,10 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
 
     override suspend fun getScheduleTagList(): ScheduleTagsResponse {
         return apiService.getScheduleTagList()
+    }
+
+    override suspend fun getSunlightTool(userId: String): NetSunlightToolRes {
+        return apiService.getSunlightTool(userId)
     }
 
     override suspend fun getWaterTool(userId: String): NetWaterToolRes {
