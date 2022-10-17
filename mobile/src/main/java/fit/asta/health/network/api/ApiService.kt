@@ -22,6 +22,7 @@ import fit.asta.health.subscription.networkdata.SubscriptionStatusResponse
 import fit.asta.health.testimonials.networkdata.TestimonialListResponse
 import fit.asta.health.testimonials.networkdata.TestimonialNetData
 import fit.asta.health.testimonials.networkdata.TestimonialResponse
+import fit.asta.health.tools.water.model.network.response.NetWaterToolRes
 import retrofit2.http.*
 
 
@@ -133,6 +134,9 @@ interface ApiService {
 
     @GET("schedule/plan/list/get")
     suspend fun getTodayPlan(@Query("userId") userId: String): TodayPlanNetData
+
+    @GET("tool/water/get")
+    suspend fun getWaterTool(userId: String): NetWaterToolRes
 
     /*
     @POST("user/preference/favourite")

@@ -22,6 +22,7 @@ import fit.asta.health.subscription.networkdata.SubscriptionStatusResponse
 import fit.asta.health.testimonials.networkdata.TestimonialListResponse
 import fit.asta.health.testimonials.networkdata.TestimonialNetData
 import fit.asta.health.testimonials.networkdata.TestimonialResponse
+import fit.asta.health.tools.water.model.network.response.NetWaterToolRes
 import fit.asta.health.utils.NetworkUtil
 import okhttp3.OkHttpClient
 
@@ -150,5 +151,9 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
 
     override suspend fun getScheduleTagList(): ScheduleTagsResponse {
         return apiService.getScheduleTagList()
+    }
+
+    override suspend fun getWaterTool(userId: String): NetWaterToolRes {
+        return apiService.getWaterTool(userId)
     }
 }

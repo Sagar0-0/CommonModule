@@ -8,7 +8,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.BuildConfig
-import fit.asta.health.navigation.home.model.ToolsHomeDataMapper
 import fit.asta.health.network.AstaNetwork
 import fit.asta.health.network.TokenProvider
 import fit.asta.health.network.api.ApiService
@@ -24,12 +23,6 @@ import javax.inject.Singleton
 @Module(includes = [AppModule::class])
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-
-    @Singleton
-    @Provides
-    fun provideToolsHomeDataMapper(): ToolsHomeDataMapper {
-        return ToolsHomeDataMapper()
-    }
 
     @Singleton
     @Provides

@@ -22,6 +22,7 @@ import fit.asta.health.subscription.networkdata.SubscriptionStatusResponse
 import fit.asta.health.testimonials.networkdata.TestimonialListResponse
 import fit.asta.health.testimonials.networkdata.TestimonialNetData
 import fit.asta.health.testimonials.networkdata.TestimonialResponse
+import fit.asta.health.tools.water.model.network.response.NetWaterToolRes
 
 interface RemoteApis {
 
@@ -59,4 +60,7 @@ interface RemoteApis {
     suspend fun putScheduleTag(schedule: ScheduleTagNetData): Status
     suspend fun getScheduleTagList(): ScheduleTagsResponse
     suspend fun getTodayPlan(userId: String): TodayPlanNetData
+
+    //Health Tools
+    suspend fun getWaterTool(userId: String): NetWaterToolRes
 }

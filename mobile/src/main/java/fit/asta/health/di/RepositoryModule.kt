@@ -11,12 +11,21 @@ import fit.asta.health.network.api.RemoteApis
 import fit.asta.health.profile.model.ProfileDataMapper
 import fit.asta.health.profile.model.ProfileRepo
 import fit.asta.health.profile.model.ProfileRepoImpl
+import fit.asta.health.tools.water.model.WaterToolDataMapper
+import fit.asta.health.tools.water.model.WaterToolRepository
+import fit.asta.health.tools.water.model.WaterToolRepositoryImpl
 import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {
+
+    @Singleton
+    @Provides
+    fun provideToolsHomeDataMapper(): ToolsHomeDataMapper {
+        return ToolsHomeDataMapper()
+    }
 
     @Singleton
     @Provides
@@ -46,6 +55,24 @@ object RepositoryModule {
         return ProfileRepoImpl(
             remoteApi = remoteApi,
             mapper = recipeMapper
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideWaterToolDataMapper(): WaterToolDataMapper {
+        return WaterToolDataMapper()
+    }
+
+    @Singleton
+    @Provides
+    fun provideWaterToolRepository(
+        remoteApi: RemoteApis,
+        waterToolMapper: WaterToolDataMapper,
+    ): WaterToolRepository {
+        return WaterToolRepositoryImpl(
+            remoteApi = remoteApi,
+            mapper = waterToolMapper
         )
     }
 }
