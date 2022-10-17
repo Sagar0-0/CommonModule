@@ -22,6 +22,7 @@ import fit.asta.health.schedule.tags.networkdata.ScheduleTagResponse
 import fit.asta.health.schedule.tags.networkdata.ScheduleTagsResponse
 import fit.asta.health.subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.subscription.networkdata.SubscriptionStatusResponse
+import fit.asta.health.testimonials.model.network.response.NetTestimonialRes
 import fit.asta.health.tools.water.model.network.response.NetWaterToolRes
 
 interface RemoteApis {
@@ -36,6 +37,7 @@ interface RemoteApis {
         time: String
     ): HealthTools
 
+    suspend fun getTestimonials(limit: Int, index: Int): NetTestimonialRes
     suspend fun getBanners(type: String): BannerResponse
     suspend fun getCategories(type: String): CategoriesNetData
     suspend fun getCoursesList(categoryId: String, limit: Int, index: Int): CoursesListNetData

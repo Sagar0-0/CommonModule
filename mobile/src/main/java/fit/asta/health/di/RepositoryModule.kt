@@ -11,6 +11,9 @@ import fit.asta.health.network.api.RemoteApis
 import fit.asta.health.profile.model.ProfileDataMapper
 import fit.asta.health.profile.model.ProfileRepo
 import fit.asta.health.profile.model.ProfileRepoImpl
+import fit.asta.health.testimonials.model.TestimonialDataMapper
+import fit.asta.health.testimonials.model.TestimonialRepository
+import fit.asta.health.testimonials.model.TestimonialRepositoryImpl
 import fit.asta.health.tools.water.model.WaterToolDataMapper
 import fit.asta.health.tools.water.model.WaterToolRepository
 import fit.asta.health.tools.water.model.WaterToolRepositoryImpl
@@ -36,6 +39,24 @@ object RepositoryModule {
         return ToolsHomeRepositoryImpl(
             remoteApi = remoteApi,
             mapper = toolsHomeMapper
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideTestimonialDataMapper(): TestimonialDataMapper {
+        return TestimonialDataMapper()
+    }
+
+    @Singleton
+    @Provides
+    fun provideTestimonialRepository(
+        remoteApi: RemoteApis,
+        testimonialMapper: TestimonialDataMapper,
+    ): TestimonialRepository {
+        return TestimonialRepositoryImpl(
+            remoteApi = remoteApi,
+            mapper = testimonialMapper
         )
     }
 

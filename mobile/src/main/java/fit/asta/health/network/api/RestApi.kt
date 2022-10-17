@@ -22,6 +22,7 @@ import fit.asta.health.schedule.tags.networkdata.ScheduleTagResponse
 import fit.asta.health.schedule.tags.networkdata.ScheduleTagsResponse
 import fit.asta.health.subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.subscription.networkdata.SubscriptionStatusResponse
+import fit.asta.health.testimonials.model.network.response.NetTestimonialRes
 import fit.asta.health.tools.water.model.network.response.NetWaterToolRes
 import fit.asta.health.utils.NetworkUtil
 import okhttp3.OkHttpClient
@@ -51,6 +52,10 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
             endDate,
             time
         )
+    }
+
+    override suspend fun getTestimonials(limit: Int, index: Int): NetTestimonialRes {
+        return apiService.getTestimonials(limit, index)
     }
 
     override suspend fun getBanners(type: String): BannerResponse {

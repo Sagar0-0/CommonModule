@@ -22,6 +22,7 @@ import fit.asta.health.schedule.tags.networkdata.ScheduleTagResponse
 import fit.asta.health.schedule.tags.networkdata.ScheduleTagsResponse
 import fit.asta.health.subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.subscription.networkdata.SubscriptionStatusResponse
+import fit.asta.health.testimonials.model.network.response.NetTestimonialRes
 import fit.asta.health.tools.water.model.network.response.NetWaterToolRes
 import retrofit2.http.*
 
@@ -75,6 +76,12 @@ interface ApiService {
     @GET("referral/get")
     suspend fun getReferralInfo(@Query("userId") userId: String): OfferNetData
      */
+
+    @GET("testimonial/list/get?")
+    suspend fun getTestimonials(
+        @Query("limit") limit: Int,
+        @Query("index") index: Int
+    ): NetTestimonialRes
 
     @POST("testimonial/post")
     suspend fun postTestimonial(@Body testimonial: TestimonialNetData): Status
