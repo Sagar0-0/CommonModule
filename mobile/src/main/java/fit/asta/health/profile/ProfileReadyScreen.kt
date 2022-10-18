@@ -67,7 +67,7 @@ fun ProfileReadyScreen(userProfile: UserProfile) {
                     UserBasicHealthDetail(userProfile.physique)
                 }
                 3 -> {
-                    HealthLayout()
+                    HealthLayout(userProfile.health)
                 }
                 4 -> {
                     LifeStyleLayout()

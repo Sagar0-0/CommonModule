@@ -1,9 +1,6 @@
 package fit.asta.health.profile.view
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -33,7 +30,8 @@ fun SpiralDesignDetailsPhoto(mainProfile: Contact) {
 
     Column(modifier = Modifier
         .padding(top = 16.dp)
-        .fillMaxWidth(),
+        .fillMaxWidth()
+        .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally) {
 
         //User Profile Photo with Spiral Design

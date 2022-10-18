@@ -27,11 +27,7 @@ class UserProfileActivity : AppCompatActivity() {
         binding = ActivityProfileNewBinding.inflate(layoutInflater)
         binding.profileComposeView.setContent {
 
-            var content by remember { mutableStateOf(1) }
-            val mainProfile = viewModel.mainProfile.value
-            val physique = viewModel.physique.value
-            val diet = viewModel.diet.value
-            var profileState = viewModel.state.collectAsState().value
+            val profileState = viewModel.state.collectAsState().value
 
             ProfileContent(profileState = profileState)
 

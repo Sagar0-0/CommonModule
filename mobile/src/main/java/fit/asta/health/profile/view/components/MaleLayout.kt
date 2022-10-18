@@ -9,82 +9,63 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
 import fit.asta.health.profile.model.domain.Physique
+import java.util.*
 
 @Composable
 fun MaleLayout(m: Physique) {
     Row(modifier = Modifier.fillMaxWidth()) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .shadow(elevation = 5.dp),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            UserBasicDetailsCardLayout(
-                cardImg = R.drawable.age,
+        Card(modifier = Modifier
+            .fillMaxWidth()
+            .weight(1f)
+            .shadow(elevation = 5.dp),
+            shape = RoundedCornerShape(8.dp)) {
+            UserBasicDetailsCardLayout(cardImg = R.drawable.age,
                 cardType = "AGE",
-                cardValue = m.age.toString()
-            )
+                cardValue = m.age.toString())
         }
         Spacer(modifier = Modifier.width(16.dp))
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .shadow(elevation = 5.dp),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            UserBasicDetailsCardLayout(
-                cardImg = R.drawable.gender,
+        Card(modifier = Modifier
+            .fillMaxWidth()
+            .weight(1f)
+            .shadow(elevation = 5.dp),
+            shape = RoundedCornerShape(8.dp)) {
+            UserBasicDetailsCardLayout(cardImg = R.drawable.gender,
                 cardType = "GENDER",
-                cardValue = m.gender
-            )
+                cardValue = m.gender.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() })
         }
     }
     Spacer(modifier = Modifier.height(16.dp))
     Row(modifier = Modifier.fillMaxWidth()) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .shadow(elevation = 5.dp),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            UserBasicDetailsCardLayout(
-                cardImg = R.drawable.height,
+        Card(modifier = Modifier
+            .fillMaxWidth()
+            .weight(1f)
+            .shadow(elevation = 5.dp),
+            shape = RoundedCornerShape(8.dp)) {
+            UserBasicDetailsCardLayout(cardImg = R.drawable.height,
                 cardType = "HEIGHT",
-                cardValue = m.height.toString()
-            )
+                cardValue = "${m.height}Cm")
         }
         Spacer(modifier = Modifier.width(16.dp))
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .shadow(elevation = 5.dp),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            UserBasicDetailsCardLayout(
-                cardImg = R.drawable.weight,
+        Card(modifier = Modifier
+            .fillMaxWidth()
+            .weight(1f)
+            .shadow(elevation = 5.dp),
+            shape = RoundedCornerShape(8.dp)) {
+            UserBasicDetailsCardLayout(cardImg = R.drawable.weight,
                 cardType = "WEIGHT",
-                cardValue = m.weight.toString()
-            )
+                cardValue = "${m.weight}Kg")
         }
     }
     Spacer(modifier = Modifier.height(16.dp))
     Row(modifier = Modifier.fillMaxWidth(0.52f)) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .shadow(elevation = 5.dp),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            UserBasicDetailsCardLayout(
-                cardImg = R.drawable.bmi,
+        Card(modifier = Modifier
+            .fillMaxWidth()
+            .weight(1f)
+            .shadow(elevation = 5.dp),
+            shape = RoundedCornerShape(8.dp)) {
+            UserBasicDetailsCardLayout(cardImg = R.drawable.bmi,
                 cardType = "BMI",
-                cardValue = m.bmi.toString()
-            )
+                cardValue = m.bmi.toString())
         }
         Spacer(modifier = Modifier.width(16.dp))
     }
