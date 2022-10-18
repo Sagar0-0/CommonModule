@@ -9,12 +9,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
+import fit.asta.health.profile.model.domain.Physique
 import fit.asta.health.profile.view.components.FemaleLayout
 import fit.asta.health.profile.view.components.MaleLayout
 import fit.asta.health.profile.view.components.UserBodyType
 
 @Composable
-fun UserBasicHealthDetail(m: Map<String, Any?>) {
+fun UserBasicHealthDetail(m: Physique) {
     Column(Modifier
         .fillMaxWidth()
         .padding(vertical = 16.dp, horizontal = 16.dp)
@@ -22,11 +23,9 @@ fun UserBasicHealthDetail(m: Map<String, Any?>) {
         .background(color = Color.White)) {
 
 
-        if (m["gen"] == "Female") FemaleLayout(m) else MaleLayout(m)
+        if (m.gender == "Female") FemaleLayout(m) else MaleLayout(m)
 
         Spacer(modifier = Modifier.height(16.dp))
-        UserBodyType(bodyType = m.keys.last(),
-            bodyImg = R.drawable.bodyfat,
-            bodyStatus = m.values.last().toString())
+        UserBodyType(bodyType = m.bodyType.toString(), bodyImg = R.drawable.bodyfat)
     }
 }

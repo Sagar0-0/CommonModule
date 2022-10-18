@@ -8,9 +8,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
+import fit.asta.health.profile.model.domain.Physique
 
 @Composable
-fun MaleLayout(m: Map<String, Any?>) {
+fun MaleLayout(m: Physique) {
     Row(modifier = Modifier.fillMaxWidth()) {
         Card(
             modifier = Modifier
@@ -22,7 +23,7 @@ fun MaleLayout(m: Map<String, Any?>) {
             UserBasicDetailsCardLayout(
                 cardImg = R.drawable.age,
                 cardType = "AGE",
-                cardValue = m["age"].toString()
+                cardValue = m.age.toString()
             )
         }
         Spacer(modifier = Modifier.width(16.dp))
@@ -36,7 +37,7 @@ fun MaleLayout(m: Map<String, Any?>) {
             UserBasicDetailsCardLayout(
                 cardImg = R.drawable.gender,
                 cardType = "GENDER",
-                cardValue = m["gen"].toString()
+                cardValue = m.gender
             )
         }
     }
@@ -52,7 +53,7 @@ fun MaleLayout(m: Map<String, Any?>) {
             UserBasicDetailsCardLayout(
                 cardImg = R.drawable.height,
                 cardType = "HEIGHT",
-                cardValue = m["ht"].toString()
+                cardValue = m.height.toString()
             )
         }
         Spacer(modifier = Modifier.width(16.dp))
@@ -66,7 +67,7 @@ fun MaleLayout(m: Map<String, Any?>) {
             UserBasicDetailsCardLayout(
                 cardImg = R.drawable.weight,
                 cardType = "WEIGHT",
-                cardValue = m["wt"].toString()
+                cardValue = m.weight.toString()
             )
         }
     }
@@ -82,7 +83,7 @@ fun MaleLayout(m: Map<String, Any?>) {
             UserBasicDetailsCardLayout(
                 cardImg = R.drawable.bmi,
                 cardType = "BMI",
-                cardValue = m["bmi"].toString()
+                cardValue = m.bmi.toString()
             )
         }
         Spacer(modifier = Modifier.width(16.dp))
