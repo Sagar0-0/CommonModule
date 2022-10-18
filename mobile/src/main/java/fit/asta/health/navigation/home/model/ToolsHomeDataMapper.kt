@@ -1,14 +1,14 @@
 package fit.asta.health.navigation.home.model
 
 import fit.asta.health.navigation.home.model.domain.*
-import fit.asta.health.navigation.home.model.network.response.HealthTools
+import fit.asta.health.navigation.home.model.network.response.NetHealthToolsRes
 import fit.asta.health.utils.DomainMapper
 
-class ToolsHomeDataMapper : DomainMapper<HealthTools, ToolsHome> {
+class ToolsHomeDataMapper : DomainMapper<NetHealthToolsRes, ToolsHome> {
 
-    override fun mapToDomainModel(networkModel: HealthTools): ToolsHome {
+    override fun mapToDomainModel(networkModel: NetHealthToolsRes): ToolsHome {
         return ToolsHome(
-            banners = networkModel.data.banners.map {
+            banners = networkModel.healthTools.netBanners.map {
                 Banner(
                     id = it.id,
                     type = it.type,
@@ -19,6 +19,15 @@ class ToolsHomeDataMapper : DomainMapper<HealthTools, ToolsHome> {
                 )
             },
             weather = Weather(
+                id = "",
+                sunRise = "",
+                sunSet = "",
+                temperature = "",
+                location = "",
+                date = "",
+                imgUrl = "",
+                weatherType = null,
+                air = null
 //                date = networkModel.data.weather.date,
 //                temperature = networkModel.data.weather.temperature,
 //                location = networkModel.data.weather.loc,
@@ -32,7 +41,7 @@ class ToolsHomeDataMapper : DomainMapper<HealthTools, ToolsHome> {
                     time = it.time,
                     temperature = it.temperature
                 ),*/
-            tools = networkModel.data.tools.map {
+            tools = networkModel.healthTools.tools.map {
                 HealthTool(
                     id = it.id,
                     name = it.name,
@@ -42,7 +51,7 @@ class ToolsHomeDataMapper : DomainMapper<HealthTools, ToolsHome> {
                     url = it.url
                 )
             },
-            testimonials = networkModel.data.testimonials.map {
+            testimonials = networkModel.healthTools.testimonials.map {
                 Testimonial(
                     id = it.id,
                     userId = it.userId,
@@ -67,15 +76,63 @@ class ToolsHomeDataMapper : DomainMapper<HealthTools, ToolsHome> {
         )
     }
 
-    override fun mapFromDomainModel(domainModel: ToolsHome): HealthTools {
-        TODO()
+    override fun mapFromDomainModel(domainModel: ToolsHome): NetHealthToolsRes {
+        TODO("Not yet implemented")
     }
 
-    fun toDomainList(initial: List<HealthTools>): List<ToolsHome> {
+    fun toDomainList(initial: List<NetHealthToolsRes>): List<ToolsHome> {
         return initial.map { mapToDomainModel(it) }
     }
 
-    fun fromDomainList(initial: List<ToolsHome>): List<HealthTools> {
+    fun fromDomainList(initial: List<ToolsHome>): List<NetHealthToolsRes> {
         return initial.map { mapFromDomainModel(it) }
     }
 }
+
+/*
+private data class IndexedWeatherData(
+    val index: Int,
+    val data: WeatherData
+)
+
+fun toWeatherDataMap(weather: SunSlots?): Map<Int, List<SunSlot>> {
+
+    return time.mapIndexed { index, time ->
+        val temperature = temperatures[index]
+        val weatherCode = weatherCodes[index]
+        val windSpeed = windSpeeds[index]
+        val pressure = pressures[index]
+        val humidity = humidities[index]
+        IndexedWeatherData(
+            index = index,
+            data = WeatherData(
+                time = LocalDateTime.parse(time, DateTimeFormatter.ISO_DATE_TIME),
+                temperatureCelsius = temperature,
+                pressure = pressure,
+                windSpeed = windSpeed,
+                humidity = humidity,
+                weatherType = WeatherType.fromWMO(weatherCode)
+            )
+        )
+    }.groupBy {
+        it.index / 24
+    }.mapValues {
+        it.value.map { it.data }
+    }
+}
+
+fun toWeatherInfo(weather: Weather): Weather {
+
+    val weatherDataMap = toWeatherDataMap(null)
+    val now = LocalDateTime.now()
+    val currentWeatherData = weatherDataMap[0]?.find {
+        val hour = if(now.minute < 30) now.hour else now.hour + 1
+        it.time.hour == hour
+    }
+
+    return WeatherInfo(
+        weatherDataPerDay = weatherDataMap,
+        currentWeatherData = currentWeatherData
+    )
+}
+*/

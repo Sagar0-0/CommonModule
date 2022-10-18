@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.navigation.home.intent.HomeState
-import fit.asta.health.navigation.home.model.ToolsHomeRepository
+import fit.asta.health.navigation.home.model.ToolsHomeRepo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,12 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel
 @Inject constructor(
-    private val toolsHomeRepo: ToolsHomeRepository,
+    private val toolsHomeRepo: ToolsHomeRepo,
 ) : ViewModel() {
-
-//    private val _uiState: MutableState<HomeState?> = mutableStateOf(HomeState.Loading)
-//    val uiState: State<HomeState?>
-//        get() = _uiState
 
     private val mutableState = MutableStateFlow<HomeState>(HomeState.Loading)
     val state = mutableState.asStateFlow()

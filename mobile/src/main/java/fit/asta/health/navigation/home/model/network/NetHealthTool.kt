@@ -2,7 +2,7 @@ package fit.asta.health.navigation.home.model.network
 
 import com.google.gson.annotations.SerializedName
 
-data class HealthTool(
+data class NetHealthTool(
     @SerializedName("dsc")
     val description: String,
     @SerializedName("id")

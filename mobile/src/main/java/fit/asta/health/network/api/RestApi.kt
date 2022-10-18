@@ -4,7 +4,7 @@ import fit.asta.health.course.details.networkdata.CourseDetailsResponse
 import fit.asta.health.course.listing.networkdata.CoursesListNetData
 import fit.asta.health.course.session.networkdata.SessionResponse
 import fit.asta.health.feedback.model.network.response.NetFeedbackRes
-import fit.asta.health.navigation.home.model.network.response.HealthTools
+import fit.asta.health.navigation.home.model.network.response.NetHealthToolsRes
 import fit.asta.health.navigation.home_old.banners.networkdata.BannerResponse
 import fit.asta.health.navigation.home_old.categories.networkdata.CategoriesNetData
 import fit.asta.health.navigation.today.networkdata.TodayPlanNetData
@@ -44,7 +44,7 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
         startDate: String,
         endDate: String,
         time: String
-    ): HealthTools {
+    ): NetHealthToolsRes {
         return apiService.getHomeData(
             userId,
             latitude,

@@ -2,7 +2,7 @@ package fit.asta.health.navigation.home.model.network
 
 import com.google.gson.annotations.SerializedName
 
-data class Testimonial(
+data class NetTestimonial(
     @SerializedName("id")
     val id: String,
     @SerializedName("uid")
@@ -16,12 +16,12 @@ data class Testimonial(
     @SerializedName("text")
     val text: String,
     @SerializedName("mda")
-    val media: List<Media>,
+    val media: List<NetMedia>,
     @SerializedName("user")
-    val user: User
+    val user: NetTestimonialUser
 )
 
-data class Media(
+data class NetMedia(
     @SerializedName("type")
     val type: Int,
     @SerializedName("ttl")
@@ -30,7 +30,7 @@ data class Media(
     val url: String
 )
 
-data class User(
+data class NetTestimonialUser(
     @SerializedName("name")
     val name: String,
     @SerializedName("org")

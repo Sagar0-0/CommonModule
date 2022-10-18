@@ -2,13 +2,13 @@ package fit.asta.health.navigation.home.model.network
 
 import com.google.gson.annotations.SerializedName
 
-data class Weather(
+data class NetWeather(
     @SerializedName("current_weather")
-    val current_weather: CurrentWeather,
+    val current_weather: NetCurrentWeather,
     @SerializedName("daily")
-    val daily: Daily,
+    val daily: NetDaily,
     @SerializedName("daily_units")
-    val daily_units: DailyUnits,
+    val daily_units: NetDailyUnits,
     @SerializedName("date")
     val date: String,
     @SerializedName("elevation")
@@ -29,7 +29,7 @@ data class Weather(
     val utc_offset_seconds: Int
 )
 
-data class CurrentWeather(
+data class NetCurrentWeather(
     @SerializedName("temperature")
     val temperature: Double,
     @SerializedName("time")
@@ -42,7 +42,7 @@ data class CurrentWeather(
     val windspeed: Double
 )
 
-data class Daily(
+data class NetDaily(
     @SerializedName("sunrise")
     val sunrise: List<String>,
     @SerializedName("sunset")
@@ -51,7 +51,7 @@ data class Daily(
     val time: List<String>
 )
 
-data class DailyUnits(
+data class NetDailyUnits(
     @SerializedName("sunrise")
     val sunrise: String,
     @SerializedName("sunset")

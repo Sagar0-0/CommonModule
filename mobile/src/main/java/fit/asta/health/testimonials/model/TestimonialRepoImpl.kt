@@ -5,10 +5,10 @@ import fit.asta.health.testimonials.model.domain.Testimonial
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class TestimonialRepositoryImpl(
+class TestimonialRepoImpl(
     private val remoteApi: RemoteApis,
     private val mapper: TestimonialDataMapper,
-) : TestimonialRepository {
+) : TestimonialRepo {
 
     override suspend fun getTestimonials(limit: Int, index: Int): Flow<Testimonial> {
         return flow {

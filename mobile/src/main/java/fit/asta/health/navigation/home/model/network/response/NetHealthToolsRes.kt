@@ -2,23 +2,24 @@ package fit.asta.health.navigation.home.model.network.response
 
 import com.google.gson.annotations.SerializedName
 import fit.asta.health.navigation.home.model.network.*
+import fit.asta.health.network.data.Status
 
-data class HealthTools(
+data class NetHealthToolsRes(
     @SerializedName("status")
     val status: Status,
     @SerializedName("data")
-    val data: Data
+    val healthTools: NetHealthTools
 )
 
-data class Data(
+data class NetHealthTools(
     @SerializedName("bnr")
-    val banners: List<Banner>,
+    val netBanners: List<NetBanner>,
     @SerializedName("slot")
-    val sunSlots: SunSlots,
+    val sunSlots: NetSunSlots,
     @SerializedName("tml")
-    val testimonials: List<Testimonial>,
+    val testimonials: List<NetTestimonial>,
     @SerializedName("tool")
-    val tools: List<HealthTool>,
+    val tools: List<NetHealthTool>,
     @SerializedName("wtr")
-    val weather: Weather,
+    val weather: NetWeather,
 )

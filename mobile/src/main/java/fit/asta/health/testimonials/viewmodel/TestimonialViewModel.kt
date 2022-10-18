@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.testimonials.intent.TestimonialState
-import fit.asta.health.testimonials.model.TestimonialRepository
+import fit.asta.health.testimonials.model.TestimonialRepo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TestimonialViewModel
 @Inject constructor(
-    private val testimonialRepo: TestimonialRepository,
+    private val testimonialRepo: TestimonialRepo,
 ) : ViewModel() {
 
     private val mutableState = MutableStateFlow<TestimonialState>(TestimonialState.Loading)

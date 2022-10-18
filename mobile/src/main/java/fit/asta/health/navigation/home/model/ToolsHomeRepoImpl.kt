@@ -5,10 +5,10 @@ import fit.asta.health.network.api.RemoteApis
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class ToolsHomeRepositoryImpl(
+class ToolsHomeRepoImpl(
     private val remoteApi: RemoteApis,
     private val mapper: ToolsHomeDataMapper,
-) : ToolsHomeRepository {
+) : ToolsHomeRepo {
 
     override suspend fun getHomeData(
         userId: String,

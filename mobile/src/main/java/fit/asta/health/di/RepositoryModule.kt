@@ -8,15 +8,15 @@ import fit.asta.health.feedback.model.FeedbackDataMapper
 import fit.asta.health.feedback.model.FeedbackRepo
 import fit.asta.health.feedback.model.FeedbackRepoImpl
 import fit.asta.health.navigation.home.model.ToolsHomeDataMapper
-import fit.asta.health.navigation.home.model.ToolsHomeRepository
-import fit.asta.health.navigation.home.model.ToolsHomeRepositoryImpl
+import fit.asta.health.navigation.home.model.ToolsHomeRepo
+import fit.asta.health.navigation.home.model.ToolsHomeRepoImpl
 import fit.asta.health.network.api.RemoteApis
 import fit.asta.health.profile.model.ProfileDataMapper
 import fit.asta.health.profile.model.ProfileRepo
 import fit.asta.health.profile.model.ProfileRepoImpl
 import fit.asta.health.testimonials.model.TestimonialDataMapper
-import fit.asta.health.testimonials.model.TestimonialRepository
-import fit.asta.health.testimonials.model.TestimonialRepositoryImpl
+import fit.asta.health.testimonials.model.TestimonialRepo
+import fit.asta.health.testimonials.model.TestimonialRepoImpl
 import fit.asta.health.tools.sunlight.model.SunlightToolDataMapper
 import fit.asta.health.tools.sunlight.model.SunlightToolRepo
 import fit.asta.health.tools.sunlight.model.SunlightToolRepoImpl
@@ -38,11 +38,11 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideHomeToolsRepository(
+    fun provideHomeToolsRep(
         remoteApi: RemoteApis,
         toolsHomeMapper: ToolsHomeDataMapper,
-    ): ToolsHomeRepository {
-        return ToolsHomeRepositoryImpl(
+    ): ToolsHomeRepo {
+        return ToolsHomeRepoImpl(
             remoteApi = remoteApi,
             mapper = toolsHomeMapper
         )
@@ -56,11 +56,11 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideTestimonialRepository(
+    fun provideTestimonialRepo(
         remoteApi: RemoteApis,
         testimonialMapper: TestimonialDataMapper,
-    ): TestimonialRepository {
-        return TestimonialRepositoryImpl(
+    ): TestimonialRepo {
+        return TestimonialRepoImpl(
             remoteApi = remoteApi,
             mapper = testimonialMapper
         )
@@ -75,7 +75,7 @@ object RepositoryModule {
     @Singleton
     @Provides
     @Named("profile_repository")
-    fun provideProfileRepository(
+    fun provideProfileRepo(
         remoteApi: RemoteApis,
         recipeMapper: ProfileDataMapper,
     ): ProfileRepo {

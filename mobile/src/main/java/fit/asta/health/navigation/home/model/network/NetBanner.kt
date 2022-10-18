@@ -2,7 +2,7 @@ package fit.asta.health.navigation.home.model.network
 
 import com.google.gson.annotations.SerializedName
 
-data class Banner(
+data class NetBanner(
     @SerializedName("dsc")
     val desc: String,
     @SerializedName("id")

@@ -9,7 +9,6 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import fit.asta.health.R
 import fit.asta.health.navigation.home.model.domain.Testimonial
-import fit.asta.health.navigation.home.model.dummy.sliderDataList
 import kotlinx.coroutines.delay
 
 @ExperimentalPagerApi
@@ -27,7 +26,7 @@ fun TestimonialAutoSliderAnimation(testimonialsList: List<Testimonial>) {
     LaunchedEffect(key1 = pagerState.currentPage) {
         delay(2500)
         var newPosition = pagerState.currentPage + 1
-        if (newPosition > (sliderDataList.size - 1)) newPosition = 0
+        if (newPosition > (testimonialsList.size - 1)) newPosition = 0
         pagerState.animateScrollToPage(newPosition)
     }
 

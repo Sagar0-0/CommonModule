@@ -4,6 +4,6 @@ import fit.asta.health.testimonials.model.domain.Testimonial
 import kotlinx.coroutines.flow.Flow
 
 
-interface TestimonialRepository {
+interface TestimonialRepo {
     suspend fun getTestimonials(limit: Int, index: Int): Flow<Testimonial>
 }

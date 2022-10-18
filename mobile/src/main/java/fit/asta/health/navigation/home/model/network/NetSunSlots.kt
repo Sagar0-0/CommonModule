@@ -2,7 +2,7 @@ package fit.asta.health.navigation.home.model.network
 
 import com.google.gson.annotations.SerializedName
 
-data class SunSlots(
+data class NetSunSlots(
     @SerializedName("date")
     val date: String,
     @SerializedName("time")
@@ -12,9 +12,9 @@ data class SunSlots(
     @SerializedName("generationtime_ms")
     val generationtime_ms: Double,
     @SerializedName("hourly")
-    val hourly: Hourly,
+    val hourly: NetHourly,
     @SerializedName("hourly_units")
-    val hourly_units: HourlyUnits,
+    val hourly_units: NetHourlyUnits,
     @SerializedName("latitude")
     val latitude: Double,
     @SerializedName("location")
@@ -29,7 +29,7 @@ data class SunSlots(
     val utc_offset_seconds: Int
 )
 
-data class Hourly(
+data class NetHourly(
     @SerializedName("temperature_2m")
     val temperature_2m: List<Double>,
     @SerializedName("time")
@@ -38,7 +38,7 @@ data class Hourly(
     val weathercode: List<Int>
 )
 
-data class HourlyUnits(
+data class NetHourlyUnits(
     @SerializedName("temperature_2m")
     val temperature_2m: String,
     @SerializedName("time")

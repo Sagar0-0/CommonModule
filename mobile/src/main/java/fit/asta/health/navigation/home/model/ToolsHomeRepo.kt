@@ -4,7 +4,7 @@ import fit.asta.health.navigation.home.model.domain.ToolsHome
 import kotlinx.coroutines.flow.Flow
 
 
-interface ToolsHomeRepository {
+interface ToolsHomeRepo {
     suspend fun getHomeData(
         userId: String,
         latitude: String,
