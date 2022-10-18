@@ -26,7 +26,7 @@ val targetList =
 @Composable
 fun HealthLayout(userHealth: ArrayList<ProfileItem>) {
 
-    Log.d("USER", "UserHealthList::: ${userHealth[0]}")
+    Log.d("USER", "UserHealthList::: $userHealth")
 
     Column(modifier = Modifier
         .verticalScroll(rememberScrollState())
