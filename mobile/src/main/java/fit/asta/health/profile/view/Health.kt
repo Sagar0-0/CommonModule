@@ -26,7 +26,11 @@ val targetList =
 @Composable
 fun HealthLayout(userHealth: ArrayList<ProfileItem>) {
 
-    Log.d("USER", "UserHealthList::: $userHealth")
+    Log.d("USER", "HEALTHLAYOUT ${
+        userHealth.forEach {
+            display(fruit = it)
+        }
+    }")
 
     Column(modifier = Modifier
         .verticalScroll(rememberScrollState())
@@ -49,5 +53,14 @@ fun HealthLayout(userHealth: ArrayList<ProfileItem>) {
         SelectionCard(cardImg = R.drawable.targets, cardType = "TARGETS", cardList = targetList)
         Spacer(modifier = Modifier.height(16.dp))
         UpdateButton()
+    }
+}
+
+
+fun display(fruit: ProfileItem) {
+    when (fruit) {
+        is ProfileItem.ChipCard -> println("${fruit.title} is good for iron")
+        is ProfileItem.PlainCard -> println("${fruit.profileCardType} is delicious")
+        is ProfileItem.SessionCard -> println("${fruit.startTime} is good for vitamin d")
     }
 }

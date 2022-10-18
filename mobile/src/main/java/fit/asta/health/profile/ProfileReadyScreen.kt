@@ -20,6 +20,7 @@ import fit.asta.health.profile.view.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileReadyScreen(userProfile: UserProfile) {
+
     var content by remember { mutableStateOf(1) }
 
     Scaffold(topBar = {
