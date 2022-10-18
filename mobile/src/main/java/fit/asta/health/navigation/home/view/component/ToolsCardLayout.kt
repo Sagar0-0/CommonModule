@@ -1,6 +1,7 @@
 package fit.asta.health.navigation.home.view.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -17,12 +18,11 @@ import coil.compose.AsyncImage
 import fit.asta.health.R
 
 @Composable
-fun ColumnScope.ToolsCardLayout(
+fun ToolsCardLayout(
     imgUrl: String,
     cardTitle: String,
 ) {
-
-    Column(verticalArrangement = Arrangement.SpaceBetween, modifier = Modifier.weight(1f)) {
+    Column {
         Box {
             AsyncImage(model = imgUrl,
                 contentDescription = null,
@@ -35,7 +35,8 @@ fun ColumnScope.ToolsCardLayout(
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(top = 8.dp, end = 8.dp),
+                        .padding(top = 8.dp, end = 8.dp)
+                        .clickable { },
                     contentScale = ContentScale.Fit)
             }
         }
@@ -49,5 +50,5 @@ fun ColumnScope.ToolsCardLayout(
                     .clip(RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)))
         }
     }
-}
 
+}

@@ -13,10 +13,8 @@ import fit.asta.health.profile.view.components.FemaleLayout
 import fit.asta.health.profile.view.components.MaleLayout
 import fit.asta.health.profile.view.components.UserBodyType
 
-var USER_GENDER: String = "Male"
-
 @Composable
-fun UserBasicHealthDetail(m:Map<String,Any?>) {
+fun UserBasicHealthDetail(m: Map<String, Any?>) {
     Column(Modifier
         .fillMaxWidth()
         .padding(vertical = 16.dp, horizontal = 16.dp)
@@ -29,7 +27,6 @@ fun UserBasicHealthDetail(m:Map<String,Any?>) {
         Spacer(modifier = Modifier.height(16.dp))
         UserBodyType(bodyType = m.keys.last(),
             bodyImg = R.drawable.bodyfat,
-            bodyStatus = m.values.last().toString()
-        )
+            bodyStatus = m.values.last().toString())
     }
 }
