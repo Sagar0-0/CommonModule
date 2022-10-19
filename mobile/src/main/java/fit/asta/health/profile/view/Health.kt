@@ -1,6 +1,5 @@
 package fit.asta.health.profile.view
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -12,6 +11,7 @@ import fit.asta.health.profile.model.domain.ProfileItem
 import fit.asta.health.profile.view.components.SelectionCard
 import fit.asta.health.profile.view.components.SleepSchedule
 import fit.asta.health.profile.view.components.UpdateButton
+import fit.asta.health.profile.view.components.UserLifeStyle
 
 
 // Health Screen Layout
@@ -26,41 +26,38 @@ val targetList =
 @Composable
 fun HealthLayout(userHealth: ArrayList<ProfileItem>) {
 
-    Log.d("USER", "HEALTHLAYOUT ${
-        userHealth.forEach {
-            display(fruit = it)
-        }
-    }")
+    Column(
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
 
-    Column(modifier = Modifier
-        .verticalScroll(rememberScrollState())
-        .fillMaxWidth()
-        .padding(16.dp)) {
-        SleepSchedule()
-        Spacer(modifier = Modifier.height(16.dp))
-        SelectionCard(cardImg = R.drawable.medications,
-            cardType = "MEDICATION",
-            cardList = medicationList)
-        Spacer(modifier = Modifier.height(16.dp))
-        SelectionCard(cardImg = R.drawable.foodrestrictions,
-            cardType = "FOOD RESTRICTIONS",
-            cardList = foodRestrictionsList)
-        Spacer(modifier = Modifier.height(16.dp))
-        SelectionCard(cardImg = R.drawable.ailements,
-            cardType = "AILMENTS",
-            cardList = ailmentsList)
-        Spacer(modifier = Modifier.height(16.dp))
-        SelectionCard(cardImg = R.drawable.targets, cardType = "TARGETS", cardList = targetList)
+        userHealth.forEach {
+
+            display(profileItem = it)
+        }
+
         Spacer(modifier = Modifier.height(16.dp))
         UpdateButton()
     }
 }
 
+@Composable
+fun display(profileItem: ProfileItem) {
 
-fun display(fruit: ProfileItem) {
-    when (fruit) {
-        is ProfileItem.ChipCard -> println("${fruit.title} is good for iron")
-        is ProfileItem.PlainCard -> println("${fruit.profileCardType} is delicious")
-        is ProfileItem.SessionCard -> println("${fruit.startTime} is good for vitamin d")
+    Spacer(modifier = Modifier.height(16.dp))
+    when (profileItem) {
+        is ProfileItem.ChipCard -> SelectionCard(
+            cardImg = R.drawable.medications,
+            cardType = "MEDICATION",
+            cardList = medicationList
+        )
+        is ProfileItem.PlainCard -> UserLifeStyle(
+            cardImg = R.drawable.indoorwork,
+            cardType = "CURRENT WORK",
+            cardValue = "SITTING"
+        )
+        is ProfileItem.SessionCard -> SleepSchedule()
     }
 }
