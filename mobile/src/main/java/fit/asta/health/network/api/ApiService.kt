@@ -3,15 +3,19 @@ package fit.asta.health.network.api
 import fit.asta.health.course.details.networkdata.CourseDetailsResponse
 import fit.asta.health.course.listing.networkdata.CoursesListNetData
 import fit.asta.health.course.session.networkdata.SessionResponse
-import fit.asta.health.navigation.home.model.network.response.HealthTools
+import fit.asta.health.feedback.model.network.response.NetFeedbackRes
+import fit.asta.health.navigation.home.model.network.response.NetHealthToolsRes
 import fit.asta.health.navigation.home_old.banners.networkdata.BannerResponse
 import fit.asta.health.navigation.home_old.categories.networkdata.CategoriesNetData
 import fit.asta.health.navigation.today.networkdata.TodayPlanNetData
 import fit.asta.health.network.data.Status
-import fit.asta.health.profile.model.network.UserProfileDao
-import fit.asta.health.profile_old.data.chips.UserInputs
-import fit.asta.health.profile_old.data.userprofile.Data
-import fit.asta.health.profile_old.data.userprofile.UserProfile
+import fit.asta.health.old_profile.data.chips.UserInputs
+import fit.asta.health.old_profile.data.userprofile.Data
+import fit.asta.health.old_profile.data.userprofile.UserProfile
+import fit.asta.health.old_testimonials.networkdata.TestimonialListResponse
+import fit.asta.health.old_testimonials.networkdata.TestimonialNetData
+import fit.asta.health.old_testimonials.networkdata.TestimonialResponse
+import fit.asta.health.profile.model.network.NetUserProfileRes
 import fit.asta.health.schedule.networkdata.ScheduleNetData
 import fit.asta.health.schedule.networkdata.ScheduleResponse
 import fit.asta.health.schedule.tags.networkdata.ScheduleTagNetData
@@ -19,9 +23,9 @@ import fit.asta.health.schedule.tags.networkdata.ScheduleTagResponse
 import fit.asta.health.schedule.tags.networkdata.ScheduleTagsResponse
 import fit.asta.health.subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.subscription.networkdata.SubscriptionStatusResponse
-import fit.asta.health.testimonials.networkdata.TestimonialListResponse
-import fit.asta.health.testimonials.networkdata.TestimonialNetData
-import fit.asta.health.testimonials.networkdata.TestimonialResponse
+import fit.asta.health.testimonials.model.network.response.NetTestimonialRes
+import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
+import fit.asta.health.tools.water.model.network.response.NetWaterToolRes
 import retrofit2.http.*
 
 
@@ -36,7 +40,7 @@ interface ApiService {
         @Query("start") startDate: String,
         @Query("end") endDate: String,
         @Query("time") time: String
-    ): HealthTools
+    ): NetHealthToolsRes
 
     @GET("banner/list/get")
     suspend fun getBanners(@Query("type") type: String): BannerResponse
@@ -75,6 +79,12 @@ interface ApiService {
     suspend fun getReferralInfo(@Query("userId") userId: String): OfferNetData
      */
 
+    @GET("testimonial/list/get?")
+    suspend fun getTestimonials(
+        @Query("limit") limit: Int,
+        @Query("index") index: Int
+    ): NetTestimonialRes
+
     @POST("testimonial/post")
     suspend fun postTestimonial(@Body testimonial: TestimonialNetData): Status
 
@@ -96,7 +106,7 @@ interface ApiService {
     suspend fun getProfile(@Query("userId") userId: String): UserProfile
 
     @GET("userProfile/get/?")
-    suspend fun getUserProfile(@Query("uid") uid: String): UserProfileDao
+    suspend fun getUserProfile(@Query("uid") uid: String): NetUserProfileRes
 
     @GET("user/profile/data/get")
     suspend fun getMultiSelectionData(@Query("uid") uid: String): UserInputs
@@ -133,6 +143,15 @@ interface ApiService {
 
     @GET("schedule/plan/list/get")
     suspend fun getTodayPlan(@Query("userId") userId: String): TodayPlanNetData
+
+    @GET("tool/sunlight/get")
+    suspend fun getSunlightTool(@Query("userId") userId: String): NetSunlightToolRes
+
+    @GET("tool/water/get")
+    suspend fun getWaterTool(@Query("userId") userId: String): NetWaterToolRes
+
+    @GET("feedback/get?")
+    suspend fun getFeedback(@Query("userId") userId: String): NetFeedbackRes
 
     /*
     @POST("user/preference/favourite")

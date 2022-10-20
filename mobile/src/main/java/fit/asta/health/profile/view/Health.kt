@@ -5,12 +5,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
+import fit.asta.health.profile.model.domain.ProfileItem
 import fit.asta.health.profile.view.components.SelectionCard
 import fit.asta.health.profile.view.components.SleepSchedule
 import fit.asta.health.profile.view.components.UpdateButton
+import fit.asta.health.profile.view.components.UserLifeStyle
 
 
 // Health Screen Layout
@@ -22,35 +23,41 @@ val ailmentsList =
 val targetList =
     mutableListOf("Skin Glow", "Flexibility", "Weight Loss", "Strength", "Concentration", "Muscles")
 
-@Preview(showSystemUi = true)
 @Composable
-fun HealthLayout() {
-    Column(modifier = Modifier
-        .verticalScroll(rememberScrollState())
-        .fillMaxWidth()
-        .padding(16.dp)) {
-        SleepSchedule()
+fun HealthLayout(userHealth: ArrayList<ProfileItem>) {
+
+    Column(
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+
+        userHealth.forEach {
+
+            display(profileItem = it)
+        }
+
         Spacer(modifier = Modifier.height(16.dp))
-        SelectionCard(
+        UpdateButton()
+    }
+}
+
+@Composable
+fun display(profileItem: ProfileItem) {
+
+    Spacer(modifier = Modifier.height(16.dp))
+    when (profileItem) {
+        is ProfileItem.ChipCard -> SelectionCard(
             cardImg = R.drawable.medications,
             cardType = "MEDICATION",
             cardList = medicationList
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        SelectionCard(
-            cardImg = R.drawable.foodrestrictions,
-            cardType = "FOOD RESTRICTIONS",
-            cardList = foodRestrictionsList
+        is ProfileItem.PlainCard -> UserLifeStyle(
+            cardImg = R.drawable.indoorwork,
+            cardType = "CURRENT WORK",
+            cardValue = "SITTING"
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        SelectionCard(
-            cardImg = R.drawable.ailements,
-            cardType = "AILMENTS",
-            cardList = ailmentsList
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        SelectionCard(cardImg = R.drawable.targets, cardType = "TARGETS", cardList = targetList)
-        Spacer(modifier = Modifier.height(16.dp))
-        UpdateButton()
+        is ProfileItem.SessionCard -> SleepSchedule()
     }
 }

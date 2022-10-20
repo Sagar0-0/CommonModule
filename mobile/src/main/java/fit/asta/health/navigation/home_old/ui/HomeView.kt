@@ -10,7 +10,7 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import fit.asta.health.navigation.home_old.banners.data.BannerData
 import fit.asta.health.navigation.home_old.categories.adapter.listeners.OnCategoryClickListener
 import fit.asta.health.navigation.home_old.categories.data.CategoryData
-import fit.asta.health.testimonials.data.TestimonialData
+import fit.asta.health.old_testimonials.data.TestimonialData
 
 interface HomeView {
 

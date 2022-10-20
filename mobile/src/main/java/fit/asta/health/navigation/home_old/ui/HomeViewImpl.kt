@@ -22,7 +22,7 @@ import fit.asta.health.navigation.home_old.categories.adapter.CategoriesAdapter
 import fit.asta.health.navigation.home_old.categories.adapter.listeners.OnCategoryClickListener
 import fit.asta.health.navigation.home_old.categories.data.CategoryData
 import fit.asta.health.navigation.home_old.testimonials.TestimonialFragment
-import fit.asta.health.testimonials.data.TestimonialData
+import fit.asta.health.old_testimonials.data.TestimonialData
 import fit.asta.health.utils.showToastMessage
 import kotlinx.android.synthetic.main.home_fragment.view.*
 import kotlinx.android.synthetic.main.home_rcv_library.view.*

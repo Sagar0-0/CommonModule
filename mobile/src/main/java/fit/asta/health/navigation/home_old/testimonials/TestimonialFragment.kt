@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import fit.asta.health.R
-import fit.asta.health.testimonials.data.TestimonialData
+import fit.asta.health.old_testimonials.data.TestimonialData
 import fit.asta.health.utils.getPublicStorageUrl
 import fit.asta.health.utils.showImageByUrl
 import kotlinx.android.synthetic.main.testimonials_card.view.*

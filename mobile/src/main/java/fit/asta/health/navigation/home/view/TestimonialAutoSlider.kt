@@ -5,137 +5,49 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.lerp
 import com.google.accompanist.pager.*
-import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.R
-import fit.asta.health.navigation.home.model.dummy.slideClientDataList
-import fit.asta.health.navigation.home.model.dummy.sliderDataList
-import fit.asta.health.navigation.home.view.component.TestimonialTextCard
-import kotlinx.coroutines.delay
-import kotlin.math.absoluteValue
+import fit.asta.health.navigation.home.model.domain.Testimonial
+import fit.asta.health.navigation.home.view.component.TestimonialAutoSliderAnimation
 
-@Preview(showBackground = true)
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun Testimonials() {
-    FontFamily(
-        Font(R.font.inter_regular, FontWeight.Normal)
-    )
+fun Testimonials(
+    testimonialsList: List<Testimonial>,
+) {
+    FontFamily(Font(R.font.inter_regular, FontWeight.Normal))
 
     FontFamily(Font(R.font.inter_medium))
 
-    Column(
-        Modifier.fillMaxWidth(),
+    Column(Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.SpaceEvenly,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Box(
-            Modifier
-                .height(26.dp)
-                .align(Alignment.CenterHorizontally)
-                .padding(top = 1.dp, bottom = 1.dp)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.testimonials_tagline),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+        Box(Modifier
+            .height(26.dp)
+            .align(Alignment.CenterHorizontally)
+            .padding(top = 1.dp, bottom = 1.dp)) {
+            Image(painter = painterResource(id = R.drawable.testimonials_tagline),
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Fit
-            )
+                contentScale = ContentScale.Fit)
         }
-        Divider(
-            color = Color(0xFF0088FF), thickness = 4.dp, modifier = Modifier
+        Divider(color = Color(0xFF0088FF),
+            thickness = 4.dp,
+            modifier = Modifier
                 .width(71.dp)
-                .clip(
-                    RoundedCornerShape(2.dp)
-                )
-        )
+                .clip(RoundedCornerShape(2.dp)))
         Spacer(modifier = Modifier.height(16.dp))
-        TestimonialAutoSlider()
+        TestimonialAutoSliderAnimation(testimonialsList = testimonialsList)
     }
 }
 
-@ExperimentalPagerApi
-@Composable
-fun TestimonialAutoSlider() {
-
-    val interFontFamily = FontFamily(
-        Font(R.font.inter_regular, FontWeight.Normal)
-    )
-
-    FontFamily(Font(R.font.inter_medium))
-
-    val interExtraBoldFontFamily = FontFamily(
-        Font(R.font.inter_extrabold, FontWeight.ExtraBold)
-    )
-
-    val pagerState = rememberPagerState(
-        pageCount = slideClientDataList.size
-    )
-
-    LaunchedEffect(key1 = pagerState.currentPage) {
-        delay(2500)
-        var newPosition = pagerState.currentPage + 1
-        if (newPosition > (sliderDataList.size - 1)) newPosition = 0
-        pagerState.animateScrollToPage(newPosition)
-    }
-
-    TestimonialsSlider(pagerState, interExtraBoldFontFamily, interFontFamily)
-}
-
-@ExperimentalPagerApi
-@Composable
-fun TestimonialsSlider(
-    pagerState: PagerState,
-    interExtraBoldFontFamily: FontFamily,
-    interFontFamily: FontFamily,
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        HorizontalPager(
-            state = pagerState,
-            verticalAlignment = Alignment.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) { page ->
-            Box(
-                modifier = Modifier
-                    .graphicsLayer {
-                        val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
-                        lerp(
-                            start = 0.85f,
-                            stop = 1f,
-                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                        ).also { scale ->
-                            scaleX = scale
-                            scaleY = scale
-                        }
-                    }
-                    .fillMaxWidth()
-            ) {
-                val sliderDataPages = slideClientDataList[page]
-                TestimonialTextCard(interExtraBoldFontFamily, sliderDataPages, interFontFamily)
-            }
-            //Horizontal dot indicator
-            HorizontalPagerIndicator(
-                pagerState = pagerState,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-            )
-        }
-    }
-}

@@ -50,7 +50,7 @@
                 android:value="" />
         </activity>
         <activity android:name=".schedule.tags.ui.TagsActivity" />
-        <activity android:name=".testimonials.ui.TestimonialsActivity" />
+        <activity android:name=".old_testimonials.ui.TestimonialsActivity" />
         <activity android:name=".course.session.ui.SessionActivity" />
         <activity android:name=".schedule.ui.ScheduleActivity" />
         <activity
@@ -66,12 +66,12 @@
             android:name=".course.listing.ui.CourseListingActivity"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".profile_old.ui.ProfileActivity"
+            android:name=".old_profile.ui.ProfileActivity"
             android:configChanges="orientation|screenSize|screenLayout"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".settings.SettingsActivity"
-            android:parentActivityName=".profile_old.ui.ProfileActivity" />
+            android:parentActivityName=".old_profile.ui.ProfileActivity" />
 
         <meta-data
             android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"

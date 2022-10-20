@@ -11,14 +11,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.viewmodel.compose.viewModel
-import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.R
-import fit.asta.health.navigation.home.viewmodel.HomeViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun NameAndMoodHomeScreenHeader() {
 

@@ -18,7 +18,6 @@ import fit.asta.health.R
 fun UserBodyType(
     bodyType: String,
     bodyImg: Int,
-    bodyStatus: String,
 ) {
     Card(modifier = Modifier
         .fillMaxWidth()
@@ -53,7 +52,7 @@ fun UserBodyType(
                 .fillMaxWidth()
                 .padding(end = 16.dp),
                 horizontalArrangement = Arrangement.End) {
-                Text(text = bodyStatus,
+                Text(text = "bodyStatus",
                     fontSize = 14.sp,
                     lineHeight = 16.sp,
                     letterSpacing = 0.4.sp,

@@ -14,14 +14,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
-import fit.asta.health.navigation.home.model.dummy.TestimonialsData
+import fit.asta.health.navigation.home.model.domain.Testimonial
 
 @Composable
 fun TestimonialTextCard(
     interExtraBoldFontFamily: FontFamily,
-    sliderDataPages: TestimonialsData,
-    interFontFamily: FontFamily
+    testimonialsDataPage: Testimonial,
+    interFontFamily: FontFamily,
 ) {
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -35,6 +36,7 @@ fun TestimonialTextCard(
             FontFamily(
                 Font(R.font.inter_light, FontWeight.Light)
             )
+
             Column {
                 Box {
                     Text(
@@ -45,7 +47,7 @@ fun TestimonialTextCard(
                     )
                 }
                 Text(
-                    text = sliderDataPages.clientDescription,
+                    text = testimonialsDataPage.text,
                     fontSize = 20.sp,
                     color = Color.Black,
                     fontWeight = FontWeight.Thin
@@ -58,7 +60,7 @@ fun TestimonialTextCard(
                         color = Color(0xFF0277BD)
                     )
                 }
-                ArtistCard(sliderDataPages, interFontFamily)
+                ArtistCard(testimonialsDataPage, interFontFamily)
             }
         }
     }

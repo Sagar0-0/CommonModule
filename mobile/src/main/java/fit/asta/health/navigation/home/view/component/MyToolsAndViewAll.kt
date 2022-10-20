@@ -10,14 +10,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun MyToolsAndViewAll() {
+fun MyToolsAndViewAll(
+    myTools:String,
+    allTools:String
+) {
     Row(horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 24.dp)) {
-        Text(text = "MyTools", style = MaterialTheme.typography.h6, color = Color.Black)
+        Text(text = myTools, style = MaterialTheme.typography.h6, color = Color.Black)
         Box(modifier = Modifier.clickable(enabled = true, onClick = ({}))) {
-            Text(text = "All Tools", style = MaterialTheme.typography.h6, color = Color.Blue)
+            Text(text = allTools, style = MaterialTheme.typography.h6, color = Color.Blue)
         }
     }
 }

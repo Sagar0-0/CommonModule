@@ -555,6 +555,7 @@
     <string name="sale_at">Sale starting at 345</string>
 
     <string name="btn_done">DONE</string>
+    <string name="media_url">https://img1.asta.fit</string>
 
     <string name="breathing_tool_title">Breathing Tool</string>
     <string name="tool_subtitle">Check your daily records to make it easy to analyze</string>

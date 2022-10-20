@@ -1,244 +1,37 @@
 package fit.asta.health.navigation.home.view.component
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.flowlayout.FlowRow
+import com.google.accompanist.flowlayout.SizeMode
 import fit.asta.health.R
+import fit.asta.health.navigation.home.model.domain.HealthTool
 
-@Preview
 @Composable
-fun VerticalImageCards() {
-    Column(Modifier
-        .fillMaxWidth()
-        .padding(vertical = 16.dp)
-    ) {
-        Row(modifier = Modifier
-            .fillMaxWidth()) {
-            Box(Modifier
-                .fillMaxWidth()
-                .weight(1f)) {
-                Column(verticalArrangement = Arrangement.SpaceBetween) {
-                    Box {
-                        Image(painter = painterResource(id = R.drawable.waterimage),
-                            contentDescription = null,
-                            Modifier.fillMaxWidth(),
-                            contentScale = ContentScale.Crop)
-                        Box(modifier = Modifier
-                            .size(32.dp)
-                            .align(Alignment.TopEnd)) {
-                            Image(painter = painterResource(id = R.drawable.schedule),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(top = 8.dp, end = 8.dp),
-                                contentScale = ContentScale.Fit)
-                        }
-                    }
-                    Card(modifier = Modifier
-                        .height(44.dp)
-                        .fillMaxWidth()
-                    ) {
-                        Text(text = "Water",
-                            style = MaterialTheme.typography.h6,
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp, vertical = 8.dp)
-                                .clip(
-                                    RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)))
-                    }
-                }
-            }
-            Spacer(modifier = Modifier.width(16.dp))
-            Box(Modifier
-                .fillMaxWidth()
-                .weight(1f)) {
-                Column(verticalArrangement = Arrangement.SpaceBetween) {
-                    Box {
-                        Image(painter = painterResource(id = R.drawable.breathingimage),
-                            contentDescription = null,
-                            Modifier.fillMaxWidth(),
-                            contentScale = ContentScale.Crop)
-                        Box(modifier = Modifier
-                            .size(32.dp)
-                            .align(Alignment.TopEnd)) {
-                            Image(painter = painterResource(id = R.drawable.schedule),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(top = 8.dp, end = 8.dp),
-                                contentScale = ContentScale.Fit)
-                        }
-                    }
+fun VerticalImageCards(toolsList: List<HealthTool>) {
+    val domainName = stringResource(id = R.string.media_url)
 
-                    Card(modifier = Modifier
-                        .height(44.dp)
-                        .fillMaxWidth()
-                    ) {
-                        Text(text = "Breathing",
-                            style = MaterialTheme.typography.h6,
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp, vertical = 8.dp)
-                                .clip(
-                                    RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)))
-                    }
-                }
-            }
-        }
-        Spacer(modifier = Modifier.padding(top = 16.dp))
-        Row(modifier = Modifier
-            .fillMaxWidth()) {
-            Box(Modifier
-                .fillMaxWidth()
-                .weight(1f)) {
-                Column(verticalArrangement = Arrangement.SpaceBetween) {
-                    Box {
-                        Image(painter = painterResource(id = R.drawable.meditationimage),
-                            contentDescription = null,
-                            Modifier.fillMaxWidth(),
-                            contentScale = ContentScale.Crop)
-                        Box(modifier = Modifier
-                            .size(32.dp)
-                            .align(Alignment.TopEnd)) {
-                            Image(painter = painterResource(id = R.drawable.schedule),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(top = 8.dp, end = 8.dp),
-                                contentScale = ContentScale.Fit)
-                        }
-                    }
+    FlowRow(mainAxisSpacing = 8.dp,
+        crossAxisSpacing = 16.dp,
+        modifier = Modifier.padding(vertical = 16.dp),
+        mainAxisSize = SizeMode.Wrap) {
 
-                    Card(modifier = Modifier
-                        .height(44.dp)
-                        .fillMaxWidth()
-                    ) {
-                        Text(text = "Meditation",
-                            style = MaterialTheme.typography.h6,
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp, vertical = 8.dp)
-                                .clip(
-                                    RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)))
-                    }
-                }
-            }
-            Spacer(modifier = Modifier.width(16.dp))
-            Box(Modifier
-                .fillMaxWidth()
-                .weight(1f)) {
-                Column(verticalArrangement = Arrangement.SpaceBetween) {
-                    Box {
-                        Image(painter = painterResource(id = R.drawable.sunlightimage),
-                            contentDescription = null,
-                            Modifier.fillMaxWidth(),
-                            contentScale = ContentScale.Crop)
-                        Box(modifier = Modifier
-                            .size(32.dp)
-                            .align(Alignment.TopEnd)) {
-                            Image(painter = painterResource(id = R.drawable.schedule),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(top = 8.dp, end = 8.dp),
-                                contentScale = ContentScale.Fit)
-                        }
-                    }
-
-                    Card(modifier = Modifier
-                        .height(44.dp)
-                        .fillMaxWidth()
-                    ) {
-                        Text(text = "Sunlight",
-                            style = MaterialTheme.typography.h6,
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp, vertical = 8.dp)
-                                .clip(
-                                    RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)))
-                    }
-                }
-            }
-        }
-        Spacer(modifier = Modifier.padding(top = 16.dp))
-        Row(modifier = Modifier
-            .fillMaxWidth()) {
-            Box(Modifier
-                .fillMaxWidth()
-                .weight(1f)) {
-                Column(verticalArrangement = Arrangement.SpaceBetween) {
-                    Box {
-                        Image(painter = painterResource(id = R.drawable.sleepimage),
-                            contentDescription = null,
-                            Modifier.fillMaxWidth(),
-                            contentScale = ContentScale.Crop)
-                        Box(modifier = Modifier
-                            .size(32.dp)
-                            .align(Alignment.TopEnd)) {
-                            Image(painter = painterResource(id = R.drawable.schedule),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(top = 8.dp, end = 8.dp),
-                                contentScale = ContentScale.Fit)
-                        }
-                    }
-
-                    Card(modifier = Modifier
-                        .height(44.dp)
-                        .fillMaxWidth()
-                    ) {
-                        Text(text = "Sleep",
-                            style = MaterialTheme.typography.h6,
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp, vertical = 8.dp)
-                                .clip(
-                                    RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)))
-                    }
-                }
-            }
-            Spacer(modifier = Modifier.width(16.dp))
-            Box(Modifier
-                .fillMaxWidth()
-                .weight(1f)) {
-                Column(verticalArrangement = Arrangement.SpaceBetween) {
-                    Box {
-                        Image(painter = painterResource(id = R.drawable.stepsimage),
-                            contentDescription = null,
-                            Modifier.fillMaxWidth(),
-                            contentScale = ContentScale.Crop)
-                        Box(modifier = Modifier
-                            .size(32.dp)
-                            .align(Alignment.TopEnd)) {
-                            Image(painter = painterResource(id = R.drawable.schedule),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(top = 8.dp, end = 8.dp),
-                                contentScale = ContentScale.Fit)
-                        }
-                    }
-
-                    Card(modifier = Modifier
-                        .height(44.dp)
-                        .fillMaxWidth()
-                    ) {
-                        Text(text = "Steps",
-                            style = MaterialTheme.typography.h6,
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp, vertical = 8.dp)
-                                .clip(
-                                    RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)))
-                    }
-                }
-            }
+        toolsList.forEach {
+            val imgURL = "$domainName${it.url}"
+            ToolsCardLayout(imgUrl = imgURL, cardTitle = it.title)
         }
     }
+
+//    LazyVerticalGrid(columns = GridCells.Fixed(2),
+//        state = LazyGridState(),
+//        modifier = Modifier.height(850.dp),
+//        userScrollEnabled = false) {
+//        items(toolsList) {
+//            val imgURl = "$domainName${it.url}"
+//            ToolsCardLayout(cardTitle = it.title, imgUrl = imgURl)
+//        }
+//    }
 }

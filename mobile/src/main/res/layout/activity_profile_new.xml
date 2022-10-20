@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".profile_old.ui.ProfileActivity">
+    tools:context=".old_profile.ui.ProfileActivity">
 
     <androidx.compose.ui.platform.ComposeView
         android:id="@+id/profile_compose_view"
