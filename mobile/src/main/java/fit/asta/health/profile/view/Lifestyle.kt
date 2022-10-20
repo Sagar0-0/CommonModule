@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
-import fit.asta.health.profile.view.components.SelectionCard
 import fit.asta.health.profile.view.components.UserLifeStyle
 
 val currentActivitiesList = mutableListOf("Badminton", "Walking", "Cricket")
@@ -25,16 +24,15 @@ fun LifeStyleLayout() {
             cardType = "CURRENT WORK",
             cardValue = "SITTING")
         Spacer(modifier = Modifier.height(16.dp))
-        SelectionCard(
-            cardImg = R.drawable.currentactivities,
-            cardType = "CURRENT ACTIVITIES",
-            cardList = currentActivitiesList
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        SelectionCard(
-            cardImg = R.drawable.preferredactivities,
-            cardType = "PREFERRED ACTIVITIES",
-            cardList = preferredActivitiesList
-        )
+//        SelectionCard(
+//            cardImg = R.drawable.currentactivities,
+//            cardType = "CURRENT ACTIVITIES",
+//            cardList = currentActivitiesList)
+//        Spacer(modifier = Modifier.height(16.dp))
+//        SelectionCard(
+//            cardImg = R.drawable.preferredactivities,
+//            cardType = "PREFERRED ACTIVITIES",
+//            cardList = preferredActivitiesList
+//        )
     }
 }

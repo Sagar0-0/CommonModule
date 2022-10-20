@@ -26,16 +26,15 @@ val targetList =
 @Composable
 fun HealthLayout(userHealth: ArrayList<ProfileItem>) {
 
-    Column(
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
+    Column(modifier = Modifier
+        .verticalScroll(rememberScrollState())
+        .fillMaxWidth()
+        .padding(16.dp)) {
+
 
         userHealth.forEach {
+            Display(profileItem = it)
 
-            display(profileItem = it)
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -44,20 +43,16 @@ fun HealthLayout(userHealth: ArrayList<ProfileItem>) {
 }
 
 @Composable
-fun display(profileItem: ProfileItem) {
+fun Display(profileItem: ProfileItem) {
 
     Spacer(modifier = Modifier.height(16.dp))
     when (profileItem) {
-        is ProfileItem.ChipCard -> SelectionCard(
-            cardImg = R.drawable.medications,
-            cardType = "MEDICATION",
-            cardList = medicationList
-        )
-        is ProfileItem.PlainCard -> UserLifeStyle(
-            cardImg = R.drawable.indoorwork,
+        is ProfileItem.ChipCard -> SelectionCard(cardImg = R.drawable.medications,
+            cardType = profileItem.title,
+            cardList = profileItem.value)
+        is ProfileItem.PlainCard -> UserLifeStyle(cardImg = R.drawable.indoorwork,
             cardType = "CURRENT WORK",
-            cardValue = "SITTING"
-        )
+            cardValue = "SITTING")
         is ProfileItem.SessionCard -> SleepSchedule()
     }
 }
