@@ -31,7 +31,6 @@ fun HealthLayout(userHealth: ArrayList<ProfileItem>) {
         .fillMaxWidth()
         .padding(16.dp)) {
 
-
         userHealth.forEach {
             Display(profileItem = it)
 
@@ -47,12 +46,14 @@ fun Display(profileItem: ProfileItem) {
 
     Spacer(modifier = Modifier.height(16.dp))
     when (profileItem) {
-        is ProfileItem.ChipCard -> SelectionCard(cardImg = R.drawable.medications,
+        is ProfileItem.ChipCard -> SelectionCard(cardImg = profileItem.icon,
             cardType = profileItem.title,
             cardList = profileItem.value)
         is ProfileItem.PlainCard -> UserLifeStyle(cardImg = R.drawable.indoorwork,
-            cardType = "CURRENT WORK",
-            cardValue = "SITTING")
-        is ProfileItem.SessionCard -> SleepSchedule()
+            cardType = profileItem.title,
+            cardValue = profileItem.value)
+        is ProfileItem.SessionCard -> SleepSchedule(cardTitle = profileItem.title,
+            bedTime = profileItem.startTime,
+            wakeUpTime = profileItem.startTime)
     }
 }

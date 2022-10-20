@@ -1,6 +1,7 @@
 package fit.asta.health.profile.view
 
 import androidx.compose.runtime.Composable
+import fit.asta.health.profile.model.domain.ProfileItem
 
 val daysList =
     mutableListOf("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
@@ -11,7 +12,7 @@ val cuisinesList = mutableListOf("North Indian", "Chinese", "Yoga", "South India
 val foodAllergiesList = mutableListOf("Sea Food", "Wheat", "Eggs", "Weight Loss", "Peanuts")
 
 @Composable
-fun DietLayout() {
+fun DietLayout(diet: ArrayList<ProfileItem>) {
 
 //    val l= mutableListOf<String>()
 //    for (i in m["nVeg"].toString()){

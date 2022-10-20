@@ -15,14 +15,18 @@ import androidx.compose.ui.unit.sp
 import fit.asta.health.R
 
 @Composable
-fun SleepSchedule() {
+fun SleepSchedule(
+    cardTitle: String,
+    bedTime: String,
+    wakeUpTime: String,
+) {
     Card(modifier = Modifier.fillMaxWidth(), elevation = 5.dp, shape = RoundedCornerShape(8.dp)) {
         Column(modifier = Modifier.padding(vertical = 16.dp)) {
             Row(Modifier
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(text = "SLEEP SCHEDULE",
+                Text(text = cardTitle,
                     fontSize = 10.sp,
                     lineHeight = 16.sp,
                     letterSpacing = 1.5.sp,
@@ -33,14 +37,12 @@ fun SleepSchedule() {
                     modifier = Modifier.size(24.dp))
             }
             Spacer(modifier = Modifier.height(15.dp))
-            UserSleepHours()
-            Spacer(modifier = Modifier.height(15.dp))
             Row(Modifier
                 .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center) {
-                UserSleepCycles(columnType = "BED TIME", columnValue = "10:30 PM")
+                UserSleepCycles(columnType = "BED TIME", columnValue = "$bedTime PM")
                 Spacer(modifier = Modifier.width(40.dp))
-                UserSleepCycles(columnType = "WAKE UP", columnValue = "07:30 AM")
+                UserSleepCycles(columnType = "WAKE UP", columnValue = "$wakeUpTime AM")
             }
         }
     }

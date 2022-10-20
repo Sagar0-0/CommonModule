@@ -71,10 +71,10 @@ fun ProfileReadyScreen(userProfile: UserProfile) {
                     HealthLayout(userProfile.health)
                 }
                 4 -> {
-                    LifeStyleLayout()
+                    HealthLayout(userProfile.lifestyle)
                 }
                 5 -> {
-                    DietLayout()
+                    HealthLayout(userProfile.diet)
                 }
             }
         }

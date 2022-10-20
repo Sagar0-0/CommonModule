@@ -10,11 +10,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowRow
-import fit.asta.health.R
 import fit.asta.health.profile.model.domain.HealthProperties
 
 @Composable
@@ -23,9 +21,6 @@ fun SelectionCard(
     cardType: String,
     cardList: List<HealthProperties>,
 ) {
-
-
-    val domainName = stringResource(id = R.string.media_url)
 
     Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp), elevation = 5.dp) {
         Column(modifier = Modifier

@@ -5,17 +5,17 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
+import fit.asta.health.profile.model.domain.ProfileItem
 import fit.asta.health.profile.view.components.UserLifeStyle
 
 val currentActivitiesList = mutableListOf("Badminton", "Walking", "Cricket")
 val preferredActivitiesList = mutableListOf("Workout", "Walking", "Yoga", "Meditation", "Dance")
 
-@Preview(showSystemUi = true)
+
 @Composable
-fun LifeStyleLayout() {
+fun LifeStyleLayout(lifestyle: ArrayList<ProfileItem>) {
     Column(modifier = Modifier
         .verticalScroll(rememberScrollState())
         .fillMaxWidth()

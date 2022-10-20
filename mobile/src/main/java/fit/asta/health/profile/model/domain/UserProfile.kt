@@ -76,4 +76,5 @@ sealed class ProfileItem {
         var endTime: String = "",
         var profileCardType: ProfileItemType = ProfileItemType.SessionCard
     ) : ProfileItem()
+
 }
