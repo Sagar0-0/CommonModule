@@ -8,10 +8,10 @@ import fit.asta.health.course.session.data.Exercise
 import fit.asta.health.course.session.ui.SessionActivity
 import fit.asta.health.navigation.home_old.categories.data.CategoryData
 import fit.asta.health.notify.reminder.data.Reminder
+import fit.asta.health.old_scheduler.tags.ui.TagsActivity
+import fit.asta.health.old_scheduler.ui.ScheduleActivity
 import fit.asta.health.old_testimonials.ui.TestimonialsActivity
 import fit.asta.health.player.VideoPlayerActivity
-import fit.asta.health.schedule.tags.ui.TagsActivity
-import fit.asta.health.schedule.ui.ScheduleActivity
 import fit.asta.health.subscription.SubscriptionActivity
 
 class ActivityLauncherImpl : ActivityLauncher {
