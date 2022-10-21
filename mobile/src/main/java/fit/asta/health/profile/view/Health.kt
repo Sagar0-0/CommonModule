@@ -16,13 +16,6 @@ import fit.asta.health.profile.view.components.UserLifeStyle
 
 // Health Screen Layout
 
-val medicationList = mutableListOf("Anxiety", "Cold", "IBS", "Diabetes", "HBP")
-val foodRestrictionsList = mutableListOf("Gluten", "Milk", "Meat", "Mushrooms")
-val ailmentsList =
-    mutableListOf("Eye Sight", "Diabetes", "Acidity", "Hyper Tension", "HyperThyroid")
-val targetList =
-    mutableListOf("Skin Glow", "Flexibility", "Weight Loss", "Strength", "Concentration", "Muscles")
-
 @Composable
 fun HealthLayout(userHealth: ArrayList<ProfileItem>) {
 
