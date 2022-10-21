@@ -25,6 +25,7 @@ import fit.asta.health.subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.subscription.networkdata.SubscriptionStatusResponse
 import fit.asta.health.testimonials.model.network.response.NetTestimonialRes
 import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
+import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
 import fit.asta.health.tools.water.model.network.response.NetWaterToolRes
 import retrofit2.http.*
 
@@ -146,6 +147,9 @@ interface ApiService {
 
     @GET("tool/sunlight/get")
     suspend fun getSunlightTool(@Query("userId") userId: String): NetSunlightToolRes
+
+    @GET("tool/walking/get")
+    suspend fun getWalkingTool(@Query("userId") userId: String): NetWalkingToolRes
 
     @GET("tool/water/get")
     suspend fun getWaterTool(@Query("userId") userId: String): NetWaterToolRes

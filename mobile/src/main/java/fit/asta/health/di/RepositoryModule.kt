@@ -20,6 +20,9 @@ import fit.asta.health.testimonials.model.TestimonialRepoImpl
 import fit.asta.health.tools.sunlight.model.SunlightToolDataMapper
 import fit.asta.health.tools.sunlight.model.SunlightToolRepo
 import fit.asta.health.tools.sunlight.model.SunlightToolRepoImpl
+import fit.asta.health.tools.walking.model.WalkingToolDataMapper
+import fit.asta.health.tools.walking.model.WalkingToolRepo
+import fit.asta.health.tools.walking.model.WalkingToolRepoImpl
 import fit.asta.health.tools.water.model.WaterToolDataMapper
 import fit.asta.health.tools.water.model.WaterToolRepo
 import fit.asta.health.tools.water.model.WaterToolRepoImpl
@@ -100,6 +103,24 @@ object RepositoryModule {
         return SunlightToolRepoImpl(
             remoteApi = remoteApi,
             mapper = sunlightToolMapper
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideWalkingToolDataMapper(): WalkingToolDataMapper {
+        return WalkingToolDataMapper()
+    }
+
+    @Singleton
+    @Provides
+    fun provideWalkingToolRepo(
+        remoteApi: RemoteApis,
+        walkingToolMapper: WalkingToolDataMapper,
+    ): WalkingToolRepo {
+        return WalkingToolRepoImpl(
+            remoteApi = remoteApi,
+            mapper = walkingToolMapper
         )
     }
 

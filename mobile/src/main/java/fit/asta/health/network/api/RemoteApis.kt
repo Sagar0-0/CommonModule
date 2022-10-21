@@ -25,6 +25,7 @@ import fit.asta.health.subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.subscription.networkdata.SubscriptionStatusResponse
 import fit.asta.health.testimonials.model.network.response.NetTestimonialRes
 import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
+import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
 import fit.asta.health.tools.water.model.network.response.NetWaterToolRes
 
 interface RemoteApis {
@@ -67,6 +68,7 @@ interface RemoteApis {
 
     //Health Tools
     suspend fun getSunlightTool(userId: String): NetSunlightToolRes
+    suspend fun getWalkingTool(userId: String): NetWalkingToolRes
     suspend fun getWaterTool(userId: String): NetWaterToolRes
 
     //Feedback
