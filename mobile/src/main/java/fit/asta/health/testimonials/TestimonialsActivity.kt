@@ -91,5 +91,3 @@ fun TestimonialsPreview(navController: NavHostController) {
 fun ScreenPreview() {
     TestimonialsPreview(navController = rememberNavController())
 }
-
-
