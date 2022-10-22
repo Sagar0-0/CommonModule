@@ -329,19 +329,22 @@ fun AddressType(selectionTypeText: String, radioButtonList: List<ButtonListTypes
                     lineHeight = 19.6.sp,
                     fontWeight = FontWeight.Bold)
             }
-            FlowRow {
+            FlowRow(Modifier.fillMaxWidth()) {
                 radioButtonList.forEach { text ->
-                    Box(modifier = Modifier.padding(top = 9.5.dp, bottom = 9.5.dp)) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            androidx.compose.material.RadioButton(selected = (text == selectedOption),
-                                onClick = {
-                                    onOptionSelected(text)
-                                },
-                                colors = RadioButtonDefaults.colors(Color(0xff2F80ED)))
-                            Text(text = text.buttonType,
-                                fontSize = 16.sp,
-                                lineHeight = 22.4.sp,
-                                color = Color(0xff575757))
+                    Row(horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically) {
+                        Box(modifier = Modifier.padding(top = 9.5.dp, bottom = 9.5.dp)) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                androidx.compose.material.RadioButton(selected = (text == selectedOption),
+                                    onClick = {
+                                        onOptionSelected(text)
+                                    },
+                                    colors = RadioButtonDefaults.colors(Color(0xff2F80ED)))
+                                Text(text = text.buttonType,
+                                    fontSize = 16.sp,
+                                    lineHeight = 22.4.sp,
+                                    color = Color(0xff575757))
+                            }
                         }
                     }
                 }
