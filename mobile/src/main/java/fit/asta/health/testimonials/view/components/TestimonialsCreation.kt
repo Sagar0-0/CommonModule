@@ -8,7 +8,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,7 +20,6 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -143,18 +141,20 @@ fun TestimonialsRadioButton(selectionTypeText: String, radioButtonList: List<But
     }
 }
 
-@Preview
+
 @Composable
-fun TestimonialLayoutDemo() {
+fun TestimonialLayoutDemo(onNavigateTstCreate: () -> Unit) {
     Column(Modifier
         .fillMaxWidth()
         .padding(16.dp)
         .verticalScroll(rememberScrollState())) {
 
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
-            Icon(painter = painterResource(id = R.drawable.removeicon),
-                contentDescription = null,
-                Modifier.size(24.dp))
+            androidx.compose.material3.IconButton(onClick = onNavigateTstCreate) {
+                androidx.compose.material3.Icon(painter = painterResource(id = R.drawable.removeicon),
+                    contentDescription = null,
+                    Modifier.size(24.dp))
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
