@@ -1,4 +1,4 @@
-package fit.asta.health.new_testimonials.view.components
+package fit.asta.health.testimonials.view.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*

@@ -1,4 +1,4 @@
-package fit.asta.health.new_testimonials.view
+package fit.asta.health.testimonials.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -19,7 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.new_testimonials.view.components.TestimonialsCardLayout
+import fit.asta.health.testimonials.view.components.TestimonialsCardLayout
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
