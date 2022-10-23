@@ -74,7 +74,7 @@ fun SessionFeedback() {
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            SubmitButton()
+            SubmitButton(text = "Update")
         }
     }, topBar = {
         TopAppBar(title = {
@@ -90,14 +90,16 @@ fun SessionFeedback() {
 
 
 @Composable
-fun SubmitButton() {
+fun SubmitButton(
+    text: String,
+) {
     Button(onClick = { /*TODO*/ },
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
         shape = RoundedCornerShape(5.dp),
         colors = ButtonDefaults.buttonColors(containerColor = Color(0xff0088FF))) {
-        Text(text = "UPDATE",
+        Text(text = text,
             fontFamily = FontFamily.Default,
             fontSize = 14.sp,
             fontWeight = FontWeight.Medium,
