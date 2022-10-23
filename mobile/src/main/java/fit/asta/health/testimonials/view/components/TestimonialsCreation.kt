@@ -30,7 +30,9 @@ import fit.asta.health.profile.view.components.UpdateButton
 
 
 @Composable
-fun MyTextField() {
+fun MyTextField(
+    textFieldTitle: String,
+) {
 
     val maxChar = 50
 
@@ -45,7 +47,7 @@ fun MyTextField() {
                 .fillMaxWidth()
                 .height(100.dp),
             placeholder = {
-                Text(text = "Write your Testimonials",
+                Text(text = textFieldTitle,
                     fontSize = 14.sp,
                     lineHeight = 19.6.sp,
                     color = Color(0xff999999))
@@ -167,7 +169,7 @@ fun TestimonialLayoutDemo(onNavigateTstCreate: () -> Unit) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        MyTextField()
+        MyTextField(textFieldTitle = "Write your Testimonials")
 
         Spacer(modifier = Modifier.height(16.dp))
 
