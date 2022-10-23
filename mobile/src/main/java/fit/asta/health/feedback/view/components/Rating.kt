@@ -32,7 +32,7 @@ fun Rating() {
                 onValueChange = { rating = it },
                 onRatingChanged = {},
                 config = RatingBarConfig().size(40.dp).activeColor(Color(0xffFFC700))
-                    .inactiveColor(Color(0xffDFE6ED)).padding(14.dp))
+                    .inactiveColor(Color(0xffDFE6ED)).padding(10.dp))
         }
     }
 }

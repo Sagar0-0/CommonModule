@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,7 +22,11 @@ import fit.asta.health.R
 @Preview
 @Composable
 fun WelcomeCard() {
-    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp)) {
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp),
+        shape = RoundedCornerShape(8.dp), elevation = CardDefaults.cardElevation(5.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White)) {
         Column(Modifier
             .fillMaxWidth()
             .padding(16.dp)) {

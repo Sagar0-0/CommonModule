@@ -39,13 +39,15 @@ fun VerticalRadioButton(selectionTypeText: String, radioButtonList: List<ButtonL
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioButtonList[0]) }
 
 
-    Card(modifier = Modifier.fillMaxWidth(),
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp),
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)) {
         Column(Modifier
             .fillMaxWidth()
-            .padding(start = 16.dp)) {
+            .padding(16.dp)) {
             Spacer(modifier = Modifier.height(16.dp))
             Row(Modifier.fillMaxWidth()) {
                 androidx.compose.material.Text(text = selectionTypeText,

@@ -198,9 +198,9 @@ fun TestimonialLayoutDemo(onNavigateTstCreate: () -> Unit) {
 }
 
 @Composable
-fun UploadFiles() {
+fun UploadFiles(modifier: Modifier = Modifier) {
 
-    Column(Modifier.fillMaxWidth()) {
+    Column(modifier = modifier) {
         Text(text = "Add a Photo or Video",
             color = Color.Black,
             fontSize = 16.sp,

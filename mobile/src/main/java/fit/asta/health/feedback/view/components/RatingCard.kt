@@ -19,9 +19,12 @@ fun RatingCard(
     cardTitle: String,
     textFieldTitle: String,
 ) {
-    Card(modifier = Modifier.fillMaxWidth(),
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp),
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)) {
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(5.dp)) {
         Column(Modifier
             .fillMaxWidth()
             .padding(16.dp)) {
