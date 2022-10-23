@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.profile.intent.ProfileState
 import fit.asta.health.profile.model.ProfileRepo
+import fit.asta.health.profile.model.domain.UserProfile
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,16 +26,27 @@ constructor(
     val state = mutableState.asStateFlow()
 
     init {
-        loadProfileData()
+        loadProfile()
     }
 
-    private fun loadProfileData() {
+    private fun loadProfile() {
         viewModelScope.launch {
-            profileRepo.getProfileData("6309a9379af54f142c65fbfe").catch { exception ->
+            profileRepo.getUserProfile("6309a9379af54f142c65fbfe").catch { exception ->
                 mutableState.value = ProfileState.Error(exception)
             }.collect {
                 mutableState.value = ProfileState.Success(it)
             }
+        }
+    }
+
+    private fun updateProfile(userProfile: UserProfile) {
+        viewModelScope.launch {
+            profileRepo.updateUserProfile(userProfile)
+                .catch { exception ->
+                    mutableState.value = ProfileState.Error(exception)
+                }.collect {
+                    //mutableState.value = ProfileState.Success(it)
+                }
         }
     }
 }

@@ -20,6 +20,7 @@ import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagsResponse
 import fit.asta.health.old_testimonials.networkdata.TestimonialListResponse
 import fit.asta.health.old_testimonials.networkdata.TestimonialNetData
 import fit.asta.health.old_testimonials.networkdata.TestimonialResponse
+import fit.asta.health.profile.model.network.NetUserProfile
 import fit.asta.health.profile.model.network.NetUserProfileRes
 import fit.asta.health.subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.subscription.networkdata.SubscriptionStatusResponse
@@ -119,6 +120,10 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
 
     override suspend fun getProfile(userId: String): UserProfile {
         return apiService.getProfile(userId)
+    }
+
+    override suspend fun updateUserProfile(netUserProfile: NetUserProfile): Status {
+        return apiService.updateUserProfile(netUserProfile)
     }
 
     override suspend fun getUserProfile(userId: String): NetUserProfileRes {

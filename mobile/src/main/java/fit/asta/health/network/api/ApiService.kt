@@ -20,6 +20,7 @@ import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagsResponse
 import fit.asta.health.old_testimonials.networkdata.TestimonialListResponse
 import fit.asta.health.old_testimonials.networkdata.TestimonialNetData
 import fit.asta.health.old_testimonials.networkdata.TestimonialResponse
+import fit.asta.health.profile.model.network.NetUserProfile
 import fit.asta.health.profile.model.network.NetUserProfileRes
 import fit.asta.health.subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.subscription.networkdata.SubscriptionStatusResponse
@@ -102,6 +103,9 @@ interface ApiService {
         @Query("limit") limit: Int,
         @Query("index") index: Int
     ): TestimonialListResponse
+
+    @POST("user/profile/put")
+    suspend fun updateUserProfile(@Body netUserProfile: NetUserProfile): Status
 
     @GET("user/profile/get")
     suspend fun getProfile(@Query("userId") userId: String): UserProfile

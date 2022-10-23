@@ -2,11 +2,11 @@ package fit.asta.health.navigation.home.model
 
 import fit.asta.health.navigation.home.model.domain.*
 import fit.asta.health.navigation.home.model.network.response.NetHealthToolsRes
-import fit.asta.health.utils.DomainMapper
 
-class ToolsHomeDataMapper : DomainMapper<NetHealthToolsRes, ToolsHome> {
 
-    override fun mapToDomainModel(networkModel: NetHealthToolsRes): ToolsHome {
+class ToolsHomeDataMapper {
+
+    fun mapToDomainModel(networkModel: NetHealthToolsRes): ToolsHome {
         return ToolsHome(
             banners = networkModel.healthTools.netBanners.map {
                 Banner(
@@ -76,7 +76,7 @@ class ToolsHomeDataMapper : DomainMapper<NetHealthToolsRes, ToolsHome> {
         )
     }
 
-    override fun mapFromDomainModel(domainModel: ToolsHome): NetHealthToolsRes {
+    fun mapToNetworkModel(domainModel: ToolsHome): NetHealthToolsRes {
         TODO("Not yet implemented")
     }
 
@@ -85,7 +85,7 @@ class ToolsHomeDataMapper : DomainMapper<NetHealthToolsRes, ToolsHome> {
     }
 
     fun fromDomainList(initial: List<ToolsHome>): List<NetHealthToolsRes> {
-        return initial.map { mapFromDomainModel(it) }
+        return initial.map { mapToNetworkModel(it) }
     }
 }
 

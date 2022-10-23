@@ -2,14 +2,13 @@ package fit.asta.health.profile.model
 
 import fit.asta.health.profile.model.domain.*
 import fit.asta.health.profile.model.network.*
-import fit.asta.health.utils.DomainMapper
 
-class ProfileDataMapper : DomainMapper<NetUserProfileRes, UserProfile> {
+class ProfileDataMapper {
 
-    override fun mapToDomainModel(networkModel: NetUserProfileRes): UserProfile {
+    fun mapToDomainModel(userProfileRes: NetUserProfileRes): UserProfile {
 
-        val userProfileDao = networkModel.userProfile
-        val contact = mapContact(networkModel.userProfile.uid, userProfileDao.contact)
+        val userProfileDao = userProfileRes.userProfile
+        val contact = mapContact(userProfileRes.userProfile.uid, userProfileDao.contact)
         val physique = mapPhysique(userProfileDao.physique)
 
         val lifestyle = arrayListOf<ProfileItem>()
@@ -154,7 +153,7 @@ class ProfileDataMapper : DomainMapper<NetUserProfileRes, UserProfile> {
             endTime = netSession.wakeTime.toString()
         )
 
-    override fun mapFromDomainModel(domainModel: UserProfile): NetUserProfileRes {
+    fun mapToNetworkModel(domainModel: UserProfile): NetUserProfile {
         TODO("Not yet implemented")
     }
 }

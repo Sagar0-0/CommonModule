@@ -1,7 +1,6 @@
 package fit.asta.health.di
 
 import android.content.Context
-import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,29 +9,16 @@ import dagger.hilt.components.SingletonComponent
 import fit.asta.health.BuildConfig
 import fit.asta.health.network.AstaNetwork
 import fit.asta.health.network.TokenProvider
-import fit.asta.health.network.api.ApiService
 import fit.asta.health.network.api.RemoteApis
 import fit.asta.health.network.interceptor.OnlineInterceptor
 import okhttp3.Cache
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 
 @Module(includes = [AppModule::class])
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-
-    @Singleton
-    @Provides
-    fun provideApiService(): ApiService {
-        return Retrofit.Builder()
-            .baseUrl("https://asta.fit/")
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-            .build()
-            .create(ApiService::class.java)
-    }
 
     @Provides
     @Singleton

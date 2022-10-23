@@ -20,6 +20,7 @@ import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagsResponse
 import fit.asta.health.old_testimonials.networkdata.TestimonialListResponse
 import fit.asta.health.old_testimonials.networkdata.TestimonialNetData
 import fit.asta.health.old_testimonials.networkdata.TestimonialResponse
+import fit.asta.health.profile.model.network.NetUserProfile
 import fit.asta.health.profile.model.network.NetUserProfileRes
 import fit.asta.health.subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.subscription.networkdata.SubscriptionStatusResponse
@@ -53,6 +54,7 @@ interface RemoteApis {
     suspend fun putTestimonial(testimonial: TestimonialNetData): Status
     suspend fun getTestimonialList(limit: Int, index: Int): TestimonialListResponse
     suspend fun getProfile(userId: String): UserProfile
+    suspend fun updateUserProfile(netUserProfile: NetUserProfile): Status
     suspend fun getUserProfile(userId: String): NetUserProfileRes
     suspend fun getMultiSelectionData(uid: String): UserInputs
     suspend fun postProfile(data: Data)
