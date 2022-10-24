@@ -75,6 +75,8 @@ fun SessionFeedback() {
             Spacer(modifier = Modifier.height(8.dp))
 
             SubmitButton(text = "Update")
+
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }, topBar = {
         TopAppBar(title = {
