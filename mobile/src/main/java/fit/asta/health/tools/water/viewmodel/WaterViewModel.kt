@@ -29,7 +29,14 @@ class WaterViewModel
 
     private fun loadWaterToolData() {
         viewModelScope.launch {
-            waterToolRepo.getWaterTool(userId = "62fcd8c098eb9d5ed038b563").catch { exception ->
+            waterToolRepo.getWaterTool(
+                userId = "62fcd8c098eb9d5ed038b563",
+                latitude = "28.6353",
+                longitude = "77.2250",
+                location = "bangalore",
+                startDate = "2022-10-03",
+                endDate = "2022-10-05",
+            ).catch { exception ->
                 mutableState.value = WaterState.Error(exception)
             }.collect {
                 mutableState.value = WaterState.Success(it)

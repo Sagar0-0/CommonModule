@@ -20,6 +20,7 @@ import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagsResponse
 import fit.asta.health.old_testimonials.networkdata.TestimonialListResponse
 import fit.asta.health.old_testimonials.networkdata.TestimonialNetData
 import fit.asta.health.old_testimonials.networkdata.TestimonialResponse
+import fit.asta.health.profile.model.network.NetHealthProperties
 import fit.asta.health.profile.model.network.NetUserProfile
 import fit.asta.health.profile.model.network.NetUserProfileRes
 import fit.asta.health.subscription.networkdata.SubscriptionDataResponse
@@ -33,6 +34,20 @@ import retrofit2.http.*
 
 interface ApiService {
 
+    //User Profile
+    @GET("userProfile/get/isUserProfileAvailable/?")
+    suspend fun isUserProfileAvailable(@Query("uid") userId: String): Status
+
+    @PUT("user/profile/put")
+    suspend fun updateUserProfile(@Body netUserProfile: NetUserProfile): Status
+
+    @GET("userProfile/get/?")
+    suspend fun getUserProfile(@Query("uid") userId: String): NetUserProfileRes
+
+    @GET("health/property/getall/?")
+    suspend fun getHealthProperties(@Query("property") property: String): NetHealthProperties
+
+    //Home page
     @GET("home/get?")
     suspend fun getHomeData(
         @Query("uid") userId: String,
@@ -44,6 +59,97 @@ interface ApiService {
         @Query("time") time: String
     ): NetHealthToolsRes
 
+    /*
+    // Scheduler Endpoints
+    @PUT("schedule/put/")
+    suspend fun updateScheduleDataOnBackend(
+        @Body schedule: AlarmEntity
+    ): Response<AstaSchedulerPutResponse>
+
+    @GET("schedule/get/")
+    suspend fun getScheduleDataFromBackend(
+        @Query("sid") scheduleId: String
+    ): Response<AstaSchedulerGetResponse>
+
+    @GET("schedule/list/get/")
+    suspend fun getScheduleListDataFromBackend(
+        @Query("uid") userID: String
+    ): Response<AstaSchedulerGetListResponse>
+
+    @DELETE("schedule/delete/")
+    suspend fun deleteScheduleFromBackend(
+        @Query("sid") scheduleID: String
+    ): Response<AstaSchedulerDeleteResponse>
+
+    // Tags Endpoints
+    @GET("tag/list/get/")
+    suspend fun getTagListDataFromBackend(
+        @Query("uid") userID: String
+    ): Response<AstaGetTagsListResponse>
+
+    @PUT("tag/put")
+    suspend fun updateScheduleTag(@Body schedule: ScheduleTagNetData): Status
+
+    // Media Endpoints
+    @GET("sound/list/get/?")
+    suspend fun getAllUserMedia(@Query("uid") userID: String): Status
+
+    @PUT("sound/put")
+    suspend fun updateUserMedia(@Body schedule: ScheduleTagNetData): Status
+     */
+
+    //Health Tool - Water Endpoints
+    @GET("tool/water/get/?")
+    suspend fun getWaterTool(
+        @Query("uid") userId: String,
+        @Query("lat") latitude: String,
+        @Query("lon") longitude: String,
+        @Query("loc") location: String,
+        @Query("start") startDate: String,
+        @Query("end") endDate: String
+    ): NetWaterToolRes
+
+    @PUT("tool/water/beverage/add/put")
+    suspend fun updateBeverage(@Body beverage: Data): Status
+
+    @POST("tool/water/beverage/quantity/post")
+    suspend fun updateBeverageQty(@Body beverage: Data): Status
+
+    @GET("tool/water/beverage/list/get/?")
+    suspend fun getBeverageList(@Query("uid") userId: String): Status
+
+    //Health Tool - Sunlight Endpoints
+    @GET("tool/sunlight/get")
+    suspend fun getSunlightTool(@Query("userId") userId: String): NetSunlightToolRes
+
+    //Health Tool - Walking Endpoints
+    @GET("tool/walking/get")
+    suspend fun getWalkingTool(@Query("userId") userId: String): NetWalkingToolRes
+
+    //Testimonial Endpoints
+    @GET("testimonial/list/get?")
+    suspend fun getTestimonials(
+        @Query("limit") limit: Int,
+        @Query("index") index: Int
+    ): NetTestimonialRes
+
+    @PUT("testimonial/put/")
+    suspend fun updateTestimonial(@Body testimonial: TestimonialNetData): Status
+
+    @GET("testimonial/get/?")
+    suspend fun getTestimonial(@Query("uid") userId: String): TestimonialResponse
+
+    //Feedback Endpoints
+    @GET("feedback/user/get/?")
+    suspend fun getFeedbackQuestions(
+        @Query("uid") userId: String,
+        @Query("fid") featureId: String
+    ): NetFeedbackRes
+
+    @POST("feedback/user/post")
+    suspend fun postFeedback(@Body feedback: Data): Status
+
+    //Old APIs ------------------------------------------------------------------------------------
     @GET("banner/list/get")
     suspend fun getBanners(@Query("type") type: String): BannerResponse
 
@@ -81,22 +187,8 @@ interface ApiService {
     suspend fun getReferralInfo(@Query("userId") userId: String): OfferNetData
      */
 
-    @GET("testimonial/list/get?")
-    suspend fun getTestimonials(
-        @Query("limit") limit: Int,
-        @Query("index") index: Int
-    ): NetTestimonialRes
-
     @POST("testimonial/post")
     suspend fun postTestimonial(@Body testimonial: TestimonialNetData): Status
-
-    @GET("testimonial/get?")
-    suspend fun getTestimonial(
-        @Query("userId") userId: String
-    ): TestimonialResponse
-
-    @PUT("testimonial/put")
-    suspend fun updateTestimonial(@Body testimonial: TestimonialNetData): Status
 
     @GET("testimonial/list/get?")
     suspend fun getTestimonialList(
@@ -104,14 +196,8 @@ interface ApiService {
         @Query("index") index: Int
     ): TestimonialListResponse
 
-    @POST("user/profile/put")
-    suspend fun updateUserProfile(@Body netUserProfile: NetUserProfile): Status
-
     @GET("user/profile/get")
     suspend fun getProfile(@Query("userId") userId: String): UserProfile
-
-    @GET("userProfile/get/?")
-    suspend fun getUserProfile(@Query("uid") uid: String): NetUserProfileRes
 
     @GET("user/profile/data/get")
     suspend fun getMultiSelectionData(@Query("uid") uid: String): UserInputs
@@ -148,33 +234,4 @@ interface ApiService {
 
     @GET("schedule/plan/list/get")
     suspend fun getTodayPlan(@Query("userId") userId: String): TodayPlanNetData
-
-    @GET("tool/sunlight/get")
-    suspend fun getSunlightTool(@Query("userId") userId: String): NetSunlightToolRes
-
-    @GET("tool/walking/get")
-    suspend fun getWalkingTool(@Query("userId") userId: String): NetWalkingToolRes
-
-    @GET("tool/water/get")
-    suspend fun getWaterTool(@Query("userId") userId: String): NetWaterToolRes
-
-    @GET("feedback/get?")
-    suspend fun getFeedback(@Query("userId") userId: String): NetFeedbackRes
-
-    /*
-    @POST("user/preference/favourite")
-    suspend fun postUserPreferenceFavourite(@Body body: FavouriteItem)
-
-    @POST("user/activity/progress")
-    suspend fun postActivityProgress(@Body body: ActivityProgress)
-
-    @GET("user/preferences")
-    suspend fun getUserPreferences(@Query("userId") userId: String): UserProfile
-
-    @GET("user/track/list")
-    suspend fun getTrackInfo(@Query("userId") userId: String): UserProfile
-
-    @GET("user/track/activity")
-    suspend fun getTrackActivity(@Query("userId") userId: String): UserProfile
-    */
 }

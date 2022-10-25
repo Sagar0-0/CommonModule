@@ -10,12 +10,24 @@ class WaterToolRepoImpl(
     private val mapper: WaterToolDataMapper,
 ) : WaterToolRepo {
 
-    override suspend fun getWaterTool(userId: String): Flow<WaterTool> {
+    override suspend fun getWaterTool(
+        userId: String,
+        latitude: String,
+        longitude: String,
+        location: String,
+        startDate: String,
+        endDate: String
+    ): Flow<WaterTool> {
         return flow {
             emit(
                 mapper.mapToDomainModel(
                     remoteApi.getWaterTool(
-                        userId = userId
+                        userId = userId,
+                        latitude = latitude,
+                        longitude = longitude,
+                        location = location,
+                        startDate = startDate,
+                        endDate = endDate
                     )
                 )
             )

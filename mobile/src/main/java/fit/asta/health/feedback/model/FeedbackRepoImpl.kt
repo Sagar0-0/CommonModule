@@ -10,11 +10,11 @@ class FeedbackRepoImpl(
     private val mapper: FeedbackDataMapper,
 ) : FeedbackRepo {
 
-    override suspend fun getFeedback(userId: String): Flow<Feedback> {
+    override suspend fun getFeedback(userId: String, featureId: String): Flow<Feedback> {
         return flow {
             emit(
                 mapper.mapToDomainModel(
-                    remoteApi.getFeedback(userId = userId)
+                    remoteApi.getFeedbackQuestions(userId = userId, featureId = featureId)
                 )
             )
         }

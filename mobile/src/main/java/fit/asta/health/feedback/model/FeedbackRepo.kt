@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface FeedbackRepo {
-    suspend fun getFeedback(userId: String): Flow<Feedback>
+    suspend fun getFeedback(userId: String, featureId: String): Flow<Feedback>
 }

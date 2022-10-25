@@ -24,12 +24,12 @@ class FeedbackViewModel
     val state = mutableState.asStateFlow()
 
     init {
-        loadWaterToolData("6309a9379af54f142c65fbfe")
+        loadWaterToolData("6309a9379af54f142c65fbfe", "")
     }
 
-    private fun loadWaterToolData(userId: String) {
+    private fun loadWaterToolData(userId: String, featureId: String) {
         viewModelScope.launch {
-            feedbackRepo.getFeedback(userId).catch { exception ->
+            feedbackRepo.getFeedback(userId = userId, featureId = featureId).catch { exception ->
                 mutableState.value = FeedbackState.Error(exception)
             }.collect {
                 mutableState.value = FeedbackState.Success(it)

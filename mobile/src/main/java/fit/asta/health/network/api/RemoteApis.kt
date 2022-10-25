@@ -20,6 +20,7 @@ import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagsResponse
 import fit.asta.health.old_testimonials.networkdata.TestimonialListResponse
 import fit.asta.health.old_testimonials.networkdata.TestimonialNetData
 import fit.asta.health.old_testimonials.networkdata.TestimonialResponse
+import fit.asta.health.profile.model.network.NetHealthProperties
 import fit.asta.health.profile.model.network.NetUserProfile
 import fit.asta.health.profile.model.network.NetUserProfileRes
 import fit.asta.health.subscription.networkdata.SubscriptionDataResponse
@@ -31,6 +32,13 @@ import fit.asta.health.tools.water.model.network.response.NetWaterToolRes
 
 interface RemoteApis {
 
+    //User Profile
+    suspend fun isUserProfileAvailable(userId: String): Status
+    suspend fun updateUserProfile(netUserProfile: NetUserProfile): Status
+    suspend fun getUserProfile(userId: String): NetUserProfileRes
+    suspend fun getHealthProperties(property: String): NetHealthProperties
+
+    //Home page
     suspend fun getHomeData(
         userId: String,
         latitude: String,
@@ -41,7 +49,52 @@ interface RemoteApis {
         time: String
     ): NetHealthToolsRes
 
+    /*
+    // Scheduler Endpoints
+    suspend fun updateScheduleDataOnBackend(schedule: AlarmEntity): Response<AstaSchedulerPutResponse>
+    suspend fun getScheduleDataFromBackend(scheduleId: String): Response<AstaSchedulerGetResponse>
+    suspend fun getScheduleListDataFromBackend(userId: String): Response<AstaSchedulerGetListResponse>
+    suspend fun deleteScheduleFromBackend(scheduleId: String): Response<AstaSchedulerDeleteResponse>
+
+    // Tags Endpoints
+    suspend fun getTagListDataFromBackend(userId: String): Response<AstaGetTagsListResponse>
+    suspend fun updateScheduleTag(schedule: ScheduleTagNetData): Status
+
+    // Media Endpoints
+    suspend fun getAllUserMedia(userId: String): Status
+    suspend fun updateUserMedia(schedule: ScheduleTagNetData): Status
+     */
+
+    //Health Tool - Water Endpoints
+    suspend fun getWaterTool(
+        userId: String,
+        latitude: String,
+        longitude: String,
+        location: String,
+        startDate: String,
+        endDate: String
+    ): NetWaterToolRes
+
+    suspend fun updateBeverage(beverage: Data): Status
+    suspend fun updateBeverageQty(beverage: Data): Status
+    suspend fun getBeverageList(userId: String): Status
+
+    //Health Tool - Sunlight Endpoints
+    suspend fun getSunlightTool(userId: String): NetSunlightToolRes
+
+    //Health Tool - Walking Endpoints
+    suspend fun getWalkingTool(userId: String): NetWalkingToolRes
+
+    //Testimonial Endpoints
     suspend fun getTestimonials(limit: Int, index: Int): NetTestimonialRes
+    suspend fun updateTestimonial(schedule: TestimonialNetData): Status
+    suspend fun getTestimonial(userId: String): TestimonialResponse
+
+    //Feedback Endpoints
+    suspend fun getFeedbackQuestions(userId: String, featureId: String): NetFeedbackRes
+    suspend fun postFeedback(feedback: Data): Status
+
+    //Old Endpoints -------------------------------------------------------------------------------
     suspend fun getBanners(type: String): BannerResponse
     suspend fun getCategories(type: String): CategoriesNetData
     suspend fun getCoursesList(categoryId: String, limit: Int, index: Int): CoursesListNetData
@@ -50,12 +103,9 @@ interface RemoteApis {
     suspend fun getSubscriptionStatus(userId: String): SubscriptionStatusResponse
     suspend fun getSession(userId: String, courseId: String, sessionId: String): SessionResponse
     suspend fun postTestimonial(testimonial: TestimonialNetData): Status
-    suspend fun getTestimonial(userId: String): TestimonialResponse
     suspend fun putTestimonial(testimonial: TestimonialNetData): Status
     suspend fun getTestimonialList(limit: Int, index: Int): TestimonialListResponse
     suspend fun getProfile(userId: String): UserProfile
-    suspend fun updateUserProfile(netUserProfile: NetUserProfile): Status
-    suspend fun getUserProfile(userId: String): NetUserProfileRes
     suspend fun getMultiSelectionData(uid: String): UserInputs
     suspend fun postProfile(data: Data)
 
@@ -67,12 +117,4 @@ interface RemoteApis {
     suspend fun putScheduleTag(schedule: ScheduleTagNetData): Status
     suspend fun getScheduleTagList(): ScheduleTagsResponse
     suspend fun getTodayPlan(userId: String): TodayPlanNetData
-
-    //Health Tools
-    suspend fun getSunlightTool(userId: String): NetSunlightToolRes
-    suspend fun getWalkingTool(userId: String): NetWalkingToolRes
-    suspend fun getWaterTool(userId: String): NetWaterToolRes
-
-    //Feedback
-    suspend fun getFeedback(userId: String): NetFeedbackRes
 }

@@ -20,6 +20,7 @@ import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagsResponse
 import fit.asta.health.old_testimonials.networkdata.TestimonialListResponse
 import fit.asta.health.old_testimonials.networkdata.TestimonialNetData
 import fit.asta.health.old_testimonials.networkdata.TestimonialResponse
+import fit.asta.health.profile.model.network.NetHealthProperties
 import fit.asta.health.profile.model.network.NetUserProfile
 import fit.asta.health.profile.model.network.NetUserProfileRes
 import fit.asta.health.subscription.networkdata.SubscriptionDataResponse
@@ -38,6 +39,24 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
         .getRetrofit(baseUrl, client)
         .create(ApiService::class.java)
 
+    //User Profile
+    override suspend fun isUserProfileAvailable(userId: String): Status {
+        return apiService.isUserProfileAvailable(userId)
+    }
+
+    override suspend fun updateUserProfile(netUserProfile: NetUserProfile): Status {
+        return apiService.updateUserProfile(netUserProfile)
+    }
+
+    override suspend fun getUserProfile(userId: String): NetUserProfileRes {
+        return apiService.getUserProfile(userId)
+    }
+
+    override suspend fun getHealthProperties(property: String): NetHealthProperties {
+        return apiService.getHealthProperties(property)
+    }
+
+    //Home page
     override suspend fun getHomeData(
         userId: String,
         latitude: String,
@@ -58,10 +77,100 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
         )
     }
 
+    /*
+    // Scheduler Endpoints
+    override suspend fun updateScheduleDataOnBackend(schedule: AlarmEntity): Response<AstaSchedulerPutResponse> {
+        return apiService.updateScheduleDataOnBackend(schedule)
+    }
+
+    override suspend fun getScheduleDataFromBackend(scheduleId: String): Response<AstaSchedulerGetResponse> {
+        return apiService.getScheduleDataFromBackend(scheduleId)
+    }
+
+    override suspend fun getScheduleListDataFromBackend(userId: String): Response<AstaSchedulerGetListResponse> {
+        return apiService.getScheduleListDataFromBackend(userId)
+    }
+
+    override suspend fun deleteScheduleFromBackend(scheduleId: String): Response<AstaSchedulerDeleteResponse> {
+        return apiService.deleteScheduleFromBackend(scheduleId)
+    }
+
+    // Tags Endpoints
+    override suspend fun getTagListDataFromBackend(userId: String): Response<AstaGetTagsListResponse> {
+        return apiService.getTagListDataFromBackend(userId)
+    }
+
+    override suspend fun updateScheduleTag(schedule: ScheduleTagNetData): Status {
+        return apiService.updateScheduleTag(schedule)
+    }
+
+    // Media Endpoints
+    override suspend fun getAllUserMedia(userId: String): Status {
+        return apiService.getAllUserMedia(userId)
+    }
+
+    override suspend fun updateUserMedia(schedule: ScheduleTagNetData): Status {
+        return apiService.updateUserMedia(schedule)
+    }
+     */
+
+    //Health Tool - Water Endpoints
+    override suspend fun getWaterTool(
+        userId: String,
+        latitude: String,
+        longitude: String,
+        location: String,
+        startDate: String,
+        endDate: String
+    ): NetWaterToolRes {
+        return apiService.getWaterTool(userId, latitude, longitude, location, startDate, endDate)
+    }
+
+    override suspend fun updateBeverage(beverage: Data): Status {
+        return apiService.updateBeverage(beverage)
+    }
+
+    override suspend fun updateBeverageQty(beverage: Data): Status {
+        return apiService.updateBeverageQty(beverage)
+    }
+
+    override suspend fun getBeverageList(userId: String): Status {
+        return apiService.getBeverageList(userId)
+    }
+
+    //Health Tool - Sunlight Endpoints
+    override suspend fun getSunlightTool(userId: String): NetSunlightToolRes {
+        return apiService.getSunlightTool(userId)
+    }
+
+    //Health Tool - Walking Endpoints
+    override suspend fun getWalkingTool(userId: String): NetWalkingToolRes {
+        return apiService.getWalkingTool(userId)
+    }
+
+    //Testimonial Endpoints
     override suspend fun getTestimonials(limit: Int, index: Int): NetTestimonialRes {
         return apiService.getTestimonials(limit, index)
     }
 
+    override suspend fun updateTestimonial(schedule: TestimonialNetData): Status {
+        return apiService.updateTestimonial(schedule)
+    }
+
+    override suspend fun getTestimonial(userId: String): TestimonialResponse {
+        return apiService.getTestimonial(userId)
+    }
+
+    //Feedback Endpoints
+    override suspend fun getFeedbackQuestions(userId: String, featureId: String): NetFeedbackRes {
+        return apiService.getFeedbackQuestions(userId, featureId)
+    }
+
+    override suspend fun postFeedback(feedback: Data): Status {
+        return apiService.postFeedback(feedback)
+    }
+
+    //Old Endpoints -------------------------------------------------------------------------------
     override suspend fun getBanners(type: String): BannerResponse {
         return apiService.getBanners(type)
     }
@@ -90,10 +199,6 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
         return apiService.postTestimonial(testimonial)
     }
 
-    override suspend fun getTestimonial(userId: String): TestimonialResponse {
-        return apiService.getTestimonial(userId)
-    }
-
     override suspend fun putTestimonial(testimonial: TestimonialNetData): Status {
         return apiService.updateTestimonial(testimonial)
     }
@@ -120,14 +225,6 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
 
     override suspend fun getProfile(userId: String): UserProfile {
         return apiService.getProfile(userId)
-    }
-
-    override suspend fun updateUserProfile(netUserProfile: NetUserProfile): Status {
-        return apiService.updateUserProfile(netUserProfile)
-    }
-
-    override suspend fun getUserProfile(userId: String): NetUserProfileRes {
-        return apiService.getUserProfile(userId)
     }
 
     override suspend fun getMultiSelectionData(uid: String): UserInputs {
@@ -164,21 +261,5 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
 
     override suspend fun getScheduleTagList(): ScheduleTagsResponse {
         return apiService.getScheduleTagList()
-    }
-
-    override suspend fun getSunlightTool(userId: String): NetSunlightToolRes {
-        return apiService.getSunlightTool(userId)
-    }
-
-    override suspend fun getWalkingTool(userId: String): NetWalkingToolRes {
-        return apiService.getWalkingTool(userId)
-    }
-
-    override suspend fun getWaterTool(userId: String): NetWaterToolRes {
-        return apiService.getWaterTool(userId)
-    }
-
-    override suspend fun getFeedback(userId: String): NetFeedbackRes {
-        return apiService.getFeedback(userId = userId)
     }
 }
