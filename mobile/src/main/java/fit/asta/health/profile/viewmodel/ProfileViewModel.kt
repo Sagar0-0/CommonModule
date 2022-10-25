@@ -49,4 +49,26 @@ constructor(
                 }
         }
     }
+
+    private fun isUserProfileAvailable(userId: String) {
+        viewModelScope.launch {
+            profileRepo.isUserProfileAvailable(userId)
+                .catch { exception ->
+                    mutableState.value = ProfileState.Error(exception)
+                }.collect {
+                    //mutableState.value = ProfileState.Success(it)
+                }
+        }
+    }
+
+    private fun getHealthProperties(propertyType: String) {
+        viewModelScope.launch {
+            profileRepo.getHealthProperties(propertyType)
+                .catch { exception ->
+                    mutableState.value = ProfileState.Error(exception)
+                }.collect {
+                    //mutableState.value = ProfileState.Success(it)
+                }
+        }
+    }
 }

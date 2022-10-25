@@ -20,8 +20,9 @@ import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagsResponse
 import fit.asta.health.old_testimonials.networkdata.TestimonialListResponse
 import fit.asta.health.old_testimonials.networkdata.TestimonialNetData
 import fit.asta.health.old_testimonials.networkdata.TestimonialResponse
-import fit.asta.health.profile.model.network.NetHealthProperties
+import fit.asta.health.profile.model.network.NetHealthPropertiesRes
 import fit.asta.health.profile.model.network.NetUserProfile
+import fit.asta.health.profile.model.network.NetUserProfileAvailableRes
 import fit.asta.health.profile.model.network.NetUserProfileRes
 import fit.asta.health.subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.subscription.networkdata.SubscriptionStatusResponse
@@ -40,7 +41,7 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
         .create(ApiService::class.java)
 
     //User Profile
-    override suspend fun isUserProfileAvailable(userId: String): Status {
+    override suspend fun isUserProfileAvailable(userId: String): NetUserProfileAvailableRes {
         return apiService.isUserProfileAvailable(userId)
     }
 
@@ -52,8 +53,8 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
         return apiService.getUserProfile(userId)
     }
 
-    override suspend fun getHealthProperties(property: String): NetHealthProperties {
-        return apiService.getHealthProperties(property)
+    override suspend fun getHealthProperties(propertyType: String): NetHealthPropertiesRes {
+        return apiService.getHealthProperties(propertyType)
     }
 
     //Home page

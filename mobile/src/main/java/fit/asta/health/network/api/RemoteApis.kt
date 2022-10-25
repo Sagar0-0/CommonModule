@@ -20,8 +20,9 @@ import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagsResponse
 import fit.asta.health.old_testimonials.networkdata.TestimonialListResponse
 import fit.asta.health.old_testimonials.networkdata.TestimonialNetData
 import fit.asta.health.old_testimonials.networkdata.TestimonialResponse
-import fit.asta.health.profile.model.network.NetHealthProperties
+import fit.asta.health.profile.model.network.NetHealthPropertiesRes
 import fit.asta.health.profile.model.network.NetUserProfile
+import fit.asta.health.profile.model.network.NetUserProfileAvailableRes
 import fit.asta.health.profile.model.network.NetUserProfileRes
 import fit.asta.health.subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.subscription.networkdata.SubscriptionStatusResponse
@@ -33,10 +34,10 @@ import fit.asta.health.tools.water.model.network.response.NetWaterToolRes
 interface RemoteApis {
 
     //User Profile
-    suspend fun isUserProfileAvailable(userId: String): Status
+    suspend fun isUserProfileAvailable(userId: String): NetUserProfileAvailableRes
     suspend fun updateUserProfile(netUserProfile: NetUserProfile): Status
     suspend fun getUserProfile(userId: String): NetUserProfileRes
-    suspend fun getHealthProperties(property: String): NetHealthProperties
+    suspend fun getHealthProperties(propertyType: String): NetHealthPropertiesRes
 
     //Home page
     suspend fun getHomeData(
