@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.feedback.intent.FeedbackState
 import fit.asta.health.feedback.model.FeedbackRepo
+import fit.asta.health.feedback.model.network.NetUserFeedback
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,15 +25,25 @@ class FeedbackViewModel
     val state = mutableState.asStateFlow()
 
     init {
-        loadWaterToolData("6309a9379af54f142c65fbfe", "")
+        loadFeedbackQuestions("6309a9379af54f142c65fbfe", "")
     }
 
-    private fun loadWaterToolData(userId: String, featureId: String) {
+    private fun loadFeedbackQuestions(userId: String, featureId: String) {
         viewModelScope.launch {
             feedbackRepo.getFeedback(userId = userId, featureId = featureId).catch { exception ->
                 mutableState.value = FeedbackState.Error(exception)
             }.collect {
                 mutableState.value = FeedbackState.Success(it)
+            }
+        }
+    }
+
+    private fun postUserFeedback(feedback: NetUserFeedback) {
+        viewModelScope.launch {
+            feedbackRepo.postUserFeedback(feedback).catch { exception ->
+                mutableState.value = FeedbackState.Error(exception)
+            }.collect {
+                //mutableState.value = FeedbackState.Success(it)
             }
         }
     }

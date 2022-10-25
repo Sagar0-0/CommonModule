@@ -1,7 +1,8 @@
 package fit.asta.health.feedback.model
 
 import fit.asta.health.feedback.model.domain.Feedback
-import fit.asta.health.feedback.model.network.response.NetFeedbackRes
+import fit.asta.health.feedback.model.network.NetFeedbackRes
+import fit.asta.health.feedback.model.network.NetUserFeedback
 
 class FeedbackDataMapper {
 
@@ -10,7 +11,7 @@ class FeedbackDataMapper {
         )
     }
 
-    fun mapToNetworkModel(domainModel: Feedback): NetFeedbackRes {
+    fun mapToNetworkModel(domainModel: Feedback): NetUserFeedback {
         TODO("Not yet implemented")
     }
 }

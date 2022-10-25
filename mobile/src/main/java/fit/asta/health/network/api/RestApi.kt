@@ -3,7 +3,8 @@ package fit.asta.health.network.api
 import fit.asta.health.course.details.networkdata.CourseDetailsResponse
 import fit.asta.health.course.listing.networkdata.CoursesListNetData
 import fit.asta.health.course.session.networkdata.SessionResponse
-import fit.asta.health.feedback.model.network.response.NetFeedbackRes
+import fit.asta.health.feedback.model.network.NetFeedbackRes
+import fit.asta.health.feedback.model.network.NetUserFeedback
 import fit.asta.health.navigation.home.model.network.response.NetHealthToolsRes
 import fit.asta.health.navigation.home_old.banners.networkdata.BannerResponse
 import fit.asta.health.navigation.home_old.categories.networkdata.CategoriesNetData
@@ -167,8 +168,8 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
         return apiService.getFeedbackQuestions(userId, featureId)
     }
 
-    override suspend fun postFeedback(feedback: Data): Status {
-        return apiService.postFeedback(feedback)
+    override suspend fun postUserFeedback(feedback: NetUserFeedback): Status {
+        return apiService.postUserFeedback(feedback)
     }
 
     //Old Endpoints -------------------------------------------------------------------------------
