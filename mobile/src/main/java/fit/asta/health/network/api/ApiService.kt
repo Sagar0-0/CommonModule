@@ -32,7 +32,9 @@ import fit.asta.health.testimonials.model.network.NetTestimonialRes
 import fit.asta.health.testimonials.model.network.NetTestimonialsRes
 import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
 import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
-import fit.asta.health.tools.water.model.network.response.NetWaterToolRes
+import fit.asta.health.tools.water.model.network.NetBeverage
+import fit.asta.health.tools.water.model.network.NetBeverageRes
+import fit.asta.health.tools.water.model.network.NetWaterToolRes
 import retrofit2.http.*
 
 
@@ -114,13 +116,13 @@ interface ApiService {
     ): NetWaterToolRes
 
     @PUT("tool/water/beverage/add/put")
-    suspend fun updateBeverage(@Body beverage: Data): Status
+    suspend fun updateBeverage(@Body beverage: NetBeverage): Status
 
     @POST("tool/water/beverage/quantity/post")
-    suspend fun updateBeverageQty(@Body beverage: Data): Status
+    suspend fun updateBeverageQty(@Body beverage: NetBeverage): Status
 
     @GET("tool/water/beverage/list/get/?")
-    suspend fun getBeverageList(@Query("uid") userId: String): Status
+    suspend fun getBeverageList(@Query("uid") userId: String): NetBeverageRes
 
     //Health Tool - Sunlight Endpoints
     @GET("tool/sunlight/get")

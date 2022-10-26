@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.tools.water.intent.WaterState
 import fit.asta.health.tools.water.model.WaterToolRepo
+import fit.asta.health.tools.water.model.network.NetBeverage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -40,6 +41,36 @@ class WaterViewModel
                 mutableState.value = WaterState.Error(exception)
             }.collect {
                 mutableState.value = WaterState.Success(it)
+            }
+        }
+    }
+
+    fun updateBeverage(beverage: NetBeverage) {
+        viewModelScope.launch {
+            waterToolRepo.updateBeverage(beverage).catch { exception ->
+                mutableState.value = WaterState.Error(exception)
+            }.collect {
+                //mutableState.value = WaterState.Success(it)
+            }
+        }
+    }
+
+    fun updateBeverageQty(beverage: NetBeverage) {
+        viewModelScope.launch {
+            waterToolRepo.updateBeverageQty(beverage).catch { exception ->
+                mutableState.value = WaterState.Error(exception)
+            }.collect {
+                //mutableState.value = WaterState.Success(it)
+            }
+        }
+    }
+
+    fun getBeverageList(userId: String) {
+        viewModelScope.launch {
+            waterToolRepo.getBeverageList(userId).catch { exception ->
+                mutableState.value = WaterState.Error(exception)
+            }.collect {
+                //mutableState.value = WaterState.Success(it)
             }
         }
     }

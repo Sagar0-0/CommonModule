@@ -32,7 +32,9 @@ import fit.asta.health.testimonials.model.network.NetTestimonialRes
 import fit.asta.health.testimonials.model.network.NetTestimonialsRes
 import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
 import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
-import fit.asta.health.tools.water.model.network.response.NetWaterToolRes
+import fit.asta.health.tools.water.model.network.NetBeverage
+import fit.asta.health.tools.water.model.network.NetBeverageRes
+import fit.asta.health.tools.water.model.network.NetWaterToolRes
 import fit.asta.health.utils.NetworkUtil
 import okhttp3.OkHttpClient
 
@@ -130,15 +132,15 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
         return apiService.getWaterTool(userId, latitude, longitude, location, startDate, endDate)
     }
 
-    override suspend fun updateBeverage(beverage: Data): Status {
+    override suspend fun updateBeverage(beverage: NetBeverage): Status {
         return apiService.updateBeverage(beverage)
     }
 
-    override suspend fun updateBeverageQty(beverage: Data): Status {
+    override suspend fun updateBeverageQty(beverage: NetBeverage): Status {
         return apiService.updateBeverageQty(beverage)
     }
 
-    override suspend fun getBeverageList(userId: String): Status {
+    override suspend fun getBeverageList(userId: String): NetBeverageRes {
         return apiService.getBeverageList(userId)
     }
 
