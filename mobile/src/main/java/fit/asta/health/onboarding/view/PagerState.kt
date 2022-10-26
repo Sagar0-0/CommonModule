@@ -1,4 +1,4 @@
-package fit.asta.health.onboarding_screen.view
+package fit.asta.health.onboarding.view
 
 import androidx.annotation.FloatRange
 import androidx.compose.animation.core.animateDpAsState

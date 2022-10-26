@@ -1,4 +1,4 @@
-package fit.asta.health.onboarding_screen.view
+package fit.asta.health.onboarding.view
 
 data class OnBoardingData(
     val image: Int,

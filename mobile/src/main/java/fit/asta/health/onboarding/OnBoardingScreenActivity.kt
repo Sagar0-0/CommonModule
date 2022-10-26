@@ -1,4 +1,4 @@
-package fit.asta.health.onboarding_screen
+package fit.asta.health.onboarding
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
