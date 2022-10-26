@@ -27,7 +27,9 @@ import fit.asta.health.profile.model.network.NetUserProfileAvailableRes
 import fit.asta.health.profile.model.network.NetUserProfileRes
 import fit.asta.health.subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.subscription.networkdata.SubscriptionStatusResponse
-import fit.asta.health.testimonials.model.network.response.NetTestimonialRes
+import fit.asta.health.testimonials.model.network.NetTestimonial
+import fit.asta.health.testimonials.model.network.NetTestimonialRes
+import fit.asta.health.testimonials.model.network.NetTestimonialsRes
 import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
 import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
 import fit.asta.health.tools.water.model.network.response.NetWaterToolRes
@@ -151,16 +153,16 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
     }
 
     //Testimonial Endpoints
-    override suspend fun getTestimonials(limit: Int, index: Int): NetTestimonialRes {
+    override suspend fun getTestimonials(limit: Int, index: Int): NetTestimonialsRes {
         return apiService.getTestimonials(limit, index)
     }
 
-    override suspend fun updateTestimonial(schedule: TestimonialNetData): Status {
-        return apiService.updateTestimonial(schedule)
+    override suspend fun updateTestimonial(netTestimonial: NetTestimonial): Status {
+        return apiService.updateTestimonial(netTestimonial)
     }
 
-    override suspend fun getTestimonial(userId: String): TestimonialResponse {
-        return apiService.getTestimonial(userId)
+    override suspend fun getUserTestimonial(userId: String): NetTestimonialRes {
+        return apiService.getUserTestimonial(userId)
     }
 
     //Feedback Endpoints
@@ -202,11 +204,15 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
     }
 
     override suspend fun putTestimonial(testimonial: TestimonialNetData): Status {
-        return apiService.updateTestimonial(testimonial)
+        return apiService.putTestimonial(testimonial)
     }
 
     override suspend fun getTestimonialList(limit: Int, index: Int): TestimonialListResponse {
         return apiService.getTestimonialList(limit, index)
+    }
+
+    override suspend fun getTestimonial(userId: String): TestimonialResponse {
+        return apiService.getTestimonial(userId)
     }
 
     override suspend fun getSubscriptionPlans(): SubscriptionDataResponse {

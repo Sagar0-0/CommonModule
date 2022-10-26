@@ -27,7 +27,9 @@ import fit.asta.health.profile.model.network.NetUserProfileAvailableRes
 import fit.asta.health.profile.model.network.NetUserProfileRes
 import fit.asta.health.subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.subscription.networkdata.SubscriptionStatusResponse
-import fit.asta.health.testimonials.model.network.response.NetTestimonialRes
+import fit.asta.health.testimonials.model.network.NetTestimonial
+import fit.asta.health.testimonials.model.network.NetTestimonialRes
+import fit.asta.health.testimonials.model.network.NetTestimonialsRes
 import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
 import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
 import fit.asta.health.tools.water.model.network.response.NetWaterToolRes
@@ -133,13 +135,13 @@ interface ApiService {
     suspend fun getTestimonials(
         @Query("limit") limit: Int,
         @Query("index") index: Int
-    ): NetTestimonialRes
+    ): NetTestimonialsRes
 
     @PUT("testimonial/put/")
-    suspend fun updateTestimonial(@Body testimonial: TestimonialNetData): Status
+    suspend fun updateTestimonial(@Body testimonial: NetTestimonial): Status
 
     @GET("testimonial/get/?")
-    suspend fun getTestimonial(@Query("uid") userId: String): TestimonialResponse
+    suspend fun getUserTestimonial(@Query("uid") userId: String): NetTestimonialRes
 
     //Feedback Endpoints
     @GET("feedback/user/get/?")
@@ -192,11 +194,17 @@ interface ApiService {
     @POST("testimonial/post")
     suspend fun postTestimonial(@Body testimonial: TestimonialNetData): Status
 
+    @PUT("testimonial/post")
+    suspend fun putTestimonial(@Body testimonial: TestimonialNetData): Status
+
     @GET("testimonial/list/get?")
     suspend fun getTestimonialList(
         @Query("limit") limit: Int,
         @Query("index") index: Int
     ): TestimonialListResponse
+
+    @GET("testimonial/get/?")
+    suspend fun getTestimonial(@Query("uid") userId: String): TestimonialResponse
 
     @GET("user/profile/get")
     suspend fun getProfile(@Query("userId") userId: String): UserProfile

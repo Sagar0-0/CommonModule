@@ -27,7 +27,9 @@ import fit.asta.health.profile.model.network.NetUserProfileAvailableRes
 import fit.asta.health.profile.model.network.NetUserProfileRes
 import fit.asta.health.subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.subscription.networkdata.SubscriptionStatusResponse
-import fit.asta.health.testimonials.model.network.response.NetTestimonialRes
+import fit.asta.health.testimonials.model.network.NetTestimonial
+import fit.asta.health.testimonials.model.network.NetTestimonialRes
+import fit.asta.health.testimonials.model.network.NetTestimonialsRes
 import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
 import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
 import fit.asta.health.tools.water.model.network.response.NetWaterToolRes
@@ -88,9 +90,9 @@ interface RemoteApis {
     suspend fun getWalkingTool(userId: String): NetWalkingToolRes
 
     //Testimonial Endpoints
-    suspend fun getTestimonials(limit: Int, index: Int): NetTestimonialRes
-    suspend fun updateTestimonial(schedule: TestimonialNetData): Status
-    suspend fun getTestimonial(userId: String): TestimonialResponse
+    suspend fun getTestimonials(limit: Int, index: Int): NetTestimonialsRes
+    suspend fun updateTestimonial(schedule: NetTestimonial): Status
+    suspend fun getUserTestimonial(userId: String): NetTestimonialRes
 
     //Feedback Endpoints
     suspend fun getFeedbackQuestions(userId: String, featureId: String): NetFeedbackRes
@@ -107,6 +109,7 @@ interface RemoteApis {
     suspend fun postTestimonial(testimonial: TestimonialNetData): Status
     suspend fun putTestimonial(testimonial: TestimonialNetData): Status
     suspend fun getTestimonialList(limit: Int, index: Int): TestimonialListResponse
+    suspend fun getTestimonial(userId: String): TestimonialResponse
     suspend fun getProfile(userId: String): UserProfile
     suspend fun getMultiSelectionData(uid: String): UserInputs
     suspend fun postProfile(data: Data)
