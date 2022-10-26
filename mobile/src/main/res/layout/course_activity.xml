@@ -5,7 +5,7 @@
     android:id="@+id/course_Layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".course.details.CourseDetailsActivity">
+    tools:context=".old_course.details.CourseDetailsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/courseAppBarLayout"

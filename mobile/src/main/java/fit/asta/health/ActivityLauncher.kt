@@ -1,10 +1,10 @@
 package fit.asta.health
 
 import android.content.Context
-import fit.asta.health.course.listing.data.CourseIndexData
-import fit.asta.health.course.session.data.Exercise
 import fit.asta.health.navigation.home_old.categories.data.CategoryData
 import fit.asta.health.notify.reminder.data.Reminder
+import fit.asta.health.old_course.listing.data.CourseIndexData
+import fit.asta.health.old_course.session.data.Exercise
 
 interface ActivityLauncher {
     fun launchSingleSelectActivity(context: Context)

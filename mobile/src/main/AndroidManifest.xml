@@ -51,19 +51,19 @@
         </activity>
         <activity android:name=".old_scheduler.tags.ui.TagsActivity" />
         <activity android:name=".old_testimonials.ui.TestimonialsActivity" />
-        <activity android:name=".course.session.ui.SessionActivity" />
+        <activity android:name=".old_course.session.ui.SessionActivity" />
         <activity android:name=".old_scheduler.ui.ScheduleActivity" />
         <activity
-            android:name=".course.details.CourseDetailsActivity"
+            android:name=".old_course.details.CourseDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".settings.WebViewActivity" />
-        <activity android:name=".article.ui.ArticleActivity" />
+        <activity android:name=".old_article.ui.ArticleActivity" />
         <activity android:name=".auth.ui.AuthActivity" />
-        <activity android:name=".subscription.SubscriptionActivity" />
+        <activity android:name=".old_subscription.SubscriptionActivity" />
         <activity android:name=".BillingActivity" />
         <activity android:name=".common.multiselect.ui.MultiSelectActivity" />
         <activity
-            android:name=".course.listing.ui.CourseListingActivity"
+            android:name=".old_course.listing.ui.CourseListingActivity"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".old_profile.ui.ProfileActivity"

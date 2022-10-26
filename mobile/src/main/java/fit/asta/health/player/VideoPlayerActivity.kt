@@ -11,8 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.Tracks
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
@@ -23,8 +23,8 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import fit.asta.health.R
-import fit.asta.health.course.session.SessionRepo
-import fit.asta.health.course.session.data.Exercise
+import fit.asta.health.old_course.session.SessionRepo
+import fit.asta.health.old_course.session.data.Exercise
 import kotlinx.android.synthetic.main.player_activity.*
 import kotlinx.android.synthetic.main.player_custom_control.*
 import kotlinx.coroutines.MainScope
