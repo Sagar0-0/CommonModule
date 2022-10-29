@@ -26,10 +26,10 @@ constructor(
     val state = mutableState.asStateFlow()
 
     init {
-        loadProfile()
+        loadUserProfile()
     }
 
-    private fun loadProfile() {
+    private fun loadUserProfile() {
         viewModelScope.launch {
             profileRepo.getUserProfile("6309a9379af54f142c65fbfe").catch { exception ->
                 mutableState.value = ProfileState.Error(exception)
