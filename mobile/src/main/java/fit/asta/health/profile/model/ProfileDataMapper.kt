@@ -11,29 +11,27 @@ class ProfileDataMapper {
         val contact = mapContact(userProfileRes.userProfile.uid, profile.contact)
         val physique = mapPhysique(profile.physique)
 
-        val ls = mapOf<UserPropertyType, ArrayList<HealthProperties>>()
-        val health = mapOf<UserPropertyType, ArrayList<HealthProperties>>()
-        val diet = mapOf<UserPropertyType, ArrayList<HealthProperties>>()
+        val ls = mutableMapOf<UserPropertyType, ArrayList<HealthProperties>>()
+        val health = mutableMapOf<UserPropertyType, ArrayList<HealthProperties>>()
+        val diet = mutableMapOf<UserPropertyType, ArrayList<HealthProperties>>()
 
-        ls.plus(Pair(UserPropertyType.SleepSchedule, mapSessionCard(profile.lifeStyle.sleep)))
-        ls.plus(Pair(UserPropertyType.WorkSchedule, mapSessionCard(profile.lifeStyle.workingHours)))
-        ls.plus(Pair(UserPropertyType.PhysActive, mapPlainCard(profile.lifeStyle.physicalActivity)))
-        ls.plus(Pair(UserPropertyType.WorkStyle, mapPlainCard(profile.lifeStyle.workStyle)))
-        ls.plus(Pair(UserPropertyType.CurActivities, mapChipCard(profile.lifeStyle.curActivities)))
-        ls.plus(
-            Pair(UserPropertyType.PrefActivities, mapChipCard(profile.lifeStyle.prefActivities))
-        )
-        ls.plus(Pair(UserPropertyType.LifeStyleTargets, mapChipCard(profile.lifeStyle.targets)))
+        ls[UserPropertyType.SleepSchedule] = mapSessionCard(profile.lifeStyle.sleep)
+        ls[UserPropertyType.WorkSchedule] = mapSessionCard(profile.lifeStyle.workingHours)
+        ls[UserPropertyType.PhysActive] = mapPlainCard(profile.lifeStyle.physicalActivity)
+        ls[UserPropertyType.WorkStyle] = mapPlainCard(profile.lifeStyle.workStyle)
+        ls[UserPropertyType.CurActivities] = mapChipCard(profile.lifeStyle.curActivities)
+        ls[UserPropertyType.PrefActivities] = mapChipCard(profile.lifeStyle.prefActivities)
+        ls[UserPropertyType.LifeStyleTargets] = mapChipCard(profile.lifeStyle.targets)
 
-        health.plus(Pair(UserPropertyType.Ailments, mapChipCard(profile.health.ailments)))
-        health.plus(Pair(UserPropertyType.Medications, mapChipCard(profile.health.medications)))
-        health.plus(Pair(UserPropertyType.Injuries, mapInjuryChipCard(profile.health.injuries)))
-        health.plus(Pair(UserPropertyType.HealthTargets, mapChipCard(profile.health.targets)))
+        health[UserPropertyType.Ailments] = mapChipCard(profile.health.ailments)
+        health[UserPropertyType.Medications] = mapChipCard(profile.health.medications)
+        health[UserPropertyType.Injuries] = mapInjuryChipCard(profile.health.injuries)
+        health[UserPropertyType.HealthTargets] = mapChipCard(profile.health.targets)
 
-        diet.plus(Pair(UserPropertyType.DietPref, mapPrefPlainCard(profile.diet.preference)))
-        diet.plus(Pair(UserPropertyType.NvDays, mapWeekChipCard(profile.diet.nonVegDays)))
-        diet.plus(Pair(UserPropertyType.Cuisines, mapChipCard(profile.diet.cuisines)))
-        diet.plus(Pair(UserPropertyType.FoodAllergies, mapChipCard(profile.diet.allergies)))
+        diet[UserPropertyType.DietPref] = mapPrefPlainCard(profile.diet.preference)
+        diet[UserPropertyType.NvDays] = mapWeekChipCard(profile.diet.nonVegDays)
+        diet[UserPropertyType.Cuisines] = mapChipCard(profile.diet.cuisines)
+        diet[UserPropertyType.FoodAllergies] = mapChipCard(profile.diet.allergies)
 
         return UserProfile(
             uid = profile.uid,
@@ -100,14 +98,26 @@ class ProfileDataMapper {
             )
         )
 
-    private fun mapChipCard(properties: List<NetHealthProperties>) =
-        properties.map { mapHealthProperties(it) }
+    private fun mapChipCard(properties: ArrayList<NetHealthProperties>): ArrayList<HealthProperties> {
 
-    private fun mapInjuryChipCard(injuries: List<NetInjury>) =
-        injuries.map { mapHealthProperties(it) }
+        val arrayList = ArrayList<HealthProperties>()
+        properties.map { arrayList.add(mapHealthProperties(it)) }
+        return arrayList
+    }
 
-    private fun mapWeekChipCard(weekDays: List<String>) =
-        weekDays.map { mapHealthProperties(it) }
+    private fun mapInjuryChipCard(injuries: ArrayList<NetInjury>): ArrayList<HealthProperties> {
+
+        val arrayList = ArrayList<HealthProperties>()
+        injuries.map { arrayList.add(mapHealthProperties(it)) }
+        return arrayList
+    }
+
+    private fun mapWeekChipCard(weekDays: ArrayList<String>): ArrayList<HealthProperties> {
+
+        val arrayList = ArrayList<HealthProperties>()
+        weekDays.map { arrayList.add(mapHealthProperties(it)) }
+        return arrayList
+    }
 
     private fun mapHealthProperties(netHealthProperties: NetHealthProperties) =
         HealthProperties(
