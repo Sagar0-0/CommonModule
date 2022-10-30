@@ -85,13 +85,13 @@ data class NetHealth(
 
 data class NetLifeStyle(
     @SerializedName("slp")
-    val sleep: NetSession,
+    var sleep: NetSession,
     @SerializedName("whr")
-    val workingHours: NetSession,
+    var workingHours: NetSession,
     @SerializedName("act")
-    val physicalActivity: NetHealthProperties,
+    var physicalActivity: NetHealthProperties,
     @SerializedName("ws")
-    val workStyle: NetHealthProperties,
+    var workStyle: NetHealthProperties,
     @SerializedName("cat")
     val curActivities: ArrayList<NetHealthProperties>,
     @SerializedName("pat")
@@ -108,16 +108,16 @@ data class NetDiet(
     @SerializedName("nv")
     val nonVegDays: ArrayList<String>,
     @SerializedName("pref")
-    val preference: Int,
+    var preference: Int,
     @SerializedName("frs")
     val foodRestrictions: ArrayList<NetHealthProperties>
 )
 
 data class NetSession(
     @SerializedName("str")
-    val bedTime: Double,
+    val from: Double,
     @SerializedName("end")
-    val wakeTime: Double
+    val to: Double
 )
 
 data class NetInjury(

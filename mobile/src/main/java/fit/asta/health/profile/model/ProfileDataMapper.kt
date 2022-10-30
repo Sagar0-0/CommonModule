@@ -75,8 +75,8 @@ class ProfileDataMapper {
     private fun mapSessionCard(netSession: NetSession) =
         arrayListOf(
             HealthProperties(
-                from = netSession.bedTime,
-                to = netSession.wakeTime
+                from = netSession.from,
+                to = netSession.to
             )
         )
 
@@ -248,7 +248,7 @@ class ProfileDataMapper {
                 }
             }
             is UserPropertyType.DietPref -> {
-
+                netDiet.preference = properties[0].name.toInt()
             }
             is UserPropertyType.FoodAllergies -> {
                 properties.map {
@@ -257,50 +257,48 @@ class ProfileDataMapper {
             }
             is UserPropertyType.HealthTargets -> {
                 properties.map {
-                    netDiet.allergies.add(mapToNetHealthProperties(it))
+                    netHealth.targets.add(mapToNetHealthProperties(it))
                 }
             }
             is UserPropertyType.Injuries -> {
                 properties.map {
-                    netDiet.allergies.add(mapToNetHealthProperties(it))
+                    netHealth.injuries.add(mapToNetInjuries(it))
                 }
             }
             is UserPropertyType.LifeStyleTargets -> {
                 properties.map {
-                    netDiet.allergies.add(mapToNetHealthProperties(it))
+                    netLifeStyle.targets.add(mapToNetHealthProperties(it))
                 }
             }
             is UserPropertyType.Medications -> {
                 properties.map {
-                    netDiet.allergies.add(mapToNetHealthProperties(it))
+                    netHealth.medications.add(mapToNetHealthProperties(it))
                 }
             }
             is UserPropertyType.NvDays -> {
                 properties.map {
-                    netDiet.allergies.add(mapToNetHealthProperties(it))
+                    netDiet.nonVegDays.add(it.name)
                 }
             }
             is UserPropertyType.PhysActive -> {
-                properties.map {
-                    netDiet.allergies.add(mapToNetHealthProperties(it))
-                }
+                netLifeStyle.physicalActivity = mapToNetHealthProperties(properties[0])
             }
             is UserPropertyType.PrefActivities -> {
                 properties.map {
-                    netDiet.allergies.add(mapToNetHealthProperties(it))
+                    netLifeStyle.prefActivities.add(mapToNetHealthProperties(it))
                 }
             }
             is UserPropertyType.SleepSchedule -> {
-
+                netLifeStyle.sleep = mapToNetSession(properties[0])
             }
             is UserPropertyType.WorkSchedule -> {
-
+                netLifeStyle.workingHours = mapToNetSession(properties[0])
             }
             is UserPropertyType.WorkStyle -> {
-
+                netLifeStyle.workStyle = mapToNetHealthProperties(properties[0])
             }
             is UserPropertyType.NONE -> {
-
+                //Log.DEBUG("User Profile Health Properties not mapped!")
             }
         }
     }
@@ -312,5 +310,19 @@ class ProfileDataMapper {
             code = it.code,
             name = it.name,
             description = it.description
+        )
+
+    private fun mapToNetSession(it: HealthProperties) =
+        NetSession(
+            from = it.from,
+            to = it.to
+        )
+
+    private fun mapToNetInjuries(it: HealthProperties) =
+        NetInjury(
+            id = it.id,
+            name = it.name,
+            code = it.code,
+            sinceWhen = it.from
         )
 }
