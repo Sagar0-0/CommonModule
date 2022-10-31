@@ -1,7 +1,6 @@
 package fit.asta.health.common.multiselect.data
 
 import android.os.Parcelable
-import fit.asta.health.old_profile.adapter.viewholders.ProfileTabType
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

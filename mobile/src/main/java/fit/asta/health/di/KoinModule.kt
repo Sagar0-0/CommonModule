@@ -3,22 +3,12 @@ package fit.asta.health.di
 import fit.asta.health.ActivityLauncher
 import fit.asta.health.ActivityLauncherImpl
 import fit.asta.health.BuildConfig
-import fit.asta.health.auth.data.UserRepository
 import fit.asta.health.common.multiselect.MultiSelectDataMapper
 import fit.asta.health.common.multiselect.MultiSelectRepo
 import fit.asta.health.common.multiselect.MultiSelectRepoImpl
 import fit.asta.health.common.multiselect.ui.MultiSelectView
 import fit.asta.health.common.multiselect.ui.MultiSelectViewImpl
 import fit.asta.health.common.multiselect.viewmodel.MultiSelectViewModel
-import fit.asta.health.navigation.home_old.banners.BannersRepo
-import fit.asta.health.navigation.home_old.banners.BannersRepoImpl
-import fit.asta.health.navigation.home_old.banners.data.BannersDataMapper
-import fit.asta.health.navigation.home_old.categories.CategoriesRepo
-import fit.asta.health.navigation.home_old.categories.CategoriesRepoImpl
-import fit.asta.health.navigation.home_old.categories.data.CategoryDataMapper
-import fit.asta.health.navigation.home_old.ui.HomeView
-import fit.asta.health.navigation.home_old.ui.HomeViewImpl
-import fit.asta.health.navigation.home_old.viewmodel.HomeViewModel
 import fit.asta.health.navigation.today.TodayPlanRepo
 import fit.asta.health.navigation.today.TodayPlanRepoImpl
 import fit.asta.health.navigation.today.adapter.TodayBaseViewHolderFactory
@@ -51,17 +41,6 @@ import fit.asta.health.old_course.session.data.SessionDataMapper
 import fit.asta.health.old_course.session.ui.SessionView
 import fit.asta.health.old_course.session.ui.SessionViewImpl
 import fit.asta.health.old_course.session.viewmodel.SessionViewModel
-import fit.asta.health.old_profile.ProfileDataMapper
-import fit.asta.health.old_profile.ProfileRepo
-import fit.asta.health.old_profile.ProfileRepoImpl
-import fit.asta.health.old_profile.adapter.ProfileViewHolderFactory
-import fit.asta.health.old_profile.ui.ProfilePagerView
-import fit.asta.health.old_profile.ui.ProfilePagerViewImpl
-import fit.asta.health.old_profile.ui.ProfileView
-import fit.asta.health.old_profile.ui.ProfileViewImpl
-import fit.asta.health.old_profile.ui.contacts.ContactsFragmentView
-import fit.asta.health.old_profile.ui.contacts.ContactsFragmentViewImpl
-import fit.asta.health.old_profile.viewmodel.ProfileViewModel
 import fit.asta.health.old_scheduler.ScheduleRepo
 import fit.asta.health.old_scheduler.ScheduleRepoImpl
 import fit.asta.health.old_scheduler.data.ScheduleDataMapper
@@ -83,12 +62,6 @@ import fit.asta.health.old_subscription.data.SubscriptionDataMapper
 import fit.asta.health.old_subscription.ui.SubscriptionView
 import fit.asta.health.old_subscription.ui.SubscriptionViewImpl
 import fit.asta.health.old_subscription.viewmodel.SubscriptionViewModel
-import fit.asta.health.old_testimonials.TestimonialsRepo
-import fit.asta.health.old_testimonials.TestimonialsRepoImpl
-import fit.asta.health.old_testimonials.data.TestimonialDataMapper
-import fit.asta.health.old_testimonials.ui.TestimonialsView
-import fit.asta.health.old_testimonials.ui.TestimonialsViewImpl
-import fit.asta.health.old_testimonials.viewmodel.TestimonialsViewModel
 import okhttp3.Cache
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
@@ -139,41 +112,6 @@ val appModule = module {
     }
 }
 
-val homeModule = module {
-
-    factory { BannersDataMapper() }
-    factory<BannersRepo> { BannersRepoImpl(get(named("remote")), get()) }
-    factory<HomeView> { HomeViewImpl() }
-    viewModel {
-        HomeViewModel(
-            get(),
-            get(),
-            get()
-        )
-    }
-}
-
-val categoryModule = module {
-    factory { CategoryDataMapper() }
-    factory<CategoriesRepo> {
-        CategoriesRepoImpl(
-            get(named("remote")),
-            get()
-        )
-    }
-}
-
-val profileModule = module {
-    factory<ProfilePagerView> { ProfilePagerViewImpl() }
-    factory { ProfileDataMapper() }
-    factory { UserRepository() }
-    factory<ProfileRepo> { ProfileRepoImpl(get(named("remote")), get()) }
-    viewModel { ProfileViewModel(get(), get()) }
-    factory<ProfileView> { ProfileViewImpl() }
-    factory<ContactsFragmentView> { ContactsFragmentViewImpl() }
-    factory { ProfileViewHolderFactory() }
-}
-
 val courseModule = module {
     factory<CourseListingView> { CourseListingViewImpl() }
     factory { CourseListingDataMapper() }
@@ -210,13 +148,6 @@ val tagsModule = module {
     factory { TagDataMapper() }
     factory<TagsRepo> { TagsRepoImpl(get(named("remote")), get()) }
     viewModel { TagsViewModel(get(), get()) }
-}
-
-val testimonialsModule = module {
-    factory<TestimonialsView> { TestimonialsViewImpl() }
-    factory { TestimonialDataMapper() }
-    factory<TestimonialsRepo> { TestimonialsRepoImpl(get(named("remote")), get()) }
-    viewModel { TestimonialsViewModel(get(), get()) }
 }
 
 val subscriptionModule = module {

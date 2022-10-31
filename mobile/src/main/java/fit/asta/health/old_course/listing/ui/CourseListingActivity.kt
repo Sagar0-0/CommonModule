@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import fit.asta.health.navigation.home_old.categories.data.CategoryData
 import fit.asta.health.old_course.listing.adapter.listeners.OnCourseClickListenerImpl
+import fit.asta.health.old_course.listing.data.CategoryData
 import fit.asta.health.old_course.listing.viewmodel.CourseListingObserver
 import fit.asta.health.old_course.listing.viewmodel.CourseListingViewModel
 import kotlinx.android.synthetic.main.course_list_activity.*

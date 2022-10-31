@@ -1,9 +1,9 @@
 package fit.asta.health
 
 import android.content.Context
-import fit.asta.health.navigation.home_old.categories.data.CategoryData
 import fit.asta.health.notify.reminder.data.Reminder
 import fit.asta.health.old_course.details.CourseDetailsActivity
+import fit.asta.health.old_course.listing.data.CategoryData
 import fit.asta.health.old_course.listing.data.CourseIndexData
 import fit.asta.health.old_course.listing.ui.CourseListingActivity
 import fit.asta.health.old_course.session.data.Exercise
@@ -11,7 +11,6 @@ import fit.asta.health.old_course.session.ui.SessionActivity
 import fit.asta.health.old_scheduler.tags.ui.TagsActivity
 import fit.asta.health.old_scheduler.ui.ScheduleActivity
 import fit.asta.health.old_subscription.SubscriptionActivity
-import fit.asta.health.old_testimonials.ui.TestimonialsActivity
 import fit.asta.health.player.VideoPlayerActivity
 
 class ActivityLauncherImpl : ActivityLauncher {
@@ -62,10 +61,6 @@ class ActivityLauncherImpl : ActivityLauncher {
 
     override fun launchSubscriptionActivity(context: Context) {
         SubscriptionActivity.launch(context)
-    }
-
-    override fun launchTestimonialsActivity(context: Context) {
-        TestimonialsActivity.launch(context)
     }
 
     override fun launchTagsActivity(context: Context, selectedTagId: String?) {

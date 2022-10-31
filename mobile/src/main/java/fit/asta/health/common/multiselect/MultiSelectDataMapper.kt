@@ -1,7 +1,7 @@
 package fit.asta.health.common.multiselect
 
 import fit.asta.health.common.multiselect.data.MultiSelectData
-import fit.asta.health.old_profile.data.chips.UserInputs
+import fit.asta.health.common.multiselect.data.UserInputs
 
 class MultiSelectDataMapper {
     fun toMap(apiUserInputs: UserInputs): List<MultiSelectData> {

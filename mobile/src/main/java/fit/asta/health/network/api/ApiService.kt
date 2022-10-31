@@ -1,19 +1,15 @@
 package fit.asta.health.network.api
 
+import fit.asta.health.common.multiselect.data.UserInputs
 import fit.asta.health.feedback.model.network.NetFeedbackRes
 import fit.asta.health.feedback.model.network.NetUserFeedback
 import fit.asta.health.navigation.home.model.network.NetHealthToolsRes
 import fit.asta.health.navigation.home.model.network.NetSelectedTools
-import fit.asta.health.navigation.home_old.banners.networkdata.BannerResponse
-import fit.asta.health.navigation.home_old.categories.networkdata.CategoriesNetData
 import fit.asta.health.navigation.today.networkdata.TodayPlanNetData
 import fit.asta.health.network.data.Status
 import fit.asta.health.old_course.details.networkdata.CourseDetailsResponse
 import fit.asta.health.old_course.listing.networkdata.CoursesListNetData
 import fit.asta.health.old_course.session.networkdata.SessionResponse
-import fit.asta.health.old_profile.data.chips.UserInputs
-import fit.asta.health.old_profile.data.userprofile.Data
-import fit.asta.health.old_profile.data.userprofile.UserProfile
 import fit.asta.health.old_scheduler.networkdata.ScheduleNetData
 import fit.asta.health.old_scheduler.networkdata.ScheduleResponse
 import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagNetData
@@ -21,9 +17,6 @@ import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagResponse
 import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagsResponse
 import fit.asta.health.old_subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.old_subscription.networkdata.SubscriptionStatusResponse
-import fit.asta.health.old_testimonials.networkdata.TestimonialListResponse
-import fit.asta.health.old_testimonials.networkdata.TestimonialNetData
-import fit.asta.health.old_testimonials.networkdata.TestimonialResponse
 import fit.asta.health.profile.model.network.NetHealthPropertiesRes
 import fit.asta.health.profile.model.network.NetUserProfile
 import fit.asta.health.profile.model.network.NetUserProfileAvailableRes
@@ -160,12 +153,6 @@ interface ApiService {
     suspend fun postUserFeedback(@Body feedback: NetUserFeedback): Status
 
     //Old APIs ------------------------------------------------------------------------------------
-    @GET("banner/list/get")
-    suspend fun getBanners(@Query("type") type: String): BannerResponse
-
-    @GET("category/list/get")
-    suspend fun getCategories(@Query("pid") type: String): CategoriesNetData
-
     @GET("course/list/get")
     suspend fun getCoursesList(
         @Query("catId") categoryId: String,
@@ -197,29 +184,8 @@ interface ApiService {
     suspend fun getReferralInfo(@Query("userId") userId: String): OfferNetData
      */
 
-    @POST("testimonial/post")
-    suspend fun postTestimonial(@Body testimonial: TestimonialNetData): Status
-
-    @PUT("testimonial/post")
-    suspend fun putTestimonial(@Body testimonial: TestimonialNetData): Status
-
-    @GET("testimonial/list/get?")
-    suspend fun getTestimonialList(
-        @Query("limit") limit: Int,
-        @Query("index") index: Int
-    ): TestimonialListResponse
-
-    @GET("testimonial/get/?")
-    suspend fun getTestimonial(@Query("uid") userId: String): TestimonialResponse
-
-    @GET("user/profile/get")
-    suspend fun getProfile(@Query("userId") userId: String): UserProfile
-
     @GET("user/profile/data/get")
     suspend fun getMultiSelectionData(@Query("uid") uid: String): UserInputs
-
-    @POST("user/profile/post")
-    suspend fun postProfile(@Body body: Data)
 
     @POST("schedule/tag/post")
     suspend fun postScheduleTag(@Body schedule: ScheduleTagNetData): Status

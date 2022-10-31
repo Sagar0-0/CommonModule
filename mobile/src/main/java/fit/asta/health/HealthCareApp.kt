@@ -40,15 +40,11 @@ class HealthCareApp : MultiDexApplication() {
             androidContext(this@HealthCareApp)
             modules(
                 appModule,
-                homeModule,
-                categoryModule,
                 todayModule,
                 courseModule,
                 courseDetailsModule,
                 exerciseModule,
-                profileModule,
                 tagsModule,
-                testimonialsModule,
                 subscriptionModule,
                 multiSelectionModule,
                 scheduleModule
