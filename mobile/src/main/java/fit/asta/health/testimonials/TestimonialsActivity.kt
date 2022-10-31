@@ -17,7 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.databinding.ActivityProfileNewBinding
-import fit.asta.health.testimonials.view.TestimonialDemo2
+import fit.asta.health.testimonials.view.AllTestimonialsLayout
 import fit.asta.health.testimonials.view.components.TestimonialLayoutDemo
 import fit.asta.health.testimonials.viewmodel.TestimonialViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -72,7 +72,7 @@ fun TestimonialsPreview(navController: NavHostController) {
         .background(MaterialTheme.colors.background)) {
         NavHost(navController, startDestination = TstScreen.TstHome.route) {
             composable(route = TstScreen.TstHome.route) {
-                TestimonialDemo2(onNavigateUp = {
+                AllTestimonialsLayout(onNavigateUp = {
                     navController.navigate(route = TstScreen.TstCreate.route)
                 })
             }

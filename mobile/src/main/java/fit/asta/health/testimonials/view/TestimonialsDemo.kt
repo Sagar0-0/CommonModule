@@ -22,7 +22,7 @@ import fit.asta.health.testimonials.view.components.TestimonialsCardLayout
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TestimonialDemo2(onNavigateUp: () -> Unit) {
+fun AllTestimonialsLayout(onNavigateUp: () -> Unit) {
     Scaffold(content = {
         Column(Modifier
             .fillMaxWidth()
@@ -63,7 +63,9 @@ fun TestimonialDemo2(onNavigateUp: () -> Unit) {
                 fontWeight = FontWeight.Medium,
                 fontSize = 20.sp)
         }, navigationIcon = {
-            Icon(Icons.Outlined.NavigateBefore, "back", tint = Color(0xff0088FF))
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(Icons.Outlined.NavigateBefore, "back", tint = Color(0xff0088FF))
+            }
         })
     })
 }
