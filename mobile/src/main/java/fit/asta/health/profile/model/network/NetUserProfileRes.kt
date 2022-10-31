@@ -72,28 +72,52 @@ data class NetPhysique(
     val weight: Int
 )
 
-data class NetDiet(
-    @SerializedName("alg")
-    val allergies: List<NetHealthProperties>,
-    @SerializedName("cns")
-    val cuisines: List<NetHealthProperties>,
-    @SerializedName("nv")
-    val nonVegDays: List<String>,
-    @SerializedName("pref")
-    val preference: Int,
-    @SerializedName("frs")
-    val foodRestrictions: List<NetHealthProperties>
-)
-
 data class NetHealth(
     @SerializedName("ail")
-    val ailments: List<NetHealthProperties>,
+    val ailments: ArrayList<NetHealthProperties>,
     @SerializedName("med")
-    val medications: List<NetHealthProperties>,
+    val medications: ArrayList<NetHealthProperties>,
     @SerializedName("inj")
-    val injuries: List<NetInjury>,
+    val injuries: ArrayList<NetInjury>,
     @SerializedName("htg")
-    val targets: List<NetHealthProperties>
+    val targets: ArrayList<NetHealthProperties>
+)
+
+data class NetLifeStyle(
+    @SerializedName("slp")
+    var sleep: NetSession,
+    @SerializedName("whr")
+    var workingHours: NetSession,
+    @SerializedName("act")
+    var physicalActivity: NetHealthProperties,
+    @SerializedName("ws")
+    var workStyle: NetHealthProperties,
+    @SerializedName("cat")
+    val curActivities: ArrayList<NetHealthProperties>,
+    @SerializedName("pat")
+    val prefActivities: ArrayList<NetHealthProperties>,
+    @SerializedName("lst")
+    val targets: ArrayList<NetHealthProperties>
+)
+
+data class NetDiet(
+    @SerializedName("alg")
+    val allergies: ArrayList<NetHealthProperties>,
+    @SerializedName("cns")
+    val cuisines: ArrayList<NetHealthProperties>,
+    @SerializedName("nv")
+    val nonVegDays: ArrayList<String>,
+    @SerializedName("pref")
+    var preference: Int,
+    @SerializedName("frs")
+    val foodRestrictions: ArrayList<NetHealthProperties>
+)
+
+data class NetSession(
+    @SerializedName("str")
+    val from: Double,
+    @SerializedName("end")
+    val to: Double
 )
 
 data class NetInjury(
@@ -105,30 +129,6 @@ data class NetInjury(
     val name: String,
     @SerializedName("dur")
     val sinceWhen: Double
-)
-
-data class NetLifeStyle(
-    @SerializedName("slp")
-    val sleep: NetSession,
-    @SerializedName("whr")
-    val workingHours: NetSession,
-    @SerializedName("act")
-    val physicalActivity: NetHealthProperties,
-    @SerializedName("ws")
-    val workStyle: NetHealthProperties,
-    @SerializedName("cat")
-    val curActivities: List<NetHealthProperties>,
-    @SerializedName("pat")
-    val prefActivities: List<NetHealthProperties>,
-    @SerializedName("lst")
-    val targets: List<NetHealthProperties>
-)
-
-data class NetSession(
-    @SerializedName("str")
-    val bedTime: Double,
-    @SerializedName("end")
-    val wakeTime: Double
 )
 
 data class NetHealthProperties(
