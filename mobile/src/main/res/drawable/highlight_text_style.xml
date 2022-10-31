@@ -19,7 +19,7 @@
 
 </shape>
    <!-- <gradient
-        android:angle="90"
+        android:fit.asta.health.tools.sunlight.view.components.angle="90"
         android:centerColor="@color/colorImageCenter"
         android:endColor="@color/colorImageEnd"
         />-->
