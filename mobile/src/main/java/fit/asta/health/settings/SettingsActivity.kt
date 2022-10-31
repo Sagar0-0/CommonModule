@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.google.android.material.appbar.MaterialToolbar
 import fit.asta.health.R
-import kotlinx.android.synthetic.main.settings_activity.*
 
 
 private const val TITLE_TAG = "settingsActivityTitle"
@@ -57,7 +57,10 @@ class SettingsActivity : AppCompatActivity(),
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         // Save current activity title so we can set it again after a configuration change
-        outState.putCharSequence(TITLE_TAG, settingsToolbar.title)
+        outState.putCharSequence(
+            TITLE_TAG,
+            findViewById<MaterialToolbar>(R.id.settingsToolbar).title
+        )
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -89,7 +92,7 @@ class SettingsActivity : AppCompatActivity(),
             .addToBackStack(null)
             .commit()
 
-        settingsToolbar.title = pref.title
+        findViewById<MaterialToolbar>(R.id.settingsToolbar).title = pref.title
         return true
     }
 

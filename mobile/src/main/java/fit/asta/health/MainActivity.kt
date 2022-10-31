@@ -23,7 +23,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
@@ -37,7 +39,6 @@ import fit.asta.health.network.TokenProvider
 import fit.asta.health.profile.UserProfileActivity
 import fit.asta.health.settings.SettingsActivity
 import fit.asta.health.utils.*
-import kotlinx.android.synthetic.main.main_activity.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -141,7 +142,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         )
 
         setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        findViewById<BottomNavigationView>(R.id.navView).setupWithNavController(navController)
         //nav_view.selectedItemId = R.id.navigation_yoga
 
         navController.addOnDestinationChangedListener { _, _, _ ->
@@ -188,10 +189,10 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
     private fun registerConnectivityReceiver() {
 
         snackBar = Snackbar.make(
-            containerMain,
+            findViewById<CoordinatorLayout>(R.id.containerMain),
             getString(R.string.OFFLINE_STATUS),
             Snackbar.LENGTH_INDEFINITE
-        ).setAnchorView(navView)
+        ).setAnchorView(findViewById<BottomNavigationView>(R.id.navView))
 
         networkConnectivity = NetworkConnectivity(this)
         networkConnectivity.observe(this) { status ->
@@ -360,8 +361,8 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
     private fun showViewBars() {
 
-        appBarLayout?.setExpanded(true, true)
-
+        findViewById<AppBarLayout>(R.id.appBarLayout)?.setExpanded(true, true)
+        val navView = findViewById<BottomNavigationView>(R.id.navView)
         val paramsBNV = navView?.layoutParams as CoordinatorLayout.LayoutParams
         val behaviorBNV = paramsBNV.behavior as? HideBottomViewOnScrollBehavior
         behaviorBNV?.slideUp(navView)

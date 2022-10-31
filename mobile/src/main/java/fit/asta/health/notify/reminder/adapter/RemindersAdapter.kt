@@ -6,13 +6,14 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import fit.asta.health.ActivityLauncher
 import fit.asta.health.R
 import fit.asta.health.notify.reminder.data.Reminder
 import fit.asta.health.utils.GenericAdapter
-import kotlinx.android.synthetic.main.sceduler_reminder_card.view.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import java.text.SimpleDateFormat
@@ -50,18 +51,19 @@ class RemindersAdapter(
 
         fun setData(reminder: Reminder) {
 
-            itemView.txtRemindTitle.text = reminder.title
-            itemView.txtRemindDesc.text = reminder.desc
-            itemView.txtRemindTime.text = getTime(reminder)
-            itemView.txtRemindDays.text = getDays(reminder)
-            itemView.imgRemindType.setImageDrawable(selectImage(reminder))
+            itemView.findViewById<AppCompatTextView>(R.id.txtRemindTitle).text = reminder.title
+            itemView.findViewById<AppCompatTextView>(R.id.txtRemindDesc).text = reminder.desc
+            itemView.findViewById<AppCompatTextView>(R.id.txtRemindTime).text = getTime(reminder)
+            itemView.findViewById<AppCompatTextView>(R.id.txtRemindDays).text = getDays(reminder)
+            itemView.findViewById<AppCompatImageView>(R.id.imgRemindType)
+                .setImageDrawable(selectImage(reminder))
 
             itemView.setOnClickListener {
 
                 launcher.launchSchedulerActivity(it.context, reminder)
             }
 
-            itemView.btnRemindDelete.setOnClickListener {
+            itemView.findViewById<AppCompatTextView>(R.id.btnRemindDelete).setOnClickListener {
 
                 delete(reminder)
             }
@@ -107,20 +109,11 @@ class RemindersAdapter(
 
         private fun selectImage(reminder: Reminder): Drawable? {
 
+            val ctx = itemView.findViewById<AppCompatTextView>(R.id.imgRemindType).context
             return when (reminder.type) {
-
-                Reminder.EXERCISE -> ContextCompat.getDrawable(
-                    itemView.imgRemindType.context,
-                    R.drawable.ic_yoga
-                )
-                Reminder.WATER -> ContextCompat.getDrawable(
-                    itemView.imgRemindType.context,
-                    R.drawable.ic_water
-                )
-                else -> ContextCompat.getDrawable(
-                    itemView.imgRemindType.context,
-                    R.drawable.ic_person
-                )
+                Reminder.EXERCISE -> ContextCompat.getDrawable(ctx, R.drawable.ic_yoga)
+                Reminder.WATER -> ContextCompat.getDrawable(ctx, R.drawable.ic_water)
+                else -> ContextCompat.getDrawable(ctx, R.drawable.ic_person)
             }
         }
     }

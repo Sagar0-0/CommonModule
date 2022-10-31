@@ -1,5 +1,6 @@
 package fit.asta.health.player
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -7,7 +8,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageButton
+import androidx.core.widget.ContentLoadingProgressBar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -25,8 +29,6 @@ import com.google.firebase.storage.StorageReference
 import fit.asta.health.R
 import fit.asta.health.old_course.session.SessionRepo
 import fit.asta.health.old_course.session.data.Exercise
-import kotlinx.android.synthetic.main.player_activity.*
-import kotlinx.android.synthetic.main.player_custom_control.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -72,11 +74,12 @@ class VideoPlayerActivity : AppCompatActivity(), Player.Listener {
     private var videoListUid: String? = null
     //private var fullscreen = false
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.player_activity)
 
-        btn_close_video.setOnClickListener {
+        findViewById<AppCompatImageButton>(R.id.btn_close_video)?.setOnClickListener {
 
             onBackPressed()
         }
@@ -224,7 +227,7 @@ class VideoPlayerActivity : AppCompatActivity(), Player.Listener {
 
     private fun initializePlayList(exerciseList: ArrayList<Exercise>) {
         videosFromExercises(exerciseList).observe(this, Observer { videos ->
-            progressPlayer.hide()
+            findViewById<ContentLoadingProgressBar>(R.id.progressPlayer).hide()
             videoList = videos
             val mediaSource = MediaSourceAdapter(this, videoList).build()
             player?.playWhenReady = playWhenReady
@@ -314,8 +317,8 @@ class VideoPlayerActivity : AppCompatActivity(), Player.Listener {
         super.onTracksChanged(tracks)
 
         val video = videoList[player!!.currentWindowIndex]
-        video_title.text = video.title
-        video_sub_title.text = video.subTitle
+        findViewById<TextView>(R.id.video_title).text = video.title
+        findViewById<TextView>(R.id.video_sub_title).text = video.subTitle
     }
 
     override fun onPositionDiscontinuity(reason: Int) {

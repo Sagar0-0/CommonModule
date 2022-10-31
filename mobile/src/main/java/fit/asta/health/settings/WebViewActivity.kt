@@ -4,8 +4,9 @@ import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.ContentLoadingProgressBar
+import com.google.android.material.appbar.MaterialToolbar
 import fit.asta.health.R
-import kotlinx.android.synthetic.main.webview_activity.*
 
 
 const val WEB_URL = "WebUrl789"
@@ -16,6 +17,7 @@ class WebViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.webview_activity)
 
+        val toolbarWebView = findViewById<MaterialToolbar>(R.id.toolbarWebView)
         setSupportActionBar(toolbarWebView)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         toolbarWebView?.setNavigationOnClickListener {
@@ -33,7 +35,7 @@ class WebViewActivity : AppCompatActivity() {
 
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
 
-            progressWebView.show()
+            findViewById<ContentLoadingProgressBar>(R.id.progressWebView).show()
             view.loadUrl(url)
             return true
         }
@@ -41,7 +43,7 @@ class WebViewActivity : AppCompatActivity() {
         override fun onPageFinished(view: WebView, url: String) {
             super.onPageFinished(view, url)
 
-            progressWebView.hide()
+            findViewById<ContentLoadingProgressBar>(R.id.progressWebView).hide()
         }
     }
 }

@@ -5,19 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import fit.asta.health.R
 import fit.asta.health.common.multiselect.adapter.MultiSelectAdapter
 import fit.asta.health.common.multiselect.adapter.SelectionUpdateListener
 import fit.asta.health.common.multiselect.data.MultiSelectData
-import kotlinx.android.synthetic.main.listview_multiselect_save_activity.view.*
 
-class MultiSelectViewImpl: MultiSelectView {
+class MultiSelectViewImpl : MultiSelectView {
 
     private var rootView: View? = null
 
     override fun setContentView(activity: Activity): View? {
         rootView = LayoutInflater.from(activity).inflate(
-            R.layout.listview_multiselect_save_activity,null,false)
+            R.layout.listview_multiselect_save_activity, null, false
+        )
         initializeViews()
         return rootView
     }
@@ -26,34 +27,40 @@ class MultiSelectViewImpl: MultiSelectView {
 
         rootView?.let {
             val adapter = MultiSelectAdapter()
-            it.recyclerView.layoutManager = LinearLayoutManager(it.context)
-            it.recyclerView.addItemDecoration(DividerItemDecoration(it.context,
-                LinearLayoutManager.VERTICAL))
-            it.recyclerView.adapter = adapter
+            val recyclerView = it.findViewById<RecyclerView>(R.id.recyclerView)
+            recyclerView.layoutManager = LinearLayoutManager(it.context)
+            recyclerView.addItemDecoration(
+                DividerItemDecoration(
+                    it.context,
+                    LinearLayoutManager.VERTICAL
+                )
+            )
+            recyclerView.adapter = adapter
         }
 
     }
 
     override fun changeState(state: MultiSelectView.State) {
-       when(state){
-           is MultiSelectView.State.LoadSelection -> {
-               setAdapter(state.list)
-           }
+        when (state) {
+            is MultiSelectView.State.LoadSelection -> {
+                setAdapter(state.list)
+            }
 
-           MultiSelectView.State.Empty -> {
+            MultiSelectView.State.Empty -> {
 
-           }
+            }
 
-          is  MultiSelectView.State.Error -> {
+            is MultiSelectView.State.Error -> {
 
-           }
+            }
 
-       }
+        }
     }
 
     private fun setAdapter(list: List<MultiSelectData>) {
         rootView?.let {
-            (it.recyclerView.adapter as MultiSelectAdapter).updateList(list)
+            val recyclerView = it.findViewById<RecyclerView>(R.id.recyclerView)
+            (recyclerView.adapter as MultiSelectAdapter).updateList(list)
         }
     }
 
@@ -63,7 +70,8 @@ class MultiSelectViewImpl: MultiSelectView {
 
     override fun setAdapterClickListener(listener: SelectionUpdateListener) {
         rootView?.let {
-            (it.recyclerView.adapter as MultiSelectAdapter).setAdapterListener(listener)
+            val recyclerView = it.findViewById<RecyclerView>(R.id.recyclerView)
+            (recyclerView.adapter as MultiSelectAdapter).setAdapterListener(listener)
         }
     }
 }

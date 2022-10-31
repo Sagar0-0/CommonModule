@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -13,7 +14,6 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.*
 import fit.asta.health.R
 import fit.asta.health.utils.*
-import kotlinx.android.synthetic.main.auth_activity.*
 import kotlin.system.exitProcess
 
 
@@ -90,7 +90,8 @@ class AuthActivity : AppCompatActivity() {
 
                 if (response?.error?.message != null) {
 
-                    this.authLayout.showSnackbar(response.error?.message!!)
+                    this.findViewById<RelativeLayout>(R.id.authLayout)
+                        .showSnackbar(response.error?.message!!)
                     Log.d("Error: ", response.error?.toString()!!)
                 }
             }

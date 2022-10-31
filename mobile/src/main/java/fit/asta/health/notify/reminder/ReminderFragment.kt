@@ -9,10 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import fit.asta.health.ActivityLauncher
 import fit.asta.health.R
 import fit.asta.health.notify.reminder.adapter.RemindersAdapter
-import kotlinx.android.synthetic.main.schedule_reminder_fragment.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -36,8 +37,7 @@ class ReminderFragment : Fragment(), KoinComponent {
         viewModel = ViewModelProvider(this).get(ReminderViewModel::class.java)
 
         remindersRecyclerView()
-
-        btnReminderAdd.setOnClickListener {
+        view?.findViewById<FloatingActionButton>(R.id.btnReminderAdd)?.setOnClickListener {
 
             launcher.launchSchedulerActivity(it.context)
         }
@@ -45,9 +45,10 @@ class ReminderFragment : Fragment(), KoinComponent {
 
     private fun remindersRecyclerView() {
 
-        rcvReminders.layoutManager =
+        val rcvReminders = view?.findViewById<RecyclerView>(R.id.rcvReminders)
+        rcvReminders?.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        rcvReminders.adapter =
+        rcvReminders?.adapter =
             RemindersAdapter(
                 requireContext(),
                 listOf()
@@ -64,7 +65,7 @@ class ReminderFragment : Fragment(), KoinComponent {
 
         viewModel.getAll().observe(viewLifecycleOwner, Observer { reminders ->
 
-            (rcvReminders.adapter as RemindersAdapter).updateList(reminders)
+            (rcvReminders?.adapter as RemindersAdapter).updateList(reminders)
         })
     }
 
@@ -73,6 +74,7 @@ class ReminderFragment : Fragment(), KoinComponent {
 
         if (!isPrimaryNavigationFragment) {
 
+            val rcvReminders = view?.findViewById<RecyclerView>(R.id.rcvReminders)
             rcvReminders?.stopScroll()
         }
     }

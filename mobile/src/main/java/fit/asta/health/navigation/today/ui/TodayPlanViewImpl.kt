@@ -5,12 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import fit.asta.health.R
 import fit.asta.health.navigation.today.adapter.TodayPlanAdapter
 import fit.asta.health.navigation.today.adapter.listeners.OnPlanClickListener
 import fit.asta.health.navigation.today.data.TodayPlanItemData
-import kotlinx.android.synthetic.main.today_fragment.view.*
-import java.util.*
 
 
 class TodayPlanViewImpl : TodayPlanView {
@@ -29,15 +28,16 @@ class TodayPlanViewImpl : TodayPlanView {
     private fun setupRecyclerView() {
         rootView?.let {
             val adapter = TodayPlanAdapter()
-            it.rcvTodayPlan.layoutManager = LinearLayoutManager(it.context)
-            it.rcvTodayPlan.adapter = adapter
-
+            val rcvTodayPlan = it.findViewById<RecyclerView>(R.id.rcvTodayPlan)
+            rcvTodayPlan.layoutManager = LinearLayoutManager(it.context)
+            rcvTodayPlan.adapter = adapter
         }
     }
 
     override fun setAdapterClickListener(listener: OnPlanClickListener) {
         rootView?.let {
-            (it.rcvTodayPlan.adapter as TodayPlanAdapter).setAdapterClickListener(listener)
+            val rcvTodayPlan = it.findViewById<RecyclerView>(R.id.rcvTodayPlan)
+            (rcvTodayPlan.adapter as TodayPlanAdapter).setAdapterClickListener(listener)
         }
     }
 
@@ -45,7 +45,7 @@ class TodayPlanViewImpl : TodayPlanView {
         when (state) {
             is TodayPlanView.State.LoadPlan -> setAdapter(state.list)
             TodayPlanView.State.Empty -> showEmpty()
-            else -> { }
+            else -> {}
         }
     }
 
@@ -55,7 +55,8 @@ class TodayPlanViewImpl : TodayPlanView {
 
     private fun setAdapter(list: List<TodayPlanItemData>) {
         rootView?.let {
-            (it.rcvTodayPlan.adapter as TodayPlanAdapter).updateList(list)
+            val rcvTodayPlan = it.findViewById<RecyclerView>(R.id.rcvTodayPlan)
+            (rcvTodayPlan.adapter as TodayPlanAdapter).updateList(list)
         }
     }
 }

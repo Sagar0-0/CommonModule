@@ -4,14 +4,15 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import fit.asta.health.R
 import fit.asta.health.common.multiselect.MultiSelectObserver
 import fit.asta.health.common.multiselect.adapter.SelectionUpdateListenerImpl
 import fit.asta.health.common.multiselect.viewmodel.MultiSelectViewModel
-import kotlinx.android.synthetic.main.listview_multiselect_save_activity.*
 import org.koin.android.ext.android.inject
 
 
-class MultiSelectActivity: AppCompatActivity() {
+class MultiSelectActivity : AppCompatActivity() {
 
     private val multiSelectView: MultiSelectView by inject()
     private val viewModel: MultiSelectViewModel by inject()
@@ -29,7 +30,7 @@ class MultiSelectActivity: AppCompatActivity() {
         viewModel.setLiveDataObservable(this, MultiSelectObserver(multiSelectView))
         multiSelectView.setAdapterClickListener(SelectionUpdateListenerImpl(viewModel))
         viewModel.getMultiSelectData(intent.getParcelableExtra(UID))
-        saveButton.setOnClickListener {
+        findViewById<ExtendedFloatingActionButton>(R.id.saveButton).setOnClickListener {
             val localIntent = Intent()
             val selectedData = viewModel.getSelectedData(intent.getParcelableExtra(UID))
             localIntent.putExtra(SELECTED_DATA, selectedData)
