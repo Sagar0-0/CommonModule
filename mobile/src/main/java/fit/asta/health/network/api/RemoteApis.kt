@@ -2,7 +2,8 @@ package fit.asta.health.network.api
 
 import fit.asta.health.feedback.model.network.NetFeedbackRes
 import fit.asta.health.feedback.model.network.NetUserFeedback
-import fit.asta.health.navigation.home.model.network.response.NetHealthToolsRes
+import fit.asta.health.navigation.home.model.network.NetHealthToolsRes
+import fit.asta.health.navigation.home.model.network.NetSelectedTools
 import fit.asta.health.navigation.home_old.banners.networkdata.BannerResponse
 import fit.asta.health.navigation.home_old.categories.networkdata.CategoriesNetData
 import fit.asta.health.navigation.today.networkdata.TodayPlanNetData
@@ -55,6 +56,8 @@ interface RemoteApis {
         time: String
     ): NetHealthToolsRes
 
+    suspend fun updateSelectedTools(toolIds: NetSelectedTools): Status
+
     /*
     // Scheduler Endpoints
     suspend fun updateScheduleDataOnBackend(schedule: AlarmEntity): Response<AstaSchedulerPutResponse>
@@ -93,7 +96,7 @@ interface RemoteApis {
 
     //Testimonial Endpoints
     suspend fun getTestimonials(limit: Int, index: Int): NetTestimonialsRes
-    suspend fun updateTestimonial(schedule: NetTestimonial): Status
+    suspend fun updateTestimonial(netTestimonial: NetTestimonial): Status
     suspend fun getUserTestimonial(userId: String): NetTestimonialRes
 
     //Feedback Endpoints

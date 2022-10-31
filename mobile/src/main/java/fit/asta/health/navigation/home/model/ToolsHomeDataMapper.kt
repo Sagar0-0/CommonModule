@@ -1,7 +1,7 @@
 package fit.asta.health.navigation.home.model
 
 import fit.asta.health.navigation.home.model.domain.*
-import fit.asta.health.navigation.home.model.network.response.NetHealthToolsRes
+import fit.asta.health.navigation.home.model.network.NetHealthToolsRes
 
 
 class ToolsHomeDataMapper {

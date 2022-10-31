@@ -1,7 +1,9 @@
 package fit.asta.health.navigation.home.model
 
 import fit.asta.health.navigation.home.model.domain.ToolsHome
+import fit.asta.health.navigation.home.model.network.NetSelectedTools
 import fit.asta.health.network.api.RemoteApis
+import fit.asta.health.network.data.Status
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -33,6 +35,12 @@ class ToolsHomeRepoImpl(
                     )
                 )
             )
+        }
+    }
+
+    override suspend fun updateSelectedTools(toolIds: NetSelectedTools): Flow<Status> {
+        return flow {
+            emit(remoteApi.updateSelectedTools(toolIds))
         }
     }
 }

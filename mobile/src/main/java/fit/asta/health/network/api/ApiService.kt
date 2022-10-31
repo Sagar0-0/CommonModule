@@ -2,7 +2,8 @@ package fit.asta.health.network.api
 
 import fit.asta.health.feedback.model.network.NetFeedbackRes
 import fit.asta.health.feedback.model.network.NetUserFeedback
-import fit.asta.health.navigation.home.model.network.response.NetHealthToolsRes
+import fit.asta.health.navigation.home.model.network.NetHealthToolsRes
+import fit.asta.health.navigation.home.model.network.NetSelectedTools
 import fit.asta.health.navigation.home_old.banners.networkdata.BannerResponse
 import fit.asta.health.navigation.home_old.categories.networkdata.CategoriesNetData
 import fit.asta.health.navigation.today.networkdata.TodayPlanNetData
@@ -64,6 +65,9 @@ interface ApiService {
         @Query("end") endDate: String,
         @Query("time") time: String
     ): NetHealthToolsRes
+
+    @PUT("tool/selected/put")
+    suspend fun updateSelectedTools(@Body toolIds: NetSelectedTools): Status
 
     /*
     // Scheduler Endpoints
@@ -140,7 +144,7 @@ interface ApiService {
     ): NetTestimonialsRes
 
     @PUT("testimonial/put/")
-    suspend fun updateTestimonial(@Body testimonial: NetTestimonial): Status
+    suspend fun updateTestimonial(@Body netTestimonial: NetTestimonial): Status
 
     @GET("testimonial/get/?")
     suspend fun getUserTestimonial(@Query("uid") userId: String): NetTestimonialRes
