@@ -7,8 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.AppCompatButton
+import androidx.viewpager2.widget.ViewPager2
 import com.android.billingclient.api.*
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.android.material.textview.MaterialTextView
 import fit.asta.health.HealthCareApp
 import fit.asta.health.R
 import fit.asta.health.old_subscription.adapter.SubscriptionPagerAdapter
@@ -16,7 +19,6 @@ import fit.asta.health.old_subscription.data.SubscriptionData
 import fit.asta.health.old_subscription.data.SubscriptionTabsData
 import fit.asta.health.old_subscription.listner.SubscriptionViewPagerListener
 import fit.asta.health.old_subscription.ui.SubscriptionFragment
-import kotlinx.android.synthetic.main.subscription_activity.view.*
 
 
 class SubscriptionPagerViewImpl : SubscriptionPagerView {
@@ -44,8 +46,9 @@ class SubscriptionPagerViewImpl : SubscriptionPagerView {
         rootView?.let {
 
             val adapter = SubscriptionPagerAdapter(fragmentActivity)
-            it.subscriptionViewPager.adapter = adapter
-            it.subscriptionViewPager.registerOnPageChangeCallback(listener)
+            val subscriptionViewPager = it.findViewById<ViewPager2>(R.id.subscriptionViewPager)
+            subscriptionViewPager.adapter = adapter
+            subscriptionViewPager.registerOnPageChangeCallback(listener)
         }
     }
 
@@ -62,17 +65,20 @@ class SubscriptionPagerViewImpl : SubscriptionPagerView {
         rootView?.let { view ->
 
             val tabDetails = mutableListOf<SubscriptionTabsData>()
-            view.cardRecurringBill.text = subPlanData.title
-
-            val adapter = (view.subscriptionViewPager.adapter as SubscriptionPagerAdapter)
+            view.findViewById<MaterialTextView>(R.id.cardRecurringBill).text = subPlanData.title
+            val subscriptionViewPager = view.findViewById<ViewPager2>(R.id.subscriptionViewPager)
+            val adapter = (subscriptionViewPager.adapter as SubscriptionPagerAdapter)
             adapter.setSubscriptionPlansList(subPlanData.plans.map { plan ->
                 tabDetails += SubscriptionTabsData(plan.title)
                 SubscriptionFragment(plan.title)
             })
 
-            TabLayoutMediator(view.subscriptionTabs, view.subscriptionViewPager) { tab, position ->
+            TabLayoutMediator(
+                view.findViewById(R.id.subscriptionTabs),
+                subscriptionViewPager
+            ) { tab, position ->
                 tab.text = tabDetails[position].tabTitle
-                view.subscriptionViewPager.setCurrentItem(tab.position, true)
+                subscriptionViewPager.setCurrentItem(tab.position, true)
             }.attach()
 
         }
@@ -90,7 +96,7 @@ class SubscriptionPagerViewImpl : SubscriptionPagerView {
     private fun updateTabs(subscriptionData: SubscriptionData) {
         setViewPageAdapter(subscriptionData)
         rootView?.let {
-            it.btnContinueSubs.setOnClickListener {
+            it.findViewById<AppCompatButton>(R.id.btnContinueSubs).setOnClickListener {
                 launchBillingFlow(mContext)
             }
         }
@@ -98,7 +104,7 @@ class SubscriptionPagerViewImpl : SubscriptionPagerView {
 
     override fun continueClickListener(listener: View.OnClickListener) {
         rootView?.let {
-            it.btnContinueSubs.setOnClickListener {
+            it.findViewById<AppCompatButton>(R.id.btnContinueSubs).setOnClickListener {
                 listener.onClick(it)
             }
         }

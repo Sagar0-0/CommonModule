@@ -1,12 +1,14 @@
 package fit.asta.health.old_article.viewholder
 
 import android.view.View
+import androidx.appcompat.widget.AppCompatTextView
+import fit.asta.health.R
 import fit.asta.health.common.BaseViewHolder
 import fit.asta.health.old_article.data.ArticleContent
-import kotlinx.android.synthetic.main.article_text.view.*
+
 
 class TextViewHolder(itemView: View) : BaseViewHolder<ArticleContent>(itemView) {
     override fun bindData(content: ArticleContent) {
-        itemView.articleText.text = content.text
+        itemView.findViewById<AppCompatTextView>(R.id.articleText).text = content.text
     }
 }

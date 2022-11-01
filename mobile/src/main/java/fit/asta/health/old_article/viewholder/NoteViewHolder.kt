@@ -6,11 +6,12 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.View
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import fit.asta.health.R
 import fit.asta.health.common.BaseViewHolder
 import fit.asta.health.old_article.data.ArticleContent
-import kotlinx.android.synthetic.main.article_note.view.*
+
 
 class NoteViewHolder(itemView: View) : BaseViewHolder<ArticleContent>(itemView) {
 
@@ -32,6 +33,6 @@ class NoteViewHolder(itemView: View) : BaseViewHolder<ArticleContent>(itemView) 
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
             )
 
-            itemView.article_note_text.text = spannable
+        itemView.findViewById<AppCompatTextView>(R.id.article_note_text).text = spannable
         }
     }

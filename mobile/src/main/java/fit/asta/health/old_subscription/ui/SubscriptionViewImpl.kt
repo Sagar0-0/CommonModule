@@ -5,10 +5,14 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import fit.asta.health.R
 import fit.asta.health.common.carousel.CarouselViewPagerAdapter
@@ -17,7 +21,6 @@ import fit.asta.health.old_subscription.adapter.SubscriptionAdapter
 import fit.asta.health.old_subscription.data.CarouselData
 import fit.asta.health.old_subscription.data.SubscriptionPlanData
 import fit.asta.health.old_subscription.listner.SubPlanSelectionListener
-import kotlinx.android.synthetic.main.subscription_page.view.*
 
 
 class SubscriptionViewImpl : SubscriptionView {
@@ -36,9 +39,11 @@ class SubscriptionViewImpl : SubscriptionView {
     private fun initializeViews() {
         rootView?.let {
 
-            it.rcv_subscription_payment.layoutManager =
+            val rcvSubscriptionPayment =
+                it.findViewById<RecyclerView>(R.id.rcv_subscription_payment)
+            rcvSubscriptionPayment.layoutManager =
                 LinearLayoutManager(it.context, LinearLayoutManager.HORIZONTAL, false)
-            it.rcv_subscription_payment.adapter = SubscriptionAdapter()
+            rcvSubscriptionPayment.adapter = SubscriptionAdapter()
         }
     }
 
@@ -54,14 +59,17 @@ class SubscriptionViewImpl : SubscriptionView {
 
     override fun setAdapterListener(listener: SubPlanSelectionListener) {
         rootView?.let {
-            (it.rcv_subscription_payment.adapter as SubscriptionAdapter).setListener(listener)
+            (it.findViewById<RecyclerView>(R.id.rcv_subscription_payment).adapter as SubscriptionAdapter).setListener(
+                listener
+            )
         }
     }
 
     private fun setAdapter(subPlanData: SubscriptionPlanData) {
         rootView?.let {
 
-            (it.sliderViewPager.adapter as CarouselViewPagerAdapter).setCarouselList(
+            val sliderViewPager = it.findViewById<ViewPager2>(R.id.sliderViewPager)
+            (sliderViewPager.adapter as CarouselViewPagerAdapter).setCarouselList(
                 subPlanData.features.map {
                     CarouselFragment.newInstance(CarouselData().apply {
                         title = it.title
@@ -70,9 +78,14 @@ class SubscriptionViewImpl : SubscriptionView {
                     })
                 })
 
-            (it.rcv_subscription_payment.adapter as SubscriptionAdapter).updateList(subPlanData.subscriptions)
-            it.termsInfo.text = subPlanData.desc
-            TabLayoutMediator(it.tabIndicator, it.sliderViewPager) { _, _ -> }.attach()
+            (it.findViewById<RecyclerView>(R.id.rcv_subscription_payment).adapter as SubscriptionAdapter).updateList(
+                subPlanData.subscriptions
+            )
+            it.findViewById<TextView>(R.id.termsInfo).text = subPlanData.desc
+            TabLayoutMediator(
+                it.findViewById(R.id.tabIndicator),
+                sliderViewPager
+            ) { _, _ -> }.attach()
         }
     }
 
@@ -89,14 +102,15 @@ class SubscriptionViewImpl : SubscriptionView {
     override fun setUpViewPager(fragment: Fragment) {
         rootView?.let {
 
-            it.sliderViewPager.adapter = CarouselViewPagerAdapter(fragment)
+            it.findViewById<ViewPager2>(R.id.sliderViewPager).adapter =
+                CarouselViewPagerAdapter(fragment)
         }
     }
 
     override fun registerAutoScroll(lifecycleScope: LifecycleCoroutineScope) {
 
         rootView?.let {
-            it.sliderViewPager.autoScroll(
+            it.findViewById<ViewPager2>(R.id.sliderViewPager).autoScroll(
                 lifecycleScope = lifecycleScope,
                 interval = CarouselViewPagerAdapter.REFRESH_RATE
             )
@@ -105,7 +119,7 @@ class SubscriptionViewImpl : SubscriptionView {
 
     override fun privacyClickListener(listener: View.OnClickListener) {
         rootView?.let {
-            it.privacyPolicy.setOnClickListener {
+            it.findViewById<AppCompatTextView>(R.id.privacyPolicy).setOnClickListener {
                 listener.onClick(it)
             }
         }
@@ -113,7 +127,7 @@ class SubscriptionViewImpl : SubscriptionView {
 
     override fun termsClickListener(listener: View.OnClickListener) {
         rootView?.let {
-            it.termsOfService.setOnClickListener {
+            it.findViewById<AppCompatTextView>(R.id.termsOfService).setOnClickListener {
                 listener.onClick(it)
             }
         }

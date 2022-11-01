@@ -10,15 +10,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.CompoundButton
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.appbar.MaterialToolbar
 import fit.asta.health.R
 import fit.asta.health.notify.receiver.AlarmReceiver
 import fit.asta.health.notify.reminder.ReminderViewModel
 import fit.asta.health.notify.reminder.data.Reminder
-import kotlinx.android.synthetic.main.schedule_activity.*
-import kotlinx.android.synthetic.main.schedule_clock_card.*
-import kotlinx.android.synthetic.main.schedule_everyday_card.*
+import fit.asta.health.utils.CustomTimePicker
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -48,8 +48,9 @@ class SchedulerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.schedule_activity)
 
-        timePicker.setIs24HourView(true)
+        findViewById<CustomTimePicker>(R.id.timePicker).setIs24HourView(true)
 
+        val tlbScheduler = findViewById<MaterialToolbar>(R.id.tlbScheduler)
         setSupportActionBar(tlbScheduler)
         tlbScheduler?.setNavigationOnClickListener {
 
@@ -60,7 +61,7 @@ class SchedulerActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this).get(ReminderViewModel::class.java)
 
-        btnAlarmDone.setOnClickListener {
+        findViewById<CustomTimePicker>(R.id.btnAlarmDone).setOnClickListener {
 
             val reminder = buildReminder()
             if (mReminder != null) {
@@ -83,6 +84,7 @@ class SchedulerActivity : AppCompatActivity() {
 
         // Build buttons for each day.
         val sWeekdays = resources.getStringArray(R.array.days)
+        val weekDays = findViewById<LinearLayout>(R.id.weekDays)
         weekDays.removeAllViews()
         val inflater = LayoutInflater.from(this)
         for (i in 0..6) {
@@ -111,6 +113,7 @@ class SchedulerActivity : AppCompatActivity() {
 
         if (reminder != null) {
 
+            val timePicker = findViewById<CustomTimePicker>(R.id.timePicker)
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
 
                 timePicker.hour = reminder.hour
@@ -179,6 +182,7 @@ class SchedulerActivity : AppCompatActivity() {
         val hour: Int
         val min: Int
 
+        val timePicker = findViewById<CustomTimePicker>(R.id.timePicker)
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
 
             hour = timePicker.hour

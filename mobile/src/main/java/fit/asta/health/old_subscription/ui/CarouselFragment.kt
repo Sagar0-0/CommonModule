@@ -5,12 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import fit.asta.health.R
 import fit.asta.health.old_subscription.data.CarouselData
 import fit.asta.health.utils.getPublicStorageUrl
 import fit.asta.health.utils.showImageByUrl
-import kotlinx.android.synthetic.main.subscription_feature_card.view.*
+
 
 class CarouselFragment : Fragment() {
 
@@ -44,11 +45,11 @@ class CarouselFragment : Fragment() {
             carousalData = it.getParcelable(ARG_CAROUSAL_DATA)
             carousalData?.let { data ->
 
-                view.txtFeatureTitle.text = data.title
-                view.txtFeatureDesc.text = data.description
+                view.findViewById<TextView>(R.id.txtFeatureTitle).text = data.title
+                view.findViewById<TextView>(R.id.txtFeatureDesc).text = data.description
                 view.context.showImageByUrl(
                     Uri.parse(getPublicStorageUrl(view.context, data.url)),
-                    view.imgFeature
+                    view.findViewById(R.id.imgFeature)
                 )
             }
         }

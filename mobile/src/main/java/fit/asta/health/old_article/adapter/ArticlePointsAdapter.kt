@@ -7,6 +7,9 @@ import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatImageButton
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import fit.asta.health.R
@@ -14,11 +17,6 @@ import fit.asta.health.old_article.networkdata.*
 import fit.asta.health.utils.GenericAdapter
 import fit.asta.health.utils.getPublicStorageUrl
 import fit.asta.health.utils.showImageByUrl
-import kotlinx.android.synthetic.main.article_media.view.*
-import kotlinx.android.synthetic.main.article_point_bullet_title.view.*
-import kotlinx.android.synthetic.main.article_point_key_value.view.*
-import kotlinx.android.synthetic.main.article_point_numeric_title.view.*
-import kotlinx.android.synthetic.main.article_point_url.view.*
 
 
 class ArticlePointsAdapter(
@@ -166,11 +164,14 @@ class ArticlePointsAdapter(
 
     fun showMedia(media: Media?, itemView: View) {
 
-        itemView.articleMediaFrame.visibility = View.GONE
-        itemView.articleMediaVideoButton.visibility = View.GONE
+        val articleMediaFrame = itemView.findViewById<ConstraintLayout>(R.id.articleMediaFrame)
+        articleMediaFrame.visibility = View.GONE
+        val articleMediaVideoButton =
+            itemView.findViewById<AppCompatImageButton>(R.id.articleMediaVideoButton)
+        articleMediaVideoButton.visibility = View.GONE
         if (media != null) {
 
-            itemView.articleMediaFrame.visibility = View.VISIBLE
+            articleMediaFrame.visibility = View.VISIBLE
 
             val imgUri = Uri.parse(
                 getPublicStorageUrl(
@@ -178,10 +179,10 @@ class ArticlePointsAdapter(
                     metaData?.imgLoc + media.url
                 )
             )
-            context.showImageByUrl(imgUri, itemView.articleMediaImage)
+            context.showImageByUrl(imgUri, itemView.findViewById(R.id.articleMediaImage))
             if (media.type == MediaType.VIDEO) {
 
-                itemView.articleMediaVideoButton.visibility = View.VISIBLE
+                articleMediaVideoButton.visibility = View.VISIBLE
             }
         }
     }
@@ -192,12 +193,14 @@ class ArticlePointsAdapter(
 
             if (item.title != null) {
 
-                itemView.articlePointBulletTitle.text = item.title
+                itemView.findViewById<AppCompatTextView>(R.id.articlePointBulletTitle).text =
+                    item.title
             }
 
             if (item.text != null) {
 
-                itemView.articlePointBulletText.text = item.text
+                itemView.findViewById<AppCompatTextView>(R.id.articlePointBulletText).text =
+                    item.text
             }
 
             showMedia(item.media, itemView)
@@ -209,12 +212,14 @@ class ArticlePointsAdapter(
         @SuppressLint("SetTextI18n")
         fun setData(item: Topic, pos: Int) {
 
-            itemView.articlePointNumericTitleNumber.text = "${pos + 1}. "
+            itemView.findViewById<AppCompatTextView>(R.id.articlePointNumericTitleNumber).text =
+                "${pos + 1}. "
             if (item.title != null) {
 
-                itemView.articlePointNumericTitle.text = item.title
+                itemView.findViewById<AppCompatTextView>(R.id.articlePointNumericTitle).text =
+                    item.title
             }
-            itemView.articlePointNumericText.text = item.text
+            itemView.findViewById<AppCompatTextView>(R.id.articlePointNumericText).text = item.text
 
             showMedia(item.media, itemView)
         }
@@ -226,12 +231,14 @@ class ArticlePointsAdapter(
         fun setData(item: Topic, pos: Int) {
 
             val char = (pos + 97).toChar()
-            itemView.articlePointNumericTitleNumber.text = "$char. "
+            itemView.findViewById<AppCompatTextView>(R.id.articlePointNumericTitleNumber).text =
+                "$char. "
             if (item.title != null) {
 
-                itemView.articlePointNumericTitle.text = item.title
+                itemView.findViewById<AppCompatTextView>(R.id.articlePointNumericTitle).text =
+                    item.title
             }
-            itemView.articlePointNumericText.text = item.text
+            itemView.findViewById<AppCompatTextView>(R.id.articlePointNumericText).text = item.text
 
             showMedia(item.media, itemView)
         }
@@ -241,8 +248,8 @@ class ArticlePointsAdapter(
 
         fun setData(item: Topic) {
 
-            itemView.articlePointKey.text = item.title
-            itemView.articlePointValue.text = item.text
+            itemView.findViewById<AppCompatTextView>(R.id.articlePointKey).text = item.title
+            itemView.findViewById<AppCompatTextView>(R.id.articlePointValue).text = item.text
         }
     }
 
@@ -251,10 +258,9 @@ class ArticlePointsAdapter(
         fun setData(item: Topic) {
 
             val text = "<a href=\"${item.text}\">${item.title}</a>"
-            itemView.articlePointUrl.text =
-                HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
-
-            itemView.articlePointUrl.movementMethod = LinkMovementMethod.getInstance()
+            val articlePointUrl = itemView.findViewById<AppCompatTextView>(R.id.articlePointUrl)
+            articlePointUrl.text = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
+            articlePointUrl.movementMethod = LinkMovementMethod.getInstance()
         }
     }
 }

@@ -6,11 +6,12 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.google.android.material.appbar.MaterialToolbar
+import fit.asta.health.R
 import fit.asta.health.old_scheduler.tags.data.ScheduleTagData
 import fit.asta.health.old_scheduler.tags.listner.ClickListenerImpl
 import fit.asta.health.old_scheduler.tags.listner.TagActivityListener
 import fit.asta.health.old_scheduler.tags.viewmodel.TagsViewModel
-import kotlinx.android.synthetic.main.schedule_tags_activity.*
 import org.koin.android.ext.android.inject
 
 
@@ -47,7 +48,7 @@ class TagsActivity : AppCompatActivity(), TagActivityListener {
         viewTags.submitClickListener(ClickListenerImpl(viewModelTags))
         viewTags.setAdapterClickListener(ClickListenerImpl(viewModelTags, this))
 
-        tlbTags.setNavigationOnClickListener {
+        findViewById<MaterialToolbar>(R.id.tlbTags).setNavigationOnClickListener {
             onBackPressed()
         }
     }

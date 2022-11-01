@@ -4,16 +4,17 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import fit.asta.health.ActivityLauncher
+import fit.asta.health.R
 import fit.asta.health.notify.reminder.data.Reminder
 import fit.asta.health.old_scheduler.tags.data.ScheduleTagData
 import fit.asta.health.old_scheduler.tags.ui.TagsActivity
 import fit.asta.health.old_scheduler.viewmodel.ScheduleViewModel
-import kotlinx.android.synthetic.main.schedule_activity.*
-import kotlinx.android.synthetic.main.schedule_clock_card.*
-import kotlinx.android.synthetic.main.schedule_tag_card.*
 import org.koin.android.ext.android.inject
 
 
@@ -44,17 +45,17 @@ class ScheduleActivity : AppCompatActivity() {
         viewModelSchedule.observerScheduleLiveData(this, ScheduleObserver(viewSchedule))
 
         viewSchedule.submitClickListener(SubmitClickListenerImpl(viewModelSchedule))
-        tlbScheduler.setNavigationOnClickListener {
+        findViewById<MaterialToolbar>(R.id.tlbScheduler).setNavigationOnClickListener {
             onBackPressed()
         }
 
-        extended_fab.setOnClickListener {
+        findViewById<ExtendedFloatingActionButton>(R.id.extended_fab).setOnClickListener {
             viewSchedule.captureTime { time ->
                 viewModelSchedule.addTime(time)
             }
         }
 
-        textTagsView.setOnClickListener {
+        findViewById<TextView>(R.id.textTagsView).setOnClickListener {
             //launcher.launchTagsActivity(this, viewModelSchedule.getTagId())
             launchTagActivity(viewModelSchedule.getTagId())
         }

@@ -3,15 +3,17 @@ package fit.asta.health.old_article.viewholder
 import android.content.Context
 import android.net.Uri
 import android.view.View
+import androidx.appcompat.widget.AppCompatImageButton
+import androidx.core.widget.ContentLoadingProgressBar
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import fit.asta.health.ActivityLauncher
+import fit.asta.health.R
 import fit.asta.health.common.BaseViewHolder
 import fit.asta.health.old_article.data.ArticleContent
 import fit.asta.health.old_course.session.data.Exercise
 import fit.asta.health.utils.getPublicStorageUrl
 import fit.asta.health.utils.showImageByUrl
-import kotlinx.android.synthetic.main.article_video.view.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -28,7 +30,7 @@ class VideoViewHolder(itemView: View) : BaseViewHolder<ArticleContent>(itemView)
             playVideo(itemView.context, currentItem)
         }
 
-        itemView.articleVideoButton?.setOnClickListener {
+        itemView.findViewById<AppCompatImageButton>(R.id.articleVideoButton)?.setOnClickListener {
             playVideo(itemView.context, currentItem)
         }
     }
@@ -44,9 +46,9 @@ class VideoViewHolder(itemView: View) : BaseViewHolder<ArticleContent>(itemView)
             )
         )
         itemView.apply {
-            context.showImageByUrl(imgUri, itemView.articleVideo)
-            progressArticleVideo.hide()
-            articleVideoButton.visibility = View.VISIBLE
+            context.showImageByUrl(imgUri, itemView.findViewById(R.id.articleVideo))
+            findViewById<ContentLoadingProgressBar>(R.id.progressArticleVideo).hide()
+            findViewById<AppCompatImageButton>(R.id.articleVideoButton).visibility = View.VISIBLE
         }
     }
 

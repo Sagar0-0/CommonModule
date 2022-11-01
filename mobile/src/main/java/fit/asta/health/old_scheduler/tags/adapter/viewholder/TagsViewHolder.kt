@@ -3,12 +3,15 @@ package fit.asta.health.old_scheduler.tags.adapter.viewholder
 import android.annotation.SuppressLint
 import android.net.Uri
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import fit.asta.health.R
 import fit.asta.health.common.BaseViewHolder
 import fit.asta.health.old_scheduler.tags.data.ScheduleTagData
 import fit.asta.health.old_scheduler.tags.listner.ClickListener
 import fit.asta.health.utils.getPublicStorageUrl
 import fit.asta.health.utils.showImageByUrl
-import kotlinx.android.synthetic.main.schedule_tags_card.view.*
+
 
 class TagsViewHolder(
     viewItem: View,
@@ -18,16 +21,17 @@ class TagsViewHolder(
     @SuppressLint("SetTextI18n")
     override fun bindData(content: ScheduleTagData) {
 
-        itemView.tag_name.text = content.tagName
-        itemView.imgSelectionMark.visibility = if (content.isSelected) View.VISIBLE else View.GONE
+        itemView.findViewById<TextView>(R.id.tag_name).text = content.tagName
+        itemView.findViewById<ImageView>(R.id.imgSelectionMark).visibility =
+            if (content.isSelected) View.VISIBLE else View.GONE
         itemView.context.showImageByUrl(
             Uri.parse(getPublicStorageUrl(itemView.context, content.url)),
-            itemView.imgTag
+            itemView.findViewById(R.id.imgTag)
         )
 
         itemView.setOnClickListener {
 
-            it.imgSelectionMark.visibility = View.VISIBLE
+            it.findViewById<ImageView>(R.id.imgSelectionMark).visibility = View.VISIBLE
             tagSelectionListener?.onSelectionUpdate(content, true)
         }
     }

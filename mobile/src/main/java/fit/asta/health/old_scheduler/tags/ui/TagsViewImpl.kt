@@ -4,13 +4,17 @@ import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.checkbox.MaterialCheckBox
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.textfield.TextInputEditText
 import fit.asta.health.R
 import fit.asta.health.old_scheduler.tags.adapter.TagsAdapter
 import fit.asta.health.old_scheduler.tags.data.ScheduleTagData
 import fit.asta.health.old_scheduler.tags.listner.ClickListener
-import kotlinx.android.synthetic.main.schedule_tags_activity.view.*
-import kotlinx.android.synthetic.main.schedule_tags_add.view.*
 
 
 class TagsViewImpl : TagsView {
@@ -36,8 +40,9 @@ class TagsViewImpl : TagsView {
     private fun setupRecyclerView() {
         rootView?.let {
             val adapter = TagsAdapter()
-            it.rcvTags.layoutManager = LinearLayoutManager(it.context)
-            it.rcvTags.adapter = adapter
+            val rcvTags = it.findViewById<RecyclerView>(R.id.rcvTags)
+            rcvTags.layoutManager = LinearLayoutManager(it.context)
+            rcvTags.adapter = adapter
         }
     }
 
@@ -52,21 +57,23 @@ class TagsViewImpl : TagsView {
 
     private fun setAdapter(list: List<ScheduleTagData>) {
         rootView?.let {
-            (it.rcvTags.adapter as TagsAdapter).updateList(list)
+            (it.findViewById<RecyclerView>(R.id.rcvTags).adapter as TagsAdapter).updateList(list)
         }
     }
 
     override fun setAdapterClickListener(listener: ClickListener) {
         rootView?.let {
-            (it.rcvTags.adapter as TagsAdapter).setAdapterListener(listener)
+            (it.findViewById<RecyclerView>(R.id.rcvTags).adapter as TagsAdapter).setAdapterListener(
+                listener
+            )
         }
     }
 
     private fun updateTagView(tagData: ScheduleTagData) {
         tagCreateView?.let {
-            it.edtTagName.setText(tagData.tagName)
-            it.cbxDouble.isChecked = tagData.type as Boolean
-            //it.imgTag.setImageURI(tagData.url)
+            it.findViewById<TextInputEditText>(R.id.edtTagName).setText(tagData.tagName)
+            it.findViewById<MaterialCheckBox>(R.id.cbxDouble).isChecked = tagData.type as Boolean
+            //it.findViewById<ImageView>(R.id.imgTag).setImageURI(tagData.url)
         }
     }
 
@@ -81,9 +88,10 @@ class TagsViewImpl : TagsView {
 
     override fun fabClickListener(listener: ClickListener) {
         rootView?.let { view ->
-            view.fab_tag_create.setOnClickListener {
-                launchTagSheet()
-            }
+            view.findViewById<ExtendedFloatingActionButton>(R.id.fab_tag_create)
+                .setOnClickListener {
+                    launchTagSheet()
+                }
         }
     }
 
@@ -91,7 +99,7 @@ class TagsViewImpl : TagsView {
 
         tagCreateView?.let { view ->
 
-            view.imgClose.setOnClickListener {
+            view.findViewById<ShapeableImageView>(R.id.imgClose).setOnClickListener {
                 bottomDialog?.hide()
             }
             bottomDialog?.setContentView(view)
@@ -102,7 +110,7 @@ class TagsViewImpl : TagsView {
     override fun submitClickListener(listener: ClickListener) {
 
         tagCreateView?.let { view ->
-            view.btnTagCreate.setOnClickListener {
+            view.findViewById<MaterialButton>(R.id.btnTagCreate).setOnClickListener {
                 if (validation()) {
                     listener.onClickSubmit()
                 }

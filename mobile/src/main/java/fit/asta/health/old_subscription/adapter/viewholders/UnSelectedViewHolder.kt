@@ -1,10 +1,13 @@
 package fit.asta.health.old_subscription.adapter.viewholders
 
 import android.view.View
+import androidx.appcompat.widget.AppCompatTextView
+import com.google.android.material.card.MaterialCardView
+import fit.asta.health.R
 import fit.asta.health.common.BaseViewHolder
 import fit.asta.health.old_subscription.data.SubscriptionItem
 import fit.asta.health.old_subscription.listner.SubPlanSelectionListener
-import kotlinx.android.synthetic.main.subscription_card_unselected.view.*
+
 
 class UnSelectedViewHolder(
     itemView: View,
@@ -13,14 +16,11 @@ class UnSelectedViewHolder(
 ) : BaseViewHolder<SubscriptionItem>(itemView) {
     override fun bindData(content: SubscriptionItem) {
 
-        itemView.txtPaymentTitle.text = content.title
-        itemView.txtPaymentSubTitle.text = content.subTitle
-        itemView.txtPaymentDesc.text = content.description
+        itemView.findViewById<AppCompatTextView>(R.id.txtPaymentTitle).text = content.title
+        itemView.findViewById<AppCompatTextView>(R.id.txtPaymentSubTitle).text = content.subTitle
+        itemView.findViewById<AppCompatTextView>(R.id.txtPaymentDesc).text = content.description
 
-
-
-        itemView.cardSubscriptionPlan.setOnClickListener {
-
+        itemView.findViewById<MaterialCardView>(R.id.cardSubscriptionPlan).setOnClickListener {
 
             subPlanSelectionListener?.onSelectionUpdate(content.uid)
             notifyDataChange()

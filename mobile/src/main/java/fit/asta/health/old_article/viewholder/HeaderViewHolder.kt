@@ -1,17 +1,19 @@
 package fit.asta.health.old_article.viewholder
 
 import android.view.View
+import android.widget.TextView
+import fit.asta.health.R
 import fit.asta.health.common.BaseViewHolder
 import fit.asta.health.old_article.data.ArticleContent
-import kotlinx.android.synthetic.main.article_header.view.*
+
 
 class HeaderViewHolder(itemView: View) : BaseViewHolder<ArticleContent>(itemView) {
 
     override fun bindData(content: ArticleContent) {
         itemView.apply {
-            articleHeaderTitle.text = content.title
-            articleHeaderDate.text = content.text
-            articleHeaderAuthor.text = content.authorName
+            findViewById<TextView>(R.id.articleHeaderTitle).text = content.title
+            findViewById<TextView>(R.id.articleHeaderDate).text = content.text
+            findViewById<TextView>(R.id.articleHeaderAuthor).text = content.authorName
         }
     }
 }

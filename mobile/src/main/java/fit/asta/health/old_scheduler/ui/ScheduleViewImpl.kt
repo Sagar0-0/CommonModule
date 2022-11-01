@@ -5,17 +5,18 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.CompoundButton
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
 import fit.asta.health.R
 import fit.asta.health.notify.reminder.data.Reminder
 import fit.asta.health.old_scheduler.adapter.TimeCyclesAdapter
 import fit.asta.health.old_scheduler.data.ScheduleTimeData
 import fit.asta.health.old_scheduler.tags.data.ScheduleTagData
-import kotlinx.android.synthetic.main.schedule_activity.view.*
-import kotlinx.android.synthetic.main.schedule_clock_card.view.*
-import kotlinx.android.synthetic.main.schedule_everyday_card.view.*
-import kotlinx.android.synthetic.main.schedule_tag_card.view.*
+import fit.asta.health.utils.CustomTimePicker
 
 
 class ScheduleViewImpl : ScheduleView {
@@ -57,13 +58,15 @@ class ScheduleViewImpl : ScheduleView {
 
     private fun setScheduleTag(tag: ScheduleTagData?) {
         rootView?.let {
-            it.textTagsView.text = tag?.tagName
+            it.findViewById<TextView>(R.id.textTagsView).text = tag?.tagName
         }
     }
 
     private fun setAdapterTimeCycles(list: List<ScheduleTimeData>) {
         rootView?.let {
-            (it.rcvTimeCycles.adapter as TimeCyclesAdapter).updateList(list)
+            (it.findViewById<RecyclerView>(R.id.rcvTimeCycles).adapter as TimeCyclesAdapter).updateList(
+                list
+            )
         }
     }
 
@@ -82,16 +85,17 @@ class ScheduleViewImpl : ScheduleView {
         // Build buttons for each day.
         rootView?.let { view ->
             val sWeekdays = view.resources.getStringArray(R.array.days)
-            view.weekDays.removeAllViews()
+            val weekDays = view.findViewById<LinearLayout>(R.id.weekDays)
+            weekDays.removeAllViews()
             val inflater = LayoutInflater.from(view.context)
             for (i in 0..6) {
 
-                val btnDayFrame = inflater.inflate(R.layout.schedule_weekday, view.weekDays, false)
+                val btnDayFrame = inflater.inflate(R.layout.schedule_weekday, weekDays, false)
                 val btnDay = btnDayFrame.findViewById<View>(R.id.btnDay) as CompoundButton
                 btnDay.isChecked =
                     if (mReminder == null) true else mReminder?.days?.any { it == i + 1 } ?: false
                 btnDay.text = sWeekdays[i].substring(0, 1)
-                view.weekDays.addView(btnDayFrame)
+                weekDays.addView(btnDayFrame)
                 btnDays[i] = btnDay
             }
         }
@@ -109,8 +113,9 @@ class ScheduleViewImpl : ScheduleView {
     private fun setupTimeCycleRecyclerView() {
         rootView?.let {
             val adapter = TimeCyclesAdapter()
-            it.rcvTimeCycles.layoutManager = LinearLayoutManager(it.context)
-            it.rcvTimeCycles.adapter = adapter
+            val rcvTimeCycles = it.findViewById<RecyclerView>(R.id.rcvTimeCycles)
+            rcvTimeCycles.layoutManager = LinearLayoutManager(it.context)
+            rcvTimeCycles.adapter = adapter
         }
     }
 
@@ -120,19 +125,22 @@ class ScheduleViewImpl : ScheduleView {
 
         rootView?.let { view ->
 
+            val timePicker = view.findViewById<CustomTimePicker>(R.id.timePicker)
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
 
-                hour = view.timePicker.hour
-                min = view.timePicker.minute
+                hour = timePicker.hour
+                min = timePicker.minute
             } else {
 
-                hour = view.timePicker.currentHour
-                min = view.timePicker.currentMinute
+                hour = timePicker.currentHour
+                min = timePicker.currentMinute
             }
 
             val time = ScheduleTimeData(hour, min)
             callBack.invoke(time)
-            (view.rcvTimeCycles.adapter as TimeCyclesAdapter).addTime(time)
+            (view.findViewById<RecyclerView>(R.id.rcvTimeCycles).adapter as TimeCyclesAdapter).addTime(
+                time
+            )
         }
     }
 
@@ -145,7 +153,7 @@ class ScheduleViewImpl : ScheduleView {
 
     override fun submitClickListener(listener: View.OnClickListener) {
         rootView?.let { view ->
-            view.btnAlarmDone.setOnClickListener {
+            view.findViewById<MaterialButton>(R.id.btnAlarmDone).setOnClickListener {
                 listener.onClick(it)
             }
         }
