@@ -8,6 +8,7 @@ plugins {
 }
 
 android {
+
     signingConfigs {
         release {
             storeFile file('..\\Keys\\AstaKey')
@@ -16,19 +17,22 @@ android {
             keyPassword 'ra123$%^NI'
         }
     }
+
     compileSdkVersion 33
     buildToolsVersion "30.0.3"
+
     defaultConfig {
         applicationId "fit.asta.health"
         minSdkVersion 23
         targetSdkVersion 33
         versionCode 11
         versionName "0.11"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
         signingConfig signingConfigs.release
         archivesBaseName = "$applicationId-$versionName"
-        multiDexEnabled true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions {
 
@@ -57,10 +61,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
 
     buildTypes {
         debug {
@@ -78,15 +82,12 @@ android {
     buildFeatures {
         dataBinding = true
         compose = true
-        viewBinding true
-        //viewBinding = true
+        viewBinding = true
     }
 
     composeOptions {
         kotlinCompilerExtensionVersion = compose_version
     }
-
-
 }
 
 dependencies {
@@ -103,14 +104,14 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     implementation 'androidx.preference:preference-ktx:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.2'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.2'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
     /*implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation 'androidx.annotation:annotation:1.1.0'*/
-    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'com.google.code.gson:gson:2.9.1'
 
     //Jet-pack compose
-    def compose_version = '1.2.1'
+    def compose_version = '1.3.0'
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation "androidx.compose.ui:ui-tooling:$compose_version"
@@ -118,19 +119,18 @@ dependencies {
     implementation "androidx.compose.animation:animation:$compose_version"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
-    implementation 'androidx.activity:activity-compose:1.6.0'
+    implementation 'androidx.activity:activity-compose:1.6.1'
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
-    implementation "androidx.compose.foundation:foundation:1.3.0-rc01"
-
+    implementation "androidx.compose.foundation:foundation:1.4.0-alpha01"
 
     //Material theme components
-    implementation 'com.google.android.material:material:1.6.1'
-    //implementation "androidx.compose.material:material:$compose_version"
-    implementation 'androidx.compose.material3:material3:1.0.0-beta02'
-    implementation 'androidx.compose.material3:material3-window-size-class:1.0.0-beta02'
+    implementation 'com.google.android.material:material:1.7.0'
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation 'androidx.compose.material3:material3:1.1.0-alpha01'
+    implementation 'androidx.compose.material3:material3-window-size-class:1.1.0-alpha01'
     //To re-use the color, typography and shape theming from your existing View-based themes
-    implementation "com.google.android.material:compose-theme-adapter:1.1.20"
+    implementation "com.google.android.material:compose-theme-adapter:1.1.21"
 
     //In-app updates
     implementation 'com.google.android.play:app-update-ktx:2.0.0'
@@ -139,27 +139,27 @@ dependencies {
     implementation 'com.google.android.play:review-ktx:2.0.0'
 
     //Location Service
-    implementation 'com.google.android.gms:play-services-location:20.0.0'
+    implementation 'com.google.android.gms:play-services-location:21.0.0'
 
     //Firebase authentication
     /*implementation platform('com.google.firebase:firebase-bom:26.2.0')*/
     implementation 'com.google.android.gms:play-services-auth:20.3.0'
-    implementation 'com.google.firebase:firebase-auth-ktx:21.0.8'
+    implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
 
     //Firebase for notifications
-    implementation 'com.google.firebase:firebase-messaging:23.0.8'
+    implementation 'com.google.firebase:firebase-messaging:23.1.0'
 
     //Firebase analytics
     implementation 'com.google.firebase:firebase-core:21.1.1'
-    implementation 'com.google.firebase:firebase-analytics:21.1.1'
+    implementation 'com.google.firebase:firebase-analytics:21.2.0'
 
     //Firebase storage for media files
-    implementation 'com.google.firebase:firebase-storage:20.0.2'
+    implementation 'com.google.firebase:firebase-storage:20.1.0'
 
     //Firestore for nosql
-    implementation 'com.google.firebase:firebase-firestore:24.3.1'
-    implementation 'com.google.firebase:firebase-firestore-ktx:24.3.1'
+    implementation 'com.google.firebase:firebase-firestore:24.4.0'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.4.0'
 
     /*implementation 'android.arch.work:work-runtime:1.0.1'
     implementation 'com.google.guava:guava:27.0.1-android'
@@ -225,25 +225,19 @@ dependencies {
     implementation "com.android.billingclient:billing-ktx:5.0.0"
 
     // Integration with activities
-    implementation 'androidx.activity:activity-compose:1.5.1'
-    // Compose Material Design
-    implementation 'androidx.compose.material:material:1.2.1'
+    implementation 'androidx.activity:activity-compose:1.6.1'
     // Animations
-    implementation 'androidx.compose.animation:animation:1.2.1'
+    implementation 'androidx.compose.animation:animation:1.3.0'
     // Tooling support (Previews, etc.)
-    implementation 'androidx.compose.ui:ui-tooling:1.2.1'
+    implementation 'androidx.compose.ui:ui-tooling:1.3.0'
     // Integration with ViewModels
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
     // UI Tests
-    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.2.1'
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.3.0'
 
     //Paging Compose
     implementation "com.google.accompanist:accompanist-pager:0.13.0"
     implementation "com.google.accompanist:accompanist-pager-indicators:0.13.0"
-
-    //turnoff include padding
-    implementation "androidx.compose.foundation:foundation:1.3.0-beta02"
-
 
     //Flow Layouts
     def flow_version = "0.26.4-beta"
@@ -252,7 +246,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.2.1'
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.3.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
@@ -262,13 +256,11 @@ dependencies {
     implementation "io.coil-kt:coil-compose:$coil_version"
 
     //Navigation
-    def nav_version = "2.5.2"
+    def nav_version = "2.5.3"
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
     //Emoji-Bar
     implementation 'com.github.a914-gowtham:compose-ratingbar:1.2.4'
-
-
 }
 
 kapt {
