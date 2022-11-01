@@ -37,7 +37,6 @@ fun CardProgress() {
                 .padding(16.dp)
         ) {
             CircularProgressIndicator(progress = 0.75f)
-
         }
 
     }
