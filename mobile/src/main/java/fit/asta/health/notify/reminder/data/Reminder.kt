@@ -3,7 +3,7 @@ package fit.asta.health.notify.reminder.data
 import android.os.Parcelable
 import android.text.format.DateFormat
 import androidx.room.*
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import java.util.*
 
 

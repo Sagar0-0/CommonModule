@@ -1,7 +1,7 @@
 package fit.asta.health.common.multiselect.data
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class MultiSelectData(var id: String = "",

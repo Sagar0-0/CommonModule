@@ -3,7 +3,7 @@ package fit.asta.health.old_course.session.networkdata
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import fit.asta.health.network.data.Status
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 data class SessionResponse(
     @SerializedName("statusDTO")

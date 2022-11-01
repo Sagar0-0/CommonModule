@@ -1,7 +1,7 @@
 package fit.asta.health.old_course.listing.data
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class CategoryData(

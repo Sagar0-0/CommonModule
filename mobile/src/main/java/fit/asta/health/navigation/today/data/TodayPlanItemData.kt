@@ -1,7 +1,7 @@
 package fit.asta.health.navigation.today.data
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 enum class TodayPlanItemType(val value: Int) {
 
