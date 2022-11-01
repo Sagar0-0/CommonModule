@@ -4,11 +4,11 @@ import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import fit.asta.health.R
 import fit.asta.health.old_course.listing.adapter.CourseListingAdapter
 import fit.asta.health.old_course.listing.adapter.listeners.OnCourseClickListener
 import fit.asta.health.old_course.listing.data.CourseIndexData
-import kotlinx.android.synthetic.main.course_list_activity.view.*
 
 
 class CourseListingViewImpl : CourseListingView {
@@ -26,15 +26,18 @@ class CourseListingViewImpl : CourseListingView {
     private fun setupRecyclerView() {
         rootView?.let {
             val adapter = CourseListingAdapter()
-            it.rcvCourseList.layoutManager = LinearLayoutManager(it.context)
-            it.rcvCourseList.adapter = adapter
+            val rcvCourseList = it.findViewById<RecyclerView>(R.id.rcvCourseList)
+            rcvCourseList.layoutManager = LinearLayoutManager(it.context)
+            rcvCourseList.adapter = adapter
 
         }
     }
 
     override fun setAdapterClickListener(listener: OnCourseClickListener) {
         rootView?.let {
-            (it.rcvCourseList.adapter as CourseListingAdapter).setAdapterClickListener(listener)
+            (it.findViewById<RecyclerView>(R.id.rcvCourseList).adapter as CourseListingAdapter).setAdapterClickListener(
+                listener
+            )
         }
     }
 
@@ -43,7 +46,7 @@ class CourseListingViewImpl : CourseListingView {
         when (state) {
             is CourseListingView.State.LoadCourses -> setAdapter(state.list)
             CourseListingView.State.Empty -> showEmpty()
-            else -> { }
+            else -> {}
         }
     }
 
@@ -53,7 +56,9 @@ class CourseListingViewImpl : CourseListingView {
 
     private fun setAdapter(list: List<CourseIndexData>) {
         rootView?.let {
-            (it.rcvCourseList.adapter as CourseListingAdapter).updateList(list)
+            (it.findViewById<RecyclerView>(R.id.rcvCourseList).adapter as CourseListingAdapter).updateList(
+                list
+            )
         }
     }
 }

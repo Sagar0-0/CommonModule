@@ -4,11 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
+import fit.asta.health.R
 import fit.asta.health.old_course.session.adapter.listeners.OnExerciseClickListenerImpl
 import fit.asta.health.old_course.session.listners.OnSessionClickListenerImpl
 import fit.asta.health.old_course.session.viewmodel.SessionObserver
 import fit.asta.health.old_course.session.viewmodel.SessionViewModel
-import kotlinx.android.synthetic.main.course_session.*
 import org.koin.android.ext.android.inject
 
 
@@ -45,7 +46,7 @@ class SessionActivity : AppCompatActivity() {
             intent.getStringExtra(ARG_SESSION_ID)!!
         )
 
-        imgBack.setOnClickListener {
+        findViewById<AppCompatImageView>(R.id.imgBack).setOnClickListener {
             onBackPressed()
         }
     }

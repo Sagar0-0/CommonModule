@@ -7,6 +7,8 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import fit.asta.health.R
 import fit.asta.health.old_course.details.CourseDetailsActivity
@@ -14,7 +16,6 @@ import fit.asta.health.old_course.details.CourseDetailsTabsData
 import fit.asta.health.old_course.details.CourseDetailsView
 import fit.asta.health.old_course.details.CourseDetailsViewPagerListener
 import fit.asta.health.old_course.details.adapter.CourseDetailsPagerAdapter
-import kotlinx.android.synthetic.main.profile_activity.view.*
 
 
 class CourseDetailsPagerViewImpl : CourseDetailsPagerView {
@@ -36,8 +37,8 @@ class CourseDetailsPagerViewImpl : CourseDetailsPagerView {
     ) {
         rootView?.let {
 
-            val coursePager = it.profile_pager
-            val courseTabLayout = it.profile_tab_layout
+            val coursePager = it.findViewById<ViewPager2>(R.id.profile_pager)
+            val courseTabLayout = it.findViewById<TabLayout>(R.id.profile_tab_layout)
 
             val pagerAdapter = CourseDetailsPagerAdapter(fragmentActivity)
             pagerAdapter.setFragmentList(getCourseDetailsPager())

@@ -4,13 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.button.MaterialButton
 import fit.asta.health.ActivityLauncher
 import fit.asta.health.R
 import fit.asta.health.old_course.details.ui.CourseDetailsObserver
 import fit.asta.health.old_course.details.viewmodel.CourseDetailsViewModel
 import fit.asta.health.old_course.listing.data.CourseIndexData
 import fit.asta.health.utils.showDrawableImage
-import kotlinx.android.synthetic.main.course_activity.*
 import org.koin.android.ext.android.inject
 import org.koin.core.KoinComponent
 
@@ -38,7 +40,7 @@ class CourseDetailsActivity : AppCompatActivity(), KoinComponent {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(courseDetailsView.setContentView(this, courseViewPager))
+        setContentView(courseDetailsView.setContentView(this, findViewById(R.id.courseViewPager)))
         courseDetailsView.setUpViewPager(supportFragmentManager)
         viewModel.observeCourseDetailsLiveData(this, CourseDetailsObserver(courseDetailsView))
 
@@ -47,19 +49,20 @@ class CourseDetailsActivity : AppCompatActivity(), KoinComponent {
             viewModel.getCourseDetailsData(courseInfo.uid)
         }
 
-        this.showDrawableImage(R.drawable.shimmer, courseImage)
+        this.showDrawableImage(R.drawable.shimmer, findViewById(R.id.courseImage))
 
+        val tlbCourse = findViewById<MaterialToolbar>(R.id.tlbCourse)
         setSupportActionBar(tlbCourse)
         tlbCourse?.setNavigationOnClickListener {
 
             onBackPressed()
         }
 
-        btnSchedule.setOnClickListener {
+        findViewById<MaterialButton>(R.id.btnSchedule).setOnClickListener {
             launcher.launchSchedulerActivity(it.context)
         }
 
-        exercisePlay.setOnClickListener {
+        findViewById<AppCompatImageView>(R.id.exercisePlay).setOnClickListener {
             //TODO: Need fix hard coded string
             launcher.launchVideoPlayerActivity(this, courseId, "")
         }

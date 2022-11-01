@@ -4,7 +4,11 @@ import android.app.Activity
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatRatingBar
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import fit.asta.health.R
 import fit.asta.health.old_course.session.adapter.ExerciseAdapter
 import fit.asta.health.old_course.session.adapter.listeners.OnExerciseClickListener
@@ -12,7 +16,6 @@ import fit.asta.health.old_course.session.data.SessionData
 import fit.asta.health.old_course.session.listners.OnSessionClickListener
 import fit.asta.health.utils.getPublicStorageUrl
 import fit.asta.health.utils.showImageByUrl
-import kotlinx.android.synthetic.main.course_session.view.*
 
 
 class SessionViewImpl : SessionView {
@@ -30,20 +33,23 @@ class SessionViewImpl : SessionView {
     private fun setupRecyclerView() {
         rootView?.let {
             val adapter = ExerciseAdapter()
-            it.recyclerExercise.layoutManager = LinearLayoutManager(it.context)
-            it.recyclerExercise.adapter = adapter
+            val recyclerExercise = it.findViewById<RecyclerView>(R.id.recyclerExercise)
+            recyclerExercise.layoutManager = LinearLayoutManager(it.context)
+            recyclerExercise.adapter = adapter
         }
     }
 
     override fun setAdapterClickListener(listener: OnExerciseClickListener) {
         rootView?.let {
-            (it.recyclerExercise.adapter as ExerciseAdapter).setAdapterClickListener(listener)
+            (it.findViewById<RecyclerView>(R.id.recyclerExercise).adapter as ExerciseAdapter).setAdapterClickListener(
+                listener
+            )
         }
     }
 
     override fun setSessionPlayClickListener(listener: OnSessionClickListener) {
         rootView?.let {
-            it.exercisePlay.setOnClickListener {
+            it.findViewById<AppCompatImageView>(R.id.exercisePlay).setOnClickListener {
                 listener.onSessionPlayClick()
             }
         }
@@ -66,20 +72,22 @@ class SessionViewImpl : SessionView {
 
             it.context.showImageByUrl(
                 Uri.parse(getPublicStorageUrl(it.context, session.imgUrl)),
-                it.imgExercise
+                it.findViewById(R.id.imgExercise)
             )
-            it.txtWorkoutTitle.text = session.title
-            it.txtInstructorName.text =
+            it.findViewById<TextView>(R.id.txtWorkoutTitle).text = session.title
+            it.findViewById<TextView>(R.id.txtInstructorName).text =
                 "${it.context.getString(R.string.title_by)} ${session.author}"
-            it.dayId.text =
+            it.findViewById<TextView>(R.id.dayId).text =
                 "${it.context.getString(R.string.title_day)} ${session.day} / ${session.totalDays}"
-            it.txtLevelSubTitle.text = session.level
-            it.txtDurationTime.text =
+            it.findViewById<TextView>(R.id.txtLevelSubTitle).text = session.level
+            it.findViewById<TextView>(R.id.txtDurationTime).text =
                 "${session.duration} ${it.context.getString(R.string.title_min)}"
-            it.txtIntensity.rating = session.intensity
-            it.txtCalories.text = "${session.calories}"
+            it.findViewById<AppCompatRatingBar>(R.id.txtIntensity).rating = session.intensity
+            it.findViewById<TextView>(R.id.txtCalories).text = "${session.calories}"
 
-            (it.recyclerExercise.adapter as ExerciseAdapter).updateList(session.exerciseList)
+            (it.findViewById<RecyclerView>(R.id.recyclerExercise).adapter as ExerciseAdapter).updateList(
+                session.exerciseList
+            )
         }
     }
 }

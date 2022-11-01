@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import fit.asta.health.R
 import fit.asta.health.old_course.details.adapter.ModulesAdapter
 import fit.asta.health.old_course.details.data.SessionData
-import kotlinx.android.synthetic.main.sessions_fragment.*
 
 
 /**
@@ -49,13 +49,17 @@ class SessionsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        arguments?.let {
+        arguments?.let { arg ->
 
-            courseId = it.getString(ARG_COURSE_ID)!!
-            sessions = it.getParcelableArrayList(ARG_MODULES)
-            courseModulesRcView.layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            courseModulesRcView.adapter = ModulesAdapter(requireContext(), courseId, sessions!!)
+            courseId = arg.getString(ARG_COURSE_ID)!!
+            sessions = arg.getParcelableArrayList(ARG_MODULES)
+
+            view?.let {
+                val courseModulesRcView = it.findViewById<RecyclerView>(R.id.courseModulesRcView)
+                courseModulesRcView.layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                courseModulesRcView.adapter = ModulesAdapter(requireContext(), courseId, sessions!!)
+            }
         }
     }
 

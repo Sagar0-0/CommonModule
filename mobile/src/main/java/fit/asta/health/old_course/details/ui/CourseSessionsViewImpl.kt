@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import fit.asta.health.R
 import fit.asta.health.old_course.details.adapter.CourseDetailsTabType
 import fit.asta.health.old_course.details.adapter.ModulesAdapter
 import fit.asta.health.old_course.details.data.SessionData
-import kotlinx.android.synthetic.main.sessions_fragment.view.*
 
 
 class CourseSessionsViewImpl : CourseSessionsView {
@@ -43,9 +43,10 @@ class CourseSessionsViewImpl : CourseSessionsView {
 
     private fun setAdapter(list: List<SessionData>) {
         rootView?.let {
-            it.courseModulesRcView.layoutManager = LinearLayoutManager(it.context)
-            it.courseModulesRcView.adapter = ModulesAdapter(it.context, "", list)
-            //(it.courseModulesRcView.adapter as ModulesAdapter).updateList(list)
+            val courseModulesRcView = it.findViewById<RecyclerView>(R.id.courseModulesRcView)
+            courseModulesRcView.layoutManager = LinearLayoutManager(it.context)
+            courseModulesRcView.adapter = ModulesAdapter(it.context, "", list)
+            //(courseModulesRcView.adapter as ModulesAdapter).updateList(list)
         }
     }
 }

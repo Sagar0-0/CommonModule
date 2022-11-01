@@ -4,10 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import fit.asta.health.R
 import fit.asta.health.utils.GenericAdapter
-import kotlinx.android.synthetic.main.course_point.view.*
 
 
 class PointsAdapter(val context: Context, items: List<String>) :
@@ -17,7 +17,7 @@ class PointsAdapter(val context: Context, items: List<String>) :
 
         fun setData(item: String) {
 
-            itemView.txtCourseBullet.text = item
+            itemView.findViewById<AppCompatTextView>(R.id.txtCourseBullet).text = item
         }
     }
 

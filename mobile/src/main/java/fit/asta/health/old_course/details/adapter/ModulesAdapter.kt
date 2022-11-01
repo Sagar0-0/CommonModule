@@ -5,13 +5,16 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatRatingBar
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import fit.asta.health.ActivityLauncher
 import fit.asta.health.R
 import fit.asta.health.old_course.details.data.SessionData
 import fit.asta.health.utils.GenericAdapter
-import kotlinx.android.synthetic.main.course_module.view.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -27,7 +30,7 @@ class ModulesAdapter(val context: Context, val courseId: String, items: List<Ses
 
         init {
 
-            itemView.btnModulePlay?.setOnClickListener {
+            itemView.findViewById<MaterialButton>(R.id.btnModulePlay)?.setOnClickListener {
 
                 launcher.launchVideoPlayerActivity(context, courseId, currentItem?.uid!!)
             }
@@ -41,29 +44,34 @@ class ModulesAdapter(val context: Context, val courseId: String, items: List<Ses
             /*val url = getPublicStorageUrl(context, metaData?.imgLoc + item.url + ".jpg")
             context.showCircleImageByUrl(Uri.parse(url), itemView.img_course_expert)*/
 
-            itemView.txtModuleStatusTitle.visibility = View.VISIBLE
-            itemView.imgModuleStatus.visibility = View.VISIBLE
+            itemView.findViewById<AppCompatTextView>(R.id.txtModuleStatusTitle).visibility =
+                View.VISIBLE
+            itemView.findViewById<AppCompatImageView>(R.id.imgModuleStatus).visibility =
+                View.VISIBLE
 
-            itemView.txtModuleTitle.text = item.title
-            itemView.txtModuleSubtitle.text = item.subTitle
-            itemView.txtModuleLevel.text = item.level
-            itemView.txtModuleDuration.text =
+            itemView.findViewById<AppCompatTextView>(R.id.txtModuleTitle).text = item.title
+            itemView.findViewById<AppCompatTextView>(R.id.txtModuleSubtitle).text = item.subTitle
+            itemView.findViewById<AppCompatTextView>(R.id.txtModuleLevel).text = item.level
+            itemView.findViewById<AppCompatTextView>(R.id.txtModuleDuration).text =
                 "${item.duration} ${context.resources.getString(R.string.title_min)}"
-            itemView.ragingModuleIntensity.rating = item.intensity
-            itemView.txtModuleCalories.text = item.calories.toString()
-            itemView.txtModuleDesc.text = item.desc
+            itemView.findViewById<AppCompatRatingBar>(R.id.ragingModuleIntensity).rating =
+                item.intensity
+            itemView.findViewById<AppCompatTextView>(R.id.txtModuleCalories).text =
+                item.calories.toString()
+            itemView.findViewById<AppCompatTextView>(R.id.txtModuleDesc).text = item.desc
 
             if (item.precautions.isNotEmpty()) {
 
-                itemView.txtModulePrecautions.visibility = View.VISIBLE
-                itemView.rcvPrecautions.visibility = View.VISIBLE
-                itemView.rcvPrecautions.layoutManager =
+                itemView.findViewById<AppCompatTextView>(R.id.txtModulePrecautions).visibility =
+                    View.VISIBLE
+                val rcvPrecautions = itemView.findViewById<RecyclerView>(R.id.rcvPrecautions)
+                rcvPrecautions.visibility = View.VISIBLE
+                rcvPrecautions.layoutManager =
                     LinearLayoutManager(itemView.context, LinearLayoutManager.VERTICAL, false)
-                itemView.rcvPrecautions.adapter =
-                    PointsAdapter(
-                        itemView.context,
-                        item.precautions
-                    )
+                rcvPrecautions.adapter = PointsAdapter(
+                    itemView.context,
+                    item.precautions
+                )
             }
         }
     }

@@ -5,7 +5,12 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.widget.ContentLoadingProgressBar
 import androidx.fragment.app.FragmentManager
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.appbar.CollapsingToolbarLayout
+import com.google.android.material.tabs.TabLayout
 import fit.asta.health.R
 import fit.asta.health.old_course.details.adapter.CourseDetailsTabType
 import fit.asta.health.old_course.details.data.CourseDetailsData
@@ -16,7 +21,6 @@ import fit.asta.health.old_course.details.ui.SessionsFragment
 import fit.asta.health.utils.getPublicStorageUrl
 import fit.asta.health.utils.mapStringKey
 import fit.asta.health.utils.showImageByUrl
-import kotlinx.android.synthetic.main.course_activity.view.*
 
 
 class CourseDetailsViewImpl : CourseDetailsView {
@@ -42,7 +46,7 @@ class CourseDetailsViewImpl : CourseDetailsView {
     override fun changeState(state: CourseDetailsView.State) {
         when (state) {
             is CourseDetailsView.State.LoadCourseDetails -> loadCourseDetails(state.course)
-            else -> { }
+            else -> {}
         }
     }
 
@@ -59,15 +63,17 @@ class CourseDetailsViewImpl : CourseDetailsView {
     private fun updateHeader(header: CourseHeaderData) {
 
         rootView?.let {
-            it.progressCourse.hide()
+            it.findViewById<ContentLoadingProgressBar>(R.id.progressCourse).hide()
             it.context.showImageByUrl(
                 Uri.parse(getPublicStorageUrl(it.context, header.url)),
-                it.courseImage
+                it.findViewById(R.id.courseImage)
             )
-            it.collapsingCourseLayout.title = header.title
+            it.findViewById<CollapsingToolbarLayout>(R.id.collapsingCourseLayout).title =
+                header.title
             //it.txt_course_subtitle.text = header.subTitle
-            it.txtLevelSubTitle.text = it.context.mapStringKey(header.level)
-            it.txtDurationTime.text = header.duration
+            it.findViewById<TextView>(R.id.txtLevelSubTitle).text =
+                it.context.mapStringKey(header.level)
+            it.findViewById<TextView>(R.id.txtDurationTime).text = header.duration
 
             //courseId = course.uid?:""
             /*val max = course.modules?.size!!
@@ -90,8 +96,9 @@ class CourseDetailsViewImpl : CourseDetailsView {
                 OverviewFragment.newInstance(course.overview),
                 it.context.getString(R.string.tab_overview)
             )
-            it.courseViewPager.adapter = adapter
-            it.courseTabs.setupWithViewPager(it.courseViewPager)
+            val courseViewPager = it.findViewById<ViewPager>(R.id.courseViewPager)
+            courseViewPager.adapter = adapter
+            it.findViewById<TabLayout>(R.id.courseTabs).setupWithViewPager(courseViewPager)
         }
     }
 }

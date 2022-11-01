@@ -7,12 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textview.MaterialTextView
 import fit.asta.health.R
 import fit.asta.health.old_course.details.adapter.ExpertsAdapter
 import fit.asta.health.old_course.details.adapter.PointsAdapter
 import fit.asta.health.old_course.details.data.OverViewData
 import fit.asta.health.utils.mapStringKey
-import kotlinx.android.synthetic.main.course_overview.*
 
 
 /**
@@ -57,31 +58,45 @@ class OverviewFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun updateUIData() {
 
-        overViewData?.let {
+        overViewData?.let { ovd ->
             //Introduction
-            courseIntroTitle.text = it.intro.title
-            courseIntroDesc.text = it.intro.desc
-            courseKeyPointsTitle.text = it.keyPoints.title
-            courseKeyPointsRcView.layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            courseKeyPointsRcView.adapter = PointsAdapter(requireContext(), it.keyPoints.points)
+            view?.let {
+                it.findViewById<MaterialTextView>(R.id.courseIntroTitle).text = ovd.intro.title
+                it.findViewById<MaterialTextView>(R.id.courseIntroDesc).text = ovd.intro.desc
+                it.findViewById<MaterialTextView>(R.id.courseKeyPointsTitle).text =
+                    ovd.keyPoints.title
 
-            //Audience
-            courseLevel.text = requireContext().mapStringKey(it.audience.level)
-            courseAgeGroup.text =
-                "${it.audience.ageGroup.from} - ${it.audience.ageGroup.to}"
-            rcvCoursePreRequisites.layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            rcvCoursePreRequisites.adapter =
-                PointsAdapter(requireContext(), it.audience.preRequisites)
-            rcvCourseNotFor.layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            rcvCourseNotFor.adapter = PointsAdapter(requireContext(), it.audience.notFor)
+                val courseKeyPointsRcView =
+                    it.findViewById<RecyclerView>(R.id.courseKeyPointsRcView)
+                courseKeyPointsRcView.layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                courseKeyPointsRcView.adapter =
+                    PointsAdapter(requireContext(), ovd.keyPoints.points)
 
-            //Experts
-            courseExpertsRcView.layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            courseExpertsRcView.adapter = ExpertsAdapter(requireContext(), it.experts)
+                //Audience
+                it.findViewById<MaterialTextView>(R.id.courseLevel).text =
+                    requireContext().mapStringKey(ovd.audience.level)
+                it.findViewById<MaterialTextView>(R.id.courseAgeGroup).text =
+                    "${ovd.audience.ageGroup.from} - ${ovd.audience.ageGroup.to}"
+
+                val rcvCoursePreRequisites =
+                    it.findViewById<RecyclerView>(R.id.rcvCoursePreRequisites)
+                rcvCoursePreRequisites.layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                rcvCoursePreRequisites.adapter =
+                    PointsAdapter(requireContext(), ovd.audience.preRequisites)
+
+                val rcvCourseNotFor = it.findViewById<RecyclerView>(R.id.rcvCourseNotFor)
+                rcvCourseNotFor.layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                rcvCourseNotFor.adapter = PointsAdapter(requireContext(), ovd.audience.notFor)
+
+                //Experts
+                val courseExpertsRcView = it.findViewById<RecyclerView>(R.id.courseExpertsRcView)
+                courseExpertsRcView.layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                courseExpertsRcView.adapter = ExpertsAdapter(requireContext(), ovd.experts)
+            }
         }
     }
 

@@ -6,13 +6,13 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import fit.asta.health.R
 import fit.asta.health.old_course.details.data.ExpertData
 import fit.asta.health.utils.GenericAdapter
 import fit.asta.health.utils.getPublicStorageUrl
 import fit.asta.health.utils.showCircleImageByUrl
-import kotlinx.android.synthetic.main.course_expert.view.*
 
 
 class ExpertsAdapter(val context: Context, items: List<ExpertData>) :
@@ -24,14 +24,19 @@ class ExpertsAdapter(val context: Context, items: List<ExpertData>) :
         fun setData(expert: ExpertData) {
 
             val url = getPublicStorageUrl(context, expert.url)
-            context.showCircleImageByUrl(Uri.parse(url), itemView.imgCourseExpert)
+            context.showCircleImageByUrl(
+                Uri.parse(url),
+                itemView.findViewById(R.id.imgCourseExpert)
+            )
 
-            itemView.txtCourseExpertName.text = expert.name
-            itemView.txtCourseExpertExp.text =
+            itemView.findViewById<AppCompatTextView>(R.id.txtCourseExpertName).text = expert.name
+            itemView.findViewById<AppCompatTextView>(R.id.txtCourseExpertExp).text =
                 "${expert.expYears} ${context.resources.getString(R.string.title_yrs_of_exp)}"
-            itemView.txtCourseExpertPfn.text = expert.profession
-            itemView.txtCourseExpertQlf.text = expert.qualification
-            itemView.txtCourseAboutExpert.text = expert.about
+            itemView.findViewById<AppCompatTextView>(R.id.txtCourseExpertPfn).text =
+                expert.profession
+            itemView.findViewById<AppCompatTextView>(R.id.txtCourseExpertQlf).text =
+                expert.qualification
+            itemView.findViewById<AppCompatTextView>(R.id.txtCourseAboutExpert).text = expert.about
         }
     }
 

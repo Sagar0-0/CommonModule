@@ -1,11 +1,13 @@
 package fit.asta.health.old_course.session.adapter.viewholder
 
 import android.view.View
+import androidx.appcompat.widget.AppCompatTextView
+import com.google.android.material.card.MaterialCardView
 import fit.asta.health.R
 import fit.asta.health.common.BaseViewHolder
 import fit.asta.health.old_course.session.adapter.listeners.OnExerciseClickListener
 import fit.asta.health.old_course.session.data.Exercise
-import kotlinx.android.synthetic.main.course_session_exercise_card.view.*
+
 
 class ExerciseViewHolder(
     itemView: View,
@@ -15,21 +17,22 @@ class ExerciseViewHolder(
     private var currentItem: Exercise? = null
 
     init {
-        itemView.exercise_frame?.setOnClickListener(this)
+        itemView.findViewById<MaterialCardView>(R.id.exercise_frame)?.setOnClickListener(this)
     }
 
     override fun bindData(content: Exercise) {
 
         currentItem = content
 
-        itemView.txtExerciseTitle.text = content.title
-        itemView.txtExerciseSubTitle.text = content.subTitle
-        itemView.txtExerciseDuration.text = secToMin(content.duration)
+        itemView.findViewById<AppCompatTextView>(R.id.txtExerciseTitle).text = content.title
+        itemView.findViewById<AppCompatTextView>(R.id.txtExerciseSubTitle).text = content.subTitle
+        itemView.findViewById<AppCompatTextView>(R.id.txtExerciseDuration).text =
+            secToMin(content.duration)
     }
 
     override fun onClick(view: View) {
         when (view) {
-            itemView.exercise_frame -> {
+            itemView.findViewById<MaterialCardView>(R.id.exercise_frame) -> {
                 onClickListener?.onExerciseClick(layoutPosition)
             }
         }

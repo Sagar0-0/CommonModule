@@ -2,12 +2,16 @@ package fit.asta.health.old_course.listing.adapter.viewholder
 
 import android.net.Uri
 import android.view.View
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
+import com.google.android.material.card.MaterialCardView
+import fit.asta.health.R
 import fit.asta.health.common.BaseViewHolder
 import fit.asta.health.old_course.listing.adapter.listeners.OnCourseClickListener
 import fit.asta.health.old_course.listing.data.CourseIndexData
 import fit.asta.health.utils.getPublicStorageUrl
 import fit.asta.health.utils.showImageByUrl
-import kotlinx.android.synthetic.main.course_list_card.view.*
+
 
 class HeaderViewHolder(
     itemView: View,
@@ -17,43 +21,43 @@ class HeaderViewHolder(
     private var currentItem: CourseIndexData? = null
 
     init {
-        itemView.courseFrame?.setOnClickListener(this)
-        itemView.imgPlay?.setOnClickListener(this)
-        itemView.imgShareAsana?.setOnClickListener(this)
-        itemView.imgReminderAsana?.setOnClickListener(this)
-        itemView.imgFavouiteAsana?.setOnClickListener(this)
+        itemView.findViewById<MaterialCardView>(R.id.courseFrame)?.setOnClickListener(this)
+        itemView.findViewById<AppCompatImageView>(R.id.imgPlay)?.setOnClickListener(this)
+        itemView.findViewById<AppCompatImageView>(R.id.imgShareAsana)?.setOnClickListener(this)
+        itemView.findViewById<AppCompatImageView>(R.id.imgReminderAsana)?.setOnClickListener(this)
+        itemView.findViewById<AppCompatImageView>(R.id.imgFavouiteAsana)?.setOnClickListener(this)
     }
 
     override fun bindData(content: CourseIndexData) {
 
         currentItem = content
 
-        itemView.courseTitle.text = content.title
-        itemView.courseSubTitle.text = content.subTitle
-        itemView.courseLevel.text = content.audienceLevel
-        itemView.txtDurationAsana.text = content.duration
+        itemView.findViewById<TextView>(R.id.courseTitle).text = content.title
+        itemView.findViewById<TextView>(R.id.courseSubTitle).text = content.subTitle
+        itemView.findViewById<TextView>(R.id.courseLevel).text = content.audienceLevel
+        itemView.findViewById<TextView>(R.id.txtDurationAsana).text = content.duration
         itemView.context.showImageByUrl(
             Uri.parse(getPublicStorageUrl(itemView.context, content.url)),
-            itemView.courseImage
+            itemView.findViewById(R.id.courseImage)
         )
 
     }
 
     override fun onClick(view: View) {
         when (view) {
-            itemView.courseFrame -> {
+            itemView.findViewById<MaterialCardView>(R.id.courseFrame) -> {
                 onClickListener?.onCourseClick(layoutPosition)
             }
-            itemView.imgPlay -> {
+            itemView.findViewById<AppCompatImageView>(R.id.imgPlay) -> {
                 onClickListener?.onPlayClick(layoutPosition)
             }
-            itemView.imgShareAsana -> {
+            itemView.findViewById<AppCompatImageView>(R.id.imgShareAsana) -> {
                 onClickListener?.onShareClick(layoutPosition)
             }
-            itemView.imgReminderAsana -> {
+            itemView.findViewById<AppCompatImageView>(R.id.imgReminderAsana) -> {
                 onClickListener?.onAlarmClick(layoutPosition)
             }
-            itemView.imgFavouiteAsana -> {
+            itemView.findViewById<AppCompatImageView>(R.id.imgFavouiteAsana) -> {
                 onClickListener?.onFavoriteClick(layoutPosition)
             }
         }
