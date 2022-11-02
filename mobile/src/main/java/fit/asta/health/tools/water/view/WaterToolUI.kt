@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,7 +37,11 @@ fun CardProgress() {
             modifier = Modifier
                 .padding(16.dp)
         ) {
-            CircularProgressIndicator(progress = 0.75f)
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .size(200.dp,200.dp),
+                    progress = 0.75f)
+                Text(text = "Hello")
         }
 
     }
