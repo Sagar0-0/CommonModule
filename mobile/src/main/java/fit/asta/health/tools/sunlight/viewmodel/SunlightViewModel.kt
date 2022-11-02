@@ -20,6 +20,7 @@ class SunlightViewModel
     private val sunlightToolRepo: SunlightToolRepo,
 ) : ViewModel() {
 
+
     private val mutableState = MutableStateFlow<SunlightState>(SunlightState.Loading)
     val state = mutableState.asStateFlow()
 
@@ -37,4 +38,6 @@ class SunlightViewModel
                 }
         }
     }
+
+
 }
