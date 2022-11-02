@@ -158,7 +158,7 @@ fun DemoPreview() {
         CircularSlider(
             modifier = Modifier.size(200.dp),
         ) {
-            Log.d("progress", it.toString())
+            Log.d("PROGRESS", (it * 100).toString())
         }
     }
 }
@@ -168,4 +168,3 @@ fun DemoPreview() {
 fun NewSlider() {
 
 }
-

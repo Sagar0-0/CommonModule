@@ -26,12 +26,6 @@ fun PracticeExpandedGridView() {
             cardValue = "40 SPF"),
         PracticeGridView(cardTitle = "Sunscreen",
             cardImg = R.drawable.ic_baseline_cancel_24,
-            cardValue = "40 SPF"),
-        PracticeGridView(cardTitle = "Sunscreen",
-            cardImg = R.drawable.ic_baseline_cancel_24,
-            cardValue = "40 SPF"),
-        PracticeGridView(cardTitle = "Sunscreen",
-            cardImg = R.drawable.ic_baseline_cancel_24,
             cardValue = "40 SPF"))
 
 

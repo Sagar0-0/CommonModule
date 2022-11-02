@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.SheetCollapsed
+import fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.currentFraction
 import fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.practice.PracticeScreenSmall
 import fit.asta.health.tools.sunlight.view.components.bottomsheet.expanded.SheetExpanded
 import fit.asta.health.tools.sunlight.view.components.bottomsheet.expanded.practice.PracticeLargeScreen
@@ -22,23 +23,25 @@ fun HomeScreen() {
         rememberBottomSheetScaffoldState(bottomSheetState = rememberBottomSheetState(
             BottomSheetValue.Collapsed))
 
+    val radius = (30 * scaffoldState.currentFraction).dp
 
     BottomSheetScaffold(modifier = Modifier.fillMaxSize(),
         scaffoldState = scaffoldState,
-        sheetShape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
+        sheetShape = RoundedCornerShape(topStart = radius, topEnd = radius),
         sheetContent = {
-            SheetContent {
-                if (scaffoldState.bottomSheetState.isCollapsed) {
-                    SheetCollapsed {
-                        PracticeScreenSmall()
-                    }
-                } else {
-                    SheetExpanded {
-                        PracticeLargeScreen()
-                    }
+
+            if (scaffoldState.bottomSheetState.isCollapsed) {
+                SheetCollapsed(isCollapsed = scaffoldState.bottomSheetState.isCollapsed) {
+                    PracticeScreenSmall()
+                }
+            } else {
+                SheetExpanded {
+                    PracticeLargeScreen()
                 }
             }
-        }, sheetPeekHeight = 150.dp) {
+
+        },
+        sheetPeekHeight = 250.dp) {
         Text(text = "Hello World")
     }
 }

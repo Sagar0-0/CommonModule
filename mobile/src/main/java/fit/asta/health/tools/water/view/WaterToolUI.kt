@@ -31,17 +31,10 @@ fun CardProgress() {
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(16.dp))
-    {
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-        ) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .size(200.dp,200.dp),
-                    progress = 0.75f)
-                Text(text = "Hello")
+            .padding(16.dp)) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            CircularProgressIndicator(modifier = Modifier.size(200.dp, 200.dp), progress = 0.75f)
+            Text(text = "Hello")
         }
 
     }
@@ -50,6 +43,7 @@ fun CardProgress() {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
+
     Surface(Modifier.fillMaxSize()) {
         CardProgress()
     }
