@@ -30,7 +30,7 @@ fun CircularSlider(
     cap: StrokeCap = StrokeCap.Round,
     touchStroke: Float = 50f,
     thumbColor: Color = Color.Blue,
-    progressColor: Color = Color.Black,
+    progressColor: Color = Color(0xff0277BD),
     backgroundColor: Color = Color.LightGray,
     debug: Boolean = false,
     onChange: ((Float) -> Unit)? = null,
