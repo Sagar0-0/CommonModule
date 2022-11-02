@@ -3,7 +3,6 @@ package fit.asta.health.tools.sunlight.view.components.bottomsheet.expanded
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -12,9 +11,7 @@ import androidx.compose.ui.Modifier
 fun SheetExpanded(
     content: @Composable BoxScope.() -> Unit,
 ) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(MaterialTheme.colors.primary)) {
+    Box(modifier = Modifier.background(MaterialTheme.colors.primary)) {
         content()
     }
 }
