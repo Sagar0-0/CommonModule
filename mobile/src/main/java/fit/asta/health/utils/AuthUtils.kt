@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.PhoneAuthProvider
 import fit.asta.health.MainActivity
-import fit.asta.health.auth.ui.AuthActivity
+import fit.asta.health.auth.view.AuthActivity
 
 
 const val RC_SIGN_IN: Int = 6789 // Any number you want

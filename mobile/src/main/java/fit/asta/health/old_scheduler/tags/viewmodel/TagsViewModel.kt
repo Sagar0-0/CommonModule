@@ -5,7 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import fit.asta.health.auth.data.UserRepository
+import fit.asta.health.auth.model.AuthRepo
 import fit.asta.health.old_scheduler.tags.TagsRepo
 import fit.asta.health.old_scheduler.tags.data.ScheduleTagData
 import fit.asta.health.old_scheduler.tags.ui.TagsObserver
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class TagsViewModel(
     private val tagsRepo: TagsRepo,
-    private val userRepo: UserRepository
+    private val userRepo: AuthRepo
 ) : ViewModel() {
 
     private val liveDataTags = MutableLiveData<TagsAction>()
@@ -22,7 +22,7 @@ class TagsViewModel(
 
     fun submitTag() {
         viewModelScope.launch {
-            userRepo.user()?.let { user ->
+            userRepo.getUser()?.let { user ->
                 val tag = dataStore.getMyTag(user.uid)
                 if (tag.uid.isEmpty()) {
                     tagsRepo.createTag(tag)
@@ -47,7 +47,7 @@ class TagsViewModel(
 
     fun fetchTag(tagId: String) {
         viewModelScope.launch {
-            userRepo.user()?.let { user ->
+            userRepo.getUser()?.let { user ->
                 tagsRepo.fetchTag(user.uid, tagId).collect {
                     dataStore.setMyTag(it)
                     liveDataTags.value = TagsAction.LoadTag(it)

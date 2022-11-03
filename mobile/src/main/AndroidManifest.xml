@@ -50,7 +50,6 @@
                 android:value="" />
         </activity>
         <activity android:name=".old_scheduler.tags.ui.TagsActivity" />
-        <activity android:name=".old_testimonials.ui.TestimonialsActivity" />
         <activity android:name=".old_course.session.ui.SessionActivity" />
         <activity android:name=".old_scheduler.ui.ScheduleActivity" />
         <activity
@@ -58,20 +57,13 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".settings.WebViewActivity" />
         <activity android:name=".old_article.ui.ArticleActivity" />
-        <activity android:name=".auth.ui.AuthActivity" />
+        <activity android:name=".auth.view.AuthActivity" />
         <activity android:name=".old_subscription.SubscriptionActivity" />
         <activity android:name=".BillingActivity" />
         <activity android:name=".common.multiselect.ui.MultiSelectActivity" />
         <activity
             android:name=".old_course.listing.ui.CourseListingActivity"
             android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".old_profile.ui.ProfileActivity"
-            android:configChanges="orientation|screenSize|screenLayout"
-            android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".settings.SettingsActivity"
-            android:parentActivityName=".old_profile.ui.ProfileActivity" />
 
         <meta-data
             android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"

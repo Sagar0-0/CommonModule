@@ -1,4 +1,4 @@
-package fit.asta.health.auth.data
+package fit.asta.health.auth.model.domain
 
 import android.net.Uri
 import android.os.Parcelable
@@ -15,3 +15,8 @@ data class User(
     val isNew: Boolean,
     val isCreated: Boolean
 ) : Parcelable
+
+data class UserCred(
+    val email: String? = "",
+    val password: String? = ""
+)
