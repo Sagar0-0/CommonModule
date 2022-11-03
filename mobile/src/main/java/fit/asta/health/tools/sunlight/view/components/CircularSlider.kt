@@ -1,13 +1,9 @@
 package fit.asta.health.tools.sunlight.view.components
 
-import android.util.Log
 import android.view.MotionEvent
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -16,8 +12,6 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import kotlin.math.*
 
 
@@ -149,22 +143,4 @@ fun distance(first: Offset, second: Offset): Float {
 
 fun Float.square(): Float {
     return this * this
-}
-
-@Preview
-@Composable
-fun DemoPreview() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularSlider(
-            modifier = Modifier.size(200.dp),
-        ) {
-            Log.d("PROGRESS", (it * 100).toString())
-        }
-    }
-}
-
-
-@Composable
-fun NewSlider() {
-
 }

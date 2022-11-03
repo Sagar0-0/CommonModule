@@ -5,8 +5,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fit.asta.health.tools.sunlight.view.components.SunlightLayout
 import fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.SheetCollapsed
 import fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.currentFraction
 import fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.practice.PracticeScreenSmall
@@ -14,7 +14,6 @@ import fit.asta.health.tools.sunlight.view.components.bottomsheet.expanded.Sheet
 import fit.asta.health.tools.sunlight.view.components.bottomsheet.expanded.practice.PracticeLargeScreen
 
 
-@Preview
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen() {
@@ -42,6 +41,6 @@ fun HomeScreen() {
 
         },
         sheetPeekHeight = 250.dp) {
-        Text(text = "Hello World")
+        SunlightLayout(it = it)
     }
 }
