@@ -14,7 +14,7 @@ fun BottomSheetButtonLayout() {
         Box(Modifier
             .fillMaxWidth()
             .weight(1f)) {
-            BottomSheetButton()
+            BottomSheetButton(title = "Schedule")
         }
 
         Spacer(modifier = Modifier.width(8.dp))
@@ -22,7 +22,7 @@ fun BottomSheetButtonLayout() {
         Box(Modifier
             .fillMaxWidth()
             .weight(1f)) {
-            BottomSheetButton()
+            BottomSheetButton(title = "Start")
         }
     }
 }

@@ -14,12 +14,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun BottomSheetButton() {
+fun BottomSheetButton(title: String) {
     Button(onClick = { /*TODO*/ },
         shape = RoundedCornerShape(5.dp),
         colors = ButtonDefaults.buttonColors(containerColor = Color(0xff43A047)),
         modifier = Modifier.fillMaxWidth()) {
-        Text(text = "SCHEDULE",
+        Text(text = title,
             color = Color.White,
             fontSize = 14.sp,
             lineHeight = 16.sp,
