@@ -11,7 +11,6 @@ import fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.curr
 import fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.practice.PracticeScreenSmall
 import fit.asta.health.tools.sunlight.view.components.bottomsheet.expanded.SheetExpanded
 import fit.asta.health.tools.sunlight.view.components.bottomsheet.expanded.practice.PracticeLargeScreen
-import fit.asta.health.tools.walking.view.WalkingTypeLayout
 
 
 @OptIn(ExperimentalMaterialApi::class)

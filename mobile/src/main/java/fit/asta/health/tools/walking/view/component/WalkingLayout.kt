@@ -1,4 +1,4 @@
-package fit.asta.health.tools.walking.view
+package fit.asta.health.tools.walking.view.component
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fit.asta.health.navigation.home.view.component.WeatherCardImage
 import fit.asta.health.tools.sunlight.view.components.CardSunBurn
-import fit.asta.health.tools.walking.view.component.HealthAndCalorieCard
 
 @Composable
 fun WalkingTypeLayout(it: PaddingValues) {

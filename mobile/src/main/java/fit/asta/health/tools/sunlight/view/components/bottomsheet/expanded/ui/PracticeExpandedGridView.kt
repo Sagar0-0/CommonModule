@@ -10,25 +10,7 @@ import fit.asta.health.R
 
 
 @Composable
-fun PracticeExpandedGridView() {
-
-    val cardList = listOf(PracticeGridView(cardTitle = "Sunscreen",
-        cardImg = R.drawable.ic_baseline_cancel_24,
-        cardValue = "40 SPF"),
-        PracticeGridView(cardTitle = "Sunscreen",
-            cardImg = R.drawable.ic_baseline_cancel_24,
-            cardValue = "40 SPF"),
-        PracticeGridView(cardTitle = "Sunscreen",
-            cardImg = R.drawable.ic_baseline_cancel_24,
-            cardValue = "40 SPF"),
-        PracticeGridView(cardTitle = "Sunscreen",
-            cardImg = R.drawable.ic_baseline_cancel_24,
-            cardValue = "40 SPF"),
-        PracticeGridView(cardTitle = "Sunscreen",
-            cardImg = R.drawable.ic_baseline_cancel_24,
-            cardValue = "40 SPF"))
-
-
+fun PracticeExpandedGridViewLayout(cardList: List<PracticeGridView>) {
     LazyVerticalGrid(columns = GridCells.Fixed(2),
         modifier = Modifier.padding(10.dp),
         userScrollEnabled = false) {
@@ -40,4 +22,24 @@ fun PracticeExpandedGridView() {
     }
 }
 
+@Composable
+fun PracticeExpandedGridView() {
 
+    val cardList = listOf(PracticeGridView(cardTitle = "Lifestyle",
+        cardImg = R.drawable.ic_baseline_cancel_24,
+        cardValue = "40 SPF"),
+        PracticeGridView(cardTitle = "Work",
+            cardImg = R.drawable.ic_baseline_cancel_24,
+            cardValue = "40 SPF"),
+        PracticeGridView(cardTitle = "Health",
+            cardImg = R.drawable.ic_baseline_cancel_24,
+            cardValue = "40 SPF"),
+        PracticeGridView(cardTitle = "Sunscreen",
+            cardImg = R.drawable.ic_baseline_cancel_24,
+            cardValue = "40 SPF"),
+        PracticeGridView(cardTitle = "Sunscreen",
+            cardImg = R.drawable.ic_baseline_cancel_24,
+            cardValue = "40 SPF"))
+
+    PracticeExpandedGridViewLayout(cardList = cardList)
+}
