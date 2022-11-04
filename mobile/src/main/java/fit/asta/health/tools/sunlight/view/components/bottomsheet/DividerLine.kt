@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun DividerLine() {
-    Divider(color = Color.White,
+    Divider(color = Color(0xff0277BD),
         modifier = Modifier
             .size(width = 80.dp, height = 8.dp)
             .clip(shape = RoundedCornerShape(4.dp)))

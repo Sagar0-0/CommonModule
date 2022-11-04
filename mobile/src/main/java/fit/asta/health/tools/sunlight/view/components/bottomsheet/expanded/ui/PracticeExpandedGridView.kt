@@ -11,6 +11,7 @@ import fit.asta.health.R
 
 @Composable
 fun PracticeExpandedGridViewLayout(cardList: List<PracticeGridView>) {
+
     LazyVerticalGrid(columns = GridCells.Fixed(2),
         modifier = Modifier.padding(10.dp),
         userScrollEnabled = false) {
@@ -20,6 +21,7 @@ fun PracticeExpandedGridViewLayout(cardList: List<PracticeGridView>) {
                 cardValue = cardList[it].cardValue)
         }
     }
+
 }
 
 @Composable
@@ -42,4 +44,5 @@ fun PracticeExpandedGridView() {
             cardValue = "40 SPF"))
 
     PracticeExpandedGridViewLayout(cardList = cardList)
+
 }
