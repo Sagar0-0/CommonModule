@@ -1,12 +1,12 @@
-package fit.asta.health.auth.model
+package fit.asta.health.firebase.model
 
 import android.app.Activity
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
-import fit.asta.health.auth.model.domain.User
-import fit.asta.health.auth.model.domain.UserCred
+import fit.asta.health.firebase.model.domain.User
+import fit.asta.health.firebase.model.domain.UserCred
 import fit.asta.health.utils.ResultState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -31,11 +31,11 @@ class AuthRepoImpl @Inject constructor(
         if (fireBaseUser != null) {
 
             return User(
-                fireBaseUser.uid,
-                fireBaseUser.displayName,
-                fireBaseUser.email,
-                fireBaseUser.phoneNumber,
-                fireBaseUser.photoUrl,
+                uid = fireBaseUser.uid,
+                name = fireBaseUser.displayName,
+                email = fireBaseUser.email,
+                phoneNumber = fireBaseUser.phoneNumber,
+                photoUrl = fireBaseUser.photoUrl,
                 isAuthenticated = true,
                 isNew = false,
                 isCreated = true
@@ -104,8 +104,8 @@ class AuthRepoImpl @Inject constructor(
         trySend(ResultState.Loading)
 
         firebaseAuth.createUserWithEmailAndPassword(
-            auth.email!!,
-            auth.password!!
+            auth.email,
+            auth.password
         ).addOnCompleteListener {
             if (it.isSuccessful) {
                 trySend(ResultState.Success("User created successfully"))
@@ -124,8 +124,8 @@ class AuthRepoImpl @Inject constructor(
         trySend(ResultState.Loading)
 
         firebaseAuth.signInWithEmailAndPassword(
-            auth.email!!,
-            auth.password!!
+            auth.email,
+            auth.password
         ).addOnSuccessListener {
             trySend(ResultState.Success("login Successfully"))
             Log.d("main", "current user id: ${firebaseAuth.currentUser?.uid}")

@@ -57,7 +57,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".settings.WebViewActivity" />
         <activity android:name=".old_article.ui.ArticleActivity" />
-        <activity android:name=".auth.view.AuthActivity" />
+        <activity android:name=".firebase.view.AuthActivity" />
         <activity android:name=".old_subscription.SubscriptionActivity" />
         <activity android:name=".BillingActivity" />
         <activity android:name=".common.multiselect.ui.MultiSelectActivity" />

@@ -3,7 +3,7 @@ package fit.asta.health.navigation.home.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.model.AuthRepo
+import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.navigation.home.intent.HomeState
 import fit.asta.health.navigation.home.model.ToolsHomeRepo
 import fit.asta.health.navigation.home.model.network.NetSelectedTools

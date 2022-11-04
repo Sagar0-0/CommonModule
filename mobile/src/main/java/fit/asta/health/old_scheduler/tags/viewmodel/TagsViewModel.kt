@@ -5,7 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import fit.asta.health.auth.model.AuthRepo
+import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.old_scheduler.tags.TagsRepo
 import fit.asta.health.old_scheduler.tags.data.ScheduleTagData
 import fit.asta.health.old_scheduler.tags.ui.TagsObserver

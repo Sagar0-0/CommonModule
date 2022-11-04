@@ -1,10 +1,9 @@
-package fit.asta.health.auth.viewmodel
+package fit.asta.health.firebase.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.intent.AuthState
-import fit.asta.health.auth.model.AuthRepo
+import fit.asta.health.firebase.model.AuthRepo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
