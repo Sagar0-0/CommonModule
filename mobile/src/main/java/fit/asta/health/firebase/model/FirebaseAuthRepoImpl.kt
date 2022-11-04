@@ -2,7 +2,6 @@ package fit.asta.health.firebase.model
 
 import android.app.Activity
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import fit.asta.health.firebase.model.domain.User
@@ -15,7 +14,8 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
-class AuthRepoImpl @Inject constructor(
+class FirebaseAuthRepoImpl @Inject constructor(
+    private val dataMapper: AuthDataMapper,
     private val firebaseAuth: FirebaseAuth
 ) : AuthRepo {
 
@@ -30,22 +30,13 @@ class AuthRepoImpl @Inject constructor(
         val fireBaseUser = firebaseAuth.currentUser
         if (fireBaseUser != null) {
 
-            return User(
-                uid = fireBaseUser.uid,
-                name = fireBaseUser.displayName,
-                email = fireBaseUser.email,
-                phoneNumber = fireBaseUser.phoneNumber,
-                photoUrl = fireBaseUser.photoUrl,
-                isAuthenticated = true,
-                isNew = false,
-                isCreated = true
-            )
+            return dataMapper.mapToUser(fireBaseUser)
         }
 
         return null
     }
 
-    override fun firebaseSignInWithGoogle(googleAuthCredential: AuthCredential): MutableLiveData<User>? {
+    override fun firebaseSignInWithGoogle(googleAuthCredential: AuthCredential): Flow<ResultState<User>> {
         TODO("Not yet implemented")
     }
 
@@ -100,7 +91,7 @@ class AuthRepoImpl @Inject constructor(
         }
     }
 
-    override fun createUser(auth: UserCred): Flow<ResultState<String>> = callbackFlow {
+    override fun createUser(auth: UserCred): Flow<ResultState<User>> = callbackFlow {
         trySend(ResultState.Loading)
 
         firebaseAuth.createUserWithEmailAndPassword(
@@ -108,7 +99,7 @@ class AuthRepoImpl @Inject constructor(
             auth.password
         ).addOnCompleteListener {
             if (it.isSuccessful) {
-                trySend(ResultState.Success("User created successfully"))
+                trySend(ResultState.Success(dataMapper.mapToUser(it.result.user!!)))
                 Log.d("main", "current user id: ${firebaseAuth.currentUser?.uid}")
             }
         }.addOnFailureListener {
@@ -120,20 +111,25 @@ class AuthRepoImpl @Inject constructor(
         }
     }
 
-    override fun loginUser(auth: UserCred): Flow<ResultState<String>> = callbackFlow {
+    override fun loginUser(auth: UserCred): Flow<ResultState<User>> = callbackFlow {
         trySend(ResultState.Loading)
 
         firebaseAuth.signInWithEmailAndPassword(
             auth.email,
             auth.password
         ).addOnSuccessListener {
-            trySend(ResultState.Success("login Successfully"))
+            trySend(ResultState.Success(dataMapper.mapToUser(it.user!!)))
             Log.d("main", "current user id: ${firebaseAuth.currentUser?.uid}")
         }.addOnFailureListener {
             trySend(ResultState.Failure(it))
         }
+
         awaitClose {
             close()
         }
+    }
+
+    override fun logout() {
+        TODO("Not yet implemented")
     }
 }
