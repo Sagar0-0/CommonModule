@@ -19,8 +19,13 @@ import androidx.compose.ui.unit.sp
 import fit.asta.health.R
 
 @Composable
-fun WeatherCardImage(temperature: String,location:String,date: String) {
-    Box(modifier = Modifier
+fun WeatherCardImage(
+    temperature: String,
+    location: String,
+    date: String,
+    modifier: Modifier = Modifier,
+) {
+    Box(modifier = modifier
         .fillMaxWidth()
         .height(151.dp)
         .clip(RoundedCornerShape(10.dp))

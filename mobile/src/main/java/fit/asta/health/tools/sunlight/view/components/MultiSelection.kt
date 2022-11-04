@@ -56,6 +56,7 @@ fun ItemDisplay(
     itemData.bgColor?.let {
         Card(modifier = Modifier
             .fillMaxWidth()
+            .padding(horizontal = 16.dp)
             .clickable {
 
                 if (!itemData.isSelected) {
@@ -64,23 +65,31 @@ fun ItemDisplay(
 
             }, backgroundColor = it, shape = RoundedCornerShape(8.dp)) {
 
-            Row(verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.padding(16.dp)) {
-                Text(text = itemData.display,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    lineHeight = 19.6.sp,
-                    color = Color.White)
+            CardComponents(itemData, demoSelected)
 
-                if (demoSelected) {
-                    Icon(imageVector = Icons.Default.Check,
-                        contentDescription = "Selected",
-                        tint = Color.Green,
-                        modifier = Modifier.size(20.dp))
-                }
-            }
+        }
+    }
+}
 
+@Composable
+private fun CardComponents(
+    itemData: ItemData,
+    demoSelected: Boolean,
+) {
+    Row(verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.padding(16.dp)) {
+        Text(text = itemData.display,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
+            lineHeight = 19.6.sp,
+            color = Color.White)
+
+        if (demoSelected) {
+            Icon(imageVector = Icons.Default.Check,
+                contentDescription = "Selected",
+                tint = Color.Green,
+                modifier = Modifier.size(20.dp))
         }
     }
 }
@@ -90,33 +99,43 @@ fun ItemList(
     list: MutableList<ItemData>,
     rowTitle: String,
     content: (@Composable () -> Unit)? = null,
+    it: PaddingValues? = null,
 ) {
 
 
     val itemDataState = remember { ItemDataState(list) }
 
 
-    Column(Modifier
-        .fillMaxWidth()
-        .padding(16.dp)
-        .verticalScroll(rememberScrollState())) {
-        Row(Modifier.fillMaxWidth()) {
-            Text(text = rowTitle,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                lineHeight = 28.sp,
-                color = Color.White)
-        }
+    it?.let { it1 ->
+        Modifier
+            .fillMaxWidth()
+            .padding(it1)
+            .verticalScroll(rememberScrollState())
+    }?.let { it2 ->
+        Column(it2) {
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        itemDataState.list.forEachIndexed { _, itemData ->
-            ItemDisplay(itemData = itemData, onCheckChanged = itemDataState::onItemSelected)
             Spacer(modifier = Modifier.height(16.dp))
+
+            Row(Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)) {
+                Text(text = rowTitle,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    lineHeight = 28.sp,
+                    color = Color.Black)
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            itemDataState.list.forEachIndexed { _, itemData ->
+                ItemDisplay(itemData = itemData, onCheckChanged = itemDataState::onItemSelected)
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            content?.let { it() }
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        content?.let { it() }
     }
 }

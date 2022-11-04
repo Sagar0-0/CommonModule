@@ -60,7 +60,7 @@ fun TimingMeter() {
         Spacer(modifier = Modifier.width(24.dp))
         TimingMeterLayout(title = "50 min", titleValue = "Vitamin D\nDaily Goal")
         Spacer(modifier = Modifier.width(24.dp))
-        TimingMeterLayout(title = "30 min", titleValue = "Sunburn D\nTime Remaining")
+        TimingMeterLayout(title = "30 min", titleValue = "Sunburn\nTime Remaining")
 
     }
 }
@@ -74,9 +74,9 @@ fun TimingMeterLayout(title: String, titleValue: String) {
             fontWeight = FontWeight.Bold,
             lineHeight = 19.6.sp,
             color = Color.White)
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(10.dp))
         Text(text = titleValue,
-            fontSize = 14.sp,
+            fontSize = 12.sp,
             fontWeight = FontWeight.Normal,
             lineHeight = 19.6.sp,
             textAlign = TextAlign.Center)
