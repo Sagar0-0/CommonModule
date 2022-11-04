@@ -32,7 +32,7 @@ fun WalkingToolHomeScreen() {
                         contentDescription = null,
                         Modifier.size(24.dp))
                 }
-                Text(text = "Sunlight",
+                Text(text = "Step Counter",
                     fontSize = 20.sp,
                     color = Color.Black,
                     textAlign = TextAlign.Center)
