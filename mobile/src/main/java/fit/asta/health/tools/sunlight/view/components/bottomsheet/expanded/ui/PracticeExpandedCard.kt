@@ -24,7 +24,7 @@ fun PracticeExpandedCard(
     modifier: Modifier = Modifier,
 ) {
 
-    Card(modifier = Modifier
+    Card(modifier = modifier
         .blur(radius = 5.dp)
         .padding(8.dp),
         shape = RoundedCornerShape(8.dp),

@@ -14,62 +14,63 @@ import androidx.compose.ui.unit.sp
 import fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.ui.DividerLineCenter
 import fit.asta.health.tools.sunlight.view.components.bottomsheet.expanded.ui.AddMoreWater
 
+
+@Preview
 @Composable
 fun WaterBottomSheetContent() {
 
-    Box {
-        Column(Modifier
-            .fillMaxWidth()
-            .height(400.dp)
-            .verticalScroll(rememberScrollState())) {
 
-            Spacer(modifier = Modifier.height(16.dp))
+    Column(Modifier
+        .fillMaxWidth()
+        .height(400.dp)
+        .verticalScroll(rememberScrollState())) {
 
-            DividerLineCenter()
+        Spacer(modifier = Modifier.height(16.dp))
 
-            Spacer(modifier = Modifier.height(32.dp))
+        DividerLineCenter()
 
-            androidx.compose.material3.Text("BEVERAGES",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                lineHeight = 22.4.sp,
-                color = Color.White)
+        Spacer(modifier = Modifier.height(32.dp))
 
-            Spacer(modifier = Modifier.height(16.dp))
+        androidx.compose.material3.Text("BEVERAGES",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+            lineHeight = 22.4.sp,
+            color = Color.White)
 
-            BeveragesLayout()
+        Spacer(modifier = Modifier.height(16.dp))
 
-            Spacer(modifier = Modifier.height(16.dp))
+        BeveragesLayout()
 
-            androidx.compose.material3.Text("QUANTITY",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                lineHeight = 22.4.sp,
-                color = Color.White)
+        Spacer(modifier = Modifier.height(16.dp))
 
-            Spacer(modifier = Modifier.height(16.dp))
+        androidx.compose.material3.Text("QUANTITY",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+            lineHeight = 22.4.sp,
+            color = Color.White)
 
-            QuantityLayout()
+        Spacer(modifier = Modifier.height(16.dp))
 
-            Spacer(modifier = Modifier.height(16.dp))
+        QuantityLayout()
 
-            androidx.compose.material3.Text("PRACTICE",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                lineHeight = 22.4.sp,
-                color = Color.White)
+        Spacer(modifier = Modifier.height(16.dp))
 
-            Spacer(modifier = Modifier.height(16.dp))
+        androidx.compose.material3.Text("PRACTICE",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+            lineHeight = 22.4.sp,
+            color = Color.White)
 
-            WaterListLayout()
+        Spacer(modifier = Modifier.height(16.dp))
 
-            Spacer(modifier = Modifier.height(16.dp))
+        WaterListLayout()
 
-            AddMoreWater()
+        Spacer(modifier = Modifier.height(16.dp))
 
-            Spacer(modifier = Modifier.height(16.dp))
+        AddMoreWater()
 
-        }
+        Spacer(modifier = Modifier.height(16.dp))
+
     }
 
 }
