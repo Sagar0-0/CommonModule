@@ -1,6 +1,5 @@
 package fit.asta.health.tools.walking.view
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material3.*
@@ -17,7 +16,6 @@ import fit.asta.health.R
 import fit.asta.health.tools.walking.view.component.WalkingBottomSheet
 
 @Preview
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WalkingToolHomeScreen() {
