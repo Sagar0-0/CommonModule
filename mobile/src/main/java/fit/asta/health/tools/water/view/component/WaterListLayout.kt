@@ -2,7 +2,6 @@ package fit.asta.health.tools.water.view.component
 
 import androidx.compose.runtime.Composable
 import fit.asta.health.R
-import fit.asta.health.tools.sunlight.view.components.bottomsheet.expanded.ui.PracticeExpandedGridViewLayout
 import fit.asta.health.tools.sunlight.view.components.bottomsheet.expanded.ui.PracticeGridView
 
 @Composable
@@ -17,5 +16,5 @@ fun WaterListLayout() {
             cardImg = R.drawable.ic_baseline_cancel_24,
             cardValue = "None"))
 
-    PracticeExpandedGridViewLayout(cardList = cardList)
+
 }

@@ -19,8 +19,9 @@ import fit.asta.health.tools.sunlight.view.components.CardSunBurn
 @Composable
 fun WaterHomeScreen() {
 
-    Column(Modifier
-        .fillMaxWidth()) {
+    Column(Modifier.fillMaxWidth()) {
+
+        Spacer(modifier = Modifier.height(32.dp))
 
         CardSunBurn()
 
@@ -28,7 +29,8 @@ fun WaterHomeScreen() {
 
         Row(Modifier
             .fillMaxWidth()
-            .padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+            .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically) {
             Icon(painter = painterResource(id = fit.asta.health.R.drawable.information_icon),
                 contentDescription = null,
                 modifier = Modifier.size(24.dp))
@@ -36,7 +38,8 @@ fun WaterHomeScreen() {
             Text(text = "Tie it into a routine. Drink a glass of water every time you brush your teeth, eat a meal or use the bathroom.",
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Thin, color = Color.White)
+                fontWeight = FontWeight.Thin,
+                color = Color.Black)
         }
     }
 
