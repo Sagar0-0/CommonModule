@@ -29,6 +29,7 @@ fun HealthAndCalorieCard() {
 
 @Composable
 fun HealthComponentLayout() {
+
     Row(Modifier
         .fillMaxWidth()
         .padding(vertical = 16.dp),
@@ -38,6 +39,7 @@ fun HealthComponentLayout() {
         HealthComponent(title = "Heart Rate", titleValue = "72 bpm")
         HealthComponent(title = "Blood Pressure", titleValue = "120/80 hhmg")
     }
+
 }
 
 
@@ -46,6 +48,7 @@ fun HealthComponent(
     title: String,
     titleValue: String,
 ) {
+
     Column(horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center) {
         Icon(painter = painterResource(id = R.drawable.ic_baseline_favorite_24),
@@ -59,4 +62,5 @@ fun HealthComponent(
             fontWeight = FontWeight.Bold,
             lineHeight = 19.6.sp)
     }
+
 }

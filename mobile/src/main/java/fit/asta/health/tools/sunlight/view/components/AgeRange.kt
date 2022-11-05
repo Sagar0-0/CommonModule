@@ -4,9 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import fit.asta.health.tools.view.components.ItemData
+import fit.asta.health.tools.view.components.ItemList
 
 @Composable
 fun AgeRange() {
+
     val itemListData = remember {
         mutableStateListOf(ItemData(1, "Pre Teen - 30 years", bgColor = Color(0x66959393)),
             ItemData(id = 2, display = "30 - 60 years", bgColor = Color(0x66959393)),
@@ -14,4 +17,5 @@ fun AgeRange() {
     }
 
     ItemList(list = itemListData, rowTitle = "Please select your age range")
+
 }

@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
-import fit.asta.health.tools.sunlight.view.components.bottomsheet.HomeScreen
+import fit.asta.health.tools.sunlight.view.components.SunlightBottomSheet
 
 @Preview
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -45,7 +45,7 @@ fun SunlightHomeScreen() {
             }
         }, elevation = 10.dp, backgroundColor = Color.White)
     }, content = {
-        HomeScreen()
+        SunlightBottomSheet(paddingValues = it)
     })
 
 }

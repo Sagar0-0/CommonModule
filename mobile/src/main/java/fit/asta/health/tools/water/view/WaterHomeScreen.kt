@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
-import fit.asta.health.tools.sunlight.view.components.bottomsheet.HomeScreen
+import fit.asta.health.tools.water.view.component.WaterBottomSheet
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -25,6 +25,7 @@ import fit.asta.health.tools.sunlight.view.components.bottomsheet.HomeScreen
 @Preview
 @Composable
 fun WaterHomeScreen() {
+
     Scaffold(topBar = {
         BottomNavigation(content = {
             Row(verticalAlignment = Alignment.CenterVertically,
@@ -48,6 +49,7 @@ fun WaterHomeScreen() {
             }
         }, elevation = 10.dp, backgroundColor = Color.White)
     }, content = {
-        HomeScreen()
+        WaterBottomSheet(paddingValues = it)
     })
+
 }

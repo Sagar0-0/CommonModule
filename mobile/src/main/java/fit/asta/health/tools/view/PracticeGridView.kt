@@ -1,4 +1,4 @@
-package fit.asta.health.tools.sunlight.view.components.bottomsheet.expanded.ui
+package fit.asta.health.tools.view
 
 data class PracticeGridView(
     val cardTitle: String,

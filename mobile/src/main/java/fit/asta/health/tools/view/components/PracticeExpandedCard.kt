@@ -1,4 +1,4 @@
-package fit.asta.health.tools.sunlight.view.components.bottomsheet.expanded.ui
+package fit.asta.health.tools.view.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,7 +26,7 @@ fun PracticeExpandedCard(
 
     Card(modifier = modifier
         .blur(radius = 5.dp)
-        .padding(8.dp),
+        .padding(horizontal = 16.dp, vertical = 8.dp),
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0x66959393))) {
         Row(modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp)) {
@@ -38,7 +38,7 @@ fun PracticeExpandedCard(
             Spacer(modifier = Modifier.width(8.dp))
             Column {
                 Text(text = cardTitle,
-                    fontSize = 18.sp,
+                    fontSize = 16.sp,
                     lineHeight = 25.2.sp,
                     fontWeight = FontWeight.Medium)
                 Spacer(modifier = Modifier.height(8.dp))

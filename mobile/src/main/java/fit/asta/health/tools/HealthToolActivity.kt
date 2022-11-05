@@ -27,4 +27,5 @@ class HealthToolActivity : AppCompatActivity() {
 
         setContentView(binding.root)
     }
+
 }

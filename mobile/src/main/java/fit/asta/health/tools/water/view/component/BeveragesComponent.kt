@@ -14,6 +14,7 @@ import fit.asta.health.R
 
 @Composable
 fun BeveragesComponent(title: String) {
+
     Column(horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center) {
         Icon(painter = painterResource(id = R.drawable.ic_baseline_favorite_24),
@@ -22,4 +23,5 @@ fun BeveragesComponent(title: String) {
         Spacer(modifier = Modifier.height(8.dp))
         Text(text = title, fontSize = 12.sp, color = Color.White, lineHeight = 19.6.sp)
     }
+
 }

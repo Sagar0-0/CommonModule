@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun BeveragesLayout() {
+
     Row(Modifier
         .fillMaxWidth()
         .padding(vertical = 16.dp),
@@ -20,4 +21,5 @@ fun BeveragesLayout() {
             BeveragesComponent(title = it)
         }
     }
+
 }

@@ -1,4 +1,4 @@
-package fit.asta.health.tools.sunlight.view.components.bottomsheet.expanded.ui
+package fit.asta.health.tools.view.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
@@ -22,7 +22,9 @@ fun AddMoreWater() {
 
     val checkedState = remember { mutableStateOf(true) }
 
-    Card(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp)) {
         Row(Modifier
             .fillMaxWidth()
             .padding(16.dp),

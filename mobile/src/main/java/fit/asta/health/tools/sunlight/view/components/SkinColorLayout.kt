@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import fit.asta.health.tools.view.components.ItemData
+import fit.asta.health.tools.view.components.ItemList
 
 @Composable
 fun SkinColorLayout() {
@@ -16,5 +18,7 @@ fun SkinColorLayout() {
             ItemData(6, "Dark", bgColor = Color(0xff544239)))
 
     }
+
     ItemList(list = itemDataListDemo, "Please select your skin color")
+
 }

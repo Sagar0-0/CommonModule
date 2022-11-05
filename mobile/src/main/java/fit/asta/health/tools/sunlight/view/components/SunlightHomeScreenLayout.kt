@@ -8,30 +8,37 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fit.asta.health.tools.view.CardSunBurn
 
 
-@Preview
 @Composable
-fun SunlightHomeScreenLayout() {
+fun SunlightHomeScreenLayout(paddingValues: PaddingValues) {
+
     Column(Modifier
         .fillMaxWidth()
-        .padding(16.dp)
+        .padding(paddingValues)
         .verticalScroll(rememberScrollState())) {
 
-        Row(Modifier.fillMaxWidth()) {
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)) {
             Text(text = "Upcoming Slots",
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
                 lineHeight = 22.4.sp,
-                color = Color(0xffFFFFFF))
+                color = Color.Black)
         }
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly) {
             Box(Modifier
                 .fillMaxWidth()
                 .weight(1f)) {
@@ -49,31 +56,44 @@ fun SunlightHomeScreenLayout() {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Row(Modifier.fillMaxWidth()) {
+        Row(Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)) {
             Text(text = "Total Duration",
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
                 lineHeight = 22.4.sp,
-                color = Color(0xffFFFFFF))
+                color = Color.Black)
         }
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        CardSunBurn()
+        CardSunBurn(cardTitle = "Duration",
+            cardValue = "1 hr ",
+            recommendedTitle = "Vitamin D\nRecommended",
+            recommendedValue = "1hr 30 min",
+            goalTitle = "Vitamin D\nDaily Goal",
+            goalValue = "50 min",
+            remainingTitle = "Sunburn\nTime Remaining",
+            remainingValue = "30 min")
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Row(Modifier.fillMaxWidth()) {
+        Row(Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)) {
             Text(text = "Total Vitamin D ",
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
                 lineHeight = 22.4.sp,
-                color = Color(0xffFFFFFF))
+                color = Color.Black)
         }
 
         Spacer(modifier = Modifier.height(24.dp))
 
         TotalVitaminDCard()
 
+        Spacer(modifier = Modifier.height(64.dp))
     }
+
 }

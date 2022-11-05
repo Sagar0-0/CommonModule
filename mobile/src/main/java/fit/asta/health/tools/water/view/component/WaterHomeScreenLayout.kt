@@ -10,20 +10,27 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.tools.sunlight.view.components.CardSunBurn
+import fit.asta.health.tools.view.CardSunBurn
 
-@Preview
 @Composable
-fun WaterHomeScreen() {
+fun WaterHomeScreen(paddingValues: PaddingValues) {
 
-    Column(Modifier.fillMaxWidth()) {
+    Column(Modifier
+        .fillMaxWidth()
+        .padding(paddingValues)) {
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        CardSunBurn()
+        CardSunBurn(cardTitle = "Total",
+            cardValue = "3 Litres",
+            recommendedTitle = "Recommended",
+            remainingValue = "3500 mL",
+            goalTitle = "Goal",
+            goalValue = "4000 mL",
+            remainingTitle = "Remaining",
+            recommendedValue = "2000 mL")
 
         Spacer(modifier = Modifier.height(48.dp))
 

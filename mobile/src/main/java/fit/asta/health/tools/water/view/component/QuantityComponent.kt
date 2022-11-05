@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun QuantityComponent(value: String) {
+
     Column(horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center) {
         Button(onClick = { /*TODO*/ }, modifier = Modifier
@@ -28,4 +29,5 @@ fun QuantityComponent(value: String) {
                 textAlign = TextAlign.Center)
         }
     }
+
 }

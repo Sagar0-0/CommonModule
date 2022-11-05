@@ -1,4 +1,4 @@
-package fit.asta.health.tools.sunlight.view.components
+package fit.asta.health.tools.view
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,13 +11,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fit.asta.health.tools.sunlight.view.components.CircularSlider
 
-@Preview
 @Composable
-fun CardSunBurn() {
+fun CardSunBurn(
+    cardTitle: String,
+    cardValue: String,
+    recommendedTitle: String,
+    goalTitle: String,
+    remainingTitle: String,
+    recommendedValue: String,
+    goalValue: String,
+    remainingValue: String,
+) {
 
     Card(modifier = Modifier
         .fillMaxWidth()
@@ -31,13 +39,13 @@ fun CardSunBurn() {
                     modifier = Modifier.size(200.dp),
                 )
                 Column {
-                    Text(text = "Duration",
+                    Text(text = cardTitle,
                         fontSize = 14.sp,
                         lineHeight = 19.6.sp,
                         letterSpacing = 1.25.sp,
                         fontWeight = FontWeight.Normal,
                         textAlign = TextAlign.Center)
-                    Text(text = "1 Hour",
+                    Text(text = cardValue,
                         fontSize = 18.sp,
                         lineHeight = 25.2.sp,
                         fontWeight = FontWeight.Bold,
@@ -45,40 +53,55 @@ fun CardSunBurn() {
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            TimingMeter()
+            TimingMeter(recommendedTitle,
+                goalTitle,
+                remainingTitle,
+                recommendedValue,
+                goalValue,
+                remainingValue)
         }
     }
 
 }
 
-
 @Composable
-fun TimingMeter() {
+fun TimingMeter(
+    recommendedTitle: String,
+    goalTitle: String,
+    remainingTitle: String,
+    recommendedValue: String,
+    goalValue: String,
+    remainingValue: String,
+) {
+
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-
-        TimingMeterLayout(title = "1hr 30 min", titleValue = "Vitamin D\nRecommended")
+        TimingMeterLayout(title = recommendedTitle, titleValue = recommendedValue)
         Spacer(modifier = Modifier.width(24.dp))
-        TimingMeterLayout(title = "50 min", titleValue = "Vitamin D\nDaily Goal")
+        TimingMeterLayout(title = goalTitle, titleValue = goalValue)
         Spacer(modifier = Modifier.width(24.dp))
-        TimingMeterLayout(title = "30 min", titleValue = "Sunburn\nTime Remaining")
-
+        TimingMeterLayout(title = remainingTitle, titleValue = recommendedValue)
     }
+
 }
 
 @Composable
 fun TimingMeterLayout(title: String, titleValue: String) {
+
     Column(horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center) {
-        androidx.compose.material.Text(text = title,
+        Text(text = titleValue,
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
             lineHeight = 19.6.sp,
             color = Color.White)
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = titleValue,
+        Text(text = title,
             fontSize = 12.sp,
             fontWeight = FontWeight.Normal,
             lineHeight = 19.6.sp,
             textAlign = TextAlign.Center)
     }
+
 }
+
+

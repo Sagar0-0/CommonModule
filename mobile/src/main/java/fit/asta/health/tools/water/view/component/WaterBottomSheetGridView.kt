@@ -1,4 +1,4 @@
-package fit.asta.health.tools.sunlight.view.components.bottomsheet.expanded.ui
+package fit.asta.health.tools.water.view.component
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -19,33 +18,25 @@ import com.google.accompanist.flowlayout.SizeMode
 import fit.asta.health.R
 import fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.ui.BottomSheetButtonLayout
 import fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.ui.DividerLineCenter
-import fit.asta.health.tools.water.view.component.BeveragesLayout
-import fit.asta.health.tools.water.view.component.QuantityLayout
+import fit.asta.health.tools.view.PracticeGridView
+import fit.asta.health.tools.view.components.AddMoreWater
+import fit.asta.health.tools.view.components.PracticeExpandedCard
 
 
-@Preview
 @Composable
-fun PracticeExpandedGridView() {
+fun WaterBottomSheetGridView(paddingValues: PaddingValues) {
 
     val cardList = listOf(PracticeGridView(cardTitle = "Lifestyle",
         cardImg = R.drawable.ic_baseline_cancel_24,
-        cardValue = "40 SPF"),
+        cardValue = "Lightly Active"),
         PracticeGridView(cardTitle = "Work",
             cardImg = R.drawable.ic_baseline_cancel_24,
-            cardValue = "40 SPF"),
+            cardValue = "Indoor"),
         PracticeGridView(cardTitle = "Health",
             cardImg = R.drawable.ic_baseline_cancel_24,
-            cardValue = "40 SPF"),
-        PracticeGridView(cardTitle = "Sunscreen",
-            cardImg = R.drawable.ic_baseline_cancel_24,
-            cardValue = "40 SPF"),
-        PracticeGridView(cardTitle = "Sunscreen",
-            cardImg = R.drawable.ic_baseline_cancel_24,
-            cardValue = "40 SPF"))
+            cardValue = "None"))
 
-//    PracticeExpandedGridViewLayout(cardList = cardList)
-
-    Box(contentAlignment = Alignment.BottomCenter) {
+    Box(contentAlignment = Alignment.BottomCenter, modifier = Modifier.padding(paddingValues)) {
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
 
             item {
@@ -65,7 +56,8 @@ fun PracticeExpandedGridView() {
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     lineHeight = 22.4.sp,
-                    color = Color.White)
+                    color = Color.Black,
+                    modifier = Modifier.padding(horizontal = 16.dp))
             }
 
             item {
@@ -85,7 +77,8 @@ fun PracticeExpandedGridView() {
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     lineHeight = 22.4.sp,
-                    color = Color.White)
+                    color = Color.Black,
+                    modifier = Modifier.padding(horizontal = 16.dp))
             }
 
             item {
@@ -105,7 +98,8 @@ fun PracticeExpandedGridView() {
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     lineHeight = 22.4.sp,
-                    color = Color.White)
+                    color = Color.Black,
+                    modifier = Modifier.padding(horizontal = 16.dp))
             }
 
             item {
@@ -135,18 +129,11 @@ fun PracticeExpandedGridView() {
             }
 
             item {
-                Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(64.dp))
             }
-
-//            item {
-//                BottomSheetButtonLayout()
-//            }
-//
-//            item {
-//                Spacer(modifier = Modifier.height(16.dp))
-//            }
 
         }
         BottomSheetButtonLayout()
     }
+
 }

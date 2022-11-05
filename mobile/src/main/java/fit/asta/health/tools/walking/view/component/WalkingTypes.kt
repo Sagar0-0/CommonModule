@@ -15,8 +15,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
-import fit.asta.health.tools.sunlight.view.components.ItemData
-import fit.asta.health.tools.sunlight.view.components.ItemList
+import fit.asta.health.tools.view.components.ItemData
+import fit.asta.health.tools.view.components.ItemList
 
 @Composable
 fun WalkingTypeLayoutWalkingType(it: PaddingValues) {
@@ -39,6 +39,7 @@ fun WalkingTypeLayoutWalkingType(it: PaddingValues) {
 @Preview
 @Composable
 fun WalkingType() {
+
     Scaffold(topBar = {
         BottomNavigation(content = {
             Row(verticalAlignment = Alignment.CenterVertically,
@@ -64,4 +65,5 @@ fun WalkingType() {
     }, content = {
         WalkingTypeLayoutWalkingType(it = it)
     })
+
 }

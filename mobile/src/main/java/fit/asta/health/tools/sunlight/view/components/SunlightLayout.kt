@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fit.asta.health.tools.view.CardSunBurn
 
 @Composable
 fun SunlightLayout(it: PaddingValues) {
@@ -66,7 +67,14 @@ fun SunlightLayout(it: PaddingValues) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        CardSunBurn()
+        CardSunBurn(cardTitle = "Duration",
+            cardValue = "1 hr ",
+            recommendedTitle = "Vitamin D\nRecommended",
+            recommendedValue = "1hr 30 min",
+            goalTitle = "Vitamin D\nDaily Goal",
+            goalValue = "50 min",
+            remainingTitle = "Sunburn\nTime Remaining",
+            remainingValue = "30 min")
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -85,5 +93,6 @@ fun SunlightLayout(it: PaddingValues) {
         TotalVitaminDCard()
 
         Spacer(modifier = Modifier.height(24.dp))
+
     }
 }

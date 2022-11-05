@@ -18,24 +18,27 @@ import fit.asta.health.R
 
 @Composable
 fun UpcomingSlotsCard() {
+
     Card(modifier = Modifier
         .fillMaxWidth()
         .blur(radius = 5.dp),
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0x66959393))) {
+
         Column(modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
             verticalArrangement = Arrangement.SpaceEvenly) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+
                 Row {
                     Box {
                         Icon(painter = painterResource(id = R.drawable.ic_sunny),
                             contentDescription = null,
-                            modifier = androidx.compose.ui.Modifier.size(40.dp),
+                            modifier = Modifier.size(40.dp),
                             tint = Color(0xffFED85B))
                     }
-                    Spacer(modifier = androidx.compose.ui.Modifier.width(4.dp))
+                    Spacer(modifier = Modifier.width(4.dp))
                     Text(text = "Sunny\n24 C",
                         textAlign = TextAlign.Center,
                         fontSize = 14.sp,
@@ -43,6 +46,7 @@ fun UpcomingSlotsCard() {
                         lineHeight = 19.6.sp,
                         color = Color.White)
                 }
+
                 IconButton(onClick = { /*TODO*/ },
                     modifier = Modifier
                         .clip(shape = RoundedCornerShape(4.dp))
@@ -52,11 +56,13 @@ fun UpcomingSlotsCard() {
                         Icon(painter = painterResource(id = com.google.android.material.R.drawable.ic_clock_black_24dp),
                             contentDescription = null,
                             tint = Color(0xff0088FF),
-                            modifier = androidx.compose.ui.Modifier.size(16.dp))
+                            modifier = Modifier.size(16.dp))
                     }
                 }
             }
-            Spacer(modifier = androidx.compose.ui.Modifier.height(8.dp))
+
+            Spacer(modifier = Modifier.height(8.dp))
+
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(
                     text = "Today",
@@ -73,6 +79,7 @@ fun UpcomingSlotsCard() {
                     lineHeight = 19.6.sp,
                 )
             }
+
         }
     }
 }
