@@ -1,5 +1,7 @@
 package fit.asta.health.testimonials
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -28,9 +30,18 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class TestimonialsActivity : AppCompatActivity() {
 
     private lateinit var navController: NavHostController
-
     private lateinit var binding: ActivityProfileNewBinding
     private val viewModel: TestimonialViewModel by viewModels()
+
+    companion object {
+
+        fun launch(context: Context) {
+            val intent = Intent(context, TestimonialsActivity::class.java)
+            intent.apply {
+                context.startActivity(this)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,9 +78,11 @@ class TestimonialsActivity : AppCompatActivity() {
 
 @Composable
 fun TestimonialsPreview(navController: NavHostController) {
-    Box(Modifier
-        .fillMaxSize()
-        .background(MaterialTheme.colors.background)) {
+    Box(
+        Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.background)
+    ) {
         NavHost(navController, startDestination = TstScreen.TstHome.route) {
             composable(route = TstScreen.TstHome.route) {
                 AllTestimonialsLayout(onNavigateUp = {

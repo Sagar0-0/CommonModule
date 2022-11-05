@@ -58,6 +58,9 @@
         <activity android:name=".settings.WebViewActivity" />
         <activity android:name=".old_article.ui.ArticleActivity" />
         <activity android:name=".firebase.view.AuthActivity" />
+        <activity
+            android:name=".testimonials.TestimonialsActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".old_subscription.SubscriptionActivity" />
         <activity android:name=".BillingActivity" />
         <activity android:name=".common.multiselect.ui.MultiSelectActivity" />
@@ -104,7 +107,8 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
