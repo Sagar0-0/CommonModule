@@ -24,7 +24,7 @@ import fit.asta.health.tools.view.components.PracticeExpandedCard
 
 
 @Composable
-fun WaterBottomSheetGridView(paddingValues: PaddingValues) {
+fun WaterBottomSheetGridView() {
 
     val cardList = listOf(PracticeGridView(cardTitle = "Lifestyle",
         cardImg = R.drawable.ic_baseline_cancel_24,
@@ -36,104 +36,107 @@ fun WaterBottomSheetGridView(paddingValues: PaddingValues) {
             cardImg = R.drawable.ic_baseline_cancel_24,
             cardValue = "None"))
 
-    Box(contentAlignment = Alignment.BottomCenter, modifier = Modifier.padding(paddingValues)) {
-        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+    Column(Modifier.fillMaxWidth()) {
 
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-            }
+        Spacer(modifier = Modifier.heightIn(16.dp))
 
-            item {
-                DividerLineCenter()
-            }
+        DividerLineCenter()
 
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-            }
+        Spacer(modifier = Modifier.heightIn(16.dp))
 
-            item {
-                Text("BEVERAGES",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    lineHeight = 22.4.sp,
-                    color = Color.Black,
-                    modifier = Modifier.padding(horizontal = 16.dp))
-            }
+        Box(contentAlignment = Alignment.BottomCenter,
+            modifier = Modifier.heightIn(min = 100.dp, max = 550.dp)) {
+            LazyColumn(modifier = Modifier.fillMaxWidth()) {
 
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-            }
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
 
-            item {
-                BeveragesLayout()
-            }
+                item {
+                    Text("BEVERAGES",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        lineHeight = 22.4.sp,
+                        color = Color.Black,
+                        modifier = Modifier.padding(horizontal = 16.dp))
+                }
 
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-            }
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
 
-            item {
-                Text("QUANTITY",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    lineHeight = 22.4.sp,
-                    color = Color.Black,
-                    modifier = Modifier.padding(horizontal = 16.dp))
-            }
+                item {
+                    BeveragesLayout()
+                }
 
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-            }
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
 
-            item {
-                QuantityLayout()
-            }
+                item {
+                    Text("QUANTITY",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        lineHeight = 22.4.sp,
+                        color = Color.Black,
+                        modifier = Modifier.padding(horizontal = 16.dp))
+                }
 
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-            }
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
 
-            item {
-                Text("PRACTICE",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    lineHeight = 22.4.sp,
-                    color = Color.Black,
-                    modifier = Modifier.padding(horizontal = 16.dp))
-            }
+                item {
+                    QuantityLayout()
+                }
 
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-            }
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
 
-            item {
-                val itemSize: Dp = LocalConfiguration.current.screenWidthDp.dp / 2
+                item {
+                    Text("PRACTICE",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        lineHeight = 22.4.sp,
+                        color = Color.Black,
+                        modifier = Modifier.padding(horizontal = 16.dp))
+                }
 
-                FlowRow(mainAxisSize = SizeMode.Expand,
-                    mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween) {
-                    cardList.forEachIndexed { index, _ ->
-                        PracticeExpandedCard(cardTitle = cardList[index].cardTitle,
-                            cardImg = cardList[index].cardImg,
-                            cardValue = cardList[index].cardValue,
-                            modifier = Modifier.size(width = itemSize, height = 100.dp))
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                item {
+                    val itemSize: Dp = LocalConfiguration.current.screenWidthDp.dp / 2
+
+                    FlowRow(mainAxisSize = SizeMode.Expand,
+                        mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween) {
+                        cardList.forEachIndexed { index, _ ->
+                            PracticeExpandedCard(cardTitle = cardList[index].cardTitle,
+                                cardImg = cardList[index].cardImg,
+                                cardValue = cardList[index].cardValue,
+                                modifier = Modifier.size(width = itemSize, height = 100.dp))
+                        }
                     }
                 }
+
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                item {
+                    AddMoreWater()
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(64.dp))
+                }
+
             }
 
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-
-            item {
-                AddMoreWater()
-            }
-
-            item {
-                Spacer(modifier = Modifier.height(64.dp))
-            }
+            BottomSheetButtonLayout()
 
         }
-        BottomSheetButtonLayout()
     }
-
 }

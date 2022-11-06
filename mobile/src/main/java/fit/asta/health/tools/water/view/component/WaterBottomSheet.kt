@@ -3,6 +3,7 @@ package fit.asta.health.tools.water.view.component
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.dp
 
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -13,7 +14,8 @@ fun WaterBottomSheet(paddingValues: PaddingValues) {
         rememberBottomSheetScaffoldState(bottomSheetState = rememberBottomSheetState(
             BottomSheetValue.Collapsed))
 
-    BottomSheetScaffold(sheetContent = { WaterBottomSheetGridView(paddingValues) },
+    BottomSheetScaffold(sheetContent = { WaterBottomSheetGridView() },
+        sheetPeekHeight = 32.dp,
         scaffoldState = scaffoldState) {
         WaterHomeScreen(paddingValues)
     }
