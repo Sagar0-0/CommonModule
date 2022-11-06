@@ -31,7 +31,6 @@ fun TestimonialsCardLayout(
         .padding(16.dp)
         .clip(RoundedCornerShape(8.dp)),
         elevation = 10.dp
-
     ) {
 
         Column(Modifier.fillMaxWidth()) {
@@ -67,7 +66,6 @@ fun TestimonialsCardLayout(
         }
     }
 }
-
 
 @Composable
 fun ArtistCard2() {

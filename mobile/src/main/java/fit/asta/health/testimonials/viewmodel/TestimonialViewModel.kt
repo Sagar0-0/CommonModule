@@ -3,7 +3,6 @@ package fit.asta.health.testimonials.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.testimonials.intent.TestimonialState
 import fit.asta.health.testimonials.model.TestimonialRepo
 import fit.asta.health.testimonials.model.network.NetTestimonial
 import kotlinx.coroutines.ExperimentalCoroutinesApi

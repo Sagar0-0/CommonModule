@@ -1,4 +1,4 @@
-package fit.asta.health.tools.sunlight.intent
+package fit.asta.health.tools.sunlight.viewmodel
 
 import fit.asta.health.tools.sunlight.model.domain.SunlightTool
 

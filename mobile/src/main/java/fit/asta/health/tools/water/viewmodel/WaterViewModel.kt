@@ -3,7 +3,6 @@ package fit.asta.health.tools.water.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.tools.water.intent.WaterState
 import fit.asta.health.tools.water.model.WaterToolRepo
 import fit.asta.health.tools.water.model.network.NetBeverage
 import kotlinx.coroutines.ExperimentalCoroutinesApi

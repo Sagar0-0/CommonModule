@@ -3,7 +3,6 @@ package fit.asta.health.profile.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.profile.intent.ProfileState
 import fit.asta.health.profile.model.ProfileRepo
 import fit.asta.health.profile.model.domain.UserProfile
 import kotlinx.coroutines.ExperimentalCoroutinesApi
