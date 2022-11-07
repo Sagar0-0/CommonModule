@@ -12,7 +12,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.tools.view.CardSunBurn
+import fit.asta.health.tools.view.components.CardSunBurn
 
 @Composable
 fun WaterHomeScreen(paddingValues: PaddingValues) {

@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.tools.view.CardSunBurn
+import fit.asta.health.tools.view.components.CardSunBurn
 
 
 @Composable
