@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import fit.asta.health.navigation.home.intent.HomeState
 import fit.asta.health.navigation.home.model.domain.ToolsHome
+import fit.asta.health.navigation.home.viewmodel.HomeState
 
 internal class AlbumStateProvider : PreviewParameterProvider<HomeState> {
     override val values: Sequence<HomeState> = sequenceOf(

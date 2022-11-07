@@ -4,7 +4,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.navigation.home.view.component.NoInternetLayout
-import fit.asta.health.profile.intent.ProfileState
+import fit.asta.health.profile.viewmodel.ProfileState
 
 @ExperimentalMaterial3Api
 @Composable

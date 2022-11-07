@@ -3,7 +3,6 @@ package fit.asta.health.tools.walking.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.tools.walking.intent.WalkingState
 import fit.asta.health.tools.walking.model.WalkingToolRepo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -49,28 +49,8 @@ class TestimonialsActivity : AppCompatActivity() {
         binding.profileComposeView.setContent {
 
             val testimonialState = viewModel.state.collectAsState().value
-
             navController = rememberNavController()
-
-//            Box(Modifier
-//                .fillMaxSize()
-//                .background(MaterialTheme.colors.background)) {
-//                NavHost(navController, startDestination = TstScreen.TstHome.route) {
-//                    composable(route = TstScreen.TstHome.route) {
-//                        TestimonialDemo2(onNavigateUp = {
-//                            navController.navigate(route = TstScreen.TstCreate.route)
-//                        })
-//                    }
-//                    composable(route = TstScreen.TstCreate.route) {
-//                        TestimonialLayoutDemo(onNavigateTstCreate = {
-//                            navController.popBackStack()
-//                        })
-//                    }
-//                }
-//            }
-
             TestimonialsPreview(navController = navController)
-
             setContentView(binding.root)
         }
     }
@@ -97,7 +77,6 @@ fun TestimonialsPreview(navController: NavHostController) {
         }
     }
 }
-
 
 @Preview
 @Composable

@@ -3,7 +3,6 @@ package fit.asta.health.feedback.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.feedback.intent.FeedbackState
 import fit.asta.health.feedback.model.FeedbackRepo
 import fit.asta.health.feedback.model.network.NetUserFeedback
 import kotlinx.coroutines.ExperimentalCoroutinesApi

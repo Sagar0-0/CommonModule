@@ -1,4 +1,4 @@
-package fit.asta.health.profile.intent
+package fit.asta.health.profile.viewmodel
 
 import fit.asta.health.profile.model.domain.UserProfile
 

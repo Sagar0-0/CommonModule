@@ -1,4 +1,4 @@
-package fit.asta.health.feedback.intent
+package fit.asta.health.feedback.viewmodel
 
 import fit.asta.health.feedback.model.domain.Feedback
 

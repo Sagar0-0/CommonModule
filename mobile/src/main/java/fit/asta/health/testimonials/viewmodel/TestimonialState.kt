@@ -1,4 +1,4 @@
-package fit.asta.health.testimonials.intent
+package fit.asta.health.testimonials.viewmodel
 
 import fit.asta.health.testimonials.model.domain.Testimonial
 

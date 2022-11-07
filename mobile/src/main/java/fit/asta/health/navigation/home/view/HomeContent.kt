@@ -10,10 +10,10 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import fit.asta.health.navigation.home.intent.HomeState
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.navigation.home.view.component.NoInternetLayout
 import fit.asta.health.navigation.home.view.component.ReadyScreen
+import fit.asta.health.navigation.home.viewmodel.HomeState
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")

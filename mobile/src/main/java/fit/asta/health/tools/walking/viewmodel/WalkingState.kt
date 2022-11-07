@@ -1,4 +1,4 @@
-package fit.asta.health.tools.walking.intent
+package fit.asta.health.tools.walking.viewmodel
 
 import fit.asta.health.tools.walking.model.domain.WalkingTool
 

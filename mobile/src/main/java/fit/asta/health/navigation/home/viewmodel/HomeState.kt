@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.home.intent
+package fit.asta.health.navigation.home.viewmodel
 
 import fit.asta.health.navigation.home.model.domain.ToolsHome
 

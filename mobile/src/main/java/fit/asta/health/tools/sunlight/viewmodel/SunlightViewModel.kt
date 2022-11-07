@@ -3,7 +3,6 @@ package fit.asta.health.tools.sunlight.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.tools.sunlight.intent.SunlightState
 import fit.asta.health.tools.sunlight.model.SunlightToolRepo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow

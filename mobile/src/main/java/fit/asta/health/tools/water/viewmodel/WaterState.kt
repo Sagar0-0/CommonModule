@@ -1,4 +1,4 @@
-package fit.asta.health.tools.water.intent
+package fit.asta.health.tools.water.viewmodel
 
 import fit.asta.health.tools.water.model.domain.WaterTool
 

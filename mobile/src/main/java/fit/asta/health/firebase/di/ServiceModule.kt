@@ -1,4 +1,4 @@
-package fit.asta.health.firebase.model.di
+package fit.asta.health.firebase.di
 
 import dagger.Binds
 import dagger.Module
