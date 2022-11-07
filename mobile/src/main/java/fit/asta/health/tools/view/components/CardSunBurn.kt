@@ -1,4 +1,4 @@
-package fit.asta.health.tools.view
+package fit.asta.health.tools.view.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
