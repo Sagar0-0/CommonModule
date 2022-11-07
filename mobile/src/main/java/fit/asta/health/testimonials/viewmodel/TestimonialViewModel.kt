@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.testimonials.model.TestimonialRepo
-import fit.asta.health.testimonials.model.network.NetTestimonial
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,7 +19,7 @@ class TestimonialViewModel
     private val testimonialRepo: TestimonialRepo,
 ) : ViewModel() {
 
-    private val mutableState = MutableStateFlow<TestimonialState>(TestimonialState.Loading)
+    private val mutableState = MutableStateFlow<TestimonialListState>(TestimonialListState.Loading)
     val state = mutableState.asStateFlow()
 
     init {
@@ -30,29 +29,9 @@ class TestimonialViewModel
     private fun loadTestimonials(limit: Int, index: Int) {
         viewModelScope.launch {
             testimonialRepo.getTestimonials(limit = limit, index = index).catch { exception ->
-                mutableState.value = TestimonialState.Error(exception)
+                mutableState.value = TestimonialListState.Error(exception)
             }.collect {
-                mutableState.value = TestimonialState.Success(it)
-            }
-        }
-    }
-
-    private fun loadTestimonial(userId: String) {
-        viewModelScope.launch {
-            testimonialRepo.getTestimonial(userId).catch { exception ->
-                mutableState.value = TestimonialState.Error(exception)
-            }.collect {
-                //mutableState.value = TestimonialState.Success(it)
-            }
-        }
-    }
-
-    private fun updateTestimonial(netTestimonial: NetTestimonial) {
-        viewModelScope.launch {
-            testimonialRepo.updateTestimonial(netTestimonial).catch { exception ->
-                mutableState.value = TestimonialState.Error(exception)
-            }.collect {
-                //mutableState.value = TestimonialState.Success(it)
+                mutableState.value = TestimonialListState.Success(it)
             }
         }
     }

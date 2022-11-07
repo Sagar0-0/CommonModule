@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,6 +22,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.databinding.ActivityProfileNewBinding
 import fit.asta.health.testimonials.view.AllTestimonialsLayout
 import fit.asta.health.testimonials.view.components.TestimonialLayoutDemo
+import fit.asta.health.testimonials.viewmodel.EditTestimonialViewModel
+import fit.asta.health.testimonials.viewmodel.TestimonialEvent
 import fit.asta.health.testimonials.viewmodel.TestimonialViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -32,6 +35,7 @@ class TestimonialsActivity : AppCompatActivity() {
     private lateinit var navController: NavHostController
     private lateinit var binding: ActivityProfileNewBinding
     private val viewModel: TestimonialViewModel by viewModels()
+    private val editViewModel: EditTestimonialViewModel by viewModels()
 
     companion object {
 
@@ -50,14 +54,19 @@ class TestimonialsActivity : AppCompatActivity() {
 
             val testimonialState = viewModel.state.collectAsState().value
             navController = rememberNavController()
-            TestimonialsPreview(navController = navController)
+            TestimonialsPreview(navController = navController, editViewModel)
             setContentView(binding.root)
         }
     }
 }
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun TestimonialsPreview(navController: NavHostController) {
+fun TestimonialsPreview(
+    navController: NavHostController,
+    editViewModel: EditTestimonialViewModel
+) {
+
     Box(
         Modifier
             .fillMaxSize()
@@ -71,15 +80,17 @@ fun TestimonialsPreview(navController: NavHostController) {
             }
             composable(route = TstScreen.TstCreate.route) {
                 TestimonialLayoutDemo(onNavigateTstCreate = {
-                    navController.navigate(route = TstScreen.TstHome.route)
+                    editViewModel.onEvent(TestimonialEvent.OnSaveClick)
+                    //navController.navigate(route = TstScreen.TstHome.route)
                 })
             }
         }
     }
 }
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Preview
 @Composable
 fun ScreenPreview() {
-    TestimonialsPreview(navController = rememberNavController())
+    TestimonialsPreview(navController = rememberNavController(), viewModel())
 }
