@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -35,7 +35,7 @@ class TestimonialsActivity : AppCompatActivity() {
     private lateinit var navController: NavHostController
     private lateinit var binding: ActivityProfileNewBinding
     private val viewModel: TestimonialViewModel by viewModels()
-    private val editViewModel: EditTestimonialViewModel by viewModels()
+    //private val editViewModel: EditTestimonialViewModel by viewModels()
 
     companion object {
 
@@ -54,7 +54,7 @@ class TestimonialsActivity : AppCompatActivity() {
 
             val testimonialState = viewModel.state.collectAsState().value
             navController = rememberNavController()
-            TestimonialsPreview(navController = navController, editViewModel)
+            TestimonialsPreview(navController = navController, hiltViewModel())
             setContentView(binding.root)
         }
     }
@@ -92,5 +92,5 @@ fun TestimonialsPreview(
 @Preview
 @Composable
 fun ScreenPreview() {
-    TestimonialsPreview(navController = rememberNavController(), viewModel())
+    TestimonialsPreview(navController = rememberNavController(), hiltViewModel())
 }
