@@ -35,7 +35,7 @@ class EditTestimonialViewModel
     var testimonial by mutableStateOf("")
         private set
 
-    private val mutableState = MutableStateFlow<TestimonialState>(TestimonialState.Loading)
+    private val mutableState = MutableStateFlow<EditTestimonialState>(EditTestimonialState.Loading)
     val state = mutableState.asStateFlow()
 
     init {
@@ -48,7 +48,7 @@ class EditTestimonialViewModel
     private fun loadTestimonial(userId: String) {
         viewModelScope.launch {
             testimonialRepo.getTestimonial(userId).catch { exception ->
-                mutableState.value = TestimonialState.Error(exception)
+                mutableState.value = EditTestimonialState.Error(exception)
             }.collect {
                 this@EditTestimonialViewModel.netTestimonial = it.testimonial
             }
@@ -58,22 +58,22 @@ class EditTestimonialViewModel
     private fun updateTestimonial(netTestimonial: NetTestimonial) {
         viewModelScope.launch {
             testimonialRepo.updateTestimonial(netTestimonial).catch { exception ->
-                mutableState.value = TestimonialState.Error(exception)
+                mutableState.value = EditTestimonialState.Error(exception)
             }.collect {
-                mutableState.value = TestimonialState.Update(it)
+                mutableState.value = EditTestimonialState.Update(it)
             }
         }
     }
 
-    fun onEvent(event: TestimonialEvent) {
+    fun onEvent(event: EditTestimonialEvent) {
         when (event) {
-            is TestimonialEvent.OnTitleChange -> {
+            is EditTestimonialEvent.OnTitleChange -> {
                 title = event.title
             }
-            is TestimonialEvent.OnTestimonialChange -> {
+            is EditTestimonialEvent.OnTestimonialChange -> {
                 testimonial = event.testimonial
             }
-            is TestimonialEvent.OnSaveClick -> {
+            is EditTestimonialEvent.OnSaveClick -> {
                 updateTestimonial(
                     NetTestimonial(
                         apv = false,

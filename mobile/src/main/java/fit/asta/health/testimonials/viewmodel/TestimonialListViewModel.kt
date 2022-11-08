@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
-class TestimonialViewModel
+class TestimonialListViewModel
 @Inject constructor(
     private val testimonialRepo: TestimonialRepo,
 ) : ViewModel() {
@@ -31,8 +31,17 @@ class TestimonialViewModel
             testimonialRepo.getTestimonials(limit = limit, index = index).catch { exception ->
                 mutableState.value = TestimonialListState.Error(exception)
             }.collect {
-                mutableState.value = TestimonialListState.Success(it)
+                mutableState.value = TestimonialListState.Success(it.testimonials)
             }
+        }
+    }
+
+    fun onEvent(event: TestimonialListEvent) {
+        when (event) {
+            is TestimonialListEvent.OnNextPage -> loadTestimonials(
+                limit = event.limit,
+                index = event.index
+            )
         }
     }
 }

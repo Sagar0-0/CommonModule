@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavHostController
@@ -21,7 +20,7 @@ import fit.asta.health.testimonials.model.network.NetTestimonial
 import fit.asta.health.testimonials.view.AllTestimonialsLayout
 import fit.asta.health.testimonials.view.components.TestimonialLayoutDemo
 import fit.asta.health.testimonials.viewmodel.TestimonialListState
-import fit.asta.health.testimonials.viewmodel.TestimonialViewModel
+import fit.asta.health.testimonials.viewmodel.TestimonialListViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -31,7 +30,7 @@ class TestimonialsActivity : AppCompatActivity() {
 
     private lateinit var navController: NavHostController
     private lateinit var binding: ActivityProfileNewBinding
-    private val viewModel: TestimonialViewModel by viewModels()
+    private val viewModel: TestimonialListViewModel by viewModels()
     //private val editViewModel: EditTestimonialViewModel by viewModels()
 
     companion object {
