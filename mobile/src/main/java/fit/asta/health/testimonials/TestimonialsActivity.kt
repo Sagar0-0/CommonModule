@@ -24,6 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.databinding.ActivityProfileNewBinding
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
+import fit.asta.health.navigation.home.view.component.NoInternetLayout
 import fit.asta.health.testimonials.model.domain.Testimonial
 import fit.asta.health.testimonials.view.AllTestimonialsLayout
 import fit.asta.health.testimonials.view.components.TestimonialLayoutDemo
@@ -59,9 +60,11 @@ class TestimonialsActivity : AppCompatActivity() {
             val testimonialState = viewModel.state.collectAsState().value
             navController = rememberNavController()
             TestimonialsContent(state = viewModel.state.collectAsState().value)
-            setContentView(binding.root)
+
         }
+        setContentView(binding.root)
     }
+
 }
 
 @Composable
@@ -107,6 +110,7 @@ fun TestimonialsScreen(
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun TestimonialsContent(state: TestimonialListState) {
+
     Scaffold(topBar = {
         TopAppBar(
             backgroundColor = Color.Transparent,
@@ -118,10 +122,11 @@ fun TestimonialsContent(state: TestimonialListState) {
         }
     }) {
         when (state) {
-            is TestimonialListState.Error -> TODO()
+            is TestimonialListState.Error -> NoInternetLayout()
             is TestimonialListState.Loading -> LoadingAnimation()
             is TestimonialListState.Success -> TestimonialsScreen(navController = rememberNavController(),
                 testimonial = state.testimonial)
         }
     }
+
 }

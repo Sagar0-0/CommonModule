@@ -25,6 +25,7 @@ import fit.asta.health.navigation.home.view.component.TestimonialAutoSliderAnima
 fun Testimonials(
     testimonialsList: List<Testimonial>,
 ) {
+
     FontFamily(Font(R.font.inter_regular, FontWeight.Normal))
 
     FontFamily(Font(R.font.inter_medium))
@@ -49,5 +50,6 @@ fun Testimonials(
         Spacer(modifier = Modifier.height(16.dp))
         TestimonialAutoSliderAnimation(testimonialsList = testimonialsList)
     }
+
 }
 
