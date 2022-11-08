@@ -18,33 +18,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fit.asta.health.testimonials.model.domain.Testimonial
 import fit.asta.health.testimonials.view.components.TestimonialsCardLayout
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AllTestimonialsLayout(onNavigateUp: () -> Unit) {
+fun AllTestimonialsLayout(onNavigateUp: () -> Unit, testimonial: List<Testimonial>) {
     Scaffold(content = {
         Column(Modifier
             .fillMaxWidth()
             .padding(it)
             .verticalScroll(rememberScrollState())
             .background(color = Color(0xffF4F6F8))) {
-            TestimonialsCardLayout(cardTitle = "Lost 16kg in 3 months",
-                cardTst = "I work in project management and joined this course because I get great courses for less.The instructors are fantastic, interesting, and helpful. I plan to use this for a long time!")
-            TestimonialsCardLayout(cardTitle = "Lost 16kg in 3 months",
-                cardTst = "I work in project management and joined this course because I get great courses for less.The instructors are fantastic, interesting, and helpful. I plan to use this for a long time!")
-            TestimonialsCardLayout(cardTitle = "Lost 16kg in 3 months",
-                cardTst = "I work in project management and joined this course because I get great courses for less.The instructors are fantastic, interesting, and helpful. I plan to use this for a long time!")
-            TestimonialsCardLayout(cardTitle = "Lost 16kg in 3 months",
-                cardTst = "I work in project management and joined this course because I get great courses for less.The instructors are fantastic, interesting, and helpful. I plan to use this for a long time!")
-            TestimonialsCardLayout(cardTitle = "Lost 16kg in 3 months",
-                cardTst = "I work in project management and joined this course because I get great courses for less.The instructors are fantastic, interesting, and helpful. I plan to use this for a long time!")
-            TestimonialsCardLayout(cardTitle = "Lost 16kg in 3 months",
-                cardTst = "I work in project management and joined this course because I get great courses for less.The instructors are fantastic, interesting, and helpful. I plan to use this for a long time!")
-            TestimonialsCardLayout(cardTitle = "Lost 16kg in 3 months",
-                cardTst = "I work in project management and joined this course because I get great courses for less.The instructors are fantastic, interesting, and helpful. I plan to use this for a long time!")
-            TestimonialsCardLayout(cardTitle = "Lost 16kg in 3 months",
-                cardTst = "I work in project management and joined this course because I get great courses for less.The instructors are fantastic, interesting, and helpful. I plan to use this for a long time!")
+
+            testimonial.forEach { testData ->
+                TestimonialsCardLayout(cardTitle = testData.title, cardTst = testData.description)
+            }
+
         }
     }, floatingActionButton = {
         FloatingActionButton(onClick = { /*TODO*/ },
@@ -69,3 +59,5 @@ fun AllTestimonialsLayout(onNavigateUp: () -> Unit) {
         })
     })
 }
+
+

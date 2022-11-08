@@ -1,5 +1,6 @@
 package fit.asta.health.testimonials
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,22 +9,25 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.databinding.ActivityProfileNewBinding
+import fit.asta.health.navigation.home.view.component.LoadingAnimation
+import fit.asta.health.testimonials.model.domain.Testimonial
 import fit.asta.health.testimonials.view.AllTestimonialsLayout
 import fit.asta.health.testimonials.view.components.TestimonialLayoutDemo
-import fit.asta.health.testimonials.viewmodel.EditTestimonialViewModel
-import fit.asta.health.testimonials.viewmodel.TestimonialEvent
+import fit.asta.health.testimonials.viewmodel.TestimonialListState
 import fit.asta.health.testimonials.viewmodel.TestimonialViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -54,43 +58,70 @@ class TestimonialsActivity : AppCompatActivity() {
 
             val testimonialState = viewModel.state.collectAsState().value
             navController = rememberNavController()
-            TestimonialsPreview(navController = navController, hiltViewModel())
+            TestimonialsContent(state = viewModel.state.collectAsState().value)
             setContentView(binding.root)
         }
     }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun TestimonialsPreview(
+fun TestimonialsScreen(
     navController: NavHostController,
-    editViewModel: EditTestimonialViewModel
+    testimonial: List<Testimonial>,
 ) {
 
-    Box(
-        Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colors.background)
-    ) {
+    Box(Modifier
+        .fillMaxSize()
+        .background(MaterialTheme.colors.background)) {
         NavHost(navController, startDestination = TstScreen.TstHome.route) {
+
             composable(route = TstScreen.TstHome.route) {
+
                 AllTestimonialsLayout(onNavigateUp = {
                     navController.navigate(route = TstScreen.TstCreate.route)
-                })
+                }, testimonial = testimonial)
+
             }
             composable(route = TstScreen.TstCreate.route) {
+
+//                val editViewModelDemo: EditTestimonialViewModel = hiltViewModel()
+
                 TestimonialLayoutDemo(onNavigateTstCreate = {
-                    editViewModel.onEvent(TestimonialEvent.OnSaveClick)
+
+//                    editViewModelDemo.onEvent(TestimonialEvent.OnSaveClick)
                     //navController.navigate(route = TstScreen.TstHome.route)
                 })
             }
         }
     }
+
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
-@Preview
+//@Preview
+//@Composable
+//fun ScreenPreview() {
+//    TestimonialsScreen(navController = rememberNavController(),)
+//}
+
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun ScreenPreview() {
-    TestimonialsPreview(navController = rememberNavController(), hiltViewModel())
+fun TestimonialsContent(state: TestimonialListState) {
+    Scaffold(topBar = {
+        TopAppBar(
+            backgroundColor = Color.Transparent,
+            elevation = 0.dp,
+        ) {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
+            }
+        }
+    }) {
+        when (state) {
+            is TestimonialListState.Error -> TODO()
+            is TestimonialListState.Loading -> LoadingAnimation()
+            is TestimonialListState.Success -> TestimonialsScreen(navController = rememberNavController(),
+                testimonial = state.testimonial)
+        }
+    }
 }
