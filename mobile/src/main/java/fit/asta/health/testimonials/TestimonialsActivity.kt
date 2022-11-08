@@ -25,7 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.databinding.ActivityProfileNewBinding
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.navigation.home.view.component.NoInternetLayout
-import fit.asta.health.testimonials.model.domain.Testimonial
+import fit.asta.health.testimonials.model.network.NetTestimonial
 import fit.asta.health.testimonials.view.AllTestimonialsLayout
 import fit.asta.health.testimonials.view.components.TestimonialLayoutDemo
 import fit.asta.health.testimonials.viewmodel.TestimonialListState
@@ -70,12 +70,14 @@ class TestimonialsActivity : AppCompatActivity() {
 @Composable
 fun TestimonialsScreen(
     navController: NavHostController,
-    testimonial: List<Testimonial>,
+    testimonial: List<NetTestimonial>,
 ) {
 
-    Box(Modifier
-        .fillMaxSize()
-        .background(MaterialTheme.colors.background)) {
+    Box(
+        Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.background)
+    ) {
         NavHost(navController, startDestination = TstScreen.TstHome.route) {
 
             composable(route = TstScreen.TstHome.route) {
@@ -124,8 +126,10 @@ fun TestimonialsContent(state: TestimonialListState) {
         when (state) {
             is TestimonialListState.Error -> NoInternetLayout()
             is TestimonialListState.Loading -> LoadingAnimation()
-            is TestimonialListState.Success -> TestimonialsScreen(navController = rememberNavController(),
-                testimonial = state.testimonial)
+            is TestimonialListState.Success -> TestimonialsScreen(
+                navController = rememberNavController(),
+                testimonial = state.testimonial
+            )
         }
     }
 

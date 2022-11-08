@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.testimonials.model.TestimonialRepo
 import fit.asta.health.testimonials.model.network.NetTestimonial
+import fit.asta.health.testimonials.model.network.User
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -77,11 +78,12 @@ class EditTestimonialViewModel
                     NetTestimonial(
                         apv = false,
                         id = netTestimonial?.id ?: "",
-                        mda = listOf(),
+                        media = listOf(),
                         rank = -1,
-                        text = testimonial,
-                        ttl = title,
-                        uid = authRepo.getUser()?.uid ?: ""
+                        testimonial = testimonial,
+                        title = title,
+                        uid = authRepo.getUser()?.uid ?: "",
+                        User("", "", "", "")
                     )
                 )
             }

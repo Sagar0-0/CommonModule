@@ -16,22 +16,35 @@ data class NetTestimonial(
     @SerializedName("id")
     val id: String,
     @SerializedName("mda")
-    val mda: List<Mda>,
+    val media: List<Media>,
     @SerializedName("rank")
     val rank: Int,
     @SerializedName("text")
-    val text: String,
+    val testimonial: String,
     @SerializedName("ttl")
-    val ttl: String,
+    val title: String,
     @SerializedName("uid")
-    val uid: String
+    val uid: String,
+    @SerializedName("user")
+    val user: User
 )
 
-data class Mda(
+data class Media(
     @SerializedName("ttl")
-    val ttl: String,
+    val title: String,
     @SerializedName("type")
     val type: Int,
+    @SerializedName("url")
+    val url: String
+)
+
+data class User(
+    @SerializedName("name")
+    val name: String,
+    @SerializedName("org")
+    val org: String,
+    @SerializedName("role")
+    val role: String,
     @SerializedName("url")
     val url: String
 )
