@@ -6,17 +6,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -73,32 +65,31 @@ fun TestimonialsScreen(
     testimonial: List<NetTestimonial>,
 ) {
 
-    Box(
-        Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colors.background)
-    ) {
-        NavHost(navController, startDestination = TstScreen.TstHome.route) {
 
-            composable(route = TstScreen.TstHome.route) {
+    NavHost(navController, startDestination = TstScreen.TstHome.route) {
 
-                AllTestimonialsLayout(onNavigateUp = {
-                    navController.navigate(route = TstScreen.TstCreate.route)
-                }, testimonial = testimonial)
+        composable(route = TstScreen.TstHome.route) {
 
-            }
-            composable(route = TstScreen.TstCreate.route) {
+            AllTestimonialsLayout(onNavigateUp = {
+                navController.navigate(route = TstScreen.TstCreate.route)
+            }, testimonial = testimonial, onNavigateBack = {
+                navController.popBackStack()
+            })
+
+        }
+        composable(route = TstScreen.TstCreate.route) {
 
 //                val editViewModelDemo: EditTestimonialViewModel = hiltViewModel()
 
-                TestimonialLayoutDemo(onNavigateTstCreate = {
+            TestimonialLayoutDemo(onNavigateTstCreate = {
 
 //                    editViewModelDemo.onEvent(TestimonialEvent.OnSaveClick)
-                    //navController.navigate(route = TstScreen.TstHome.route)
-                })
-            }
+                //navController.navigate(route = TstScreen.TstHome.route)
+                navController.popBackStack()
+            })
         }
     }
+
 
 }
 
@@ -113,24 +104,12 @@ fun TestimonialsScreen(
 @Composable
 fun TestimonialsContent(state: TestimonialListState) {
 
-    Scaffold(topBar = {
-        TopAppBar(
-            backgroundColor = Color.Transparent,
-            elevation = 0.dp,
-        ) {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
-            }
-        }
-    }) {
-        when (state) {
-            is TestimonialListState.Error -> NoInternetLayout()
-            is TestimonialListState.Loading -> LoadingAnimation()
-            is TestimonialListState.Success -> TestimonialsScreen(
-                navController = rememberNavController(),
-                testimonial = state.testimonial
-            )
-        }
+    when (state) {
+        is TestimonialListState.Error -> NoInternetLayout()
+        is TestimonialListState.Loading -> LoadingAnimation()
+        is TestimonialListState.Success -> TestimonialsScreen(navController = rememberNavController(),
+            testimonial = state.testimonial)
     }
+
 
 }

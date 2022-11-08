@@ -23,7 +23,11 @@ import fit.asta.health.testimonials.view.components.TestimonialsCardLayout
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AllTestimonialsLayout(onNavigateUp: () -> Unit, testimonial: List<NetTestimonial>) {
+fun AllTestimonialsLayout(
+    onNavigateUp: () -> Unit,
+    testimonial: List<NetTestimonial>,
+    onNavigateBack: () -> Unit,
+) {
     Scaffold(content = {
         Column(
             Modifier
@@ -34,7 +38,12 @@ fun AllTestimonialsLayout(onNavigateUp: () -> Unit, testimonial: List<NetTestimo
         ) {
 
             testimonial.forEach { testData ->
-                TestimonialsCardLayout(cardTitle = testData.title, cardTst = testData.testimonial)
+                TestimonialsCardLayout(cardTitle = testData.title,
+                    cardTst = testData.testimonial,
+                    user = testData.user.name,
+                    userOrg = testData.user.org,
+                    userRole = testData.user.role,
+                    model = testData.user.url)
             }
 
         }
@@ -59,7 +68,7 @@ fun AllTestimonialsLayout(onNavigateUp: () -> Unit, testimonial: List<NetTestimo
                 fontSize = 20.sp
             )
         }, navigationIcon = {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = onNavigateBack) {
                 Icon(Icons.Outlined.NavigateBefore, "back", tint = Color(0xff0088FF))
             }
         })
