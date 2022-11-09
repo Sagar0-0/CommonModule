@@ -25,7 +25,7 @@ fun UpdateButton() {
         .clip(shape = RectangleShape),
         shape = RoundedCornerShape(5.dp),
         colors = CardDefaults.cardColors(Color(0xff0088FF))) {
-        Text(text = "UPDATE",
+        Text(text = "SUBMIT",
             fontFamily = FontFamily.Default,
             fontSize = 14.sp,
             fontWeight = FontWeight.Medium,

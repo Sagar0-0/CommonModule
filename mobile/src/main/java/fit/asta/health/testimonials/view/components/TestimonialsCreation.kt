@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -89,6 +90,7 @@ fun TestimonialTitle(
     }
 }
 
+@Preview
 @Composable
 fun TestimonialType() {
 
@@ -106,42 +108,52 @@ fun TestimonialType() {
 fun TestimonialsRadioButton(selectionTypeText: String, radioButtonList: List<ButtonListTypes>) {
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioButtonList[0]) }
 
-    androidx.compose.material3.Card(modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(width = 1.dp, color = Color(0xffDFE6ED))) {
-        Column(Modifier
-            .fillMaxWidth()
-            .padding(start = 16.dp)) {
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(Modifier.fillMaxWidth()) {
-                Text(text = selectionTypeText,
-                    color = Color(0x99000000),
-                    fontSize = 14.sp,
-                    lineHeight = 19.6.sp,
-                    fontWeight = FontWeight.Bold)
-            }
-            FlowRow(Modifier.fillMaxWidth()) {
-                radioButtonList.forEach { index ->
-                    Row(horizontalArrangement = Arrangement.SpaceEvenly,
-                        verticalAlignment = Alignment.CenterVertically) {
-                        Box(modifier = Modifier.padding(top = 9.5.dp, bottom = 9.5.dp)) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                RadioButton(selected = (index == selectedOption), onClick = {
-                                    onOptionSelected(index)
-                                }, colors = RadioButtonDefaults.colors(Color(0xff2F80ED)))
-                                androidx.compose.material3.Text(text = index.buttonType,
-                                    fontSize = 16.sp,
-                                    lineHeight = 22.4.sp,
-                                    color = Color(0xff575757))
+    Column(Modifier.fillMaxWidth()) {
+        androidx.compose.material3.Card(modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(8.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            border = BorderStroke(width = 1.dp, color = Color(0xffDFE6ED))) {
+            Column(Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp)) {
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(Modifier.fillMaxWidth()) {
+                    Text(text = selectionTypeText,
+                        color = Color(0x99000000),
+                        fontSize = 14.sp,
+                        lineHeight = 19.6.sp,
+                        fontWeight = FontWeight.Bold)
+                }
+                FlowRow(Modifier.fillMaxWidth()) {
+                    radioButtonList.forEach { index ->
+                        Row(horizontalArrangement = Arrangement.SpaceEvenly,
+                            verticalAlignment = Alignment.CenterVertically) {
+                            Box(modifier = Modifier.padding(top = 9.5.dp, bottom = 9.5.dp)) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    RadioButton(selected = (index == selectedOption), onClick = {
+                                        onOptionSelected(index)
+                                    }, colors = RadioButtonDefaults.colors(Color(0xff2F80ED)))
+                                    androidx.compose.material3.Text(text = index.buttonType,
+                                        fontSize = 16.sp,
+                                        lineHeight = 22.4.sp,
+                                        color = Color(0xff575757))
+                                }
                             }
                         }
                     }
                 }
             }
         }
+
+        if (selectedOption == radioButtonList[0] || selectedOption == radioButtonList[2]) {
+            Spacer(modifier = Modifier.height(16.dp))
+
+            MyTextField(textFieldTitle = "Write your Testimonials")
+        }
+
     }
+
 }
 
 
@@ -170,10 +182,6 @@ fun TestimonialLayoutDemo(onNavigateTstCreate: () -> Unit) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        MyTextField(textFieldTitle = "Write your Testimonials")
-
-        Spacer(modifier = Modifier.height(16.dp))
-
         TestimonialTitle(placeHolder = "Lisa")
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -195,6 +203,7 @@ fun TestimonialLayoutDemo(onNavigateTstCreate: () -> Unit) {
         Spacer(modifier = Modifier.height(16.dp))
 
         UpdateButton()
+
     }
 }
 
