@@ -5,8 +5,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -92,20 +96,24 @@ fun TestimonialTitle(
 
 @Preview
 @Composable
-fun TestimonialType() {
+fun TestimonialType(contentTestType: @Composable() (() -> Unit)? = null) {
 
     val radioButtonList = listOf(ButtonListTypes(buttonType = "Written"),
         ButtonListTypes(buttonType = "Video"),
         ButtonListTypes(buttonType = "Image"))
 
     TestimonialsRadioButton(selectionTypeText = "Type of Testimonials",
-        radioButtonList = radioButtonList)
+        radioButtonList = radioButtonList, content = contentTestType)
 
 }
 
 
 @Composable
-fun TestimonialsRadioButton(selectionTypeText: String, radioButtonList: List<ButtonListTypes>) {
+fun TestimonialsRadioButton(
+    selectionTypeText: String,
+    radioButtonList: List<ButtonListTypes>,
+    content: @Composable() (() -> Unit)? = null,
+) {
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioButtonList[0]) }
 
     Column(Modifier.fillMaxWidth()) {
@@ -149,7 +157,7 @@ fun TestimonialsRadioButton(selectionTypeText: String, radioButtonList: List<But
         if (selectedOption == radioButtonList[0] || selectedOption == radioButtonList[2]) {
             Spacer(modifier = Modifier.height(16.dp))
 
-            MyTextField(textFieldTitle = "Write your Testimonials")
+            content?.let { it() }
         }
 
     }
@@ -269,5 +277,41 @@ fun Modifier.dashedBorder(width: Dp, radius: Dp, color: Color) = drawBehind {
             radius.toPx(),
             radius.toPx(),
             paint)
+    }
+}
+
+
+@Composable
+fun CustomOutlinedTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String = "",
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    showError: Boolean = false,
+    errorMessage: String = "",
+) {
+    Column(Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center) {
+        OutlinedTextField(value = value,
+            onValueChange = onValueChange,
+            label = { Text(text = label) },
+            isError = showError,
+            trailingIcon = {
+                if (showError) Icon(imageVector = Icons.Filled.Error,
+                    contentDescription = "Show Error Icon")
+            },
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions,
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth())
+        if (showError) {
+            Text(text = errorMessage,
+                color = MaterialTheme.colors.error,
+                style = MaterialTheme.typography.caption,
+                modifier = Modifier
+                    .fillMaxWidth())
+        }
     }
 }
