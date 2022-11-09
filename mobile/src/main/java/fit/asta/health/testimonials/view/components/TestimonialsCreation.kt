@@ -98,6 +98,7 @@ fun TestimonialType() {
 
     TestimonialsRadioButton(selectionTypeText = "Type of Testimonials",
         radioButtonList = radioButtonList)
+
 }
 
 
@@ -122,15 +123,15 @@ fun TestimonialsRadioButton(selectionTypeText: String, radioButtonList: List<But
                     fontWeight = FontWeight.Bold)
             }
             FlowRow(Modifier.fillMaxWidth()) {
-                radioButtonList.forEach { text ->
+                radioButtonList.forEach { index ->
                     Row(horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically) {
                         Box(modifier = Modifier.padding(top = 9.5.dp, bottom = 9.5.dp)) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                RadioButton(selected = (text == selectedOption), onClick = {
-                                    onOptionSelected(text)
+                                RadioButton(selected = (index == selectedOption), onClick = {
+                                    onOptionSelected(index)
                                 }, colors = RadioButtonDefaults.colors(Color(0xff2F80ED)))
-                                androidx.compose.material3.Text(text = text.buttonType,
+                                androidx.compose.material3.Text(text = index.buttonType,
                                     fontSize = 16.sp,
                                     lineHeight = 22.4.sp,
                                     color = Color(0xff575757))
