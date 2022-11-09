@@ -1,12 +1,17 @@
 package fit.asta.health.testimonials.viewmodel
 
-import fit.asta.health.network.data.Status
-import fit.asta.health.testimonials.model.network.NetTestimonial
 
-
-sealed class EditTestimonialState {
-    object Loading : EditTestimonialState()
-    class Success(val testimonial: NetTestimonial) : EditTestimonialState()
-    class Update(val status: Status) : EditTestimonialState()
-    class Error(val error: Throwable) : EditTestimonialState()
-}
+data class EditTestimonialState(
+    val type: Int = -1,
+    val typeError: String? = null,
+    val title: String = "",
+    val titleError: String? = null,
+    val subTitle: String = "",
+    val subTitleError: String? = null,
+    val testimonial: String = "",
+    val testimonialError: String? = null,
+    val role: String = "",
+    val roleError: String? = null,
+    val organization: String = "",
+    val organizationError: String? = null
+)

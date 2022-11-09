@@ -122,9 +122,10 @@ fun TestimonialsRadioButton(
             elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),
             border = BorderStroke(width = 1.dp, color = Color(0xffDFE6ED))) {
-            Column(Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp)) {
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp)) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(Modifier.fillMaxWidth()) {
                     Text(text = selectionTypeText,
@@ -167,10 +168,11 @@ fun TestimonialsRadioButton(
 
 @Composable
 fun TestimonialLayoutDemo(onNavigateTstCreate: () -> Unit) {
-    Column(Modifier
-        .fillMaxWidth()
-        .padding(16.dp)
-        .verticalScroll(rememberScrollState())) {
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState())) {
 
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
             androidx.compose.material3.IconButton(onClick = onNavigateTstCreate) {
@@ -182,27 +184,23 @@ fun TestimonialLayoutDemo(onNavigateTstCreate: () -> Unit) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        TestimonialTitle(placeHolder = "Title")
-
-        Spacer(modifier = Modifier.height(16.dp))
-
         TestimonialType()
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        TestimonialTitle(placeHolder = "Lisa")
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        TestimonialTitle(placeHolder = "Role")
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        TestimonialTitle(placeHolder = "Organisation")
+        TestimonialTitle(placeHolder = "Title")
 
         Spacer(modifier = Modifier.height(16.dp))
 
         TestimonialTitle(placeHolder = "Subtitle")
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        TestimonialTitle(placeHolder = "Your Organization Name")
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        TestimonialTitle(placeHolder = "Role at your Organization")
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -229,9 +227,10 @@ fun UploadFiles(modifier: Modifier = Modifier) {
         Box(modifier = Modifier.dashedBorder(width = 1.dp,
             radius = 8.dp,
             color = Color(0xff8694A9))) {
-            Row(Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically) {
                 Text(text = "Upload Image or Video",

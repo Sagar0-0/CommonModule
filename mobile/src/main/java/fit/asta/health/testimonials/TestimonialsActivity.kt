@@ -132,11 +132,11 @@ fun TestimonialsContent(state: TestimonialListState) {
     when (state) {
         is TestimonialListState.Error -> NoInternetLayout()
         is TestimonialListState.Loading -> LoadingAnimation()
-        is TestimonialListState.Success -> TestimonialsScreen(navController = rememberNavController(),
-            testimonial = state.testimonial)
+        is TestimonialListState.Success -> TestimonialsScreen(
+            navController = rememberNavController(),
+            testimonial = state.testimonial
+        )
     }
-
-
 }
 
 @Composable
@@ -191,96 +191,110 @@ fun ShowForm(onNavigateTstCreate: () -> Unit) {
         org: String,
     ) {
         if (validateData(title, testimonials, userName, role, org)) {
-            Log.d(MainActivity::class.java.simpleName,
-                "Title:$title, testimonials:$testimonials, userName:$userName, role:$role, org:$org")
+            Log.d(
+                MainActivity::class.java.simpleName,
+                "Title:$title, testimonials:$testimonials, userName:$userName, role:$role, org:$org"
+            )
         } else {
             Toast.makeText(context, "Please, review fields", Toast.LENGTH_LONG).show()
         }
     }
 
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(16.dp)
-        .verticalScroll(scrollState),
-        verticalArrangement = Arrangement.Center) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .verticalScroll(scrollState),
+        verticalArrangement = Arrangement.Center
+    ) {
 
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
             IconButton(onClick = onNavigateTstCreate) {
-                Icon(painter = painterResource(id = R.drawable.removeicon),
+                Icon(
+                    painter = painterResource(id = R.drawable.removeicon),
                     contentDescription = null,
-                    Modifier.size(24.dp))
+                    Modifier.size(24.dp)
+                )
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        CustomOutlinedTextField(value = title,
-            onValueChange = { title = it },
-            label = "Title",
-            showError = !validateTitle,
-            errorMessage = validateTitleError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Next),
-            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }))
-
-        Spacer(modifier = Modifier.height(16.dp))
-
         TestimonialType(contentTestType = {
-            CustomOutlinedTextField(value = testimonials,
+
+            CustomOutlinedTextField(
+                value = title,
+                onValueChange = { title = it },
+                label = "Title",
+                showError = !validateTitle,
+                errorMessage = validateTitleError,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) })
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            CustomOutlinedTextField(
+                value = testimonials,
                 onValueChange = { testimonials = it },
                 label = "Testimonials",
                 showError = !validateTestimonials,
                 errorMessage = validateTestimonialsError,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next),
-                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }))
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) })
+            )
         })
 
-
         Spacer(modifier = Modifier.height(16.dp))
 
-        CustomOutlinedTextField(value = userName,
-            onValueChange = { userName = it },
-            label = "User Name",
-            showError = !validateUserName,
-            errorMessage = validateUserNameError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Next),
-            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }))
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        CustomOutlinedTextField(value = role,
-            onValueChange = { role = it },
-            label = "Role",
-            showError = !validateRole,
-            errorMessage = validateRoleError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Next),
-            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }))
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        CustomOutlinedTextField(value = org,
+        CustomOutlinedTextField(
+            value = org,
             onValueChange = { org = it },
             label = "Organisation",
             showError = !validateOrg,
             errorMessage = validateOrgError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Next),
-            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }))
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next
+            ),
+            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) })
+        )
 
+        Spacer(modifier = Modifier.height(16.dp))
+
+        CustomOutlinedTextField(
+            value = role,
+            onValueChange = { role = it },
+            label = "Role",
+            showError = !validateRole,
+            errorMessage = validateRoleError,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next
+            ),
+            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) })
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         UploadFiles()
 
-        Button(onClick = { submit(title, testimonials, userName, role, org) },
+        Button(
+            onClick = { submit(title, testimonials, userName, role, org) },
             modifier = Modifier
                 .fillMaxWidth(1f)
                 .padding(16.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue,
-                contentColor = Color.White)) {
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.Blue,
+                contentColor = Color.White
+            )
+        ) {
             Text(text = "Submit", fontSize = 16.sp)
         }
     }

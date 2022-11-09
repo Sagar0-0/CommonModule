@@ -2,7 +2,11 @@ package fit.asta.health.testimonials.viewmodel
 
 
 sealed class EditTestimonialEvent {
+    data class OnTypeChange(val type: Int) : EditTestimonialEvent()
     data class OnTitleChange(val title: String) : EditTestimonialEvent()
+    data class OnSubTitleChange(val subTitle: String) : EditTestimonialEvent()
     data class OnTestimonialChange(val testimonial: String) : EditTestimonialEvent()
-    object OnSaveClick : EditTestimonialEvent()
+    data class OnRoleChange(val role: String) : EditTestimonialEvent()
+    data class OnOrgChange(val org: String) : EditTestimonialEvent()
+    object OnSubmit : EditTestimonialEvent()
 }
