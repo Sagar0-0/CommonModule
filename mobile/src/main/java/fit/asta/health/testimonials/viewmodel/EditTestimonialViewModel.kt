@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.testimonials.model.TestimonialRepo
 import fit.asta.health.testimonials.model.network.NetTestimonial
+import fit.asta.health.testimonials.model.network.User
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,6 +39,8 @@ class EditTestimonialViewModel
     private val _validationEventChannel = Channel<ValidationEvent>()
     val validationEvents = _validationEventChannel.receiveAsFlow()
 
+    var testimonialId = ""
+
     init {
 
         authRepo.getUser()?.let {
@@ -50,6 +53,7 @@ class EditTestimonialViewModel
             testimonialRepo.getTestimonial(userId).catch { exception ->
                 mutableState.value = GetTestimonialState.Error(exception)
             }.collect {
+                testimonialId = it.testimonial.id
                 mutableState.value = GetTestimonialState.Success(it.testimonial)
             }
         }
@@ -92,7 +96,27 @@ class EditTestimonialViewModel
 
     private fun submit() {
 
-        //updateTestimonial(stateSave)
+        //TODO - Error Handling and Validation required
+
+        authRepo.getUser()?.let {
+            updateTestimonial(
+                NetTestimonial(
+                    id = testimonialId,
+                    apv = false,
+                    rank = -1,
+                    title = stateSave.title,
+                    testimonial = stateSave.testimonial,
+                    uid = it.uid,
+                    user = User(
+                        name = it.name!!,
+                        role = stateSave.role,
+                        org = stateSave.organization,
+                        url = it.photoUrl.toString()
+                    ),
+                    media = listOf()
+                )
+            )
+        }
     }
 
     sealed class ValidationEvent {
