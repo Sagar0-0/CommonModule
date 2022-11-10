@@ -19,10 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.testimonials.model.network.NetTestimonial
-import fit.asta.health.testimonials.model.network.TestimonialType
-import fit.asta.health.testimonials.view.components.BeforeAndAfterCard
 import fit.asta.health.testimonials.view.components.TestimonialsCardLayout
-import fit.asta.health.testimonials.view.components.TestimonialsVideoCard
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,21 +39,33 @@ fun AllTestimonialsLayout(
         ) {
 
             testimonial.forEach { testimonial ->
-                when (testimonial.type) {
-                    TestimonialType.TEXT -> {
-                        TestimonialsCardLayout(
-                            cardTitle = testimonial.title,
-                            cardTst = testimonial.testimonial,
-                            user = testimonial.user.name,
-                            userOrg = testimonial.user.org,
-                            userRole = testimonial.user.role,
-                            model = testimonial.user.url
-                        )
-                    }
-                    TestimonialType.IMAGE -> BeforeAndAfterCard(testimonial)
-                    TestimonialType.VIDEO -> TestimonialsVideoCard(testimonial)
-                }
+                TestimonialsCardLayout(
+                    cardTitle = testimonial.title,
+                    cardTst = testimonial.testimonial,
+                    user = testimonial.user.name,
+                    userOrg = testimonial.user.org,
+                    userRole = testimonial.user.role,
+                    model = testimonial.user.url
+                )
             }
+
+//            testimonial.forEach { testimonial ->
+//                when (testimonial.type) {
+//                    TestimonialType.TEXT -> {
+//                        TestimonialsCardLayout(
+//                            cardTitle = testimonial.title,
+//                            cardTst = testimonial.testimonial,
+//                            user = testimonial.user.name,
+//                            userOrg = testimonial.user.org,
+//                            userRole = testimonial.user.role,
+//                            model = testimonial.user.url
+//                        )
+//                    }
+//                    TestimonialType.IMAGE -> BeforeAndAfterCard(testimonial)
+//                    TestimonialType.VIDEO -> TestimonialsVideoCard(testimonial)
+//                }
+//            }
+
         }
     }, floatingActionButton = {
         FloatingActionButton(

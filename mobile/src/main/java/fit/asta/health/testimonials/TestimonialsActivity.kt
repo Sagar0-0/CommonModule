@@ -40,6 +40,7 @@ import fit.asta.health.databinding.ActivityProfileNewBinding
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.navigation.home.view.component.MainActivity
 import fit.asta.health.navigation.home.view.component.NoInternetLayout
+import fit.asta.health.profile.view.components.ButtonListTypes
 import fit.asta.health.testimonials.model.network.NetTestimonial
 import fit.asta.health.testimonials.view.AllTestimonialsLayout
 import fit.asta.health.testimonials.view.components.CustomOutlinedTextField
@@ -133,17 +134,23 @@ fun TestimonialsContent(state: TestimonialListState) {
     when (state) {
         is TestimonialListState.Error -> NoInternetLayout()
         is TestimonialListState.Loading -> LoadingAnimation()
-        is TestimonialListState.Success -> TestimonialsScreen(
-            navController = rememberNavController(),
-            testimonial = state.testimonial
-        )
+        is TestimonialListState.Success -> TestimonialsScreen(navController = rememberNavController(),
+            testimonial = state.testimonial)
     }
 }
 
 @Composable
 fun ShowForm(onNavigateTstCreate: () -> Unit) {
 
+    val radioButtonList = listOf(ButtonListTypes(buttonType = "Written"),
+        ButtonListTypes(buttonType = "Video"),
+        ButtonListTypes(buttonType = "Image"))
+
+    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioButtonList[0]) }
+
     val maxChar = 50
+
+    var enableButton by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
@@ -151,18 +158,20 @@ fun ShowForm(onNavigateTstCreate: () -> Unit) {
 
     var title by remember { mutableStateOf("") }
     var testimonials by remember { mutableStateOf("") }
-    var userName by remember { mutableStateOf("") }
     var role by remember { mutableStateOf("") }
     var org by remember { mutableStateOf("") }
 
     var validateTitle by rememberSaveable { mutableStateOf(true) }
     var validateTestimonials by rememberSaveable { mutableStateOf(true) }
-    var validateUserName by rememberSaveable { mutableStateOf(true) }
     var validateRole by rememberSaveable { mutableStateOf(true) }
     var validateOrg by rememberSaveable { mutableStateOf(true) }
 
     val validateTitleError = "Please, input a Title"
-    val validateTestimonialsError = "Please, write your Testimonial within Range"
+    val validateTestimonialsError = if (testimonials.isEmpty()) {
+        "Please, write your Testimonial"
+    } else {
+        "Please, write your Testimonial within ${testimonials.length}/$maxChar"
+    }
     val validateUserNameError = "Please, input a valid Name"
     val validateRoleError = "Please, input a Role"
     val validateOrgError = "Please, input a Organisation"
@@ -170,52 +179,46 @@ fun ShowForm(onNavigateTstCreate: () -> Unit) {
     fun validateData(
         title: String,
         testimonials: String,
-        userName: String,
         role: String,
         org: String,
     ): Boolean {
 
         validateTitle = title.isNotBlank()
-        validateTestimonials = testimonials.isNotBlank() && testimonials.length < 50
-        validateUserName = userName.isNotBlank() && userName.any { !it.isDigit() }
+        validateTestimonials = testimonials.isNotBlank() && testimonials.length < maxChar
         validateOrg = org.isNotBlank()
         validateRole = role.isNotBlank()
 
-        return validateTitle && validateTestimonials && validateUserName && validateOrg && validateRole
+        return validateTitle && validateTestimonials && validateOrg && validateRole
+
     }
 
     fun submit(
         title: String,
         testimonials: String,
-        userName: String,
         role: String,
         org: String,
     ) {
-        if (validateData(title, testimonials, userName, role, org)) {
-            Log.d(
-                MainActivity::class.java.simpleName,
-                "Title:$title, testimonials:$testimonials, userName:$userName, role:$role, org:$org"
-            )
+        enableButton = if (validateData(title, testimonials, role, org)) {
+            Log.d(MainActivity::class.java.simpleName,
+                "Title:$title, testimonials:$testimonials, role:$role, org:$org")
+            true
         } else {
             Toast.makeText(context, "Please, review fields", Toast.LENGTH_LONG).show()
+            false
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .verticalScroll(scrollState),
-        verticalArrangement = Arrangement.Center
-    ) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(16.dp)
+        .verticalScroll(scrollState),
+        verticalArrangement = Arrangement.Center) {
 
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
             IconButton(onClick = onNavigateTstCreate) {
-                Icon(
-                    painter = painterResource(id = R.drawable.removeicon),
+                Icon(painter = painterResource(id = R.drawable.removeicon),
                     contentDescription = null,
-                    Modifier.size(24.dp)
-                )
+                    Modifier.size(24.dp))
             }
         }
 
@@ -223,80 +226,70 @@ fun ShowForm(onNavigateTstCreate: () -> Unit) {
 
         TestimonialType(contentTestType = {
 
-            CustomOutlinedTextField(
-                value = title,
+            CustomOutlinedTextField(value = testimonials,
+                onValueChange = {
+                    if (it.length < maxChar) {
+                        testimonials = it
+                    }
+                },
+                label = "Testimonials",
+                showError = !validateTestimonials,
+                errorMessage = validateTestimonialsError,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next),
+                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
+                modifier = Modifier.height(120.dp))
+        }, titleTestimonial = {
+            CustomOutlinedTextField(value = title,
                 onValueChange = { title = it },
                 label = "Title",
                 showError = !validateTitle,
                 errorMessage = validateTitleError,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next
-                ),
-                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) })
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            CustomOutlinedTextField(
-                value = testimonials,
-                onValueChange = { testimonials = it },
-                label = "Testimonials",
-                showError = !validateTestimonials,
-                errorMessage = validateTestimonialsError,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next
-                ),
-                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) })
-            )
-        })
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next),
+                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }))
+        }, selectedOption = selectedOption, onOptionSelected = onOptionSelected)
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        CustomOutlinedTextField(
-            value = org,
+        CustomOutlinedTextField(value = org,
             onValueChange = { org = it },
             label = "Organisation",
             showError = !validateOrg,
             errorMessage = validateOrgError,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Next
-            ),
-            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) })
-        )
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next),
+            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }))
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        CustomOutlinedTextField(
-            value = role,
+        CustomOutlinedTextField(value = role,
             onValueChange = { role = it },
             label = "Role",
             showError = !validateRole,
             errorMessage = validateRoleError,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Next
-            ),
-            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) })
-        )
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next),
+            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }))
 
-        Spacer(modifier = Modifier.height(16.dp))
 
-        UploadFiles()
+        if (selectedOption == radioButtonList[1] || selectedOption == radioButtonList[2]) {
 
-        Button(
-            onClick = { submit(title, testimonials, userName, role, org) },
+            Spacer(modifier = Modifier.height(16.dp))
+
+            UploadFiles()
+        }
+
+        Button(onClick = { submit(title, testimonials, role, org) },
             modifier = Modifier
                 .fillMaxWidth(1f)
                 .padding(16.dp),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Blue,
-                contentColor = Color.White
-            )
-        ) {
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue,
+                contentColor = Color.White),
+            enabled = enableButton) {
             Text(text = "Submit", fontSize = 16.sp)
         }
+
     }
+
 }

@@ -3,11 +3,9 @@ package fit.asta.health.testimonials.view.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Error
@@ -24,14 +22,12 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.R
 import fit.asta.health.profile.view.components.ButtonListTypes
-import fit.asta.health.profile.view.components.UpdateButton
 
 
 @Composable
@@ -94,38 +90,49 @@ fun TestimonialTitle(
     }
 }
 
-@Preview
 @Composable
-fun TestimonialType(contentTestType: @Composable() (() -> Unit)? = null) {
+fun TestimonialType(
+    contentTestType: @Composable() (() -> Unit)? = null,
+    titleTestimonial: @Composable() (() -> Unit)? = null,
+    selectedOption: ButtonListTypes,
+    onOptionSelected: (ButtonListTypes) -> Unit,
+) {
 
     val radioButtonList = listOf(ButtonListTypes(buttonType = "Written"),
         ButtonListTypes(buttonType = "Video"),
         ButtonListTypes(buttonType = "Image"))
 
     TestimonialsRadioButton(selectionTypeText = "Type of Testimonials",
-        radioButtonList = radioButtonList, content = contentTestType)
+        radioButtonList = radioButtonList,
+        content = contentTestType,
+        titleTestimonial = titleTestimonial,
+        selectedOption = selectedOption,
+        onOptionSelected = onOptionSelected)
 
 }
 
 
 @Composable
 fun TestimonialsRadioButton(
+    selectedOption: ButtonListTypes,
+    onOptionSelected: (ButtonListTypes) -> Unit,
     selectionTypeText: String,
     radioButtonList: List<ButtonListTypes>,
     content: @Composable() (() -> Unit)? = null,
+    titleTestimonial: @Composable() (() -> Unit)? = null,
 ) {
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioButtonList[0]) }
 
     Column(Modifier.fillMaxWidth()) {
+
         androidx.compose.material3.Card(modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(8.dp),
             elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),
             border = BorderStroke(width = 1.dp, color = Color(0xffDFE6ED))) {
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp)) {
+
+            Column(Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp)) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(Modifier.fillMaxWidth()) {
                     Text(text = selectionTypeText,
@@ -155,6 +162,11 @@ fun TestimonialsRadioButton(
             }
         }
 
+        Spacer(modifier = Modifier.height(16.dp))
+
+        titleTestimonial?.let { it() }
+
+
         if (selectedOption == radioButtonList[0] || selectedOption == radioButtonList[2]) {
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -166,52 +178,51 @@ fun TestimonialsRadioButton(
 }
 
 
-@Composable
-fun TestimonialLayoutDemo(onNavigateTstCreate: () -> Unit) {
-    Column(
-        Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState())) {
-
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
-            androidx.compose.material3.IconButton(onClick = onNavigateTstCreate) {
-                androidx.compose.material3.Icon(painter = painterResource(id = R.drawable.removeicon),
-                    contentDescription = null,
-                    Modifier.size(24.dp))
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        TestimonialType()
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        TestimonialTitle(placeHolder = "Title")
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        TestimonialTitle(placeHolder = "Subtitle")
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        TestimonialTitle(placeHolder = "Your Organization Name")
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        TestimonialTitle(placeHolder = "Role at your Organization")
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        UploadFiles()
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        UpdateButton()
-
-    }
-}
+//@Composable
+//fun TestimonialLayoutDemo(onNavigateTstCreate: () -> Unit) {
+//    Column(Modifier
+//        .fillMaxWidth()
+//        .padding(16.dp)
+//        .verticalScroll(rememberScrollState())) {
+//
+//        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
+//            androidx.compose.material3.IconButton(onClick = onNavigateTstCreate) {
+//                androidx.compose.material3.Icon(painter = painterResource(id = R.drawable.removeicon),
+//                    contentDescription = null,
+//                    Modifier.size(24.dp))
+//            }
+//        }
+//
+//        Spacer(modifier = Modifier.height(16.dp))
+//
+//        TestimonialType()
+//
+//        Spacer(modifier = Modifier.height(16.dp))
+//
+//        TestimonialTitle(placeHolder = "Title")
+//
+//        Spacer(modifier = Modifier.height(16.dp))
+//
+//        TestimonialTitle(placeHolder = "Subtitle")
+//
+//        Spacer(modifier = Modifier.height(16.dp))
+//
+//        TestimonialTitle(placeHolder = "Your Organization Name")
+//
+//        Spacer(modifier = Modifier.height(16.dp))
+//
+//        TestimonialTitle(placeHolder = "Role at your Organization")
+//
+//        Spacer(modifier = Modifier.height(16.dp))
+//
+//        UploadFiles()
+//
+//        Spacer(modifier = Modifier.height(16.dp))
+//
+//        UpdateButton()
+//
+//    }
+//}
 
 @Composable
 fun UploadFiles(modifier: Modifier = Modifier) {
@@ -227,10 +238,9 @@ fun UploadFiles(modifier: Modifier = Modifier) {
         Box(modifier = Modifier.dashedBorder(width = 1.dp,
             radius = 8.dp,
             color = Color(0xff8694A9))) {
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
+            Row(Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically) {
                 Text(text = "Upload Image or Video",
@@ -282,6 +292,7 @@ fun Modifier.dashedBorder(width: Dp, radius: Dp, color: Color) = drawBehind {
 
 @Composable
 fun CustomOutlinedTextField(
+    modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
     label: String = "",
@@ -290,12 +301,11 @@ fun CustomOutlinedTextField(
     showError: Boolean = false,
     errorMessage: String = "",
 ) {
-    Column(Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center) {
+
+    Column(Modifier.fillMaxWidth()) {
         OutlinedTextField(value = value,
             onValueChange = onValueChange,
-            label = { Text(text = label) },
+            label = { Text(text = label, textAlign = TextAlign.Center) },
             isError = showError,
             trailingIcon = {
                 if (showError) Icon(imageVector = Icons.Filled.Error,
@@ -303,14 +313,21 @@ fun CustomOutlinedTextField(
             },
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions,
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth())
-        if (showError) {
-            Text(text = errorMessage,
-                color = MaterialTheme.colors.error,
-                style = MaterialTheme.typography.caption,
-                modifier = Modifier
-                    .fillMaxWidth())
+            singleLine = false,
+            modifier = modifier.fillMaxWidth())
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+
+            if (showError) {
+                Text(text = errorMessage,
+                    color = MaterialTheme.colors.error,
+                    style = MaterialTheme.typography.caption)
+            }
+
+            if (label == "Testimonials") {
+                Text(text = "${value.length}/50", textAlign = TextAlign.End)
+            }
+
         }
     }
+
 }
