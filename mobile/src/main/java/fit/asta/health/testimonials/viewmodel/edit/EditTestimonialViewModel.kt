@@ -1,4 +1,4 @@
-package fit.asta.health.testimonials.viewmodel
+package fit.asta.health.testimonials.viewmodel.edit
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -101,6 +101,7 @@ class EditTestimonialViewModel
             updateTestimonial(
                 NetTestimonial(
                     id = testimonialId,
+                    type = stateEdit.type,
                     apv = false,
                     rank = -1,
                     title = stateEdit.title,

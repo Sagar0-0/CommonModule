@@ -17,33 +17,42 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
+import fit.asta.health.testimonials.model.network.NetTestimonial
 
-@Preview
+
 @Composable
-fun TestimonialsVideoCard() {
+fun TestimonialsVideoCard(testimonial: NetTestimonial) {
 
-    Card(modifier = Modifier
-        .fillMaxWidth()
-        .padding(16.dp)
-        .clip(RoundedCornerShape(8.dp)),
-        elevation = 10.dp) {
-        Column(Modifier
+    Card(
+        modifier = Modifier
             .fillMaxWidth()
-        ) {
-            Row(Modifier
+            .padding(16.dp)
+            .clip(RoundedCornerShape(8.dp)),
+        elevation = 10.dp
+    ) {
+        Column(
+            Modifier
                 .fillMaxWidth()
-                .padding(16.dp)) {
+        ) {
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
                 Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
-                    Surface(shape = RoundedCornerShape(8.dp),
+                    Surface(
+                        shape = RoundedCornerShape(8.dp),
                         border = BorderStroke(width = 5.dp, color = Color(0xffE0F1FF)),
-                        modifier = Modifier.fillMaxWidth()) {
-                        Image(painter = painterResource(id = R.drawable.weatherimage),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.weatherimage),
                             contentDescription = null,
                             modifier = Modifier.fillMaxWidth(),
-                            contentScale = ContentScale.Crop)
+                            contentScale = ContentScale.Crop
+                        )
                     }
                     PlayButton()
                 }
@@ -56,14 +65,18 @@ fun TestimonialsVideoCard() {
 
 @Composable
 fun PlayButton() {
-    IconButton(onClick = { /*TODO*/ },
+    IconButton(
+        onClick = { /*TODO*/ },
         modifier = Modifier
             .clip(CircleShape)
             .size(42.dp)
-            .background(color = Color.White)) {
-        Icon(painter = painterResource(id = R.drawable.asana_play_img),
+            .background(color = Color.White)
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.asana_play_img),
             contentDescription = null,
             tint = Color(0xff008CFF),
-            modifier = Modifier.size(24.dp))
+            modifier = Modifier.size(24.dp)
+        )
     }
 }

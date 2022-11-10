@@ -15,6 +15,8 @@ data class NetTestimonial(
     val apv: Boolean,
     @SerializedName("id")
     val id: String,
+    @SerializedName("type")
+    val type: TestimonialType,
     @SerializedName("mda")
     val media: List<Media>,
     @SerializedName("rank")
@@ -28,6 +30,10 @@ data class NetTestimonial(
     @SerializedName("user")
     val user: User
 )
+
+enum class TestimonialType {
+    TEXT, IMAGE, VIDEO
+}
 
 data class Media(
     @SerializedName("ttl")

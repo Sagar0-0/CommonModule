@@ -19,7 +19,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.testimonials.model.network.NetTestimonial
+import fit.asta.health.testimonials.model.network.TestimonialType
+import fit.asta.health.testimonials.view.components.BeforeAndAfterCard
 import fit.asta.health.testimonials.view.components.TestimonialsCardLayout
+import fit.asta.health.testimonials.view.components.TestimonialsVideoCard
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,15 +41,22 @@ fun AllTestimonialsLayout(
                 .background(color = Color(0xffF4F6F8))
         ) {
 
-            testimonial.forEach { testData ->
-                TestimonialsCardLayout(cardTitle = testData.title,
-                    cardTst = testData.testimonial,
-                    user = testData.user.name,
-                    userOrg = testData.user.org,
-                    userRole = testData.user.role,
-                    model = testData.user.url)
+            testimonial.forEach { testimonial ->
+                when (testimonial.type) {
+                    TestimonialType.TEXT -> {
+                        TestimonialsCardLayout(
+                            cardTitle = testimonial.title,
+                            cardTst = testimonial.testimonial,
+                            user = testimonial.user.name,
+                            userOrg = testimonial.user.org,
+                            userRole = testimonial.user.role,
+                            model = testimonial.user.url
+                        )
+                    }
+                    TestimonialType.IMAGE -> BeforeAndAfterCard(testimonial)
+                    TestimonialType.VIDEO -> TestimonialsVideoCard(testimonial)
+                }
             }
-
         }
     }, floatingActionButton = {
         FloatingActionButton(

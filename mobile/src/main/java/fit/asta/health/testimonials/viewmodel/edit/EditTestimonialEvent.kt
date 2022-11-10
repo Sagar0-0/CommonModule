@@ -1,8 +1,10 @@
-package fit.asta.health.testimonials.viewmodel
+package fit.asta.health.testimonials.viewmodel.edit
+
+import fit.asta.health.testimonials.model.network.TestimonialType
 
 
 sealed class EditTestimonialEvent {
-    data class OnTypeChange(val type: Int) : EditTestimonialEvent()
+    data class OnTypeChange(val type: TestimonialType) : EditTestimonialEvent()
     data class OnTitleChange(val title: String) : EditTestimonialEvent()
     data class OnSubTitleChange(val subTitle: String) : EditTestimonialEvent()
     data class OnTestimonialChange(val testimonial: String) : EditTestimonialEvent()

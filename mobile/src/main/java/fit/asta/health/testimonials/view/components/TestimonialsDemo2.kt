@@ -67,7 +67,6 @@ fun TestimonialsCardLayout(
                     }
 
                     ArtistCard2(user, userOrg, userRole, model = "$domainName$model")
-
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))

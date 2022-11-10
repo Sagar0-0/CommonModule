@@ -47,6 +47,7 @@ import fit.asta.health.testimonials.view.components.TestimonialType
 import fit.asta.health.testimonials.view.components.UploadFiles
 import fit.asta.health.testimonials.viewmodel.TestimonialListState
 import fit.asta.health.testimonials.viewmodel.TestimonialListViewModel
+import fit.asta.health.testimonials.viewmodel.edit.EditTestimonialViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -57,7 +58,7 @@ class TestimonialsActivity : AppCompatActivity() {
     private lateinit var navController: NavHostController
     private lateinit var binding: ActivityProfileNewBinding
     private val viewModel: TestimonialListViewModel by viewModels()
-    //private val editViewModel: EditTestimonialViewModel by viewModels()
+    private val editViewModel: EditTestimonialViewModel by viewModels()
 
     companion object {
 
