@@ -106,7 +106,7 @@ class EditTestimonialViewModel
                     rank = -1,
                     title = stateEdit.title,
                     testimonial = stateEdit.testimonial,
-                    uid = it.uid,
+                    userId = it.uid,
                     user = User(
                         name = it.name!!,
                         role = stateEdit.role,

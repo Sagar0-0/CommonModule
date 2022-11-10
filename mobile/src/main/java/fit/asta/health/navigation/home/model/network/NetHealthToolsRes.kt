@@ -2,6 +2,7 @@ package fit.asta.health.navigation.home.model.network
 
 import com.google.gson.annotations.SerializedName
 import fit.asta.health.network.data.Status
+import fit.asta.health.testimonials.model.network.NetTestimonial
 
 data class NetHealthToolsRes(
     @SerializedName("status")

@@ -18,7 +18,7 @@ data class NetTestimonial(
     @SerializedName("type")
     val type: TestimonialType,
     @SerializedName("mda")
-    val media: List<Media>,
+    val media: List<Media>?,
     @SerializedName("rank")
     val rank: Int,
     @SerializedName("text")
@@ -26,7 +26,7 @@ data class NetTestimonial(
     @SerializedName("ttl")
     val title: String,
     @SerializedName("uid")
-    val uid: String,
+    val userId: String,
     @SerializedName("user")
     val user: User
 )
