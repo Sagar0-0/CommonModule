@@ -1,17 +1,19 @@
 package fit.asta.health.testimonials.viewmodel
 
+import fit.asta.health.utils.UiString
+
 
 data class EditTestimonialState(
     val type: Int = -1,
-    val typeError: String? = null,
+    val typeError: UiString = UiString.Empty,
     val title: String = "",
-    val titleError: String? = null,
+    val titleError: UiString = UiString.Empty,
     val subTitle: String = "",
-    val subTitleError: String? = null,
+    val subTitleError: UiString = UiString.Empty,
     val testimonial: String = "",
-    val testimonialError: String? = null,
+    val testimonialError: UiString = UiString.Empty,
     val role: String = "",
-    val roleError: String? = null,
+    val roleError: UiString = UiString.Empty,
     val organization: String = "",
-    val organizationError: String? = null
+    val organizationError: UiString = UiString.Empty
 )

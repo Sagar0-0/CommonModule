@@ -30,14 +30,14 @@ class EditTestimonialViewModel
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    var stateSave by mutableStateOf(EditTestimonialState())
+    var stateEdit by mutableStateOf(EditTestimonialState())
         private set
 
     private val mutableState = MutableStateFlow<GetTestimonialState>(GetTestimonialState.Loading)
     val state = mutableState.asStateFlow()
 
-    private val _validationEventChannel = Channel<ValidationEvent>()
-    val validationEvents = _validationEventChannel.receiveAsFlow()
+    private val _testimonialSubmitStateChannel = Channel<TestimonialSubmitState>()
+    val submitState = _testimonialSubmitStateChannel.receiveAsFlow()
 
     var testimonialId = ""
 
@@ -62,10 +62,9 @@ class EditTestimonialViewModel
     private fun updateTestimonial(netTestimonial: NetTestimonial) {
         viewModelScope.launch {
             testimonialRepo.updateTestimonial(netTestimonial).catch { exception ->
-                mutableState.value = GetTestimonialState.Error(exception)
+                _testimonialSubmitStateChannel.send(TestimonialSubmitState.Error(exception))
             }.collect {
-                mutableState.value = GetTestimonialState.Update(it)
-                _validationEventChannel.send(ValidationEvent.Success)
+                _testimonialSubmitStateChannel.send(TestimonialSubmitState.Success(it))
             }
         }
     }
@@ -73,22 +72,22 @@ class EditTestimonialViewModel
     fun onEvent(event: EditTestimonialEvent) {
         when (event) {
             is EditTestimonialEvent.OnTypeChange -> {
-                stateSave = stateSave.copy(type = event.type)
+                stateEdit = stateEdit.copy(type = event.type)
             }
             is EditTestimonialEvent.OnTitleChange -> {
-                stateSave = stateSave.copy(title = event.title)
+                stateEdit = stateEdit.copy(title = event.title)
             }
             is EditTestimonialEvent.OnSubTitleChange -> {
-                stateSave = stateSave.copy(subTitle = event.subTitle)
+                stateEdit = stateEdit.copy(subTitle = event.subTitle)
             }
             is EditTestimonialEvent.OnTestimonialChange -> {
-                stateSave = stateSave.copy(testimonial = event.testimonial)
+                stateEdit = stateEdit.copy(testimonial = event.testimonial)
             }
             is EditTestimonialEvent.OnRoleChange -> {
-                stateSave = stateSave.copy(role = event.role)
+                stateEdit = stateEdit.copy(role = event.role)
             }
             is EditTestimonialEvent.OnOrgChange -> {
-                stateSave = stateSave.copy(organization = event.org)
+                stateEdit = stateEdit.copy(organization = event.org)
             }
             is EditTestimonialEvent.OnSubmit -> submit()
         }
@@ -96,7 +95,7 @@ class EditTestimonialViewModel
 
     private fun submit() {
 
-        //TODO - Error Handling and Validation required
+        //TODO - Error Handling and Validation required??
 
         authRepo.getUser()?.let {
             updateTestimonial(
@@ -104,22 +103,18 @@ class EditTestimonialViewModel
                     id = testimonialId,
                     apv = false,
                     rank = -1,
-                    title = stateSave.title,
-                    testimonial = stateSave.testimonial,
+                    title = stateEdit.title,
+                    testimonial = stateEdit.testimonial,
                     uid = it.uid,
                     user = User(
                         name = it.name!!,
-                        role = stateSave.role,
-                        org = stateSave.organization,
+                        role = stateEdit.role,
+                        org = stateEdit.organization,
                         url = it.photoUrl.toString()
                     ),
                     media = listOf()
                 )
             )
         }
-    }
-
-    sealed class ValidationEvent {
-        object Success : ValidationEvent()
     }
 }
