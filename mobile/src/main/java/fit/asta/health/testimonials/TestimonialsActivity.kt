@@ -89,7 +89,7 @@ class TestimonialsActivity : AppCompatActivity() {
 @Composable
 fun TestimonialsScreen(
     navController: NavHostController,
-    testimonial: List<NetTestimonial>,
+    testimonials: List<NetTestimonial>,
 ) {
 
 
@@ -99,7 +99,7 @@ fun TestimonialsScreen(
 
             AllTestimonialsLayout(onNavigateUp = {
                 navController.navigate(route = TstScreen.TstCreate.route)
-            }, testimonial = testimonial, onNavigateBack = {
+            }, testimonials = testimonials, onNavigateBack = {
                 navController.popBackStack()
             })
 
@@ -134,8 +134,10 @@ fun TestimonialsContent(state: TestimonialListState) {
     when (state) {
         is TestimonialListState.Error -> NoInternetLayout()
         is TestimonialListState.Loading -> LoadingAnimation()
-        is TestimonialListState.Success -> TestimonialsScreen(navController = rememberNavController(),
-            testimonial = state.testimonial)
+        is TestimonialListState.Success -> TestimonialsScreen(
+            navController = rememberNavController(),
+            testimonials = state.testimonials
+        )
     }
 }
 

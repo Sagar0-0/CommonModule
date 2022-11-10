@@ -32,7 +32,14 @@ data class NetTestimonial(
 )
 
 enum class TestimonialType {
-    TEXT, IMAGE, VIDEO
+    @SerializedName("0")
+    TEXT,
+
+    @SerializedName("1")
+    IMAGE,
+
+    @SerializedName("2")
+    VIDEO
 }
 
 data class Media(
