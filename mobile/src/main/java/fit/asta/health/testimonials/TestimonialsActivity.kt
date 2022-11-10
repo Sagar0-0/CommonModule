@@ -198,14 +198,18 @@ fun ShowForm(onNavigateTstCreate: () -> Unit) {
         role: String,
         org: String,
     ) {
-        enableButton = if (validateData(title, testimonials, role, org)) {
+        if (validateData(title, testimonials, role, org)) {
             Log.d(MainActivity::class.java.simpleName,
                 "Title:$title, testimonials:$testimonials, role:$role, org:$org")
-            true
         } else {
             Toast.makeText(context, "Please, review fields", Toast.LENGTH_LONG).show()
-            false
         }
+    }
+
+    fun enableButtonDemo(): Boolean {
+        enableButton =
+            title.isNotBlank() || testimonials.isNotBlank() || role.isNotBlank() || org.isNotBlank()
+        return enableButton
     }
 
     Column(modifier = Modifier
@@ -286,7 +290,7 @@ fun ShowForm(onNavigateTstCreate: () -> Unit) {
                 .padding(16.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue,
                 contentColor = Color.White),
-            enabled = enableButton) {
+            enabled = enableButtonDemo()) {
             Text(text = "Submit", fontSize = 16.sp)
         }
 
