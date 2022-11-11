@@ -9,8 +9,6 @@ data class EditTestimonialState(
     val typeError: UiString = UiString.Empty,
     val title: String = "",
     val titleError: UiString = UiString.Empty,
-    val subTitle: String = "",
-    val subTitleError: UiString = UiString.Empty,
     val testimonial: String = "",
     val testimonialError: UiString = UiString.Empty,
     val role: String = "",

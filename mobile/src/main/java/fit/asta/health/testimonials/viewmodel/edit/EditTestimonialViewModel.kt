@@ -10,7 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.testimonials.model.TestimonialRepo
 import fit.asta.health.testimonials.model.network.NetTestimonial
-import fit.asta.health.testimonials.model.network.User
+import fit.asta.health.testimonials.model.network.NetTestimonialUser
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -77,9 +77,6 @@ class EditTestimonialViewModel
             is EditTestimonialEvent.OnTitleChange -> {
                 stateEdit = stateEdit.copy(title = event.title)
             }
-            is EditTestimonialEvent.OnSubTitleChange -> {
-                stateEdit = stateEdit.copy(subTitle = event.subTitle)
-            }
             is EditTestimonialEvent.OnTestimonialChange -> {
                 stateEdit = stateEdit.copy(testimonial = event.testimonial)
             }
@@ -107,7 +104,7 @@ class EditTestimonialViewModel
                     title = stateEdit.title,
                     testimonial = stateEdit.testimonial,
                     userId = it.uid,
-                    user = User(
+                    user = NetTestimonialUser(
                         name = it.name!!,
                         role = stateEdit.role,
                         org = stateEdit.organization,
