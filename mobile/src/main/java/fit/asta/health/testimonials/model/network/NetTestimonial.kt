@@ -8,7 +8,7 @@ data class NetTestimonial(
     @SerializedName("id")
     val id: String,
     @SerializedName("type")
-    val type: TestimonialType,
+    val type: Int,
     @SerializedName("mda")
     val media: List<NetMedia>?,
     @SerializedName("rank")
@@ -22,17 +22,6 @@ data class NetTestimonial(
     @SerializedName("user")
     val user: NetTestimonialUser
 )
-
-enum class TestimonialType {
-    @SerializedName("0")
-    TEXT,
-
-    @SerializedName("1")
-    IMAGE,
-
-    @SerializedName("2")
-    VIDEO
-}
 
 data class NetMedia(
     @SerializedName("ttl")

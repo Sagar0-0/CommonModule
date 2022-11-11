@@ -18,8 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.model.network.NetTestimonial
-import fit.asta.health.testimonials.model.network.TestimonialType
 import fit.asta.health.testimonials.view.components.BeforeAndAfterCard
 import fit.asta.health.testimonials.view.components.TestimonialsCardLayout
 import fit.asta.health.testimonials.view.components.TestimonialsVideoCard
@@ -42,7 +42,7 @@ fun AllTestimonialsLayout(
         ) {
 
             testimonials.forEach { testimonial ->
-                when (testimonial.type) {
+                when (TestimonialType.fromInt(testimonial.type)) {
                     TestimonialType.TEXT -> {
                         TestimonialsCardLayout(
                             cardTitle = testimonial.title,
