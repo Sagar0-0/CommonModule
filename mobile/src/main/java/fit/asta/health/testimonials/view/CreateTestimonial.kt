@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.R
 import fit.asta.health.navigation.home.view.component.MainActivity
-import fit.asta.health.testimonials.model.network.TestimonialType
+import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.view.components.ButtonListTypes
 import fit.asta.health.testimonials.view.components.CustomOutlinedTextField
 import fit.asta.health.testimonials.view.components.TestimonialRadioType
@@ -174,7 +174,7 @@ fun TestimonialForm(
             )
         }, selectedOption = selectedOption, onOptionSelected = {
             onOptionSelected(it)
-            editViewModel.onEvent(EditTestimonialEvent.OnTypeChange(it.type))
+            editViewModel.onEvent(EditTestimonialEvent.OnTypeChange(it.type.value))
         })
 
         Spacer(modifier = Modifier.height(16.dp))

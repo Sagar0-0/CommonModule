@@ -9,12 +9,12 @@ data class Testimonial(
     val url: String = ""
 )
 
-enum class TestimonialType(val i: Int) {
+enum class TestimonialType(val value: Int) {
     TEXT(0),
     IMAGE(1),
     VIDEO(2);
 
     companion object {
-        fun fromInt(value: Int) = values().first { it.i == value }
+        fun fromInt(value: Int) = values().first { it.value == value }
     }
 }

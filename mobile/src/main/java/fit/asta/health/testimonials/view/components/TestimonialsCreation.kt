@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.R
-import fit.asta.health.testimonials.model.network.TestimonialType
+import fit.asta.health.testimonials.model.domain.TestimonialType
 
 
 data class ButtonListTypes(
