@@ -50,7 +50,7 @@ fun AllTestimonialsLayout(
                             user = testimonial.user.name,
                             userOrg = testimonial.user.org,
                             userRole = testimonial.user.role,
-                            model = testimonial.user.url
+                            url = testimonial.user.url
                         )
                     }
                     TestimonialType.IMAGE -> BeforeAndAfterCard(testimonial)

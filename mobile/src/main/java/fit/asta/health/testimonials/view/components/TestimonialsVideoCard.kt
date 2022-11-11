@@ -1,7 +1,6 @@
 package fit.asta.health.testimonials.view.components
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -18,8 +17,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import fit.asta.health.R
 import fit.asta.health.testimonials.model.network.NetTestimonial
+import fit.asta.health.utils.getImageUrl
 
 
 @Composable
@@ -47,18 +48,26 @@ fun TestimonialsVideoCard(testimonial: NetTestimonial) {
                         border = BorderStroke(width = 5.dp, color = Color(0xffE0F1FF)),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.weatherimage),
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxWidth(),
-                            contentScale = ContentScale.Crop
-                        )
+                        val media = testimonial.media?.get(0)
+                        if (media != null) {
+                            AsyncImage(
+                                model = getImageUrl(media.url),
+                                contentDescription = null,
+                                modifier = Modifier.fillMaxWidth(),
+                                contentScale = ContentScale.Crop
+                            )
+                            PlayButton()
+                        }
                     }
-                    PlayButton()
                 }
             }
 
-            ArtistCard2(user = "Kristin Watson", userOrg = " EkoHunt", userRole = "CTO", model = "")
+            ArtistCard2(
+                user = testimonial.user.name,
+                userOrg = testimonial.user.org,
+                userRole = testimonial.user.role,
+                url = testimonial.user.url
+            )
         }
     }
 }

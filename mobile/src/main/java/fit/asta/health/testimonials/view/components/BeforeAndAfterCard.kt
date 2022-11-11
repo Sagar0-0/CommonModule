@@ -1,7 +1,6 @@
 package fit.asta.health.testimonials.view.components
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -13,14 +12,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import fit.asta.health.R
 import fit.asta.health.testimonials.model.network.NetTestimonial
+import fit.asta.health.utils.getImageUrl
 
 @Composable
 fun BeforeAndAfterCard(testimonial: NetTestimonial) {
@@ -48,38 +48,48 @@ fun BeforeAndAfterCard(testimonial: NetTestimonial) {
                         modifier = Modifier.padding(0.dp)
                     ) {
                         Box(Modifier.padding(2.dp), contentAlignment = Alignment.BottomCenter) {
-                            Image(
-                                painter = painterResource(id = R.drawable.weatherimage),
-                                contentDescription = null,
-                                Modifier
-                                    .fillMaxWidth(0.5f)
-                                    .height(100.dp),
-                                contentScale = ContentScale.Crop
-                            )
-                            Text(
-                                text = "BEFORE",
-                                fontSize = 16.sp,
-                                color = Color.White,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(10.dp)
-                            )
+
+                            val media = testimonial.media?.get(0)
+                            if (media != null) {
+
+                                AsyncImage(
+                                    model = getImageUrl(media.url),
+                                    contentDescription = null,
+                                    Modifier
+                                        .fillMaxWidth(0.5f)
+                                        .height(180.dp),
+                                    contentScale = ContentScale.Crop
+                                )
+                                Text(
+                                    text = media.title,
+                                    fontSize = 16.sp,
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier.padding(10.dp)
+                                )
+                            }
                         }
                         Box(Modifier.padding(2.dp), contentAlignment = Alignment.BottomCenter) {
-                            Image(
-                                painter = painterResource(id = R.drawable.weatherimage),
-                                contentDescription = null,
-                                Modifier
-                                    .fillMaxWidth(1f)
-                                    .height(100.dp),
-                                contentScale = ContentScale.Crop
-                            )
-                            Text(
-                                text = "AFTER",
-                                fontSize = 16.sp,
-                                color = Color.White,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(10.dp)
-                            )
+
+                            val media = testimonial.media?.get(1)
+                            if (media != null) {
+
+                                AsyncImage(
+                                    model = getImageUrl(media.url),
+                                    contentDescription = null,
+                                    Modifier
+                                        .fillMaxWidth(1f)
+                                        .height(180.dp),
+                                    contentScale = ContentScale.Crop
+                                )
+                                Text(
+                                    text = media.title,
+                                    fontSize = 16.sp,
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier.padding(10.dp)
+                                )
+                            }
                         }
                     }
                 }
@@ -97,7 +107,7 @@ fun BeforeAndAfterCard(testimonial: NetTestimonial) {
                             Text(text = "❝", fontSize = 20.sp, color = Color(0xFF0277BD))
                         }
                         Text(
-                            text = "I work in project management and joined this course because I get great courses for less.\n" + "The instructors are fantastic, interesting, and helpful. I plan to use this for a long time!",
+                            text = testimonial.testimonial,
                             fontSize = 16.sp,
                             color = Color(0xFF000000),
                             fontWeight = FontWeight.Thin,
@@ -108,15 +118,13 @@ fun BeforeAndAfterCard(testimonial: NetTestimonial) {
                             Text(text = "❞", fontSize = 20.sp, color = Color(0xFF0277BD))
                         }
                         ArtistCard2(
-                            user = "Kristin Watson",
-                            userOrg = " EkoHunt",
-                            userRole = "CTO",
-                            model = ""
+                            user = testimonial.user.name,
+                            userOrg = testimonial.user.org,
+                            userRole = testimonial.user.role,
+                            url = testimonial.user.url
                         )
-
                     }
                 }
-
             }
         }
     }

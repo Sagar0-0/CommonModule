@@ -34,10 +34,8 @@ data class NetTestimonial(
 enum class TestimonialType {
     @SerializedName("0")
     TEXT,
-
     @SerializedName("1")
     IMAGE,
-
     @SerializedName("2")
     VIDEO
 }
