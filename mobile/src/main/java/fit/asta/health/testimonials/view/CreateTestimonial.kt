@@ -1,7 +1,5 @@
 package fit.asta.health.testimonials.view
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
@@ -12,12 +10,14 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -26,12 +26,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.R
-import fit.asta.health.navigation.home.view.component.MainActivity
 import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.view.components.ButtonListTypes
-import fit.asta.health.testimonials.view.components.CustomOutlinedTextField
 import fit.asta.health.testimonials.view.components.TestimonialRadioType
 import fit.asta.health.testimonials.view.components.UploadFiles
+import fit.asta.health.testimonials.view.components.ValidatedTextField
 import fit.asta.health.testimonials.viewmodel.edit.EditTestimonialEvent
 import fit.asta.health.testimonials.viewmodel.edit.EditTestimonialViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -52,69 +51,13 @@ fun TestimonialForm(
 
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioButtonList[0]) }
 
-    val maxChar = 50
-    var enableButton by remember { mutableStateOf(false) }
-
-    val context = LocalContext.current
     val focusManager = LocalFocusManager.current
     val scrollState = rememberScrollState()
 
-    var title by remember { mutableStateOf("") }
-    var testimonial by remember { mutableStateOf("") }
-    var role by remember { mutableStateOf("") }
-    var org by remember { mutableStateOf("") }
-
-    var validateTitle by rememberSaveable { mutableStateOf(true) }
-    var validateTestimonials by rememberSaveable { mutableStateOf(true) }
-    var validateRole by rememberSaveable { mutableStateOf(true) }
-    var validateOrg by rememberSaveable { mutableStateOf(true) }
-
-    val validateTitleError = "Please, input a Title"
-    val validateOrgError = "Please, input a Organisation"
-    val validateRoleError = "Please, input a Role"
-    val validateTestimonialsError = if (testimonial.isEmpty()) {
-        "Please, write your Testimonial"
-    } else {
-        "Please, write your Testimonial within ${testimonial.length}/$maxChar"
-    }
-
-    fun validateData(
-        title: String,
-        testimonials: String,
-        role: String,
-        org: String,
-    ): Boolean {
-
-        validateTitle = title.isNotBlank()
-        validateTestimonials = testimonials.isNotBlank() && testimonials.length < maxChar
-        validateOrg = org.isNotBlank()
-        validateRole = role.isNotBlank()
-
-        return validateTitle && validateTestimonials && validateOrg && validateRole
-    }
-
-    fun submit(
-        title: String,
-        testimonials: String,
-        role: String,
-        org: String,
-    ) {
-        if (validateData(title, testimonials, role, org)) {
-            Log.d(
-                MainActivity::class.java.simpleName,
-                "Title:$title, testimonials:$testimonials, role:$role, org:$org"
-            )
-            editViewModel.onEvent(EditTestimonialEvent.OnSubmit)
-        } else {
-            Toast.makeText(context, "Please, review fields", Toast.LENGTH_LONG).show()
-        }
-    }
-
-    fun enableButtonDemo(): Boolean {
-        enableButton =
-            title.isNotBlank() || testimonial.isNotBlank() || role.isNotBlank() || org.isNotBlank()
-        return enableButton
-    }
+    val validateTitle by rememberSaveable { mutableStateOf(true) }
+    val validateTestimonials by rememberSaveable { mutableStateOf(true) }
+    val validateRole by rememberSaveable { mutableStateOf(true) }
+    val validateOrg by rememberSaveable { mutableStateOf(true) }
 
     Column(
         modifier = Modifier
@@ -138,17 +81,12 @@ fun TestimonialForm(
 
         TestimonialRadioType(contentTestType = {
 
-            CustomOutlinedTextField(
-                value = testimonial,
-                onValueChange = {
-                    if (it.length < maxChar) {
-                        testimonial = it
-                        editViewModel.onEvent(EditTestimonialEvent.OnTestimonialChange(it))
-                    }
-                },
+            ValidatedTextField(
+                value = editViewModel.state.testimonial,
+                onValueChange = { editViewModel.onEvent(EditTestimonialEvent.OnTestimonialChange(it)) },
                 label = "Testimonial",
                 showError = !validateTestimonials,
-                errorMessage = validateTestimonialsError,
+                errorMessage = editViewModel.state.testimonialError.asString(),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Next
@@ -157,15 +95,12 @@ fun TestimonialForm(
                 modifier = Modifier.height(120.dp)
             )
         }, titleTestimonial = {
-            CustomOutlinedTextField(
-                value = title,
-                onValueChange = {
-                    title = it
-                    editViewModel.onEvent(EditTestimonialEvent.OnTitleChange(it))
-                },
+            ValidatedTextField(
+                value = editViewModel.state.title,
+                onValueChange = { editViewModel.onEvent(EditTestimonialEvent.OnTitleChange(it)) },
                 label = "Title",
                 showError = !validateTitle,
-                errorMessage = validateTitleError,
+                errorMessage = editViewModel.state.titleError.asString(),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Next
@@ -179,15 +114,14 @@ fun TestimonialForm(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        CustomOutlinedTextField(
-            value = org,
+        ValidatedTextField(
+            value = editViewModel.state.organization,
             onValueChange = {
-                org = it
                 editViewModel.onEvent(EditTestimonialEvent.OnOrgChange(it))
             },
             label = "Organisation",
             showError = !validateOrg,
-            errorMessage = validateOrgError,
+            errorMessage = editViewModel.state.organizationError.asString(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next
@@ -197,15 +131,12 @@ fun TestimonialForm(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        CustomOutlinedTextField(
-            value = role,
-            onValueChange = {
-                role = it
-                editViewModel.onEvent(EditTestimonialEvent.OnRoleChange(it))
-            },
+        ValidatedTextField(
+            value = editViewModel.state.role,
+            onValueChange = { editViewModel.onEvent(EditTestimonialEvent.OnRoleChange(it)) },
             label = "Role",
             showError = !validateRole,
-            errorMessage = validateRoleError,
+            errorMessage = editViewModel.state.roleError.asString(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next
@@ -220,7 +151,7 @@ fun TestimonialForm(
         }
 
         Button(
-            onClick = { submit(title, testimonial, role, org) },
+            onClick = { editViewModel.onEvent(EditTestimonialEvent.OnSubmit) },
             modifier = Modifier
                 .fillMaxWidth(1f)
                 .padding(16.dp),
@@ -228,10 +159,9 @@ fun TestimonialForm(
                 backgroundColor = Color.Blue,
                 contentColor = Color.White
             ),
-            enabled = enableButtonDemo()
+            enabled = editViewModel.state.enableSubmit
         ) {
             Text(text = "Submit", fontSize = 16.sp)
         }
     }
-
 }

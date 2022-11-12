@@ -4,11 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -330,51 +326,5 @@ fun Modifier.dashedBorder(width: Dp, radius: Dp, color: Color) = drawBehind {
             radius.toPx(),
             paint
         )
-    }
-}
-
-@Composable
-fun CustomOutlinedTextField(
-    modifier: Modifier = Modifier,
-    value: String,
-    onValueChange: (String) -> Unit,
-    label: String = "",
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    keyboardActions: KeyboardActions = KeyboardActions.Default,
-    showError: Boolean = false,
-    errorMessage: String = "",
-) {
-
-    Column(Modifier.fillMaxWidth()) {
-        OutlinedTextField(
-            value = value,
-            onValueChange = onValueChange,
-            label = { Text(text = label, textAlign = TextAlign.Center) },
-            isError = showError,
-            trailingIcon = {
-                if (showError) Icon(
-                    imageVector = Icons.Filled.Error,
-                    contentDescription = "Show Error Icon"
-                )
-            },
-            keyboardOptions = keyboardOptions,
-            keyboardActions = keyboardActions,
-            singleLine = false,
-            modifier = modifier.fillMaxWidth()
-        )
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-
-            if (showError) {
-                Text(
-                    text = errorMessage,
-                    color = MaterialTheme.colors.error,
-                    style = MaterialTheme.typography.caption
-                )
-            }
-
-            if (label == "Testimonials") {
-                Text(text = "${value.length}/50", textAlign = TextAlign.End)
-            }
-        }
     }
 }

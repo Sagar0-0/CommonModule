@@ -3,7 +3,8 @@ package fit.asta.health.testimonials.viewmodel.edit
 import fit.asta.health.utils.UiString
 
 
-data class EditTestimonialState(
+data class TestimonialState(
+    val id: String = "",
     val type: Int = 0,
     val typeError: UiString = UiString.Empty,
     val title: String = "",
@@ -13,5 +14,6 @@ data class EditTestimonialState(
     val role: String = "",
     val roleError: UiString = UiString.Empty,
     val organization: String = "",
-    val organizationError: UiString = UiString.Empty
+    val organizationError: UiString = UiString.Empty,
+    val enableSubmit: Boolean = false
 )

@@ -3,7 +3,6 @@ package fit.asta.health.testimonials.viewmodel.edit
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,8 +12,6 @@ import fit.asta.health.testimonials.model.network.NetTestimonial
 import fit.asta.health.testimonials.model.network.NetTestimonialUser
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -26,23 +23,16 @@ import javax.inject.Inject
 class EditTestimonialViewModel
 @Inject constructor(
     private val testimonialRepo: TestimonialRepo,
-    private val authRepo: AuthRepo,
-    private val savedStateHandle: SavedStateHandle
+    private val authRepo: AuthRepo
 ) : ViewModel() {
 
-    var stateEdit by mutableStateOf(EditTestimonialState())
+    var state by mutableStateOf(TestimonialState())
         private set
 
-    private val mutableState = MutableStateFlow<GetTestimonialState>(GetTestimonialState.Loading)
-    val state = mutableState.asStateFlow()
-
-    private val _testimonialSubmitStateChannel = Channel<TestimonialSubmitState>()
-    val submitState = _testimonialSubmitStateChannel.receiveAsFlow()
-
-    var testimonialId = ""
+    private val _stateChannel = Channel<TestimonialSubmitState>()
+    val stateChannel = _stateChannel.receiveAsFlow()
 
     init {
-
         authRepo.getUser()?.let {
             loadTestimonial(userId = it.uid)
         }
@@ -51,10 +41,16 @@ class EditTestimonialViewModel
     private fun loadTestimonial(userId: String) {
         viewModelScope.launch {
             testimonialRepo.getTestimonial(userId).catch { exception ->
-                mutableState.value = GetTestimonialState.Error(exception)
+                _stateChannel.send(TestimonialSubmitState.Error(exception))
             }.collect {
-                testimonialId = it.testimonial.id
-                mutableState.value = GetTestimonialState.Success(it.testimonial)
+                state = TestimonialState(
+                    id = it.testimonial.id,
+                    type = it.testimonial.type,
+                    title = it.testimonial.title,
+                    testimonial = it.testimonial.testimonial,
+                    role = it.testimonial.user.role,
+                    organization = it.testimonial.user.org
+                )
             }
         }
     }
@@ -62,9 +58,9 @@ class EditTestimonialViewModel
     private fun updateTestimonial(netTestimonial: NetTestimonial) {
         viewModelScope.launch {
             testimonialRepo.updateTestimonial(netTestimonial).catch { exception ->
-                _testimonialSubmitStateChannel.send(TestimonialSubmitState.Error(exception))
+                _stateChannel.send(TestimonialSubmitState.Error(exception))
             }.collect {
-                _testimonialSubmitStateChannel.send(TestimonialSubmitState.Success(it))
+                _stateChannel.send(TestimonialSubmitState.Success(it))
             }
         }
     }
@@ -72,19 +68,19 @@ class EditTestimonialViewModel
     fun onEvent(event: EditTestimonialEvent) {
         when (event) {
             is EditTestimonialEvent.OnTypeChange -> {
-                stateEdit = stateEdit.copy(type = event.type)
+                this.state = this.state.copy(type = event.type)
             }
             is EditTestimonialEvent.OnTitleChange -> {
-                stateEdit = stateEdit.copy(title = event.title)
+                this.state = this.state.copy(title = event.title)
             }
             is EditTestimonialEvent.OnTestimonialChange -> {
-                stateEdit = stateEdit.copy(testimonial = event.testimonial)
+                this.state = this.state.copy(testimonial = event.testimonial)
             }
             is EditTestimonialEvent.OnRoleChange -> {
-                stateEdit = stateEdit.copy(role = event.role)
+                this.state = this.state.copy(role = event.role)
             }
             is EditTestimonialEvent.OnOrgChange -> {
-                stateEdit = stateEdit.copy(organization = event.org)
+                this.state = this.state.copy(organization = event.org)
             }
             is EditTestimonialEvent.OnSubmit -> submit()
         }
@@ -97,17 +93,17 @@ class EditTestimonialViewModel
         authRepo.getUser()?.let {
             updateTestimonial(
                 NetTestimonial(
-                    id = testimonialId,
-                    type = stateEdit.type,
+                    id = this.state.id,
+                    type = this.state.type,
                     apv = false,
                     rank = -1,
-                    title = stateEdit.title,
-                    testimonial = stateEdit.testimonial,
+                    title = this.state.title,
+                    testimonial = this.state.testimonial,
                     userId = it.uid,
                     user = NetTestimonialUser(
                         name = it.name!!,
-                        role = stateEdit.role,
-                        org = stateEdit.organization,
+                        role = this.state.role,
+                        org = this.state.organization,
                         url = it.photoUrl.toString()
                     ),
                     media = listOf()
