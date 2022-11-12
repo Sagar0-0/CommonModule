@@ -264,6 +264,10 @@ dependencies {
 
     //Emoji-Bar
     implementation 'com.github.a914-gowtham:compose-ratingbar:1.2.4'
+
+    //Media-3
+    implementation 'androidx.media3:media3-exoplayer:1.0.0-beta02'
+    implementation 'androidx.media3:media3-ui:1.0.0-beta02'
 }
 
 kapt {
