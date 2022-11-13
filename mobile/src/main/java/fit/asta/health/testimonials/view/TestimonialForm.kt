@@ -13,7 +13,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -28,7 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.R
 import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.view.components.ButtonListTypes
-import fit.asta.health.testimonials.view.components.TestimonialRadioType
+import fit.asta.health.testimonials.view.components.TestimonialsRadioButton
 import fit.asta.health.testimonials.view.components.UploadFiles
 import fit.asta.health.testimonials.view.components.ValidatedTextField
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
@@ -49,7 +48,9 @@ fun TestimonialForm(
         ButtonListTypes(title = "Video", type = TestimonialType.VIDEO),
     )
 
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioButtonList[0]) }
+    val selectedOption = radioButtonList.find {
+        it.type == TestimonialType.fromInt(editViewModel.data.type)
+    } ?: radioButtonList[0]
 
     val focusManager = LocalFocusManager.current
     val scrollState = rememberScrollState()
@@ -79,38 +80,51 @@ fun TestimonialForm(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        TestimonialRadioType(contentTestType = {
-
-            ValidatedTextField(
-                value = editViewModel.data.testimonial,
-                onValueChange = { editViewModel.onEvent(TestimonialEvent.OnTestimonialChange(it)) },
-                label = "Testimonial",
-                showError = !validateTestimonials,
-                errorMessage = editViewModel.data.testimonialError.asString(),
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next
-                ),
-                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
-                modifier = Modifier.height(120.dp)
-            )
-        }, titleTestimonial = {
-            ValidatedTextField(
-                value = editViewModel.data.title,
-                onValueChange = { editViewModel.onEvent(TestimonialEvent.OnTitleChange(it)) },
-                label = "Title",
-                showError = !validateTitle,
-                errorMessage = editViewModel.data.titleError.asString(),
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next
-                ),
-                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) })
-            )
-        }, selectedOption = selectedOption, onOptionSelected = {
-            onOptionSelected(it)
-            editViewModel.onEvent(TestimonialEvent.OnTypeChange(it.type.value))
-        })
+        TestimonialsRadioButton(
+            selectionTypeText = "Testimonial Type",
+            radioButtonList = radioButtonList,
+            selectedOption = selectedOption,
+            content = {
+                ValidatedTextField(
+                    value = editViewModel.data.testimonial,
+                    onValueChange = { editViewModel.onEvent(TestimonialEvent.OnTestimonialChange(it)) },
+                    label = "Testimonial",
+                    showError = !validateTestimonials,
+                    errorMessage = editViewModel.data.testimonialError.asString(),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Next
+                    ),
+                    keyboardActions = KeyboardActions(onNext = {
+                        focusManager.moveFocus(
+                            FocusDirection.Down
+                        )
+                    }),
+                    modifier = Modifier.height(120.dp)
+                )
+            },
+            titleTestimonial = {
+                ValidatedTextField(
+                    value = editViewModel.data.title,
+                    onValueChange = { editViewModel.onEvent(TestimonialEvent.OnTitleChange(it)) },
+                    label = "Title",
+                    showError = !validateTitle,
+                    errorMessage = editViewModel.data.titleError.asString(),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Next
+                    ),
+                    keyboardActions = KeyboardActions(onNext = {
+                        focusManager.moveFocus(
+                            FocusDirection.Down
+                        )
+                    })
+                )
+            },
+            onOptionSelected = {
+                editViewModel.onEvent(TestimonialEvent.OnTypeChange(it.type.value))
+            }
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 

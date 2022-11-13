@@ -105,37 +105,13 @@ fun TestimonialTitle(
 }
 
 @Composable
-fun TestimonialRadioType(
-    contentTestType: @Composable() (() -> Unit)? = null,
-    titleTestimonial: @Composable() (() -> Unit)? = null,
-    selectedOption: ButtonListTypes,
-    onOptionSelected: (ButtonListTypes) -> Unit,
-) {
-
-    val radioButtonList = listOf(
-        ButtonListTypes(title = "Written", type = TestimonialType.TEXT),
-        ButtonListTypes(title = "Image", type = TestimonialType.IMAGE),
-        ButtonListTypes(title = "Video", type = TestimonialType.VIDEO),
-    )
-
-    TestimonialsRadioButton(
-        selectionTypeText = "Testimonial Type",
-        radioButtonList = radioButtonList,
-        content = contentTestType,
-        titleTestimonial = titleTestimonial,
-        selectedOption = selectedOption,
-        onOptionSelected = onOptionSelected
-    )
-}
-
-@Composable
 fun TestimonialsRadioButton(
-    selectedOption: ButtonListTypes,
-    onOptionSelected: (ButtonListTypes) -> Unit,
     selectionTypeText: String,
     radioButtonList: List<ButtonListTypes>,
+    selectedOption: ButtonListTypes,
     content: @Composable() (() -> Unit)? = null,
     titleTestimonial: @Composable() (() -> Unit)? = null,
+    onOptionSelected: (ButtonListTypes) -> Unit,
 ) {
 
     Column(Modifier.fillMaxWidth()) {
@@ -164,18 +140,22 @@ fun TestimonialsRadioButton(
                     )
                 }
                 FlowRow(Modifier.fillMaxWidth()) {
-                    radioButtonList.forEach { index ->
+                    radioButtonList.forEach { item ->
                         Row(
                             horizontalArrangement = Arrangement.SpaceEvenly,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Box(modifier = Modifier.padding(top = 9.5.dp, bottom = 9.5.dp)) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    RadioButton(selected = (index == selectedOption), onClick = {
-                                        onOptionSelected(index)
-                                    }, colors = RadioButtonDefaults.colors(Color(0xff2F80ED)))
+                                    RadioButton(
+                                        selected = (item.type == selectedOption.type),
+                                        onClick = {
+                                            onOptionSelected(item)
+                                        },
+                                        colors = RadioButtonDefaults.colors(Color(0xff2F80ED))
+                                    )
                                     androidx.compose.material3.Text(
-                                        text = index.title,
+                                        text = item.title,
                                         fontSize = 16.sp,
                                         lineHeight = 22.4.sp,
                                         color = Color(0xff575757)
