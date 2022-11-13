@@ -1,4 +1,4 @@
-package fit.asta.health.ui.theme
+package fit.asta.health.tools.water.viewmodel.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

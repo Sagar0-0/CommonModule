@@ -1,4 +1,8 @@
-package fit.asta.health.tools.sunlight.view.components
+package fit.asta.health.tools
+
+/*
+class BreathingBottomSheetGridView {
+}*/
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,7 +28,7 @@ import fit.asta.health.tools.view.components.AddMoreWater
 import fit.asta.health.tools.view.components.PracticeExpandedCard
 
 @Composable
-fun SunlightBottomSheetGridView(cardList: List<PracticeGridView>) {
+fun BreathingBottomSheetGridView(cardList: List<PracticeGridView>) {
 
 
     Box(contentAlignment = Alignment.BottomCenter) {
@@ -89,26 +93,32 @@ fun SunlightBottomSheetGridView(cardList: List<PracticeGridView>) {
 
 @Preview
 @Composable
-fun SunlightPracticeGridView() {
+fun BreathingPracticeGridView() {
 
     val cardList = listOf(
-        PracticeGridView(cardTitle = "Sunscreen",
-            cardValue = "40 SPF",
+        PracticeGridView(cardTitle = "Exercise",
+            cardValue = "Ujjayi+3",
             cardImg = R.drawable.ic_baseline_favorite_24),
-        PracticeGridView(cardTitle = "Sunscreen",
-            cardValue = "40 SPF",
+        PracticeGridView(cardTitle = "Pace",
+            cardValue = "Slow",
             cardImg = R.drawable.ic_baseline_favorite_24),
-        PracticeGridView(cardTitle = "Sunscreen",
-            cardValue = "40 SPF",
+        PracticeGridView(cardTitle = "Level",
+            cardValue = "Beginner 2",
             cardImg = R.drawable.ic_baseline_favorite_24),
-        PracticeGridView(cardTitle = "Sunscreen",
-            cardValue = "40 SPF",
+        PracticeGridView(cardTitle = "Music",
+            cardValue = "Vital life of force",
             cardImg = R.drawable.ic_baseline_favorite_24),
-        PracticeGridView(cardTitle = "Sunscreen",
-            cardValue = "40 SPF",
+        PracticeGridView(cardTitle = "Language",
+            cardValue = "English",
+            cardImg = R.drawable.ic_baseline_favorite_24),
+        PracticeGridView(cardTitle = "Break",
+            cardValue = "2 Minutes",
+            cardImg = R.drawable.ic_baseline_favorite_24),
+        PracticeGridView(cardTitle = "Goal",
+            cardValue = "Destress",
             cardImg = R.drawable.ic_baseline_favorite_24),
     )
 
-    SunlightBottomSheetGridView(cardList = cardList)
+    BreathingBottomSheetGridView(cardList = cardList)
 
 }

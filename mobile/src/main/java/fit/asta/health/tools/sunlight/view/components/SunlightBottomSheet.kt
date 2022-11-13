@@ -3,6 +3,7 @@ package fit.asta.health.tools.sunlight.view.components
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -20,3 +21,4 @@ fun SunlightBottomSheet(paddingValues: PaddingValues) {
     }
 
 }
+
