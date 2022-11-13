@@ -1,4 +1,4 @@
-package fit.asta.health.testimonials.viewmodel.edit
+package fit.asta.health.testimonials.viewmodel.create
 
 import fit.asta.health.utils.UiString
 
@@ -15,5 +15,5 @@ data class TestimonialState(
     val roleError: UiString = UiString.Empty,
     val organization: String = "",
     val organizationError: UiString = UiString.Empty,
-    val enableSubmit: Boolean = false
+    val enableSubmit: Boolean = true
 )

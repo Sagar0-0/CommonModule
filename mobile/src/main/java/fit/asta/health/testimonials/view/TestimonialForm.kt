@@ -31,8 +31,8 @@ import fit.asta.health.testimonials.view.components.ButtonListTypes
 import fit.asta.health.testimonials.view.components.TestimonialRadioType
 import fit.asta.health.testimonials.view.components.UploadFiles
 import fit.asta.health.testimonials.view.components.ValidatedTextField
-import fit.asta.health.testimonials.viewmodel.edit.EditTestimonialEvent
-import fit.asta.health.testimonials.viewmodel.edit.EditTestimonialViewModel
+import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
+import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -40,7 +40,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun TestimonialForm(
     onNavigateTstCreate: () -> Unit,
-    editViewModel: EditTestimonialViewModel = hiltViewModel()
+    editViewModel: TestimonialViewModel = hiltViewModel()
 ) {
 
     val radioButtonList = listOf(
@@ -82,11 +82,11 @@ fun TestimonialForm(
         TestimonialRadioType(contentTestType = {
 
             ValidatedTextField(
-                value = editViewModel.state.testimonial,
-                onValueChange = { editViewModel.onEvent(EditTestimonialEvent.OnTestimonialChange(it)) },
+                value = editViewModel.data.testimonial,
+                onValueChange = { editViewModel.onEvent(TestimonialEvent.OnTestimonialChange(it)) },
                 label = "Testimonial",
                 showError = !validateTestimonials,
-                errorMessage = editViewModel.state.testimonialError.asString(),
+                errorMessage = editViewModel.data.testimonialError.asString(),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Next
@@ -96,11 +96,11 @@ fun TestimonialForm(
             )
         }, titleTestimonial = {
             ValidatedTextField(
-                value = editViewModel.state.title,
-                onValueChange = { editViewModel.onEvent(EditTestimonialEvent.OnTitleChange(it)) },
+                value = editViewModel.data.title,
+                onValueChange = { editViewModel.onEvent(TestimonialEvent.OnTitleChange(it)) },
                 label = "Title",
                 showError = !validateTitle,
-                errorMessage = editViewModel.state.titleError.asString(),
+                errorMessage = editViewModel.data.titleError.asString(),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Next
@@ -109,19 +109,17 @@ fun TestimonialForm(
             )
         }, selectedOption = selectedOption, onOptionSelected = {
             onOptionSelected(it)
-            editViewModel.onEvent(EditTestimonialEvent.OnTypeChange(it.type.value))
+            editViewModel.onEvent(TestimonialEvent.OnTypeChange(it.type.value))
         })
 
         Spacer(modifier = Modifier.height(16.dp))
 
         ValidatedTextField(
-            value = editViewModel.state.organization,
-            onValueChange = {
-                editViewModel.onEvent(EditTestimonialEvent.OnOrgChange(it))
-            },
+            value = editViewModel.data.organization,
+            onValueChange = { editViewModel.onEvent(TestimonialEvent.OnOrgChange(it)) },
             label = "Organisation",
             showError = !validateOrg,
-            errorMessage = editViewModel.state.organizationError.asString(),
+            errorMessage = editViewModel.data.organizationError.asString(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next
@@ -132,11 +130,11 @@ fun TestimonialForm(
         Spacer(modifier = Modifier.height(16.dp))
 
         ValidatedTextField(
-            value = editViewModel.state.role,
-            onValueChange = { editViewModel.onEvent(EditTestimonialEvent.OnRoleChange(it)) },
+            value = editViewModel.data.role,
+            onValueChange = { editViewModel.onEvent(TestimonialEvent.OnRoleChange(it)) },
             label = "Role",
             showError = !validateRole,
-            errorMessage = editViewModel.state.roleError.asString(),
+            errorMessage = editViewModel.data.roleError.asString(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next
@@ -151,7 +149,7 @@ fun TestimonialForm(
         }
 
         Button(
-            onClick = { editViewModel.onEvent(EditTestimonialEvent.OnSubmit) },
+            onClick = { editViewModel.onEvent(TestimonialEvent.OnSubmit) },
             modifier = Modifier
                 .fillMaxWidth(1f)
                 .padding(16.dp),
@@ -159,7 +157,7 @@ fun TestimonialForm(
                 backgroundColor = Color.Blue,
                 contentColor = Color.White
             ),
-            enabled = editViewModel.state.enableSubmit
+            enabled = editViewModel.data.enableSubmit
         ) {
             Text(text = "Submit", fontSize = 16.sp)
         }

@@ -1,4 +1,4 @@
-package fit.asta.health.testimonials.viewmodel.edit
+package fit.asta.health.testimonials.viewmodel.create
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,6 +12,8 @@ import fit.asta.health.testimonials.model.network.NetTestimonial
 import fit.asta.health.testimonials.model.network.NetTestimonialUser
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -20,14 +22,17 @@ import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
-class EditTestimonialViewModel
+class TestimonialViewModel
 @Inject constructor(
     private val testimonialRepo: TestimonialRepo,
     private val authRepo: AuthRepo
 ) : ViewModel() {
 
-    var state by mutableStateOf(TestimonialState())
+    var data by mutableStateOf(TestimonialState())
         private set
+
+    private val _mutableState = MutableStateFlow<TestimonialGetState>(TestimonialGetState.Loading)
+    val state = _mutableState.asStateFlow()
 
     private val _stateChannel = Channel<TestimonialSubmitState>()
     val stateChannel = _stateChannel.receiveAsFlow()
@@ -40,10 +45,11 @@ class EditTestimonialViewModel
 
     private fun loadTestimonial(userId: String) {
         viewModelScope.launch {
-            testimonialRepo.getTestimonial(userId).catch { exception ->
-                _stateChannel.send(TestimonialSubmitState.Error(exception))
+            testimonialRepo.getTestimonial(userId).catch {
+                //_mutableState.value = GetTestimonialState.Error(exception)
+                _mutableState.value = TestimonialGetState.Empty
             }.collect {
-                state = TestimonialState(
+                data = TestimonialState(
                     id = it.testimonial.id,
                     type = it.testimonial.type,
                     title = it.testimonial.title,
@@ -51,6 +57,7 @@ class EditTestimonialViewModel
                     role = it.testimonial.user.role,
                     organization = it.testimonial.user.org
                 )
+                _mutableState.value = TestimonialGetState.Success(it.testimonial)
             }
         }
     }
@@ -65,24 +72,24 @@ class EditTestimonialViewModel
         }
     }
 
-    fun onEvent(event: EditTestimonialEvent) {
+    fun onEvent(event: TestimonialEvent) {
         when (event) {
-            is EditTestimonialEvent.OnTypeChange -> {
-                this.state = this.state.copy(type = event.type)
+            is TestimonialEvent.OnTypeChange -> {
+                this.data = this.data.copy(type = event.type)
             }
-            is EditTestimonialEvent.OnTitleChange -> {
-                this.state = this.state.copy(title = event.title)
+            is TestimonialEvent.OnTitleChange -> {
+                this.data = this.data.copy(title = event.title)
             }
-            is EditTestimonialEvent.OnTestimonialChange -> {
-                this.state = this.state.copy(testimonial = event.testimonial)
+            is TestimonialEvent.OnTestimonialChange -> {
+                this.data = this.data.copy(testimonial = event.testimonial)
             }
-            is EditTestimonialEvent.OnRoleChange -> {
-                this.state = this.state.copy(role = event.role)
+            is TestimonialEvent.OnRoleChange -> {
+                this.data = this.data.copy(role = event.role)
             }
-            is EditTestimonialEvent.OnOrgChange -> {
-                this.state = this.state.copy(organization = event.org)
+            is TestimonialEvent.OnOrgChange -> {
+                this.data = this.data.copy(organization = event.org)
             }
-            is EditTestimonialEvent.OnSubmit -> submit()
+            is TestimonialEvent.OnSubmit -> submit()
         }
     }
 
@@ -93,17 +100,17 @@ class EditTestimonialViewModel
         authRepo.getUser()?.let {
             updateTestimonial(
                 NetTestimonial(
-                    id = this.state.id,
-                    type = this.state.type,
+                    id = this.data.id,
+                    type = this.data.type,
                     apv = false,
                     rank = -1,
-                    title = this.state.title,
-                    testimonial = this.state.testimonial,
+                    title = this.data.title,
+                    testimonial = this.data.testimonial,
                     userId = it.uid,
                     user = NetTestimonialUser(
                         name = it.name!!,
-                        role = this.state.role,
-                        org = this.state.organization,
+                        role = this.data.role,
+                        org = this.data.organization,
                         url = it.photoUrl.toString()
                     ),
                     media = listOf()

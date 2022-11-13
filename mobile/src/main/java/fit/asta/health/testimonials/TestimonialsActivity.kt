@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -20,6 +21,8 @@ import fit.asta.health.testimonials.view.AllTestimonialsLayout
 import fit.asta.health.testimonials.view.TestimonialForm
 import fit.asta.health.testimonials.viewmodel.TestimonialListState
 import fit.asta.health.testimonials.viewmodel.TestimonialListViewModel
+import fit.asta.health.testimonials.viewmodel.create.TestimonialGetState
+import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -91,5 +94,19 @@ fun TestimonialsScreen(
                 navController.popBackStack()
             })
         }
+    }
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
+@Composable
+fun LoadTestimonialForm(
+    onNavigateTstCreate: () -> Unit,
+    getViewModel: TestimonialViewModel = hiltViewModel()
+) {
+    when (getViewModel.state.collectAsState().value) {
+        TestimonialGetState.Loading -> LoadingAnimation()
+        TestimonialGetState.Empty -> TestimonialForm(onNavigateTstCreate)
+        is TestimonialGetState.Error -> NoInternetLayout()
+        is TestimonialGetState.Success -> TestimonialForm(onNavigateTstCreate)
     }
 }
