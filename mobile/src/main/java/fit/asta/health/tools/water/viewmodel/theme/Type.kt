@@ -33,7 +33,7 @@ val HeadingLine = Typography(
     headlineLarge = TextStyle(
         fontFamily = FontFamily(Font(R.font.inter_regular)),
         fontWeight = FontWeight.Normal,
-        fontSize =  34.sp
+        fontSize = 34.sp
     ),
     headlineMedium = TextStyle(
         fontFamily = FontFamily(Font(R.font.inter_regular)),
@@ -105,4 +105,42 @@ val Buttons = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp
     )
+)
+
+val IbarraNovaFont = FontFamily(
+    Font(R.font.inter_regular),
+    Font(R.font.inter_extrabold, weight = FontWeight.Bold),
+    Font(R.font.inter_medium, weight = FontWeight.Medium),
+    Font(R.font.inter_light, weight = FontWeight.SemiBold)
+)
+
+val IbarraNovaSemiBoldGraniteGray =
+    TextStyle(
+        fontFamily = IbarraNovaFont,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 18.sp,
+        color = ColorGraniteGray
+    )
+
+val IbarraNovaSemiBoldPlatinum16 =
+    TextStyle(
+        fontFamily = IbarraNovaFont,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 16.sp,
+        color = ColorPlatinum
+    )
+
+val IbarraNovaNormalGray14 =
+    TextStyle(
+        fontFamily = IbarraNovaFont,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 16.sp,
+        color = ColorGraniteGray
+    )
+
+val IbarraNovaNormalError13 = TextStyle(
+    fontFamily = IbarraNovaFont,
+    fontWeight = FontWeight.Normal,
+    fontSize = 13.sp,
+    color = ColorRed
 )

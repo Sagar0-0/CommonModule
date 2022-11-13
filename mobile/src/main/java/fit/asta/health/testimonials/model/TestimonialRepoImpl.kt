@@ -2,9 +2,9 @@ package fit.asta.health.testimonials.model
 
 import fit.asta.health.network.api.RemoteApis
 import fit.asta.health.network.data.Status
-import fit.asta.health.testimonials.model.domain.Testimonial
 import fit.asta.health.testimonials.model.network.NetTestimonial
 import fit.asta.health.testimonials.model.network.NetTestimonialRes
+import fit.asta.health.testimonials.model.network.NetTestimonialsRes
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -13,15 +13,10 @@ class TestimonialRepoImpl(
     private val mapper: TestimonialDataMapper,
 ) : TestimonialRepo {
 
-    override suspend fun getTestimonials(limit: Int, index: Int): Flow<List<Testimonial>> {
+    override suspend fun getTestimonials(limit: Int, index: Int): Flow<NetTestimonialsRes> {
         return flow {
             emit(
-                mapper.mapToDomainModel(
-                    remoteApi.getTestimonials(
-                        limit = limit,
-                        index = index
-                    )
-                )
+                remoteApi.getTestimonials(limit = limit, index = index)
             )
         }
     }

@@ -56,9 +56,9 @@ class ToolsHomeDataMapper {
                     id = it.id,
                     userId = it.userId,
                     title = it.title,
-                    text = it.text,
+                    text = it.testimonial,
                     rank = it.rank,
-                    media = it.media.map { media ->
+                    media = it.media?.map { media ->
                         Media(
                             type = media.type,
                             title = media.title,

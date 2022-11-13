@@ -5,26 +5,24 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.databinding.ActivityProfileNewBinding
+import fit.asta.health.navigation.home.view.component.LoadingAnimation
+import fit.asta.health.navigation.home.view.component.NoInternetLayout
+import fit.asta.health.testimonials.model.network.NetTestimonial
 import fit.asta.health.testimonials.view.AllTestimonialsLayout
-import fit.asta.health.testimonials.view.components.TestimonialLayoutDemo
-import fit.asta.health.testimonials.viewmodel.EditTestimonialViewModel
-import fit.asta.health.testimonials.viewmodel.TestimonialEvent
-import fit.asta.health.testimonials.viewmodel.TestimonialViewModel
+import fit.asta.health.testimonials.view.TestimonialForm
+import fit.asta.health.testimonials.viewmodel.TestimonialListState
+import fit.asta.health.testimonials.viewmodel.TestimonialListViewModel
+import fit.asta.health.testimonials.viewmodel.create.TestimonialGetState
+import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -34,8 +32,8 @@ class TestimonialsActivity : AppCompatActivity() {
 
     private lateinit var navController: NavHostController
     private lateinit var binding: ActivityProfileNewBinding
-    private val viewModel: TestimonialViewModel by viewModels()
-    private val editViewModel: EditTestimonialViewModel by viewModels()
+    private val viewModel: TestimonialListViewModel by viewModels()
+    //val editViewModel: EditTestimonialViewModel by viewModels()
 
     companion object {
 
@@ -52,45 +50,63 @@ class TestimonialsActivity : AppCompatActivity() {
         binding = ActivityProfileNewBinding.inflate(layoutInflater)
         binding.profileComposeView.setContent {
 
-            val testimonialState = viewModel.state.collectAsState().value
             navController = rememberNavController()
-            TestimonialsPreview(navController = navController, editViewModel)
-            setContentView(binding.root)
+            TestimonialsContent(state = viewModel.state.collectAsState().value)
         }
+        setContentView(binding.root)
+    }
+}
+
+@Composable
+fun TestimonialsContent(state: TestimonialListState) {
+
+    when (state) {
+        is TestimonialListState.Error -> NoInternetLayout()
+        is TestimonialListState.Loading -> LoadingAnimation()
+        is TestimonialListState.Success -> TestimonialsScreen(
+            navController = rememberNavController(),
+            testimonials = state.testimonials
+        )
     }
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun TestimonialsPreview(
+fun TestimonialsScreen(
     navController: NavHostController,
-    editViewModel: EditTestimonialViewModel
+    testimonials: List<NetTestimonial>,
 ) {
 
-    Box(
-        Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colors.background)
-    ) {
-        NavHost(navController, startDestination = TstScreen.TstHome.route) {
-            composable(route = TstScreen.TstHome.route) {
-                AllTestimonialsLayout(onNavigateUp = {
-                    navController.navigate(route = TstScreen.TstCreate.route)
-                })
-            }
-            composable(route = TstScreen.TstCreate.route) {
-                TestimonialLayoutDemo(onNavigateTstCreate = {
-                    editViewModel.onEvent(TestimonialEvent.OnSaveClick)
-                    //navController.navigate(route = TstScreen.TstHome.route)
-                })
-            }
+    NavHost(navController, startDestination = TstScreen.TstHome.route) {
+
+        composable(route = TstScreen.TstHome.route) {
+
+            AllTestimonialsLayout(onNavigateUp = {
+                navController.navigate(route = TstScreen.TstCreate.route)
+            }, testimonials = testimonials, onNavigateBack = {
+                navController.popBackStack()
+            })
+        }
+        composable(route = TstScreen.TstCreate.route) {
+
+            TestimonialForm(onNavigateTstCreate = {
+                //navController.navigate(route = TstScreen.TstHome.route)
+                navController.popBackStack()
+            })
         }
     }
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@Preview
 @Composable
-fun ScreenPreview() {
-    TestimonialsPreview(navController = rememberNavController(), viewModel())
+fun LoadTestimonialForm(
+    onNavigateTstCreate: () -> Unit,
+    getViewModel: TestimonialViewModel = hiltViewModel()
+) {
+    when (getViewModel.state.collectAsState().value) {
+        TestimonialGetState.Loading -> LoadingAnimation()
+        TestimonialGetState.Empty -> TestimonialForm(onNavigateTstCreate)
+        is TestimonialGetState.Error -> NoInternetLayout()
+        is TestimonialGetState.Success -> TestimonialForm(onNavigateTstCreate)
+    }
 }

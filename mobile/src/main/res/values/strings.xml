@@ -560,6 +560,18 @@
     <string name="breathing_tool_title">Breathing Tool</string>
     <string name="tool_subtitle">Check your daily records to make it easy to analyze</string>
 
+    <!-- Validation -->
+    <string name="the_field_can_not_be_blank">The field can\'t be blank</string>
+    <string name="that_is_not_a_valid_email">That\'s not a valid email</string>
+    <string name="that_is_not_a_valid_phone">That\'s not a valid phone number</string>
+    <string name="error_terms_condition_not_accepted">Please kindly accept our terms and conditions</string>
+    <string name="the_password_needs_to_contain_at_least_one_letter_and_digit">
+        The password needs to contain at least one letter and digit</string>
+    <string name="the_password_needs_to_consist_of_at_least_8_characters">
+        The password needs to consist of at least 8 characters</string>
+    <string name="must_be_from_9_to_12_digits">Must be from 9 to 12 digits</string>
+    <string name="validation_successfully">Validation Successfully</string>
+
 
 </resources>
 
