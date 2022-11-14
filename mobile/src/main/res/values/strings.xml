@@ -571,7 +571,8 @@
         The password needs to consist of at least 8 characters</string>
     <string name="must_be_from_9_to_12_digits">Must be from 9 to 12 digits</string>
     <string name="validation_successfully">Validation Successfully</string>
-
+    <string name="data_length_more">The length should not be more than %d characters</string>
+    <string name="data_length_less">The length should not be less than %d characters</string>
 
 </resources>
 

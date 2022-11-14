@@ -14,9 +14,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -35,6 +32,7 @@ import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.view.components.*
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
 import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
+import fit.asta.health.utils.UiString
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -58,15 +56,13 @@ fun TestimonialForm(
     val focusManager = LocalFocusManager.current
     val scrollState = rememberScrollState()
 
-    val validateTitle by rememberSaveable { mutableStateOf(true) }
-    val validateTestimonials by rememberSaveable { mutableStateOf(true) }
-    val validateRole by rememberSaveable { mutableStateOf(true) }
-    val validateOrg by rememberSaveable { mutableStateOf(true) }
-
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(vertical = paddingValues.calculateTopPadding(), horizontal = 16.dp)
-        .verticalScroll(scrollState), verticalArrangement = Arrangement.Center) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = paddingValues.calculateTopPadding(), horizontal = 16.dp)
+            .verticalScroll(scrollState),
+        verticalArrangement = Arrangement.Center
+    ) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -74,29 +70,37 @@ fun TestimonialForm(
             radioButtonList = radioButtonList,
             selectedOption = selectedOption,
             content = {
-                ValidatedTextField(value = editViewModel.data.testimonial,
+                ValidatedTextField(
+                    value = editViewModel.data.testimonial,
                     onValueChange = { editViewModel.onEvent(TestimonialEvent.OnTestimonialChange(it)) },
                     label = "Testimonial",
-                    showError = !validateTestimonials,
-                    errorMessage = editViewModel.data.testimonialError.asString(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Next),
+                    showError = editViewModel.data.testimonialError !is UiString.Empty,
+                    errorMessage = editViewModel.data.testimonialError,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Next
+                    ),
                     keyboardActions = KeyboardActions(onNext = {
                         focusManager.moveFocus(FocusDirection.Down)
                     }),
-                    modifier = Modifier.height(120.dp))
+                    modifier = Modifier.height(120.dp)
+                )
             },
             titleTestimonial = {
-                ValidatedTextField(value = editViewModel.data.title,
+                ValidatedTextField(
+                    value = editViewModel.data.title,
                     onValueChange = { editViewModel.onEvent(TestimonialEvent.OnTitleChange(it)) },
                     label = "Title",
-                    showError = !validateTitle,
-                    errorMessage = editViewModel.data.titleError.asString(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Next),
+                    showError = editViewModel.data.titleError !is UiString.Empty,
+                    errorMessage = editViewModel.data.titleError,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Next
+                    ),
                     keyboardActions = KeyboardActions(onNext = {
                         focusManager.moveFocus(FocusDirection.Down)
-                    }))
+                    })
+                )
             },
             onOptionSelected = {
                 editViewModel.onEvent(TestimonialEvent.OnTypeChange(it.type.value))
@@ -104,25 +108,35 @@ fun TestimonialForm(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ValidatedTextField(value = editViewModel.data.organization,
+        ValidatedTextField(
+            value = editViewModel.data.org,
             onValueChange = { editViewModel.onEvent(TestimonialEvent.OnOrgChange(it)) },
             label = "Organisation",
-            showError = !validateOrg,
-            errorMessage = editViewModel.data.organizationError.asString(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Next),
-            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }))
+            showError = editViewModel.data.orgError !is UiString.Empty,
+            errorMessage = editViewModel.data.orgError,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next
+            ),
+            keyboardActions = KeyboardActions(onNext = {
+                focusManager.moveFocus(FocusDirection.Down)
+            })
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ValidatedTextField(value = editViewModel.data.role,
+        ValidatedTextField(
+            value = editViewModel.data.role,
             onValueChange = { editViewModel.onEvent(TestimonialEvent.OnRoleChange(it)) },
             label = "Role",
-            showError = !validateRole,
-            errorMessage = editViewModel.data.roleError.asString(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Exit) }))
+            showError = editViewModel.data.roleError !is UiString.Empty,
+            errorMessage = editViewModel.data.roleError,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Exit) })
+        )
 
         if (selectedOption == radioButtonList[1]) {
             Spacer(modifier = Modifier.height(16.dp))
@@ -132,13 +146,17 @@ fun TestimonialForm(
             TestGetVideo()
         }
 
-        Button(onClick = { editViewModel.onEvent(TestimonialEvent.OnSubmit) },
+        Button(
+            onClick = { editViewModel.onEvent(TestimonialEvent.OnSubmit) },
             modifier = Modifier
                 .fillMaxWidth(1f)
                 .padding(16.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue,
-                contentColor = Color.White),
-            enabled = editViewModel.data.enableSubmit) {
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.Blue,
+                contentColor = Color.White
+            ),
+            enabled = editViewModel.data.enableSubmit
+        ) {
             Text(text = "Submit", fontSize = 16.sp)
         }
     }
@@ -151,17 +169,23 @@ fun CreateTstScreen(onNavigateTstCreate: () -> Unit) {
 
     Scaffold(topBar = {
         BottomNavigation(content = {
-            Row(verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 IconButton(onClick = onNavigateTstCreate) {
-                    Icon(painter = painterResource(id = R.drawable.ic_exercise_back),
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_exercise_back),
                         contentDescription = null,
-                        Modifier.size(24.dp))
+                        Modifier.size(24.dp)
+                    )
                 }
-                androidx.compose.material3.Text(text = "Create your Testimonial",
+                androidx.compose.material3.Text(
+                    text = "Create your Testimonial",
                     fontSize = 20.sp,
                     color = Color.Black,
-                    textAlign = TextAlign.Center)
+                    textAlign = TextAlign.Center
+                )
             }
         }, elevation = 10.dp, backgroundColor = Color.White)
     }, content = {

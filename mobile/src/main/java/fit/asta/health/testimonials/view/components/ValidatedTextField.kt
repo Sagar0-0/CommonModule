@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Error
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import fit.asta.health.utils.UiString
 
 
 @Composable
@@ -26,7 +27,7 @@ fun ValidatedTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     showError: Boolean = false,
-    errorMessage: String = "",
+    errorMessage: UiString,
 ) {
 
     Column(Modifier
@@ -51,7 +52,7 @@ fun ValidatedTextField(
 
             if (showError) {
                 Text(
-                    text = errorMessage,
+                    text = errorMessage.asString(),
                     color = MaterialTheme.colors.error,
                     style = MaterialTheme.typography.caption
                 )

@@ -10,10 +10,6 @@ import fit.asta.health.ui.theme.ColorAmericanPurple
 import fit.asta.health.ui.theme.IbarraNovaNormalGray14
 import fit.asta.health.ui.theme.IbarraNovaSemiBoldPlatinum16
 
-//import fit.asta.health.ui.theme.ColorAmericanPurple
-//import fit.asta.health.ui.theme.IbarraNovaNormalGray14
-//import fit.asta.health.ui.theme.IbarraNovaSemiBoldPlatinum16
-
 
 @Composable
 fun AuthenticationTextField(
@@ -30,13 +26,10 @@ fun AuthenticationTextField(
         state = state,
         hint = hint,
         onValueChange = onValueChange,
-        //textStyle = IbarraNovaSemiBoldPlatinum16,
         textStyle = IbarraNovaSemiBoldPlatinum16,
         hintTextStyle = IbarraNovaNormalGray14,
-        //color = ColorAmericanPurple,
         color = ColorAmericanPurple,
         cornerRadius = 15.dp,
         type = type
     )
-
 }

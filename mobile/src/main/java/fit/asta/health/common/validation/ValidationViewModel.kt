@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.validation.event.ValidationEvent
 import fit.asta.health.common.validation.event.ValidationResultEvent
 import fit.asta.health.common.validation.inerfaces.TextFieldId
+import fit.asta.health.common.validation.state.ValidationResultState
 import fit.asta.health.common.validation.state.ValidationState
 import fit.asta.health.common.validation.use_case.ValidateEmail
 import fit.asta.health.common.validation.use_case.ValidatePassword
@@ -39,18 +40,19 @@ open class ValidationViewModel @Inject constructor() : ViewModel() {
                 }
 
                 val result = validate.execute(value = event.state.text.trim())
-
-                forms[event.state.id] = if (result.isValid) {
-
-                    event.state.copy(hasError = false, errorMessageId = null)
-                } else {
-                    event.state.copy(hasError = true, errorMessageId = result.errorMessageId)
+                forms[event.state.id] = when (result) {
+                    is ValidationResultState.Error -> event.state.copy(
+                        hasError = true,
+                        errorMessageId = result.id
+                    )
+                    ValidationResultState.Success -> event.state.copy(
+                        hasError = false,
+                        errorMessageId = null
+                    )
                 }
             }
             is ValidationEvent.CheckBoxValueChange -> TODO()
-
             is ValidationEvent.Submit -> isValidForm()
-
         }
     }
 
