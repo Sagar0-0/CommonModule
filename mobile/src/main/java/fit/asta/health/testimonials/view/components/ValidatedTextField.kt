@@ -29,7 +29,8 @@ fun ValidatedTextField(
     errorMessage: String = "",
 ) {
 
-    Column(Modifier.fillMaxWidth()) {
+    Column(Modifier
+        .fillMaxWidth()) {
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,

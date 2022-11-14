@@ -38,8 +38,8 @@ fun GetVideo(
     onVideoClick: (() -> Unit)? = null,
 ) {
     Column(modifier = modifier) {
-        Text(text = "Add a Photo or Video",
-            color = Color.White,
+        Text(text = "Upload Video",
+            color = Color.Black,
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium)
 

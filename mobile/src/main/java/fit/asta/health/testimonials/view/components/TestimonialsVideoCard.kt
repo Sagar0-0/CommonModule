@@ -26,66 +26,56 @@ import fit.asta.health.utils.getImageUrl
 @Composable
 fun TestimonialsVideoCard(testimonial: NetTestimonial) {
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .clip(RoundedCornerShape(8.dp)),
-        elevation = 10.dp
-    ) {
-        Column(
-            Modifier
-                .fillMaxWidth()
-        ) {
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
-                    Surface(
-                        shape = RoundedCornerShape(8.dp),
-                        border = BorderStroke(width = 5.dp, color = Color(0xffE0F1FF)),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        val media = testimonial.media?.get(0)
-                        if (media != null) {
-                            AsyncImage(
-                                model = getImageUrl(media.url),
-                                contentDescription = null,
-                                modifier = Modifier.fillMaxWidth(),
-                                contentScale = ContentScale.Crop
-                            )
-                            PlayButton()
-                        }
-                    }
-                }
-            }
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .padding(16.dp)
+        .clip(RoundedCornerShape(8.dp)),
+        elevation = 10.dp) {
+        Column(Modifier.fillMaxWidth()) {
+            PlayVideoLayout(testimonial)
 
-            ArtistCard2(
-                user = testimonial.user.name,
+            UserCard(user = testimonial.user.name,
                 userOrg = testimonial.user.org,
                 userRole = testimonial.user.role,
-                url = testimonial.user.url
-            )
+                url = testimonial.user.url)
         }
     }
 }
 
 @Composable
+fun PlayVideoLayout(testimonial: NetTestimonial) {
+    Row(Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp)) {
+        Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
+            Surface(shape = RoundedCornerShape(8.dp),
+                border = BorderStroke(width = 5.dp, color = Color(0xffE0F1FF)),
+                modifier = Modifier.fillMaxWidth()) {
+                val media = testimonial.media?.get(0)
+                if (media != null) {
+                    AsyncImage(model = getImageUrl(media.url),
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxWidth(),
+                        contentScale = ContentScale.Crop)
+                    PlayButton()
+                }
+            }
+        }
+    }
+
+    Spacer(modifier = Modifier.height(16.dp))
+}
+
+@Composable
 fun PlayButton() {
-    IconButton(
-        onClick = { /*TODO*/ },
+    IconButton(onClick = { /*TODO*/ },
         modifier = Modifier
             .clip(CircleShape)
             .size(42.dp)
-            .background(color = Color.White)
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.asana_play_img),
+            .background(color = Color.White)) {
+        Icon(painter = painterResource(id = R.drawable.asana_play_img),
             contentDescription = null,
             tint = Color(0xff008CFF),
-            modifier = Modifier.size(24.dp)
-        )
+            modifier = Modifier.size(24.dp))
     }
 }

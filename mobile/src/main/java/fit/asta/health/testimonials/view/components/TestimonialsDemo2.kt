@@ -29,30 +29,30 @@ fun TestimonialsCardLayout(
     userOrg: String,
     userRole: String,
     url: String,
+    content: (@Composable() () -> Unit)? = null,
 ) {
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .clip(RoundedCornerShape(8.dp)),
-        elevation = 10.dp
-    ) {
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .padding(16.dp)
+        .clip(RoundedCornerShape(8.dp)),
+        elevation = 10.dp) {
 
         Column(Modifier.fillMaxWidth()) {
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                Text(
-                    text = cardTitle,
+            Row(Modifier
+                .fillMaxWidth()
+                .padding(16.dp)) {
+                Text(text = cardTitle,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     lineHeight = 22.4.sp,
-                    color = Color(0xff132839)
-                )
+                    color = Color(0xff132839))
             }
+
+            Spacer(modifier = Modifier.height(0.dp))
+
+            content?.let { it() }
+
             Box(modifier = Modifier.padding(horizontal = 16.dp)) {
                 FontFamily(Font(R.font.inter_light, FontWeight.Light))
 
@@ -60,19 +60,17 @@ fun TestimonialsCardLayout(
                     Box {
                         Text(text = "❝", fontSize = 20.sp, color = Color(0xFF0277BD))
                     }
-                    Text(
-                        text = cardTst,
+                    Text(text = cardTst,
                         fontSize = 16.sp,
                         color = Color(0xff404040),
                         fontWeight = FontWeight.Thin,
                         lineHeight = 24.sp,
-                        letterSpacing = 0.5.sp
-                    )
+                        letterSpacing = 0.5.sp)
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                         Text(text = "❞", fontSize = 20.sp, color = Color(0xFF0277BD))
                     }
 
-                    ArtistCard2(user, userOrg, userRole, url = url)
+                    UserCard(user, userOrg, userRole, url = url)
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -81,28 +79,23 @@ fun TestimonialsCardLayout(
 }
 
 @Composable
-fun ArtistCard2(user: String, userOrg: String, userRole: String, url: String) {
+fun UserCard(user: String, userOrg: String, userRole: String, url: String) {
 
     Box(modifier = Modifier.fillMaxWidth()) {
-        Row(
-            Modifier.fillMaxWidth(),
+        Row(Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+            verticalAlignment = Alignment.CenterVertically) {
             Box {
-                AsyncImage(
-                    model = getImageUrl(url),
+                AsyncImage(model = getImageUrl(url),
                     contentDescription = null,
                     modifier = Modifier
                         .clip(shape = CircleShape)
-                        .size(72.dp), contentScale = ContentScale.Crop
-                )
+                        .size(72.dp),
+                    contentScale = ContentScale.Crop)
             }
             Spacer(modifier = Modifier.width(16.dp))
-            Column(
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
+            Column(horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.SpaceBetween) {
                 Text(text = user, fontSize = 16.sp, color = Color.Black)
 
                 Text(text = "$userRole, $userOrg", fontSize = 12.sp, color = Color(0xff8694A9))

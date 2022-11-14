@@ -18,7 +18,7 @@ import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.navigation.home.view.component.NoInternetLayout
 import fit.asta.health.testimonials.model.network.NetTestimonial
 import fit.asta.health.testimonials.view.AllTestimonialsLayout
-import fit.asta.health.testimonials.view.TestimonialForm
+import fit.asta.health.testimonials.view.CreateTstScreen
 import fit.asta.health.testimonials.viewmodel.TestimonialListState
 import fit.asta.health.testimonials.viewmodel.TestimonialListViewModel
 import fit.asta.health.testimonials.viewmodel.create.TestimonialGetState
@@ -88,7 +88,7 @@ fun TestimonialsScreen(
 
         composable(route = TstScreen.TstCreate.route) {
 
-            TestimonialForm(onNavigateTstCreate = {
+            CreateTstScreen(onNavigateTstCreate = {
                 //navController.navigate(route = TstScreen.TstHome.route)
                 navController.popBackStack()
             })
@@ -104,8 +104,8 @@ fun LoadTestimonialForm(
 ) {
     when (getViewModel.state.collectAsState().value) {
         TestimonialGetState.Loading -> LoadingAnimation()
-        TestimonialGetState.Empty -> TestimonialForm(onNavigateTstCreate)
+        TestimonialGetState.Empty -> CreateTstScreen(onNavigateTstCreate)
         is TestimonialGetState.Error -> NoInternetLayout()
-        is TestimonialGetState.Success -> TestimonialForm(onNavigateTstCreate)
+        is TestimonialGetState.Success -> CreateTstScreen(onNavigateTstCreate)
     }
 }

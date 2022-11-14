@@ -28,7 +28,7 @@ import fit.asta.health.testimonials.model.domain.TestimonialType
 
 data class ButtonListTypes(
     val title: String,
-    val type: TestimonialType
+    val type: TestimonialType,
 )
 
 @Composable
@@ -114,7 +114,8 @@ fun TestimonialsRadioButton(
     onOptionSelected: (ButtonListTypes) -> Unit,
 ) {
 
-    Column(Modifier.fillMaxWidth()) {
+    Column(Modifier
+        .fillMaxWidth()) {
 
         androidx.compose.material3.Card(
             modifier = Modifier.fillMaxWidth(),

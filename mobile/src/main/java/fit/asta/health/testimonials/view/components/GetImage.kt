@@ -38,8 +38,8 @@ fun GetImage(
 ) {
 
     Column(modifier = modifier) {
-        Text(text = "Add a Photo or Video",
-            color = Color.White,
+        Text(text = "Upload Images",
+            color = Color.Black,
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium)
 
