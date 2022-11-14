@@ -1,4 +1,4 @@
-package fit.asta.health.tools
+package fit.asta.health.tools.breathing.view.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -13,47 +13,47 @@ import androidx.compose.ui.unit.dp
 import fit.asta.health.R
 
 @Composable
-fun CardBreathingGoals(){
-    Row() {
+fun CardBreathingGoals() {
+    Row {
 
 
-    Card(
-        modifier = Modifier
-            .size(121.5.dp)
-            .wrapContentHeight()
-    ){
-        Column(
+        Card(
+            modifier = Modifier
+                .size(121.5.dp)
+                .wrapContentHeight()
+        ) {
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
-        ){
-            Image(painter = painterResource(id = R.drawable.sleepimage),
-                contentDescription = null,
-                contentScale = ContentScale.Fit)
-        }
+            ) {
+                Image(painter = painterResource(id = R.drawable.sleepimage),
+                    contentDescription = null,
+                    contentScale = ContentScale.Fit)
+            }
             Column(
                 modifier = Modifier
                     .size(121.5.dp)
                     .wrapContentHeight()
-                    //.padding(16.dp)
+                //.padding(16.dp)
             ) {
-                Text(text = "Destress")
+                Text(text = "De-stress")
                 Text(text = "Night Time")
             }
-    }
+        }
 
         Card(
             modifier = Modifier
                 .size(121.5.dp)
                 .wrapContentHeight()
 
-                    //Spacer(modifier = Modifier.width(16.dp))
-        ){
+            //Spacer(modifier = Modifier.width(16.dp))
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
-            ){
+            ) {
                 Image(painter = painterResource(id = R.drawable.sleepimage),
                     contentDescription = null,
                     contentScale = ContentScale.FillWidth)
@@ -64,7 +64,7 @@ fun CardBreathingGoals(){
                     .wrapContentHeight()
                 //.padding(16.dp)
             ) {
-                Text(text = "Destress")
+                Text(text = "De-stress")
                 Text(text = "Night Time")
             }
         }
@@ -73,6 +73,6 @@ fun CardBreathingGoals(){
 
 @Preview
 @Composable
-fun ComposablPreview(){
+fun ComposablePreview() {
     CardBreathingGoals()
 }

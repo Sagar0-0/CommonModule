@@ -1,4 +1,4 @@
-package fit.asta.health.tools
+package fit.asta.health.tools.breathing.view.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.BottomNavigation
@@ -19,25 +19,26 @@ import fit.asta.health.tools.view.components.ItemData
 import fit.asta.health.tools.view.components.ItemList
 
 @Composable
-fun BreathingMusic(it: PaddingValues) {
+fun BreathingLanguage(it: PaddingValues) {
 
     val itemListData = remember {
-        mutableStateListOf(ItemData(1, "The Breath of Joy", bgColor = Color(0x66959393)),
-            ItemData(id = 2, display = "Source of your Prana", bgColor = Color(0x66959393)),
-            ItemData(3, "Vital life force", bgColor = Color(0x66959393)),
-            ItemData(4, "Release Stress", bgColor = Color(0x66959393)),
-            ItemData(5, "Quieting the Mind", bgColor = Color(0x66959393)),
+        mutableStateListOf(
+            ItemData(1, "English", bgColor = Color(0x66959393)),
+            ItemData(id = 2, display = "Hindi", bgColor = Color(0x66959393)),
+            ItemData(3, "Kannada", bgColor = Color(0x66959393)),
+            ItemData(4, "Telugu", bgColor = Color(0x66959393)),
+            ItemData(5, "Bengali", bgColor = Color(0x66959393)),
         )
     }
 
-    ItemList(list = itemListData, rowTitle = "Select music for your breathing exercise", it = it)
+    ItemList(list = itemListData, rowTitle = "Select your preferred Language", it = it)
 
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun Music() {
+fun Language() {
 
     Scaffold(topBar = {
         BottomNavigation(content = {
@@ -62,7 +63,7 @@ fun Music() {
             }
         }, elevation = 10.dp)
     }, content = {
-        BreathingMusic(it = it)
+        BreathingLanguage(it = it)
     })
 
 }

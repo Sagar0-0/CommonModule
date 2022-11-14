@@ -63,10 +63,8 @@ fun TestimonialsContent(state: TestimonialListState) {
     when (state) {
         is TestimonialListState.Error -> NoInternetLayout()
         is TestimonialListState.Loading -> LoadingAnimation()
-        is TestimonialListState.Success -> TestimonialsScreen(
-            navController = rememberNavController(),
-            testimonials = state.testimonials
-        )
+        is TestimonialListState.Success -> TestimonialsScreen(navController = rememberNavController(),
+            testimonials = state.testimonials)
     }
 }
 
@@ -87,6 +85,7 @@ fun TestimonialsScreen(
                 navController.popBackStack()
             })
         }
+
         composable(route = TstScreen.TstCreate.route) {
 
             TestimonialForm(onNavigateTstCreate = {
@@ -101,7 +100,7 @@ fun TestimonialsScreen(
 @Composable
 fun LoadTestimonialForm(
     onNavigateTstCreate: () -> Unit,
-    getViewModel: TestimonialViewModel = hiltViewModel()
+    getViewModel: TestimonialViewModel = hiltViewModel(),
 ) {
     when (getViewModel.state.collectAsState().value) {
         TestimonialGetState.Loading -> LoadingAnimation()

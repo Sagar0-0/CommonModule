@@ -1,4 +1,4 @@
-package fit.asta.health.tools
+package fit.asta.health.tools.breathing.view.components
 
 /*
 class BreathingBottomSheetGridView {

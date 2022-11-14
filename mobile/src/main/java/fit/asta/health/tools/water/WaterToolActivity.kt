@@ -1,4 +1,4 @@
-package fit.asta.health.tools
+package fit.asta.health.tools.water
 
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -12,7 +12,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class HealthToolActivity : AppCompatActivity() {
+class WaterToolActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityProfileNewBinding
     private val viewModel: WaterViewModel by viewModels()

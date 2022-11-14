@@ -1,7 +1,10 @@
-package fit.asta.health.tools
+package fit.asta.health.tools.breathing.view.components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -12,25 +15,24 @@ import fit.asta.health.R
 
 
 @Composable
-fun CardBreathingRatio(){
-    Card() {
+fun CardBreathingRatio() {
+    Card {
         Column(
-        modifier = Modifier
-            .padding(16.dp),
-    ) {
-        Text(text = "Nadi Shodana")
+            modifier = Modifier.padding(16.dp),
+        ) {
+            Text(text = "Nadi Shodana")
             Row(verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()){
-        Column() {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(painter = painterResource(id = R.drawable.ic_exercise_back),
-                        contentDescription = null)
+                modifier = Modifier.fillMaxWidth()) {
+                Column {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(painter = painterResource(id = R.drawable.ic_exercise_back),
+                            contentDescription = null)
 
+                    }
+                    Text(text = "Reset")
                 }
-            Text(text = "Reset")
-        }
-                Column() {
+                Column {
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(painter = painterResource(id = R.drawable.ic_exercise_back),
                             contentDescription = null)
@@ -38,7 +40,7 @@ fun CardBreathingRatio(){
                     }
                     Text(text = "Ratio")
                 }
-                Column() {
+                Column {
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(painter = painterResource(id = R.drawable.ic_exercise_back),
                             contentDescription = null)
@@ -46,7 +48,7 @@ fun CardBreathingRatio(){
                     }
                     Text(text = "Duration")
                 }
-                Column() {
+                Column {
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(painter = painterResource(id = R.drawable.ic_exercise_back),
                             contentDescription = null)
@@ -62,6 +64,6 @@ fun CardBreathingRatio(){
 
 @Preview
 @Composable
-fun ComposablePreview() {
+fun ComposablePreviewDemo() {
     CardBreathingRatio()
 }
