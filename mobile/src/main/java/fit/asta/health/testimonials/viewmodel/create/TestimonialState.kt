@@ -14,5 +14,5 @@ data class TestimonialState(
     var roleError: UiString = UiString.Empty,
     val org: String = "",
     var orgError: UiString = UiString.Empty,
-    val enableSubmit: Boolean = true
+    var enableSubmit: Boolean = false
 )
