@@ -19,9 +19,4 @@
         <!--<item name="tabRippleColor">@color/mtrl_tabs_icon_color_selector_colored</item>-->
     </style>
 
-    <style name="Widget.AppTheme.MyView" parent="">
-        <item name="android:background">@color/gray_600</item>
-        <item name="exampleColor">@color/light_blue_600</item>
-    </style>
-
 </resources>
