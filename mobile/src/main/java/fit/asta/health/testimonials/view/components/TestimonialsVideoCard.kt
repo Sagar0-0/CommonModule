@@ -32,6 +32,9 @@ fun TestimonialsVideoCard(testimonial: NetTestimonial) {
         .clip(RoundedCornerShape(8.dp)),
         elevation = 10.dp) {
         Column(Modifier.fillMaxWidth()) {
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             PlayVideoLayout(testimonial)
 
             UserCard(user = testimonial.user.name,

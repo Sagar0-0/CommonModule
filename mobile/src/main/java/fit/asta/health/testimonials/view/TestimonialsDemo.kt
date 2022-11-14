@@ -18,10 +18,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.model.network.NetTestimonial
-import fit.asta.health.testimonials.view.components.BeforeAndCardLayout
-import fit.asta.health.testimonials.view.components.PlayVideoLayout
-import fit.asta.health.testimonials.view.components.TestimonialsCardLayout
+import fit.asta.health.testimonials.view.components.TestimonialImageCard
+import fit.asta.health.testimonials.view.components.TestimonialTextCard
+import fit.asta.health.testimonials.view.components.TestimonialsVideoCard
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,37 +40,19 @@ fun AllTestimonialsLayout(
             .background(color = Color(0xffF4F6F8))) {
 
             testimonials.forEach { testimonial ->
-//                when (TestimonialType.fromInt(testimonial.type)) {
-//                    TestimonialType.TEXT -> {
-//                        TestimonialsCardLayout(
-//                            cardTitle = testimonial.title,
-//                            cardTst = testimonial.testimonial,
-//                            user = testimonial.user.name,
-//                            userOrg = testimonial.user.org,
-//                            userRole = testimonial.user.role,
-//                            url = testimonial.user.url,
-//                            content = null
-//                        )
-//                    }
-//                    TestimonialType.IMAGE -> BeforeAndAfterCard(testimonial)
-//                    TestimonialType.VIDEO -> TestimonialsVideoCard(testimonial)
-//                }
-                TestimonialsCardLayout(cardTitle = testimonial.title,
-                    cardTst = testimonial.testimonial,
-                    user = testimonial.user.name,
-                    userOrg = testimonial.user.org,
-                    userRole = testimonial.user.role,
-                    url = testimonial.user.url,
-                    content = {
-                        when (testimonial.type) {
-                            1 -> {
-                                BeforeAndCardLayout(testimonial = testimonial)
-                            }
-                            2 -> {
-                                PlayVideoLayout(testimonial = testimonial)
-                            }
-                        }
-                    })
+                when (TestimonialType.fromInt(testimonial.type)) {
+                    TestimonialType.TEXT -> {
+                        TestimonialTextCard(cardTitle = testimonial.title,
+                            cardTst = testimonial.testimonial,
+                            user = testimonial.user.name,
+                            userOrg = testimonial.user.org,
+                            userRole = testimonial.user.role,
+                            url = testimonial.user.url)
+                    }
+                    TestimonialType.IMAGE -> TestimonialImageCard(testimonial)
+                    TestimonialType.VIDEO -> TestimonialsVideoCard(testimonial)
+                }
+
             }
         }
     }, floatingActionButton = {

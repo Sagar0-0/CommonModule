@@ -23,7 +23,7 @@ import fit.asta.health.testimonials.model.network.NetTestimonial
 import fit.asta.health.utils.getImageUrl
 
 @Composable
-fun BeforeAndAfterCard(testimonial: NetTestimonial) {
+fun TestimonialImageCard(testimonial: NetTestimonial) {
 
     Card(modifier = Modifier
         .fillMaxWidth()
