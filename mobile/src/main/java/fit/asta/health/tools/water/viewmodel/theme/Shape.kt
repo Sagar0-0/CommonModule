@@ -1,4 +1,4 @@
-package fit.asta.health.ui.theme
+package fit.asta.health.tools.water.viewmodel.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Shapes

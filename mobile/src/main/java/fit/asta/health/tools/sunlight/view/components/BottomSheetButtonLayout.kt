@@ -3,6 +3,7 @@ package fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.ui
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -25,4 +26,10 @@ fun BottomSheetButtonLayout() {
             BottomSheetButton(title = "Start")
         }
     }
+}
+
+@Composable
+@Preview
+fun Preview2(){
+    BottomSheetButtonLayout()
 }

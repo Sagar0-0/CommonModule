@@ -1,4 +1,4 @@
-package fit.asta.health.tools.walking.view.component
+package fit.asta.health.tools.breathing.view.components
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -17,15 +17,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.navigation.home.view.component.WeatherCardImage
 import fit.asta.health.tools.view.components.CardSunBurn
-import fit.asta.health.tools.water.view.CardProgress
 
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            BreathingSliderCard()
+        }
+    }
+}
 
 @Composable
-fun WalkingTypeLayout(paddingValues: PaddingValues) {
-
+fun BreathingSliderCard() {
+    //paddingValues: PaddingValues
     Column(modifier = Modifier
         .fillMaxWidth()
-        .padding(paddingValues)
+        // .padding(16.dp)
         .verticalScroll(rememberScrollState())) {
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -53,21 +60,21 @@ fun WalkingTypeLayout(paddingValues: PaddingValues) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Row(Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)) {
-            Text(text = "Health Details",
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                lineHeight = 22.4.sp,
-                color = Color.Black)
-        }
+        /* Row(Modifier
+             .fillMaxWidth()
+             .padding(horizontal = 16.dp)) {
+             Text(text = "Health Details",
+                 fontWeight = FontWeight.Bold,
+                 fontSize = 16.sp,
+                 lineHeight = 22.4.sp,
+                 color = Color.Black)
+         }*/
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        HealthAndCalorieCard()
+        // HealthAndCalorieCard()
 
-        Spacer(modifier = Modifier.height(24.dp))
+        // Spacer(modifier = Modifier.height(16.dp))
 
         Row(Modifier
             .fillMaxWidth()
@@ -92,3 +99,11 @@ fun WalkingTypeLayout(paddingValues: PaddingValues) {
 
 }
 
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    Surface(Modifier.fillMaxSize()) {
+        BreathingSliderCard()
+    }
+
+}
