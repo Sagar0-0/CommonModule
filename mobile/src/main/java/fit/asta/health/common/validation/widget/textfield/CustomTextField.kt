@@ -26,8 +26,9 @@ import androidx.compose.ui.unit.dp
 import fit.asta.health.R
 import fit.asta.health.common.validation.state.ValidationState
 import fit.asta.health.common.validation.util.TextFieldType
-import fit.asta.health.tools.water.viewmodel.theme.ColorPlatinum
-import fit.asta.health.tools.water.viewmodel.theme.IbarraNovaNormalError13
+import fit.asta.health.ui.theme.ColorPlatinum
+import fit.asta.health.ui.theme.IbarraNovaNormalError13
+
 //import fit.asta.health.ui.theme.ColorPlatinum
 //import fit.asta.health.ui.theme.IbarraNovaNormalError13
 
@@ -42,9 +43,9 @@ fun CustomTextField(
     onValueChange: (String) -> Unit,
     color: Color,
     cornerRadius: Dp = 0.dp,
-    type: TextFieldType
+    type: TextFieldType,
 
-) {
+    ) {
 
     var passwordVisible by remember {
         mutableStateOf(true)
@@ -109,7 +110,7 @@ fun CustomTextField(
                     .align(Alignment.End)
                     .padding(top = 10.dp),
                 //style = IbarraNovaNormalError13
-            style = IbarraNovaNormalError13
+                style = IbarraNovaNormalError13
             )
         }
     }

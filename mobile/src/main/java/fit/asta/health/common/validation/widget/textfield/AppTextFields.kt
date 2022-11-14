@@ -6,9 +6,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.validation.state.ValidationState
 import fit.asta.health.common.validation.util.TextFieldType
-import fit.asta.health.tools.water.viewmodel.theme.ColorAmericanPurple
-import fit.asta.health.tools.water.viewmodel.theme.IbarraNovaNormalGray14
-import fit.asta.health.tools.water.viewmodel.theme.IbarraNovaSemiBoldPlatinum16
+import fit.asta.health.ui.theme.ColorAmericanPurple
+import fit.asta.health.ui.theme.IbarraNovaNormalGray14
+import fit.asta.health.ui.theme.IbarraNovaSemiBoldPlatinum16
+
 //import fit.asta.health.ui.theme.ColorAmericanPurple
 //import fit.asta.health.ui.theme.IbarraNovaNormalGray14
 //import fit.asta.health.ui.theme.IbarraNovaSemiBoldPlatinum16
@@ -20,9 +21,9 @@ fun AuthenticationTextField(
     state: ValidationState,
     @StringRes hint: Int,
     onValueChange: (String) -> Unit,
-    type: TextFieldType
+    type: TextFieldType,
 
-) {
+    ) {
 
     CustomTextField(
         modifier = modifier,
