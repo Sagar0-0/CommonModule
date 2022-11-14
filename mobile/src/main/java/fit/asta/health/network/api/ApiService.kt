@@ -29,6 +29,8 @@ import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
 import fit.asta.health.tools.water.model.network.NetBeverage
 import fit.asta.health.tools.water.model.network.NetBeverageRes
 import fit.asta.health.tools.water.model.network.NetWaterToolRes
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.*
 
 
@@ -151,6 +153,13 @@ interface ApiService {
 
     @POST("feedback/user/post")
     suspend fun postUserFeedback(@Body feedback: NetUserFeedback): Status
+
+    @Multipart
+    @POST("upload")
+    suspend fun uploadFiles(
+        @Part("description") description: RequestBody?,
+        @Body file: MultipartBody
+    ): Status
 
     //Old APIs ------------------------------------------------------------------------------------
     @GET("course/list/get")

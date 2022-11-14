@@ -11,6 +11,7 @@ import fit.asta.health.network.AstaNetwork
 import fit.asta.health.network.TokenProvider
 import fit.asta.health.network.api.RemoteApis
 import fit.asta.health.network.interceptor.OnlineInterceptor
+import fit.asta.health.network.repo.FileUploadRepo
 import okhttp3.Cache
 import okhttp3.logging.HttpLoggingInterceptor
 import javax.inject.Singleton
@@ -50,6 +51,12 @@ object NetworkModule {
         }
 
         return builder.build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideFileRepo(remoteApi: RemoteApis): FileUploadRepo {
+        return FileUploadRepo(remoteApi)
     }
 
     /*

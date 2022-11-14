@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.R
 import fit.asta.health.firebase.model.AuthRepo
+import fit.asta.health.network.repo.FileUploadRepo
 import fit.asta.health.testimonials.model.TestimonialRepo
 import fit.asta.health.testimonials.model.network.NetTestimonial
 import fit.asta.health.testimonials.model.network.NetTestimonialUser
@@ -27,6 +28,7 @@ import javax.inject.Inject
 class TestimonialViewModel
 @Inject constructor(
     private val testimonialRepo: TestimonialRepo,
+    private val fileRepo: FileUploadRepo,
     private val authRepo: AuthRepo
 ) : ViewModel() {
 

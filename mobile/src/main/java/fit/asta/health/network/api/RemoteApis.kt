@@ -29,6 +29,8 @@ import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
 import fit.asta.health.tools.water.model.network.NetBeverage
 import fit.asta.health.tools.water.model.network.NetBeverageRes
 import fit.asta.health.tools.water.model.network.NetWaterToolRes
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 interface RemoteApis {
 
@@ -95,6 +97,9 @@ interface RemoteApis {
     //Feedback Endpoints
     suspend fun getFeedbackQuestions(userId: String, featureId: String): NetFeedbackRes
     suspend fun postUserFeedback(feedback: NetUserFeedback): Status
+
+    //File upload Endpoint
+    suspend fun uploadFiles(description: RequestBody?, file: MultipartBody): Status
 
     //Old Endpoints -------------------------------------------------------------------------------
     suspend fun getCoursesList(categoryId: String, limit: Int, index: Int): CoursesListNetData

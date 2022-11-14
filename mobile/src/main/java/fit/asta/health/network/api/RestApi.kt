@@ -30,7 +30,9 @@ import fit.asta.health.tools.water.model.network.NetBeverage
 import fit.asta.health.tools.water.model.network.NetBeverageRes
 import fit.asta.health.tools.water.model.network.NetWaterToolRes
 import fit.asta.health.utils.NetworkUtil
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 
 class RestApi(baseUrl: String, client: OkHttpClient) :
     RemoteApis {
@@ -172,6 +174,10 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
 
     override suspend fun postUserFeedback(feedback: NetUserFeedback): Status {
         return apiService.postUserFeedback(feedback)
+    }
+
+    override suspend fun uploadFiles(description: RequestBody?, file: MultipartBody): Status {
+        return apiService.uploadFiles(description, file)
     }
 
     //Old Endpoints -------------------------------------------------------------------------------
