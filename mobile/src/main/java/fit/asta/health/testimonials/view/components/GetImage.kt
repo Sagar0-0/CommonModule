@@ -204,7 +204,7 @@ private fun UploadBeforeImage(onBeforeImageClick: (() -> Unit)?) {
 
 @Preview
 @Composable
-fun DemoImage() {
+fun TestGetImage() {
 
     var beforeSelectedImage by remember { mutableStateOf<Uri?>(null) }
     val beforeLauncher =

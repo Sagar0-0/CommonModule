@@ -175,7 +175,7 @@ private fun UploadVideo(onVideoClick: (() -> Unit)?) {
 
 @Preview
 @Composable
-fun Demo() {
+fun TestGetVideo() {
 
     var selectedVideo by remember { mutableStateOf<Uri?>(null) }
     val videoLauncher =
