@@ -18,7 +18,7 @@ import javax.inject.Inject
 class TestimonialListViewModel
 @Inject constructor(
     private val testimonialRepo: TestimonialRepo,
-    private val networkHelper: NetworkHelper
+    private val networkHelper: NetworkHelper,
 ) : ViewModel() {
 
     private val mutableState = MutableStateFlow<TestimonialListState>(TestimonialListState.Loading)
@@ -28,9 +28,9 @@ class TestimonialListViewModel
         loadTestimonials(10, 0)
     }
 
-    private fun loadTestimonials(limit: Int, index: Int) {
+    private fun loadTestimonials(limit: Int, page: Int) {
         viewModelScope.launch {
-            testimonialRepo.getTestimonials(limit = limit, index = index).catch { exception ->
+            testimonialRepo.getTestimonials(limit = limit, page = page).catch { exception ->
                 mutableState.value = TestimonialListState.Error(exception)
             }.collect {
                 mutableState.value = TestimonialListState.Success(it.testimonials)
@@ -42,7 +42,7 @@ class TestimonialListViewModel
         when (event) {
             is TestimonialListEvent.OnNextPage -> loadTestimonials(
                 limit = event.limit,
-                index = event.index
+                page = event.index
             )
         }
     }
