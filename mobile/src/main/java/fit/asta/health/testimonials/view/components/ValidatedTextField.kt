@@ -59,7 +59,7 @@ fun ValidatedTextField(
             }
 
             if (label == "Testimonials") {
-                Text(text = "${value.length}/50", textAlign = TextAlign.End)
+                Text(text = "${value.length}/256")
             }
         }
     }

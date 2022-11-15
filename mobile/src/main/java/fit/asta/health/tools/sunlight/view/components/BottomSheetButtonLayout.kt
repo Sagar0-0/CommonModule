@@ -1,4 +1,4 @@
-package fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.ui
+package fit.asta.health.tools.sunlight.view.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable

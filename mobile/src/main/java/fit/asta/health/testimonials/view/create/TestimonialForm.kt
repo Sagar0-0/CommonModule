@@ -15,7 +15,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -42,6 +42,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 fun TestimonialForm(
     editViewModel: TestimonialViewModel = hiltViewModel(),
     paddingValues: PaddingValues,
+    onNavigateTstHome: () -> Unit,
 ) {
 
     val radioButtonList = listOf(
@@ -49,6 +50,8 @@ fun TestimonialForm(
         ButtonListTypes(title = "Image", type = TestimonialType.IMAGE),
         ButtonListTypes(title = "Video", type = TestimonialType.VIDEO),
     )
+
+    var showCustomDialogWithResult by remember { mutableStateOf(false) }
 
     val selectedOption = radioButtonList.find {
         it.type == TestimonialType.fromInt(editViewModel.data.type)
@@ -58,8 +61,8 @@ fun TestimonialForm(
     val scrollState = rememberScrollState()
 
     Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(vertical = paddingValues.calculateTopPadding(), horizontal = 16.dp)
+        .fillMaxSize()
+        .padding(top = paddingValues.calculateTopPadding(), start = 16.dp, end = 16.dp)
         .verticalScroll(scrollState), verticalArrangement = Arrangement.Center) {
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -133,7 +136,9 @@ fun TestimonialForm(
             TestGetVideo()
         }
 
-        Button(onClick = { editViewModel.onEvent(TestimonialEvent.OnSubmit) },
+        Button(onClick = {
+            showCustomDialogWithResult = !showCustomDialogWithResult
+        },
             modifier = Modifier
                 .fillMaxWidth(1f)
                 .padding(16.dp),
@@ -142,19 +147,39 @@ fun TestimonialForm(
             enabled = editViewModel.data.enableSubmit) {
             Text(text = "Submit", fontSize = 16.sp)
         }
+
+        if (showCustomDialogWithResult) {
+            CustomDialogWithResultExample(onDismiss = {
+                showCustomDialogWithResult = !showCustomDialogWithResult
+            },
+                onNegativeClick = {
+                    showCustomDialogWithResult = !showCustomDialogWithResult
+                },
+                onPositiveClick = {
+                    editViewModel.onEvent(TestimonialEvent.OnSubmit)
+                    onNavigateTstHome()
+                },
+                btnTitle = "Submit Testimonial",
+                btnWarn = "Allow Permission to send you notifications when new art styles added.",
+                btn1Title = "Cancel",
+                btn2Title = "Continue Practicing")
+        }
+
     }
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
 @Composable
-fun CreateTstScreen(onNavigateTstCreate: () -> Unit) {
+fun CreateTstScreen(onNavigateTstCreate: () -> Unit, onNavigateTstHome: () -> Unit) {
+
+    var showCustomDialogWithResult by remember { mutableStateOf(false) }
 
     Scaffold(topBar = {
         BottomNavigation(content = {
             Row(verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()) {
-                IconButton(onClick = onNavigateTstCreate) {
+                IconButton(onClick = { showCustomDialogWithResult = !showCustomDialogWithResult }) {
                     Icon(Icons.Outlined.NavigateBefore,
                         "back",
                         tint = Color(0xff0088FF),
@@ -167,7 +192,24 @@ fun CreateTstScreen(onNavigateTstCreate: () -> Unit) {
             }
         }, elevation = 10.dp, backgroundColor = Color.White)
     }, content = {
-        TestimonialForm(paddingValues = it)
+        TestimonialForm(paddingValues = it, onNavigateTstHome = onNavigateTstHome)
     })
+
+    if (showCustomDialogWithResult) {
+        CustomDialogWithResultExample(onDismiss = {
+            showCustomDialogWithResult = !showCustomDialogWithResult
+        },
+            onNegativeClick = {
+                onNavigateTstCreate()
+            },
+            onPositiveClick = {
+                showCustomDialogWithResult = !showCustomDialogWithResult
+            },
+            btnTitle = "Discard Testimonial",
+            btnWarn = "Allow Permission to send you notifications when new art styles added.",
+            btn1Title = "Discard Testimonials",
+            btn2Title = "Cancel")
+    }
+
 
 }

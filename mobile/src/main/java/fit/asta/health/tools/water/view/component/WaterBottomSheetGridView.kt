@@ -16,7 +16,7 @@ import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
 import fit.asta.health.R
-import fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.ui.BottomSheetButtonLayout
+import fit.asta.health.tools.sunlight.view.components.BottomSheetButtonLayout
 import fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.ui.DividerLineCenter
 import fit.asta.health.tools.view.PracticeGridView
 import fit.asta.health.tools.view.components.AddMoreWater

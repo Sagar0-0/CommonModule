@@ -58,10 +58,8 @@ fun TestimonialsContent(state: TestimonialListState) {
     when (state) {
         is TestimonialListState.Error -> NoInternetLayout()
         is TestimonialListState.Loading -> LoadingAnimation()
-        is TestimonialListState.Success -> TestimonialsScreen(
-            navController = rememberNavController(),
-            testimonials = state.testimonials
-        )
+        is TestimonialListState.Success -> TestimonialsScreen(navController = rememberNavController(),
+            testimonials = state.testimonials)
     }
 
 }
@@ -89,7 +87,10 @@ fun TestimonialsScreen(
 //                //navController.navigate(route = TstScreen.TstHome.route)
 //                navController.popBackStack()
 //            })
-            LoadTestimonialForm(onNavigateTstCreate = { navController.popBackStack() })
+            LoadTestimonialForm(onNavigateTstCreate = { navController.popBackStack() },
+                onNavigateTstHome = {
+                    navController.navigate(route = TestimonialsRoute.Home.route)
+                })
         }
     }
 }
@@ -99,11 +100,14 @@ fun TestimonialsScreen(
 fun LoadTestimonialForm(
     onNavigateTstCreate: () -> Unit,
     getViewModel: TestimonialViewModel = hiltViewModel(),
+    onNavigateTstHome: () -> Unit,
 ) {
+
     when (getViewModel.state.collectAsState().value) {
         TestimonialGetState.Loading -> LoadingAnimation()
-        TestimonialGetState.Empty -> CreateTstScreen(onNavigateTstCreate)
+        TestimonialGetState.Empty -> CreateTstScreen(onNavigateTstCreate, onNavigateTstHome)
         is TestimonialGetState.Error -> NoInternetLayout()
-        is TestimonialGetState.Success -> CreateTstScreen(onNavigateTstCreate)
+        is TestimonialGetState.Success -> CreateTstScreen(onNavigateTstCreate, onNavigateTstHome)
     }
+
 }
