@@ -1,4 +1,4 @@
-package fit.asta.health.testimonials.view.components
+package fit.asta.health.testimonials.view.list
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import fit.asta.health.R
 import fit.asta.health.testimonials.model.network.NetTestimonial
+import fit.asta.health.testimonials.view.components.UserCard
 import fit.asta.health.utils.getImageUrl
 
 @Composable
@@ -33,9 +34,10 @@ fun TestimonialImageCard(testimonial: NetTestimonial) {
         Column(Modifier.fillMaxWidth()) {
             BeforeAndCardLayout(testimonial)
 
-            Row(Modifier
-                .fillMaxWidth()
-                .padding(16.dp)) {
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)) {
                 Box(modifier = Modifier.padding(horizontal = 16.dp)) {
                     FontFamily(Font(R.font.inter_light, FontWeight.Light))
                     Column {
@@ -64,9 +66,10 @@ fun TestimonialImageCard(testimonial: NetTestimonial) {
 
 @Composable
 fun BeforeAndCardLayout(testimonial: NetTestimonial) {
-    Row(Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 16.dp)) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)) {
         Surface(shape = RoundedCornerShape(8.dp),
             border = BorderStroke(width = 5.dp, color = Color(0xffE0F1FF)),
             modifier = Modifier.fillMaxWidth()) {

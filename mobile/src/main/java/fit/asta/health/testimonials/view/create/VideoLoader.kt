@@ -1,4 +1,4 @@
-package fit.asta.health.testimonials.view.components
+package fit.asta.health.testimonials.view.create
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -155,10 +155,11 @@ private fun PlayOrDestroy(
 @Composable
 private fun UploadVideo(onVideoClick: (() -> Unit)?) {
     Box(Modifier.padding(2.dp), contentAlignment = Alignment.Center) {
-        Card(Modifier
-            .fillMaxWidth()
-            .height(180.dp)
-            .clickable { onVideoClick?.let { it() } }) {
+        Card(
+            Modifier
+                .fillMaxWidth()
+                .height(180.dp)
+                .clickable { onVideoClick?.let { it() } }) {
             Column(horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxSize()) {

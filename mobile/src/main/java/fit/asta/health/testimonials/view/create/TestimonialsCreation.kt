@@ -1,4 +1,4 @@
-package fit.asta.health.testimonials.view.components
+package fit.asta.health.testimonials.view.create
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -23,13 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.R
-import fit.asta.health.testimonials.model.domain.TestimonialType
+import fit.asta.health.testimonials.model.domain.ButtonListTypes
 
-
-data class ButtonListTypes(
-    val title: String,
-    val type: TestimonialType,
-)
 
 @Composable
 fun MyTextField(
@@ -83,9 +78,10 @@ fun TestimonialsRadioButton(
             colors = CardDefaults.cardColors(containerColor = Color.White),
             border = BorderStroke(width = 1.dp, color = Color(0xffDFE6ED))) {
 
-            Column(Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp)) {
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp)) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(Modifier.fillMaxWidth()) {
                     Text(text = selectionTypeText,
@@ -141,9 +137,10 @@ fun UploadFiles(modifier: Modifier = Modifier) {
         Box(modifier = Modifier.dashedBorder(width = 1.dp,
             radius = 8.dp,
             color = Color(0xff8694A9))) {
-            Row(Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically) {
                 Text(text = "Upload Image or Video",

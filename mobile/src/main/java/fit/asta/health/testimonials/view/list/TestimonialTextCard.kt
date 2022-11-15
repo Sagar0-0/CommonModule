@@ -1,4 +1,4 @@
-package fit.asta.health.testimonials.view.components
+package fit.asta.health.testimonials.view.list
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
+import fit.asta.health.testimonials.view.components.UserCard
 
 
 @Composable
@@ -33,9 +34,10 @@ fun TestimonialTextCard(
         elevation = 10.dp) {
 
         Column(Modifier.fillMaxWidth()) {
-            Row(Modifier
-                .fillMaxWidth()
-                .padding(16.dp)) {
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)) {
                 Text(text = cardTitle,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,

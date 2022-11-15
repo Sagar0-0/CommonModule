@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.testimonials.view.components.MyTextField
+import fit.asta.health.testimonials.view.create.MyTextField
 
 
 @Composable
@@ -25,9 +25,10 @@ fun RatingCard(
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(5.dp)) {
-        Column(Modifier
-            .fillMaxWidth()
-            .padding(16.dp)) {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(16.dp)) {
             Text(text = cardTitle,
                 fontSize = 16.sp,
                 color = Color(0xff132839),

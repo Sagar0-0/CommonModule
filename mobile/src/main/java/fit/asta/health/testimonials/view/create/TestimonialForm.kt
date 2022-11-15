@@ -1,4 +1,4 @@
-package fit.asta.health.testimonials.view
+package fit.asta.health.testimonials.view.create
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -28,8 +28,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import fit.asta.health.testimonials.model.domain.ButtonListTypes
 import fit.asta.health.testimonials.model.domain.TestimonialType
-import fit.asta.health.testimonials.view.components.*
+import fit.asta.health.testimonials.view.components.ValidatedTextField
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
 import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
 import fit.asta.health.utils.UiString

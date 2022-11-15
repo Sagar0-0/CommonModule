@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowColumn
 import fit.asta.health.profile.view.components.ButtonListTypes
-import fit.asta.health.testimonials.view.components.MyTextField
+import fit.asta.health.testimonials.view.create.MyTextField
 
 @Preview
 @Composable
@@ -45,9 +45,10 @@ fun VerticalRadioButton(selectionTypeText: String, radioButtonList: List<ButtonL
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)) {
-        Column(Modifier
-            .fillMaxWidth()
-            .padding(16.dp)) {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(16.dp)) {
             Spacer(modifier = Modifier.height(16.dp))
             Row(Modifier.fillMaxWidth()) {
                 androidx.compose.material.Text(text = selectionTypeText,

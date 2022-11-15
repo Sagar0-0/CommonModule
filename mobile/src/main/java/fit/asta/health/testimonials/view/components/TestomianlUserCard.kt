@@ -38,5 +38,4 @@ fun UserCard(user: String, userOrg: String, userRole: String, url: String) {
             }
         }
     }
-
 }

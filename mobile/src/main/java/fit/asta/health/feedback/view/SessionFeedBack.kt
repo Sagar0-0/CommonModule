@@ -20,7 +20,7 @@ import fit.asta.health.feedback.view.components.OnlyTextFieldCard
 import fit.asta.health.feedback.view.components.RatingCard
 import fit.asta.health.feedback.view.components.VerticalRadioBttnCard
 import fit.asta.health.feedback.view.components.WelcomeCard
-import fit.asta.health.testimonials.view.components.UploadFiles
+import fit.asta.health.testimonials.view.create.UploadFiles
 
 @Preview
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,11 +29,12 @@ fun SessionFeedback() {
 
     Scaffold(content = {
 
-        Column(Modifier
-            .fillMaxWidth()
-            .padding(it)
-            .verticalScroll(rememberScrollState())
-            .background(color = Color(0xffF4F6F8))) {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(it)
+                .verticalScroll(rememberScrollState())
+                .background(color = Color(0xffF4F6F8))) {
 
             Spacer(modifier = Modifier.height(16.dp))
 

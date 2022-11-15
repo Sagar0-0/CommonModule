@@ -1,4 +1,4 @@
-package fit.asta.health.testimonials.view.components
+package fit.asta.health.testimonials.view.create
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -79,9 +79,10 @@ private fun ImagePreviewLayout(
     Box {
 
         if (beforeSelectedImage != null && !isBeforeDeleted) {
-            Box(Modifier
-                .padding(2.dp)
-                .clickable { onBeforeImageClick?.let { it() } },
+            Box(
+                Modifier
+                    .padding(2.dp)
+                    .clickable { onBeforeImageClick?.let { it() } },
                 contentAlignment = Alignment.BottomCenter) {
 
                 Image(painter = rememberAsyncImagePainter(model = beforeSelectedImage),
@@ -122,9 +123,10 @@ private fun ImagePreviewLayout(
     Box {
 
         if (afterSelectedImage != null && !isAfterDeleted) {
-            Box(Modifier
-                .padding(2.dp)
-                .clickable { onAfterImageClick?.let { it() } },
+            Box(
+                Modifier
+                    .padding(2.dp)
+                    .clickable { onAfterImageClick?.let { it() } },
                 contentAlignment = Alignment.BottomCenter) {
 
                 Image(painter = rememberAsyncImagePainter(model = afterSelectedImage),
@@ -164,10 +166,11 @@ private fun ImagePreviewLayout(
 @Composable
 private fun UploadAfterImage(onAfterImageClick: (() -> Unit)?) {
     Box(Modifier.padding(2.dp), contentAlignment = Alignment.Center) {
-        Card(Modifier
-            .fillMaxWidth()
-            .height(180.dp)
-            .clickable { onAfterImageClick?.let { it() } }) {
+        Card(
+            Modifier
+                .fillMaxWidth()
+                .height(180.dp)
+                .clickable { onAfterImageClick?.let { it() } }) {
             Column(horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxSize()) {
@@ -189,10 +192,11 @@ private fun UploadAfterImage(onAfterImageClick: (() -> Unit)?) {
 @Composable
 private fun UploadBeforeImage(onBeforeImageClick: (() -> Unit)?) {
     Box(Modifier.padding(2.dp), contentAlignment = Alignment.Center) {
-        Card(Modifier
-            .fillMaxWidth(0.5f)
-            .height(180.dp)
-            .clickable { onBeforeImageClick?.let { it() } }) {
+        Card(
+            Modifier
+                .fillMaxWidth(0.5f)
+                .height(180.dp)
+                .clickable { onBeforeImageClick?.let { it() } }) {
             Column(horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxSize()) {

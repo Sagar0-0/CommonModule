@@ -85,22 +85,22 @@ class TestimonialViewModel
             }
             is TestimonialEvent.OnTitleChange -> {
                 this.data.titleError = onValidateText(event.title, 4, 64)
-                this.data = this.data.copy(title = event.title.trim())
+                this.data = this.data.copy(title = event.title)
                 this.data.enableSubmit = validateData()
             }
             is TestimonialEvent.OnTestimonialChange -> {
                 this.data.testimonialError = onValidateText(event.testimonial, 32, 512)
-                this.data = this.data.copy(testimonial = event.testimonial.trim())
+                this.data = this.data.copy(testimonial = event.testimonial)
                 this.data.enableSubmit = validateData()
             }
             is TestimonialEvent.OnOrgChange -> {
                 this.data.orgError = onValidateText(event.org, 4, 32)
-                this.data = this.data.copy(org = event.org.trim())
+                this.data = this.data.copy(org = event.org)
                 this.data.enableSubmit = validateData()
             }
             is TestimonialEvent.OnRoleChange -> {
                 this.data.roleError = onValidateText(event.role, 2, 32)
-                this.data = this.data.copy(role = event.role.trim())
+                this.data = this.data.copy(role = event.role)
                 this.data.enableSubmit = validateData()
             }
             is TestimonialEvent.OnSubmit -> submit()
@@ -118,13 +118,13 @@ class TestimonialViewModel
                     type = this.data.type,
                     apv = false,
                     rank = -1,
-                    title = this.data.title,
-                    testimonial = this.data.testimonial,
+                    title = this.data.title.trim(),
+                    testimonial = this.data.testimonial.trim(),
                     userId = it.uid,
                     user = NetTestimonialUser(
                         name = it.name!!,
-                        role = this.data.role,
-                        org = this.data.org,
+                        role = this.data.role.trim(),
+                        org = this.data.org.trim(),
                         url = it.photoUrl.toString()
                     ),
                     media = listOf()

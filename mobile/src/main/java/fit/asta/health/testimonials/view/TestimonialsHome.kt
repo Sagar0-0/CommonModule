@@ -17,9 +17,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.model.network.NetTestimonial
-import fit.asta.health.testimonials.view.components.TestimonialImageCard
-import fit.asta.health.testimonials.view.components.TestimonialTextCard
-import fit.asta.health.testimonials.view.components.TestimonialsVideoCard
+import fit.asta.health.testimonials.view.list.TestimonialImageCard
+import fit.asta.health.testimonials.view.list.TestimonialTextCard
+import fit.asta.health.testimonials.view.list.TestimonialsVideoCard
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -60,11 +60,12 @@ private fun TestimonialHomeContent(
     it: PaddingValues,
     testimonials: List<NetTestimonial>,
 ) {
-    Column(Modifier
-        .fillMaxWidth()
-        .padding(it)
-        .verticalScroll(rememberScrollState())
-        .background(color = Color(0xffF4F6F8))) {
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .padding(it)
+            .verticalScroll(rememberScrollState())
+            .background(color = Color(0xffF4F6F8))) {
 
         testimonials.forEach { testimonial ->
             when (TestimonialType.fromInt(testimonial.type)) {

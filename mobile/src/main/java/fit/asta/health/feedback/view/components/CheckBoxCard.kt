@@ -13,7 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.testimonials.view.components.MyTextField
+import fit.asta.health.testimonials.view.create.MyTextField
 
 @Preview
 @Composable
@@ -26,9 +26,10 @@ fun CheckBoxCard() {
     Card(modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)) {
-        Column(Modifier
-            .fillMaxWidth()
-            .padding(16.dp)) {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(16.dp)) {
             Text(text = "Where did you first hear about us?",
                 fontSize = 16.sp,
                 color = Color(0xff132839),
