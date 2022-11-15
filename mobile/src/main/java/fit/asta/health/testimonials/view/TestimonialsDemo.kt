@@ -1,10 +1,7 @@
 package fit.asta.health.testimonials.view
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -33,28 +30,7 @@ fun AllTestimonialsLayout(
     onNavigateBack: () -> Unit,
 ) {
     Scaffold(content = {
-        Column(Modifier
-            .fillMaxWidth()
-            .padding(it)
-            .verticalScroll(rememberScrollState())
-            .background(color = Color(0xffF4F6F8))) {
-
-            testimonials.forEach { testimonial ->
-                when (TestimonialType.fromInt(testimonial.type)) {
-                    TestimonialType.TEXT -> {
-                        TestimonialTextCard(cardTitle = testimonial.title,
-                            cardTst = testimonial.testimonial,
-                            user = testimonial.user.name,
-                            userOrg = testimonial.user.org,
-                            userRole = testimonial.user.role,
-                            url = testimonial.user.url)
-                    }
-                    TestimonialType.IMAGE -> TestimonialImageCard(testimonial)
-                    TestimonialType.VIDEO -> TestimonialsVideoCard(testimonial)
-                }
-
-            }
-        }
+        TestimonialHomeContent(it, testimonials)
     }, floatingActionButton = {
         FloatingActionButton(onClick = { /*TODO*/ },
             containerColor = Color(0xff0075FF),
@@ -77,6 +53,35 @@ fun AllTestimonialsLayout(
             }
         })
     })
+}
+
+@Composable
+private fun TestimonialHomeContent(
+    it: PaddingValues,
+    testimonials: List<NetTestimonial>,
+) {
+    Column(Modifier
+        .fillMaxWidth()
+        .padding(it)
+        .verticalScroll(rememberScrollState())
+        .background(color = Color(0xffF4F6F8))) {
+
+        testimonials.forEach { testimonial ->
+            when (TestimonialType.fromInt(testimonial.type)) {
+                TestimonialType.TEXT -> {
+                    TestimonialTextCard(cardTitle = testimonial.title,
+                        cardTst = testimonial.testimonial,
+                        user = testimonial.user.name,
+                        userOrg = testimonial.user.org,
+                        userRole = testimonial.user.role,
+                        url = testimonial.user.url)
+                }
+                TestimonialType.IMAGE -> TestimonialImageCard(testimonial)
+                TestimonialType.VIDEO -> TestimonialsVideoCard(testimonial)
+            }
+
+        }
+    }
 }
 
 

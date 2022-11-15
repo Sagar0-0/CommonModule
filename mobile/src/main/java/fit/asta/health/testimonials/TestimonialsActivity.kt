@@ -16,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.databinding.ActivityProfileNewBinding
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.navigation.home.view.component.NoInternetLayout
+import fit.asta.health.testimonials.model.domain.TstScreen
 import fit.asta.health.testimonials.model.network.NetTestimonial
 import fit.asta.health.testimonials.view.AllTestimonialsLayout
 import fit.asta.health.testimonials.view.CreateTstScreen
@@ -66,6 +67,7 @@ fun TestimonialsContent(state: TestimonialListState) {
         is TestimonialListState.Success -> TestimonialsScreen(navController = rememberNavController(),
             testimonials = state.testimonials)
     }
+
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -87,11 +89,11 @@ fun TestimonialsScreen(
         }
 
         composable(route = TstScreen.TstCreate.route) {
-
-            CreateTstScreen(onNavigateTstCreate = {
-                //navController.navigate(route = TstScreen.TstHome.route)
-                navController.popBackStack()
-            })
+//            CreateTstScreen(onNavigateTstCreate = {
+//                //navController.navigate(route = TstScreen.TstHome.route)
+//                navController.popBackStack()
+//            })
+            LoadTestimonialForm(onNavigateTstCreate = { navController.popBackStack() })
         }
     }
 }

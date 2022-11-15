@@ -40,8 +40,7 @@ fun MyTextField(
     var text by remember { mutableStateOf("") }
 
     Column(Modifier.fillMaxWidth()) {
-        OutlinedTextField(
-            value = text,
+        OutlinedTextField(value = text,
             onValueChange = {
                 if (it.length <= maxChar) text = it
             },
@@ -49,118 +48,67 @@ fun MyTextField(
                 .fillMaxWidth()
                 .height(100.dp),
             placeholder = {
-                Text(
-                    text = textFieldTitle,
+                Text(text = textFieldTitle,
                     fontSize = 14.sp,
                     lineHeight = 19.6.sp,
-                    color = Color(0xff999999)
-                )
+                    color = Color(0xff999999))
             },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                backgroundColor = Color.White,
+            colors = TextFieldDefaults.outlinedTextFieldColors(backgroundColor = Color.White,
                 focusedBorderColor = Color(0xff0088FF),
-                unfocusedBorderColor = Color(0xffDFE6ED)
-            ),
-            shape = RoundedCornerShape(8.dp)
-        )
-        Text(
-            text = "${text.length} / $maxChar",
+                unfocusedBorderColor = Color(0xffDFE6ED)),
+            shape = RoundedCornerShape(8.dp))
+        Text(text = "${text.length} / $maxChar",
             textAlign = TextAlign.End,
             style = MaterialTheme.typography.caption,
-            modifier = Modifier.fillMaxWidth()
-        )
+            modifier = Modifier.fillMaxWidth())
     }
 }
 
-@Composable
-fun TestimonialTitle(
-    placeHolder: String,
-) {
-
-    var text by remember { mutableStateOf("") }
-
-    Column(Modifier.fillMaxWidth()) {
-        OutlinedTextField(
-            value = text,
-            onValueChange = {
-                text = it
-            },
-            modifier = Modifier.fillMaxWidth(),
-            placeholder = {
-                Text(
-                    text = placeHolder,
-                    fontSize = 14.sp,
-                    lineHeight = 19.6.sp,
-                    color = Color(0xff999999)
-                )
-            },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                backgroundColor = Color.White,
-                focusedBorderColor = Color(0xff0088FF),
-                unfocusedBorderColor = Color(0xffDFE6ED)
-            ),
-            shape = RoundedCornerShape(8.dp)
-        )
-    }
-}
 
 @Composable
 fun TestimonialsRadioButton(
     selectionTypeText: String,
     radioButtonList: List<ButtonListTypes>,
     selectedOption: ButtonListTypes,
-    content: @Composable() (() -> Unit)? = null,
-    titleTestimonial: @Composable() (() -> Unit)? = null,
+    content: @Composable (() -> Unit)? = null,
+    titleTestimonial: @Composable (() -> Unit)? = null,
     onOptionSelected: (ButtonListTypes) -> Unit,
 ) {
 
-    Column(Modifier
-        .fillMaxWidth()) {
+    Column(Modifier.fillMaxWidth()) {
 
-        androidx.compose.material3.Card(
-            modifier = Modifier.fillMaxWidth(),
+        androidx.compose.material3.Card(modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(8.dp),
             elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),
-            border = BorderStroke(width = 1.dp, color = Color(0xffDFE6ED))
-        ) {
+            border = BorderStroke(width = 1.dp, color = Color(0xffDFE6ED))) {
 
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp)
-            ) {
+            Column(Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp)) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(Modifier.fillMaxWidth()) {
-                    Text(
-                        text = selectionTypeText,
+                    Text(text = selectionTypeText,
                         color = Color(0x99000000),
                         fontSize = 14.sp,
                         lineHeight = 19.6.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                        fontWeight = FontWeight.Bold)
                 }
                 FlowRow(Modifier.fillMaxWidth()) {
                     radioButtonList.forEach { item ->
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceEvenly,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
+                        Row(horizontalArrangement = Arrangement.SpaceEvenly,
+                            verticalAlignment = Alignment.CenterVertically) {
                             Box(modifier = Modifier.padding(top = 9.5.dp, bottom = 9.5.dp)) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    RadioButton(
-                                        selected = (item.type == selectedOption.type),
+                                    RadioButton(selected = (item.type == selectedOption.type),
                                         onClick = {
                                             onOptionSelected(item)
                                         },
-                                        colors = RadioButtonDefaults.colors(Color(0xff2F80ED))
-                                    )
-                                    androidx.compose.material3.Text(
-                                        text = item.title,
+                                        colors = RadioButtonDefaults.colors(Color(0xff2F80ED)))
+                                    androidx.compose.material3.Text(text = item.title,
                                         fontSize = 16.sp,
                                         lineHeight = 22.4.sp,
-                                        color = Color(0xff575757)
-                                    )
+                                        color = Color(0xff575757))
                                 }
                             }
                         }
@@ -172,121 +120,57 @@ fun TestimonialsRadioButton(
         Spacer(modifier = Modifier.height(16.dp))
 
         titleTestimonial?.let { it() }
-        if (selectedOption == radioButtonList[0] || selectedOption == radioButtonList[2]) {
+        if (selectedOption == radioButtonList[0] || selectedOption == radioButtonList[1]) {
             Spacer(modifier = Modifier.height(16.dp))
             content?.let { it() }
         }
     }
 }
 
-//@Composable
-//fun TestimonialLayoutDemo(onNavigateTstCreate: () -> Unit) {
-//    Column(Modifier
-//        .fillMaxWidth()
-//        .padding(16.dp)
-//        .verticalScroll(rememberScrollState())) {
-//
-//        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
-//            androidx.compose.material3.IconButton(onClick = onNavigateTstCreate) {
-//                androidx.compose.material3.Icon(painter = painterResource(id = R.drawable.removeicon),
-//                    contentDescription = null,
-//                    Modifier.size(24.dp))
-//            }
-//        }
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        TestimonialType()
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        TestimonialTitle(placeHolder = "Title")
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        TestimonialTitle(placeHolder = "Subtitle")
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        TestimonialTitle(placeHolder = "Your Organization Name")
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        TestimonialTitle(placeHolder = "Role at your Organization")
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        UploadFiles()
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        UpdateButton()
-//
-//    }
-//}
-
 @Composable
 fun UploadFiles(modifier: Modifier = Modifier) {
 
     Column(modifier = modifier) {
-        Text(
-            text = "Add a Photo or Video",
+        Text(text = "Add a Photo or Video",
             color = Color.Black,
             fontSize = 16.sp,
-            fontWeight = FontWeight.Medium
-        )
+            fontWeight = FontWeight.Medium)
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Box(
-            modifier = Modifier.dashedBorder(
-                width = 1.dp,
-                radius = 8.dp,
-                color = Color(0xff8694A9)
-            )
-        ) {
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
+        Box(modifier = Modifier.dashedBorder(width = 1.dp,
+            radius = 8.dp,
+            color = Color(0xff8694A9))) {
+            Row(Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Upload Image or Video",
+                verticalAlignment = Alignment.CenterVertically) {
+                Text(text = "Upload Image or Video",
                     color = Color(0xff585D64),
                     fontSize = 14.sp,
-                    lineHeight = 19.6.sp
-                )
+                    lineHeight = 19.6.sp)
 
-                Button(
-                    onClick = { /*TODO*/ },
+                Button(onClick = { /*TODO*/ },
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xff0075FF)),
-                    shape = RoundedCornerShape(20.dp)
-                ) {
-                    Text(
-                        text = "Upload",
+                    shape = RoundedCornerShape(20.dp)) {
+                    Text(text = "Upload",
                         color = Color.White,
                         fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium
-                    )
+                        fontWeight = FontWeight.Medium)
                     Spacer(modifier = Modifier.width(7.dp))
-                    Image(
-                        painter = painterResource(id = R.drawable.upload),
+                    Image(painter = painterResource(id = R.drawable.upload),
                         contentDescription = null,
-                        modifier = Modifier.size(24.dp)
-                    )
+                        modifier = Modifier.size(24.dp))
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(
-            text = "You can upload maximum 5 images and 1 video *",
+        Text(text = "You can upload maximum 5 images and 1 video *",
             fontSize = 12.sp,
-            color = Color(0x99000000)
-        )
+            color = Color(0x99000000))
     }
 }
 
@@ -298,14 +182,12 @@ fun Modifier.dashedBorder(width: Dp, radius: Dp, color: Color) = drawBehind {
             style = PaintingStyle.Stroke
             pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
         }
-        it.drawRoundRect(
-            width.toPx(),
+        it.drawRoundRect(width.toPx(),
             width.toPx(),
             size.width - width.toPx(),
             size.height - width.toPx(),
             radius.toPx(),
             radius.toPx(),
-            paint
-        )
+            paint)
     }
 }

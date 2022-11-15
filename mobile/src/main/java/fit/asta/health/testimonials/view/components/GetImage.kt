@@ -175,7 +175,12 @@ private fun UploadAfterImage(onAfterImageClick: (() -> Unit)?) {
                     contentDescription = null,
                     modifier = Modifier.size(48.dp))
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Browse to choose a File")
+                Text(text = "Browse to choose")
+                Text(text = "After Image",
+                    fontSize = 24.sp,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(10.dp))
             }
         }
     }
@@ -195,7 +200,12 @@ private fun UploadBeforeImage(onBeforeImageClick: (() -> Unit)?) {
                     contentDescription = null,
                     modifier = Modifier.size(48.dp))
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Browse to choose a File")
+                Text(text = "Browse to choose")
+                Text(text = "Before Image",
+                    fontSize = 24.sp,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(10.dp))
             }
         }
     }
