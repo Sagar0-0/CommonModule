@@ -3,6 +3,7 @@ package fit.asta.health.testimonials.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.network.NetworkHelper
 import fit.asta.health.testimonials.model.TestimonialRepo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,6 +18,7 @@ import javax.inject.Inject
 class TestimonialListViewModel
 @Inject constructor(
     private val testimonialRepo: TestimonialRepo,
+    private val networkHelper: NetworkHelper
 ) : ViewModel() {
 
     private val mutableState = MutableStateFlow<TestimonialListState>(TestimonialListState.Loading)
