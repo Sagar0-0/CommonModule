@@ -8,6 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.BuildConfig
 import fit.asta.health.network.AstaNetwork
+import fit.asta.health.network.NetworkHelper
 import fit.asta.health.network.TokenProvider
 import fit.asta.health.network.api.RemoteApis
 import fit.asta.health.network.interceptor.OnlineInterceptor
@@ -33,7 +34,7 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideRemoteRestApi(
-        @ApplicationContext app: Context,
+        networkHelper: NetworkHelper,
         cache: Cache,
         token: TokenProvider
     ): RemoteApis {
@@ -41,7 +42,7 @@ object NetworkModule {
         val builder = AstaNetwork.Builder()
             .setApiKey(token)
             .setCache(cache = cache)
-            .addInterceptor(OnlineInterceptor(app))
+            .addInterceptor(OnlineInterceptor(networkHelper))
 
         if (BuildConfig.DEBUG) {
             builder.addNetworkInterceptor(
@@ -51,6 +52,11 @@ object NetworkModule {
         }
 
         return builder.build()
+    }
+
+    @Provides
+    fun provideNetworkHelper(@ApplicationContext context: Context): NetworkHelper {
+        return NetworkHelper(context)
     }
 
     @Singleton

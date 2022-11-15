@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.R
 import fit.asta.health.firebase.model.AuthRepo
+import fit.asta.health.network.NetworkHelper
 import fit.asta.health.network.repo.FileUploadRepo
 import fit.asta.health.testimonials.model.TestimonialRepo
 import fit.asta.health.testimonials.model.network.NetTestimonial
@@ -28,8 +29,9 @@ import javax.inject.Inject
 class TestimonialViewModel
 @Inject constructor(
     private val testimonialRepo: TestimonialRepo,
+    private val authRepo: AuthRepo,
     private val fileRepo: FileUploadRepo,
-    private val authRepo: AuthRepo
+    private val networkHelper: NetworkHelper
 ) : ViewModel() {
 
     var data by mutableStateOf(TestimonialState())
@@ -89,7 +91,7 @@ class TestimonialViewModel
                 this.data.enableSubmit = validateData()
             }
             is TestimonialEvent.OnTestimonialChange -> {
-                this.data.testimonialError = onValidateText(event.testimonial, 32, 512)
+                this.data.testimonialError = onValidateText(event.testimonial, 32, 256)
                 this.data = this.data.copy(testimonial = event.testimonial)
                 this.data.enableSubmit = validateData()
             }

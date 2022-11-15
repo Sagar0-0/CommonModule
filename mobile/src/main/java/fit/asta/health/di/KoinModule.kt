@@ -18,6 +18,7 @@ import fit.asta.health.navigation.today.ui.TodayPlanViewImpl
 import fit.asta.health.navigation.today.viewmodel.TodayPlanViewModel
 import fit.asta.health.network.AstaNetwork
 import fit.asta.health.network.Certificate
+import fit.asta.health.network.NetworkHelper
 import fit.asta.health.network.TokenProvider
 import fit.asta.health.network.interceptor.OfflineInterceptor
 import fit.asta.health.network.interceptor.OnlineInterceptor
@@ -75,13 +76,17 @@ val appModule = module {
         Cache(androidApplication().filesDir, AstaNetwork.CACHE_SIZE)
     }
 
+    single(named("network")) {
+        NetworkHelper(androidApplication())
+    }
+
     single { TokenProvider() }
 
     single(named("local")) {
 
         val builder = AstaNetwork.Builder()
             .setCache(cache = get(named("cache")))
-            .addInterceptor(OfflineInterceptor(androidApplication()))
+            .addInterceptor(OfflineInterceptor(networkHelper = get(named("network"))))
             .addCertificatePinner(Certificate())
 
         if (BuildConfig.DEBUG) {
@@ -99,7 +104,7 @@ val appModule = module {
         val builder = AstaNetwork.Builder()
             .setApiKey(get())
             .setCache(cache = get(named("cache")))
-            .addInterceptor(OnlineInterceptor(androidApplication()))
+            .addInterceptor(OnlineInterceptor(networkHelper = get(named("network"))))
 
         if (BuildConfig.DEBUG) {
             builder.addNetworkInterceptor(

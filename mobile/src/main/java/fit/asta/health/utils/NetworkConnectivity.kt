@@ -1,7 +1,6 @@
 package fit.asta.health.utils
 
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
@@ -9,6 +8,7 @@ import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Build
 import androidx.lifecycle.LiveData
+
 
 class NetworkConnectivity(val context: Context) : LiveData<Boolean>() {
 
@@ -21,8 +21,7 @@ class NetworkConnectivity(val context: Context) : LiveData<Boolean>() {
         when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ->
                 cm.registerDefaultNetworkCallback(getConnectivityManagerCallback())
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ->
-                lollipopNetworkAvailableRequest()
+            else -> lollipopNetworkAvailableRequest()
         }
 
         postValue(isConnected())
@@ -31,13 +30,9 @@ class NetworkConnectivity(val context: Context) : LiveData<Boolean>() {
     override fun onInactive() {
         super.onInactive()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-            cm.unregisterNetworkCallback(cmCallback)
-        }
+        cm.unregisterNetworkCallback(cmCallback)
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private fun lollipopNetworkAvailableRequest() {
 
         val builder = NetworkRequest.Builder()
@@ -47,7 +42,6 @@ class NetworkConnectivity(val context: Context) : LiveData<Boolean>() {
         cm.registerNetworkCallback(builder.build(), getConnectivityManagerCallback())
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private fun getConnectivityManagerCallback(): ConnectivityManager.NetworkCallback {
 
         cmCallback = object : ConnectivityManager.NetworkCallback() {
@@ -75,31 +69,16 @@ class NetworkConnectivity(val context: Context) : LiveData<Boolean>() {
 
         var result = false
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        cm.run {
 
-            cm.run {
+            cm.getNetworkCapabilities(cm.activeNetwork)?.run {
 
-                cm.getNetworkCapabilities(cm.activeNetwork)?.run {
+                result = when {
 
-                    result = when {
-
-                        hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-                        hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-                        hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-                        else -> false
-                    }
-                }
-            }
-        } else {
-            cm.run {
-                cm.activeNetworkInfo?.run {
-
-                    result = when (type) {
-                        ConnectivityManager.TYPE_WIFI -> true
-                        ConnectivityManager.TYPE_MOBILE -> true
-                        ConnectivityManager.TYPE_ETHERNET -> true
-                        else -> false
-                    }
+                    hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                    hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                    hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                    else -> false
                 }
             }
         }
