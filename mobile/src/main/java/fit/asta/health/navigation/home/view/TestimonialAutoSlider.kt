@@ -30,7 +30,9 @@ fun Testimonials(
 
     FontFamily(Font(R.font.inter_medium))
 
-    Column(Modifier.fillMaxWidth(),
+    Column(Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally) {
         Box(Modifier
@@ -52,4 +54,3 @@ fun Testimonials(
     }
 
 }
-

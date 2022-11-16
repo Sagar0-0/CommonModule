@@ -25,14 +25,13 @@ import fit.asta.health.R
 @Composable
 fun ReferAndEarn() {
 
-    val interFontFamily = FontFamily(
-        Font(R.font.inter_regular, FontWeight.Medium)
-    )
+    val interFontFamily = FontFamily(Font(R.font.inter_regular, FontWeight.Medium))
 
     val interMediumFontFamily = FontFamily(Font(R.font.inter_medium, FontWeight.Medium))
 
     Box(modifier = Modifier
         .fillMaxWidth()
+        .padding(horizontal = 16.dp)
         .height(132.dp)
         .background(Color.Transparent)) {
         Image(painter = painterResource(id = R.drawable.background_image),
@@ -56,7 +55,8 @@ fun ReferAndEarn() {
                     Text(text = "Refer and Earn",
                         fontSize = 16.sp,
                         fontFamily = interMediumFontFamily,
-                        color = Color.Black, lineHeight = 24.sp)
+                        color = Color.Black,
+                        lineHeight = 24.sp)
                     Text(text = "Send referral link to your friend to earn ₹ 100",
                         fontSize = 12.sp,
                         fontFamily = interFontFamily,
@@ -71,7 +71,8 @@ fun ReferAndEarn() {
                         Text(text = "Refer",
                             fontSize = 14.sp,
                             fontFamily = interMediumFontFamily,
-                            color = Color.White, letterSpacing = 0.15.sp)
+                            color = Color.White,
+                            letterSpacing = 0.15.sp)
                     }
                 }
             }

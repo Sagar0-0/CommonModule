@@ -28,8 +28,8 @@ fun WeatherCardImage(
     Box(modifier = modifier
         .fillMaxWidth()
         .height(151.dp)
-        .clip(RoundedCornerShape(10.dp))
-    ) {
+        .padding(horizontal = 16.dp)
+        .clip(RoundedCornerShape(10.dp))) {
         Image(painter = painterResource(id = R.drawable.weatherimage),
             contentDescription = null,
             contentScale = ContentScale.FillBounds,
@@ -37,33 +37,28 @@ fun WeatherCardImage(
                 .fillMaxSize()
                 .align(Alignment.TopCenter))
         TemperatureAndWeather(temperature = temperature)
-        LocationAndDate(location=location,date=date)
+        LocationAndDate(location = location, date = date)
     }
 }
 
 @Composable
 fun TemperatureAndWeather(temperature: String) {
 
-    val interFontFamily = FontFamily(
-        Font(R.font.inter_regular, FontWeight.Normal)
-    )
+    val interFontFamily = FontFamily(Font(R.font.inter_regular, FontWeight.Normal))
 
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(start = 14.dp, end = 18.dp, top = 10.dp, bottom = 62.41.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+        verticalAlignment = Alignment.CenterVertically) {
         Box(Modifier.size(100.dp, 80.dp)) {
             Row(horizontalArrangement = Arrangement.SpaceBetween) {
                 Box {
-                    Text(
-                        text = temperature,
+                    Text(text = temperature,
                         fontFamily = interFontFamily,
                         fontSize = 72.sp,
                         color = Color.White,
-                        modifier = Modifier.align(alignment = Alignment.TopCenter)
-                    )
+                        modifier = Modifier.align(alignment = Alignment.TopCenter))
                 }
                 Box(Modifier.size(13.5.dp)) {
                     Image(painter = painterResource(id = R.drawable.temperaturedegreeimage),
@@ -85,20 +80,17 @@ fun TemperatureAndWeather(temperature: String) {
 
 @Composable
 fun LocationAndDate(
-    location:String,
-    date:String
+    location: String,
+    date: String,
 ) {
 
-    val interFontFamily = FontFamily(
-        Font(R.font.inter_regular, FontWeight.Normal)
-    )
+    val interFontFamily = FontFamily(Font(R.font.inter_regular, FontWeight.Normal))
 
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(start = 14.dp, end = 18.dp, top = 104.dp, bottom = 23.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+        verticalAlignment = Alignment.CenterVertically) {
         Box(modifier = Modifier.size(154.dp, 24.dp)) {
             Image(painter = painterResource(id = R.drawable.location),
                 contentDescription = null,
@@ -108,11 +100,10 @@ fun LocationAndDate(
                 fontFamily = interFontFamily,
                 modifier = Modifier
                     .align(alignment = Alignment.Center)
-                    .padding(start = 4.dp), fontSize = 14.sp, color = Color(0xFFFFFFFF))
+                    .padding(start = 4.dp),
+                fontSize = 14.sp,
+                color = Color(0xFFFFFFFF))
         }
-        Text(text = date,
-            color = Color.White,
-            fontFamily = interFontFamily,
-            fontSize = 14.sp)
+        Text(text = date, color = Color.White, fontFamily = interFontFamily, fontSize = 14.sp)
     }
 }

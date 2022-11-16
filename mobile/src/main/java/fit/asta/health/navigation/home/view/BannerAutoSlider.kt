@@ -1,16 +1,11 @@
 package fit.asta.health.navigation.home.view
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -19,7 +14,6 @@ import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
 import fit.asta.health.navigation.home.model.domain.Banner
 import fit.asta.health.navigation.home.view.component.BannerLayout
-import fit.asta.health.tools.water.view.CardProgress
 import kotlinx.coroutines.delay
 import kotlin.math.absoluteValue
 
@@ -37,18 +31,18 @@ fun BannerAutoSlider(bannerList: List<Banner>) {
         pagerState.animateScrollToPage(newPosition)
     }
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp)) {
         HorizontalPager(state = pagerState,
             verticalAlignment = Alignment.Top,
             horizontalAlignment = Alignment.CenterHorizontally) { page ->
             Box(modifier = Modifier
                 .graphicsLayer {
                     val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
-                    lerp(
-                        start = 0.85f,
+                    lerp(start = 0.85f,
                         stop = 1f,
-                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                    ).also { scale ->
+                        fraction = 1f - pageOffset.coerceIn(0f, 1f)).also { scale ->
                         scaleX = scale
                         scaleY = scale
                     }

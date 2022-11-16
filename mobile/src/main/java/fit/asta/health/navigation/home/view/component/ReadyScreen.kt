@@ -18,33 +18,33 @@ import fit.asta.health.navigation.home.view.Testimonials
 import fit.asta.health.testimonials.TestimonialsActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @Composable
-@OptIn(ExperimentalPagerApi::class, ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalPagerApi::class)
 fun ReadyScreen(toolsHome: ToolsHome) {
 
     val context = LocalContext.current
 
-    Box(
-        modifier = Modifier
+    Box(modifier = Modifier
+        .background(color = MaterialTheme.colors.background)
+        .clip(RoundedCornerShape(16.dp))) {
+        Column(Modifier
+            .padding(start = 16.dp, end = 16.dp, top = 16.dp)
             .background(color = MaterialTheme.colors.background)
-            .clip(RoundedCornerShape(16.dp))
-    ) {
-        Column(
-            Modifier
-                .padding(start = 16.dp, end = 16.dp, top = 16.dp)
-                .background(color = MaterialTheme.colors.background)
-                .verticalScroll(rememberScrollState())
-        ) {
+            .verticalScroll(rememberScrollState())) {
+
             NameAndMoodHomeScreenHeader()
+
             Spacer(modifier = Modifier.height(24.dp))
+
             toolsHome.weather?.let {
-                WeatherCardImage(
-                    temperature = it.temperature,
+                WeatherCardImage(temperature = it.temperature,
                     location = it.location,
-                    date = "Friday,24 October"
-                )
+                    date = "Friday,24 October")
             }
+
             Spacer(modifier = Modifier.height(24.dp))
+
             toolsHome.banners?.let { BannerAutoSlider(bannerList = it) }
 
             MyToolsAndViewAll(myTools = "My Tools", allTools = "All Tools", onClick = {
@@ -53,7 +53,9 @@ fun ReadyScreen(toolsHome: ToolsHome) {
             })
 
             toolsHome.tools?.let { VerticalImageCards(toolsList = it) }
+
             toolsHome.testimonials?.let { Testimonials(testimonialsList = it) }
+
             Spacer(modifier = Modifier.height(24.dp))
             RateUsCard()
             Spacer(modifier = Modifier.height(24.dp))

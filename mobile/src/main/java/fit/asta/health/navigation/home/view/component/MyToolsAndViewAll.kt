@@ -17,19 +17,15 @@ fun MyToolsAndViewAll(
     allTools: String,
     onClick: (value: Int) -> Unit,
 ) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
+    Row(horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 24.dp)
-    ) {
+            .padding(vertical = 24.dp, horizontal = 16.dp)) {
         Text(text = myTools, style = MaterialTheme.typography.h6, color = Color.Black)
         Box(modifier = Modifier.clickable(enabled = true, onClick = ({}))) {
-            ClickableText(
-                text = AnnotatedString(allTools),
+            ClickableText(text = AnnotatedString(allTools),
                 style = MaterialTheme.typography.h6,
-                onClick = onClick
-            )
+                onClick = onClick)
         }
     }
 }

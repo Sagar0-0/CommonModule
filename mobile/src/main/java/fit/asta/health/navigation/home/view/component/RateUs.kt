@@ -26,14 +26,13 @@ import fit.asta.health.R
 
 @Composable
 fun RateUsCard() {
-    FontFamily(
-        Font(R.font.inter_regular, FontWeight.Medium)
-    )
+    FontFamily(Font(R.font.inter_regular, FontWeight.Medium))
 
     val interMediumFontFamily = FontFamily(Font(R.font.inter_medium, FontWeight.Medium))
 
     Card(modifier = Modifier
         .fillMaxWidth()
+        .padding(horizontal = 16.dp)
         .height(124.dp)
         .clip(RoundedCornerShape(8.dp))
         .shadow(elevation = 4.dp)) {
@@ -52,7 +51,8 @@ fun RateUsCard() {
                     Text(text = "Rate Us",
                         fontSize = 16.sp,
                         fontFamily = interMediumFontFamily,
-                        color = Color.Black, lineHeight = 24.sp)
+                        color = Color.Black,
+                        lineHeight = 24.sp)
                     Text(text = "We value your feedback pls let us know how we are doing by rating us.",
                         fontSize = 12.sp,
                         fontFamily = interMediumFontFamily,
@@ -62,16 +62,15 @@ fun RateUsCard() {
                         Modifier
                             .clip(RoundedCornerShape(6.dp))
                             .height(28.dp)
-                            .background(brush = Brush.linearGradient(colors = listOf(
-                                Color(0xFF0075FF),
-                                Color(0xFF00D1FF)
-                            ))),
+                            .background(brush = Brush.linearGradient(colors = listOf(Color(
+                                0xFF0075FF), Color(0xFF00D1FF)))),
                         contentPadding = PaddingValues(vertical = 2.dp, horizontal = 8.dp),
                         colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent)) {
                         Text(text = "Rate Us",
                             fontSize = 14.sp,
                             fontFamily = interMediumFontFamily,
-                            color = Color.White, letterSpacing = 0.15.sp)
+                            color = Color.White,
+                            letterSpacing = 0.15.sp)
                     }
                 }
             }

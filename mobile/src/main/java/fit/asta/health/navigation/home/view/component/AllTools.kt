@@ -8,11 +8,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -30,7 +31,7 @@ class MainActivity : ComponentActivity() {
 }
 
 data class Tool(
-    val id:Int
+    val id: Int,
 )
 
 val tools = listOf(
@@ -43,11 +44,10 @@ val tools = listOf(
 )
 
 @Composable
-fun ToolList(){
-    LazyColumn{
-        items(tools){Tool->
+fun ToolList() {
+    LazyColumn {
+        items(tools) {
             ViewAllTools()
-
         }
     }
 }
@@ -55,44 +55,38 @@ fun ToolList(){
 @Composable
 fun ViewAllTools() {
 
-        Card(
-        elevation = 8.dp,
+    Card(elevation = 8.dp,
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(16.dp))
 
-    { Row(
-        modifier = Modifier
-            .padding(16.dp))
-        {
-            Image(
-                painter = painterResource(id = R.drawable.breathingimage),
+    {
+        Row(modifier = Modifier.padding(16.dp)) {
+            Image(painter = painterResource(id = R.drawable.breathingimage),
                 contentDescription = " ",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(140.dp, 100.dp)
-                    .clip(RoundedCornerShape(8.dp))
-            )
-            Column(
-                modifier = Modifier.padding(8.dp)
-            ) {
-                Row (modifier = Modifier
-                                .fillMaxWidth())
-                { Text(text = stringResource(id = R.string.breathing_tool_title))
+                    .clip(RoundedCornerShape(8.dp)))
+            Column(modifier = Modifier.padding(8.dp)) {
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    Text(text = stringResource(id = R.string.breathing_tool_title))
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth(),
                         //.align(Alignment.TopEnd)
                         //.size(32.dp),
-                        horizontalArrangement = Arrangement.End,)
-                    {Image(
-                        painter = painterResource(id = R.drawable.ic_uncheck),
-                        contentDescription = null,)}
+                        horizontalArrangement = Arrangement.End,
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_uncheck),
+                            contentDescription = null,
+                        )
+                    }
                 }
 
-                androidx.compose.material.Text(text = androidx.compose.ui.res.stringResource(id = fit.asta.health.R.string.tool_subtitle))
+                Text(text = stringResource(id = R.string.tool_subtitle))
 
             }
 

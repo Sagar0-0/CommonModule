@@ -16,33 +16,25 @@ import fit.asta.health.R
 @Composable
 fun NameAndMoodHomeScreenHeader() {
 
-    val poppinsFontFamily = FontFamily(
-        Font(R.font.poppins_medium, FontWeight.Medium)
-    )
+    val poppinsFontFamily = FontFamily(Font(R.font.poppins_medium, FontWeight.Medium))
 
-    val interFontFamily = FontFamily(
-        Font(R.font.inter_regular, FontWeight.Normal)
-    )
+    val interFontFamily = FontFamily(Font(R.font.inter_regular, FontWeight.Normal))
 
     Column(modifier = Modifier
         .fillMaxWidth()
+        .padding(horizontal = 16.dp)
         .height(59.dp),
         verticalArrangement = Arrangement.SpaceBetween) {
         Row(horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically) {
-            Box(modifier = Modifier
-                .size(153.dp, 36.dp)) {
-                Text(text = "Hello Aastha",
-                    fontSize = 24.sp,
-                    fontFamily = poppinsFontFamily)
+            Box(modifier = Modifier.size(153.dp, 36.dp)) {
+                Text(text = "Hello Aastha", fontSize = 24.sp, fontFamily = poppinsFontFamily)
             }
             Box {
-                Text(text = "\uD83D\uDC4B", fontSize = 24.sp,
-                    fontFamily = poppinsFontFamily)
+                Text(text = "\uD83D\uDC4B", fontSize = 24.sp, fontFamily = poppinsFontFamily)
             }
         }
-        Box(modifier = Modifier
-            .size(147.dp, 15.dp)) {
+        Box(modifier = Modifier.size(147.dp, 15.dp)) {
             Text(text = "What’s your mood today ?",
                 fontSize = 12.sp,
                 fontFamily = interFontFamily,
