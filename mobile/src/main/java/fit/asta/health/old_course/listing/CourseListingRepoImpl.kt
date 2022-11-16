@@ -13,11 +13,11 @@ class CourseListingRepoImpl(
 
     override suspend fun fetchCoursesList(
         categoryId: String,
-        limit: Int,
-        index: Int
+        index: Int,
+        limit: Int
     ): Flow<List<CourseIndexData>> {
         return flow {
-            emit(courseListDataMapper.toMap(remoteApi.getCoursesList(categoryId, limit, index)))
+            emit(courseListDataMapper.toMap(remoteApi.getCoursesList(categoryId, index, limit)))
         }
     }
 }

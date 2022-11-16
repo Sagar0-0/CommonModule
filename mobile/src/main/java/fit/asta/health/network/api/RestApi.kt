@@ -155,8 +155,8 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
     }
 
     //Testimonial Endpoints
-    override suspend fun getTestimonials(limit: Int, index: Int): NetTestimonialsRes {
-        return apiService.getTestimonials(limit, index)
+    override suspend fun getTestimonials(index: Int, limit: Int): NetTestimonialsRes {
+        return apiService.getTestimonials(index, limit)
     }
 
     override suspend fun updateTestimonial(netTestimonial: NetTestimonial): Status {
@@ -187,10 +187,10 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
 
     override suspend fun getCoursesList(
         categoryId: String,
-        limit: Int,
-        index: Int
+        index: Int,
+        limit: Int
     ): CoursesListNetData {
-        return apiService.getCoursesList(categoryId, limit, index)
+        return apiService.getCoursesList(categoryId, index, limit)
     }
 
     override suspend fun getTodayPlan(userId: String): TodayPlanNetData {

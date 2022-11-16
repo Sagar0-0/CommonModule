@@ -13,12 +13,8 @@ class TestimonialRepoImpl(
     private val mapper: TestimonialDataMapper,
 ) : TestimonialRepo {
 
-    override suspend fun getTestimonials(limit: Int, index: Int): Flow<NetTestimonialsRes> {
-        return flow {
-            emit(
-                remoteApi.getTestimonials(limit = limit, index = index)
-            )
-        }
+    override suspend fun getTestimonials(index: Int, limit: Int): NetTestimonialsRes {
+        return remoteApi.getTestimonials(index = index, limit = limit)
     }
 
     override suspend fun getTestimonial(userId: String): Flow<NetTestimonialRes> {

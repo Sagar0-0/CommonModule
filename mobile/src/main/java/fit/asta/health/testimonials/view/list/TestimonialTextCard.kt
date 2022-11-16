@@ -14,35 +14,34 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
+import fit.asta.health.testimonials.model.network.NetTestimonial
 import fit.asta.health.testimonials.view.components.UserCard
 
 
 @Composable
-fun TestimonialTextCard(
-    cardTitle: String,
-    cardTst: String,
-    user: String,
-    userOrg: String,
-    userRole: String,
-    url: String,
-) {
+fun TestimonialTextCard(testimonial: NetTestimonial) {
 
-    Card(modifier = Modifier
-        .fillMaxWidth()
-        .padding(16.dp)
-        .clip(RoundedCornerShape(8.dp)),
-        elevation = 10.dp) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .clip(RoundedCornerShape(8.dp)),
+        elevation = 10.dp
+    ) {
 
         Column(Modifier.fillMaxWidth()) {
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)) {
-                Text(text = cardTitle,
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = testimonial.title,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     lineHeight = 22.4.sp,
-                    color = Color(0xff132839))
+                    color = Color(0xff132839)
+                )
             }
 
             Box(modifier = Modifier.padding(horizontal = 16.dp)) {
@@ -52,17 +51,24 @@ fun TestimonialTextCard(
                     Box {
                         Text(text = "❝", fontSize = 20.sp, color = Color(0xFF0277BD))
                     }
-                    Text(text = cardTst,
+                    Text(
+                        text = testimonial.testimonial,
                         fontSize = 16.sp,
                         color = Color(0xff404040),
                         fontWeight = FontWeight.Thin,
                         lineHeight = 24.sp,
-                        letterSpacing = 0.5.sp)
+                        letterSpacing = 0.5.sp
+                    )
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                         Text(text = "❞", fontSize = 20.sp, color = Color(0xFF0277BD))
                     }
 
-                    UserCard(user, userOrg, userRole, url = url)
+                    UserCard(
+                        user = testimonial.user.name,
+                        userOrg = testimonial.user.org,
+                        userRole = testimonial.user.role,
+                        url = testimonial.user.url
+                    )
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))

@@ -45,7 +45,7 @@ class CourseListingActivity : AppCompatActivity() {
         val tlbCourseList = findViewById<MaterialToolbar>(R.id.tlbCourseList)
         tlbCourseList.title = catTitle
 
-        categoryId?.let { viewModel.fetchCourses(it, 10, 0) }
+        categoryId?.let { viewModel.fetchCourses(it, 0, 10) }
 
         tlbCourseList.setNavigationOnClickListener {
             onBackPressed()

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface TestimonialRepo {
 
-    suspend fun getTestimonials(page: Int, limit: Int): Flow<NetTestimonialsRes>
+    suspend fun getTestimonials(index: Int, limit: Int): NetTestimonialsRes
     suspend fun getTestimonial(userId: String): Flow<NetTestimonialRes>
     suspend fun updateTestimonial(netTestimonial: NetTestimonial): Flow<Status>
 

@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface CourseListingRepo {
     suspend fun fetchCoursesList(
         categoryId: String,
-        limit: Int,
-        index: Int
+        index: Int,
+        limit: Int
     ): Flow<List<CourseIndexData>>
 }

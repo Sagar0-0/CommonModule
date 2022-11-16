@@ -15,10 +15,10 @@ class CourseListingViewModel(
     private val coursesLiveData = MutableLiveData<CourseListingAction>()
     private val dataStore = CourseListingDataStoreImpl()
 
-    fun fetchCourses(categoryId: String, limit: Int, index: Int) {
+    fun fetchCourses(categoryId: String, index: Int, limit: Int) {
         viewModelScope.launch {
             courseListingRepo.fetchCoursesList(
-                categoryId, limit, index
+                categoryId, index, limit
             ).collect {
                 updateCoursesList(it)
             }

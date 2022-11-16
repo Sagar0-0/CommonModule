@@ -90,7 +90,7 @@ interface RemoteApis {
     suspend fun getWalkingTool(userId: String): NetWalkingToolRes
 
     //Testimonial Endpoints
-    suspend fun getTestimonials(limit: Int, index: Int): NetTestimonialsRes
+    suspend fun getTestimonials(index: Int, limit: Int): NetTestimonialsRes
     suspend fun updateTestimonial(netTestimonial: NetTestimonial): Status
     suspend fun getUserTestimonial(userId: String): NetTestimonialRes
 
@@ -102,7 +102,7 @@ interface RemoteApis {
     suspend fun uploadFiles(description: RequestBody?, file: MultipartBody): Status
 
     //Old Endpoints -------------------------------------------------------------------------------
-    suspend fun getCoursesList(categoryId: String, limit: Int, index: Int): CoursesListNetData
+    suspend fun getCoursesList(categoryId: String, index: Int, limit: Int): CoursesListNetData
     suspend fun getCourseDetails(courseId: String): CourseDetailsResponse
     suspend fun getSubscriptionPlans(): SubscriptionDataResponse
     suspend fun getSubscriptionStatus(userId: String): SubscriptionStatusResponse

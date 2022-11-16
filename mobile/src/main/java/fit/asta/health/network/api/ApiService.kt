@@ -134,8 +134,8 @@ interface ApiService {
     //Testimonial Endpoints
     @GET("testimonial/list/get?")
     suspend fun getTestimonials(
-        @Query("limit") limit: Int,
-        @Query("index") index: Int
+        @Query("index") index: Int,
+        @Query("limit") limit: Int
     ): NetTestimonialsRes
 
     @PUT("testimonial/put/")
@@ -165,8 +165,8 @@ interface ApiService {
     @GET("course/list/get")
     suspend fun getCoursesList(
         @Query("catId") categoryId: String,
-        @Query("limit") limit: Int,
-        @Query("index") index: Int
+        @Query("index") index: Int,
+        @Query("limit") limit: Int
     ): CoursesListNetData
 
     @GET("course/details/get")
