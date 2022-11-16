@@ -573,6 +573,8 @@
     <string name="validation_successfully">Validation Successfully</string>
     <string name="data_length_more">The length should not be more than %d characters</string>
     <string name="data_length_less">The length should not be less than %d characters</string>
+    <string name="testimonial_title_create">Create your Testimonial</string>
+    <string name="testimonial_title_edit">Edit your Testimonial?</string>
 
 </resources>
 

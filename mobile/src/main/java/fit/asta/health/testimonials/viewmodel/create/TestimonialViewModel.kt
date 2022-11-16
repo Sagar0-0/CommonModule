@@ -35,6 +35,9 @@ class TestimonialViewModel
     private val fileRepo: FileUploadRepo,
 ) : ViewModel() {
 
+    var title by mutableStateOf(UiString.Resource(R.string.testimonial_title_create))
+        private set
+
     var data by mutableStateOf(TestimonialState())
         private set
 
@@ -59,6 +62,10 @@ class TestimonialViewModel
             testimonialRepo.getTestimonial(userId).catch { exception ->
                 _mutableState.value = TestimonialGetState.Error(exception)
             }.collect {
+
+                if (it.testimonial.id.isNotBlank())
+                    title = UiString.Resource(R.string.testimonial_title_edit)
+
                 data = TestimonialState(
                     id = it.testimonial.id,
                     type = it.testimonial.type,

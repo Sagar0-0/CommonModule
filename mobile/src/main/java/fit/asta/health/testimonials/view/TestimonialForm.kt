@@ -21,7 +21,11 @@ fun LoadTestimonialForm(
         TestimonialGetState.Loading -> LoadingAnimation()
         TestimonialGetState.NoInternet -> NoInternetLayout()
         is TestimonialGetState.Error -> ServerErrorLayout(state.error)
-        is TestimonialGetState.Success -> CreateTstScreen(onNavigateTstCreate, onNavigateTstHome)
+        is TestimonialGetState.Success -> CreateTstScreen(
+            getViewModel.title.asString(),
+            onNavigateTstCreate,
+            onNavigateTstHome
+        )
     }
 }
 

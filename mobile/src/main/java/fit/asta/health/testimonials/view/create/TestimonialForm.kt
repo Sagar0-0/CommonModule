@@ -22,9 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -60,10 +60,12 @@ fun TestimonialForm(
     val focusManager = LocalFocusManager.current
     val scrollState = rememberScrollState()
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(top = paddingValues.calculateTopPadding(), start = 16.dp, end = 16.dp)
-        .verticalScroll(scrollState), verticalArrangement = Arrangement.Center) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = paddingValues.calculateTopPadding(), start = 16.dp, end = 16.dp)
+            .verticalScroll(scrollState), verticalArrangement = Arrangement.Center
+    ) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -71,34 +73,44 @@ fun TestimonialForm(
             radioButtonList = radioButtonList,
             selectedOption = selectedOption,
             content = {
-                ValidatedTextField(value = editViewModel.data.testimonial,
+                ValidatedTextField(
+                    value = editViewModel.data.testimonial,
                     onValueChange = { editViewModel.onEvent(TestimonialEvent.OnTestimonialChange(it)) },
                     label = "Testimonial",
                     showError = editViewModel.data.testimonialError !is UiString.Empty,
                     errorMessage = editViewModel.data.testimonialError,
                     keyboardOptions = if (editViewModel.data.testimonial.length < 512) {
-                        KeyboardOptions(keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Default)
+                        KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Default
+                        )
                     } else {
-                        KeyboardOptions(keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Next)
+                        KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Next
+                        )
                     },
                     keyboardActions = KeyboardActions(onNext = {
                         focusManager.clearFocus()
                     }),
-                    modifier = Modifier.height(120.dp))
+                    modifier = Modifier.height(120.dp)
+                )
             },
             titleTestimonial = {
-                ValidatedTextField(value = editViewModel.data.title,
+                ValidatedTextField(
+                    value = editViewModel.data.title,
                     onValueChange = { editViewModel.onEvent(TestimonialEvent.OnTitleChange(it)) },
                     label = "Title",
                     showError = editViewModel.data.titleError !is UiString.Empty,
                     errorMessage = editViewModel.data.titleError,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Next),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Next
+                    ),
                     keyboardActions = KeyboardActions(onNext = {
                         focusManager.moveFocus(FocusDirection.Down)
-                    }))
+                    })
+                )
             },
             onOptionSelected = {
                 editViewModel.onEvent(TestimonialEvent.OnTypeChange(it.type.value))
@@ -106,27 +118,35 @@ fun TestimonialForm(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ValidatedTextField(value = editViewModel.data.org,
+        ValidatedTextField(
+            value = editViewModel.data.org,
             onValueChange = { editViewModel.onEvent(TestimonialEvent.OnOrgChange(it)) },
             label = "Organisation",
             showError = editViewModel.data.orgError !is UiString.Empty,
             errorMessage = editViewModel.data.orgError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Next),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next
+            ),
             keyboardActions = KeyboardActions(onNext = {
                 focusManager.moveFocus(FocusDirection.Down)
-            }))
+            })
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ValidatedTextField(value = editViewModel.data.role,
+        ValidatedTextField(
+            value = editViewModel.data.role,
             onValueChange = { editViewModel.onEvent(TestimonialEvent.OnRoleChange(it)) },
             label = "Role",
             showError = editViewModel.data.roleError !is UiString.Empty,
             errorMessage = editViewModel.data.roleError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Exit) }))
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Exit) })
+        )
 
         if (selectedOption == radioButtonList[1]) {
             Spacer(modifier = Modifier.height(16.dp))
@@ -136,22 +156,27 @@ fun TestimonialForm(
             TestGetVideo()
         }
 
-        Button(onClick = {
-            showCustomDialogWithResult = !showCustomDialogWithResult
-        },
+        Button(
+            onClick = {
+                showCustomDialogWithResult = !showCustomDialogWithResult
+            },
             modifier = Modifier
                 .fillMaxWidth(1f)
                 .padding(16.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue,
-                contentColor = Color.White),
-            enabled = editViewModel.data.enableSubmit) {
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.Blue,
+                contentColor = Color.White
+            ),
+            enabled = editViewModel.data.enableSubmit
+        ) {
             Text(text = "Submit", fontSize = 16.sp)
         }
 
         if (showCustomDialogWithResult) {
-            CustomDialogWithResultExample(onDismiss = {
-                showCustomDialogWithResult = !showCustomDialogWithResult
-            },
+            CustomDialogWithResultExample(
+                onDismiss = {
+                    showCustomDialogWithResult = !showCustomDialogWithResult
+                },
                 onNegativeClick = {
                     showCustomDialogWithResult = !showCustomDialogWithResult
                 },
@@ -162,7 +187,8 @@ fun TestimonialForm(
                 btnTitle = "Submit Testimonial",
                 btnWarn = "Allow Permission to send you notifications when new art styles added.",
                 btn1Title = "Cancel",
-                btn2Title = "Continue Practicing")
+                btn2Title = "Continue Practicing"
+            )
         }
 
     }
@@ -171,24 +197,30 @@ fun TestimonialForm(
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
 @Composable
-fun CreateTstScreen(onNavigateTstCreate: () -> Unit, onNavigateTstHome: () -> Unit) {
+fun CreateTstScreen(title: String, onNavigateTstCreate: () -> Unit, onNavigateTstHome: () -> Unit) {
 
     var showCustomDialogWithResult by remember { mutableStateOf(false) }
 
     Scaffold(topBar = {
         BottomNavigation(content = {
-            Row(verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 IconButton(onClick = { showCustomDialogWithResult = !showCustomDialogWithResult }) {
-                    Icon(Icons.Outlined.NavigateBefore,
+                    Icon(
+                        Icons.Outlined.NavigateBefore,
                         "back",
                         tint = Color(0xff0088FF),
-                        modifier = Modifier.size(24.dp))
+                        modifier = Modifier.size(24.dp)
+                    )
                 }
-                androidx.compose.material3.Text(text = "Create your Testimonial",
-                    fontSize = 20.sp,
-                    color = Color.Black,
-                    textAlign = TextAlign.Center)
+                androidx.compose.material3.Text(
+                    text = title,
+                    color = Color(0xff010101),
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 20.sp
+                )
             }
         }, elevation = 10.dp, backgroundColor = Color.White)
     }, content = {
@@ -196,9 +228,10 @@ fun CreateTstScreen(onNavigateTstCreate: () -> Unit, onNavigateTstHome: () -> Un
     })
 
     if (showCustomDialogWithResult) {
-        CustomDialogWithResultExample(onDismiss = {
-            showCustomDialogWithResult = !showCustomDialogWithResult
-        },
+        CustomDialogWithResultExample(
+            onDismiss = {
+                showCustomDialogWithResult = !showCustomDialogWithResult
+            },
             onNegativeClick = {
                 onNavigateTstCreate()
             },
@@ -208,8 +241,7 @@ fun CreateTstScreen(onNavigateTstCreate: () -> Unit, onNavigateTstHome: () -> Un
             btnTitle = "Discard Testimonial",
             btnWarn = "Allow Permission to send you notifications when new art styles added.",
             btn1Title = "Discard Testimonials",
-            btn2Title = "Cancel")
+            btn2Title = "Cancel"
+        )
     }
-
-
 }
