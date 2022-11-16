@@ -14,5 +14,7 @@ data class TestimonialState(
     var roleError: UiString = UiString.Empty,
     val org: String = "",
     var orgError: UiString = UiString.Empty,
+    val imageError: UiString = UiString.Empty,
+    val videoError: UiString = UiString.Empty,
     var enableSubmit: Boolean = false
 )

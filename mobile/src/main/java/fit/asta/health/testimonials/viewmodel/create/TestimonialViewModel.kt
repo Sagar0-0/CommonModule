@@ -11,6 +11,7 @@ import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.network.NetworkHelper
 import fit.asta.health.network.repo.FileUploadRepo
 import fit.asta.health.testimonials.model.TestimonialRepo
+import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.model.network.NetTestimonial
 import fit.asta.health.testimonials.model.network.NetTestimonialUser
 import fit.asta.health.utils.UiString
@@ -30,8 +31,8 @@ class TestimonialViewModel
 @Inject constructor(
     private val testimonialRepo: TestimonialRepo,
     private val authRepo: AuthRepo,
+    networkHelper: NetworkHelper,
     private val fileRepo: FileUploadRepo,
-    private val networkHelper: NetworkHelper
 ) : ViewModel() {
 
     var data by mutableStateOf(TestimonialState())
@@ -44,16 +45,19 @@ class TestimonialViewModel
     val stateChannel = _stateChannel.receiveAsFlow()
 
     init {
-        authRepo.getUser()?.let {
-            loadTestimonial(userId = it.uid)
+        if (networkHelper.isConnected()) {
+            authRepo.getUser()?.let {
+                loadTestimonial(userId = it.uid)
+            }
+        } else {
+            _mutableState.value = TestimonialGetState.NoInternet
         }
     }
 
     private fun loadTestimonial(userId: String) {
         viewModelScope.launch {
-            testimonialRepo.getTestimonial(userId).catch {
-                //_mutableState.value = GetTestimonialState.Error(exception)
-                _mutableState.value = TestimonialGetState.Empty
+            testimonialRepo.getTestimonial(userId).catch { exception ->
+                _mutableState.value = TestimonialGetState.Error(exception)
             }.collect {
                 data = TestimonialState(
                     id = it.testimonial.id,
@@ -83,27 +87,27 @@ class TestimonialViewModel
         when (event) {
             is TestimonialEvent.OnTypeChange -> {
                 this.data = this.data.copy(type = event.type)
-                this.data.enableSubmit = validateData()
+                this.data.enableSubmit = validateTestimonial(TestimonialType.fromInt(event.type))
             }
             is TestimonialEvent.OnTitleChange -> {
-                this.data.titleError = onValidateText(event.title, 4, 64)
                 this.data = this.data.copy(title = event.title)
-                this.data.enableSubmit = validateData()
+                this.data.titleError = onValidateText(event.title, 4, 64)
+                this.data.enableSubmit = validateTestimonial(TestimonialType.fromInt(data.type))
             }
             is TestimonialEvent.OnTestimonialChange -> {
-                this.data.testimonialError = onValidateText(event.testimonial, 32, 256)
                 this.data = this.data.copy(testimonial = event.testimonial)
-                this.data.enableSubmit = validateData()
+                this.data.testimonialError = onValidateText(event.testimonial, 32, 256)
+                this.data.enableSubmit = validateTestimonial(TestimonialType.fromInt(data.type))
             }
             is TestimonialEvent.OnOrgChange -> {
-                this.data.orgError = onValidateText(event.org, 4, 32)
                 this.data = this.data.copy(org = event.org)
-                this.data.enableSubmit = validateData()
+                this.data.orgError = onValidateText(event.org, 4, 32)
+                this.data.enableSubmit = validateTestimonial(TestimonialType.fromInt(data.type))
             }
             is TestimonialEvent.OnRoleChange -> {
-                this.data.roleError = onValidateText(event.role, 2, 32)
                 this.data = this.data.copy(role = event.role)
-                this.data.enableSubmit = validateData()
+                this.data.roleError = onValidateText(event.role, 2, 32)
+                this.data.enableSubmit = validateTestimonial(TestimonialType.fromInt(data.type))
             }
             is TestimonialEvent.OnSubmit -> submit()
         }
@@ -151,16 +155,25 @@ class TestimonialViewModel
         }
     }
 
-    private fun validateData(): Boolean {
-        return (data.title.isNotBlank() && data.titleError is UiString.Empty
-                && data.testimonial.isNotBlank() && data.testimonialError is UiString.Empty
+    private fun validateTestimonial(type: TestimonialType): Boolean {
+        return when (type) {
+            TestimonialType.TEXT -> validateData(
+                data.testimonial.isNotBlank()
+                        && data.testimonialError is UiString.Empty
+            )
+            TestimonialType.IMAGE -> validateData(
+                data.testimonial.isNotBlank()
+                        && data.testimonialError is UiString.Empty
+                        && data.imageError is UiString.Empty
+            )
+            TestimonialType.VIDEO -> validateData(data.videoError is UiString.Empty)
+        }
+    }
+
+    private fun validateData(typeValidation: Boolean): Boolean {
+        return (typeValidation && data.title.isNotBlank() && data.titleError is UiString.Empty
                 && data.org.isNotBlank() && data.orgError is UiString.Empty
                 && data.role.isNotBlank() && data.roleError is UiString.Empty
                 )
-    }
-
-    private fun onValidateTestimonial() {
-        if (data.testimonial.isBlank() || data.testimonial.length > 512)
-            data.testimonialError = UiString.Resource(R.string.the_field_can_not_be_blank)
     }
 }

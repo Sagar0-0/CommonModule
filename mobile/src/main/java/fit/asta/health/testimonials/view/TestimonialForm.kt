@@ -17,11 +17,15 @@ fun LoadTestimonialForm(
     getViewModel: TestimonialViewModel = hiltViewModel(),
     onNavigateTstHome: () -> Unit,
 ) {
-
-    when (getViewModel.state.collectAsState().value) {
+    when (val state = getViewModel.state.collectAsState().value) {
         TestimonialGetState.Loading -> LoadingAnimation()
-        TestimonialGetState.Empty -> CreateTstScreen(onNavigateTstCreate, onNavigateTstHome)
-        is TestimonialGetState.Error -> NoInternetLayout()
+        TestimonialGetState.NoInternet -> NoInternetLayout()
+        is TestimonialGetState.Error -> ServerErrorLayout(state.error)
         is TestimonialGetState.Success -> CreateTstScreen(onNavigateTstCreate, onNavigateTstHome)
     }
+}
+
+@Composable
+fun ServerErrorLayout(error: Throwable) {
+
 }
