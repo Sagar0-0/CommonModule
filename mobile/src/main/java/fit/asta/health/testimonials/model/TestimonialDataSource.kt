@@ -4,6 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import fit.asta.health.testimonials.model.network.NetTestimonial
 
+private const val STARTING_PAGE_INDEX = 0
 
 class TestimonialDataSource(
     private val repo: TestimonialRepo
@@ -17,13 +18,15 @@ class TestimonialDataSource(
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, NetTestimonial> {
+
+        val index = params.key ?: STARTING_PAGE_INDEX
+
         return try {
-            val index = params.key ?: 0
-            val response = repo.getTestimonials(index = index, limit = 10)
+            val response = repo.getTestimonials(index = index, limit = params.loadSize)
             LoadResult.Page(
                 data = response.testimonials,
-                prevKey = null,
-                nextKey = if (response.testimonials.isEmpty()) params.key?.plus(1) else null
+                prevKey = if (index == STARTING_PAGE_INDEX) null else index - 1,
+                nextKey = if (response.testimonials.isEmpty()) null else params.key?.plus(1)
             )
         } catch (e: Exception) {
             LoadResult.Error(e)
