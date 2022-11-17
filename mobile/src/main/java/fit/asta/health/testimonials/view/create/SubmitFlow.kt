@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import fit.asta.health.R
+import fit.asta.health.testimonials.view.components.SuccessfulCard
 import fit.asta.health.tools.sunlight.view.components.BottomSheetButton
 
 @Composable
@@ -42,6 +43,18 @@ fun CustomDialogWithResultExample(
     }
 }
 
+
+@Composable
+fun OnSuccessfulSubmit(
+    onDismiss: () -> Unit,
+    onPositiveClick: () -> Unit,
+) {
+
+    Dialog(onDismissRequest = onDismiss) {
+        SuccessfulCard(onClick = onPositiveClick)
+    }
+
+}
 
 @Composable
 fun DialogContent(

@@ -58,7 +58,6 @@ fun ToolsCardLayout(
 
 }
 
-
 @Composable
 fun ToolsCardLayoutDemo(
     imgUrl: String,

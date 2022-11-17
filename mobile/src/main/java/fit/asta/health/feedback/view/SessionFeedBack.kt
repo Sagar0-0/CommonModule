@@ -29,12 +29,11 @@ fun SessionFeedback() {
 
     Scaffold(content = {
 
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .padding(it)
-                .verticalScroll(rememberScrollState())
-                .background(color = Color(0xffF4F6F8))) {
+        Column(Modifier
+            .fillMaxWidth()
+            .padding(it)
+            .verticalScroll(rememberScrollState())
+            .background(color = Color(0xffF4F6F8))) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -95,19 +94,22 @@ fun SessionFeedback() {
 @Composable
 fun SubmitButton(
     text: String,
+    onClick: (() -> Unit)? = null,
 ) {
-    Button(onClick = { /*TODO*/ },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        shape = RoundedCornerShape(5.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color(0xff0088FF))) {
-        Text(text = text,
-            fontFamily = FontFamily.Default,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium,
-            color = Color.White,
-            lineHeight = 16.sp,
-            letterSpacing = 1.25.sp)
+    onClick?.let {
+        Button(onClick = it,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            shape = RoundedCornerShape(5.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xff0088FF))) {
+            Text(text = text,
+                fontFamily = FontFamily.Default,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color.White,
+                lineHeight = 16.sp,
+                letterSpacing = 1.25.sp)
+        }
     }
 }
