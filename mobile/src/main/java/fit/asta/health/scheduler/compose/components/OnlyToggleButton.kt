@@ -1,12 +1,15 @@
-package fit.asta.health.new_scheduler.view.components
+package fit.asta.health.scheduler.compose.components
 
 import android.app.TimePickerDialog
 import android.icu.util.Calendar
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material3.*
@@ -16,6 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -27,9 +32,12 @@ fun OnlyToggleButton(
     icon: Int,
     title: String,
     switchTitle: String,
+    onNavigateToClickText: (() -> Unit)?,
 ) {
 
     val mCheckedState = remember { mutableStateOf(false) }
+
+    val enabled by remember { mutableStateOf(true) }
 
     Column(
         modifier = Modifier
@@ -59,7 +67,15 @@ fun OnlyToggleButton(
             }
             Box {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = switchTitle, fontSize = 16.sp, color = Color(0xff8694A9))
+                    ClickableText(text = AnnotatedString(
+                        text = switchTitle,
+                        spanStyle = SpanStyle(fontSize = 16.sp, color = Color(0xff8694A9))
+                    ),
+                        onClick = {
+                            if (enabled) {
+                                onNavigateToClickText?.invoke()
+                            }
+                        })
 
                     Spacer(modifier = Modifier.width(8.dp))
 
@@ -83,6 +99,7 @@ fun AlarmIconButton(
     title: String,
     arrowTitle: String,
     arrowImage: Int,
+    onNavigateToScreen: () -> Unit,
 ) {
 
     Column(
@@ -119,7 +136,7 @@ fun AlarmIconButton(
                     Spacer(modifier = Modifier.width(8.dp))
 
                     Box(Modifier.size(24.dp), contentAlignment = Alignment.Center) {
-                        IconButton(onClick = { /*TODO*/ }) {
+                        IconButton(onClick = onNavigateToScreen) {
                             Icon(
                                 painter = painterResource(id = arrowImage),
                                 contentDescription = null,
@@ -139,6 +156,11 @@ fun AlarmIconButton(
 @Composable
 fun DigitalDemo() {
 
+
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
+
     val calendar = Calendar.getInstance()
     val initHour = calendar[Calendar.HOUR_OF_DAY]
     val initMinute = calendar[Calendar.MINUTE]
@@ -152,13 +174,15 @@ fun DigitalDemo() {
         hourDemo.value = "$hour"
     }, initHour, initMinute, false)
 
+    if (isPressed) timePickerDialog.show()
+
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xff0088FF)),
         shape = RoundedCornerShape(size = 8.dp),
         modifier = Modifier.padding(16.dp)
     ) {
-        TextButton(onClick = { timePickerDialog.show() }) {
+        TextButton(onClick = { }, interactionSource = interactionSource) {
             Text(
                 text = "${hourDemo.value}:${minuteDemo.value}",
                 color = Color.White,
