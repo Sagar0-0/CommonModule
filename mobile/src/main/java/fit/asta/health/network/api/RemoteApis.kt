@@ -21,6 +21,12 @@ import fit.asta.health.profile.model.network.NetHealthPropertiesRes
 import fit.asta.health.profile.model.network.NetUserProfile
 import fit.asta.health.profile.model.network.NetUserProfileAvailableRes
 import fit.asta.health.profile.model.network.NetUserProfileRes
+import fit.asta.health.scheduler.model.db.entity.AlarmEntity
+import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerDeleteResponse
+import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerGetListResponse
+import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerGetResponse
+import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerPutResponse
+import fit.asta.health.scheduler.model.net.tag.AstaGetTagsListResponse
 import fit.asta.health.testimonials.model.network.NetTestimonial
 import fit.asta.health.testimonials.model.network.NetTestimonialRes
 import fit.asta.health.testimonials.model.network.NetTestimonialsRes
@@ -31,6 +37,8 @@ import fit.asta.health.tools.water.model.network.NetBeverageRes
 import fit.asta.health.tools.water.model.network.NetWaterToolRes
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.Response
+
 
 interface RemoteApis {
 
@@ -53,21 +61,19 @@ interface RemoteApis {
 
     suspend fun updateSelectedTools(toolIds: NetSelectedTools): Status
 
-    /*
     // Scheduler Endpoints
     suspend fun updateScheduleDataOnBackend(schedule: AlarmEntity): Response<AstaSchedulerPutResponse>
     suspend fun getScheduleDataFromBackend(scheduleId: String): Response<AstaSchedulerGetResponse>
     suspend fun getScheduleListDataFromBackend(userId: String): Response<AstaSchedulerGetListResponse>
-    suspend fun deleteScheduleFromBackend(scheduleId: String): Response<AstaSchedulerDeleteResponse>
+    suspend fun deleteScheduleDataFromBackend(scheduleId: String): Response<AstaSchedulerDeleteResponse>
 
     // Tags Endpoints
-    suspend fun getTagListDataFromBackend(userId: String): Response<AstaGetTagsListResponse>
+    suspend fun getTagListFromBackend(userId: String): Response<AstaGetTagsListResponse>
     suspend fun updateScheduleTag(schedule: ScheduleTagNetData): Status
 
     // Media Endpoints
     suspend fun getAllUserMedia(userId: String): Status
     suspend fun updateUserMedia(schedule: ScheduleTagNetData): Status
-     */
 
     //Health Tool - Water Endpoints
     suspend fun getWaterTool(

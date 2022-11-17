@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFeedFragment">
+
+    <fragment
+        android:id="@+id/homeFeedFragment"
+        android:name="fit.asta.health.thirdparty.spotify.view.fragment.SpotifyHomeFeedFragment"
+        android:label="fragment_spotify_home_feed"
+        tools:layout="@layout/fragment_spotify_home_feed">
+        <action
+            android:id="@+id/action_homeFeedFragment_to_spotifySearchFragment"
+            app:destination="@id/spotifySearchFragment" />
+        <action
+            android:id="@+id/action_homeFeedFragment_to_spotifyLibraryFragment"
+            app:destination="@id/spotifyLibraryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/spotifySearchFragment"
+        android:name="fit.asta.health.thirdparty.spotify.view.fragment.SpotifySearchFragment"
+        android:label="fragment_spotify_search"
+        tools:layout="@layout/fragment_spotify_search">
+        <action
+            android:id="@+id/action_spotifySearchFragment_to_spotifyLibraryFragment"
+            app:destination="@id/spotifyLibraryFragment" />
+        <action
+            android:id="@+id/action_spotifySearchFragment_to_homeFeedFragment"
+            app:destination="@id/homeFeedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/spotifyLibraryFragment"
+        android:name="fit.asta.health.thirdparty.spotify.view.fragment.SpotifyLibraryFragment"
+        android:label="fragment_spotify_library"
+        tools:layout="@layout/fragment_spotify_library">
+        <action
+            android:id="@+id/action_spotifyLibraryFragment_to_homeFeedFragment"
+            app:destination="@id/homeFeedFragment" />
+        <action
+            android:id="@+id/action_spotifyLibraryFragment_to_spotifySearchFragment"
+            app:destination="@id/spotifySearchFragment" />
+    </fragment>
+</navigation>

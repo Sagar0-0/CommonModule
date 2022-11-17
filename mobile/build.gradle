@@ -34,6 +34,7 @@ android {
         multiDexEnabled true
         signingConfig signingConfigs.release
         archivesBaseName = "$applicationId-$versionName"
+        manifestPlaceholders = [redirectSchemeName: "spotify-sdk", redirectHostName: "auth"]
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions {
@@ -180,6 +181,8 @@ dependencies {
     def room_version = "2.4.3"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:2.4.3"
+    androidTestImplementation "androidx.room:room-testing:2.4.3"
 
     //Dagger Hilt
     implementation "com.google.dagger:hilt-android:$dagger_version"
@@ -231,6 +234,34 @@ dependencies {
     //Coil-for loading images
     def coil_version = "2.2.2"
     implementation "io.coil-kt:coil-compose:$coil_version"
+
+    // FlexBox
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+
+    // Spotify Auth
+    implementation 'com.spotify.android:auth:2.0.2'
+
+    // recyclerview swipe decorator
+    implementation "com.github.xabaras:RecyclerViewSwipeDecorator:1.4"
+
+    // swipe action view for snooze and stop
+    def swipe_version = "1.4.0"
+    implementation "com.github.Tunous:SwipeActionView:$swipe_version"
+
+    // for picking tone
+    implementation "xyz.aprildown:UltimateRingtonePicker:3.1.0"
+
+    // for circular image view
+    implementation "com.mikhaellopez:circularimageview:4.3.0"
+
+    // transformation view
+    implementation "com.github.skydoves:transformationlayout:1.1.1"
+
+    // image picker
+    implementation "com.github.Drjacky:ImagePicker:2.1.15"
+
+    // number picker
+    implementation "io.github.ShawnLin013:number-picker:2.4.13"
 
     //Navigation
     def nav_version = "2.5.3"

@@ -21,6 +21,12 @@ import fit.asta.health.profile.model.network.NetHealthPropertiesRes
 import fit.asta.health.profile.model.network.NetUserProfile
 import fit.asta.health.profile.model.network.NetUserProfileAvailableRes
 import fit.asta.health.profile.model.network.NetUserProfileRes
+import fit.asta.health.scheduler.model.db.entity.AlarmEntity
+import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerDeleteResponse
+import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerGetListResponse
+import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerGetResponse
+import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerPutResponse
+import fit.asta.health.scheduler.model.net.tag.AstaGetTagsListResponse
 import fit.asta.health.testimonials.model.network.NetTestimonial
 import fit.asta.health.testimonials.model.network.NetTestimonialRes
 import fit.asta.health.testimonials.model.network.NetTestimonialsRes
@@ -31,6 +37,7 @@ import fit.asta.health.tools.water.model.network.NetBeverageRes
 import fit.asta.health.tools.water.model.network.NetWaterToolRes
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.Response
 import retrofit2.http.*
 
 
@@ -64,7 +71,6 @@ interface ApiService {
     @PUT("tool/selected/put")
     suspend fun updateSelectedTools(@Body toolIds: NetSelectedTools): Status
 
-    /*
     // Scheduler Endpoints
     @PUT("schedule/put/")
     suspend fun updateScheduleDataOnBackend(
@@ -82,13 +88,13 @@ interface ApiService {
     ): Response<AstaSchedulerGetListResponse>
 
     @DELETE("schedule/delete/")
-    suspend fun deleteScheduleFromBackend(
+    suspend fun deleteScheduleDataFromBackend(
         @Query("sid") scheduleID: String
     ): Response<AstaSchedulerDeleteResponse>
 
     // Tags Endpoints
     @GET("tag/list/get/")
-    suspend fun getTagListDataFromBackend(
+    suspend fun getTagListFromBackend(
         @Query("uid") userID: String
     ): Response<AstaGetTagsListResponse>
 
@@ -101,7 +107,6 @@ interface ApiService {
 
     @PUT("sound/put")
     suspend fun updateUserMedia(@Body schedule: ScheduleTagNetData): Status
-     */
 
     //Health Tool - Water Endpoints
     @GET("tool/water/get/?")

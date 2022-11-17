@@ -23,6 +23,10 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.SET_ALARM" />
 
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <supports-screens
         android:anyDensity="true"
         android:largeScreens="true"
@@ -96,6 +100,74 @@
             tools:replace="android:launchMode" />
         -->
         <activity
+            android:name=".thirdparty.spotify.view.activity.SpotifyAlbumDetailsActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".thirdparty.spotify.view.activity.SpotifyTracksDetailsActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".thirdparty.spotify.view.activity.SpotifyUserLibraryActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".thirdparty.MusicHomeActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".thirdparty.spotify.view.activity.SpotifySearchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".thirdparty.spotify.view.activity.SpotifyHomeScreenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".thirdparty.spotify.view.activity.SpotifyLoginActivity"
+            android:exported="true"
+            android:launchMode="singleInstance">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="callback"
+                    android:scheme="fit.asta.health" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.spotify.sdk.android.auth.LoginActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name=".scheduler.view.alarmsetting.TagsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".scheduler.view.alarmsetting.TimeSettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".scheduler.view.alarmsetting.AlarmSettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".scheduler.view.alarmsplashscreen.AlarmScreenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".scheduler.SchedulerHomeActivity"
+            android:exported="true" />
+
+        <activity
             android:name=".SplashScreen"
             android:exported="true"
             android:theme="@style/SplashTheme">
@@ -117,14 +189,24 @@
         </activity>
 
         <receiver android:name=".notify.receiver.AlarmReceiver" />
-        <receiver android:name=".notify.receiver.SnoozeReceiver" /> <!-- For listening to device reboot to reschedule alarms -->
-        <!--
-<receiver android:name="fit.asta.health.notify.receiver.BootReceiver">
+        <receiver android:name=".notify.receiver.SnoozeReceiver" />
+        <receiver
+            android:name=".scheduler.AlarmBroadcastReceiver"
+            android:directBootAware="true"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <!-- For listening to device reboot to reschedule alarms -->
+        <!--<receiver android:name="fit.asta.health.notify.receiver.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
-        </receiver>
-        -->
+        </receiver>-->
         <service
             android:name=".MessagingService"
             android:exported="false">
@@ -132,6 +214,9 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <service android:name=".scheduler.services.AlarmService" />
+        <service android:name=".scheduler.services.RescheduleAlarmService" />
     </application>
 
 </manifest>

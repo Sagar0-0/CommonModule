@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:spotify="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="item"
+            type="fit.asta.health.thirdparty.spotify.model.net.common.Album" />
+
+        <variable
+            name="token"
+            type="String" />
+
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical"
+        spotify:openAlbumDetails="@{item.id}">
+
+        <ImageView
+            android:id="@+id/currentUserTopTrackImage"
+            android:layout_width="144dp"
+            android:layout_height="144dp"
+            android:contentDescription="@string/current_user_top_track_s_image"
+            spotify:loadImageFromURL="@{item.images}" />
+
+        <TextView
+            android:id="@+id/currentUserTopTrackName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{item.name}"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/currentUserTopTrackArtist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.6"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            spotify:loadArtistsCollection="@{item.artists}" />
+
+    </LinearLayout>
+</layout>

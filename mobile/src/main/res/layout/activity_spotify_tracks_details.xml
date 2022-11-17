@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:spotify="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="item"
+            type="fit.asta.health.thirdparty.spotify.model.db.entity.TrackEntity" />
+    </data>
+
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/parentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:context=".thirdparty.spotify.view.activity.SpotifyTracksDetailsActivity">
+
+        <ImageView
+            android:id="@+id/trackImage"
+            android:layout_width="144dp"
+            android:layout_height="144dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="?actionBarSize"
+            android:layout_marginBottom="16dp"
+            spotify:loadImageFromURL="@{item.trackAlbum.images}" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addToFavoriteButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add To favorite"
+            android:textAllCaps="false" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/openInSpotifyButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Open In Spotify"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+</layout>

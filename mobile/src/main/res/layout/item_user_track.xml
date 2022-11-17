@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:spotify="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="userPlaylistItem"
+            type="fit.asta.health.thirdparty.spotify.model.net.me.tracks.Track" />
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
+        spotify:openInSpotify="@{userPlaylistItem.uri}">
+
+        <ImageView
+            android:id="@+id/userPlaylistImage"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:scaleType="centerCrop"
+            spotify:loadImageFromURL="@{userPlaylistItem.album.images}" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/userPlaylistName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{userPlaylistItem.name}"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/userPlaylistDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:alpha="0.6"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                spotify:loadArtistsCollection="@{userPlaylistItem.artists}" />
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

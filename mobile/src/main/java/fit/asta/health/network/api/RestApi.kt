@@ -21,6 +21,12 @@ import fit.asta.health.profile.model.network.NetHealthPropertiesRes
 import fit.asta.health.profile.model.network.NetUserProfile
 import fit.asta.health.profile.model.network.NetUserProfileAvailableRes
 import fit.asta.health.profile.model.network.NetUserProfileRes
+import fit.asta.health.scheduler.model.db.entity.AlarmEntity
+import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerDeleteResponse
+import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerGetListResponse
+import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerGetResponse
+import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerPutResponse
+import fit.asta.health.scheduler.model.net.tag.AstaGetTagsListResponse
 import fit.asta.health.testimonials.model.network.NetTestimonial
 import fit.asta.health.testimonials.model.network.NetTestimonialRes
 import fit.asta.health.testimonials.model.network.NetTestimonialsRes
@@ -33,6 +39,8 @@ import fit.asta.health.utils.NetworkUtil
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
+import retrofit2.Response
+
 
 class RestApi(baseUrl: String, client: OkHttpClient) :
     RemoteApis {
@@ -83,7 +91,7 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
         return apiService.updateSelectedTools(toolIds)
     }
 
-    /*
+
     // Scheduler Endpoints
     override suspend fun updateScheduleDataOnBackend(schedule: AlarmEntity): Response<AstaSchedulerPutResponse> {
         return apiService.updateScheduleDataOnBackend(schedule)
@@ -97,13 +105,13 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
         return apiService.getScheduleListDataFromBackend(userId)
     }
 
-    override suspend fun deleteScheduleFromBackend(scheduleId: String): Response<AstaSchedulerDeleteResponse> {
-        return apiService.deleteScheduleFromBackend(scheduleId)
+    override suspend fun deleteScheduleDataFromBackend(scheduleId: String): Response<AstaSchedulerDeleteResponse> {
+        return apiService.deleteScheduleDataFromBackend(scheduleId)
     }
 
     // Tags Endpoints
-    override suspend fun getTagListDataFromBackend(userId: String): Response<AstaGetTagsListResponse> {
-        return apiService.getTagListDataFromBackend(userId)
+    override suspend fun getTagListFromBackend(userId: String): Response<AstaGetTagsListResponse> {
+        return apiService.getTagListFromBackend(userId)
     }
 
     override suspend fun updateScheduleTag(schedule: ScheduleTagNetData): Status {
@@ -118,7 +126,6 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
     override suspend fun updateUserMedia(schedule: ScheduleTagNetData): Status {
         return apiService.updateUserMedia(schedule)
     }
-     */
 
     //Health Tool - Water Endpoints
     override suspend fun getWaterTool(

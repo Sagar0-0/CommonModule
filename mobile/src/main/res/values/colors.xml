@@ -40,6 +40,28 @@
     <color name="gray_400">#FFBDBDBD</color>
     <color name="gray_600">#FF757575</color>
 
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#0F0F0F</color>
+    <color name="black2">#1D1D1D</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="white2">#90CFCFCF</color>
+
+    <color name="sub_text_color">#777777</color>
+
+    <!--colors for bottom-sheet-->
+    <color name="bottom_sheet_primary_background_color">#FFFFFF</color>
+    <color name="bottom_sheet_primary_text_color">#010101</color>
+    <color name="bottom_sheet_primary_sub_text_color">#4F4F4F</color>
+    <color name="bottom_sheet_primary_edit_text_background_color">#F0F0F0</color>
+    <!--colors for bottom-sheet-->
+
+    <color name="rounded_image_stroke_color">#E5E5E5</color>
+    <color name="number_picker_un_selected_text">#ABABAB</color>
+
     <!--<color name="colorPrimaryDark">#FFFFFF</color>
     <color name="colorPrimaryVariant">#007EEC</color>
     <color name="colorSecondaryVariant">#FFFFFF</color>-->

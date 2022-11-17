@@ -576,5 +576,80 @@
     <string name="testimonial_title_create">Create your Testimonial</string>
     <string name="testimonial_title_edit">Edit your Testimonial?</string>
 
+
+    <string name="current_user_top_track_s_image">Current User Top Track\'s Image</string>
+    <string name="current_user_s_top_artists">Current User\'s Top Artists</string>
+    <string name="user_s_playlists">User\'s Playlists</string>
+    <string name="add_alarm">Add Alarm</string>
+    <string name="alarm_settings">Alarm Settings</string>
+    <string name="label">Label</string>
+    <string name="reminder_mode">Reminder Mode</string>
+    <string name="notification">Notification</string>
+    <string name="schedule">Schedule</string>
+    <string name="screen_splash">Screen Splash</string>
+    <string name="close_button">Close Button</string>
+    <string name="save_button">Save Button</string>
+    <string name="status">Status</string>
+    <string name="tag">Tag</string>
+    <string name="relax_to_energize">Relax to energize</string>
+    <string name="description">Description</string>
+    <string name="_4_hours">4 Hours</string>
+    <string name="intervals">Intervals</string>
+    <string name="important">Important</string>
+    <string name="this_will_make_sure_you_attempt_with_the_help_of_flashlight_sound_changes_vibration_etc">This will make sure you attempt with the help of flashlight, sound changes, vibration etc.</string>
+    <string name="_50">50%</string>
+    <string name="vibration">Vibration</string>
+    <string name="spring">Spring</string>
+    <string name="nap">Nap</string>
+    <string name="power_nap">Power Nap</string>
+    <string name="sound">Sound</string>
+    <string name="time_setting">Time Setting</string>
+    <string name="variant_intervals">Variant Intervals</string>
+    <string name="snooze">Snooze</string>
+    <string name="_5_mins">5 Minutes</string>
+    <string name="advanced_reminder">Advanced Reminder</string>
+    <string name="_15_mins">15 Minutes</string>
+    <string name="remind_at_the_end">Remind at the End</string>
+    <string name="this_will_make_you_remind_at_end">This will make you remind at end</string>
+    <string name="_30_mins">30 Minutes</string>
+    <string name="tags">Tags</string>
+    <string name="add_tag">Add Tag</string>
+    <string name="add_alarm_label">Add Alarm Label</string>
+    <string name="enter_label">Enter Label</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="add_description">Add Description</string>
+    <string name="enter_description">Enter Description</string>
+    <string name="select_reminder_mode">Select Reminder Mode</string>
+    <string name="splash">Splash</string>
+    <string name="tags_settings">Tags Settings</string>
+    <string name="custom_tag_add_image_button">Custom Tag Add Image Button</string>
+    <string name="default_tone">Default Tone</string>
+    <string name="repeat">Repeat</string>
+    <string name="add_custom_interval">Add Interval</string>
+    <string name="enter_tag_name">Enter Tag Name</string>
+    <string name="everyday">Everyday</string>
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+    <string name="add_variant_interval">Add Variant Interval</string>
+    <string name="number_picker_formatter">%02d</string>
+    <string name="select_snooze_time">Select Snooze Duration</string>
+    <string name="intervals_amp_time_settings"><![CDATA[Intervals & Time Settings]]></string>
+    <string name="remind_at_the_end_of_duration">Remind at the end of duration</string>
+    <string name="repetitive_interval">Repetitive Interval</string>
+    <string name="interval_s_status">Interval\'s Status</string>
+    <string name="turn_on_intervals_to_use_intervals_s_settings">Turn on intervals to use intervals’s settings.</string>
+
+    <item name="repeatTimeTag" type="id" />
+    <item name="repeatTimeUnitTag" type="id" />
+    <item name="tagMeta" type="id" />
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
 
