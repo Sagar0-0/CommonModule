@@ -15,7 +15,6 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.navigation.home.model.domain.ToolsHome
 import fit.asta.health.navigation.home.view.BannerAutoSlider
 import fit.asta.health.navigation.home.view.Testimonials
-import fit.asta.health.testimonials.TestimonialsActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -34,9 +33,11 @@ fun HomeScreenLayout(toolsHome: ToolsHome) {
 
             item {
                 toolsHome.weather?.let {
-                    WeatherCardImage(temperature = it.temperature,
+                    WeatherCardImage(
+                        temperature = it.temperature,
                         location = it.location,
-                        date = "Friday,24 October")
+                        date = "Friday,24 October"
+                    )
                 }
             }
 
@@ -49,7 +50,7 @@ fun HomeScreenLayout(toolsHome: ToolsHome) {
             item {
                 MyToolsAndViewAll(myTools = "My Tools", allTools = "All Tools", onClick = {
 
-                    TestimonialsActivity.launch(context = context)
+                    //TODO - Integrate All tools
                 })
             }
 
@@ -57,14 +58,18 @@ fun HomeScreenLayout(toolsHome: ToolsHome) {
 
                 val itemSize: Dp = LocalConfiguration.current.screenWidthDp.dp / 2
 
-                FlowRow(mainAxisSize = SizeMode.Expand,
-                    mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween) {
+                FlowRow(
+                    mainAxisSize = SizeMode.Expand,
+                    mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween
+                ) {
 
                     toolsHome.tools?.let {
                         it.forEachIndexed { index, _ ->
-                            ToolsCardLayoutDemo(imgUrl = toolsHome.tools[index].url,
+                            ToolsCardLayoutDemo(
+                                imgUrl = toolsHome.tools[index].url,
                                 cardTitle = toolsHome.tools[index].title,
-                                modifier = Modifier.size(width = itemSize, height = 250.dp))
+                                modifier = Modifier.size(width = itemSize, height = 250.dp)
+                            )
                         }
                     }
                 }
