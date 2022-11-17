@@ -18,7 +18,9 @@ fun HomeContent(state: HomeState) {
         when (state) {
             is HomeState.Loading -> LoadingAnimation()
             is HomeState.Success -> HomeScreenLayout(toolsHome = state.toolsHome)
-            is HomeState.Error -> NoInternetLayout()
+            is HomeState.Error -> NoInternetLayout(onTryAgain = {
+
+            })
         }
     }
 }

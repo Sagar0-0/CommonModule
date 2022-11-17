@@ -2,13 +2,14 @@ package fit.asta.health.testimonials.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.cachedIn
+import androidx.paging.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.network.NetworkHelper
 import fit.asta.health.testimonials.model.TestimonialDataSource
 import fit.asta.health.testimonials.model.TestimonialRepo
+import fit.asta.health.testimonials.model.network.NetTestimonial
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 
@@ -19,7 +20,31 @@ class TestimonialListViewModel
     private val networkHelper: NetworkHelper,
 ) : ViewModel() {
 
-    val testimonialPager = Pager(PagingConfig(pageSize = 10)) {
-        TestimonialDataSource(testimonialRepo)
-    }.flow.cachedIn(viewModelScope)
+    private val modificationEvents = MutableStateFlow<List<TestimonialListEvent>>(emptyList())
+    val testimonialPager =
+        Pager(PagingConfig(pageSize = TestimonialDataSource.PAGE_SIZE)) {
+            TestimonialDataSource(testimonialRepo, networkHelper)
+        }.flow
+            .cachedIn(viewModelScope)
+            .combine(modificationEvents) { pagingData, modifications ->
+                modifications.fold(pagingData) { acc, event ->
+                    applyEvents(acc, event)
+                }
+            }
+    //val testimonialViewState: LiveData<PagingData<NetTestimonial>> = testimonialPager.asLiveData()
+
+    fun onViewEvent(event: TestimonialListEvent) {
+        modificationEvents.value += event
+    }
+
+    private fun applyEvents(
+        paging: PagingData<NetTestimonial>,
+        event: TestimonialListEvent
+    ): PagingData<NetTestimonial> {
+        return when (event) {
+            is TestimonialListEvent.Remove -> {
+                paging.filter { event.id != it.id }
+            }
+        }
+    }
 }

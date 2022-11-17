@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -35,6 +36,7 @@ fun TestimonialsList(
     viewModel: TestimonialListViewModel
 ) {
     val testimonials = viewModel.testimonialPager.collectAsLazyPagingItems()
+    testimonials.refresh()
 
     LazyColumn(
         Modifier
@@ -53,35 +55,54 @@ fun TestimonialsList(
         }
 
         testimonials.apply {
-
-            when (loadState.append) {
-                is LoadState.NotLoading -> Unit
-                LoadState.Loading -> {
+            when {
+                // refresh
+                loadState.refresh is LoadState.Loading -> {
                     item {
                         LoadingAnimation()
                     }
                 }
-                is LoadState.Error -> {
+                // reload
+                loadState.append is LoadState.Loading -> {
+                    item {
+                        LoadingItem()
+                    }
+                }
+                // refresh error
+                loadState.refresh is LoadState.Error -> {
+                    item {
+                        NoInternetLayout(onTryAgain = {
+                            testimonials.refresh()
+                        })
+                    }
+                }
+                // reload error
+                loadState.append is LoadState.Error -> {
                     item {
                         ErrorItem(message = "Some error occurred")
                     }
                 }
             }
-
-            when (loadState.refresh) {
-                is LoadState.NotLoading -> Unit
-                LoadState.Loading -> {
-                    item {
-                        LoadingAnimation()
-                    }
-                }
-                is LoadState.Error -> {
-                    item {
-                        NoInternetLayout()
-                    }
-                }
-            }
         }
+    }
+}
+
+@Composable
+fun LoadingItem() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator(
+            modifier = Modifier
+                .width(42.dp)
+                .height(42.dp)
+                .padding(8.dp),
+            strokeWidth = 5.dp
+        )
+
     }
 }
 

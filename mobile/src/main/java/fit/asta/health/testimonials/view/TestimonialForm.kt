@@ -19,7 +19,9 @@ fun LoadTestimonialForm(
 ) {
     when (val state = getViewModel.state.collectAsState().value) {
         TestimonialGetState.Loading -> LoadingAnimation()
-        TestimonialGetState.NoInternet -> NoInternetLayout()
+        TestimonialGetState.NoInternet -> NoInternetLayout(onTryAgain = {
+            getViewModel.onLoad()
+        })
         is TestimonialGetState.Error -> ServerErrorLayout(state.error)
         is TestimonialGetState.Success -> CreateTstScreen(
             getViewModel.title.asString(),

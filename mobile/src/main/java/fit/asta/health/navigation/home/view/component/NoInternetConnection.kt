@@ -19,7 +19,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,91 +26,90 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import fit.asta.health.R
 
-@Preview
 @Composable
-fun NoInternetLayout() {
+fun NoInternetLayout(onTryAgain: () -> Unit) {
 
     val openFullDialogCustom = remember { mutableStateOf(true) }
 
     //...............................................................................
     //Full screen Custom Dialog Sample\
-    NoInternetScreen(openFullDialogCustom)
+    NoInternetScreen(openFullDialogCustom, onTryAgain)
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun NoInternetScreen(openFullDialogCustom: MutableState<Boolean>) {
-    if (openFullDialogCustom.value) {
+private fun NoInternetScreen(openFullDialogCustom: MutableState<Boolean>, onTryAgain: () -> Unit) {
 
-        Dialog(
-            onDismissRequest = {
-                openFullDialogCustom.value = false
-            },
-            properties = DialogProperties(
-                usePlatformDefaultWidth = false // experimental
-            )
-        ) {
-            Surface(modifier = Modifier.fillMaxSize()) {
+    Dialog(
+        onDismissRequest = {
+            openFullDialogCustom.value = false
+        },
+        properties = DialogProperties(
+            usePlatformDefaultWidth = false // experimental
+        )
+    ) {
+        Surface(modifier = Modifier.fillMaxSize()) {
 
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
 
 
-                    Image(
-                        painter = painterResource(id = R.drawable.nointrenet),
-                        contentDescription = null,
-                        contentScale = ContentScale.Fit,
-                        modifier = Modifier
-                            .height(200.dp)
-                            .fillMaxWidth(),
+                Image(
+                    painter = painterResource(id = R.drawable.nointrenet),
+                    contentDescription = null,
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .height(200.dp)
+                        .fillMaxWidth(),
 
-                        )
-
-                    Spacer(modifier = Modifier.height(20.dp))
-                    //.........................Text: title
-                    Text(
-                        text = "Whoops!!",
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(top = 20.dp)
-                            .fillMaxWidth(),
-                        letterSpacing = 2.sp,
-                        fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.primary,
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
 
-                    //.........................Text : description
-                    Text(
-                        text = "No Internet connection was found. Check your connection or try again.",
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(top = 10.dp, start = 25.dp, end = 25.dp)
-                            .fillMaxWidth(),
-                        letterSpacing = 1.sp,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                    //.........................Spacer
-                    Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(20.dp))
+                //.........................Text: title
+                Text(
+                    text = "Whoops!!",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(top = 20.dp)
+                        .fillMaxWidth(),
+                    letterSpacing = 2.sp,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+                Spacer(modifier = Modifier.height(8.dp))
 
-                    val cornerRadius = 16.dp
-                    val gradientColor = listOf(Color(0xFFff669f), Color(0xFFff8961))
-                    GradientButton(
-                        gradientColors = gradientColor,
-                        cornerRadius = cornerRadius,
-                        nameButton = "Try again",
-                        roundedCornerShape = RoundedCornerShape(topStart = 30.dp,
-                            bottomEnd = 30.dp)
-                    )
-                }
+                //.........................Text : description
+                Text(
+                    text = "No Internet connection was found. Check your connection or try again.",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(top = 10.dp, start = 25.dp, end = 25.dp)
+                        .fillMaxWidth(),
+                    letterSpacing = 1.sp,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+                //.........................Spacer
+                Spacer(modifier = Modifier.height(24.dp))
+
+                val cornerRadius = 16.dp
+                val gradientColor = listOf(Color(0xFFff669f), Color(0xFFff8961))
+                GradientButton(
+                    gradientColors = gradientColor,
+                    cornerRadius = cornerRadius,
+                    nameButton = "Try again",
+                    roundedCornerShape = RoundedCornerShape(
+                        topStart = 30.dp,
+                        bottomEnd = 30.dp
+                    ),
+                    onClick = onTryAgain
+                )
             }
         }
-
     }
 }
 
@@ -122,16 +120,14 @@ fun GradientButton(
     cornerRadius: Dp,
     nameButton: String,
     roundedCornerShape: RoundedCornerShape,
+    onClick: () -> Unit
 ) {
 
     Button(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 32.dp, end = 32.dp),
-        onClick = {
-            //your code
-        },
-
+        onClick = onClick,
         contentPadding = PaddingValues(),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent

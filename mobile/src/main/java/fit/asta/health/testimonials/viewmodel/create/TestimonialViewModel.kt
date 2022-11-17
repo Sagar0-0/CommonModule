@@ -31,7 +31,7 @@ class TestimonialViewModel
 @Inject constructor(
     private val testimonialRepo: TestimonialRepo,
     private val authRepo: AuthRepo,
-    networkHelper: NetworkHelper,
+    val networkHelper: NetworkHelper,
     private val fileRepo: FileUploadRepo,
 ) : ViewModel() {
 
@@ -48,6 +48,10 @@ class TestimonialViewModel
     val stateChannel = _stateChannel.receiveAsFlow()
 
     init {
+        onLoad()
+    }
+
+    fun onLoad() {
         if (networkHelper.isConnected()) {
             authRepo.getUser()?.let {
                 loadTestimonial(userId = it.uid)
