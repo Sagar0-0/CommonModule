@@ -189,6 +189,10 @@
         <item translatable="false">bg_music_none</item>
     </string-array>
 
+    <!--Background Music Service Notification-->
+    <string name="notification_channel_name">Music Channel</string>
+    <string name="notification_channel_description">Shows the currently playing music</string>
+
     <!-- User Preferences - Video Quality -->
     <string name="user_pref_video_quality_key" translatable="false">user_pref_video_quality</string>
     <string name="user_pref_video_quality_title">Quality</string>

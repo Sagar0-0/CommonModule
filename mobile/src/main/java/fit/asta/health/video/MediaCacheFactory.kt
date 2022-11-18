@@ -1,4 +1,4 @@
-package fit.asta.health.player
+package fit.asta.health.video
 
 import android.content.Context
 import android.net.Uri
@@ -9,12 +9,12 @@ import com.google.android.exoplayer2.upstream.cache.CacheDataSink
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
-import com.google.android.exoplayer2.util.Util
 import java.io.File
 
 
 open class SingletonHolder<out T : Any, in A, in B, in C>(creator: (A, B, C) -> T) {
     private var creator: ((A, B, C) -> T)? = creator
+
     @Volatile
     private var instance: T? = null
 
@@ -68,7 +68,7 @@ internal class VideoCacheFactory private constructor(
 
         simpleCache = SimpleCache(cacheFolder, cacheEvictor, databaseProvider)
 
-        val userAgent: String = Util.getUserAgent(context, "userAgentVideo")
+        //val userAgent: String = Util.getUserAgent(context, "userAgentVideo")
         dataSourceFactory = ResolvingDataSource.Factory(
             DefaultHttpDataSource.Factory(),
             ResolvingDataSource.Resolver { dataSpec: DataSpec ->

@@ -62,6 +62,8 @@
     <color name="rounded_image_stroke_color">#E5E5E5</color>
     <color name="number_picker_un_selected_text">#ABABAB</color>
 
+    <color name="background_line">#66000000</color>
+
     <!--<color name="colorPrimaryDark">#FFFFFF</color>
     <color name="colorPrimaryVariant">#007EEC</color>
     <color name="colorSecondaryVariant">#FFFFFF</color>-->

@@ -1,6 +1,6 @@
-package fit.asta.health.player
+package fit.asta.health.video
 
-//import org.koin.android.ext.android.inject
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -8,12 +8,15 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageButton
+import androidx.core.widget.ContentLoadingProgressBar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.Tracks
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
@@ -21,19 +24,19 @@ import com.google.android.exoplayer2.util.Log
 import com.google.android.exoplayer2.util.Util
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import fit.asta.health.R
-import fit.asta.health.databinding.ActivityPlayerBinding
-import fit.asta.health.databinding.CustomPlaybackControlBinding
+import fit.asta.health.old_course.session.SessionRepo
+import fit.asta.health.old_course.session.data.Exercise
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 
 
 class VideoPlayerActivity : AppCompatActivity(), Player.Listener {
 
-    private lateinit var actPlayer: ActivityPlayerBinding
-    private lateinit var customPlayer: CustomPlaybackControlBinding
-
-    //private val sessionRepo: SessionRepo by inject()
+    private val sessionRepo: SessionRepo by inject()
     private val scope = MainScope()
 
     companion object {
@@ -62,7 +65,7 @@ class VideoPlayerActivity : AppCompatActivity(), Player.Listener {
 
     private val tag = VideoPlayerActivity::class.java.name
     private var playerView: PlayerView? = null
-    private var player: SimpleExoPlayer? = null
+    private var player: ExoPlayer? = null
     private var playWhenReady = true
     private var statePlayedAll = false
     private var currentIndex = 0
@@ -71,12 +74,12 @@ class VideoPlayerActivity : AppCompatActivity(), Player.Listener {
     private var videoListUid: String? = null
     //private var fullscreen = false
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        actPlayer = ActivityPlayerBinding.inflate(layoutInflater)
-        setContentView(actPlayer.root)
+        setContentView(R.layout.player_activity)
 
-        customPlayer.btnCloseVideo.setOnClickListener {
+        findViewById<AppCompatImageButton>(R.id.btn_close_video)?.setOnClickListener {
 
             onBackPressed()
         }
@@ -196,7 +199,10 @@ class VideoPlayerActivity : AppCompatActivity(), Player.Listener {
                     .setPreferredAudioLanguage("en")
             )
 
-            player = SimpleExoPlayer.Builder(this).setTrackSelector(trackSelector).build()
+            player = ExoPlayer.Builder(this)
+                .setSeekBackIncrementMs(30000)
+                .setSeekForwardIncrementMs(30000)
+                .setTrackSelector(trackSelector).build()
             player?.addListener(this)
         }
 
@@ -206,13 +212,13 @@ class VideoPlayerActivity : AppCompatActivity(), Player.Listener {
         if (exerciseList == null) {
 
             scope.launch {
-                /*sessionRepo.fetchSession(
+                sessionRepo.fetchSession(
                     "",
                     intent.getStringExtra(ARG_COURSE_ID)!!,
                     intent.getStringExtra(ARG_SESSION_ID)!!
                 ).collect {
                     initializePlayList(ArrayList(it.exerciseList))
-                }*/
+                }
             }
         } else {
             initializePlayList(exerciseList)
@@ -221,7 +227,7 @@ class VideoPlayerActivity : AppCompatActivity(), Player.Listener {
 
     private fun initializePlayList(exerciseList: ArrayList<Exercise>) {
         videosFromExercises(exerciseList).observe(this, Observer { videos ->
-            actPlayer.progressPlayer.hide()
+            findViewById<ContentLoadingProgressBar>(R.id.progressPlayer).hide()
             videoList = videos
             val mediaSource = MediaSourceAdapter(this, videoList).build()
             player?.playWhenReady = playWhenReady
@@ -270,7 +276,7 @@ class VideoPlayerActivity : AppCompatActivity(), Player.Listener {
         setResult(Activity.RESULT_OK, data)
     }
 
-    override fun onPlaybackStateChanged(playbackState: Int) {
+    override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
 
         val stateString: String
         when (playbackState) {
@@ -311,8 +317,8 @@ class VideoPlayerActivity : AppCompatActivity(), Player.Listener {
         super.onTracksChanged(tracks)
 
         val video = videoList[player!!.currentWindowIndex]
-        customPlayer.videoTitle.text = video.title
-        customPlayer.videoSubTitle.text = video.subTitle
+        findViewById<TextView>(R.id.video_title).text = video.title
+        findViewById<TextView>(R.id.video_sub_title).text = video.subTitle
     }
 
     override fun onPositionDiscontinuity(reason: Int) {
@@ -331,7 +337,7 @@ class VideoPlayerActivity : AppCompatActivity(), Player.Listener {
         val videos = MutableLiveData<ArrayList<Video>>()
         val videoList = ArrayList<Video>()
 
-        /*val mStorageRef: StorageReference = FirebaseStorage.getInstance().reference
+        val mStorageRef: StorageReference = FirebaseStorage.getInstance().reference
 
         for (exercise in exList) {
 
@@ -349,7 +355,7 @@ class VideoPlayerActivity : AppCompatActivity(), Player.Listener {
                     )
                 )
             }
-        }*/
+        }
 
         Tasks.whenAllComplete(videoUrlTasks)
             .addOnCompleteListener {

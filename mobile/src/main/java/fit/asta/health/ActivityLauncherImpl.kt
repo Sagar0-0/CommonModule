@@ -11,7 +11,7 @@ import fit.asta.health.old_course.session.ui.SessionActivity
 import fit.asta.health.old_scheduler.tags.ui.TagsActivity
 import fit.asta.health.old_scheduler.ui.ScheduleActivity
 import fit.asta.health.old_subscription.SubscriptionActivity
-import fit.asta.health.player.VideoPlayerActivity
+import fit.asta.health.video.VideoPlayerActivity
 
 class ActivityLauncherImpl : ActivityLauncher {
 

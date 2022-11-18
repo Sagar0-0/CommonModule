@@ -224,8 +224,10 @@ dependencies {
     implementation retrofit.values()
 
     //Exo player
-    implementation 'com.google.android.exoplayer:exoplayer:2.18.1'
-    implementation 'com.google.android.exoplayer:extension-cast:2.18.1'
+    def exo = "2.18.1"
+    implementation "com.google.android.exoplayer:exoplayer:$exo"
+    implementation "com.google.android.exoplayer:extension-cast:$exo"
+    api "com.google.android.exoplayer:extension-mediasession:$exo"
 
     //Billing
     implementation "com.android.billingclient:billing:5.0.0"
