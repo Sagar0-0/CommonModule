@@ -1,11 +1,12 @@
 package fit.asta.health.testimonials.viewmodel.create
 
+import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.utils.UiString
 
 
 data class TestimonialState(
     val id: String = "",
-    val type: Int = 0,
+    val type: TestimonialType = TestimonialType.TEXT,
     val title: String = "",
     var titleError: UiString = UiString.Empty,
     val testimonial: String = "",

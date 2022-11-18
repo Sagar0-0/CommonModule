@@ -19,49 +19,58 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import fit.asta.health.R
-import fit.asta.health.testimonials.model.network.NetTestimonial
+import fit.asta.health.testimonials.model.domain.Testimonial
 import fit.asta.health.testimonials.view.components.UserCard
 import fit.asta.health.utils.getImageUrl
 
 
 @Composable
-fun TestimonialsVideoCard(testimonial: NetTestimonial) {
+fun TestimonialsVideoCard(testimonial: Testimonial) {
 
-    Card(modifier = Modifier
-        .fillMaxWidth()
-        .padding(16.dp)
-        .clip(RoundedCornerShape(8.dp)),
-        elevation = 10.dp) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .clip(RoundedCornerShape(8.dp)),
+        elevation = 10.dp
+    ) {
         Column(Modifier.fillMaxWidth()) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
             PlayVideoLayout(testimonial)
 
-            UserCard(user = testimonial.user.name,
+            UserCard(
+                user = testimonial.user.name,
                 userOrg = testimonial.user.org,
                 userRole = testimonial.user.role,
-                url = testimonial.user.url)
+                url = testimonial.user.url
+            )
         }
     }
 }
 
 @Composable
-fun PlayVideoLayout(testimonial: NetTestimonial) {
+fun PlayVideoLayout(testimonial: Testimonial) {
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)) {
+            .padding(horizontal = 16.dp)
+    ) {
         Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
-            Surface(shape = RoundedCornerShape(8.dp),
+            Surface(
+                shape = RoundedCornerShape(8.dp),
                 border = BorderStroke(width = 5.dp, color = Color(0xffE0F1FF)),
-                modifier = Modifier.fillMaxWidth()) {
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 val media = testimonial.media?.get(0)
                 if (media != null) {
-                    AsyncImage(model = getImageUrl(media.url),
+                    AsyncImage(
+                        model = getImageUrl(media.url),
                         contentDescription = null,
                         modifier = Modifier.fillMaxWidth(),
-                        contentScale = ContentScale.Crop)
+                        contentScale = ContentScale.Crop
+                    )
                     PlayButton()
                 }
             }
@@ -73,14 +82,18 @@ fun PlayVideoLayout(testimonial: NetTestimonial) {
 
 @Composable
 fun PlayButton() {
-    IconButton(onClick = { /*TODO*/ },
+    IconButton(
+        onClick = { /*TODO*/ },
         modifier = Modifier
             .clip(CircleShape)
             .size(42.dp)
-            .background(color = Color.White)) {
-        Icon(painter = painterResource(id = R.drawable.asana_play_img),
+            .background(color = Color.White)
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.asana_play_img),
             contentDescription = null,
             tint = Color(0xff008CFF),
-            modifier = Modifier.size(24.dp))
+            modifier = Modifier.size(24.dp)
+        )
     }
 }

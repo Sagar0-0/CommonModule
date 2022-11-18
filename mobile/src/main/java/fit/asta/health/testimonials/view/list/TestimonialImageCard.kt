@@ -19,44 +19,51 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import fit.asta.health.R
-import fit.asta.health.testimonials.model.network.NetTestimonial
+import fit.asta.health.testimonials.model.domain.Testimonial
 import fit.asta.health.testimonials.view.components.UserCard
 import fit.asta.health.utils.getImageUrl
 
 @Composable
-fun TestimonialImageCard(testimonial: NetTestimonial) {
+fun TestimonialImageCard(testimonial: Testimonial) {
 
-    Card(modifier = Modifier
-        .fillMaxWidth()
-        .padding(16.dp)
-        .clip(RoundedCornerShape(8.dp)),
-        elevation = 10.dp) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .clip(RoundedCornerShape(8.dp)),
+        elevation = 10.dp
+    ) {
         Column(Modifier.fillMaxWidth()) {
             BeforeAndCardLayout(testimonial)
 
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)) {
+                    .padding(16.dp)
+            ) {
                 Box(modifier = Modifier.padding(horizontal = 16.dp)) {
                     FontFamily(Font(R.font.inter_light, FontWeight.Light))
                     Column {
                         Box {
                             Text(text = "❝", fontSize = 20.sp, color = Color(0xFF0277BD))
                         }
-                        Text(text = testimonial.testimonial,
+                        Text(
+                            text = testimonial.testimonial,
                             fontSize = 16.sp,
                             color = Color(0xFF000000),
                             fontWeight = FontWeight.Thin,
                             lineHeight = 24.sp,
-                            letterSpacing = 0.5.sp)
+                            letterSpacing = 0.5.sp
+                        )
                         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                             Text(text = "❞", fontSize = 20.sp, color = Color(0xFF0277BD))
                         }
-                        UserCard(user = testimonial.user.name,
+                        UserCard(
+                            user = testimonial.user.name,
                             userOrg = testimonial.user.org,
                             userRole = testimonial.user.role,
-                            url = testimonial.user.url)
+                            url = testimonial.user.url
+                        )
                     }
                 }
             }
@@ -65,32 +72,41 @@ fun TestimonialImageCard(testimonial: NetTestimonial) {
 }
 
 @Composable
-fun BeforeAndCardLayout(testimonial: NetTestimonial) {
+fun BeforeAndCardLayout(testimonial: Testimonial) {
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)) {
-        Surface(shape = RoundedCornerShape(8.dp),
+            .padding(horizontal = 16.dp)
+    ) {
+        Surface(
+            shape = RoundedCornerShape(8.dp),
             border = BorderStroke(width = 5.dp, color = Color(0xffE0F1FF)),
-            modifier = Modifier.fillMaxWidth()) {
-            Row(horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.padding(0.dp)) {
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.padding(0.dp)
+            ) {
                 Box(Modifier.padding(2.dp), contentAlignment = Alignment.BottomCenter) {
 
                     val media = testimonial.media?.get(0)
                     if (media != null) {
 
-                        AsyncImage(model = getImageUrl(media.url),
+                        AsyncImage(
+                            model = getImageUrl(media.url),
                             contentDescription = null,
                             Modifier
                                 .fillMaxWidth(0.5f)
                                 .height(180.dp),
-                            contentScale = ContentScale.Crop)
-                        Text(text = media.title,
+                            contentScale = ContentScale.Crop
+                        )
+                        Text(
+                            text = media.title,
                             fontSize = 16.sp,
                             color = Color.White,
                             fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(10.dp))
+                            modifier = Modifier.padding(10.dp)
+                        )
                     }
                 }
                 Box(Modifier.padding(2.dp), contentAlignment = Alignment.BottomCenter) {
@@ -98,17 +114,21 @@ fun BeforeAndCardLayout(testimonial: NetTestimonial) {
                     val media = testimonial.media?.get(1)
                     if (media != null) {
 
-                        AsyncImage(model = getImageUrl(media.url),
+                        AsyncImage(
+                            model = getImageUrl(media.url),
                             contentDescription = null,
                             Modifier
                                 .fillMaxWidth(1f)
                                 .height(180.dp),
-                            contentScale = ContentScale.Crop)
-                        Text(text = media.title,
+                            contentScale = ContentScale.Crop
+                        )
+                        Text(
+                            text = media.title,
                             fontSize = 16.sp,
                             color = Color.White,
                             fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(10.dp))
+                            modifier = Modifier.padding(10.dp)
+                        )
                     }
                 }
             }

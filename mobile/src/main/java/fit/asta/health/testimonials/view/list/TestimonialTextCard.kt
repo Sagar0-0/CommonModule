@@ -14,12 +14,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
-import fit.asta.health.testimonials.model.network.NetTestimonial
+import fit.asta.health.testimonials.model.domain.Testimonial
 import fit.asta.health.testimonials.view.components.UserCard
 
 
 @Composable
-fun TestimonialTextCard(testimonial: NetTestimonial) {
+fun TestimonialTextCard(testimonial: Testimonial) {
 
     Card(
         modifier = Modifier

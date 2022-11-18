@@ -7,7 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.network.NetworkHelper
 import fit.asta.health.testimonials.model.TestimonialDataSource
 import fit.asta.health.testimonials.model.TestimonialRepo
-import fit.asta.health.testimonials.model.network.NetTestimonial
+import fit.asta.health.testimonials.model.domain.Testimonial
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
@@ -38,9 +38,9 @@ class TestimonialListViewModel
     }
 
     private fun applyEvents(
-        paging: PagingData<NetTestimonial>,
+        paging: PagingData<Testimonial>,
         event: TestimonialListEvent
-    ): PagingData<NetTestimonial> {
+    ): PagingData<Testimonial> {
         return when (event) {
             is TestimonialListEvent.Remove -> {
                 paging.filter { event.id != it.id }

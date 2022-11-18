@@ -46,7 +46,7 @@ fun TestimonialsList(
 
         items(testimonials) { item ->
             item?.let {
-                when (TestimonialType.fromInt(it.type)) {
+                when (it.type) {
                     TestimonialType.TEXT -> TestimonialTextCard(it)
                     TestimonialType.IMAGE -> TestimonialImageCard(it)
                     TestimonialType.VIDEO -> TestimonialsVideoCard(it)
