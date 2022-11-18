@@ -77,7 +77,7 @@
             android:value="com.google.android.exoplayer2.ext.cast.DefaultCastOptionsProvider" />
 
         <activity
-            android:name=".video.VideoPlayerActivity"
+            android:name=".player.video.VideoPlayerActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:label="@string/app_name"
             android:launchMode="singleTop"
