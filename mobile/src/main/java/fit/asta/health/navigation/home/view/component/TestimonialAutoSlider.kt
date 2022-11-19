@@ -8,7 +8,7 @@ import androidx.compose.ui.text.font.FontWeight
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import fit.asta.health.R
-import fit.asta.health.navigation.home.model.domain.Testimonial
+import fit.asta.health.testimonials.model.domain.Testimonial
 import kotlinx.coroutines.delay
 
 @ExperimentalPagerApi

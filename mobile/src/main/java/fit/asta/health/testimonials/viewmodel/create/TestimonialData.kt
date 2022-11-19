@@ -4,7 +4,7 @@ import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.utils.UiString
 
 
-data class TestimonialState(
+data class TestimonialData(
     val id: String = "",
     val type: TestimonialType = TestimonialType.TEXT,
     val title: String = "",

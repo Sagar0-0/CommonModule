@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import fit.asta.health.R
-import fit.asta.health.navigation.home.model.domain.Testimonial
+import fit.asta.health.testimonials.model.domain.Testimonial
 
 @Composable
 fun ArtistCard(
@@ -28,25 +28,31 @@ fun ArtistCard(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.size(width = 80.dp, height = 80.dp)) {
-                AsyncImage(model = "$domainName${testimonialsDataPages.user?.url}",
+                AsyncImage(
+                    model = "$domainName${testimonialsDataPages.user.url}",
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
-                    modifier = Modifier.fillMaxSize())
+                    modifier = Modifier.fillMaxSize()
+                )
             }
             Spacer(modifier = Modifier.width(16.dp))
             Column(horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.SpaceBetween) {
-                testimonialsDataPages.user?.let {
-                    Text(text = it.name,
+                testimonialsDataPages.user.let {
+                    Text(
+                        text = it.name,
                         fontFamily = interFontFamily,
                         fontSize = 16.sp,
-                        color = Color.Black)
+                        color = Color.Black
+                    )
                 }
-                testimonialsDataPages.user?.let {
-                    Text(text = "${it.role},${it.org}",
+                testimonialsDataPages.user.let {
+                    Text(
+                        text = "${it.role},${it.org}",
                         fontFamily = interFontFamily,
                         fontSize = 12.sp,
-                        color = Color.Black)
+                        color = Color.Black
+                    )
                 }
             }
         }

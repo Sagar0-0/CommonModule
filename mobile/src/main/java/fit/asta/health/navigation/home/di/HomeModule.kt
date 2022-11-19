@@ -8,6 +8,7 @@ import fit.asta.health.navigation.home.model.ToolsHomeDataMapper
 import fit.asta.health.navigation.home.model.ToolsHomeRepo
 import fit.asta.health.navigation.home.model.ToolsHomeRepoImpl
 import fit.asta.health.network.api.RemoteApis
+import fit.asta.health.testimonials.model.TestimonialDataMapper
 import javax.inject.Singleton
 
 @Module
@@ -16,8 +17,8 @@ object HomeModule {
 
     @Singleton
     @Provides
-    fun provideToolsHomeDataMapper(): ToolsHomeDataMapper {
-        return ToolsHomeDataMapper()
+    fun provideToolsHomeDataMapper(testimonialDataMapper: TestimonialDataMapper): ToolsHomeDataMapper {
+        return ToolsHomeDataMapper(testimonialDataMapper)
     }
 
     @Singleton

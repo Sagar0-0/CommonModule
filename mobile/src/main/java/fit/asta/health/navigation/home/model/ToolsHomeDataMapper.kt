@@ -1,10 +1,14 @@
 package fit.asta.health.navigation.home.model
 
-import fit.asta.health.navigation.home.model.domain.*
+import fit.asta.health.navigation.home.model.domain.Banner
+import fit.asta.health.navigation.home.model.domain.HealthTool
+import fit.asta.health.navigation.home.model.domain.ToolsHome
+import fit.asta.health.navigation.home.model.domain.Weather
 import fit.asta.health.navigation.home.model.network.NetHealthToolsRes
+import fit.asta.health.testimonials.model.TestimonialDataMapper
 
 
-class ToolsHomeDataMapper {
+class ToolsHomeDataMapper(private val testimonialDataMapper: TestimonialDataMapper) {
 
     fun mapToDomainModel(networkModel: NetHealthToolsRes): ToolsHome {
         return ToolsHome(
@@ -51,28 +55,7 @@ class ToolsHomeDataMapper {
                     url = it.url
                 )
             },
-            testimonials = networkModel.healthTools.testimonials.map {
-                Testimonial(
-                    id = it.id,
-                    userId = it.userId,
-                    title = it.title,
-                    text = it.testimonial,
-                    rank = it.rank,
-                    media = it.media?.map { media ->
-                        Media(
-                            type = media.type,
-                            title = media.title,
-                            url = media.url
-                        )
-                    },
-                    user = User(
-                        name = it.user.name,
-                        org = it.user.org,
-                        role = it.user.role,
-                        url = it.user.url
-                    )
-                )
-            }
+            testimonials = testimonialDataMapper.mapToDomainModel(networkModel.healthTools.testimonials)
         )
     }
 

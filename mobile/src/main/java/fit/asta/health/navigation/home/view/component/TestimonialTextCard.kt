@@ -14,7 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
-import fit.asta.health.navigation.home.model.domain.Testimonial
+import fit.asta.health.testimonials.model.domain.Testimonial
 
 @Composable
 fun TestimonialTextCard(
@@ -47,7 +47,7 @@ fun TestimonialTextCard(
                     )
                 }
                 Text(
-                    text = testimonialsDataPage.text,
+                    text = testimonialsDataPage.testimonial,
                     fontSize = 20.sp,
                     color = Color.Black,
                     fontWeight = FontWeight.Thin

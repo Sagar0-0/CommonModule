@@ -38,7 +38,7 @@ class TestimonialViewModel
     var title by mutableStateOf(UiString.Resource(R.string.testimonial_title_create))
         private set
 
-    var data by mutableStateOf(TestimonialState())
+    var data by mutableStateOf(TestimonialData())
         private set
 
     private val _mutableState = MutableStateFlow<TestimonialGetState>(TestimonialGetState.Loading)
@@ -64,13 +64,14 @@ class TestimonialViewModel
     private fun loadTestimonial(userId: String) {
         viewModelScope.launch {
             testimonialRepo.getTestimonial(userId).catch { exception ->
-                _mutableState.value = TestimonialGetState.Error(exception)
+                //_mutableState.value = TestimonialGetState.Error(exception)
+                _mutableState.value = TestimonialGetState.Empty
             }.collect {
 
                 if (it.id.isNotBlank())
                     title = UiString.Resource(R.string.testimonial_title_edit)
 
-                data = TestimonialState(
+                data = TestimonialData(
                     id = it.id,
                     type = it.type,
                     title = it.title,

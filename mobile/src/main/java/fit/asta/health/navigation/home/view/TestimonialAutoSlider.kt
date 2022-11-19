@@ -17,10 +17,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.R
-import fit.asta.health.navigation.home.model.domain.Testimonial
 import fit.asta.health.navigation.home.view.component.MyToolsAndViewAll
 import fit.asta.health.navigation.home.view.component.TestimonialAutoSliderAnimation
 import fit.asta.health.testimonials.TestimonialsActivity
+import fit.asta.health.testimonials.model.domain.Testimonial
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
