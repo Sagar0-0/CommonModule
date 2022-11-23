@@ -1,6 +1,7 @@
 package fit.asta.health.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,4 +20,9 @@ object AppModule {
         return app as HealthCareApp
     }
 
+    @Provides
+    @Singleton
+    fun providesSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
+        return context.getSharedPreferences("shared", Context.MODE_PRIVATE)
+    }
 }

@@ -26,6 +26,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.google.firebase.storage.FirebaseStorage
 import fit.asta.health.BuildConfig
 import fit.asta.health.R
@@ -177,6 +178,22 @@ fun Context.rateUs() {
                 Uri.parse(resources.getString(R.string.google_play_store_url) + BuildConfig.APPLICATION_ID)
             )
         )
+    }
+}
+
+fun showInAppReview(activity: Activity) {
+
+    val reviewManager = ReviewManagerFactory.create(activity)
+    //val reviewManager = FakeReviewManager(activity)
+    reviewManager.requestReviewFlow().addOnCompleteListener {
+        if (it.isSuccessful) {
+            val flow = reviewManager.launchReviewFlow(activity, it.result)
+            flow.addOnCompleteListener { _ ->
+                // Continue your application process
+            }
+        } else {
+            activity.showToastMessage(it.exception?.message)
+        }
     }
 }
 
