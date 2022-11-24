@@ -1,11 +1,11 @@
 package fit.asta.health.navigation.home.view.component
 
+import android.app.Activity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
@@ -20,9 +20,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalCoroutinesApi
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun HomeScreenLayout(toolsHome: ToolsHome) {
-
-    val context = LocalContext.current
+fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
 
     Box(Modifier.fillMaxSize()) {
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
@@ -82,7 +80,7 @@ fun HomeScreenLayout(toolsHome: ToolsHome) {
 
             item { Spacer(modifier = Modifier.height(24.dp)) }
 
-            item { RateUsCard() }
+            item { RateUsCard(activity) }
 
             item { Spacer(modifier = Modifier.height(24.dp)) }
 
@@ -91,5 +89,4 @@ fun HomeScreenLayout(toolsHome: ToolsHome) {
             item { Spacer(modifier = Modifier.height(24.dp)) }
         }
     }
-
 }

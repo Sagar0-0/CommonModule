@@ -1,5 +1,6 @@
 package fit.asta.health.navigation.home.view
 
+import android.app.Activity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -17,8 +18,6 @@ internal class AlbumStateProvider : PreviewParameterProvider<HomeState> {
 @ExperimentalCoroutinesApi
 @Preview
 @Composable
-fun AlbumScreenPreview(
-    @PreviewParameter(AlbumStateProvider::class) state: HomeState,
-) {
-    HomeContent(state)
+fun AlbumScreenPreview(@PreviewParameter(AlbumStateProvider::class) activity: Activity) {
+    HomeContent(activity)
 }
