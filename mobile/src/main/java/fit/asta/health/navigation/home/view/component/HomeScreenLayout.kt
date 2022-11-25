@@ -60,7 +60,7 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(552.dp)
+                            .height(560.dp)
                             .padding(horizontal = 16.dp)) {
                         it.forEachIndexed { index, _ ->
                             item {
