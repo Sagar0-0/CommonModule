@@ -7,12 +7,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.flowlayout.FlowMainAxisAlignment
-import com.google.accompanist.flowlayout.FlowRow
-import com.google.accompanist.flowlayout.SizeMode
 import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.navigation.home.model.domain.ToolsHome
 import fit.asta.health.navigation.home.view.BannerAutoSlider
@@ -77,19 +72,21 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
             item { Spacer(modifier = Modifier.height(24.dp)) }
 
             item {
-                val itemSize: Dp = LocalConfiguration.current.screenWidthDp.dp / 2
 
-                FlowRow(mainAxisSize = SizeMode.Expand,
-                    mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween) {
-
-                    toolsHome.tools?.let {
+                toolsHome.tools?.let {
+                    LazyVerticalGrid(columns = GridCells.Fixed(2),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(1315.dp)
+                            .padding(horizontal = 16.dp)) {
                         it.forEachIndexed { index, _ ->
-                            ToolsCardLayoutDemo(imgUrl = toolsHome.tools[index].url,
-                                cardTitle = toolsHome.tools[index].title,
-                                modifier = Modifier
-                                    .size(width = itemSize, height = 250.dp)
-                                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                                imageModifier = Modifier.height(180.dp))
+                            item {
+                                ToolsCardLayoutDemo(imgUrl = toolsHome.tools[index].url,
+                                    cardTitle = toolsHome.tools[index].title,
+                                    imageModifier = Modifier.height(180.dp))
+                            }
                         }
                     }
                 }
@@ -107,7 +104,7 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
 
             item { ReferAndEarn() }
 
-            item { Spacer(modifier = Modifier.height(24.dp)) }
+            item { Spacer(modifier = Modifier.height(130.dp)) }
         }
     }
 }
