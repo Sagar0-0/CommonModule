@@ -3,6 +3,8 @@ package fit.asta.health.navigation.home.view.component
 import android.app.Activity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -31,11 +33,9 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
 
             item {
                 toolsHome.weather?.let {
-                    WeatherCardImage(
-                        temperature = it.temperature,
+                    WeatherCardImage(temperature = it.temperature,
                         location = it.location,
-                        date = "Friday,24 October"
-                    )
+                        date = "Friday,24 October")
                 }
             }
 
@@ -54,27 +54,48 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
 
             item {
 
-                val itemSize: Dp = LocalConfiguration.current.screenWidthDp.dp / 2
-
-                FlowRow(
-                    mainAxisSize = SizeMode.Expand,
-                    mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween
-                ) {
-
-                    toolsHome.tools?.let {
+                toolsHome.tools?.let {
+                    LazyVerticalGrid(columns = GridCells.Fixed(3),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(552.dp)
+                            .padding(horizontal = 16.dp)) {
                         it.forEachIndexed { index, _ ->
-                            ToolsCardLayoutDemo(
-                                imgUrl = toolsHome.tools[index].url,
-                                cardTitle = toolsHome.tools[index].title,
-                                modifier = Modifier.size(width = itemSize, height = 250.dp)
-                            )
+                            item {
+                                ToolsCardLayoutDemo(imgUrl = toolsHome.tools[index].url,
+                                    cardTitle = toolsHome.tools[index].title)
+                            }
                         }
                     }
                 }
 
+
             }
 
             item { Spacer(modifier = Modifier.height(24.dp)) }
+
+            item {
+                val itemSize: Dp = LocalConfiguration.current.screenWidthDp.dp / 2
+
+                FlowRow(mainAxisSize = SizeMode.Expand,
+                    mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween) {
+
+                    toolsHome.tools?.let {
+                        it.forEachIndexed { index, _ ->
+                            ToolsCardLayoutDemo(imgUrl = toolsHome.tools[index].url,
+                                cardTitle = toolsHome.tools[index].title,
+                                modifier = Modifier
+                                    .size(width = itemSize, height = 250.dp)
+                                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                                imageModifier = Modifier.height(180.dp))
+                        }
+                    }
+                }
+            }
+
+            item { Spacer(modifier = Modifier.height(8.dp)) }
 
             item { toolsHome.testimonials?.let { Testimonials(testimonialsList = it) } }
 

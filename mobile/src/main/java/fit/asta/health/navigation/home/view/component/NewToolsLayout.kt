@@ -100,6 +100,7 @@ fun NewDemo() {
         itemsIndexed(items = items) { _: Int, tools: String ->
             NewDemoCard(tool = tools)
         }
+
     }
 
 }

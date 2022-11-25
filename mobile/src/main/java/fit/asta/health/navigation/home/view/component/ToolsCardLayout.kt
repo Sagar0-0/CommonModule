@@ -63,10 +63,10 @@ fun ToolsCardLayoutDemo(
     imgUrl: String,
     cardTitle: String,
     modifier: Modifier = Modifier,
+    imageModifier: Modifier = Modifier,
 ) {
 
-    androidx.compose.material3.Card(modifier = modifier.padding(horizontal = 16.dp,
-        vertical = 8.dp),
+    androidx.compose.material3.Card(modifier = modifier,
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0x1A959393))) {
         Column(modifier = Modifier.background(Color.Transparent)) {
@@ -75,8 +75,8 @@ fun ToolsCardLayoutDemo(
 
                 AsyncImage(model = getImageUrl(url = imgUrl),
                     contentDescription = null,
-                    modifier = Modifier
-                        .height(180.dp)
+                    modifier = imageModifier
+                        .height(107.dp)
                         .clip(RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)),
                     contentScale = ContentScale.Crop)
 
@@ -103,7 +103,7 @@ fun ToolsCardLayoutDemo(
                     .padding(horizontal = 16.dp, vertical = 8.dp)
                     .height(44.dp),
                 color = Color(0xDE000000),
-                fontSize = 20.sp,
+                fontSize = 18.sp,
                 lineHeight = 28.sp,
                 fontWeight = FontWeight.Normal)
 
