@@ -199,7 +199,7 @@ fun TaskDoneCard(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween) {
                         Text(text = cardTtl,
-                            fontSize = 24.sp,
+                            fontSize = 16.sp,
                             fontWeight = FontWeight.Medium,
                             color = Color(0xff131723),
                             textAlign = TextAlign.Left)
@@ -273,7 +273,7 @@ fun AppointmentDone(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween) {
                         Text(text = cardTtl,
-                            fontSize = 24.sp,
+                            fontSize = 16.sp,
                             fontWeight = FontWeight.Medium,
                             color = Color(0xff131723),
                             textAlign = TextAlign.Left)
