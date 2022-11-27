@@ -1,5 +1,6 @@
 package fit.asta.health
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -11,11 +12,11 @@ import android.widget.ImageView
 import androidx.activity.addCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -39,9 +40,12 @@ import fit.asta.health.network.TokenProvider
 import fit.asta.health.profile.UserProfileActivity
 import fit.asta.health.settings.SettingsActivity
 import fit.asta.health.utils.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
+
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
     FirebaseAuth.IdTokenListener, KoinComponent {
@@ -51,15 +55,31 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         private const val REQUEST_IMMEDIATE_UPDATE: Int = 1789
     }
 
-    private lateinit var authViewModel: AuthViewModel
+    private val authViewModel: AuthViewModel by viewModels()
     private var settingsLauncher: ActivityResultLauncher<Intent>? = null
     private lateinit var networkConnectivity: NetworkConnectivity
     private var snackBar: Snackbar? = null
     private var profileImgView: ImageView? = null
     private val tokenProvider: TokenProvider by inject()
 
+    //private val viewModel: HomeViewModel by viewModels()
+    private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        permissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) {
+            //viewModel.loadHomeData()
+        }
+
+        permissionLauncher.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+            )
+        )
 
         window.apply {
 
@@ -80,7 +100,6 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
             statusBarColor = Color.TRANSPARENT*/
         }
 
-        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
         if (!authViewModel.isAuthenticated())
             signIn()
         else {
