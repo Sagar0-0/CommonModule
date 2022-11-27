@@ -1,12 +1,10 @@
 package fit.asta.health.old_subscription.ui
 
 import android.app.Activity
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleCoroutineScope
@@ -98,7 +96,6 @@ class SubscriptionViewImpl : SubscriptionView {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun setUpViewPager(fragment: Fragment) {
         rootView?.let {
 
