@@ -41,6 +41,17 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
             }
 
             item {
+                MyToolsAndViewAll(myTools = "My Schedules", allTools = "All Schedules", onClick = {
+
+                    //TODO - Integrate All tools
+                })
+            }
+
+            item {
+                ScheduleCardLayout()
+            }
+
+            item {
                 MyToolsAndViewAll(myTools = "My Tools", allTools = "All Tools", onClick = {
 
                     //TODO - Integrate All tools

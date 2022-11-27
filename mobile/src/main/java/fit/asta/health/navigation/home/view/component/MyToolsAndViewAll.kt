@@ -20,7 +20,7 @@ fun MyToolsAndViewAll(
     Row(horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 24.dp, horizontal = 16.dp)) {
+            .padding(vertical = 8.dp, horizontal = 16.dp)) {
         Text(text = myTools, style = MaterialTheme.typography.h6, color = Color.Black)
         Box(modifier = Modifier.clickable(enabled = true, onClick = ({}))) {
             ClickableText(text = AnnotatedString(allTools),

@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_EXPRESSION")
+
 package fit.asta.health.navigation.home.view.component
 
 import androidx.compose.foundation.layout.*
@@ -238,7 +240,6 @@ fun TaskDoneCard(
 fun AppointmentDone(
     modifier: Modifier = Modifier,
     cardTtl: String,
-    cardValue: String,
     cardTodo: String,
     cardBtn: String,
     time: String,
@@ -306,4 +307,40 @@ fun AppointmentDone(
 
     }
 
+}
+
+@Composable
+fun ScheduleCardLayout() {
+
+    Column(Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp, vertical = 8.dp)) {
+        WaterScheduleCard()
+        Spacer(modifier = Modifier.height(8.dp))
+        MediaTaskCard(cardTtl = "Breathing",
+            cardValue = "44%",
+            cardTodo = "20mins • 16 mins left",
+            cardBtn = "Continue Video")
+        Spacer(modifier = Modifier.height(8.dp))
+        SimpleTaskCard(cardTtl = "Steps",
+            cardValue = "84%",
+            cardTodo = "7 hr 30 minutes • 30 minutes left",
+            cardBtn = "Reschedule")
+        Spacer(modifier = Modifier.height(8.dp))
+        TaskDoneCard(cardTtl = "Fasting",
+            cardValue = "44%",
+            cardTodo = "Fasting to cleanse your body",
+            cardBtn = "Done",
+            time = "9:00am - 2:00pm",
+            scheduleTtl = "Reschedule")
+        Spacer(modifier = Modifier.height(8.dp))
+        AppointmentDone(cardTtl = "Appointment",
+            cardTodo = "44%",
+            cardBtn = "Done",
+            time = "4:00pm",
+            scheduleTtl = "Reschedule",
+            doctorName = "Dr Deepika",
+            doctorSpecialization = "Physiotherapist")
+        Spacer(modifier = Modifier.height(8.dp))
+    }
 }
