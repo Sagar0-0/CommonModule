@@ -1,12 +1,10 @@
 package fit.asta.health.old_subscription
 
 import android.app.Activity
-import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
 import androidx.viewpager2.widget.ViewPager2
 import com.android.billingclient.api.*
@@ -38,7 +36,6 @@ class SubscriptionPagerViewImpl : SubscriptionPagerView {
         return rootView
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun setUpViewPager(
         fragmentActivity: SubscriptionActivity,
         listener: SubscriptionViewPagerListener

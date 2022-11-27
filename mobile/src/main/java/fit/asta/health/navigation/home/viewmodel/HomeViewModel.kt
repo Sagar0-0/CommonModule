@@ -6,6 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.navigation.home.model.ToolsHomeRepo
 import fit.asta.health.navigation.home.model.network.NetSelectedTools
+import fit.asta.health.utils.getCurrentDate
+import fit.asta.health.utils.getCurrentTime
+import fit.asta.health.utils.getNextDate
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,8 +19,7 @@ import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
-class HomeViewModel
-@Inject constructor(
+class HomeViewModel @Inject constructor(
     private val toolsHomeRepo: ToolsHomeRepo,
     private val authRepo: AuthRepo
 ) : ViewModel() {
@@ -31,15 +33,16 @@ class HomeViewModel
 
     private fun loadHomeData() {
         viewModelScope.launch {
+
             authRepo.getUser()?.let {
                 toolsHomeRepo.getHomeData(
                     userId = it.uid,
                     latitude = "28.6353",
                     longitude = "77.2250",
                     location = "bangalore",
-                    startDate = "2022-10-03",
-                    endDate = "2022-10-05",
-                    time = "2022-10-03%2012%20pm"
+                    startDate = getCurrentDate(),
+                    endDate = getNextDate(2),
+                    time = getCurrentTime()
                 ).catch { exception ->
                     _mutableState.value = HomeState.Error(exception)
                 }.collect {

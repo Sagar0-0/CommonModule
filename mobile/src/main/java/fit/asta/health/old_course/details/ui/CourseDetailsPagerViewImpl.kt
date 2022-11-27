@@ -1,10 +1,8 @@
 package fit.asta.health.old_course.details.ui
 
 import android.app.Activity
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
@@ -30,7 +28,6 @@ class CourseDetailsPagerViewImpl : CourseDetailsPagerView {
         return rootView
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun setUpViewPager(
         fragmentActivity: CourseDetailsActivity,
         listener: CourseDetailsViewPagerListener
