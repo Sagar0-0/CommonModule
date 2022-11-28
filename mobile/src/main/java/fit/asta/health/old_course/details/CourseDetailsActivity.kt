@@ -3,6 +3,7 @@ package fit.asta.health.old_course.details
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import com.google.android.material.appbar.MaterialToolbar
@@ -13,15 +14,16 @@ import fit.asta.health.old_course.details.ui.CourseDetailsObserver
 import fit.asta.health.old_course.details.viewmodel.CourseDetailsViewModel
 import fit.asta.health.old_course.listing.data.CourseIndexData
 import fit.asta.health.utils.showDrawableImage
-import org.koin.android.ext.android.inject
-import org.koin.core.KoinComponent
+import javax.inject.Inject
 
 
-class CourseDetailsActivity : AppCompatActivity(), KoinComponent {
+class CourseDetailsActivity : AppCompatActivity() {
 
-    private val courseDetailsView: CourseDetailsView by inject()
-    private val viewModel: CourseDetailsViewModel by inject()
-    private val launcher: ActivityLauncher by inject()
+    @Inject
+    lateinit var courseDetailsView: CourseDetailsView
+    private val viewModel: CourseDetailsViewModel by viewModels()
+    @Inject
+    lateinit var launcher: ActivityLauncher
     private var courseId: String = ""
 
     companion object {

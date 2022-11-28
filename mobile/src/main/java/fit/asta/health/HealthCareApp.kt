@@ -8,11 +8,8 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.multidex.MultiDexApplication
 import dagger.hilt.android.HiltAndroidApp
 import fit.asta.health.common.db.AppDb
-import fit.asta.health.di.*
 import fit.asta.health.notify.util.createNotificationChannel
 import fit.asta.health.utils.getUriFromResourceId
-import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.startKoin
 
 @HiltAndroidApp
 class HealthCareApp : MultiDexApplication() {
@@ -29,7 +26,6 @@ class HealthCareApp : MultiDexApplication() {
         super.onCreate()
         mContext = this
         instance = this
-        startKoin()
         setupDb()
         createNotificationChannel()
 
@@ -37,23 +33,6 @@ class HealthCareApp : MultiDexApplication() {
             getString(R.string.breakfast_notification_channel_id),
             getString(R.string.breakfast_notification_channel_name)
         )*/
-    }
-
-    private fun startKoin() {
-        startKoin {
-            androidContext(this@HealthCareApp)
-            modules(
-                appModule,
-                todayModule,
-                courseModule,
-                courseDetailsModule,
-                exerciseModule,
-                tagsModule,
-                subscriptionModule,
-                multiSelectionModule,
-                scheduleModule
-            )
-        }
     }
 
     private fun setupDb() {

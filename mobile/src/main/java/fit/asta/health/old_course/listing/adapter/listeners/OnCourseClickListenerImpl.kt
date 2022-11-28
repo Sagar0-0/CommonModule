@@ -4,16 +4,16 @@ import android.content.Context
 import fit.asta.health.ActivityLauncher
 import fit.asta.health.notify.reminder.data.Reminder
 import fit.asta.health.old_course.listing.viewmodel.CourseListingViewModel
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import javax.inject.Inject
+
 
 class OnCourseClickListenerImpl(
     private val context: Context,
     private val viewModel: CourseListingViewModel
-) :
-    OnCourseClickListener, KoinComponent {
+) : OnCourseClickListener {
 
-    private val launcher: ActivityLauncher by inject()
+    @Inject
+    lateinit var launcher: ActivityLauncher
 
     override fun onCourseClick(position: Int) {
         launcher.launchCourseDetailsActivity(context, viewModel.getCourseDetails(position))

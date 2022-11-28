@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.material.appbar.MaterialToolbar
@@ -12,13 +13,14 @@ import fit.asta.health.old_scheduler.tags.data.ScheduleTagData
 import fit.asta.health.old_scheduler.tags.listner.ClickListenerImpl
 import fit.asta.health.old_scheduler.tags.listner.TagActivityListener
 import fit.asta.health.old_scheduler.tags.viewmodel.TagsViewModel
-import org.koin.android.ext.android.inject
+import javax.inject.Inject
 
 
 class TagsActivity : AppCompatActivity(), TagActivityListener {
 
-    private val viewTags: TagsView by inject()
-    private val viewModelTags: TagsViewModel by inject()
+    @Inject
+    lateinit var viewTags: TagsView
+    private val viewModelTags: TagsViewModel by viewModels()
 
     companion object {
 

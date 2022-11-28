@@ -3,16 +3,17 @@ package fit.asta.health.navigation.today.adapter.listeners
 import android.content.Context
 import fit.asta.health.ActivityLauncher
 import fit.asta.health.navigation.today.viewmodel.TodayPlanViewModel
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import javax.inject.Inject
+
 
 class OnPlanClickListenerImpl(
     private val context: Context,
     private val viewModel: TodayPlanViewModel
 ) :
-    OnPlanClickListener, KoinComponent {
+    OnPlanClickListener {
 
-    private val launcher: ActivityLauncher by inject()
+    @Inject
+    lateinit var launcher: ActivityLauncher
 
     override fun onPlanClick(position: Int) {
         val plan = viewModel.getPlanDetails(position)

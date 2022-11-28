@@ -3,16 +3,16 @@ package fit.asta.health.old_course.session.adapter.listeners
 import androidx.appcompat.app.AppCompatActivity
 import fit.asta.health.ActivityLauncher
 import fit.asta.health.old_course.session.viewmodel.SessionViewModel
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import javax.inject.Inject
+
 
 class OnExerciseClickListenerImpl(
     private val context: AppCompatActivity,
     private val viewModel: SessionViewModel
-) :
-    OnExerciseClickListener, KoinComponent {
+) : OnExerciseClickListener {
 
-    private val launcher: ActivityLauncher by inject()
+    @Inject
+    lateinit var launcher: ActivityLauncher
 
     override fun onExerciseClick(position: Int) {
 

@@ -14,14 +14,15 @@ import fit.asta.health.old_article.data.ArticleContent
 import fit.asta.health.old_course.session.data.Exercise
 import fit.asta.health.utils.getPublicStorageUrl
 import fit.asta.health.utils.showImageByUrl
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import javax.inject.Inject
 
-class VideoViewHolder(itemView: View) : BaseViewHolder<ArticleContent>(itemView), KoinComponent {
+
+class VideoViewHolder(itemView: View) : BaseViewHolder<ArticleContent>(itemView) {
     private val storageRef: StorageReference?
         get() = FirebaseStorage.getInstance().reference
 
-    private val launcher: ActivityLauncher by inject()
+    @Inject
+    lateinit var launcher: ActivityLauncher
     private var currentItem: ArticleContent? = null
 
     init {

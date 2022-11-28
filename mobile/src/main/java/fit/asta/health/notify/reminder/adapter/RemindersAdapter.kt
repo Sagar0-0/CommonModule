@@ -14,19 +14,19 @@ import fit.asta.health.ActivityLauncher
 import fit.asta.health.R
 import fit.asta.health.notify.reminder.data.Reminder
 import fit.asta.health.utils.GenericAdapter
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 class RemindersAdapter(
     val context: Context,
     val list: List<Reminder>,
     val deleteCallback: (Reminder) -> Unit
 ) :
-    GenericAdapter<Reminder>(list), KoinComponent {
+    GenericAdapter<Reminder>(list) {
 
-    private val launcher: ActivityLauncher by inject()
+    @Inject
+    lateinit var launcher: ActivityLauncher
     private val dateFormat = SimpleDateFormat("h:mma", Locale.getDefault())
 
     fun delete(reminder: Reminder) {

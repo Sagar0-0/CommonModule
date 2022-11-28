@@ -15,14 +15,14 @@ import fit.asta.health.ActivityLauncher
 import fit.asta.health.R
 import fit.asta.health.old_course.details.data.SessionData
 import fit.asta.health.utils.GenericAdapter
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import javax.inject.Inject
 
 
 class ModulesAdapter(val context: Context, val courseId: String, items: List<SessionData>) :
-    GenericAdapter<SessionData>(items), KoinComponent {
+    GenericAdapter<SessionData>(items) {
 
-    private val launcher: ActivityLauncher by inject()
+    @Inject
+    lateinit var launcher: ActivityLauncher
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
