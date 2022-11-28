@@ -5,9 +5,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.navigation.home.model.domain.ToolsHome
 import fit.asta.health.navigation.home.view.BannerAutoSlider
@@ -41,9 +45,42 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
             }
 
             item {
+
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp, horizontal = 16.dp)) {
+                    Text(text = "Upcoming Vitamin D Session",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.Black)
+                }
+
+            }
+
+            item {
+
+                LazyVerticalGrid(columns = GridCells.Fixed(3),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(170.dp)
+                        .padding(horizontal = 16.dp),
+                    userScrollEnabled = false) {
+
+                    repeat(times = 3) {
+                        item {
+                            SunlightSlotsCardLayout()
+                        }
+                    }
+
+                }
+            }
+
+            item {
                 MyToolsAndViewAll(myTools = "My Schedules", allTools = "All Schedules", onClick = {
 
-                    //TODO - Integrate All tools
+                    //TODO - Integrate All Schedules
                 })
             }
 
@@ -67,7 +104,8 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(560.dp)
-                            .padding(horizontal = 16.dp)) {
+                            .padding(horizontal = 16.dp),
+                        userScrollEnabled = false) {
                         it.forEachIndexed { index, _ ->
                             item {
                                 ToolsCardLayoutDemo(imgUrl = toolsHome.tools[index].url,
@@ -91,7 +129,8 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(1315.dp)
-                            .padding(horizontal = 16.dp)) {
+                            .padding(horizontal = 16.dp),
+                        userScrollEnabled = false) {
                         it.forEachIndexed { index, _ ->
                             item {
                                 ToolsCardLayoutDemo(imgUrl = toolsHome.tools[index].url,
