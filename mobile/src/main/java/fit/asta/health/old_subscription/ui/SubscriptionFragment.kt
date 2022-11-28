@@ -5,18 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import fit.asta.health.old_subscription.listner.PrivacyClickListenerImpl
 import fit.asta.health.old_subscription.listner.SubPlanSelectionListenerImpl
 import fit.asta.health.old_subscription.listner.TermsClickListenerImpl
 import fit.asta.health.old_subscription.viewmodel.SubscriptionViewModel
-import org.koin.android.ext.android.inject
+import javax.inject.Inject
+
 
 class SubscriptionFragment(private val tabName: String) : Fragment() {
 
-    private val subscriptionView: SubscriptionView by inject()
-    private val subscriptionViewModel: SubscriptionViewModel by activityViewModels()
+    @Inject
+    lateinit var subscriptionView: SubscriptionView
+    private val subscriptionViewModel: SubscriptionViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

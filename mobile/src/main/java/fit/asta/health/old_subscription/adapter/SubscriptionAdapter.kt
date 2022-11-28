@@ -5,12 +5,13 @@ import fit.asta.health.common.BaseAdapter
 import fit.asta.health.common.BaseViewHolder
 import fit.asta.health.old_subscription.data.SubscriptionItem
 import fit.asta.health.old_subscription.listner.SubPlanSelectionListener
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import javax.inject.Inject
 
-class SubscriptionAdapter : BaseAdapter<SubscriptionItem>(), KoinComponent {
 
-    private val viewHolderFactory: SubscriptionViewHolderFactory by inject()
+class SubscriptionAdapter : BaseAdapter<SubscriptionItem>() {
+
+    @Inject
+    lateinit var viewHolderFactory: SubscriptionViewHolderFactory
     private var changeSelectionListener: SubPlanSelectionListener? = null
 
     override fun onCreateViewHolder(

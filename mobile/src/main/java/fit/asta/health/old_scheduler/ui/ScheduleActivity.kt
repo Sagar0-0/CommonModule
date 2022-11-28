@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -15,14 +16,16 @@ import fit.asta.health.notify.reminder.data.Reminder
 import fit.asta.health.old_scheduler.tags.data.ScheduleTagData
 import fit.asta.health.old_scheduler.tags.ui.TagsActivity
 import fit.asta.health.old_scheduler.viewmodel.ScheduleViewModel
-import org.koin.android.ext.android.inject
+import javax.inject.Inject
 
 
 class ScheduleActivity : AppCompatActivity() {
 
-    private val viewSchedule: ScheduleView by inject()
-    private val viewModelSchedule: ScheduleViewModel by inject()
-    private val launcher: ActivityLauncher by inject()
+    @Inject
+    lateinit var viewSchedule: ScheduleView
+    private val viewModelSchedule: ScheduleViewModel by viewModels()
+    @Inject
+    lateinit var launcher: ActivityLauncher
 
     companion object {
 

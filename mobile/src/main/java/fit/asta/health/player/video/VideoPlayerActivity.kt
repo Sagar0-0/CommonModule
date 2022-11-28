@@ -31,12 +31,13 @@ import fit.asta.health.old_course.session.SessionRepo
 import fit.asta.health.old_course.session.data.Exercise
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
+import javax.inject.Inject
 
 
 class VideoPlayerActivity : AppCompatActivity(), Player.Listener {
 
-    private val sessionRepo: SessionRepo by inject()
+    @Inject
+    lateinit var sessionRepo: SessionRepo
     private val scope = MainScope()
 
     companion object {

@@ -6,9 +6,9 @@ import fit.asta.health.R
 import fit.asta.health.common.BaseAdapter
 import fit.asta.health.common.BaseViewHolder
 import fit.asta.health.common.multiselect.data.MultiSelectData
-import org.koin.core.KoinComponent
 
-class MultiSelectAdapter: BaseAdapter<MultiSelectData>(), KoinComponent {
+
+class MultiSelectAdapter : BaseAdapter<MultiSelectData>() {
 
     private var selectionUpdateListener: SelectionUpdateListener? = null
 
@@ -16,8 +16,9 @@ class MultiSelectAdapter: BaseAdapter<MultiSelectData>(), KoinComponent {
         parent: ViewGroup,
         viewType: Int
     ): BaseViewHolder<MultiSelectData> {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.listview_multiselect_item, parent, false)
-        return  MultiSelectViewHolder(view, selectionUpdateListener)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.listview_multiselect_item, parent, false)
+        return MultiSelectViewHolder(view, selectionUpdateListener)
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<MultiSelectData>, position: Int) {
@@ -27,5 +28,4 @@ class MultiSelectAdapter: BaseAdapter<MultiSelectData>(), KoinComponent {
     fun setAdapterListener(listener: SelectionUpdateListener){
         selectionUpdateListener = listener
     }
-
 }

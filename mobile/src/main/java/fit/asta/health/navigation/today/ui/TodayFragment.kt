@@ -5,18 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import fit.asta.health.navigation.today.adapter.listeners.OnPlanClickListenerImpl
 import fit.asta.health.navigation.today.viewmodel.TodayPlanObserver
 import fit.asta.health.navigation.today.viewmodel.TodayPlanViewModel
-import org.koin.android.ext.android.inject
+import javax.inject.Inject
+
 
 class TodayFragment : Fragment() {
 
-    private val todayPlanView: TodayPlanView by inject()
-    private val todayPlanViewModel: TodayPlanViewModel by inject()
+    @Inject
+    lateinit var todayPlanView: TodayPlanView
+    private val todayPlanViewModel: TodayPlanViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
         return todayPlanView.onCreateView(inflater, container, savedInstanceState)
     }
 

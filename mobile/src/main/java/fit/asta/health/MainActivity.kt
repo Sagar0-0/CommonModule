@@ -46,14 +46,13 @@ import fit.asta.health.profile.UserProfileActivity
 import fit.asta.health.settings.SettingsActivity
 import fit.asta.health.utils.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import javax.inject.Inject
 
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
-    FirebaseAuth.IdTokenListener, KoinComponent {
+    FirebaseAuth.IdTokenListener {
 
     companion object {
         private const val REQUEST_FLEXIBLE_UPDATE: Int = 1369
@@ -65,7 +64,8 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
     private lateinit var networkConnectivity: NetworkConnectivity
     private var snackBar: Snackbar? = null
     private var profileImgView: ImageView? = null
-    private val tokenProvider: TokenProvider by inject()
+    @Inject
+    lateinit var tokenProvider: TokenProvider
 
     //private val viewModel: HomeViewModel by viewModels()
     private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>

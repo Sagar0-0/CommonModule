@@ -3,6 +3,7 @@ package fit.asta.health.old_course.session.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import fit.asta.health.R
@@ -10,13 +11,14 @@ import fit.asta.health.old_course.session.adapter.listeners.OnExerciseClickListe
 import fit.asta.health.old_course.session.listners.OnSessionClickListenerImpl
 import fit.asta.health.old_course.session.viewmodel.SessionObserver
 import fit.asta.health.old_course.session.viewmodel.SessionViewModel
-import org.koin.android.ext.android.inject
+import javax.inject.Inject
 
 
 class SessionActivity : AppCompatActivity() {
 
-    private val sessionView: SessionView by inject()
-    private val viewModel: SessionViewModel by inject()
+    @Inject
+    lateinit var sessionView: SessionView
+    private val viewModel: SessionViewModel by viewModels()
 
     companion object {
 

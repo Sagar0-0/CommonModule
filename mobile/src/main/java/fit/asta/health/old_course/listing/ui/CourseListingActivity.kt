@@ -3,6 +3,7 @@ package fit.asta.health.old_course.listing.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.appbar.MaterialToolbar
 import fit.asta.health.R
@@ -10,13 +11,14 @@ import fit.asta.health.old_course.listing.adapter.listeners.OnCourseClickListene
 import fit.asta.health.old_course.listing.data.CategoryData
 import fit.asta.health.old_course.listing.viewmodel.CourseListingObserver
 import fit.asta.health.old_course.listing.viewmodel.CourseListingViewModel
-import org.koin.android.ext.android.inject
+import javax.inject.Inject
 
 
 class CourseListingActivity : AppCompatActivity() {
 
-    private val courseListingView: CourseListingView by inject()
-    private val viewModel: CourseListingViewModel by inject()
+    @Inject
+    lateinit var courseListingView: CourseListingView
+    private val viewModel: CourseListingViewModel by viewModels()
 
     companion object {
 

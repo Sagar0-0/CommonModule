@@ -3,19 +3,21 @@ package fit.asta.health.common.multiselect.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import fit.asta.health.R
 import fit.asta.health.common.multiselect.MultiSelectObserver
 import fit.asta.health.common.multiselect.adapter.SelectionUpdateListenerImpl
 import fit.asta.health.common.multiselect.viewmodel.MultiSelectViewModel
-import org.koin.android.ext.android.inject
+import javax.inject.Inject
 
 
 class MultiSelectActivity : AppCompatActivity() {
 
-    private val multiSelectView: MultiSelectView by inject()
-    private val viewModel: MultiSelectViewModel by inject()
+    private val viewModel: MultiSelectViewModel by viewModels()
+    @Inject
+    lateinit var multiSelectView: MultiSelectView
 
     companion object {
 

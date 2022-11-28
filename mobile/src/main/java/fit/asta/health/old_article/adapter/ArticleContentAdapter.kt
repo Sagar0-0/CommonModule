@@ -5,19 +5,22 @@ import fit.asta.health.common.BaseAdapter
 import fit.asta.health.common.BaseViewHolder
 import fit.asta.health.old_article.data.ArticleContent
 import fit.asta.health.old_article.viewholder.BaseViewHolderFactory
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import javax.inject.Inject
 
 
-class ArticleContentAdapter: BaseAdapter<ArticleContent>(), KoinComponent {
+class ArticleContentAdapter : BaseAdapter<ArticleContent>() {
 
-    private val viewHolderFactory: BaseViewHolderFactory by inject()
+    @Inject
+    lateinit var viewHolderFactory: BaseViewHolderFactory
 
     override fun getItemViewType(position: Int): Int {
         return items[position].type.value
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<ArticleContent> {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseViewHolder<ArticleContent> {
         return viewHolderFactory.create(parent, viewType)
     }
 

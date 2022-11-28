@@ -1,11 +1,9 @@
 <resources>
     <string name="app_name">Asta</string>
-    <string name="title_activity_user_profile">User Profile</string>
 
     <!-- Web Urls -->
     <string name="url_privacy_policy" translatable="false">tos_pp/privacy_policy.htm</string>
     <string name="url_terms_of_use" translatable="false">tos_pp/terms_of_use.htm</string>
-    <string name="url_help" translatable="false">http://health.asta.com/help</string>
     <string name="google_market_url" translatable="false">market://details?id=</string>
     <string name="google_play_store_url" translatable="false">https://play.google.com/store/apps/details?id=</string>
     <string name="fire_storage_url" translatable="false">https://firebasestorage.googleapis.com/v0/b/</string>
@@ -55,105 +53,20 @@
     <string name="user_pref_promotions_title">Discounts/Offers</string>
 
     <!-- User Preference - Payment Settings -->
-    <string name="user_pref_payment_cat_key" translatable="false">user_pref_payment_cat</string>
-    <string name="user_pref_payment_cat_title">PAYMENT</string>
-
     <string name="user_pref_purchase_key" translatable="false">user_pref_purchase</string>
-    <string name="user_pref_purchase_title">Purchase</string>
-
     <string name="user_pref_donate_key" translatable="false">user_pref_donate</string>
-    <string name="user_pref_donate_title">Do you like to donate?</string>
-
     <string name="user_pref_give_gift_key" translatable="false">user_pref_give_gift</string>
-    <string name="user_pref_give_gift_title">Give a Gift</string>
 
     <!-- User Preference - Unit Settings -->
-    <string name="user_pref_unit_key" translatable="false">user_pref_unit</string>
-    <string name="user_pref_unit_cat_key" translatable="false">user_pref_unit_cat</string>
-    <string name="user_pref_unit_cat_title">UNIT</string>
-    <string name="user_pref_unit_height_dlg_title">Choose Height Unit</string>
     <string name="user_pref_unit_height_key" translatable="false">user_pref_unit_height</string>
-    <string name="title_height">Height</string>
-
-    <string-array name="user_pref_unit_height_entries">
-        <item>Centimetres</item>
-        <item>Feet and Inches</item>
-    </string-array>
-
-    <string-array name="user_pref_unit_height_values">
-        <item translatable="false">centimetres</item>
-        <item translatable="false">feet_inches</item>
-    </string-array>
-
-    <string name="user_pref_unit_weight_dlg_key" translatable="false">user_pref_unit_weight_dlg</string>
-    <string name="user_pref_unit_weight_dlg_title">Choose Weight Unit</string>
     <string name="user_pref_unit_weight_key" translatable="false">user_pref_unit_weight</string>
-    <string name="title_weight">Weight</string>
-
-    <string-array name="user_pref_unit_weight_entries">
-        <item>Kilograms</item>
-        <item>Stones</item>
-        <item>Pounds</item>
-    </string-array>
-
-    <string-array name="user_pref_unit_weight_values">
-        <item translatable="false">kilograms</item>
-        <item translatable="false">stones</item>
-        <item translatable="false">pounds</item>
-    </string-array>
-
-    <string name="user_pref_unit_energy_dlg_key" translatable="false">user_pref_unit_energy_dlg</string>
-    <string name="user_pref_unit_energy_dlg_title">Choose Energy Unit</string>
     <string name="user_pref_unit_energy_key" translatable="false">user_pref_unit_energy</string>
-    <string name="user_pref_unit_energy_title">Energy</string>
-
-    <string-array name="user_pref_unit_energy_entries">
-        <item>Calories</item>
-        <item>Kilojoules</item>
-    </string-array>
-
-    <string-array name="user_pref_unit_energy_values">
-        <item translatable="false">calories</item>
-        <item translatable="false">kilojoules</item>
-    </string-array>
-
-    <string name="user_pref_unit_distance_dlg_key" translatable="false">user_pref_unit_distance_dlg</string>
-    <string name="user_pref_unit_distance_dlg_title">Choose Distance Unit</string>
     <string name="user_pref_unit_distance_key" translatable="false">user_pref_unit_distance</string>
-    <string name="user_pref_unit_distance_title">Distance</string>
-
-    <string-array name="user_pref_unit_distance_entries">
-        <item>Kilometres</item>
-        <item>Miles</item>
-    </string-array>
-
-    <string-array name="user_pref_unit_distance_values">
-        <item translatable="false">kilometres</item>
-        <item translatable="false">miles</item>
-    </string-array>
 
     <!-- User Preference - Language Settings -->
-    <string name="user_pref_lang_dlg_key" translatable="false">user_pref_lang_dlg</string>
-    <string name="user_pref_lang_dlg_title">Choose Language</string>
     <string name="user_pref_lang_key" translatable="false">user_pref_lang</string>
-    <string name="user_pref_lang_title">Language</string>
-
-    <string-array name="user_pref_lang_entries">
-        <item>English</item>
-        <item>Hindi</item>
-        <item>Kannada</item>
-        <item>Telugu</item>
-    </string-array>
-
-    <string-array name="user_pref_lang_values">
-        <item translatable="false">en</item>
-        <item translatable="false">hi</item>
-        <item translatable="false">kn</item>
-        <item translatable="false">tg</item>
-    </string-array>
 
     <!-- User Preferences - Video Settings -->
-    <string name="user_pref_video_key" translatable="false">user_pref_video</string>
     <string name="user_pref_video_cat_key" translatable="false">user_pref_video_cat</string>
     <string name="user_pref_video_cat_title">Video</string>
 
@@ -238,9 +151,6 @@
     <string name="user_pref_share_app_key" translatable="false">user_pref_share_app</string>
     <string name="user_pref_share_app_title">Share</string>
 
-    <string name="user_pref_subscribe_app_key" translatable="false">user_pref_subscribe_app</string>
-    <string name="user_pref_subscribe_app_title">Subscription</string>
-
     <string name="user_pref_support_us_cat_key" translatable="false">user_pref_support_us_cat</string>
     <string name="user_pref_support_us_cat_title">SUPPORT US</string>
 
@@ -255,15 +165,6 @@
 
     <string name="user_pref_bug_report_key" translatable="false">user_pref_bug_report</string>
     <string name="user_pref_bug_report_title">Bug report</string>
-
-    <string name="user_pref_help_key" translatable="false">user_pref_help</string>
-    <string name="user_pref_help_title">Help</string>
-
-    <string name="user_pref_contributors_key" translatable="false">user_pref_contributors</string>
-    <string name="user_pref_contributors_title">Contributors</string>
-
-    <string name="user_pref_agreement_cat_key" translatable="false">user_pref_agreement_cat</string>
-    <string name="user_pref_agreement_cat_title">AGREEMENT</string>
 
     <string name="user_pref_terms_of_use_key" translatable="false">user_pref_terms_of_use</string>
     <string name="user_pref_terms_of_use_title">Terms of Use</string>
@@ -284,91 +185,20 @@
     <string name="user_pref_delete_account_title">Delete</string>
     <string name="user_pref_delete_account_summary">All your data will be lost and can\'t be restored</string>
 
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Gender Preferences -->
-    <string-array name="gender_entries">
-        <item>Female</item>
-        <item>Male</item>
-    </string-array>
-
-    <string-array name="gender_values">
-        <item translatable="false">female</item>
-        <item translatable="false">male</item>
-    </string-array>
-
     <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="login_failed">"Login failed"</string>
-    <string name="title_activity_home">HomeActivity</string>
     <string name="title_home">Home</string>
-    <string name="title_breath">Breath</string>
-    <string name="title_water">Water</string>
-    <string name="title_yoga">Yoga</string>
     <string name="title_notifications">Notifications</string>
-    <string name="title_asanas">Asanas</string>
-    <string name="title_meditation">Meditation</string>
-    <string name="title_milestones">Milestones</string>
     <string name="title_profile">Profile</string>
     <string name="title_settings">Settings</string>
-    <string name="profile_txt_name">Name</string>
-    <string name="profile_txt_phone">Phone</string>
-    <string name="profile_txt_email">EMail</string>
-    <string name="profile_txt_gender">Gender</string>
-    <string name="profile_txt_gender_female">Female</string>
-    <string name="profile_txt_gender_male">Male</string>
-    <string name="profile_txt_dob">Birthday</string>
-    <string name="profile_txt_dob_hint">MM/DD/YYYY</string>
-    <string name="profile_txt_body">Body Type</string>
-    <string name="profile_txt_physical_activities">Activities</string>
-    <string name="profile_txt_sleep_hours">Sleep Hours</string>
-    <string name="profile_txt_profession">Profession</string>
-    <string name="profile_txt_location">Location</string>
-    <string name="profile_txt_heart_rate">Heart Rate</string>
-    <string name="profile_txt_ailments">Ailments</string>
-    <string name="profile_txt_targets">Targets</string>
     <string name="btn_start">START</string>
-    <string name="btn_subscribe">SUBSCRIBE</string>
     <string name="btn_schedule">SCHEDULE</string>
-    <string name="btn_select">SELECT</string>
-    <string name="title_diet">Diet</string>
     <string name="article_author_by">" by "</string>
     <string name="OFFLINE_STATUS">You are offline</string>
-    <string name="title_weather">Weather</string>
     <string name="title_day">Day</string>
     <string name="title_level">Level</string>
-    <string name="L1">Beginner 1</string>
-    <string name="L2">Beginner 2</string>
-    <string name="L3">Intermediate 1</string>
-    <string name="L4">Intermediate 2</string>
-    <string name="L5">Advanced</string>
     <string name="title_duration">Duration</string>
     <string name="title_min">Min</string>
     <string name="title_yrs_of_exp">years of experience</string>
-    <string name="duration_title">Choose duration:</string>
-    <string name="level_title">Choose level:</string>
-    <string name="heal_title">Choose to heal:</string>
-    <string name="style_title">Choose styles:</string>
-    <string name="stretch_title">Choose the parts to stretch:</string>
-    <string name="strength_title">Choose the parts to strengthen:</string>
-    <string name="focus_title">Choose the below:</string>
-    <string name="title_minutes">Minutes</string>
-    <string name="title_style">Style</string>
-    <string name="title_stretch">Stretch</string>
-    <string name="title_strength">Strength</string>
-    <string name="title_focus">Focus</string>
-    <string name="title_heal">Heal</string>
     <string name="tab_overview">OVERVIEW</string>
     <string name="tab_sessions">SESSIONS</string>
     <string name="title_key_points">Key Points</string>
@@ -379,7 +209,6 @@
     <string name="title_age_group">Age Group</string>
     <string name="title_prerequisites">Prerequisites</string>
     <string name="title_do_not">"Don'ts"</string>
-    <string name="title_see_all">See All</string>
     <string name="title_status">Status</string>
     <string name="title_schedule">Schedule</string>
     <string name="title_tags">Tags</string>
@@ -387,7 +216,6 @@
     <string name="title_snooze">Snooze</string>
     <string name="title">Title</string>
     <string name="title_desc">Description</string>
-    <string name="title_done">Done</string>
     <string name="title_every_day">Everyday</string>
     <string name="title_set_a_reminder">Set a reminder</string>
     <string name="title_reminder">Reminder</string>
@@ -396,88 +224,20 @@
     <string name="every_day">Everyday</string>
     <string name="title_cancel">Cancel</string>
     <string name="title_share">Share with friends</string>
-    <string name="desc_share">Help your friends to make healthy and transform</string>
-    <string name="recent">Recent</string>
-    <string name="popular">Popular</string>
-    <string name="my_fav">My Favourite</string>
     <string name="rateUs">Please take a moment to rate us</string>
-    <string name="remind_me_later">Remind me later</string>
-    <string name="sure">Sure</string>
-    <string name="journey_tow">Journey towards a healthy lifestyle </string>
     <string name="rating">Rate Us</string>
-    <string name="total_awakening">Total Awakening</string>
-    <string name="your_sessions">Your Sessions</string>
     <!-- strings.xml -->
     <string name="exit">Exit</string>
-    <string name="play">PLAY</string>
     <string name="library">LIBRARY</string>
     <string name="testimonials">TESTIMONIALS</string>
-    <string name="i_work_in_p_three">I work in project management and joined this course because I get great courses for less.The instructors are fantastic, interesting, and helpful.\n \n \n \n \n \n I plan to use this for a long time!</string>
-    <string name="i_work_in_p_two">The instructors are fantastic, interesting, and helpful. I plan to use this for a long time!</string>
-    <string name="i_work_in_p_one">I work in project management and joined this course because I get great courses for less. \\n The instructors are fantastic, interesting, and helpful. I plan to use this for a long time!</string>
-    <string name="name1">Jenny Wilson</string>
-    <string name="name2">Cody Fisher</string>
-    <string name="name3">Leslie Alexander</string>
-    <string name="cto_ekohunt">CTO, EkoHunt</string>
     <string name="view_more">VIEW MORE</string>
-
-
-    <!--Profile Creation-->
-    <string name="name_profile">Name</string>
-    <string name="phone_profile">Phone Number</string>
-    <string name="email_profile">Email</string>
-    <string name="age_profile">Age</string>
-    <string name="gender_profile">Gender</string>
-    <string name="male_gender">Male</string>
-    <string name="female_gender">Female</string>
-    <string name="nextButton">Next</string>
-    <string name="femaleFurtherInvestigation">Are you pregnant</string>
-    <string name="pregnantYes">Yes</string>
-    <string name="pregnantNo">No</string>
-    <string name="weekOfPregnancy">Select the week of Pregnancy</string>
-    <string name="periodCycle">Upload recent menstruation data</string>
-
-    <!--Body type-->
-    <string name="height">Your Height in cm</string>
-    <string name="weight">Your Weight in Kg</string>
-    <string name="BMI">Calculate BMI</string>
-    <string name="bodyType">Select your body Type</string>
-
-    <!--Physical Activity-->
-    <string name="walikng">Walking</string>
-    <string name="running">Running</string>
-    <string name="yoga">Yoga</string>
-    <string name="circuitTraining">Circuit Training</string>
-    <string name="cycling">Cycling</string>
-    <string name="hiking">Hiking</string>
-    <string name="swimming">Swimming</string>
-    <string name="threadMill">Thread Mill</string>
-    <string name="exerciseBike">Exercise Bike</string>
-    <string name="ellipticalTrainer">Elliptical Trainer</string>
-    <string name="weightMachunes">Weight Machines</string>
-    <string name="dailyActivities">Select Activities you perform</string>
-    <string name="sleep">How many hours do you sleep</string>
-    <string name="ailments">What are the Ailments you are suffering from:</string>
-    <string name="bloodPressure">Blood Pressure</string>
-    <string name="diabetic">Diabetic</string>
-    <string name="thyroid">Thyroid</string>
-    <string name="heartDisease">Heart Diseases</string>
-    <string name="astama">Astama</string>
-    <string name="positive_pregnecy">Please enter weeks</string>
-    <string name="your_BMI">your BMI is: </string>
 
     <!-- bottom-Navigation Bar-->
     <string name="today">Today</string>
     <string name="track">Track</string>
 
-    <!--Asanas-->
-    <string name="duration_days">30 Days</string>
-    <string name="subtitle_asanas">Helps you in building the immunity.</string>
-
     <!--subscription-->
     <string name="subscription">Subscription</string>
-    <string name="go_to_subscription">Go to Subscriptions</string>
-    <string name="plan_featur">100+ Inspired fitness workouts covering fat burn, toning, flexibility, relaxation and so much more </string>
     <string name="annual_plan">ANNUAL PLAN</string>
     <string name="day_free_tr">7-day free trail</string>
     <string name="then_99_99_">then $99.99 billed yearly</string>
@@ -486,136 +246,60 @@
     <string name="start_today">Start today</string>
     <string name="then_14.99">for $14.99 per month</string>
 
-    <string name="recurring_b">Recurring billing, cancel anytime</string>
-    <string name="terms_info">By tapping \"Continue\", your payment will be charged to your Google Play account, and your subscription will automatically renew for the same package length at the same price until you cancel in settings in the Google Play store. By tapping \"Continue\", you agree to our terms.</string>
     <string name="privacy_pol"><u>Privacy Policy</u></string>
     <string name="termes_of_s"><u>Terms of Service</u></string>
     <string name="continue_subs">Continue</string>
     <string name="save_subs">save 53%</string>
-    <string name="premium">PREMIUM</string>
-    <string name="gold">GOLD</string>
 
     <!--Exercise-->
-    <string name="workout_tit">Immunity Booster</string>
     <string name="title_by">By</string>
     <string name="title_sec">Sec</string>
-    <string name="day_9_30">Day 9 / 30</string>
     <string name="caplevel">Level</string>
-    <string name="level">Beginner 1</string>
     <string name="capduration">Duration</string>
     <string name="duration">60 Mins</string>
     <string name="capintensit">Intensity</string>
-    <string name="intensity">Medium</string>
     <string name="capcalories">Calories</string>
-    <string name="calories">200</string>
     <string name="start_exercises">Exercises:</string>
     <string name="title_exercise">Adhomukha Swanasana</string>
     <string name="subtitle_exercise">Down Dog</string>
     <string name="duration_exercise">1:30</string>
-    <string name="tab_title_contact">Contact</string>
-    <string name="tab_title_physique">Physique</string>
-    <string name="tab_title_lifestyle">Lifestyle</string>
-    <string name="tab_title_health_targets">Health Targets</string>
 
-    <!--profile-->
-    <string name="contact">Contact</string>
-    <string name="physique">Physique</string>
-    <string name="lifestyle">Lifestyle</string>
-    <string name="health_targets">Health Targets</string>
-    <string name="lisa_ray">Lisa Ray</string>
-    <string name="lisa_ray_gm">lisa.ray@gmail.com</string>
-    <string name="lisa_ray_ph">+91 959 198 4429</string>
-    <string name="profile_level">Level</string>
-    <string name="profile_goals">Goals</string>
-    <string name="profile_plan">Plan</string>
-    <string name="profile_health">Health</string>
-
-    <!--testimonials-->
-    <string name="testimonials_write">Write Testimonial</string>
-    <string name="testimonials_card">Testimonials</string>
-    <string name="testimonial_title">Testimonial</string>
-    <string name="testimonial_name">Name</string>
-    <string name="testimonial_designation">Designation</string>
-    <string name="testimonial_organization">Organization</string>
-    <string name="testimonial_submit">SUBMIT</string>
-    <string name="offers">Subscribe and get 5% off</string>
-    <string name="offer_ends">Offer ends in : </string>
-    <string name="timer"> 00:00:00</string>
-    <string name="exclusively">EXCLUSIVELY</string>
-    <string name="for_you">FOR YOU </string>
-    <string name="subscribe_now">SUBSCRIBE NOW</string>
-
-    <!--HomeBanner Title-->
-    <string name="fully_personalised_course">Fully Personalised Courses</string>
-    <string name="personalised_course_subtitle">Courses specially curated just for you, considering your health and needs</string>
-
-    <string name="priority_low">Low</string>
-    <string name="priority_high">High</string>
-    <string name="select_priority">Select the Priority</string>
     <string name="priority">High Priority</string>
     <string name="setting_priority">Setting High priority never fails to remind</string>
-
-    <string name="best_sale">Best sale of the season</string>
-    <string name="sale_at">Sale starting at 345</string>
-
     <string name="btn_done">DONE</string>
     <string name="media_url">https://img1.asta.fit</string>
-
     <string name="breathing_tool_title">Breathing Tool</string>
     <string name="tool_subtitle">Check your daily records to make it easy to analyze</string>
 
     <!-- Validation -->
     <string name="the_field_can_not_be_blank">The field can\'t be blank</string>
     <string name="that_is_not_a_valid_email">That\'s not a valid email</string>
-    <string name="that_is_not_a_valid_phone">That\'s not a valid phone number</string>
     <string name="error_terms_condition_not_accepted">Please kindly accept our terms and conditions</string>
     <string name="the_password_needs_to_contain_at_least_one_letter_and_digit">
         The password needs to contain at least one letter and digit</string>
     <string name="the_password_needs_to_consist_of_at_least_8_characters">
         The password needs to consist of at least 8 characters</string>
-    <string name="must_be_from_9_to_12_digits">Must be from 9 to 12 digits</string>
-    <string name="validation_successfully">Validation Successfully</string>
     <string name="data_length_more">The length should not be more than %d characters</string>
     <string name="data_length_less">The length should not be less than %d characters</string>
     <string name="testimonial_title_create">Create your Testimonial</string>
     <string name="testimonial_title_edit">Edit your Testimonial?</string>
 
-
     <string name="current_user_top_track_s_image">Current User Top Track\'s Image</string>
     <string name="current_user_s_top_artists">Current User\'s Top Artists</string>
-    <string name="user_s_playlists">User\'s Playlists</string>
     <string name="add_alarm">Add Alarm</string>
     <string name="alarm_settings">Alarm Settings</string>
     <string name="label">Label</string>
     <string name="reminder_mode">Reminder Mode</string>
     <string name="notification">Notification</string>
-    <string name="schedule">Schedule</string>
-    <string name="screen_splash">Screen Splash</string>
     <string name="close_button">Close Button</string>
     <string name="save_button">Save Button</string>
     <string name="status">Status</string>
     <string name="tag">Tag</string>
-    <string name="relax_to_energize">Relax to energize</string>
     <string name="description">Description</string>
-    <string name="_4_hours">4 Hours</string>
-    <string name="intervals">Intervals</string>
-    <string name="important">Important</string>
     <string name="this_will_make_sure_you_attempt_with_the_help_of_flashlight_sound_changes_vibration_etc">This will make sure you attempt with the help of flashlight, sound changes, vibration etc.</string>
-    <string name="_50">50%</string>
-    <string name="vibration">Vibration</string>
-    <string name="spring">Spring</string>
-    <string name="nap">Nap</string>
-    <string name="power_nap">Power Nap</string>
-    <string name="sound">Sound</string>
-    <string name="time_setting">Time Setting</string>
     <string name="variant_intervals">Variant Intervals</string>
     <string name="snooze">Snooze</string>
-    <string name="_5_mins">5 Minutes</string>
     <string name="advanced_reminder">Advanced Reminder</string>
-    <string name="_15_mins">15 Minutes</string>
-    <string name="remind_at_the_end">Remind at the End</string>
-    <string name="this_will_make_you_remind_at_end">This will make you remind at end</string>
-    <string name="_30_mins">30 Minutes</string>
     <string name="tags">Tags</string>
     <string name="add_tag">Add Tag</string>
     <string name="add_alarm_label">Add Alarm Label</string>
@@ -627,12 +311,9 @@
     <string name="select_reminder_mode">Select Reminder Mode</string>
     <string name="splash">Splash</string>
     <string name="tags_settings">Tags Settings</string>
-    <string name="custom_tag_add_image_button">Custom Tag Add Image Button</string>
     <string name="default_tone">Default Tone</string>
     <string name="repeat">Repeat</string>
     <string name="add_custom_interval">Add Interval</string>
-    <string name="enter_tag_name">Enter Tag Name</string>
-    <string name="everyday">Everyday</string>
     <string name="monday">Monday</string>
     <string name="tuesday">Tuesday</string>
     <string name="wednesday">Wednesday</string>
@@ -640,7 +321,6 @@
     <string name="friday">Friday</string>
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
-    <string name="add_variant_interval">Add Variant Interval</string>
     <string name="number_picker_formatter">%02d</string>
     <string name="select_snooze_time">Select Snooze Duration</string>
     <string name="intervals_amp_time_settings"><![CDATA[Intervals & Time Settings]]></string>

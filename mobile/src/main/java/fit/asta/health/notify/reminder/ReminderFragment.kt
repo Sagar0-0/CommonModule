@@ -16,12 +16,13 @@ import fit.asta.health.R
 import fit.asta.health.notify.reminder.adapter.RemindersAdapter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
-import org.koin.core.KoinComponent
+import javax.inject.Inject
 
-class ReminderFragment : Fragment(), KoinComponent {
 
-    private val launcher: ActivityLauncher by inject()
+class ReminderFragment : Fragment() {
+
+    @Inject
+    lateinit var launcher: ActivityLauncher
     private lateinit var viewModel: ReminderViewModel
 
     override fun onCreateView(

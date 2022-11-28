@@ -5,11 +5,12 @@ import fit.asta.health.common.BaseAdapter
 import fit.asta.health.common.BaseViewHolder
 import fit.asta.health.navigation.today.adapter.listeners.OnPlanClickListener
 import fit.asta.health.navigation.today.data.TodayPlanItemData
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import javax.inject.Inject
 
-class TodayPlanAdapter : BaseAdapter<TodayPlanItemData>(), KoinComponent {
-    private val viewHolderFactory: TodayBaseViewHolderFactory by inject()
+
+class TodayPlanAdapter : BaseAdapter<TodayPlanItemData>() {
+    @Inject
+    lateinit var viewHolderFactory: TodayBaseViewHolderFactory
     private var onClickListener: OnPlanClickListener? = null
 
     override fun onCreateViewHolder(
