@@ -10,15 +10,10 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.addCallback
-import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -64,6 +59,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
     private lateinit var networkConnectivity: NetworkConnectivity
     private var snackBar: Snackbar? = null
     private var profileImgView: ImageView? = null
+
     @Inject
     lateinit var tokenProvider: TokenProvider
 
@@ -72,14 +68,6 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //Sushi
-        setContent{
-            MaterialTheme{
-               Surface(
-                   modifier = Modifier.fillMaxWidth(),
-                   color = MaterialTheme.colorScheme.background
-               ) {
-    //till here
 
         permissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
@@ -138,10 +126,6 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
         FirebaseAuth.getInstance().addAuthStateListener(this)
         FirebaseAuth.getInstance().addIdTokenListener(this)
-
-               }
-            }
-        }
     }
 
     private fun loadAppScreen() {
@@ -189,18 +173,18 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         //nav_view.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 
-    /*private val mOnNavigationItemSelectedListener =
-        BottomNavigationView.OnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.navigation_settings -> {
-                    val artistsFragment = SettingsFragment.newInstance()
-                    openFragment(artistsFragment)
-                    return@OnNavigationItemSelectedListener true
-                }
+/*private val mOnNavigationItemSelectedListener =
+    BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        when (item.itemId) {
+            R.id.navigation_settings -> {
+                val artistsFragment = SettingsFragment.newInstance()
+                openFragment(artistsFragment)
+                return@OnNavigationItemSelectedListener true
             }
+        }
 
-            false
-        }*/
+        false
+    }*/
 
     private fun openFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
@@ -279,23 +263,23 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         signInLauncher.launch(signInIntent)
     }
 
-    /*private fun registerDynamicLinks() {
+/*private fun registerDynamicLinks() {
 
-        Firebase.dynamicLinks
-            .getDynamicLink(intent)
-            .addOnSuccessListener(this) { linkData ->
+    Firebase.dynamicLinks
+        .getDynamicLink(intent)
+        .addOnSuccessListener(this) { linkData ->
 
-                var deepLink: Uri? = null
-                if (linkData != null) {
+            var deepLink: Uri? = null
+            if (linkData != null) {
 
-                    Log.e("startFireBaseActivity", linkData.link.toString())
-                }
+                Log.e("startFireBaseActivity", linkData.link.toString())
             }
-            .addOnFailureListener(this) { e ->
+        }
+        .addOnFailureListener(this) { e ->
 
-                Log.e("startFireBaseActivity", "getDynamicLink:onFailure", e)
-            }
-    }*/
+            Log.e("startFireBaseActivity", "getDynamicLink:onFailure", e)
+        }
+}*/
 
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
 
