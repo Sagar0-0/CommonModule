@@ -11,12 +11,4 @@
         <item name="android:windowBackground">@color/colorWindowBackground</item>
     </style>
 
-    <style name="AppTheme.TabLayout" parent="Widget.MaterialComponents.TabLayout.Colored">
-        <item name="android:background">@color/colorTransparent</item>
-        <item name="tabIconTint">@color/colorPrimary</item>
-        <item name="tabIndicatorColor">@color/colorPrimary</item>
-        <!--<item name="tabSelectedTextColor">@color/colorSelectedTabText</item>-->
-        <!--<item name="tabRippleColor">@color/mtrl_tabs_icon_color_selector_colored</item>-->
-    </style>
-
 </resources>

@@ -1,8 +1,0 @@
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="line">
-    <size
-        android:width="0.5px"
-        android:height="1px" />
-
-    <solid android:color="@color/colorBackground" />
-</shape>

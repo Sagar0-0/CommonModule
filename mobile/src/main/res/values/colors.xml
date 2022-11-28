@@ -2,49 +2,14 @@
 <resources>
     <color name="colorPrimary">#007EEC</color>
     <color name="colorOnPrimary">#FFFFFF</color>
-    <color name="colorPrimaryContainer">#E0F1FF</color>
-    <color name="colorOnPrimaryContainer">#E0F1FF</color>
-    <color name="colorPrimaryInverse">#E0F1FF</color>
-
     <color name="colorSecondary">#FFFFFF</color>
-    <color name="colorOnSecondary">#FFFFFF</color>
-    <color name="colorSecondaryContainer">#F4F6F8</color>
-    <color name="colorOnSecondaryContainer">#132639</color>
-
-    <color name="colorTertiary">#FFFFFF</color>
-    <color name="colorOnTertiary">#FFFFFF</color>
-    <color name="colorTertiaryContainer">#F4F6F8</color>
-    <color name="colorOnTertiaryContainer">#132639</color>
-
     <color name="colorError">#B00020</color>
-    <color name="colorOnError">#FFFFFF</color>
-    <color name="colorErrorContainer">#B00020</color>
-    <color name="colorOnErrorContainer">#B00020</color>
-    <color name="colorOutline">#B00020</color>
-
     <color name="colorWindowBackground">#F4F6F8</color>
     <color name="colorBackground">#F4F6F8</color>
     <color name="colorOnBackground">#010101</color>
     <color name="colorSurface">#F7EBEF</color>
-    <color name="colorOnSurface">#010101</color>
-    <color name="colorSurfaceVariant">#F7EBEF</color>
-    <color name="colorOnSurfaceVariant">#010101</color>
-    <color name="colorSurfaceInverse">#010101</color>
-    <color name="colorOnSurfaceInverse">#010101</color>
-
     <color name="colorTransparent">#DDFFFFFF</color>
-    <color name="colorGradientStart">#00D1FF</color>
-    <color name="colorGradientEnd">#0075FF</color>
-    <color name="light_blue_400">#FF29B6F6</color>
-    <color name="light_blue_600">#FF039BE5</color>
-    <color name="gray_400">#FFBDBDBD</color>
-    <color name="gray_600">#FF757575</color>
 
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
     <color name="black">#0F0F0F</color>
     <color name="black2">#1D1D1D</color>
     <color name="white">#FFFFFFFF</color>
@@ -53,15 +18,11 @@
     <color name="sub_text_color">#777777</color>
 
     <!--colors for bottom-sheet-->
-    <color name="bottom_sheet_primary_background_color">#FFFFFF</color>
-    <color name="bottom_sheet_primary_text_color">#010101</color>
     <color name="bottom_sheet_primary_sub_text_color">#4F4F4F</color>
     <color name="bottom_sheet_primary_edit_text_background_color">#F0F0F0</color>
     <!--colors for bottom-sheet-->
 
-    <color name="rounded_image_stroke_color">#E5E5E5</color>
     <color name="number_picker_un_selected_text">#ABABAB</color>
-
     <color name="background_line">#66000000</color>
 
     <!--<color name="colorPrimaryDark">#FFFFFF</color>

@@ -2,39 +2,13 @@
 <resources>
     <color name="colorPrimary">#558B2F</color>
     <color name="colorOnPrimary">#FFFFFF</color>
-    <color name="colorPrimaryContainer">#001F38</color>
-    <color name="colorOnPrimaryContainer">#C6DBEC</color>
-    <color name="colorPrimaryInverse">#E0F1FF</color>
-
     <color name="colorSecondary">#828F9C</color>
-    <color name="colorOnSecondary">#0D0D0D</color>
-    <color name="colorSecondaryContainer">#161616</color>
-    <color name="colorOnSecondaryContainer">#C6D9EC</color>
-
-    <color name="colorTertiary">#FFFFFF</color>
-    <color name="colorOnTertiary">#FFFFFF</color>
-    <color name="colorTertiaryContainer">#F4F6F8</color>
-    <color name="colorOnTertiaryContainer">#132639</color>
-
     <color name="colorError">#B00020</color>
-    <color name="colorOnError">#FFFFFF</color>
-    <color name="colorErrorContainer">#B00020</color>
-    <color name="colorOnErrorContainer">#B00020</color>
-    <color name="colorOutline">#B00020</color>
-
     <color name="colorWindowBackground">#161616</color>
     <color name="colorBackground">#161616</color>
     <color name="colorOnBackground">#FFFFFF</color>
     <color name="colorSurface">#1B2128</color>
-    <color name="colorOnSurface">#FFFFFF</color>
-    <color name="colorSurfaceVariant">#010101</color>
-    <color name="colorOnSurfaceVariant">#FFFFFF</color>
-    <color name="colorSurfaceInverse">#010101</color>
-    <color name="colorOnSurfaceInverse">#FFFFFF</color>
-
     <color name="colorTransparent">#BB242424</color>
-    <color name="colorGradientStart">#67FF5A</color>
-    <color name="colorGradientEnd">#5AAFFD</color>
 
     <!--<color name="colorPrimaryDark">#242424</color>
     <color name="colorPrimaryVariant">#007EEC</color>

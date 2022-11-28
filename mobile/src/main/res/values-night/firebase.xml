@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorSignUpBackground">@color/colorWindowBackground</color>
-    <color name="colorSignUpBtnPhone">@color/colorPrimary</color>
-    <color name="colorSignUpBtnTextPhone">@color/colorPrimary</color>
-    <color name="colorSignUpBtnGoogle">@color/colorOnPrimary</color>
-    <color name="colorSignUpBtnTextGoogle">#757575</color>
     <color name="colorSignUpText">#BDBDBD</color>
     <color name="colorSignUpLinkText">@color/colorPrimary</color>
     <color name="colorSignUpTextPrimary">#FFFFFF</color>
     <color name="colorSignUpTextSecondary">#909090</color>
     <color name="colorSignUpControlNormal">#757575</color>
-    <color name="colorSignUpSpinnerTextCountry">#FFFFFF</color>
-    <color name="colorSignUpTextHint">#FFFFFF</color>
 </resources>
