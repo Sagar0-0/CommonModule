@@ -2,10 +2,7 @@ package fit.asta.health.tools.sunlight.view.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,7 +15,7 @@ import androidx.compose.ui.unit.sp
 fun BottomSheetButton(
     title: String,
     modifier: Modifier = Modifier,
-    colors: ButtonColors = ButtonDefaults.buttonColors(containerColor = Color(0xff43A047)),
+    colors: ButtonColors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
     onClick: (() -> Unit)? = null,
 ) {
     onClick?.let {
@@ -27,7 +24,7 @@ fun BottomSheetButton(
             colors = colors,
             modifier = modifier.fillMaxWidth()) {
             Text(text = title,
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onPrimary,
                 fontSize = 16.sp,
                 lineHeight = 16.sp,
                 fontWeight = FontWeight.Medium,
@@ -35,3 +32,4 @@ fun BottomSheetButton(
         }
     }
 }
+//Color(0xff43A047)

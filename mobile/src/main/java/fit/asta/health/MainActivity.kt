@@ -10,10 +10,15 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.addCallback
+import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -67,6 +72,14 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //Sushi
+        setContent{
+            MaterialTheme{
+               Surface(
+                   modifier = Modifier.fillMaxWidth(),
+                   color = MaterialTheme.colorScheme.background
+               ) {
+    //till here
 
         permissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
@@ -125,6 +138,10 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
         FirebaseAuth.getInstance().addAuthStateListener(this)
         FirebaseAuth.getInstance().addIdTokenListener(this)
+
+               }
+            }
+        }
     }
 
     private fun loadAppScreen() {
