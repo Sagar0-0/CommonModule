@@ -1,12 +1,12 @@
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
-    id 'com.google.gms.google-services'
-    id 'com.google.firebase.crashlytics'
-    id 'com.google.firebase.firebase-perf'
-    id 'kotlin-parcelize'
+    id("com.android.application")
+    id("kotlin-android")
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
+    id("com.google.firebase.firebase-perf")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -20,23 +20,23 @@ android {
         }
     }
 
-    compileSdkVersion 33
-    buildToolsVersion "30.0.3"
-    namespace 'fit.asta.health'
+    namespace = "fit.asta.health"
+    compileSdkVersion = 33
+    buildToolsVersion = "31.0.0"
 
     defaultConfig {
-        applicationId "fit.asta.health"
-        minSdkVersion 23
-        targetSdkVersion 33
-        versionCode 11
-        versionName "0.11"
+        applicationId = "fit.asta.health"
+        minSdk = 23
+        targetSdk = 33
+        versionCode = 11
+        versionName = "0.11"
 
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled = true
-        signingConfig signingConfigs.release
+        signingConfig = signingConfigs.release
         archivesBaseName = "$applicationId-$versionName"
         manifestPlaceholders = [redirectSchemeName: "spotify-sdk", redirectHostName: "auth"]
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions {
 
@@ -70,20 +70,24 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = "1.8"
     }
 
     buildTypes {
         debug {
-            applicationIdSuffix '.dev'
+            applicationIdSuffix ".dev"
             minifyEnabled = false
+            multiDexEnabled = true
             aaptOptions.cruncherEnabled = false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            FirebasePerformance.instrumentationEnabled = false
+            ext.enableCrashlytics = false
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
         release {
             minifyEnabled = true
+            multiDexEnabled = true
             shrinkResources = true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
 
@@ -101,7 +105,7 @@ android {
 
 dependencies {
 
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: "libs", include: ["*.jar"])
     //implementation project(":player-lib")
 
     //De-sugaring
@@ -109,82 +113,82 @@ dependencies {
 
     //Androidx
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
-    implementation 'androidx.preference:preference-ktx:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
-    implementation 'com.google.code.gson:gson:2.9.1'
+    implementation "androidx.core:core-ktx:1.9.0"
+    implementation "androidx.appcompat:appcompat:1.5.1"
+    implementation "androidx.legacy:legacy-support-v4:1.0.0"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+    implementation "androidx.preference:preference-ktx:1.2.0"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.4"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.5.3"
+    implementation "androidx.navigation:navigation-ui-ktx:2.5.3"
+    implementation "com.google.code.gson:gson:2.10"
 
     //Jet-pack compose
-    def compose_version = '1.4.0-alpha02'
+    def compose_version = "1.4.0-alpha02"
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation "androidx.compose.ui:ui-tooling:$compose_version"
     implementation "androidx.compose.ui:ui-util:$compose_version"
     implementation "androidx.compose.animation:animation:$compose_version"
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
-    implementation 'androidx.activity:activity-compose:1.6.1'
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
+    implementation "androidx.activity:activity-compose:1.6.1"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
     implementation "androidx.compose.foundation:foundation:$compose_version"
 
     //Material theme components
-    implementation 'com.google.android.material:material:1.7.0'
+    implementation "com.google.android.material:material:1.7.0"
     implementation "androidx.compose.material:material:$compose_version"
-    implementation 'androidx.compose.material3:material3:1.1.0-alpha02'
-    implementation 'androidx.compose.material3:material3-window-size-class:1.1.0-alpha02'
+    implementation "androidx.compose.material3:material3:1.1.0-alpha02"
+    implementation "androidx.compose.material3:material3-window-size-class:1.1.0-alpha02"
     //To re-use the color, typography and shape theming from your existing View-based themes
     implementation "com.google.android.material:compose-theme-adapter:1.2.0"
 
     //In-app updates
-    implementation 'com.google.android.play:app-update-ktx:2.0.1'
+    implementation "com.google.android.play:app-update-ktx:2.0.1"
 
     //In-app reviews
-    implementation 'com.google.android.play:review-ktx:2.0.1'
+    implementation "com.google.android.play:review-ktx:2.0.1"
 
     //Location Service
-    implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation "com.google.android.gms:play-services-location:21.0.1"
 
     //Firebase authentication
-    implementation platform('com.google.firebase:firebase-bom:30.4.1')
-    implementation 'com.google.firebase:firebase-auth-ktx'
-    implementation 'com.google.android.gms:play-services-auth:20.4.0'
-    implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
+    implementation platform("com.google.firebase:firebase-bom:31.1.0")
+    implementation "com.google.firebase:firebase-auth-ktx"
+    implementation "com.google.android.gms:play-services-auth:20.4.0"
+    implementation "com.firebaseui:firebase-ui-auth:8.0.2"
 
     //Firebase for notifications
-    implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation "com.google.firebase:firebase-messaging-ktx"
 
     //Firebase analytics
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4'
-    implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx'
-    implementation 'com.google.firebase:firebase-perf-ktx'
-    implementation 'com.google.firebase:firebase-config-ktx'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4"
+    implementation "com.google.firebase:firebase-analytics-ktx"
+    implementation "com.google.firebase:firebase-crashlytics-ktx"
+    implementation "com.google.firebase:firebase-perf-ktx"
+    implementation "com.google.firebase:firebase-config-ktx"
 
     //Firebase storage for media files
-    implementation 'com.google.firebase:firebase-storage-ktx'
+    implementation "com.google.firebase:firebase-storage-ktx"
 
     //Firestore for nosql
-    implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation "com.google.firebase:firebase-firestore-ktx"
 
-    /*implementation 'android.arch.work:work-runtime:1.0.1'
-    implementation 'com.google.guava:guava:27.0.1-android'
-    implementation 'com.google.firebase:firebase-dynamic-links-ktx:19.1.0'*/
+    /*implementation "android.arch.work:work-runtime:1.0.1"
+    implementation "com.google.guava:guava:27.0.1-android"
+    implementation "com.google.firebase:firebase-dynamic-links-ktx:19.1.0"*/
 
     // Glide - Image library
-    implementation 'com.github.bumptech.glide:glide:4.13.2'
-    implementation 'com.ramotion.fluidslider:fluid-slider:0.3.1'
-    /*implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'*/
+    implementation "com.github.bumptech.glide:glide:4.14.2"
+    implementation "com.ramotion.fluidslider:fluid-slider:0.3.1"
+    /*implementation "com.theartofdev.edmodo:android-image-cropper:2.8.0"*/
 
     // Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
 
     // Room Library
     def room_version = "2.4.3"
@@ -201,13 +205,13 @@ dependencies {
     /*annotationProcessor "com.google.dagger:hilt-compiler:$dagger_version"*/
 
     // Toothpick
-    /*implementation 'com.github.stephanenicolas.toothpick:toothpick-runtime:1.1.3'
-    implementation 'com.github.stephanenicolas.toothpick:smoothie:1.1.3'
-    kapt 'com.github.stephanenicolas.toothpick:toothpick-compiler:1.1.3'
-    testImplementation 'com.github.stephanenicolas.toothpick:toothpick-testing:1.1.3'*/
+    /*implementation "com.github.stephanenicolas.toothpick:toothpick-runtime:1.1.3"
+    implementation "com.github.stephanenicolas.toothpick:smoothie:1.1.3"
+    kapt "com.github.stephanenicolas.toothpick:toothpick-compiler:1.1.3"
+    testImplementation "com.github.stephanenicolas.toothpick:toothpick-testing:1.1.3"*/
 
     //multidex support
-    implementation 'com.android.support:multidex:1.0.3'
+    implementation "androidx.multidex:multidex:2.0.1"
 
     // Retrofit and OkHttp
     def retrofit = "2.9.0"
@@ -237,10 +241,10 @@ dependencies {
     implementation "io.coil-kt:coil-compose:$coil_version"
 
     // FlexBox
-    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+    implementation "com.google.android.flexbox:flexbox:3.0.0"
 
     // Spotify Auth
-    implementation 'com.spotify.android:auth:2.0.2'
+    implementation "com.spotify.android:auth:2.0.2"
 
     // recyclerview swipe decorator
     implementation "com.github.xabaras:RecyclerViewSwipeDecorator:1.4"
@@ -253,13 +257,13 @@ dependencies {
     implementation "xyz.aprildown:UltimateRingtonePicker:3.1.0"
 
     // for circular image view
-    implementation "com.mikhaellopez:circularimageview:4.3.0"
+    implementation "com.mikhaellopez:circularimageview:4.3.1"
 
     // transformation view
     implementation "com.github.skydoves:transformationlayout:1.1.1"
 
     // image picker
-    implementation "com.github.Drjacky:ImagePicker:2.1.15"
+    implementation "com.github.Drjacky:ImagePicker:2.3.20"
 
     // number picker
     implementation "io.github.ShawnLin013:number-picker:2.4.13"
@@ -269,18 +273,18 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
     //Emoji-Bar
-    implementation 'com.github.a914-gowtham:compose-ratingbar:1.2.4'
+    implementation "com.github.a914-gowtham:compose-ratingbar:1.2.4"
 
     //Media-3
-    implementation 'androidx.media3:media3-exoplayer:1.0.0-beta02'
-    implementation 'androidx.media3:media3-ui:1.0.0-beta02'
+    implementation "androidx.media3:media3-exoplayer:1.0.0-beta02"
+    implementation "androidx.media3:media3-ui:1.0.0-beta02"
 
     //Flow Layouts
-    def flow_version = "0.27.0"
+    def flow_version = "0.27.1"
     implementation "com.google.accompanist:accompanist-flowlayout:$flow_version"
 
     //Accompanist-BottomSheet Nav
-    def accomp_version = "0.27.0"
+    def accomp_version = "0.27.1"
     implementation "com.google.accompanist:accompanist-navigation-material:$accomp_version"
     implementation "com.google.accompanist:accompanist-navigation-material:$accomp_version"
 
@@ -305,18 +309,18 @@ dependencies {
     implementation "com.google.accompanist:accompanist-pager-indicators:0.13.0"
 
     // Integration with activities
-    implementation 'androidx.activity:activity-compose:1.6.1'
+    implementation "androidx.activity:activity-compose:1.6.1"
     // Animations
-    implementation 'androidx.compose.animation:animation:1.3.1'
+    implementation "androidx.compose.animation:animation:1.3.1"
     // Tooling support (Previews, etc.)
-    implementation 'androidx.compose.ui:ui-tooling:1.3.1'
+    implementation "androidx.compose.ui:ui-tooling:1.3.1"
     // Integration with ViewModels
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
 
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation "junit:junit:4.13.2"
     testImplementation "androidx.paging:paging-common-ktx:$paging_version"
-    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    androidTestImplementation "androidx.test.ext:junit:1.1.4"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.0"
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
