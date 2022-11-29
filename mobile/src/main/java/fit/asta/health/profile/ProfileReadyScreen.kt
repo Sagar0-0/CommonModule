@@ -1,11 +1,11 @@
 package fit.asta.health.profile
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationDefaults
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Emergency
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
@@ -23,14 +23,31 @@ fun ProfileReadyScreen(userProfile: UserProfile) {
 
     var content by remember { mutableStateOf(1) }
 
+    val checkedState = remember { mutableStateOf(false) }
+
     Scaffold(topBar = {
         Column {
             TopAppBar(title = {
                 Text(text = "Profile Screen")
             }, navigationIcon = {
-                Icon(Icons.Outlined.NavigateBefore, "back")
+
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(Icons.Outlined.NavigateBefore, "back", modifier = Modifier.size(48.dp))
+                }
+
+            }, actions = {
+                IconToggleButton(checked = checkedState.value, onCheckedChange = {
+                    checkedState.value = !checkedState.value
+                }) {
+                    Icon(imageVector = Icons.Filled.Edit,
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp),
+                        tint = Color(0xff0088FF))
+                }
             })
-            BottomNavigation(backgroundColor = Color.White, elevation = 10.dp) {
+
+            BottomNavigation(backgroundColor = Color.White,
+                elevation = BottomNavigationDefaults.Elevation) {
                 BottomNavigationItem(selected = false, onClick = { content = 1 }, icon = {
                     Icon(Icons.Outlined.AccountCircle, contentDescription = "Profile Screen 1")
                 }, label = {
@@ -62,19 +79,19 @@ fun ProfileReadyScreen(userProfile: UserProfile) {
         Box(modifier = Modifier.padding(p)) {
             when (content) {
                 1 -> {
-                    SpiralDesignDetailsPhoto(mainProfile = userProfile.contact)
+                    SpiralDesignDetailsPhoto(mainProfile = userProfile.contact, checkedState)
                 }
                 2 -> {
-                    UserBasicHealthDetail(userProfile.physique)
+                    UserBasicHealthDetail(userProfile.physique, checkedState)
                 }
                 3 -> {
-                    HealthLayout(userProfile.health)
+                    HealthLayout(userProfile.health, checkedState)
                 }
                 4 -> {
-                    HealthLayout(userProfile.lifestyle)
+                    HealthLayout(userProfile.lifestyle, checkedState)
                 }
                 5 -> {
-                    HealthLayout(userProfile.diet)
+                    HealthLayout(userProfile.diet, checkedState)
                 }
             }
         }

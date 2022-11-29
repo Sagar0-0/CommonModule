@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -12,13 +13,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.R
+import fit.asta.health.profile.view.EditIcon
 
 @Composable
 fun UserLifeStyle(
     cardImg: Int,
     cardType: String,
     cardValue: String,
+    checkedState: MutableState<Boolean>,
 ) {
     Card(modifier = Modifier.fillMaxWidth(), elevation = 5.dp, shape = RoundedCornerShape(8.dp)) {
         Row(Modifier
@@ -48,9 +50,14 @@ fun UserLifeStyle(
                         color = Color.Black)
                 }
             }
-            Image(painter = painterResource(id = R.drawable.edit),
-                contentDescription = null,
-                modifier = Modifier.size(24.dp))
+
+            Box(modifier = Modifier.size(24.dp), contentAlignment = Alignment.Center) {
+                if (checkedState.value) {
+                    EditIcon()
+                }
+            }
+
+
         }
     }
 }

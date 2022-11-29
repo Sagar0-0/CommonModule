@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fit.asta.health.profile.model.domain.HealthProperties
@@ -18,43 +19,52 @@ import fit.asta.health.profile.view.components.UserLifeStyle
 // Health Screen Layout
 
 @Composable
-fun HealthLayout(userHealth: Map<UserPropertyType, ArrayList<HealthProperties>>) {
+fun HealthLayout(
+    userHealth: Map<UserPropertyType, ArrayList<HealthProperties>>,
+    checkedState: MutableState<Boolean>,
+) {
 
-    Column(
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
+    Column(modifier = Modifier
+        .verticalScroll(rememberScrollState())
+        .fillMaxWidth()
+        .padding(16.dp)) {
 
         userHealth.forEach {
-            Display(profileItem = it.key, props = it.value)
+            Display(profileItem = it.key, props = it.value, checkedState)
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-        UpdateButton()
+
+        Row(Modifier.fillMaxWidth()) {
+            if (checkedState.value) {
+                UpdateButton()
+            }
+        }
+
+
     }
 }
 
 @Composable
-fun Display(profileItem: UserPropertyType, props: ArrayList<HealthProperties>) {
+fun Display(
+    profileItem: UserPropertyType,
+    props: ArrayList<HealthProperties>,
+    checkedState: MutableState<Boolean>,
+) {
 
     Spacer(modifier = Modifier.height(16.dp))
     when (profileItem.type) {
-        ProfileItemType.SessionCard -> SleepSchedule(
-            cardTitle = profileItem.title,
+        ProfileItemType.SessionCard -> SleepSchedule(cardTitle = profileItem.title,
             bedTime = props[0].from.toString(),
-            wakeUpTime = props[0].to.toString()
-        )
-        ProfileItemType.PlainCard -> UserLifeStyle(
-            cardImg = profileItem.icon,
+            wakeUpTime = props[0].to.toString(),
+            checkedState)
+        ProfileItemType.PlainCard -> UserLifeStyle(cardImg = profileItem.icon,
             cardType = profileItem.title,
-            cardValue = props[0].name
-        )
-        ProfileItemType.ChipsCard -> SelectionCard(
-            cardImg = profileItem.icon,
+            cardValue = props[0].name,
+            checkedState)
+        ProfileItemType.ChipsCard -> SelectionCard(cardImg = profileItem.icon,
             cardType = profileItem.title,
-            cardList = props
-        )
+            cardList = props,
+            checkedState)
     }
 }

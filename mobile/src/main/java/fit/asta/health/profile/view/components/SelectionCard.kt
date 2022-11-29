@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,6 +21,7 @@ fun SelectionCard(
     cardImg: Int,
     cardType: String,
     cardList: List<HealthProperties>,
+    checkedState: MutableState<Boolean>,
 ) {
 
     Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp), elevation = 5.dp) {
@@ -41,14 +43,17 @@ fun SelectionCard(
                         letterSpacing = 1.5.sp,
                         color = Color(0xDE000000))
                 }
-                AddIcon()
+                if (checkedState.value) {
+                    AddIcon()
+                }
+
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
             FlowRow(mainAxisSpacing = 8.dp, crossAxisSpacing = 4.dp) {
                 cardList.forEach {
-                    ChipsOnCards(textOnChip = it.name)
+                    ChipsOnCards(textOnChip = it.name, checkedState)
                 }
             }
         }

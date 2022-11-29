@@ -136,7 +136,7 @@ fun SelectionCardCreateProfile(
 
             FlowRow(mainAxisSpacing = 8.dp, crossAxisSpacing = 4.dp) {
                 cardList.forEach {
-                    ChipsOnCards(textOnChip = it)
+                    ChipsOnCards(textOnChip = it, checkedState = null)
                 }
             }
         }
@@ -194,7 +194,7 @@ fun OnlyChipSelectionCard(
 
             FlowRow(mainAxisSpacing = 8.dp, crossAxisSpacing = 4.dp) {
                 cardList.forEach {
-                    ChipsOnCards(textOnChip = it)
+                    ChipsOnCards(textOnChip = it, checkedState = null)
                 }
             }
 
