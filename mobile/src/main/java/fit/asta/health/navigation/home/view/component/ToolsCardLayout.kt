@@ -100,14 +100,10 @@ fun ToolsCardLayoutDemo(
                 }
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
-
             Text(text = cardTitle,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-                    .height(44.dp),
+                modifier = Modifier.padding(start = 8.dp, top = 8.dp, bottom = 8.dp),
                 color = Color(0xDE000000),
-                fontSize = 18.sp,
+                fontSize = 16.sp,
                 lineHeight = 28.sp,
                 fontWeight = FontWeight.Normal)
 
