@@ -6,6 +6,7 @@ import fit.asta.health.profile.model.network.NetHealthPropertiesRes
 import fit.asta.health.profile.model.network.NetUserProfileAvailableRes
 import kotlinx.coroutines.flow.Flow
 
+
 interface ProfileRepo {
     suspend fun isUserProfileAvailable(userId: String): Flow<NetUserProfileAvailableRes>
     suspend fun getUserProfile(uid: String): Flow<UserProfile>

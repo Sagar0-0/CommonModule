@@ -79,19 +79,19 @@ fun ProfileReadyScreen(userProfile: UserProfile) {
         Box(modifier = Modifier.padding(p)) {
             when (content) {
                 1 -> {
-                    SpiralDesignDetailsPhoto(mainProfile = userProfile.contact, checkedState)
+                    ContactLayout(mainProfile = userProfile.contact, checkedState)
                 }
                 2 -> {
-                    UserBasicHealthDetail(userProfile.physique, checkedState)
+                    PhysiqueLayout(userProfile.physique, checkedState)
                 }
                 3 -> {
                     HealthLayout(userProfile.health, checkedState)
                 }
                 4 -> {
-                    HealthLayout(userProfile.lifestyle, checkedState)
+                    LifeStyleLayout(userProfile.lifeStyle, checkedState)
                 }
                 5 -> {
-                    HealthLayout(userProfile.diet, checkedState)
+                    DietLayout(userProfile.diet, checkedState)
                 }
             }
         }

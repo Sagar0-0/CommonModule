@@ -17,8 +17,8 @@ import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagResponse
 import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagsResponse
 import fit.asta.health.old_subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.old_subscription.networkdata.SubscriptionStatusResponse
+import fit.asta.health.profile.model.domain.UserProfile
 import fit.asta.health.profile.model.network.NetHealthPropertiesRes
-import fit.asta.health.profile.model.network.NetUserProfile
 import fit.asta.health.profile.model.network.NetUserProfileAvailableRes
 import fit.asta.health.profile.model.network.NetUserProfileRes
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
@@ -48,7 +48,7 @@ interface ApiService {
     suspend fun isUserProfileAvailable(@Query("uid") userId: String): NetUserProfileAvailableRes
 
     @PUT("user/profile/put")
-    suspend fun updateUserProfile(@Body netUserProfile: NetUserProfile): Status
+    suspend fun updateUserProfile(@Body userProfile: UserProfile): Status
 
     @GET("userProfile/get/?")
     suspend fun getUserProfile(@Query("uid") userId: String): NetUserProfileRes

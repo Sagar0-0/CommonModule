@@ -32,13 +32,15 @@ import fit.asta.health.profile.model.domain.Contact
 
 
 @Composable
-fun SpiralDesignDetailsPhoto(mainProfile: Contact, checkedState: MutableState<Boolean>) {
+fun ContactLayout(mainProfile: Contact, checkedState: MutableState<Boolean>) {
 
-    Column(modifier = Modifier
-        .padding(top = 16.dp)
-        .fillMaxWidth()
-        .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = Modifier
+            .padding(top = 16.dp)
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
 
         //User Profile Photo with Spiral Design
         UserProfileImg()
@@ -155,9 +157,10 @@ private fun UserDetails(
     val adr =
         address.address + " " + address.street + " " + address.city + " " + address.country + " - " + address.pin
     Row(modifier = Modifier.padding(horizontal = 32.dp, vertical = 16.dp)) {
-        Box(Modifier
-            .width(305.dp)
-            .padding(end = 16.dp), contentAlignment = Alignment.Center) {
+        Box(
+            Modifier
+                .width(305.dp)
+                .padding(end = 16.dp), contentAlignment = Alignment.Center) {
             Text(text = adr,
                 fontFamily = FontFamily.Default,
                 fontWeight = FontWeight.Normal,
