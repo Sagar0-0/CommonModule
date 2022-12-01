@@ -16,44 +16,54 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.profile.model.domain.HealthProperties
 
+
 @Composable
-fun SelectionCard(
-    cardImg: Int,
-    cardType: String,
-    cardList: List<HealthProperties>,
-    checkedState: MutableState<Boolean>,
+fun ChipCard(
+    icon: Int,
+    title: String,
+    list: List<HealthProperties>,
+    editState: MutableState<Boolean>,
 ) {
 
     Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp), elevation = 5.dp) {
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)) {
-            Row(Modifier.fillMaxWidth(),
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Row(
+                Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically) {
-                Row(horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically) {
-                    Image(painter = painterResource(id = cardImg),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(id = icon),
                         contentDescription = null,
-                        modifier = Modifier.size(40.dp))
+                        modifier = Modifier.size(40.dp)
+                    )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = cardType,
+                    Text(
+                        text = title,
                         fontSize = 10.sp,
                         lineHeight = 16.sp,
                         letterSpacing = 1.5.sp,
-                        color = Color(0xDE000000))
+                        color = Color(0xDE000000)
+                    )
                 }
-                if (checkedState.value) {
+                if (editState.value) {
                     AddIcon()
                 }
-
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
             FlowRow(mainAxisSpacing = 8.dp, crossAxisSpacing = 4.dp) {
-                cardList.forEach {
-                    ChipsOnCards(textOnChip = it.name, checkedState)
+                list.forEach {
+                    ChipsOnCards(textOnChip = it.name, editState)
                 }
             }
         }

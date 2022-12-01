@@ -12,42 +12,53 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fit.asta.health.profile.model.domain.Session
 import fit.asta.health.profile.view.EditIcon
 
+
 @Composable
-fun SleepSchedule(
-    cardTitle: String,
-    bedTime: String,
-    wakeUpTime: String,
-    checkedState: MutableState<Boolean>,
+fun SessionCard(
+    title: String,
+    session: Session,
+    editState: MutableState<Boolean>
 ) {
     Card(modifier = Modifier.fillMaxWidth(), elevation = 5.dp, shape = RoundedCornerShape(8.dp)) {
+
         Column(modifier = Modifier.padding(vertical = 16.dp)) {
-            Row(Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(text = cardTitle,
+
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+
+                Text(
+                    text = title,
                     fontSize = 10.sp,
                     lineHeight = 16.sp,
                     letterSpacing = 1.5.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xDE000000))
+                    color = Color(0xDE000000)
+                )
 
                 Box(modifier = Modifier.size(24.dp), contentAlignment = Alignment.Center) {
-                    if (checkedState.value) {
+                    if (editState.value) {
                         EditIcon()
                     }
                 }
-
             }
+
             Spacer(modifier = Modifier.height(15.dp))
-            Row(Modifier
-                .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center) {
-                UserSleepCycles(columnType = "BED TIME", columnValue = "$bedTime PM")
+
+            Row(
+                Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                UserSleepCycles(columnType = "BED TIME", columnValue = "${session.from} PM")
                 Spacer(modifier = Modifier.width(40.dp))
-                UserSleepCycles(columnType = "WAKE UP", columnValue = "$wakeUpTime AM")
+                UserSleepCycles(columnType = "WAKE UP", columnValue = "${session.to} AM")
             }
         }
     }
