@@ -19,21 +19,17 @@ fun HealthLayout(
     editState: MutableState<Boolean>,
 ) {
 
-    Column(
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
+    Column(modifier = Modifier
+        .verticalScroll(rememberScrollState())
+        .fillMaxWidth()
+        .padding(16.dp)) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ChipCard(
-            icon = UserPropertyType.Ailments.icon,
+        ChipCard(icon = UserPropertyType.Ailments.icon,
             title = UserPropertyType.Ailments.title,
             list = health.ailments,
-            editState = editState
-        )
+            editState = editState)
 
         /*Spacer(modifier = Modifier.height(16.dp))
 
@@ -46,22 +42,19 @@ fun HealthLayout(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ChipCard(
-            icon = UserPropertyType.Medications.icon,
+        ChipCard(icon = UserPropertyType.Medications.icon,
             title = UserPropertyType.Medications.title,
             list = health.medications,
-            editState = editState
-        )
+            editState = editState)
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ChipCard(
-            icon = UserPropertyType.HealthTargets.icon,
+        ChipCard(icon = UserPropertyType.HealthTargets.icon,
             title = UserPropertyType.HealthTargets.title,
             list = health.targets,
-            editState = editState
-        )
+            editState = editState)
 
+        Spacer(modifier = Modifier.height(16.dp))
         Row(Modifier.fillMaxWidth()) {
             if (editState.value) {
                 UpdateButton()

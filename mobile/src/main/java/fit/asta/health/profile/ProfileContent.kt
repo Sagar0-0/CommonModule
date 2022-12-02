@@ -13,7 +13,6 @@ fun ProfileContent(profileState: ProfileState) {
         is ProfileState.Loading -> LoadingAnimation()
         is ProfileState.Success -> ProfileReadyScreen(userProfile = profileState.userProfile)
         is ProfileState.Error -> NoInternetLayout(onTryAgain = {
-
         })
     }
 }
