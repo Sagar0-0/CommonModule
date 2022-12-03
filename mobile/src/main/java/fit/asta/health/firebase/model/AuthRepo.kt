@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface AuthRepo {
     fun isAuthenticated(): Boolean
+    fun getUserId(): String?
     fun getUser(): User?
     fun firebaseSignInWithGoogle(googleAuthCredential: AuthCredential): Flow<ResultState<User>>
     fun createUserWithPhone(phone: String, activity: Activity): Flow<ResultState<String>>

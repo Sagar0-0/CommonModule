@@ -1,4 +1,4 @@
-package fit.asta.health.profile.model.domain
+package fit.asta.health.profile.model.network
 
 import com.google.gson.annotations.SerializedName
 

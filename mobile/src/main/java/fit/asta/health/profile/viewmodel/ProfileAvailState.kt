@@ -1,6 +1,6 @@
 package fit.asta.health.profile.viewmodel
 
-import fit.asta.health.profile.model.domain.UserProfileAvailable
+import fit.asta.health.profile.model.network.UserProfileAvailable
 
 
 sealed class ProfileAvailState {

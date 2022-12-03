@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -38,9 +39,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.firebase.viewmodel.AuthViewModel
 import fit.asta.health.network.TokenProvider
 import fit.asta.health.profile.UserProfileActivity
+import fit.asta.health.profile.viewmodel.ProfileAvailState
+import fit.asta.health.profile.viewmodel.ProfileAvailViewModel
 import fit.asta.health.settings.SettingsActivity
 import fit.asta.health.utils.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 
@@ -54,6 +58,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         private const val REQUEST_IMMEDIATE_UPDATE: Int = 1789
     }
 
+    private val profileViewModel: ProfileAvailViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
     private var settingsLauncher: ActivityResultLauncher<Intent>? = null
     private lateinit var networkConnectivity: NetworkConnectivity
@@ -62,8 +67,6 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
     @Inject
     lateinit var tokenProvider: TokenProvider
-
-    //private val viewModel: HomeViewModel by viewModels()
     private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,11 +104,14 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
             statusBarColor = Color.TRANSPARENT*/
         }
 
-        if (!authViewModel.isAuthenticated())
+        if (!authViewModel.isAuthenticated()) {
             signIn()
-        else {
-
+        } else {
             loadAppScreen()
+            authViewModel.getUserId()?.let {
+                createProfile()
+                profileViewModel.isUserProfileAvailable(it)
+            }
         }
 
         onBackPressedDispatcher.addCallback(this) {
@@ -292,6 +298,14 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
             loadAppScreen()
 
+            if (authViewModel.isAuthenticated()) {
+
+                authViewModel.getUserId()?.let {
+                    createProfile()
+                    profileViewModel.isUserProfileAvailable(it)
+                }
+            }
+
         } else {
 
             val response = result.idpResponse
@@ -301,6 +315,38 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
                 Log.d("Error: ", response.error?.toString()!!)
             }
         }
+    }
+
+    private fun createProfile() {
+
+        lifecycleScope.launchWhenStarted {
+            profileViewModel.state.collectLatest {
+                when (it) {
+                    ProfileAvailState.Loading -> {
+                        //Do nothing
+                    }
+                    is ProfileAvailState.Error -> {
+                        loadProfileScreen()
+                    }
+                    is ProfileAvailState.Success -> {
+                        if (!it.userProfile.flag) {
+                            loadProfileScreen()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun loadProfileScreen() {
+
+        Snackbar.make(
+            findViewById<CoordinatorLayout>(R.id.containerMain),
+            getString(R.string.OFFLINE_STATUS),
+            Snackbar.LENGTH_INDEFINITE
+        ).setAnchorView(findViewById<BottomNavigationView>(R.id.navView)).show()
+
+        this.showToastMessage("Create Profile!!")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

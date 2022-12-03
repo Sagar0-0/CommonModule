@@ -39,6 +39,7 @@ class AuthViewModel
         }
     }
 
+    fun getUserId() = authRepo.getUserId()
 
     fun getUser() = authRepo.getUser()
 

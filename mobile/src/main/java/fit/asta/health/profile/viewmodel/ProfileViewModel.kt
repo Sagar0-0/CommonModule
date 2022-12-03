@@ -23,9 +23,6 @@ constructor(
     private val profileRepo: ProfileRepo,
 ) : ViewModel() {
 
-    private val mutableAvailState = MutableStateFlow<ProfileAvailState>(ProfileAvailState.Loading)
-    val stateAvail = mutableAvailState.asStateFlow()
-
     private val mutableEditState = MutableStateFlow<ProfileEditState>(ProfileEditState.Loading)
     val stateEdit = mutableEditState.asStateFlow()
 
@@ -37,19 +34,6 @@ constructor(
 
     init {
         loadUserProfile()
-    }
-
-    fun isUserProfileAvailable() {
-        viewModelScope.launch {
-            authRepo.getUser()?.let {
-                profileRepo.isUserProfileAvailable(it.uid)
-                    .catch { exception ->
-                        mutableAvailState.value = ProfileAvailState.Error(exception)
-                    }.collect { state ->
-                        mutableAvailState.value = ProfileAvailState.Success(state.userProfileStatus)
-                    }
-            }
-        }
     }
 
     private fun updateProfile(userProfile: UserProfile) {
