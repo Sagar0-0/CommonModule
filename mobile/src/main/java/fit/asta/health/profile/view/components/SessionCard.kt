@@ -20,7 +20,8 @@ import fit.asta.health.profile.view.EditIcon
 fun SessionCard(
     title: String,
     session: Session,
-    editState: MutableState<Boolean>
+    editState: MutableState<Boolean>,
+    onClick: () -> Unit,
 ) {
     Card(modifier = Modifier.fillMaxWidth(), elevation = 5.dp, shape = RoundedCornerShape(8.dp)) {
 
@@ -44,7 +45,7 @@ fun SessionCard(
 
                 Box(modifier = Modifier.size(24.dp), contentAlignment = Alignment.Center) {
                     if (editState.value) {
-                        EditIcon()
+                        EditIcon(onClick)
                     }
                 }
             }

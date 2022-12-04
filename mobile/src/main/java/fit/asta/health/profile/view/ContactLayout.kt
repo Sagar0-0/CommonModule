@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
@@ -27,80 +26,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
+import fit.asta.health.feedback.view.SubmitButton
 import fit.asta.health.profile.model.domain.Address
 import fit.asta.health.profile.model.domain.Contact
-
-@Composable
-fun ContactLayout(mainProfile: Contact, checkedState: MutableState<Boolean>) {
-
-    Column(modifier = Modifier
-        .padding(top = 16.dp)
-        .fillMaxWidth()
-        .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally) {
-
-        //User Profile Photo with Spiral Design
-        UserProfileImg()
-
-        Spacer(modifier = Modifier.height(30.dp))
-        // User Details
-        UserDetails(mainProfile.name,
-            mainProfile.phone,
-            mainProfile.email,
-            mainProfile.address,
-            checkedState)
-
-        Spacer(modifier = Modifier.height(30.dp))
-
-        //User's Achievement
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween) {
-            DetailsCard(scoreBoard = "24/346",
-                cardType = "LeaderBoard",
-                imageID = R.drawable.leaderboard)
-            DetailsCard(scoreBoard = "12",
-                cardType = "Badges Earned",
-                imageID = R.drawable.badgecompleted)
-        }
-
-        Spacer(modifier = Modifier.height(30.dp))
-
-        // User's Profile Details
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically) {
-            ProfileDetails(imageID = R.drawable.ssidchart,
-                profileType = "Level",
-                verticalPadding = 13,
-                horizontalPadding = 13.0)
-            ProfileDetails(imageID = R.drawable.description,
-                profileType = "Plan",
-                verticalPadding = 13,
-                horizontalPadding = 17.0)
-            ProfileDetails(imageID = R.drawable.sportsscore,
-                profileType = "Goal",
-                verticalPadding = 13,
-                horizontalPadding = 16.0)
-            ProfileDetails(imageID = R.drawable.healthandsafety,
-                profileType = "Health",
-                verticalPadding = 13,
-                horizontalPadding = 8.88)
-        }
-
-        Spacer(modifier = Modifier.height(30.dp))
-
-        //Update Button
-        if (checkedState.value) {
-            UpdateButton()
-        }
-
-        Spacer(modifier = Modifier.height(30.dp))
-    }
-}
 
 // User's Detail Layout
 @Composable
@@ -110,6 +38,7 @@ private fun UserDetails(
     email: String,
     address: Address,
     checkedState: MutableState<Boolean>,
+    onClick: () -> Unit,
 ) {
 
 
@@ -141,7 +70,7 @@ private fun UserDetails(
 
         Box(modifier = Modifier.size(24.dp), contentAlignment = Alignment.Center) {
             if (checkedState.value) {
-                EditIcon()
+                EditIcon(onClick = onClick)
             }
         }
 
@@ -167,7 +96,7 @@ private fun UserDetails(
 
         Box(modifier = Modifier.size(24.dp), contentAlignment = Alignment.Center) {
             if (checkedState.value) {
-                EditIcon()
+                EditIcon(onClick = onClick)
             }
         }
 
@@ -177,7 +106,7 @@ private fun UserDetails(
 
 // User's Profile Photo with Design Layout
 @Composable
-private fun UserProfileImg() {
+fun UserProfileImg() {
     Box(contentAlignment = Alignment.Center,
         modifier = Modifier.padding(start = 7.5.dp, end = 7.5.dp)) {
         Surface(shape = CircleShape,
@@ -225,14 +154,18 @@ private fun UserProfileImg() {
 
 //Edit Icon Layout
 @Composable
-fun EditIcon(condition: (() -> Unit)? = null) {
+fun EditIcon(onClick: (() -> Unit)? = null) {
 
-    IconButton(onClick = { /*TODO*/ }) {
-        Icon(imageVector = Icons.Filled.Edit,
-            contentDescription = null,
-            modifier = Modifier.size(24.dp),
-            tint = Color(0xff0088FF))
+
+    onClick?.let {
+        IconButton(onClick = it) {
+            Icon(imageVector = Icons.Filled.Edit,
+                contentDescription = null,
+                modifier = Modifier.size(24.dp),
+                tint = Color(0xff0088FF))
+        }
     }
+
 
 }
 
@@ -296,24 +229,79 @@ fun ProfileDetails(
 }
 
 @Composable
-fun UpdateButton() {
+fun ContactLayout(
+    mainProfile: Contact,
+    checkedState: MutableState<Boolean>,
+    onClick: () -> Unit,
+) {
 
-    Card(modifier = Modifier
+    Column(modifier = Modifier
+        .padding(top = 16.dp)
         .fillMaxWidth()
-        .padding(horizontal = 16.dp)
-        .clip(shape = RectangleShape),
-        shape = RoundedCornerShape(5.dp),
-        colors = CardDefaults.cardColors(Color(0xff0088FF))) {
-        Text(text = "UPDATE",
-            fontFamily = FontFamily.Default,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium,
-            color = Color.White,
-            lineHeight = 16.sp,
-            letterSpacing = 1.25.sp,
-            modifier = Modifier
-                .align(alignment = Alignment.CenterHorizontally)
-                .padding(vertical = 17.dp))
+        .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+
+        //User Profile Photo with Spiral Design
+        UserProfileImg()
+
+        Spacer(modifier = Modifier.height(30.dp))
+        // User Details
+        UserDetails(mainProfile.name,
+            mainProfile.phone,
+            mainProfile.email,
+            mainProfile.address,
+            checkedState,
+            onClick)
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        //User's Achievement
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween) {
+            DetailsCard(scoreBoard = "24/346",
+                cardType = "LeaderBoard",
+                imageID = R.drawable.leaderboard)
+            DetailsCard(scoreBoard = "12",
+                cardType = "Badges Earned",
+                imageID = R.drawable.badgecompleted)
+        }
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        // User's Profile Details
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically) {
+            ProfileDetails(imageID = R.drawable.ssidchart,
+                profileType = "Level",
+                verticalPadding = 13,
+                horizontalPadding = 13.0)
+            ProfileDetails(imageID = R.drawable.description,
+                profileType = "Plan",
+                verticalPadding = 13,
+                horizontalPadding = 17.0)
+            ProfileDetails(imageID = R.drawable.sportsscore,
+                profileType = "Goal",
+                verticalPadding = 13,
+                horizontalPadding = 16.0)
+            ProfileDetails(imageID = R.drawable.healthandsafety,
+                profileType = "Health",
+                verticalPadding = 13,
+                horizontalPadding = 8.88)
+        }
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        //Update Button
+        if (checkedState.value) {
+            SubmitButton(text = "Update")
+        }
+
+        Spacer(modifier = Modifier.height(30.dp))
     }
 
 }

@@ -21,6 +21,7 @@ fun SingleSelectionCard(
     title: String,
     value: String,
     editState: MutableState<Boolean>,
+    onClick: () -> Unit,
 ) {
     Card(modifier = Modifier.fillMaxWidth(), elevation = 5.dp, shape = RoundedCornerShape(8.dp)) {
         Row(
@@ -61,7 +62,7 @@ fun SingleSelectionCard(
 
             Box(modifier = Modifier.size(24.dp), contentAlignment = Alignment.Center) {
                 if (editState.value) {
-                    EditIcon()
+                    EditIcon(onClick)
                 }
             }
         }

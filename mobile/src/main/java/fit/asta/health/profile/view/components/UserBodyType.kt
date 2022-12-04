@@ -21,6 +21,7 @@ fun UserBodyType(
     bodyType: String,
     bodyImg: Int,
     checkedState: MutableState<Boolean>,
+    onBodyType: () -> Unit,
 ) {
     Card(modifier = Modifier
         .fillMaxWidth()
@@ -41,7 +42,7 @@ fun UserBodyType(
 
                 Box(modifier = Modifier.size(24.dp), contentAlignment = Alignment.Center) {
                     if (checkedState.value) {
-                        EditIcon()
+                        EditIcon(onBodyType)
                     }
                 }
 

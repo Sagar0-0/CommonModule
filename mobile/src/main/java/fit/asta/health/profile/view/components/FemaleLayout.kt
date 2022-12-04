@@ -13,7 +13,16 @@ import fit.asta.health.profile.model.domain.Physique
 import java.util.*
 
 @Composable
-fun FemaleLayout(m: Physique, checkedState: MutableState<Boolean>) {
+fun FemaleLayout(
+    m: Physique,
+    checkedState: MutableState<Boolean>,
+    onAge: () -> Unit,
+    onGender: () -> Unit,
+    onHeight: () -> Unit,
+    onWeight: () -> Unit,
+    onBMI: () -> Unit,
+    onPregnancyWeek: () -> Unit,
+) {
     Row(modifier = Modifier.fillMaxWidth()) {
         Card(modifier = Modifier
             .fillMaxWidth()
@@ -22,7 +31,9 @@ fun FemaleLayout(m: Physique, checkedState: MutableState<Boolean>) {
             shape = RoundedCornerShape(8.dp)) {
             UserBasicDetailsCardLayout(cardImg = R.drawable.age,
                 cardType = "AGE",
-                cardValue = m.age.toString(), checkedState)
+                cardValue = m.age.toString(),
+                checkedState,
+                onAge)
         }
         Spacer(modifier = Modifier.width(16.dp))
         Card(modifier = Modifier
@@ -33,7 +44,8 @@ fun FemaleLayout(m: Physique, checkedState: MutableState<Boolean>) {
             UserBasicDetailsCardLayout(cardImg = R.drawable.gender,
                 cardType = "GENDER",
                 cardValue = m.gender.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
-                checkedState = checkedState)
+                checkedState = checkedState,
+                onGender)
         }
     }
     Spacer(modifier = Modifier.height(16.dp))
@@ -46,7 +58,8 @@ fun FemaleLayout(m: Physique, checkedState: MutableState<Boolean>) {
             UserBasicDetailsCardLayout(cardImg = R.drawable.height,
                 cardType = "HEIGHT",
                 cardValue = "${m.height}Cm",
-                checkedState = checkedState)
+                checkedState = checkedState,
+                onHeight)
         }
         Spacer(modifier = Modifier.width(16.dp))
         Card(modifier = Modifier
@@ -57,7 +70,8 @@ fun FemaleLayout(m: Physique, checkedState: MutableState<Boolean>) {
             UserBasicDetailsCardLayout(cardImg = R.drawable.weight,
                 cardType = "WEIGHT",
                 cardValue = "${m.weight}Kg",
-                checkedState = checkedState)
+                checkedState = checkedState,
+                onWeight)
         }
     }
     Spacer(modifier = Modifier.height(16.dp))
@@ -70,7 +84,8 @@ fun FemaleLayout(m: Physique, checkedState: MutableState<Boolean>) {
             UserBasicDetailsCardLayout(cardImg = R.drawable.bmi,
                 cardType = "BMI",
                 cardValue = "${m.bmi}",
-                checkedState = checkedState)
+                checkedState = checkedState,
+                onBMI)
         }
         Spacer(modifier = Modifier.width(16.dp))
         Card(modifier = Modifier
@@ -81,7 +96,8 @@ fun FemaleLayout(m: Physique, checkedState: MutableState<Boolean>) {
             UserBasicDetailsCardLayout(cardImg = R.drawable.pregnant,
                 cardType = "PREGNANCY",
                 cardValue = "${m.pregnancyWeek}Week",
-                checkedState = checkedState)
+                checkedState = checkedState,
+                onPregnancyWeek)
         }
     }
 }

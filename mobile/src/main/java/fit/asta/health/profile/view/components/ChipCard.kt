@@ -23,39 +23,30 @@ fun ChipCard(
     title: String,
     list: List<HealthProperties>,
     editState: MutableState<Boolean>,
+    onClick: () -> Unit,
 ) {
 
     Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp), elevation = 5.dp) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            Row(
-                Modifier.fillMaxWidth(),
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)) {
+            Row(Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Image(
-                        painter = painterResource(id = icon),
+                verticalAlignment = Alignment.CenterVertically) {
+                Row(horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically) {
+                    Image(painter = painterResource(id = icon),
                         contentDescription = null,
-                        modifier = Modifier.size(40.dp)
-                    )
+                        modifier = Modifier.size(40.dp))
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = title,
+                    Text(text = title,
                         fontSize = 10.sp,
                         lineHeight = 16.sp,
                         letterSpacing = 1.5.sp,
-                        color = Color(0xDE000000)
-                    )
+                        color = Color(0xDE000000))
                 }
                 if (editState.value) {
-                    AddIcon()
+                    AddIcon(onClick)
                 }
             }
 

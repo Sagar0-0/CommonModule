@@ -12,15 +12,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun AddIcon() {
+fun AddIcon(onClick: (() -> Unit)? = null) {
 
-    IconButton(onClick = { /*TODO*/ },
-        Modifier.size(24.dp),
-        colors = IconButtonDefaults.iconButtonColors(containerColor = Color(0xff0088ff))) {
-        Icon(imageVector = Icons.Filled.Add,
-            contentDescription = null,
-            modifier = Modifier.size(16.dp),
-            tint = Color.White)
+    onClick?.let {
+        IconButton(onClick = it,
+            Modifier.size(24.dp),
+            colors = IconButtonDefaults.iconButtonColors(containerColor = Color(0xff0088ff))) {
+            Icon(imageVector = Icons.Filled.Add,
+                contentDescription = null,
+                modifier = Modifier.size(16.dp),
+                tint = Color.White)
+        }
     }
 
 }

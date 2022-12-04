@@ -16,18 +16,44 @@ import fit.asta.health.profile.view.components.MaleLayout
 import fit.asta.health.profile.view.components.UserBodyType
 
 @Composable
-fun PhysiqueLayout(m: Physique, checkedState: MutableState<Boolean>) {
-    Column(
-        Modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp, horizontal = 16.dp)
-            .verticalScroll(rememberScrollState())
-            .background(color = Color.White)
-    ) {
+fun PhysiqueLayout(
+    m: Physique,
+    checkedState: MutableState<Boolean>,
+    onAge: () -> Unit,
+    onGender: () -> Unit,
+    onHeight: () -> Unit,
+    onWeight: () -> Unit,
+    onBMI: () -> Unit,
+    onPregnancyWeek: () -> Unit,
+    onBodyType: () -> Unit,
+) {
+    Column(Modifier
+        .fillMaxWidth()
+        .padding(vertical = 16.dp, horizontal = 16.dp)
+        .verticalScroll(rememberScrollState())
+        .background(color = Color.White)) {
 
-        if (m.gender == "Female") FemaleLayout(m, checkedState) else MaleLayout(m, checkedState)
+        if (m.gender == "Female") FemaleLayout(m,
+            checkedState,
+            onAge,
+            onGender,
+            onHeight,
+            onWeight,
+            onBMI,
+            onPregnancyWeek) else MaleLayout(
+            m,
+            checkedState,
+            onAge,
+            onGender,
+            onHeight,
+            onWeight,
+            onBMI,
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
-        UserBodyType(bodyType = m.bodyType.toString(), bodyImg = R.drawable.bodyfat, checkedState)
+        UserBodyType(bodyType = m.bodyType.toString(),
+            bodyImg = R.drawable.bodyfat,
+            checkedState,
+            onBodyType)
     }
 }

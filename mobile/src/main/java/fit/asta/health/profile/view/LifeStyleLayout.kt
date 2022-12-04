@@ -7,12 +7,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import fit.asta.health.feedback.view.SubmitButton
 import fit.asta.health.profile.model.domain.LifeStyle
 import fit.asta.health.profile.model.domain.UserPropertyType
 import fit.asta.health.profile.view.components.ChipCard
 import fit.asta.health.profile.view.components.SessionCard
 import fit.asta.health.profile.view.components.SingleSelectionCard
-import fit.asta.health.profile.view.components.UpdateButton
 
 
 // Health Screen Layout
@@ -20,15 +20,20 @@ import fit.asta.health.profile.view.components.UpdateButton
 @Composable
 fun LifeStyleLayout(
     lifeStyle: LifeStyle,
-    editState: MutableState<Boolean>
+    editState: MutableState<Boolean>,
+    onSleepSchedule: () -> Unit,
+    onWorkStyle: () -> Unit,
+    onWorkSchedule: () -> Unit,
+    onPhysicallyActive: () -> Unit,
+    onCurrentActive: () -> Unit,
+    onPreferredActivity: () -> Unit,
+    onLifeStyleTargets: () -> Unit,
 ) {
 
-    Column(
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
+    Column(modifier = Modifier
+        .verticalScroll(rememberScrollState())
+        .fillMaxWidth()
+        .padding(16.dp)) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -36,17 +41,16 @@ fun LifeStyleLayout(
             //icon = UserPropertyType.SleepSchedule.icon,
             title = UserPropertyType.SleepSchedule.title,
             session = lifeStyle.sleep,
-            editState = editState
-        )
+            editState = editState,
+            onSleepSchedule)
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        SingleSelectionCard(
-            icon = UserPropertyType.WorkStyle.icon,
+        SingleSelectionCard(icon = UserPropertyType.WorkStyle.icon,
             title = UserPropertyType.WorkStyle.title,
             value = lifeStyle.workStyle.name,
-            editState = editState
-        )
+            editState = editState,
+            onWorkStyle)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -54,50 +58,46 @@ fun LifeStyleLayout(
             //icon = UserPropertyType.WorkSchedule.icon,
             title = UserPropertyType.WorkSchedule.title,
             session = lifeStyle.workingHours,
-            editState = editState
-        )
+            editState = editState,
+            onWorkSchedule)
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        SingleSelectionCard(
-            icon = UserPropertyType.PhysActive.icon,
+        SingleSelectionCard(icon = UserPropertyType.PhysActive.icon,
             title = UserPropertyType.PhysActive.title,
             value = lifeStyle.physicalActivity.name,
-            editState = editState
-        )
+            editState = editState,
+            onPhysicallyActive)
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ChipCard(
-            icon = UserPropertyType.CurActivities.icon,
+        ChipCard(icon = UserPropertyType.CurActivities.icon,
             title = UserPropertyType.CurActivities.title,
             list = lifeStyle.curActivities,
-            editState = editState
-        )
+            editState = editState,
+            onCurrentActive)
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ChipCard(
-            icon = UserPropertyType.PrefActivities.icon,
+        ChipCard(icon = UserPropertyType.PrefActivities.icon,
             title = UserPropertyType.PrefActivities.title,
             list = lifeStyle.prefActivities,
-            editState = editState
-        )
+            editState = editState,
+            onPreferredActivity)
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ChipCard(
-            icon = UserPropertyType.LifeStyleTargets.icon,
+        ChipCard(icon = UserPropertyType.LifeStyleTargets.icon,
             title = UserPropertyType.LifeStyleTargets.title,
             list = lifeStyle.targets,
-            editState = editState
-        )
+            editState = editState,
+            onLifeStyleTargets)
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(Modifier.fillMaxWidth()) {
             if (editState.value) {
-                UpdateButton()
+                SubmitButton(text = "Update")
             }
         }
     }

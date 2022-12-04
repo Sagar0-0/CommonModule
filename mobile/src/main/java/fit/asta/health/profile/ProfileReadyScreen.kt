@@ -1,9 +1,12 @@
+@file:OptIn(ExperimentalMaterialApi::class)
+
 package fit.asta.health.profile
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationDefaults
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Emergency
@@ -17,7 +20,7 @@ import androidx.compose.ui.unit.sp
 import fit.asta.health.profile.model.domain.UserProfile
 import fit.asta.health.profile.view.*
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun ProfileReadyScreen(userProfile: UserProfile) {
 
@@ -79,19 +82,19 @@ fun ProfileReadyScreen(userProfile: UserProfile) {
         Box(modifier = Modifier.padding(p)) {
             when (content) {
                 1 -> {
-                    ContactLayout(mainProfile = userProfile.contact, checkedState)
+                    ContactScreen(mainProfile = userProfile.contact, checkedState)
                 }
                 2 -> {
-                    PhysiqueLayout(userProfile.physique, checkedState)
+                    PhysiqueScreen(userProfile.physique, checkedState)
                 }
                 3 -> {
-                    HealthLayout(userProfile.health, checkedState)
+                    HealthScreen(userProfile.health, checkedState)
                 }
                 4 -> {
-                    LifeStyleLayout(userProfile.lifeStyle, checkedState)
+                    LifeStyleScreen(userProfile.lifeStyle, checkedState)
                 }
                 5 -> {
-                    DietLayout(userProfile.diet, checkedState)
+                    DietScreen(userProfile.diet, checkedState)
                 }
             }
         }

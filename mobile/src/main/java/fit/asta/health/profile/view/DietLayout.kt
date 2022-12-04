@@ -7,10 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import fit.asta.health.feedback.view.SubmitButton
 import fit.asta.health.profile.model.domain.Diet
 import fit.asta.health.profile.model.domain.UserPropertyType
 import fit.asta.health.profile.view.components.ChipCard
-import fit.asta.health.profile.view.components.UpdateButton
 
 
 // Health Screen Layout
@@ -19,32 +19,31 @@ import fit.asta.health.profile.view.components.UpdateButton
 fun DietLayout(
     diet: Diet,
     editState: MutableState<Boolean>,
+    onFoodAllergies: () -> Unit,
+    onCuisines: () -> Unit,
+    onFoodRes: () -> Unit,
 ) {
 
-    Column(
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
+    Column(modifier = Modifier
+        .verticalScroll(rememberScrollState())
+        .fillMaxWidth()
+        .padding(16.dp)) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ChipCard(
-            icon = UserPropertyType.FoodAllergies.icon,
+        ChipCard(icon = UserPropertyType.FoodAllergies.icon,
             title = UserPropertyType.FoodAllergies.title,
             list = diet.allergies,
-            editState = editState
-        )
+            editState = editState,
+            onFoodAllergies)
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ChipCard(
-            icon = UserPropertyType.Cuisines.icon,
+        ChipCard(icon = UserPropertyType.Cuisines.icon,
             title = UserPropertyType.Cuisines.title,
             list = diet.cuisines,
-            editState = editState
-        )
+            editState = editState,
+            onCuisines)
 
         /*Spacer(modifier = Modifier.height(16.dp))
 
@@ -66,18 +65,17 @@ fun DietLayout(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ChipCard(
-            icon = UserPropertyType.FoodRestrictions.icon,
+        ChipCard(icon = UserPropertyType.FoodRestrictions.icon,
             title = UserPropertyType.FoodRestrictions.title,
             list = diet.foodRestrictions,
-            editState = editState
-        )
+            editState = editState,
+            onFoodRes)
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(Modifier.fillMaxWidth()) {
             if (editState.value) {
-                UpdateButton()
+                SubmitButton(text = "Update")
             }
         }
     }

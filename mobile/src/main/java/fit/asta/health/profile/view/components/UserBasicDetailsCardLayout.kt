@@ -21,6 +21,7 @@ fun UserBasicDetailsCardLayout(
     cardType: String,
     cardValue: String,
     checkedState: MutableState<Boolean>,
+    onClick: () -> Unit,
 ) {
     Column {
         Row(modifier = Modifier
@@ -30,7 +31,7 @@ fun UserBasicDetailsCardLayout(
 
             Box(modifier = Modifier.size(24.dp), contentAlignment = Alignment.Center) {
                 if (checkedState.value) {
-                    EditIcon()
+                    EditIcon(onClick = onClick)
                 }
             }
 
