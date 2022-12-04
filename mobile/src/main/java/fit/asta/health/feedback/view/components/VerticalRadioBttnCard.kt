@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowColumn
-import fit.asta.health.profile.view.components.ButtonListTypes
+import fit.asta.health.profile.view.ButtonListTypes
 import fit.asta.health.testimonials.view.create.MyTextField
 
 @Preview

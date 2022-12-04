@@ -1,4 +1,4 @@
-package fit.asta.health.profile.view.components
+package fit.asta.health.profile.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -25,18 +25,18 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.R
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 data class ButtonListTypes(
     val buttonType: String,
 )
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview
+@OptIn(ExperimentalCoroutinesApi::class)
+@ExperimentalMaterial3Api
 @Composable
 fun CreateProfile() {
 
@@ -294,15 +294,21 @@ fun Alpha(
     CompositionLocalProvider(
         LocalMinimumTouchTargetEnforcement provides false,
     ) {
-        Row(Modifier
-            .height(30.dp)
-            .width(121.dp)) {
-            Button(onClick = { /*TODO*/ },
-                shape = RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp)) {
+        Row(
+            Modifier
+                .height(30.dp)
+                .width(121.dp)
+        ) {
+            Button(
+                onClick = { /*TODO*/ },
+                shape = RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp)
+            ) {
                 Text(text = text1, fontSize = 10.sp)
             }
-            Button(onClick = { /*TODO*/ },
-                shape = RoundedCornerShape(topEnd = 8.dp, bottomEnd = 8.dp)) {
+            Button(
+                onClick = { /*TODO*/ },
+                shape = RoundedCornerShape(topEnd = 8.dp, bottomEnd = 8.dp)
+            ) {
                 Text(text = text2, fontSize = 10.sp)
             }
         }
@@ -318,16 +324,20 @@ fun AddressType(selectionTypeText: String, radioButtonList: List<ButtonListTypes
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)) {
-        Column(Modifier
-            .fillMaxWidth()
-            .padding(start = 16.dp)) {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp)
+        ) {
             Spacer(modifier = Modifier.height(16.dp))
             Row(Modifier.fillMaxWidth()) {
-                androidx.compose.material.Text(text = selectionTypeText,
+                androidx.compose.material.Text(
+                    text = selectionTypeText,
                     color = Color(0x99000000),
                     fontSize = 14.sp,
                     lineHeight = 19.6.sp,
-                    fontWeight = FontWeight.Bold)
+                    fontWeight = FontWeight.Bold
+                )
             }
             FlowRow(Modifier.fillMaxWidth()) {
                 radioButtonList.forEach { text ->

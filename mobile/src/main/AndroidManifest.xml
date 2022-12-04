@@ -47,14 +47,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="n">
-        <activity
-            android:name=".profile.UserProfileActivity"
-            android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
+        <activity android:name=".profile.UserProfileActivity" />
+        <activity android:name=".profile.CreateUserProfileActivity" />
         <activity android:name=".old_scheduler.tags.ui.TagsActivity" />
         <activity android:name=".old_course.session.ui.SessionActivity" />
         <activity android:name=".old_scheduler.ui.ScheduleActivity" />

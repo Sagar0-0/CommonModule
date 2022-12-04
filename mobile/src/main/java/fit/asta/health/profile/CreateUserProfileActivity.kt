@@ -15,12 +15,12 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class UserProfileActivity : AppCompatActivity() {
+class CreateUserProfileActivity : AppCompatActivity() {
 
     companion object {
 
         fun launch(context: Context) {
-            val intent = Intent(context, UserProfileActivity::class.java)
+            val intent = Intent(context, CreateUserProfileActivity::class.java)
             intent.apply {
                 context.startActivity(this)
             }
@@ -32,7 +32,7 @@ class UserProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            ProfileContent()
+            CreateProfile()
         }
     }
 }
