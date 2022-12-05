@@ -8,7 +8,6 @@ import fit.asta.health.network.api.RemoteApis
 import fit.asta.health.profile.model.ProfileDataMapper
 import fit.asta.health.profile.model.ProfileRepo
 import fit.asta.health.profile.model.ProfileRepoImpl
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -23,15 +22,7 @@ object ProfileModule {
 
     @Singleton
     @Provides
-    @Named("profile_repository")
-    fun provideProfileRepo(
-        remoteApi: RemoteApis,
-        recipeMapper: ProfileDataMapper,
-    ): ProfileRepo {
-        return ProfileRepoImpl(
-            remoteApi = remoteApi,
-            mapper = recipeMapper
-        )
+    fun provideProfileRepo(remoteApi: RemoteApis, recipeMapper: ProfileDataMapper): ProfileRepo {
+        return ProfileRepoImpl(remoteApi = remoteApi, mapper = recipeMapper)
     }
 }
-

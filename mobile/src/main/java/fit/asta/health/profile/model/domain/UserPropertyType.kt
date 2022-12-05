@@ -125,6 +125,13 @@ sealed class UserPropertyType(
         icon = R.drawable.foodrestrictions
     )
 
+    object FoodRestrictions : UserPropertyType(
+        name = "food-restrictions",
+        type = ProfileItemType.ChipsCard,
+        title = "FOOD RESTRICTIONS",
+        icon = R.drawable.foodrestrictions
+    )
+
     object NONE : UserPropertyType(
         name = "",
         type = ProfileItemType.PlainCard,
@@ -150,6 +157,7 @@ sealed class UserPropertyType(
                 12 -> NvDays
                 13 -> Cuisines
                 14 -> FoodAllergies
+                15 -> FoodRestrictions
                 else -> NONE
             }
         }

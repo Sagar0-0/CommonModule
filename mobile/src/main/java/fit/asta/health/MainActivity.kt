@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -37,10 +38,14 @@ import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.firebase.viewmodel.AuthViewModel
 import fit.asta.health.network.TokenProvider
+import fit.asta.health.profile.CreateUserProfileActivity
 import fit.asta.health.profile.UserProfileActivity
+import fit.asta.health.profile.viewmodel.ProfileAvailState
+import fit.asta.health.profile.viewmodel.ProfileAvailViewModel
 import fit.asta.health.settings.SettingsActivity
 import fit.asta.health.utils.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 
@@ -54,6 +59,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         private const val REQUEST_IMMEDIATE_UPDATE: Int = 1789
     }
 
+    private val profileViewModel: ProfileAvailViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
     private var settingsLauncher: ActivityResultLauncher<Intent>? = null
     private lateinit var networkConnectivity: NetworkConnectivity
@@ -62,8 +68,6 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
     @Inject
     lateinit var tokenProvider: TokenProvider
-
-    //private val viewModel: HomeViewModel by viewModels()
     private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,9 +105,13 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
             statusBarColor = Color.TRANSPARENT*/
         }
 
-        if (!authViewModel.isAuthenticated())
+        if (!authViewModel.isAuthenticated()) {
             signIn()
-        else {
+        } else {
+            authViewModel.getUserId()?.let {
+                createProfile()
+                profileViewModel.isUserProfileAvailable(it)
+            }
 
             loadAppScreen()
         }
@@ -173,18 +181,18 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         //nav_view.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 
-/*private val mOnNavigationItemSelectedListener =
-    BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
-            R.id.navigation_settings -> {
-                val artistsFragment = SettingsFragment.newInstance()
-                openFragment(artistsFragment)
-                return@OnNavigationItemSelectedListener true
+    /*private val mOnNavigationItemSelectedListener =
+        BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_settings -> {
+                    val artistsFragment = SettingsFragment.newInstance()
+                    openFragment(artistsFragment)
+                    return@OnNavigationItemSelectedListener true
+                }
             }
-        }
 
-        false
-    }*/
+            false
+        }*/
 
     private fun openFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
@@ -290,7 +298,15 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
         if (result.resultCode == Activity.RESULT_OK) {
 
-            loadAppScreen()
+            if (authViewModel.isAuthenticated()) {
+
+                authViewModel.getUserId()?.let {
+                    createProfile()
+                    profileViewModel.isUserProfileAvailable(it)
+                }
+
+                loadAppScreen()
+            }
 
         } else {
 
@@ -299,6 +315,27 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
                 this.showToastMessage(response.error?.message!!)
                 Log.d("Error: ", response.error?.toString()!!)
+            }
+        }
+    }
+
+    private fun createProfile() {
+
+        lifecycleScope.launchWhenStarted {
+            profileViewModel.state.collectLatest {
+                when (it) {
+                    ProfileAvailState.Loading -> {
+                        //Do nothing
+                    }
+                    is ProfileAvailState.Error -> {
+                        //Error Handling
+                    }
+                    is ProfileAvailState.Success -> {
+                        if (!it.isAvailable) {
+                            CreateUserProfileActivity.launch(this@MainActivity)
+                        }
+                    }
+                }
             }
         }
     }
@@ -484,7 +521,6 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
     }
 
     private fun startUserProfileActivity() {
-
-        startActivity(Intent(applicationContext, UserProfileActivity::class.java))
+        UserProfileActivity.launch(this@MainActivity)
     }
 }

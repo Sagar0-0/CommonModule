@@ -1,11 +1,9 @@
 package fit.asta.health.profile.model
 
-import fit.asta.health.profile.model.domain.*
-import fit.asta.health.profile.model.network.*
 
 class ProfileDataMapper {
 
-    fun mapToDomainModel(userProfileRes: NetUserProfileRes): UserProfile {
+    /*fun mapToDomainModel(userProfileRes: NetUserProfileRes): UserProfile {
 
         val profile = userProfileRes.userProfile
         val contact = mapContact(userProfileRes.userProfile.uid, profile.contact)
@@ -324,5 +322,5 @@ class ProfileDataMapper {
             name = it.name,
             code = it.code,
             sinceWhen = it.from
-        )
+        )*/
 }

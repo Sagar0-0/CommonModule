@@ -17,8 +17,8 @@ import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagResponse
 import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagsResponse
 import fit.asta.health.old_subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.old_subscription.networkdata.SubscriptionStatusResponse
+import fit.asta.health.profile.model.domain.UserProfile
 import fit.asta.health.profile.model.network.NetHealthPropertiesRes
-import fit.asta.health.profile.model.network.NetUserProfile
 import fit.asta.health.profile.model.network.NetUserProfileAvailableRes
 import fit.asta.health.profile.model.network.NetUserProfileRes
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
@@ -55,8 +55,8 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
         return apiService.isUserProfileAvailable(userId)
     }
 
-    override suspend fun updateUserProfile(netUserProfile: NetUserProfile): Status {
-        return apiService.updateUserProfile(netUserProfile)
+    override suspend fun updateUserProfile(userProfile: UserProfile): Status {
+        return apiService.updateUserProfile(userProfile)
     }
 
     override suspend fun getUserProfile(userId: String): NetUserProfileRes {

@@ -13,7 +13,7 @@ import fit.asta.health.R
 /*Edit Icon Layout*/
 
 @Composable
-fun EditIcon() {
+fun EditIconDemo() {
     Box {
         Image(painter = painterResource(id = R.drawable.edit),
             contentDescription = null,

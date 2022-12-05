@@ -22,18 +22,17 @@ class FirebaseAuthRepoImpl @Inject constructor(
     private lateinit var omVerificationCode: String
 
     override fun isAuthenticated(): Boolean {
-        return firebaseAuth.currentUser != null
+        return FirebaseAuth.getInstance().currentUser != null
+    }
+
+    override fun getUserId(): String? {
+        return FirebaseAuth.getInstance().uid
     }
 
     override fun getUser(): User? {
-
-        val fireBaseUser = firebaseAuth.currentUser
-        if (fireBaseUser != null) {
-
-            return dataMapper.mapToUser(fireBaseUser)
+        return FirebaseAuth.getInstance().currentUser?.let {
+            dataMapper.mapToUser(it)
         }
-
-        return null
     }
 
     override fun firebaseSignInWithGoogle(googleAuthCredential: AuthCredential): Flow<ResultState<User>> {

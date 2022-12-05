@@ -1,4 +1,4 @@
-package fit.asta.health.profile.view.components
+package fit.asta.health.profile.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -8,6 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,26 +18,34 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.R
+import fit.asta.health.profile.view.components.AddIcon
+import fit.asta.health.profile.view.components.ChipsOnCards
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@Preview
+
+@OptIn(ExperimentalCoroutinesApi::class)
+@ExperimentalMaterial3Api
 @Composable
 fun CreateProfilePage2() {
 
     val radioButtonList =
         listOf(ButtonListTypes(buttonType = "Yes"), ButtonListTypes(buttonType = "No"))
 
-    val radioButtonList2 = listOf(ButtonListTypes(buttonType = "Yes"),
+    val radioButtonList2 = listOf(
+        ButtonListTypes(buttonType = "Yes"),
         ButtonListTypes(buttonType = "No"),
-        ButtonListTypes(buttonType = "Don't Know"))
+        ButtonListTypes(buttonType = "Don't Know")
+    )
 
-    val radioButtonList3 = listOf(ButtonListTypes(buttonType = "Morning"),
+    val radioButtonList3 = listOf(
+        ButtonListTypes(buttonType = "Morning"),
         ButtonListTypes(buttonType = "Afternoon"),
-        ButtonListTypes(buttonType = "Night"))
+        ButtonListTypes(buttonType = "Night")
+    )
 
     val healthHistoryList = listOf("Diabetes", "Heart Disease", "Stroke", "Depression")
 
@@ -136,7 +145,7 @@ fun SelectionCardCreateProfile(
 
             FlowRow(mainAxisSpacing = 8.dp, crossAxisSpacing = 4.dp) {
                 cardList.forEach {
-                    ChipsOnCards(textOnChip = it)
+                    ChipsOnCards(textOnChip = it, checkedState = null)
                 }
             }
         }
@@ -194,7 +203,7 @@ fun OnlyChipSelectionCard(
 
             FlowRow(mainAxisSpacing = 8.dp, crossAxisSpacing = 4.dp) {
                 cardList.forEach {
-                    ChipsOnCards(textOnChip = it)
+                    ChipsOnCards(textOnChip = it, checkedState = null)
                 }
             }
 
