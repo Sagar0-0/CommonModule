@@ -7,6 +7,6 @@ import fit.asta.health.network.data.Status
 data class NetUserProfileAvailableRes(
     @SerializedName("status")
     val status: Status,
-    @SerializedName("data")
-    val data: UserProfileAvailable
+    @SerializedName("flag")
+    val flag: Boolean
 )

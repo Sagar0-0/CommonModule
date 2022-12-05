@@ -108,11 +108,12 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         if (!authViewModel.isAuthenticated()) {
             signIn()
         } else {
-            loadAppScreen()
             authViewModel.getUserId()?.let {
                 createProfile()
                 profileViewModel.isUserProfileAvailable(it)
             }
+
+            loadAppScreen()
         }
 
         onBackPressedDispatcher.addCallback(this) {
@@ -297,14 +298,14 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
         if (result.resultCode == Activity.RESULT_OK) {
 
-            loadAppScreen()
-
             if (authViewModel.isAuthenticated()) {
 
                 authViewModel.getUserId()?.let {
                     createProfile()
                     profileViewModel.isUserProfileAvailable(it)
                 }
+
+                loadAppScreen()
             }
 
         } else {
@@ -327,10 +328,10 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
                         //Do nothing
                     }
                     is ProfileAvailState.Error -> {
-                        CreateUserProfileActivity.launch(this@MainActivity)
+                        //Error Handling
                     }
                     is ProfileAvailState.Success -> {
-                        if (!it.userProfile.flag) {
+                        if (!it.isAvailable) {
                             CreateUserProfileActivity.launch(this@MainActivity)
                         }
                     }

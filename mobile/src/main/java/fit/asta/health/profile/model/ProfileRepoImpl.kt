@@ -4,7 +4,6 @@ import fit.asta.health.network.api.RemoteApis
 import fit.asta.health.network.data.Status
 import fit.asta.health.profile.model.domain.UserProfile
 import fit.asta.health.profile.model.network.NetHealthPropertiesRes
-import fit.asta.health.profile.model.network.UserProfileAvailable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -26,9 +25,9 @@ class ProfileRepoImpl(
         }
     }
 
-    override suspend fun isUserProfileAvailable(userId: String): Flow<UserProfileAvailable> {
+    override suspend fun isUserProfileAvailable(userId: String): Flow<Boolean> {
         return flow {
-            emit(remoteApi.isUserProfileAvailable(userId).data)
+            emit(remoteApi.isUserProfileAvailable(userId).flag)
         }
     }
 
