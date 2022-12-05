@@ -32,6 +32,7 @@ import fit.asta.health.testimonials.model.network.NetTestimonialRes
 import fit.asta.health.testimonials.model.network.NetTestimonialsRes
 import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
 import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
+import fit.asta.health.tools.water.model.network.ModifiedWaterTool
 import fit.asta.health.tools.water.model.network.NetBeverage
 import fit.asta.health.tools.water.model.network.NetBeverageRes
 import fit.asta.health.tools.water.model.network.NetWaterToolRes
@@ -137,6 +138,10 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
         endDate: String
     ): NetWaterToolRes {
         return apiService.getWaterTool(userId, latitude, longitude, location, startDate, endDate)
+    }
+
+    override suspend fun updateWaterTool(modifiedWaterTool: ModifiedWaterTool): Status{
+        return apiService.updateWaterTool(modifiedWaterTool)
     }
 
     override suspend fun updateBeverage(beverage: NetBeverage): Status {

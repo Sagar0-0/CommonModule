@@ -32,6 +32,7 @@ import fit.asta.health.testimonials.model.network.NetTestimonialRes
 import fit.asta.health.testimonials.model.network.NetTestimonialsRes
 import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
 import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
+import fit.asta.health.tools.water.model.network.ModifiedWaterTool
 import fit.asta.health.tools.water.model.network.NetBeverage
 import fit.asta.health.tools.water.model.network.NetBeverageRes
 import fit.asta.health.tools.water.model.network.NetWaterToolRes
@@ -109,7 +110,7 @@ interface ApiService {
     suspend fun updateUserMedia(@Body schedule: ScheduleTagNetData): Status
 
     //Health Tool - Water Endpoints
-    @GET("tool/water/get/?")
+    @GET("tools/water/get/?")
     suspend fun getWaterTool(
         @Query("uid") userId: String,
         @Query("lat") latitude: String,
@@ -119,21 +120,24 @@ interface ApiService {
         @Query("end") endDate: String
     ): NetWaterToolRes
 
-    @PUT("tool/water/beverage/add/put")
+    @PUT("tools/water/put")
+    suspend fun updateWaterTool(@Body modifiedWaterTool: ModifiedWaterTool): Status
+
+    @PUT("tools/water/beverage/add/put")
     suspend fun updateBeverage(@Body beverage: NetBeverage): Status
 
-    @POST("tool/water/beverage/quantity/post")
+    @POST("tools/water/beverage/quantity/post")
     suspend fun updateBeverageQty(@Body beverage: NetBeverage): Status
 
-    @GET("tool/water/beverage/list/get/?")
+    @GET("tools/water/beverage/list/get/?")
     suspend fun getBeverageList(@Query("uid") userId: String): NetBeverageRes
 
     //Health Tool - Sunlight Endpoints
-    @GET("tool/sunlight/get")
+    @GET("tools/sunlight/get")
     suspend fun getSunlightTool(@Query("userId") userId: String): NetSunlightToolRes
 
     //Health Tool - Walking Endpoints
-    @GET("tool/walking/get")
+    @GET("tools/walking/get")
     suspend fun getWalkingTool(@Query("userId") userId: String): NetWalkingToolRes
 
     //Testimonial Endpoints

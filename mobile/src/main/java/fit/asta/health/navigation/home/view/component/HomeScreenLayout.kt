@@ -1,6 +1,7 @@
 package fit.asta.health.navigation.home.view.component
 
 import android.app.Activity
+import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -16,6 +17,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.navigation.home.model.domain.ToolsHome
 import fit.asta.health.navigation.home.view.BannerAutoSlider
 import fit.asta.health.navigation.home.view.Testimonials
+import fit.asta.health.tools.water.WaterToolActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -92,6 +94,9 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
                 MyToolsAndViewAll(myTools = "My Tools", allTools = "All Tools", onClick = {
 
                     //TODO - Integrate All tools
+                    val myIntent =Intent(activity.applicationContext, WaterToolActivity::class.java)
+                    myIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    activity.applicationContext.startActivity(myIntent)
                 })
             }
 

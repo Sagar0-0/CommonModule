@@ -11,20 +11,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.tools.sunlight.view.components.CircularSlider
 
+@Preview
 @Composable
 fun CardSunBurn(
-    cardTitle: String,
-    cardValue: String,
-    recommendedTitle: String,
-    goalTitle: String,
-    remainingTitle: String,
-    recommendedValue: String,
-    goalValue: String,
-    remainingValue: String,
+    cardTitle: String = "Total",
+    cardValue: String = "6 Litres",
+    recommendedTitle: String = "Recommended",
+    remainingValue: String = "3500 mL",
+    goalTitle: String = "Goal",
+    goalValue: String = "4000 mL",
+    remainingTitle: String = "Remaining",
+    recommendedValue: String = "2000 mL"
 ) {
 
     Card(modifier = Modifier

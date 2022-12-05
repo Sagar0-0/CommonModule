@@ -84,6 +84,8 @@
             android:launchMode="singleTop"
             android:screenOrientation="landscape"
             tools:ignore="LockedOrientationActivity" />
+
+        <activity android:name=".tools.water.WaterToolActivity"/>
         <!--
  <activity
              android:name="com.theartofdev.edmodo.cropper.CropImageActivity"

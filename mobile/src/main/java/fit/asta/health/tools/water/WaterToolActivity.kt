@@ -3,9 +3,9 @@ package fit.asta.health.tools.water
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.collectAsState
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.databinding.ActivityProfileNewBinding
+import fit.asta.health.tools.water.view.waterToolForm
 import fit.asta.health.tools.water.viewmodel.WaterViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -21,8 +21,7 @@ class WaterToolActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileNewBinding.inflate(layoutInflater)
         binding.profileComposeView.setContent {
-
-            val waterState = viewModel.state.collectAsState().value
+            waterToolForm(viewModel = viewModel)
         }
 
         setContentView(binding.root)

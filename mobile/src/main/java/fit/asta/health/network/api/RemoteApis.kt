@@ -32,6 +32,7 @@ import fit.asta.health.testimonials.model.network.NetTestimonialRes
 import fit.asta.health.testimonials.model.network.NetTestimonialsRes
 import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
 import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
+import fit.asta.health.tools.water.model.network.ModifiedWaterTool
 import fit.asta.health.tools.water.model.network.NetBeverage
 import fit.asta.health.tools.water.model.network.NetBeverageRes
 import fit.asta.health.tools.water.model.network.NetWaterToolRes
@@ -84,6 +85,7 @@ interface RemoteApis {
         startDate: String,
         endDate: String
     ): NetWaterToolRes
+    suspend fun updateWaterTool(modifiedWaterTool: ModifiedWaterTool):Status
 
     suspend fun updateBeverage(beverage: NetBeverage): Status
     suspend fun updateBeverageQty(beverage: NetBeverage): Status

@@ -10,21 +10,29 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.tools.view.components.CardSunBurn
+import fit.asta.health.tools.water.viewmodel.WaterViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun WaterHomeScreen(paddingValues: PaddingValues) {
+fun WaterHomeScreen(paddingValues: PaddingValues,viewModel: WaterViewModel = hiltViewModel()) {
 
-    Column(Modifier
-        .fillMaxWidth()
-        .padding(paddingValues)) {
+    val wT = viewModel.waterTool.value!!
+
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .padding(paddingValues)) {
 
         Spacer(modifier = Modifier.height(32.dp))
 
         CardSunBurn(cardTitle = "Total",
-            cardValue = "3 Litres",
+            cardValue = wT.waterToolData.tgt+" Liters",
             recommendedTitle = "Recommended",
             remainingValue = "3500 mL",
             goalTitle = "Goal",
@@ -34,9 +42,10 @@ fun WaterHomeScreen(paddingValues: PaddingValues) {
 
         Spacer(modifier = Modifier.height(48.dp))
 
-        Row(Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically) {
             Icon(painter = painterResource(id = fit.asta.health.R.drawable.information_icon),
                 contentDescription = null,

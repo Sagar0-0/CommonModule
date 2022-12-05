@@ -1,10 +1,16 @@
 package fit.asta.health.tools.water.viewmodel
 
+import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.tools.water.model.WaterToolRepo
+import fit.asta.health.tools.water.model.domain.WaterTool
+import fit.asta.health.tools.water.model.network.ModifiedWaterTool
 import fit.asta.health.tools.water.model.network.NetBeverage
+import fit.asta.health.tools.water.model.network.NetWaterTool
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,10 +24,13 @@ import javax.inject.Inject
 class WaterViewModel
 @Inject constructor(
     private val waterToolRepo: WaterToolRepo,
+    private val authRepo: AuthRepo
 ) : ViewModel() {
 
     private val mutableState = MutableStateFlow<WaterState>(WaterState.Loading)
     val state = mutableState.asStateFlow()
+
+    val waterTool = mutableStateOf<NetWaterTool?>(null)
 
     init {
         loadWaterToolData()
@@ -29,17 +38,34 @@ class WaterViewModel
 
     private fun loadWaterToolData() {
         viewModelScope.launch {
-            waterToolRepo.getWaterTool(
-                userId = "62fcd8c098eb9d5ed038b563",
-                latitude = "28.6353",
-                longitude = "77.2250",
-                location = "bangalore",
-                startDate = "2022-10-03",
-                endDate = "2022-10-05",
-            ).catch { exception ->
+            authRepo.getUser()?.let { user->
+                waterToolRepo.getWaterTool(
+                    userId = user.uid,
+                    latitude = "28.6353",
+                    longitude = "77.2250",
+                    location = "bangalore",
+                    startDate = "2022-12-03",
+                    endDate = "2022-12-04",
+                ).catch { exception ->
+                    mutableState.value = WaterState.Error(exception)
+                }.collect {
+                    mutableState.value = WaterState.Success
+                    waterTool.value = it
+                    Log.i("Water Tool",it.toString())
+                }
+            }
+
+        }
+    }
+
+    fun updateWaterTool(modifiedWaterTool: ModifiedWaterTool){
+        viewModelScope.launch {
+            waterToolRepo.updateWaterTool(modifiedWaterTool).catch { exception->
                 mutableState.value = WaterState.Error(exception)
-            }.collect {
-                mutableState.value = WaterState.Success(it)
+            }.collect{
+                if(it.code==200) {
+                    mutableState.value = WaterState.Success
+                }
             }
         }
     }

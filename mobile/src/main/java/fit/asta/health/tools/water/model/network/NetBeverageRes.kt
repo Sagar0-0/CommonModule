@@ -23,3 +23,4 @@ data class NetBeverage(
     @SerializedName("ttl")
     val ttl: String
 )
+

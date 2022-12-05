@@ -3,8 +3,10 @@ package fit.asta.health.tools.water.model
 import fit.asta.health.network.api.RemoteApis
 import fit.asta.health.network.data.Status
 import fit.asta.health.tools.water.model.domain.WaterTool
+import fit.asta.health.tools.water.model.network.ModifiedWaterTool
 import fit.asta.health.tools.water.model.network.NetBeverage
 import fit.asta.health.tools.water.model.network.NetBeverageRes
+import fit.asta.health.tools.water.model.network.NetWaterTool
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -20,7 +22,7 @@ class WaterToolRepoImpl(
         location: String,
         startDate: String,
         endDate: String
-    ): Flow<WaterTool> {
+    ): Flow<NetWaterTool> {
         return flow {
             emit(
                 mapper.mapToDomainModel(
@@ -33,6 +35,14 @@ class WaterToolRepoImpl(
                         endDate = endDate
                     )
                 )
+            )
+        }
+    }
+
+    override suspend fun updateWaterTool(modifiedWaterTool: ModifiedWaterTool):Flow<Status>{
+        return flow {
+            emit(
+                remoteApi.updateWaterTool(modifiedWaterTool)
             )
         }
     }
