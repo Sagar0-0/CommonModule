@@ -19,6 +19,7 @@ import fit.asta.health.navigation.home.view.BannerAutoSlider
 import fit.asta.health.navigation.home.view.Testimonials
 import fit.asta.health.tools.water.WaterToolActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.util.*
 
 @ExperimentalCoroutinesApi
 @OptIn(ExperimentalPagerApi::class)
@@ -34,9 +35,11 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
 
             item {
                 toolsHome.weather?.let {
-                    WeatherCardImage(temperature = it.temperature,
+                    WeatherCardImage(
+                        temperature = it.temperature,
                         location = it.location,
-                        date = "Friday,24 October")
+                        date = "Friday,24 October"
+                    )
                 }
             }
 
@@ -48,27 +51,33 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
 
             item {
 
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp, horizontal = 16.dp)) {
-                    Text(text = "Upcoming Vitamin D Session",
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp, horizontal = 16.dp)
+                ) {
+                    Text(
+                        text = "Upcoming Vitamin D Session",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Medium,
-                        color = Color.Black)
+                        color = Color.Black
+                    )
                 }
 
             }
 
             item {
 
-                LazyVerticalGrid(columns = GridCells.Fixed(3),
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(3),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(170.dp)
                         .padding(horizontal = 16.dp),
-                    userScrollEnabled = false) {
+                    userScrollEnabled = false
+                ) {
 
                     repeat(times = 3) {
                         item {
@@ -92,29 +101,41 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
 
             item {
                 MyToolsAndViewAll(myTools = "My Tools", allTools = "All Tools", onClick = {
-
                     //TODO - Integrate All tools
-                    val myIntent =Intent(activity.applicationContext, WaterToolActivity::class.java)
-                    myIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    activity.applicationContext.startActivity(myIntent)
                 })
             }
 
             item {
 
                 toolsHome.tools?.let {
-                    LazyVerticalGrid(columns = GridCells.Fixed(3),
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(3),
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(560.dp)
                             .padding(horizontal = 16.dp),
-                        userScrollEnabled = false) {
-                        it.forEachIndexed { index, _ ->
+                        userScrollEnabled = false
+                    ) {
+                        it.forEachIndexed { _, tool ->
                             item {
-                                ToolsCardLayoutDemo(imgUrl = toolsHome.tools[index].url,
-                                    cardTitle = toolsHome.tools[index].title)
+                                ToolsCardLayoutDemo(
+                                    type = tool.name,
+                                    cardTitle = tool.title,
+                                    imgUrl = tool.url
+                                ) {
+                                    when (it.lowercase(Locale.getDefault())) {
+                                        "water" -> {
+                                            val myIntent = Intent(
+                                                activity.applicationContext,
+                                                WaterToolActivity::class.java
+                                            )
+                                            myIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                            activity.applicationContext.startActivity(myIntent)
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -128,19 +149,35 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
             item {
 
                 toolsHome.tools?.let {
-                    LazyVerticalGrid(columns = GridCells.Fixed(2),
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(1315.dp)
                             .padding(horizontal = 16.dp),
-                        userScrollEnabled = false) {
-                        it.forEachIndexed { index, _ ->
+                        userScrollEnabled = false
+                    ) {
+                        it.forEachIndexed { _, tool ->
                             item {
-                                ToolsCardLayoutDemo(imgUrl = toolsHome.tools[index].url,
-                                    cardTitle = toolsHome.tools[index].title,
-                                    imageModifier = Modifier.height(180.dp))
+                                ToolsCardLayoutDemo(
+                                    cardTitle = tool.title,
+                                    type = tool.name,
+                                    imgUrl = tool.url,
+                                    imageModifier = Modifier.height(180.dp)
+                                ) {
+                                    when (it.lowercase(Locale.getDefault())) {
+                                        "water" -> {
+                                            val myIntent = Intent(
+                                                activity.applicationContext,
+                                                WaterToolActivity::class.java
+                                            )
+                                            myIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                            activity.applicationContext.startActivity(myIntent)
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
