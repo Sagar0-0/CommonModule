@@ -74,7 +74,8 @@ fun SunlightLayout(it: PaddingValues) {
             goalTitle = "Vitamin D\nDaily Goal",
             goalValue = "50 min",
             remainingTitle = "Sunburn\nTime Remaining",
-            remainingValue = "30 min")
+            remainingValue = "30 min",
+        valueChanged = null)
 
         Spacer(modifier = Modifier.height(24.dp))
 

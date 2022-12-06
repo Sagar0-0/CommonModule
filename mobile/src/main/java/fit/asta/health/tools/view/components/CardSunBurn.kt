@@ -1,11 +1,14 @@
 package fit.asta.health.tools.view.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.tools.sunlight.view.components.CircularSlider
 
-@Preview
 @Composable
 fun CardSunBurn(
     cardTitle: String = "Total",
@@ -26,8 +28,11 @@ fun CardSunBurn(
     goalTitle: String = "Goal",
     goalValue: String = "4000 mL",
     remainingTitle: String = "Remaining",
-    recommendedValue: String = "2000 mL"
+    recommendedValue: String = "2000 mL",
+    valueChanged:((Float)->Unit)?
 ) {
+
+    val angle = -60f+((300f* cardValue[0].toInt())/6)
 
     Card(modifier = Modifier
         .fillMaxWidth()
@@ -39,6 +44,13 @@ fun CardSunBurn(
             Box(contentAlignment = Alignment.Center) {
                 CircularSlider(
                     modifier = Modifier.size(200.dp),
+                    onChange = {
+                        if (valueChanged != null) {
+                            valueChanged(it)
+                        }
+                        Log.i("Circular SeeBar",it.toString())
+                    },
+                    angle1 = angle
                 )
                 Column {
                     Text(text = cardTitle,
@@ -105,5 +117,3 @@ fun TimingMeterLayout(title: String, titleValue: String) {
     }
 
 }
-
-

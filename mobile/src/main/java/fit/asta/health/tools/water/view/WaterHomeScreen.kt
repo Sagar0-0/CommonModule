@@ -1,12 +1,12 @@
 package fit.asta.health.tools.water.view
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,6 +30,8 @@ fun WaterHomeScreen(viewModel:WaterViewModel= hiltViewModel()) {
 
     val wT = viewModel.waterTool.value!!
 
+    val changed by remember{mutableStateOf(viewModel.changedTgt.value)}
+
     Scaffold(topBar = {
         BottomNavigation(content = {
             Row(verticalAlignment = Alignment.CenterVertically,
@@ -44,17 +46,7 @@ fun WaterHomeScreen(viewModel:WaterViewModel= hiltViewModel()) {
                     fontSize = 20.sp,
                     color = Color.Black,
                     textAlign = TextAlign.Center)
-                IconButton(onClick = { viewModel.updateWaterTool(
-                    ModifiedWaterTool(
-                        id=wT.waterToolData.id,
-                        uid=wT.waterToolData.uid,
-                        type = 1,
-                        code = "water",
-                        tgt = "6",
-                        prc = null,
-                        wea = false
-                    )
-                ) }) {
+                IconButton(onClick = {  }) {
                     Icon(painter = painterResource(id = R.drawable.ic_physique),
                         contentDescription = null,
                         Modifier.size(24.dp),
@@ -62,7 +54,30 @@ fun WaterHomeScreen(viewModel:WaterViewModel= hiltViewModel()) {
                 }
             }
         }, elevation = 10.dp, backgroundColor = Color.White)
-    }, content = {
+    },
+        floatingActionButton = {
+            if(changed!=null) {
+                ExtendedFloatingActionButton(
+                    onClick = {
+                        viewModel.updateWaterTool(
+                            ModifiedWaterTool(
+                                id = wT.waterToolData.id,
+                                uid = wT.waterToolData.uid,
+                                type = 1,
+                                code = "water",
+                                tgt = changed.toString(),
+                                prc = null,
+                                wea = false
+                            )
+                        )
+                    },
+                    modifier = Modifier.height(35.dp)
+                ) {
+                    Text(text = "SAVE")
+                }
+            }                 },
+        floatingActionButtonPosition = FabPosition.Center,
+        content = {
         WaterBottomSheet(paddingValues = it)
     })
 

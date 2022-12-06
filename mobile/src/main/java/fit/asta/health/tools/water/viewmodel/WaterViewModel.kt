@@ -11,6 +11,8 @@ import fit.asta.health.tools.water.model.domain.WaterTool
 import fit.asta.health.tools.water.model.network.ModifiedWaterTool
 import fit.asta.health.tools.water.model.network.NetBeverage
 import fit.asta.health.tools.water.model.network.NetWaterTool
+import fit.asta.health.utils.getCurrentDate
+import fit.asta.health.utils.getNextDate
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,6 +33,7 @@ class WaterViewModel
     val state = mutableState.asStateFlow()
 
     val waterTool = mutableStateOf<NetWaterTool?>(null)
+    val changedTgt = mutableStateOf<Int?>(null)
 
     init {
         loadWaterToolData()
@@ -44,8 +47,8 @@ class WaterViewModel
                     latitude = "28.6353",
                     longitude = "77.2250",
                     location = "bangalore",
-                    startDate = "2022-12-03",
-                    endDate = "2022-12-04",
+                    startDate = getCurrentDate(),
+                    endDate = getNextDate(1)
                 ).catch { exception ->
                     mutableState.value = WaterState.Error(exception)
                 }.collect {
@@ -98,5 +101,9 @@ class WaterViewModel
                 //mutableState.value = WaterState.Success(it)
             }
         }
+    }
+
+    fun changedTarget(x:Int){
+        changedTgt.value=x
     }
 }

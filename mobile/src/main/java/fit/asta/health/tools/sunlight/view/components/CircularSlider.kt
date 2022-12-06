@@ -12,31 +12,40 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import kotlin.math.*
 
 
 @OptIn(ExperimentalComposeUiApi::class)
+@Preview
 @Composable
 fun CircularSlider(
     modifier: Modifier = Modifier,
     padding: Float = 50f,
     stroke: Float = 20f,
     cap: StrokeCap = StrokeCap.Round,
-    touchStroke: Float = 50f,
+    touchStroke: Float = 100f,
     thumbColor: Color = Color.Blue,
     progressColor: Color = Color(0xff0277BD),
     backgroundColor: Color = Color.LightGray,
     debug: Boolean = false,
+    angle1: Float = -60f,
     onChange: ((Float) -> Unit)? = null,
 ) {
     var width by remember { mutableStateOf(0) }
     var height by remember { mutableStateOf(0) }
-    var angle by remember { mutableStateOf(-60f) }
+    var angle by remember { mutableStateOf(angle1) }
     var last by remember { mutableStateOf(0f) }
     var down by remember { mutableStateOf(false) }
     var radius by remember { mutableStateOf(0f) }
     var center by remember { mutableStateOf(Offset.Zero) }
     var appliedAngle by remember { mutableStateOf(0f) }
+    var progresscolor by remember{
+        mutableStateOf(progressColor)
+    }
+
+
     LaunchedEffect(key1 = angle) {
         var a = angle
         a += 60
@@ -52,6 +61,14 @@ fun CircularSlider(
     }
     LaunchedEffect(key1 = appliedAngle) {
         onChange?.invoke(appliedAngle / 300f)
+        progresscolor=if(appliedAngle/300f<0.25f){
+            Color.Red
+        }else if(appliedAngle/300f<0.5f){Color(0xFFFFA000)
+        }
+        else if(appliedAngle/300f<0.75f){Color(0xFF0288D1)
+        }else{
+            Color(0xFF689F38)
+        }
     }
     Canvas(modifier = modifier
         .onGloballyPositioned {
@@ -95,7 +112,7 @@ fun CircularSlider(
             size = Size(radius * 2, radius * 2),
             useCenter = false,
             style = Stroke(width = stroke, cap = cap))
-        drawArc(color = progressColor,
+        drawArc(color = progresscolor,
             startAngle = 120f,
             sweepAngle = appliedAngle,
             topLeft = center - Offset(radius, radius),

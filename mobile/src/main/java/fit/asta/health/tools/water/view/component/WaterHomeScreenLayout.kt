@@ -1,16 +1,16 @@
 package fit.asta.health.tools.water.view.component
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -22,7 +22,14 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun WaterHomeScreen(paddingValues: PaddingValues,viewModel: WaterViewModel = hiltViewModel()) {
 
-    val wT = viewModel.waterTool.value!!
+    var wT by remember{mutableStateOf(viewModel.waterTool.value!!.waterToolData.tgt)}
+
+    fun valueChanged(value: Float,){
+        val x=(6.0*value)/1.0
+        wT=(x.toInt()+1).toString()
+        viewModel.changedTarget(x.toInt()+1)
+        Log.i("Liters",(x.toInt()+1).toString())
+    }
 
     Column(
         Modifier
@@ -32,13 +39,16 @@ fun WaterHomeScreen(paddingValues: PaddingValues,viewModel: WaterViewModel = hil
         Spacer(modifier = Modifier.height(32.dp))
 
         CardSunBurn(cardTitle = "Total",
-            cardValue = wT.waterToolData.tgt+" Liters",
+            cardValue = "$wT Liters",
             recommendedTitle = "Recommended",
             remainingValue = "3500 mL",
             goalTitle = "Goal",
             goalValue = "4000 mL",
             remainingTitle = "Remaining",
-            recommendedValue = "2000 mL")
+            recommendedValue = "2000 mL",
+        valueChanged = {
+            valueChanged(it)
+        })
 
         Spacer(modifier = Modifier.height(48.dp))
 
@@ -60,3 +70,4 @@ fun WaterHomeScreen(paddingValues: PaddingValues,viewModel: WaterViewModel = hil
     }
 
 }
+

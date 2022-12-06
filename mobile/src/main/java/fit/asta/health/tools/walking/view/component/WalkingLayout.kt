@@ -49,7 +49,8 @@ fun WalkingTypeLayout(paddingValues: PaddingValues) {
             goalTitle = "Goal",
             goalValue = "90 min",
             remainingTitle = "Achieved",
-            remainingValue = "40 min")
+            remainingValue = "40 min",
+        valueChanged = null)
 
         Spacer(modifier = Modifier.height(24.dp))
 
