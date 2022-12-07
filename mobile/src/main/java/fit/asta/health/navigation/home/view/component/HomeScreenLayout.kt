@@ -1,7 +1,6 @@
 package fit.asta.health.navigation.home.view.component
 
 import android.app.Activity
-import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -10,6 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -25,6 +25,8 @@ import java.util.*
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
+
+    val context = LocalContext.current
 
     Box(Modifier.fillMaxSize()) {
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
@@ -110,7 +112,7 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
                 toolsHome.tools?.let {
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(3),
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         modifier = Modifier
                             .fillMaxWidth()
@@ -127,54 +129,7 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
                                 ) {
                                     when (it.lowercase(Locale.getDefault())) {
                                         "water" -> {
-                                            val myIntent = Intent(
-                                                activity.applicationContext,
-                                                WaterToolActivity::class.java
-                                            )
-                                            myIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                            activity.applicationContext.startActivity(myIntent)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-
-            }
-
-            item { Spacer(modifier = Modifier.height(24.dp)) }
-
-            item {
-
-                toolsHome.tools?.let {
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(1315.dp)
-                            .padding(horizontal = 16.dp),
-                        userScrollEnabled = false
-                    ) {
-                        it.forEachIndexed { _, tool ->
-                            item {
-                                ToolsCardLayoutDemo(
-                                    cardTitle = tool.title,
-                                    type = tool.name,
-                                    imgUrl = tool.url,
-                                    imageModifier = Modifier.height(180.dp)
-                                ) {
-                                    when (it.lowercase(Locale.getDefault())) {
-                                        "water" -> {
-                                            val myIntent = Intent(
-                                                activity.applicationContext,
-                                                WaterToolActivity::class.java
-                                            )
-                                            myIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                            activity.applicationContext.startActivity(myIntent)
+                                            WaterToolActivity.launch(context = context)
                                         }
                                     }
                                 }

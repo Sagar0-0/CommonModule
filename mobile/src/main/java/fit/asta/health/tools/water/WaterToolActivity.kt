@@ -1,12 +1,12 @@
 package fit.asta.health.tools.water
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.databinding.ActivityProfileNewBinding
-import fit.asta.health.tools.water.view.waterToolForm
-import fit.asta.health.tools.water.viewmodel.WaterViewModel
+import fit.asta.health.tools.water.view.WaterToolForm
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -14,17 +14,21 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class WaterToolActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityProfileNewBinding
-    private val viewModel: WaterViewModel by viewModels()
+    companion object {
+
+        fun launch(context: Context) {
+            val intent = Intent(context, WaterToolActivity::class.java)
+            intent.apply {
+                context.startActivity(this)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityProfileNewBinding.inflate(layoutInflater)
-        binding.profileComposeView.setContent {
-            waterToolForm(viewModel = viewModel)
+
+        setContent {
+            WaterToolForm()
         }
-
-        setContentView(binding.root)
     }
-
 }
