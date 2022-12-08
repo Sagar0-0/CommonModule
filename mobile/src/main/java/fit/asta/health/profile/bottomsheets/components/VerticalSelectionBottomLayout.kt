@@ -1,5 +1,3 @@
-@file:Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-
 package fit.asta.health.profile.bottomsheets.components
 
 import androidx.compose.foundation.border
@@ -49,7 +47,10 @@ fun AutoComplete(exerciseList: List<String>) {
         .fillMaxWidth()
         .clickable(onClick = { }, interactionSource = interactionSource, indication = null)) {
 
-        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(Modifier
+            .fillMaxWidth()
+            .height(450.dp),
+            horizontalAlignment = Alignment.CenterHorizontally) {
             DividerLine()
             Spacer(modifier = Modifier.height(20.dp))
             Row(modifier = Modifier.fillMaxWidth()) {
@@ -58,9 +59,7 @@ fun AutoComplete(exerciseList: List<String>) {
                         exercise = it
                     },
                     placeholder = {
-                        Text(text = "Search",
-                            fontSize = 16.sp,
-                            color = Color(0xff999999))
+                        Text(text = "Search", fontSize = 16.sp, color = Color(0xff999999))
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -88,6 +87,7 @@ fun AutoComplete(exerciseList: List<String>) {
                         }
                     })
             }
+            Spacer(modifier = Modifier.height(16.dp))
             SearchKeywords(textFieldSize, exercise, exerciseList)
         }
         DoneButton()
@@ -105,7 +105,7 @@ private fun SearchKeywords(
     LazyColumn(modifier = Modifier
         .padding(horizontal = 5.dp)
         .width(textFieldSize.width.dp),
-        contentPadding = PaddingValues(vertical = 24.dp)) {
+        contentPadding = PaddingValues(vertical = 0.dp)) {
 
         if (exercise1.isNotEmpty()) {
             items(exerciseList.filter {
