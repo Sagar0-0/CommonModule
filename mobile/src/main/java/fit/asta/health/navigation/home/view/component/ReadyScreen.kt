@@ -14,7 +14,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.navigation.home.model.domain.ToolsHome
-import fit.asta.health.navigation.home.view.BannerAutoSlider
 import fit.asta.health.navigation.home.view.Testimonials
 import fit.asta.health.testimonials.TestimonialsActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi

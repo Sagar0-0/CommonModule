@@ -6,6 +6,8 @@ import fit.asta.health.feedback.model.network.NetUserFeedback
 import fit.asta.health.navigation.home.model.network.NetHealthToolsRes
 import fit.asta.health.navigation.home.model.network.NetSelectedTools
 import fit.asta.health.navigation.today.networkdata.TodayPlanNetData
+import fit.asta.health.network.data.MultiFileUploadRes
+import fit.asta.health.network.data.SingleFileUploadRes
 import fit.asta.health.network.data.Status
 import fit.asta.health.old_course.details.networkdata.CourseDetailsResponse
 import fit.asta.health.old_course.listing.networkdata.CoursesListNetData
@@ -140,7 +142,7 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
         return apiService.getWaterTool(userId, latitude, longitude, location, startDate, endDate)
     }
 
-    override suspend fun updateWaterTool(modifiedWaterTool: ModifiedWaterTool): Status{
+    override suspend fun updateWaterTool(modifiedWaterTool: ModifiedWaterTool): Status {
         return apiService.updateWaterTool(modifiedWaterTool)
     }
 
@@ -188,8 +190,38 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
         return apiService.postUserFeedback(feedback)
     }
 
-    override suspend fun uploadFiles(description: RequestBody?, file: MultipartBody): Status {
-        return apiService.uploadFiles(description, file)
+    //File upload Endpoints
+    override suspend fun uploadFile(
+        id: RequestBody, uid: RequestBody, feature: RequestBody, file: MultipartBody.Part
+    ): SingleFileUploadRes {
+        return apiService.uploadFile(id, uid, feature, file)
+    }
+
+    override suspend fun uploadFile(
+        id: RequestBody, uid: RequestBody, feature: RequestBody, file: MultipartBody.Part,
+        progressCallback: ProgressCallback?
+    ): SingleFileUploadRes {
+        return apiService.uploadFile(id, uid, feature, file, progressCallback)
+    }
+
+    override suspend fun uploadFiles(body: RequestBody?, files: MultipartBody): MultiFileUploadRes {
+        return apiService.uploadFiles(body, files)
+    }
+
+    override suspend fun uploadFiles(
+        body: RequestBody?,
+        files: MultipartBody,
+        progressCallback: ProgressCallback?
+    ): MultiFileUploadRes {
+        return apiService.uploadFiles(body, files, progressCallback)
+    }
+
+    override suspend fun deleteFile(Id: String, feature: String): Status {
+        return apiService.deleteFile(Id, feature)
+    }
+
+    override suspend fun deleteFiles(Id: String, feature: String): Status {
+        return apiService.deleteFiles(Id, feature)
     }
 
     //Old Endpoints -------------------------------------------------------------------------------

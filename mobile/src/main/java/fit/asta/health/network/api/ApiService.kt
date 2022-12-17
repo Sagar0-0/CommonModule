@@ -6,6 +6,8 @@ import fit.asta.health.feedback.model.network.NetUserFeedback
 import fit.asta.health.navigation.home.model.network.NetHealthToolsRes
 import fit.asta.health.navigation.home.model.network.NetSelectedTools
 import fit.asta.health.navigation.today.networkdata.TodayPlanNetData
+import fit.asta.health.network.data.MultiFileUploadRes
+import fit.asta.health.network.data.SingleFileUploadRes
 import fit.asta.health.network.data.Status
 import fit.asta.health.old_course.details.networkdata.CourseDetailsResponse
 import fit.asta.health.old_course.listing.networkdata.CoursesListNetData
@@ -163,12 +165,47 @@ interface ApiService {
     @POST("feedback/user/post")
     suspend fun postUserFeedback(@Body feedback: NetUserFeedback): Status
 
+    //File upload Endpoint
     @Multipart
-    @POST("upload")
+    @PUT("file/upload/put/")
+    suspend fun uploadFile(
+        @Part("id") id: RequestBody,
+        @Part("uid") uid: RequestBody,
+        @Part("feature") feature: RequestBody,
+        @Part file: MultipartBody.Part
+    ): SingleFileUploadRes
+
+    //File upload Endpoint
+    @Multipart
+    @PUT("file/upload/put/")
+    suspend fun uploadFile(
+        @Part("id") id: RequestBody,
+        @Part("uid") uid: RequestBody,
+        @Part("feature") feature: RequestBody,
+        @Part file: MultipartBody.Part,
+        @Tag progressCallback: ProgressCallback?
+    ): SingleFileUploadRes
+
+    @Multipart
+    @PUT("file/upload/list/put/")
     suspend fun uploadFiles(
-        @Part("description") description: RequestBody?,
-        @Body file: MultipartBody
-    ): Status
+        @Body body: RequestBody?,
+        @Part file: MultipartBody
+    ): MultiFileUploadRes
+
+    @Multipart
+    @PUT("file/upload/list/put/")
+    suspend fun uploadFiles(
+        @Body body: RequestBody?,
+        @Part file: MultipartBody,
+        @Tag progressCallback: ProgressCallback?
+    ): MultiFileUploadRes
+
+    @DELETE("file/upload/delete/")
+    suspend fun deleteFile(@Query("uid") Id: String, @Query("feature") feature: String): Status
+
+    @DELETE("file/upload/list/delete/")
+    suspend fun deleteFiles(@Query("uid") Id: String, @Query("feature") feature: String): Status
 
     //Old APIs ------------------------------------------------------------------------------------
     @GET("course/list/get")

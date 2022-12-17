@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.home.view.component
+package fit.asta.health.navigation.home.view
 
 import android.app.Activity
 import androidx.compose.foundation.layout.*
@@ -15,8 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.navigation.home.model.domain.ToolsHome
-import fit.asta.health.navigation.home.view.BannerAutoSlider
-import fit.asta.health.navigation.home.view.Testimonials
+import fit.asta.health.navigation.home.view.component.*
 import fit.asta.health.tools.water.WaterToolActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.*

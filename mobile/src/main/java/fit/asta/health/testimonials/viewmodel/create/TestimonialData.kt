@@ -1,5 +1,6 @@
 package fit.asta.health.testimonials.viewmodel.create
 
+import fit.asta.health.testimonials.model.domain.Media
 import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.utils.UiString
 
@@ -15,7 +16,7 @@ data class TestimonialData(
     var roleError: UiString = UiString.Empty,
     val org: String = "",
     var orgError: UiString = UiString.Empty,
-    val imageError: UiString = UiString.Empty,
-    val videoError: UiString = UiString.Empty,
+    var media: MutableList<Media> = mutableListOf(),
+    val mediaError: UiString = UiString.Empty,
     var enableSubmit: Boolean = false
 )

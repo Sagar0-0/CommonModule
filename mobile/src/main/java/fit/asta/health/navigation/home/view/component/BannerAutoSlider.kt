@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.home.view
+package fit.asta.health.navigation.home.view.component
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
@@ -13,7 +13,6 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
 import fit.asta.health.navigation.home.model.domain.Banner
-import fit.asta.health.navigation.home.view.component.BannerLayout
 import kotlinx.coroutines.delay
 import kotlin.math.absoluteValue
 
@@ -40,9 +39,11 @@ fun BannerAutoSlider(bannerList: List<Banner>) {
             Box(modifier = Modifier
                 .graphicsLayer {
                     val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
-                    lerp(start = 0.85f,
+                    lerp(
+                        start = 0.85f,
                         stop = 1f,
-                        fraction = 1f - pageOffset.coerceIn(0f, 1f)).also { scale ->
+                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                    ).also { scale ->
                         scaleX = scale
                         scaleY = scale
                     }

@@ -121,7 +121,12 @@ class TestimonialViewModel
                 this.data.roleError = onValidateText(event.role, 2, 32)
                 this.data.enableSubmit = validateTestimonial(data.type)
             }
+            is TestimonialEvent.OnMediaClear -> {
+
+            }
             is TestimonialEvent.OnSubmit -> submit()
+            is TestimonialEvent.OnMediaIndex -> TODO()
+            is TestimonialEvent.OnMediaSelect -> TODO()
         }
     }
 
@@ -149,6 +154,10 @@ class TestimonialViewModel
         }
     }
 
+    fun uploadFile() {
+
+    }
+
     private fun clearErrors() {
         data.titleError = UiString.Empty
         data.testimonialError = UiString.Empty
@@ -174,9 +183,13 @@ class TestimonialViewModel
             TestimonialType.IMAGE -> validateData(
                 data.testimonial.isNotBlank()
                         && data.testimonialError is UiString.Empty
-                        && data.imageError is UiString.Empty
+                        && data.mediaError is UiString.Empty
             )
-            TestimonialType.VIDEO -> validateData(data.videoError is UiString.Empty)
+            TestimonialType.VIDEO -> validateData(
+                data.testimonial.isNotBlank()
+                        && data.testimonialError is UiString.Empty
+                        && data.mediaError is UiString.Empty
+            )
         }
     }
 

@@ -29,7 +29,7 @@ data class NetMedia(
     @SerializedName("type")
     val type: Int,
     @SerializedName("url")
-    val url: String
+    var url: String
 )
 
 data class NetTestimonialUser(
