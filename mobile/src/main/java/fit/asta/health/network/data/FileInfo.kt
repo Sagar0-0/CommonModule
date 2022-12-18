@@ -8,3 +8,9 @@ data class FileInfo(
     val file: File,
     val mediaType: String
 )
+
+data class UploadInfo(
+    val id: String = "",
+    val uid: String,
+    val feature: String
+)

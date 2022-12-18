@@ -51,7 +51,8 @@ fun AgeLayout() {
         }
         Spacer(modifier = Modifier.height(10.dp))
         Row(Modifier
-            .padding(start = 32.dp, end = 32.dp),
+            .padding(start = 32.dp, end = 32.dp)
+            .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically) {
             val textState = remember { mutableStateOf(TextFieldValue()) }
@@ -59,13 +60,21 @@ fun AgeLayout() {
             val textState3 = remember { mutableStateOf(TextFieldValue()) }
             TextField(value = textState.value,
                 onValueChange = { textState.value = it },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                modifier = Modifier.fillMaxWidth(0.3f),
+                placeholder = { Text(text = "Day") })
+            Spacer(modifier = Modifier.width(4.dp))
             TextField(value = textState2.value,
                 onValueChange = { textState2.value = it },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                modifier = Modifier.fillMaxWidth(0.5f),
+                placeholder = { Text(text = "Month") })
+            Spacer(modifier = Modifier.width(4.dp))
             TextField(value = textState3.value,
                 onValueChange = { textState3.value = it },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                modifier = Modifier.fillMaxWidth(01f),
+                placeholder = { Text(text = "Year") })
         }
         DoneButton()
     }

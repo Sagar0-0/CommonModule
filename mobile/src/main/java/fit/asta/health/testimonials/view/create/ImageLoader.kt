@@ -1,11 +1,13 @@
 package fit.asta.health.testimonials.view.create
 
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -19,225 +21,225 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.R
+import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
+import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun GetImage(
+fun TestGetImage(viewModel: TestimonialViewModel = hiltViewModel()) {
+
+    val launcher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
+            viewModel.onEvent(TestimonialEvent.OnMediaSelect(uri.toString()))
+        }
+
+    ImagePreviewLayout(
+        viewModel = viewModel,
+        onImageClick = {
+            viewModel.onEvent(TestimonialEvent.OnMediaIndex(it))
+            launcher.launch("image/jpeg")
+        },
+        onImageClear = { viewModel.onEvent(TestimonialEvent.OnMediaClear(it)) }
+    )
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
+@Composable
+fun ImagePreviewLayout(
+    viewModel: TestimonialViewModel,
     modifier: Modifier = Modifier,
-    beforeSelectedImage: Uri? = null,
-    afterSelectedImage: Uri? = null,
-    onBeforeImageClick: () -> Unit,
-    onAfterImageClick: () -> Unit,
-    onBeforeImageClear: () -> Unit,
-    onAfterImageClear: () -> Unit,
+    onImageClick: (inx: Int) -> Unit,
+    onImageClear: (inx: Int) -> Unit
 ) {
 
+    val beforeImage = "Before Image"
+    val afterImage = "After Image"
+
     Column(modifier = modifier) {
-        Text(text = "Upload Images",
+        Text(
+            text = "Upload Images",
             color = Color.Black,
             fontSize = 16.sp,
-            fontWeight = FontWeight.Medium)
+            fontWeight = FontWeight.Medium
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Box(modifier = Modifier
-            .dashedBorder(width = 1.dp, radius = 8.dp, color = Color(0xff8694A9))
-            .fillMaxWidth()) {
-            Row(horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.padding(0.dp)) {
-                ImagePreviewLayout(beforeSelectedImage = beforeSelectedImage,
-                    afterSelectedImage = afterSelectedImage,
-                    onBeforeImageClick = onBeforeImageClick,
-                    onAfterImageClick = onAfterImageClick,
-                    onBeforeImageClear = onBeforeImageClear,
-                    onAfterImageClear = onAfterImageClear)
+        Box(
+            modifier = Modifier
+                .dashedBorder(width = 1.dp, radius = 8.dp, color = Color(0xff8694A9))
+                .fillMaxWidth()
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.padding(0.dp)
+            ) {
+
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(560.dp)
+                        .padding(horizontal = 16.dp)
+                ) {
+
+                    items(viewModel.data.media) { media ->
+
+                        Box {
+                            if (media.url.isNotEmpty()) {
+                                SelectedImageView(
+                                    title = beforeImage,
+                                    inx = 0,
+                                    url = viewModel.data.media[0].url,
+                                    onImageClick = {
+
+                                    },
+                                    onImageClear = {
+
+                                    }
+                                )
+                            } else {
+                                UploadImageView(title = beforeImage, inx = 0, onImageClick = {
+
+                                })
+                            }
+                        }
+                    }
+                }
+
+                Box {
+                    if (viewModel.data.media.isNotEmpty() && viewModel.data.media[0].url.isNotEmpty()) {
+                        SelectedImageView(
+                            title = beforeImage,
+                            inx = 0,
+                            url = viewModel.data.media[0].url,
+                            onImageClick = {
+
+                            },
+                            onImageClear = {
+
+                            }
+                        )
+                    } else {
+                        UploadImageView(title = beforeImage, inx = 0, onImageClick = {
+
+                        })
+                    }
+                }
+
+                Box {
+                    if (viewModel.data.media.size > 1 && viewModel.data.media[1].url.isNotEmpty()) {
+                        SelectedImageView(
+                            title = afterImage,
+                            inx = 1,
+                            url = viewModel.data.media[1].url,
+                            onImageClick = {
+
+                            },
+                            onImageClear = {
+
+                            }
+                        )
+                    } else {
+                        UploadImageView(title = afterImage, inx = 1, onImageClick = {
+
+                        })
+                    }
+                }
             }
         }
     }
 }
 
 @Composable
-private fun ImagePreviewLayout(
-    beforeSelectedImage: Uri? = null,
-    afterSelectedImage: Uri? = null,
-    onBeforeImageClick: (() -> Unit)? = null,
-    onAfterImageClick: (() -> Unit)? = null,
-    onBeforeImageClear: () -> Unit,
-    onAfterImageClear: () -> Unit,
+private fun SelectedImageView(
+    title: String,
+    inx: Int,
+    url: String,
+    onImageClick: (inx: Int) -> Unit,
+    onImageClear: (inx: Int) -> Unit
 ) {
 
-    var isBeforeDeleted by remember { mutableStateOf(false) }
+    Box(
+        Modifier
+            .padding(2.dp)
+            .clickable { onImageClick(inx) },
+        contentAlignment = Alignment.BottomCenter
+    ) {
 
-    var isAfterDeleted by remember { mutableStateOf(false) }
+        Image(
+            painter = rememberAsyncImagePainter(model = url),
+            contentDescription = null,
+            Modifier
+                .fillMaxWidth(1f)
+                .height(180.dp)
+                .clip(RoundedCornerShape(8.dp)),
+            contentScale = ContentScale.Crop
+        )
 
-
-    Box {
-
-        if (beforeSelectedImage != null && !isBeforeDeleted) {
-            Box(
-                Modifier
-                    .padding(2.dp)
-                    .clickable { onBeforeImageClick?.let { it() } },
-                contentAlignment = Alignment.BottomCenter) {
-
-                Image(painter = rememberAsyncImagePainter(model = beforeSelectedImage),
-                    contentDescription = null,
-                    Modifier
-                        .fillMaxWidth(0.5f)
-                        .height(180.dp)
-                        .clip(RoundedCornerShape(8.dp)),
-                    contentScale = ContentScale.Crop)
-
-
-                Text(text = "Before Image",
-                    fontSize = 16.sp,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(10.dp))
-
-            }
-
-            Box(contentAlignment = Alignment.TopEnd, modifier = Modifier.fillMaxWidth(0.5f)) {
-                IconButton(onClick = {
-                    onBeforeImageClear()
-                    isBeforeDeleted = true
-                }) {
-                    Icon(painter = painterResource(id = R.drawable.ic_delete_forever),
-                        contentDescription = null,
-                        tint = Color(0xffFF4081))
-                }
-            }
-        } else {
-            UploadBeforeImage(onBeforeImageClick)
-            isBeforeDeleted = false
-        }
-
+        Text(
+            text = title,
+            fontSize = 16.sp,
+            color = Color.White,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(10.dp)
+        )
     }
 
-
-    Box {
-
-        if (afterSelectedImage != null && !isAfterDeleted) {
-            Box(
-                Modifier
-                    .padding(2.dp)
-                    .clickable { onAfterImageClick?.let { it() } },
-                contentAlignment = Alignment.BottomCenter) {
-
-                Image(painter = rememberAsyncImagePainter(model = afterSelectedImage),
-                    contentDescription = null,
-                    Modifier
-                        .fillMaxWidth()
-                        .height(180.dp)
-                        .clip(RoundedCornerShape(8.dp)),
-                    contentScale = ContentScale.Crop)
-
-                Text(text = "After Image",
-                    fontSize = 16.sp,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(10.dp))
-
-            }
-
-            Box(contentAlignment = Alignment.TopEnd, modifier = Modifier.fillMaxWidth()) {
-                IconButton(onClick = {
-                    onAfterImageClear()
-                    isAfterDeleted = true
-                }) {
-                    Icon(painter = painterResource(id = R.drawable.ic_delete_forever),
-                        contentDescription = null,
-                        tint = Color(0xffFF4081))
-                }
-            }
-        } else {
-            UploadAfterImage(onAfterImageClick)
-            isAfterDeleted = false
+    Box(contentAlignment = Alignment.TopEnd, modifier = Modifier.fillMaxWidth(1f)) {
+        IconButton(onClick = {
+            onImageClear(inx)
+        }) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_delete_forever),
+                contentDescription = null,
+                tint = Color(0xffFF4081)
+            )
         }
-
     }
 }
 
 @Composable
-private fun UploadAfterImage(onAfterImageClick: (() -> Unit)?) {
+private fun UploadImageView(title: String, inx: Int, onImageClick: (inx: Int) -> Unit) {
+
     Box(Modifier.padding(2.dp), contentAlignment = Alignment.Center) {
+
         Card(
             Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(1f)
                 .height(180.dp)
-                .clickable { onAfterImageClick?.let { it() } }) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally,
+                .clickable { onImageClick(inx) }) {
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxSize()) {
-                Image(painter = painterResource(id = R.drawable.upload),
+                modifier = Modifier.fillMaxSize()
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.upload),
                     contentDescription = null,
-                    modifier = Modifier.size(48.dp))
+                    modifier = Modifier.size(48.dp)
+                )
+
                 Spacer(modifier = Modifier.height(8.dp))
+
                 Text(text = "Browse to choose")
-                Text(text = "After Image",
+                Text(
+                    text = title,
                     fontSize = 24.sp,
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(10.dp))
+                    modifier = Modifier.padding(10.dp)
+                )
             }
         }
     }
-}
-
-@Composable
-private fun UploadBeforeImage(onBeforeImageClick: (() -> Unit)?) {
-    Box(Modifier.padding(2.dp), contentAlignment = Alignment.Center) {
-        Card(
-            Modifier
-                .fillMaxWidth(0.5f)
-                .height(180.dp)
-                .clickable { onBeforeImageClick?.let { it() } }) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxSize()) {
-                Image(painter = painterResource(id = R.drawable.upload),
-                    contentDescription = null,
-                    modifier = Modifier.size(48.dp))
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Browse to choose")
-                Text(text = "Before Image",
-                    fontSize = 24.sp,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(10.dp))
-            }
-        }
-    }
-}
-
-
-@Preview
-@Composable
-fun TestGetImage() {
-
-    var beforeSelectedImage by remember { mutableStateOf<Uri?>(null) }
-    val beforeLauncher =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
-            beforeSelectedImage = uri
-        }
-
-
-    var afterSelectedImage by remember { mutableStateOf<Uri?>(null) }
-    val afterLauncher =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
-            afterSelectedImage = uri
-        }
-
-    GetImage(onBeforeImageClick = { beforeLauncher.launch("image/jpeg") },
-        onAfterImageClick = { afterLauncher.launch("image/jpeg") },
-        beforeSelectedImage = beforeSelectedImage,
-        afterSelectedImage = afterSelectedImage,
-        onBeforeImageClear = { beforeSelectedImage = null },
-        onAfterImageClear = { afterSelectedImage = null })
-
 }

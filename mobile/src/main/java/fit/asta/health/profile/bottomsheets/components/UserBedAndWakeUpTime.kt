@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_EXPRESSION")
-
 package fit.asta.health.profile.bottomsheets.components
 
 import androidx.compose.foundation.layout.*

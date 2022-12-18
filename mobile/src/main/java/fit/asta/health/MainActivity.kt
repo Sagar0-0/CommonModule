@@ -16,7 +16,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -86,32 +85,13 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
             )
         )
 
-        window.apply {
-
-            //To stop taking the screenshot
-            //setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
-
-            //System UI color
-            /*if (android.os.Build.VERSION.SDK_INT in 21..22) {
-
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                window.statusBarColor = ContextCompat.getColor(context, R.color.colorPrimary)
-            }
-
-            clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            statusBarColor = Color.TRANSPARENT*/
-        }
-
         if (!authViewModel.isAuthenticated()) {
             signIn()
         } else {
-            authViewModel.getUserId()?.let {
+            /*authViewModel.getUserId()?.let {
                 createProfile()
                 profileViewModel.isUserProfileAvailable(it)
-            }
+            }*/
 
             loadAppScreen()
         }
@@ -138,16 +118,10 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
     private fun loadAppScreen() {
 
-        applicationContext.setAppTheme()
+        //applicationContext.setAppTheme()
         setContentView(R.layout.main_activity)
         setSupportActionBar(findViewById(R.id.appToolbar))
         supportActionBar?.setDisplayShowTitleEnabled(false)
-
-        /*val fab: FloatingActionButton? = findViewById(R.id.fabSignOut)
-            fab?.setOnClickListener {
-
-                fab_snack_main.showSnackbar(R.string.app_name)
-            }*/
 
         registerConnectivityReceiver()
         bottomNavBar()
@@ -155,11 +129,6 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
     }
 
     private fun bottomNavBar() {
-
-        /*val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController*/
-        val navController = findNavController(R.id.navHostFragment)
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -169,36 +138,13 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
             )
         )
 
+        val navController = findNavController(R.id.navHostFragment)
         setupActionBarWithNavController(navController, appBarConfiguration)
         findViewById<BottomNavigationView>(R.id.navView).setupWithNavController(navController)
-        //nav_view.selectedItemId = R.id.navigation_yoga
-
         navController.addOnDestinationChangedListener { _, _, _ ->
 
             showViewBars()
         }
-
-        //nav_view.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-    }
-
-    /*private val mOnNavigationItemSelectedListener =
-        BottomNavigationView.OnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.navigation_settings -> {
-                    val artistsFragment = SettingsFragment.newInstance()
-                    openFragment(artistsFragment)
-                    return@OnNavigationItemSelectedListener true
-                }
-            }
-
-            false
-        }*/
-
-    private fun openFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.navHostFragment, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
     }
 
     override fun onStart() {
@@ -270,24 +216,6 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
         signInLauncher.launch(signInIntent)
     }
-
-/*private fun registerDynamicLinks() {
-
-    Firebase.dynamicLinks
-        .getDynamicLink(intent)
-        .addOnSuccessListener(this) { linkData ->
-
-            var deepLink: Uri? = null
-            if (linkData != null) {
-
-                Log.e("startFireBaseActivity", linkData.link.toString())
-            }
-        }
-        .addOnFailureListener(this) { e ->
-
-            Log.e("startFireBaseActivity", "getDynamicLink:onFailure", e)
-        }
-}*/
 
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
 
@@ -423,10 +351,6 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         val paramsBNV = navView?.layoutParams as CoordinatorLayout.LayoutParams
         val behaviorBNV = paramsBNV.behavior as? HideBottomViewOnScrollBehavior
         behaviorBNV?.slideUp(navView)
-
-        /*val paramsFAB = fab_snack_main?.layoutParams as CoordinatorLayout.LayoutParams
-        val behaviorFAB = paramsFAB.behavior as? HideBottomViewOnScrollBehavior
-        behaviorFAB?.slideUp(fab_snack_main)*/
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -512,10 +436,6 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
             applicationContext,
             if (item.isChecked) R.drawable.ic_notifications_off else R.drawable.ic_notifications_on
         )
-
-        //showTextNotification(getString(R.string.title_reminder), "Test", "Just for fun!")
-        //showBigTextNotification(getString(R.string.title_reminder), "Test", "Welcome to tutlane, it provides a tutorials related to all technologies in software industry. Here we covered complete tutorials from basic to adavanced topics from all technologies.\n\n - By Tultane", null)
-        //showImageNotification(getString(R.string.title_reminder), "Test", "Just for fun!", Uri.parse("https://firebasestorage.googleapis.com/v0/b/yogam-91999.appspot.com/o/media%2Fimages%2Fasanas%2Faerobics.jpg?alt=media"))
 
         PrefUtils.setMasterNotification(item.isChecked, applicationContext)
     }

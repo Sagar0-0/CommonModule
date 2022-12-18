@@ -102,7 +102,7 @@ fun ToolsCardLayoutDemo(
                     model = getImageUrl(url = imgUrl),
                     contentDescription = null,
                     modifier = imageModifier
-                        .height(107.dp)
+                        .aspectRatio(ratio = 1f)
                         .clip(RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)),
                     contentScale = ContentScale.Crop
                 )

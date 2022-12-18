@@ -9,5 +9,8 @@ sealed class TestimonialEvent {
     data class OnTestimonialChange(val testimonial: String) : TestimonialEvent()
     data class OnRoleChange(val role: String) : TestimonialEvent()
     data class OnOrgChange(val org: String) : TestimonialEvent()
+    data class OnMediaIndex(val inx: Int) : TestimonialEvent()
+    data class OnMediaSelect(val url: String) : TestimonialEvent()
+    data class OnMediaClear(val inx: Int) : TestimonialEvent()
     object OnSubmit : TestimonialEvent()
 }

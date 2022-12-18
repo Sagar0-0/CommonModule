@@ -6,7 +6,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
-import fit.asta.health.navigation.home.view.component.HomeScreenLayout
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.navigation.home.view.component.NoInternetLayout
 import fit.asta.health.navigation.home.viewmodel.HomeState

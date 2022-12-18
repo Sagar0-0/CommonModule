@@ -61,8 +61,11 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideFileRepo(remoteApi: RemoteApis): FileUploadRepo {
-        return FileUploadRepo(remoteApi)
+    fun provideFileRepo(
+        @ApplicationContext context: Context,
+        remoteApi: RemoteApis
+    ): FileUploadRepo {
+        return FileUploadRepo(context, remoteApi)
     }
 
     /*
