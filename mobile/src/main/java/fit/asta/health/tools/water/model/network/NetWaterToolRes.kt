@@ -49,6 +49,8 @@ data class Bev(
     val code: String,
     val icon: String,
     val name: String,
+    //qty
+    //meta
     val ttl: String
 )
 

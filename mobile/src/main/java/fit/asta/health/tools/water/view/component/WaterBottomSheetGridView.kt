@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -22,7 +23,7 @@ import fit.asta.health.tools.view.PracticeGridView
 import fit.asta.health.tools.view.components.AddMoreWater
 import fit.asta.health.tools.view.components.PracticeExpandedCard
 
-
+@Preview
 @Composable
 fun WaterBottomSheetGridView() {
 

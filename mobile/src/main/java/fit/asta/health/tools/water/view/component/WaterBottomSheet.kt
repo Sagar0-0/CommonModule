@@ -17,7 +17,7 @@ fun WaterBottomSheet(paddingValues: PaddingValues) {
             BottomSheetValue.Collapsed))
 
     BottomSheetScaffold(sheetContent = { WaterBottomSheetGridView() },
-        sheetPeekHeight = 32.dp,
+        sheetPeekHeight = 100.dp,
         scaffoldState = scaffoldState) {
         WaterHomeScreen(paddingValues)
     }
