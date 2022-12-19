@@ -1,5 +1,6 @@
 package fit.asta.health.testimonials.viewmodel.create
 
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -9,8 +10,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.R
 import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.network.NetworkHelper
+import fit.asta.health.network.data.UploadInfo
 import fit.asta.health.network.repo.FileUploadRepo
 import fit.asta.health.testimonials.model.TestimonialRepo
+import fit.asta.health.testimonials.model.domain.Media
 import fit.asta.health.testimonials.model.domain.Testimonial
 import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.model.domain.TestimonialUser
@@ -95,9 +98,30 @@ class TestimonialViewModel
         }
     }
 
+    fun uploadFile(filePath: Uri) {
+        viewModelScope.launch {
+            authRepo.getUser()?.let {
+                fileRepo.uploadFile(
+                    fileInfo = UploadInfo(id = "", uid = it.uid, feature = "testimonial"),
+                    filePath = filePath
+                ).catch {
+
+                }.collect {
+
+                }
+            }
+        }
+    }
+
     fun onEvent(event: TestimonialEvent) {
         when (event) {
             is TestimonialEvent.OnTypeChange -> {
+                if (event.type == TestimonialType.IMAGE) {
+                    if (data.media.isEmpty()) {
+                        data.media.add(0, Media(inx = 0, title = "Before Image"))
+                        data.media.add(1, Media(inx = 1, title = "After Image"))
+                    }
+                }
                 this.data = this.data.copy(type = event.type)
                 this.data.enableSubmit = validateTestimonial(event.type)
             }
@@ -125,8 +149,12 @@ class TestimonialViewModel
 
             }
             is TestimonialEvent.OnSubmit -> submit()
-            is TestimonialEvent.OnMediaIndex -> TODO()
-            is TestimonialEvent.OnMediaSelect -> TODO()
+            is TestimonialEvent.OnMediaIndex -> {
+
+            }
+            is TestimonialEvent.OnMediaSelect -> {
+
+            }
         }
     }
 
@@ -152,10 +180,6 @@ class TestimonialViewModel
                 )
             )
         }
-    }
-
-    fun uploadFile() {
-
     }
 
     private fun clearErrors() {

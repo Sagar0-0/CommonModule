@@ -37,6 +37,7 @@ fun TestGetImage(viewModel: TestimonialViewModel = hiltViewModel()) {
 
     val launcher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
+            viewModel.uploadFile(uri!!)
             viewModel.onEvent(TestimonialEvent.OnMediaSelect(uri.toString()))
         }
 
@@ -58,9 +59,6 @@ fun ImagePreviewLayout(
     onImageClick: (inx: Int) -> Unit,
     onImageClear: (inx: Int) -> Unit
 ) {
-
-    val beforeImage = "Before Image"
-    val afterImage = "After Image"
 
     Column(modifier = modifier) {
         Text(
@@ -86,7 +84,7 @@ fun ImagePreviewLayout(
                     columns = GridCells.Fixed(2),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(560.dp)
+                        .height(200.dp)
                         .padding(horizontal = 16.dp)
                 ) {
 
@@ -95,62 +93,20 @@ fun ImagePreviewLayout(
                         Box {
                             if (media.url.isNotEmpty()) {
                                 SelectedImageView(
-                                    title = beforeImage,
-                                    inx = 0,
-                                    url = viewModel.data.media[0].url,
-                                    onImageClick = {
-
-                                    },
-                                    onImageClear = {
-
-                                    }
+                                    title = media.title,
+                                    inx = media.inx,
+                                    url = media.url,
+                                    onImageClick = onImageClick,
+                                    onImageClear = onImageClear
                                 )
                             } else {
-                                UploadImageView(title = beforeImage, inx = 0, onImageClick = {
-
-                                })
+                                UploadImageView(
+                                    title = media.title,
+                                    inx = media.inx,
+                                    onImageClick = onImageClick
+                                )
                             }
                         }
-                    }
-                }
-
-                Box {
-                    if (viewModel.data.media.isNotEmpty() && viewModel.data.media[0].url.isNotEmpty()) {
-                        SelectedImageView(
-                            title = beforeImage,
-                            inx = 0,
-                            url = viewModel.data.media[0].url,
-                            onImageClick = {
-
-                            },
-                            onImageClear = {
-
-                            }
-                        )
-                    } else {
-                        UploadImageView(title = beforeImage, inx = 0, onImageClick = {
-
-                        })
-                    }
-                }
-
-                Box {
-                    if (viewModel.data.media.size > 1 && viewModel.data.media[1].url.isNotEmpty()) {
-                        SelectedImageView(
-                            title = afterImage,
-                            inx = 1,
-                            url = viewModel.data.media[1].url,
-                            onImageClick = {
-
-                            },
-                            onImageClear = {
-
-                            }
-                        )
-                    } else {
-                        UploadImageView(title = afterImage, inx = 1, onImageClick = {
-
-                        })
                     }
                 }
             }

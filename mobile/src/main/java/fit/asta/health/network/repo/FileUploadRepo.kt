@@ -6,8 +6,11 @@ import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
 import fit.asta.health.network.api.RemoteApis
 import fit.asta.health.network.data.FileInfo
+import fit.asta.health.network.data.SingleFileUploadRes
 import fit.asta.health.network.data.UploadInfo
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -26,7 +29,7 @@ class FileUploadRepo(
     private val remoteApi: RemoteApis,
 ) {
 
-    suspend fun uploadFile(info: UploadInfo, filePath: Uri): Boolean {
+    suspend fun uploadFile(fileInfo: UploadInfo, filePath: Uri): Flow<SingleFileUploadRes> {
 
         /*val body = file.asRequestBody(file.getMediaType())
         val part = MultipartBody.Part.createFormData("file", file.name, body)*/
@@ -55,20 +58,16 @@ class FileUploadRepo(
             body = contentPart
         )
 
-        return withContext(Dispatchers.IO) {
-
-            return@withContext try {
-                remoteApi.uploadFile(
-                    info.id.toRequestBody("multipart/form-data".toMediaTypeOrNull()),
-                    info.uid.toRequestBody("multipart/form-data".toMediaType()),
-                    info.feature.toRequestBody("multipart/form-data".toMediaType()),
-                    multiPart
+        return flow {
+            withContext(Dispatchers.IO) {
+                emit(
+                    remoteApi.uploadFile(
+                        fileInfo.id.toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+                        fileInfo.uid.toRequestBody("multipart/form-data".toMediaType()),
+                        fileInfo.feature.toRequestBody("multipart/form-data".toMediaType()),
+                        multiPart
+                    )
                 )
-                true
-            } catch (e: HttpException) {
-                false
-            } catch (e: IOException) {
-                false
             }
         }
     }
@@ -79,7 +78,7 @@ class FileUploadRepo(
 
         list.forEach {
             multipart.addFormDataPart(
-                name = it.name,
+                name = "files",
                 filename = it.file.name,
                 body = it.file.asRequestBody(it.mediaType.toMediaType())
             )

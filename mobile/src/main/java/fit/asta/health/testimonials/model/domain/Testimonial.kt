@@ -29,6 +29,7 @@ data class TestimonialUser(
 )
 
 data class Media(
+    val inx: Int = 0,
     val title: String = "",
     val type: MediaType = MediaType.IMAGE,
     val url: String = ""
