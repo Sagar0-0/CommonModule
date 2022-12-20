@@ -37,15 +37,14 @@ fun TestGetImage(viewModel: TestimonialViewModel = hiltViewModel()) {
 
     val launcher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
-            viewModel.uploadFile(uri!!)
-            viewModel.onEvent(TestimonialEvent.OnMediaSelect(uri.toString()))
+            viewModel.onEvent(TestimonialEvent.OnMediaSelect(uri))
         }
 
     ImagePreviewLayout(
         viewModel = viewModel,
         onImageClick = {
-            viewModel.onEvent(TestimonialEvent.OnMediaIndex(it))
             launcher.launch("image/jpeg")
+            viewModel.onEvent(TestimonialEvent.OnMediaIndex(it))
         },
         onImageClear = { viewModel.onEvent(TestimonialEvent.OnMediaClear(it)) }
     )
@@ -88,21 +87,21 @@ fun ImagePreviewLayout(
                         .padding(horizontal = 16.dp)
                 ) {
 
-                    items(viewModel.data.media) { media ->
+                    items(viewModel.data.media) { mda ->
 
                         Box {
-                            if (media.url.isNotEmpty()) {
+                            if (mda.url.isNotEmpty()) {
                                 SelectedImageView(
-                                    title = media.title,
-                                    inx = media.inx,
-                                    url = media.url,
+                                    title = mda.title,
+                                    inx = mda.inx,
+                                    url = mda.url,
                                     onImageClick = onImageClick,
                                     onImageClear = onImageClear
                                 )
                             } else {
                                 UploadImageView(
-                                    title = media.title,
-                                    inx = media.inx,
+                                    title = mda.title,
+                                    inx = mda.inx,
                                     onImageClick = onImageClick
                                 )
                             }

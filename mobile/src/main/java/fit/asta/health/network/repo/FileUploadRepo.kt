@@ -1,13 +1,12 @@
 package fit.asta.health.network.repo
 
-import android.content.ContentResolver
 import android.content.Context
-import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
 import fit.asta.health.network.api.RemoteApis
-import fit.asta.health.network.data.FileInfo
+import fit.asta.health.network.data.MultiFileUploadRes
 import fit.asta.health.network.data.SingleFileUploadRes
 import fit.asta.health.network.data.UploadInfo
+import fit.asta.health.utils.InputStreamRequestBody
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -15,13 +14,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import okio.BufferedSink
-import okio.source
-import retrofit2.HttpException
-import java.io.IOException
 
 
 class FileUploadRepo(
@@ -29,7 +22,7 @@ class FileUploadRepo(
     private val remoteApi: RemoteApis,
 ) {
 
-    suspend fun uploadFile(fileInfo: UploadInfo, filePath: Uri): Flow<SingleFileUploadRes> {
+    suspend fun uploadFile(fileInfo: UploadInfo): Flow<SingleFileUploadRes> {
 
         /*val body = file.asRequestBody(file.getMediaType())
         val part = MultipartBody.Part.createFormData("file", file.name, body)*/
@@ -49,9 +42,8 @@ class FileUploadRepo(
             )
         }*/
 
-        val documentFile = DocumentFile.fromSingleUri(context, filePath)
-        val contentPart = InputStreamRequestBody(context.contentResolver, filePath)
-
+        val documentFile = DocumentFile.fromSingleUri(context, fileInfo.filePath)
+        val contentPart = InputStreamRequestBody(context.contentResolver, fileInfo.filePath)
         val multiPart = MultipartBody.Part.createFormData(
             name = "file",
             filename = documentFile?.name,
@@ -72,49 +64,23 @@ class FileUploadRepo(
         }
     }
 
-    suspend fun uploadFiles(info: UploadInfo, list: List<FileInfo>): Boolean {
+    suspend fun uploadFiles(list: List<UploadInfo>): Flow<MultiFileUploadRes> {
 
         val multipart = MultipartBody.Builder().setType(MultipartBody.FORM)
 
         list.forEach {
-            multipart.addFormDataPart(
-                name = "files",
-                filename = it.file.name,
-                body = it.file.asRequestBody(it.mediaType.toMediaType())
-            )
+
+            val documentFile = DocumentFile.fromSingleUri(context, it.filePath)
+            val contentPart = InputStreamRequestBody(context.contentResolver, it.filePath)
+            multipart.addFormDataPart(name = "files", filename = documentFile?.name, contentPart)
         }
 
-        return withContext(Dispatchers.IO) {
-
-            return@withContext try {
-                remoteApi.uploadFiles(
-                    null,
-                    multipart.build()
+        return flow {
+            withContext(Dispatchers.IO) {
+                emit(
+                    remoteApi.uploadFiles(null, multipart.build())
                 )
-                true
-            } catch (e: HttpException) {
-                false
-            } catch (e: IOException) {
-                false
             }
         }
-    }
-}
-
-class InputStreamRequestBody(
-    private val contentResolver: ContentResolver,
-    private val uri: Uri
-) : RequestBody() {
-
-    override fun contentType() = contentResolver.getType(uri)?.toMediaTypeOrNull()
-
-    override fun contentLength(): Long = -1
-
-    @Throws(IOException::class)
-    override fun writeTo(sink: BufferedSink) {
-
-        val input = contentResolver.openInputStream(uri)
-        input?.use { sink.writeAll(it.source()) }
-            ?: throw IOException("Could not open $uri")
     }
 }

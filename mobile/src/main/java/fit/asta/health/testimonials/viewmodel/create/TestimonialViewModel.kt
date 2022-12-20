@@ -44,6 +44,8 @@ class TestimonialViewModel
     var data by mutableStateOf(TestimonialData())
         private set
 
+    private var curInx = 0
+
     private val _mutableState = MutableStateFlow<TestimonialGetState>(TestimonialGetState.Loading)
     val state = _mutableState.asStateFlow()
 
@@ -98,12 +100,19 @@ class TestimonialViewModel
         }
     }
 
-    fun uploadFile(filePath: Uri) {
+    private fun uploadFile(filePath: Uri?) {
+
+        if (filePath == null) return
+
         viewModelScope.launch {
             authRepo.getUser()?.let {
                 fileRepo.uploadFile(
-                    fileInfo = UploadInfo(id = "", uid = it.uid, feature = "testimonial"),
-                    filePath = filePath
+                    fileInfo = UploadInfo(
+                        id = "",
+                        uid = it.uid,
+                        feature = "testimonial",
+                        filePath = filePath
+                    )
                 ).catch {
 
                 }.collect {
@@ -146,14 +155,17 @@ class TestimonialViewModel
                 this.data.enableSubmit = validateTestimonial(data.type)
             }
             is TestimonialEvent.OnMediaClear -> {
-
+                this.data.media[event.inx] = this.data.media[event.inx].copy(url = "")
             }
-            is TestimonialEvent.OnSubmit -> submit()
+            is TestimonialEvent.OnSubmit -> {
+                submit()
+            }
             is TestimonialEvent.OnMediaIndex -> {
-
+                curInx = event.inx
             }
             is TestimonialEvent.OnMediaSelect -> {
-
+                this.data.media[curInx] = this.data.media[curInx].copy(url = event.url.toString())
+                uploadFile(event.url)
             }
         }
     }

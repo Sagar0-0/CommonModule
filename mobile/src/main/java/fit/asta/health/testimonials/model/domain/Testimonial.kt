@@ -32,7 +32,7 @@ data class Media(
     val inx: Int = 0,
     val title: String = "",
     val type: MediaType = MediaType.IMAGE,
-    val url: String = ""
+    var url: String = ""
 )
 
 enum class MediaType(val value: Int) {
