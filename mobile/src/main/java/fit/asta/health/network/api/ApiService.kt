@@ -9,6 +9,7 @@ import fit.asta.health.navigation.today.networkdata.TodayPlanNetData
 import fit.asta.health.network.data.MultiFileUploadRes
 import fit.asta.health.network.data.SingleFileUploadRes
 import fit.asta.health.network.data.Status
+import fit.asta.health.network.data.UploadInfo
 import fit.asta.health.old_course.details.networkdata.CourseDetailsResponse
 import fit.asta.health.old_course.listing.networkdata.CoursesListNetData
 import fit.asta.health.old_course.session.networkdata.SessionResponse
@@ -169,9 +170,7 @@ interface ApiService {
     @Multipart
     @PUT("file/upload/put/")
     suspend fun uploadFile(
-        @Part("id") id: String,
-        @Part("uid") uid: String,
-        @Part("feature") feature: String,
+        @Part("json") info: UploadInfo,
         @Part file: MultipartBody.Part
     ): SingleFileUploadRes
 
@@ -179,9 +178,7 @@ interface ApiService {
     @Multipart
     @PUT("file/upload/put/")
     suspend fun uploadFile(
-        @Part("id") id: String,
-        @Part("uid") uid: String,
-        @Part("feature") feature: String,
+        @Part("json") info: UploadInfo,
         @Part file: MultipartBody.Part,
         @Tag progressCallback: ProgressCallback?
     ): SingleFileUploadRes

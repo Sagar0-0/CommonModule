@@ -50,12 +50,7 @@ class FileUploadRepo(
         return flow {
             withContext(Dispatchers.IO) {
                 emit(
-                    remoteApi.uploadFile(
-                        fileInfo.id,
-                        fileInfo.uid,
-                        fileInfo.feature,
-                        multiPart
-                    ).singleFile
+                    remoteApi.uploadFile(fileInfo, multiPart).singleFile
                 )
             }
         }

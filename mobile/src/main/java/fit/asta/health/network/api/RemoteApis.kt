@@ -9,6 +9,7 @@ import fit.asta.health.navigation.today.networkdata.TodayPlanNetData
 import fit.asta.health.network.data.MultiFileUploadRes
 import fit.asta.health.network.data.SingleFileUploadRes
 import fit.asta.health.network.data.Status
+import fit.asta.health.network.data.UploadInfo
 import fit.asta.health.old_course.details.networkdata.CourseDetailsResponse
 import fit.asta.health.old_course.listing.networkdata.CoursesListNetData
 import fit.asta.health.old_course.session.networkdata.SessionResponse
@@ -110,17 +111,10 @@ interface RemoteApis {
     suspend fun postUserFeedback(feedback: NetUserFeedback): Status
 
     //File upload Endpoints
-    suspend fun uploadFile(
-        id: String,
-        uid: String,
-        feature: String,
-        file: MultipartBody.Part
-    ): SingleFileUploadRes
+    suspend fun uploadFile(info: UploadInfo, file: MultipartBody.Part): SingleFileUploadRes
 
     suspend fun uploadFile(
-        id: String,
-        uid: String,
-        feature: String,
+        info: UploadInfo,
         file: MultipartBody.Part,
         progressCallback: ProgressCallback?
     ): SingleFileUploadRes
