@@ -192,13 +192,16 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
 
     //File upload Endpoints
     override suspend fun uploadFile(
-        id: RequestBody, uid: RequestBody, feature: RequestBody, file: MultipartBody.Part
+        id: String,
+        uid: String,
+        feature: String,
+        file: MultipartBody.Part
     ): SingleFileUploadRes {
         return apiService.uploadFile(id, uid, feature, file)
     }
 
     override suspend fun uploadFile(
-        id: RequestBody, uid: RequestBody, feature: RequestBody, file: MultipartBody.Part,
+        id: String, uid: String, feature: String, file: MultipartBody.Part,
         progressCallback: ProgressCallback?
     ): SingleFileUploadRes {
         return apiService.uploadFile(id, uid, feature, file, progressCallback)

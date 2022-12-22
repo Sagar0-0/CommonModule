@@ -111,16 +111,16 @@ interface RemoteApis {
 
     //File upload Endpoints
     suspend fun uploadFile(
-        id: RequestBody,
-        uid: RequestBody,
-        feature: RequestBody,
+        id: String,
+        uid: String,
+        feature: String,
         file: MultipartBody.Part
     ): SingleFileUploadRes
 
     suspend fun uploadFile(
-        id: RequestBody,
-        uid: RequestBody,
-        feature: RequestBody,
+        id: String,
+        uid: String,
+        feature: String,
         file: MultipartBody.Part,
         progressCallback: ProgressCallback?
     ): SingleFileUploadRes

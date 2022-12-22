@@ -4,20 +4,20 @@ import com.google.gson.annotations.SerializedName
 
 data class Media(
     @SerializedName("type")
-    val type: Int,
+    val type: Int = 0,
     @SerializedName("url")
-    val url: String,
+    val url: String = "",
     @SerializedName("time")
-    val time: String
+    val time: String = ""
 )
 
 data class SingleFileUpload(
     @SerializedName("id")
-    val id: String,
+    val id: String = "",
     @SerializedName("feature")
-    val feature: String,
+    val feature: String = "",
     @SerializedName("mda")
-    val media: Media
+    val media: Media = Media()
 )
 
 data class SingleFileUploadRes(

@@ -3,18 +3,15 @@ package fit.asta.health.network.repo
 import android.content.Context
 import androidx.documentfile.provider.DocumentFile
 import fit.asta.health.network.api.RemoteApis
-import fit.asta.health.network.data.MultiFileUploadRes
-import fit.asta.health.network.data.SingleFileUploadRes
+import fit.asta.health.network.data.MultiFileUpload
+import fit.asta.health.network.data.SingleFileUpload
 import fit.asta.health.network.data.UploadInfo
 import fit.asta.health.utils.InputStreamRequestBody
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.toRequestBody
 
 
 class FileUploadRepo(
@@ -22,7 +19,7 @@ class FileUploadRepo(
     private val remoteApi: RemoteApis,
 ) {
 
-    suspend fun uploadFile(fileInfo: UploadInfo): Flow<SingleFileUploadRes> {
+    suspend fun uploadFile(fileInfo: UploadInfo): Flow<SingleFileUpload> {
 
         /*val body = file.asRequestBody(file.getMediaType())
         val part = MultipartBody.Part.createFormData("file", file.name, body)*/
@@ -54,19 +51,24 @@ class FileUploadRepo(
             withContext(Dispatchers.IO) {
                 emit(
                     remoteApi.uploadFile(
-                        fileInfo.id.toRequestBody("multipart/form-data".toMediaTypeOrNull()),
-                        fileInfo.uid.toRequestBody("multipart/form-data".toMediaType()),
-                        fileInfo.feature.toRequestBody("multipart/form-data".toMediaType()),
+                        fileInfo.id,
+                        fileInfo.uid,
+                        fileInfo.feature,
                         multiPart
-                    )
+                    ).singleFile
                 )
             }
         }
     }
 
-    suspend fun uploadFiles(list: List<UploadInfo>): Flow<MultiFileUploadRes> {
+    suspend fun uploadFiles(list: List<UploadInfo>): Flow<MultiFileUpload> {
 
         val multipart = MultipartBody.Builder().setType(MultipartBody.FORM)
+
+        /*val id = fileInfo.id.toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+        val body: RequestBody = list[0].toString()
+            .toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+        multipart.addFormDataPart(name = "json", filename = "", list)*/
 
         list.forEach {
 
@@ -78,7 +80,7 @@ class FileUploadRepo(
         return flow {
             withContext(Dispatchers.IO) {
                 emit(
-                    remoteApi.uploadFiles(null, multipart.build())
+                    remoteApi.uploadFiles(null, multipart.build()).multiFile
                 )
             }
         }

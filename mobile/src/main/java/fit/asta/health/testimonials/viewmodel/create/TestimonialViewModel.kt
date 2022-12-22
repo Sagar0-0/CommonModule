@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.R
 import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.network.NetworkHelper
+import fit.asta.health.network.data.SingleFileUpload
 import fit.asta.health.network.data.UploadInfo
 import fit.asta.health.network.repo.FileUploadRepo
 import fit.asta.health.testimonials.model.TestimonialRepo
@@ -42,6 +43,9 @@ class TestimonialViewModel
         private set
 
     var data by mutableStateOf(TestimonialData())
+        private set
+
+    var media by mutableStateOf(SingleFileUpload())
         private set
 
     private var curInx = 0
@@ -105,18 +109,18 @@ class TestimonialViewModel
         if (filePath == null) return
 
         viewModelScope.launch {
-            authRepo.getUser()?.let {
+            authRepo.getUser()?.let { user ->
                 fileRepo.uploadFile(
                     fileInfo = UploadInfo(
-                        id = "",
-                        uid = it.uid,
+                        id = media.id,
+                        uid = user.uid,
                         feature = "testimonial",
                         filePath = filePath
                     )
                 ).catch {
 
                 }.collect {
-
+                    media = it
                 }
             }
         }
@@ -236,3 +240,81 @@ class TestimonialViewModel
                 )
     }
 }
+
+/*
+Testimonials:
+
+-> 1. Upload file to S3 -> 2. Create the entry in the DB -> 3. Response
+-> 1. Upload file to S3 -> 2. Create the entry in the DB -> 3. Response
+
+Cache in the Local DB
+
+-> 4. Read the URL from response -> 5. Update the Urls in the Testimonial -> 6. Create/Update Testimonial
+
+Profile:
+
+-> 1. Upload file to S3 -> 2. Create the entry in the DB -> 3. Response
+
+Cache in the Local DB
+
+-> 4. Read the URL from response -> 5. Update the Urls in the Profile -> 6. Create/Update Profile
+
+Schedule Tag:
+
+-> 1. Upload file to S3 -> 2. Create the entry in the DB -> 3. Response
+
+Cache in the Local DB
+
+-> 4. Read the URL from response -> 5. Update the Urls in the Tag -> 6. Create/Update Tag
+
+
+Feedback:
+
+-> 1. Upload file to S3 -> 2. Create the Cache in the DB -> 3. Response
+
+Cache in the Local DB
+
+-> 4. Read the URL from response -> 5. Update the Urls in the Feedback -> 6. Create/Update Feedback
+
+
+Order Madicine (Prescription):
+
+
+Consultation Chat (Prescriptions and Reports):
+
+
+Review (Images or Videos):
+
+
+Diagnostics (Prescription):
+
+
+
+Server Cache:
+
+Create / Update:
+
+-> 1. Upload file to S3 -> 2. Create the Cache in the DB -> 3. Response
+
+-> 4. Create/Update Testimonial request -> 5. Read the media information from Cache -> 6. Change the model data -> 7. Create/Update the db entry -> 8. Delete the cache
+
+Read:
+
+1. Find the testimonial  -> 2. If the testimonial is avaiable, read the testimonial
+    -> 3. If the testimonial not availble then find the media in the cache -> 4. If media available read it from the Cache -> 5. Create the empty testimonial with Media
+    -> 6. Response
+    -> 4. If the media not available the send empty or not found response
+
+Who need to Cache??
+
+App ->
+
+DisAdv:
+1.Is Room DB can be tampered? 2. iOS and Android implementation
+Adv: 1. Less burden on the server, 2. Offline support can be added
+
+Server ->
+
+DisAdv: 1. Usage of more computation power
+Adv: 1. Security 2. Single implementation
+ */

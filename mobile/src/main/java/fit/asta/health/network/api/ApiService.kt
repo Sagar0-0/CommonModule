@@ -169,9 +169,9 @@ interface ApiService {
     @Multipart
     @PUT("file/upload/put/")
     suspend fun uploadFile(
-        @Part("id") id: RequestBody,
-        @Part("uid") uid: RequestBody,
-        @Part("feature") feature: RequestBody,
+        @Part("id") id: String,
+        @Part("uid") uid: String,
+        @Part("feature") feature: String,
         @Part file: MultipartBody.Part
     ): SingleFileUploadRes
 
@@ -179,9 +179,9 @@ interface ApiService {
     @Multipart
     @PUT("file/upload/put/")
     suspend fun uploadFile(
-        @Part("id") id: RequestBody,
-        @Part("uid") uid: RequestBody,
-        @Part("feature") feature: RequestBody,
+        @Part("id") id: String,
+        @Part("uid") uid: String,
+        @Part("feature") feature: String,
         @Part file: MultipartBody.Part,
         @Tag progressCallback: ProgressCallback?
     ): SingleFileUploadRes
