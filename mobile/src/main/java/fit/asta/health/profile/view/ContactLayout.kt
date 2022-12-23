@@ -106,7 +106,7 @@ private fun UserDetails(
 
 // User's Profile Photo with Design Layout
 @Composable
-fun UserProfileImg() {
+fun UserProfileImg(icon: Int) {
     Box(contentAlignment = Alignment.Center,
         modifier = Modifier.padding(start = 7.5.dp, end = 7.5.dp)) {
         Surface(shape = CircleShape,
@@ -124,7 +124,7 @@ fun UserProfileImg() {
                 modifier = Modifier.align(alignment = Alignment.BottomEnd)) {
 
                 IconButton(onClick = { /*TODO*/ }) {
-                    Image(painter = painterResource(id = R.drawable.cameraicon),
+                    Image(painter = painterResource(id = icon),
                         contentDescription = null,
                         modifier = Modifier
                             .size(40.dp)
@@ -242,7 +242,7 @@ fun ContactLayout(
         horizontalAlignment = Alignment.CenterHorizontally) {
 
         //User Profile Photo with Spiral Design
-        UserProfileImg()
+        UserProfileImg(icon = R.drawable.cameraicon)
 
         Spacer(modifier = Modifier.height(30.dp))
         // User Details

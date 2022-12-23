@@ -324,6 +324,10 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+
+    // Stepper
+    implementation 'com.github.maryamrzdh:compose-stepper:1.0.0-beta01'
+
 }
 
 kapt {

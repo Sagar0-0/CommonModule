@@ -6,10 +6,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -18,34 +16,29 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.R
+import fit.asta.health.profile.bottomsheets.components.TimerButton
 import fit.asta.health.profile.view.components.AddIcon
 import fit.asta.health.profile.view.components.ChipsOnCards
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-
-@OptIn(ExperimentalCoroutinesApi::class)
-@ExperimentalMaterial3Api
+@Preview
 @Composable
 fun CreateProfilePage2() {
 
     val radioButtonList =
         listOf(ButtonListTypes(buttonType = "Yes"), ButtonListTypes(buttonType = "No"))
 
-    val radioButtonList2 = listOf(
-        ButtonListTypes(buttonType = "Yes"),
+    val radioButtonList2 = listOf(ButtonListTypes(buttonType = "Yes"),
         ButtonListTypes(buttonType = "No"),
-        ButtonListTypes(buttonType = "Don't Know")
-    )
+        ButtonListTypes(buttonType = "Don't Know"))
 
-    val radioButtonList3 = listOf(
-        ButtonListTypes(buttonType = "Morning"),
+    val radioButtonList3 = listOf(ButtonListTypes(buttonType = "Morning"),
         ButtonListTypes(buttonType = "Afternoon"),
-        ButtonListTypes(buttonType = "Night")
-    )
+        ButtonListTypes(buttonType = "Night"))
 
     val healthHistoryList = listOf("Diabetes", "Heart Disease", "Stroke", "Depression")
 
@@ -57,12 +50,13 @@ fun CreateProfilePage2() {
 
     val healthHistoryList5 = listOf("Cycling", "Walking", "Swimming", "Gym", "Dancing", "Bowling")
 
+    val checkedState = remember { mutableStateOf(true) }
+
     Card(modifier = Modifier
         .fillMaxWidth()
         .padding(16.dp)
         .verticalScroll(rememberScrollState()),
-        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)) {
+        elevation = 5.dp) {
 
         Column(modifier = Modifier
             .fillMaxWidth()
@@ -79,18 +73,21 @@ fun CreateProfilePage2() {
 
             SelectionCardCreateProfile(cardType = "Any Significant Health history?",
                 cardList = healthHistoryList,
-                radioButtonList = radioButtonList)
+                radioButtonList = radioButtonList,
+                checkedState)
 
             Spacer(modifier = Modifier.height(16.dp))
 
             SelectionCardCreateProfile(cardType = "Any Significant health Injuries ?",
                 cardList = healthHistoryList2,
-                radioButtonList = radioButtonList2)
+                radioButtonList = radioButtonList2,
+                checkedState)
 
             Spacer(modifier = Modifier.height(16.dp))
 
             OnlyChipSelectionCard(cardType = "When were you Injured?",
-                cardList = healthHistoryList3)
+                cardList = healthHistoryList3,
+                checkedState)
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -105,7 +102,8 @@ fun CreateProfilePage2() {
             Spacer(modifier = Modifier.height(16.dp))
 
             OnlyChipSelectionCard(cardType = "What activities are indulge in?",
-                cardList = healthHistoryList5)
+                cardList = healthHistoryList5,
+                checkedState)
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -114,12 +112,12 @@ fun CreateProfilePage2() {
     }
 }
 
-
 @Composable
 fun SelectionCardCreateProfile(
     cardType: String,
     cardList: List<String>,
     radioButtonList: List<ButtonListTypes>,
+    checkedState: (MutableState<Boolean>)? = null,
 ) {
 
     Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp), elevation = 5.dp) {
@@ -136,7 +134,7 @@ fun SelectionCardCreateProfile(
                         color = Color(0xff132839),
                         fontWeight = FontWeight.Medium)
                 }
-                AddIcon()
+                AddIcon(onClick = {/*Todo*/ })
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -145,13 +143,12 @@ fun SelectionCardCreateProfile(
 
             FlowRow(mainAxisSpacing = 8.dp, crossAxisSpacing = 4.dp) {
                 cardList.forEach {
-                    ChipsOnCards(textOnChip = it, checkedState = null)
+                    ChipsOnCards(textOnChip = it, checkedState = checkedState)
                 }
             }
         }
     }
 }
-
 
 @Composable
 fun RadioButtonCreateProfile(
@@ -178,12 +175,14 @@ fun RadioButtonCreateProfile(
     }
 }
 
-
 @Composable
 fun OnlyChipSelectionCard(
     cardType: String,
     cardList: List<String>,
+    checkedState: (MutableState<Boolean>)? = null,
 ) {
+
+
     Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp), elevation = 5.dp) {
         Column(modifier = Modifier
             .fillMaxWidth()
@@ -198,19 +197,19 @@ fun OnlyChipSelectionCard(
                         color = Color(0xff132839),
                         fontWeight = FontWeight.Medium)
                 }
+                AddIcon(onClick = {/*Todo*/ })
             }
             Spacer(modifier = Modifier.height(16.dp))
 
             FlowRow(mainAxisSpacing = 8.dp, crossAxisSpacing = 4.dp) {
                 cardList.forEach {
-                    ChipsOnCards(textOnChip = it, checkedState = null)
+                    ChipsOnCards(textOnChip = it, checkedState = checkedState)
                 }
             }
 
         }
     }
 }
-
 
 @Composable
 fun SelectionOutlineButton(
@@ -246,7 +245,6 @@ fun SelectionOutlineButton(
     }
 }
 
-
 @Composable
 fun OutlineButton(textOnChip: String) {
     OutlinedButton(onClick = { /*TODO*/ },
@@ -261,14 +259,13 @@ fun OutlineButton(textOnChip: String) {
     }
 }
 
-
 @Composable
 fun TimerButton() {
 
     Column(Modifier.fillMaxWidth()) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
 
-            Button(onClick = {},
+            Button(onClick = {/*Todo*/ },
                 content = {
                     Text(text = "Skip",
                         color = Color.White,
@@ -281,7 +278,7 @@ fun TimerButton() {
 
             Spacer(modifier = Modifier.width(24.dp))
 
-            Button(onClick = {},
+            Button(onClick = {/*Todo*/ },
                 content = {
                     Text(text = "Done",
                         color = Color.White,
