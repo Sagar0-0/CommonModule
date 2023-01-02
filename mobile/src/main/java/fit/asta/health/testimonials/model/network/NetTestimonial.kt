@@ -24,10 +24,10 @@ data class NetTestimonial(
 )
 
 data class NetMedia(
+    @SerializedName("name")
+    val name: String,
     @SerializedName("ttl")
     val title: String,
-    @SerializedName("type")
-    val type: Int,
     @SerializedName("url")
     var url: String
 )

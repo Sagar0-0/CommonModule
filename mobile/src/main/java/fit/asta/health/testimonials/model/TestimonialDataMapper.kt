@@ -1,6 +1,9 @@
 package fit.asta.health.testimonials.model
 
-import fit.asta.health.testimonials.model.domain.*
+import fit.asta.health.testimonials.model.domain.Media
+import fit.asta.health.testimonials.model.domain.Testimonial
+import fit.asta.health.testimonials.model.domain.TestimonialType
+import fit.asta.health.testimonials.model.domain.TestimonialUser
 import fit.asta.health.testimonials.model.network.NetMedia
 import fit.asta.health.testimonials.model.network.NetTestimonial
 import fit.asta.health.testimonials.model.network.NetTestimonialUser
@@ -31,8 +34,8 @@ class TestimonialDataMapper {
     private fun mapToMedia(mediaList: List<NetMedia>?): List<Media>? {
         return mediaList?.map {
             Media(
+                index = 0, //it.name?.toInt()!!,
                 title = it.title,
-                type = MediaType.fromInt(it.type),
                 url = it.url
             )
         }
@@ -60,8 +63,8 @@ class TestimonialDataMapper {
     private fun mapToNetMedia(mediaList: List<Media>?): List<NetMedia>? {
         return mediaList?.map {
             NetMedia(
+                name = it.index.toString(),
                 title = it.title,
-                type = it.type.value,
                 url = it.url
             )
         }

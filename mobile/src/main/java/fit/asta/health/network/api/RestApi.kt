@@ -174,8 +174,11 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
         return apiService.getTestimonials(index, limit)
     }
 
-    override suspend fun updateTestimonial(netTestimonial: NetTestimonial): Status {
-        return apiService.updateTestimonial(netTestimonial)
+    override suspend fun updateTestimonial(
+        netTestimonial: NetTestimonial,
+        files: MultipartBody
+    ): Status {
+        return apiService.updateTestimonial(netTestimonial = netTestimonial, files = files)
     }
 
     override suspend fun getUserTestimonial(userId: String): NetTestimonialRes {

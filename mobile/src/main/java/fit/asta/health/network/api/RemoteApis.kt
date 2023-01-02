@@ -103,7 +103,7 @@ interface RemoteApis {
 
     //Testimonial Endpoints
     suspend fun getTestimonials(index: Int, limit: Int): NetTestimonialsRes
-    suspend fun updateTestimonial(netTestimonial: NetTestimonial): Status
+    suspend fun updateTestimonial(netTestimonial: NetTestimonial, files: MultipartBody): Status
     suspend fun getUserTestimonial(userId: String): NetTestimonialRes
 
     //Feedback Endpoints

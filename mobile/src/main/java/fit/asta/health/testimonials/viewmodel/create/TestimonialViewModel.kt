@@ -1,6 +1,5 @@
 package fit.asta.health.testimonials.viewmodel.create
 
-import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,8 +10,6 @@ import fit.asta.health.R
 import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.network.NetworkHelper
 import fit.asta.health.network.data.SingleFileUpload
-import fit.asta.health.network.data.UploadInfo
-import fit.asta.health.network.repo.FileUploadRepo
 import fit.asta.health.testimonials.model.TestimonialRepo
 import fit.asta.health.testimonials.model.domain.Media
 import fit.asta.health.testimonials.model.domain.Testimonial
@@ -35,8 +32,7 @@ class TestimonialViewModel
 @Inject constructor(
     private val testimonialRepo: TestimonialRepo,
     private val authRepo: AuthRepo,
-    val networkHelper: NetworkHelper,
-    private val fileRepo: FileUploadRepo,
+    val networkHelper: NetworkHelper
 ) : ViewModel() {
 
     var title by mutableStateOf(UiString.Resource(R.string.testimonial_title_create))
@@ -95,33 +91,11 @@ class TestimonialViewModel
 
     private fun updateTestimonial(netTestimonial: Testimonial) {
         viewModelScope.launch {
-            testimonialRepo.updateTestimonial(netTestimonial).catch { exception ->
+            testimonialRepo.updateTestimonial(netTestimonial, listOf()).catch { exception ->
                 _stateChannel.send(TestimonialSubmitState.Error(exception))
             }.collect {
                 clearErrors()
                 _stateChannel.send(TestimonialSubmitState.Success(it))
-            }
-        }
-    }
-
-    private fun uploadFile(filePath: Uri?) {
-
-        if (filePath == null) return
-
-        viewModelScope.launch {
-            authRepo.getUser()?.let { user ->
-                fileRepo.uploadFile(
-                    fileInfo = UploadInfo(
-                        id = media.id,
-                        uid = user.uid,
-                        feature = "testimonial",
-                        filePath = filePath
-                    )
-                ).catch {
-
-                }.collect {
-                    media = it
-                }
             }
         }
     }
@@ -131,8 +105,8 @@ class TestimonialViewModel
             is TestimonialEvent.OnTypeChange -> {
                 if (event.type == TestimonialType.IMAGE) {
                     if (data.media.isEmpty()) {
-                        data.media.add(0, Media(inx = 0, title = "Before Image"))
-                        data.media.add(1, Media(inx = 1, title = "After Image"))
+                        data.media.add(0, Media(index = 0, title = "Before Image"))
+                        data.media.add(1, Media(index = 1, title = "After Image"))
                     }
                 }
                 this.data = this.data.copy(type = event.type)
@@ -160,6 +134,7 @@ class TestimonialViewModel
             }
             is TestimonialEvent.OnMediaClear -> {
                 this.data.media[event.inx] = this.data.media[event.inx].copy(url = "")
+                this.data.enableSubmit = validateTestimonial(data.type)
             }
             is TestimonialEvent.OnSubmit -> {
                 submit()
@@ -168,8 +143,9 @@ class TestimonialViewModel
                 curInx = event.inx
             }
             is TestimonialEvent.OnMediaSelect -> {
-                this.data.media[curInx] = this.data.media[curInx].copy(url = event.url.toString())
-                uploadFile(event.url)
+                this.data.media[curInx] =
+                    this.data.media[curInx].copy(url = if (event.url == null) "" else event.url.toString())
+                this.data.enableSubmit = validateTestimonial(data.type)
             }
         }
     }
@@ -240,81 +216,3 @@ class TestimonialViewModel
                 )
     }
 }
-
-/*
-Testimonials:
-
--> 1. Upload file to S3 -> 2. Create the entry in the DB -> 3. Response
--> 1. Upload file to S3 -> 2. Create the entry in the DB -> 3. Response
-
-Cache in the Local DB
-
--> 4. Read the URL from response -> 5. Update the Urls in the Testimonial -> 6. Create/Update Testimonial
-
-Profile:
-
--> 1. Upload file to S3 -> 2. Create the entry in the DB -> 3. Response
-
-Cache in the Local DB
-
--> 4. Read the URL from response -> 5. Update the Urls in the Profile -> 6. Create/Update Profile
-
-Schedule Tag:
-
--> 1. Upload file to S3 -> 2. Create the entry in the DB -> 3. Response
-
-Cache in the Local DB
-
--> 4. Read the URL from response -> 5. Update the Urls in the Tag -> 6. Create/Update Tag
-
-
-Feedback:
-
--> 1. Upload file to S3 -> 2. Create the Cache in the DB -> 3. Response
-
-Cache in the Local DB
-
--> 4. Read the URL from response -> 5. Update the Urls in the Feedback -> 6. Create/Update Feedback
-
-
-Order Madicine (Prescription):
-
-
-Consultation Chat (Prescriptions and Reports):
-
-
-Review (Images or Videos):
-
-
-Diagnostics (Prescription):
-
-
-
-Server Cache:
-
-Create / Update:
-
--> 1. Upload file to S3 -> 2. Create the Cache in the DB -> 3. Response
-
--> 4. Create/Update Testimonial request -> 5. Read the media information from Cache -> 6. Change the model data -> 7. Create/Update the db entry -> 8. Delete the cache
-
-Read:
-
-1. Find the testimonial  -> 2. If the testimonial is avaiable, read the testimonial
-    -> 3. If the testimonial not availble then find the media in the cache -> 4. If media available read it from the Cache -> 5. Create the empty testimonial with Media
-    -> 6. Response
-    -> 4. If the media not available the send empty or not found response
-
-Who need to Cache??
-
-App ->
-
-DisAdv:
-1.Is Room DB can be tampered? 2. iOS and Android implementation
-Adv: 1. Less burden on the server, 2. Offline support can be added
-
-Server ->
-
-DisAdv: 1. Usage of more computation power
-Adv: 1. Security 2. Single implementation
- */

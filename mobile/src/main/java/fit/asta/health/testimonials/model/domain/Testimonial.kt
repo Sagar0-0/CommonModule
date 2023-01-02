@@ -29,9 +29,8 @@ data class TestimonialUser(
 )
 
 data class Media(
-    val inx: Int = 0,
+    val index: Int = -1,
     val title: String = "",
-    val type: MediaType = MediaType.IMAGE,
     var url: String = ""
 )
 

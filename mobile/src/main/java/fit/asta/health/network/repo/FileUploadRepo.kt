@@ -69,7 +69,7 @@ class FileUploadRepo(
 
             val documentFile = DocumentFile.fromSingleUri(context, it.filePath)
             val contentPart = InputStreamRequestBody(context.contentResolver, it.filePath)
-            multipart.addFormDataPart(name = "files", filename = documentFile?.name, contentPart)
+            multipart.addFormDataPart(name = "file", filename = documentFile?.name, contentPart)
         }
 
         return flow {

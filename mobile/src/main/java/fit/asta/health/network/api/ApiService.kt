@@ -151,7 +151,11 @@ interface ApiService {
     ): NetTestimonialsRes
 
     @PUT("testimonial/put/")
-    suspend fun updateTestimonial(@Body netTestimonial: NetTestimonial): Status
+    @Multipart
+    suspend fun updateTestimonial(
+        @Part("json") netTestimonial: NetTestimonial,
+        @Part files: MultipartBody
+    ): Status
 
     @GET("testimonial/get/?")
     suspend fun getUserTestimonial(@Query("uid") userId: String): NetTestimonialRes

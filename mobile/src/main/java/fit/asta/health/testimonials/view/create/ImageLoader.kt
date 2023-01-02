@@ -90,19 +90,19 @@ fun ImagePreviewLayout(
                     items(viewModel.data.media) { mda ->
 
                         Box {
-                            if (mda.url.isNotEmpty()) {
+                            if (mda.url.isEmpty()) {
+                                UploadImageView(
+                                    title = mda.title,
+                                    inx = mda.index,
+                                    onImageClick = onImageClick
+                                )
+                            } else {
                                 SelectedImageView(
                                     title = mda.title,
-                                    inx = mda.inx,
+                                    inx = mda.index,
                                     url = mda.url,
                                     onImageClick = onImageClick,
                                     onImageClear = onImageClear
-                                )
-                            } else {
-                                UploadImageView(
-                                    title = mda.title,
-                                    inx = mda.inx,
-                                    onImageClick = onImageClick
                                 )
                             }
                         }

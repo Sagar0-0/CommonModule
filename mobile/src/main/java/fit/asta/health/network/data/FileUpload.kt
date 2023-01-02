@@ -14,8 +14,8 @@ data class Media(
 data class SingleFileUpload(
     @SerializedName("id")
     val id: String = "",
-    @SerializedName("feature")
-    val feature: String = "",
+    @SerializedName("name")
+    val name: String = "",
     @SerializedName("mda")
     val media: Media = Media()
 )
@@ -30,8 +30,8 @@ data class SingleFileUploadRes(
 data class MultiFileUpload(
     @SerializedName("id")
     val id: String,
-    @SerializedName("feature")
-    val feature: String,
+    @SerializedName("name")
+    val name: String,
     @SerializedName("mda")
     val mda: List<Media>
 )
