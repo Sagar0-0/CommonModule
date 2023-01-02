@@ -15,12 +15,11 @@ import androidx.compose.ui.unit.dp
 import fit.asta.health.profile.view.ButtonListTypes
 import fit.asta.health.profile.view.OnlyChipSelectionCard
 import fit.asta.health.profile.view.SelectionCardCreateProfile
-import fit.asta.health.profile.view.TimerButton
 
 
 @Preview
 @Composable
-fun HealthContent() {
+fun HealthContent(eventSkip: (() -> Unit)? = null, eventNext: (() -> Unit)? = null) {
 
     var text by remember { mutableStateOf(TextFieldValue("")) }
     val focusManager = LocalFocusManager.current
@@ -83,7 +82,9 @@ fun HealthContent() {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            TimerButton()
+            CreateProfileButtons(eventSkip, eventNext)
+
+            Spacer(modifier = Modifier.height(20.dp))
         }
     }
 

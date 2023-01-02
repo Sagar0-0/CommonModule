@@ -12,11 +12,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fit.asta.health.profile.view.*
+import fit.asta.health.profile.view.AddressType
+import fit.asta.health.profile.view.ButtonListTypes
+import fit.asta.health.profile.view.OnlyChipSelectionCard
+import fit.asta.health.profile.view.SelectionOutlineButton
 
 @Preview
 @Composable
-fun LifeStyleContent() {
+fun LifeStyleContent(eventSkip: (() -> Unit)? = null, eventNext: (() -> Unit)? = null) {
 
 
     val healthHistoryList4 = listOf("Less", "Moderate", "Very")
@@ -63,7 +66,9 @@ fun LifeStyleContent() {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            TimerButton()
+            CreateProfileButtons(eventSkip, eventNext)
+
+            Spacer(modifier = Modifier.height(20.dp))
         }
     }
 

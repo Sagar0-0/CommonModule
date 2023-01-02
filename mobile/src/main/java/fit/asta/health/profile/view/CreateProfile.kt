@@ -251,7 +251,7 @@ fun CreateProfile() {
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            NextButton()
+            NextButton(text = "Next")
         }
     }
 }
@@ -406,21 +406,22 @@ fun UserConsent() {
 
 
 @Composable
-fun NextButton() {
-    Button(modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 16.dp)
-        .clip(shape = RectangleShape),
-        shape = RoundedCornerShape(5.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color(0xff0088FF)),
-        onClick = {}) {
-        Text(text = "NEXT",
-            fontFamily = FontFamily.Default,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium,
-            color = Color.White,
-            lineHeight = 16.sp,
-            letterSpacing = 1.25.sp,
-            textAlign = TextAlign.Center)
+fun NextButton(text: String, modifier: Modifier = Modifier, event: (() -> Unit)? = null) {
+    event?.let {
+        Button(modifier = modifier
+            .padding(horizontal = 16.dp)
+            .clip(shape = RectangleShape),
+            shape = RoundedCornerShape(5.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xff0088FF)),
+            onClick = it) {
+            Text(text = text,
+                fontFamily = FontFamily.Default,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color.White,
+                lineHeight = 16.sp,
+                letterSpacing = 1.25.sp,
+                textAlign = TextAlign.Center)
+        }
     }
 }

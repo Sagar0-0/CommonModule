@@ -29,7 +29,7 @@ import fit.asta.health.profile.view.UserConsent
 @ExperimentalMaterial3Api
 @Preview
 @Composable
-fun DetailsContent() {
+fun DetailsContent(eventNext: (() -> Unit)? = null) {
 
     Card(shape = RoundedCornerShape(16.dp)) {
 
@@ -108,13 +108,12 @@ fun DetailsContent() {
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            NextButton()
+            NextButton(text = "Next", modifier = Modifier.fillMaxWidth(1f), event = eventNext)
 
             Spacer(modifier = Modifier.height(16.dp))
 
         }
 
     }
-
 
 }

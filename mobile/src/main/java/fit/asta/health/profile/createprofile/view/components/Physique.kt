@@ -27,11 +27,12 @@ import androidx.compose.ui.unit.sp
 import fit.asta.health.profile.view.AddressType
 import fit.asta.health.profile.view.Alpha
 import fit.asta.health.profile.view.ButtonListTypes
+import fit.asta.health.profile.view.NextButton
 
 
 @Preview
 @Composable
-fun PhysiqueContent() {
+fun PhysiqueContent(eventSkip: (() -> Unit)? = null, eventNext: (() -> Unit)? = null) {
 
     val placeHolderDOB = listOf("DAY", "MONTH", "YEAR")
 
@@ -177,9 +178,21 @@ fun PhysiqueContent() {
                 colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent))
 
             Spacer(modifier = Modifier.height(20.dp))
+
+            CreateProfileButtons(eventSkip, eventNext)
+
+            Spacer(modifier = Modifier.height(20.dp))
         }
     }
 
+}
+
+@Composable
+fun CreateProfileButtons(eventSkip: (() -> Unit)? = null, eventNext: (() -> Unit)? = null) {
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        NextButton(text = "Skip", modifier = Modifier.fillMaxWidth(0.5f), event = eventNext)
+        NextButton(text = "Next", modifier = Modifier.fillMaxWidth(1f), event = eventNext)
+    }
 }
 
 @Composable
