@@ -154,7 +154,7 @@ interface ApiService {
     @Multipart
     suspend fun updateTestimonial(
         @Part("json") netTestimonial: NetTestimonial,
-        @Part files: MultipartBody
+        @Part files: List<MultipartBody.Part>
     ): Status
 
     @GET("testimonial/get/?")

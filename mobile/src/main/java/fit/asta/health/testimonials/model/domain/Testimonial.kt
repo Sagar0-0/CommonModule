@@ -1,5 +1,7 @@
 package fit.asta.health.testimonials.model.domain
 
+import android.net.Uri
+
 data class Testimonial(
     val id: String = "",
     val type: TestimonialType = TestimonialType.TEXT,
@@ -29,9 +31,10 @@ data class TestimonialUser(
 )
 
 data class Media(
-    val index: Int = -1,
+    val name: String = "",
     val title: String = "",
-    var url: String = ""
+    var url: String = "",
+    var localUrl: Uri? = null
 )
 
 enum class MediaType(val value: Int) {

@@ -9,7 +9,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.R
 import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.network.NetworkHelper
-import fit.asta.health.network.data.SingleFileUpload
 import fit.asta.health.testimonials.model.TestimonialRepo
 import fit.asta.health.testimonials.model.domain.Media
 import fit.asta.health.testimonials.model.domain.Testimonial
@@ -41,9 +40,6 @@ class TestimonialViewModel
     var data by mutableStateOf(TestimonialData())
         private set
 
-    var media by mutableStateOf(SingleFileUpload())
-        private set
-
     private var curInx = 0
 
     private val _mutableState = MutableStateFlow<TestimonialGetState>(TestimonialGetState.Loading)
@@ -68,8 +64,8 @@ class TestimonialViewModel
 
     private fun loadTestimonial(userId: String) {
         viewModelScope.launch {
-            testimonialRepo.getTestimonial(userId).catch { exception ->
-                //_mutableState.value = TestimonialGetState.Error(exception)
+            testimonialRepo.getTestimonial(userId).catch { ex ->
+                //_mutableState.value = TestimonialGetState.Error(ex)
                 _mutableState.value = TestimonialGetState.Empty
             }.collect {
 
@@ -91,12 +87,13 @@ class TestimonialViewModel
 
     private fun updateTestimonial(netTestimonial: Testimonial) {
         viewModelScope.launch {
-            testimonialRepo.updateTestimonial(netTestimonial, listOf()).catch { exception ->
-                _stateChannel.send(TestimonialSubmitState.Error(exception))
-            }.collect {
-                clearErrors()
-                _stateChannel.send(TestimonialSubmitState.Success(it))
-            }
+            testimonialRepo.updateTestimonial(netTestimonial)
+                .catch { ex ->
+                    _stateChannel.send(TestimonialSubmitState.Error(ex))
+                }.collect {
+                    clearErrors()
+                    _stateChannel.send(TestimonialSubmitState.Success(it))
+                }
         }
     }
 
@@ -105,8 +102,8 @@ class TestimonialViewModel
             is TestimonialEvent.OnTypeChange -> {
                 if (event.type == TestimonialType.IMAGE) {
                     if (data.media.isEmpty()) {
-                        data.media.add(0, Media(index = 0, title = "Before Image"))
-                        data.media.add(1, Media(index = 1, title = "After Image"))
+                        data.media.add(0, Media(name = "0", title = "Before Image"))
+                        data.media.add(1, Media(name = "1", title = "After Image"))
                     }
                 }
                 this.data = this.data.copy(type = event.type)
@@ -133,7 +130,7 @@ class TestimonialViewModel
                 this.data.enableSubmit = validateTestimonial(data.type)
             }
             is TestimonialEvent.OnMediaClear -> {
-                this.data.media[event.inx] = this.data.media[event.inx].copy(url = "")
+                this.data.media[event.inx] = this.data.media[event.inx].copy(localUrl = null)
                 this.data.enableSubmit = validateTestimonial(data.type)
             }
             is TestimonialEvent.OnSubmit -> {
@@ -143,9 +140,10 @@ class TestimonialViewModel
                 curInx = event.inx
             }
             is TestimonialEvent.OnMediaSelect -> {
-                this.data.media[curInx] =
-                    this.data.media[curInx].copy(url = if (event.url == null) "" else event.url.toString())
-                this.data.enableSubmit = validateTestimonial(data.type)
+                if (event.url != null) {
+                    this.data.media[curInx] = this.data.media[curInx].copy(localUrl = event.url)
+                    this.data.enableSubmit = validateTestimonial(data.type)
+                }
             }
         }
     }
@@ -168,7 +166,7 @@ class TestimonialViewModel
                         org = this.data.org.trim(),
                         url = it.photoUrl.toString()
                     ),
-                    media = listOf()
+                    media = this.data.media
                 )
             )
         }

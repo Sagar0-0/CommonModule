@@ -176,7 +176,7 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
 
     override suspend fun updateTestimonial(
         netTestimonial: NetTestimonial,
-        files: MultipartBody
+        files: List<MultipartBody.Part>
     ): Status {
         return apiService.updateTestimonial(netTestimonial = netTestimonial, files = files)
     }

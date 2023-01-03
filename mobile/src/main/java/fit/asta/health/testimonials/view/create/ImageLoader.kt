@@ -1,5 +1,6 @@
 package fit.asta.health.testimonials.view.create
 
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -28,6 +29,7 @@ import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.R
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
 import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
+import fit.asta.health.utils.getImageUrl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -90,17 +92,17 @@ fun ImagePreviewLayout(
                     items(viewModel.data.media) { mda ->
 
                         Box {
-                            if (mda.url.isEmpty()) {
+                            if (mda.url.isEmpty() && mda.localUrl == null) {
                                 UploadImageView(
                                     title = mda.title,
-                                    inx = mda.index,
+                                    inx = mda.name.toInt(),
                                     onImageClick = onImageClick
                                 )
                             } else {
                                 SelectedImageView(
                                     title = mda.title,
-                                    inx = mda.index,
-                                    url = mda.url,
+                                    inx = mda.name.toInt(),
+                                    url = getOneUrl(mda.localUrl, mda.url),
                                     onImageClick = onImageClick,
                                     onImageClear = onImageClear
                                 )
@@ -111,6 +113,11 @@ fun ImagePreviewLayout(
             }
         }
     }
+}
+
+@Composable
+private fun getOneUrl(localUrl: Uri?, remoteUrl: String): String {
+    return localUrl?.toString() ?: getImageUrl(remoteUrl)
 }
 
 @Composable

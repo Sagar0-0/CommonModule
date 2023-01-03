@@ -34,7 +34,7 @@ class TestimonialDataMapper {
     private fun mapToMedia(mediaList: List<NetMedia>?): List<Media>? {
         return mediaList?.map {
             Media(
-                index = 0, //it.name?.toInt()!!,
+                name = it.name,
                 title = it.title,
                 url = it.url
             )
@@ -63,7 +63,7 @@ class TestimonialDataMapper {
     private fun mapToNetMedia(mediaList: List<Media>?): List<NetMedia>? {
         return mediaList?.map {
             NetMedia(
-                name = it.index.toString(),
+                name = it.name,
                 title = it.title,
                 url = it.url
             )
