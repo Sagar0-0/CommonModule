@@ -1,4 +1,4 @@
-package fit.asta.health.network.api
+package fit.asta.health.thirdparty.spotify.api
 
 import fit.asta.health.thirdparty.spotify.model.net.albums.SpotifyAlbumDetailsModel
 import fit.asta.health.thirdparty.spotify.model.net.categories.SpotifyBrowseCategoriesModel

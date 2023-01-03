@@ -1,11 +1,11 @@
-package fit.asta.health.di
+package fit.asta.health.thirdparty.spotify.di
 
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.network.api.SpotifyApiService
-import fit.asta.health.network.api.SpotifyRemoteApis
+import fit.asta.health.thirdparty.spotify.api.SpotifyApiService
+import fit.asta.health.thirdparty.spotify.api.SpotifyRemoteApis
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.SPOTIFY_BASE_URL
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

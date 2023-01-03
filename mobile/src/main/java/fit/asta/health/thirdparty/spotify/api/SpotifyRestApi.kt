@@ -1,4 +1,4 @@
-package fit.asta.health.network.api
+package fit.asta.health.thirdparty.spotify.api
 
 import android.util.Log
 import fit.asta.health.thirdparty.spotify.model.net.albums.SpotifyAlbumDetailsModel
