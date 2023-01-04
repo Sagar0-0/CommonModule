@@ -87,43 +87,22 @@ fun BeforeAndCardLayout(testimonial: Testimonial) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.padding(0.dp)
             ) {
-                Box(Modifier.padding(2.dp), contentAlignment = Alignment.BottomCenter) {
 
-                    val media = testimonial.media?.get(0)
-                    if (media != null) {
+                testimonial.media.forEach {
+
+                    Box(Modifier.padding(2.dp), contentAlignment = Alignment.BottomCenter) {
 
                         AsyncImage(
-                            model = getImageUrl(media.url),
+                            model = getImageUrl(it.url),
                             contentDescription = null,
                             Modifier
                                 .fillMaxWidth(0.5f)
                                 .height(180.dp),
                             contentScale = ContentScale.Crop
                         )
-                        Text(
-                            text = media.title,
-                            fontSize = 16.sp,
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(10.dp)
-                        )
-                    }
-                }
-                Box(Modifier.padding(2.dp), contentAlignment = Alignment.BottomCenter) {
 
-                    val media = testimonial.media?.get(1)
-                    if (media != null) {
-
-                        AsyncImage(
-                            model = getImageUrl(media.url),
-                            contentDescription = null,
-                            Modifier
-                                .fillMaxWidth(1f)
-                                .height(180.dp),
-                            contentScale = ContentScale.Crop
-                        )
                         Text(
-                            text = media.title,
+                            text = it.title,
                             fontSize = 16.sp,
                             color = Color.White,
                             fontWeight = FontWeight.Bold,
@@ -134,5 +113,6 @@ fun BeforeAndCardLayout(testimonial: Testimonial) {
             }
         }
     }
+
     Spacer(modifier = Modifier.height(16.dp))
 }

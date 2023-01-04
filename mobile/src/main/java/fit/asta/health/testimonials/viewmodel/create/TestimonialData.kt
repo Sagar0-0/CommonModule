@@ -1,6 +1,7 @@
 package fit.asta.health.testimonials.viewmodel.create
 
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import fit.asta.health.testimonials.model.domain.Media
 import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.utils.UiString
@@ -17,7 +18,7 @@ data class TestimonialData(
     var roleError: UiString = UiString.Empty,
     val org: String = "",
     var orgError: UiString = UiString.Empty,
-    val media: MutableList<Media> = mutableStateListOf(),
+    val media: SnapshotStateList<Media> = mutableStateListOf(),
     val mediaError: UiString = UiString.Empty,
     var enableSubmit: Boolean = false
 )

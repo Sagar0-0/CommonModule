@@ -10,7 +10,7 @@ data class NetTestimonial(
     @SerializedName("type")
     val type: Int,
     @SerializedName("mda")
-    val media: List<NetMedia>?,
+    val media: List<NetMedia>,
     @SerializedName("rank")
     val rank: Int,
     @SerializedName("text")

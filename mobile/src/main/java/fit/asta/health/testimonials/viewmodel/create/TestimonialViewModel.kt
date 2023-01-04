@@ -78,7 +78,8 @@ class TestimonialViewModel
                     title = it.title,
                     testimonial = it.testimonial,
                     role = it.user.role,
-                    org = it.user.org
+                    org = it.user.org,
+                    media = it.media
                 )
                 _mutableState.value = TestimonialGetState.Success(it)
             }

@@ -1,6 +1,8 @@
 package fit.asta.health.testimonials.model.domain
 
 import android.net.Uri
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 
 data class Testimonial(
     val id: String = "",
@@ -10,7 +12,7 @@ data class Testimonial(
     val testimonial: String = "",
     val userId: String,
     val user: TestimonialUser,
-    val media: List<Media>?,
+    val media: SnapshotStateList<Media> = mutableStateListOf(),
 )
 
 enum class TestimonialType(val value: Int) {

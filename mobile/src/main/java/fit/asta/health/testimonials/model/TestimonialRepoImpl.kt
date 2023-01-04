@@ -38,7 +38,7 @@ class TestimonialRepoImpl(
     override suspend fun updateTestimonial(testimonial: Testimonial): Flow<Status> {
 
         val parts: ArrayList<MultipartBody.Part> = ArrayList()
-        testimonial.media?.forEach {
+        testimonial.media.forEach {
             if (it.localUrl != null) {
                 val contentPart = InputStreamRequestBody(context.contentResolver, it.localUrl!!)
                 parts.add(
