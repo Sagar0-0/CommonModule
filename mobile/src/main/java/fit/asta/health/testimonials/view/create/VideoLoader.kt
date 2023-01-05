@@ -1,6 +1,5 @@
 package fit.asta.health.testimonials.view.create
 
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -23,65 +22,91 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import fit.asta.health.R
+import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
+import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+
+@OptIn(ExperimentalCoroutinesApi::class)
+@Preview
+@Composable
+fun TestGetVideo(viewModel: TestimonialViewModel = hiltViewModel()) {
+
+    val videoLauncher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
+            viewModel.onEvent(TestimonialEvent.OnMediaSelect(uri))
+        }
+
+    GetVideo(
+        viewModel = viewModel,
+        onVideoClick = {
+            videoLauncher.launch("video/*")
+            viewModel.onEvent(TestimonialEvent.OnMediaIndex(0))
+        },
+        onVideoClear = { viewModel.onEvent(TestimonialEvent.OnMediaClear(0)) }
+    )
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun GetVideo(
     modifier: Modifier = Modifier,
-    onSelectedVideo: Uri? = null,
-    onVideoClear: () -> Unit,
+    viewModel: TestimonialViewModel,
     onVideoClick: (() -> Unit)? = null,
+    onVideoClear: () -> Unit
 ) {
     Column(modifier = modifier) {
-        Text(text = "Upload Video",
+        Text(
+            text = "Upload Video",
             color = Color.Black,
             fontSize = 16.sp,
-            fontWeight = FontWeight.Medium)
+            fontWeight = FontWeight.Medium
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Box(modifier = Modifier
-            .dashedBorder(width = 1.dp, radius = 8.dp, color = Color(0xff8694A9))
-            .fillMaxWidth()) {
-            Row(horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.padding(0.dp)) {
+        Box(
+            modifier = Modifier
+                .dashedBorder(width = 1.dp, radius = 8.dp, color = Color(0xff8694A9))
+                .fillMaxWidth()
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.padding(0.dp)
+            ) {
 
-                VideoLayout(onVideoClear = onVideoClear,
-                    onSelectedVideo = onSelectedVideo,
-                    onVideoClick = onVideoClick)
-
+                VideoLayout(
+                    viewModel = viewModel,
+                    onVideoClear = onVideoClear,
+                    onVideoClick = onVideoClick
+                )
             }
         }
     }
 }
 
-
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun VideoLayout(
-    onSelectedVideo: Uri? = null,
-    onVideoClear: () -> Unit,
+    viewModel: TestimonialViewModel,
     onVideoClick: (() -> Unit)? = null,
+    onVideoClear: () -> Unit,
 ) {
 
-    var lifecycle by remember {
-        mutableStateOf(Lifecycle.Event.ON_CREATE)
-    }
-
-    val context = LocalContext.current
-    val player = ExoPlayer.Builder(context).build()
-    val playerView = PlayerView(context)
-    val mediaItem = onSelectedVideo?.let { MediaItem.fromUri(it) }
     val playWhenReady by rememberSaveable { mutableStateOf(true) }
-    mediaItem?.let { player.setMediaItem(it) }
+    val player = ExoPlayer.Builder(LocalContext.current).build()
+    val playerView = PlayerView(LocalContext.current)
     playerView.player = player
 
     val lifecycleOwner = LocalLifecycleOwner.current
-
+    var lifecycle by remember { mutableStateOf(Lifecycle.Event.ON_CREATE) }
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             lifecycle = event
@@ -93,12 +118,17 @@ fun VideoLayout(
         }
     }
 
-
-    var isVideoDeleted by remember { mutableStateOf(false) }
-
     Box {
 
-        if (onSelectedVideo != null && !isVideoDeleted) {
+        val media = viewModel.data.media[0]
+        if (media.url.isEmpty() && media.localUrl == null) {
+
+            UploadVideo(onVideoClick)
+        } else {
+
+            val mediaItem = getOneUrl(media.localUrl, media.url).let { MediaItem.fromUri(it) }
+            mediaItem.let { player.setMediaItem(it) }
+
             Box(Modifier.padding(2.dp), contentAlignment = Alignment.BottomCenter) {
 
                 AndroidView(factory = {
@@ -115,29 +145,23 @@ fun VideoLayout(
                         else -> Unit
                     }
                 })
-
-
             }
 
             Box(contentAlignment = Alignment.TopEnd, modifier = Modifier.fillMaxWidth()) {
                 IconButton(onClick = {
                     onVideoClear()
-                    isVideoDeleted = true
                 }) {
-                    Icon(painter = painterResource(id = R.drawable.ic_delete_forever),
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_delete_forever),
                         contentDescription = null,
-                        tint = Color(0xffFF4081))
+                        tint = Color(0xffFF4081)
+                    )
                 }
             }
-        } else {
-            UploadVideo(onVideoClick)
-            isVideoDeleted = false
         }
     }
 
     PlayOrDestroy(player, playWhenReady)
-
-
 }
 
 @Composable
@@ -151,7 +175,6 @@ private fun PlayOrDestroy(
     }
 }
 
-
 @Composable
 private fun UploadVideo(onVideoClick: (() -> Unit)?) {
     Box(Modifier.padding(2.dp), contentAlignment = Alignment.Center) {
@@ -160,32 +183,21 @@ private fun UploadVideo(onVideoClick: (() -> Unit)?) {
                 .fillMaxWidth()
                 .height(180.dp)
                 .clickable { onVideoClick?.let { it() } }) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally,
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxSize()) {
-                Image(painter = painterResource(id = R.drawable.upload),
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.upload),
                     contentDescription = null,
-                    modifier = Modifier.size(48.dp))
+                    modifier = Modifier.size(48.dp)
+                )
+
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Browse to choose a File")
+
+                Text(text = "Browse to choose a video")
             }
         }
     }
-}
-
-
-@Preview
-@Composable
-fun TestGetVideo() {
-
-    var selectedVideo by remember { mutableStateOf<Uri?>(null) }
-    val videoLauncher =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
-            selectedVideo = uri
-        }
-
-    GetVideo(onVideoClear = { selectedVideo = null },
-        onVideoClick = { videoLauncher.launch("video/*") },
-        onSelectedVideo = selectedVideo)
-
 }

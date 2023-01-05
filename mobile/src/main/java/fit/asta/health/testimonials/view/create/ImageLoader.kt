@@ -45,7 +45,7 @@ fun TestGetImage(viewModel: TestimonialViewModel = hiltViewModel()) {
     ImagePreviewLayout(
         viewModel = viewModel,
         onImageClick = {
-            launcher.launch("image/jpeg")
+            launcher.launch("image/*")
             viewModel.onEvent(TestimonialEvent.OnMediaIndex(it))
         },
         onImageClear = { viewModel.onEvent(TestimonialEvent.OnMediaClear(it)) }
@@ -55,8 +55,8 @@ fun TestGetImage(viewModel: TestimonialViewModel = hiltViewModel()) {
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun ImagePreviewLayout(
-    viewModel: TestimonialViewModel,
     modifier: Modifier = Modifier,
+    viewModel: TestimonialViewModel,
     onImageClick: (inx: Int) -> Unit,
     onImageClear: (inx: Int) -> Unit
 ) {
@@ -116,7 +116,7 @@ fun ImagePreviewLayout(
 }
 
 @Composable
-private fun getOneUrl(localUrl: Uri?, remoteUrl: String): String {
+fun getOneUrl(localUrl: Uri?, remoteUrl: String): String {
     return localUrl?.toString() ?: getImageUrl(remoteUrl)
 }
 

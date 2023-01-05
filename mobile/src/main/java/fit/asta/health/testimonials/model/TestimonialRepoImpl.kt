@@ -40,6 +40,7 @@ class TestimonialRepoImpl(
         val parts: ArrayList<MultipartBody.Part> = ArrayList()
         testimonial.media.forEach {
             if (it.localUrl != null) {
+                //val contentPart = RequestBody.create("image/jpg".toMediaTypeOrNull(), file)
                 val contentPart = InputStreamRequestBody(context.contentResolver, it.localUrl!!)
                 parts.add(
                     MultipartBody.Part.createFormData(

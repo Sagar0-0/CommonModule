@@ -101,38 +101,37 @@ class TestimonialViewModel
     fun onEvent(event: TestimonialEvent) {
         when (event) {
             is TestimonialEvent.OnTypeChange -> {
-                if (event.type == TestimonialType.IMAGE) {
-                    if (data.media.isEmpty()) {
-                        data.media.add(0, Media(name = "0", title = "Before Image"))
-                        data.media.add(1, Media(name = "1", title = "After Image"))
-                    }
+                //TODO - Proper handling of media based on testimonial type
+                if (data.media.isEmpty()) {
+                    data.media.add(0, Media(name = "0", title = "Before Image"))
+                    data.media.add(1, Media(name = "1", title = "After Image"))
                 }
-                this.data = this.data.copy(type = event.type)
-                this.data.enableSubmit = validateTestimonial(event.type)
+                data = data.copy(type = event.type)
+                data.enableSubmit = validateTestimonial(event.type)
             }
             is TestimonialEvent.OnTitleChange -> {
-                this.data = this.data.copy(title = event.title)
-                this.data.titleError = onValidateText(event.title, 4, 64)
-                this.data.enableSubmit = validateTestimonial(data.type)
+                data = data.copy(title = event.title)
+                data.titleError = onValidateText(event.title, 4, 64)
+                data.enableSubmit = validateTestimonial(data.type)
             }
             is TestimonialEvent.OnTestimonialChange -> {
-                this.data = this.data.copy(testimonial = event.testimonial)
-                this.data.testimonialError = onValidateText(event.testimonial, 32, 256)
-                this.data.enableSubmit = validateTestimonial(data.type)
+                data = data.copy(testimonial = event.testimonial)
+                data.testimonialError = onValidateText(event.testimonial, 32, 256)
+                data.enableSubmit = validateTestimonial(data.type)
             }
             is TestimonialEvent.OnOrgChange -> {
-                this.data = this.data.copy(org = event.org)
-                this.data.orgError = onValidateText(event.org, 4, 32)
-                this.data.enableSubmit = validateTestimonial(data.type)
+                data = data.copy(org = event.org)
+                data.orgError = onValidateText(event.org, 4, 32)
+                data.enableSubmit = validateTestimonial(data.type)
             }
             is TestimonialEvent.OnRoleChange -> {
-                this.data = this.data.copy(role = event.role)
-                this.data.roleError = onValidateText(event.role, 2, 32)
-                this.data.enableSubmit = validateTestimonial(data.type)
+                data = data.copy(role = event.role)
+                data.roleError = onValidateText(event.role, 2, 32)
+                data.enableSubmit = validateTestimonial(data.type)
             }
             is TestimonialEvent.OnMediaClear -> {
-                this.data.media[event.inx] = this.data.media[event.inx].copy(localUrl = null)
-                this.data.enableSubmit = validateTestimonial(data.type)
+                data.media[event.inx] = data.media[event.inx].copy(localUrl = null, url = "")
+                data.enableSubmit = validateTestimonial(data.type)
             }
             is TestimonialEvent.OnSubmit -> {
                 submit()
@@ -142,8 +141,8 @@ class TestimonialViewModel
             }
             is TestimonialEvent.OnMediaSelect -> {
                 if (event.url != null) {
-                    this.data.media[curInx] = this.data.media[curInx].copy(localUrl = event.url)
-                    this.data.enableSubmit = validateTestimonial(data.type)
+                    data.media[curInx] = data.media[curInx].copy(localUrl = event.url)
+                    data.enableSubmit = validateTestimonial(data.type)
                 }
             }
         }
@@ -156,18 +155,18 @@ class TestimonialViewModel
         authRepo.getUser()?.let {
             updateTestimonial(
                 Testimonial(
-                    id = this.data.id,
-                    type = this.data.type,
-                    title = this.data.title.trim(),
-                    testimonial = this.data.testimonial.trim(),
+                    id = data.id,
+                    type = data.type,
+                    title = data.title.trim(),
+                    testimonial = data.testimonial.trim(),
                     userId = it.uid,
                     user = TestimonialUser(
                         name = it.name!!,
-                        role = this.data.role.trim(),
-                        org = this.data.org.trim(),
+                        role = data.role.trim(),
+                        org = data.org.trim(),
                         url = it.photoUrl.toString()
                     ),
-                    media = this.data.media
+                    media = data.media
                 )
             )
         }
