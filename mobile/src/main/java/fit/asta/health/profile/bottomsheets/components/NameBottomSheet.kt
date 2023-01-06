@@ -16,6 +16,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fit.asta.health.ui.theme.Dark03
+import fit.asta.health.ui.theme.TextLight04
 
 data class TextFieldListData(
     val placeHolderText: String,
@@ -70,7 +72,7 @@ fun InputFromUserLayout(placeHolderText: String) {
             exercise = it
         },
         placeholder = {
-            Text(text = placeHolderText, fontSize = 16.sp, color = Color(0xff999999))
+            Text(text = placeHolderText, fontSize = 16.sp, color = Dark03)
         },
         modifier = Modifier
             .fillMaxWidth()
@@ -79,7 +81,7 @@ fun InputFromUserLayout(placeHolderText: String) {
         colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
-            cursorColor = Color(0xffDFE6ED)),
+            cursorColor = TextLight04),
         textStyle = TextStyle(color = Color.Black, fontSize = 16.sp),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Done),

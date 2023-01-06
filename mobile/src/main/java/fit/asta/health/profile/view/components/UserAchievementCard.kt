@@ -3,6 +3,7 @@ package fit.asta.health.profile.view.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -30,7 +31,7 @@ fun UserAchievementCard(
 
                 Spacer(modifier = Modifier.height(2.dp))
 
-                Text(text = cardType, fontSize = 12.sp, color = Color(0xff8694A9))
+                Text(text = cardType, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     }

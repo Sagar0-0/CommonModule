@@ -29,7 +29,7 @@ fun TestimonialsLayout(
     }, floatingActionButton = {
         FloatingActionButton(
             onClick = onNavigateUp,
-            containerColor = Color(0xff0075FF),
+            containerColor = MaterialTheme.colorScheme.primary,
             shape = CircleShape,
             modifier = Modifier.size(40.dp),
             contentColor = Color.White
@@ -42,13 +42,13 @@ fun TestimonialsLayout(
         TopAppBar(title = {
             Text(
                 text = "Testimonials",
-                color = Color(0xff010101),
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Medium,
                 fontSize = 20.sp
             )
         }, navigationIcon = {
             IconButton(onClick = onNavigateBack) {
-                Icon(Icons.Outlined.NavigateBefore, "back", tint = Color(0xff0088FF))
+                Icon(Icons.Outlined.NavigateBefore, "back", tint = MaterialTheme.colorScheme.primary)
             }
         })
     })

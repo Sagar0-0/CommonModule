@@ -248,7 +248,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
     }
 
     private fun createProfile() {
-
+/*
         lifecycleScope.launchWhenStarted {
             profileViewModel.state.collectLatest {
                 when (it) {
@@ -265,7 +265,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
                     }
                 }
             }
-        }
+        }*/
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

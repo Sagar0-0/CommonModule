@@ -32,7 +32,7 @@ fun SunlightHomeScreen() {
                 }
                 Text(text = "Sunlight",
                     fontSize = 20.sp,
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center)
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(painter = painterResource(id = R.drawable.ic_physique),

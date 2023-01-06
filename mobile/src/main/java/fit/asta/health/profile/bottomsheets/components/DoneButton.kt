@@ -5,6 +5,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,7 +21,7 @@ fun DoneButton() {
     Button(onClick = { /*TODO*/ },
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(5.dp),
-        colors = ButtonDefaults.buttonColors(Color(0xff0088FF))) {
+        colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)) {
         Text(text = "DONE",
             fontFamily = FontFamily.Default,
             fontSize = 14.sp,

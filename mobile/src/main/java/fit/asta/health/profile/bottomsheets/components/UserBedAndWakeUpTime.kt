@@ -5,6 +5,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -13,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fit.asta.health.ui.theme.TSelected
 
 @Preview
 @Composable
@@ -43,9 +45,9 @@ fun TimerButton() {
 
     var selected by remember { mutableStateOf(false) }
 
-    val colorState: Color = if (selected) Color(0xffD6D6D6) else Color(0xff0088FF)
+    val colorState: Color = if (selected) TSelected else MaterialTheme.colorScheme.primary
 
-    val colorState2: Color = if (!selected) Color(0xffD6D6D6) else Color(0xff0088FF)
+    val colorState2: Color = if (!selected) TSelected else MaterialTheme.colorScheme.primary
 
     Column(Modifier.fillMaxWidth()) {
         Row(Modifier

@@ -8,10 +8,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
@@ -29,6 +26,9 @@ import fit.asta.health.R
 import fit.asta.health.feedback.view.SubmitButton
 import fit.asta.health.profile.model.domain.Address
 import fit.asta.health.profile.model.domain.Contact
+import fit.asta.health.ui.theme.ProfileBorder1
+import fit.asta.health.ui.theme.ProfileBorder2
+import fit.asta.health.ui.theme.ProfileBorder3
 
 // User's Detail Layout
 @Composable
@@ -58,12 +58,12 @@ private fun UserDetails(
                     fontFamily = FontFamily.Default,
                     fontSize = 14.sp,
                     textAlign = TextAlign.Center,
-                    color = Color(0x99000000))
+                    color = MaterialTheme.colorScheme.onBackground)
                 Text(text = email,
                     fontFamily = FontFamily.Default,
                     fontSize = 14.sp,
                     textAlign = TextAlign.Center,
-                    color = Color(0x99000000))
+                    color = MaterialTheme.colorScheme.onBackground)
             }
         }
 
@@ -90,7 +90,7 @@ private fun UserDetails(
                 fontWeight = FontWeight.Normal,
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center,
-                color = Color(0x99000000),
+                color = MaterialTheme.colorScheme.onBackground,
                 lineHeight = 22.4.sp)
         }
 
@@ -112,7 +112,7 @@ fun UserProfileImg(icon: Int) {
         Surface(shape = CircleShape,
             modifier = Modifier.size(188.dp),
             color = Color.Transparent,
-            border = BorderStroke(1.dp, Color(0xff33A0FF))) {}
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)) {}
         Box {
             Image(painter = painterResource(id = R.drawable.userphoto),
                 contentDescription = null,
@@ -140,15 +140,15 @@ fun UserProfileImg(icon: Int) {
         Surface(shape = CircleShape,
             modifier = Modifier.size(218.dp),
             color = Color.Transparent,
-            border = BorderStroke(1.dp, Color(0xff70BCFF))) {}
+            border = BorderStroke(1.dp, ProfileBorder1)) {}
         Surface(shape = CircleShape,
             modifier = Modifier.size(248.dp),
             color = Color.Transparent,
-            border = BorderStroke(1.dp, Color(0xff99CFFF))) {}
+            border = BorderStroke(1.dp, ProfileBorder2)) {}
         Surface(shape = CircleShape,
             modifier = Modifier.size(278.dp),
             color = Color.Transparent,
-            border = BorderStroke(1.dp, Color(0xffE5F3FF))) {}
+            border = BorderStroke(1.dp, ProfileBorder3)) {}
     }
 }
 
@@ -162,7 +162,7 @@ fun EditIcon(onClick: (() -> Unit)? = null) {
             Icon(imageVector = Icons.Filled.Edit,
                 contentDescription = null,
                 modifier = Modifier.size(24.dp),
-                tint = Color(0xff0088FF))
+                tint = MaterialTheme.colorScheme.primary)
         }
     }
 
@@ -177,7 +177,7 @@ fun DetailsCard(
     imageID: Int,
 ) {
     Card(elevation = CardDefaults.cardElevation(),
-        colors = CardDefaults.cardColors(Color(0xffffffff)),
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onPrimary),
         shape = RoundedCornerShape(8.dp)) {
         Row(modifier = Modifier.padding(16.dp)) {
             Image(painter = painterResource(id = imageID),
@@ -197,7 +197,7 @@ fun DetailsCard(
                     fontSize = 12.sp,
                     fontFamily = FontFamily.Default,
                     fontWeight = FontWeight.Normal,
-                    color = Color(0xff8694A9))
+                    color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     }

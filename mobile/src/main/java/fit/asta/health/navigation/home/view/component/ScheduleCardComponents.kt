@@ -10,6 +10,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +27,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
+import fit.asta.health.ui.theme.ScheduleBackground
+import fit.asta.health.ui.theme.TextDark02
 
 @Composable
 fun ScheduleCardsImage() {
@@ -42,7 +45,7 @@ fun ScheduleTodo(todo: String) {
     Text(text = todo,
         fontSize = 12.sp,
         fontWeight = FontWeight.Normal,
-        color = Color(0xff585964),
+        color = MaterialTheme.colorScheme.onBackground,
         textAlign = TextAlign.Left)
 }
 
@@ -53,7 +56,7 @@ fun ScheduleCardTitle(title: String, value: String) {
         Text(text = title,
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium,
-            color = Color(0xff131723),
+            color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Left)
 
         Spacer(modifier = Modifier.width(16.dp))
@@ -62,7 +65,7 @@ fun ScheduleCardTitle(title: String, value: String) {
         Text(text = value,
             fontSize = 12.sp,
             fontWeight = FontWeight.Medium,
-            color = Color(0xff0277BD))
+            color = MaterialTheme.colorScheme.primary)
     }
 
 
@@ -74,7 +77,7 @@ fun ScheduleCardSelectionText(title: String) {
         onClick = { /*TODO*/ },
         style = TextStyle(fontSize = 14.sp,
             fontWeight = FontWeight.Normal,
-            color = Color(0xff0088FF)))
+            color = MaterialTheme.colorScheme.primary))
 }
 
 @Composable
@@ -82,9 +85,9 @@ fun OutlineBtn(text: String) {
 
     OutlinedButton(onClick = { /*TODO*/ },
         shape = RoundedCornerShape(8.dp),
-        border = BorderStroke(width = 1.dp, color = Color(0xff0088FF))) {
+        border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.primary)) {
         Text(text = text,
-            color = Color(0xff0088ff),
+            color = MaterialTheme.colorScheme.primary,
             fontSize = 14.sp,
             fontWeight = FontWeight.Normal)
     }
@@ -96,15 +99,15 @@ fun OutlineBtnTick(text: String) {
 
     OutlinedButton(onClick = { /*TODO*/ },
         shape = RoundedCornerShape(8.dp),
-        border = BorderStroke(width = 1.dp, color = Color(0xff0088FF)),
+        border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.primary),
         contentPadding = PaddingValues(8.dp)) {
         Icon(painter = painterResource(id = R.drawable.ic_tick),
             contentDescription = null,
             modifier = Modifier.size(19.dp),
-            tint = Color(0xff0088FF))
+            tint = MaterialTheme.colorScheme.primary)
         Spacer(modifier = Modifier.width(2.dp))
         Text(text = text,
-            color = Color(0xff0088ff),
+            color = MaterialTheme.colorScheme.primary,
             fontSize = 14.sp,
             fontWeight = FontWeight.Normal)
     }
@@ -116,7 +119,7 @@ fun WaterQuantitySelection(value: String) {
     Button(
         onClick = { /*TODO*/ },
         shape = RoundedCornerShape(8.dp),
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xffF4F6F8)),
+        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colorScheme.secondaryContainer),
         modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
         contentPadding = PaddingValues(8.dp),
     ) {
@@ -128,12 +131,12 @@ fun WaterQuantitySelection(value: String) {
 fun CardValue(cardValue: String) {
 
     Surface(shape = RoundedCornerShape(21.dp),
-        color = Color(0xffCCEDFF),
-        contentColor = Color(0xff0277BD)) {
+        color = ScheduleBackground,
+        contentColor = MaterialTheme.colorScheme.primary) {
         Text(text = cardValue,
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium,
-            color = Color(0xff0277BD),
+            color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
             textAlign = TextAlign.Center)
     }

@@ -3,6 +3,7 @@ package fit.asta.health.testimonials.view.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,9 +33,9 @@ fun UserCard(user: String, userOrg: String, userRole: String, url: String) {
             Spacer(modifier = Modifier.width(16.dp))
             Column(horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.SpaceBetween) {
-                Text(text = user, fontSize = 16.sp, color = Color.Black)
+                Text(text = user, style = MaterialTheme.typography.bodyLarge,  color = MaterialTheme.colorScheme.onBackground)
 
-                Text(text = "$userRole, $userOrg", fontSize = 12.sp, color = Color(0xff8694A9))
+                Text(text = "$userRole, $userOrg", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.surfaceVariant)
             }
         }
     }

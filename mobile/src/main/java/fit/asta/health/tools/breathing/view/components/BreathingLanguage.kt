@@ -23,11 +23,11 @@ fun BreathingLanguage(it: PaddingValues) {
 
     val itemListData = remember {
         mutableStateListOf(
-            ItemData(1, "English", bgColor = Color(0x66959393)),
-            ItemData(id = 2, display = "Hindi", bgColor = Color(0x66959393)),
-            ItemData(3, "Kannada", bgColor = Color(0x66959393)),
-            ItemData(4, "Telugu", bgColor = Color(0x66959393)),
-            ItemData(5, "Bengali", bgColor = Color(0x66959393)),
+            ItemData(1, "English", bgColor = Color.LightGray),
+            ItemData(id = 2, display = "Hindi", bgColor = Color.LightGray),
+            ItemData(3, "Kannada", bgColor = Color.LightGray),
+            ItemData(4, "Telugu", bgColor = Color.LightGray),
+            ItemData(5, "Bengali", bgColor = Color.LightGray),
         )
     }
 
@@ -52,13 +52,13 @@ fun Language() {
                 }
                 Text(text = "Language",
                     fontSize = 20.sp,
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center)
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(painter = painterResource(id = R.drawable.ic_physique),
                         contentDescription = null,
                         Modifier.size(24.dp),
-                        tint = Color(0xff0088FF))
+                        tint = MaterialTheme.colorScheme.primary)
                 }
             }
         }, elevation = 10.dp)

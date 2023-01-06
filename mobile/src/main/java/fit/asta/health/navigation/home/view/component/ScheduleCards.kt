@@ -4,9 +4,7 @@ package fit.asta.health.navigation.home.view.component
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,7 +22,8 @@ fun WaterScheduleCard(modifier: Modifier = Modifier) {
 
     Card(modifier = modifier,
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0x1A959393))) {
+        //colors = CardDefaults.cardColors(containerColor = Color(0x1A959393))) {
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimary)) {
 
         Row(modifier = modifier
             .fillMaxWidth()
@@ -77,7 +76,7 @@ fun MediaTaskCard(
 
     Card(modifier = modifier,
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0x1A959393))) {
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimary)) {
 
         Row(modifier = modifier
             .fillMaxWidth()
@@ -127,7 +126,7 @@ fun SimpleTaskCard(
 
     Card(modifier = modifier,
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0x1A959393))) {
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimary)) {
 
         Row(modifier = modifier
             .fillMaxWidth()
@@ -178,7 +177,7 @@ fun TaskDoneCard(
 
     Card(modifier = modifier,
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0x1A959393))) {
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimary)) {
 
         Column(Modifier
             .fillMaxWidth()
@@ -201,7 +200,7 @@ fun TaskDoneCard(
                         Text(text = cardTtl,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Medium,
-                            color = Color(0xff131723),
+                            color = MaterialTheme.colorScheme.onBackground,
                             textAlign = TextAlign.Left)
 
                         CardValue(cardValue)
@@ -251,7 +250,7 @@ fun AppointmentDone(
 
     Card(modifier = modifier,
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0x1A959393))) {
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimary)) {
 
         Column(Modifier
             .fillMaxWidth()
@@ -275,7 +274,7 @@ fun AppointmentDone(
                         Text(text = cardTtl,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Medium,
-                            color = Color(0xff131723),
+                            color = MaterialTheme.colorScheme.onBackground,
                             textAlign = TextAlign.Left)
 
                         CardValue(cardTodo)
@@ -285,7 +284,7 @@ fun AppointmentDone(
                         Text(text = "$doctorName \n$doctorSpecialization",
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Normal,
-                            color = Color(0xff585964),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             textAlign = TextAlign.Left)
                     }
 

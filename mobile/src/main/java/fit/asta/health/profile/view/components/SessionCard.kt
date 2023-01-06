@@ -40,7 +40,7 @@ fun SessionCard(
                     lineHeight = 16.sp,
                     letterSpacing = 1.5.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xDE000000)
+                    color = Color.Black
                 )
 
                 Box(modifier = Modifier.size(24.dp), contentAlignment = Alignment.Center) {

@@ -45,7 +45,7 @@ fun ProfileReadyScreen(userProfile: UserProfile) {
                     Icon(imageVector = Icons.Filled.Edit,
                         contentDescription = null,
                         modifier = Modifier.size(24.dp),
-                        tint = Color(0xff0088FF))
+                        tint = MaterialTheme.colorScheme.primary)
                 }
             })
 
@@ -55,27 +55,27 @@ fun ProfileReadyScreen(userProfile: UserProfile) {
                     Icon(Icons.Outlined.AccountCircle, contentDescription = "Profile Screen 1")
                 }, label = {
                     Text(text = "Details", fontSize = 11.sp, maxLines = 1)
-                }, selectedContentColor = Color.Blue)
+                }, selectedContentColor = MaterialTheme.colorScheme.primary)
                 BottomNavigationItem(selected = false, onClick = { content = 2 }, icon = {
                     Icon(Icons.Outlined.Face, contentDescription = "Profile Screen 2")
                 }, label = {
                     Text(text = "Physique", fontSize = 11.sp, maxLines = 1)
-                }, selectedContentColor = Color.Blue)
+                }, selectedContentColor = MaterialTheme.colorScheme.primary)
                 BottomNavigationItem(selected = false, onClick = { content = 3 }, icon = {
                     Icon(Icons.Outlined.Favorite, contentDescription = "Profile Screen 3")
                 }, label = {
                     Text(text = "Health", fontSize = 11.sp, maxLines = 1)
-                }, selectedContentColor = Color.Blue)
+                }, selectedContentColor = MaterialTheme.colorScheme.primary)
                 BottomNavigationItem(selected = false, onClick = { content = 4 }, icon = {
                     Icon(Icons.Default.Emergency, contentDescription = "Profile Screen 4")
                 }, label = {
                     Text(text = "Lifestyle", fontSize = 11.sp, maxLines = 1)
-                }, selectedContentColor = Color.Blue)
+                }, selectedContentColor = MaterialTheme.colorScheme.primary)
                 BottomNavigationItem(selected = true, onClick = { content = 5 }, icon = {
                     Icon(Icons.Outlined.Egg, contentDescription = "Profile Screen 2")
                 }, label = {
                     Text(text = "Diet", fontSize = 11.sp, maxLines = 1)
-                }, selectedContentColor = Color.Blue)
+                }, selectedContentColor = MaterialTheme.colorScheme.primary)
             }
         }
     }) { p ->

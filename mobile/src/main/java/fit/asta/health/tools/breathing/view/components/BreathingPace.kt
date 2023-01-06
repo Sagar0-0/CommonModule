@@ -23,9 +23,9 @@ fun BreathingPace(it: PaddingValues) {
 
     val itemListData = remember {
         mutableStateListOf(
-            ItemData(1, "Slow", bgColor = Color(0x66959393)),
-            ItemData(id = 2, display = "Medium", bgColor = Color(0x66959393)),
-            ItemData(3, "Fast", bgColor = Color(0x66959393)),
+            ItemData(1, "Slow", bgColor = Color.LightGray),
+            ItemData(id = 2, display = "Medium", bgColor = Color.LightGray),
+            ItemData(3, "Fast", bgColor = Color.LightGray),
 
             )
     }
@@ -51,13 +51,13 @@ fun Pace() {
                 }
                 Text(text = "Language",
                     fontSize = 20.sp,
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center)
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(painter = painterResource(id = R.drawable.ic_physique),
                         contentDescription = null,
                         Modifier.size(24.dp),
-                        tint = Color(0xff0088FF))
+                        tint = MaterialTheme.colorScheme.primary)
                 }
             }
         }, elevation = 10.dp)

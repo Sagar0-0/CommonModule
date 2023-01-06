@@ -3,6 +3,7 @@ package fit.asta.health.scheduler.compose.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,7 +48,7 @@ fun NotificationBottomSheetLayout(
             androidx.compose.material3.Text(
                 text = text,
                 fontSize = 20.sp,
-                color = Color(0xff132839),
+                color = MaterialTheme.colorScheme.onTertiaryContainer,
                 textAlign = TextAlign.Center
             )
             androidx.compose.material3.IconButton(onClick = { /*TODO*/ }) {
@@ -55,7 +56,7 @@ fun NotificationBottomSheetLayout(
                     painter = painterResource(id = R.drawable.ic_baseline_check_24),
                     contentDescription = null,
                     Modifier.size(24.dp),
-                    tint = Color(0xff0088FF)
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
         }

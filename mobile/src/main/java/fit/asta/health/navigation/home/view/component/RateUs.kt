@@ -25,6 +25,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.R
 import fit.asta.health.navigation.home.viewmodel.RateUsEvent
 import fit.asta.health.navigation.home.viewmodel.RateUsViewModel
+import fit.asta.health.ui.theme.RateUsGrad1
+import fit.asta.health.ui.theme.RateUsGrad2
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -79,7 +81,7 @@ fun RateUsCard(activity: Activity, viewModel: RateUsViewModel = hiltViewModel())
                         text = "We value your feedback pls let us know how we are doing by rating us.",
                         fontSize = 12.sp,
                         fontFamily = interMediumFontFamily,
-                        color = Color(0xFF8694A9)
+                        color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Button(
@@ -92,9 +94,9 @@ fun RateUsCard(activity: Activity, viewModel: RateUsViewModel = hiltViewModel())
                             .background(
                                 brush = Brush.linearGradient(
                                     colors = listOf(
-                                        Color(
-                                            0xFF0075FF
-                                        ), Color(0xFF00D1FF)
+                                        (
+                                            RateUsGrad1
+                                        ), (RateUsGrad2)
                                     )
                                 )
                             ),

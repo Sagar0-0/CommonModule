@@ -24,11 +24,11 @@ import fit.asta.health.tools.view.components.ItemList
 fun GoalLayout(it: PaddingValues) {
 
     val itemListData = remember {
-        mutableStateListOf(ItemData(1, "Loosing Weight", bgColor = Color(0x66959393)),
-            ItemData(id = 2, display = "Boost Mind", bgColor = Color(0x66959393)),
-            ItemData(3, "Tone Body", bgColor = Color(0x66959393)),
-            ItemData(4, "Improve muscles", bgColor = Color(0x66959393)),
-            ItemData(5, "Reduce Stress and Anxiety", bgColor = Color(0x66959393)))
+        mutableStateListOf(ItemData(1, "Loosing Weight", bgColor = Color.LightGray),
+            ItemData(id = 2, display = "Boost Mind", bgColor = Color.LightGray),
+            ItemData(3, "Tone Body", bgColor = Color.LightGray),
+            ItemData(4, "Improve muscles", bgColor = Color.LightGray),
+            ItemData(5, "Reduce Stress and Anxiety", bgColor = Color.LightGray))
     }
 
     ItemList(list = itemListData, rowTitle = "Select you walking goals", it = it)
@@ -53,13 +53,13 @@ fun Goal() {
                 }
                 Text(text = "Goals",
                     fontSize = 20.sp,
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center)
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(painter = painterResource(id = R.drawable.ic_physique),
                         contentDescription = null,
                         Modifier.size(24.dp),
-                        tint = Color(0xff0088FF))
+                        tint = MaterialTheme.colorScheme.primary)
                 }
             }
         }, elevation = 10.dp)

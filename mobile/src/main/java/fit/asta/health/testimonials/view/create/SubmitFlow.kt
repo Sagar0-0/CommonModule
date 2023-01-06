@@ -77,7 +77,7 @@ fun DialogContent(
                     painter = painterResource(id = R.drawable.ic_notifications),
                     contentDescription = null, // decorative
                     contentScale = ContentScale.Fit,
-                    colorFilter = ColorFilter.tint(color = Color(0xff0277BD)),
+                    colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
                     modifier = Modifier
                         .height(70.dp)
                         .fillMaxWidth(),

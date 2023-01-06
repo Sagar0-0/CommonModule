@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -45,18 +46,18 @@ fun TestimonialImageCard(testimonial: Testimonial) {
                     FontFamily(Font(R.font.inter_light, FontWeight.Light))
                     Column {
                         Box {
-                            Text(text = "❝", fontSize = 20.sp, color = Color(0xFF0277BD))
+                            Text(text = "❝", fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
                         }
                         Text(
                             text = testimonial.testimonial,
                             fontSize = 16.sp,
-                            color = Color(0xFF000000),
+                            color = Color.Black,
                             fontWeight = FontWeight.Thin,
                             lineHeight = 24.sp,
                             letterSpacing = 0.5.sp
                         )
                         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                            Text(text = "❞", fontSize = 20.sp, color = Color(0xFF0277BD))
+                            Text(text = "❞", fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
                         }
                         UserCard(
                             user = testimonial.user.name,
@@ -80,7 +81,7 @@ fun BeforeAndCardLayout(testimonial: Testimonial) {
     ) {
         Surface(
             shape = RoundedCornerShape(8.dp),
-            border = BorderStroke(width = 5.dp, color = Color(0xffE0F1FF)),
+            border = BorderStroke(width = 5.dp, color = MaterialTheme.colorScheme.primaryContainer),
             modifier = Modifier.fillMaxWidth()
         ) {
             Row(

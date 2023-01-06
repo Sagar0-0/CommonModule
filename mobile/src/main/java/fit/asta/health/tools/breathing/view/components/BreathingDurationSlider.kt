@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Surface
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -44,7 +45,7 @@ fun BreathingSliderCard() {
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
                 lineHeight = 22.4.sp,
-                color = Color.Black)
+                color = MaterialTheme.colorScheme.onBackground)
         }
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -84,7 +85,7 @@ fun BreathingSliderCard() {
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
                 lineHeight = 22.4.sp,
-                color = Color.Black)
+                color = MaterialTheme.colorScheme.onBackground)
         }
 
         Spacer(modifier = Modifier.height(24.dp))

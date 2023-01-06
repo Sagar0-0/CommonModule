@@ -3,6 +3,7 @@ package fit.asta.health.profile.view.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
@@ -53,13 +54,13 @@ fun UserBasicDetailsCardLayout(
                 Column {
                     Text(text = cardType,
                         fontSize = 10.sp,
-                        color = Color(0xDE000000),
+                        color = MaterialTheme.colorScheme.onBackground,
                         lineHeight = 16.sp,
                         letterSpacing = 1.5.sp)
                     Spacer(modifier = Modifier.height(11.dp))
                     Text(text = cardValue,
                         fontSize = 20.sp,
-                        color = Color(0xDE000000),
+                        color = MaterialTheme.colorScheme.onBackground,
                         lineHeight = 24.sp,
                         letterSpacing = 0.15.sp,
                         fontWeight = FontWeight.Bold)

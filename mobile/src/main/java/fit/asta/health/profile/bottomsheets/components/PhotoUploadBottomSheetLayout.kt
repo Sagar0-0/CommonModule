@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,7 +57,7 @@ fun PhotoUploadBottomSheetLayout() {
 
 @Composable
 fun DividerLine() {
-    Divider(color = Color(0xff0088FF),
+    Divider(color = MaterialTheme.colorScheme.primary,
         modifier = Modifier
             .size(width = 80.dp, height = 8.dp)
             .clip(shape = RoundedCornerShape(4.dp)))

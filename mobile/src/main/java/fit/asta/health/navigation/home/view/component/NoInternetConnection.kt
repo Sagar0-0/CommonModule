@@ -25,6 +25,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import fit.asta.health.R
+import fit.asta.health.ui.theme.Gradient1NoInternet
+import fit.asta.health.ui.theme.Gradient2NoInternet
 
 @Composable
 fun NoInternetLayout(onTryAgain: () -> Unit) {
@@ -97,7 +99,7 @@ private fun NoInternetScreen(openFullDialogCustom: MutableState<Boolean>, onTryA
                 Spacer(modifier = Modifier.height(24.dp))
 
                 val cornerRadius = 16.dp
-                val gradientColor = listOf(Color(0xFFff669f), Color(0xFFff8961))
+                val gradientColor = listOf(Gradient1NoInternet, Gradient2NoInternet)
                 GradientButton(
                     gradientColors = gradientColor,
                     cornerRadius = cornerRadius,

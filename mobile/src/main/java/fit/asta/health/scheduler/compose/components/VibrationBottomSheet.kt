@@ -1,6 +1,7 @@
 package fit.asta.health.scheduler.compose.components
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
@@ -43,7 +44,7 @@ fun VibrationBottomSheetLayout(text: String, onNavigateBack: () -> Unit) {
             Text(
                 text = text,
                 fontSize = 20.sp,
-                color = Color(0xff132839),
+                color = MaterialTheme.colorScheme.onTertiaryContainer,
                 textAlign = TextAlign.Center
             )
             androidx.compose.material3.IconButton(onClick = { /*TODO*/ }) {
@@ -51,7 +52,7 @@ fun VibrationBottomSheetLayout(text: String, onNavigateBack: () -> Unit) {
                     painter = painterResource(id = R.drawable.ic_baseline_check_24),
                     contentDescription = null,
                     Modifier.size(24.dp),
-                    tint = Color(0xff0088FF)
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
         }
@@ -61,8 +62,8 @@ fun VibrationBottomSheetLayout(text: String, onNavigateBack: () -> Unit) {
             onValueChange = { value = it },
             valueRange = 0f..100f,
             colors = SliderDefaults.colors(
-                thumbColor = Color(0xff0088FF),
-                activeTrackColor = Color(0xff0088FF)
+                thumbColor = MaterialTheme.colorScheme.primary,
+                activeTrackColor = MaterialTheme.colorScheme.primary
             ),
             modifier = Modifier.padding(horizontal = 16.dp)
         )
@@ -75,7 +76,7 @@ fun VibrationBottomSheetLayout(text: String, onNavigateBack: () -> Unit) {
                 text = "${value.toInt()}%",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xff0088FF)
+                color = MaterialTheme.colorScheme.primary
             )
         }
     }

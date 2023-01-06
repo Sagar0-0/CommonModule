@@ -1,10 +1,7 @@
 package fit.asta.health.tools.view.components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,7 +30,7 @@ fun AddMoreWater() {
             Box {
                 Icon(painter = painterResource(id = R.drawable.ic_notifications),
                     contentDescription = null,
-                    tint = Color(0xff4CAF50),
+                    tint = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier.size(24.dp))
             }
             Spacer(modifier = Modifier.width(16.dp))
@@ -41,13 +38,13 @@ fun AddMoreWater() {
                 Text(text = "Weather",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     lineHeight = 19.6.sp)
                 Text(
                     text = "There will be addition of 500 ml to 1 Litre of water to your daily intake based on the weather temperature.",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     lineHeight = 19.6.sp,
                 )
             }

@@ -2,6 +2,7 @@ package fit.asta.health.profile.view.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,7 +23,7 @@ fun UserDetail2(
             fontWeight = FontWeight.Normal,
             fontSize = 14.sp,
             textAlign = TextAlign.Center,
-            color = Color(0x99000000),
+            color = MaterialTheme.colorScheme.onBackground,
             lineHeight = 22.4.sp)
     }
 }

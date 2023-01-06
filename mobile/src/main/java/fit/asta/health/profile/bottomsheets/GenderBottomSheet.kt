@@ -6,6 +6,7 @@ import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.material.rememberBottomSheetScaffoldState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,7 +49,7 @@ fun GenderBottomSheet() {
     },
         sheetShape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
         sheetElevation = 10.dp,
-        sheetBackgroundColor = Color(0xffFFFFFF),
+        sheetBackgroundColor = MaterialTheme.colorScheme.onPrimary,
         scaffoldState = state,
         drawerBackgroundColor = Color.Green) {
         Text(text = "Hello")

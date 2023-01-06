@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
+import fit.asta.health.ui.theme.TSelected
 
 @Composable
 fun OnlyToggleButton(
@@ -58,18 +59,18 @@ fun OnlyToggleButton(
                             painter = painterResource(id = icon),
                             contentDescription = null,
                             Modifier.size(20.dp),
-                            tint = Color(0xff0088FF)
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = title, fontSize = 16.sp, color = Color(0xff132839))
+                    Text(text = title, fontSize = 16.sp, color = MaterialTheme.colorScheme.onTertiaryContainer)
                 }
             }
             Box {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     ClickableText(text = AnnotatedString(
                         text = switchTitle,
-                        spanStyle = SpanStyle(fontSize = 16.sp, color = Color(0xff8694A9))
+                        spanStyle = SpanStyle(fontSize = 16.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     ),
                         onClick = {
                             if (enabled) {
@@ -83,8 +84,8 @@ fun OnlyToggleButton(
                         checked = mCheckedState.value,
                         onCheckedChange = { mCheckedState.value = it },
                         colors = SwitchDefaults.colors(
-                            uncheckedThumbColor = Color(0xff8694A9),
-                            checkedThumbColor = Color(0xff0088FF)
+                            uncheckedThumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            checkedThumbColor = MaterialTheme.colorScheme.primary
                         )
                     )
                 }
@@ -121,17 +122,17 @@ fun AlarmIconButton(
                             painter = painterResource(id = image),
                             contentDescription = null,
                             Modifier.size(20.dp),
-                            tint = Color(0xff0088FF)
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = title, fontSize = 16.sp, color = Color(0xff132839))
+                    Text(text = title, fontSize = 16.sp, color = MaterialTheme.colorScheme.onTertiaryContainer)
                 }
             }
 
             Box {
                 Row {
-                    Text(text = arrowTitle, fontSize = 16.sp, color = Color(0xff8694A9))
+                    Text(text = arrowTitle, fontSize = 16.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
 
                     Spacer(modifier = Modifier.width(8.dp))
 
@@ -141,7 +142,7 @@ fun AlarmIconButton(
                                 painter = painterResource(id = arrowImage),
                                 contentDescription = null,
                                 Modifier.size(20.dp),
-                                tint = Color(0xff0088FF)
+                                tint = MaterialTheme.colorScheme.primary
                             )
                         }
                     }
@@ -178,7 +179,7 @@ fun DigitalDemo() {
 
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xff0088FF)),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
         shape = RoundedCornerShape(size = 8.dp),
         modifier = Modifier.padding(16.dp)
     ) {
@@ -223,14 +224,14 @@ fun RepeatAlarm() {
                             painter = painterResource(id = R.drawable.ic_ic24_calendar_edit),
                             contentDescription = null,
                             Modifier.size(20.dp),
-                            tint = Color(0xff0088FF)
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                     Column {
-                        Text(text = "Repeat", fontSize = 16.sp, color = Color(0xff132839))
+                        Text(text = "Repeat", fontSize = 16.sp, color = MaterialTheme.colorScheme.onTertiaryContainer)
                         Spacer(modifier = Modifier.height(1.dp))
-                        Text(text = "Everyday", fontSize = 16.sp, color = Color(0xff8694A9))
+                        Text(text = "Everyday", fontSize = 16.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }
@@ -249,7 +250,7 @@ fun DaysCircleButton(
 
     var selected by remember { mutableStateOf(true) }
 
-    val colorState: Color = if (selected) Color(0xffD6D6D6) else Color(0xff0088FF)
+    val colorState: Color = if (selected) TSelected else MaterialTheme.colorScheme.primary
 
     val colorState2: Color = if (!selected) Color.White else Color.Black
 

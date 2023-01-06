@@ -2,10 +2,7 @@ package fit.asta.health.tools.view.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,7 +25,7 @@ fun PracticeExpandedCard(
         .blur(radius = 5.dp)
         .padding(horizontal = 16.dp, vertical = 8.dp),
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0x66959393))) {
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondary)) {
         Row(modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp)) {
             Box(contentAlignment = Alignment.Center) {
                 Icon(painter = painterResource(id = cardImg),

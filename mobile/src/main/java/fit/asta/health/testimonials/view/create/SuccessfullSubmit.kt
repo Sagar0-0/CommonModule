@@ -11,6 +11,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -70,7 +71,7 @@ fun FullScreenDialog() {
                     // medal icon
                     Icon(painter = painterResource(id = R.drawable.award_svg_150),
                         contentDescription = "Medal icon",
-                        tint = Color(0xFF008CFF),
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(size = 150.dp))
 
                     Text(text = "Congratulations!",
@@ -84,7 +85,7 @@ fun FullScreenDialog() {
                         fontFamily = FontFamily(Font(resId = R.font.roboto_regular,
                             weight = FontWeight.Normal)),
                         textAlign = TextAlign.Center,
-                        color = Color(0xff132839),
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
                         lineHeight = 19.6.sp)
 
                     Button(onClick = {

@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,7 +18,7 @@ fun AddIcon(onClick: (() -> Unit)? = null) {
     onClick?.let {
         IconButton(onClick = it,
             Modifier.size(24.dp),
-            colors = IconButtonDefaults.iconButtonColors(containerColor = Color(0xff0088ff))) {
+            colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.primary)) {
             Icon(imageVector = Icons.Filled.Add,
                 contentDescription = null,
                 modifier = Modifier.size(16.dp),

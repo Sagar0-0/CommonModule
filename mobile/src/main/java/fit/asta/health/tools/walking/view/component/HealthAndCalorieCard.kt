@@ -3,6 +3,7 @@ package fit.asta.health.tools.walking.view.component
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -55,7 +56,7 @@ fun HealthComponent(
             contentDescription = null,
             modifier = Modifier.size(24.dp))
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = title, fontSize = 12.sp, color = Color.White, lineHeight = 19.6.sp)
+        Text(text = title, fontSize = 12.sp, color = MaterialTheme.colorScheme.onPrimary, lineHeight = 19.6.sp)
         Spacer(modifier = Modifier.height(8.dp))
         Text(text = titleValue,
             fontSize = 12.sp,

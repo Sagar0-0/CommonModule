@@ -23,11 +23,11 @@ fun BreathingMusic(it: PaddingValues) {
 
     val itemListData = remember {
         mutableStateListOf(
-            ItemData(1, "The Breath of Joy", bgColor = Color(0x66959393)),
-            ItemData(id = 2, display = "Source of your Prana", bgColor = Color(0x66959393)),
-            ItemData(3, "Vital life force", bgColor = Color(0x66959393)),
-            ItemData(4, "Release Stress", bgColor = Color(0x66959393)),
-            ItemData(5, "Quieting the Mind", bgColor = Color(0x66959393)),
+            ItemData(1, "The Breath of Joy", bgColor = Color.LightGray),
+            ItemData(id = 2, display = "Source of your Prana", bgColor = Color.LightGray),
+            ItemData(3, "Vital life force", bgColor = Color.LightGray),
+            ItemData(4, "Release Stress", bgColor = Color.LightGray),
+            ItemData(5, "Quieting the Mind", bgColor = Color.LightGray),
         )
     }
 
@@ -52,13 +52,13 @@ fun Music() {
                 }
                 Text(text = "Language",
                     fontSize = 20.sp,
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center)
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(painter = painterResource(id = R.drawable.ic_physique),
                         contentDescription = null,
                         Modifier.size(24.dp),
-                        tint = Color(0xff0088FF))
+                        tint = MaterialTheme.colorScheme.primary)
                 }
             }
         }, elevation = 10.dp)

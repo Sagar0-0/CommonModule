@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -56,7 +57,7 @@ fun DietContent(eventSkip: (() -> Unit)? = null, eventNext: (() -> Unit)? = null
             SelectionCardCreateProfile(cardType = "Any Significant Health history?",
                 cardList = healthHistoryList,
                 radioButtonList = radioButtonList,
-                checkedState)
+                checkedState) 
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -66,5 +67,4 @@ fun DietContent(eventSkip: (() -> Unit)? = null, eventNext: (() -> Unit)? = null
 
         }
     }
-
 }

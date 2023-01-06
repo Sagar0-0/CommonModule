@@ -11,6 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowRow
+import fit.asta.health.ui.theme.RadioGrey
 
 
 @Composable
@@ -56,7 +57,7 @@ fun AddressType(selectionTypeText: String, radioButtonList: List<ButtonListTypes
         .padding(start = 16.dp)) {
         Row(Modifier.fillMaxWidth()) {
             Text(text = selectionTypeText,
-                color = Color(0x99000000),
+                color = Color.Black,
                 fontSize = 14.sp,
                 lineHeight = 19.6.sp,
                 fontWeight = FontWeight.Bold)
@@ -67,11 +68,11 @@ fun AddressType(selectionTypeText: String, radioButtonList: List<ButtonListTypes
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         RadioButton(selected = (text == selectedOption), onClick = {
                             onOptionSelected(text)
-                        }, colors = RadioButtonDefaults.colors(Color(0xff2F80ED)))
+                        }, colors = RadioButtonDefaults.colors(androidx.compose.material3.MaterialTheme.colorScheme.primary))
                         Text(text = text.buttonType,
                             fontSize = 16.sp,
                             lineHeight = 22.4.sp,
-                            color = Color(0xff575757))
+                            color = RadioGrey)
                     }
                 }
             }
@@ -85,20 +86,20 @@ fun ToggleRectangularButton() {
 
     var selected by remember { mutableStateOf(false) }
 
-    val color = if (selected) Color.Transparent else Color(0xff0277BD)
+    val color = if (selected) Color.Transparent else (androidx.compose.material3.MaterialTheme.colorScheme.primary)
 
 
     Box(modifier = Modifier.padding(start = 16.dp, top = 9.5.dp, bottom = 9.5.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             OutlinedButton(onClick = { selected = !selected },
                 content = { },
-                border = BorderStroke(width = 1.dp, color = Color(0xff0277BD)),
+                border = BorderStroke(width = 1.dp, color = androidx.compose.material3.MaterialTheme.colorScheme.primary),
                 colors = ButtonDefaults.buttonColors(backgroundColor = color),
                 modifier = Modifier.size(20.dp))
             Text(text = "Mark as Default Address",
                 fontSize = 16.sp,
                 lineHeight = 22.4.sp,
-                color = Color(0xff575757),
+                color = RadioGrey,
                 modifier = Modifier.padding(start = 4.dp))
         }
     }

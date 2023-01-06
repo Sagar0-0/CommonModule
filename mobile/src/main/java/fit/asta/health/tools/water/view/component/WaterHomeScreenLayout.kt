@@ -3,6 +3,7 @@ package fit.asta.health.tools.water.view.component
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -65,7 +66,7 @@ fun WaterHomeScreen(paddingValues: PaddingValues,viewModel: WaterViewModel = hil
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Thin,
-                color = Color.Black)
+                color = MaterialTheme.colorScheme.onBackground)
         }
     }
 

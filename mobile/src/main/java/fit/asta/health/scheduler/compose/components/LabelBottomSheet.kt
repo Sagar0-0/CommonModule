@@ -3,6 +3,7 @@ package fit.asta.health.scheduler.compose.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -42,7 +43,7 @@ fun CustomLabelBottomSheetLayout(
             Text(
                 text = text,
                 fontSize = 20.sp,
-                color = Color(0xff132839),
+                color = MaterialTheme.colorScheme.onTertiaryContainer,
                 textAlign = TextAlign.Center
             )
             IconButton(onClick = { /*TODO*/ }) {
@@ -50,7 +51,7 @@ fun CustomLabelBottomSheetLayout(
                     painter = painterResource(id = R.drawable.ic_baseline_check_24),
                     contentDescription = null,
                     Modifier.size(24.dp),
-                    tint = Color(0xff0088FF)
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
         }

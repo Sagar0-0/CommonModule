@@ -8,6 +8,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -81,7 +82,7 @@ private fun CardComponents(
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
             lineHeight = 19.6.sp,
-            color = Color.White)
+            color = MaterialTheme.colorScheme.onPrimary)
 
         if (demoSelected) {
             Icon(imageVector = Icons.Default.Check,

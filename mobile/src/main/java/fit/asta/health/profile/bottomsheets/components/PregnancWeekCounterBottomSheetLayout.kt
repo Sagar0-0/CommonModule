@@ -7,6 +7,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -65,7 +66,7 @@ fun WeekCounterLayout() {
                 .padding(end = 2.5.dp)) {
             Button(onClick = {},
                 enabled = true,
-                colors = ButtonDefaults.buttonColors(Color(0xff0088FF)),
+                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
                 shape = RoundedCornerShape(8.dp)) {
                 Text(text = "Week", fontSize = 16.sp, lineHeight = 22.4.sp, color = Color.White)
             }

@@ -21,15 +21,19 @@ fun ChipsOnCards(
 ) {
 
     checkedState?.let {
-        Chip(onClick = { /*TODO*/ },
+        Chip(
+            onClick = { /*TODO*/ },
             shape = RoundedCornerShape(32.dp),
             colors = ChipDefaults.chipColors(backgroundColor = Color(0x80D6D6D6)),
-            enabled = it.value) {
-            Text(text = textOnChip,
+            enabled = it.value
+        ) {
+            Text(
+                text = textOnChip,
                 fontSize = 14.sp,
                 lineHeight = 20.sp,
                 letterSpacing = 0.25.sp,
-                color = Color(0x99000000))
+                color = Color(0x99000000)
+            )
 
 
             if (checkedState.value) {

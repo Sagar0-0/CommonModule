@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
@@ -38,7 +39,7 @@ fun CardSunBurn(
         .fillMaxWidth()
         .padding(horizontal = 16.dp),
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0x66959393))) {
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondary)) {
         Column(modifier = Modifier.padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally) {
             Box(contentAlignment = Alignment.Center) {
@@ -107,7 +108,7 @@ fun TimingMeterLayout(title: String, titleValue: String) {
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
             lineHeight = 19.6.sp,
-            color = Color.White)
+            color = MaterialTheme.colorScheme.onPrimary)
         Spacer(modifier = Modifier.height(10.dp))
         Text(text = title,
             fontSize = 12.sp,

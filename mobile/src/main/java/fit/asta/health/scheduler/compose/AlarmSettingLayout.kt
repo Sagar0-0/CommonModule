@@ -51,7 +51,7 @@ fun AlarmSettingLayout(
                 Text(
                     text = "Alarm Setting",
                     fontSize = 20.sp,
-                    color = Color(0xff132839),
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
                     textAlign = TextAlign.Center
                 )
                 IconButton(onClick = { /*TODO*/ }) {
@@ -59,7 +59,7 @@ fun AlarmSettingLayout(
                         painter = painterResource(id = R.drawable.ic_baseline_check_24),
                         contentDescription = null,
                         Modifier.size(24.dp),
-                        tint = Color(0xff0088FF)
+                        tint = MaterialTheme.colorScheme.primary
                     )
                 }
             }
@@ -139,7 +139,7 @@ fun AlarmSettingLayout(
             )
             Text(
                 text = "This will make sure you attempt with the help of flashlight, sound changes, vibration etc.",
-                color = Color(0xff8694A9),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 16.sp,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )

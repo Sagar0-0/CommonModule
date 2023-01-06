@@ -63,11 +63,11 @@ fun Testimonials(
         Text(
             text = "Why our customers love ASTA?",
             style = MaterialTheme.typography.h6,
-            color = Color.Gray
+            color = androidx.compose.material3.MaterialTheme.colorScheme.onBackground
         )
 
         Divider(
-            color = Color(0xFF0088FF),
+            color = androidx.compose.material3.MaterialTheme.colorScheme.primary,
             thickness = 4.dp,
             modifier = Modifier
                 .width(71.dp)

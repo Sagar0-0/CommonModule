@@ -44,7 +44,7 @@ fun SingleSelectionCard(
                         lineHeight = 16.sp,
                         letterSpacing = 1.5.sp,
                         fontWeight = FontWeight.Medium,
-                        color = Color(0xDE000000)
+                        color = Color.Black
                     )
 
                     Spacer(modifier = Modifier.height(2.dp))

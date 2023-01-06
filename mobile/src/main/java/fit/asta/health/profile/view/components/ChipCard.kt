@@ -43,7 +43,7 @@ fun ChipCard(
                         fontSize = 10.sp,
                         lineHeight = 16.sp,
                         letterSpacing = 1.5.sp,
-                        color = Color(0xDE000000))
+                        color = Color.Black)
                 }
                 if (editState.value) {
                     AddIcon(onClick)

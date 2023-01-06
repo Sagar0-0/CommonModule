@@ -7,6 +7,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Surface
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,6 +17,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
+import fit.asta.health.ui.theme.ProfileBorder1
+import fit.asta.health.ui.theme.ProfileBorder2
+import fit.asta.health.ui.theme.ProfileBorder3
 
 // User's Profile Photo with Design Layout
 
@@ -26,7 +30,7 @@ fun UserProfileImg() {
         Surface(shape = CircleShape,
             modifier = Modifier.size(188.dp),
             color = Color.Transparent,
-            border = BorderStroke(1.dp, Color(0xff33A0FF))) {}
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)) {}
         Box {
             Image(painter = painterResource(id = R.drawable.userphoto),
                 contentDescription = null,
@@ -48,14 +52,14 @@ fun UserProfileImg() {
         Surface(shape = CircleShape,
             modifier = Modifier.size(218.dp),
             color = Color.Transparent,
-            border = BorderStroke(1.dp, Color(0xff70BCFF))) {}
+            border = BorderStroke(1.dp, ProfileBorder1)) {}
         Surface(shape = CircleShape,
             modifier = Modifier.size(248.dp),
             color = Color.Transparent,
-            border = BorderStroke(1.dp, Color(0xff99CFFF))) {}
+            border = BorderStroke(1.dp, ProfileBorder2)) {}
         Surface(shape = CircleShape,
             modifier = Modifier.size(278.dp),
             color = Color.Transparent,
-            border = BorderStroke(1.dp, Color(0xffE5F3FF))) {}
+            border = BorderStroke(1.dp, ProfileBorder3)) {}
     }
 }

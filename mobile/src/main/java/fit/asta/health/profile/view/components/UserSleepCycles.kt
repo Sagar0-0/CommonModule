@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,13 +23,13 @@ fun UserSleepCycles(
             lineHeight = 16.sp,
             letterSpacing = 1.5.sp,
             fontWeight = FontWeight.Medium,
-            color = Color(0xDE000000))
+            color = MaterialTheme.colorScheme.onBackground)
         Spacer(modifier = Modifier.height(8.dp))
         Text(text = columnValue,
             fontSize = 20.sp,
             lineHeight = 24.sp,
             letterSpacing = 0.15.sp,
             fontWeight = FontWeight.Medium,
-            color = Color(0xDE000000))
+            color = MaterialTheme.colorScheme.onBackground)
     }
 }

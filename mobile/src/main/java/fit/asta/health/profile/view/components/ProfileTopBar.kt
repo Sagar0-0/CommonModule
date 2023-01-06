@@ -46,7 +46,7 @@ fun ProfileTopBar() {
             Text(text = "Profile",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Medium,
-                color = Color(0xff000000))
+                color = Color.Black)
         }
         Image(painter = painterResource(id = R.drawable.view),
             contentDescription = null,

@@ -38,7 +38,7 @@ fun TagCard() {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
-    val color = if (isPressed) Color(0xff0088FF) else Color.Transparent
+    val color = if (isPressed) MaterialTheme.colorScheme.primary else Color.Transparent
 
 
     Button(
@@ -143,7 +143,7 @@ fun CustomTagBottomSheetLayout(
             Text(
                 text = "Custom Tags",
                 fontSize = 20.sp,
-                color = Color(0xff132839),
+                color = MaterialTheme.colorScheme.onTertiaryContainer,
                 textAlign = TextAlign.Center
             )
             IconButton(onClick = { /*TODO*/ }) {
@@ -151,7 +151,7 @@ fun CustomTagBottomSheetLayout(
                     painter = painterResource(id = R.drawable.ic_baseline_check_24),
                     contentDescription = null,
                     Modifier.size(24.dp),
-                    tint = Color(0xff0088FF)
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
         }
@@ -203,9 +203,9 @@ fun CustomTagTextField(label: String) {
         onValueChange = { value = it },
         label = { Text(label) },
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = Color(0xff0088FF),
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
             unfocusedBorderColor = Color.LightGray,
-            focusedLabelColor = Color(0xff0088FF)
+            focusedLabelColor = MaterialTheme.colorScheme.primary
         ),
         modifier = Modifier.focusRequester(focusRequester = focusRequester),
         shape = RoundedCornerShape(8.dp)
@@ -226,7 +226,7 @@ fun TagSelectionLayout(
                 .fillMaxWidth()
                 .padding(it)
                 .verticalScroll(rememberScrollState())
-                .background(color = Color(0xffF4F6F8))
+                .background(color = MaterialTheme.colorScheme.secondaryContainer)
         ) {
             for (i in 1..10) {
                 SwipeDemo()
@@ -236,7 +236,7 @@ fun TagSelectionLayout(
         onNavigateCustomTag?.let {
             FloatingActionButton(
                 onClick = it,
-                containerColor = Color(0xff0075FF),
+                containerColor = MaterialTheme.colorScheme.primary,
                 shape = CircleShape,
                 modifier = Modifier.size(80.dp),
                 contentColor = Color.White
@@ -248,13 +248,13 @@ fun TagSelectionLayout(
         TopAppBar(title = {
             Text(
                 text = "Tags",
-                color = Color(0xff010101),
+                color = MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.Medium,
                 fontSize = 20.sp
             )
         }, navigationIcon = {
             IconButton(onClick = onNavigateBack) {
-                Icon(Icons.Outlined.NavigateBefore, "back", tint = Color(0xff0088FF))
+                Icon(Icons.Outlined.NavigateBefore, "back", tint = MaterialTheme.colorScheme.primary)
             }
         })
     })

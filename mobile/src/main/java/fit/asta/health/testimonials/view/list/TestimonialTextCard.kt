@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -16,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import fit.asta.health.R
 import fit.asta.health.testimonials.model.domain.Testimonial
 import fit.asta.health.testimonials.view.components.UserCard
+import fit.asta.health.ui.theme.Dark02
 
 
 @Composable
@@ -40,7 +42,7 @@ fun TestimonialTextCard(testimonial: Testimonial) {
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     lineHeight = 22.4.sp,
-                    color = Color(0xff132839)
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
 
@@ -49,18 +51,18 @@ fun TestimonialTextCard(testimonial: Testimonial) {
 
                 Column {
                     Box {
-                        Text(text = "❝", fontSize = 20.sp, color = Color(0xFF0277BD))
+                        Text(text = "❝", fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
                     }
                     Text(
                         text = testimonial.testimonial,
                         fontSize = 16.sp,
-                        color = Color(0xff404040),
+                        color = Dark02,
                         fontWeight = FontWeight.Thin,
                         lineHeight = 24.sp,
                         letterSpacing = 0.5.sp
                     )
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                        Text(text = "❞", fontSize = 20.sp, color = Color(0xFF0277BD))
+                        Text(text = "❞", fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
                     }
 
                     UserCard(

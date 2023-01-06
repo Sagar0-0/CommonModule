@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -44,7 +45,7 @@ fun SuccessfulCard(modifier: Modifier = Modifier, onClick: (() -> Unit)? = null)
                     Text(text = "Thank You!",
                         fontSize = 34.sp,
                         fontWeight = FontWeight.Normal,
-                        color = Color(0xff132839),
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
                         textAlign = TextAlign.Center)
                 }
 
@@ -58,7 +59,7 @@ fun SuccessfulCard(modifier: Modifier = Modifier, onClick: (() -> Unit)? = null)
                     Text(text = "Your feedback has been submitted",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Normal,
-                        color = Color(0xff8694A9),
+                        color = MaterialTheme.colorScheme.secondary,
                         textAlign = TextAlign.Center)
                 }
 
@@ -76,10 +77,10 @@ fun SuccessfulCard(modifier: Modifier = Modifier, onClick: (() -> Unit)? = null)
         Box(modifier = Modifier
             .clip(shape = CircleShape)
             .size(100.dp)
-            .background(color = Color(0xff00BC08)), contentAlignment = Alignment.Center) {
+            .background(color = Color.Green), contentAlignment = Alignment.Center) {
             Icon(painter = painterResource(id = R.drawable.ic_tick),
                 contentDescription = null,
-                tint = Color.White,
+                tint = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.size(80.dp))
         }
 

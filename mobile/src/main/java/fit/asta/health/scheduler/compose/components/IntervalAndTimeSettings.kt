@@ -49,7 +49,7 @@ fun IntervalTimeLayout(
                 .fillMaxSize()
                 .padding(it)
                 .verticalScroll(rememberScrollState())
-                .background(color = Color(0xffF4F6F8)),
+                .background(color = MaterialTheme.colorScheme.secondaryContainer),
             onNavigateAction = onNavigateSnooze,
             onNavigateRepetitiveInterval = onNavigateRepetitiveInterval
         )
@@ -70,7 +70,7 @@ fun IntervalTimeLayout(
                 Text(
                     text = "Intervals and Time Settings",
                     fontSize = 20.sp,
-                    color = Color(0xff132839),
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
                     textAlign = TextAlign.Center
                 )
                 IconButton(onClick = { /*TODO*/ }) {
@@ -78,7 +78,7 @@ fun IntervalTimeLayout(
                         painter = painterResource(id = R.drawable.ic_baseline_check_24),
                         contentDescription = null,
                         Modifier.size(24.dp),
-                        tint = Color(0xff0088FF)
+                        tint = MaterialTheme.colorScheme.primary
                     )
                 }
             }
@@ -170,18 +170,18 @@ fun ShowMoreContent(
                             painter = painterResource(id = icon),
                             contentDescription = null,
                             Modifier.size(20.dp),
-                            tint = Color(0xff0088FF)
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = title, fontSize = 16.sp, color = Color(0xff132839))
+                    Text(text = title, fontSize = 16.sp, color = MaterialTheme.colorScheme.onTertiaryContainer)
                 }
             }
             Box {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     ClickableText(text = AnnotatedString(
                         text = switchTitle,
-                        spanStyle = SpanStyle(fontSize = 16.sp, color = Color(0xff8694A9))
+                        spanStyle = SpanStyle(fontSize = 16.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     ),
                         onClick = {
                             if (enabled) {
@@ -197,8 +197,8 @@ fun ShowMoreContent(
                             mCheckedState.value = it
                         },
                         colors = SwitchDefaults.colors(
-                            uncheckedThumbColor = Color(0xff8694A9),
-                            checkedThumbColor = Color(0xff0088FF)
+                            uncheckedThumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            checkedThumbColor = MaterialTheme.colorScheme.primary
                         )
                     )
                 }
@@ -252,11 +252,11 @@ fun TextSelection(
                             painter = painterResource(id = image),
                             contentDescription = null,
                             Modifier.size(20.dp),
-                            tint = Color(0xff0088FF)
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = title, fontSize = 16.sp, color = Color(0xff132839))
+                    Text(text = title, fontSize = 16.sp, color = MaterialTheme.colorScheme.onSecondaryContainer)
                 }
             }
 
@@ -273,7 +273,7 @@ fun TextSelection(
                                 painter = painterResource(id = arrowImage),
                                 contentDescription = null,
                                 Modifier.size(24.dp),
-                                tint = Color(0xff0088FF)
+                                tint = MaterialTheme.colorScheme.primary
                             )
                         }
                     }
@@ -289,7 +289,7 @@ private fun SelectableText(arrowTitle: String) {
         onClick = {},
         text = AnnotatedString(
             text = arrowTitle,
-            spanStyle = SpanStyle(fontSize = 16.sp, color = Color(0xff8694A9))
+            spanStyle = SpanStyle(fontSize = 16.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
         )
     )
 }
@@ -390,18 +390,18 @@ fun CustomIntervalToggleButton(
                             painter = painterResource(id = icon),
                             contentDescription = null,
                             Modifier.size(20.dp),
-                            tint = Color(0xff0088FF)
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = title, fontSize = 16.sp, color = Color(0xff132839))
+                    Text(text = title, fontSize = 16.sp, color = MaterialTheme.colorScheme.onSecondaryContainer)
                 }
             }
             Box {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     ClickableText(text = AnnotatedString(
                         text = switchTitle,
-                        spanStyle = SpanStyle(fontSize = 16.sp, color = Color(0xff8694A9))
+                        spanStyle = SpanStyle(fontSize = 16.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     ),
                         onClick = {
                             if (enabled) {
@@ -415,8 +415,8 @@ fun CustomIntervalToggleButton(
                         checked = mCheckedState.value,
                         onCheckedChange = { mCheckedState.value = it },
                         colors = SwitchDefaults.colors(
-                            uncheckedThumbColor = Color(0xff8694A9),
-                            checkedThumbColor = Color(0xff0088FF)
+                            uncheckedThumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            checkedThumbColor = MaterialTheme.colorScheme.primary
                         )
                     )
                 }
@@ -461,11 +461,11 @@ fun CustomIntervalTextSelection(
                             painter = painterResource(id = image),
                             contentDescription = null,
                             Modifier.size(20.dp),
-                            tint = Color(0xff0088FF)
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = title, fontSize = 16.sp, color = Color(0xff132839))
+                    Text(text = title, fontSize = 16.sp, color = MaterialTheme.colorScheme.onTertiaryContainer)
                 }
             }
 
@@ -482,7 +482,7 @@ fun CustomIntervalTextSelection(
                                 painter = painterResource(id = arrowImage),
                                 contentDescription = null,
                                 Modifier.size(24.dp),
-                                tint = Color(0xff0088FF)
+                                tint = MaterialTheme.colorScheme.primary
                             )
                         }
                     }
@@ -499,7 +499,7 @@ fun CustomIntervalText(modifier: Modifier = Modifier) {
         Text(
             text = "Turn On Interval's Status to use Interval Settings",
             fontSize = 14.sp,
-            color = Color(0xff8694A9),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center
         )
     }
@@ -528,7 +528,7 @@ fun CustomFloatingButton() {
                 onClick = { /*TODO*/ },
                 shape = CircleShape,
                 modifier = Modifier.size(60.dp),
-                containerColor = Color(0xFF0088FF)
+                containerColor = MaterialTheme.colorScheme.primary
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_baseline_add_24),
@@ -559,11 +559,11 @@ fun CustomVariantInterval(
                                 painter = painterResource(id = R.drawable.ic_ic24_rotate),
                                 contentDescription = null,
                                 Modifier.size(20.dp),
-                                tint = Color(0xff0088FF)
+                                tint = MaterialTheme.colorScheme.primary
                             )
                         }
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = time, fontSize = 16.sp, color = Color(0xff132839))
+                        Text(text = time, fontSize = 16.sp, color = MaterialTheme.colorScheme.onTertiaryContainer)
                     }
                 }
 
@@ -580,7 +580,7 @@ fun CustomVariantInterval(
                                     painter = painterResource(id = R.drawable.ic_round_remove_circle_24),
                                     contentDescription = null,
                                     Modifier.size(24.dp),
-                                    tint = Color(0xff0088FF)
+                                    tint = MaterialTheme.colorScheme.primary
                                 )
                             }
                         }

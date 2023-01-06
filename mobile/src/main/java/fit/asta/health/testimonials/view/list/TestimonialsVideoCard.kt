@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.IconButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -60,7 +61,7 @@ fun PlayVideoLayout(testimonial: Testimonial) {
         Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
             Surface(
                 shape = RoundedCornerShape(8.dp),
-                border = BorderStroke(width = 5.dp, color = Color(0xffE0F1FF)),
+                border = BorderStroke(width = 5.dp, color = MaterialTheme.colorScheme.primaryContainer),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 val media = testimonial.media?.get(0)
@@ -92,7 +93,7 @@ fun PlayButton() {
         Icon(
             painter = painterResource(id = R.drawable.asana_play_img),
             contentDescription = null,
-            tint = Color(0xff008CFF),
+            tint = MaterialTheme.colorScheme.primary,
             modifier = Modifier.size(24.dp)
         )
     }

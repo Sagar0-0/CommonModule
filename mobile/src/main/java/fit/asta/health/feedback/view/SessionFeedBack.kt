@@ -33,7 +33,7 @@ fun SessionFeedback() {
             .fillMaxWidth()
             .padding(it)
             .verticalScroll(rememberScrollState())
-            .background(color = Color(0xffF4F6F8))) {
+            .background(color = MaterialTheme.colorScheme.secondaryContainer)) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -67,7 +67,7 @@ fun SessionFeedback() {
 
             Text(text = "By submitting review you give us consent to publish your review in our app. ",
                 fontSize = 14.sp,
-                color = Color(0xff8694A9),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp))
@@ -81,11 +81,11 @@ fun SessionFeedback() {
     }, topBar = {
         TopAppBar(title = {
             Text(text = "Feedback",
-                color = Color(0xff010101),
+                color = MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.Medium,
                 fontSize = 20.sp)
         }, navigationIcon = {
-            Icon(Icons.Outlined.NavigateBefore, "back", tint = Color(0xff0088FF))
+            Icon(Icons.Outlined.NavigateBefore, "back", tint = MaterialTheme.colorScheme.primary)
         })
     })
 }
@@ -102,7 +102,7 @@ fun SubmitButton(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             shape = RoundedCornerShape(5.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xff0088FF))) {
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)) {
             Text(text = text,
                 fontFamily = FontFamily.Default,
                 fontSize = 14.sp,

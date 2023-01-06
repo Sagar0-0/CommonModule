@@ -2,6 +2,7 @@ package fit.asta.health.navigation.home.view.component
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,7 +39,7 @@ fun NameAndMoodHomeScreenHeader() {
             Text(text = "What’s your mood today ?",
                 fontSize = 12.sp,
                 fontFamily = interFontFamily,
-                color = Color(0xFFA9A7B1))
+                color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }

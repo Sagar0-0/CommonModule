@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,7 +42,7 @@ fun TestimonialsList(
     LazyColumn(
         Modifier
             .padding(paddingValues)
-            .background(color = Color(0xffF4F6F8))
+            .background(color = MaterialTheme.colorScheme.secondaryContainer)
     ) {
 
         items(testimonials) { item ->

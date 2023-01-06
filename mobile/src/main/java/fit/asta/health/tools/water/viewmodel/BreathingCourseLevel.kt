@@ -22,11 +22,11 @@ import fit.asta.health.tools.view.components.ItemList
 fun BreathingCourseLevels(it: PaddingValues) {
 
     val itemListData = remember {
-        mutableStateListOf(ItemData(1, "The beginner 1  needs slow-paced direction and a great level of detail so they can become familiar with basic  use of the breath.", bgColor = Color(0x66959393)),
-            ItemData(id = 2, display = "Stairs, WalkThe beginner 2 would like to explore their practice and begin to become more familiar with use of the breath. Becoming More Familiar", bgColor = Color(0x66959393)),
-            ItemData(3, "The Intermediate are designed for those who have a good understanding of the basic yoga postures, and have begun to explore a wider variety of poses and styles.", bgColor = Color(0x66959393)),
-            ItemData(4, "classes are designed for more experienced yogis with a very solid understanding of basic yoga postures who are comfortable performing more advanced poses.", bgColor = Color(0x66959393)),
-            ItemData(5, "The advanced practices yoga regularly and has begun to master connection of breath with movement. Hard Work!", bgColor = Color(0x66959393)),
+        mutableStateListOf(ItemData(1, "The beginner 1  needs slow-paced direction and a great level of detail so they can become familiar with basic  use of the breath.", bgColor = Color.LightGray),
+            ItemData(id = 2, display = "Stairs, WalkThe beginner 2 would like to explore their practice and begin to become more familiar with use of the breath. Becoming More Familiar", bgColor = Color.LightGray),
+            ItemData(3, "The Intermediate are designed for those who have a good understanding of the basic yoga postures, and have begun to explore a wider variety of poses and styles.", bgColor = Color.LightGray),
+            ItemData(4, "classes are designed for more experienced yogis with a very solid understanding of basic yoga postures who are comfortable performing more advanced poses.", bgColor = Color.LightGray),
+            ItemData(5, "The advanced practices yoga regularly and has begun to master connection of breath with movement. Hard Work!", bgColor = Color.LightGray),
             )
     }
 
@@ -51,13 +51,13 @@ fun CourseLevel() {
                 }
                 Text(text = "Course Level",
                     fontSize = 20.sp,
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center)
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(painter = painterResource(id = R.drawable.ic_physique),
                         contentDescription = null,
                         Modifier.size(24.dp),
-                        tint = Color(0xff0088FF))
+                        tint = MaterialTheme.colorScheme.primary)
                 }
             }
         }, elevation = 10.dp)

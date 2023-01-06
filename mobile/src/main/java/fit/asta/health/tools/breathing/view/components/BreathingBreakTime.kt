@@ -23,14 +23,14 @@ fun BreathingBreakTime(it: PaddingValues) {
 
     val itemListData = remember {
         mutableStateListOf(
-            ItemData(1, "1 Minute", bgColor = Color(0x66959393)),
-            ItemData(id = 2, display = "2 Minutes", bgColor = Color(0x66959393)),
-            ItemData(3, "3 Minutes", bgColor = Color(0x66959393)),
-            ItemData(4, "4 Minutes", bgColor = Color(0x66959393)),
-            ItemData(5, "5 Minutes", bgColor = Color(0x66959393)),
-            ItemData(6, "6 Minutes", bgColor = Color(0x66959393)),
-            ItemData(7, "7 Minutes", bgColor = Color(0x66959393)),
-            ItemData(8, "8 Minutes", bgColor = Color(0x66959393)),
+            ItemData(1, "1 Minute", bgColor = Color.LightGray),
+            ItemData(id = 2, display = "2 Minutes", bgColor = Color.LightGray),
+            ItemData(3, "3 Minutes", bgColor = Color.LightGray),
+            ItemData(4, "4 Minutes", bgColor = Color.LightGray),
+            ItemData(5, "5 Minutes", bgColor = Color.LightGray),
+            ItemData(6, "6 Minutes", bgColor = Color.LightGray),
+            ItemData(7, "7 Minutes", bgColor = Color.LightGray),
+            ItemData(8, "8 Minutes", bgColor = Color.LightGray),
         )
     }
 
@@ -57,13 +57,13 @@ fun BreakTime() {
                 }
                 Text(text = "Break Time",
                     fontSize = 20.sp,
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center)
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(painter = painterResource(id = R.drawable.ic_physique),
                         contentDescription = null,
                         Modifier.size(24.dp),
-                        tint = Color(0xff0088FF))
+                        tint = MaterialTheme.colorScheme.primary)
                 }
             }
         }, elevation = 10.dp)

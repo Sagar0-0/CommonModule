@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,17 +27,17 @@ fun UserDetail1(
                 fontFamily = FontFamily.Default,
                 fontSize = 24.sp,
                 textAlign = TextAlign.Center,
-                color = Color.Black)
+                color = MaterialTheme.colorScheme.onBackground)
             Text(text = userNumber,
                 fontFamily = FontFamily.Default,
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center,
-                color = Color(0x99000000))
+                color = MaterialTheme.colorScheme.onBackground)
             Text(text = userMail,
                 fontFamily = FontFamily.Default,
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center,
-                color = Color(0x99000000))
+                color = MaterialTheme.colorScheme.onBackground)
         }
     }
 }

@@ -24,6 +24,10 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.R
 import fit.asta.health.testimonials.model.domain.ButtonListTypes
+import fit.asta.health.ui.theme.ColorGraniteGray
+import fit.asta.health.ui.theme.Dark02
+import fit.asta.health.ui.theme.FocusedBorderColor
+import fit.asta.health.ui.theme.TextLight04
 
 
 @Composable
@@ -46,11 +50,11 @@ fun MyTextField(
                 Text(text = textFieldTitle,
                     fontSize = 14.sp,
                     lineHeight = 19.6.sp,
-                    color = Color(0xff999999))
+                    color = ColorGraniteGray)
             },
             colors = TextFieldDefaults.outlinedTextFieldColors(backgroundColor = Color.White,
-                focusedBorderColor = Color(0xff0088FF),
-                unfocusedBorderColor = Color(0xffDFE6ED)),
+                focusedBorderColor = FocusedBorderColor,
+                unfocusedBorderColor = TextLight04),
             shape = RoundedCornerShape(8.dp))
         Text(text = "${text.length} / $maxChar",
             textAlign = TextAlign.End,
@@ -76,7 +80,7 @@ fun TestimonialsRadioButton(
             shape = RoundedCornerShape(8.dp),
             elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),
-            border = BorderStroke(width = 1.dp, color = Color(0xffDFE6ED))) {
+            border = BorderStroke(width = 1.dp, color = TextLight04)) {
 
             Column(
                 Modifier
@@ -85,7 +89,7 @@ fun TestimonialsRadioButton(
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(Modifier.fillMaxWidth()) {
                     Text(text = selectionTypeText,
-                        color = Color(0x99000000),
+                        color = Color.Black,
                         fontSize = 14.sp,
                         lineHeight = 19.6.sp,
                         fontWeight = FontWeight.Bold)
@@ -100,11 +104,13 @@ fun TestimonialsRadioButton(
                                         onClick = {
                                             onOptionSelected(item)
                                         },
-                                        colors = RadioButtonDefaults.colors(Color(0xff2F80ED)))
+                                       // colors = RadioButtonDefaults.colors(Color(0xff2F80ED))
+                                        colors = RadioButtonDefaults.colors(androidx.compose.material3.MaterialTheme.colorScheme.primary)
+                                    )
                                     androidx.compose.material3.Text(text = item.title,
                                         fontSize = 16.sp,
                                         lineHeight = 22.4.sp,
-                                        color = Color(0xff575757))
+                                        color = Dark02)
                                 }
                             }
                         }
@@ -136,7 +142,7 @@ fun UploadFiles(modifier: Modifier = Modifier) {
 
         Box(modifier = Modifier.dashedBorder(width = 1.dp,
             radius = 8.dp,
-            color = Color(0xff8694A9))) {
+            color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant)) {
             Row(
                 Modifier
                     .fillMaxWidth()
@@ -144,12 +150,12 @@ fun UploadFiles(modifier: Modifier = Modifier) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically) {
                 Text(text = "Upload Image or Video",
-                    color = Color(0xff585D64),
+                    color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 14.sp,
                     lineHeight = 19.6.sp)
 
                 Button(onClick = { /*TODO*/ },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xff0075FF)),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.primary),
                     shape = RoundedCornerShape(20.dp)) {
                     Text(text = "Upload",
                         color = Color.White,
@@ -167,7 +173,7 @@ fun UploadFiles(modifier: Modifier = Modifier) {
 
         Text(text = "You can upload maximum 5 images and 1 video *",
             fontSize = 12.sp,
-            color = Color(0x99000000))
+            color = Color.Black)
     }
 }
 

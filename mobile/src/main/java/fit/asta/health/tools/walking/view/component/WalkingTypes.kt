@@ -22,13 +22,13 @@ import fit.asta.health.tools.view.components.ItemList
 fun WalkingTypeLayoutWalkingType(it: PaddingValues) {
 
     val itemListData = remember {
-        mutableStateListOf(ItemData(1, "Walking", bgColor = Color(0x66959393)),
-            ItemData(id = 2, display = "Stairs, Walk", bgColor = Color(0x66959393)),
-            ItemData(3, "Treadmill", bgColor = Color(0x66959393)),
-            ItemData(4, "Dog Walk", bgColor = Color(0x66959393)),
-            ItemData(5, "Power Walk", bgColor = Color(0x66959393)),
-            ItemData(5, "Running", bgColor = Color(0x66959393)),
-            ItemData(5, "Trekking", bgColor = Color(0x66959393)))
+        mutableStateListOf(ItemData(1, "Walking", bgColor = Color.LightGray),
+            ItemData(id = 2, display = "Stairs, Walk", bgColor = Color.LightGray),
+            ItemData(3, "Treadmill", bgColor = Color.LightGray),
+            ItemData(4, "Dog Walk", bgColor = Color.LightGray),
+            ItemData(5, "Power Walk", bgColor = Color.LightGray),
+            ItemData(5, "Running", bgColor = Color.LightGray),
+            ItemData(5, "Trekking", bgColor = Color.LightGray))
     }
 
     ItemList(list = itemListData, rowTitle = "Select the walking type", it = it)
@@ -52,13 +52,13 @@ fun WalkingType() {
                 }
                 Text(text = "Walking Types",
                     fontSize = 20.sp,
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center)
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(painter = painterResource(id = R.drawable.ic_physique),
                         contentDescription = null,
                         Modifier.size(24.dp),
-                        tint = Color(0xff0088FF))
+                        tint = MaterialTheme.colorScheme.primary)
                 }
             }
         }, elevation = 10.dp)

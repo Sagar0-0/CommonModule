@@ -33,7 +33,7 @@ fun BodyTypeListLayout(
                 fontSize = 14.sp,
                 lineHeight = 19.6.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color(0x99000000),
+                color = Color.Black,
                 textAlign = TextAlign.Center)
         }
     }

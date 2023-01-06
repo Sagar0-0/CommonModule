@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,23 +56,23 @@ fun ReferAndEarn() {
                     Text(text = "Refer and Earn",
                         fontSize = 16.sp,
                         fontFamily = interMediumFontFamily,
-                        color = Color.Black,
+                        color = MaterialTheme.colorScheme.onBackground,
                         lineHeight = 24.sp)
                     Text(text = "Send referral link to your friend to earn ₹ 100",
                         fontSize = 12.sp,
                         fontFamily = interFontFamily,
-                        color = Color(0xFF8694A9))
+                        color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Spacer(modifier = Modifier.height(12.dp))
                     Button(onClick = {},
                         Modifier
                             .clip(RoundedCornerShape(6.dp))
                             .size(width = 53.dp, height = 28.dp),
                         contentPadding = PaddingValues(vertical = 2.dp, horizontal = 8.dp),
-                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)) {
+                        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colorScheme.primary)) {
                         Text(text = "Refer",
                             fontSize = 14.sp,
                             fontFamily = interMediumFontFamily,
-                            color = Color.White,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             letterSpacing = 0.15.sp)
                     }
                 }

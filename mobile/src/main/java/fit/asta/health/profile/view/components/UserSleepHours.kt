@@ -3,6 +3,7 @@ package fit.asta.health.profile.view.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,7 +27,7 @@ fun UserSleepHours() {
                 fontWeight = FontWeight.SemiBold,
                 letterSpacing = 0.18.sp,
                 lineHeight = 24.sp,
-                color = Color(0xff707070),
+                color = MaterialTheme.colorScheme.secondary,
                 textAlign = TextAlign.Center)
         }
     }

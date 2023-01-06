@@ -44,16 +44,16 @@ fun WaterHomeScreen(viewModel:WaterViewModel= hiltViewModel()) {
                 }
                 Text(text = "Water Tool",
                     fontSize = 20.sp,
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center)
                 IconButton(onClick = {  }) {
                     Icon(painter = painterResource(id = R.drawable.ic_physique),
                         contentDescription = null,
                         Modifier.size(24.dp),
-                        tint = Color(0xff0088FF))
+                        tint = MaterialTheme.colorScheme.primary)
                 }
             }
-        }, elevation = 10.dp, backgroundColor = Color.White)
+        }, elevation = 10.dp, backgroundColor = MaterialTheme.colorScheme.onPrimary)
     },
         floatingActionButton = {
             if(changed!=null) {

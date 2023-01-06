@@ -14,6 +14,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -39,10 +40,11 @@ fun AllSchedulesCards() {
                 }
                 Text(text = "My Schedules",
                     fontSize = 20.sp,
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center)
             }
-        }, elevation = 10.dp, backgroundColor = Color.White)
+        }, elevation = 10.dp,
+            backgroundColor = MaterialTheme.colorScheme.onPrimary)
     }) {
         Items(paddingValues = it)
     }
@@ -56,7 +58,9 @@ fun AllSchedulesLayout(idList: List<Int>, dayTime: String) {
 
     val extraPadding by animateDpAsState(targetValue = if (expanded) 0.dp else 0.dp)
 
-    Column(modifier = Modifier.padding(bottom = extraPadding.coerceAtLeast(0.dp))) {
+    Column(modifier = Modifier
+        .padding(bottom = extraPadding.coerceAtLeast(0.dp))
+        ) {
 
         Row(modifier = Modifier
             .fillMaxWidth()
@@ -67,7 +71,7 @@ fun AllSchedulesLayout(idList: List<Int>, dayTime: String) {
             Text(text = dayTime,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Medium,
-                color = Color.Black)
+                color = MaterialTheme.colorScheme.onBackground)
 
             IconButton(onClick = { expanded = !expanded }) {
 
@@ -79,7 +83,8 @@ fun AllSchedulesLayout(idList: List<Int>, dayTime: String) {
 
         Row(Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)) {
+            .padding(horizontal = 16.dp)
+            .shadow(8.dp)) {
             Column {
                 if (expanded) {
                     idList.forEach { id ->
