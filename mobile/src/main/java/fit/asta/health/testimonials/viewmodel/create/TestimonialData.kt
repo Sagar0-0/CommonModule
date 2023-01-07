@@ -18,7 +18,13 @@ data class TestimonialData(
     var roleError: UiString = UiString.Empty,
     val org: String = "",
     var orgError: UiString = UiString.Empty,
-    val media: SnapshotStateList<Media> = mutableStateListOf(),
-    val mediaError: UiString = UiString.Empty,
+    var imgMedia: SnapshotStateList<Media> = mutableStateListOf(
+        Media(name = "before", title = "Before Image"),
+        Media(name = "after", title = "After Image")
+    ),
+    var vdoMedia: SnapshotStateList<Media> = mutableStateListOf(
+        Media(name = "journey", title = "Health Transformation")
+    ),
+    var mediaError: UiString = UiString.Empty,
     var enableSubmit: Boolean = false
 )

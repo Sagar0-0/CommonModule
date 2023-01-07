@@ -41,7 +41,7 @@ fun TestGetVideo(viewModel: TestimonialViewModel = hiltViewModel()) {
 
     val videoLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
-            viewModel.onEvent(TestimonialEvent.OnMediaSelect(uri))
+            viewModel.onEvent(TestimonialEvent.OnVideoSelect(uri))
         }
 
     GetVideo(
@@ -50,7 +50,7 @@ fun TestGetVideo(viewModel: TestimonialViewModel = hiltViewModel()) {
             videoLauncher.launch("video/*")
             viewModel.onEvent(TestimonialEvent.OnMediaIndex(0))
         },
-        onVideoClear = { viewModel.onEvent(TestimonialEvent.OnMediaClear(0)) }
+        onVideoClear = { viewModel.onEvent(TestimonialEvent.OnVideoClear(0)) }
     )
 }
 
@@ -120,7 +120,7 @@ fun VideoLayout(
 
     Box {
 
-        val media = viewModel.data.media[0]
+        val media = viewModel.data.vdoMedia[0]
         if (media.url.isEmpty() && media.localUrl == null) {
 
             UploadVideo(onVideoClick)

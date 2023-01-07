@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.R
-import fit.asta.health.testimonials.model.domain.ButtonListTypes
+import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.ui.theme.ColorGraniteGray
 import fit.asta.health.ui.theme.Dark02
 import fit.asta.health.ui.theme.FocusedBorderColor
@@ -67,11 +67,11 @@ fun MyTextField(
 @Composable
 fun TestimonialsRadioButton(
     selectionTypeText: String,
-    radioButtonList: List<ButtonListTypes>,
-    selectedOption: ButtonListTypes,
+    radioButtonList: List<TestimonialType>,
+    selectedOption: TestimonialType,
     content: @Composable (() -> Unit)? = null,
     titleTestimonial: @Composable (() -> Unit)? = null,
-    onOptionSelected: (ButtonListTypes) -> Unit,
+    onOptionSelected: (TestimonialType) -> Unit,
 ) {
 
     Column(Modifier.fillMaxWidth()) {
@@ -100,11 +100,12 @@ fun TestimonialsRadioButton(
                             verticalAlignment = Alignment.CenterVertically) {
                             Box(modifier = Modifier.padding(top = 9.5.dp, bottom = 9.5.dp)) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    RadioButton(selected = (item.type == selectedOption.type),
+                                    RadioButton(
+                                        selected = (item == selectedOption),
                                         onClick = {
                                             onOptionSelected(item)
                                         },
-                                       // colors = RadioButtonDefaults.colors(Color(0xff2F80ED))
+                                        // colors = RadioButtonDefaults.colors(Color(0xff2F80ED))
                                         colors = RadioButtonDefaults.colors(androidx.compose.material3.MaterialTheme.colorScheme.primary)
                                     )
                                     androidx.compose.material3.Text(text = item.title,

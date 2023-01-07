@@ -273,6 +273,7 @@
 
     <!-- Validation -->
     <string name="the_field_can_not_be_blank">The field can\'t be blank</string>
+    <string name="the_media_can_not_be_blank">The media files can\'t be empty</string>
     <string name="that_is_not_a_valid_email">That\'s not a valid email</string>
     <string name="error_terms_condition_not_accepted">Please kindly accept our terms and conditions</string>
     <string name="the_password_needs_to_contain_at_least_one_letter_and_digit">
