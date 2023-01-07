@@ -53,6 +53,8 @@ fun PhysiqueContent(eventSkip: (() -> Unit)? = null, eventNext: (() -> Unit)? = 
             .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally) {
 
+            Spacer(modifier = Modifier.height(16.dp))
+
             Row(modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
@@ -147,11 +149,20 @@ fun PhysiqueContent(eventSkip: (() -> Unit)? = null, eventNext: (() -> Unit)? = 
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            AddressType(selectionTypeText = "Gender", radioButtonList = buttonTypeList)
+            Row(Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)) {
+                AddressType(selectionTypeText = "Gender", radioButtonList = buttonTypeList)
+            }
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            AddressType(selectionTypeText = "Are you Pregnant?", radioButtonList = isPregnantList)
+            Row(Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)) {
+                AddressType(selectionTypeText = "Are you Pregnant?",
+                    radioButtonList = isPregnantList)
+            }
 
             Spacer(modifier = Modifier.height(20.dp))
 

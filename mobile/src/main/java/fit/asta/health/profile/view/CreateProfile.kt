@@ -256,7 +256,6 @@ fun CreateProfile() {
     }
 }
 
-
 @Composable
 fun UserCircleImage() {
 
@@ -312,11 +311,16 @@ fun Alpha(
 }
 
 @Composable
-fun AddressType(selectionTypeText: String, radioButtonList: List<ButtonListTypes>) {
+fun AddressType(
+    selectionTypeText: String,
+    radioButtonList: List<ButtonListTypes>,
+    modifier: Modifier = Modifier,
+) {
 
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioButtonList[0]) }
 
-    Card(modifier = Modifier.fillMaxWidth(),
+    Card(modifier = modifier
+        .fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)) {
@@ -354,7 +358,6 @@ fun AddressType(selectionTypeText: String, radioButtonList: List<ButtonListTypes
         }
     }
 }
-
 
 @Composable
 fun PrivacyStatement() {
@@ -403,7 +406,6 @@ fun UserConsent() {
         }
     }
 }
-
 
 @Composable
 fun NextButton(text: String, modifier: Modifier = Modifier, event: (() -> Unit)? = null) {

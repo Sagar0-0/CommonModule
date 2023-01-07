@@ -21,7 +21,6 @@ import fit.asta.health.profile.view.SelectionOutlineButton
 @Composable
 fun LifeStyleContent(eventSkip: (() -> Unit)? = null, eventNext: (() -> Unit)? = null) {
 
-
     val healthHistoryList4 = listOf("Less", "Moderate", "Very")
     val checkedState = remember { mutableStateOf(true) }
     val radioButtonList3 = listOf(ButtonListTypes(buttonType = "Morning"),
@@ -29,44 +28,66 @@ fun LifeStyleContent(eventSkip: (() -> Unit)? = null, eventNext: (() -> Unit)? =
         ButtonListTypes(buttonType = "Night"))
     val healthHistoryList5 = listOf("Cycling", "Walking", "Swimming", "Gym", "Dancing", "Bowling")
 
-
-
     Card(shape = RoundedCornerShape(16.dp)) {
 
         Column(modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(vertical = 16.dp)
             .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally) {
 
-            SelectionOutlineButton(cardType = "Are you physically active ?",
-                cardList = healthHistoryList4)
+            Row(Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)) {
+                SelectionOutlineButton(cardType = "Are you physically active ?",
+                    cardList = healthHistoryList4)
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            SelectionOutlineButton(cardType = "Are you physically active ?",
-                cardList = healthHistoryList4)
+            Row(Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)) {
+                SelectionOutlineButton(cardType = "Are you physically active ?",
+                    cardList = healthHistoryList4)
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            AddressType(selectionTypeText = "What are your working hours?",
-                radioButtonList = radioButtonList3)
+            Row(Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)) {
+                AddressType(selectionTypeText = "What are your working hours?",
+                    radioButtonList = radioButtonList3)
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            OnlyChipSelectionCard(cardType = "What activities are indulge in?",
-                cardList = healthHistoryList5,
-                checkedState)
+            Row(Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)) {
+                OnlyChipSelectionCard(cardType = "What activities are indulge in?",
+                    cardList = healthHistoryList5,
+                    checkedState)
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            OnlyChipSelectionCard(cardType = "What activities are indulge in?",
-                cardList = healthHistoryList5,
-                checkedState)
+            Row(Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)) {
+                OnlyChipSelectionCard(cardType = "What activities are indulge in?",
+                    cardList = healthHistoryList5,
+                    checkedState)
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            CreateProfileButtons(eventSkip, eventNext)
+            Row(Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)) {
+                CreateProfileButtons(eventSkip, eventNext)
+            }
 
             Spacer(modifier = Modifier.height(20.dp))
         }

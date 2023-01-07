@@ -44,6 +44,12 @@ fun HealthContent(eventSkip: (() -> Unit)? = null, eventNext: (() -> Unit)? = nu
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            SelectionCardCreateProfile(cardType = "Any Significant Health history?",
+                cardList = healthHistoryList,
+                radioButtonList = radioButtonList,
+                checkedState)
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             SelectionCardCreateProfile(cardType = "Any Significant Health history?",
                 cardList = healthHistoryList,
@@ -52,22 +58,12 @@ fun HealthContent(eventSkip: (() -> Unit)? = null, eventNext: (() -> Unit)? = nu
 
             Spacer(modifier = Modifier.height(16.dp))
 
-
             SelectionCardCreateProfile(cardType = "Any Significant Health history?",
                 cardList = healthHistoryList,
                 radioButtonList = radioButtonList,
                 checkedState)
 
             Spacer(modifier = Modifier.height(16.dp))
-
-
-            SelectionCardCreateProfile(cardType = "Any Significant Health history?",
-                cardList = healthHistoryList,
-                radioButtonList = radioButtonList,
-                checkedState)
-
-            Spacer(modifier = Modifier.height(16.dp))
-
 
             OnlyChipSelectionCard(cardType = "When were you Injured?",
                 cardList = healthHistoryList3,
