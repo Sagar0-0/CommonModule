@@ -190,7 +190,7 @@ fun PhysiqueContent(eventSkip: (() -> Unit)? = null, eventNext: (() -> Unit)? = 
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            CreateProfileButtons(eventSkip, eventNext)
+            CreateProfileButtons(eventSkip, eventNext, text = "Next")
 
             Spacer(modifier = Modifier.height(20.dp))
         }
@@ -199,10 +199,16 @@ fun PhysiqueContent(eventSkip: (() -> Unit)? = null, eventNext: (() -> Unit)? = 
 }
 
 @Composable
-fun CreateProfileButtons(eventSkip: (() -> Unit)? = null, eventNext: (() -> Unit)? = null) {
+fun CreateProfileButtons(
+    eventSkip: (() -> Unit)? = null,
+    eventNext: (() -> Unit)? = null,
+    text: String? = null,
+) {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
         NextButton(text = "Skip", modifier = Modifier.fillMaxWidth(0.5f), event = eventNext)
-        NextButton(text = "Next", modifier = Modifier.fillMaxWidth(1f), event = eventNext)
+        if (text != null) {
+            NextButton(text = text, modifier = Modifier.fillMaxWidth(1f), event = eventNext)
+        }
     }
 }
 

@@ -86,7 +86,7 @@ fun LifeStyleContent(eventSkip: (() -> Unit)? = null, eventNext: (() -> Unit)? =
             Row(Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)) {
-                CreateProfileButtons(eventSkip, eventNext)
+                CreateProfileButtons(eventSkip, eventNext, text = "Next")
             }
 
             Spacer(modifier = Modifier.height(20.dp))

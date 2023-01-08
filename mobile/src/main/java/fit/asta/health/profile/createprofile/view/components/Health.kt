@@ -78,7 +78,7 @@ fun HealthContent(eventSkip: (() -> Unit)? = null, eventNext: (() -> Unit)? = nu
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            CreateProfileButtons(eventSkip, eventNext)
+            CreateProfileButtons(eventSkip, eventNext, text = "Next")
 
             Spacer(modifier = Modifier.height(20.dp))
         }
