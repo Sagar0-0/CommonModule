@@ -64,10 +64,9 @@ fun PlayVideoLayout(testimonial: Testimonial) {
                 border = BorderStroke(width = 5.dp, color = MaterialTheme.colorScheme.primaryContainer),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                val media = testimonial.media?.get(0)
-                if (media != null) {
+                testimonial.media.forEach {
                     AsyncImage(
-                        model = getImageUrl(media.url),
+                        model = getImageUrl(it.url),
                         contentDescription = null,
                         modifier = Modifier.fillMaxWidth(),
                         contentScale = ContentScale.Crop

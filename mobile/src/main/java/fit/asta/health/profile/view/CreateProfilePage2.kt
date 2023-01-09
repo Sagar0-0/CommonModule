@@ -139,13 +139,15 @@ fun SelectionCardCreateProfile(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            RadioButtonCreateProfile(radioButtonList = radioButtonList)
-
-            FlowRow(mainAxisSpacing = 8.dp, crossAxisSpacing = 4.dp) {
-                cardList.forEach {
-                    ChipsOnCards(textOnChip = it, checkedState = checkedState)
-                }
-            }
+            RadioButtonCreateProfile(radioButtonList = radioButtonList,
+                cardList = cardList,
+                checkedState = checkedState)
+//
+//            FlowRow(mainAxisSpacing = 8.dp, crossAxisSpacing = 4.dp) {
+//                cardList.forEach {
+//                    ChipsOnCards(textOnChip = it, checkedState = checkedState)
+//                }
+//            }
         }
     }
 }
@@ -153,6 +155,8 @@ fun SelectionCardCreateProfile(
 @Composable
 fun RadioButtonCreateProfile(
     radioButtonList: List<ButtonListTypes>,
+    cardList: List<String>,
+    checkedState: (MutableState<Boolean>)? = null,
 ) {
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioButtonList[0]) }
 
@@ -172,6 +176,17 @@ fun RadioButtonCreateProfile(
                 }
             }
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        if (selectedOption == radioButtonList[0]) {
+            FlowRow(mainAxisSpacing = 8.dp, crossAxisSpacing = 4.dp) {
+                cardList.forEach {
+                    ChipsOnCards(textOnChip = it, checkedState = checkedState)
+                }
+            }
+        }
+
     }
 }
 

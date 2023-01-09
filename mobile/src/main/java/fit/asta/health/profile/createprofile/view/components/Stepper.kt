@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -41,37 +43,47 @@ fun StepperView() {
         R.drawable.diet)
 
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-        StepperDemo(modifier = Modifier.fillMaxWidth(),
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(imageVector = Icons.Filled.Close,
+                    contentDescription = "close",
+                    modifier = Modifier.size(24.dp))
+            }
+            Spacer(modifier = Modifier.width(5.dp))
+            Text(text = "Cancel Create Profile", fontSize = 16.sp)
+        }
+        StepperDemo(
+            modifier = Modifier.fillMaxWidth(),
             numberOfSteps = numberOfSteps,
             currentStep = currentStep,
             stepDescriptionList = titleList,
             unSelectedColor = Color.LightGray,
             selectedColor = Color.Blue,
             isRainbow = false,
-            iconsList = iconList)
+            iconsList = iconList,
+        )
         Spacer(modifier = Modifier.height(20.dp))
         Box(modifier = Modifier.fillMaxWidth()) {
             when (currentStep) {
                 1 -> {
-                    DetailsContent(eventNext = { currentStep += 1 })
+                    DetailsContent(eventNext = { currentStep = 2 })
                 }
                 2 -> {
-                    PhysiqueContent(eventNext = { currentStep += 1 })
+                    PhysiqueContent(eventNext = { currentStep = 3 })
                 }
                 3 -> {
-                    HealthContent(eventNext = { currentStep += 1 })
+                    HealthContent(eventNext = { currentStep = 4 })
                 }
                 4 -> {
-                    LifeStyleContent(eventNext = { currentStep += 1 })
+                    LifeStyleContent(eventNext = { currentStep = 5 })
                 }
                 5 -> {
-                    DietContent(eventNext = { currentStep += 1 })
+                    DietContent(eventNext = { currentStep = 6 })
                 }
             }
         }
     }
-
-
 }
 
 @Composable
@@ -93,6 +105,7 @@ fun StepperDemo(
     selectedColor: Color? = null,
     isRainbow: Boolean = false,
     iconsList: List<Int>,
+    logic: (() -> Unit)? = null,
 ) {
 
     val descriptionList = MutableList(numberOfSteps) { "" }
@@ -112,7 +125,8 @@ fun StepperDemo(
                 stepDescription = descriptionList[step - 1],
                 unSelectedColor = unSelectedColor,
                 selectedColor = selectedColor,
-                icons = iconsList[step - 1])
+                icons = iconsList[step - 1],
+                logic = logic)
         }
     }
 }
@@ -129,6 +143,7 @@ private fun StepDemo(
     unSelectedColor: Color,
     selectedColor: Color?,
     icons: Int?,
+    logic: (() -> Unit)? = null,
 ) {
 
     val rainBowColor = Brush.linearGradient(listOf(
@@ -178,14 +193,22 @@ private fun StepDemo(
                 }) {
 
             Box(contentAlignment = Alignment.Center) {
-                if (isCompete) Icon(imageVector = Icons.Default.Done,
-                    "done",
-                    modifier = modifier.padding(4.dp),
-                    tint = Color.White)
+                if (isCompete) logic?.let {
+                    IconButton(onClick = it) {
+                        Icon(imageVector = Icons.Default.Done,
+                            "done",
+                            modifier = modifier.padding(4.dp),
+                            tint = Color.White)
+                    }
+                }
                 else icons?.let { painterResource(id = it) }?.let {
-                    Icon(painter = it,
-                        contentDescription = "done",
-                        modifier = modifier.padding(4.dp))
+                    logic?.let { it1 ->
+                        IconButton(onClick = it1) {
+                            Icon(painter = it,
+                                contentDescription = "done",
+                                modifier = modifier.padding(4.dp))
+                        }
+                    }
                 }
             }
         }

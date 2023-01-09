@@ -1,6 +1,5 @@
 package fit.asta.health.testimonials.model
 
-import androidx.compose.runtime.toMutableStateList
 import fit.asta.health.testimonials.model.domain.Media
 import fit.asta.health.testimonials.model.domain.Testimonial
 import fit.asta.health.testimonials.model.domain.TestimonialType
@@ -19,7 +18,7 @@ class TestimonialDataMapper {
     fun mapToDomainModel(networkModel: NetTestimonial) =
         Testimonial(
             id = networkModel.id,
-            type = TestimonialType.fromInt(networkModel.type),
+            type = TestimonialType.from(networkModel.type),
             rank = networkModel.rank,
             title = networkModel.title,
             testimonial = networkModel.testimonial,
@@ -30,7 +29,7 @@ class TestimonialDataMapper {
                 role = networkModel.user.role,
                 url = networkModel.user.url
             ),
-            media = mapToMedia(networkModel.media).toMutableStateList()
+            media = mapToMedia(networkModel.media)
         )
 
     private fun mapToMedia(mediaList: List<NetMedia>): List<Media> {

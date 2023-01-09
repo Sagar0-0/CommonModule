@@ -25,7 +25,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import fit.asta.health.testimonials.model.domain.ButtonListTypes
 import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.view.components.ValidatedTextField
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
@@ -43,15 +42,15 @@ fun TestimonialForm(
 ) {
 
     val radioButtonList = listOf(
-        ButtonListTypes(title = "Written", type = TestimonialType.TEXT),
-        ButtonListTypes(title = "Image", type = TestimonialType.IMAGE),
-        ButtonListTypes(title = "Video", type = TestimonialType.VIDEO),
+        TestimonialType.TEXT,
+        TestimonialType.IMAGE,
+        TestimonialType.VIDEO
     )
 
     var showCustomDialogWithResult by remember { mutableStateOf(false) }
 
     val selectedOption = radioButtonList.find {
-        it.type == editViewModel.data.type
+        it == editViewModel.data.type
     } ?: radioButtonList[0]
 
     val focusManager = LocalFocusManager.current
@@ -111,7 +110,7 @@ fun TestimonialForm(
                 )
             },
             onOptionSelected = {
-                editViewModel.onEvent(TestimonialEvent.OnTypeChange(it.type))
+                editViewModel.onEvent(TestimonialEvent.OnTypeChange(it))
             })
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -179,7 +178,6 @@ fun TestimonialForm(
                 onNavigateTstHome()
             }
         }
-
     }
 }
 

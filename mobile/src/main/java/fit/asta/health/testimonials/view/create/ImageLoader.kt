@@ -8,7 +8,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -39,7 +38,7 @@ fun TestGetImage(viewModel: TestimonialViewModel = hiltViewModel()) {
 
     val launcher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
-            viewModel.onEvent(TestimonialEvent.OnMediaSelect(uri))
+            viewModel.onEvent(TestimonialEvent.OnImageSelect(uri))
         }
 
     ImagePreviewLayout(
@@ -48,7 +47,7 @@ fun TestGetImage(viewModel: TestimonialViewModel = hiltViewModel()) {
             launcher.launch("image/*")
             viewModel.onEvent(TestimonialEvent.OnMediaIndex(it))
         },
-        onImageClear = { viewModel.onEvent(TestimonialEvent.OnMediaClear(it)) }
+        onImageClear = { viewModel.onEvent(TestimonialEvent.OnImageClear(it)) }
     )
 }
 
@@ -89,23 +88,24 @@ fun ImagePreviewLayout(
                         .padding(horizontal = 16.dp)
                 ) {
 
-                    items(viewModel.data.media) { mda ->
-
-                        Box {
-                            if (mda.url.isEmpty() && mda.localUrl == null) {
-                                UploadImageView(
-                                    title = mda.title,
-                                    inx = mda.name.toInt(),
-                                    onImageClick = onImageClick
-                                )
-                            } else {
-                                SelectedImageView(
-                                    title = mda.title,
-                                    inx = mda.name.toInt(),
-                                    url = getOneUrl(mda.localUrl, mda.url),
-                                    onImageClick = onImageClick,
-                                    onImageClear = onImageClear
-                                )
+                    viewModel.data.imgMedia.forEachIndexed { index, media ->
+                        item {
+                            Box {
+                                if (media.url.isEmpty() && media.localUrl == null) {
+                                    UploadImageView(
+                                        title = media.title,
+                                        inx = index,
+                                        onImageClick = onImageClick
+                                    )
+                                } else {
+                                    SelectedImageView(
+                                        title = media.title,
+                                        inx = index,
+                                        url = getOneUrl(media.localUrl, media.url),
+                                        onImageClick = onImageClick,
+                                        onImageClear = onImageClear
+                                    )
+                                }
                             }
                         }
                     }

@@ -3,6 +3,7 @@ package fit.asta.health.testimonials.viewmodel.create
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -78,9 +79,20 @@ class TestimonialViewModel
                     title = it.title,
                     testimonial = it.testimonial,
                     role = it.user.role,
-                    org = it.user.org,
-                    media = it.media
+                    org = it.user.org
                 )
+
+                when (it.type) {
+                    TestimonialType.TEXT -> {
+                    }
+                    TestimonialType.IMAGE -> {
+                        data.imgMedia = it.media.toMutableStateList()
+                    }
+                    TestimonialType.VIDEO -> {
+                        data.vdoMedia = it.media.toMutableStateList()
+                    }
+                }
+
                 _mutableState.value = TestimonialGetState.Success(it)
             }
         }
@@ -101,11 +113,6 @@ class TestimonialViewModel
     fun onEvent(event: TestimonialEvent) {
         when (event) {
             is TestimonialEvent.OnTypeChange -> {
-                //TODO - Proper handling of media based on testimonial type
-                if (data.media.isEmpty()) {
-                    data.media.add(0, Media(name = "0", title = "Before Image"))
-                    data.media.add(1, Media(name = "1", title = "After Image"))
-                }
                 data = data.copy(type = event.type)
                 data.enableSubmit = validateTestimonial(event.type)
             }
@@ -129,28 +136,40 @@ class TestimonialViewModel
                 data.roleError = onValidateText(event.role, 2, 32)
                 data.enableSubmit = validateTestimonial(data.type)
             }
-            is TestimonialEvent.OnMediaClear -> {
-                data.media[event.inx] = data.media[event.inx].copy(localUrl = null, url = "")
+            is TestimonialEvent.OnMediaIndex -> {
+                curInx = event.inx
+            }
+            is TestimonialEvent.OnImageSelect -> {
+                if (event.url != null) {
+                    data.imgMedia[curInx] = data.imgMedia[curInx].copy(localUrl = event.url)
+                }
+                data.imgError = onValidateMedia(data.imgMedia)
+                data.enableSubmit = validateTestimonial(data.type)
+            }
+            is TestimonialEvent.OnImageClear -> {
+                data.imgMedia[event.inx] = data.imgMedia[event.inx].copy(localUrl = null, url = "")
+                data.imgError = UiString.Resource(R.string.the_media_can_not_be_blank)
+                data.enableSubmit = validateTestimonial(data.type)
+            }
+            is TestimonialEvent.OnVideoSelect -> {
+                if (event.url != null) {
+                    data.vdoMedia[curInx] = data.vdoMedia[curInx].copy(localUrl = event.url)
+                }
+                data.vdoError = onValidateMedia(data.vdoMedia)
+                data.enableSubmit = validateTestimonial(data.type)
+            }
+            is TestimonialEvent.OnVideoClear -> {
+                data.vdoMedia[event.inx] = data.vdoMedia[event.inx].copy(localUrl = null, url = "")
+                data.vdoError = UiString.Resource(R.string.the_media_can_not_be_blank)
                 data.enableSubmit = validateTestimonial(data.type)
             }
             is TestimonialEvent.OnSubmit -> {
                 submit()
             }
-            is TestimonialEvent.OnMediaIndex -> {
-                curInx = event.inx
-            }
-            is TestimonialEvent.OnMediaSelect -> {
-                if (event.url != null) {
-                    data.media[curInx] = data.media[curInx].copy(localUrl = event.url)
-                    data.enableSubmit = validateTestimonial(data.type)
-                }
-            }
         }
     }
 
     private fun submit() {
-
-        //TODO - Error Handling and Validation required??
 
         authRepo.getUser()?.let {
             updateTestimonial(
@@ -166,7 +185,11 @@ class TestimonialViewModel
                         org = data.org.trim(),
                         url = it.photoUrl.toString()
                     ),
-                    media = data.media
+                    media = when (data.type) {
+                        TestimonialType.TEXT -> listOf()
+                        TestimonialType.IMAGE -> data.imgMedia
+                        TestimonialType.VIDEO -> data.vdoMedia
+                    }
                 )
             )
         }
@@ -177,6 +200,8 @@ class TestimonialViewModel
         data.testimonialError = UiString.Empty
         data.roleError = UiString.Empty
         data.orgError = UiString.Empty
+        data.imgError = UiString.Empty
+        data.vdoError = UiString.Empty
     }
 
     private fun onValidateText(value: String, min: Int, max: Int): UiString {
@@ -188,21 +213,25 @@ class TestimonialViewModel
         }
     }
 
+    private fun onValidateMedia(mediaList: List<Media>): UiString {
+        return if (validateMedia(mediaList)) UiString.Empty
+        else UiString.Resource(R.string.the_media_can_not_be_blank)
+    }
+
+    private fun validateMedia(mediaList: List<Media>): Boolean {
+        return mediaList.find { it.localUrl == null && it.url.isBlank() } == null
+    }
+
     private fun validateTestimonial(type: TestimonialType): Boolean {
         return when (type) {
             TestimonialType.TEXT -> validateData(
-                data.testimonial.isNotBlank()
-                        && data.testimonialError is UiString.Empty
+                data.testimonial.isNotBlank() && data.testimonialError is UiString.Empty
             )
             TestimonialType.IMAGE -> validateData(
-                data.testimonial.isNotBlank()
-                        && data.testimonialError is UiString.Empty
-                        && data.mediaError is UiString.Empty
+                validateMedia(data.imgMedia) && data.imgError is UiString.Empty
             )
             TestimonialType.VIDEO -> validateData(
-                data.testimonial.isNotBlank()
-                        && data.testimonialError is UiString.Empty
-                        && data.mediaError is UiString.Empty
+                validateMedia(data.vdoMedia) && data.vdoError is UiString.Empty
             )
         }
     }
