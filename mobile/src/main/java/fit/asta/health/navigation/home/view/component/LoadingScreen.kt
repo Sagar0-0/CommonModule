@@ -57,7 +57,7 @@ fun LoadingAnimation(
                     .graphicsLayer {
                         translationY = -value * distance
                     }
-                    .background(color = circleColor, shape = CircleShape))
+                    .background(color = androidx.compose.material3.MaterialTheme.colorScheme.primary, shape = CircleShape))
             }
         }
     }

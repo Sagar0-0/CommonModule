@@ -2,6 +2,7 @@ package fit.asta.health.navigation.home.view.component
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,7 +44,7 @@ fun ArtistCard(
                         text = it.name,
                         fontFamily = interFontFamily,
                         fontSize = 16.sp,
-                        color = Color.Black
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
                 testimonialsDataPages.user.let {
@@ -51,7 +52,7 @@ fun ArtistCard(
                         text = "${it.role},${it.org}",
                         fontFamily = interFontFamily,
                         fontSize = 12.sp,
-                        color = Color.Black
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
             }

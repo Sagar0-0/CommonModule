@@ -21,7 +21,7 @@ fun MyToolsAndViewAll(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp, horizontal = 16.dp)) {
-        Text(text = myTools, style = MaterialTheme.typography.h6, color = Color.Black)
+        Text(text = myTools, style = MaterialTheme.typography.h6, color = androidx.compose.material3.MaterialTheme.colorScheme.onBackground)
         Box(modifier = Modifier.clickable(enabled = true, onClick = ({}))) {
             ClickableText(text = AnnotatedString(allTools),
                 style = MaterialTheme.typography.h6,
