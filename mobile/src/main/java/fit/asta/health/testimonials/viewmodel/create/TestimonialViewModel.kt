@@ -1,6 +1,5 @@
 package fit.asta.health.testimonials.viewmodel.create
 
-import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -144,24 +143,24 @@ class TestimonialViewModel
                 if (event.url != null) {
                     data.imgMedia[curInx] = data.imgMedia[curInx].copy(localUrl = event.url)
                 }
-                data.mediaError = onValidateMedia(event.url)
+                data.imgError = onValidateMedia(data.imgMedia)
                 data.enableSubmit = validateTestimonial(data.type)
             }
             is TestimonialEvent.OnImageClear -> {
                 data.imgMedia[event.inx] = data.imgMedia[event.inx].copy(localUrl = null, url = "")
-                data.mediaError = onValidateMedia(null)
+                data.imgError = UiString.Resource(R.string.the_media_can_not_be_blank)
                 data.enableSubmit = validateTestimonial(data.type)
             }
             is TestimonialEvent.OnVideoSelect -> {
                 if (event.url != null) {
                     data.vdoMedia[curInx] = data.vdoMedia[curInx].copy(localUrl = event.url)
                 }
-                data.mediaError = onValidateMedia(event.url)
+                data.vdoError = onValidateMedia(data.vdoMedia)
                 data.enableSubmit = validateTestimonial(data.type)
             }
             is TestimonialEvent.OnVideoClear -> {
                 data.vdoMedia[event.inx] = data.vdoMedia[event.inx].copy(localUrl = null, url = "")
-                data.mediaError = onValidateMedia(null)
+                data.vdoError = UiString.Resource(R.string.the_media_can_not_be_blank)
                 data.enableSubmit = validateTestimonial(data.type)
             }
             is TestimonialEvent.OnSubmit -> {
@@ -201,7 +200,8 @@ class TestimonialViewModel
         data.testimonialError = UiString.Empty
         data.roleError = UiString.Empty
         data.orgError = UiString.Empty
-        data.mediaError = UiString.Empty
+        data.imgError = UiString.Empty
+        data.vdoError = UiString.Empty
     }
 
     private fun onValidateText(value: String, min: Int, max: Int): UiString {
@@ -213,13 +213,13 @@ class TestimonialViewModel
         }
     }
 
-    private fun onValidateMedia(url: Uri?): UiString {
-        return if (url != null) UiString.Empty
+    private fun onValidateMedia(mediaList: List<Media>): UiString {
+        return if (validateMedia(mediaList)) UiString.Empty
         else UiString.Resource(R.string.the_media_can_not_be_blank)
     }
 
     private fun validateMedia(mediaList: List<Media>): Boolean {
-        return mediaList.find { it.localUrl == null } == null
+        return mediaList.find { it.localUrl == null && it.url.isBlank() } == null
     }
 
     private fun validateTestimonial(type: TestimonialType): Boolean {
@@ -228,10 +228,10 @@ class TestimonialViewModel
                 data.testimonial.isNotBlank() && data.testimonialError is UiString.Empty
             )
             TestimonialType.IMAGE -> validateData(
-                validateMedia(data.imgMedia) && data.mediaError is UiString.Empty
+                validateMedia(data.imgMedia) && data.imgError is UiString.Empty
             )
             TestimonialType.VIDEO -> validateData(
-                validateMedia(data.vdoMedia) && data.mediaError is UiString.Empty
+                validateMedia(data.vdoMedia) && data.vdoError is UiString.Empty
             )
         }
     }

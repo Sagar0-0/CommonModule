@@ -2,6 +2,7 @@ package fit.asta.health.testimonials.viewmodel.create
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import fit.asta.health.R
 import fit.asta.health.testimonials.model.domain.Media
 import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.utils.UiString
@@ -25,6 +26,7 @@ data class TestimonialData(
     var vdoMedia: SnapshotStateList<Media> = mutableStateListOf(
         Media(name = "journey", title = "Health Transformation")
     ),
-    var mediaError: UiString = UiString.Empty,
+    var imgError: UiString = UiString.Resource(R.string.the_media_can_not_be_blank),
+    var vdoError: UiString = UiString.Resource(R.string.the_media_can_not_be_blank),
     var enableSubmit: Boolean = false
 )
