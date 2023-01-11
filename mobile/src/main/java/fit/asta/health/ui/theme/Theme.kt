@@ -4,7 +4,10 @@ import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalContext
+import fit.asta.health.ui.LocalSpacing
+import fit.asta.health.ui.Spacing
 
 
 private val LightColors = lightColorScheme(
@@ -69,8 +72,8 @@ private val DarkColors = darkColorScheme(
 
 @Composable
 fun AppTheme(
-  useDarkTheme: Boolean = isSystemInDarkTheme(),
-  content: @Composable () -> Unit
+    useDarkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit,
 ) {
     val useDynamicColors = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
     val colors = when {
@@ -80,10 +83,12 @@ fun AppTheme(
         else -> LightColors
     }
 
-    MaterialTheme(
-        colorScheme = colors,
-        typography = DisplayText,
-        shapes = Shapes,
-        content = content
-    )
+    CompositionLocalProvider(LocalSpacing provides Spacing()) {
+        MaterialTheme(colorScheme = colors,
+            typography = DisplayText,
+            shapes = Shapes,
+            content = content)
+    }
+
+
 }
