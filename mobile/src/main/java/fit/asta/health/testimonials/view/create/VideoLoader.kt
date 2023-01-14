@@ -9,6 +9,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -17,10 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -31,6 +30,7 @@ import androidx.media3.ui.PlayerView
 import fit.asta.health.R
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
 import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
+import fit.asta.health.ui.spacing
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -44,14 +44,10 @@ fun TestGetVideo(viewModel: TestimonialViewModel = hiltViewModel()) {
             viewModel.onEvent(TestimonialEvent.OnVideoSelect(uri))
         }
 
-    GetVideo(
-        viewModel = viewModel,
-        onVideoClick = {
-            videoLauncher.launch("video/*")
-            viewModel.onEvent(TestimonialEvent.OnMediaIndex(0))
-        },
-        onVideoClear = { viewModel.onEvent(TestimonialEvent.OnVideoClear(0)) }
-    )
+    GetVideo(viewModel = viewModel, onVideoClick = {
+        videoLauncher.launch("video/*")
+        viewModel.onEvent(TestimonialEvent.OnMediaIndex(0))
+    }, onVideoClear = { viewModel.onEvent(TestimonialEvent.OnVideoClear(0)) })
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -60,17 +56,14 @@ fun GetVideo(
     modifier: Modifier = Modifier,
     viewModel: TestimonialViewModel,
     onVideoClick: (() -> Unit)? = null,
-    onVideoClear: () -> Unit
+    onVideoClear: () -> Unit,
 ) {
     Column(modifier = modifier) {
         Text(
-            text = "Upload Video",
-            color = Color.Black,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Medium
+            text = "Upload Video", color = Color.Black, style = MaterialTheme.typography.titleMedium
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         Box(
             modifier = Modifier
@@ -78,14 +71,11 @@ fun GetVideo(
                 .fillMaxWidth()
         ) {
             Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.padding(0.dp)
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
 
                 VideoLayout(
-                    viewModel = viewModel,
-                    onVideoClear = onVideoClear,
-                    onVideoClick = onVideoClick
+                    viewModel = viewModel, onVideoClear = onVideoClear, onVideoClick = onVideoClick
                 )
             }
         }
@@ -177,7 +167,7 @@ private fun PlayOrDestroy(
 
 @Composable
 private fun UploadVideo(onVideoClick: (() -> Unit)?) {
-    Box(Modifier.padding(2.dp), contentAlignment = Alignment.Center) {
+    Box(Modifier.padding(spacing.minSmall), contentAlignment = Alignment.Center) {
         Card(
             Modifier
                 .fillMaxWidth()
@@ -194,7 +184,7 @@ private fun UploadVideo(onVideoClick: (() -> Unit)?) {
                     modifier = Modifier.size(48.dp)
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(spacing.small))
 
                 Text(text = "Browse to choose a video")
             }

@@ -16,12 +16,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,15 +25,18 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import fit.asta.health.R
+import fit.asta.health.ui.spacing
 
 
 class FullScreenActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Column(modifier = Modifier.fillMaxSize(),
+            Column(
+                modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally) {
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 FullScreenDialog()
             }
         }
@@ -58,45 +57,57 @@ fun FullScreenDialog() {
 
     if (dialogOpen) {
 
-        Dialog(onDismissRequest = {
-            dialogOpen = false
-        }, properties = DialogProperties(usePlatformDefaultWidth = false // experimental
-        )) {
+        Dialog(
+            onDismissRequest = {
+                dialogOpen = false
+            }, properties = DialogProperties(
+                usePlatformDefaultWidth = false // experimental
+            )
+        ) {
             Surface(modifier = Modifier.fillMaxSize()) {
 
-                Column(modifier = Modifier.fillMaxSize(),
+                Column(
+                    modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally) {
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
 
                     // medal icon
-                    Icon(painter = painterResource(id = R.drawable.award_svg_150),
+                    Icon(
+                        painter = painterResource(id = R.drawable.award_svg_150),
                         contentDescription = "Medal icon",
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(size = 150.dp))
+                        modifier = Modifier.size(size = 150.dp)
+                    )
 
-                    Text(text = "Congratulations!",
-                        fontSize = 22.sp,
-                        modifier = Modifier.padding(top = 26.dp),
-                        fontWeight = FontWeight.Bold)
+                    Text(
+                        text = "Congratulations!",
+                        modifier = Modifier.padding(top = spacing.extraMedium),
+                        style = MaterialTheme.typography.headlineMedium
+                    )
 
-                    Text(text = "Thank you for submitting your Testimonial.\nWe're verifying it before Publishing it to the World ;)",
-                        fontSize = 12.sp,
-                        modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                        fontFamily = FontFamily(Font(resId = R.font.roboto_regular,
-                            weight = FontWeight.Normal)),
+                    Text(
+                        text = "Thank you for submitting your Testimonial.\nWe're verifying it before Publishing it to the World ;)",
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(
+                            top = spacing.medium, start = spacing.medium, end = spacing.medium
+                        ),
                         textAlign = TextAlign.Center,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        lineHeight = 19.6.sp)
+                        lineHeight = 19.6.sp
+                    )
 
-                    Button(onClick = {
-                        Toast.makeText(context, "Continue Button", Toast.LENGTH_SHORT).show()
-                    },
-                        modifier = Modifier.padding(top = 20.dp),
-                        shape = RoundedCornerShape(percent = 25)) {
-                        Text(text = "Continue Practising",
-                            fontFamily = FontFamily(Font(resId = R.font.roboto_medium,
-                                weight = FontWeight.Medium)),
-                            fontSize = 18.sp)
+                    Button(
+                        onClick = {
+                            Toast.makeText(context, "Continue Button", Toast.LENGTH_SHORT).show()
+                        },
+                        modifier = Modifier.padding(top = spacing.extraMedium),
+                        shape = RoundedCornerShape(percent = 25)
+                    ) {
+                        Text(
+                            text = "Continue Practising",
+                            style = MaterialTheme.typography.labelLarge,
+                        )
                     }
                 }
             }

@@ -33,13 +33,15 @@ fun SuccessfulCard(modifier: Modifier = Modifier, onClick: (() -> Unit)? = null)
             .height(252.dp)
             .fillMaxWidth(),
             shape = RoundedCornerShape(8.dp)) {
-            Column(Modifier
-                .fillMaxWidth()
-                .padding(top = 86.dp)) {
-
-                Row(Modifier
+            Column(
+                Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+                    .padding(top = 86.dp)) {
+
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically) {
                     Text(text = "Thank You!",
@@ -51,9 +53,10 @@ fun SuccessfulCard(modifier: Modifier = Modifier, onClick: (() -> Unit)? = null)
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                Row(Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically) {
                     Text(text = "Your feedback has been submitted",
@@ -70,9 +73,8 @@ fun SuccessfulCard(modifier: Modifier = Modifier, onClick: (() -> Unit)? = null)
                 Spacer(modifier = Modifier.height(16.dp))
 
             }
+
         }
-
-
 
         Box(modifier = Modifier
             .clip(shape = CircleShape)
@@ -83,7 +85,6 @@ fun SuccessfulCard(modifier: Modifier = Modifier, onClick: (() -> Unit)? = null)
                 tint = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.size(80.dp))
         }
-
 
     }
 

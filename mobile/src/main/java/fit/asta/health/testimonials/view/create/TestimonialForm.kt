@@ -19,16 +19,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.view.components.ValidatedTextField
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
 import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
+import fit.asta.health.ui.spacing
 import fit.asta.health.utils.UiString
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -42,9 +41,7 @@ fun TestimonialForm(
 ) {
 
     val radioButtonList = listOf(
-        TestimonialType.TEXT,
-        TestimonialType.IMAGE,
-        TestimonialType.VIDEO
+        TestimonialType.TEXT, TestimonialType.IMAGE, TestimonialType.VIDEO
     )
 
     var showCustomDialogWithResult by remember { mutableStateOf(false) }
@@ -59,11 +56,15 @@ fun TestimonialForm(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = paddingValues.calculateTopPadding(), start = 16.dp, end = 16.dp)
+            .padding(
+                top = paddingValues.calculateTopPadding(),
+                start = spacing.medium,
+                end = spacing.medium
+            )
             .verticalScroll(scrollState), verticalArrangement = Arrangement.Center
     ) {
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         TestimonialsRadioButton(
             selectionTypeText = "Testimonial Type",
@@ -78,13 +79,11 @@ fun TestimonialForm(
                     errorMessage = editViewModel.data.testimonialError,
                     keyboardOptions = if (editViewModel.data.testimonial.length < 512) {
                         KeyboardOptions(
-                            keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Default
+                            keyboardType = KeyboardType.Text, imeAction = ImeAction.Default
                         )
                     } else {
                         KeyboardOptions(
-                            keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Next
+                            keyboardType = KeyboardType.Text, imeAction = ImeAction.Next
                         )
                     },
                     keyboardActions = KeyboardActions(onNext = {
@@ -101,8 +100,7 @@ fun TestimonialForm(
                     showError = editViewModel.data.titleError !is UiString.Empty,
                     errorMessage = editViewModel.data.titleError,
                     keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Next
+                        keyboardType = KeyboardType.Text, imeAction = ImeAction.Next
                     ),
                     keyboardActions = KeyboardActions(onNext = {
                         focusManager.moveFocus(FocusDirection.Down)
@@ -113,7 +111,7 @@ fun TestimonialForm(
                 editViewModel.onEvent(TestimonialEvent.OnTypeChange(it))
             })
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         ValidatedTextField(
             value = editViewModel.data.org,
@@ -122,15 +120,14 @@ fun TestimonialForm(
             showError = editViewModel.data.orgError !is UiString.Empty,
             errorMessage = editViewModel.data.orgError,
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Next
+                keyboardType = KeyboardType.Text, imeAction = ImeAction.Next
             ),
             keyboardActions = KeyboardActions(onNext = {
                 focusManager.moveFocus(FocusDirection.Down)
             })
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         ValidatedTextField(
             value = editViewModel.data.role,
@@ -139,17 +136,16 @@ fun TestimonialForm(
             showError = editViewModel.data.roleError !is UiString.Empty,
             errorMessage = editViewModel.data.roleError,
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Done
+                keyboardType = KeyboardType.Text, imeAction = ImeAction.Done
             ),
             keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Exit) })
         )
 
         if (selectedOption == radioButtonList[1]) {
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
             TestGetImage()
         } else if (selectedOption == radioButtonList[2]) {
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
             TestGetVideo()
         }
 
@@ -159,14 +155,13 @@ fun TestimonialForm(
             },
             modifier = Modifier
                 .fillMaxWidth(1f)
-                .padding(16.dp),
+                .padding(spacing.medium),
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Blue,
-                contentColor = Color.White
+                backgroundColor = Color.Blue, contentColor = Color.White
             ),
             enabled = editViewModel.data.enableSubmit
         ) {
-            Text(text = "Submit", fontSize = 16.sp)
+            Text(text = "Submit", style = MaterialTheme.typography.labelLarge)
         }
 
         if (showCustomDialogWithResult) {
@@ -191,8 +186,7 @@ fun CreateTstScreen(title: String, onNavigateTstCreate: () -> Unit, onNavigateTs
     Scaffold(topBar = {
         BottomNavigation(content = {
             Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
+                verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()
             ) {
                 IconButton(onClick = { showCustomDialogWithResult = !showCustomDialogWithResult }) {
                     Icon(
@@ -205,8 +199,7 @@ fun CreateTstScreen(title: String, onNavigateTstCreate: () -> Unit, onNavigateTs
                 androidx.compose.material3.Text(
                     text = title,
                     color = MaterialTheme.colorScheme.onBackground,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 20.sp
+                    style = MaterialTheme.typography.headlineSmall
                 )
             }
         }, elevation = 10.dp, backgroundColor = Color.White)

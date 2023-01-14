@@ -3,11 +3,7 @@ package fit.asta.health.testimonials.view.create
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,11 +13,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import fit.asta.health.R
 import fit.asta.health.testimonials.view.components.SuccessfulCard
 import fit.asta.health.tools.sunlight.view.components.BottomSheetButton
+import fit.asta.health.ui.spacing
 
 @Composable
 fun CustomDialogWithResultExample(
@@ -66,11 +62,13 @@ fun DialogContent(
     btn1Title: String,
     btn2Title: String,
 ) {
-    Card(shape = RoundedCornerShape(10.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)) {
+    Card(
+        shape = MaterialTheme.shapes.medium,
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+    ) {
         Column(modifier.background(Color.White)) {
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(spacing.large))
 
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 Image(
@@ -85,64 +83,70 @@ fun DialogContent(
                     )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                androidx.compose.material3.Text(text = btnTitle,
+                Text(
+                    text = btnTitle,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(top = 5.dp)
                         .fillMaxWidth(),
                     style = MaterialTheme.typography.labelLarge,
                     maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    fontSize = 24.sp)
+                    overflow = TextOverflow.Ellipsis
+                )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
-            Row(Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 64.dp),
-                horizontalArrangement = Arrangement.Center) {
-                androidx.compose.material3.Text(
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = spacing.maxLarge),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
                     text = btnWarn,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(top = 5.dp)
                         .fillMaxWidth(),
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontSize = 16.sp,
+                    style = MaterialTheme.typography.bodyMedium
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly) {
-                Box(Modifier
+            Row(
+                modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f)) {
+                    .padding(horizontal = spacing.small),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .weight(1f)) {
                     BottomSheetButton(title = btn1Title,
                         colors = ButtonDefaults.buttonColors(contentColor = MaterialTheme.colorScheme.error),
                         modifier = Modifier.height(53.dp),
                         onClick = onNegativeClick)
                 }
 
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(spacing.small))
 
-                Box(Modifier
-                    .fillMaxWidth()
-                    .weight(1f)) {
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .weight(1f)) {
                     BottomSheetButton(title = btn2Title,
                         modifier.height(53.dp),
                         onClick = onPositiveClick)
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
         }
     }

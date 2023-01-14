@@ -17,7 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
@@ -29,12 +28,12 @@ import fit.asta.health.testimonials.view.list.TestimonialImageCard
 import fit.asta.health.testimonials.view.list.TestimonialTextCard
 import fit.asta.health.testimonials.view.list.TestimonialsVideoCard
 import fit.asta.health.testimonials.viewmodel.TestimonialListViewModel
-
+import fit.asta.health.ui.spacing
 
 @Composable
 fun TestimonialsList(
     paddingValues: PaddingValues,
-    viewModel: TestimonialListViewModel
+    viewModel: TestimonialListViewModel,
 ) {
     val testimonials = viewModel.testimonialPager.collectAsLazyPagingItems()
     testimonials.refresh()
@@ -93,14 +92,13 @@ fun LoadingItem() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight(),
-        contentAlignment = Alignment.Center
+            .wrapContentHeight(), contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(
             modifier = Modifier
                 .width(42.dp)
                 .height(42.dp)
-                .padding(8.dp),
+                .padding(spacing.medium),
             strokeWidth = 5.dp
         )
 
@@ -112,7 +110,7 @@ fun ErrorItem(message: String) {
     Card(
         elevation = 2.dp,
         modifier = Modifier
-            .padding(6.dp)
+            .padding(spacing.medium)
             .fillMaxWidth()
             .wrapContentHeight()
     ) {
@@ -120,7 +118,7 @@ fun ErrorItem(message: String) {
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.Red)
-                .padding(8.dp)
+                .padding(spacing.small)
         ) {
             Image(
                 modifier = Modifier
@@ -134,9 +132,9 @@ fun ErrorItem(message: String) {
             Text(
                 color = Color.White,
                 text = message,
-                fontSize = 16.sp,
+                style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier
-                    .padding(start = 12.dp)
+                    .padding(start = spacing.medium)
                     .align(Alignment.CenterVertically)
             )
         }
