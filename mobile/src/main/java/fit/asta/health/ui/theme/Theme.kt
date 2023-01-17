@@ -84,10 +84,12 @@ fun AppTheme(
     }
 
     CompositionLocalProvider(LocalSpacing provides Spacing()) {
-        MaterialTheme(colorScheme = colors,
-            typography = DisplayText,
+        MaterialTheme(
+            colorScheme = colors,
+            typography = MyTypography,
             shapes = Shapes,
-            content = content)
+            content = content
+        )
     }
 
 

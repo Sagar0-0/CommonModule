@@ -30,12 +30,14 @@ fun CustomDialogWithResultExample(
     btn2Title: String,
 ) {
     Dialog(onDismissRequest = onDismiss) {
-        DialogContent(onNegativeClick = onNegativeClick,
+        DialogContent(
+            onNegativeClick = onNegativeClick,
             onPositiveClick = onPositiveClick,
             btnTitle = btnTitle,
             btnWarn = btnWarn,
             btn1Title = btn1Title,
-            btn2Title = btn2Title)
+            btn2Title = btn2Title
+        )
     }
 }
 
@@ -77,7 +79,8 @@ fun DialogContent(
                     contentScale = ContentScale.Fit,
                     colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
                     modifier = Modifier
-                        .height(70.dp)
+//                        .height(70.dp)
+                        .heightIn(min = 70.dp)
                         .fillMaxWidth(),
 
                     )
@@ -90,7 +93,7 @@ fun DialogContent(
                     text = btnTitle,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .padding(top = 5.dp)
+                        .padding(top = spacing.extraSmall)
                         .fillMaxWidth(),
                     style = MaterialTheme.typography.labelLarge,
                     maxLines = 2,
@@ -103,14 +106,14 @@ fun DialogContent(
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = spacing.maxLarge),
+                    .padding(horizontal = spacing.extraLarge2),
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
                     text = btnWarn,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .padding(top = 5.dp)
+                        .padding(top = spacing.extraSmall)
                         .fillMaxWidth(),
                     style = MaterialTheme.typography.bodyMedium
                 )
@@ -127,11 +130,14 @@ fun DialogContent(
                 Box(
                     Modifier
                         .fillMaxWidth()
-                        .weight(1f)) {
-                    BottomSheetButton(title = btn1Title,
+                        .weight(1f)
+                ) {
+                    BottomSheetButton(
+                        title = btn1Title,
                         colors = ButtonDefaults.buttonColors(contentColor = MaterialTheme.colorScheme.error),
-                        modifier = Modifier.height(53.dp),
-                        onClick = onNegativeClick)
+                        modifier = Modifier.heightIn(min = 53.dp),
+                        onClick = onNegativeClick
+                    )
                 }
 
                 Spacer(modifier = Modifier.width(spacing.small))
@@ -139,10 +145,11 @@ fun DialogContent(
                 Box(
                     Modifier
                         .fillMaxWidth()
-                        .weight(1f)) {
-                    BottomSheetButton(title = btn2Title,
-                        modifier.height(53.dp),
-                        onClick = onPositiveClick)
+                        .weight(1f)
+                ) {
+                    BottomSheetButton(
+                        title = btn2Title, modifier.heightIn(min = 53.dp), onClick = onPositiveClick
+                    )
                 }
             }
 

@@ -1,6 +1,5 @@
 package fit.asta.health.testimonials.view.create
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -24,10 +23,6 @@ import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.R
 import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.ui.spacing
-import fit.asta.health.ui.theme.ColorGraniteGray
-import fit.asta.health.ui.theme.Dark02
-import fit.asta.health.ui.theme.FocusedBorderColor
-import fit.asta.health.ui.theme.TextLight04
 
 
 @Composable
@@ -44,17 +39,19 @@ fun MyTextField(
                 if (it.length <= maxChar) text = it
             }, modifier = Modifier
                 .fillMaxWidth()
-                .height(100.dp), placeholder = {
+                .heightIn(min = 100.dp)
+//                .height(100.dp),
+            , placeholder = {
                 Text(
                     text = textFieldTitle,
                     lineHeight = 19.6.sp,
-                    color = ColorGraniteGray,
+                    color = MaterialTheme.colorScheme.surfaceVariant,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }, colors = TextFieldDefaults.outlinedTextFieldColors(
-                backgroundColor = Color.White,
-                focusedBorderColor = FocusedBorderColor,
-                unfocusedBorderColor = TextLight04
+                backgroundColor = MaterialTheme.colorScheme.surface,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.background
             ), shape = MaterialTheme.shapes.medium
         )
         Text(
@@ -81,9 +78,8 @@ fun TestimonialsRadioButton(
         androidx.compose.material3.Card(
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.medium,
-            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
-            border = BorderStroke(width = 1.dp, color = TextLight04)
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+//            border = BorderStroke(width = 1.dp, color = TextLight04)
         ) {
 
             Column(
@@ -95,7 +91,7 @@ fun TestimonialsRadioButton(
                 Row(Modifier.fillMaxWidth()) {
                     Text(
                         text = selectionTypeText,
-                        color = Color.Black,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
                         lineHeight = 19.6.sp,
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -106,7 +102,11 @@ fun TestimonialsRadioButton(
                             horizontalArrangement = Arrangement.SpaceEvenly,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Box(modifier = Modifier.padding(top = 9.5.dp, bottom = 9.5.dp)) {
+                            Box(
+                                modifier = Modifier.padding(
+                                    top = spacing.small, bottom = spacing.small
+                                )
+                            ) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     RadioButton(
                                         selected = (item == selectedOption), onClick = {
@@ -118,7 +118,7 @@ fun TestimonialsRadioButton(
                                     androidx.compose.material3.Text(
                                         text = item.title,
                                         lineHeight = 22.4.sp,
-                                        color = Dark02,
+                                        color = MaterialTheme.colorScheme.onPrimaryContainer,
                                         style = MaterialTheme.typography.bodyLarge
                                     )
                                 }

@@ -57,6 +57,7 @@ fun ImagePreviewLayout(
 ) {
 
     Column(modifier = modifier) {
+
         Text(text = "Upload Images", style = MaterialTheme.typography.bodyMedium)
 
         Spacer(modifier = Modifier.height(spacing.medium))
@@ -69,10 +70,10 @@ fun ImagePreviewLayout(
             Row(horizontalArrangement = Arrangement.SpaceBetween) {
 
                 LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    modifier = Modifier
+                    columns = GridCells.Fixed(2), modifier = Modifier
                         .fillMaxWidth()
-                        .height(200.dp)
+//                        .height(200.dp)
+                        .heightIn(min = 200.dp)
                         .padding(horizontal = spacing.medium)
                 ) {
 
@@ -129,14 +130,15 @@ private fun SelectedImageView(
             contentDescription = null,
             Modifier
                 .fillMaxWidth(1f)
-                .height(180.dp)
+//                .height(180.dp)
+                .heightIn(min = 180.dp)
                 .clip(MaterialTheme.shapes.medium),
             contentScale = ContentScale.Crop
         )
 
         Text(
             text = title,
-            color = TextLight04,
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(spacing.small)
         )
@@ -163,7 +165,7 @@ private fun UploadImageView(title: String, inx: Int, onImageClick: (inx: Int) ->
         Card(
             Modifier
                 .fillMaxWidth(1f)
-                .height(180.dp)
+                .heightIn(min = 180.dp)
                 .clickable { onImageClick(inx) }) {
 
             Column(
@@ -181,12 +183,14 @@ private fun UploadImageView(title: String, inx: Int, onImageClick: (inx: Int) ->
                 Spacer(modifier = Modifier.height(spacing.small))
 
                 Text(text = "Browse to choose")
+
                 Text(
                     text = title,
                     color = TextLight04,
                     modifier = Modifier.padding(spacing.small),
                     style = MaterialTheme.typography.headlineMedium
                 )
+
             }
         }
     }

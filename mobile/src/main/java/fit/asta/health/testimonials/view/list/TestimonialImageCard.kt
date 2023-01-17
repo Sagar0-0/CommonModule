@@ -1,8 +1,6 @@
 package fit.asta.health.testimonials.view.list
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
@@ -11,17 +9,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import fit.asta.health.R
 import fit.asta.health.testimonials.model.domain.Testimonial
 import fit.asta.health.testimonials.view.components.UserCard
+import fit.asta.health.ui.elevation
+import fit.asta.health.ui.spacing
+import fit.asta.health.ui.theme.ts
 import fit.asta.health.utils.getImageUrl
 
 @Composable
@@ -30,34 +29,36 @@ fun TestimonialImageCard(testimonial: Testimonial) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
-            .clip(RoundedCornerShape(8.dp)),
-        elevation = 10.dp
+            .padding(spacing.medium)
+            .clip(MaterialTheme.shapes.large),
+        elevation = elevation.high
     ) {
+
         Column(Modifier.fillMaxWidth()) {
             BeforeAndCardLayout(testimonial)
 
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(spacing.medium)
             ) {
-                Box(modifier = Modifier.padding(horizontal = 16.dp)) {
+                Box(modifier = Modifier.padding(horizontal = spacing.medium)) {
                     FontFamily(Font(R.font.inter_light, FontWeight.Light))
                     Column {
                         Box {
-                            Text(text = "❝", fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
+                            Text(
+                                text = "❝", style = ts.quote
+                            )
                         }
                         Text(
                             text = testimonial.testimonial,
-                            fontSize = 16.sp,
-                            color = Color.Black,
-                            fontWeight = FontWeight.Thin,
-                            lineHeight = 24.sp,
-                            letterSpacing = 0.5.sp
+                            style = ts.quote,
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                            Text(text = "❞", fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
+                            Text(
+                                text = "❞", style = ts.quoteBold
+                            )
                         }
                         UserCard(
                             user = testimonial.user.name,
@@ -74,24 +75,23 @@ fun TestimonialImageCard(testimonial: Testimonial) {
 
 @Composable
 fun BeforeAndCardLayout(testimonial: Testimonial) {
+
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = spacing.medium)
     ) {
         Surface(
-            shape = RoundedCornerShape(8.dp),
-            border = BorderStroke(width = 5.dp, color = MaterialTheme.colorScheme.primaryContainer),
-            modifier = Modifier.fillMaxWidth()
+            shape = MaterialTheme.shapes.medium, modifier = Modifier.fillMaxWidth()
         ) {
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.padding(0.dp)
-            ) {
+            Row(horizontalArrangement = Arrangement.SpaceBetween) {
 
                 testimonial.media.forEach {
 
-                    Box(Modifier.padding(2.dp), contentAlignment = Alignment.BottomCenter) {
+                    Box(
+                        Modifier.padding(spacing.minSmall),
+                        contentAlignment = Alignment.BottomCenter
+                    ) {
 
                         AsyncImage(
                             model = getImageUrl(it.url),
@@ -104,10 +104,9 @@ fun BeforeAndCardLayout(testimonial: Testimonial) {
 
                         Text(
                             text = it.title,
-                            fontSize = 16.sp,
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(10.dp)
+                            style = ts.quote,
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.padding(spacing.medium)
                         )
                     }
                 }
@@ -115,5 +114,5 @@ fun BeforeAndCardLayout(testimonial: Testimonial) {
         }
     }
 
-    Spacer(modifier = Modifier.height(16.dp))
+    Spacer(modifier = Modifier.height(spacing.medium))
 }

@@ -96,8 +96,7 @@ fun LoadingItem() {
     ) {
         CircularProgressIndicator(
             modifier = Modifier
-                .width(42.dp)
-                .height(42.dp)
+                .size(height = 42.dp, width = 42.dp)
                 .padding(spacing.medium),
             strokeWidth = 5.dp
         )
@@ -123,8 +122,7 @@ fun ErrorItem(message: String) {
             Image(
                 modifier = Modifier
                     .clip(CircleShape)
-                    .width(42.dp)
-                    .height(42.dp),
+                    .size(42.dp),
                 painter = painterResource(id = R.drawable.ic_help),
                 contentDescription = "",
                 colorFilter = ColorFilter.tint(Color.White)

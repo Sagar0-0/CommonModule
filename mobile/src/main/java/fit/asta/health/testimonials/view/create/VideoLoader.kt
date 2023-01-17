@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -119,7 +120,7 @@ fun VideoLayout(
             val mediaItem = getOneUrl(media.localUrl, media.url).let { MediaItem.fromUri(it) }
             mediaItem.let { player.setMediaItem(it) }
 
-            Box(Modifier.padding(2.dp), contentAlignment = Alignment.BottomCenter) {
+            Box(Modifier.padding(spacing.minSmall), contentAlignment = Alignment.BottomCenter) {
 
                 AndroidView(factory = {
                     playerView
@@ -144,7 +145,7 @@ fun VideoLayout(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_delete_forever),
                         contentDescription = null,
-                        tint = Color(0xffFF4081)
+                        tint = MaterialTheme.colorScheme.error
                     )
                 }
             }
@@ -171,7 +172,8 @@ private fun UploadVideo(onVideoClick: (() -> Unit)?) {
         Card(
             Modifier
                 .fillMaxWidth()
-                .height(180.dp)
+                .defaultMinSize(min(180.dp, 180.dp))
+//                .height(180.dp)
                 .clickable { onVideoClick?.let { it() } }) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,

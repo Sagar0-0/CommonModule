@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
@@ -21,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -77,7 +77,9 @@ fun FullScreenDialog() {
                         painter = painterResource(id = R.drawable.award_svg_150),
                         contentDescription = "Medal icon",
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(size = 150.dp)
+                        modifier = Modifier
+//                            .size(size = 150.dp)
+                            .defaultMinSize(min(150.dp, 150.dp))
                     )
 
                     Text(
@@ -102,7 +104,7 @@ fun FullScreenDialog() {
                             Toast.makeText(context, "Continue Button", Toast.LENGTH_SHORT).show()
                         },
                         modifier = Modifier.padding(top = spacing.extraMedium),
-                        shape = RoundedCornerShape(percent = 25)
+                        shape = MaterialTheme.shapes.small
                     ) {
                         Text(
                             text = "Continue Practising",

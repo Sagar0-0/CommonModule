@@ -8,7 +8,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -73,7 +72,9 @@ fun TestimonialTextCard(testimonial: Testimonial) {
                     )
                 }
             }
+
             Spacer(modifier = Modifier.height(16.dp))
+
         }
     }
 }
