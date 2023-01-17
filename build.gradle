@@ -10,7 +10,7 @@ buildscript {
 
     dependencies {
         classpath "com.android.tools.build:gradle:$gradle_version"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$dagger_version"
         classpath "com.google.gms:google-services:$gms_version"
         classpath "com.google.firebase:firebase-crashlytics-gradle:2.9.2"

@@ -1,14 +1,13 @@
 package fit.asta.health.common.validation.widget.textfield
 
 import androidx.annotation.StringRes
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.validation.state.ValidationState
 import fit.asta.health.common.validation.util.TextFieldType
 import fit.asta.health.ui.theme.ColorAmericanPurple
-import fit.asta.health.ui.theme.IbarraNovaNormalGray14
-import fit.asta.health.ui.theme.IbarraNovaSemiBoldPlatinum16
 
 
 @Composable
@@ -26,8 +25,8 @@ fun AuthenticationTextField(
         state = state,
         hint = hint,
         onValueChange = onValueChange,
-        textStyle = IbarraNovaSemiBoldPlatinum16,
-        hintTextStyle = IbarraNovaNormalGray14,
+        textStyle = MaterialTheme.typography.labelLarge,
+        hintTextStyle = MaterialTheme.typography.labelLarge,
         color = ColorAmericanPurple,
         cornerRadius = 15.dp,
         type = type

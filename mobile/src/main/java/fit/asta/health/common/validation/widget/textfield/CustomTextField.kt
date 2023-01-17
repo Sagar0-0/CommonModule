@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -27,7 +28,6 @@ import fit.asta.health.R
 import fit.asta.health.common.validation.state.ValidationState
 import fit.asta.health.common.validation.util.TextFieldType
 import fit.asta.health.ui.theme.ColorPlatinum
-import fit.asta.health.ui.theme.IbarraNovaNormalError13
 
 //import fit.asta.health.ui.theme.ColorPlatinum
 //import fit.asta.health.ui.theme.IbarraNovaNormalError13
@@ -64,10 +64,11 @@ fun CustomTextField(
 
     Column {
 
-        TextField(
-            modifier = modifier
-                .background(color = color, shape = RoundedCornerShape(cornerRadius))
-                .fillMaxWidth(),
+        TextField(modifier = modifier
+            .background(
+                color = color, shape = RoundedCornerShape(cornerRadius)
+            )
+            .fillMaxWidth(),
             value = state.text,
             textStyle = textStyle,
             onValueChange = onValueChange,
@@ -81,8 +82,7 @@ fun CustomTextField(
                 disabledIndicatorColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent
             ),
-            visualTransformation =
-            if (type == TextFieldType.Password) {
+            visualTransformation = if (type == TextFieldType.Password) {
 
                 if (passwordVisible) PasswordVisualTransformation() else VisualTransformation.None
 
@@ -95,12 +95,12 @@ fun CustomTextField(
                         modifier = Modifier.clickable {
                             passwordVisible = !passwordVisible
                         },
-                        painter = painterResource(id = trailingId), contentDescription = "password",
+                        painter = painterResource(id = trailingId),
+                        contentDescription = "password",
                         tint = ColorPlatinum
                     )
                 }
-            }
-        )
+            })
 
         if (state.hasError && state.errorMessageId != null) {
 
@@ -110,7 +110,7 @@ fun CustomTextField(
                     .align(Alignment.End)
                     .padding(top = 10.dp),
                 //style = IbarraNovaNormalError13
-                style = IbarraNovaNormalError13
+                style = MaterialTheme.typography.labelLarge
             )
         }
     }

@@ -56,7 +56,7 @@ fun TestimonialForm(
 
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(
                 top = paddingValues.calculateTopPadding(),
                 start = spacing.medium,

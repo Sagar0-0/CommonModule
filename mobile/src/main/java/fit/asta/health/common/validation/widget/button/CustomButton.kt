@@ -34,12 +34,13 @@ fun CustomButton(
     textStyle: TextStyle,
     borderWidth: Dp = 0.dp,
     borderColor: Color = color,
-    gradient: Brush? = null
+    gradient: Brush? = null,
 
-) {
+    ) {
 
     Button(
-        onClick = onClick, modifier = modifier,
+        onClick = onClick,
+        modifier = modifier,
         contentPadding = PaddingValues(vertical = 5.dp),
         colors = ButtonDefaults.buttonColors(containerColor = color),
         shape = RoundedCornerShape(cornerRadius),
