@@ -24,6 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.R
+import fit.asta.health.testimonials.view.theme.boxSize
+import fit.asta.health.testimonials.view.theme.cardHeight
+import fit.asta.health.testimonials.view.theme.imageHeight
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
 import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
 import fit.asta.health.ui.spacing
@@ -72,7 +75,7 @@ fun ImagePreviewLayout(
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2), modifier = Modifier
                         .fillMaxWidth()
-                        .height(200.dp)
+                        .height(boxSize.large)
 //                        .heightIn(min = 200.dp)
                         .padding(horizontal = spacing.medium)
                 ) {
@@ -130,7 +133,7 @@ private fun SelectedImageView(
             contentDescription = null,
             Modifier
                 .fillMaxWidth(1f)
-                .height(180.dp)
+                .height(imageHeight.large)
 //                .heightIn(min = 180.dp)
                 .clip(MaterialTheme.shapes.medium),
             contentScale = ContentScale.Crop
@@ -165,7 +168,7 @@ private fun UploadImageView(title: String, inx: Int, onImageClick: (inx: Int) ->
         Card(
             Modifier
                 .fillMaxWidth(1f)
-                .height(180.dp)
+                .height(cardHeight.medium)
 //                .heightIn(min = 180.dp)
                 .clickable { onImageClick(inx) }) {
 
@@ -178,7 +181,7 @@ private fun UploadImageView(title: String, inx: Int, onImageClick: (inx: Int) ->
                 Image(
                     painter = painterResource(id = R.drawable.upload),
                     contentDescription = null,
-                    modifier = Modifier.size(48.dp)
+                    modifier = Modifier.size(imageHeight.small)
                 )
 
                 Spacer(modifier = Modifier.height(spacing.small))

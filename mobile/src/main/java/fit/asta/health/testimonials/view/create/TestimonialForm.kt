@@ -22,10 +22,11 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.min
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.view.components.ValidatedTextField
+import fit.asta.health.testimonials.view.theme.boxSize
+import fit.asta.health.testimonials.view.theme.iconButtonSize
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
 import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
 import fit.asta.health.ui.spacing
@@ -90,9 +91,7 @@ fun TestimonialForm(
                     keyboardActions = KeyboardActions(onNext = {
                         focusManager.clearFocus()
                     }),
-                    modifier = Modifier
-//                        .height(120.dp)
-                        .heightIn(min = 120.dp)
+                    modifier = Modifier.height(boxSize.extraMedium)
                 )
             },
             titleTestimonial = {
@@ -196,9 +195,7 @@ fun CreateTstScreen(title: String, onNavigateTstCreate: () -> Unit, onNavigateTs
                         Icons.Outlined.NavigateBefore,
                         "back",
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier
-//                            .size(24.dp)
-                            .defaultMinSize(min(24.dp, 24.dp))
+                        modifier = Modifier.size(iconButtonSize.extraMedium)
                     )
                 }
                 androidx.compose.material3.Text(

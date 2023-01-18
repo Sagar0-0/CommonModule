@@ -20,7 +20,6 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.min
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -29,6 +28,9 @@ import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import fit.asta.health.R
+import fit.asta.health.testimonials.view.theme.aspectRatio
+import fit.asta.health.testimonials.view.theme.cardHeight
+import fit.asta.health.testimonials.view.theme.imageSize
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
 import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
 import fit.asta.health.ui.spacing
@@ -124,7 +126,7 @@ fun VideoLayout(
 
                 AndroidView(factory = {
                     playerView
-                }, modifier = Modifier.aspectRatio(16f / 09f), update = {
+                }, modifier = Modifier.aspectRatio(aspectRatio.large), update = {
                     when (lifecycle) {
                         Lifecycle.Event.ON_PAUSE -> {
                             it.onPause()
@@ -172,7 +174,7 @@ private fun UploadVideo(onVideoClick: (() -> Unit)?) {
         Card(
             Modifier
                 .fillMaxWidth()
-                .defaultMinSize(min(180.dp, 180.dp))
+                .defaultMinSize(minHeight = cardHeight.medium, minWidth = cardHeight.medium)
 //                .height(180.dp)
                 .clickable { onVideoClick?.let { it() } }) {
             Column(
@@ -183,7 +185,7 @@ private fun UploadVideo(onVideoClick: (() -> Unit)?) {
                 Image(
                     painter = painterResource(id = R.drawable.upload),
                     contentDescription = null,
-                    modifier = Modifier.size(48.dp)
+                    modifier = Modifier.size(imageSize.extraLarge)
                 )
 
                 Spacer(modifier = Modifier.height(spacing.small))

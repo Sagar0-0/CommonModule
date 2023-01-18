@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.R
 import fit.asta.health.testimonials.model.domain.TestimonialType
+import fit.asta.health.testimonials.view.theme.boxSize
+import fit.asta.health.testimonials.view.theme.imageSize
 import fit.asta.health.ui.spacing
 
 
@@ -39,9 +41,7 @@ fun MyTextField(
                 if (it.length <= maxChar) text = it
             }, modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 100.dp)
-//                .height(100.dp),
-            , placeholder = {
+                .height(boxSize.medium), placeholder = {
                 Text(
                     text = textFieldTitle,
                     lineHeight = 19.6.sp,
@@ -184,7 +184,7 @@ fun UploadFiles(modifier: Modifier = Modifier) {
                     Image(
                         painter = painterResource(id = R.drawable.upload),
                         contentDescription = null,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(imageSize.extraMedium)
                     )
                 }
             }

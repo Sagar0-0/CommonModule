@@ -9,9 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.min
 import coil.compose.AsyncImage
+import fit.asta.health.testimonials.view.theme.imageHeight
 import fit.asta.health.ui.spacing
 import fit.asta.health.utils.getImageUrl
 
@@ -30,8 +29,7 @@ fun UserCard(user: String, userOrg: String, userRole: String, url: String) {
                     contentDescription = null,
                     modifier = Modifier
                         .clip(shape = CircleShape)
-//                        .size(72.dp)
-                        .defaultMinSize(min(72.dp, 72.dp)),
+                        .size(imageHeight.medium),
                     contentScale = ContentScale.Crop
                 )
             }

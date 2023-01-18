@@ -27,6 +27,9 @@ import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.view.list.TestimonialImageCard
 import fit.asta.health.testimonials.view.list.TestimonialTextCard
 import fit.asta.health.testimonials.view.list.TestimonialsVideoCard
+import fit.asta.health.testimonials.view.theme.boxSize
+import fit.asta.health.testimonials.view.theme.cardElevation
+import fit.asta.health.testimonials.view.theme.imageHeight
 import fit.asta.health.testimonials.viewmodel.TestimonialListViewModel
 import fit.asta.health.ui.spacing
 
@@ -96,9 +99,8 @@ fun LoadingItem() {
     ) {
         CircularProgressIndicator(
             modifier = Modifier
-                .size(height = 42.dp, width = 42.dp)
-                .padding(spacing.medium),
-            strokeWidth = 5.dp
+                .size(boxSize.largeSmall)
+                .padding(spacing.medium), strokeWidth = 5.dp
         )
 
     }
@@ -107,7 +109,7 @@ fun LoadingItem() {
 @Composable
 fun ErrorItem(message: String) {
     Card(
-        elevation = 2.dp,
+        elevation = cardElevation.extraSmall,
         modifier = Modifier
             .padding(spacing.medium)
             .fillMaxWidth()
@@ -122,7 +124,7 @@ fun ErrorItem(message: String) {
             Image(
                 modifier = Modifier
                     .clip(CircleShape)
-                    .size(42.dp),
+                    .size(imageHeight.small),
                 painter = painterResource(id = R.drawable.ic_help),
                 contentDescription = "",
                 colorFilter = ColorFilter.tint(Color.White)

@@ -19,12 +19,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import fit.asta.health.R
+import fit.asta.health.testimonials.view.theme.iconSize
 import fit.asta.health.ui.spacing
 
 
@@ -77,9 +76,7 @@ fun FullScreenDialog() {
                         painter = painterResource(id = R.drawable.award_svg_150),
                         contentDescription = "Medal icon",
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier
-//                            .size(size = 150.dp)
-                            .defaultMinSize(min(150.dp, 150.dp))
+                        modifier = Modifier.size(size = iconSize.large)
                     )
 
                     Text(

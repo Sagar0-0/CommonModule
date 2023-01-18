@@ -12,10 +12,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import fit.asta.health.R
 import fit.asta.health.testimonials.view.components.SuccessfulCard
+import fit.asta.health.testimonials.view.theme.buttonSize
+import fit.asta.health.testimonials.view.theme.cardElevation
+import fit.asta.health.testimonials.view.theme.imageHeight
 import fit.asta.health.tools.sunlight.view.components.BottomSheetButton
 import fit.asta.health.ui.spacing
 
@@ -66,7 +68,7 @@ fun DialogContent(
 ) {
     Card(
         shape = MaterialTheme.shapes.medium,
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = cardElevation.small)
     ) {
         Column(modifier.background(Color.White)) {
 
@@ -79,8 +81,7 @@ fun DialogContent(
                     contentScale = ContentScale.Fit,
                     colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
                     modifier = Modifier
-//                        .height(70.dp)
-                        .heightIn(min = 70.dp)
+                        .height(imageHeight.medium)
                         .fillMaxWidth(),
 
                     )
@@ -135,7 +136,7 @@ fun DialogContent(
                     BottomSheetButton(
                         title = btn1Title,
                         colors = ButtonDefaults.buttonColors(contentColor = MaterialTheme.colorScheme.error),
-                        modifier = Modifier.heightIn(min = 53.dp),
+                        modifier = Modifier.height(buttonSize.extraLarge),
                         onClick = onNegativeClick
                     )
                 }
@@ -148,7 +149,9 @@ fun DialogContent(
                         .weight(1f)
                 ) {
                     BottomSheetButton(
-                        title = btn2Title, modifier.heightIn(min = 53.dp), onClick = onPositiveClick
+                        title = btn2Title,
+                        modifier.height(buttonSize.extraLarge),
+                        onClick = onPositiveClick
                     )
                 }
             }
