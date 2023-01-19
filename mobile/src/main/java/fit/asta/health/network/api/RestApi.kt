@@ -30,9 +30,6 @@ import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerGetListRespons
 import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerGetResponse
 import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerPutResponse
 import fit.asta.health.scheduler.model.net.tag.AstaGetTagsListResponse
-import fit.asta.health.testimonials.model.network.NetTestimonial
-import fit.asta.health.testimonials.model.network.NetTestimonialRes
-import fit.asta.health.testimonials.model.network.NetTestimonialsRes
 import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
 import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
 import fit.asta.health.tools.water.model.network.ModifiedWaterTool
@@ -167,22 +164,6 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
     //Health Tool - Walking Endpoints
     override suspend fun getWalkingTool(userId: String): NetWalkingToolRes {
         return apiService.getWalkingTool(userId)
-    }
-
-    //Testimonial Endpoints
-    override suspend fun getTestimonials(index: Int, limit: Int): NetTestimonialsRes {
-        return apiService.getTestimonials(index, limit)
-    }
-
-    override suspend fun updateTestimonial(
-        netTestimonial: NetTestimonial,
-        files: List<MultipartBody.Part>
-    ): Status {
-        return apiService.updateTestimonial(netTestimonial = netTestimonial, files = files)
-    }
-
-    override suspend fun getUserTestimonial(userId: String): NetTestimonialRes {
-        return apiService.getUserTestimonial(userId)
     }
 
     //Feedback Endpoints

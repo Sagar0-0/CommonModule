@@ -1,8 +1,8 @@
 package fit.asta.health.testimonials.model
 
 import android.content.Context
-import fit.asta.health.network.api.RemoteApis
 import fit.asta.health.network.data.Status
+import fit.asta.health.testimonials.model.api.TestimonialApi
 import fit.asta.health.testimonials.model.domain.Testimonial
 import fit.asta.health.utils.InputStreamRequestBody
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +14,7 @@ import okhttp3.MultipartBody
 
 class TestimonialRepoImpl(
     private val context: Context,
-    private val remoteApi: RemoteApis,
+    private val remoteApi: TestimonialApi,
     private val mapper: TestimonialDataMapper,
 ) : TestimonialRepo {
 
@@ -54,7 +54,7 @@ class TestimonialRepoImpl(
 
         return flow {
             withContext(Dispatchers.IO) {
-                emit(remoteApi.updateTestimonial(mapper.mapToNetworkModel(testimonial), parts))
+                emit(remoteApi.createTestimonial(mapper.mapToNetworkModel(testimonial), parts))
             }
         }
     }

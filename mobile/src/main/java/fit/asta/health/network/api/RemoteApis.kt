@@ -30,9 +30,6 @@ import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerGetListRespons
 import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerGetResponse
 import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerPutResponse
 import fit.asta.health.scheduler.model.net.tag.AstaGetTagsListResponse
-import fit.asta.health.testimonials.model.network.NetTestimonial
-import fit.asta.health.testimonials.model.network.NetTestimonialRes
-import fit.asta.health.testimonials.model.network.NetTestimonialsRes
 import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
 import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
 import fit.asta.health.tools.water.model.network.ModifiedWaterTool
@@ -100,15 +97,6 @@ interface RemoteApis {
 
     //Health Tool - Walking Endpoints
     suspend fun getWalkingTool(userId: String): NetWalkingToolRes
-
-    //Testimonial Endpoints
-    suspend fun getTestimonials(index: Int, limit: Int): NetTestimonialsRes
-    suspend fun updateTestimonial(
-        netTestimonial: NetTestimonial,
-        files: List<MultipartBody.Part>
-    ): Status
-
-    suspend fun getUserTestimonial(userId: String): NetTestimonialRes
 
     //Feedback Endpoints
     suspend fun getFeedbackQuestions(userId: String, featureId: String): NetFeedbackRes

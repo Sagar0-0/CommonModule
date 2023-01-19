@@ -6,10 +6,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.network.api.RemoteApis
+import fit.asta.health.BuildConfig
 import fit.asta.health.testimonials.model.TestimonialDataMapper
 import fit.asta.health.testimonials.model.TestimonialRepo
 import fit.asta.health.testimonials.model.TestimonialRepoImpl
+import fit.asta.health.testimonials.model.api.TestimonialApi
+import fit.asta.health.testimonials.model.api.TestimonialRestApi
 import javax.inject.Singleton
 
 @Module
@@ -24,9 +26,15 @@ object TestimonialsModule {
 
     @Singleton
     @Provides
+    fun provideRemoteRestApi(): TestimonialApi {
+        return TestimonialRestApi(BuildConfig.BASE_URL)
+    }
+
+    @Singleton
+    @Provides
     fun provideTestimonialRepo(
         @ApplicationContext context: Context,
-        remoteApi: RemoteApis,
+        remoteApi: TestimonialApi,
         testimonialMapper: TestimonialDataMapper,
     ): TestimonialRepo {
         return TestimonialRepoImpl(
@@ -36,4 +44,3 @@ object TestimonialsModule {
         )
     }
 }
-

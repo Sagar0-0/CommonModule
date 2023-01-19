@@ -30,9 +30,6 @@ import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerGetListRespons
 import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerGetResponse
 import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerPutResponse
 import fit.asta.health.scheduler.model.net.tag.AstaGetTagsListResponse
-import fit.asta.health.testimonials.model.network.NetTestimonial
-import fit.asta.health.testimonials.model.network.NetTestimonialRes
-import fit.asta.health.testimonials.model.network.NetTestimonialsRes
 import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
 import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
 import fit.asta.health.tools.water.model.network.ModifiedWaterTool
@@ -142,23 +139,6 @@ interface ApiService {
     //Health Tool - Walking Endpoints
     @GET("tools/walking/get")
     suspend fun getWalkingTool(@Query("userId") userId: String): NetWalkingToolRes
-
-    //Testimonial Endpoints
-    @GET("testimonial/list/get?")
-    suspend fun getTestimonials(
-        @Query("index") index: Int,
-        @Query("limit") limit: Int
-    ): NetTestimonialsRes
-
-    @PUT("testimonial/put/")
-    @Multipart
-    suspend fun updateTestimonial(
-        @Part("json") netTestimonial: NetTestimonial,
-        @Part files: List<MultipartBody.Part>
-    ): Status
-
-    @GET("testimonial/get/?")
-    suspend fun getUserTestimonial(@Query("uid") userId: String): NetTestimonialRes
 
     //Feedback Endpoints
     @GET("feedback/user/get/?")
