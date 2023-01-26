@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,10 +12,7 @@ import fit.asta.health.R
 import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.network.NetworkHelper
 import fit.asta.health.testimonials.model.TestimonialRepo
-import fit.asta.health.testimonials.model.domain.Media
-import fit.asta.health.testimonials.model.domain.Testimonial
-import fit.asta.health.testimonials.model.domain.TestimonialType
-import fit.asta.health.testimonials.model.domain.TestimonialUser
+import fit.asta.health.testimonials.model.domain.*
 import fit.asta.health.utils.UiString
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
@@ -32,7 +30,8 @@ class TestimonialViewModel
 @Inject constructor(
     private val testimonialRepo: TestimonialRepo,
     private val authRepo: AuthRepo,
-    val networkHelper: NetworkHelper
+    val networkHelper: NetworkHelper,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     var title by mutableStateOf(UiString.Resource(R.string.testimonial_title_create))
@@ -43,15 +42,14 @@ class TestimonialViewModel
 
     private var curInx = 0
 
+    private val _areInputsValid = MutableStateFlow(false)
+    val areInputsValid = _areInputsValid.asStateFlow()
+
     private val _mutableState = MutableStateFlow<TestimonialGetState>(TestimonialGetState.Loading)
     val state = _mutableState.asStateFlow()
 
     private val _stateChannel = Channel<TestimonialSubmitState>()
     val stateChannel = _stateChannel.receiveAsFlow()
-
-    init {
-        onLoad()
-    }
 
     fun onLoad() {
         if (networkHelper.isConnected()) {
@@ -114,27 +112,27 @@ class TestimonialViewModel
         when (event) {
             is TestimonialEvent.OnTypeChange -> {
                 data = data.copy(type = event.type)
-                data.enableSubmit = validateTestimonial(event.type)
+                _areInputsValid.value = validateTestimonial(event.type)
             }
             is TestimonialEvent.OnTitleChange -> {
                 data = data.copy(title = event.title)
                 data.titleError = onValidateText(event.title, 4, 64)
-                data.enableSubmit = validateTestimonial(data.type)
+                _areInputsValid.value = validateTestimonial(data.type)
             }
             is TestimonialEvent.OnTestimonialChange -> {
                 data = data.copy(testimonial = event.testimonial)
                 data.testimonialError = onValidateText(event.testimonial, 32, 256)
-                data.enableSubmit = validateTestimonial(data.type)
+                _areInputsValid.value = validateTestimonial(data.type)
             }
             is TestimonialEvent.OnOrgChange -> {
                 data = data.copy(org = event.org)
                 data.orgError = onValidateText(event.org, 4, 32)
-                data.enableSubmit = validateTestimonial(data.type)
+                _areInputsValid.value = validateTestimonial(data.type)
             }
             is TestimonialEvent.OnRoleChange -> {
                 data = data.copy(role = event.role)
                 data.roleError = onValidateText(event.role, 2, 32)
-                data.enableSubmit = validateTestimonial(data.type)
+                _areInputsValid.value = validateTestimonial(data.type)
             }
             is TestimonialEvent.OnMediaIndex -> {
                 curInx = event.inx
@@ -144,24 +142,24 @@ class TestimonialViewModel
                     data.imgMedia[curInx] = data.imgMedia[curInx].copy(localUrl = event.url)
                 }
                 data.imgError = onValidateMedia(data.imgMedia)
-                data.enableSubmit = validateTestimonial(data.type)
+                _areInputsValid.value = validateTestimonial(data.type)
             }
             is TestimonialEvent.OnImageClear -> {
                 data.imgMedia[event.inx] = data.imgMedia[event.inx].copy(localUrl = null, url = "")
                 data.imgError = UiString.Resource(R.string.the_media_can_not_be_blank)
-                data.enableSubmit = validateTestimonial(data.type)
+                _areInputsValid.value = validateTestimonial(data.type)
             }
             is TestimonialEvent.OnVideoSelect -> {
                 if (event.url != null) {
                     data.vdoMedia[curInx] = data.vdoMedia[curInx].copy(localUrl = event.url)
                 }
                 data.vdoError = onValidateMedia(data.vdoMedia)
-                data.enableSubmit = validateTestimonial(data.type)
+                _areInputsValid.value = validateTestimonial(data.type)
             }
             is TestimonialEvent.OnVideoClear -> {
                 data.vdoMedia[event.inx] = data.vdoMedia[event.inx].copy(localUrl = null, url = "")
                 data.vdoError = UiString.Resource(R.string.the_media_can_not_be_blank)
-                data.enableSubmit = validateTestimonial(data.type)
+                _areInputsValid.value = validateTestimonial(data.type)
             }
             is TestimonialEvent.OnSubmit -> {
                 submit()

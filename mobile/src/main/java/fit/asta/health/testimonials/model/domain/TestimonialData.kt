@@ -1,11 +1,11 @@
-package fit.asta.health.testimonials.viewmodel.create
+package fit.asta.health.testimonials.model.domain
 
+import android.os.Parcelable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import fit.asta.health.R
-import fit.asta.health.testimonials.model.domain.Media
-import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.utils.UiString
+import kotlinx.android.parcel.Parcelize
 
 
 data class TestimonialData(
@@ -27,6 +27,8 @@ data class TestimonialData(
         Media(name = "journey", title = "Health Transformation")
     ),
     var imgError: UiString = UiString.Resource(R.string.the_media_can_not_be_blank),
-    var vdoError: UiString = UiString.Resource(R.string.the_media_can_not_be_blank),
-    var enableSubmit: Boolean = false
+    var vdoError: UiString = UiString.Resource(R.string.the_media_can_not_be_blank)
 )
+
+@Parcelize
+data class InputWrapper(val value: String = "", val errorId: Int? = null) : Parcelable
