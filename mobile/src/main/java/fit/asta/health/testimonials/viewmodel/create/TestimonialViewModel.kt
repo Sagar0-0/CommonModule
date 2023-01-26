@@ -51,6 +51,10 @@ class TestimonialViewModel
     private val _stateChannel = Channel<TestimonialSubmitState>()
     val stateChannel = _stateChannel.receiveAsFlow()
 
+    init {
+        onLoad()
+    }
+
     fun onLoad() {
         if (networkHelper.isConnected()) {
             authRepo.getUser()?.let {
