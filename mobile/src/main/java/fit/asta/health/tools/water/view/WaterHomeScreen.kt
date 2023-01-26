@@ -3,10 +3,7 @@ package fit.asta.health.tools.water.view
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,11 +25,12 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun WaterHomeScreen(viewModel:WaterViewModel= hiltViewModel()) {
 
-    val wT = viewModel.waterTool.value!!
+    val wT = viewModel.waterTool.collectAsState().value!!
 
     val changed by remember{mutableStateOf(viewModel.changedTgt.value)}
 
-    Scaffold(topBar = {
+    Scaffold(
+        topBar = {
         BottomNavigation(content = {
             Row(verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -54,7 +52,7 @@ fun WaterHomeScreen(viewModel:WaterViewModel= hiltViewModel()) {
                 }
             }
         }, elevation = 10.dp, backgroundColor = MaterialTheme.colorScheme.onPrimary)
-    },
+        },
         floatingActionButton = {
             if(changed!=null) {
                 ExtendedFloatingActionButton(

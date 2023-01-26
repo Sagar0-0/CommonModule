@@ -1,5 +1,6 @@
 package fit.asta.health.network.api
 
+import android.util.Log
 import fit.asta.health.common.multiselect.data.UserInputs
 import fit.asta.health.feedback.model.network.NetFeedbackRes
 import fit.asta.health.feedback.model.network.NetUserFeedback
@@ -137,7 +138,10 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
         startDate: String,
         endDate: String
     ): NetWaterToolRes {
-        return apiService.getWaterTool(userId, latitude, longitude, location, startDate, endDate)
+
+        val l =apiService.getWaterTool(userId, latitude, longitude, location, startDate, endDate)
+        Log.i("RestApiline 140",l.waterTool.toString())
+        return l
     }
 
     override suspend fun updateWaterTool(modifiedWaterTool: ModifiedWaterTool): Status {

@@ -32,7 +32,7 @@ class WaterViewModel
     private val mutableState = MutableStateFlow<WaterState>(WaterState.Loading)
     val state = mutableState.asStateFlow()
 
-    val waterTool = mutableStateOf<NetWaterTool?>(null)
+    val waterTool = MutableStateFlow<NetWaterTool?>(null)
     val changedTgt = mutableStateOf<Int?>(null)
 
     init {
@@ -42,6 +42,7 @@ class WaterViewModel
     private fun loadWaterToolData() {
         viewModelScope.launch {
             authRepo.getUser()?.let { user->
+                Log.i("User Id","------------------>${user.uid}");
                 waterToolRepo.getWaterTool(
                     userId = user.uid,
                     latitude = "28.6353",
@@ -52,8 +53,8 @@ class WaterViewModel
                 ).catch { exception ->
                     mutableState.value = WaterState.Error(exception)
                 }.collect {
-                    mutableState.value = WaterState.Success
                     waterTool.value = it
+                    mutableState.value = WaterState.Success
                     Log.i("Water Tool",it.toString())
                 }
             }
