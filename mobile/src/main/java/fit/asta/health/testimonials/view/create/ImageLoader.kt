@@ -87,7 +87,8 @@ fun ImagePreviewLayout(
                                     UploadImageView(
                                         title = media.title,
                                         inx = index,
-                                        onImageClick = onImageClick
+                                        onImageClick = onImageClick,
+                                        onImageClear = onImageClear
                                     )
                                 } else {
                                     SelectedImageView(
@@ -161,7 +162,12 @@ private fun SelectedImageView(
 }
 
 @Composable
-private fun UploadImageView(title: String, inx: Int, onImageClick: (inx: Int) -> Unit) {
+private fun UploadImageView(
+    title: String,
+    inx: Int,
+    onImageClick: (inx: Int) -> Unit,
+    onImageClear: (inx: Int) -> Unit
+) {
 
     Box(Modifier.padding(spacing.minSmall), contentAlignment = Alignment.Center) {
 

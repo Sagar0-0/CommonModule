@@ -23,6 +23,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.view.components.ValidatedTextField
 import fit.asta.health.testimonials.view.theme.boxSize
@@ -54,6 +55,7 @@ fun TestimonialForm(
 
     val focusManager = LocalFocusManager.current
     val scrollState = rememberScrollState()
+    val areInputsValid by editViewModel.areInputsValid.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier
@@ -161,7 +163,7 @@ fun TestimonialForm(
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color.Blue, contentColor = Color.White
             ),
-            enabled = editViewModel.data.enableSubmit
+            enabled = areInputsValid
         ) {
             Text(text = "Submit", style = MaterialTheme.typography.labelLarge)
         }
