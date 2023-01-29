@@ -32,9 +32,6 @@ import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerPutResponse
 import fit.asta.health.scheduler.model.net.tag.AstaGetTagsListResponse
 import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
 import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
-import fit.asta.health.tools.water.model.network.ModifiedWaterTool
-import fit.asta.health.tools.water.model.network.NetBeverage
-import fit.asta.health.tools.water.model.network.NetBeverageRes
 import fit.asta.health.tools.water.model.network.NetWaterToolRes
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -120,7 +117,7 @@ interface ApiService {
         @Query("end") endDate: String
     ): NetWaterToolRes
 
-    @PUT("tools/water/put")
+    /*@PUT("tools/water/put")
     suspend fun updateWaterTool(@Body modifiedWaterTool: ModifiedWaterTool): Status
 
     @PUT("tools/water/beverage/add/put")
@@ -130,7 +127,7 @@ interface ApiService {
     suspend fun updateBeverageQty(@Body beverage: NetBeverage): Status
 
     @GET("tools/water/beverage/list/get/?")
-    suspend fun getBeverageList(@Query("uid") userId: String): NetBeverageRes
+    suspend fun getBeverageList(@Query("uid") userId: String): NetBeverageRes*/
 
     //Health Tool - Sunlight Endpoints
     @GET("tools/sunlight/get")

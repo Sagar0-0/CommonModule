@@ -1,5 +1,6 @@
-package fit.asta.health.tools.water.view
 
+package fit.asta.health.tools.water.view
+/*
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.*
@@ -268,3 +269,4 @@ class customTriangleShape : Shape {
     }
 }
 
+*/

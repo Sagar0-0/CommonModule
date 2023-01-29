@@ -15,7 +15,7 @@ data class NetWaterTool(
     val waterToolData: WaterToolData,
     @SerializedName("progressData")
     val progressData: ProgressData,
-    @SerializedName("waterBeverageInfo")
+    @SerializedName("userBeverageInfo")
     val userBeverageInfo: WaterBeverageInfo,
     @SerializedName("beverageList")
     val allBeveragesList:List<AllBeverageData>
@@ -48,6 +48,8 @@ data class Meta(
 )
 
 data class AllBeverageData(
+    @SerializedName("id")
+    val id: String,
     @SerializedName("ttl")
     val title: String,
     @SerializedName("name")
