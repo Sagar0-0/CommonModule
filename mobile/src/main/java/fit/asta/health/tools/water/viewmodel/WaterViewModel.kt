@@ -98,13 +98,21 @@ class WaterViewModel
     }
 
     fun updateSelectBeveragesTool(beveragesId: String){
-        val temp = _modifiedWaterTool.value
+        _modifiedWaterTool.update {wT->
+            wT?.beveragesDetails?.forEach{it->
+                if(it.beverageId==beveragesId){
+                    it.isSelected=!it.isSelected
+                }
+            }
+            wT
+        }
+      /*  val temp = _modifiedWaterTool.value
         temp?.beveragesDetails?.forEach{
             if(it.beverageId==beveragesId){
                 it.isSelected=!it.isSelected
             }
         }
-        _modifiedWaterTool.value=temp
+        _modifiedWaterTool.value=temp*/
     }
 
     private fun compareModifiedTool(){
@@ -132,7 +140,7 @@ class WaterViewModel
         if(_sliderIndex.value==null){
             _showSlider.value=false
             _sliderIndex.value=index
-            _sliderInitialValue.value=value.toFloat()
+            _sliderInitialValue.update { value.toFloat() }
             _showSlider.value=true
         }else{
             if(_sliderIndex.value==index){
@@ -142,7 +150,7 @@ class WaterViewModel
             }else{
                 _showSlider.value=false
                 _sliderIndex.value=index
-                _sliderInitialValue.value=value.toFloat()
+                _sliderInitialValue.update { value.toFloat() }
                 _showSlider.value=true
             }
         }

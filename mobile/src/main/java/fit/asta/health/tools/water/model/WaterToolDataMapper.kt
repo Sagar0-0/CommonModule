@@ -16,8 +16,7 @@ class WaterToolDataMapper {
         val isSelectedList = mutableListOf<String>()
 
         //if(networkModel.waterTool.userBeverageInfo.userBeverageList!=null) {
-
-            networkModel.waterTool.userBeverageInfo.userBeverageList.forEach{
+        networkModel.waterTool.userBeverageInfo.userBeverageList.forEach{
                 isSelectedList.add(it.code)
             }
 

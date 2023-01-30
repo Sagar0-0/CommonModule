@@ -23,7 +23,7 @@ import kotlin.math.*
 fun CircularSlider(
     modifier: Modifier = Modifier,
     padding: Float = 50f,
-    stroke: Float = 20f,
+    stroke: Float = 32f,
     cap: StrokeCap = StrokeCap.Round,
     touchStroke: Float = 100f,
     thumbColor: Color = Color.Blue,

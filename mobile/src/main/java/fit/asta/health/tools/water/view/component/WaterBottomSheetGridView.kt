@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
@@ -36,7 +37,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(
     ExperimentalCoroutinesApi::class,
-    ExperimentalMaterialApi::class
+    ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class
 )
 @Composable
 fun WaterBottomSheetGridView(
@@ -63,13 +64,14 @@ fun WaterBottomSheetGridView(
     )
 
     val openDialog = remember { mutableStateOf(false) }
-    val waterLive by viewModel.modifiedWaterTool.collectAsState()
+    val waterLive by viewModel.modifiedWaterTool.collectAsStateWithLifecycle()
     val selectedBeverageData by viewModel.containerInCharge.collectAsState()
     val showSlider by viewModel.showSlider.collectAsState()
 
     if (openDialog.value) {
-        Popup(
-            onDismissRequest = { openDialog.value = false }) {
+        AlertDialog(
+            onDismissRequest = { openDialog.value = false }
+        ) {
             waterLive?.let { AllBeveragesPopUp(it) }
         }
     }

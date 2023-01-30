@@ -41,7 +41,7 @@ fun AllBeveragesPopUp(waterTool: WaterTool,viewModel: WaterViewModel = hiltViewM
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             FlowRow {
-                waterTool.beveragesDetails.forEach {
+                allBeveragesList?.beveragesDetails?.forEach {
                     BeveragesComponentInPopUp(it.beverageId,it.title,it.code,it.isSelected)
                 }
             }
