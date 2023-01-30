@@ -20,7 +20,7 @@ fun LoadTestimonialForm(
     when (val state = getViewModel.state.collectAsState().value) {
         TestimonialGetState.Loading -> LoadingAnimation()
         TestimonialGetState.Empty -> CreateTstScreen(
-            getViewModel.title.asString(),
+            getViewModel.titleMain.asString(),
             onNavigateTstCreate,
             onNavigateTstHome
         )
@@ -29,7 +29,7 @@ fun LoadTestimonialForm(
         })
         is TestimonialGetState.Error -> ServerErrorLayout(state.error)
         is TestimonialGetState.Success -> CreateTstScreen(
-            getViewModel.title.asString(),
+            getViewModel.titleMain.asString(),
             onNavigateTstCreate,
             onNavigateTstHome
         )

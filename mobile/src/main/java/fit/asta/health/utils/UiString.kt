@@ -1,17 +1,22 @@
 package fit.asta.health.utils
 
 import android.content.Context
+import android.os.Parcelable
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import kotlinx.android.parcel.RawValue
+import kotlinx.parcelize.Parcelize
 
-sealed class UiString {
+
+@Parcelize
+sealed class UiString : Parcelable {
     companion object {
         private const val EMPTY = ""
     }
 
     data class Dynamic(val value: String) : UiString()
-    class Resource(@StringRes val id: Int, vararg val args: Any) : UiString()
+    class Resource(@StringRes val id: Int, vararg val args: String) : UiString()
     object Empty : UiString()
 
     @Composable

@@ -16,13 +16,15 @@ import fit.asta.health.testimonials.model.domain.*
 import fit.asta.health.utils.UiString
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+const val TYPE = "type"
+const val TITLE = "title"
+const val TESTIMONIAL = "testimonial"
+const val ORG = "org"
+const val ROLE = "role"
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
@@ -31,19 +33,31 @@ class TestimonialViewModel
     private val testimonialRepo: TestimonialRepo,
     private val authRepo: AuthRepo,
     val networkHelper: NetworkHelper,
-    private val savedStateHandle: SavedStateHandle
+    private val savedState: SavedStateHandle
 ) : ViewModel() {
 
-    var title by mutableStateOf(UiString.Resource(R.string.testimonial_title_create))
+    var titleMain by mutableStateOf(UiString.Resource(R.string.testimonial_title_create))
         private set
+
+    val type = savedState.getStateFlow<TestimonialType>(TYPE, TestimonialType.TEXT)
+    val title = savedState.getStateFlow(TITLE, InputWrapper())
+    val testimonial = savedState.getStateFlow(TESTIMONIAL, InputWrapper())
+    val org = savedState.getStateFlow(ORG, InputWrapper())
+    val role = savedState.getStateFlow(ROLE, InputWrapper())
+
+    val areInputsValid = combine(title, testimonial, org, role) { title, testimonial, org, role ->
+
+        title.value.isNotEmpty() && title.error == UiString.Empty &&
+                testimonial.value.isNotEmpty() && testimonial.error == UiString.Empty &&
+                org.value.isNotEmpty() && org.error == UiString.Empty &&
+                role.value.isNotEmpty() && role.error == UiString.Empty
+
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
     var data by mutableStateOf(TestimonialData())
         private set
 
     private var curInx = 0
-
-    private val _areInputsValid = MutableStateFlow(false)
-    val areInputsValid = _areInputsValid.asStateFlow()
 
     private val _mutableState = MutableStateFlow<TestimonialGetState>(TestimonialGetState.Loading)
     val state = _mutableState.asStateFlow()
@@ -73,15 +87,16 @@ class TestimonialViewModel
             }.collect {
 
                 if (it.id.isNotBlank())
-                    title = UiString.Resource(R.string.testimonial_title_edit)
+                    titleMain = UiString.Resource(R.string.testimonial_title_edit)
+
+                savedState[TYPE] = it.type
+                savedState[TITLE] = it.title
+                savedState[TESTIMONIAL] = it.testimonial
+                savedState[ORG] = it.user.org
+                savedState[ROLE] = it.user.role
 
                 data = TestimonialData(
-                    id = it.id,
-                    type = it.type,
-                    title = it.title,
-                    testimonial = it.testimonial,
-                    role = it.user.role,
-                    org = it.user.org
+                    id = it.id
                 )
 
                 when (it.type) {
@@ -115,28 +130,21 @@ class TestimonialViewModel
     fun onEvent(event: TestimonialEvent) {
         when (event) {
             is TestimonialEvent.OnTypeChange -> {
-                data = data.copy(type = event.type)
-                _areInputsValid.value = validateTestimonial(event.type)
+                savedState[TYPE] = event.type
+                //_areInputsValid.value = validateTestimonial(event.type)
             }
             is TestimonialEvent.OnTitleChange -> {
-                data = data.copy(title = event.title)
-                data.titleError = onValidateText(event.title, 4, 64)
-                _areInputsValid.value = validateTestimonial(data.type)
+                savedState[TITLE] = title.value.copy(value = event.title, error = onValidateText(event.title, 4, 64))
             }
             is TestimonialEvent.OnTestimonialChange -> {
-                data = data.copy(testimonial = event.testimonial)
-                data.testimonialError = onValidateText(event.testimonial, 32, 256)
-                _areInputsValid.value = validateTestimonial(data.type)
+                savedState[TESTIMONIAL] =
+                    testimonial.value.copy(value = event.testimonial, error = onValidateText(event.testimonial, 32, 256))
             }
             is TestimonialEvent.OnOrgChange -> {
-                data = data.copy(org = event.org)
-                data.orgError = onValidateText(event.org, 4, 32)
-                _areInputsValid.value = validateTestimonial(data.type)
+                savedState[ORG] = title.value.copy(value = event.org, error = onValidateText(event.org, 4, 32))
             }
             is TestimonialEvent.OnRoleChange -> {
-                data = data.copy(role = event.role)
-                data.roleError = onValidateText(event.role, 2, 32)
-                _areInputsValid.value = validateTestimonial(data.type)
+                savedState[ROLE] = title.value.copy(value = event.role, error = onValidateText(event.role, 2, 32))
             }
             is TestimonialEvent.OnMediaIndex -> {
                 curInx = event.inx
@@ -146,24 +154,24 @@ class TestimonialViewModel
                     data.imgMedia[curInx] = data.imgMedia[curInx].copy(localUrl = event.url)
                 }
                 data.imgError = onValidateMedia(data.imgMedia)
-                _areInputsValid.value = validateTestimonial(data.type)
+                //_areInputsValid.value = validateTestimonial(type.value)
             }
             is TestimonialEvent.OnImageClear -> {
                 data.imgMedia[event.inx] = data.imgMedia[event.inx].copy(localUrl = null, url = "")
                 data.imgError = UiString.Resource(R.string.the_media_can_not_be_blank)
-                _areInputsValid.value = validateTestimonial(data.type)
+                //_areInputsValid.value = validateTestimonial(type.value)
             }
             is TestimonialEvent.OnVideoSelect -> {
                 if (event.url != null) {
                     data.vdoMedia[curInx] = data.vdoMedia[curInx].copy(localUrl = event.url)
                 }
                 data.vdoError = onValidateMedia(data.vdoMedia)
-                _areInputsValid.value = validateTestimonial(data.type)
+                //_areInputsValid.value = validateTestimonial(type.value)
             }
             is TestimonialEvent.OnVideoClear -> {
                 data.vdoMedia[event.inx] = data.vdoMedia[event.inx].copy(localUrl = null, url = "")
                 data.vdoError = UiString.Resource(R.string.the_media_can_not_be_blank)
-                _areInputsValid.value = validateTestimonial(data.type)
+                //_areInputsValid.value = validateTestimonial(type.value)
             }
             is TestimonialEvent.OnSubmit -> {
                 submit()
@@ -177,17 +185,17 @@ class TestimonialViewModel
             updateTestimonial(
                 Testimonial(
                     id = data.id,
-                    type = data.type,
-                    title = data.title.trim(),
-                    testimonial = data.testimonial.trim(),
+                    type = type.value,
+                    title = title.value.value.trim(),
+                    testimonial = testimonial.value.value.trim(),
                     userId = it.uid,
                     user = TestimonialUser(
                         name = it.name!!,
-                        role = data.role.trim(),
-                        org = data.org.trim(),
+                        role = role.value.value.trim(),
+                        org = org.value.value.trim(),
                         url = it.photoUrl.toString()
                     ),
-                    media = when (data.type) {
+                    media = when (type.value) {
                         TestimonialType.TEXT -> listOf()
                         TestimonialType.IMAGE -> data.imgMedia
                         TestimonialType.VIDEO -> data.vdoMedia
@@ -198,10 +206,11 @@ class TestimonialViewModel
     }
 
     private fun clearErrors() {
-        data.titleError = UiString.Empty
-        data.testimonialError = UiString.Empty
-        data.roleError = UiString.Empty
-        data.orgError = UiString.Empty
+        savedState[TITLE] = title.value.copy(error = UiString.Empty)
+        savedState[TESTIMONIAL] = testimonial.value.copy(error = UiString.Empty)
+        savedState[ORG] = org.value.copy(error = UiString.Empty)
+        savedState[ROLE] = role.value.copy(error = UiString.Empty)
+
         data.imgError = UiString.Empty
         data.vdoError = UiString.Empty
     }
@@ -209,8 +218,8 @@ class TestimonialViewModel
     private fun onValidateText(value: String, min: Int, max: Int): UiString {
         return when {
             value.isBlank() -> UiString.Resource(R.string.the_field_can_not_be_blank)
-            value.length > max -> UiString.Resource(R.string.data_length_more, max)
-            value.length in 1 until min -> UiString.Resource(R.string.data_length_less, min)
+            value.length > max -> UiString.Resource(R.string.data_length_more, max.toString())
+            value.length in 1 until min -> UiString.Resource(R.string.data_length_less, min.toString())
             else -> UiString.Empty
         }
     }
@@ -224,24 +233,17 @@ class TestimonialViewModel
         return mediaList.find { it.localUrl == null && it.url.isBlank() } == null
     }
 
-    private fun validateTestimonial(type: TestimonialType): Boolean {
-        return when (type) {
-            TestimonialType.TEXT -> validateData(
-                data.testimonial.isNotBlank() && data.testimonialError is UiString.Empty
-            )
-            TestimonialType.IMAGE -> validateData(
-                validateMedia(data.imgMedia) && data.imgError is UiString.Empty
-            )
-            TestimonialType.VIDEO -> validateData(
-                validateMedia(data.vdoMedia) && data.vdoError is UiString.Empty
-            )
-        }
+    /*private suspend fun clearFocusAndHideKeyboard() {
+        _events.send(ScreenEvent.ClearFocus)
+        _events.send(ScreenEvent.UpdateKeyboard(false))
+        focusedTextField = FocusedTextFieldKey.NONE
     }
 
-    private fun validateData(typeValidation: Boolean): Boolean {
-        return (typeValidation && data.title.isNotBlank() && data.titleError is UiString.Empty
-                && data.org.isNotBlank() && data.orgError is UiString.Empty
-                && data.role.isNotBlank() && data.roleError is UiString.Empty
-                )
-    }
+    private fun focusOnLastSelectedTextField() {
+        viewModelScope.launch(Dispatchers.Default) {
+            _events.send(ScreenEvent.RequestFocus(focusedTextField))
+            delay(250)
+            _events.send(ScreenEvent.UpdateKeyboard(true))
+        }
+    }*/
 }

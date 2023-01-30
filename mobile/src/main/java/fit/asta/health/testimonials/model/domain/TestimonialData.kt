@@ -10,15 +10,6 @@ import kotlinx.android.parcel.Parcelize
 
 data class TestimonialData(
     val id: String = "",
-    val type: TestimonialType = TestimonialType.TEXT,
-    val title: String = "",
-    var titleError: UiString = UiString.Empty,
-    val testimonial: String = "",
-    var testimonialError: UiString = UiString.Empty,
-    val role: String = "",
-    var roleError: UiString = UiString.Empty,
-    val org: String = "",
-    var orgError: UiString = UiString.Empty,
     var imgMedia: SnapshotStateList<Media> = mutableStateListOf(
         Media(name = "before", title = "Before Image"),
         Media(name = "after", title = "After Image")
@@ -31,4 +22,4 @@ data class TestimonialData(
 )
 
 @Parcelize
-data class InputWrapper(val value: String = "", val errorId: Int? = null) : Parcelable
+data class InputWrapper(val value: String = "", val error: UiString = UiString.Empty) : Parcelable

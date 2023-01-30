@@ -1,10 +1,14 @@
 package fit.asta.health.testimonials.model.domain
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+
+@Parcelize
 sealed class TestimonialType(
     val value: Int,
     val title: String
-) {
+) : Parcelable {
     object TEXT : TestimonialType(value = 0, title = "Text")
     object IMAGE : TestimonialType(value = 1, title = "Image")
     object VIDEO : TestimonialType(value = 2, title = "Video")

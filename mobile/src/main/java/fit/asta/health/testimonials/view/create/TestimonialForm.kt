@@ -43,6 +43,13 @@ fun TestimonialForm(
     onNavigateTstHome: () -> Unit,
 ) {
 
+    val type by editViewModel.type.collectAsStateWithLifecycle()
+    val title by editViewModel.title.collectAsStateWithLifecycle()
+    val testimonial by editViewModel.testimonial.collectAsStateWithLifecycle()
+    val organization by editViewModel.org.collectAsStateWithLifecycle()
+    val role by editViewModel.role.collectAsStateWithLifecycle()
+    val areInputsValid by editViewModel.areInputsValid.collectAsStateWithLifecycle()
+
     val radioButtonList = listOf(
         TestimonialType.TEXT, TestimonialType.IMAGE, TestimonialType.VIDEO
     )
@@ -50,12 +57,11 @@ fun TestimonialForm(
     var showCustomDialogWithResult by remember { mutableStateOf(false) }
 
     val selectedOption = radioButtonList.find {
-        it == editViewModel.data.type
+        it == type
     } ?: radioButtonList[0]
 
     val focusManager = LocalFocusManager.current
     val scrollState = rememberScrollState()
-    val areInputsValid by editViewModel.areInputsValid.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier
@@ -76,12 +82,12 @@ fun TestimonialForm(
             selectedOption = selectedOption,
             content = {
                 ValidatedTextField(
-                    value = editViewModel.data.testimonial,
+                    value = testimonial.value,
                     onValueChange = { editViewModel.onEvent(TestimonialEvent.OnTestimonialChange(it)) },
                     label = "Testimonial",
-                    showError = editViewModel.data.testimonialError !is UiString.Empty,
-                    errorMessage = editViewModel.data.testimonialError,
-                    keyboardOptions = if (editViewModel.data.testimonial.length < 512) {
+                    showError = testimonial.error !is UiString.Empty,
+                    errorMessage = testimonial.error,
+                    keyboardOptions = if (testimonial.value.length < 512) {
                         KeyboardOptions(
                             keyboardType = KeyboardType.Text, imeAction = ImeAction.Default
                         )
@@ -98,11 +104,11 @@ fun TestimonialForm(
             },
             titleTestimonial = {
                 ValidatedTextField(
-                    value = editViewModel.data.title,
+                    value = title.value,
                     onValueChange = { editViewModel.onEvent(TestimonialEvent.OnTitleChange(it)) },
                     label = "Title",
-                    showError = editViewModel.data.titleError !is UiString.Empty,
-                    errorMessage = editViewModel.data.titleError,
+                    showError = title.error !is UiString.Empty,
+                    errorMessage = title.error,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Text, imeAction = ImeAction.Next
                     ),
@@ -118,11 +124,11 @@ fun TestimonialForm(
         Spacer(modifier = Modifier.height(spacing.medium))
 
         ValidatedTextField(
-            value = editViewModel.data.org,
+            value = organization.value,
             onValueChange = { editViewModel.onEvent(TestimonialEvent.OnOrgChange(it)) },
             label = "Organisation",
-            showError = editViewModel.data.orgError !is UiString.Empty,
-            errorMessage = editViewModel.data.orgError,
+            showError = organization.error !is UiString.Empty,
+            errorMessage = organization.error,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text, imeAction = ImeAction.Next
             ),
@@ -134,11 +140,11 @@ fun TestimonialForm(
         Spacer(modifier = Modifier.height(spacing.medium))
 
         ValidatedTextField(
-            value = editViewModel.data.role,
+            value = role.value,
             onValueChange = { editViewModel.onEvent(TestimonialEvent.OnRoleChange(it)) },
             label = "Role",
-            showError = editViewModel.data.roleError !is UiString.Empty,
-            errorMessage = editViewModel.data.roleError,
+            showError = role.error !is UiString.Empty,
+            errorMessage = role.error,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text, imeAction = ImeAction.Done
             ),
