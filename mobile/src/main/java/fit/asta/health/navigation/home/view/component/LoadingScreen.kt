@@ -34,30 +34,35 @@ fun LoadingAnimation(
     circles.forEachIndexed { index, animationTable ->
         LaunchedEffect(key1 = animationTable) {
             delay(index * 100L)
-            animationTable.animateTo(targetValue = 1f,
-                animationSpec = infiniteRepeatable(animation = keyframes {
+            animationTable.animateTo(
+                targetValue = 1f, animationSpec = infiniteRepeatable(animation = keyframes {
                     durationMillis = 1200
                     0.0f at 0 with LinearOutSlowInEasing
                     1.0f at 300 with LinearOutSlowInEasing
                     0.0f at 600 with LinearOutSlowInEasing
                     0.0f at 1200 with LinearOutSlowInEasing
-                }, repeatMode = RepeatMode.Restart))
+                }, repeatMode = RepeatMode.Restart)
+            )
         }
     }
 
     val circleValues = circles.map { it.value }
     val distance = with(LocalDensity.current) { travelDistance.toPx() }
 
-    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-        Row(modifier = modifier,
-            horizontalArrangement = Arrangement.spacedBy(spaceBetween)) {
+    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = modifier, horizontalArrangement = Arrangement.spacedBy(spaceBetween)
+        ) {
             circleValues.forEach { value ->
                 Box(modifier = Modifier
                     .size(circleSize)
                     .graphicsLayer {
                         translationY = -value * distance
                     }
-                    .background(color = androidx.compose.material3.MaterialTheme.colorScheme.primary, shape = CircleShape))
+                    .background(
+                        color = androidx.compose.material3.MaterialTheme.colorScheme.primary,
+                        shape = CircleShape
+                    ))
             }
         }
     }

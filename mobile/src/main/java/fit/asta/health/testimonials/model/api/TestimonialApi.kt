@@ -8,7 +8,6 @@ import okhttp3.MultipartBody
 
 //Testimonial Endpoints
 interface TestimonialApi {
-
     suspend fun getTestimonials(index: Int, limit: Int): NetTestimonialsRes
     suspend fun createTestimonial(tml: NetTestimonial, files: List<MultipartBody.Part>): Status
     suspend fun getUserTestimonial(userId: String): NetTestimonialRes

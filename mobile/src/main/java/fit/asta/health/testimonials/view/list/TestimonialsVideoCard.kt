@@ -37,9 +37,11 @@ fun TestimonialsVideoCard(testimonial: Testimonial) {
             .padding(spacing.medium)
             .clip(MaterialTheme.shapes.medium), elevation = cardElevation.small
     ) {
-        Column(Modifier.fillMaxWidth()) {
-
-            Spacer(modifier = Modifier.height(spacing.medium))
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(spacing.medium)
+        ) {
 
             PlayVideoLayout(testimonial)
 
@@ -56,9 +58,7 @@ fun TestimonialsVideoCard(testimonial: Testimonial) {
 @Composable
 fun PlayVideoLayout(testimonial: Testimonial) {
     Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = spacing.medium)
+        Modifier.fillMaxWidth()
     ) {
         Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
             Surface(

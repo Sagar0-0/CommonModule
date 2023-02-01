@@ -4,7 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import fit.asta.health.R
 import fit.asta.health.testimonials.view.components.SuccessfulCard
 import fit.asta.health.testimonials.view.theme.buttonSize
@@ -20,6 +21,7 @@ import fit.asta.health.testimonials.view.theme.cardElevation
 import fit.asta.health.testimonials.view.theme.imageHeight
 import fit.asta.health.tools.sunlight.view.components.BottomSheetButton
 import fit.asta.health.ui.spacing
+import kotlinx.coroutines.delay
 
 @Composable
 fun CustomDialogWithResultExample(
@@ -47,11 +49,25 @@ fun CustomDialogWithResultExample(
 @Composable
 fun OnSuccessfulSubmit(
     onDismiss: () -> Unit,
+    onNavigateTstHome: () -> Unit,
     onPositiveClick: () -> Unit,
 ) {
 
-    Dialog(onDismissRequest = onDismiss) {
-        SuccessfulCard(onClick = onPositiveClick)
+    var underReview by remember {
+        mutableStateOf(true)
+    }
+
+    LaunchedEffect(key1 = Unit, block = {
+        delay(2000)
+        underReview = false
+        delay(3000)
+        onNavigateTstHome()
+    })
+
+    Dialog(
+        onDismissRequest = onDismiss, properties = DialogProperties(dismissOnClickOutside = false)
+    ) {
+        SuccessfulCard(onClick = onPositiveClick, underReview = underReview)
     }
 
 }
@@ -161,3 +177,6 @@ fun DialogContent(
         }
     }
 }
+
+
+

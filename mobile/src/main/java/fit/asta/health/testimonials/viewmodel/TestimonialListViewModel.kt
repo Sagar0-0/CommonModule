@@ -21,6 +21,7 @@ class TestimonialListViewModel
 ) : ViewModel() {
 
     private val modificationEvents = MutableStateFlow<List<TestimonialListEvent>>(emptyList())
+
     val testimonialPager =
         Pager(PagingConfig(pageSize = TestimonialDataSource.PAGE_SIZE)) {
             TestimonialDataSource(testimonialRepo, networkHelper)

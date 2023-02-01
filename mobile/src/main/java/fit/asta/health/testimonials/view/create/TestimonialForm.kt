@@ -6,7 +6,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomNavigation
-import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -14,9 +13,10 @@ import androidx.compose.material.icons.outlined.NavigateBefore
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
@@ -35,7 +35,7 @@ import fit.asta.health.utils.UiString
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
-@OptIn(ExperimentalCoroutinesApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun TestimonialForm(
     editViewModel: TestimonialViewModel = hiltViewModel(),
@@ -50,6 +50,9 @@ fun TestimonialForm(
     val role by editViewModel.role.collectAsStateWithLifecycle()
     val areInputsValid by editViewModel.areInputsValid.collectAsStateWithLifecycle()
 
+
+    val focusRequester = remember { FocusRequester() }
+
     val radioButtonList = listOf(
         TestimonialType.TEXT, TestimonialType.IMAGE, TestimonialType.VIDEO
     )
@@ -62,6 +65,8 @@ fun TestimonialForm(
 
     val focusManager = LocalFocusManager.current
     val scrollState = rememberScrollState()
+
+
 
     Column(
         modifier = Modifier
@@ -83,7 +88,13 @@ fun TestimonialForm(
             content = {
                 ValidatedTextField(
                     value = testimonial.value,
-                    onValueChange = { editViewModel.onEvent(TestimonialEvent.OnTestimonialChange(it)) },
+                    onValueChange = {
+                        editViewModel.onEvent(
+                            TestimonialEvent.OnTestimonialChange(
+                                it
+                            )
+                        )
+                    },
                     label = "Testimonial",
                     showError = testimonial.error !is UiString.Empty,
                     errorMessage = testimonial.error,
@@ -148,7 +159,8 @@ fun TestimonialForm(
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text, imeAction = ImeAction.Done
             ),
-            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Exit) })
+            modifier = Modifier.focusRequester(focusRequester = focusRequester),
+            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
         )
 
         if (selectedOption == radioButtonList[1]) {
@@ -159,9 +171,10 @@ fun TestimonialForm(
             TestGetVideo()
         }
 
-        Button(
+        androidx.compose.material.Button(
             onClick = {
                 showCustomDialogWithResult = !showCustomDialogWithResult
+
             },
             modifier = Modifier
                 .fillMaxWidth(1f)
@@ -175,15 +188,16 @@ fun TestimonialForm(
         }
 
         if (showCustomDialogWithResult) {
-
             OnSuccessfulSubmit(onDismiss = {
                 showCustomDialogWithResult = !showCustomDialogWithResult
-            }) {
+            }, onNavigateTstHome = onNavigateTstHome, onPositiveClick = {
                 editViewModel.onEvent(TestimonialEvent.OnSubmit)
                 onNavigateTstHome()
-            }
+            })
         }
     }
+
+
 }
 
 

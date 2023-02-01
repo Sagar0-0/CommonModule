@@ -15,19 +15,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
 import fit.asta.health.feedback.view.SubmitButton
+import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.testimonials.view.theme.boxSize
 import fit.asta.health.testimonials.view.theme.cardHeight
 import fit.asta.health.testimonials.view.theme.iconSize
 import fit.asta.health.ui.spacing
 import fit.asta.health.ui.theme.ts
 
-@Preview
 @Composable
-fun SuccessfulCard(modifier: Modifier = Modifier, onClick: (() -> Unit)? = null) {
+fun SuccessfulCard(
+    modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
+    underReview: Boolean,
+) {
 
     Box(contentAlignment = Alignment.TopCenter) {
 
@@ -67,7 +70,11 @@ fun SuccessfulCard(modifier: Modifier = Modifier, onClick: (() -> Unit)? = null)
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Your feedback has been submitted",
+                        text = if (underReview) {
+                            "Your feedback is under review. Please wait few seconds."
+                        } else {
+                            "Your feedback has been submitted"
+                        },
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Normal,
                         color = MaterialTheme.colorScheme.secondary,
@@ -77,13 +84,19 @@ fun SuccessfulCard(modifier: Modifier = Modifier, onClick: (() -> Unit)? = null)
 
                 Spacer(modifier = Modifier.height(spacing.large))
 
-                SubmitButton(text = "Continue", onClick = onClick)
+                if (underReview) {
+                    LoadingAnimation()
+                } else {
+                    SubmitButton(text = "Done", onClick = onClick)
+                }
 
                 Spacer(modifier = Modifier.height(spacing.medium))
 
             }
 
         }
+
+
 
         Box(
             modifier = Modifier
@@ -93,7 +106,11 @@ fun SuccessfulCard(modifier: Modifier = Modifier, onClick: (() -> Unit)? = null)
                 .background(color = Color.Green), contentAlignment = Alignment.Center
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_tick),
+                painter = if (underReview) {
+                    painterResource(id = R.drawable.review)
+                } else {
+                    painterResource(id = R.drawable.ic_tick)
+                },
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.size(iconSize.medium)
