@@ -6,8 +6,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -22,11 +20,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.R
-import fit.asta.health.testimonials.view.theme.boxSize
 import fit.asta.health.testimonials.view.theme.cardHeight
 import fit.asta.health.testimonials.view.theme.imageHeight
+import fit.asta.health.testimonials.viewmodel.create.MediaType
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
 import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
 import fit.asta.health.ui.spacing
@@ -37,27 +36,20 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun TestGetImage(viewModel: TestimonialViewModel = hiltViewModel()) {
-
-    val launcher =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
-            viewModel.onEvent(TestimonialEvent.OnImageSelect(uri))
-        }
-
-    ImagePreviewLayout(viewModel = viewModel, onImageClick = {
-        launcher.launch("image/*")
-        viewModel.onEvent(TestimonialEvent.OnMediaIndex(it))
-    }, onImageClear = { viewModel.onEvent(TestimonialEvent.OnImageClear(it)) })
-}
-
-@OptIn(ExperimentalCoroutinesApi::class)
-@Composable
-fun ImagePreviewLayout(
+fun ImageLayout(
     modifier: Modifier = Modifier,
-    viewModel: TestimonialViewModel,
-    onImageClick: (inx: Int) -> Unit,
-    onImageClear: (inx: Int) -> Unit,
+    viewModel: TestimonialViewModel = hiltViewModel()
 ) {
+    val imgBefore by viewModel.imgBefore.collectAsStateWithLifecycle()
+    val imgAfter by viewModel.imgAfter.collectAsStateWithLifecycle()
+    val beforeLauncher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
+            viewModel.onEvent(TestimonialEvent.OnMediaSelect(MediaType.BeforeImage, uri))
+        }
+    val afterLauncher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
+            viewModel.onEvent(TestimonialEvent.OnMediaSelect(MediaType.AfterImage, uri))
+        }
 
     Column(modifier = modifier) {
 
@@ -72,35 +64,37 @@ fun ImagePreviewLayout(
         ) {
             Row(horizontalArrangement = Arrangement.SpaceBetween) {
 
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2), modifier = Modifier
-                        .fillMaxWidth()
-                        .height(boxSize.large)
-//                        .heightIn(min = 200.dp)
-                        .padding(horizontal = spacing.medium)
-                ) {
+                Box {
+                    if (imgBefore.url.isEmpty() && imgBefore.localUrl == null) {
+                        UploadImageView(
+                            title = "",
+                            onImageClick = { beforeLauncher.launch("image/*") },
+                            onImageClear = { viewModel.onEvent(TestimonialEvent.OnMediaClear(MediaType.BeforeImage)) }
+                        )
+                    } else {
+                        SelectedImageView(
+                            title = "",
+                            url = getOneUrl(imgBefore.localUrl, imgBefore.url),
+                            onImageClick = { afterLauncher.launch("image/*") },
+                            onImageClear = { viewModel.onEvent(TestimonialEvent.OnMediaClear(MediaType.BeforeImage)) }
+                        )
+                    }
+                }
 
-                    viewModel.data.imgMedia.forEachIndexed { index, media ->
-                        item {
-                            Box {
-                                if (media.url.isEmpty() && media.localUrl == null) {
-                                    UploadImageView(
-                                        title = media.title,
-                                        inx = index,
-                                        onImageClick = onImageClick,
-                                        onImageClear = onImageClear
-                                    )
-                                } else {
-                                    SelectedImageView(
-                                        title = media.title,
-                                        inx = index,
-                                        url = getOneUrl(media.localUrl, media.url),
-                                        onImageClick = onImageClick,
-                                        onImageClear = onImageClear
-                                    )
-                                }
-                            }
-                        }
+                Box {
+                    if (imgAfter.url.isEmpty() && imgAfter.localUrl == null) {
+                        UploadImageView(
+                            title = "",
+                            onImageClick = { afterLauncher.launch("image/*") },
+                            onImageClear = { viewModel.onEvent(TestimonialEvent.OnMediaClear(MediaType.AfterImage)) }
+                        )
+                    } else {
+                        SelectedImageView(
+                            title = "",
+                            url = getOneUrl(imgAfter.localUrl, imgAfter.url),
+                            onImageClick = { afterLauncher.launch("image/*") },
+                            onImageClear = { viewModel.onEvent(TestimonialEvent.OnMediaClear(MediaType.AfterImage)) }
+                        )
                     }
                 }
             }
@@ -116,16 +110,15 @@ fun getOneUrl(localUrl: Uri?, remoteUrl: String): String {
 @Composable
 private fun SelectedImageView(
     title: String,
-    inx: Int,
     url: String,
-    onImageClick: (inx: Int) -> Unit,
-    onImageClear: (inx: Int) -> Unit,
+    onImageClick: () -> Unit,
+    onImageClear: () -> Unit,
 ) {
 
     Box(
         Modifier
             .padding(spacing.minSmall)
-            .clickable { onImageClick(inx) },
+            .clickable { onImageClick() },
         contentAlignment = Alignment.BottomCenter
     ) {
 
@@ -150,7 +143,7 @@ private fun SelectedImageView(
 
     Box(contentAlignment = Alignment.TopEnd, modifier = Modifier.fillMaxWidth(1f)) {
         IconButton(onClick = {
-            onImageClear(inx)
+            onImageClear()
         }) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_delete_forever),
@@ -164,8 +157,7 @@ private fun SelectedImageView(
 @Composable
 private fun UploadImageView(
     title: String,
-    inx: Int,
-    onImageClick: (inx: Int) -> Unit,
+    onImageClick: () -> Unit,
     onImageClear: (inx: Int) -> Unit
 ) {
 
@@ -176,7 +168,7 @@ private fun UploadImageView(
                 .fillMaxWidth(1f)
                 .height(cardHeight.medium)
 //                .heightIn(min = 180.dp)
-                .clickable { onImageClick(inx) }) {
+                .clickable { onImageClick() }) {
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -200,7 +192,6 @@ private fun UploadImageView(
                     modifier = Modifier.padding(spacing.small),
                     style = MaterialTheme.typography.headlineMedium
                 )
-
             }
         }
     }

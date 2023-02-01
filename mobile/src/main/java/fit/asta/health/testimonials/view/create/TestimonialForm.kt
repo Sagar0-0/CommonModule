@@ -153,7 +153,7 @@ fun TestimonialForm(
 
         if (selectedOption == radioButtonList[1]) {
             Spacer(modifier = Modifier.height(spacing.medium))
-            TestGetImage()
+            ImageLayout()
         } else if (selectedOption == radioButtonList[2]) {
             Spacer(modifier = Modifier.height(spacing.medium))
             TestGetVideo()

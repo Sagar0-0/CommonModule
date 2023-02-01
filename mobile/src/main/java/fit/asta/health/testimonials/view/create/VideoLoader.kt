@@ -24,6 +24,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
@@ -31,6 +32,7 @@ import fit.asta.health.R
 import fit.asta.health.testimonials.view.theme.aspectRatio
 import fit.asta.health.testimonials.view.theme.cardHeight
 import fit.asta.health.testimonials.view.theme.imageSize
+import fit.asta.health.testimonials.viewmodel.create.MediaType
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
 import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
 import fit.asta.health.ui.spacing
@@ -44,13 +46,12 @@ fun TestGetVideo(viewModel: TestimonialViewModel = hiltViewModel()) {
 
     val videoLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
-            viewModel.onEvent(TestimonialEvent.OnVideoSelect(uri))
+            viewModel.onEvent(TestimonialEvent.OnMediaSelect(MediaType.Video, uri))
         }
 
     GetVideo(viewModel = viewModel, onVideoClick = {
         videoLauncher.launch("video/*")
-        viewModel.onEvent(TestimonialEvent.OnMediaIndex(0))
-    }, onVideoClear = { viewModel.onEvent(TestimonialEvent.OnVideoClear(0)) })
+    }, onVideoClear = { viewModel.onEvent(TestimonialEvent.OnMediaClear(MediaType.Video)) })
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -93,6 +94,7 @@ fun VideoLayout(
     onVideoClear: () -> Unit,
 ) {
 
+    val video by viewModel.video.collectAsStateWithLifecycle()
     val playWhenReady by rememberSaveable { mutableStateOf(true) }
     val player = ExoPlayer.Builder(LocalContext.current).build()
     val playerView = PlayerView(LocalContext.current)
@@ -113,13 +115,12 @@ fun VideoLayout(
 
     Box {
 
-        val media = viewModel.data.vdoMedia[0]
-        if (media.url.isEmpty() && media.localUrl == null) {
+        if (video.url.isEmpty() && video.localUrl == null) {
 
             UploadVideo(onVideoClick)
         } else {
 
-            val mediaItem = getOneUrl(media.localUrl, media.url).let { MediaItem.fromUri(it) }
+            val mediaItem = getOneUrl(video.localUrl, video.url).let { MediaItem.fromUri(it) }
             mediaItem.let { player.setMediaItem(it) }
 
             Box(Modifier.padding(spacing.minSmall), contentAlignment = Alignment.BottomCenter) {

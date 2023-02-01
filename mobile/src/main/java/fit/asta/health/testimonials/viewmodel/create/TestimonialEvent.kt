@@ -3,6 +3,11 @@ package fit.asta.health.testimonials.viewmodel.create
 import android.net.Uri
 import fit.asta.health.testimonials.model.domain.TestimonialType
 
+sealed class MediaType {
+    object BeforeImage: MediaType()
+    object AfterImage: MediaType()
+    object Video: MediaType()
+}
 
 sealed class TestimonialEvent {
     data class OnTypeChange(val type: TestimonialType) : TestimonialEvent()
@@ -10,10 +15,7 @@ sealed class TestimonialEvent {
     data class OnTestimonialChange(val testimonial: String) : TestimonialEvent()
     data class OnRoleChange(val role: String) : TestimonialEvent()
     data class OnOrgChange(val org: String) : TestimonialEvent()
-    data class OnMediaIndex(val inx: Int) : TestimonialEvent()
-    data class OnImageSelect(val url: Uri?) : TestimonialEvent()
-    data class OnImageClear(val inx: Int) : TestimonialEvent()
-    data class OnVideoSelect(val url: Uri?) : TestimonialEvent()
-    data class OnVideoClear(val inx: Int) : TestimonialEvent()
+    data class OnMediaSelect(val mediaType: MediaType, val url: Uri?) : TestimonialEvent()
+    data class OnMediaClear(val mediaType: MediaType) : TestimonialEvent()
     object OnSubmit : TestimonialEvent()
 }
