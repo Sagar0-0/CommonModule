@@ -42,6 +42,9 @@ class TestimonialViewModel
     var titleMain by mutableStateOf(UiString.Resource(R.string.testimonial_title_create))
         private set
 
+    private val _mutableState = MutableStateFlow<TestimonialGetState>(TestimonialGetState.Loading)
+    val state = _mutableState.asStateFlow()
+
     val id = savedState.getStateFlow(ID, "")
     val type = savedState.getStateFlow<TestimonialType>(TYPE, TestimonialType.TEXT)
     val title = savedState.getStateFlow(TITLE, InputWrapper())
@@ -52,17 +55,29 @@ class TestimonialViewModel
     val imgAfter = savedState.getStateFlow(IMAGE_AFTER, MediaWrapper())
     val video = savedState.getStateFlow(VIDEO, MediaWrapper())
 
-    val areInputsValid = combine(title, testimonial, org, role) { title, testimonial, org, role ->
+    val areInputsValid =
+        combine(type, title, testimonial, org, role) { type, title, testimonial, org, role ->
 
-        title.value.isNotEmpty() && title.error == UiString.Empty &&
-                testimonial.value.isNotEmpty() && testimonial.error == UiString.Empty &&
-                org.value.isNotEmpty() && org.error == UiString.Empty &&
-                role.value.isNotEmpty() && role.error == UiString.Empty
+            when (type) {
+                TestimonialType.TEXT -> testimonial.value.isNotBlank() && testimonial.error is UiString.Empty
+                TestimonialType.IMAGE -> true
+                TestimonialType.VIDEO -> true
+            } && title.value.isNotEmpty() && title.error is UiString.Empty &&
+                    org.value.isNotEmpty() && org.error is UiString.Empty &&
+                    role.value.isNotEmpty() && role.error is UiString.Empty
 
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
-    private val _mutableState = MutableStateFlow<TestimonialGetState>(TestimonialGetState.Loading)
-    val state = _mutableState.asStateFlow()
+    val areMediaValid = combine(type, imgBefore, imgAfter, video) { type, before, after, video ->
+
+        when (type) {
+            TestimonialType.TEXT -> true
+            TestimonialType.IMAGE -> (before.localUrl != null || before.url.isNotBlank()) &&
+                    (after.localUrl != null || after.url.isNotBlank())
+            TestimonialType.VIDEO -> video.localUrl != null || video.url.isNotBlank()
+        }
+
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
     private val _stateChannel = Channel<TestimonialSubmitState>()
     val stateChannel = _stateChannel.receiveAsFlow()
@@ -182,7 +197,7 @@ class TestimonialViewModel
             }
             is TestimonialEvent.OnMediaClear -> {
 
-                when(event.mediaType) {
+                when (event.mediaType) {
                     MediaType.AfterImage -> {
                         savedState[IMAGE_AFTER] = imgAfter.value.copy(
                             localUrl = null, url = "",

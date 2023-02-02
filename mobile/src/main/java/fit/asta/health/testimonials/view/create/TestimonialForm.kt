@@ -49,6 +49,7 @@ fun TestimonialForm(
     val organization by editViewModel.org.collectAsStateWithLifecycle()
     val role by editViewModel.role.collectAsStateWithLifecycle()
     val areInputsValid by editViewModel.areInputsValid.collectAsStateWithLifecycle()
+    val areMediaValid by editViewModel.areMediaValid.collectAsStateWithLifecycle()
 
 
     val focusRequester = remember { FocusRequester() }
@@ -182,7 +183,7 @@ fun TestimonialForm(
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color.Blue, contentColor = Color.White
             ),
-            enabled = areInputsValid
+            enabled = areInputsValid && areMediaValid
         ) {
             Text(text = "Submit", style = MaterialTheme.typography.labelLarge)
         }
