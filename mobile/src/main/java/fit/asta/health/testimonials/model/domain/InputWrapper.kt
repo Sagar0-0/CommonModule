@@ -11,6 +11,8 @@ data class InputWrapper(val value: String = "", val error: UiString = UiString.E
 
 @Parcelize
 data class MediaWrapper(
+    val name: String = "",
+    val title: String = "",
     val localUrl: Uri? = null,
     val url: String = "",
     val error: UiString = UiString.Empty
