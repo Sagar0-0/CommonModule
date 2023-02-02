@@ -51,9 +51,9 @@ class TestimonialViewModel
     val testimonial = savedState.getStateFlow(TESTIMONIAL, InputWrapper())
     val org = savedState.getStateFlow(ORG, InputWrapper())
     val role = savedState.getStateFlow(ROLE, InputWrapper())
-    val imgBefore = savedState.getStateFlow(IMAGE_BEFORE, MediaWrapper(name = "before", title = "Before Image"))
-    val imgAfter = savedState.getStateFlow(IMAGE_AFTER, MediaWrapper(name = "after", title = "After Image"))
-    val video = savedState.getStateFlow(VIDEO, MediaWrapper(name = "journey", title = "Health Transformation"))
+    val imgBefore = savedState.getStateFlow(IMAGE_BEFORE, Media(name = "before", title = "Before Image"))
+    val imgAfter = savedState.getStateFlow(IMAGE_AFTER, Media(name = "after", title = "After Image"))
+    val video = savedState.getStateFlow(VIDEO, Media(name = "journey", title = "Health Transformation"))
 
     val areInputsValid =
         combine(type, title, testimonial, org, role) { type, title, testimonial, org, role ->
@@ -117,11 +117,11 @@ class TestimonialViewModel
                     TestimonialType.TEXT -> {
                     }
                     TestimonialType.IMAGE -> {
-                        savedState[IMAGE_BEFORE] = MediaWrapper(url = it.media[0].url)
-                        savedState[IMAGE_AFTER] = MediaWrapper(url = it.media[1].url)
+                        savedState[IMAGE_BEFORE] = Media(url = it.media[0].url)
+                        savedState[IMAGE_AFTER] = Media(url = it.media[1].url)
                     }
                     TestimonialType.VIDEO -> {
-                        savedState[VIDEO] = MediaWrapper(url = it.media[0].url)
+                        savedState[VIDEO] = Media(url = it.media[0].url)
                     }
                 }
 
@@ -242,28 +242,8 @@ class TestimonialViewModel
                     ),
                     media = when (type.value) {
                         TestimonialType.TEXT -> listOf()
-                        TestimonialType.IMAGE -> listOf(
-                            Media(
-                                name = imgBefore.value.name,
-                                title = imgBefore.value.title,
-                                localUrl = imgBefore.value.localUrl,
-                                url = imgBefore.value.url
-                            ),
-                            Media(
-                                name = imgAfter.value.name,
-                                title = imgAfter.value.title,
-                                localUrl = imgAfter.value.localUrl,
-                                url = imgAfter.value.url
-                            )
-                        )
-                        TestimonialType.VIDEO -> listOf(
-                            Media(
-                                name = video.value.name,
-                                title = video.value.title,
-                                localUrl = video.value.localUrl,
-                                url = video.value.url
-                            )
-                        )
+                        TestimonialType.IMAGE -> listOf(imgBefore.value, imgAfter.value)
+                        TestimonialType.VIDEO -> listOf(video.value)
                     }
                 )
             )
