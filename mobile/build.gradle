@@ -236,7 +236,11 @@ dependencies {
     def exo = "2.18.2"
     implementation "com.google.android.exoplayer:exoplayer:$exo"
     implementation "com.google.android.exoplayer:extension-cast:$exo"
+    implementation "com.google.android.exoplayer:exoplayer-core:$exo"
+    implementation "com.google.android.exoplayer:exoplayer-dash:$exo"
+    implementation "com.google.android.exoplayer:exoplayer-ui:$exo"
     api "com.google.android.exoplayer:extension-mediasession:$exo"
+
 
     //Billing
     implementation "com.android.billingclient:billing:5.1.0"

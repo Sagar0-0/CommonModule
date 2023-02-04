@@ -175,7 +175,7 @@ fun TestimonialForm(
         androidx.compose.material.Button(
             onClick = {
                 showCustomDialogWithResult = !showCustomDialogWithResult
-
+                editViewModel.onEvent(TestimonialEvent.OnSubmit)
             },
             modifier = Modifier
                 .fillMaxWidth(1f)
@@ -196,6 +196,8 @@ fun TestimonialForm(
                 onNavigateTstHome()
             })
         }
+
+
     }
 
 

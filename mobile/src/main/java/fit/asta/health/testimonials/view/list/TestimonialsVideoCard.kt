@@ -1,5 +1,6 @@
 package fit.asta.health.testimonials.view.list
 
+import android.net.Uri
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,14 +11,22 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.Lifecycle.Event.*
+import androidx.lifecycle.LifecycleEventObserver
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.ui.StyledPlayerView
 import fit.asta.health.R
 import fit.asta.health.testimonials.model.domain.Testimonial
 import fit.asta.health.testimonials.view.components.UserCard
@@ -25,7 +34,6 @@ import fit.asta.health.testimonials.view.theme.cardElevation
 import fit.asta.health.testimonials.view.theme.iconButtonSize
 import fit.asta.health.testimonials.view.theme.iconSize
 import fit.asta.health.ui.spacing
-import fit.asta.health.utils.getImageUrl
 
 
 @Composable
@@ -53,10 +61,13 @@ fun TestimonialsVideoCard(testimonial: Testimonial) {
             )
         }
     }
+
+
 }
 
 @Composable
 fun PlayVideoLayout(testimonial: Testimonial) {
+
     Row(
         Modifier.fillMaxWidth()
     ) {
@@ -67,13 +78,14 @@ fun PlayVideoLayout(testimonial: Testimonial) {
                 ), modifier = Modifier.fillMaxWidth()
             ) {
                 testimonial.media.forEach {
-                    AsyncImage(
-                        model = getImageUrl(it.url),
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxWidth(),
-                        contentScale = ContentScale.Crop
-                    )
-                    PlayButton()
+//                    AsyncImage(
+//                        model = getImageUrl(it.url),
+//                        contentDescription = null,
+//                        modifier = Modifier.fillMaxWidth(),
+//                        contentScale = ContentScale.Crop
+//                    )
+//                    PlayButton()
+                    VideoView(videoUri = it.localUrl.toString())
                 }
             }
         }
@@ -98,4 +110,70 @@ fun PlayButton() {
             modifier = Modifier.size(iconSize.mediumSmall)
         )
     }
+}
+
+
+@Composable
+fun VideoView(videoUri: String) {
+
+    val context = LocalContext.current
+
+    val exoPlayer = ExoPlayer.Builder(LocalContext.current).build().also { exoPlayer ->
+        val mediaItem = MediaItem.Builder().setUri(Uri.parse(videoUri)).build()
+        exoPlayer.setMediaItem(mediaItem)
+        exoPlayer.prepare()
+    }
+
+    val lifeCycleOwner = rememberUpdatedState(newValue = LocalLifecycleOwner.current)
+
+    DisposableEffect(
+        AndroidView(
+            factory = {
+                StyledPlayerView(context).apply {
+                    player = exoPlayer
+                }
+            }, modifier = Modifier
+                .fillMaxWidth()
+                .height(180.dp)
+        )
+    ) {
+
+        val observer = LifecycleEventObserver { _, event ->
+            when (event) {
+                ON_PAUSE -> {
+                    exoPlayer.pause()
+                }
+                ON_RESUME -> {
+                    exoPlayer.play()
+                }
+                ON_CREATE -> {
+                    exoPlayer.pause()
+                }
+                ON_START -> {
+                    exoPlayer.play()
+                }
+                ON_STOP -> {
+                    exoPlayer.stop()
+                }
+                ON_DESTROY -> {
+                    exoPlayer.stop()
+                    exoPlayer.clearVideoSurface()
+                }
+                ON_ANY -> {
+
+                }
+            }
+        }
+
+        val lifeCycle = lifeCycleOwner.value.lifecycle
+        lifeCycle.addObserver(observer)
+
+        onDispose {
+            exoPlayer.release()
+            lifeCycle.removeObserver(observer)
+        }
+
+
+    }
+
 }

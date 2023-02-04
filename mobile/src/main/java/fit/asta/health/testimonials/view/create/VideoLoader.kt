@@ -46,6 +46,7 @@ fun TestGetVideo(viewModel: TestimonialViewModel = hiltViewModel()) {
     GetVideo(viewModel = viewModel, onVideoClick = {
         videoLauncher.launch("video/*")
     }, onVideoClear = { viewModel.onEvent(TestimonialEvent.OnMediaClear(MediaType.Video)) })
+
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -91,7 +92,9 @@ fun VideoLayout(
     playerView.player = player
 
     val lifecycleOwner = LocalLifecycleOwner.current
+
     var lifecycle by remember { mutableStateOf(Lifecycle.Event.ON_CREATE) }
+
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             lifecycle = event
@@ -114,9 +117,10 @@ fun VideoLayout(
 
             Box(Modifier.padding(spacing.minSmall), contentAlignment = Alignment.BottomCenter) {
 
-                AndroidView(factory = {
-                    playerView
-                },
+                AndroidView(
+                    factory = {
+                        playerView
+                    },
                     modifier = Modifier
                         .height(cardHeight.medium)
                         .clip(MaterialTheme.shapes.medium),
@@ -133,6 +137,7 @@ fun VideoLayout(
                         }
                     })
             }
+
 
             ClearTstMedia(onTstMediaClear = { onVideoClear() })
 
