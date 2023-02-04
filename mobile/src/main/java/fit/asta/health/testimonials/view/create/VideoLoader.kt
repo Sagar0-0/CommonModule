@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.media3.exoplayer.ExoPlayer
 import fit.asta.health.testimonials.view.components.UploadTstMediaView
 import fit.asta.health.testimonials.view.list.VideoView
 import fit.asta.health.testimonials.viewmodel.create.MediaType
@@ -76,12 +77,22 @@ fun VideoLayout(
     val video by viewModel.video.collectAsStateWithLifecycle()
 
     Box {
-
         if (video.url.isEmpty() && video.localUrl == null) {
             UploadTstMediaView(onClick = onVideoClick)
         } else {
-            VideoView(videoUri = video.localUrl.toString())
+            VideoView(videoUri = getOneUrl(localUrl = video.localUrl, remoteUrl = video.url))
         }
     }
 
+}
+
+@Composable
+private fun PlayOrDestroy(
+    player: ExoPlayer,
+    playWhenReady: Boolean,
+) {
+    LaunchedEffect(player) {
+        player.playWhenReady = playWhenReady
+        player.prepare()
+    }
 }
