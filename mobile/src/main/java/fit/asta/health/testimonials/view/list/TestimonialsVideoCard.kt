@@ -30,10 +30,12 @@ import com.google.android.exoplayer2.ui.StyledPlayerView
 import fit.asta.health.R
 import fit.asta.health.testimonials.model.domain.Testimonial
 import fit.asta.health.testimonials.view.components.UserCard
+import fit.asta.health.testimonials.view.theme.aspectRatio
 import fit.asta.health.testimonials.view.theme.cardElevation
 import fit.asta.health.testimonials.view.theme.iconButtonSize
 import fit.asta.health.testimonials.view.theme.iconSize
 import fit.asta.health.ui.spacing
+import fit.asta.health.utils.getImageUrl
 
 
 @Composable
@@ -78,14 +80,7 @@ fun PlayVideoLayout(testimonial: Testimonial) {
                 ), modifier = Modifier.fillMaxWidth()
             ) {
                 testimonial.media.forEach {
-//                    AsyncImage(
-//                        model = getImageUrl(it.url),
-//                        contentDescription = null,
-//                        modifier = Modifier.fillMaxWidth(),
-//                        contentScale = ContentScale.Crop
-//                    )
-//                    PlayButton()
-                    VideoView(videoUri = it.localUrl.toString())
+                    VideoView(videoUri = getImageUrl(url = it.url))
                 }
             }
         }
@@ -121,7 +116,7 @@ fun VideoView(videoUri: String) {
     val exoPlayer = ExoPlayer.Builder(LocalContext.current).build().also { exoPlayer ->
         val mediaItem = MediaItem.Builder().setUri(Uri.parse(videoUri)).build()
         exoPlayer.setMediaItem(mediaItem)
-        exoPlayer.prepare()
+        exoPlayer.stop()
     }
 
     val lifeCycleOwner = rememberUpdatedState(newValue = LocalLifecycleOwner.current)
@@ -134,7 +129,7 @@ fun VideoView(videoUri: String) {
                 }
             }, modifier = Modifier
                 .fillMaxWidth()
-                .height(180.dp)
+                .aspectRatio(aspectRatio.medium)
         )
     ) {
 
@@ -147,17 +142,16 @@ fun VideoView(videoUri: String) {
                     exoPlayer.play()
                 }
                 ON_CREATE -> {
-                    exoPlayer.pause()
+
                 }
                 ON_START -> {
-                    exoPlayer.play()
+
                 }
                 ON_STOP -> {
                     exoPlayer.stop()
                 }
                 ON_DESTROY -> {
                     exoPlayer.stop()
-                    exoPlayer.clearVideoSurface()
                 }
                 ON_ANY -> {
 
@@ -169,10 +163,10 @@ fun VideoView(videoUri: String) {
         lifeCycle.addObserver(observer)
 
         onDispose {
-            exoPlayer.release()
             lifeCycle.removeObserver(observer)
+            exoPlayer.stop()
+            exoPlayer.release()
         }
-
 
     }
 
