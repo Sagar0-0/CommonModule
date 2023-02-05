@@ -1,7 +1,9 @@
 package fit.asta.health.testimonials.viewmodel.create
 
 import android.net.Uri
-import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,7 +15,6 @@ import fit.asta.health.testimonials.model.TestimonialRepo
 import fit.asta.health.testimonials.model.domain.*
 import fit.asta.health.utils.UiString
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -36,7 +37,7 @@ class TestimonialViewModel
     private val testimonialRepo: TestimonialRepo,
     private val authRepo: AuthRepo,
     val networkHelper: NetworkHelper,
-    private val savedState: SavedStateHandle
+    private val savedState: SavedStateHandle,
 ) : ViewModel() {
 
     var titleMain by mutableStateOf(UiString.Resource(R.string.testimonial_title_create))
@@ -51,9 +52,12 @@ class TestimonialViewModel
     val testimonial = savedState.getStateFlow(TESTIMONIAL, InputWrapper())
     val org = savedState.getStateFlow(ORG, InputWrapper())
     val role = savedState.getStateFlow(ROLE, InputWrapper())
-    val imgBefore = savedState.getStateFlow(IMAGE_BEFORE, Media(name = "before", title = "Before Image"))
-    val imgAfter = savedState.getStateFlow(IMAGE_AFTER, Media(name = "after", title = "After Image"))
-    val video = savedState.getStateFlow(VIDEO, Media(name = "journey", title = "Health Transformation"))
+    val imgBefore =
+        savedState.getStateFlow(IMAGE_BEFORE, Media(name = "before", title = "Before Image"))
+    val imgAfter =
+        savedState.getStateFlow(IMAGE_AFTER, Media(name = "after", title = "After Image"))
+    val video =
+        savedState.getStateFlow(VIDEO, Media(name = "journey", title = "Health Transformation"))
 
     val areInputsValid =
         combine(type, title, testimonial, org, role) { type, title, testimonial, org, role ->
@@ -62,9 +66,7 @@ class TestimonialViewModel
                 TestimonialType.TEXT -> testimonial.value.isNotBlank() && testimonial.error is UiString.Empty
                 TestimonialType.IMAGE -> true
                 TestimonialType.VIDEO -> true
-            } && title.value.isNotEmpty() && title.error is UiString.Empty &&
-                    org.value.isNotEmpty() && org.error is UiString.Empty &&
-                    role.value.isNotEmpty() && role.error is UiString.Empty
+            } && title.value.isNotEmpty() && title.error is UiString.Empty && org.value.isNotEmpty() && org.error is UiString.Empty && role.value.isNotEmpty() && role.error is UiString.Empty
 
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
@@ -72,15 +74,15 @@ class TestimonialViewModel
 
         when (type) {
             TestimonialType.TEXT -> true
-            TestimonialType.IMAGE -> (before.localUrl != null || before.url.isNotBlank()) &&
-                    (after.localUrl != null || after.url.isNotBlank())
+            TestimonialType.IMAGE -> (before.localUrl != null || before.url.isNotBlank()) && (after.localUrl != null || after.url.isNotBlank())
             TestimonialType.VIDEO -> video.localUrl != null || video.url.isNotBlank()
         }
 
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
-    private val _stateChannel = Channel<TestimonialSubmitState>()
-    val stateChannel = _stateChannel.receiveAsFlow()
+    private val _stateChannel =
+        MutableStateFlow<TestimonialSubmitState>(TestimonialSubmitState.Loading) //Channel<TestimonialSubmitState>()
+    val stateChannel = _stateChannel.asStateFlow() //_stateChannel.receiveAsFlow()
 
     init {
         onLoad()
@@ -99,12 +101,11 @@ class TestimonialViewModel
     private fun loadTestimonial(userId: String) {
         viewModelScope.launch {
             testimonialRepo.getTestimonial(userId).catch { ex ->
-                //_mutableState.value = TestimonialGetState.Error(ex)
-                _mutableState.value = TestimonialGetState.Empty
+                _mutableState.value = TestimonialGetState.Error(ex)
             }.collect {
 
-                if (it.id.isNotBlank())
-                    titleMain = UiString.Resource(R.string.testimonial_title_edit)
+                if (it.id.isNotBlank()) titleMain =
+                    UiString.Resource(R.string.testimonial_title_edit)
 
                 savedState[ID] = it.id
                 savedState[TYPE] = it.type
@@ -132,13 +133,12 @@ class TestimonialViewModel
 
     private fun updateTestimonial(netTestimonial: Testimonial) {
         viewModelScope.launch {
-            testimonialRepo.updateTestimonial(netTestimonial)
-                .catch { ex ->
-                    _stateChannel.send(TestimonialSubmitState.Error(ex))
-                }.collect {
-                    clearErrors()
-                    _stateChannel.send(TestimonialSubmitState.Success(it))
-                }
+            testimonialRepo.updateTestimonial(netTestimonial).catch { ex ->
+                _stateChannel.value = TestimonialSubmitState.Error(ex)
+            }.collect {
+                clearErrors()
+                _stateChannel.value = TestimonialSubmitState.Success(it)
+            }
         }
     }
 
@@ -149,16 +149,13 @@ class TestimonialViewModel
             }
             is TestimonialEvent.OnTitleChange -> {
                 savedState[TITLE] = title.value.copy(
-                    value = event.title,
-                    error = onValidateText(event.title, 4, 64)
+                    value = event.title, error = onValidateText(event.title, 4, 64)
                 )
             }
             is TestimonialEvent.OnTestimonialChange -> {
-                savedState[TESTIMONIAL] =
-                    testimonial.value.copy(
-                        value = event.testimonial,
-                        error = onValidateText(event.testimonial, 32, 256)
-                    )
+                savedState[TESTIMONIAL] = testimonial.value.copy(
+                    value = event.testimonial, error = onValidateText(event.testimonial, 32, 256)
+                )
             }
             is TestimonialEvent.OnOrgChange -> {
                 savedState[ORG] =
@@ -200,19 +197,22 @@ class TestimonialViewModel
                 when (event.mediaType) {
                     MediaType.AfterImage -> {
                         savedState[IMAGE_AFTER] = imgAfter.value.copy(
-                            localUrl = null, url = "",
+                            localUrl = null,
+                            url = "",
                             error = UiString.Resource(R.string.the_media_can_not_be_blank)
                         )
                     }
                     MediaType.BeforeImage -> {
                         savedState[IMAGE_BEFORE] = imgBefore.value.copy(
-                            localUrl = null, url = "",
+                            localUrl = null,
+                            url = "",
                             error = UiString.Resource(R.string.the_media_can_not_be_blank)
                         )
                     }
                     MediaType.Video -> {
                         savedState[VIDEO] = video.value.copy(
-                            localUrl = null, url = "",
+                            localUrl = null,
+                            url = "",
                             error = UiString.Resource(R.string.the_media_can_not_be_blank)
                         )
                     }
@@ -225,6 +225,7 @@ class TestimonialViewModel
     }
 
     private fun submit() {
+
 
         authRepo.getUser()?.let {
             updateTestimonial(
@@ -248,6 +249,8 @@ class TestimonialViewModel
                 )
             )
         }
+
+
     }
 
     private fun clearErrors() {
@@ -265,8 +268,7 @@ class TestimonialViewModel
             value.isBlank() -> UiString.Resource(R.string.the_field_can_not_be_blank)
             value.length > max -> UiString.Resource(R.string.data_length_more, max.toString())
             value.length in 1 until min -> UiString.Resource(
-                R.string.data_length_less,
-                min.toString()
+                R.string.data_length_less, min.toString()
             )
             else -> UiString.Empty
         }

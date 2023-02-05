@@ -1,5 +1,6 @@
 package fit.asta.health.testimonials.view.create
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
@@ -24,11 +25,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import fit.asta.health.navigation.home.view.component.LoadingAnimation
+import fit.asta.health.navigation.home.view.component.NoInternetLayout
 import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.view.components.ValidatedTextField
 import fit.asta.health.testimonials.view.theme.boxSize
 import fit.asta.health.testimonials.view.theme.iconButtonSize
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
+import fit.asta.health.testimonials.viewmodel.create.TestimonialSubmitState
 import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
 import fit.asta.health.ui.spacing
 import fit.asta.health.utils.UiString
@@ -66,6 +70,9 @@ fun TestimonialForm(
 
     val focusManager = LocalFocusManager.current
     val scrollState = rememberScrollState()
+
+    val event = editViewModel.stateChannel.collectAsState()
+    val events = event.value
 
 
 
@@ -189,12 +196,29 @@ fun TestimonialForm(
         }
 
         if (showCustomDialogWithResult) {
-            OnSuccessfulSubmit(onDismiss = {
-                showCustomDialogWithResult = !showCustomDialogWithResult
-            }, onNavigateTstHome = onNavigateTstHome, onPositiveClick = {
-                editViewModel.onEvent(TestimonialEvent.OnSubmit)
-                onNavigateTstHome()
-            })
+//            OnSuccessfulSubmit(onDismiss = {
+//                showCustomDialogWithResult = !showCustomDialogWithResult
+//            }, onNavigateTstHome = onNavigateTstHome, onPositiveClick = {
+//                editViewModel.onEvent(TestimonialEvent.OnSubmit)
+//                onNavigateTstHome()
+//            })
+
+            when (events) {
+                is TestimonialSubmitState.Error -> {
+                    Log.d("validate", "Error -> ${events.error}")
+                }
+                is TestimonialSubmitState.Loading -> LoadingAnimation()
+                is TestimonialSubmitState.Success -> {
+                    OnSuccessfulSubmit(onDismiss = {
+                        showCustomDialogWithResult = !showCustomDialogWithResult
+                    }, onNavigateTstHome = onNavigateTstHome, onPositiveClick = {
+                        onNavigateTstHome()
+                    })
+                    Log.d("validate", "Success->${events.status}")
+                }
+
+                is TestimonialSubmitState.NoInternet -> NoInternetLayout(onTryAgain = {})
+            }
         }
 
 
