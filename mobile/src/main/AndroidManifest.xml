@@ -55,6 +55,7 @@
         <activity
             android:name=".old_course.details.CourseDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".settings.SettingsActivity" />
         <activity android:name=".settings.WebViewActivity" />
         <activity android:name=".old_article.ui.ArticleActivity" />
         <activity android:name=".firebase.view.AuthActivity" />

@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
     private fun loadAppScreen() {
 
-        //applicationContext.setAppTheme()
+        applicationContext.setAppTheme()
         setContentView(R.layout.main_activity)
         setSupportActionBar(findViewById(R.id.appToolbar))
         supportActionBar?.setDisplayShowTitleEnabled(false)
