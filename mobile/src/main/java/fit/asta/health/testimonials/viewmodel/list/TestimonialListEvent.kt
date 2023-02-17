@@ -1,4 +1,4 @@
-package fit.asta.health.testimonials.viewmodel
+package fit.asta.health.testimonials.viewmodel.list
 
 
 sealed class TestimonialListEvent {

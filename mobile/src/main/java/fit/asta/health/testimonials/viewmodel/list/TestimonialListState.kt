@@ -1,4 +1,4 @@
-package fit.asta.health.testimonials.viewmodel
+package fit.asta.health.testimonials.viewmodel.list
 
 import fit.asta.health.testimonials.model.network.NetTestimonial
 

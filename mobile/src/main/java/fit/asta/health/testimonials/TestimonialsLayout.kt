@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.testimonials.view.TestimonialsList
-import fit.asta.health.testimonials.viewmodel.TestimonialListViewModel
+import fit.asta.health.testimonials.viewmodel.list.TestimonialListViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -30,7 +30,7 @@ import fit.asta.health.testimonials.view.list.TestimonialsVideoCard
 import fit.asta.health.testimonials.view.theme.boxSize
 import fit.asta.health.testimonials.view.theme.cardElevation
 import fit.asta.health.testimonials.view.theme.imageHeight
-import fit.asta.health.testimonials.viewmodel.TestimonialListViewModel
+import fit.asta.health.testimonials.viewmodel.list.TestimonialListViewModel
 import fit.asta.health.ui.spacing
 
 @Composable

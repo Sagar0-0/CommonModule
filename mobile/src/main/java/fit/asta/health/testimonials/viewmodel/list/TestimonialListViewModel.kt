@@ -1,4 +1,4 @@
-package fit.asta.health.testimonials.viewmodel
+package fit.asta.health.testimonials.viewmodel.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
