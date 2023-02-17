@@ -101,7 +101,7 @@ class TestimonialViewModel
     private fun loadTestimonial(userId: String) {
         viewModelScope.launch {
             testimonialRepo.getTestimonial(userId).catch { ex ->
-                _mutableState.value = TestimonialGetState.Error(ex)
+                _mutableState.value = TestimonialGetState.Empty
             }.collect {
 
                 if (it.id.isNotBlank()) titleMain =
