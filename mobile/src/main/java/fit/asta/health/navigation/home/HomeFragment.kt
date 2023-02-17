@@ -22,8 +22,7 @@ class HomeFragment : Fragment() {
     @SuppressLint("StateFlowValueCalledInComposition")
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {

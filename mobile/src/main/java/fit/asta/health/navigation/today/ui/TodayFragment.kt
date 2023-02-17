@@ -1,42 +1,36 @@
 package fit.asta.health.navigation.today.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import fit.asta.health.navigation.today.adapter.listeners.OnPlanClickListenerImpl
-import fit.asta.health.navigation.today.viewmodel.TodayPlanObserver
+import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.navigation.today.viewmodel.TodayPlanViewModel
-import javax.inject.Inject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
+@ExperimentalMaterialApi
+@ExperimentalCoroutinesApi
+@AndroidEntryPoint
+@Suppress("DEPRECATION")
 class TodayFragment : Fragment() {
 
-    @Inject
-    lateinit var todayPlanView: TodayPlanView
     private val todayPlanViewModel: TodayPlanViewModel by viewModels()
 
+    @SuppressLint("StateFlowValueCalledInComposition")
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        return todayPlanView.onCreateView(inflater, container, savedInstanceState)
-    }
+        return ComposeView(requireContext()).apply {
+            setContent {
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        todayPlanView.setAdapterClickListener(
-            OnPlanClickListenerImpl(
-                requireContext(),
-                todayPlanViewModel
-            )
-        )
-        todayPlanViewModel.observeTodayLiveData(
-            viewLifecycleOwner,
-            TodayPlanObserver(todayPlanView)
-        )
-        todayPlanViewModel.fetchPlan("")
+            }
+        }
     }
 }
