@@ -43,7 +43,7 @@ fun TestimonialImageCard(testimonial: Testimonial) {
 @Composable
 fun BeforeAndCardLayout(testimonial: Testimonial) {
 
-    val tstMedia = testimonial.media
+    val tstImageMedia = testimonial.media
 
     Row(
         Modifier
@@ -51,7 +51,7 @@ fun BeforeAndCardLayout(testimonial: Testimonial) {
             .padding(spacing.medium)
     ) {
 
-        if (tstMedia.isNotEmpty()) {
+        if (tstImageMedia.isNotEmpty()) {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(testimonial.media.size),
                 modifier = Modifier.height(imageHeight.large),
@@ -59,7 +59,7 @@ fun BeforeAndCardLayout(testimonial: Testimonial) {
                 horizontalArrangement = Arrangement.spacedBy(spacing.small)
             ) {
 
-                testimonial.media.forEach {
+                tstImageMedia.forEach {
                     item {
                         AsyncImage(
                             model = getImageUrl(it.url),

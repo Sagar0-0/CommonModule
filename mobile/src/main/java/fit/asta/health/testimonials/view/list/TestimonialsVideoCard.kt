@@ -10,6 +10,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.rememberUpdatedState
@@ -69,6 +70,8 @@ fun TestimonialsVideoCard(testimonial: Testimonial) {
 @Composable
 fun PlayVideoLayout(testimonial: Testimonial) {
 
+    val tstVideoMedia = testimonial.media
+
     Row(
         Modifier.fillMaxWidth()
     ) {
@@ -78,9 +81,14 @@ fun PlayVideoLayout(testimonial: Testimonial) {
                     width = 5.dp, color = MaterialTheme.colorScheme.primaryContainer
                 ), modifier = Modifier.fillMaxWidth()
             ) {
-                testimonial.media.forEach {
-                    VideoView(videoUri = getImageUrl(url = it.url))
+                if (tstVideoMedia.isNotEmpty()) {
+                    tstVideoMedia.forEach {
+                        VideoView(videoUri = getImageUrl(url = it.url))
+                    }
+                } else {
+                    Text(text = "MEDIA FILE NOT FOUND", modifier = Modifier.align(Alignment.Center))
                 }
+
             }
         }
     }
@@ -105,7 +113,6 @@ fun PlayButton() {
         )
     }
 }
-
 
 @Composable
 fun VideoView(videoUri: String) {
