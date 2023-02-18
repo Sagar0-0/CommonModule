@@ -3,6 +3,7 @@ package fit.asta.health.testimonials.model
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import fit.asta.health.network.NetworkHelper
+import fit.asta.health.network.data.ApiResponse
 import fit.asta.health.testimonials.model.domain.Testimonial
 
 
@@ -22,19 +23,20 @@ class TestimonialDataSource(
 
         val index = params.key ?: STARTING_PAGE_INDEX
 
-        return try {
-            if (networkHelper.isConnected()) {
-                val testimonials = repo.getTestimonials(index = index, limit = params.loadSize)
-                LoadResult.Page(
-                    data = testimonials,
-                    prevKey = if (index == STARTING_PAGE_INDEX) null else index - 1,
-                    nextKey = if (testimonials.isEmpty()) null else params.key?.plus(1)
-                )
-            } else {
-                LoadResult.Error(Throwable("NoInternet"))
+        return if (networkHelper.isConnected()) {
+            when (val result = repo.getTestimonials(index = index, limit = params.loadSize)) {
+                is ApiResponse.Error -> LoadResult.Error(result.exception)
+                is ApiResponse.HttpError -> LoadResult.Error(result.ex)
+                is ApiResponse.Success -> {
+                    LoadResult.Page(
+                        data = result.data,
+                        prevKey = if (index == STARTING_PAGE_INDEX) null else index - 1,
+                        nextKey = if (result.data.isEmpty()) null else params.key?.plus(1)
+                    )
+                }
             }
-        } catch (e: Exception) {
-            LoadResult.Error(e)
+        } else {
+            LoadResult.Error(Throwable("NoInternet"))
         }
     }
 

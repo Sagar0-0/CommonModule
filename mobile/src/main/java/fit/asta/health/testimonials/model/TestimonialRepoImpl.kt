@@ -1,6 +1,7 @@
 package fit.asta.health.testimonials.model
 
 import android.content.Context
+import fit.asta.health.network.data.ApiResponse
 import fit.asta.health.network.data.Status
 import fit.asta.health.testimonials.model.api.TestimonialApi
 import fit.asta.health.testimonials.model.domain.Testimonial
@@ -10,6 +11,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
+import retrofit2.HttpException
+import java.io.IOException
 
 
 class TestimonialRepoImpl(
@@ -18,13 +21,16 @@ class TestimonialRepoImpl(
     private val mapper: TestimonialDataMapper,
 ) : TestimonialRepo {
 
-    override suspend fun getTestimonials(index: Int, limit: Int): List<Testimonial> {
-        return mapper.mapToDomainModel(
-            remoteApi.getTestimonials(
-                index = index,
-                limit = limit
-            ).testimonials
-        )
+    override suspend fun getTestimonials(index: Int, limit: Int): ApiResponse<List<Testimonial>> {
+
+        return try {
+            val response = remoteApi.getTestimonials(index = index, limit = limit)
+            ApiResponse.Success(data = mapper.mapToDomainModel(response.testimonials))
+        } catch (e: HttpException) {
+            ApiResponse.HttpError(code = e.code(), msg = e.message(), ex = e)
+        } catch (e: IOException) {
+            ApiResponse.Error(exception = e)
+        }
     }
 
     override suspend fun getTestimonial(userId: String): Flow<Testimonial> {
@@ -56,6 +62,5 @@ class TestimonialRepoImpl(
                 emit(remoteApi.createTestimonial(mapper.mapToNetworkModel(testimonial), parts))
             }
         }
-
     }
 }

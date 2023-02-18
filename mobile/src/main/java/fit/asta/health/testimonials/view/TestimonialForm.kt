@@ -2,7 +2,9 @@ package fit.asta.health.testimonials.view
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import fit.asta.health.R
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.navigation.home.view.component.NoInternetLayout
 import fit.asta.health.testimonials.view.create.CreateTstScreen
@@ -24,7 +26,12 @@ fun LoadTestimonialForm(
         })
         is TestimonialGetState.Error -> ServerErrorLayout(state.error)
         is TestimonialGetState.Success -> CreateTstScreen(
-            getViewModel.titleMain.asString(),
+            stringResource(R.string.testimonial_title_edit),
+            onNavigateTstCreate,
+            onNavigateTstHome
+        )
+        TestimonialGetState.Empty -> CreateTstScreen(
+            stringResource(R.string.testimonial_title_create),
             onNavigateTstCreate,
             onNavigateTstHome
         )

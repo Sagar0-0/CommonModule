@@ -40,9 +40,6 @@ class TestimonialViewModel
     private val savedState: SavedStateHandle,
 ) : ViewModel() {
 
-    var titleMain by mutableStateOf(UiString.Resource(R.string.testimonial_title_create))
-        private set
-
     private val _mutableState = MutableStateFlow<TestimonialGetState>(TestimonialGetState.Loading)
     val state = _mutableState.asStateFlow()
 
@@ -103,9 +100,6 @@ class TestimonialViewModel
             testimonialRepo.getTestimonial(userId).catch { ex ->
                 _mutableState.value = TestimonialGetState.Empty
             }.collect {
-
-                if (it.id.isNotBlank()) titleMain =
-                    UiString.Resource(R.string.testimonial_title_edit)
 
                 savedState[ID] = it.id
                 savedState[TYPE] = it.type
