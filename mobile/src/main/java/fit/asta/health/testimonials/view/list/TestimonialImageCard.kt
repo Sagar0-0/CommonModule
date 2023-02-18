@@ -5,7 +5,9 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -41,33 +43,40 @@ fun TestimonialImageCard(testimonial: Testimonial) {
 @Composable
 fun BeforeAndCardLayout(testimonial: Testimonial) {
 
+    val tstMedia = testimonial.media
+
     Row(
         Modifier
             .fillMaxWidth()
             .padding(spacing.medium)
     ) {
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(testimonial.media.size),
-            modifier = Modifier
-                .height(imageHeight.large),
-            userScrollEnabled = false,
-            horizontalArrangement = Arrangement.spacedBy(spacing.small)
-        ) {
-            testimonial.media.forEach {
-                item {
-                    AsyncImage(
-                        model = getImageUrl(it.url),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .height(imageHeight.large)
-                            .clip(MaterialTheme.shapes.large),
-                        contentScale = ContentScale.Crop
-                    )
-                }
-            }
+        if (tstMedia.isNotEmpty()) {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(testimonial.media.size),
+                modifier = Modifier.height(imageHeight.large),
+                userScrollEnabled = false,
+                horizontalArrangement = Arrangement.spacedBy(spacing.small)
+            ) {
 
+                testimonial.media.forEach {
+                    item {
+                        AsyncImage(
+                            model = getImageUrl(it.url),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .height(imageHeight.large)
+                                .clip(MaterialTheme.shapes.large),
+                            contentScale = ContentScale.Crop
+                        )
+                    }
+                }
+
+            }
+        } else {
+            Text(text = "NO MEDIA FILE PRESENT", modifier = Modifier.align(CenterVertically))
         }
+
 
     }
 

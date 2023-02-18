@@ -64,7 +64,6 @@ fun TestimonialsVideoCard(testimonial: Testimonial) {
         }
     }
 
-
 }
 
 @Composable
