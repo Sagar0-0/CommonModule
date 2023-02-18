@@ -122,9 +122,7 @@ class SchedulerBackendViewModel @Inject constructor(
     }
 
     // Handle Response Got From Web API
-    private
-
-    fun <T : Any> handleResponse(response: Response<T>): NetworkResult<T> {
+    private fun <T : Any> handleResponse(response: Response<T>): NetworkResult<T> {
         Log.d(SpotifyConstants.TAG, "handleResponse: ${response.body()} ")
         when {
             response.message().toString().contains("timeout") -> {

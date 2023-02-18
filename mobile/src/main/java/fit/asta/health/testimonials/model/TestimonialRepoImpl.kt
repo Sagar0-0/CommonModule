@@ -6,10 +6,8 @@ import fit.asta.health.network.data.Status
 import fit.asta.health.testimonials.model.api.TestimonialApi
 import fit.asta.health.testimonials.model.domain.Testimonial
 import fit.asta.health.utils.InputStreamRequestBody
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 import retrofit2.HttpException
 import java.io.IOException
@@ -33,34 +31,35 @@ class TestimonialRepoImpl(
         }
     }
 
-    override suspend fun getTestimonial(userId: String): Flow<Testimonial> {
-        return flow {
-            emit(
-                mapper.mapToDomainModel(remoteApi.getUserTestimonial(userId).testimonial)
-            )
+    override suspend fun getTestimonial(userId: String): ApiResponse<Testimonial> {
+        return try {
+            val response = remoteApi.getUserTestimonial(userId)
+            ApiResponse.Success(data = mapper.mapToDomainModel(response.testimonial))
+        } catch (e: HttpException) {
+            ApiResponse.HttpError(code = e.code(), msg = e.message(), ex = e)
+        } catch (e: IOException) {
+            ApiResponse.Error(exception = e)
         }
     }
 
     override suspend fun updateTestimonial(testimonial: Testimonial): Flow<Status> {
+
         val parts: ArrayList<MultipartBody.Part> = ArrayList()
         testimonial.media.forEach {
             if (it.localUrl != null) {
-                //val contentPart = RequestBody.create("image/jpg".toMediaTypeOrNull(), file)
-                val contentPart = InputStreamRequestBody(context.contentResolver, it.localUrl!!)
+                //val body = RequestBody.create("image/jpg".toMediaTypeOrNull(), file)
                 parts.add(
                     MultipartBody.Part.createFormData(
                         name = "file",
                         filename = it.name,
-                        body = contentPart
+                        body = InputStreamRequestBody(context.contentResolver, it.localUrl!!)
                     )
                 )
             }
         }
 
         return flow {
-            withContext(Dispatchers.IO) {
-                emit(remoteApi.createTestimonial(mapper.mapToNetworkModel(testimonial), parts))
-            }
+            emit(remoteApi.createTestimonial(mapper.mapToNetworkModel(testimonial), parts))
         }
     }
 }

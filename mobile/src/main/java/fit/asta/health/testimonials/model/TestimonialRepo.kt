@@ -8,6 +8,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface TestimonialRepo {
     suspend fun getTestimonials(index: Int, limit: Int): ApiResponse<List<Testimonial>>
-    suspend fun getTestimonial(userId: String): Flow<Testimonial>
+    suspend fun getTestimonial(userId: String): ApiResponse<Testimonial>
     suspend fun updateTestimonial(testimonial: Testimonial): Flow<Status>
 }

@@ -33,7 +33,6 @@ class TestimonialListViewModel
                 }
             }
     //val testimonialViewState: LiveData<PagingData<NetTestimonial>> = testimonialPager.asLiveData()
-
     fun onViewEvent(event: TestimonialListEvent) {
         modificationEvents.value += event
     }

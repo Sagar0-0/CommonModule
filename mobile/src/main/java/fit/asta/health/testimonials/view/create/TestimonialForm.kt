@@ -71,7 +71,7 @@ fun TestimonialForm(
     val focusManager = LocalFocusManager.current
     val scrollState = rememberScrollState()
 
-    val event = editViewModel.stateChannel.collectAsState()
+    val event = editViewModel.stateSubmit.collectAsState()
     val events = event.value
 
 

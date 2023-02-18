@@ -1,9 +1,6 @@
 package fit.asta.health.testimonials.viewmodel.create
 
 import android.net.Uri
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.R
 import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.network.NetworkHelper
+import fit.asta.health.network.data.ApiResponse
 import fit.asta.health.testimonials.model.TestimonialRepo
 import fit.asta.health.testimonials.model.domain.*
 import fit.asta.health.utils.UiString
@@ -77,9 +75,9 @@ class TestimonialViewModel
 
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
-    private val _stateChannel =
-        MutableStateFlow<TestimonialSubmitState>(TestimonialSubmitState.Loading) //Channel<TestimonialSubmitState>()
-    val stateChannel = _stateChannel.asStateFlow() //_stateChannel.receiveAsFlow()
+    private val _stateSubmit =
+        MutableStateFlow<TestimonialSubmitState>(TestimonialSubmitState.Loading)
+    val stateSubmit = _stateSubmit.asStateFlow()
 
     init {
         onLoad()
@@ -97,41 +95,74 @@ class TestimonialViewModel
 
     private fun loadTestimonial(userId: String) {
         viewModelScope.launch {
-            testimonialRepo.getTestimonial(userId).catch { ex ->
-                _mutableState.value = TestimonialGetState.Empty
-            }.collect {
 
-                savedState[ID] = it.id
-                savedState[TYPE] = it.type
-                savedState[TITLE] = InputWrapper(value = it.title)
-                savedState[TESTIMONIAL] = InputWrapper(value = it.testimonial)
-                savedState[ORG] = InputWrapper(value = it.user.org)
-                savedState[ROLE] = InputWrapper(value = it.user.role)
+            when (val result = testimonialRepo.getTestimonial(userId)) {
+                is ApiResponse.Error -> {
 
-                when (it.type) {
-                    TestimonialType.TEXT -> {
-                    }
-                    TestimonialType.IMAGE -> {
-                        savedState[IMAGE_BEFORE] = Media(url = it.media[0].url)
-                        savedState[IMAGE_AFTER] = Media(url = it.media[1].url)
-                    }
-                    TestimonialType.VIDEO -> {
-                        savedState[VIDEO] = Media(url = it.media[0].url)
-                    }
                 }
+                is ApiResponse.HttpError -> {
+                    _mutableState.value = TestimonialGetState.Empty
+                }
+                is ApiResponse.Success -> {
 
-                _mutableState.value = TestimonialGetState.Success(it)
+                    savedState[ID] = result.data.id
+                    savedState[TYPE] = result.data.type
+                    savedState[TITLE] = InputWrapper(value = result.data.title)
+                    savedState[TESTIMONIAL] = InputWrapper(value = result.data.testimonial)
+                    savedState[ORG] = InputWrapper(value = result.data.user.org)
+                    savedState[ROLE] = InputWrapper(value = result.data.user.role)
+
+                    when (result.data.type) {
+                        TestimonialType.TEXT -> {
+                        }
+                        TestimonialType.IMAGE -> {
+                            savedState[IMAGE_BEFORE] = Media(url = result.data.media[0].url)
+                            savedState[IMAGE_AFTER] = Media(url = result.data.media[1].url)
+                        }
+                        TestimonialType.VIDEO -> {
+                            savedState[VIDEO] = Media(url = result.data.media[0].url)
+                        }
+                    }
+
+                    _mutableState.value = TestimonialGetState.Success(result.data)
+                }
             }
+        }
+    }
+
+    private fun submit() {
+
+        authRepo.getUser()?.let {
+            updateTestimonial(
+                Testimonial(
+                    id = id.value,
+                    type = type.value,
+                    title = title.value.value.trim(),
+                    testimonial = testimonial.value.value.trim(),
+                    userId = it.uid,
+                    user = TestimonialUser(
+                        name = it.name!!,
+                        role = role.value.value.trim(),
+                        org = org.value.value.trim(),
+                        url = it.photoUrl.toString()
+                    ),
+                    media = when (type.value) {
+                        TestimonialType.TEXT -> listOf()
+                        TestimonialType.IMAGE -> listOf(imgBefore.value, imgAfter.value)
+                        TestimonialType.VIDEO -> listOf(video.value)
+                    }
+                )
+            )
         }
     }
 
     private fun updateTestimonial(netTestimonial: Testimonial) {
         viewModelScope.launch {
             testimonialRepo.updateTestimonial(netTestimonial).catch { ex ->
-                _stateChannel.value = TestimonialSubmitState.Error(ex)
+                _stateSubmit.value = TestimonialSubmitState.Error(ex)
             }.collect {
                 clearErrors()
-                _stateChannel.value = TestimonialSubmitState.Success(it)
+                _stateSubmit.value = TestimonialSubmitState.Success(it)
             }
         }
     }
@@ -216,35 +247,6 @@ class TestimonialViewModel
                 submit()
             }
         }
-    }
-
-    private fun submit() {
-
-
-        authRepo.getUser()?.let {
-            updateTestimonial(
-                Testimonial(
-                    id = id.value,
-                    type = type.value,
-                    title = title.value.value.trim(),
-                    testimonial = testimonial.value.value.trim(),
-                    userId = it.uid,
-                    user = TestimonialUser(
-                        name = it.name!!,
-                        role = role.value.value.trim(),
-                        org = org.value.value.trim(),
-                        url = it.photoUrl.toString()
-                    ),
-                    media = when (type.value) {
-                        TestimonialType.TEXT -> listOf()
-                        TestimonialType.IMAGE -> listOf(imgBefore.value, imgAfter.value)
-                        TestimonialType.VIDEO -> listOf(video.value)
-                    }
-                )
-            )
-        }
-
-
     }
 
     private fun clearErrors() {
