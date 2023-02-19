@@ -12,8 +12,8 @@ data class Testimonial(
     val rank: Int = -1,
     val title: String = "",
     val testimonial: String = "",
-    val userId: String,
-    val user: TestimonialUser,
+    val userId: String = "",
+    val user: TestimonialUser = TestimonialUser(),
     val media: List<Media> = listOf()
 ) : Parcelable
 

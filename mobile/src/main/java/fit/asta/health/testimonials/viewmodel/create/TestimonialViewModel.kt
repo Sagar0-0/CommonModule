@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
+const val TESTIMONIAL_DATA = "testimonialData"
 const val ID = "id"
 const val TYPE = "type"
 const val TITLE = "title"
@@ -41,6 +42,7 @@ class TestimonialViewModel
     private val _mutableState = MutableStateFlow<TestimonialGetState>(TestimonialGetState.Loading)
     val state = _mutableState.asStateFlow()
 
+    private val testimonialData = savedState.getStateFlow(TESTIMONIAL_DATA, Testimonial())
     val id = savedState.getStateFlow(ID, "")
     val type = savedState.getStateFlow<TestimonialType>(TYPE, TestimonialType.TEXT)
     val title = savedState.getStateFlow(TITLE, InputWrapper())
@@ -54,6 +56,7 @@ class TestimonialViewModel
     val video =
         savedState.getStateFlow(VIDEO, Media(name = "journey", title = "Health Transformation"))
 
+
     val areInputsValid =
         combine(type, title, testimonial, org, role) { type, title, testimonial, org, role ->
 
@@ -61,7 +64,10 @@ class TestimonialViewModel
                 TestimonialType.TEXT -> testimonial.value.isNotBlank() && testimonial.error is UiString.Empty
                 TestimonialType.IMAGE -> true
                 TestimonialType.VIDEO -> true
-            } && title.value.isNotEmpty() && title.error is UiString.Empty && org.value.isNotEmpty() && org.error is UiString.Empty && role.value.isNotEmpty() && role.error is UiString.Empty
+            } && title.value.isNotEmpty() && title.error is UiString.Empty
+                    && org.value.isNotEmpty() && org.error is UiString.Empty
+                    && role.value.isNotEmpty() && role.error is UiString.Empty
+                    && isTestimonialDirty()
 
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
@@ -105,6 +111,7 @@ class TestimonialViewModel
                 }
                 is ApiResponse.Success -> {
 
+                    savedState[TESTIMONIAL_DATA] = result.data
                     savedState[ID] = result.data.id
                     savedState[TYPE] = result.data.type
                     savedState[TITLE] = InputWrapper(value = result.data.title)
@@ -273,5 +280,12 @@ class TestimonialViewModel
     private fun onValidateMedia(localUrl: Uri?, url: String): UiString {
         return if (localUrl != null || url.isNotBlank()) UiString.Empty
         else UiString.Resource(R.string.the_media_can_not_be_blank)
+    }
+
+    private fun isTestimonialDirty(): Boolean {
+        return testimonialData.value.title != title.value.value
+                || testimonialData.value.testimonial != testimonial.value.value
+                || testimonialData.value.user.org != org.value.value
+                || testimonialData.value.user.role != role.value.value
     }
 }
