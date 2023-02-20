@@ -32,6 +32,7 @@ import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerPutResponse
 import fit.asta.health.scheduler.model.net.tag.AstaGetTagsListResponse
 import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
 import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
+import fit.asta.health.tools.water.model.network.NetBevQtyPut
 import fit.asta.health.tools.water.model.network.NetWaterToolRes
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -83,10 +84,11 @@ interface RemoteApis {
         endDate: String
     ): NetWaterToolRes
 
+    suspend fun updateBeverageQty(beverage: NetBevQtyPut): Status
+
     /*suspend fun updateWaterTool(modifiedWaterTool: ModifiedWaterTool): Status
 
     suspend fun updateBeverage(beverage: NetBeverage): Status
-    suspend fun updateBeverageQty(beverage: NetBeverage): Status
     suspend fun getBeverageList(userId: String): NetBeverageRes*/
 
     //Health Tool - Sunlight Endpoints

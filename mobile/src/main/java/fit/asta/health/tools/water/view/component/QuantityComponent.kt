@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import fit.asta.health.tools.water.viewmodel.WaterViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -36,9 +37,9 @@ fun QuantityComponent(
     index: Int,
     viewModel: WaterViewModel = hiltViewModel()
 ) {
-    val choosenContainerValue by viewModel.selectedContainer.collectAsState()
-    val showSlider by viewModel.showSlider.collectAsState()
-    val selectedIndex by viewModel.sliderIndex.collectAsState()
+    val choosenContainerValue by viewModel.selectedContainer.collectAsStateWithLifecycle()
+    val showSlider by viewModel.showSlider.collectAsStateWithLifecycle()
+    val selectedIndex by viewModel.sliderIndex.collectAsStateWithLifecycle()
 
     val TriangleShape = GenericShape { size, _ ->
         // 1)

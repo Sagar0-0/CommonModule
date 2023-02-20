@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.validation.util.TextFieldType
 import fit.asta.health.tools.water.model.domain.BeverageDetails
 import fit.asta.health.tools.water.viewmodel.WaterViewModel
@@ -30,8 +31,8 @@ fun BeveragesLayout(viewModel: WaterViewModel = hiltViewModel()) {
         horizontalArrangement = Arrangement.SpaceEvenly) {
 
         //val list = listOf("Water", "Butter Milk", "Coconut", "Milk", "Fruit Juice")
-        val beveragesist  by viewModel.modifiedWaterTool.collectAsState()
-        val chossenIndex by viewModel.choosenIndexCode.collectAsState()
+        val beveragesist  by viewModel.modifiedWaterTool.collectAsStateWithLifecycle()
+        val chossenIndex by viewModel.choosenIndexCode.collectAsStateWithLifecycle()
 
         if(beveragesist?.selectedListId?.isEmpty() == true){
             Text(text = "no bevrages selected")

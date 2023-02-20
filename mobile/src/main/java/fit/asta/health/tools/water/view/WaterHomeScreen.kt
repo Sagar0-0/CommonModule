@@ -11,6 +11,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.R
 import fit.asta.health.tools.water.view.component.WaterBottomSheet
 import fit.asta.health.tools.water.viewmodel.WaterViewModel
@@ -21,7 +22,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun WaterHomeScreen(viewModel:WaterViewModel= hiltViewModel()) {
 
-    val showSaveButton by viewModel.saveData.collectAsState()
+    val showSaveButton by viewModel.saveData.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -51,6 +52,7 @@ fun WaterHomeScreen(viewModel:WaterViewModel= hiltViewModel()) {
             if(showSaveButton) {
                 ExtendedFloatingActionButton(
                     onClick = {
+                        //viewModel.onSaved()
                     },
                     modifier = Modifier.height(35.dp)
                 ) {

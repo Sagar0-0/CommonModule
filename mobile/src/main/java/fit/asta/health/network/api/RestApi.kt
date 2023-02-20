@@ -33,6 +33,7 @@ import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerPutResponse
 import fit.asta.health.scheduler.model.net.tag.AstaGetTagsListResponse
 import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
 import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
+import fit.asta.health.tools.water.model.network.NetBevQtyPut
 import fit.asta.health.tools.water.model.network.NetWaterToolRes
 import fit.asta.health.utils.NetworkUtil
 import okhttp3.MultipartBody
@@ -141,16 +142,16 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
         return l
     }
 
+    override suspend fun updateBeverageQty(beverage: NetBevQtyPut): Status {
+        return apiService.updateBeverageQty(beverage)
+    }
+
     /*override suspend fun updateWaterTool(modifiedWaterTool: ModifiedWaterTool): Status {
         return apiService.updateWaterTool(modifiedWaterTool)
     }
 
     override suspend fun updateBeverage(beverage: NetBeverage): Status {
         return apiService.updateBeverage(beverage)
-    }
-
-    override suspend fun updateBeverageQty(beverage: NetBeverage): Status {
-        return apiService.updateBeverageQty(beverage)
     }
 
     override suspend fun getBeverageList(userId: String): NetBeverageRes {

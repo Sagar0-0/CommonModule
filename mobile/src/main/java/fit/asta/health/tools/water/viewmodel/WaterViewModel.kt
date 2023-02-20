@@ -1,4 +1,4 @@
-package fit.asta.health.tools.water.viewmodel
+package fit.asta.health .tools.water.viewmodel
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
@@ -7,7 +7,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.tools.water.model.WaterToolRepo
+import fit.asta.health.tools.water.model.domain.BeverageDetails
 import fit.asta.health.tools.water.model.domain.WaterTool
+import fit.asta.health.tools.water.model.network.NetBevQtyPut
 import fit.asta.health.utils.getCurrentDate
 import fit.asta.health.utils.getNextDate
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -43,8 +45,11 @@ class WaterViewModel
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(),null)
 
+
     private val _selectedContainer = MutableStateFlow<String?>(null)
     val selectedContainer = _selectedContainer.asStateFlow()
+
+    private val _changedContainerList = mutableListOf<Int>()
 
     //-------------------slider-----------------------//
     private val _showSlider = MutableStateFlow(false)
@@ -115,8 +120,9 @@ class WaterViewModel
         _modifiedWaterTool.value=temp*/
     }
 
-    private fun compareModifiedTool(){
-        _saveData.value = _selectedContainer.value!=null
+    fun compareModifiedTool(){
+        Log.i("WaterViewModel 122","presed------------->${_changedContainerList}")
+        _saveData.value = _changedContainerList.isNotEmpty()
     }
 
     fun updateTheChoosenIndex(code: String){
@@ -161,7 +167,28 @@ class WaterViewModel
         _sliderIndex.value=null
     }
 
+    fun onSavedQTY(){
+        val beverageName = containerInCharge.value?.name;
+        viewModelScope.launch {
+            _selectedContainer.value?.let {selectedValue->
+                _modifiedWaterTool.value?.progressData?.let { it1 ->
+                    NetBevQtyPut(
+                        bev = beverageName.toString(),
+                        id = it1.id,
+                        uid = it1.uid,
+                        qty = selectedValue.toDouble()
+                    )
+                }
+            }?.let {
+                waterToolRepo.updateBeverageQty(
+                    beverage = it,
+                )
+            };
+        }
+    }
+
     fun sliderValueChanged(value: Int){
+        //TODO: while updating _modifiedWaterTool _waterTool gets updated
         if(_sliderIndex.value!=null) {
             val temp = _modifiedWaterTool.value
             temp?.beveragesDetails?.forEach {
@@ -169,7 +196,30 @@ class WaterViewModel
                     it.containers[_sliderIndex.value!!] = value
                 }
             }
-            _modifiedWaterTool.value=temp
+            Log.i("test198","12345")
+            _modifiedWaterTool.update { _->
+                temp
+            }
+
+            val list1 = _modifiedWaterTool.value?.beveragesDetails!!
+            val list2 = _waterTool.value?.beveragesDetails!!
+
+            for(i in 0 until (list2.size)){
+                Log.i("test202","list1 = ${list1[i].containers}")
+                Log.i("test202","${list2[i].containers}")
+                if(list1[i].containers != list2[i].containers){
+
+                    Log.i("testbg206",i.toString())
+                    if (i !in _changedContainerList) {
+                        _changedContainerList.add(i)
+                    }
+                }else{
+                    if (i in _changedContainerList){
+                        _changedContainerList.remove(i)
+                    }
+                }
+            }
+            compareModifiedTool()
         }
     }
 

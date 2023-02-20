@@ -65,8 +65,8 @@ fun WaterBottomSheetGridView(
 
     val openDialog = remember { mutableStateOf(false) }
     val waterLive by viewModel.modifiedWaterTool.collectAsStateWithLifecycle()
-    val selectedBeverageData by viewModel.containerInCharge.collectAsState()
-    val showSlider by viewModel.showSlider.collectAsState()
+    val selectedBeverageData by viewModel.containerInCharge.collectAsStateWithLifecycle()
+    val showSlider by viewModel.showSlider.collectAsStateWithLifecycle()
 
     if (openDialog.value) {
         AlertDialog(

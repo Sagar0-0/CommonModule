@@ -22,14 +22,15 @@ import fit.asta.health.tools.water.viewmodel.WaterViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 import androidx.compose.runtime.*
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.tools.water.model.domain.WaterTool
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun AllBeveragesPopUp(waterTool: WaterTool,viewModel: WaterViewModel = hiltViewModel()){
 
-    val allBeveragesList by viewModel.modifiedWaterTool.collectAsState()
-    val saveButton by viewModel.somethingChanged.collectAsState()
+    val allBeveragesList by viewModel.modifiedWaterTool.collectAsStateWithLifecycle()
+    val saveButton by viewModel.somethingChanged.collectAsStateWithLifecycle()
 
     Box(
         modifier = Modifier
