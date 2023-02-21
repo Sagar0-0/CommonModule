@@ -10,6 +10,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.navigation.home.view.HomeContent
+import fit.asta.health.ui.theme.AppTheme
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -26,7 +27,9 @@ class HomeFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                HomeContent(requireActivity())
+                AppTheme {
+                    HomeContent(requireActivity())
+                }
             }
         }
     }
