@@ -11,9 +11,11 @@ import fit.asta.health.network.AstaNetwork
 import fit.asta.health.network.NetworkHelper
 import fit.asta.health.network.TokenProvider
 import fit.asta.health.network.api.RemoteApis
+import fit.asta.health.network.api.RestApi
 import fit.asta.health.network.interceptor.OnlineInterceptor
 import fit.asta.health.network.repo.FileUploadRepo
 import okhttp3.Cache
+import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import javax.inject.Singleton
 
@@ -33,15 +35,22 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRemoteRestApi(
+    fun provideRemoteRestApi(client: OkHttpClient): RemoteApis {
+        return RestApi(baseUrl = BuildConfig.BASE_URL, client = client)
+    }
+
+    @Singleton
+    @Provides
+    fun provideOkHttpClient(
         networkHelper: NetworkHelper,
         cache: Cache,
         token: TokenProvider
-    ): RemoteApis {
+    ): OkHttpClient {
 
         val builder = AstaNetwork.Builder()
             .setApiKey(token)
             .setCache(cache = cache)
+            .setBaseUrl(BuildConfig.BASE_URL)
             .addInterceptor(OnlineInterceptor(networkHelper))
 
         if (BuildConfig.DEBUG) {

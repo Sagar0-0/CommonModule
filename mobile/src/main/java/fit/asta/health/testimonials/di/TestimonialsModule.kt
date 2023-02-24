@@ -12,6 +12,7 @@ import fit.asta.health.testimonials.model.TestimonialRepo
 import fit.asta.health.testimonials.model.TestimonialRepoImpl
 import fit.asta.health.testimonials.model.api.TestimonialApi
 import fit.asta.health.testimonials.model.api.TestimonialRestApi
+import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
 @Module
@@ -26,8 +27,8 @@ object TestimonialsModule {
 
     @Singleton
     @Provides
-    fun provideRemoteRestApi(): TestimonialApi {
-        return TestimonialRestApi(BuildConfig.BASE_URL)
+    fun provideRemoteRestApi(client: OkHttpClient): TestimonialApi {
+        return TestimonialRestApi(baseUrl = BuildConfig.BASE_URL, client = client)
     }
 
     @Singleton

@@ -8,15 +8,9 @@ import okhttp3.Cache
 import okhttp3.CertificatePinner
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import retrofit2.CallAdapter
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import java.security.KeyStore
-import java.security.SecureRandom
 import java.text.DateFormat
-import javax.net.ssl.KeyManagerFactory
-import javax.net.ssl.SSLContext
 
 
 object NetworkUtil {
@@ -65,7 +59,7 @@ object NetworkUtil {
         return builder.build()
     }
 
-     fun buildCertificatePinner(pins: List<Certificate> = listOf()): CertificatePinner {
+    fun buildCertificatePinner(pins: List<Certificate> = listOf()): CertificatePinner {
         val builder = CertificatePinner.Builder()
 
         pins.map {
