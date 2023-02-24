@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.tools.water.view.WaterToolForm
+import fit.asta.health.ui.theme.AppTheme
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -28,7 +29,9 @@ class WaterToolActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            WaterToolForm()
+            AppTheme {
+                WaterToolForm()
+            }
         }
     }
 }

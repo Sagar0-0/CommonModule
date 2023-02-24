@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import fit.asta.health.ui.theme.AppTheme
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -26,9 +27,10 @@ class TestimonialsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
-            TestimonialsNavigation(navController = rememberNavController())
+            AppTheme {
+                TestimonialsNavigation(navController = rememberNavController())
+            }
         }
     }
 }
