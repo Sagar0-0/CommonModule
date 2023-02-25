@@ -18,8 +18,7 @@ class WaterToolRepoImpl(
         latitude: String,
         longitude: String,
         location: String,
-        startDate: String,
-        endDate: String
+        date: String
     ): Flow<WaterTool> {
         return flow {
             emit(
@@ -29,8 +28,7 @@ class WaterToolRepoImpl(
                         latitude = latitude,
                         longitude = longitude,
                         location = location,
-                        startDate = startDate,
-                        endDate = endDate
+                        date = date
                     )
                 )
             )

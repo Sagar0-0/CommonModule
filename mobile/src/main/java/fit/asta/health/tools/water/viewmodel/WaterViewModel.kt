@@ -1,4 +1,4 @@
-package fit.asta.health .tools.water.viewmodel
+package fit.asta.health.tools.water.viewmodel
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
@@ -7,11 +7,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.tools.water.model.WaterToolRepo
-import fit.asta.health.tools.water.model.domain.BeverageDetails
 import fit.asta.health.tools.water.model.domain.WaterTool
 import fit.asta.health.tools.water.model.network.NetBevQtyPut
 import fit.asta.health.utils.getCurrentDate
-import fit.asta.health.utils.getNextDate
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -75,14 +73,13 @@ class WaterViewModel
     private fun loadWaterToolData() {
         viewModelScope.launch {
             authRepo.getUser()?.let { user->
-                Log.i("User Id","------------------>${user.uid}");
+                Log.i("User Id","------------------>${user.uid}")
                 waterToolRepo.getWaterTool(
                     userId = user.uid,
                     latitude = "28.6353",
                     longitude = "77.2250",
                     location = "bangalore",
-                    startDate = getCurrentDate(),
-                    endDate = getNextDate(1)
+                    date = getCurrentDate()
                 ).catch { exception ->
                     mutableState.value = WaterState.Error(exception)
                 }.collect {
@@ -121,7 +118,7 @@ class WaterViewModel
     }
 
     fun compareModifiedTool(){
-        Log.i("WaterViewModel 122","presed------------->${_changedContainerList}")
+        Log.i("fit.asta.health.tools.water.viewmodel.WaterViewModel 122","presed------------->${_changedContainerList}")
         _saveData.value = _changedContainerList.isNotEmpty()
     }
 
@@ -168,7 +165,7 @@ class WaterViewModel
     }
 
     fun onSavedQTY(){
-        val beverageName = containerInCharge.value?.name;
+        val beverageName = containerInCharge.value?.name
         viewModelScope.launch {
             _selectedContainer.value?.let {selectedValue->
                 _modifiedWaterTool.value?.progressData?.let { it1 ->
@@ -183,7 +180,7 @@ class WaterViewModel
                 waterToolRepo.updateBeverageQty(
                     beverage = it,
                 )
-            };
+            }
         }
     }
 

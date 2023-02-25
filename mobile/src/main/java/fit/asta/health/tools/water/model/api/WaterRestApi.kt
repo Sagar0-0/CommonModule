@@ -21,11 +21,10 @@ class WaterRestApi(baseUrl: String, client: OkHttpClient) :
         latitude: String,
         longitude: String,
         location: String,
-        startDate: String,
-        endDate: String
+        date: String
     ): NetWaterToolRes {
 
-        val l = apiService.getWaterTool(userId, latitude, longitude, location, startDate, endDate)
+        val l = apiService.getWaterTool(userId, latitude, longitude, location, date)
         Log.i("RestApiline 140", l.waterTool.toString())
         return l
     }

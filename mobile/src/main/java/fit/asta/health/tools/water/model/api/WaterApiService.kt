@@ -14,8 +14,7 @@ interface WaterApiService {
         @Query("lat") latitude: String,
         @Query("lon") longitude: String,
         @Query("loc") location: String,
-        @Query("start") startDate: String,
-        @Query("end") endDate: String
+        @Query("date") date: String
     ): NetWaterToolRes
 
     @POST("tools/water/beverage/quantity/post")
