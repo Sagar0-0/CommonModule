@@ -20,10 +20,6 @@ import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagResponse
 import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagsResponse
 import fit.asta.health.old_subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.old_subscription.networkdata.SubscriptionStatusResponse
-import fit.asta.health.profile.model.domain.UserProfile
-import fit.asta.health.profile.model.network.NetHealthPropertiesRes
-import fit.asta.health.profile.model.network.NetUserProfileAvailableRes
-import fit.asta.health.profile.model.network.NetUserProfileRes
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerDeleteResponse
 import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerGetListResponse
@@ -45,23 +41,6 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
     private val apiService: ApiService = NetworkUtil
         .getRetrofit(baseUrl, client)
         .create(ApiService::class.java)
-
-    //User Profile
-    override suspend fun isUserProfileAvailable(userId: String): NetUserProfileAvailableRes {
-        return apiService.isUserProfileAvailable(userId)
-    }
-
-    override suspend fun updateUserProfile(userProfile: UserProfile): Status {
-        return apiService.updateUserProfile(userProfile)
-    }
-
-    override suspend fun getUserProfile(userId: String): NetUserProfileRes {
-        return apiService.getUserProfile(userId)
-    }
-
-    override suspend fun getHealthProperties(propertyType: String): NetHealthPropertiesRes {
-        return apiService.getHealthProperties(propertyType)
-    }
 
     //Home page
     override suspend fun getHomeData(
@@ -87,7 +66,6 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
     override suspend fun updateSelectedTools(toolIds: NetSelectedTools): Status {
         return apiService.updateSelectedTools(toolIds)
     }
-
 
     // Scheduler Endpoints
     override suspend fun updateScheduleDataOnBackend(schedule: AlarmEntity): Response<AstaSchedulerPutResponse> {

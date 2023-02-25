@@ -20,10 +20,6 @@ import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagResponse
 import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagsResponse
 import fit.asta.health.old_subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.old_subscription.networkdata.SubscriptionStatusResponse
-import fit.asta.health.profile.model.domain.UserProfile
-import fit.asta.health.profile.model.network.NetHealthPropertiesRes
-import fit.asta.health.profile.model.network.NetUserProfileAvailableRes
-import fit.asta.health.profile.model.network.NetUserProfileRes
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerDeleteResponse
 import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerGetListResponse
@@ -39,12 +35,6 @@ import retrofit2.Response
 
 interface RemoteApis {
 
-    //User Profile
-    suspend fun isUserProfileAvailable(userId: String): NetUserProfileAvailableRes
-    suspend fun updateUserProfile(userProfile: UserProfile): Status
-    suspend fun getUserProfile(userId: String): NetUserProfileRes
-    suspend fun getHealthProperties(propertyType: String): NetHealthPropertiesRes
-
     //Home page
     suspend fun getHomeData(
         userId: String,
@@ -58,17 +48,17 @@ interface RemoteApis {
 
     suspend fun updateSelectedTools(toolIds: NetSelectedTools): Status
 
-    // Scheduler Endpoints
+    //Scheduler Endpoints
     suspend fun updateScheduleDataOnBackend(schedule: AlarmEntity): Response<AstaSchedulerPutResponse>
     suspend fun getScheduleDataFromBackend(scheduleId: String): Response<AstaSchedulerGetResponse>
     suspend fun getScheduleListDataFromBackend(userId: String): Response<AstaSchedulerGetListResponse>
     suspend fun deleteScheduleDataFromBackend(scheduleId: String): Response<AstaSchedulerDeleteResponse>
 
-    // Tags Endpoints
+    //Tags Endpoints
     suspend fun getTagListFromBackend(userId: String): Response<AstaGetTagsListResponse>
     suspend fun updateScheduleTag(schedule: ScheduleTagNetData): Status
 
-    // Media Endpoints
+    //Media Endpoints
     suspend fun getAllUserMedia(userId: String): Status
     suspend fun updateUserMedia(schedule: ScheduleTagNetData): Status
 
