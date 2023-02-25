@@ -18,7 +18,6 @@ import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagResponse
 import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagsResponse
 import fit.asta.health.old_subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.old_subscription.networkdata.SubscriptionStatusResponse
-import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*
@@ -40,10 +39,6 @@ interface ApiService {
 
     @PUT("tool/selected/put")
     suspend fun updateSelectedTools(@Body toolIds: NetSelectedTools): Status
-
-    //Health Tool - Walking Endpoints
-    @GET("tools/walking/get")
-    suspend fun getWalkingTool(@Query("userId") userId: String): NetWalkingToolRes
 
     //File upload Endpoints ------------------------------------------------------------------------
     @Multipart
