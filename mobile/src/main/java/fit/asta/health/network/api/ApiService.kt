@@ -20,17 +20,10 @@ import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagResponse
 import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagsResponse
 import fit.asta.health.old_subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.old_subscription.networkdata.SubscriptionStatusResponse
-import fit.asta.health.scheduler.model.db.entity.AlarmEntity
-import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerDeleteResponse
-import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerGetListResponse
-import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerGetResponse
-import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerPutResponse
-import fit.asta.health.scheduler.model.net.tag.AstaGetTagsListResponse
 import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
 import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Response
 import retrofit2.http.*
 
 
@@ -50,43 +43,6 @@ interface ApiService {
 
     @PUT("tool/selected/put")
     suspend fun updateSelectedTools(@Body toolIds: NetSelectedTools): Status
-
-    // Scheduler Endpoints
-    @PUT("schedule/put/")
-    suspend fun updateScheduleDataOnBackend(
-        @Body schedule: AlarmEntity
-    ): Response<AstaSchedulerPutResponse>
-
-    @GET("schedule/get/")
-    suspend fun getScheduleDataFromBackend(
-        @Query("sid") scheduleId: String
-    ): Response<AstaSchedulerGetResponse>
-
-    @GET("schedule/list/get/")
-    suspend fun getScheduleListDataFromBackend(
-        @Query("uid") userID: String
-    ): Response<AstaSchedulerGetListResponse>
-
-    @DELETE("schedule/delete/")
-    suspend fun deleteScheduleDataFromBackend(
-        @Query("sid") scheduleID: String
-    ): Response<AstaSchedulerDeleteResponse>
-
-    // Tags Endpoints
-    @GET("tag/list/get/")
-    suspend fun getTagListFromBackend(
-        @Query("uid") userID: String
-    ): Response<AstaGetTagsListResponse>
-
-    @PUT("tag/put")
-    suspend fun updateScheduleTag(@Body schedule: ScheduleTagNetData): Status
-
-    // Media Endpoints
-    @GET("sound/list/get/?")
-    suspend fun getAllUserMedia(@Query("uid") userID: String): Status
-
-    @PUT("sound/put")
-    suspend fun updateUserMedia(@Body schedule: ScheduleTagNetData): Status
 
     //Health Tool - Sunlight Endpoints
     @GET("tools/sunlight/get")
@@ -114,7 +70,6 @@ interface ApiService {
         @Part file: MultipartBody.Part
     ): SingleFileUploadRes
 
-    //File upload Endpoint
     @Multipart
     @PUT("file/upload/put/")
     suspend fun uploadFile(

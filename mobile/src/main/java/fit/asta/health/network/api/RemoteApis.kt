@@ -20,17 +20,10 @@ import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagResponse
 import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagsResponse
 import fit.asta.health.old_subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.old_subscription.networkdata.SubscriptionStatusResponse
-import fit.asta.health.scheduler.model.db.entity.AlarmEntity
-import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerDeleteResponse
-import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerGetListResponse
-import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerGetResponse
-import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerPutResponse
-import fit.asta.health.scheduler.model.net.tag.AstaGetTagsListResponse
 import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
 import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Response
 
 
 interface RemoteApis {
@@ -47,20 +40,6 @@ interface RemoteApis {
     ): NetHealthToolsRes
 
     suspend fun updateSelectedTools(toolIds: NetSelectedTools): Status
-
-    //Scheduler Endpoints
-    suspend fun updateScheduleDataOnBackend(schedule: AlarmEntity): Response<AstaSchedulerPutResponse>
-    suspend fun getScheduleDataFromBackend(scheduleId: String): Response<AstaSchedulerGetResponse>
-    suspend fun getScheduleListDataFromBackend(userId: String): Response<AstaSchedulerGetListResponse>
-    suspend fun deleteScheduleDataFromBackend(scheduleId: String): Response<AstaSchedulerDeleteResponse>
-
-    //Tags Endpoints
-    suspend fun getTagListFromBackend(userId: String): Response<AstaGetTagsListResponse>
-    suspend fun updateScheduleTag(schedule: ScheduleTagNetData): Status
-
-    //Media Endpoints
-    suspend fun getAllUserMedia(userId: String): Status
-    suspend fun updateUserMedia(schedule: ScheduleTagNetData): Status
 
     //Health Tool - Sunlight Endpoints
     suspend fun getSunlightTool(userId: String): NetSunlightToolRes
