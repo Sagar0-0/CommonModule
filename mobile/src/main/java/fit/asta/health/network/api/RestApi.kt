@@ -18,7 +18,6 @@ import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagResponse
 import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagsResponse
 import fit.asta.health.old_subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.old_subscription.networkdata.SubscriptionStatusResponse
-import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
 import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
 import fit.asta.health.utils.NetworkUtil
 import okhttp3.MultipartBody
@@ -56,11 +55,6 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
 
     override suspend fun updateSelectedTools(toolIds: NetSelectedTools): Status {
         return apiService.updateSelectedTools(toolIds)
-    }
-
-    //Health Tool - Sunlight Endpoints
-    override suspend fun getSunlightTool(userId: String): NetSunlightToolRes {
-        return apiService.getSunlightTool(userId)
     }
 
     //Health Tool - Walking Endpoints

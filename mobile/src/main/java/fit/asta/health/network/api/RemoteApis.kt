@@ -18,7 +18,6 @@ import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagResponse
 import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagsResponse
 import fit.asta.health.old_subscription.networkdata.SubscriptionDataResponse
 import fit.asta.health.old_subscription.networkdata.SubscriptionStatusResponse
-import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
 import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -38,9 +37,6 @@ interface RemoteApis {
     ): NetHealthToolsRes
 
     suspend fun updateSelectedTools(toolIds: NetSelectedTools): Status
-
-    //Health Tool - Sunlight Endpoints
-    suspend fun getSunlightTool(userId: String): NetSunlightToolRes
 
     //Health Tool - Walking Endpoints
     suspend fun getWalkingTool(userId: String): NetWalkingToolRes

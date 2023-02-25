@@ -1,12 +1,13 @@
 package fit.asta.health.tools.sunlight.model
 
-import fit.asta.health.network.api.RemoteApis
+import fit.asta.health.tools.sunlight.model.api.SunlightApi
 import fit.asta.health.tools.sunlight.model.domain.SunlightTool
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
+
 class SunlightToolRepoImpl(
-    private val remoteApi: RemoteApis,
+    private val remoteApi: SunlightApi,
     private val mapper: SunlightToolDataMapper,
 ) : SunlightToolRepo {
 
