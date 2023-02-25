@@ -1,8 +1,6 @@
 package fit.asta.health.network.api
 
 import fit.asta.health.common.multiselect.data.UserInputs
-import fit.asta.health.feedback.model.network.NetFeedbackRes
-import fit.asta.health.feedback.model.network.NetUserFeedback
 import fit.asta.health.navigation.home.model.network.NetHealthToolsRes
 import fit.asta.health.navigation.home.model.network.NetSelectedTools
 import fit.asta.health.navigation.today.networkdata.TodayPlanNetData
@@ -46,10 +44,6 @@ interface RemoteApis {
 
     //Health Tool - Walking Endpoints
     suspend fun getWalkingTool(userId: String): NetWalkingToolRes
-
-    //Feedback Endpoints
-    suspend fun getFeedbackQuestions(userId: String, featureId: String): NetFeedbackRes
-    suspend fun postUserFeedback(feedback: NetUserFeedback): Status
 
     //File upload Endpoints
     suspend fun uploadFile(info: UploadInfo, file: MultipartBody.Part): SingleFileUploadRes

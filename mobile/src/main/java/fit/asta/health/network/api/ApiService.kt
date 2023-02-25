@@ -1,8 +1,6 @@
 package fit.asta.health.network.api
 
 import fit.asta.health.common.multiselect.data.UserInputs
-import fit.asta.health.feedback.model.network.NetFeedbackRes
-import fit.asta.health.feedback.model.network.NetUserFeedback
 import fit.asta.health.navigation.home.model.network.NetHealthToolsRes
 import fit.asta.health.navigation.home.model.network.NetSelectedTools
 import fit.asta.health.navigation.today.networkdata.TodayPlanNetData
@@ -52,17 +50,7 @@ interface ApiService {
     @GET("tools/walking/get")
     suspend fun getWalkingTool(@Query("userId") userId: String): NetWalkingToolRes
 
-    //Feedback Endpoints
-    @GET("feedback/user/get/?")
-    suspend fun getFeedbackQuestions(
-        @Query("uid") userId: String,
-        @Query("fid") featureId: String
-    ): NetFeedbackRes
-
-    @POST("feedback/user/post")
-    suspend fun postUserFeedback(@Body feedback: NetUserFeedback): Status
-
-    //File upload Endpoint
+    //File upload Endpoints ------------------------------------------------------------------------
     @Multipart
     @PUT("file/upload/put/")
     suspend fun uploadFile(

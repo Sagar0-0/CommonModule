@@ -1,14 +1,15 @@
 package fit.asta.health.feedback.model
 
+import fit.asta.health.feedback.model.api.FeedbackApi
 import fit.asta.health.feedback.model.domain.Feedback
 import fit.asta.health.feedback.model.network.NetUserFeedback
-import fit.asta.health.network.api.RemoteApis
 import fit.asta.health.network.data.Status
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
+
 class FeedbackRepoImpl(
-    private val remoteApi: RemoteApis,
+    private val remoteApi: FeedbackApi,
     private val mapper: FeedbackDataMapper,
 ) : FeedbackRepo {
 

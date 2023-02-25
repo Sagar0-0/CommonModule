@@ -1,8 +1,6 @@
 package fit.asta.health.network.api
 
 import fit.asta.health.common.multiselect.data.UserInputs
-import fit.asta.health.feedback.model.network.NetFeedbackRes
-import fit.asta.health.feedback.model.network.NetUserFeedback
 import fit.asta.health.navigation.home.model.network.NetHealthToolsRes
 import fit.asta.health.navigation.home.model.network.NetSelectedTools
 import fit.asta.health.navigation.today.networkdata.TodayPlanNetData
@@ -68,15 +66,6 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
     //Health Tool - Walking Endpoints
     override suspend fun getWalkingTool(userId: String): NetWalkingToolRes {
         return apiService.getWalkingTool(userId)
-    }
-
-    //Feedback Endpoints
-    override suspend fun getFeedbackQuestions(userId: String, featureId: String): NetFeedbackRes {
-        return apiService.getFeedbackQuestions(userId, featureId)
-    }
-
-    override suspend fun postUserFeedback(feedback: NetUserFeedback): Status {
-        return apiService.postUserFeedback(feedback)
     }
 
     //File upload Endpoints
