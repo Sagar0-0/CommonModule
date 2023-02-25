@@ -1,6 +1,5 @@
 package fit.asta.health.network.api
 
-import android.util.Log
 import fit.asta.health.common.multiselect.data.UserInputs
 import fit.asta.health.feedback.model.network.NetFeedbackRes
 import fit.asta.health.feedback.model.network.NetUserFeedback
@@ -33,8 +32,6 @@ import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerPutResponse
 import fit.asta.health.scheduler.model.net.tag.AstaGetTagsListResponse
 import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
 import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
-import fit.asta.health.tools.water.model.network.NetBevQtyPut
-import fit.asta.health.tools.water.model.network.NetWaterToolRes
 import fit.asta.health.utils.NetworkUtil
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -126,37 +123,6 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
     override suspend fun updateUserMedia(schedule: ScheduleTagNetData): Status {
         return apiService.updateUserMedia(schedule)
     }
-
-    //Health Tool - Water Endpoints
-    override suspend fun getWaterTool(
-        userId: String,
-        latitude: String,
-        longitude: String,
-        location: String,
-        startDate: String,
-        endDate: String
-    ): NetWaterToolRes {
-
-        val l =apiService.getWaterTool(userId, latitude, longitude, location, startDate, endDate)
-        Log.i("RestApiline 140",l.waterTool.toString())
-        return l
-    }
-
-    override suspend fun updateBeverageQty(beverage: NetBevQtyPut): Status {
-        return apiService.updateBeverageQty(beverage)
-    }
-
-    /*override suspend fun updateWaterTool(modifiedWaterTool: ModifiedWaterTool): Status {
-        return apiService.updateWaterTool(modifiedWaterTool)
-    }
-
-    override suspend fun updateBeverage(beverage: NetBeverage): Status {
-        return apiService.updateBeverage(beverage)
-    }
-
-    override suspend fun getBeverageList(userId: String): NetBeverageRes {
-        return apiService.getBeverageList(userId)
-    }*/
 
     //Health Tool - Sunlight Endpoints
     override suspend fun getSunlightTool(userId: String): NetSunlightToolRes {

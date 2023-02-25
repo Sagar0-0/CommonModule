@@ -32,8 +32,6 @@ import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerPutResponse
 import fit.asta.health.scheduler.model.net.tag.AstaGetTagsListResponse
 import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
 import fit.asta.health.tools.walking.model.network.response.NetWalkingToolRes
-import fit.asta.health.tools.water.model.network.NetBevQtyPut
-import fit.asta.health.tools.water.model.network.NetWaterToolRes
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -106,29 +104,6 @@ interface ApiService {
 
     @PUT("sound/put")
     suspend fun updateUserMedia(@Body schedule: ScheduleTagNetData): Status
-
-    //Health Tool - Water Endpoints
-    @GET("tools/water/get/?")
-    suspend fun getWaterTool(
-        @Query("uid") userId: String,
-        @Query("lat") latitude: String,
-        @Query("lon") longitude: String,
-        @Query("loc") location: String,
-        @Query("start") startDate: String,
-        @Query("end") endDate: String
-    ): NetWaterToolRes
-
-    @POST("tools/water/beverage/quantity/post")
-    suspend fun updateBeverageQty(@Body beverage: NetBevQtyPut): Status
-
-    /*@PUT("tools/water/put")
-    suspend fun updateWaterTool(@Body modifiedWaterTool: ModifiedWaterTool): Status
-
-    @PUT("tools/water/beverage/add/put")
-    suspend fun updateBeverage(@Body beverage: NetBeverage): Status
-
-    @GET("tools/water/beverage/list/get/?")
-    suspend fun getBeverageList(@Query("uid") userId: String): NetBeverageRes*/
 
     //Health Tool - Sunlight Endpoints
     @GET("tools/sunlight/get")

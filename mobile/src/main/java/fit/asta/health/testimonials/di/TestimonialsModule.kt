@@ -21,14 +21,14 @@ object TestimonialsModule {
 
     @Singleton
     @Provides
-    fun provideTestimonialDataMapper(): TestimonialDataMapper {
-        return TestimonialDataMapper()
+    fun provideTestimonialApi(client: OkHttpClient): TestimonialApi {
+        return TestimonialRestApi(baseUrl = BuildConfig.BASE_URL, client = client)
     }
 
     @Singleton
     @Provides
-    fun provideRemoteRestApi(client: OkHttpClient): TestimonialApi {
-        return TestimonialRestApi(baseUrl = BuildConfig.BASE_URL, client = client)
+    fun provideTestimonialDataMapper(): TestimonialDataMapper {
+        return TestimonialDataMapper()
     }
 
     @Singleton
