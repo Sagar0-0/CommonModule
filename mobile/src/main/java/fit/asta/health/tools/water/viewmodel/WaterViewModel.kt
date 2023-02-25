@@ -190,15 +190,16 @@ class WaterViewModel
     fun sliderValueChanged(value: Int){
         //TODO: while updating _modifiedWaterTool _waterTool gets updated
         if(_sliderIndex.value!=null) {
-            val temp = _modifiedWaterTool.value
-            temp?.beveragesDetails?.forEach {
-                if (it.code == _choosenBeverageIndexCode.value) {
-                    it.containers[_sliderIndex.value!!] = value
-                }
-            }
+            //val temp = _modifiedWaterTool.value
+
             Log.i("test198","12345")
-            _modifiedWaterTool.update { _->
-                temp
+            _modifiedWaterTool.update { wt->
+                wt?.beveragesDetails?.forEach {
+                    if (it.code == _choosenBeverageIndexCode.value) {
+                        it.containers[_sliderIndex.value!!] = value
+                    }
+                }
+                wt
             }
 
             val list1 = _modifiedWaterTool.value?.beveragesDetails!!
