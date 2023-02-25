@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".old_course.details.ui.SessionsFragment">
+    tools:context=".old.course.details.ui.SessionsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/courseModulesRcView"

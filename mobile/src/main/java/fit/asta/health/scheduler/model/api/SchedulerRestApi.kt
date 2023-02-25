@@ -1,7 +1,7 @@
 package fit.asta.health.scheduler.model.api
 
 import fit.asta.health.network.data.Status
-import fit.asta.health.old_scheduler.tags.networkdata.ScheduleTagNetData
+import fit.asta.health.old.scheduler.tags.networkdata.ScheduleTagNetData
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerDeleteResponse
 import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerGetListResponse
