@@ -30,8 +30,13 @@ fun ValidatedTextField(
     errorMessage: UiString,
 ) {
 
-    Column(Modifier
-        .fillMaxWidth()) {
+
+    /*Todo Text fields theming*/
+
+    Column(
+        Modifier.fillMaxWidth()
+    ) {
+
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
@@ -39,8 +44,7 @@ fun ValidatedTextField(
             isError = showError,
             trailingIcon = {
                 if (showError) Icon(
-                    imageVector = Icons.Filled.Error,
-                    contentDescription = "Show Error Icon"
+                    imageVector = Icons.Filled.Error, contentDescription = "Show Error Icon"
                 )
             },
             keyboardOptions = keyboardOptions,
@@ -48,6 +52,7 @@ fun ValidatedTextField(
             singleLine = false,
             modifier = modifier.fillMaxWidth()
         )
+
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
 
             if (showError) {
@@ -62,5 +67,6 @@ fun ValidatedTextField(
                 Text(text = "${value.length}/256")
             }
         }
+
     }
 }

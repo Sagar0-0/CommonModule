@@ -14,6 +14,7 @@ import androidx.compose.ui.layout.ContentScale
 import coil.compose.AsyncImage
 import fit.asta.health.testimonials.model.domain.Testimonial
 import fit.asta.health.testimonials.view.components.UserTst
+import fit.asta.health.testimonials.view.theme.cardElevation
 import fit.asta.health.testimonials.view.theme.imageHeight
 import fit.asta.health.ui.spacing
 import fit.asta.health.utils.getImageUrl
@@ -24,8 +25,10 @@ fun TestimonialImageCard(testimonial: Testimonial) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(spacing.medium)
-            .clip(MaterialTheme.shapes.large)
+            .padding(spacing.medium),
+        shape = MaterialTheme.shapes.medium,
+        elevation = cardElevation.small,
+        backgroundColor = MaterialTheme.colorScheme.onPrimary
     ) {
         Column(Modifier.fillMaxWidth()) {
 

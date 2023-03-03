@@ -45,8 +45,10 @@ fun TestimonialsVideoCard(testimonial: Testimonial) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(spacing.medium)
-            .clip(MaterialTheme.shapes.medium), elevation = cardElevation.small
+            .padding(spacing.medium),
+        shape = MaterialTheme.shapes.medium,
+        elevation = cardElevation.small,
+        backgroundColor = MaterialTheme.colorScheme.onPrimary
     ) {
         Column(
             Modifier

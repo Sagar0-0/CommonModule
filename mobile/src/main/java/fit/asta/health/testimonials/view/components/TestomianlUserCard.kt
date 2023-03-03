@@ -41,7 +41,7 @@ fun UserCard(user: String, userOrg: String, userRole: String, url: String) {
                 Text(
                     text = user,
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
 
                 Text(

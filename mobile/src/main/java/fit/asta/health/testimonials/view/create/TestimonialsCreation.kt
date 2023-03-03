@@ -23,6 +23,7 @@ import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.R
 import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.view.theme.boxSize
+import fit.asta.health.testimonials.view.theme.cardElevation
 import fit.asta.health.testimonials.view.theme.imageSize
 import fit.asta.health.ui.spacing
 
@@ -79,7 +80,7 @@ fun TestimonialsRadioButton(
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.medium,
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-//            border = BorderStroke(width = 1.dp, color = TextLight04)
+            elevation = CardDefaults.cardElevation(defaultElevation = cardElevation.medium)
         ) {
 
             Column(

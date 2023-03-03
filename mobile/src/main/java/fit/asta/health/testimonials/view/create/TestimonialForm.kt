@@ -6,23 +6,24 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.BottomNavigation
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.NavigateBefore
+import androidx.compose.material.icons.filled.NavigateBefore
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
@@ -30,7 +31,7 @@ import fit.asta.health.navigation.home.view.component.NoInternetLayout
 import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.view.components.ValidatedTextField
 import fit.asta.health.testimonials.view.theme.boxSize
-import fit.asta.health.testimonials.view.theme.iconButtonSize
+import fit.asta.health.testimonials.view.theme.cardElevation
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
 import fit.asta.health.testimonials.viewmodel.create.TestimonialSubmitState
 import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
@@ -196,12 +197,6 @@ fun TestimonialForm(
         }
 
         if (showCustomDialogWithResult) {
-//            OnSuccessfulSubmit(onDismiss = {
-//                showCustomDialogWithResult = !showCustomDialogWithResult
-//            }, onNavigateTstHome = onNavigateTstHome, onPositiveClick = {
-//                editViewModel.onEvent(TestimonialEvent.OnSubmit)
-//                onNavigateTstHome()
-//            })
 
             when (events) {
                 is TestimonialSubmitState.Error -> {
@@ -214,13 +209,11 @@ fun TestimonialForm(
                     }, onNavigateTstHome = onNavigateTstHome, onPositiveClick = {
                         onNavigateTstHome()
                     })
-                    Log.d("validate", "Success->${events.status}")
                 }
 
                 is TestimonialSubmitState.NoInternet -> NoInternetLayout(onTryAgain = {})
             }
         }
-
 
     }
 
@@ -228,35 +221,34 @@ fun TestimonialForm(
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun CreateTstScreen(title: String, onNavigateTstCreate: () -> Unit, onNavigateTstHome: () -> Unit) {
 
     var showCustomDialogWithResult by remember { mutableStateOf(false) }
 
     Scaffold(topBar = {
-        BottomNavigation(content = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()
-            ) {
-                IconButton(onClick = { showCustomDialogWithResult = !showCustomDialogWithResult }) {
-                    Icon(
-                        Icons.Outlined.NavigateBefore,
-                        "back",
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(iconButtonSize.extraMedium)
-                    )
-                }
-                androidx.compose.material3.Text(
-                    text = title,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    style = MaterialTheme.typography.headlineSmall
+        TopAppBar(title = {
+            Text(
+                text = title,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = FontWeight.Medium,
+                fontSize = 20.sp
+            )
+        }, navigationIcon = {
+            IconButton(onClick = {
+                showCustomDialogWithResult = !showCustomDialogWithResult
+            }) {
+                Icon(
+                    Icons.Filled.NavigateBefore,
+                    contentDescription = "back",
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
-        }, elevation = 10.dp, backgroundColor = Color.White)
+        }, modifier = Modifier.shadow(elevation = cardElevation.medium))
     }, content = {
         TestimonialForm(paddingValues = it, onNavigateTstHome = onNavigateTstHome)
-    })
+    }, containerColor = MaterialTheme.colorScheme.background)
 
     if (showCustomDialogWithResult) {
         CustomDialogWithResultExample(
@@ -275,4 +267,5 @@ fun CreateTstScreen(title: String, onNavigateTstCreate: () -> Unit, onNavigateTs
             btn2Title = "Cancel"
         )
     }
+
 }

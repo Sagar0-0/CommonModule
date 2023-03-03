@@ -121,6 +121,7 @@ class TestimonialViewModel
 
                     when (result.data.type) {
                         TestimonialType.TEXT -> {
+
                         }
                         TestimonialType.IMAGE -> {
                             savedState[IMAGE_BEFORE] = Media(url = result.data.media[0].url)
@@ -161,6 +162,7 @@ class TestimonialViewModel
                 )
             )
         }
+
     }
 
     private fun updateTestimonial(netTestimonial: Testimonial) {

@@ -327,6 +327,10 @@ dependencies {
     // Stepper
     implementation 'com.github.maryamrzdh:compose-stepper:1.0.0-beta01'
 
+
+    //Image-Cropper
+    implementation "io.github.mr0xf00:easycrop:0.1.1"
+
     testImplementation "junit:junit:4.13.2"
     testImplementation "androidx.paging:paging-common-ktx:$paging_version"
     androidTestImplementation "androidx.test.ext:junit:1.1.5"

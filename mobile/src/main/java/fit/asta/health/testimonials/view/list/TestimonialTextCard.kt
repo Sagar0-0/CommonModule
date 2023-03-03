@@ -6,7 +6,6 @@ import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import fit.asta.health.testimonials.model.domain.Testimonial
@@ -21,8 +20,10 @@ fun TestimonialTextCard(testimonial: Testimonial) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(spacing.medium)
-            .clip(MaterialTheme.shapes.medium), elevation = cardElevation.small
+            .padding(spacing.medium),
+        shape = MaterialTheme.shapes.medium,
+        elevation = cardElevation.small,
+        backgroundColor = MaterialTheme.colorScheme.onPrimary
     ) {
 
         Column(Modifier.fillMaxWidth()) {

@@ -42,9 +42,8 @@ fun TestimonialsList(
     testimonials.refresh()
 
     LazyColumn(
-        Modifier
-            .padding(paddingValues)
-            .background(color = MaterialTheme.colorScheme.secondaryContainer)
+        Modifier.padding(paddingValues)
+        //.background(color = MaterialTheme.colorScheme.secondaryContainer)
     ) {
 
         items(testimonials) { item ->
@@ -62,7 +61,12 @@ fun TestimonialsList(
                 // refresh
                 loadState.refresh is LoadState.Loading -> {
                     item {
-                        LoadingAnimation()
+                        Box(
+                            modifier = Modifier.fillParentMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            LoadingAnimation()
+                        }
                     }
                 }
                 // reload

@@ -64,7 +64,7 @@ fun ImageLayout(
                         UploadTstMediaView(title = imgBefore.title,
                             onClick = { beforeLauncher.launch("image/*") })
                     } else {
-                        SelectedImageView(title = "",
+                        SelectedImageView(title = imgBefore.title,
                             url = getOneUrl(imgBefore.localUrl, imgBefore.url),
                             onImageClick = { afterLauncher.launch("image/*") },
                             onImageClear = {
