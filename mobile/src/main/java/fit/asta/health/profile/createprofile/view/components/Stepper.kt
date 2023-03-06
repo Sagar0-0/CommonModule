@@ -9,104 +9,53 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.Egg
+import androidx.compose.material.icons.outlined.Face
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import fit.asta.health.R
 import fit.asta.health.profile.view.*
+import fit.asta.health.testimonials.view.theme.cardElevation
+import fit.asta.health.ui.spacing
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StepperView() {
+fun StepperDemo() {
 
     val numberOfSteps = 5
+
     var currentStep by rememberSaveable { mutableStateOf(1) }
-    val titleList = arrayListOf("Details", "Physique", "Heath", "LifeStyle", "Diet")
-    val iconList = listOf(R.drawable.userphoto,
-        R.drawable.ic_physique,
-        R.drawable.healthandsafety,
-        R.drawable.profilelifestyle,
-        R.drawable.diet)
 
-    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(imageVector = Icons.Filled.Close,
-                    contentDescription = "close",
-                    modifier = Modifier.size(24.dp))
-            }
-            Spacer(modifier = Modifier.width(5.dp))
-            Text(text = "Cancel Create Profile", fontSize = 16.sp)
-        }
-        StepperDemo(
-            modifier = Modifier.fillMaxWidth(),
-            numberOfSteps = numberOfSteps,
-            currentStep = currentStep,
-            stepDescriptionList = titleList,
-            unSelectedColor = Color.LightGray,
-            selectedColor = Color.Blue,
-            isRainbow = false,
-            iconsList = iconList,
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        Box(modifier = Modifier.fillMaxWidth()) {
-            when (currentStep) {
-                1 -> {
-                    DetailsContent(eventNext = { currentStep = 2 })
-                }
-                2 -> {
-                    PhysiqueContent(eventNext = { currentStep = 3 })
-                }
-                3 -> {
-                    HealthContent(eventNext = { currentStep = 4 })
-                }
-                4 -> {
-                    LifeStyleContent(eventNext = { currentStep = 5 })
-                }
-                5 -> {
-                    DietContent(eventNext = { currentStep = 6 })
-                }
-            }
-        }
-    }
-}
+    var content by remember { mutableStateOf(1) }
 
-@Composable
-fun ButtonLogic(current: () -> Unit) {
+    val stepDescriptionList = arrayListOf("Details", "Physique", "Heath", "LifeStyle", "Diet")
 
-    Button(onClick = current) {
-        Text(text = "Next")
-    }
-
-}
-
-@Composable
-fun StepperDemo(
-    modifier: Modifier = Modifier,
-    numberOfSteps: Int,
-    currentStep: Int,
-    stepDescriptionList: List<String> = List(numberOfSteps) { "" },
-    unSelectedColor: Color = Color.LightGray,
-    selectedColor: Color? = null,
-    isRainbow: Boolean = false,
-    iconsList: List<Int>,
-    logic: (() -> Unit)? = null,
-) {
+    val iconList = listOf(
+        Icons.Outlined.AccountCircle,
+        Icons.Outlined.Face,
+        Icons.Outlined.Favorite,
+        Icons.Default.Emergency,
+        Icons.Outlined.Egg
+    )
 
     val descriptionList = MutableList(numberOfSteps) { "" }
 
@@ -114,21 +63,79 @@ fun StepperDemo(
         if (index < numberOfSteps) descriptionList[index] = element
     }
 
-    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-        for (step in 1..numberOfSteps) {
-            StepDemo(modifier = Modifier.weight(1F),
-                step = step,
-                isCompete = step < currentStep,
-                isCurrent = step == currentStep,
-                isComplete = step == numberOfSteps,
-                isRainbow = isRainbow,
-                stepDescription = descriptionList[step - 1],
-                unSelectedColor = unSelectedColor,
-                selectedColor = selectedColor,
-                icons = iconsList[step - 1],
-                logic = logic)
+    Scaffold(topBar = {
+        TopAppBar(title = {
+            Text(
+                text = "Create Profile",
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = FontWeight.Medium,
+                fontSize = 20.sp
+            )
+        }, navigationIcon = {
+            IconButton(onClick = {
+                currentStep -= 1
+            }) {
+                androidx.compose.material3.Icon(
+                    Icons.Filled.NavigateBefore,
+                    contentDescription = "back",
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+        }, modifier = Modifier.shadow(elevation = cardElevation.medium))
+    }, content = {
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    top = it.calculateTopPadding(),
+                    start = spacing.medium,
+                    end = spacing.medium,
+                    bottom = spacing.medium
+                )
+        ) {
+            Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
+                for (step in 1..numberOfSteps) {
+                    StepDemo(modifier = Modifier.weight(1F),
+                        step = step,
+                        isCompete = step < currentStep,
+                        isCurrent = step == currentStep,
+                        isComplete = step == numberOfSteps,
+                        isRainbow = false,
+                        stepDescription = descriptionList[step - 1],
+                        unSelectedColor = Color.LightGray,
+                        selectedColor = null,
+                        icons = iconList[step - 1],
+                        logic = {
+                            content = step
+                            currentStep = step
+                        })
+                }
+            }
+            Spacer(modifier = Modifier.height(20.dp))
+            Box(modifier = Modifier.fillMaxWidth()) {
+                when (currentStep) {
+                    1 -> {
+                        DetailsContent(eventNext = { currentStep += 1 })
+                    }
+                    2 -> {
+                        PhysiqueContent(eventNext = { currentStep += 1 })
+                    }
+                    3 -> {
+                        HealthContent(eventNext = { currentStep += 1 })
+                    }
+                    4 -> {
+                        LifeStyleContent(eventNext = { currentStep += 1 })
+                    }
+                    5 -> {
+                        DietContent(eventNext = { currentStep += 1 })
+                    }
+                }
+            }
         }
-    }
+
+    }, containerColor = MaterialTheme.colorScheme.background)
+
 }
 
 @Composable
@@ -142,30 +149,32 @@ private fun StepDemo(
     stepDescription: String,
     unSelectedColor: Color,
     selectedColor: Color?,
-    icons: Int?,
-    logic: (() -> Unit)? = null,
+    icons: ImageVector,
+    logic: () -> Unit,
 ) {
 
-    val rainBowColor = Brush.linearGradient(listOf(
-        Color.Magenta,
-        Color.Blue,
-        Color.Cyan,
-        Color.Green,
-        Color.Yellow,
-        Color.Red,
-    ))
+    val rainBowColor = Brush.linearGradient(
+        listOf(
+            Color.Magenta,
+            Color.Blue,
+            Color.Cyan,
+            Color.Green,
+            Color.Yellow,
+            Color.Red,
+        )
+    )
 
     val transition = updateTransition(isCompete, label = "")
 
     val innerCircleColor by transition.animateColor(label = "innerCircleColor") {
-        if (it) selectedColor ?: MaterialTheme.colors.primary else unSelectedColor
+        if (it) selectedColor ?: MaterialTheme.colorScheme.primary else unSelectedColor
     }
     val txtColor by transition.animateColor(label = "txtColor") {
-        if (it || isCurrent) selectedColor ?: MaterialTheme.colors.primary else unSelectedColor
+        if (it || isCurrent) selectedColor ?: MaterialTheme.colorScheme.primary else unSelectedColor
     }
 
     val color by transition.animateColor(label = "color") {
-        if (it || isCurrent) selectedColor ?: MaterialTheme.colors.primary else Color.Gray
+        if (it || isCurrent) selectedColor ?: MaterialTheme.colorScheme.primary else Color.Gray
     }
 
     val borderStroke: BorderStroke = if (isRainbow) {
@@ -193,21 +202,24 @@ private fun StepDemo(
                 }) {
 
             Box(contentAlignment = Alignment.Center) {
-                if (isCompete) logic?.let {
-                    IconButton(onClick = it) {
-                        Icon(imageVector = Icons.Default.Done,
-                            "done",
-                            modifier = modifier.padding(4.dp),
-                            tint = Color.White)
+                if (isCompete) {
+                    IconButton(onClick = logic) {
+
                     }
-                }
-                else icons?.let { painterResource(id = it) }?.let {
-                    logic?.let { it1 ->
-                        IconButton(onClick = it1) {
-                            Icon(painter = it,
-                                contentDescription = "done",
-                                modifier = modifier.padding(4.dp))
-                        }
+                    Icon(
+                        imageVector = Icons.Default.Done,
+                        "done",
+                        modifier = modifier.padding(4.dp),
+                        tint = Color.Black
+                    )
+                } else {
+                    IconButton(onClick = logic) {
+                        Icon(
+                            imageVector = icons,
+                            contentDescription = "done",
+                            modifier = modifier.padding(4.dp),
+                            tint = Color.White
+                        )
                     }
                 }
             }
@@ -253,4 +265,5 @@ private fun StepDemo(
             }
         }
     }
+
 }

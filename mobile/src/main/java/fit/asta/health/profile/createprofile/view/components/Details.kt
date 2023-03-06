@@ -41,7 +41,6 @@ fun DetailsContent(eventNext: (() -> Unit)? = null) {
             .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally) {
 
-
             Spacer(modifier = Modifier.height(16.dp))
 
             UserCircleImage()

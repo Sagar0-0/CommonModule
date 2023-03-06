@@ -10,6 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.profile.view.*
+import fit.asta.health.ui.theme.AppTheme
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -32,7 +33,9 @@ class CreateUserProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            CreateProfile()
+            AppTheme {
+                CreateProfile()
+            }
         }
     }
 }
