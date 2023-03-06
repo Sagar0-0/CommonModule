@@ -30,6 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.R
+import fit.asta.health.testimonials.view.theme.imageSize
+import fit.asta.health.ui.spacing
 
 data class ButtonListTypes(
     val buttonType: String,
@@ -63,8 +65,7 @@ fun CreateProfile() {
     ) {
 
         Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -140,8 +141,7 @@ fun CreateProfile() {
                     },
                     shape = RoundedCornerShape(8.dp),
                     keyboardOptions = KeyboardOptions.Default.copy(
-                        keyboardType = KeyboardType.Number,
-                        imeAction = ImeAction.Done
+                        keyboardType = KeyboardType.Number, imeAction = ImeAction.Done
                     ),
                     keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
                     placeholder = { Text("DAY") },
@@ -156,8 +156,7 @@ fun CreateProfile() {
                     },
                     shape = RoundedCornerShape(8.dp),
                     keyboardOptions = KeyboardOptions.Default.copy(
-                        keyboardType = KeyboardType.Number,
-                        imeAction = ImeAction.Done
+                        keyboardType = KeyboardType.Number, imeAction = ImeAction.Done
                     ),
                     keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
                     placeholder = { Text("MONTH") },
@@ -172,8 +171,7 @@ fun CreateProfile() {
                     },
                     shape = RoundedCornerShape(8.dp),
                     keyboardOptions = KeyboardOptions.Default.copy(
-                        keyboardType = KeyboardType.Number,
-                        imeAction = ImeAction.Done
+                        keyboardType = KeyboardType.Number, imeAction = ImeAction.Done
                     ),
                     keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
                     placeholder = { Text("YEAR") },
@@ -210,8 +208,7 @@ fun CreateProfile() {
                 },
                 shape = RoundedCornerShape(8.dp),
                 keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Done
+                    keyboardType = KeyboardType.Number, imeAction = ImeAction.Done
                 ),
                 keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
                 modifier = Modifier
@@ -248,8 +245,7 @@ fun CreateProfile() {
                 },
                 shape = RoundedCornerShape(8.dp),
                 keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Done
+                    keyboardType = KeyboardType.Number, imeAction = ImeAction.Done
                 ),
                 keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
                 modifier = Modifier
@@ -287,8 +283,7 @@ fun CreateProfile() {
                     text = it
                 },
                 keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Done
+                    keyboardType = KeyboardType.Number, imeAction = ImeAction.Done
                 ),
                 keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
                 modifier = Modifier
@@ -349,7 +344,6 @@ fun UserCircleImage() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Alpha(
     text1: String,
@@ -362,14 +356,12 @@ fun Alpha(
             .width(121.dp)
     ) {
         Button(
-            onClick = { /*TODO*/ },
-            shape = RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp)
+            onClick = { /*TODO*/ }, shape = RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp)
         ) {
             Text(text = text1, fontSize = 10.sp)
         }
         Button(
-            onClick = { /*TODO*/ },
-            shape = RoundedCornerShape(topEnd = 8.dp, bottomEnd = 8.dp)
+            onClick = { /*TODO*/ }, shape = RoundedCornerShape(topEnd = 8.dp, bottomEnd = 8.dp)
         ) {
             Text(text = text2, fontSize = 10.sp)
         }
@@ -386,8 +378,7 @@ fun AddressType(
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioButtonList[0]) }
 
     Card(
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
@@ -416,11 +407,9 @@ fun AddressType(
                         Box(modifier = Modifier.padding(top = 9.5.dp, bottom = 9.5.dp)) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 androidx.compose.material.RadioButton(
-                                    selected = (text == selectedOption),
-                                    onClick = {
+                                    selected = (text == selectedOption), onClick = {
                                         onOptionSelected(text)
-                                    },
-                                    colors = RadioButtonDefaults.colors(Color(0xff2F80ED))
+                                    }, colors = RadioButtonDefaults.colors(Color(0xff2F80ED))
                                 )
                                 Text(
                                     text = text.buttonType,
@@ -442,20 +431,20 @@ fun PrivacyStatement() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = spacing.medium),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Box {
             Image(
                 painter = painterResource(id = R.drawable.privacy),
                 contentDescription = null,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(imageSize.extraMedium)
             )
         }
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(spacing.medium))
         Column {
             Text(text = "Privacy Statement", fontSize = 14.sp, color = Color(0xDE000000))
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(spacing.extraSmall))
             Text(
                 text = "We value your privacy. We are committed to protecting your privacy and ask for your consent for the use of your personal health information as required during you health care.",
                 fontSize = 12.sp,
@@ -482,10 +471,10 @@ fun UserConsent() {
             Checkbox(
                 checked = checkedState.value,
                 onCheckedChange = { checkedState.value = it },
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(imageSize.extraMedium)
             )
         }
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(spacing.medium))
         Column {
             Text(
                 text = "I CONSENT TO THE USE OF MY PERSONAL HEALTH INFORMATION AS REQUIRED DURING YOUR HEALTH CARE.",

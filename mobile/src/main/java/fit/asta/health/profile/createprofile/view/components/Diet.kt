@@ -19,7 +19,7 @@ import fit.asta.health.profile.view.SelectionOutlineButton
 
 @Preview
 @Composable
-fun DietContent(eventSkip: (() -> Unit)? = null, eventNext: (() -> Unit)? = null) {
+fun DietContent(eventPrevious: (() -> Unit)? = null, eventNext: (() -> Unit)? = null) {
 
     val healthHistoryList4 = listOf("Less", "Moderate", "Very")
     val healthHistoryList5 = listOf("Cycling", "Walking", "Swimming", "Gym", "Dancing", "Bowling")
@@ -30,37 +30,46 @@ fun DietContent(eventSkip: (() -> Unit)? = null, eventNext: (() -> Unit)? = null
 
     Card(shape = RoundedCornerShape(16.dp)) {
 
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
-            SelectionOutlineButton(cardType = "Are you physically active ?",
-                cardList = healthHistoryList4)
+            SelectionOutlineButton(
+                cardType = "Are you physically active ?", cardList = healthHistoryList4
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            OnlyChipSelectionCard(cardType = "What activities are indulge in?",
+            OnlyChipSelectionCard(
+                cardType = "What activities are indulge in?",
                 cardList = healthHistoryList5,
-                checkedState)
+                checkedState
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            OnlyChipSelectionCard(cardType = "What activities are indulge in?",
+            OnlyChipSelectionCard(
+                cardType = "What activities are indulge in?",
                 cardList = healthHistoryList5,
-                checkedState)
+                checkedState
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            SelectionCardCreateProfile(cardType = "Any Significant Health history?",
+            SelectionCardCreateProfile(
+                cardType = "Any Significant Health history?",
                 cardList = healthHistoryList,
                 radioButtonList = radioButtonList,
-                checkedState) 
+                checkedState
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            CreateProfileButtons(eventSkip, eventNext, text = "Done")
+            CreateProfileButtons(eventPrevious, eventNext, text = "Done")
 
             Spacer(modifier = Modifier.height(20.dp))
 

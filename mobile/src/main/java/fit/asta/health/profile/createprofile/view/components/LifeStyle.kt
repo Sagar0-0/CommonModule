@@ -10,86 +10,117 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.profile.view.AddressType
 import fit.asta.health.profile.view.ButtonListTypes
 import fit.asta.health.profile.view.OnlyChipSelectionCard
 import fit.asta.health.profile.view.SelectionOutlineButton
+import fit.asta.health.ui.spacing
 
-@Preview
 @Composable
-fun LifeStyleContent(eventSkip: (() -> Unit)? = null, eventNext: (() -> Unit)? = null) {
+fun LifeStyleContent(
+    eventPrevious: (() -> Unit)? = null,
+    eventNext: (() -> Unit)? = null,
+    onSkipEvent: (Int) -> Unit,
+) {
 
     val healthHistoryList4 = listOf("Less", "Moderate", "Very")
     val checkedState = remember { mutableStateOf(true) }
-    val radioButtonList3 = listOf(ButtonListTypes(buttonType = "Morning"),
+    val radioButtonList3 = listOf(
+        ButtonListTypes(buttonType = "Morning"),
         ButtonListTypes(buttonType = "Afternoon"),
-        ButtonListTypes(buttonType = "Night"))
+        ButtonListTypes(buttonType = "Night")
+    )
     val healthHistoryList5 = listOf("Cycling", "Walking", "Swimming", "Gym", "Dancing", "Bowling")
 
     Card(shape = RoundedCornerShape(16.dp)) {
 
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp)
-            .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally) {
-
-            Row(Modifier
+        Column(
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)) {
-                SelectionOutlineButton(cardType = "Are you physically active ?",
-                    cardList = healthHistoryList4)
+                .padding(vertical = 16.dp)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            ) {
+                SelectionOutlineButton(
+                    cardType = "Are you physically active ?", cardList = healthHistoryList4
+                )
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Row(Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)) {
-                SelectionOutlineButton(cardType = "Are you physically active ?",
-                    cardList = healthHistoryList4)
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            ) {
+                SelectionOutlineButton(
+                    cardType = "Are you physically active ?", cardList = healthHistoryList4
+                )
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Row(Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)) {
-                AddressType(selectionTypeText = "What are your working hours?",
-                    radioButtonList = radioButtonList3)
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            ) {
+                AddressType(
+                    selectionTypeText = "What are your working hours?",
+                    radioButtonList = radioButtonList3
+                )
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Row(Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)) {
-                OnlyChipSelectionCard(cardType = "What activities are indulge in?",
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            ) {
+                OnlyChipSelectionCard(
+                    cardType = "What activities are indulge in?",
                     cardList = healthHistoryList5,
-                    checkedState)
+                    checkedState
+                )
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Row(Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)) {
-                OnlyChipSelectionCard(cardType = "What activities are indulge in?",
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            ) {
+                OnlyChipSelectionCard(
+                    cardType = "What activities are indulge in?",
                     cardList = healthHistoryList5,
-                    checkedState)
+                    checkedState
+                )
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Row(Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)) {
-                CreateProfileButtons(eventSkip, eventNext, text = "Next")
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            ) {
+                CreateProfileButtons(eventPrevious, eventNext, text = "Next")
             }
 
             Spacer(modifier = Modifier.height(20.dp))
+
+            SkipPage(onSkipEvent = onSkipEvent)
+
+            Spacer(modifier = Modifier.height(spacing.medium))
         }
     }
 

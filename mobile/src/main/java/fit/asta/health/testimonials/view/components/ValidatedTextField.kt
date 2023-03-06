@@ -7,11 +7,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -28,14 +28,13 @@ fun ValidatedTextField(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     showError: Boolean = false,
     errorMessage: UiString,
+    singleLine: Boolean = false,
 ) {
 
 
     /*Todo Text fields theming*/
 
-    Column(
-        Modifier.fillMaxWidth()
-    ) {
+    Column(Modifier.fillMaxWidth()) {
 
         OutlinedTextField(
             value = value,
@@ -49,7 +48,7 @@ fun ValidatedTextField(
             },
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions,
-            singleLine = false,
+            singleLine = singleLine,
             modifier = modifier.fillMaxWidth()
         )
 
@@ -58,8 +57,8 @@ fun ValidatedTextField(
             if (showError) {
                 Text(
                     text = errorMessage.asString(),
-                    color = MaterialTheme.colors.error,
-                    style = MaterialTheme.typography.caption
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.titleSmall
                 )
             }
 
@@ -69,4 +68,34 @@ fun ValidatedTextField(
         }
 
     }
+}
+
+
+@Composable
+fun ValidateNumberField(
+    modifier: Modifier = Modifier,
+    value: String,
+    onValueChange: (String) -> Unit,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    placeholder: String = "",
+    singleLine: Boolean = false,
+) {
+
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        keyboardActions = keyboardActions,
+        keyboardOptions = keyboardOptions,
+        placeholder = {
+            Text(
+                text = placeholder,
+                style = MaterialTheme.typography.bodySmall,
+                textAlign = TextAlign.Center
+            )
+        },
+        singleLine = singleLine,
+        modifier = modifier,
+    )
+
 }

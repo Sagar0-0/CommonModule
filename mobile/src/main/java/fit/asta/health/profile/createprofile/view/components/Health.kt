@@ -10,16 +10,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.profile.view.ButtonListTypes
 import fit.asta.health.profile.view.OnlyChipSelectionCard
 import fit.asta.health.profile.view.SelectionCardCreateProfile
+import fit.asta.health.ui.spacing
 
 
-@Preview
 @Composable
-fun HealthContent(eventSkip: (() -> Unit)? = null, eventNext: (() -> Unit)? = null) {
+fun HealthContent(
+    eventPrevious: (() -> Unit)? = null,
+    eventNext: (() -> Unit)? = null,
+    onSkipEvent: (Int) -> Unit,
+) {
 
     var text by remember { mutableStateOf(TextFieldValue("")) }
     val focusManager = LocalFocusManager.current
@@ -31,56 +34,72 @@ fun HealthContent(eventSkip: (() -> Unit)? = null, eventNext: (() -> Unit)? = nu
 
     Card(shape = RoundedCornerShape(16.dp)) {
 
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
-            SelectionCardCreateProfile(cardType = "Any Significant Health history?",
+            SelectionCardCreateProfile(
+                cardType = "Any Significant Health history?",
                 cardList = healthHistoryList,
                 radioButtonList = radioButtonList,
-                checkedState)
+                checkedState
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            SelectionCardCreateProfile(cardType = "Any Significant Health history?",
+            SelectionCardCreateProfile(
+                cardType = "Any Significant Health history?",
                 cardList = healthHistoryList,
                 radioButtonList = radioButtonList,
-                checkedState)
+                checkedState
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            SelectionCardCreateProfile(cardType = "Any Significant Health history?",
+            SelectionCardCreateProfile(
+                cardType = "Any Significant Health history?",
                 cardList = healthHistoryList,
                 radioButtonList = radioButtonList,
-                checkedState)
+                checkedState
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            SelectionCardCreateProfile(cardType = "Any Significant Health history?",
+            SelectionCardCreateProfile(
+                cardType = "Any Significant Health history?",
                 cardList = healthHistoryList,
                 radioButtonList = radioButtonList,
-                checkedState)
+                checkedState
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            OnlyChipSelectionCard(cardType = "When were you Injured?",
-                cardList = healthHistoryList3,
-                checkedState)
+            OnlyChipSelectionCard(
+                cardType = "When were you Injured?", cardList = healthHistoryList3, checkedState
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            SelectionCardCreateProfile(cardType = "Any Significant Health history?",
+            SelectionCardCreateProfile(
+                cardType = "Any Significant Health history?",
                 cardList = healthHistoryList,
                 radioButtonList = radioButtonList,
-                checkedState)
+                checkedState
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            CreateProfileButtons(eventSkip, eventNext, text = "Next")
+            CreateProfileButtons(eventPrevious, eventNext, text = "Next")
 
             Spacer(modifier = Modifier.height(20.dp))
+
+            SkipPage(onSkipEvent = onSkipEvent)
+
+            Spacer(modifier = Modifier.height(spacing.medium))
         }
     }
 

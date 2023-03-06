@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -14,185 +13,253 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.profile.view.AddressType
-import fit.asta.health.profile.view.Alpha
 import fit.asta.health.profile.view.ButtonListTypes
 import fit.asta.health.profile.view.NextButton
+import fit.asta.health.testimonials.view.components.ValidateNumberField
+import fit.asta.health.testimonials.view.components.ValidatedTextField
+import fit.asta.health.ui.spacing
+import fit.asta.health.utils.UiString
 
 
-@Preview
 @Composable
-fun PhysiqueContent(eventSkip: (() -> Unit)? = null, eventNext: (() -> Unit)? = null) {
+fun PhysiqueContent(
+    eventPrevious: (() -> Unit)? = null,
+    eventNext: (() -> Unit)? = null,
+    onSkipEvent: (Int) -> Unit,
+) {
 
     val placeHolderDOB = listOf("DAY", "MONTH", "YEAR")
 
-    val buttonTypeList = listOf(ButtonListTypes(buttonType = "Female"),
+    val buttonTypeList = listOf(
+        ButtonListTypes(buttonType = "Female"),
         ButtonListTypes(buttonType = "Male"),
-        ButtonListTypes(buttonType = "Others"))
+        ButtonListTypes(buttonType = "Others")
+    )
 
     val isPregnantList =
         listOf(ButtonListTypes(buttonType = "Yes"), ButtonListTypes(buttonType = "No"))
 
-    Card(shape = RoundedCornerShape(16.dp)) {
+    Card(shape = MaterialTheme.shapes.medium) {
 
-        var text by remember { mutableStateOf(TextFieldValue("")) }
+        var text by remember { mutableStateOf(("")) }
         val focusManager = LocalFocusManager.current
 
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally) {
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row(modifier = Modifier
+        Column(
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(text = "Date of Birth",
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = spacing.medium),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "Date of Birth",
                     color = Color(0xff132839),
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium)
+                    fontWeight = FontWeight.Medium
+                )
 
-                Text(text = "24yr",
+                Text(
+                    text = "24yr",
                     color = Color(0x99000000),
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium)
+                    fontWeight = FontWeight.Medium
+                )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(spacing.small))
 
-            LazyVerticalGrid(columns = GridCells.Fixed(3),
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(3),
                 userScrollEnabled = false,
                 modifier = Modifier
-                    .height(60.dp)
-                    .padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                    .fillMaxWidth()
+                    .height(48.dp)
+                    .padding(horizontal = spacing.medium),
+                horizontalArrangement = Arrangement.spacedBy(spacing.small)
+            ) {
 
-                placeHolderDOB.forEach {
+                placeHolderDOB.forEach { placeHolder ->
                     item {
-                        dOBTextField(text = text, focusManager = focusManager, placeholder = it)
+                        ValidateNumberField(
+                            value = text,
+                            onValueChange = { text = it },
+                            placeholder = placeHolder,
+                            singleLine = true,
+                            modifier = Modifier.height(48.dp),
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Number, imeAction = ImeAction.Next
+                            ),
+                            keyboardActions = KeyboardActions(onNext = {
+                                focusManager.moveFocus(
+                                    FocusDirection.Next
+                                )
+                            })
+                        )
                     }
                 }
 
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically) {
-                Text(text = "Weight",
-                    color = Color(0xff132839),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium)
-                Box {
-                    Alpha(text1 = "kg", text2 = "lb")
-                }
-            }
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            OutlinedTextField(value = text,
-                onValueChange = {
-                    text = it
-                },
-                shape = RoundedCornerShape(8.dp),
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp))
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                    .padding(horizontal = spacing.medium),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically) {
-                Text(text = "Height",
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Weight",
                     color = Color(0xff132839),
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium)
-                Box {
-                    Alpha(text1 = "in", text2 = "cm")
-                }
+                    fontWeight = FontWeight.Medium
+                )
+                RowToggleButtonGroup(
+                    buttonCount = 2,
+                    onButtonClick = { index -> println(index) },
+                    buttonTexts = arrayOf("kg", "lb"),
+                    modifier = Modifier.size(width = 80.dp, height = 24.dp)
+                )
             }
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(spacing.extraSmall))
 
-            OutlinedTextField(value = text,
-                onValueChange = {
-                    text = it
-                },
-                shape = RoundedCornerShape(8.dp),
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+            ValidatedTextField(
+                value = text,
+                onValueChange = { text = it },
+                errorMessage = UiString.Empty,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number, imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(onNext = {
+                    focusManager.moveFocus(
+                        FocusDirection.Next
+                    )
+                }),
+                modifier = Modifier.padding(horizontal = spacing.medium)
+            )
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp))
+                    .padding(horizontal = spacing.medium),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Height",
+                    color = Color(0xff132839),
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium
+                )
+                RowToggleButtonGroup(
+                    buttonCount = 2,
+                    onButtonClick = { index -> println(index) },
+                    buttonTexts = arrayOf("in", "cm"),
+                    modifier = Modifier.size(width = 80.dp, height = 24.dp)
+                )
+            }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(spacing.extraSmall))
 
-            Row(Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)) {
+            ValidatedTextField(
+                value = text,
+                onValueChange = { text = it },
+                errorMessage = UiString.Empty,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number, imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(onNext = {
+                    focusManager.moveFocus(
+                        FocusDirection.Next
+                    )
+                }),
+                modifier = Modifier.padding(horizontal = spacing.medium)
+            )
+
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = spacing.medium)
+            ) {
                 AddressType(selectionTypeText = "Gender", radioButtonList = buttonTypeList)
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
-            Row(Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)) {
-                AddressType(selectionTypeText = "Are you Pregnant?",
-                    radioButtonList = isPregnantList)
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = spacing.medium)
+            ) {
+                AddressType(
+                    selectionTypeText = "Are you Pregnant?", radioButtonList = isPregnantList
+                )
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = spacing.medium),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically) {
-                Text(text = "Please mention the week of Pregnancy",
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Please mention the week of Pregnancy",
                     color = Color(0x99000000),
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold)
+                    fontWeight = FontWeight.Bold
+                )
             }
-            TextField(value = text,
+            TextField(
+                value = text,
                 onValueChange = {
                     text = it
                 },
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Done),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number, imeAction = ImeAction.Done
+                ),
                 keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent))
+                    .padding(horizontal = spacing.medium),
+                colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent)
+            )
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
-            CreateProfileButtons(eventSkip, eventNext, text = "Next")
+            CreateProfileButtons(eventPrevious, eventNext, text = "Next")
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            SkipPage(onSkipEvent = onSkipEvent)
+
+            Spacer(modifier = Modifier.height(spacing.medium))
         }
     }
 
@@ -200,33 +267,14 @@ fun PhysiqueContent(eventSkip: (() -> Unit)? = null, eventNext: (() -> Unit)? = 
 
 @Composable
 fun CreateProfileButtons(
-    eventSkip: (() -> Unit)? = null,
+    eventPrevious: (() -> Unit)? = null,
     eventNext: (() -> Unit)? = null,
     text: String? = null,
 ) {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        NextButton(text = "Skip", modifier = Modifier.fillMaxWidth(0.5f), event = eventNext)
+        NextButton(text = "Previous", modifier = Modifier.fillMaxWidth(0.5f), event = eventPrevious)
         if (text != null) {
             NextButton(text = text, modifier = Modifier.fillMaxWidth(1f), event = eventNext)
         }
     }
-}
-
-@Composable
-private fun dOBTextField(
-    text: TextFieldValue,
-    focusManager: FocusManager,
-    placeholder: String,
-): TextFieldValue {
-    var text1 = text
-    OutlinedTextField(value = text,
-        onValueChange = {
-            text1 = it
-        },
-        shape = RoundedCornerShape(8.dp),
-        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number,
-            imeAction = ImeAction.Done),
-        keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-        placeholder = { Text(placeholder) })
-    return text1
 }

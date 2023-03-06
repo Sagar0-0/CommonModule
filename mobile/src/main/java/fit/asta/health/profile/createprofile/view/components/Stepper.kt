@@ -1,6 +1,7 @@
 package fit.asta.health.profile.createprofile.view.components
 
 
+import android.util.Log
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.BorderStroke
@@ -39,7 +40,7 @@ import fit.asta.health.ui.spacing
 @Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StepperDemo() {
+fun CreateProfileLayout() {
 
     val numberOfSteps = 5
 
@@ -48,6 +49,12 @@ fun StepperDemo() {
     var content by remember { mutableStateOf(1) }
 
     val stepDescriptionList = arrayListOf("Details", "Physique", "Heath", "LifeStyle", "Diet")
+
+    var isSkipPressed by remember {
+        mutableStateOf(false)
+    }
+
+    Log.d("validate", "Text Click -> $isSkipPressed")
 
     val iconList = listOf(
         Icons.Outlined.AccountCircle,
@@ -61,6 +68,12 @@ fun StepperDemo() {
 
     stepDescriptionList.forEachIndexed { index, element ->
         if (index < numberOfSteps) descriptionList[index] = element
+    }
+
+    val iconColor = if (isSkipPressed) {
+        MaterialTheme.colorScheme.error
+    } else {
+        MaterialTheme.colorScheme.primary
     }
 
     Scaffold(topBar = {
@@ -96,7 +109,8 @@ fun StepperDemo() {
         ) {
             Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
                 for (step in 1..numberOfSteps) {
-                    StepDemo(modifier = Modifier.weight(1F),
+                    Stepper(
+                        modifier = Modifier.weight(1F),
                         step = step,
                         isCompete = step < currentStep,
                         isCurrent = step == currentStep,
@@ -109,29 +123,76 @@ fun StepperDemo() {
                         logic = {
                             content = step
                             currentStep = step
-                        })
+                        },
+                        isPressed = isSkipPressed,
+                        iconTint = iconColor
+                    )
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
-            Box(modifier = Modifier.fillMaxWidth()) {
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.BottomCenter) {
                 when (currentStep) {
                     1 -> {
-                        DetailsContent(eventNext = { currentStep += 1 })
+                        DetailsContent(eventNext = {
+                            currentStep += 1
+                        }, onSkipEvent = {
+                            currentStep += 1
+                            isSkipPressed = true
+                        })
                     }
                     2 -> {
-                        PhysiqueContent(eventNext = { currentStep += 1 })
+                        PhysiqueContent(
+                            eventNext = {
+                                currentStep += 1
+                            },
+                            eventPrevious = {
+                                currentStep -= 1
+                            },
+                            onSkipEvent = {
+                                currentStep += 1
+                                isSkipPressed = true
+                            },
+                        )
                     }
                     3 -> {
-                        HealthContent(eventNext = { currentStep += 1 })
+                        HealthContent(
+                            eventNext = {
+                                currentStep += 1
+                            },
+                            eventPrevious = {
+                                currentStep -= 1
+                            },
+                            onSkipEvent = {
+                                currentStep += 1
+                                isSkipPressed = true
+                            },
+                        )
                     }
                     4 -> {
-                        LifeStyleContent(eventNext = { currentStep += 1 })
+                        LifeStyleContent(
+                            eventNext = {
+                                currentStep += 1
+                            },
+                            eventPrevious = {
+                                currentStep -= 1
+                            },
+                            onSkipEvent = {
+                                currentStep += 1
+                                isSkipPressed = true
+                            },
+                        )
                     }
                     5 -> {
-                        DietContent(eventNext = { currentStep += 1 })
+                        DietContent(eventNext = {
+                            currentStep += 1
+                        }, eventPrevious = {
+                            currentStep -= 1
+                        })
                     }
                 }
+
             }
+
         }
 
     }, containerColor = MaterialTheme.colorScheme.background)
@@ -139,18 +200,20 @@ fun StepperDemo() {
 }
 
 @Composable
-private fun StepDemo(
+private fun Stepper(
     modifier: Modifier = Modifier,
     step: Int,
     isCompete: Boolean,
     isCurrent: Boolean,
     isComplete: Boolean,
     isRainbow: Boolean,
+    isPressed: Boolean,
     stepDescription: String,
     unSelectedColor: Color,
     selectedColor: Color?,
     icons: ImageVector,
     logic: () -> Unit,
+    iconTint: Color,
 ) {
 
     val rainBowColor = Brush.linearGradient(
@@ -189,9 +252,8 @@ private fun StepDemo(
 
         val (circle, txt, line) = createRefs()
 
-        Surface(shape = CircleShape,
-            border = borderStroke,
-            color = innerCircleColor,
+        Surface(shape = CircleShape, border = borderStroke,
+            //color = innerCircleColor,
             modifier = Modifier
                 .size(30.dp)
                 .constrainAs(circle) {
@@ -202,25 +264,31 @@ private fun StepDemo(
                 }) {
 
             Box(contentAlignment = Alignment.Center) {
-                if (isCompete) {
-                    IconButton(onClick = logic) {
 
-                    }
-                    Icon(
-                        imageVector = Icons.Default.Done,
-                        "done",
-                        modifier = modifier.padding(4.dp),
-                        tint = Color.Black
-                    )
-                } else {
-                    IconButton(onClick = logic) {
+                IconButton(onClick = logic) {
+
+                    if (isCompete) {
                         Icon(
                             imageVector = icons,
                             contentDescription = "done",
                             modifier = modifier.padding(4.dp),
-                            tint = Color.White
+                            tint = if (isPressed) {
+                                MaterialTheme.colorScheme.error
+                            } else {
+                                MaterialTheme.colorScheme.primary
+                            }
                         )
+                    } else {
+                        IconButton(onClick = logic) {
+                            Icon(
+                                imageVector = icons,
+                                contentDescription = "done",
+                                modifier = modifier.padding(4.dp),
+                                tint = Color.Black
+                            )
+                        }
                     }
+
                 }
             }
         }
