@@ -2,16 +2,18 @@ package fit.asta.health.profile.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.RadioButtonDefaults
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -28,7 +30,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.R
 import fit.asta.health.testimonials.view.theme.imageSize
 import fit.asta.health.ui.spacing
@@ -186,7 +187,7 @@ fun CreateProfile() {
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = CenterVertically
             ) {
                 Text(
                     text = "Weight",
@@ -223,7 +224,7 @@ fun CreateProfile() {
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = CenterVertically
             ) {
                 Text(
                     text = "Height",
@@ -253,13 +254,25 @@ fun CreateProfile() {
                     .padding(horizontal = 16.dp)
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
-
-            AddressType(selectionTypeText = "Gender", radioButtonList = buttonTypeList)
+            val (selectedOption, onOptionSelected) = remember { mutableStateOf(buttonTypeList[0]) }
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            AddressType(selectionTypeText = "Are you Pregnant?", radioButtonList = isPregnantList)
+            AddressType(
+                selectionTypeText = "Gender",
+                radioButtonList = buttonTypeList,
+                selectedOption = selectedOption,
+                onOptionSelected = onOptionSelected
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            AddressType(
+                selectionTypeText = "Are you Pregnant?",
+                radioButtonList = isPregnantList,
+                selectedOption = selectedOption,
+                onOptionSelected = onOptionSelected
+            )
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -268,7 +281,7 @@ fun CreateProfile() {
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = CenterVertically
             ) {
                 Text(
                     text = "Please mention the week of Pregnancy",
@@ -373,24 +386,25 @@ fun AddressType(
     selectionTypeText: String,
     radioButtonList: List<ButtonListTypes>,
     modifier: Modifier = Modifier,
+    selectedOption: ButtonListTypes,
+    onOptionSelected: (ButtonListTypes) -> Unit,
 ) {
-
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioButtonList[0]) }
 
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
+        shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp)
-        ) {
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(Modifier.fillMaxWidth()) {
-                androidx.compose.material.Text(
+        Column(Modifier.fillMaxWidth()) {
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = spacing.medium)
+            ) {
+                Text(
                     text = selectionTypeText,
                     color = Color(0x99000000),
                     fontSize = 14.sp,
@@ -398,26 +412,27 @@ fun AddressType(
                     fontWeight = FontWeight.Bold
                 )
             }
-            FlowRow(Modifier.fillMaxWidth()) {
+
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(radioButtonList.size),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp),
+                userScrollEnabled = false
+            ) {
                 radioButtonList.forEach { text ->
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Box(modifier = Modifier.padding(top = 9.5.dp, bottom = 9.5.dp)) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                androidx.compose.material.RadioButton(
-                                    selected = (text == selectedOption), onClick = {
-                                        onOptionSelected(text)
-                                    }, colors = RadioButtonDefaults.colors(Color(0xff2F80ED))
-                                )
-                                Text(
-                                    text = text.buttonType,
-                                    fontSize = 16.sp,
-                                    lineHeight = 22.4.sp,
-                                    color = Color(0xff575757)
-                                )
-                            }
+                    item {
+                        Row(verticalAlignment = CenterVertically, modifier = Modifier.weight(1f)) {
+                            RadioButton(
+                                selected = (text == selectedOption),
+                                onClick = { onOptionSelected(text) },
+                                modifier = Modifier.size(40.dp)
+                            )
+                            Text(
+                                text = text.buttonType,
+                                style = MaterialTheme.typography.labelSmall,
+                                textAlign = TextAlign.Right
+                            )
                         }
                     }
                 }

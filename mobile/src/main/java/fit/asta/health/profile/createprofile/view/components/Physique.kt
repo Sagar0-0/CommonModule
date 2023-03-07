@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package fit.asta.health.profile.createprofile.view.components
 
 import androidx.compose.foundation.layout.*
@@ -9,7 +7,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,8 +45,16 @@ fun PhysiqueContent(
         ButtonListTypes(buttonType = "Others")
     )
 
+
     val isPregnantList =
         listOf(ButtonListTypes(buttonType = "Yes"), ButtonListTypes(buttonType = "No"))
+
+    val (selectedOption, onOptionSelected) = remember { mutableStateOf(buttonTypeList[0]) }
+    val (isPregnantSelectedOption, onPregnantOptionSelected) = remember {
+        mutableStateOf(
+            isPregnantList[0]
+        )
+    }
 
     Card(shape = MaterialTheme.shapes.medium) {
 
@@ -205,7 +213,12 @@ fun PhysiqueContent(
                     .fillMaxWidth()
                     .padding(horizontal = spacing.medium)
             ) {
-                AddressType(selectionTypeText = "Gender", radioButtonList = buttonTypeList)
+                AddressType(
+                    selectionTypeText = "Gender",
+                    radioButtonList = buttonTypeList,
+                    selectedOption = selectedOption,
+                    onOptionSelected = onOptionSelected
+                )
             }
 
             Spacer(modifier = Modifier.height(spacing.medium))
@@ -216,40 +229,47 @@ fun PhysiqueContent(
                     .padding(horizontal = spacing.medium)
             ) {
                 AddressType(
-                    selectionTypeText = "Are you Pregnant?", radioButtonList = isPregnantList
+                    selectionTypeText = "Are you Pregnant?",
+                    radioButtonList = isPregnantList,
+                    selectedOption = isPregnantSelectedOption,
+                    onOptionSelected = onPregnantOptionSelected
                 )
             }
 
-            Spacer(modifier = Modifier.height(spacing.medium))
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = spacing.medium),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Please mention the week of Pregnancy",
-                    color = Color(0x99000000),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
+            if (isPregnantSelectedOption == isPregnantList[0]) {
+
+                Spacer(modifier = Modifier.height(spacing.medium))
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = spacing.medium),
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    Text(
+                        "Please Enter your Pregnancy Week",
+                        color = Color(0xff132839),
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(spacing.medium))
+
+                ValidateNumberField(
+                    value = text,
+                    onValueChange = { text = it },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = spacing.medium),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number, imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
                 )
+
             }
-            TextField(
-                value = text,
-                onValueChange = {
-                    text = it
-                },
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Number, imeAction = ImeAction.Done
-                ),
-                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = spacing.medium),
-                colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent)
-            )
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
@@ -271,10 +291,12 @@ fun CreateProfileButtons(
     eventNext: (() -> Unit)? = null,
     text: String? = null,
 ) {
+
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
         NextButton(text = "Previous", modifier = Modifier.fillMaxWidth(0.5f), event = eventPrevious)
         if (text != null) {
             NextButton(text = text, modifier = Modifier.fillMaxWidth(1f), event = eventNext)
         }
     }
+
 }

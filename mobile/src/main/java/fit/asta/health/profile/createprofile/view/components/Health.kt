@@ -37,7 +37,7 @@ fun HealthContent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(spacing.medium)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -49,7 +49,7 @@ fun HealthContent(
                 checkedState
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
             SelectionCardCreateProfile(
                 cardType = "Any Significant Health history?",
@@ -58,7 +58,7 @@ fun HealthContent(
                 checkedState
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
             SelectionCardCreateProfile(
                 cardType = "Any Significant Health history?",
@@ -67,7 +67,7 @@ fun HealthContent(
                 checkedState
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
             SelectionCardCreateProfile(
                 cardType = "Any Significant Health history?",
@@ -76,13 +76,13 @@ fun HealthContent(
                 checkedState
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
             OnlyChipSelectionCard(
                 cardType = "When were you Injured?", cardList = healthHistoryList3, checkedState
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
             SelectionCardCreateProfile(
                 cardType = "Any Significant Health history?",
@@ -91,11 +91,11 @@ fun HealthContent(
                 checkedState
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
             CreateProfileButtons(eventPrevious, eventNext, text = "Next")
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
             SkipPage(onSkipEvent = onSkipEvent)
 

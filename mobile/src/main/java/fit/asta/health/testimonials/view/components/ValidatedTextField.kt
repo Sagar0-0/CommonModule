@@ -49,7 +49,8 @@ fun ValidatedTextField(
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions,
             singleLine = singleLine,
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.medium
         )
 
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
@@ -96,6 +97,7 @@ fun ValidateNumberField(
         },
         singleLine = singleLine,
         modifier = modifier,
+        shape = MaterialTheme.shapes.medium
     )
 
 }
