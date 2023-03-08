@@ -11,8 +11,10 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun DeleteIcon() {
-    Icon(imageVector = Icons.Filled.RemoveCircle,
+    Icon(
+        imageVector = Icons.Filled.RemoveCircle,
         contentDescription = null,
         Modifier.size(20.dp),
-        tint = MaterialTheme.colorScheme.error)
+        tint = MaterialTheme.colorScheme.error
+    )
 }

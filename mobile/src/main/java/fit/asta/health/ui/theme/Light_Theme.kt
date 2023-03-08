@@ -38,7 +38,7 @@ val md_theme_light_inverseOnSurface = Color(0xFFDDE9F6)
 val md_theme_light_inverseSurface = Color(0xFF003061)
 val md_theme_light_inversePrimary = Color(0xFFA2C9FF)
 
-val md_theme_light_shadow = Color(0xFF333F4B)
+//val md_theme_light_shadow = Color(0xFF333F4B)
 
 val md_theme_light_surfaceTint = Color(0xFF132839)
 

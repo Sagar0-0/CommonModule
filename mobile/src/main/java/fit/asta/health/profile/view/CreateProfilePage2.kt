@@ -12,13 +12,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.profile.view.components.AddIcon
 import fit.asta.health.profile.view.components.ChipsOnCards
+import fit.asta.health.testimonials.view.theme.cardElevation
+import fit.asta.health.ui.customSize
 import fit.asta.health.ui.spacing
 
 @Composable
@@ -35,15 +33,19 @@ fun SelectionCardCreateProfile(
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(spacing.medium)
+            modifier = Modifier.fillMaxWidth()
         ) {
+
+            Spacer(modifier = Modifier.height(spacing.small))
+
             Row(
-                Modifier.fillMaxWidth(),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = spacing.medium),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -53,50 +55,34 @@ fun SelectionCardCreateProfile(
                 ) {
                     Text(
                         text = cardType,
-                        fontSize = 14.sp,
-                        color = Color(0xff132839),
-                        fontWeight = FontWeight.Medium
+                        color = MaterialTheme.colorScheme.onTertiaryContainer,
+                        style = MaterialTheme.typography.titleSmall
                     )
                 }
                 AddIcon(onClick = {/*Todo*/ })
             }
 
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(radioButtonList.size),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(35.dp),
-                userScrollEnabled = false
-            ) {
-                radioButtonList.forEach { text ->
-                    item {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            RadioButton(selected = (text == selectedOption),
-                                onClick = { onOptionSelected(text) })
-                            Text(
-                                text = text.buttonType,
-                                style = MaterialTheme.typography.labelSmall,
-                                textAlign = TextAlign.Right
-                            )
-                        }
-                    }
-                }
-            }
+            MultiToggleLayout(
+                selectionTypeText = null,
+                radioButtonList = radioButtonList,
+                selectedOption = selectedOption,
+                onOptionSelected = onOptionSelected
+            )
 
             if (selectedOption == radioButtonList[0]) {
-                Spacer(modifier = Modifier.height(16.dp))
-                FlowRow(mainAxisSpacing = 8.dp, crossAxisSpacing = 4.dp) {
+
+                FlowRow(
+                    mainAxisSpacing = spacing.minSmall,
+                    modifier = Modifier.padding(start = spacing.medium),
+                ) {
                     cardList.forEach {
                         ChipsOnCards(textOnChip = it, checkedState = checkedState)
                     }
                 }
-            }
 
+
+            }
+            Spacer(modifier = Modifier.height(spacing.small))
         }
     }
 }
@@ -112,15 +98,19 @@ fun OnlyChipSelectionCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(spacing.medium)
+            modifier = Modifier.fillMaxWidth()
         ) {
+
+            Spacer(modifier = Modifier.height(spacing.small))
+
             Row(
-                Modifier.fillMaxWidth(),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = spacing.medium),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -130,20 +120,25 @@ fun OnlyChipSelectionCard(
                 ) {
                     Text(
                         text = cardType,
-                        fontSize = 14.sp,
-                        color = Color(0xff132839),
-                        fontWeight = FontWeight.Medium
+                        color = MaterialTheme.colorScheme.onTertiaryContainer,
+                        style = MaterialTheme.typography.titleSmall
                     )
                 }
                 AddIcon(onClick = {/*Todo*/ })
             }
-            Spacer(modifier = Modifier.height(spacing.medium))
 
-            FlowRow(mainAxisSpacing = 8.dp, crossAxisSpacing = 4.dp) {
+            Spacer(modifier = Modifier.height(spacing.small))
+
+            FlowRow(
+                mainAxisSpacing = spacing.minSmall,
+                modifier = Modifier.padding(start = spacing.medium),
+            ) {
                 cardList.forEach {
                     ChipsOnCards(textOnChip = it, checkedState = checkedState)
                 }
             }
+
+            Spacer(modifier = Modifier.height(spacing.small))
 
         }
     }
@@ -157,44 +152,49 @@ fun SelectionOutlineButton(
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(spacing.medium)
+            modifier = Modifier.fillMaxWidth()
         ) {
+
+            Spacer(modifier = Modifier.height(spacing.small))
+
             Row(
-                Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = spacing.medium),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = cardType,
-                        style = MaterialTheme.typography.titleSmall,
-                        color = Color(0xff132839),
-                    )
-                }
-                AddIcon()
+
+                Text(
+                    text = cardType,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                    style = MaterialTheme.typography.titleSmall
+                )
+
             }
 
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(spacing.small))
 
-
-            FlowRow(
-                mainAxisSpacing = spacing.small,
-                crossAxisSpacing = spacing.extraSmall,
-                modifier = Modifier.fillMaxWidth()
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(cardList.size),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = spacing.small)
+                    .height(customSize.extraLarge),
+                userScrollEnabled = false,
+                horizontalArrangement = Arrangement.spacedBy(spacing.extraSmall),
             ) {
-                cardList.forEach {
-                    OutlineButton(textOnChip = it, modifier = Modifier.weight(1f))
+                cardList.forEach { text ->
+                    item {
+                        OutlineButton(textOnChip = text, modifier = Modifier.weight(1f))
+                    }
                 }
             }
 
+            Spacer(modifier = Modifier.height(spacing.small))
         }
     }
 }
@@ -205,7 +205,7 @@ fun OutlineButton(textOnChip: String, modifier: Modifier = Modifier) {
     OutlinedButton(
         onClick = { /*TODO*/ },
         colors = ButtonDefaults.outlinedButtonColors(disabledContentColor = Color(0xffE7EAED)),
-        shape = RoundedCornerShape(100.dp),
+        shape = RoundedCornerShape(customSize.extraLarge4),
         modifier = modifier
     ) {
         Text(

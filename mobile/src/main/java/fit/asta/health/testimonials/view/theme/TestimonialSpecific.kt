@@ -112,6 +112,8 @@ val imageHeight: ImageHeight
 
 data class CardElevation(
     val extraSmall: Dp = 2.dp,
+    val smallMedium: Dp = 4.dp,
+    val smallExtraMedium: Dp = 6.dp,
     val small: Dp = 8.dp,
     val medium: Dp = 16.dp,
     val large: Dp = 32.dp,

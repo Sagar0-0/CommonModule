@@ -1,7 +1,6 @@
 package fit.asta.health.profile.createprofile.view.components
 
 
-import android.util.Log
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.BorderStroke
@@ -23,11 +22,9 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,6 +39,8 @@ import fit.asta.health.ui.spacing
 @Composable
 fun CreateProfileLayout() {
 
+    /* TODO Paddings, Font, Elevations (4dp and 6dp), BottomSheets, Colors */
+
     val numberOfSteps = 5
 
     var currentStep by rememberSaveable { mutableStateOf(1) }
@@ -53,8 +52,6 @@ fun CreateProfileLayout() {
     var isSkipPressed by remember {
         mutableStateOf(false)
     }
-
-    Log.d("validate", "Text Click -> $isSkipPressed")
 
     val iconList = listOf(
         Icons.Outlined.AccountCircle,
@@ -80,9 +77,8 @@ fun CreateProfileLayout() {
         TopAppBar(title = {
             Text(
                 text = "Create Profile",
-                color = MaterialTheme.colorScheme.onSurface,
-                fontWeight = FontWeight.Medium,
-                fontSize = 20.sp
+                color = MaterialTheme.colorScheme.background,
+                style = MaterialTheme.typography.headlineSmall
             )
         }, navigationIcon = {
             IconButton(onClick = {
@@ -94,9 +90,8 @@ fun CreateProfileLayout() {
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
-        }, modifier = Modifier.shadow(elevation = cardElevation.medium))
+        }, elevation = cardElevation.small)
     }, content = {
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -104,7 +99,6 @@ fun CreateProfileLayout() {
                     top = it.calculateTopPadding(),
                     start = spacing.medium,
                     end = spacing.medium,
-                    bottom = spacing.medium
                 )
         ) {
             Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
@@ -129,72 +123,70 @@ fun CreateProfileLayout() {
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(20.dp))
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.BottomCenter) {
-                when (currentStep) {
-                    1 -> {
-                        DetailsContent(eventNext = {
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            when (currentStep) {
+                1 -> {
+                    DetailsContent(eventNext = {
+                        currentStep += 1
+                    }, onSkipEvent = {
+                        currentStep += 1
+                        isSkipPressed = true
+                    })
+                }
+                2 -> {
+                    PhysiqueContent(
+                        eventNext = {
                             currentStep += 1
-                        }, onSkipEvent = {
+                        },
+                        eventPrevious = {
+                            currentStep -= 1
+                        },
+                        onSkipEvent = {
                             currentStep += 1
                             isSkipPressed = true
-                        })
-                    }
-                    2 -> {
-                        PhysiqueContent(
-                            eventNext = {
-                                currentStep += 1
-                            },
-                            eventPrevious = {
-                                currentStep -= 1
-                            },
-                            onSkipEvent = {
-                                currentStep += 1
-                                isSkipPressed = true
-                            },
-                        )
-                    }
-                    3 -> {
-                        HealthContent(
-                            eventNext = {
-                                currentStep += 1
-                            },
-                            eventPrevious = {
-                                currentStep -= 1
-                            },
-                            onSkipEvent = {
-                                currentStep += 1
-                                isSkipPressed = true
-                            },
-                        )
-                    }
-                    4 -> {
-                        LifeStyleContent(
-                            eventNext = {
-                                currentStep += 1
-                            },
-                            eventPrevious = {
-                                currentStep -= 1
-                            },
-                            onSkipEvent = {
-                                currentStep += 1
-                                isSkipPressed = true
-                            },
-                        )
-                    }
-                    5 -> {
-                        DietContent(eventNext = {
-                            currentStep += 1
-                        }, eventPrevious = {
-                            currentStep -= 1
-                        })
-                    }
+                        },
+                    )
                 }
-
+                3 -> {
+                    HealthContent(
+                        eventNext = {
+                            currentStep += 1
+                        },
+                        eventPrevious = {
+                            currentStep -= 1
+                        },
+                        onSkipEvent = {
+                            currentStep += 1
+                            isSkipPressed = true
+                        },
+                    )
+                }
+                4 -> {
+                    LifeStyleContent(
+                        eventNext = {
+                            currentStep += 1
+                        },
+                        eventPrevious = {
+                            currentStep -= 1
+                        },
+                        onSkipEvent = {
+                            currentStep += 1
+                            isSkipPressed = true
+                        },
+                    )
+                }
+                5 -> {
+                    DietContent(eventNext = {
+                        currentStep += 1
+                    }, eventPrevious = {
+                        currentStep -= 1
+                    })
+                }
             }
 
         }
-
     }, containerColor = MaterialTheme.colorScheme.background)
 
 }
@@ -232,6 +224,7 @@ private fun Stepper(
     val innerCircleColor by transition.animateColor(label = "innerCircleColor") {
         if (it) selectedColor ?: MaterialTheme.colorScheme.primary else unSelectedColor
     }
+
     val txtColor by transition.animateColor(label = "txtColor") {
         if (it || isCurrent) selectedColor ?: MaterialTheme.colorScheme.primary else unSelectedColor
     }
@@ -252,8 +245,8 @@ private fun Stepper(
 
         val (circle, txt, line) = createRefs()
 
-        Surface(shape = CircleShape, border = borderStroke,
-            //color = innerCircleColor,
+        Surface(shape = CircleShape,
+            border = borderStroke,
             modifier = Modifier
                 .size(30.dp)
                 .constrainAs(circle) {

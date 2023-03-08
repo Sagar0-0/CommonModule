@@ -5,11 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material.icons.outlined.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.profile.view.*
+import fit.asta.health.profile.createprofile.view.components.CreateProfileLayout
 import fit.asta.health.ui.theme.AppTheme
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -28,13 +25,12 @@ class CreateUserProfileActivity : AppCompatActivity() {
         }
     }
 
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
             AppTheme {
-                CreateProfile()
+                CreateProfileLayout()
             }
         }
     }
