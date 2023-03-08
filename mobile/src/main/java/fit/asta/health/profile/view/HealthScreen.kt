@@ -3,10 +3,12 @@ package fit.asta.health.profile.view
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -25,8 +27,13 @@ fun HealthScreen(
         mutableStateOf(null)
     }
 
+    var modalBottomSheetValue by remember {
+        mutableStateOf(ModalBottomSheetValue.Hidden)
+    }
 
-    val modalBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+    val modalBottomSheetState = rememberModalBottomSheetState(
+        initialValue = modalBottomSheetValue
+    )
 
     val scope = rememberCoroutineScope()
 
@@ -35,17 +42,25 @@ fun HealthScreen(
     }
 
     val openSheet = {
-        scope.launch { modalBottomSheetState.show() }
+        scope.launch {
+            modalBottomSheetState.show()
+            modalBottomSheetValue = ModalBottomSheetValue.Expanded
+        }
     }
 
-    ModalBottomSheetLayout(modifier = Modifier.fillMaxSize(),
+    ModalBottomSheetLayout(
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentHeight(),
         sheetState = modalBottomSheetState,
         sheetContent = {
             Spacer(modifier = Modifier.height(1.dp))
             currentBottomSheet?.let {
                 HealthSheetLayout(sheetLayout = it, closeSheet = { closeSheet() })
             }
-        }) {
+        },
+        sheetShape = MaterialTheme.shapes.medium
+    ) {
 
         HealthLayout(health = health, editState = editState, onAilments = {
             currentBottomSheet = AILMENTS
@@ -71,9 +86,11 @@ fun HealthSheetLayout(
     sheetLayout: HealthBottomSheetType,
     closeSheet: () -> Unit,
 ) {
+
     when (sheetLayout) {
         AILMENTS -> Screen1(closeSheet)
         MEDICATIONS -> Screen1(closeSheet)
         HEALTHTARGETS -> Screen1(closeSheet)
     }
+
 }

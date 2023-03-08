@@ -23,7 +23,6 @@ import fit.asta.health.profile.bottomsheets.components.DoneButton
 @Composable
 fun GenderBottomSheet() {
 
-
     val buttonTypeList = listOf(ButtonListTypes(buttonType = "Female"),
         ButtonListTypes(buttonType = "Male"),
         ButtonListTypes(buttonType = "Others"))

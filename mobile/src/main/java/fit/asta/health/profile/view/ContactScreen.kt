@@ -63,7 +63,7 @@ enum class BottomSheetType {
 fun Screen1(closeSheet: () -> Unit) {
 
     Box(modifier = Modifier
-        .fillMaxWidth()
+        .fillMaxSize()
         .background(Color.White)) {
         Column(modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally) {

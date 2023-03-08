@@ -8,16 +8,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
+import androidx.compose.material.Divider
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Egg
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.*
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -77,20 +79,22 @@ fun CreateProfileLayout() {
         TopAppBar(title = {
             Text(
                 text = "Create Profile",
-                color = MaterialTheme.colorScheme.background,
+                color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.headlineSmall
             )
         }, navigationIcon = {
-            IconButton(onClick = {
-                currentStep -= 1
-            }) {
-                androidx.compose.material3.Icon(
-                    Icons.Filled.NavigateBefore,
+            IconButton(
+                onClick = {
+                    currentStep -= 1
+                },
+            ) {
+                Icon(
+                    Icons.Filled.Close,
                     contentDescription = "back",
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
-        }, elevation = cardElevation.small)
+        }, elevation = cardElevation.small, backgroundColor = MaterialTheme.colorScheme.onPrimary)
     }, content = {
         Column(
             modifier = Modifier

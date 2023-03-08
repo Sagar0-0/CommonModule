@@ -29,11 +29,13 @@ fun HealthLayout(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ChipCard(icon = UserPropertyType.Ailments.icon,
+        ChipCard(
+            icon = UserPropertyType.Ailments.icon,
             title = UserPropertyType.Ailments.title,
             list = health.ailments,
             editState = editState,
-            onAilments)
+            onClick = onAilments
+        )
 
         /*Spacer(modifier = Modifier.height(16.dp))
 

@@ -36,6 +36,7 @@ fun SelectionCardCreateProfile(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
     ) {
+
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -59,7 +60,9 @@ fun SelectionCardCreateProfile(
                         style = MaterialTheme.typography.titleSmall
                     )
                 }
-                AddIcon(onClick = {/*Todo*/ })
+
+                AddIcon(onClick = {})
+
             }
 
             MultiToggleLayout(

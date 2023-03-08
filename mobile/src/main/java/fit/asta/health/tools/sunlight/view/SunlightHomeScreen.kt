@@ -1,12 +1,14 @@
 package fit.asta.health.tools.sunlight.view
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -16,7 +18,6 @@ import fit.asta.health.R
 import fit.asta.health.tools.sunlight.view.components.SunlightBottomSheet
 
 @Preview
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SunlightHomeScreen() {
 
