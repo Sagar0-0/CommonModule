@@ -1,5 +1,7 @@
 package fit.asta.health.profile.createprofile.view.components
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
@@ -26,6 +28,7 @@ import fit.asta.health.testimonials.view.components.ValidatedTextField
 import fit.asta.health.ui.spacing
 import fit.asta.health.utils.UiString
 
+@OptIn(ExperimentalFoundationApi::class)
 @ExperimentalMaterial3Api
 @Composable
 fun DetailsContent(
@@ -36,80 +39,85 @@ fun DetailsContent(
     var text by remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally
+    CompositionLocalProvider(
+        LocalOverscrollConfiguration provides null
     ) {
-
-        Spacer(modifier = Modifier.height(spacing.extraSmall))
-
-        UserCircleImage()
-
-        Spacer(modifier = Modifier.height(spacing.medium))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = spacing.medium)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "Name*",
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                style = MaterialTheme.typography.titleSmall
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            UserCircleImage()
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "Name*",
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                    style = MaterialTheme.typography.titleSmall
+                )
+            }
+
+            Spacer(modifier = Modifier.height(spacing.extraSmall))
+
+            ValidatedTextField(
+                value = text,
+                onValueChange = { text = it },
+                errorMessage = UiString.Empty,
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
+                label = "Name",
             )
-        }
 
-        Spacer(modifier = Modifier.height(spacing.extraSmall))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
-        ValidatedTextField(
-            value = text,
-            onValueChange = { text = it },
-            errorMessage = UiString.Empty,
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
-            label = "Name",
-        )
+            Row(
+                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "E-mail*",
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                    style = MaterialTheme.typography.titleSmall
+                )
+            }
 
-        Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(spacing.extraSmall))
 
-        Row(
-            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = "E-mail*",
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                style = MaterialTheme.typography.titleSmall
+            ValidatedTextField(
+                value = text,
+                onValueChange = { text = it },
+                errorMessage = UiString.Empty,
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+                label = "E-mail"
             )
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            PrivacyStatement()
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            UserConsent()
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            NextButton(text = "Next", modifier = Modifier.fillMaxWidth(), event = eventNext)
+
+            Spacer(modifier = Modifier.height(spacing.small))
+
+            SkipPage(onSkipEvent)
+
+            Spacer(modifier = Modifier.height(spacing.medium))
         }
-
-        Spacer(modifier = Modifier.height(spacing.extraSmall))
-
-        ValidatedTextField(
-            value = text,
-            onValueChange = { text = it },
-            errorMessage = UiString.Empty,
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-            label = "E-mail"
-        )
-
-        Spacer(modifier = Modifier.height(spacing.medium))
-
-        PrivacyStatement()
-
-        Spacer(modifier = Modifier.height(spacing.medium))
-
-        UserConsent()
-
-        Spacer(modifier = Modifier.height(spacing.medium))
-
-        NextButton(text = "Next", modifier = Modifier.fillMaxWidth(), event = eventNext)
-
-        Spacer(modifier = Modifier.height(spacing.small))
-
-        SkipPage(onSkipEvent)
-
-        Spacer(modifier = Modifier.height(spacing.medium))
     }
 
 

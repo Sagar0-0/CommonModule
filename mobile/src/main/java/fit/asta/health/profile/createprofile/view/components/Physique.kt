@@ -1,5 +1,7 @@
 package fit.asta.health.profile.createprofile.view.components
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -26,6 +28,7 @@ import fit.asta.health.ui.spacing
 import fit.asta.health.utils.UiString
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PhysiqueContent(
     eventPrevious: (() -> Unit)? = null,
@@ -55,201 +58,206 @@ fun PhysiqueContent(
     var text by remember { mutableStateOf(("")) }
     val focusManager = LocalFocusManager.current
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally
+    CompositionLocalProvider(
+        LocalOverscrollConfiguration provides null
     ) {
-
-        Spacer(modifier = Modifier.height(spacing.extraSmall))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = "Date of Birth",
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                style = MaterialTheme.typography.titleSmall
-            )
-
-            Text(
-                text = "24yr",
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                style = MaterialTheme.typography.titleSmall
-            )
-        }
-
-        Spacer(modifier = Modifier.height(spacing.small))
-
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(3),
-            userScrollEnabled = false,
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp),
-            horizontalArrangement = Arrangement.spacedBy(spacing.small)
+                .padding(horizontal = spacing.medium)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-            placeHolderDOB.forEach { placeHolder ->
-                item {
-                    ValidateNumberField(
-                        value = text,
-                        onValueChange = { text = it },
-                        placeholder = placeHolder,
-                        singleLine = true,
-                        modifier = Modifier.height(48.dp),
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number, imeAction = ImeAction.Next
-                        ),
-                        keyboardActions = KeyboardActions(onNext = {
-                            focusManager.moveFocus(
-                                FocusDirection.Next
-                            )
-                        })
-                    )
-                }
-            }
-
-        }
-
-        Spacer(modifier = Modifier.height(spacing.medium))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "Weight",
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                style = MaterialTheme.typography.titleSmall
-            )
-            RowToggleButtonGroup(
-                buttonCount = 2,
-                onButtonClick = { index -> println(index) },
-                buttonTexts = arrayOf("kg", "lb"),
-                modifier = Modifier.size(width = 80.dp, height = 24.dp)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(spacing.extraSmall))
-
-        ValidatedTextField(
-            value = text,
-            onValueChange = { text = it },
-            errorMessage = UiString.Empty,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number, imeAction = ImeAction.Next
-            ),
-            keyboardActions = KeyboardActions(onNext = {
-                focusManager.moveFocus(
-                    FocusDirection.Next
-                )
-            }),
-        )
-
-        Spacer(modifier = Modifier.height(spacing.medium))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "Height",
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                style = MaterialTheme.typography.titleSmall
-            )
-            RowToggleButtonGroup(
-                buttonCount = 2,
-                onButtonClick = { index -> println(index) },
-                buttonTexts = arrayOf("in", "cm"),
-                modifier = Modifier.size(width = 80.dp, height = 24.dp)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(spacing.extraSmall))
-
-        ValidatedTextField(
-            value = text,
-            onValueChange = { text = it },
-            errorMessage = UiString.Empty,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number, imeAction = ImeAction.Next
-            ),
-            keyboardActions = KeyboardActions(onNext = {
-                focusManager.moveFocus(
-                    FocusDirection.Next
-                )
-            }),
-        )
-
-
-        Spacer(modifier = Modifier.height(spacing.medium))
-
-        Row(
-            Modifier.fillMaxWidth()
-        ) {
-            MultiToggleWithTitle(
-                selectionTypeText = "Gender",
-                radioButtonList = buttonTypeList,
-                selectedOption = selectedOption,
-                onOptionSelected = onOptionSelected
-            )
-        }
-
-        Spacer(modifier = Modifier.height(spacing.medium))
-
-        Row(
-            Modifier.fillMaxWidth()
-        ) {
-            MultiToggleWithTitle(
-                selectionTypeText = "Are you Pregnant?",
-                radioButtonList = isPregnantList,
-                selectedOption = isPregnantSelectedOption,
-                onOptionSelected = onPregnantOptionSelected
-            )
-        }
-
-
-        if (isPregnantSelectedOption == isPregnantList[0]) {
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
             Row(
-                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start
+                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    "Please Enter your Pregnancy Week",
+                    text = "Date of Birth",
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                    style = MaterialTheme.typography.titleSmall
+                )
+
+                Text(
+                    text = "24yr",
                     color = MaterialTheme.colorScheme.onTertiaryContainer,
                     style = MaterialTheme.typography.titleSmall
                 )
             }
 
+            Spacer(modifier = Modifier.height(spacing.small))
+
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(3),
+                userScrollEnabled = false,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp),
+                horizontalArrangement = Arrangement.spacedBy(spacing.small)
+            ) {
+
+                placeHolderDOB.forEach { placeHolder ->
+                    item {
+                        ValidateNumberField(
+                            value = text,
+                            onValueChange = { text = it },
+                            placeholder = placeHolder,
+                            singleLine = true,
+                            modifier = Modifier.height(48.dp),
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Number, imeAction = ImeAction.Next
+                            ),
+                            keyboardActions = KeyboardActions(onNext = {
+                                focusManager.moveFocus(
+                                    FocusDirection.Next
+                                )
+                            })
+                        )
+                    }
+                }
+
+            }
+
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            ValidateNumberField(
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Weight",
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                    style = MaterialTheme.typography.titleSmall
+                )
+                RowToggleButtonGroup(
+                    buttonCount = 2,
+                    onButtonClick = { index -> println(index) },
+                    buttonTexts = arrayOf("kg", "lb"),
+                    modifier = Modifier.size(width = 80.dp, height = 24.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(spacing.extraSmall))
+
+            ValidatedTextField(
                 value = text,
                 onValueChange = { text = it },
-                modifier = Modifier.fillMaxWidth(),
+                errorMessage = UiString.Empty,
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number, imeAction = ImeAction.Done
+                    keyboardType = KeyboardType.Number, imeAction = ImeAction.Next
                 ),
-                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
+                keyboardActions = KeyboardActions(onNext = {
+                    focusManager.moveFocus(
+                        FocusDirection.Next
+                    )
+                }),
             )
 
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Height",
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                    style = MaterialTheme.typography.titleSmall
+                )
+                RowToggleButtonGroup(
+                    buttonCount = 2,
+                    onButtonClick = { index -> println(index) },
+                    buttonTexts = arrayOf("in", "cm"),
+                    modifier = Modifier.size(width = 80.dp, height = 24.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(spacing.extraSmall))
+
+            ValidatedTextField(
+                value = text,
+                onValueChange = { text = it },
+                errorMessage = UiString.Empty,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number, imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(onNext = {
+                    focusManager.moveFocus(
+                        FocusDirection.Next
+                    )
+                }),
+            )
+
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            Row(
+                Modifier.fillMaxWidth()
+            ) {
+                MultiToggleWithTitle(
+                    selectionTypeText = "Gender",
+                    radioButtonList = buttonTypeList,
+                    selectedOption = selectedOption,
+                    onOptionSelected = onOptionSelected
+                )
+            }
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            Row(
+                Modifier.fillMaxWidth()
+            ) {
+                MultiToggleWithTitle(
+                    selectionTypeText = "Are you Pregnant?",
+                    radioButtonList = isPregnantList,
+                    selectedOption = isPregnantSelectedOption,
+                    onOptionSelected = onPregnantOptionSelected
+                )
+            }
+
+
+            if (isPregnantSelectedOption == isPregnantList[0]) {
+
+                Spacer(modifier = Modifier.height(spacing.medium))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start
+                ) {
+                    Text(
+                        "Please Enter your Pregnancy Week",
+                        color = MaterialTheme.colorScheme.onTertiaryContainer,
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(spacing.medium))
+
+                ValidateNumberField(
+                    value = text,
+                    onValueChange = { text = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number, imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
+                )
+
+            }
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            CreateProfileButtons(eventPrevious, eventNext, text = "Next")
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            SkipPage(onSkipEvent = onSkipEvent)
+
+            Spacer(modifier = Modifier.height(spacing.medium))
         }
-
-        Spacer(modifier = Modifier.height(spacing.medium))
-
-        CreateProfileButtons(eventPrevious, eventNext, text = "Next")
-
-        Spacer(modifier = Modifier.height(spacing.medium))
-
-        SkipPage(onSkipEvent = onSkipEvent)
-
-        Spacer(modifier = Modifier.height(spacing.medium))
     }
 
 

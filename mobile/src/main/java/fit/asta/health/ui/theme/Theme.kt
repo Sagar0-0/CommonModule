@@ -1,6 +1,8 @@
 package fit.asta.health.ui.theme
 
 import android.os.Build
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -70,6 +72,7 @@ private val DarkColors = darkColorScheme(
     surfaceTint = md_theme_dark_surfaceTint,
 )
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AppTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
@@ -83,12 +86,12 @@ fun AppTheme(
         else -> LightColors
     }
 
-    CompositionLocalProvider(LocalSpacing provides Spacing()) {
+    CompositionLocalProvider(
+        LocalSpacing provides Spacing(), LocalOverscrollConfiguration provides null
+    ) {
         MaterialTheme(
-            colorScheme = colors,
-            typography = MyTypography,
-            shapes = Shapes,
-            content = content
+            colorScheme = colors, typography = MyTypography, shapes = Shapes, content = content
         )
     }
+
 }

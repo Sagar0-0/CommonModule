@@ -12,6 +12,8 @@ enum class ProfileItemType(val value: Int) {
     companion object {
         fun valueOf(value: Int) = values().first { it.value == value }
     }
+
+
 }
 
 sealed class UserPropertyType(

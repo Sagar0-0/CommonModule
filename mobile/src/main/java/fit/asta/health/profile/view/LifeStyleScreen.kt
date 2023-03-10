@@ -25,7 +25,6 @@ fun LifeStyleScreen(
         mutableStateOf(null)
     }
 
-
     val modalBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
 
     val scope = rememberCoroutineScope()

@@ -76,35 +76,33 @@ fun CreateProfileLayout() {
     }
 
     Scaffold(topBar = {
-        TopAppBar(title = {
-            Text(
-                text = "Create Profile",
-                color = MaterialTheme.colorScheme.onBackground,
-                style = MaterialTheme.typography.headlineSmall
-            )
-        }, navigationIcon = {
-            IconButton(
-                onClick = {
-                    currentStep -= 1
+
+        Column {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = "Create Profile",
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.headlineSmall
+                    )
                 },
-            ) {
-                Icon(
-                    Icons.Filled.Close,
-                    contentDescription = "back",
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
-        }, elevation = cardElevation.small, backgroundColor = MaterialTheme.colorScheme.onPrimary)
-    }, content = {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    top = it.calculateTopPadding(),
-                    start = spacing.medium,
-                    end = spacing.medium,
-                )
-        ) {
+                navigationIcon = {
+                    IconButton(
+                        onClick = {
+                            currentStep -= 1
+                        },
+                    ) {
+                        Icon(
+                            Icons.Filled.Close,
+                            contentDescription = "back",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                },
+                elevation = cardElevation.small,
+                backgroundColor = MaterialTheme.colorScheme.onPrimary
+            )
+
             Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
                 for (step in 1..numberOfSteps) {
                     Stepper(
@@ -127,9 +125,13 @@ fun CreateProfileLayout() {
                     )
                 }
             }
-
             Spacer(modifier = Modifier.height(spacing.medium))
+        }
+    }, content = { p ->
 
+        Box(
+            modifier = Modifier.padding(p)
+        ) {
             when (currentStep) {
                 1 -> {
                     DetailsContent(eventNext = {
@@ -154,7 +156,7 @@ fun CreateProfileLayout() {
                     )
                 }
                 3 -> {
-                    HealthContent(
+                    HealthCreateScreen(
                         eventNext = {
                             currentStep += 1
                         },
@@ -168,7 +170,7 @@ fun CreateProfileLayout() {
                     )
                 }
                 4 -> {
-                    LifeStyleContent(
+                    LifeStyleCreateScreen(
                         eventNext = {
                             currentStep += 1
                         },
@@ -182,14 +184,13 @@ fun CreateProfileLayout() {
                     )
                 }
                 5 -> {
-                    DietContent(eventNext = {
+                    DietCreateScreen(eventDone = {
                         currentStep += 1
                     }, eventPrevious = {
                         currentStep -= 1
                     })
                 }
             }
-
         }
     }, containerColor = MaterialTheme.colorScheme.background)
 

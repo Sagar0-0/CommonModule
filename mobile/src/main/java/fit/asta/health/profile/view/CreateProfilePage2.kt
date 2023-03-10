@@ -25,6 +25,7 @@ fun SelectionCardCreateProfile(
     cardList: List<String>,
     radioButtonList: List<ButtonListTypes>,
     checkedState: (MutableState<Boolean>)? = null,
+    onItemsSelect: () -> Unit,
 ) {
 
 
@@ -61,7 +62,7 @@ fun SelectionCardCreateProfile(
                     )
                 }
 
-                AddIcon(onClick = {})
+                AddIcon(onClick = onItemsSelect)
 
             }
 
@@ -95,6 +96,7 @@ fun OnlyChipSelectionCard(
     cardType: String,
     cardList: List<String>,
     checkedState: (MutableState<Boolean>)? = null,
+    onItemsSelect: () -> Unit,
 ) {
 
 
@@ -127,7 +129,7 @@ fun OnlyChipSelectionCard(
                         style = MaterialTheme.typography.titleSmall
                     )
                 }
-                AddIcon(onClick = {/*Todo*/ })
+                AddIcon(onClick = onItemsSelect)
             }
 
             Spacer(modifier = Modifier.height(spacing.small))
