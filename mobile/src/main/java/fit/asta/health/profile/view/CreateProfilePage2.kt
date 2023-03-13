@@ -29,7 +29,7 @@ fun SelectionCardCreateProfile(
 ) {
 
 
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioButtonList[0]) }
+    val (selectedOption, onOptionSelected) = remember { mutableStateOf("") }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -73,7 +73,7 @@ fun SelectionCardCreateProfile(
                 onOptionSelected = onOptionSelected
             )
 
-            if (selectedOption == radioButtonList[0]) {
+            if (selectedOption == radioButtonList[0].buttonType) {
 
                 FlowRow(
                     mainAxisSpacing = spacing.minSmall,

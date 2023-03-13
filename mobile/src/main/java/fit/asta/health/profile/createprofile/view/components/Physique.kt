@@ -9,21 +9,25 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import fit.asta.health.profile.view.ButtonListTypes
-import fit.asta.health.profile.view.MultiToggleWithTitle
+import fit.asta.health.profile.view.MultiToggleLayout
 import fit.asta.health.profile.view.NextButton
 import fit.asta.health.testimonials.view.components.ValidateNumberField
 import fit.asta.health.testimonials.view.components.ValidatedTextField
+import fit.asta.health.testimonials.view.theme.cardElevation
 import fit.asta.health.ui.spacing
 import fit.asta.health.utils.UiString
 
@@ -44,14 +48,13 @@ fun PhysiqueContent(
         ButtonListTypes(buttonType = "Others")
     )
 
-
     val isPregnantList =
         listOf(ButtonListTypes(buttonType = "Yes"), ButtonListTypes(buttonType = "No"))
 
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf(buttonTypeList[0]) }
+    val (selectedOption, onOptionSelected) = remember { mutableStateOf("") }
     val (isPregnantSelectedOption, onPregnantOptionSelected) = remember {
         mutableStateOf(
-            isPregnantList[0]
+            ""
         )
     }
 
@@ -192,60 +195,61 @@ fun PhysiqueContent(
                 }),
             )
 
-
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            Row(
-                Modifier.fillMaxWidth()
-            ) {
-                MultiToggleWithTitle(
-                    selectionTypeText = "Gender",
-                    radioButtonList = buttonTypeList,
-                    selectedOption = selectedOption,
-                    onOptionSelected = onOptionSelected
-                )
-            }
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            Row(
-                Modifier.fillMaxWidth()
-            ) {
-                MultiToggleWithTitle(
-                    selectionTypeText = "Are you Pregnant?",
-                    radioButtonList = isPregnantList,
-                    selectedOption = isPregnantSelectedOption,
-                    onOptionSelected = onPregnantOptionSelected
-                )
-            }
-
-
-            if (isPregnantSelectedOption == isPregnantList[0]) {
-
-                Spacer(modifier = Modifier.height(spacing.medium))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start
-                ) {
-                    Text(
-                        "Please Enter your Pregnancy Week",
-                        color = MaterialTheme.colorScheme.onTertiaryContainer,
-                        style = MaterialTheme.typography.titleSmall
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(spacing.medium))
-
-                ValidateNumberField(
-                    value = text,
-                    onValueChange = { text = it },
+            Row(Modifier.fillMaxWidth()) {
+                Card(
                     modifier = Modifier.fillMaxWidth(),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number, imeAction = ImeAction.Done
-                    ),
-                    keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
-                )
+                    shape = MaterialTheme.shapes.medium,
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
+                ) {
 
+                    MultiToggleLayout("Gender", buttonTypeList, selectedOption, onOptionSelected)
+
+                    if (selectedOption == buttonTypeList[0].buttonType) {
+
+                        MultiToggleLayout(
+                            selectionTypeText = "Are you Pregnant",
+                            radioButtonList = isPregnantList,
+                            selectedOption = isPregnantSelectedOption,
+                            onOptionSelected = onPregnantOptionSelected
+                        )
+
+                        if (isPregnantSelectedOption == isPregnantList[0].buttonType) {
+
+                            Spacer(modifier = Modifier.height(spacing.medium))
+
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = spacing.medium),
+                                horizontalArrangement = Arrangement.Start
+                            ) {
+                                Text(
+                                    "Please Enter your Pregnancy Week",
+                                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                                    style = MaterialTheme.typography.titleSmall
+                                )
+                            }
+
+                            ValidateNumberField(
+                                value = text,
+                                onValueChange = { text = it },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(
+                                        horizontal = spacing.medium, vertical = spacing.medium
+                                    ),
+                                keyboardOptions = KeyboardOptions(
+                                    keyboardType = KeyboardType.Number, imeAction = ImeAction.Done
+                                ),
+                                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
+                            )
+                        }
+
+                    }
+                }
             }
 
             Spacer(modifier = Modifier.height(spacing.medium))
@@ -259,7 +263,6 @@ fun PhysiqueContent(
             Spacer(modifier = Modifier.height(spacing.medium))
         }
     }
-
 
 }
 

@@ -7,6 +7,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 data class Spacing(
+
     val minSmall: Dp = 2.dp,
     val extraSmall: Dp = 4.dp,
     val extraSmall1: Dp = 7.5.dp,
@@ -26,6 +27,7 @@ val spacing: Spacing
 
 
 data class CustomSize(
+
     val minSmall: Dp = 2.dp,
     val extraSmall: Dp = 4.dp,
     val small: Dp = 8.dp,

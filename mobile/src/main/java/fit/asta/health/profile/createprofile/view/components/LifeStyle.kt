@@ -27,16 +27,36 @@ fun LifeStyleContent(
     onLifeStyleTargets: () -> Unit,
 ) {
 
-    val healthHistoryList4 = listOf("Less", "Moderate", "Very")
-    val healthHistoryList6 = listOf("Standing", "Sitting")
-    val healthHistoryList7 = listOf("Indoor", "Outdoor")
     val checkedState = remember { mutableStateOf(true) }
-    val radioButtonList3 = listOf(
+
+    val radioButtonList = listOf(
         ButtonListTypes(buttonType = "Morning"),
         ButtonListTypes(buttonType = "Afternoon"),
         ButtonListTypes(buttonType = "Night")
     )
+
+    val radioButtonList2 = listOf(
+        ButtonListTypes(buttonType = "Less"),
+        ButtonListTypes(buttonType = "Moderate"),
+        ButtonListTypes(buttonType = "Very")
+    )
+
+    val radioButtonList3 = listOf(
+        ButtonListTypes(buttonType = "Standing"),
+        ButtonListTypes(buttonType = "Sitting"),
+    )
+
+    val radioButtonList4 = listOf(
+        ButtonListTypes(buttonType = "Indoor"),
+        ButtonListTypes(buttonType = "Outdoor"),
+    )
+
     val healthHistoryList5 = listOf("Cycling", "Walking", "Swimming", "Gym", "Dancing", "Bowling")
+
+    val (selectedWorkingOption, onWorkingOptionSelected) = remember { mutableStateOf("") }
+    val (selectedActiveOption, onActiveOptionSelected) = remember { mutableStateOf("") }
+    val (selectedEnvOption, onEnvOptionSelected) = remember { mutableStateOf("") }
+    val (selectedWorkStyleOption, onWorkStyleOptionSelected) = remember { mutableStateOf("") }
 
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
@@ -52,31 +72,38 @@ fun LifeStyleContent(
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            SelectionOutlineButton(
-                cardType = "Are you physically active ?", cardList = healthHistoryList4
+            MultiToggleWithTitle(
+                selectionTypeText = "Are you physically active ? ",
+                radioButtonList = radioButtonList2,
+                selectedOption = selectedActiveOption,
+                onOptionSelected = onActiveOptionSelected
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            SelectionOutlineButton(
-                cardType = "Current Working Environment?", cardList = healthHistoryList6
+            MultiToggleWithTitle(
+                selectionTypeText = "Current Working Environment?",
+                radioButtonList = radioButtonList3,
+                selectedOption = selectedEnvOption,
+                onOptionSelected = onEnvOptionSelected
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            SelectionOutlineButton(
-                cardType = "Current WorkStyle?", cardList = healthHistoryList7
+            MultiToggleWithTitle(
+                selectionTypeText = "Current WorkStyle?",
+                radioButtonList = radioButtonList4,
+                selectedOption = selectedWorkStyleOption,
+                onOptionSelected = onWorkStyleOptionSelected
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
-
-            val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioButtonList3[0]) }
 
             MultiToggleWithTitle(
                 selectionTypeText = "What are your working hours?",
-                radioButtonList = radioButtonList3,
-                selectedOption = selectedOption,
-                onOptionSelected = onOptionSelected
+                radioButtonList = radioButtonList,
+                selectedOption = selectedWorkingOption,
+                onOptionSelected = onWorkingOptionSelected
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
@@ -151,7 +178,9 @@ fun LifeStyleCreateScreen(
     val openSheet = {
         scope.launch {
             modalBottomSheetState.show()
-            modalBottomSheetValue = ModalBottomSheetValue.Expanded
+            if (modalBottomSheetValue == ModalBottomSheetValue.HalfExpanded) {
+                modalBottomSheetValue = ModalBottomSheetValue.Expanded
+            }
         }
     }
 

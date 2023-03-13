@@ -26,9 +26,9 @@ fun DietContent(
     onFoodAllergies: () -> Unit,
     onCuisines: () -> Unit,
     onFoodRes: () -> Unit,
+    onDietaryPref: () -> Unit,
 ) {
 
-    val healthHistoryList4 = listOf("Less", "Moderate", "Very")
     val healthHistoryList6 = listOf("Veg", "Non-Veg", "Vegan")
     val healthHistoryList5 = listOf("Cycling", "Walking", "Swimming", "Gym", "Dancing", "Bowling")
     val checkedState = remember { mutableStateOf(true) }
@@ -36,6 +36,7 @@ fun DietContent(
         listOf(ButtonListTypes(buttonType = "Yes"), ButtonListTypes(buttonType = "No"))
 
     val healthHistoryList = listOf("Diabetes", "Heart Disease", "Stroke", "Depression")
+
 
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
@@ -51,14 +52,11 @@ fun DietContent(
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            SelectionOutlineButton(
-                cardType = "Are you physically active ?", cardList = healthHistoryList4
-            )
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            SelectionOutlineButton(
-                cardType = "Dietary Preferences?", cardList = healthHistoryList6
+            OnlyChipSelectionCard(
+                cardType = "Dietary Preferences",
+                cardList = healthHistoryList6,
+                checkedState,
+                onDietaryPref
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
@@ -135,12 +133,15 @@ fun DietCreateScreen(
     val openSheet = {
         scope.launch {
             modalBottomSheetState.show()
-            modalBottomSheetValue = ModalBottomSheetValue.Expanded
+            if (modalBottomSheetValue == ModalBottomSheetValue.HalfExpanded) {
+                modalBottomSheetValue = ModalBottomSheetValue.Expanded
+            }
         }
     }
 
 
-    ModalBottomSheetLayout(modifier = Modifier.fillMaxSize(),
+    ModalBottomSheetLayout(
+        modifier = Modifier.fillMaxSize(),
         sheetState = modalBottomSheetState,
         sheetContent = {
             Spacer(modifier = Modifier.height(1.dp))
@@ -148,6 +149,7 @@ fun DietCreateScreen(
                 DietCreateBottomSheetLayout(sheetLayout = it, closeSheet = { closeSheet() })
             }
         }) {
+
         DietContent(eventPrevious, eventDone, onNonVegDays = {
             currentBottomSheet = NONVEGDAYS
             openSheet()
@@ -160,6 +162,9 @@ fun DietCreateScreen(
         }, onFoodRes = {
             currentBottomSheet = FOODRES
             openSheet()
+        }, onDietaryPref = {
+            currentBottomSheet = DIETARYPREF
+            openSheet()
         })
 
     }
@@ -168,7 +173,7 @@ fun DietCreateScreen(
 
 
 enum class DietCreateBottomSheetType {
-    NONVEGDAYS, FOODALLERGIES, CUISINES, FOODRES
+    DIETARYPREF, NONVEGDAYS, FOODALLERGIES, CUISINES, FOODRES
 }
 
 @Composable
@@ -177,6 +182,7 @@ fun DietCreateBottomSheetLayout(
     closeSheet: () -> Unit,
 ) {
     when (sheetLayout) {
+        DIETARYPREF -> Screen1(closeSheet)
         NONVEGDAYS -> Screen1(closeSheet)
         FOODALLERGIES -> Screen1(closeSheet)
         CUISINES -> Screen1(closeSheet)

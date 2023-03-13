@@ -71,8 +71,8 @@ fun MultiToggleWithTitle(
     modifier: Modifier = Modifier,
     selectionTypeText: (String)? = null,
     radioButtonList: List<ButtonListTypes>,
-    selectedOption: ButtonListTypes,
-    onOptionSelected: (ButtonListTypes) -> Unit,
+    selectedOption: String,
+    onOptionSelected: (String) -> Unit,
 ) {
 
     Card(
@@ -83,14 +83,15 @@ fun MultiToggleWithTitle(
     ) {
         MultiToggleLayout(selectionTypeText, radioButtonList, selectedOption, onOptionSelected)
     }
+
 }
 
 @Composable
 fun MultiToggleLayout(
     selectionTypeText: String?,
     radioButtonList: List<ButtonListTypes>,
-    selectedOption: ButtonListTypes,
-    onOptionSelected: (ButtonListTypes) -> Unit,
+    selectedOption: String,
+    onOptionSelected: (String) -> Unit,
 ) {
     Column(Modifier.fillMaxWidth()) {
 
@@ -125,8 +126,8 @@ fun MultiToggleLayout(
                 item {
                     Row(verticalAlignment = CenterVertically, modifier = Modifier.weight(1f)) {
                         RadioButton(
-                            selected = (text == selectedOption),
-                            onClick = { onOptionSelected(text) },
+                            selected = (text.buttonType == selectedOption),
+                            onClick = { onOptionSelected(text.buttonType) },
                             modifier = Modifier.size(customSize.largeSmall)
                         )
                         Text(
