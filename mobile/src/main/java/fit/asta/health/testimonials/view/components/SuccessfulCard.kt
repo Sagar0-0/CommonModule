@@ -17,13 +17,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
-import fit.asta.health.feedback.view.SubmitButton
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
-import fit.asta.health.testimonials.view.theme.boxSize
-import fit.asta.health.testimonials.view.theme.cardHeight
-import fit.asta.health.testimonials.view.theme.iconSize
-import fit.asta.health.ui.spacing
-import fit.asta.health.ui.theme.ts
+import fit.asta.health.ui.components.NextButton
+import fit.asta.health.ui.theme.*
 
 @Composable
 fun SuccessfulCard(
@@ -87,7 +83,7 @@ fun SuccessfulCard(
                 if (underReview) {
                     LoadingAnimation()
                 } else {
-                    SubmitButton(text = "Done", onClick = onClick)
+                    NextButton(text = "Done", event = onClick)
                 }
 
                 Spacer(modifier = Modifier.height(spacing.medium))

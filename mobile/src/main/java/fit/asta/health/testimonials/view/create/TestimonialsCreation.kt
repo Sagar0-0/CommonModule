@@ -22,10 +22,10 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.R
 import fit.asta.health.testimonials.model.domain.TestimonialType
-import fit.asta.health.testimonials.view.theme.boxSize
-import fit.asta.health.testimonials.view.theme.cardElevation
-import fit.asta.health.testimonials.view.theme.imageSize
-import fit.asta.health.ui.spacing
+import fit.asta.health.ui.theme.boxSize
+import fit.asta.health.ui.theme.cardElevation
+import fit.asta.health.ui.theme.imageSize
+import fit.asta.health.ui.theme.spacing
 
 
 @Composable

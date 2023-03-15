@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fit.asta.health.profile.createprofile.view.components.DietCreateBottomSheetType.*
 import fit.asta.health.profile.view.*
-import fit.asta.health.ui.spacing
+import fit.asta.health.ui.theme.spacing
 import kotlinx.coroutines.launch
 
 

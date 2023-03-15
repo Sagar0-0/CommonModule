@@ -24,11 +24,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import fit.asta.health.profile.view.ButtonListTypes
 import fit.asta.health.profile.view.MultiToggleLayout
-import fit.asta.health.profile.view.NextButton
 import fit.asta.health.testimonials.view.components.ValidateNumberField
 import fit.asta.health.testimonials.view.components.ValidatedTextField
-import fit.asta.health.testimonials.view.theme.cardElevation
-import fit.asta.health.ui.spacing
+import fit.asta.health.ui.components.NextButton
+import fit.asta.health.ui.theme.cardElevation
+import fit.asta.health.ui.theme.spacing
 import fit.asta.health.utils.UiString
 
 

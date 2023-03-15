@@ -20,12 +20,12 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.input.ImeAction
-import fit.asta.health.profile.view.NextButton
 import fit.asta.health.profile.view.PrivacyStatement
 import fit.asta.health.profile.view.UserCircleImage
 import fit.asta.health.profile.view.UserConsent
 import fit.asta.health.testimonials.view.components.ValidatedTextField
-import fit.asta.health.ui.spacing
+import fit.asta.health.ui.components.NextButton
+import fit.asta.health.ui.theme.spacing
 import fit.asta.health.utils.UiString
 
 @OptIn(ExperimentalFoundationApi::class)

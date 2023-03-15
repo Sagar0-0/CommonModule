@@ -30,12 +30,12 @@ import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.navigation.home.view.component.NoInternetLayout
 import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.view.components.ValidatedTextField
-import fit.asta.health.testimonials.view.theme.boxSize
-import fit.asta.health.testimonials.view.theme.cardElevation
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
 import fit.asta.health.testimonials.viewmodel.create.TestimonialSubmitState
 import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
-import fit.asta.health.ui.spacing
+import fit.asta.health.ui.theme.boxSize
+import fit.asta.health.ui.theme.cardElevation
+import fit.asta.health.ui.theme.spacing
 import fit.asta.health.utils.UiString
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 

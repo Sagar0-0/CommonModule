@@ -31,11 +31,7 @@ import com.google.android.exoplayer2.ui.StyledPlayerView
 import fit.asta.health.R
 import fit.asta.health.testimonials.model.domain.Testimonial
 import fit.asta.health.testimonials.view.components.UserCard
-import fit.asta.health.testimonials.view.theme.aspectRatio
-import fit.asta.health.testimonials.view.theme.cardElevation
-import fit.asta.health.testimonials.view.theme.iconButtonSize
-import fit.asta.health.testimonials.view.theme.iconSize
-import fit.asta.health.ui.spacing
+import fit.asta.health.ui.theme.*
 import fit.asta.health.utils.getImageUrl
 
 

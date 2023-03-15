@@ -14,16 +14,14 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import fit.asta.health.R
-import fit.asta.health.testimonials.view.theme.cardElevation
-import fit.asta.health.testimonials.view.theme.imageSize
-import fit.asta.health.ui.customSize
-import fit.asta.health.ui.spacing
+import fit.asta.health.ui.theme.cardElevation
+import fit.asta.health.ui.theme.customSize
+import fit.asta.health.ui.theme.imageSize
+import fit.asta.health.ui.theme.spacing
 
 data class ButtonListTypes(
     val buttonType: String,
@@ -198,22 +196,3 @@ fun UserConsent() {
     }
 }
 
-@Composable
-fun NextButton(text: String, modifier: Modifier = Modifier, event: (() -> Unit)? = null) {
-    event?.let {
-        Button(
-            modifier = modifier.clip(shape = RectangleShape),
-            shape = MaterialTheme.shapes.small,
-            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-            onClick = it
-        ) {
-            Text(
-                text = text,
-                fontFamily = FontFamily.Default,
-                style = MaterialTheme.typography.titleLarge,
-                color = Color.White,
-                textAlign = TextAlign.Center
-            )
-        }
-    }
-}

@@ -18,7 +18,7 @@ import fit.asta.health.testimonials.view.list.VideoView
 import fit.asta.health.testimonials.viewmodel.create.MediaType
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
 import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
-import fit.asta.health.ui.spacing
+import fit.asta.health.ui.theme.spacing
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 

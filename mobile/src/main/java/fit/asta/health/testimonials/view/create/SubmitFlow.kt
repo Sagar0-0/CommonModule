@@ -16,11 +16,11 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import fit.asta.health.R
 import fit.asta.health.testimonials.view.components.SuccessfulCard
-import fit.asta.health.testimonials.view.theme.buttonSize
-import fit.asta.health.testimonials.view.theme.cardElevation
-import fit.asta.health.testimonials.view.theme.imageHeight
 import fit.asta.health.tools.sunlight.view.components.BottomSheetButton
-import fit.asta.health.ui.spacing
+import fit.asta.health.ui.theme.buttonSize
+import fit.asta.health.ui.theme.cardElevation
+import fit.asta.health.ui.theme.imageHeight
+import fit.asta.health.ui.theme.spacing
 import kotlinx.coroutines.delay
 
 @Composable

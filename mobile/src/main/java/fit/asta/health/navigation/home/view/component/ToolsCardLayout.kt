@@ -15,7 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -87,13 +86,13 @@ fun ToolsCardLayoutDemo(
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
-        //colors = CardDefaults.cardColors(containerColor = Color(0x1A959393)),
         colors = CardDefaults.cardColors(containerColor = androidx.compose.material3.MaterialTheme.colorScheme.primaryContainer),
         onClick = {
             onClick(type)
         }
     ) {
-        Column(modifier = Modifier.background(Color.Transparent)) {
+
+    Column(modifier = Modifier.background(Color.Transparent)) {
 
             Box {
 
