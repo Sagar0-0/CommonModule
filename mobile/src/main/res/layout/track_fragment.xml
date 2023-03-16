@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/schedulerLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="fit.asta.health.old.scheduler.ui.ScheduleActivity">
+    android:layout_height="match_parent">
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

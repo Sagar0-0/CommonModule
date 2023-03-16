@@ -1,23 +1,11 @@
 package fit.asta.health.network.api
 
-import fit.asta.health.common.multiselect.data.UserInputs
 import fit.asta.health.navigation.home.model.network.NetHealthToolsRes
 import fit.asta.health.navigation.home.model.network.NetSelectedTools
-import fit.asta.health.navigation.today.networkdata.TodayPlanNetData
 import fit.asta.health.network.data.MultiFileUploadRes
 import fit.asta.health.network.data.SingleFileUploadRes
 import fit.asta.health.network.data.Status
 import fit.asta.health.network.data.UploadInfo
-import fit.asta.health.old.course.details.networkdata.CourseDetailsResponse
-import fit.asta.health.old.course.listing.networkdata.CoursesListNetData
-import fit.asta.health.old.course.session.networkdata.SessionResponse
-import fit.asta.health.old.scheduler.networkdata.ScheduleNetData
-import fit.asta.health.old.scheduler.networkdata.ScheduleResponse
-import fit.asta.health.old.scheduler.tags.networkdata.ScheduleTagNetData
-import fit.asta.health.old.scheduler.tags.networkdata.ScheduleTagResponse
-import fit.asta.health.old.scheduler.tags.networkdata.ScheduleTagsResponse
-import fit.asta.health.old.subscription.networkdata.SubscriptionDataResponse
-import fit.asta.health.old.subscription.networkdata.SubscriptionStatusResponse
 import fit.asta.health.utils.NetworkUtil
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -90,70 +78,5 @@ class RestApi(baseUrl: String, client: OkHttpClient) :
 
     override suspend fun deleteFiles(Id: String, feature: String): Status {
         return apiService.deleteFiles(Id, feature)
-    }
-
-    //Old Endpoints -------------------------------------------------------------------------------
-    override suspend fun getCourseDetails(courseId: String): CourseDetailsResponse {
-        return apiService.getCourseDetails(courseId)
-    }
-
-    override suspend fun getCoursesList(
-        categoryId: String,
-        index: Int,
-        limit: Int
-    ): CoursesListNetData {
-        return apiService.getCoursesList(categoryId, index, limit)
-    }
-
-    override suspend fun getTodayPlan(userId: String): TodayPlanNetData {
-        return apiService.getTodayPlan(userId)
-    }
-
-    override suspend fun getSubscriptionPlans(): SubscriptionDataResponse {
-        return apiService.getSubscriptionPlans()
-    }
-
-    override suspend fun getSubscriptionStatus(userId: String): SubscriptionStatusResponse {
-        return apiService.getSubscriptionStatus(userId)
-    }
-
-    override suspend fun getSession(
-        userId: String,
-        courseId: String,
-        sessionId: String
-    ): SessionResponse {
-        return apiService.getSession(userId, courseId, sessionId)
-    }
-
-    override suspend fun getMultiSelectionData(uid: String): UserInputs {
-        return apiService.getMultiSelectionData(uid)
-    }
-
-    override suspend fun getScheduledPlan(userId: String, scheduleId: String): ScheduleResponse {
-        return apiService.getScheduledPlan(userId, scheduleId)
-    }
-
-    override suspend fun postScheduledPlan(scheduleData: ScheduleNetData) {
-        return apiService.postScheduledPlan(scheduleData)
-    }
-
-    override suspend fun putRescheduledPlan(scheduleData: ScheduleNetData) {
-        return apiService.putRescheduledPlan(scheduleData)
-    }
-
-    override suspend fun postScheduleTag(schedule: ScheduleTagNetData): Status {
-        return apiService.postScheduleTag(schedule)
-    }
-
-    override suspend fun getScheduleTag(userId: String, tagId: String): ScheduleTagResponse {
-        return apiService.getScheduleTag(userId, tagId)
-    }
-
-    override suspend fun putScheduleTag(schedule: ScheduleTagNetData): Status {
-        return apiService.putScheduleTag(schedule)
-    }
-
-    override suspend fun getScheduleTagList(): ScheduleTagsResponse {
-        return apiService.getScheduleTagList()
     }
 }

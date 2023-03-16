@@ -27,7 +27,6 @@ fun TestimonialsLayout(
     viewModel: TestimonialListViewModel = hiltViewModel(),
 ) {
 
-
     Scaffold(content = {
         TestimonialsList(it, viewModel)
     }, floatingActionButton = {

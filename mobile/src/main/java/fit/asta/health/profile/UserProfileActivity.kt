@@ -10,7 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.profile.view.*
-import fit.asta.health.ui.theme.AppTheme
+import fit.asta.health.ui.AppTheme
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 

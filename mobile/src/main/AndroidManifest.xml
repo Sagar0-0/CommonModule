@@ -7,7 +7,8 @@
 
     <dist:module dist:instant="true" />
 
-    <uses-permission android:name="com.android.vending.BILLING" /> <!-- <uses-permission android:name="android.permission.READ_SMS" /> -->
+    <uses-permission android:name="com.android.vending.BILLING" />
+    <!-- <uses-permission android:name="android.permission.READ_SMS" /> -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -49,25 +50,13 @@
         tools:targetApi="n">
         <activity android:name=".profile.UserProfileActivity" />
         <activity android:name=".profile.CreateUserProfileActivity" />
-        <activity android:name=".old.scheduler.tags.ui.TagsActivity" />
-        <activity android:name=".old.course.session.ui.SessionActivity" />
-        <activity android:name=".old.scheduler.ui.ScheduleActivity" />
-        <activity
-            android:name=".old.course.details.CourseDetailsActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".settings.SettingsActivity" />
         <activity android:name=".settings.WebViewActivity" />
-        <activity android:name=".old.article.ui.ArticleActivity" />
         <activity android:name=".firebase.view.AuthActivity" />
         <activity
             android:name=".testimonials.TestimonialsActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".old.subscription.SubscriptionActivity" />
         <activity android:name=".BillingActivity" />
-        <activity android:name=".common.multiselect.ui.MultiSelectActivity" />
-        <activity
-            android:name=".old.course.listing.ui.CourseListingActivity"
-            android:parentActivityName=".MainActivity" />
 
         <meta-data
             android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"

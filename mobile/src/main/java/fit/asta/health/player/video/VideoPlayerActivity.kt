@@ -27,8 +27,8 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import fit.asta.health.R
-import fit.asta.health.old.course.session.SessionRepo
-import fit.asta.health.old.course.session.data.Exercise
+import fit.asta.health.player.video.model.SessionRepo
+import fit.asta.health.player.video.model.data.Exercise
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject

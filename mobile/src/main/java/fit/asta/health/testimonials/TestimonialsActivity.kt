@@ -7,7 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.ui.theme.AppTheme
+import fit.asta.health.ui.AppTheme
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
