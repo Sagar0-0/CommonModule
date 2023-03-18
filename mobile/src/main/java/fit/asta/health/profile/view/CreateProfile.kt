@@ -18,10 +18,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import fit.asta.health.R
-import fit.asta.health.ui.theme.cardElevation
-import fit.asta.health.ui.theme.customSize
-import fit.asta.health.ui.theme.imageSize
-import fit.asta.health.ui.theme.spacing
+import fit.asta.health.common.ui.theme.cardElevation
+import fit.asta.health.common.ui.theme.customSize
+import fit.asta.health.common.ui.theme.imageSize
+import fit.asta.health.common.ui.theme.spacing
 
 data class ButtonListTypes(
     val buttonType: String,

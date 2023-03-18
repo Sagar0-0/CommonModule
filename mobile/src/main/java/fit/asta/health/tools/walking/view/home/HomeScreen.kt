@@ -33,7 +33,7 @@ import fit.asta.health.R
 import fit.asta.health.tools.walking.nav.StepsCounterScreen
 import fit.asta.health.tools.walking.view.component.*
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
-import fit.asta.health.ui.theme.spacing
+import fit.asta.health.common.ui.theme.spacing
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 

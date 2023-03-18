@@ -28,10 +28,10 @@ import fit.asta.health.testimonials.view.list.TestimonialImageCard
 import fit.asta.health.testimonials.view.list.TestimonialTextCard
 import fit.asta.health.testimonials.view.list.TestimonialsVideoCard
 import fit.asta.health.testimonials.viewmodel.list.TestimonialListViewModel
-import fit.asta.health.ui.theme.boxSize
-import fit.asta.health.ui.theme.cardElevation
-import fit.asta.health.ui.theme.imageHeight
-import fit.asta.health.ui.theme.spacing
+import fit.asta.health.common.ui.theme.boxSize
+import fit.asta.health.common.ui.theme.cardElevation
+import fit.asta.health.common.ui.theme.imageHeight
+import fit.asta.health.common.ui.theme.spacing
 
 @Composable
 fun TestimonialsList(

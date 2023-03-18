@@ -1,4 +1,4 @@
-package fit.asta.health.ui
+package fit.asta.health.common.ui
 
 import android.os.Build
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -8,7 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalContext
-import fit.asta.health.ui.theme.*
+import fit.asta.health.common.ui.theme.*
 
 
 private val LightColors = lightColorScheme(

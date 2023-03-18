@@ -20,7 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import fit.asta.health.tools.walking.view.component.RoundIconButton
-import fit.asta.health.ui.theme.spacing
+import fit.asta.health.common.ui.theme.spacing
 
 @Composable
 fun CardItem(

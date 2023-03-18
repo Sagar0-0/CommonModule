@@ -24,7 +24,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.sp
-import fit.asta.health.ui.theme.spacing
+import fit.asta.health.common.ui.theme.spacing
 import kotlin.math.*
 
 @OptIn(ExperimentalComposeUiApi::class)

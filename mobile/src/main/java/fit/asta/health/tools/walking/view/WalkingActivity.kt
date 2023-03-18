@@ -28,7 +28,7 @@ import fit.asta.health.tools.walking.nav.StepsCounterNavigation
 import fit.asta.health.tools.walking.view.component.WalkingBottomSheet
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
 import fit.asta.health.tools.water.WaterToolActivity
-import fit.asta.health.ui.AppTheme
+import fit.asta.health.common.ui.AppTheme
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class WalkingActivity : ComponentActivity() {

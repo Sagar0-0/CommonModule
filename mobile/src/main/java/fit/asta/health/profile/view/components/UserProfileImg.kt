@@ -17,9 +17,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
-import fit.asta.health.ui.theme.ProfileBorder1
-import fit.asta.health.ui.theme.ProfileBorder2
-import fit.asta.health.ui.theme.ProfileBorder3
+import fit.asta.health.common.ui.theme.ProfileBorder1
+import fit.asta.health.common.ui.theme.ProfileBorder2
+import fit.asta.health.common.ui.theme.ProfileBorder3
 
 // User's Profile Photo with Design Layout
 

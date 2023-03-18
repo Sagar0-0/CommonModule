@@ -10,7 +10,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.navigation.home.view.HomeContent
-import fit.asta.health.ui.AppTheme
+import fit.asta.health.common.ui.AppTheme
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 

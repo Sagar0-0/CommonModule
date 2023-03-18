@@ -31,7 +31,7 @@ import com.google.android.exoplayer2.ui.StyledPlayerView
 import fit.asta.health.R
 import fit.asta.health.testimonials.model.domain.Testimonial
 import fit.asta.health.testimonials.view.components.UserCard
-import fit.asta.health.ui.theme.*
+import fit.asta.health.common.ui.theme.*
 import fit.asta.health.common.utils.getImageUrl
 
 

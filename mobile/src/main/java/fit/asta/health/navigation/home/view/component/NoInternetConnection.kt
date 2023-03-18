@@ -25,8 +25,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import fit.asta.health.R
-import fit.asta.health.ui.theme.Gradient1NoInternet
-import fit.asta.health.ui.theme.Gradient2NoInternet
+import fit.asta.health.common.ui.theme.Gradient1NoInternet
+import fit.asta.health.common.ui.theme.Gradient2NoInternet
 
 @Composable
 fun NoInternetLayout(onTryAgain: () -> Unit) {

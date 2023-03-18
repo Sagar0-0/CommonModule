@@ -22,7 +22,7 @@ import androidx.navigation.NavController
 import fit.asta.health.R
 import fit.asta.health.tools.walking.model.ListItem
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
-import fit.asta.health.ui.theme.spacing
+import fit.asta.health.common.ui.theme.spacing
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)

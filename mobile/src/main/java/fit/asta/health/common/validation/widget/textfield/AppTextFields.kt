@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.validation.state.ValidationState
 import fit.asta.health.common.validation.util.TextFieldType
-import fit.asta.health.ui.theme.ColorAmericanPurple
+import fit.asta.health.common.ui.theme.ColorAmericanPurple
 
 
 @Composable

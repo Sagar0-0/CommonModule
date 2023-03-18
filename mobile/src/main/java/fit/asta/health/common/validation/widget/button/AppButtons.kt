@@ -5,7 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import fit.asta.health.ui.theme.ColorVerdigris
+import fit.asta.health.common.ui.theme.ColorVerdigris
 
 
 @Composable
