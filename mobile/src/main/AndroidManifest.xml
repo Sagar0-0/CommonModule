@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-sdk />
 
     <dist:module dist:instant="true" />
@@ -70,6 +70,7 @@
             tools:ignore="LockedOrientationActivity" />
 
         <activity android:name=".tools.water.WaterToolActivity"/>
+        <activity android:name=".tools.walking.view.WalkingActivity"/>
         <!--
  <activity
              android:name="com.theartofdev.edmodo.cropper.CropImageActivity"

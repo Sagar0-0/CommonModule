@@ -15,11 +15,6 @@ fun TestimonialsNavigation(navController: NavHostController) {
 
         composable(route = TestimonialsRoute.Home.route) {
 
-            TestimonialsLayout(onNavigateUp = {
-                navController.navigate(route = TestimonialsRoute.Create.route)
-            }, onNavigateBack = {
-                navController.popBackStack()
-            })
         }
 
         composable(route = TestimonialsRoute.Create.route) {

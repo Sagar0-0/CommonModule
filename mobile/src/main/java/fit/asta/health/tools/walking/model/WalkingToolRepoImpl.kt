@@ -13,13 +13,6 @@ class WalkingToolRepoImpl(
 
     override suspend fun getWalkingTool(userId: String): Flow<WalkingTool> {
         return flow {
-            emit(
-                mapper.mapToDomainModel(
-                    remoteApi.getWalkingTool(
-                        userId = userId
-                    )
-                )
-            )
         }
     }
 }

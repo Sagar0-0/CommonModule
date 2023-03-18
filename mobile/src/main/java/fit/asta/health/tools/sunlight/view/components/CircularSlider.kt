@@ -45,7 +45,6 @@ fun CircularSlider(
         mutableStateOf(progressColor)
     }
 
-
     LaunchedEffect(key1 = angle) {
         var a = angle
         a += 60
@@ -70,6 +69,7 @@ fun CircularSlider(
             Color(0xFF689F38)
         }
     }
+
     Canvas(modifier = modifier
         .onGloballyPositioned {
             width = it.size.width

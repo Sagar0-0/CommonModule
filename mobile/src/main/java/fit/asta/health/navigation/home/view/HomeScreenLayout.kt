@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.navigation.home.model.domain.ToolsHome
 import fit.asta.health.navigation.home.view.component.*
+import fit.asta.health.tools.walking.view.WalkingActivity
 import fit.asta.health.tools.water.WaterToolActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.*
@@ -129,6 +130,9 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
                                     when (it.lowercase(Locale.getDefault())) {
                                         "water" -> {
                                             WaterToolActivity.launch(context = context)
+                                        }
+                                        "steps" -> {
+                                            WalkingActivity.launch(context = context)
                                         }
                                     }
                                 }

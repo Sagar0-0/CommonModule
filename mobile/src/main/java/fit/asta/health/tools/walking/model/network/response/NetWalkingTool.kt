@@ -1,4 +1,4 @@
-package fit.asta.health.tools.walking.model.network
+package fit.asta.health.tools.walking.model.network.response
 
 import com.google.gson.annotations.SerializedName
 
