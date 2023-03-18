@@ -8,8 +8,8 @@ import com.google.firebase.storage.StorageReference
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
-import fit.asta.health.utils.ONE_MEGABYTE
-import fit.asta.health.utils.loadJSONFromAsset
+import fit.asta.health.common.utils.ONE_MEGABYTE
+import fit.asta.health.common.utils.loadJSONFromAsset
 
 
 class ReminderSupplier {

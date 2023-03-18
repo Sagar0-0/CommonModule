@@ -16,7 +16,7 @@
 
 package fit.asta.health.network.api
 
-import fit.asta.health.utils.ChatError
+import fit.asta.health.common.utils.ChatError
 
 
 /**

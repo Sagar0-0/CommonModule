@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import fit.asta.health.utils.NetworkConnectivity
+import fit.asta.health.common.utils.NetworkConnectivity
 
 
 class SplashScreen : AppCompatActivity() {

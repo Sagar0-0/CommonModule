@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import fit.asta.health.ActivityLauncher
 import fit.asta.health.R
 import fit.asta.health.notify.reminder.data.Reminder
-import fit.asta.health.utils.GenericAdapter
+import fit.asta.health.common.utils.GenericAdapter
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject

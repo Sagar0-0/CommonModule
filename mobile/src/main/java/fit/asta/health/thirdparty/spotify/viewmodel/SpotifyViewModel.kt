@@ -23,7 +23,7 @@ import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopArtistsModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopTracksModel
 import fit.asta.health.thirdparty.spotify.model.net.tracks.SpotifyTrackDetailsModel
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.TAG
-import fit.asta.health.utils.NetworkResult
+import fit.asta.health.common.utils.NetworkResult
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject

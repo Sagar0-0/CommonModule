@@ -6,7 +6,7 @@ import fit.asta.health.network.data.MultiFileUploadRes
 import fit.asta.health.network.data.SingleFileUploadRes
 import fit.asta.health.network.data.Status
 import fit.asta.health.network.data.UploadInfo
-import fit.asta.health.utils.NetworkUtil
+import fit.asta.health.common.utils.NetworkUtil
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody

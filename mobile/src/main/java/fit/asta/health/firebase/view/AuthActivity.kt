@@ -13,7 +13,7 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.*
 import fit.asta.health.R
 import fit.asta.health.firebase.viewmodel.AuthViewModel
-import fit.asta.health.utils.*
+import fit.asta.health.common.utils.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 

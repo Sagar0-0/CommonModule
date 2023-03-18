@@ -4,7 +4,7 @@ import android.util.Log
 import fit.asta.health.network.data.Status
 import fit.asta.health.tools.water.model.network.NetBevQtyPut
 import fit.asta.health.tools.water.model.network.NetWaterToolRes
-import fit.asta.health.utils.NetworkUtil
+import fit.asta.health.common.utils.NetworkUtil
 import okhttp3.OkHttpClient
 
 

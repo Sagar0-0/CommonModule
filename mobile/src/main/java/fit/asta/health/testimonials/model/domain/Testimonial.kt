@@ -2,7 +2,7 @@ package fit.asta.health.testimonials.model.domain
 
 import android.net.Uri
 import android.os.Parcelable
-import fit.asta.health.utils.UiString
+import fit.asta.health.common.utils.UiString
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

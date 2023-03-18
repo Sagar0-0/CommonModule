@@ -1,7 +1,7 @@
 package fit.asta.health.tools.sunlight.model.api
 
 import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
-import fit.asta.health.utils.NetworkUtil
+import fit.asta.health.common.utils.NetworkUtil
 import okhttp3.OkHttpClient
 
 

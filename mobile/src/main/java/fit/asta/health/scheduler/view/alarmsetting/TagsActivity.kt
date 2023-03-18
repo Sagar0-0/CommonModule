@@ -19,7 +19,7 @@ import fit.asta.health.scheduler.viewmodel.AlarmSettingViewModel
 import fit.asta.health.scheduler.viewmodel.AlarmViewModel
 import fit.asta.health.scheduler.viewmodel.SchedulerBackendViewModel
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.TAG
-import fit.asta.health.utils.NetworkResult
+import fit.asta.health.common.utils.NetworkResult
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint

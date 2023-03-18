@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fit.asta.health.utils
+package fit.asta.health.common.utils
 
 
 /**

@@ -39,7 +39,7 @@ import fit.asta.health.network.TokenProvider
 import fit.asta.health.profile.UserProfileActivity
 import fit.asta.health.profile.viewmodel.ProfileAvailViewModel
 import fit.asta.health.settings.SettingsActivity
-import fit.asta.health.utils.*
+import fit.asta.health.common.utils.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 

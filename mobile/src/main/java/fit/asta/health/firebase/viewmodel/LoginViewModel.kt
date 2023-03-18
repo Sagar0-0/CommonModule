@@ -7,7 +7,7 @@ import fit.asta.health.SETTINGS_SCREEN
 import fit.asta.health.firebase.model.domain.UserCred
 import fit.asta.health.firebase.model.service.AuthService
 import fit.asta.health.firebase.model.service.CrashLogService
-import fit.asta.health.utils.isValidEmail
+import fit.asta.health.common.utils.isValidEmail
 import javax.inject.Inject
 
 @HiltViewModel

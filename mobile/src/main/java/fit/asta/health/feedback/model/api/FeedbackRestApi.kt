@@ -3,7 +3,7 @@ package fit.asta.health.feedback.model.api
 import fit.asta.health.feedback.model.network.NetFeedbackRes
 import fit.asta.health.feedback.model.network.NetUserFeedback
 import fit.asta.health.network.data.Status
-import fit.asta.health.utils.NetworkUtil
+import fit.asta.health.common.utils.NetworkUtil
 import okhttp3.OkHttpClient
 
 

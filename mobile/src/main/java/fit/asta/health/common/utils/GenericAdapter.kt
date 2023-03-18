@@ -1,4 +1,4 @@
-package fit.asta.health.utils
+package fit.asta.health.common.utils
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView

@@ -24,7 +24,7 @@ import com.bumptech.glide.request.transition.Transition
 import fit.asta.health.MainActivity
 import fit.asta.health.R
 import fit.asta.health.notify.receiver.SnoozeReceiver
-import fit.asta.health.utils.getUriFromResourceId
+import fit.asta.health.common.utils.getUriFromResourceId
 
 
 private const val NOTIFICATION_ID = 0

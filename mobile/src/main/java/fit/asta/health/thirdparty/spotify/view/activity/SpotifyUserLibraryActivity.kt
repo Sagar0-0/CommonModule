@@ -11,7 +11,7 @@ import fit.asta.health.databinding.ActivitySpotifyUserLibraryBinding
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
 import fit.asta.health.thirdparty.spotify.view.adapters.*
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModel
-import fit.asta.health.utils.NetworkResult
+import fit.asta.health.common.utils.NetworkResult
 
 
 @AndroidEntryPoint

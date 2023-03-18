@@ -1,4 +1,4 @@
-package fit.asta.health.utils
+package fit.asta.health.common.utils
 
 sealed class NetworkResult<T>(
     val data: T? = null,

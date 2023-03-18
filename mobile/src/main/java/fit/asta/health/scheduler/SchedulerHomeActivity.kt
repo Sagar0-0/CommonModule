@@ -11,7 +11,7 @@ import fit.asta.health.scheduler.view.adapters.AlarmAdapter
 import fit.asta.health.scheduler.viewmodel.AlarmViewModel
 import fit.asta.health.scheduler.viewmodel.SchedulerBackendViewModel
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.TAG
-import fit.asta.health.utils.NetworkResult
+import fit.asta.health.common.utils.NetworkResult
 
 @AndroidEntryPoint
 class SchedulerHomeActivity : AppCompatActivity() {

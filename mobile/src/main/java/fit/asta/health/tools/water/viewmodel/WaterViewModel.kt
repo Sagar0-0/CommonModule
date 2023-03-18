@@ -9,7 +9,7 @@ import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.tools.water.model.WaterToolRepo
 import fit.asta.health.tools.water.model.domain.WaterTool
 import fit.asta.health.tools.water.model.network.NetBevQtyPut
-import fit.asta.health.utils.getCurrentDate
+import fit.asta.health.common.utils.getCurrentDate
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

@@ -5,7 +5,7 @@ import fit.asta.health.network.data.ApiResponse
 import fit.asta.health.network.data.Status
 import fit.asta.health.testimonials.model.api.TestimonialApi
 import fit.asta.health.testimonials.model.domain.Testimonial
-import fit.asta.health.utils.InputStreamRequestBody
+import fit.asta.health.common.utils.InputStreamRequestBody
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okhttp3.MultipartBody

@@ -3,7 +3,7 @@ package fit.asta.health.tools.walking.model.api
 import fit.asta.health.tools.walking.model.network.request.PostReq
 import fit.asta.health.tools.walking.model.network.request.PutReq
 import fit.asta.health.tools.walking.model.network.response.*
-import fit.asta.health.utils.NetworkUtil
+import fit.asta.health.common.utils.NetworkUtil
 import okhttp3.OkHttpClient
 import java.util.*
 

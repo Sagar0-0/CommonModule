@@ -6,7 +6,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.firebase.messaging.FirebaseMessaging
 import fit.asta.health.R
-import fit.asta.health.utils.PrefUtils
+import fit.asta.health.common.utils.PrefUtils
 
 class NotifyFragment : PreferenceFragmentCompat() {
 

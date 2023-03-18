@@ -15,7 +15,7 @@ import fit.asta.health.thirdparty.spotify.model.net.common.ExternalUrls
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
 import fit.asta.health.thirdparty.spotify.viewmodel.FavoriteViewModel
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModel
-import fit.asta.health.utils.NetworkResult
+import fit.asta.health.common.utils.NetworkResult
 
 @AndroidEntryPoint
 class SpotifyAlbumDetailsActivity : AppCompatActivity() {

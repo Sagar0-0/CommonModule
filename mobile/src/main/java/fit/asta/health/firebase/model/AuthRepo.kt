@@ -4,7 +4,7 @@ import android.app.Activity
 import com.google.firebase.auth.AuthCredential
 import fit.asta.health.firebase.model.domain.User
 import fit.asta.health.firebase.model.domain.UserCred
-import fit.asta.health.utils.ResultState
+import fit.asta.health.common.utils.ResultState
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepo {

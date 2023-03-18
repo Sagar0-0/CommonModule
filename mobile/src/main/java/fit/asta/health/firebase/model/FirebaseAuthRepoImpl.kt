@@ -6,7 +6,7 @@ import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import fit.asta.health.firebase.model.domain.User
 import fit.asta.health.firebase.model.domain.UserCred
-import fit.asta.health.utils.ResultState
+import fit.asta.health.common.utils.ResultState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow

@@ -5,7 +5,7 @@ import fit.asta.health.profile.model.domain.UserProfile
 import fit.asta.health.profile.model.network.NetHealthPropertiesRes
 import fit.asta.health.profile.model.network.NetUserProfileAvailableRes
 import fit.asta.health.profile.model.network.NetUserProfileRes
-import fit.asta.health.utils.NetworkUtil
+import fit.asta.health.common.utils.NetworkUtil
 import okhttp3.OkHttpClient
 
 

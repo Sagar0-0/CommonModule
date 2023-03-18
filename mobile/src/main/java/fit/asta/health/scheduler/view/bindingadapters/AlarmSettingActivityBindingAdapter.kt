@@ -26,7 +26,7 @@ import fit.asta.health.scheduler.view.alarmsetting.bottomsheets.*
 import fit.asta.health.scheduler.view.interfaces.BottomSheetInterface
 import fit.asta.health.scheduler.viewmodel.AlarmViewModel
 import fit.asta.health.scheduler.viewmodel.SchedulerBackendViewModel
-import fit.asta.health.utils.NetworkResult
+import fit.asta.health.common.utils.NetworkResult
 import xyz.aprildown.ultimateringtonepicker.RingtonePickerDialog
 import xyz.aprildown.ultimateringtonepicker.UltimateRingtonePicker
 

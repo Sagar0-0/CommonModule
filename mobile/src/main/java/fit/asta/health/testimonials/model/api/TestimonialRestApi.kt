@@ -4,7 +4,7 @@ import fit.asta.health.network.data.Status
 import fit.asta.health.testimonials.model.network.NetTestimonial
 import fit.asta.health.testimonials.model.network.NetTestimonialRes
 import fit.asta.health.testimonials.model.network.NetTestimonialsRes
-import fit.asta.health.utils.NetworkUtil
+import fit.asta.health.common.utils.NetworkUtil
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 

@@ -1,4 +1,4 @@
-package fit.asta.health.utils
+package fit.asta.health.common.utils
 
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson

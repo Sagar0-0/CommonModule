@@ -25,7 +25,7 @@ import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
 import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
 import fit.asta.health.ui.theme.imageHeight
 import fit.asta.health.ui.theme.spacing
-import fit.asta.health.utils.getImageUrl
+import fit.asta.health.common.utils.getImageUrl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 

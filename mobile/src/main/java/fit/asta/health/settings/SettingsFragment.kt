@@ -8,7 +8,7 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import fit.asta.health.R
-import fit.asta.health.utils.*
+import fit.asta.health.common.utils.*
 
 
 class SettingsFragment : PreferenceFragmentCompat() {

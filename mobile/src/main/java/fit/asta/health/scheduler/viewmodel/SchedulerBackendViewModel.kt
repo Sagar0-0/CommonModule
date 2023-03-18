@@ -15,7 +15,7 @@ import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerPutResponse
 import fit.asta.health.scheduler.model.net.tag.AstaGetTagsListResponse
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.TAG
-import fit.asta.health.utils.NetworkResult
+import fit.asta.health.common.utils.NetworkResult
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject

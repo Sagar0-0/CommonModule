@@ -11,7 +11,7 @@ import fit.asta.health.network.NetworkHelper
 import fit.asta.health.network.data.ApiResponse
 import fit.asta.health.testimonials.model.TestimonialRepo
 import fit.asta.health.testimonials.model.domain.*
-import fit.asta.health.utils.UiString
+import fit.asta.health.common.utils.UiString
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

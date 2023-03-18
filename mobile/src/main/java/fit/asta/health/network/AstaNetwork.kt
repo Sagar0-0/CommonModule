@@ -2,7 +2,7 @@ package fit.asta.health.network
 
 import fit.asta.health.BuildConfig
 import fit.asta.health.network.interceptor.ApiKeyInterceptor
-import fit.asta.health.utils.NetworkUtil
+import fit.asta.health.common.utils.NetworkUtil
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

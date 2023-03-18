@@ -36,7 +36,7 @@ import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
 import fit.asta.health.ui.theme.boxSize
 import fit.asta.health.ui.theme.cardElevation
 import fit.asta.health.ui.theme.spacing
-import fit.asta.health.utils.UiString
+import fit.asta.health.common.utils.UiString
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 

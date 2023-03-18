@@ -1,7 +1,7 @@
 package fit.asta.health.player.video.model.api
 
 import fit.asta.health.player.video.model.networkdata.SessionResponse
-import fit.asta.health.utils.NetworkUtil
+import fit.asta.health.common.utils.NetworkUtil
 import okhttp3.OkHttpClient
 
 

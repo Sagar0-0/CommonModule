@@ -8,7 +8,7 @@ import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerGetListRespons
 import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerGetResponse
 import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerPutResponse
 import fit.asta.health.scheduler.model.net.tag.AstaGetTagsListResponse
-import fit.asta.health.utils.NetworkUtil
+import fit.asta.health.common.utils.NetworkUtil
 import okhttp3.OkHttpClient
 import retrofit2.Response
 

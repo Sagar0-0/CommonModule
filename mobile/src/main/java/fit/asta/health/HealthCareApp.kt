@@ -9,7 +9,7 @@ import androidx.multidex.MultiDexApplication
 import dagger.hilt.android.HiltAndroidApp
 import fit.asta.health.common.db.AppDb
 import fit.asta.health.notify.util.createNotificationChannel
-import fit.asta.health.utils.getUriFromResourceId
+import fit.asta.health.common.utils.getUriFromResourceId
 
 @HiltAndroidApp
 class HealthCareApp : MultiDexApplication() {

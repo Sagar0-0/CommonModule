@@ -24,7 +24,7 @@ import fit.asta.health.thirdparty.spotify.view.adapters.SpotifyTopArtistsAdapter
 import fit.asta.health.thirdparty.spotify.view.adapters.SpotifyTopTracksAdapter
 import fit.asta.health.thirdparty.spotify.view.adapters.SpotifyUserPlaylistsAdapter
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModel
-import fit.asta.health.utils.NetworkResult
+import fit.asta.health.common.utils.NetworkResult
 
 @AndroidEntryPoint
 class SpotifySearchFragment : Fragment() {

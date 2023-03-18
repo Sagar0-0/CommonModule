@@ -1,4 +1,4 @@
-package fit.asta.health.utils
+package fit.asta.health.common.utils
 
 object Constants {
     const val DATA_LIMIT  = 20L

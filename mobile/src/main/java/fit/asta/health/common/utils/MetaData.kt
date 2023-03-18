@@ -1,4 +1,4 @@
-package fit.asta.health.utils
+package fit.asta.health.common.utils
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

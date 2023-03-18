@@ -29,7 +29,7 @@ import fit.asta.health.testimonials.view.components.ValidatedTextField
 import fit.asta.health.ui.components.NextButton
 import fit.asta.health.ui.theme.cardElevation
 import fit.asta.health.ui.theme.spacing
-import fit.asta.health.utils.UiString
+import fit.asta.health.common.utils.UiString
 
 
 @OptIn(ExperimentalFoundationApi::class)

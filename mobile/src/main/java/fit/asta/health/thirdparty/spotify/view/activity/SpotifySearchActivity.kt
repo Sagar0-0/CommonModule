@@ -19,7 +19,7 @@ import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.SPOTI
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.SPOTIFY_USER_TOKEN
 import fit.asta.health.thirdparty.spotify.view.adapters.*
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModel
-import fit.asta.health.utils.NetworkResult
+import fit.asta.health.common.utils.NetworkResult
 
 @AndroidEntryPoint
 class SpotifySearchActivity : AppCompatActivity() {

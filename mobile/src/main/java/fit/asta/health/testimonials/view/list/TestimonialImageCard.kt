@@ -17,7 +17,7 @@ import fit.asta.health.testimonials.view.components.UserTst
 import fit.asta.health.ui.theme.cardElevation
 import fit.asta.health.ui.theme.imageHeight
 import fit.asta.health.ui.theme.spacing
-import fit.asta.health.utils.getImageUrl
+import fit.asta.health.common.utils.getImageUrl
 
 @Composable
 fun TestimonialImageCard(testimonial: Testimonial) {

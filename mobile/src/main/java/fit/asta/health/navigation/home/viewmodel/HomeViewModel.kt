@@ -6,9 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.navigation.home.model.ToolsHomeRepo
 import fit.asta.health.navigation.home.model.network.NetSelectedTools
-import fit.asta.health.utils.getCurrentDate
-import fit.asta.health.utils.getCurrentTime
-import fit.asta.health.utils.getNextDate
+import fit.asta.health.common.utils.getCurrentDate
+import fit.asta.health.common.utils.getCurrentTime
+import fit.asta.health.common.utils.getNextDate
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

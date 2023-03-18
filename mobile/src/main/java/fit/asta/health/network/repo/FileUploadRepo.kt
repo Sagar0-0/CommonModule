@@ -6,7 +6,7 @@ import fit.asta.health.network.api.RemoteApis
 import fit.asta.health.network.data.MultiFileUpload
 import fit.asta.health.network.data.SingleFileUpload
 import fit.asta.health.network.data.UploadInfo
-import fit.asta.health.utils.InputStreamRequestBody
+import fit.asta.health.common.utils.InputStreamRequestBody
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
