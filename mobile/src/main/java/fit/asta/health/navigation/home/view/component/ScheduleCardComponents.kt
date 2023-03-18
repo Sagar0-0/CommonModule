@@ -27,8 +27,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
-import fit.asta.health.ui.theme.ScheduleBackground
-import fit.asta.health.ui.theme.TextDark02
+import fit.asta.health.common.ui.theme.ScheduleBackground
+import fit.asta.health.common.ui.theme.TextDark02
 
 @Composable
 fun ScheduleCardsImage() {

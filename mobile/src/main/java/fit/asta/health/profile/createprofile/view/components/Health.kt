@@ -25,8 +25,8 @@ import fit.asta.health.profile.view.*
 import fit.asta.health.profile.view.components.AddIcon
 import fit.asta.health.profile.view.components.ChipsOnCards
 import fit.asta.health.testimonials.view.components.ValidateNumberField
-import fit.asta.health.ui.theme.cardElevation
-import fit.asta.health.ui.theme.spacing
+import fit.asta.health.common.ui.theme.cardElevation
+import fit.asta.health.common.ui.theme.spacing
 import kotlinx.coroutines.launch
 
 

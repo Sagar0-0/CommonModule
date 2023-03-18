@@ -6,8 +6,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import fit.asta.health.testimonials.model.domain.Testimonial
-import fit.asta.health.ui.theme.Spacing
-import fit.asta.health.ui.theme.ts
+import fit.asta.health.common.ui.theme.Spacing
+import fit.asta.health.common.ui.theme.ts
 
 @Composable
 fun UserTst(

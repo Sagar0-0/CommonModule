@@ -25,8 +25,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.R
 import fit.asta.health.navigation.home.viewmodel.RateUsEvent
 import fit.asta.health.navigation.home.viewmodel.RateUsViewModel
-import fit.asta.health.ui.theme.RateUsGrad1
-import fit.asta.health.ui.theme.RateUsGrad2
+import fit.asta.health.common.ui.theme.RateUsGrad1
+import fit.asta.health.common.ui.theme.RateUsGrad2
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 

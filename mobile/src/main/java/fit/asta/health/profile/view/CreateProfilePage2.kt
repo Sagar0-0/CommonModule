@@ -15,9 +15,9 @@ import androidx.compose.ui.graphics.Color
 import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.profile.view.components.AddIcon
 import fit.asta.health.profile.view.components.ChipsOnCards
-import fit.asta.health.ui.theme.cardElevation
-import fit.asta.health.ui.theme.customSize
-import fit.asta.health.ui.theme.spacing
+import fit.asta.health.common.ui.theme.cardElevation
+import fit.asta.health.common.ui.theme.customSize
+import fit.asta.health.common.ui.theme.spacing
 
 @Composable
 fun SelectionCardCreateProfile(

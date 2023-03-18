@@ -27,10 +27,10 @@ import androidx.compose.ui.unit.dp
 import fit.asta.health.R
 import fit.asta.health.common.validation.state.ValidationState
 import fit.asta.health.common.validation.util.TextFieldType
-import fit.asta.health.ui.theme.ColorPlatinum
+import fit.asta.health.common.ui.theme.ColorPlatinum
 
-//import fit.asta.health.ui.theme.ColorPlatinum
-//import fit.asta.health.ui.theme.IbarraNovaNormalError13
+//import fit.asta.health.common.ui.theme.ColorPlatinum
+//import fit.asta.health.common.ui.theme.IbarraNovaNormalError13
 
 
 @Composable

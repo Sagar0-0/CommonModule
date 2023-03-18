@@ -23,8 +23,8 @@ import fit.asta.health.testimonials.view.components.UploadTstMediaView
 import fit.asta.health.testimonials.viewmodel.create.MediaType
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
 import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
-import fit.asta.health.ui.theme.imageHeight
-import fit.asta.health.ui.theme.spacing
+import fit.asta.health.common.ui.theme.imageHeight
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.utils.getImageUrl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 

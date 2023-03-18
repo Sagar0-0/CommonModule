@@ -1,4 +1,4 @@
-package fit.asta.health.ui.components
+package fit.asta.health.common.ui.components
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults

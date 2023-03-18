@@ -23,8 +23,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import fit.asta.health.R
-import fit.asta.health.ui.theme.iconSize
-import fit.asta.health.ui.theme.spacing
+import fit.asta.health.common.ui.theme.iconSize
+import fit.asta.health.common.ui.theme.spacing
 
 
 class FullScreenActivity : ComponentActivity() {

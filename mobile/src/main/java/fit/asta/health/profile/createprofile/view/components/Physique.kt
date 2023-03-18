@@ -26,9 +26,9 @@ import fit.asta.health.profile.view.ButtonListTypes
 import fit.asta.health.profile.view.MultiToggleLayout
 import fit.asta.health.testimonials.view.components.ValidateNumberField
 import fit.asta.health.testimonials.view.components.ValidatedTextField
-import fit.asta.health.ui.components.NextButton
-import fit.asta.health.ui.theme.cardElevation
-import fit.asta.health.ui.theme.spacing
+import fit.asta.health.common.ui.components.NextButton
+import fit.asta.health.common.ui.theme.cardElevation
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.utils.UiString
 
 

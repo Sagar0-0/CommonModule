@@ -1,4 +1,4 @@
-package fit.asta.health.ui.theme
+package fit.asta.health.common.ui.theme
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.booleanPreferencesKey

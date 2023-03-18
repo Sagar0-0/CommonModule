@@ -16,8 +16,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.ui.theme.Dark03
-import fit.asta.health.ui.theme.TextLight04
+import fit.asta.health.common.ui.theme.Dark03
+import fit.asta.health.common.ui.theme.TextLight04
 
 data class TextFieldListData(
     val placeHolderText: String,

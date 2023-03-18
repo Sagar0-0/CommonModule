@@ -26,9 +26,9 @@ import fit.asta.health.R
 import fit.asta.health.feedback.view.SubmitButton
 import fit.asta.health.profile.model.domain.Address
 import fit.asta.health.profile.model.domain.Contact
-import fit.asta.health.ui.theme.ProfileBorder1
-import fit.asta.health.ui.theme.ProfileBorder2
-import fit.asta.health.ui.theme.ProfileBorder3
+import fit.asta.health.common.ui.theme.ProfileBorder1
+import fit.asta.health.common.ui.theme.ProfileBorder2
+import fit.asta.health.common.ui.theme.ProfileBorder3
 
 // User's Detail Layout
 @Composable

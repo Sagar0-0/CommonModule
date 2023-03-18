@@ -11,7 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowRow
-import fit.asta.health.ui.theme.RadioGrey
+import fit.asta.health.common.ui.theme.RadioGrey
 
 
 @Composable

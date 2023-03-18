@@ -12,9 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import fit.asta.health.ui.theme.cardHeight
-import fit.asta.health.ui.theme.imageHeight
-import fit.asta.health.ui.theme.spacing
+import fit.asta.health.common.ui.theme.cardHeight
+import fit.asta.health.common.ui.theme.imageHeight
+import fit.asta.health.common.ui.theme.spacing
 
 @Composable
 fun UploadTstMediaView(
