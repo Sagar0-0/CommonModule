@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.databinding.FragmentSpotifySearchBinding
+import fit.asta.health.databinding.SpotifySearchFragmentBinding
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.SPOTIFY_USER_DETAILS
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.SPOTIFY_USER_TOKEN
 import fit.asta.health.thirdparty.spotify.view.adapters.SpotifyCategoriesAdapter
@@ -29,7 +29,7 @@ import fit.asta.health.utils.NetworkResult
 @AndroidEntryPoint
 class SpotifySearchFragment : Fragment() {
 
-    private var _binding: FragmentSpotifySearchBinding? = null
+    private var _binding: SpotifySearchFragmentBinding? = null
     private val binding get() = _binding!!
 
     private val TAG = this::class.simpleName
@@ -55,7 +55,7 @@ class SpotifySearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentSpotifySearchBinding.inflate(inflater, container, false)
+        _binding = SpotifySearchFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 

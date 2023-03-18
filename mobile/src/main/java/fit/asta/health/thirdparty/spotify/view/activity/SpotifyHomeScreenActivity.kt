@@ -6,16 +6,16 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.R
-import fit.asta.health.databinding.ActivitySpotifyHomeScreenBinding
+import fit.asta.health.databinding.SpotifyHomeScreenActivityBinding
 
 @AndroidEntryPoint
 class SpotifyHomeScreenActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivitySpotifyHomeScreenBinding
+    private lateinit var binding: SpotifyHomeScreenActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySpotifyHomeScreenBinding.inflate(layoutInflater)
+        binding = SpotifyHomeScreenActivityBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
 

@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import fit.asta.health.databinding.LayoutItemAlarmBinding
+import fit.asta.health.databinding.SchedulerLayoutItemAlarmBinding
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.util.AlarmDiffUtils
 import fit.asta.health.scheduler.viewmodel.AlarmViewModel
@@ -18,7 +18,7 @@ class AlarmAdapter(
 ) : RecyclerView.Adapter<AlarmAdapter.InnerViewHolder>() {
 
     // a class to hold references to the item of recyclerview
-    class InnerViewHolder(private val binding: LayoutItemAlarmBinding) :
+    class InnerViewHolder(private val binding: SchedulerLayoutItemAlarmBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(alarmEntity: AlarmEntity, viewModel: AlarmViewModel) {
             binding.alarmItem = alarmEntity
@@ -29,7 +29,7 @@ class AlarmAdapter(
         companion object {
             fun from(parent: ViewGroup): InnerViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = LayoutItemAlarmBinding.inflate(layoutInflater, parent, false)
+                val binding = SchedulerLayoutItemAlarmBinding.inflate(layoutInflater, parent, false)
                 return InnerViewHolder(binding)
             }
         }

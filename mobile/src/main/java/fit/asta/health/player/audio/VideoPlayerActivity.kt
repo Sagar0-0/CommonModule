@@ -21,16 +21,16 @@ import com.google.android.exoplayer2.util.Util
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import fit.asta.health.R
-import fit.asta.health.databinding.ActivityPlayerBinding
-import fit.asta.health.databinding.CustomPlaybackControlBinding
+import fit.asta.health.databinding.PlayerActivityBinding
+import fit.asta.health.databinding.PlayerCustomControlBinding
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 
 class VideoPlayerActivity : AppCompatActivity(), Player.Listener {
 
-    private lateinit var actPlayer: ActivityPlayerBinding
-    private lateinit var customPlayer: CustomPlaybackControlBinding
+    private lateinit var actPlayer: PlayerActivityBinding
+    private lateinit var customPlayer: PlayerCustomControlBinding
 
     //private val sessionRepo: SessionRepo by inject()
     private val scope = MainScope()
@@ -72,7 +72,7 @@ class VideoPlayerActivity : AppCompatActivity(), Player.Listener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        actPlayer = ActivityPlayerBinding.inflate(layoutInflater)
+        actPlayer = PlayerActivityBinding.inflate(layoutInflater)
         setContentView(actPlayer.root)
 
         customPlayer.btnCloseVideo.setOnClickListener {

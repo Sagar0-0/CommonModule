@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.R
-import fit.asta.health.databinding.FragmentVibrationSliderBottomSheetBinding
+import fit.asta.health.databinding.SchedulerFragmentVibrationSliderBottomSheetBinding
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.view.interfaces.BottomSheetInterface
 import fit.asta.health.scheduler.viewmodel.AlarmSettingViewModel
@@ -18,7 +18,7 @@ class VibrationBottomSheet(
     private var bottomSheetInterface: BottomSheetInterface
 ) : BottomSheetDialogFragment() {
 
-    private var _binding: FragmentVibrationSliderBottomSheetBinding? = null
+    private var _binding: SchedulerFragmentVibrationSliderBottomSheetBinding? = null
     private lateinit var alarmSettingViewModel: AlarmSettingViewModel
 
     // This property is only valid between onCreateView and
@@ -35,7 +35,7 @@ class VibrationBottomSheet(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentVibrationSliderBottomSheetBinding.inflate(inflater, container, false)
+        _binding = SchedulerFragmentVibrationSliderBottomSheetBinding.inflate(inflater, container, false)
         alarmSettingViewModel = ViewModelProvider(this).get(AlarmSettingViewModel::class.java)
         _binding?.alarmSettingViewModel = alarmSettingViewModel
         _binding?.cancelButton?.setOnClickListener { dismiss() }

@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.databinding.FragmentSpotifyMusicBinding
+import fit.asta.health.databinding.SpotifyMusicFragmentBinding
 import fit.asta.health.thirdparty.spotify.model.net.me.player.recentlyplayed.Track
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.SPOTIFY_USER_DETAILS
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.SPOTIFY_USER_TOKEN
@@ -28,7 +28,7 @@ import fit.asta.health.utils.NetworkResult
 @AndroidEntryPoint
 class SpotifyMusicFragment : Fragment() {
 
-    private var _binding: FragmentSpotifyMusicBinding? = null
+    private var _binding: SpotifyMusicFragmentBinding? = null
     private val binding get() = _binding!!
 
     private val TAG = this::class.simpleName
@@ -48,7 +48,7 @@ class SpotifyMusicFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentSpotifyMusicBinding.inflate(layoutInflater)
+        _binding = SpotifyMusicFragmentBinding.inflate(layoutInflater)
         return binding.root
     }
 

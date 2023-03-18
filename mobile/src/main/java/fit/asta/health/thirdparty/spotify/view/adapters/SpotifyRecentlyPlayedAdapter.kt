@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import fit.asta.health.databinding.ItemRecentlyPlayedBinding
+import fit.asta.health.databinding.SpotifyItemRecentlyPlayedBinding
 import fit.asta.health.thirdparty.spotify.model.net.me.player.recentlyplayed.Track
 import fit.asta.health.thirdparty.spotify.utils.CommonDiffUtils
 
@@ -12,7 +12,7 @@ class SpotifyRecentlyPlayedAdapter(
     private var mList: List<Track>
 ) : RecyclerView.Adapter<SpotifyRecentlyPlayedAdapter.InnerViewHolder>() {
 
-    class InnerViewHolder(private val binding: ItemRecentlyPlayedBinding) :
+    class InnerViewHolder(private val binding: SpotifyItemRecentlyPlayedBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(recentlyPlayedItem: Track) {
             binding.recentlyPlayedTrack = recentlyPlayedItem
@@ -22,7 +22,7 @@ class SpotifyRecentlyPlayedAdapter(
         companion object {
             fun from(parent: ViewGroup): InnerViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ItemRecentlyPlayedBinding.inflate(layoutInflater, parent, false)
+                val binding = SpotifyItemRecentlyPlayedBinding.inflate(layoutInflater, parent, false)
                 return InnerViewHolder(binding)
             }
         }

@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import fit.asta.health.databinding.LayoutItemTagBinding
+import fit.asta.health.databinding.SchedulerLayoutItemTagBinding
 import fit.asta.health.scheduler.model.db.entity.TagEntity
 import fit.asta.health.scheduler.util.AlarmDiffUtils
 import fit.asta.health.scheduler.viewmodel.AlarmSettingViewModel
@@ -19,7 +19,7 @@ class TagAdapter(
 
     private var selectedPosition = -1
 
-    class InnerViewHolder(private val binding: LayoutItemTagBinding) :
+    class InnerViewHolder(private val binding: SchedulerLayoutItemTagBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(tagItem: TagEntity, viewModel: AlarmViewModel) {
             binding.tagItem = tagItem
@@ -32,7 +32,7 @@ class TagAdapter(
         companion object {
             fun from(parent: ViewGroup): InnerViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = LayoutItemTagBinding.inflate(layoutInflater, parent, false)
+                val binding = SchedulerLayoutItemTagBinding.inflate(layoutInflater, parent, false)
                 return InnerViewHolder(binding)
             }
 

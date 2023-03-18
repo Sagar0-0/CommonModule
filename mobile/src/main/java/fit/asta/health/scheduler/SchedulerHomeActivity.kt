@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.databinding.ActivitySchedulerHomeBinding
+import fit.asta.health.databinding.SchedulerHomeActivityBinding
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.view.adapters.AlarmAdapter
 import fit.asta.health.scheduler.viewmodel.AlarmViewModel
@@ -16,7 +16,7 @@ import fit.asta.health.utils.NetworkResult
 @AndroidEntryPoint
 class SchedulerHomeActivity : AppCompatActivity() {
 
-    private lateinit var _binding: ActivitySchedulerHomeBinding
+    private lateinit var _binding: SchedulerHomeActivityBinding
     private lateinit var viewModel: AlarmViewModel
     private lateinit var alarmAdapter: AlarmAdapter
     private var mList: List<AlarmEntity> = emptyList()
@@ -28,7 +28,7 @@ class SchedulerHomeActivity : AppCompatActivity() {
 
         backendViewModel = ViewModelProvider(this)[SchedulerBackendViewModel::class.java]
 
-        _binding = ActivitySchedulerHomeBinding.inflate(layoutInflater)
+        _binding = SchedulerHomeActivityBinding.inflate(layoutInflater)
         setContentView(_binding.root)
 
         viewModel = ViewModelProvider(this).get(AlarmViewModel::class.java)

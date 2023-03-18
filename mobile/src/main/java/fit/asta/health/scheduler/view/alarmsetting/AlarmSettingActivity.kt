@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.R
-import fit.asta.health.databinding.ActivityAlarmSettingBinding
+import fit.asta.health.databinding.SchedulerAlarmSettingActivityBinding
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.db.entity.TagEntity
 import fit.asta.health.scheduler.model.net.scheduler.*
@@ -24,7 +24,7 @@ import java.io.Serializable
 @AndroidEntryPoint
 class AlarmSettingActivity : AppCompatActivity(), BottomSheetInterface {
 
-    private lateinit var _binding: ActivityAlarmSettingBinding
+    private lateinit var _binding: SchedulerAlarmSettingActivityBinding
     private var alarmEntity: AlarmEntity? = null
     private lateinit var alarmViewModel: AlarmViewModel
     private lateinit var backendViewModel: SchedulerBackendViewModel
@@ -64,7 +64,7 @@ class AlarmSettingActivity : AppCompatActivity(), BottomSheetInterface {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityAlarmSettingBinding.inflate(layoutInflater)
+        _binding = SchedulerAlarmSettingActivityBinding.inflate(layoutInflater)
         setContentView(_binding.root)
 //        _binding.resultLauncher = resultLauncher
 
