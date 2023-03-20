@@ -4,17 +4,17 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import fit.asta.health.tools.walking.view.home.StepCounterUIEvent
-import fit.asta.health.tools.walking.view.steps_counter.StepCounterUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.tools.walking.model.WalkingToolRepo
+import fit.asta.health.tools.walking.model.domain.WalkingTool
 import fit.asta.health.tools.walking.sensor.MeasurableSensor
 import fit.asta.health.tools.walking.view.home.HomeUIState
+import fit.asta.health.tools.walking.view.home.StepCounterUIEvent
+import fit.asta.health.tools.walking.view.steps_counter.StepCounterUIState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,22 +26,33 @@ class WalkingViewModel
     private val walkingToolRepo: WalkingToolRepo, private val stepsSensor: MeasurableSensor
 ) : ViewModel() {
 
-//    private val mutableState = MutableStateFlow<WalkingState>(WalkingState.Loading)
-//    val state = mutableState.asStateFlow()
-//
-//    init {
-//        loadWalkingToolData()
-//    }
-//
-//    private fun loadWalkingToolData() {
-//        viewModelScope.launch {
-//            walkingToolRepo.getWalkingTool(userId = "62fcd8c098eb9d5ed038b563").catch { exception ->
-//                mutableState.value = WalkingState.Error(exception)
-//            }.collect {
-//                mutableState.value = WalkingState.Success(it)
-//            }
-//        }
-//    }
+    private val _homeUiState = mutableStateOf(HomeUIState())
+    val homeUiState: State<HomeUIState> = _homeUiState
+
+    private val _apiState = mutableStateOf(WalkingTool())
+    val ApiState: State<WalkingTool> = _apiState
+
+    init {
+        loadWalkingToolData()
+    }
+
+    private fun loadWalkingToolData() {
+        viewModelScope.launch {
+            walkingToolRepo.getHomeData(userId = "6309a9379af54f142c65fbfe")
+                .collect {
+                when(it){
+                    is NetworkResult.Loading -> {}
+                    is NetworkResult.Success -> {
+                        _apiState.value= it.data!!
+                    }
+                    is NetworkResult.Error -> {}
+                    else -> {}
+                }
+            }
+        }
+    }
+
+
 
     private val _selectedGoal = MutableStateFlow(emptyList<String>())
     val selectedGoal: StateFlow<List<String>> = _selectedGoal
@@ -117,7 +128,18 @@ class WalkingViewModel
     }
 
 
-    private val _homeUiState = mutableStateOf(HomeUIState())
-    val homeUiState: State<HomeUIState> = _homeUiState
+
+
+
+    fun putDataToServer() {
+        viewModelScope.launch {
+            try {
+
+
+            } catch (e: Exception) {
+
+            }
+        }
+    }
 
 }

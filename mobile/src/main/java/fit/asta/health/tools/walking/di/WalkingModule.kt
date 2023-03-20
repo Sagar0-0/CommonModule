@@ -6,7 +6,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.BuildConfig
-import fit.asta.health.tools.walking.model.WalkingToolDataMapper
 import fit.asta.health.tools.walking.model.WalkingToolRepo
 import fit.asta.health.tools.walking.model.WalkingToolRepoImpl
 import fit.asta.health.tools.walking.model.api.WalkingApi
@@ -35,19 +34,11 @@ object WalkingModule {
 
     @Singleton
     @Provides
-    fun provideWalkingToolDataMapper(): WalkingToolDataMapper {
-        return WalkingToolDataMapper()
-    }
-
-    @Singleton
-    @Provides
     fun provideWalkingToolRepo(
-        remoteApi: WalkingApi,
-        walkingToolMapper: WalkingToolDataMapper,
+        remoteApi: WalkingApi
     ): WalkingToolRepo {
         return WalkingToolRepoImpl(
-            remoteApi = remoteApi,
-            mapper = walkingToolMapper
+            remoteApi = remoteApi
         )
     }
 }

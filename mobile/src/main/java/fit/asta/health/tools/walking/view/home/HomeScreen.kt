@@ -29,10 +29,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import fit.asta.health.R
+import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.tools.walking.model.domain.WalkingTool
 import fit.asta.health.tools.walking.nav.StepsCounterScreen
 import fit.asta.health.tools.walking.view.component.*
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
-import fit.asta.health.common.ui.theme.spacing
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -92,6 +93,7 @@ fun StepsBottomSheet(
     paddingValues: PaddingValues
 ) {
     val state = homeViewModel.homeUiState.value
+    val apiState= homeViewModel.ApiState.value
     val sheetState = rememberBottomSheetState(
         initialValue = BottomSheetValue.Collapsed
     )
@@ -105,7 +107,7 @@ fun StepsBottomSheet(
     }
     BottomSheetScaffold(
         sheetContent = {
-            WalkingBottomSheetView(homeViewModel, visible, navController)
+            WalkingBottomSheetView(homeViewModel, visible, navController,apiState)
         },
         sheetBackgroundColor = Color.Gray,
         backgroundColor = Color.DarkGray,
@@ -113,12 +115,12 @@ fun StepsBottomSheet(
         scaffoldState = scaffoldState
     ) {
         visible = !sheetState.isCollapsed
-        HomeLayout(paddingValues = paddingValues, state)
+        HomeLayout(paddingValues = paddingValues, state,apiState)
     }
 }
 
 @Composable
-fun HomeLayout(paddingValues: PaddingValues, state: HomeUIState) {
+fun HomeLayout(paddingValues: PaddingValues, state: HomeUIState, apiState: WalkingTool) {
 
     Column(
         modifier = Modifier
@@ -132,7 +134,7 @@ fun HomeLayout(paddingValues: PaddingValues, state: HomeUIState) {
     ) {
         Spacer(modifier = Modifier.height(8.dp))
 
-        MainCircularSlider() { }
+        MainCircularSlider(apiState=apiState) { }
         StepsDetailsCard(
             modifier = Modifier,
             distance = state.distance,
@@ -158,7 +160,10 @@ fun HomeLayout(paddingValues: PaddingValues, state: HomeUIState) {
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun WalkingBottomSheetView(
-    homeViewModel: WalkingViewModel, visible: Boolean, navController: NavController
+    homeViewModel: WalkingViewModel,
+    visible: Boolean,
+    navController: NavController,
+    apiState: WalkingTool
 ) {
     val selectedGoal by homeViewModel.selectedGoal.collectAsState(emptyList())
     val selectedWalkTypes by homeViewModel.selectedWalkTypes.collectAsState("")
@@ -173,7 +178,7 @@ fun WalkingBottomSheetView(
             CardItem(
                 modifier = Modifier.weight(0.5f),
                 name = "Music ",
-                type = "Spotify",
+                type = apiState.titleMusic,
                 id = R.drawable.baseline_music_note_24
             ) {}
 
@@ -181,7 +186,7 @@ fun WalkingBottomSheetView(
                 modifier = Modifier.weight(0.5f),
                 name = "Types",
                 type = selectedWalkTypes.let {
-                    it.ifBlank { "Select Types" }
+                    it.ifBlank { apiState.valuesType }
                 },
                 id = R.drawable.baseline_merge_type_24,
                 onClick = { navController.navigate(route = StepsCounterScreen.TypesScreen.route) }
@@ -201,7 +206,7 @@ fun WalkingBottomSheetView(
                         type = if (selectedGoal.isNotEmpty()) {
                             selectedGoal[0]
                         } else {
-                            "Select Goals"
+                            apiState.valuesGoal[0]
                         },
                         id = R.drawable.round_filter_vintage_24,
                         onClick = { navController.navigate(route = StepsCounterScreen.GoalScreen.route) })
@@ -232,7 +237,7 @@ fun WalkingBottomSheetView(
 }
 
 @Composable
-fun MainCircularSlider(modifier: Modifier = Modifier, onClick: () -> Unit) {
+fun MainCircularSlider(modifier: Modifier = Modifier, apiState: WalkingTool,onClick: () -> Unit) {
     val isDuration = remember {
         mutableStateOf(true)
     }
@@ -259,7 +264,11 @@ fun MainCircularSlider(modifier: Modifier = Modifier, onClick: () -> Unit) {
                 ProgressBarItem(
                     isDuration = isDuration.value,
                     modifier = Modifier.weight(0.3f),
-                    value = 57,
+                    value = (if (isDuration.value){
+                        apiState.durationRecommend
+                    } else {
+                        apiState.distanceRecommend.toInt()
+                    }),
                     name = "Recommended"
                 )
                 ProgressBarItem(
