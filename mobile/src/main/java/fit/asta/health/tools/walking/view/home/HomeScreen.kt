@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -92,7 +91,7 @@ fun StepsBottomSheet(
     homeViewModel: WalkingViewModel = hiltViewModel(),
     paddingValues: PaddingValues
 ) {
-
+    val state = homeViewModel.homeUiState.value
     val sheetState = rememberBottomSheetState(
         initialValue = BottomSheetValue.Collapsed
     )
@@ -114,12 +113,12 @@ fun StepsBottomSheet(
         scaffoldState = scaffoldState
     ) {
         visible = !sheetState.isCollapsed
-        HomeLayout(paddingValues = paddingValues)
+        HomeLayout(paddingValues = paddingValues, state)
     }
 }
 
 @Composable
-fun HomeLayout(paddingValues: PaddingValues) {
+fun HomeLayout(paddingValues: PaddingValues, state: HomeUIState) {
 
     Column(
         modifier = Modifier
@@ -134,9 +133,24 @@ fun HomeLayout(paddingValues: PaddingValues) {
         Spacer(modifier = Modifier.height(8.dp))
 
         MainCircularSlider() { }
-        StepsDetailsCard(modifier = Modifier)
-        DetailsCard(modifier = Modifier)
-        VitaminCard(modifier = Modifier, recommendedValue = "600", achievedValue = "500")
+        StepsDetailsCard(
+            modifier = Modifier,
+            distance = state.distance,
+            duration = state.duration,
+            steps = state.steps
+        )
+        DetailsCard(
+            modifier = Modifier,
+            heartRate = state.heartRate,
+            calories = state.calories,
+            weightLoosed = state.weightLoosed,
+            bp = state.bp
+        )
+        VitaminCard(
+            modifier = Modifier,
+            recommendedValue = state.recommendedSunlight,
+            achievedValue = state.achievedSunlight
+        )
         Spacer(modifier = Modifier.height(200.dp))
     }
 }
@@ -167,8 +181,8 @@ fun WalkingBottomSheetView(
                 modifier = Modifier.weight(0.5f),
                 name = "Types",
                 type = selectedWalkTypes.let {
-                it.ifBlank { "Select Types" }
-            },
+                    it.ifBlank { "Select Types" }
+                },
                 id = R.drawable.baseline_merge_type_24,
                 onClick = { navController.navigate(route = StepsCounterScreen.TypesScreen.route) }
             )
@@ -266,7 +280,7 @@ fun MainCircularSlider(modifier: Modifier = Modifier, onClick: () -> Unit) {
 }
 
 @Composable
-fun StepsDetailsCard(modifier: Modifier) {
+fun StepsDetailsCard(modifier: Modifier,distance:Int,duration:Int,steps:Int) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
@@ -279,18 +293,18 @@ fun StepsDetailsCard(modifier: Modifier) {
             horizontalArrangement = Arrangement.SpaceAround
         ) {
             DetailsItem(
-                type = "Distance", value = "5 Km", id = R.drawable.total_distance
+                type = "Distance", value = "$distance Km", id = R.drawable.total_distance
             ) {
 
             }
 
             DetailsItem(
-                type = "Duration", value = "90 min", id = R.drawable.heartrate
+                type = "Duration", value = "$duration min", id = R.drawable.heartrate
             ) {
 
             }
             DetailsItem(
-                type = "Steps", value = "1000", id = R.drawable.heartrate
+                type = "Steps", value = "$steps", id = R.drawable.heartrate
             ) {
 
             }
@@ -299,7 +313,7 @@ fun StepsDetailsCard(modifier: Modifier) {
 }
 
 @Composable
-fun DetailsCard(modifier: Modifier) {
+fun DetailsCard(modifier: Modifier,heartRate:Int,calories:Int,weightLoosed:Double,bp:String) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
@@ -312,22 +326,22 @@ fun DetailsCard(modifier: Modifier) {
             horizontalArrangement = Arrangement.SpaceAround
         ) {
             DetailsItem(
-                type = "Heart Rate", value = "78 bpm", id = R.drawable.heartrate
+                type = "Heart Rate", value = "$heartRate bpm", id = R.drawable.heartrate
             ) {
 
             }
             DetailsItem(
-                type = "Calories", value = "400 kal", id = R.drawable.calories
+                type = "Calories", value = "$calories kal", id = R.drawable.calories
             ) {
 
             }
             DetailsItem(
-                type = "Weight Loosed", value = "0.4 kg", id = R.drawable.pulse_rate
+                type = "Weight Loosed", value = "$weightLoosed kg", id = R.drawable.pulse_rate
             ) {
 
             }
             DetailsItem(
-                type = "BP", value = "120/80 hhmg", id = R.drawable.pulse_rate
+                type = "BP", value = "$bp hhmg", id = R.drawable.pulse_rate
             ) {
 
             }
@@ -406,7 +420,7 @@ fun CustomProgressBar(
 
 
 @Composable
-fun VitaminCard(modifier: Modifier, recommendedValue: String, achievedValue: String) {
+fun VitaminCard(modifier: Modifier, recommendedValue:Int, achievedValue: Int) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
@@ -421,8 +435,8 @@ fun VitaminCard(modifier: Modifier, recommendedValue: String, achievedValue: Str
             Row(
                 horizontalArrangement = Arrangement.SpaceAround, modifier = Modifier.fillMaxWidth()
             ) {
-                RowItem(name = "Recommended", value = recommendedValue)
-                RowItem(name = "Achieved", value = achievedValue)
+                RowItem(name = "Recommended", value = "$recommendedValue")
+                RowItem(name = "Achieved", value = "$achievedValue")
             }
             Text(
                 text = "You need to take $recommendedValue IU every day to overcome your Vitamin D deficiency",

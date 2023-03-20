@@ -9,6 +9,7 @@ import fit.asta.health.tools.walking.view.steps_counter.StepCounterUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.tools.walking.model.WalkingToolRepo
 import fit.asta.health.tools.walking.sensor.MeasurableSensor
+import fit.asta.health.tools.walking.view.home.HomeUIState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class WalkingViewModel
 @Inject constructor(
-    private val walkingToolRepo: WalkingToolRepo,private val stepsSensor: MeasurableSensor
+    private val walkingToolRepo: WalkingToolRepo, private val stepsSensor: MeasurableSensor
 ) : ViewModel() {
 
 //    private val mutableState = MutableStateFlow<WalkingState>(WalkingState.Loading)
@@ -42,10 +43,10 @@ class WalkingViewModel
 //        }
 //    }
 
-    private val _selectedGoal =MutableStateFlow(emptyList<String>())
+    private val _selectedGoal = MutableStateFlow(emptyList<String>())
     val selectedGoal: StateFlow<List<String>> = _selectedGoal
 
-    private val _selectedWalkTypes =  MutableStateFlow("")
+    private val _selectedWalkTypes = MutableStateFlow("")
     val selectedWalkTypes: StateFlow<String> = _selectedWalkTypes
 
     val initialStep = MutableStateFlow(true)
@@ -53,7 +54,7 @@ class WalkingViewModel
         _selectedGoal.value = goal
     }
 
-    fun onWalkTypesSelected(walkTypes:String) {
+    fun onWalkTypesSelected(walkTypes: String) {
         _selectedWalkTypes.value = walkTypes
     }
 
@@ -70,35 +71,40 @@ class WalkingViewModel
     }
 
 
-    private fun startSteps(){
+    private fun startSteps() {
         setStartTime()
         stepsSensor.startListening()
-        stepsSensor.setOnSensorValuesChangedListener { step->
+        stepsSensor.setOnSensorValuesChangedListener { step ->
 
-            if (initialStep.value){
-                _uiState.value=_uiState.value.copy(initialSteps=step[0].toInt())
-                initialStep.value=false
+            if (initialStep.value) {
+                _uiState.value = _uiState.value.copy(initialSteps = step[0].toInt())
+                initialStep.value = false
             }
-            val steps =step[0].toInt() - _uiState.value.initialSteps
+            val steps = step[0].toInt() - _uiState.value.initialSteps
             val stepLength = 0.7f
             val timeNs = System.nanoTime() - _uiState.value.startTime
             val speed = calculateSpeed(steps, stepLength, timeNs)
 
-            _uiState.value=_uiState.value.copy(
+            _uiState.value = _uiState.value.copy(
                 steps = steps,
-                distance =(step[0].toInt()/1408),
+                distance = (step[0].toInt() / 1408),
                 speed = speed
+            )
+            _homeUiState.value = _homeUiState.value.copy(
+                distance = (step[0].toInt() / 1408), steps = steps
             )
         }
     }
 
 
-    fun setStartTime(){
-        _uiState.value=_uiState.value.copy(startTime = System.nanoTime())
+    fun setStartTime() {
+        _uiState.value = _uiState.value.copy(startTime = System.nanoTime())
     }
-    private fun stopSteps(){
+
+    private fun stopSteps() {
         stepsSensor.stopListening()
     }
+
     private fun calculateSpeed(steps: Int, stepLength: Float, timeNs: Long): Float {
         val distance = steps * stepLength
         val timeSeconds = timeNs / 1_000_000_000L
@@ -111,5 +117,7 @@ class WalkingViewModel
     }
 
 
+    private val _homeUiState = mutableStateOf(HomeUIState())
+    val homeUiState: State<HomeUIState> = _homeUiState
 
 }
