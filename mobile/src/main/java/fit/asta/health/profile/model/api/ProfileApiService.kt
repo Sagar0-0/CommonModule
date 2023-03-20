@@ -20,6 +20,6 @@ interface ProfileApiService {
     @GET("userProfile/get/?")
     suspend fun getUserProfile(@Query("uid") userId: String): NetUserProfileRes
 
-    @GET("health/property/getall/?")
+    @GET("health/property/get/all/?")
     suspend fun getHealthProperties(@Query("property") propertyType: String): NetHealthPropertiesRes
 }

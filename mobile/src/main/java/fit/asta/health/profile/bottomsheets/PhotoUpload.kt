@@ -20,15 +20,16 @@ import fit.asta.health.profile.bottomsheets.components.PhotoUploadBottomSheetLay
 @Preview
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun BottomSheet() {
+fun PhotoUploadBottomSheet() {
 
     val state = rememberBottomSheetScaffoldState()
 
-    BottomSheetScaffold(sheetContent = {
-        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            PhotoUploadBottomSheetLayout()
-        }
-    },
+    BottomSheetScaffold(
+        sheetContent = {
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                PhotoUploadBottomSheetLayout()
+            }
+        },
         sheetShape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
         sheetElevation = 10.dp,
         sheetBackgroundColor = MaterialTheme.colorScheme.onPrimary,

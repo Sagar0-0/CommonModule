@@ -11,9 +11,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.profile.bottomsheets.ItemSelectionBtmSheetLayout
 import fit.asta.health.profile.createprofile.view.components.DietCreateBottomSheetType.*
 import fit.asta.health.profile.view.*
-import fit.asta.health.common.ui.theme.spacing
 import kotlinx.coroutines.launch
 
 
@@ -182,10 +183,10 @@ fun DietCreateBottomSheetLayout(
     closeSheet: () -> Unit,
 ) {
     when (sheetLayout) {
-        DIETARYPREF -> Screen1(closeSheet)
-        NONVEGDAYS -> Screen1(closeSheet)
-        FOODALLERGIES -> Screen1(closeSheet)
-        CUISINES -> Screen1(closeSheet)
-        FOODRES -> Screen1(closeSheet)
+        DIETARYPREF -> ItemSelectionBtmSheetLayout()
+        NONVEGDAYS -> ItemSelectionBtmSheetLayout()
+        FOODALLERGIES -> ItemSelectionBtmSheetLayout()
+        CUISINES -> ItemSelectionBtmSheetLayout()
+        FOODRES -> ItemSelectionBtmSheetLayout()
     }
 }

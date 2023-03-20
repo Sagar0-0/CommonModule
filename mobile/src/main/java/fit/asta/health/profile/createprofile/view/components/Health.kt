@@ -20,13 +20,14 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import fit.asta.health.common.ui.theme.cardElevation
+import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.profile.bottomsheets.ItemSelectionBtmSheetLayout
 import fit.asta.health.profile.createprofile.view.components.HealthCreateBottomSheetTypes.*
 import fit.asta.health.profile.view.*
 import fit.asta.health.profile.view.components.AddIcon
 import fit.asta.health.profile.view.components.ChipsOnCards
 import fit.asta.health.testimonials.view.components.ValidateNumberField
-import fit.asta.health.common.ui.theme.cardElevation
-import fit.asta.health.common.ui.theme.spacing
 import kotlinx.coroutines.launch
 
 
@@ -48,7 +49,6 @@ fun HealthContent(
     val checkedState = remember { mutableStateOf(true) }
     val radioButtonList =
         listOf(ButtonListTypes(buttonType = "Yes"), ButtonListTypes(buttonType = "No"))
-    val healthHistoryList3 = listOf("6 Months Ago") // Convert it to TextField
     val healthHistoryList4 = listOf("Head", "Leg", "Hand", "Toe")
 
     CompositionLocalProvider(
@@ -71,25 +71,6 @@ fun HealthContent(
                 radioButtonList = radioButtonList,
                 checkedState,
                 onItemsSelect = onHealthHistory
-            )
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            OnlyChipSelectionCard(
-                cardType = "When were you recently Injured?",
-                cardList = healthHistoryList3,
-                checkedState,
-                onItemsSelect = onHealthHistory
-            ) // Convert it to Text field
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            SelectionCardCreateProfile(
-                cardType = "Any Injuries?",
-                cardList = healthHistoryList,
-                radioButtonList = radioButtonList,
-                checkedState,
-                onItemsSelect = onInjuries
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
@@ -168,8 +149,7 @@ fun HealthCreateScreen(
         mutableStateOf(ModalBottomSheetValue.Hidden)
     }
 
-    val modalBottomSheetState =
-        rememberModalBottomSheetState(modalBottomSheetValue)
+    val modalBottomSheetState = rememberModalBottomSheetState(modalBottomSheetValue)
 
     val scope = rememberCoroutineScope()
 
@@ -233,12 +213,12 @@ fun HealthCreateBtmSheetLayout(
 ) {
 
     when (sheetLayout) {
-        HEALTHHISTORY -> Screen1(closeSheet)
-        INJURIES -> Screen1(closeSheet)
-        AILMENTS -> Screen1(closeSheet)
-        MEDICATIONS -> Screen1(closeSheet)
-        HEALTHTARGETS -> Screen1(closeSheet)
-        BODYINJURIY -> Screen1(closeSheet)
+        HEALTHHISTORY -> ItemSelectionBtmSheetLayout()
+        INJURIES -> ItemSelectionBtmSheetLayout()
+        AILMENTS -> ItemSelectionBtmSheetLayout()
+        MEDICATIONS -> ItemSelectionBtmSheetLayout()
+        HEALTHTARGETS -> ItemSelectionBtmSheetLayout()
+        BODYINJURIY -> ItemSelectionBtmSheetLayout()
     }
 
 }

@@ -87,11 +87,13 @@ fun LifeStyleLayout(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ChipCard(icon = UserPropertyType.LifeStyleTargets.icon,
+        ChipCard(
+            icon = UserPropertyType.LifeStyleTargets.icon,
             title = UserPropertyType.LifeStyleTargets.title,
-            list = lifeStyle.targets,
+            list = lifeStyle.lifeStyleTargets,
             editState = editState,
-            onLifeStyleTargets)
+            onLifeStyleTargets
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 

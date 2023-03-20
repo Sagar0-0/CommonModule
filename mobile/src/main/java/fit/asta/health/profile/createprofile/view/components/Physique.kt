@@ -22,14 +22,17 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import fit.asta.health.profile.view.ButtonListTypes
-import fit.asta.health.profile.view.MultiToggleLayout
-import fit.asta.health.testimonials.view.components.ValidateNumberField
-import fit.asta.health.testimonials.view.components.ValidatedTextField
+import fit.asta.health.R
 import fit.asta.health.common.ui.components.NextButton
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiString
+import fit.asta.health.profile.bottomsheets.components.BodyTypeBottomSheetLayout
+import fit.asta.health.profile.bottomsheets.components.BodyTypes
+import fit.asta.health.profile.view.ButtonListTypes
+import fit.asta.health.profile.view.MultiToggleLayout
+import fit.asta.health.testimonials.view.components.ValidateNumberField
+import fit.asta.health.testimonials.view.components.ValidatedTextField
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -57,6 +60,13 @@ fun PhysiqueContent(
             ""
         )
     }
+
+    val bodyTypeList = mutableListOf(
+        BodyTypes(bodyTypeImg = R.drawable.underweight, bodyTypeTitle = "Under Weight"),
+        BodyTypes(bodyTypeImg = R.drawable.normal, bodyTypeTitle = "Normal"),
+        BodyTypes(bodyTypeImg = R.drawable.overweight, bodyTypeTitle = "Over Weight"),
+        BodyTypes(bodyTypeImg = R.drawable.obese, bodyTypeTitle = "Obese")
+    )
 
     var text by remember { mutableStateOf(("")) }
     val focusManager = LocalFocusManager.current
@@ -249,6 +259,19 @@ fun PhysiqueContent(
                         }
 
                     }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            Row(Modifier.fillMaxWidth()) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = MaterialTheme.shapes.medium,
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
+                ) {
+                    BodyTypeBottomSheetLayout()
                 }
             }
 

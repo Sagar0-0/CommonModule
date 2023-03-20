@@ -6,8 +6,6 @@ import fit.asta.health.profile.model.domain.UserProfile
 
 
 data class NetUserProfileRes(
-    @SerializedName("status")
-    val status: Status,
-    @SerializedName("data")
-    val userProfile: UserProfile
+    @SerializedName("status") val status: Status,
+    @SerializedName("data") val userProfile: UserProfile,
 )

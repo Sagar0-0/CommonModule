@@ -4,8 +4,6 @@ import com.google.gson.annotations.SerializedName
 import fit.asta.health.network.data.Status
 
 data class NetTestimonialsRes(
-    @SerializedName("data")
-    val testimonials: List<NetTestimonial>,
-    @SerializedName("status")
-    val status: Status
+    @SerializedName("status") val status: Status,
+    @SerializedName("data") val testimonials: List<NetTestimonial>,
 )

@@ -18,7 +18,8 @@ fun ProfileContent(viewModel: ProfileViewModel = hiltViewModel()) {
     when (val profileState = viewModel.state.collectAsState().value) {
         is ProfileState.Loading -> LoadingAnimation()
         is ProfileState.Success -> ProfileReadyScreen(userProfile = profileState.userProfile)
-        is ProfileState.Error -> NoInternetLayout(onTryAgain = {
-        })
+        is ProfileState.Error -> NoInternetLayout(onTryAgain = {})
+        ProfileState.Empty -> TODO()
+        ProfileState.NoInternet -> TODO()
     }
 }

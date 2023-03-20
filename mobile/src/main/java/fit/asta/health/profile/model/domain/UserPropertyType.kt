@@ -22,6 +22,7 @@ sealed class UserPropertyType(
     val type: ProfileItemType,
     @DrawableRes val icon: Int
 ) {
+
     object SleepSchedule : UserPropertyType(
         name = "sleep-schedule",
         type = ProfileItemType.SessionCard,
@@ -65,7 +66,7 @@ sealed class UserPropertyType(
     )
 
     object LifeStyleTargets : UserPropertyType(
-        name = "lifestyle-targets",
+        name = "lifestyle-lifeStyleTargets",
         type = ProfileItemType.ChipsCard,
         title = "LIFESTYLE TARGETS",
         icon = R.drawable.targets
@@ -93,7 +94,7 @@ sealed class UserPropertyType(
     )
 
     object HealthTargets : UserPropertyType(
-        name = "health-targets",
+        name = "health-lifeStyleTargets",
         type = ProfileItemType.ChipsCard,
         title = "HEALTH TARGETS",
         icon = R.drawable.targets
@@ -164,4 +165,5 @@ sealed class UserPropertyType(
             }
         }
     }
+
 }

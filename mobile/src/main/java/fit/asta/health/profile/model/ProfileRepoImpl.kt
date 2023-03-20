@@ -36,4 +36,5 @@ class ProfileRepoImpl(
             emit(remoteApi.getHealthProperties(propertyType))
         }
     }
+
 }

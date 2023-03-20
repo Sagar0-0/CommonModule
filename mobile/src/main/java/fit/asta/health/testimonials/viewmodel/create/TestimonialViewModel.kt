@@ -6,12 +6,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.R
+import fit.asta.health.common.utils.UiString
 import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.network.NetworkHelper
 import fit.asta.health.network.data.ApiResponse
 import fit.asta.health.testimonials.model.TestimonialRepo
 import fit.asta.health.testimonials.model.domain.*
-import fit.asta.health.common.utils.UiString
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -29,13 +29,14 @@ const val IMAGE_BEFORE = "img_before"
 const val IMAGE_AFTER = "img_after"
 const val VIDEO = "video"
 
+
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class TestimonialViewModel
 @Inject constructor(
     private val testimonialRepo: TestimonialRepo,
     private val authRepo: AuthRepo,
-    val networkHelper: NetworkHelper,
+    private val networkHelper: NetworkHelper,
     private val savedState: SavedStateHandle,
 ) : ViewModel() {
 
@@ -56,18 +57,13 @@ class TestimonialViewModel
     val video =
         savedState.getStateFlow(VIDEO, Media(name = "journey", title = "Health Transformation"))
 
-
     val areInputsValid =
         combine(type, title, testimonial, org, role) { type, title, testimonial, org, role ->
-
             when (type) {
                 TestimonialType.TEXT -> testimonial.value.isNotBlank() && testimonial.error is UiString.Empty
                 TestimonialType.IMAGE -> true
                 TestimonialType.VIDEO -> true
-            } && title.value.isNotEmpty() && title.error is UiString.Empty
-                    && org.value.isNotEmpty() && org.error is UiString.Empty
-                    && role.value.isNotEmpty() && role.error is UiString.Empty
-                    && isTestimonialDirty()
+            } && title.value.isNotEmpty() && title.error is UiString.Empty && org.value.isNotEmpty() && org.error is UiString.Empty && role.value.isNotEmpty() && role.error is UiString.Empty && isTestimonialDirty()
 
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
@@ -100,6 +96,7 @@ class TestimonialViewModel
     }
 
     private fun loadTestimonial(userId: String) {
+
         viewModelScope.launch {
 
             when (val result = testimonialRepo.getTestimonial(userId)) {
@@ -285,10 +282,7 @@ class TestimonialViewModel
     }
 
     private fun isTestimonialDirty(): Boolean {
-        return testimonialData.value.title != title.value.value
-                || testimonialData.value.testimonial != testimonial.value.value
-                || testimonialData.value.user.org != org.value.value
-                || testimonialData.value.user.role != role.value.value
+        return testimonialData.value.title != title.value.value || testimonialData.value.testimonial != testimonial.value.value || testimonialData.value.user.org != org.value.value || testimonialData.value.user.role != role.value.value
     }
 
 }

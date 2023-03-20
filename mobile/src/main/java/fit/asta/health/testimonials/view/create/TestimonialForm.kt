@@ -26,6 +26,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import fit.asta.health.common.ui.theme.boxSize
+import fit.asta.health.common.ui.theme.cardElevation
+import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.common.utils.UiString
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.navigation.home.view.component.NoInternetLayout
 import fit.asta.health.testimonials.model.domain.TestimonialType
@@ -33,10 +37,6 @@ import fit.asta.health.testimonials.view.components.ValidatedTextField
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
 import fit.asta.health.testimonials.viewmodel.create.TestimonialSubmitState
 import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
-import fit.asta.health.common.ui.theme.boxSize
-import fit.asta.health.common.ui.theme.cardElevation
-import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.common.utils.UiString
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -55,7 +55,6 @@ fun TestimonialForm(
     val role by editViewModel.role.collectAsStateWithLifecycle()
     val areInputsValid by editViewModel.areInputsValid.collectAsStateWithLifecycle()
     val areMediaValid by editViewModel.areMediaValid.collectAsStateWithLifecycle()
-
 
     val focusRequester = remember { FocusRequester() }
 

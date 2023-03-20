@@ -57,4 +57,5 @@ class AlarmAdapter(
     fun getData(): List<AlarmEntity> {
         return mList
     }
+
 }

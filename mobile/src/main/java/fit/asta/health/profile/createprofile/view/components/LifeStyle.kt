@@ -11,9 +11,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.profile.bottomsheets.ItemSelectionBtmSheetLayout
 import fit.asta.health.profile.createprofile.view.components.LifeStyleCreateBottomSheetType.*
 import fit.asta.health.profile.view.*
-import fit.asta.health.common.ui.theme.spacing
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -185,7 +186,8 @@ fun LifeStyleCreateScreen(
     }
 
 
-    ModalBottomSheetLayout(modifier = Modifier.fillMaxSize(),
+    ModalBottomSheetLayout(
+        modifier = Modifier.fillMaxSize(),
         sheetState = modalBottomSheetState,
         sheetContent = {
             Spacer(modifier = Modifier.height(1.dp))
@@ -219,8 +221,8 @@ fun LifeStyleCreateBottomSheetLayout(
     closeSheet: () -> Unit,
 ) {
     when (sheetLayout) {
-        CURRENTACTIVITIES -> Screen1(closeSheet)
-        PREFERREDACTIVITIES -> Screen1(closeSheet)
-        LIFESTYLETARGETS -> Screen1(closeSheet)
+        CURRENTACTIVITIES -> ItemSelectionBtmSheetLayout()
+        PREFERREDACTIVITIES -> ItemSelectionBtmSheetLayout()
+        LIFESTYLETARGETS -> ItemSelectionBtmSheetLayout()
     }
 }

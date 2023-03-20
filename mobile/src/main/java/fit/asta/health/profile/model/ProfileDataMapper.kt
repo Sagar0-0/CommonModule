@@ -19,12 +19,12 @@ class ProfileDataMapper {
         ls[UserPropertyType.WorkStyle] = mapPlainCard(profile.lifeStyle.workStyle)
         ls[UserPropertyType.CurActivities] = mapChipCard(profile.lifeStyle.curActivities)
         ls[UserPropertyType.PrefActivities] = mapChipCard(profile.lifeStyle.prefActivities)
-        ls[UserPropertyType.LifeStyleTargets] = mapChipCard(profile.lifeStyle.targets)
+        ls[UserPropertyType.LifeStyleTargets] = mapChipCard(profile.lifeStyle.lifeStyleTargets)
 
         health[UserPropertyType.Ailments] = mapChipCard(profile.health.ailments)
         health[UserPropertyType.Medications] = mapChipCard(profile.health.medications)
         health[UserPropertyType.Injuries] = mapInjuryChipCard(profile.health.injuries)
-        health[UserPropertyType.HealthTargets] = mapChipCard(profile.health.targets)
+        health[UserPropertyType.HealthTargets] = mapChipCard(profile.health.lifeStyleTargets)
 
         diet[UserPropertyType.DietPref] = mapPrefPlainCard(profile.diet.preference)
         diet[UserPropertyType.NvDays] = mapWeekChipCard(profile.diet.nonVegDays)
@@ -148,7 +148,7 @@ class ProfileDataMapper {
             ailments = arrayListOf(),
             medications = arrayListOf(),
             injuries = arrayListOf(),
-            targets = arrayListOf()
+            lifeStyleTargets = arrayListOf()
         )
 
         val netLifeStyle = NetLifeStyle(
@@ -158,7 +158,7 @@ class ProfileDataMapper {
             workStyle = NetHealthProperties("", 0, "", "", ""),
             curActivities = arrayListOf(),
             prefActivities = arrayListOf(),
-            targets = arrayListOf()
+            lifeStyleTargets = arrayListOf()
         )
 
         val netDiet = NetDiet(
@@ -255,7 +255,7 @@ class ProfileDataMapper {
             }
             is UserPropertyType.HealthTargets -> {
                 properties.map {
-                    netHealth.targets.add(mapToNetHealthProperties(it))
+                    netHealth.lifeStyleTargets.add(mapToNetHealthProperties(it))
                 }
             }
             is UserPropertyType.Injuries -> {
@@ -265,7 +265,7 @@ class ProfileDataMapper {
             }
             is UserPropertyType.LifeStyleTargets -> {
                 properties.map {
-                    netLifeStyle.targets.add(mapToNetHealthProperties(it))
+                    netLifeStyle.lifeStyleTargets.add(mapToNetHealthProperties(it))
                 }
             }
             is UserPropertyType.Medications -> {
