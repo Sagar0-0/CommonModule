@@ -1,5 +1,6 @@
 package fit.asta.health.profile.createprofile.view.components
 
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -24,10 +25,15 @@ import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.bottomsheets.ItemSelectionBtmSheetLayout
 import fit.asta.health.profile.createprofile.view.components.HealthCreateBottomSheetTypes.*
-import fit.asta.health.profile.view.*
+import fit.asta.health.profile.view.ButtonListTypes
+import fit.asta.health.profile.view.MultiToggleLayout
+import fit.asta.health.profile.view.SelectionCardCreateProfile
 import fit.asta.health.profile.view.components.AddIcon
 import fit.asta.health.profile.view.components.ChipsOnCards
+import fit.asta.health.profile.viewmodel.ProfileEvent
+import fit.asta.health.profile.viewmodel.ProfileViewModel
 import fit.asta.health.testimonials.view.components.ValidateNumberField
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
 
@@ -133,13 +139,15 @@ fun HealthContent(
 }
 
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun HealthCreateScreen(
+    viewModel: ProfileViewModel,
     eventPrevious: (() -> Unit)? = null,
     eventNext: (() -> Unit)? = null,
     onSkipEvent: (Int) -> Unit,
 ) {
+
 
     var currentBottomSheet: HealthCreateBottomSheetTypes? by remember {
         mutableStateOf(null)
@@ -177,25 +185,36 @@ fun HealthCreateScreen(
             }
         }) {
 
-        HealthContent(eventPrevious, eventNext, onSkipEvent, onHealthHistory = {
-            currentBottomSheet = HEALTHHISTORY
-            openSheet()
-        }, onInjuries = {
-            currentBottomSheet = INJURIES
-            openSheet()
-        }, onAilments = {
-            currentBottomSheet = AILMENTS
-            openSheet()
-        }, onMedications = {
-            currentBottomSheet = MEDICATIONS
-            openSheet()
-        }, onHealthTargets = {
-            currentBottomSheet = HEALTHTARGETS
-            openSheet()
-        }, onBodyInjurySelect = {
+        HealthContent(eventPrevious = eventPrevious,
+            eventNext = eventNext,
+            onSkipEvent = onSkipEvent,
+            onHealthHistory = {
+                currentBottomSheet = HEALTHHISTORY
+                openSheet()
+            },
+            onInjuries = {
+                currentBottomSheet = INJURIES
+                openSheet()
+            },
+            onAilments = {
+                currentBottomSheet = AILMENTS
+                openSheet()
+                Log.d(
+                    "validate",
+                    "AILMENT ->  ${viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "ailments"))}"
+                )
+            },
+            onMedications = {
+                currentBottomSheet = MEDICATIONS
+                openSheet()
+            },
+            onHealthTargets = {
+                currentBottomSheet = HEALTHTARGETS
+                openSheet()
+            }) {
             currentBottomSheet = BODYINJURIY
             openSheet()
-        })
+        }
 
     }
 

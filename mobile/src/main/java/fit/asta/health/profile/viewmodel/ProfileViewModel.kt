@@ -7,9 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.network.NetworkHelper
 import fit.asta.health.profile.model.ProfileRepo
-import fit.asta.health.profile.model.domain.Contact
-import fit.asta.health.profile.model.domain.Physique
-import fit.asta.health.profile.model.domain.UserProfile
+import fit.asta.health.profile.model.domain.*
 import fit.asta.health.profile.viewmodel.ProfileConstants.AGE
 import fit.asta.health.profile.viewmodel.ProfileConstants.BODY_TYPE
 import fit.asta.health.profile.viewmodel.ProfileConstants.DOB
@@ -43,10 +41,6 @@ class ProfileViewModel
     private val savedState: SavedStateHandle,
 ) : ViewModel() {
 
-    private val isProfileAvailState =
-        MutableStateFlow<ProfileAvailState>(ProfileAvailState.Loading)
-    val statePropAvail = isProfileAvailState.asStateFlow()
-
     private val mutableEditState = MutableStateFlow<ProfileEditState>(ProfileEditState.Loading)
     val stateEdit = mutableEditState.asStateFlow()
 
@@ -56,17 +50,42 @@ class ProfileViewModel
     private val mutableState = MutableStateFlow<ProfileState>(ProfileState.Loading)
     val state = mutableState.asStateFlow()
 
-    private val profileData = savedState.getStateFlow(PROFILE_DATA, UserProfile())
+    private val myArrayList = ArrayList<HealthProperties>()
+    val list: ArrayList<HealthProperties>
+        get() = myArrayList
+
+    var isDataChanged = false
+        private set
+
+    private fun setChanged() {
+        isDataChanged = true
+    }
+
+    fun validateDataChanged() {
+        setChanged()
+    }
+
+    fun addItem(item: HealthProperties) {
+        myArrayList.add(item)
+        setChanged()
+    }
+
+    fun removeItem(item: HealthProperties) {
+        myArrayList.remove(item)
+        setChanged()
+    }
+
+    val profileData = savedState.getStateFlow(PROFILE_DATA, UserProfile())
 
     //Details
     val name = savedState.getStateFlow(NAME, InputWrapper())
     val email = savedState.getStateFlow(EMAIL, InputWrapper())
-    private val userImg = savedState.getStateFlow(
+    val userImg = savedState.getStateFlow(
         USER_IMG, Media(name = "user_img", title = "User Profile Image")
     )
 
     //Physique
-    private val dob = savedState.getStateFlow(DOB, InputIntWrapper())
+    val dob = savedState.getStateFlow(DOB, InputIntWrapper())
     val age = savedState.getStateFlow(AGE, InputIntWrapper())
     val weight = savedState.getStateFlow(WEIGHT, InputIntWrapper())
     val height = savedState.getStateFlow(HEIGHT, InputIntWrapper())
@@ -79,17 +98,7 @@ class ProfileViewModel
     val isPregnant = savedState.getStateFlow(IS_PREGNANT, initialValue = null)
 
     init {
-        loadUserProfile()
-    }
 
-    fun onUserProfileAvail() {
-        if (networkHelper.isConnected()) {
-            authRepo.getUser()?.let {
-                isUserProfileAvailable(userId = it.uid)
-            }
-        } else {
-            isProfileAvailState.value = ProfileAvailState.NoInternet
-        }
     }
 
     private fun loadUserProfile() {
@@ -102,16 +111,6 @@ class ProfileViewModel
             mutableState.value = ProfileState.NoInternet
         }
 
-    }
-
-    private fun isUserProfileAvailable(userId: String) {
-        viewModelScope.launch {
-            profileRepo.isUserProfileAvailable(userId).catch { exception ->
-                isProfileAvailState.value = ProfileAvailState.Error(exception)
-            }.collect { userStatus ->
-                isProfileAvailState.value = ProfileAvailState.Success(userStatus)
-            }
-        }
     }
 
     //view only
@@ -143,6 +142,8 @@ class ProfileViewModel
                         height = height.value.value,
                         pregnancyWeek = pregnancyWeek.value.value,
                         weight = weight.value.value
+                    ), health = Health(
+                        ailments = list
                     )
                 )
             )
@@ -180,6 +181,15 @@ class ProfileViewModel
             }
         } else {
             mutableHPropState.value = HPropState.NoInternet
+        }
+
+    }
+
+
+    fun onEvent(event: ProfileEvent) {
+
+        when (event) {
+            is ProfileEvent.GetHealthProperties -> getHealthProperties(propertyType = event.propertyType)
         }
 
     }

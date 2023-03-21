@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package fit.asta.health.profile.createprofile.view.components
 
 
@@ -7,19 +9,18 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
 import androidx.compose.material.Divider
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Emergency
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Egg
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.*
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -28,18 +29,17 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import fit.asta.health.profile.view.*
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.profile.viewmodel.ProfileViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateProfileLayout() {
+fun CreateProfileLayout(viewModel: ProfileViewModel) {
 
     /* TODO Paddings, Font, Elevations (4dp and 6dp), BottomSheets, Colors */
 
@@ -156,17 +156,14 @@ fun CreateProfileLayout() {
                     )
                 }
                 3 -> {
-                    HealthCreateScreen(
-                        eventNext = {
-                            currentStep += 1
-                        },
-                        eventPrevious = {
-                            currentStep -= 1
-                        },
-                        onSkipEvent = {
-                            currentStep += 1
-                            isSkipPressed = true
-                        },
+                    HealthCreateScreen(eventNext = {
+                        currentStep += 1
+                    }, eventPrevious = {
+                        currentStep -= 1
+                    }, onSkipEvent = {
+                        currentStep += 1
+                        isSkipPressed = true
+                    }, viewModel = viewModel
                     )
                 }
                 4 -> {
@@ -197,7 +194,7 @@ fun CreateProfileLayout() {
 }
 
 @Composable
-private fun Stepper(
+fun Stepper(
     modifier: Modifier = Modifier,
     step: Int,
     isCompete: Boolean,
