@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.RunCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,17 +20,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fit.asta.health.R
-import fit.asta.health.tools.walking.view.component.ButtonWithColor
-import fit.asta.health.tools.walking.view.home.StepCounterUIEvent
-import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.tools.walking.view.component.ButtonWithColor
+import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun StepsCounterScreen(navController: NavController,homeViewModel:WalkingViewModel) {
-    val state=homeViewModel.uiState.value
+    val state=homeViewModel.uiStateStep.value
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         backgroundColor = MaterialTheme.colors.background,
@@ -125,11 +123,11 @@ fun StepsItem(modifier: Modifier = Modifier,state: StepCounterUIState,viewModel:
                 }
             }
             item {
-                SessionCard(type = "Calories burned", count = "500 Cal") {
+                SessionCard(type = "Calories burned", count = "${state.calories} Cal") {
                 }
             }
             item {
-                SessionCard(type = "Avg.Pace(min/Km)", count = "30 Min") {
+                SessionCard(type = "Avg.Pace(min/Km)", count = "${state.time} Min") {
                 }
             }
             item {
@@ -141,11 +139,11 @@ fun StepsItem(modifier: Modifier = Modifier,state: StepCounterUIState,viewModel:
                 }
             }
             item {
-                SessionCard(type = "Avg.Heart.Rt(BPM)", count = "85") {
+                SessionCard(type = "Avg.Heart.Rt(BPM)", count = "${state.heartRate}") {
                 }
             }
             item {
-                SessionCard(type = "Weight Loosed", count = "0.25 kg") {
+                SessionCard(type = "Weight Loosed", count = "${state.weightLoosed} kg") {
                 }
             }
         }
@@ -159,7 +157,7 @@ fun StepsItem(modifier: Modifier = Modifier,state: StepCounterUIState,viewModel:
                 modifier = Modifier
                     .weight(0.5f), color = Color.Red, text = "END"
             ) {
-                viewModel.onUIEvent(StepCounterUIEvent.StopButtonClicked)
+
             }
             ButtonWithColor(
                 modifier = Modifier

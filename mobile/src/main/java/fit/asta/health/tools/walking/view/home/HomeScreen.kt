@@ -93,7 +93,8 @@ fun StepsBottomSheet(
     paddingValues: PaddingValues
 ) {
     val state = homeViewModel.homeUiState.value
-    val apiState= homeViewModel.ApiState.value
+    val apiState = homeViewModel.ApiState.value
+    val startWorking = homeViewModel.startWorking
     val sheetState = rememberBottomSheetState(
         initialValue = BottomSheetValue.Collapsed
     )
@@ -107,7 +108,7 @@ fun StepsBottomSheet(
     }
     BottomSheetScaffold(
         sheetContent = {
-            WalkingBottomSheetView(homeViewModel, visible, navController,apiState)
+            WalkingBottomSheetView(homeViewModel, visible, navController, apiState, startWorking)
         },
         sheetBackgroundColor = Color.Gray,
         backgroundColor = Color.DarkGray,
@@ -115,7 +116,7 @@ fun StepsBottomSheet(
         scaffoldState = scaffoldState
     ) {
         visible = !sheetState.isCollapsed
-        HomeLayout(paddingValues = paddingValues, state,apiState)
+        HomeLayout(paddingValues = paddingValues, state, apiState)
     }
 }
 
@@ -134,7 +135,7 @@ fun HomeLayout(paddingValues: PaddingValues, state: HomeUIState, apiState: Walki
     ) {
         Spacer(modifier = Modifier.height(8.dp))
 
-        MainCircularSlider(apiState=apiState) { }
+        MainCircularSlider(apiState = apiState) { }
         StepsDetailsCard(
             modifier = Modifier,
             distance = state.distance,
@@ -163,7 +164,8 @@ fun WalkingBottomSheetView(
     homeViewModel: WalkingViewModel,
     visible: Boolean,
     navController: NavController,
-    apiState: WalkingTool
+    apiState: WalkingTool,
+    startWorking: MutableState<Boolean>
 ) {
     val selectedGoal by homeViewModel.selectedGoal.collectAsState(emptyList())
     val selectedWalkTypes by homeViewModel.selectedWalkTypes.collectAsState("")
@@ -226,10 +228,16 @@ fun WalkingBottomSheetView(
 
             }
             ButtonWithColor(
-                modifier = Modifier.weight(0.5f), color = Color.Blue, text = "START"
+                modifier = Modifier.weight(0.5f),
+                color = if (!startWorking.value) { Color.Blue } else { Color.Red },
+                text = if (!startWorking.value) { "START" } else { "END" }
             ) {
-                homeViewModel.onUIEvent(StepCounterUIEvent.StartButtonClicked)
-                navController.navigate(route = StepsCounterScreen.DistanceScreen.route)
+                if (startWorking.value) {
+                    homeViewModel.onUIEvent(StepCounterUIEvent.StopButtonClicked)
+                    navController.navigate(route = StepsCounterScreen.DistanceScreen.route)
+                } else {
+                    homeViewModel.onUIEvent(StepCounterUIEvent.StartButtonClicked)
+                }
             }
         }
 
@@ -237,7 +245,7 @@ fun WalkingBottomSheetView(
 }
 
 @Composable
-fun MainCircularSlider(modifier: Modifier = Modifier, apiState: WalkingTool,onClick: () -> Unit) {
+fun MainCircularSlider(modifier: Modifier = Modifier, apiState: WalkingTool, onClick: () -> Unit) {
     val isDuration = remember {
         mutableStateOf(true)
     }
@@ -264,7 +272,7 @@ fun MainCircularSlider(modifier: Modifier = Modifier, apiState: WalkingTool,onCl
                 ProgressBarItem(
                     isDuration = isDuration.value,
                     modifier = Modifier.weight(0.3f),
-                    value = (if (isDuration.value){
+                    value = (if (isDuration.value) {
                         apiState.durationRecommend
                     } else {
                         apiState.distanceRecommend.toInt()
@@ -289,7 +297,7 @@ fun MainCircularSlider(modifier: Modifier = Modifier, apiState: WalkingTool,onCl
 }
 
 @Composable
-fun StepsDetailsCard(modifier: Modifier,distance:Int,duration:Int,steps:Int) {
+fun StepsDetailsCard(modifier: Modifier, distance: Int, duration: Int, steps: Int) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
@@ -322,7 +330,13 @@ fun StepsDetailsCard(modifier: Modifier,distance:Int,duration:Int,steps:Int) {
 }
 
 @Composable
-fun DetailsCard(modifier: Modifier,heartRate:Int,calories:Int,weightLoosed:Double,bp:String) {
+fun DetailsCard(
+    modifier: Modifier,
+    heartRate: Int,
+    calories: Int,
+    weightLoosed: Double,
+    bp: String
+) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
@@ -429,7 +443,7 @@ fun CustomProgressBar(
 
 
 @Composable
-fun VitaminCard(modifier: Modifier, recommendedValue:Int, achievedValue: Int) {
+fun VitaminCard(modifier: Modifier, recommendedValue: Int, achievedValue: Int) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),

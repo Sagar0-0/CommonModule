@@ -1,11 +1,14 @@
 package fit.asta.health.tools.walking.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.NetworkResult
+import fit.asta.health.tools.walking.db.StepsData
+import fit.asta.health.tools.walking.model.LocalRepo
 import fit.asta.health.tools.walking.model.WalkingToolRepo
 import fit.asta.health.tools.walking.model.domain.WalkingTool
 import fit.asta.health.tools.walking.sensor.MeasurableSensor
@@ -16,6 +19,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 
@@ -23,35 +27,55 @@ import javax.inject.Inject
 @HiltViewModel
 class WalkingViewModel
 @Inject constructor(
-    private val walkingToolRepo: WalkingToolRepo, private val stepsSensor: MeasurableSensor
+    private val walkingToolRepo: WalkingToolRepo,
+    private val stepsSensor: MeasurableSensor,
+    private val localRepo: LocalRepo
 ) : ViewModel() {
-
+    val date = LocalDate.now().dayOfMonth
     private val _homeUiState = mutableStateOf(HomeUIState())
     val homeUiState: State<HomeUIState> = _homeUiState
 
     private val _apiState = mutableStateOf(WalkingTool())
     val ApiState: State<WalkingTool> = _apiState
 
+    val startWorking= mutableStateOf(false)
+
     init {
         loadWalkingToolData()
+
+        viewModelScope.launch {
+            val date = localRepo.getStepsData(LocalDate.now().dayOfMonth)
+            if (date == null) {
+                val stepsData = StepsData(
+                    date = LocalDate.now().dayOfMonth, status = "",
+                    initialSteps = 0, allSteps = 0,
+                    time = 0
+                )
+                localRepo.insert(stepsData)
+            }
+            if (date != null) {
+                if (date.date==LocalDate.now().dayOfMonth){
+
+                }
+            }
+        }
     }
 
     private fun loadWalkingToolData() {
         viewModelScope.launch {
             walkingToolRepo.getHomeData(userId = "6309a9379af54f142c65fbfe")
                 .collect {
-                when(it){
-                    is NetworkResult.Loading -> {}
-                    is NetworkResult.Success -> {
-                        _apiState.value= it.data!!
+                    when (it) {
+                        is NetworkResult.Loading -> {}
+                        is NetworkResult.Success -> {
+                            _apiState.value = it.data!!
+                        }
+                        is NetworkResult.Error -> {}
+                        else -> {}
                     }
-                    is NetworkResult.Error -> {}
-                    else -> {}
                 }
-            }
         }
     }
-
 
 
     private val _selectedGoal = MutableStateFlow(emptyList<String>())
@@ -60,7 +84,6 @@ class WalkingViewModel
     private val _selectedWalkTypes = MutableStateFlow("")
     val selectedWalkTypes: StateFlow<String> = _selectedWalkTypes
 
-    val initialStep = MutableStateFlow(true)
     fun onGoalSelected(goal: List<String>) {
         _selectedGoal.value = goal
     }
@@ -70,47 +93,60 @@ class WalkingViewModel
     }
 
 
-    private val _uiState = mutableStateOf(StepCounterUIState())
-    val uiState: State<StepCounterUIState> = _uiState
-
     fun onUIEvent(uiEvent: StepCounterUIEvent) {
         when (uiEvent) {
-            is StepCounterUIEvent.StartButtonClicked -> startSteps()
-            is StepCounterUIEvent.StopButtonClicked -> stopSteps()
+            is StepCounterUIEvent.StartButtonClicked -> {
+                changeStatus("active")
+                changeTime()
+                startSteps()
+                startWorking.value=true
+            }
+            is StepCounterUIEvent.StopButtonClicked -> {
+                startWorking.value=false
+                stopSteps()
+                changeStatus("inactive")
+                endScreen()
+            }
             else -> {}
         }
     }
 
 
     private fun startSteps() {
-        setStartTime()
         stepsSensor.startListening()
         stepsSensor.setOnSensorValuesChangedListener { step ->
-
-            if (initialStep.value) {
-                _uiState.value = _uiState.value.copy(initialSteps = step[0].toInt())
-                initialStep.value = false
+            Log.d("Subhash", "start:${step[0].toInt()}")
+            Log.d("Subhash", "out:  $date")
+            viewModelScope.launch {
+                val data = localRepo.getStepsData(date)
+                if (data != null && data.date == date) {
+                    if (data.initialSteps > 1) {
+                        localRepo.updateStepsonRunning(
+                            date = data.date,
+                            all_steps = step[0].toInt() - data.initialSteps,
+                        )
+                        Log.d(
+                            "Subhash",
+                            "update:  steps distance${((step[0].toInt() - data.initialSteps))}"
+                        )
+                    } else {
+                        Log.d("Subhash", "startSteps: start steps")
+                        localRepo.updateSteps(date = date, step = step[0].toInt())
+                    }
+                    _homeUiState.value = _homeUiState.value.copy(
+                        distance = (data.allSteps / 1408),
+                        steps = data.allSteps,
+                        duration = (System.nanoTime() - data.time).toInt()
+                    )
+                } else {
+                    Log.d("Subhash", "startSteps: null")
+                }
             }
-            val steps = step[0].toInt() - _uiState.value.initialSteps
-            val stepLength = 0.7f
-            val timeNs = System.nanoTime() - _uiState.value.startTime
-            val speed = calculateSpeed(steps, stepLength, timeNs)
-
-            _uiState.value = _uiState.value.copy(
-                steps = steps,
-                distance = (step[0].toInt() / 1408),
-                speed = speed
-            )
-            _homeUiState.value = _homeUiState.value.copy(
-                distance = (step[0].toInt() / 1408), steps = steps
-            )
         }
     }
 
 
-    fun setStartTime() {
-        _uiState.value = _uiState.value.copy(startTime = System.nanoTime())
-    }
+
 
     private fun stopSteps() {
         stepsSensor.stopListening()
@@ -128,9 +164,6 @@ class WalkingViewModel
     }
 
 
-
-
-
     fun putDataToServer() {
         viewModelScope.launch {
             try {
@@ -142,4 +175,34 @@ class WalkingViewModel
         }
     }
 
+    private val _uiStateStep = mutableStateOf(StepCounterUIState())
+    val uiStateStep: State<StepCounterUIState> = _uiStateStep
+    fun endScreen() {
+        viewModelScope.launch {
+            val data = localRepo.getStepsData(date)
+            if (data != null && data.date == date) {
+                val steps = data.allSteps
+                val stepLength = 0.7f
+                val timeNs = System.nanoTime() - data.time
+                val speed = calculateSpeed(steps, stepLength, timeNs)
+                val distance = ((data.allSteps - data.initialSteps) / 1408)
+                _uiStateStep.value = _uiStateStep.value.copy(
+                    calories = 0, steps = steps,
+                    distance = distance, speed = speed, time = timeNs
+                )
+            }
+        }
+    }
+
+    fun changeStatus(status:String){
+        viewModelScope.launch {
+            localRepo.updateStatus(date, status)
+        }
+    }
+
+    fun changeTime(){
+        viewModelScope.launch {
+            localRepo.updateTime(date,System.nanoTime().toInt())
+        }
+    }
 }
