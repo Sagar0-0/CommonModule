@@ -18,7 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
-import fit.asta.health.common.ui.components.NextButton
+import fit.asta.health.common.ui.components.PrimaryButton
 import fit.asta.health.common.ui.theme.*
 
 @Composable
@@ -83,7 +83,7 @@ fun SuccessfulCard(
                 if (underReview) {
                     LoadingAnimation()
                 } else {
-                    NextButton(text = "Done", event = onClick)
+                    PrimaryButton(text = "Done", event = onClick)
                 }
 
                 Spacer(modifier = Modifier.height(spacing.medium))

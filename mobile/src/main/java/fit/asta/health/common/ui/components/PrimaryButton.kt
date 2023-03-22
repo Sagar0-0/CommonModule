@@ -13,7 +13,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 
 @Composable
-fun NextButton(text: String, modifier: Modifier = Modifier, event: (() -> Unit)? = null) {
+fun PrimaryButton(text: String, modifier: Modifier = Modifier, event: (() -> Unit)? = null) {
     event?.let {
         Button(
             modifier = modifier.clip(shape = RectangleShape),

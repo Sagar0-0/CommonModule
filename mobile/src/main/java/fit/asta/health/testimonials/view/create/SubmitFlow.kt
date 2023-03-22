@@ -16,7 +16,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import fit.asta.health.R
 import fit.asta.health.testimonials.view.components.SuccessfulCard
-import fit.asta.health.tools.sunlight.view.components.BottomSheetButton
+import fit.asta.health.common.ui.components.BottomSheetButton
 import fit.asta.health.common.ui.theme.buttonSize
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.imageHeight
