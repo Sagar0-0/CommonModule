@@ -37,7 +37,7 @@ class RemindersAdapter(
     override fun setViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view =
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.sceduler_reminder_card, parent, false)
+                .inflate(R.layout.scheduler_reminder_card, parent, false)
         return ItemViewHolder(view)
     }
 

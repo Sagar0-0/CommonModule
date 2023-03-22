@@ -14,7 +14,7 @@ data class Testimonial(
     val testimonial: String = "",
     val userId: String = "",
     val user: TestimonialUser = TestimonialUser(),
-    val media: List<Media> = listOf(),
+    val media: List<Media> = listOf()
 ) : Parcelable
 
 @Parcelize
@@ -22,7 +22,7 @@ data class TestimonialUser(
     val name: String = "",
     val org: String = "",
     val role: String = "",
-    val url: String = "",
+    val url: String = ""
 ) : Parcelable
 
 @Parcelize
@@ -31,5 +31,5 @@ data class Media(
     val title: String = "",
     var url: String = "",
     var localUrl: Uri? = null,
-    val error: UiString = UiString.Empty,
+    val error: UiString = UiString.Empty
 ) : Parcelable

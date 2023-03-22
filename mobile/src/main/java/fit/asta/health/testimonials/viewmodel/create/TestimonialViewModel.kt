@@ -57,13 +57,18 @@ class TestimonialViewModel
     val video =
         savedState.getStateFlow(VIDEO, Media(name = "journey", title = "Health Transformation"))
 
+
     val areInputsValid =
         combine(type, title, testimonial, org, role) { type, title, testimonial, org, role ->
+
             when (type) {
                 TestimonialType.TEXT -> testimonial.value.isNotBlank() && testimonial.error is UiString.Empty
                 TestimonialType.IMAGE -> true
                 TestimonialType.VIDEO -> true
-            } && title.value.isNotEmpty() && title.error is UiString.Empty && org.value.isNotEmpty() && org.error is UiString.Empty && role.value.isNotEmpty() && role.error is UiString.Empty && isTestimonialDirty()
+            } && title.value.isNotEmpty() && title.error is UiString.Empty
+                    && org.value.isNotEmpty() && org.error is UiString.Empty
+                    && role.value.isNotEmpty() && role.error is UiString.Empty
+                    && isTestimonialDirty()
 
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
@@ -96,7 +101,6 @@ class TestimonialViewModel
     }
 
     private fun loadTestimonial(userId: String) {
-
         viewModelScope.launch {
 
             when (val result = testimonialRepo.getTestimonial(userId)) {
@@ -282,7 +286,9 @@ class TestimonialViewModel
     }
 
     private fun isTestimonialDirty(): Boolean {
-        return testimonialData.value.title != title.value.value || testimonialData.value.testimonial != testimonial.value.value || testimonialData.value.user.org != org.value.value || testimonialData.value.user.role != role.value.value
+        return testimonialData.value.title != title.value.value
+                || testimonialData.value.testimonial != testimonial.value.value
+                || testimonialData.value.user.org != org.value.value
+                || testimonialData.value.user.role != role.value.value
     }
-
 }

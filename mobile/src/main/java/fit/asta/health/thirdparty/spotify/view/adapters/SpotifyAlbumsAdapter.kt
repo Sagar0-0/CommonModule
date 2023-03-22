@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import fit.asta.health.databinding.ItemSearchAlbumsBinding
+import fit.asta.health.databinding.SpotifyItemSearchAlbumsBinding
 import fit.asta.health.thirdparty.spotify.model.net.common.Album
 import fit.asta.health.thirdparty.spotify.utils.CommonDiffUtils
 
@@ -12,7 +12,7 @@ class SpotifyAlbumsAdapter(
     private var mList: List<Album>
 ) : RecyclerView.Adapter<SpotifyAlbumsAdapter.InnerViewHolder>() {
 
-    class InnerViewHolder(private val binding: ItemSearchAlbumsBinding) :
+    class InnerViewHolder(private val binding: SpotifyItemSearchAlbumsBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Album) {
             binding.item = item
@@ -22,7 +22,7 @@ class SpotifyAlbumsAdapter(
         companion object {
             fun from(parent: ViewGroup): InnerViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ItemSearchAlbumsBinding.inflate(layoutInflater, parent, false)
+                val binding = SpotifyItemSearchAlbumsBinding.inflate(layoutInflater, parent, false)
                 return InnerViewHolder(binding)
             }
         }

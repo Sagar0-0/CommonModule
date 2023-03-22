@@ -299,7 +299,7 @@ private fun SelectableText(arrowTitle: String) {
 fun SnoozeBottomSheet(onNavigateBack: () -> Unit) {
 
     AndroidView(modifier = Modifier.fillMaxWidth(), factory = {
-        val view = View.inflate(it, R.layout.layout_dialog_number_picker, null)
+        val view = View.inflate(it, R.layout.scheduler_layout_dialog_number_picker, null)
 
         view
     }, update = {
@@ -322,7 +322,7 @@ fun SnoozeBottomSheet(onNavigateBack: () -> Unit) {
 @Composable
 fun TimePickerDemo(onNavigateBack: () -> Unit) {
     AndroidView(modifier = Modifier.fillMaxWidth(), factory = {
-        val view = View.inflate(it, R.layout.layout_dialog_number_picker, null)
+        val view = View.inflate(it, R.layout.scheduler_layout_dialog_number_picker, null)
 
         view
     }, update = {

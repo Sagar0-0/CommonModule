@@ -12,7 +12,7 @@ import com.spotify.sdk.android.auth.AuthorizationClient
 import com.spotify.sdk.android.auth.AuthorizationRequest
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.databinding.ActivitySpotifyLoginBinding
+import fit.asta.health.databinding.SpotifyLoginActivityBinding
 import fit.asta.health.thirdparty.MusicHomeActivity
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.SHARED_PREF_SPOTIFY
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.SHARED_PREF_SPOTIFY_TOKEN
@@ -29,7 +29,7 @@ import fit.asta.health.common.utils.NetworkResult
 @AndroidEntryPoint
 class SpotifyLoginActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivitySpotifyLoginBinding
+    private lateinit var binding: SpotifyLoginActivityBinding
     private val tag = this::class.simpleName
 
     private lateinit var builder: AuthorizationRequest.Builder
@@ -40,7 +40,7 @@ class SpotifyLoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySpotifyLoginBinding.inflate(layoutInflater)
+        binding = SpotifyLoginActivityBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
 

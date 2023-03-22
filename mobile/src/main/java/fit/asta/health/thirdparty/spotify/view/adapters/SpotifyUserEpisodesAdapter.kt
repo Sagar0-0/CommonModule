@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import fit.asta.health.databinding.ItemUserEpisodeBinding
+import fit.asta.health.databinding.SpotifyItemUserEpisodeBinding
 import fit.asta.health.thirdparty.spotify.model.net.me.episodes.Item
 import fit.asta.health.thirdparty.spotify.utils.CommonDiffUtils
 
@@ -12,7 +12,7 @@ class SpotifyUserEpisodesAdapter(
     private var mList: List<Item>
 ) : RecyclerView.Adapter<SpotifyUserEpisodesAdapter.InnerViewHolder>() {
 
-    class InnerViewHolder(private val binding: ItemUserEpisodeBinding) :
+    class InnerViewHolder(private val binding: SpotifyItemUserEpisodeBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Item) {
             binding.userPlaylistItem = item.episode
@@ -22,7 +22,7 @@ class SpotifyUserEpisodesAdapter(
         companion object {
             fun from(parent: ViewGroup): InnerViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ItemUserEpisodeBinding.inflate(layoutInflater, parent, false)
+                val binding = SpotifyItemUserEpisodeBinding.inflate(layoutInflater, parent, false)
                 return InnerViewHolder(binding)
             }
         }

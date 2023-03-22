@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.databinding.FragmentFavMusicBinding
+import fit.asta.health.databinding.SpotifyFragmentFavMusicBinding
 import fit.asta.health.thirdparty.spotify.view.adapters.FavAlbumsAdapter
 import fit.asta.health.thirdparty.spotify.view.adapters.FavTracksAdapter
 import fit.asta.health.thirdparty.spotify.viewmodel.FavoriteViewModel
@@ -16,7 +16,7 @@ import fit.asta.health.thirdparty.spotify.viewmodel.FavoriteViewModel
 @AndroidEntryPoint
 class FavMusicFragment : Fragment() {
 
-    private var _binding: FragmentFavMusicBinding? = null
+    private var _binding: SpotifyFragmentFavMusicBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var favoriteViewModel: FavoriteViewModel
@@ -26,7 +26,7 @@ class FavMusicFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentFavMusicBinding.inflate(layoutInflater)
+        _binding = SpotifyFragmentFavMusicBinding.inflate(layoutInflater)
         return binding.root
     }
 

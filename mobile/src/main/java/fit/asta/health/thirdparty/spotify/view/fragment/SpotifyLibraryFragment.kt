@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.databinding.FragmentSpotifyLibraryBinding
+import fit.asta.health.databinding.SpotifyLibraryFragmentBinding
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
 import fit.asta.health.thirdparty.spotify.view.adapters.*
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModel
@@ -19,7 +19,7 @@ import fit.asta.health.common.utils.NetworkResult
 @AndroidEntryPoint
 class SpotifyLibraryFragment : Fragment() {
 
-    private var _binding: FragmentSpotifyLibraryBinding? = null
+    private var _binding: SpotifyLibraryFragmentBinding? = null
     private val binding get() = _binding!!
     private val TAG = this::class.simpleName
 
@@ -36,7 +36,7 @@ class SpotifyLibraryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentSpotifyLibraryBinding.inflate(inflater, container, false)
+        _binding = SpotifyLibraryFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 

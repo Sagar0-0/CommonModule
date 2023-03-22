@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 sealed class TestimonialType(
     val value: Int,
-    val title: String,
+    val title: String
 ) : Parcelable {
 
     object TEXT : TestimonialType(value = 0, title = "Text")

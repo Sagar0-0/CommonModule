@@ -19,7 +19,7 @@
     <item
         android:id="@+id/user_profile_menu"
         android:title="@string/title_profile"
-        app:actionLayout="@layout/profile_view_user"
+        app:actionLayout="@layout/home_profile_view_user"
         app:showAsAction="always" />
 
     <item

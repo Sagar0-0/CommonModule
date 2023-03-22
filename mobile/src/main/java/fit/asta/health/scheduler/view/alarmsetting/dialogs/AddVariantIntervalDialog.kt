@@ -4,7 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
-import fit.asta.health.databinding.LayoutDialogAddVariantIntervalBinding
+import fit.asta.health.databinding.SchedulerLayoutDialogAddVariantIntervalBinding
 import fit.asta.health.scheduler.model.net.scheduler.Stat
 import fit.asta.health.scheduler.view.interfaces.DialogInterface
 
@@ -13,7 +13,7 @@ class AddVariantIntervalDialog(
     private val listener: DialogInterface
 ) : Dialog(context) {
 
-    private lateinit var _binding: LayoutDialogAddVariantIntervalBinding
+    private lateinit var _binding: SchedulerLayoutDialogAddVariantIntervalBinding
     private val binding get() = _binding
 
     init {
@@ -22,7 +22,7 @@ class AddVariantIntervalDialog(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = LayoutDialogAddVariantIntervalBinding.inflate(layoutInflater)
+        _binding = SchedulerLayoutDialogAddVariantIntervalBinding.inflate(layoutInflater)
         setContentView(_binding.root)
 
         _binding.cancelButton.setOnClickListener {

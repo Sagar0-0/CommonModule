@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.R
-import fit.asta.health.databinding.LayoutDialogNumberPickerBinding
+import fit.asta.health.databinding.SchedulerLayoutDialogNumberPickerBinding
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.view.interfaces.TimeActivityBottomSheetListener
 import fit.asta.health.scheduler.viewmodel.TimeSettingViewModel
@@ -19,7 +19,7 @@ class RepeatTimeBottomSheet(
     private var bottomSheetListener: TimeActivityBottomSheetListener
 ) : BottomSheetDialogFragment() {
 
-    private var _binding: LayoutDialogNumberPickerBinding? = null
+    private var _binding: SchedulerLayoutDialogNumberPickerBinding? = null
     private lateinit var timeSettingViewModel: TimeSettingViewModel
 
     // This property is only valid between onCreateView and
@@ -36,7 +36,7 @@ class RepeatTimeBottomSheet(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = LayoutDialogNumberPickerBinding.inflate(inflater, container, false)
+        _binding = SchedulerLayoutDialogNumberPickerBinding.inflate(inflater, container, false)
         timeSettingViewModel = ViewModelProvider(this)[TimeSettingViewModel::class.java]
         _binding?.choice = "repeat"
 

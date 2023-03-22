@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.databinding.ActivitySpotifyTracksDetailsBinding
+import fit.asta.health.databinding.SpotifyTracksDetailsActivityBinding
 import fit.asta.health.thirdparty.spotify.model.db.entity.TrackEntity
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.SPOTIFY_TRACK_ID
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.SPOTIFY_USER_TOKEN
@@ -20,7 +20,7 @@ import fit.asta.health.common.utils.NetworkResult
 @AndroidEntryPoint
 class SpotifyTracksDetailsActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivitySpotifyTracksDetailsBinding
+    private lateinit var binding: SpotifyTracksDetailsActivityBinding
     private val tag = this::class.simpleName
 
     private lateinit var spotifyViewModel: SpotifyViewModel
@@ -30,7 +30,7 @@ class SpotifyTracksDetailsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySpotifyTracksDetailsBinding.inflate(layoutInflater)
+        binding = SpotifyTracksDetailsActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.item = TrackEntity(
             trackAlbum = null,

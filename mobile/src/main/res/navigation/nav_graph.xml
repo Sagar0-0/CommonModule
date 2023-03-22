@@ -9,7 +9,7 @@
         android:id="@+id/homeFeedFragment"
         android:name="fit.asta.health.thirdparty.spotify.view.fragment.SpotifyHomeFeedFragment"
         android:label="fragment_spotify_home_feed"
-        tools:layout="@layout/fragment_spotify_home_feed">
+        tools:layout="@layout/spotify_home_feed_fragment">
         <action
             android:id="@+id/action_homeFeedFragment_to_spotifySearchFragment"
             app:destination="@id/spotifySearchFragment" />
@@ -21,7 +21,7 @@
         android:id="@+id/spotifySearchFragment"
         android:name="fit.asta.health.thirdparty.spotify.view.fragment.SpotifySearchFragment"
         android:label="fragment_spotify_search"
-        tools:layout="@layout/fragment_spotify_search">
+        tools:layout="@layout/spotify_search_fragment">
         <action
             android:id="@+id/action_spotifySearchFragment_to_spotifyLibraryFragment"
             app:destination="@id/spotifyLibraryFragment" />
@@ -33,7 +33,7 @@
         android:id="@+id/spotifyLibraryFragment"
         android:name="fit.asta.health.thirdparty.spotify.view.fragment.SpotifyLibraryFragment"
         android:label="fragment_spotify_library"
-        tools:layout="@layout/fragment_spotify_library">
+        tools:layout="@layout/spotify_library_fragment">
         <action
             android:id="@+id/action_spotifyLibraryFragment_to_homeFeedFragment"
             app:destination="@id/homeFeedFragment" />

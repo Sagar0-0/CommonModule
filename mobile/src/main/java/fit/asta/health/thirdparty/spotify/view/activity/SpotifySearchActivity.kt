@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.databinding.ActivitySpotifySearchBinding
+import fit.asta.health.databinding.SpotifySearchActivityBinding
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.SPOTIFY_USER_DETAILS
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.SPOTIFY_USER_TOKEN
 import fit.asta.health.thirdparty.spotify.view.adapters.*
@@ -24,7 +24,7 @@ import fit.asta.health.common.utils.NetworkResult
 @AndroidEntryPoint
 class SpotifySearchActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivitySpotifySearchBinding
+    private lateinit var binding: SpotifySearchActivityBinding
     private val tag = this::class.simpleName
 
     private lateinit var spotifyViewModel: SpotifyViewModel
@@ -46,7 +46,7 @@ class SpotifySearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySpotifySearchBinding.inflate(layoutInflater)
+        binding = SpotifySearchActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         spotifyViewModel = ViewModelProvider(this)[SpotifyViewModel::class.java]

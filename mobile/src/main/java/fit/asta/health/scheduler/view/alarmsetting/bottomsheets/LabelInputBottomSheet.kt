@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.R
-import fit.asta.health.databinding.FragmentLabelInputBottomSheetBinding
+import fit.asta.health.databinding.SchedulerFragmentLabelInputBottomSheetBinding
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.view.interfaces.BottomSheetInterface
 import fit.asta.health.scheduler.viewmodel.AlarmSettingViewModel
@@ -19,7 +19,7 @@ class LabelInputBottomSheet(
     private var bottomSheetInterface: BottomSheetInterface
 ) : BottomSheetDialogFragment() {
 
-    private var _binding: FragmentLabelInputBottomSheetBinding? = null
+    private var _binding: SchedulerFragmentLabelInputBottomSheetBinding? = null
     private lateinit var alarmSettingViewModel: AlarmSettingViewModel
 
     // This property is only valid between onCreateView and
@@ -36,7 +36,7 @@ class LabelInputBottomSheet(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentLabelInputBottomSheetBinding.inflate(inflater, container, false)
+        _binding = SchedulerFragmentLabelInputBottomSheetBinding.inflate(inflater, container, false)
         alarmSettingViewModel = ViewModelProvider(this).get(AlarmSettingViewModel::class.java)
 
         if (arguments?.getParcelable<AlarmEntity>("alarmItem") != null) {

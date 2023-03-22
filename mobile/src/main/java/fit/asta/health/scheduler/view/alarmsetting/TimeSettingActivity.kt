@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.R
-import fit.asta.health.databinding.ActivityTimeSettingBinding
+import fit.asta.health.databinding.SchedulerActivityTimeSettingBinding
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.net.scheduler.Adv
 import fit.asta.health.scheduler.model.net.scheduler.Ivl
@@ -27,7 +27,7 @@ import fit.asta.health.scheduler.viewmodel.TimeSettingViewModel
 @AndroidEntryPoint
 class TimeSettingActivity : AppCompatActivity(), DialogInterface, TimeActivityBottomSheetListener {
 
-    private lateinit var binding: ActivityTimeSettingBinding
+    private lateinit var binding: SchedulerActivityTimeSettingBinding
     private lateinit var viewModel: TimeSettingViewModel
     private var listOfVariantIntervals: MutableList<Stat> =
         emptyList<Stat>().toMutableList()
@@ -37,7 +37,7 @@ class TimeSettingActivity : AppCompatActivity(), DialogInterface, TimeActivityBo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityTimeSettingBinding.inflate(layoutInflater)
+        binding = SchedulerActivityTimeSettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         viewModel = ViewModelProvider(this)[TimeSettingViewModel::class.java]

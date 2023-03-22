@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import fit.asta.health.databinding.FragmentAstaMusicBinding
+import fit.asta.health.databinding.SpotifyFragmentMusicBinding
 
 class AstaMusicFragment : Fragment() {
 
-    private var _binding: FragmentAstaMusicBinding? = null
+    private var _binding: SpotifyFragmentMusicBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -17,7 +17,7 @@ class AstaMusicFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentAstaMusicBinding.inflate(layoutInflater)
+        _binding = SpotifyFragmentMusicBinding.inflate(layoutInflater)
         return binding.root
     }
 

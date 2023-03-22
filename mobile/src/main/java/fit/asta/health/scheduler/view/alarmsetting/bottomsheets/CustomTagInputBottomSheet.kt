@@ -14,14 +14,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.R
-import fit.asta.health.databinding.FragmentAddCustomTagBinding
+import fit.asta.health.databinding.SchedulerFragmentAddCustomTagBinding
 import fit.asta.health.scheduler.viewmodel.AlarmSettingViewModel
 
 
 @AndroidEntryPoint
 class CustomTagInputBottomSheet : BottomSheetDialogFragment() {
 
-    private var _binding: FragmentAddCustomTagBinding? = null
+    private var _binding: SchedulerFragmentAddCustomTagBinding? = null
     private lateinit var alarmSettingViewModel: AlarmSettingViewModel
     private val launcher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -46,7 +46,7 @@ class CustomTagInputBottomSheet : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentAddCustomTagBinding.inflate(inflater, container, false)
+        _binding = SchedulerFragmentAddCustomTagBinding.inflate(inflater, container, false)
         alarmSettingViewModel = ViewModelProvider(this).get(AlarmSettingViewModel::class.java)
 
 //        if (arguments?.getParcelable<AlarmEntity>("alarmItem") != null) {

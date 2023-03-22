@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.databinding.ActivityTagsBinding
+import fit.asta.health.databinding.SchedulerTagsActivityBinding
 import fit.asta.health.scheduler.model.db.entity.TagEntity
 import fit.asta.health.scheduler.model.net.tag.Data
 import fit.asta.health.scheduler.util.Constants
@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class TagsActivity : AppCompatActivity() {
 
-    private lateinit var _binding: ActivityTagsBinding
+    private lateinit var _binding: SchedulerTagsActivityBinding
     private lateinit var viewModel: AlarmViewModel
     private lateinit var tagAdapter: TagAdapter
     private var mList: List<TagEntity> = emptyList()
@@ -37,7 +37,7 @@ class TagsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityTagsBinding.inflate(layoutInflater)
+        _binding = SchedulerTagsActivityBinding.inflate(layoutInflater)
         setContentView(_binding.root)
 
         viewModel = ViewModelProvider(this)[AlarmViewModel::class.java]

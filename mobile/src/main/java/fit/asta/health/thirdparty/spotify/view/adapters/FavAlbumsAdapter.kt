@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import fit.asta.health.databinding.ItemFavAlbumsBinding
+import fit.asta.health.databinding.SpotifyItemFavAlbumsBinding
 import fit.asta.health.thirdparty.spotify.model.net.common.Album
 import fit.asta.health.thirdparty.spotify.utils.CommonDiffUtils
 
@@ -12,7 +12,7 @@ class FavAlbumsAdapter(
     private var mList: List<Album>
 ) : RecyclerView.Adapter<FavAlbumsAdapter.InnerViewHolder>() {
 
-    class InnerViewHolder(private val binding: ItemFavAlbumsBinding) :
+    class InnerViewHolder(private val binding: SpotifyItemFavAlbumsBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Album) {
             binding.item = item
@@ -22,7 +22,7 @@ class FavAlbumsAdapter(
         companion object {
             fun from(parent: ViewGroup): InnerViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ItemFavAlbumsBinding.inflate(layoutInflater, parent, false)
+                val binding = SpotifyItemFavAlbumsBinding.inflate(layoutInflater, parent, false)
                 return InnerViewHolder(binding)
             }
         }

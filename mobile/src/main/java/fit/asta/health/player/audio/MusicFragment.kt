@@ -13,7 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.R
-import fit.asta.health.databinding.FragmentMusicBinding
+import fit.asta.health.databinding.PlayerFragmentMusicBinding
 import fit.asta.health.player.audio.adapters.PlayerAdapter
 import fit.asta.health.player.audio.adapters.PlayerClickListener
 import fit.asta.health.player.audio.data.entity.Song
@@ -25,7 +25,7 @@ import fit.asta.health.player.audio.viewmodels.SongViewModel
 @AndroidEntryPoint
 class MusicFragment : Fragment(), PlayerClickListener {
 
-    private var _binding: FragmentMusicBinding? = null
+    private var _binding: PlayerFragmentMusicBinding? = null
     private val binding get() = _binding!!
 
     lateinit var songViewModel: SongViewModel
@@ -46,7 +46,7 @@ class MusicFragment : Fragment(), PlayerClickListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentMusicBinding.inflate(inflater, container, false)
+        _binding = PlayerFragmentMusicBinding.inflate(inflater, container, false)
         return binding.root
     }
 

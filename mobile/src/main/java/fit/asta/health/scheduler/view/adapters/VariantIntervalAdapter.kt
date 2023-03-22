@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import fit.asta.health.databinding.LayoutItemCustomIntervalBinding
+import fit.asta.health.databinding.SchedulerLayoutItemCustomIntervalBinding
 import fit.asta.health.scheduler.model.net.scheduler.Stat
 import fit.asta.health.scheduler.util.AlarmDiffUtils
 import fit.asta.health.scheduler.view.interfaces.DialogInterface
@@ -15,7 +15,7 @@ class VariantIntervalAdapter(
 //    private var viewModel: AlarmViewModel
 ) : RecyclerView.Adapter<VariantIntervalAdapter.InnerViewHolder>() {
 
-    class InnerViewHolder(private val binding: LayoutItemCustomIntervalBinding) :
+    class InnerViewHolder(private val binding: SchedulerLayoutItemCustomIntervalBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
             alarmTimeItem: Stat,
@@ -30,7 +30,7 @@ class VariantIntervalAdapter(
         companion object {
             fun from(parent: ViewGroup): InnerViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = LayoutItemCustomIntervalBinding.inflate(layoutInflater, parent, false)
+                val binding = SchedulerLayoutItemCustomIntervalBinding.inflate(layoutInflater, parent, false)
                 return InnerViewHolder(binding)
             }
         }

@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import fit.asta.health.common.BaseAdapter
 import fit.asta.health.common.BaseViewHolder
-import fit.asta.health.databinding.PlaylistItemBinding
+import fit.asta.health.databinding.PlayerPlaylistItemBinding
 import fit.asta.health.player.audio.data.entity.Song
 
 class PlayerAdapter(
@@ -12,7 +12,7 @@ class PlayerAdapter(
 ) : BaseAdapter<Song>() {
 
     class PlayerViewHolder(
-        private val binding: PlaylistItemBinding
+        private val binding: PlayerPlaylistItemBinding
     ) : BaseViewHolder<Song>(binding.root) {
         override fun bindData(content: Song) {
             binding.txtExerciseTitle.text = content.title
@@ -23,7 +23,7 @@ class PlayerAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Song> {
         val binding =
-            PlaylistItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            PlayerPlaylistItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PlayerViewHolder(binding)
     }
 

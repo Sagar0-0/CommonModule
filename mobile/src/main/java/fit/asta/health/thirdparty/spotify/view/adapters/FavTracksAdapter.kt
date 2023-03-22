@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import fit.asta.health.databinding.ItemFavTrackBinding
+import fit.asta.health.databinding.SpotifyItemFavTrackBinding
 import fit.asta.health.thirdparty.spotify.model.db.entity.TrackEntity
 import fit.asta.health.thirdparty.spotify.utils.CommonDiffUtils
 
@@ -12,7 +12,7 @@ class FavTracksAdapter(
     private var mList: List<TrackEntity>
 ) : RecyclerView.Adapter<FavTracksAdapter.InnerViewHolder>() {
 
-    class InnerViewHolder(private val binding: ItemFavTrackBinding) :
+    class InnerViewHolder(private val binding: SpotifyItemFavTrackBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: TrackEntity) {
             binding.item = item
@@ -22,7 +22,7 @@ class FavTracksAdapter(
         companion object {
             fun from(parent: ViewGroup): InnerViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ItemFavTrackBinding.inflate(layoutInflater, parent, false)
+                val binding = SpotifyItemFavTrackBinding.inflate(layoutInflater, parent, false)
                 return InnerViewHolder(binding)
             }
         }

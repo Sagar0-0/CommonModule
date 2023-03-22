@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.collectAsState
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.databinding.ActivityProfileNewBinding
+import fit.asta.health.databinding.ProfileActivityBinding
 import fit.asta.health.feedback.viewmodel.FeedbackViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -15,13 +15,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class FeedbackActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityProfileNewBinding
+    lateinit var binding: ProfileActivityBinding
     private val viewModel: FeedbackViewModel by viewModels()
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityProfileNewBinding.inflate(layoutInflater)
+        binding = ProfileActivityBinding.inflate(layoutInflater)
         binding.profileComposeView.setContent {
 
             val feedbackState = viewModel.state.collectAsState().value

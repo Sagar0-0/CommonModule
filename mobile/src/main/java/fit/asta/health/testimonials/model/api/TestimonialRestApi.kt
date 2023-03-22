@@ -22,7 +22,7 @@ class TestimonialRestApi(baseUrl: String, client: OkHttpClient) : TestimonialApi
 
     override suspend fun createTestimonial(
         tml: NetTestimonial,
-        files: List<MultipartBody.Part>,
+        files: List<MultipartBody.Part>
     ): Status {
         return apiService.createTestimonial(netTestimonial = tml, files = files)
     }

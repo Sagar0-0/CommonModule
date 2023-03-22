@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.databinding.ActivitySpotifyUserLibraryBinding
+import fit.asta.health.databinding.SpotifyUserLibraryActivityBinding
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
 import fit.asta.health.thirdparty.spotify.view.adapters.*
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModel
@@ -17,7 +17,7 @@ import fit.asta.health.common.utils.NetworkResult
 @AndroidEntryPoint
 class SpotifyUserLibraryActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivitySpotifyUserLibraryBinding
+    private lateinit var binding: SpotifyUserLibraryActivityBinding
     private val TAG = this::class.simpleName
 
     private lateinit var spotifyViewModel: SpotifyViewModel
@@ -32,7 +32,7 @@ class SpotifyUserLibraryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySpotifyUserLibraryBinding.inflate(layoutInflater)
+        binding = SpotifyUserLibraryActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         spotifyViewModel = ViewModelProvider(this)[SpotifyViewModel::class.java]
