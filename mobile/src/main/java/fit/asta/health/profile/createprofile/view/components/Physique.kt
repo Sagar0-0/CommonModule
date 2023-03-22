@@ -23,7 +23,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.NextButton
+import fit.asta.health.common.ui.components.PrimaryButton
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiString
@@ -297,9 +297,9 @@ fun CreateProfileButtons(
 ) {
 
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(spacing.small)) {
-        NextButton(text = "Previous", modifier = Modifier.fillMaxWidth(0.5f), event = eventPrevious)
+        PrimaryButton(text = "Previous", modifier = Modifier.fillMaxWidth(0.5f), event = eventPrevious)
         if (text != null) {
-            NextButton(text = text, modifier = Modifier.fillMaxWidth(1f), event = eventNext)
+            PrimaryButton(text = text, modifier = Modifier.fillMaxWidth(1f), event = eventNext)
         }
     }
 
