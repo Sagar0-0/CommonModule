@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.profile.createprofile.view.components.CreateProfileLayout
@@ -43,11 +42,11 @@ class CreateUserProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val viewModelProvider = ViewModelProvider(this)
-        viewModel = viewModelProvider[ProfileViewModel::class.java]
+//        val viewModelProvider = ViewModelProvider(this)
+//        viewModel = viewModelProvider[ProfileViewModel::class.java]
         setContent {
             AppTheme {
-                CreateProfileLayout(viewModel = viewModel)
+                CreateProfileLayout()
             }
         }
     }

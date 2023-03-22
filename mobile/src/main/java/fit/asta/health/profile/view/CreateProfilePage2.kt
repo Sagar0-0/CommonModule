@@ -1,3 +1,9 @@
+@file:OptIn(
+    ExperimentalCoroutinesApi::class,
+    ExperimentalCoroutinesApi::class,
+    ExperimentalCoroutinesApi::class
+)
+
 package fit.asta.health.profile.view
 
 import androidx.compose.foundation.layout.*
@@ -7,29 +13,32 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowRow
-import fit.asta.health.profile.view.components.AddIcon
-import fit.asta.health.profile.view.components.ChipsOnCards
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.profile.model.domain.UserSelection
+import fit.asta.health.profile.view.components.AddIcon
+import fit.asta.health.profile.view.components.RemoveChipOnCard
+import fit.asta.health.profile.viewmodel.ProfileViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @Composable
 fun SelectionCardCreateProfile(
+    viewModel: ProfileViewModel = hiltViewModel(),
     cardType: String,
     cardList: List<String>,
     radioButtonList: List<ButtonListTypes>,
-    checkedState: (MutableState<Boolean>)? = null,
+    checkedState: MutableState<Boolean>? = null,
     onItemsSelect: () -> Unit,
+    selectedOption: UserSelection?,
+    onStateChange: (UserSelection) -> Unit,
+    enabled: Boolean?,
 ) {
-
-
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf("") }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -62,28 +71,30 @@ fun SelectionCardCreateProfile(
                     )
                 }
 
-                AddIcon(onClick = onItemsSelect)
+                if (selectedOption == UserSelection.Yes) {
+                    AddIcon(onClick = onItemsSelect)
+                }
 
             }
 
-            MultiToggleLayout(
+
+            YesNoToggle(
                 selectionTypeText = null,
-                radioButtonList = radioButtonList,
                 selectedOption = selectedOption,
-                onOptionSelected = onOptionSelected
+                onStateChange = onStateChange
             )
 
-            if (selectedOption == radioButtonList[0].buttonType) {
+
+            if (selectedOption == UserSelection.Yes) {
 
                 FlowRow(
                     mainAxisSpacing = spacing.minSmall,
                     modifier = Modifier.padding(start = spacing.medium),
                 ) {
                     cardList.forEach {
-                        ChipsOnCards(textOnChip = it, checkedState = checkedState)
+                        RemoveChipOnCard(textOnChip = it, checkedState = checkedState)
                     }
                 }
-
 
             }
             Spacer(modifier = Modifier.height(spacing.small))
@@ -139,7 +150,7 @@ fun OnlyChipSelectionCard(
                 modifier = Modifier.padding(start = spacing.medium),
             ) {
                 cardList.forEach {
-                    ChipsOnCards(textOnChip = it, checkedState = checkedState)
+                    RemoveChipOnCard(textOnChip = it, checkedState = checkedState)
                 }
             }
 

@@ -18,14 +18,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.bottomsheets.components.DividerLine
+import fit.asta.health.profile.model.domain.HealthProperties
+import fit.asta.health.profile.view.components.AddChipOnCard
 
-@Preview
 @Composable
-fun ItemSelectionBtmSheetLayout() {
+fun ItemSelectionBtmSheetLayout(cardList: List<HealthProperties>? = null) {
 
     val focusManager = LocalFocusManager.current
 
@@ -49,6 +50,7 @@ fun ItemSelectionBtmSheetLayout() {
                 val searchQuery = remember { mutableStateOf("") }
 
                 OutlinedTextField(
+
                     value = searchQuery.value,
                     onValueChange = { searchQuery.value = it },
                     modifier = Modifier.weight(1f),
@@ -69,6 +71,15 @@ fun ItemSelectionBtmSheetLayout() {
 
                 )
 
+            }
+
+            FlowRow(
+                mainAxisSpacing = spacing.minSmall,
+                modifier = Modifier.padding(start = spacing.medium),
+            ) {
+                cardList?.forEach {
+                    AddChipOnCard(textOnChip = it.name)
+                }
             }
 
         }

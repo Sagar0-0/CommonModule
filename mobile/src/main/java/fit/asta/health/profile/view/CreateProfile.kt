@@ -1,9 +1,12 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package fit.asta.health.profile.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -17,11 +20,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.R
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.imageSize
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.profile.model.domain.UserSelection
+import fit.asta.health.profile.viewmodel.ProfileViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 data class ButtonListTypes(
     val buttonType: String,
@@ -91,6 +98,7 @@ fun MultiToggleLayout(
     selectedOption: String,
     onOptionSelected: (String) -> Unit,
 ) {
+
     Column(Modifier.fillMaxWidth()) {
 
         if (!selectionTypeText.isNullOrEmpty()) {
@@ -138,6 +146,66 @@ fun MultiToggleLayout(
             }
         }
     }
+}
+
+@Composable
+fun YesNoToggle(
+    viewModel: ProfileViewModel = hiltViewModel(),
+    selectionTypeText: String?,
+    selectedOption: UserSelection?,
+    onStateChange: (UserSelection) -> Unit,
+) {
+
+    Column(Modifier.fillMaxWidth()) {
+
+        if (!selectionTypeText.isNullOrEmpty()) {
+
+            Spacer(modifier = Modifier.height(spacing.small))
+
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = spacing.medium)
+            ) {
+                Text(
+                    text = selectionTypeText,
+                    color = Color(0x99000000),
+                    style = MaterialTheme.typography.titleSmall
+                )
+            }
+        }
+
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = spacing.small)
+                .height(customSize.extraLarge),
+            userScrollEnabled = false,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+
+            items(listOf(UserSelection.Yes, UserSelection.No)) { option ->
+                Row(verticalAlignment = CenterVertically, modifier = Modifier.weight(1f)) {
+
+                    RadioButton(selected = selectedOption == option, onClick = {
+                        onStateChange(option)
+                    })
+                    Text(
+                        text = when (option) {
+                            UserSelection.Yes -> "Yes"
+                            UserSelection.No -> "No"
+                        }, style = MaterialTheme.typography.labelSmall, textAlign = TextAlign.Right
+                    )
+
+                }
+            }
+
+        }
+
+
+    }
+
 }
 
 @Composable
@@ -195,4 +263,3 @@ fun UserConsent() {
         }
     }
 }
-

@@ -25,6 +25,7 @@ import fit.asta.health.testimonials.model.domain.InputWrapper
 import fit.asta.health.testimonials.model.domain.Media
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
@@ -49,6 +50,76 @@ class ProfileViewModel
 
     private val mutableState = MutableStateFlow<ProfileState>(ProfileState.Loading)
     val state = mutableState.asStateFlow()
+
+    // Any Significant Health History
+    private val _selectedHealthHisOption =
+        MutableStateFlow<UserSelection?>(null) // event raising -> lifecycle
+    val selectedHealthHisOption: StateFlow<UserSelection?>
+        get() = _selectedHealthHisOption
+
+    //Any Injury
+    private val _selectedInjOption =
+        MutableStateFlow<UserSelection?>(null) // event raising -> lifecycle
+    val selectedInjOption: StateFlow<UserSelection?>
+        get() = _selectedInjOption
+
+    //Body Part
+    private val _selectedBodyPartOption =
+        MutableStateFlow<UserSelection?>(null) // event raising -> lifecycle
+    val selectedBdyPartOption: StateFlow<UserSelection?>
+        get() = _selectedBodyPartOption
+
+    //Any Ailments
+    private val _selectedAilOption =
+        MutableStateFlow<UserSelection?>(null) // event raising -> lifecycle
+    val selectedAilOption: StateFlow<UserSelection?>
+        get() = _selectedAilOption
+
+    //Any Medications
+    private val _selectedMedOption =
+        MutableStateFlow<UserSelection?>(null) // event raising -> lifecycle
+    val selectedMedOption: StateFlow<UserSelection?>
+        get() = _selectedMedOption
+
+    //Any Health Target
+    private val _selectedHealthTarOption =
+        MutableStateFlow<UserSelection?>(null) // event raising -> lifecycle
+    val selectedHealthTarOption: StateFlow<UserSelection?>
+        get() = _selectedHealthTarOption
+
+    //Food Res
+    private val _selectedFoodResOption =
+        MutableStateFlow<UserSelection?>(null) // event raising -> lifecycle
+    val selectedFoodResOption: StateFlow<UserSelection?>
+        get() = _selectedFoodResOption
+
+    fun setSelectedHealthHisOption(option: UserSelection) {
+        _selectedHealthHisOption.value = option
+    }
+
+    fun setSelectedInjOption(option: UserSelection) {
+        _selectedInjOption.value = option
+    }
+
+    fun setSelectedBodyPrtOption(option: UserSelection) {
+        _selectedBodyPartOption.value = option
+    }
+
+    fun setSelectedAilOption(option: UserSelection) {
+        _selectedAilOption.value = option
+    }
+
+    fun setSelectedMedOption(option: UserSelection) {
+        _selectedMedOption.value = option
+    }
+
+    fun setSelectedHealthTarOption(option: UserSelection) {
+        _selectedHealthTarOption.value = option
+    }
+
+    fun setSelectedFoodResOption(option: UserSelection) {
+        _selectedFoodResOption.value = option
+    }
 
     private val myArrayList = ArrayList<HealthProperties>()
     val list: ArrayList<HealthProperties>

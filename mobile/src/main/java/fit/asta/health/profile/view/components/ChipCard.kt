@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package fit.asta.health.profile.view.components
 
 import androidx.compose.foundation.Image
@@ -15,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.profile.model.domain.HealthProperties
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 @Composable
@@ -46,7 +49,7 @@ fun ChipCard(
                         color = Color.Black)
                 }
                 if (editState.value) {
-                    AddIcon(onClick)
+                    AddIcon(onClick = onClick)
                 }
             }
 
@@ -54,7 +57,7 @@ fun ChipCard(
 
             FlowRow(mainAxisSpacing = 8.dp, crossAxisSpacing = 4.dp) {
                 list.forEach {
-                    ChipsOnCards(textOnChip = it.name, editState)
+                    RemoveChipOnCard(textOnChip = it.name, editState)
                 }
             }
         }

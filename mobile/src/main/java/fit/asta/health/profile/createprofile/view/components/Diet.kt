@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package fit.asta.health.profile.createprofile.view.components
 
 import androidx.compose.foundation.*
@@ -11,16 +13,22 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.bottomsheets.ItemSelectionBtmSheetLayout
 import fit.asta.health.profile.createprofile.view.components.DietCreateBottomSheetType.*
+import fit.asta.health.profile.model.domain.UserSelection
 import fit.asta.health.profile.view.*
+import fit.asta.health.profile.viewmodel.ProfileViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DietContent(
+    viewModel: ProfileViewModel = hiltViewModel(),
     eventPrevious: (() -> Unit)? = null,
     eventNext: (() -> Unit)? = null,
     onNonVegDays: () -> Unit,
@@ -38,6 +46,7 @@ fun DietContent(
 
     val healthHistoryList = listOf("Diabetes", "Heart Disease", "Stroke", "Depression")
 
+    val selectedFoodRes by viewModel.selectedFoodResOption.collectAsStateWithLifecycle()
 
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
@@ -90,8 +99,11 @@ fun DietContent(
                 cardType = "Food Restrictions?",
                 cardList = healthHistoryList,
                 radioButtonList = radioButtonList,
-                checkedState,
-                onFoodRes
+                checkedState = checkedState,
+                onItemsSelect = onFoodRes,
+                selectedOption = selectedFoodRes,
+                onStateChange = { state -> viewModel.setSelectedFoodResOption(state) },
+                enabled = selectedFoodRes == UserSelection.Yes
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
@@ -141,8 +153,7 @@ fun DietCreateScreen(
     }
 
 
-    ModalBottomSheetLayout(
-        modifier = Modifier.fillMaxSize(),
+    ModalBottomSheetLayout(modifier = Modifier.fillMaxSize(),
         sheetState = modalBottomSheetState,
         sheetContent = {
             Spacer(modifier = Modifier.height(1.dp))
@@ -151,7 +162,7 @@ fun DietCreateScreen(
             }
         }) {
 
-        DietContent(eventPrevious, eventDone, onNonVegDays = {
+        DietContent(eventPrevious = eventPrevious, eventNext = eventDone, onNonVegDays = {
             currentBottomSheet = NONVEGDAYS
             openSheet()
         }, onFoodAllergies = {
