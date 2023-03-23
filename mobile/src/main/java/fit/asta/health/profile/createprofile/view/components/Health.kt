@@ -24,14 +24,15 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.bottomsheets.ItemSelectionBtmSheetLayout
 import fit.asta.health.profile.createprofile.view.components.HealthCreateBottomSheetTypes.*
-import fit.asta.health.profile.model.domain.UserSelection
+import fit.asta.health.profile.model.domain.TwoToggleSelections
 import fit.asta.health.profile.view.ButtonListTypes
-import fit.asta.health.profile.view.MultiToggleLayout
 import fit.asta.health.profile.view.SelectionCardCreateProfile
+import fit.asta.health.profile.view.TwoTogglesGroup
 import fit.asta.health.profile.view.components.AddIcon
 import fit.asta.health.profile.view.components.RemoveChipOnCard
 import fit.asta.health.profile.viewmodel.HPropState
@@ -60,13 +61,14 @@ fun HealthContent(
     val healthHistoryList = listOf("Diabetes", "Heart Disease", "Stroke", "Depression")
     val checkedState = remember { mutableStateOf(true) }
     val radioButtonList =
-        listOf(ButtonListTypes(buttonType = "Yes"), ButtonListTypes(buttonType = "No"))
+        listOf(ButtonListTypes(buttonType = "First"), ButtonListTypes(buttonType = "Second"))
     val healthHistoryList4 = listOf("Head", "Leg", "Hand", "Toe")
 
     val selectedHealthHis by viewModel.selectedHealthHisOption.collectAsStateWithLifecycle()
     val selectedAil by viewModel.selectedAilOption.collectAsStateWithLifecycle()
     val selectedMed by viewModel.selectedMedOption.collectAsStateWithLifecycle()
     val selectedHealthTar by viewModel.selectedHealthTarOption.collectAsStateWithLifecycle()
+    val selectedInjury by viewModel.selectedInjOption.collectAsStateWithLifecycle()
 
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
@@ -90,24 +92,26 @@ fun HealthContent(
                 onItemsSelect = onHealthHistory,
                 selectedOption = selectedHealthHis,
                 onStateChange = { state ->
-                    viewModel.setSelectedHealthHisOption(state)
+                    viewModel.onEvent(ProfileEvent.SetSelectHealthHisOption(state))
                 },
-                enabled = selectedHealthHis == UserSelection.Yes
+                enabled = selectedHealthHis == TwoToggleSelections.First
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            InjuriesLayout(
-                cardType = "Any Injuries",
+            InjuriesLayout(cardType = "Any Injuries",
+                cardType2 = "Body Part?",
                 cardList = healthHistoryList,
+                cardList2 = healthHistoryList4,
                 radioButtonList = radioButtonList,
                 checkedState = checkedState,
-                onItemsSelect = onInjuries,
-                cardType2 = "Body Part?",
-                cardList2 = healthHistoryList4,
                 checkedState2 = checkedState,
-                onItemsSelect2 = onBodyInjurySelect
-            )
+                onItemsSelect = onInjuries,
+                onItemsSelect2 = onBodyInjurySelect,
+                selectedOption = selectedInjury,
+                onStateChange = { state ->
+                    viewModel.onEvent(ProfileEvent.SetSelectedInjOption(state))
+                })
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
@@ -119,9 +123,9 @@ fun HealthContent(
                 onItemsSelect = onAilments,
                 selectedOption = selectedAil,
                 onStateChange = { state ->
-                    viewModel.setSelectedAilOption(state)
+                    viewModel.onEvent(ProfileEvent.SetSelectedAilOption(state))
                 },
-                enabled = selectedAil == UserSelection.Yes
+                enabled = selectedAil == TwoToggleSelections.First
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
@@ -134,9 +138,9 @@ fun HealthContent(
                 onItemsSelect = onMedications,
                 selectedOption = selectedMed,
                 onStateChange = { state ->
-                    viewModel.setSelectedMedOption(state)
+                    viewModel.onEvent(ProfileEvent.SetSelectedMedOption(state))
                 },
-                enabled = selectedMed == UserSelection.Yes
+                enabled = selectedMed == TwoToggleSelections.First
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
@@ -149,9 +153,9 @@ fun HealthContent(
                 onItemsSelect = onHealthTargets,
                 selectedOption = selectedHealthTar,
                 onStateChange = { state ->
-                    viewModel.setSelectedHealthTarOption(state)
+                    viewModel.onEvent(ProfileEvent.SetSelectedHealthTarOption(state))
                 },
-                enabled = selectedHealthTar == UserSelection.Yes
+                enabled = selectedHealthTar == TwoToggleSelections.First
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
@@ -346,14 +350,14 @@ fun InjuriesLayout(
     cardList: List<String>,
     cardList2: List<String>,
     radioButtonList: List<ButtonListTypes>,
-    checkedState: (MutableState<Boolean>)? = null,
-    checkedState2: (MutableState<Boolean>)? = null,
+    checkedState: MutableState<Boolean>? = null,
+    checkedState2: MutableState<Boolean>? = null,
     onItemsSelect: () -> Unit,
     onItemsSelect2: () -> Unit,
+    selectedOption: TwoToggleSelections?,
+    onStateChange: (TwoToggleSelections) -> Unit,
 ) {
 
-
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf("") }
     var text by remember { mutableStateOf(("")) }
     val focusManager = LocalFocusManager.current
 
@@ -388,20 +392,21 @@ fun InjuriesLayout(
                     )
                 }
 
-                AddIcon(onClick = onItemsSelect)
+                if (selectedOption == TwoToggleSelections.First) {
+                    AddIcon(onClick = onItemsSelect)
+                }
 
             }
 
-            MultiToggleLayout(
+            TwoTogglesGroup(
                 selectionTypeText = null,
-                radioButtonList = radioButtonList,
                 selectedOption = selectedOption,
-                onOptionSelected = onOptionSelected
+                onStateChange = onStateChange
             )
 
-            if (selectedOption == radioButtonList[0].buttonType) {
+            if (selectedOption == TwoToggleSelections.First) {
 
-                com.google.accompanist.flowlayout.FlowRow(
+                FlowRow(
                     mainAxisSpacing = spacing.minSmall,
                     modifier = Modifier.padding(start = spacing.medium),
                 ) {
@@ -476,7 +481,7 @@ fun InjuriesLayout(
 
                 Spacer(modifier = Modifier.height(spacing.small))
 
-                com.google.accompanist.flowlayout.FlowRow(
+                FlowRow(
                     mainAxisSpacing = spacing.minSmall,
                     modifier = Modifier.padding(start = spacing.medium),
                 ) {

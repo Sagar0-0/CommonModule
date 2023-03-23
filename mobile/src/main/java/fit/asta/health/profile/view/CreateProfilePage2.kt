@@ -21,7 +21,7 @@ import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.profile.model.domain.UserSelection
+import fit.asta.health.profile.model.domain.TwoToggleSelections
 import fit.asta.health.profile.view.components.AddIcon
 import fit.asta.health.profile.view.components.RemoveChipOnCard
 import fit.asta.health.profile.viewmodel.ProfileViewModel
@@ -35,8 +35,8 @@ fun SelectionCardCreateProfile(
     radioButtonList: List<ButtonListTypes>,
     checkedState: MutableState<Boolean>? = null,
     onItemsSelect: () -> Unit,
-    selectedOption: UserSelection?,
-    onStateChange: (UserSelection) -> Unit,
+    selectedOption: TwoToggleSelections?,
+    onStateChange: (TwoToggleSelections) -> Unit,
     enabled: Boolean?,
 ) {
 
@@ -52,6 +52,7 @@ fun SelectionCardCreateProfile(
         ) {
 
             Spacer(modifier = Modifier.height(spacing.small))
+
 
             Row(
                 Modifier
@@ -71,21 +72,22 @@ fun SelectionCardCreateProfile(
                     )
                 }
 
-                if (selectedOption == UserSelection.Yes) {
+                if (selectedOption == TwoToggleSelections.First) {
                     AddIcon(onClick = onItemsSelect)
                 }
 
             }
 
 
-            YesNoToggle(
+
+            TwoTogglesGroup(
                 selectionTypeText = null,
                 selectedOption = selectedOption,
                 onStateChange = onStateChange
             )
 
 
-            if (selectedOption == UserSelection.Yes) {
+            if (selectedOption == TwoToggleSelections.First) {
 
                 FlowRow(
                     mainAxisSpacing = spacing.minSmall,

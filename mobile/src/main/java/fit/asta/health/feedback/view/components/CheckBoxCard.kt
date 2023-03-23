@@ -19,7 +19,7 @@ import fit.asta.health.testimonials.view.create.MyTextField
 @Composable
 fun CheckBoxCard() {
 
-    val checkBoxList = listOf("Friends and Family", "Social Media", "Ads and Promotion", "Other")
+    val checkBoxList = listOf("Friends and Family", "Social Media", "Ads and Promotion", "Third")
 
     val checkedState = remember { mutableStateOf(true) }
 

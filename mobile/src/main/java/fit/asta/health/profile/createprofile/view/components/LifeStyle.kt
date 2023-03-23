@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package fit.asta.health.profile.createprofile.view.components
 
 import androidx.compose.foundation.*
@@ -6,20 +8,30 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.bottomsheets.ItemSelectionBtmSheetLayout
 import fit.asta.health.profile.createprofile.view.components.LifeStyleCreateBottomSheetType.*
 import fit.asta.health.profile.view.*
+import fit.asta.health.profile.viewmodel.ProfileEvent
+import fit.asta.health.profile.viewmodel.ProfileViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LifeStyleContent(
+    viewModel: ProfileViewModel = hiltViewModel(),
     eventPrevious: (() -> Unit)? = null,
     eventNext: (() -> Unit)? = null,
     onSkipEvent: (Int) -> Unit,
@@ -30,34 +42,12 @@ fun LifeStyleContent(
 
     val checkedState = remember { mutableStateOf(true) }
 
-    val radioButtonList = listOf(
-        ButtonListTypes(buttonType = "Morning"),
-        ButtonListTypes(buttonType = "Afternoon"),
-        ButtonListTypes(buttonType = "Night")
-    )
-
-    val radioButtonList2 = listOf(
-        ButtonListTypes(buttonType = "Less"),
-        ButtonListTypes(buttonType = "Moderate"),
-        ButtonListTypes(buttonType = "Very")
-    )
-
-    val radioButtonList3 = listOf(
-        ButtonListTypes(buttonType = "Standing"),
-        ButtonListTypes(buttonType = "Sitting"),
-    )
-
-    val radioButtonList4 = listOf(
-        ButtonListTypes(buttonType = "Indoor"),
-        ButtonListTypes(buttonType = "Outdoor"),
-    )
-
     val healthHistoryList5 = listOf("Cycling", "Walking", "Swimming", "Gym", "Dancing", "Bowling")
 
-    val (selectedWorkingOption, onWorkingOptionSelected) = remember { mutableStateOf("") }
-    val (selectedActiveOption, onActiveOptionSelected) = remember { mutableStateOf("") }
-    val (selectedEnvOption, onEnvOptionSelected) = remember { mutableStateOf("") }
-    val (selectedWorkStyleOption, onWorkStyleOptionSelected) = remember { mutableStateOf("") }
+    val selectedPhyActiveOption by viewModel.selectedPhyAct.collectAsStateWithLifecycle()
+    val selectedWorkingEnvOption by viewModel.selectedWorkingEnv.collectAsStateWithLifecycle()
+    val selectedWorkingStyOption by viewModel.selectedWorkStyle.collectAsStateWithLifecycle()
+    val selectedWorkingHrsOption by viewModel.selectedWorkingHrs.collectAsStateWithLifecycle()
 
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
@@ -73,39 +63,82 @@ fun LifeStyleContent(
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            MultiToggleWithTitle(
-                selectionTypeText = "Are you physically active ? ",
-                radioButtonList = radioButtonList2,
-                selectedOption = selectedActiveOption,
-                onOptionSelected = onActiveOptionSelected
-            )
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.medium,
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
+            ) {
+                ThreeTogglesGroups(
+                    selectionTypeText = "Are you Physically Active",
+                    selectedOption = selectedPhyActiveOption,
+                    onStateChange = { state ->
+                        viewModel.onEvent(ProfileEvent.SetSelectedPhyActOption(state))
+                    },
+                    firstOption = "Moderate",
+                    secondOption = "Less",
+                    thirdOption = "Very"
+                )
+            }
+
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            MultiToggleWithTitle(
-                selectionTypeText = "Current Working Environment?",
-                radioButtonList = radioButtonList3,
-                selectedOption = selectedEnvOption,
-                onOptionSelected = onEnvOptionSelected
-            )
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.medium,
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
+            ) {
+                TwoTogglesGroup(
+                    selectionTypeText = "Current Working Environment",
+                    selectedOption = selectedWorkingEnvOption,
+                    onStateChange = { state ->
+                        viewModel.onEvent(ProfileEvent.SetSelectedWorkingEnvOption(state))
+                    },
+                    firstOption = "Standing",
+                    secondOption = "Sitting"
+                )
+            }
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            MultiToggleWithTitle(
-                selectionTypeText = "Current WorkStyle?",
-                radioButtonList = radioButtonList4,
-                selectedOption = selectedWorkStyleOption,
-                onOptionSelected = onWorkStyleOptionSelected
-            )
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.medium,
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
+            ) {
+                TwoTogglesGroup(
+                    selectionTypeText = "Current WorkStyle",
+                    selectedOption = selectedWorkingStyOption,
+                    onStateChange = { state ->
+                        viewModel.onEvent(ProfileEvent.SetSelectedWorkingStyleOption(state))
+                    },
+                    firstOption = "Indoor",
+                    secondOption = "Outdoor"
+                )
+            }
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            MultiToggleWithTitle(
-                selectionTypeText = "What are your working hours?",
-                radioButtonList = radioButtonList,
-                selectedOption = selectedWorkingOption,
-                onOptionSelected = onWorkingOptionSelected
-            )
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.medium,
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
+            ) {
+                ThreeTogglesGroups(
+                    selectionTypeText = "What are your working hours",
+                    selectedOption = selectedWorkingHrsOption,
+                    onStateChange = { state ->
+                        viewModel.onEvent(ProfileEvent.SetSelectedWorkingHrsOption(state))
+                    },
+                    firstOption = "Afternoon",
+                    secondOption = "Morning",
+                    thirdOption = "Night"
+                )
+            }
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
@@ -145,7 +178,6 @@ fun LifeStyleContent(
             Spacer(modifier = Modifier.height(spacing.medium))
         }
     }
-
 
 }
 
@@ -195,16 +227,21 @@ fun LifeStyleCreateScreen(
                 LifeStyleCreateBottomSheetLayout(sheetLayout = it, closeSheet = { closeSheet() })
             }
         }) {
-        LifeStyleContent(eventPrevious, eventNext, onSkipEvent, onCurrentActivity = {
-            currentBottomSheet = CURRENTACTIVITIES
-            openSheet()
-        }, onPreferredActivity = {
-            currentBottomSheet = PREFERREDACTIVITIES
-            openSheet()
-        }, onLifeStyleTargets = {
-            currentBottomSheet = LIFESTYLETARGETS
-            openSheet()
-        })
+        LifeStyleContent(eventPrevious = eventPrevious,
+            eventNext = eventNext,
+            onSkipEvent = onSkipEvent,
+            onCurrentActivity = {
+                currentBottomSheet = CURRENTACTIVITIES
+                openSheet()
+            },
+            onPreferredActivity = {
+                currentBottomSheet = PREFERREDACTIVITIES
+                openSheet()
+            },
+            onLifeStyleTargets = {
+                currentBottomSheet = LIFESTYLETARGETS
+                openSheet()
+            })
     }
 
 
@@ -214,6 +251,7 @@ fun LifeStyleCreateScreen(
 enum class LifeStyleCreateBottomSheetType {
     CURRENTACTIVITIES, PREFERREDACTIVITIES, LIFESTYLETARGETS
 }
+
 
 @Composable
 fun LifeStyleCreateBottomSheetLayout(

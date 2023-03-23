@@ -23,18 +23,23 @@ import fit.asta.health.profile.bottomsheets.components.DoneButton
 @Composable
 fun GenderBottomSheet() {
 
-    val buttonTypeList = listOf(ButtonListTypes(buttonType = "Female"),
-        ButtonListTypes(buttonType = "Male"),
-        ButtonListTypes(buttonType = "Others"))
+    val buttonTypeList = listOf(
+        ButtonListTypes(buttonType = "Second"),
+        ButtonListTypes(buttonType = "First"),
+        ButtonListTypes(buttonType = "Others")
+    )
 
     val state = rememberBottomSheetScaffoldState()
 
-    BottomSheetScaffold(sheetContent = {
-        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            Column(Modifier
-                .fillMaxWidth()
-                .padding(top = 32.dp, start = 16.dp, end = 16.dp),
-                verticalArrangement = Arrangement.SpaceEvenly) {
+    BottomSheetScaffold(
+        sheetContent = {
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = 32.dp, start = 16.dp, end = 16.dp),
+                    verticalArrangement = Arrangement.SpaceEvenly
+                ) {
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                     DividerLine()
                 }

@@ -26,7 +26,8 @@ import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.imageSize
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.profile.model.domain.UserSelection
+import fit.asta.health.profile.model.domain.ThreeToggleSelections
+import fit.asta.health.profile.model.domain.TwoToggleSelections
 import fit.asta.health.profile.viewmodel.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -149,11 +150,13 @@ fun MultiToggleLayout(
 }
 
 @Composable
-fun YesNoToggle(
+fun TwoTogglesGroup(
     viewModel: ProfileViewModel = hiltViewModel(),
     selectionTypeText: String?,
-    selectedOption: UserSelection?,
-    onStateChange: (UserSelection) -> Unit,
+    selectedOption: TwoToggleSelections?,
+    onStateChange: (TwoToggleSelections) -> Unit,
+    firstOption: String = "Yes",
+    secondOption: String = "No",
 ) {
 
     Column(Modifier.fillMaxWidth()) {
@@ -185,7 +188,7 @@ fun YesNoToggle(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
 
-            items(listOf(UserSelection.Yes, UserSelection.No)) { option ->
+            items(listOf(TwoToggleSelections.First, TwoToggleSelections.Second)) { option ->
                 Row(verticalAlignment = CenterVertically, modifier = Modifier.weight(1f)) {
 
                     RadioButton(selected = selectedOption == option, onClick = {
@@ -193,8 +196,8 @@ fun YesNoToggle(
                     })
                     Text(
                         text = when (option) {
-                            UserSelection.Yes -> "Yes"
-                            UserSelection.No -> "No"
+                            TwoToggleSelections.First -> firstOption
+                            TwoToggleSelections.Second -> secondOption
                         }, style = MaterialTheme.typography.labelSmall, textAlign = TextAlign.Right
                     )
 
@@ -207,6 +210,76 @@ fun YesNoToggle(
     }
 
 }
+
+@Composable
+fun ThreeTogglesGroups(
+    viewModel: ProfileViewModel = hiltViewModel(),
+    selectionTypeText: String?,
+    selectedOption: ThreeToggleSelections?,
+    onStateChange: (ThreeToggleSelections) -> Unit,
+    firstOption: String = "Male",
+    secondOption: String = "Female",
+    thirdOption: String = "Others",
+) {
+
+    Column(Modifier.fillMaxWidth()) {
+
+        if (!selectionTypeText.isNullOrEmpty()) {
+
+            Spacer(modifier = Modifier.height(spacing.small))
+
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = spacing.medium)
+            ) {
+                Text(
+                    text = selectionTypeText,
+                    color = Color(0x99000000),
+                    style = MaterialTheme.typography.titleSmall
+                )
+            }
+        }
+
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(3),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = spacing.small)
+                .height(customSize.extraLarge),
+            userScrollEnabled = false,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+
+            items(
+                listOf(
+                    ThreeToggleSelections.Second,
+                    ThreeToggleSelections.First,
+                    ThreeToggleSelections.Third
+                )
+            ) { option ->
+                Row(verticalAlignment = CenterVertically, modifier = Modifier.weight(1f)) {
+
+                    RadioButton(selected = selectedOption == option, onClick = {
+                        onStateChange(option)
+                    })
+                    Text(
+                        text = when (option) {
+                            ThreeToggleSelections.First -> firstOption
+                            ThreeToggleSelections.Second -> secondOption
+                            ThreeToggleSelections.Third -> thirdOption
+                        }, style = MaterialTheme.typography.labelSmall, textAlign = TextAlign.Right
+                    )
+
+                }
+            }
+
+        }
+
+
+    }
+}
+
 
 @Composable
 fun PrivacyStatement() {

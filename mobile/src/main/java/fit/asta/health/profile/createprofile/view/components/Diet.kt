@@ -18,8 +18,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.bottomsheets.ItemSelectionBtmSheetLayout
 import fit.asta.health.profile.createprofile.view.components.DietCreateBottomSheetType.*
-import fit.asta.health.profile.model.domain.UserSelection
+import fit.asta.health.profile.model.domain.TwoToggleSelections
 import fit.asta.health.profile.view.*
+import fit.asta.health.profile.viewmodel.ProfileEvent
 import fit.asta.health.profile.viewmodel.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -42,7 +43,7 @@ fun DietContent(
     val healthHistoryList5 = listOf("Cycling", "Walking", "Swimming", "Gym", "Dancing", "Bowling")
     val checkedState = remember { mutableStateOf(true) }
     val radioButtonList =
-        listOf(ButtonListTypes(buttonType = "Yes"), ButtonListTypes(buttonType = "No"))
+        listOf(ButtonListTypes(buttonType = "First"), ButtonListTypes(buttonType = "Second"))
 
     val healthHistoryList = listOf("Diabetes", "Heart Disease", "Stroke", "Depression")
 
@@ -102,8 +103,14 @@ fun DietContent(
                 checkedState = checkedState,
                 onItemsSelect = onFoodRes,
                 selectedOption = selectedFoodRes,
-                onStateChange = { state -> viewModel.setSelectedFoodResOption(state) },
-                enabled = selectedFoodRes == UserSelection.Yes
+                onStateChange = { state ->
+                    viewModel.onEvent(
+                        ProfileEvent.SetSelectedFoodResOption(
+                            state
+                        )
+                    )
+                },
+                enabled = selectedFoodRes == TwoToggleSelections.First
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
@@ -153,7 +160,8 @@ fun DietCreateScreen(
     }
 
 
-    ModalBottomSheetLayout(modifier = Modifier.fillMaxSize(),
+    ModalBottomSheetLayout(
+        modifier = Modifier.fillMaxSize(),
         sheetState = modalBottomSheetState,
         sheetContent = {
             Spacer(modifier = Modifier.height(1.dp))

@@ -53,71 +53,127 @@ class ProfileViewModel
 
     // Any Significant Health History
     private val _selectedHealthHisOption =
-        MutableStateFlow<UserSelection?>(null) // event raising -> lifecycle
-    val selectedHealthHisOption: StateFlow<UserSelection?>
+        MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
+    val selectedHealthHisOption: StateFlow<TwoToggleSelections?>
         get() = _selectedHealthHisOption
 
     //Any Injury
     private val _selectedInjOption =
-        MutableStateFlow<UserSelection?>(null) // event raising -> lifecycle
-    val selectedInjOption: StateFlow<UserSelection?>
+        MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
+    val selectedInjOption: StateFlow<TwoToggleSelections?>
         get() = _selectedInjOption
 
     //Body Part
     private val _selectedBodyPartOption =
-        MutableStateFlow<UserSelection?>(null) // event raising -> lifecycle
-    val selectedBdyPartOption: StateFlow<UserSelection?>
+        MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
+    val selectedBdyPartOption: StateFlow<TwoToggleSelections?>
         get() = _selectedBodyPartOption
 
     //Any Ailments
     private val _selectedAilOption =
-        MutableStateFlow<UserSelection?>(null) // event raising -> lifecycle
-    val selectedAilOption: StateFlow<UserSelection?>
+        MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
+    val selectedAilOption: StateFlow<TwoToggleSelections?>
         get() = _selectedAilOption
 
     //Any Medications
     private val _selectedMedOption =
-        MutableStateFlow<UserSelection?>(null) // event raising -> lifecycle
-    val selectedMedOption: StateFlow<UserSelection?>
+        MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
+    val selectedMedOption: StateFlow<TwoToggleSelections?>
         get() = _selectedMedOption
 
     //Any Health Target
     private val _selectedHealthTarOption =
-        MutableStateFlow<UserSelection?>(null) // event raising -> lifecycle
-    val selectedHealthTarOption: StateFlow<UserSelection?>
+        MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
+    val selectedHealthTarOption: StateFlow<TwoToggleSelections?>
         get() = _selectedHealthTarOption
 
     //Food Res
     private val _selectedFoodResOption =
-        MutableStateFlow<UserSelection?>(null) // event raising -> lifecycle
-    val selectedFoodResOption: StateFlow<UserSelection?>
+        MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
+    val selectedFoodResOption: StateFlow<TwoToggleSelections?>
         get() = _selectedFoodResOption
 
-    fun setSelectedHealthHisOption(option: UserSelection) {
+
+    //Is Pregnant
+    private val _isPregnantOption =
+        MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
+    val selectedIsPregnant: StateFlow<TwoToggleSelections?>
+        get() = _isPregnantOption
+
+    //Gender
+    private val _selectedGenderOption = MutableStateFlow<ThreeToggleSelections?>(null)
+    val selectedGender: StateFlow<ThreeToggleSelections?>
+        get() = _selectedGenderOption
+
+    //Physically Active
+    private val _selectedPhyActOption = MutableStateFlow<ThreeToggleSelections?>(null)
+    val selectedPhyAct: StateFlow<ThreeToggleSelections?>
+        get() = _selectedPhyActOption
+
+    //Working Hours
+    private val _selectedWorkingHrsOption = MutableStateFlow<ThreeToggleSelections?>(null)
+    val selectedWorkingHrs: StateFlow<ThreeToggleSelections?>
+        get() = _selectedWorkingHrsOption
+
+    //Working Env
+    private val _selectedWorkingEnvOption = MutableStateFlow<TwoToggleSelections?>(null)
+    val selectedWorkingEnv: StateFlow<TwoToggleSelections?>
+        get() = _selectedWorkingEnvOption
+
+    //Working Style
+    private val _selectedWorkStyleOption = MutableStateFlow<TwoToggleSelections?>(null)
+    val selectedWorkStyle: StateFlow<TwoToggleSelections?>
+        get() = _selectedWorkStyleOption
+
+    private fun setSelectedPhysicalActiveOption(option: ThreeToggleSelections) {
+        _selectedPhyActOption.value = option
+    }
+
+    private fun setSelectedWorkingHrsOption(option: ThreeToggleSelections) {
+        _selectedWorkingHrsOption.value = option
+    }
+
+    private fun setSelectedWorkingEnvOption(option: TwoToggleSelections) {
+        _selectedWorkingEnvOption.value = option
+    }
+
+    private fun setSelectedWorkingStyleOption(option: TwoToggleSelections) {
+        _selectedWorkStyleOption.value = option
+    }
+
+    private fun setSelectedHealthHisOption(option: TwoToggleSelections) {
         _selectedHealthHisOption.value = option
     }
 
-    fun setSelectedInjOption(option: UserSelection) {
+    private fun setSelectedGenderOption(option: ThreeToggleSelections) {
+        _selectedGenderOption.value = option
+    }
+
+    private fun setSelectedIsPregnantOption(option: TwoToggleSelections) {
+        _isPregnantOption.value = option
+    }
+
+    private fun setSelectedInjOption(option: TwoToggleSelections) {
         _selectedInjOption.value = option
     }
 
-    fun setSelectedBodyPrtOption(option: UserSelection) {
+    private fun setSelectedBodyPrtOption(option: TwoToggleSelections) {
         _selectedBodyPartOption.value = option
     }
 
-    fun setSelectedAilOption(option: UserSelection) {
+    private fun setSelectedAilOption(option: TwoToggleSelections) {
         _selectedAilOption.value = option
     }
 
-    fun setSelectedMedOption(option: UserSelection) {
+    private fun setSelectedMedOption(option: TwoToggleSelections) {
         _selectedMedOption.value = option
     }
 
-    fun setSelectedHealthTarOption(option: UserSelection) {
+    private fun setSelectedHealthTarOption(option: TwoToggleSelections) {
         _selectedHealthTarOption.value = option
     }
 
-    fun setSelectedFoodResOption(option: UserSelection) {
+    private fun setSelectedFoodResOption(option: TwoToggleSelections) {
         _selectedFoodResOption.value = option
     }
 
@@ -261,9 +317,22 @@ class ProfileViewModel
 
         when (event) {
             is ProfileEvent.GetHealthProperties -> getHealthProperties(propertyType = event.propertyType)
+            is ProfileEvent.SetSelectHealthHisOption -> setSelectedHealthHisOption(option = event.option)
+            is ProfileEvent.SetSelectedAilOption -> setSelectedAilOption(event.option)
+            is ProfileEvent.SetSelectedBodyPrtOption -> setSelectedBodyPrtOption(event.option)
+            is ProfileEvent.SetSelectedFoodResOption -> setSelectedFoodResOption(event.option)
+            is ProfileEvent.SetSelectedHealthTarOption -> setSelectedHealthTarOption(event.option)
+            is ProfileEvent.SetSelectedInjOption -> setSelectedInjOption(event.option)
+            is ProfileEvent.SetSelectedMedOption -> setSelectedMedOption(event.option)
+            is ProfileEvent.SetSelectedIsPregnantOption -> setSelectedIsPregnantOption(event.option)
+            is ProfileEvent.SetSelectedGenderOption -> setSelectedGenderOption(event.option)
+            is ProfileEvent.SetSelectedPhyActOption -> setSelectedPhysicalActiveOption(event.option)
+            is ProfileEvent.SetSelectedWorkingEnvOption -> setSelectedWorkingEnvOption(event.option)
+            is ProfileEvent.SetSelectedWorkingHrsOption -> setSelectedWorkingHrsOption(event.option)
+            is ProfileEvent.SetSelectedWorkingStyleOption -> setSelectedWorkingStyleOption(event.option)
         }
-
     }
 
 }
 
+// viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "injury"))
