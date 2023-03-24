@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package fit.asta.health.profile.bottomsheets
 
 import androidx.compose.foundation.background
@@ -19,14 +21,21 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.bottomsheets.components.DividerLine
 import fit.asta.health.profile.model.domain.HealthProperties
 import fit.asta.health.profile.view.components.AddChipOnCard
+import fit.asta.health.profile.viewmodel.ProfileEvent
+import fit.asta.health.profile.viewmodel.ProfileViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @Composable
-fun ItemSelectionBtmSheetLayout(cardList: List<HealthProperties>? = null) {
+fun ItemSelectionBtmSheetLayout(
+    viewModel: ProfileViewModel = hiltViewModel(),
+    cardList: List<HealthProperties>? = null,
+) {
 
     val focusManager = LocalFocusManager.current
 
@@ -35,6 +44,7 @@ fun ItemSelectionBtmSheetLayout(cardList: List<HealthProperties>? = null) {
             .fillMaxSize()
             .background(Color.White)
     ) {
+
         Column(Modifier.fillMaxWidth()) {
 
             Spacer(modifier = Modifier.height(spacing.medium))
@@ -77,8 +87,11 @@ fun ItemSelectionBtmSheetLayout(cardList: List<HealthProperties>? = null) {
                 mainAxisSpacing = spacing.minSmall,
                 modifier = Modifier.padding(start = spacing.medium),
             ) {
+
                 cardList?.forEach {
-                    AddChipOnCard(textOnChip = it.name)
+                    AddChipOnCard(textOnChip = it.name, onClick = {
+                        viewModel.onEvent(ProfileEvent.SetSelectedAddItemOption(it))
+                    })
                 }
             }
 

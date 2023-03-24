@@ -23,6 +23,7 @@ import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.bottomsheets.ItemSelectionBtmSheetLayout
 import fit.asta.health.profile.createprofile.view.components.LifeStyleCreateBottomSheetType.*
 import fit.asta.health.profile.view.*
+import fit.asta.health.profile.viewmodel.HPropState
 import fit.asta.health.profile.viewmodel.ProfileEvent
 import fit.asta.health.profile.viewmodel.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -42,12 +43,11 @@ fun LifeStyleContent(
 
     val checkedState = remember { mutableStateOf(true) }
 
-    val healthHistoryList5 = listOf("Cycling", "Walking", "Swimming", "Gym", "Dancing", "Bowling")
-
     val selectedPhyActiveOption by viewModel.selectedPhyAct.collectAsStateWithLifecycle()
     val selectedWorkingEnvOption by viewModel.selectedWorkingEnv.collectAsStateWithLifecycle()
     val selectedWorkingStyOption by viewModel.selectedWorkStyle.collectAsStateWithLifecycle()
     val selectedWorkingHrsOption by viewModel.selectedWorkingHrs.collectAsStateWithLifecycle()
+    val lifeStyleList by viewModel.list.collectAsStateWithLifecycle()
 
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
@@ -144,27 +144,27 @@ fun LifeStyleContent(
 
             OnlyChipSelectionCard(
                 cardType = "Current Activities?",
-                cardList = healthHistoryList5,
-                checkedState,
-                onCurrentActivity
+                cardList = lifeStyleList,
+                checkedState = checkedState,
+                onItemsSelect = onCurrentActivity
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
             OnlyChipSelectionCard(
                 cardType = "Preferred Activities?",
-                cardList = healthHistoryList5,
-                checkedState,
-                onPreferredActivity
+                cardList = lifeStyleList,
+                checkedState = checkedState,
+                onItemsSelect = onPreferredActivity
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
             OnlyChipSelectionCard(
                 cardType = "LifeStyleTargets?",
-                cardList = healthHistoryList5,
-                checkedState,
-                onLifeStyleTargets
+                cardList = lifeStyleList,
+                checkedState = checkedState,
+                onItemsSelect = onLifeStyleTargets
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
@@ -185,6 +185,7 @@ fun LifeStyleContent(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun LifeStyleCreateScreen(
+    viewModel: ProfileViewModel = hiltViewModel(),
     eventPrevious: (() -> Unit)? = null,
     eventNext: (() -> Unit)? = null,
     onSkipEvent: (Int) -> Unit,
@@ -217,7 +218,6 @@ fun LifeStyleCreateScreen(
         }
     }
 
-
     ModalBottomSheetLayout(
         modifier = Modifier.fillMaxSize(),
         sheetState = modalBottomSheetState,
@@ -233,14 +233,17 @@ fun LifeStyleCreateScreen(
             onCurrentActivity = {
                 currentBottomSheet = CURRENTACTIVITIES
                 openSheet()
+                viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "activity"))
             },
             onPreferredActivity = {
                 currentBottomSheet = PREFERREDACTIVITIES
                 openSheet()
+                viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "activity"))
             },
             onLifeStyleTargets = {
                 currentBottomSheet = LIFESTYLETARGETS
                 openSheet()
+                viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "goal"))
             })
     }
 
@@ -255,12 +258,43 @@ enum class LifeStyleCreateBottomSheetType {
 
 @Composable
 fun LifeStyleCreateBottomSheetLayout(
+    viewModel: ProfileViewModel = hiltViewModel(),
     sheetLayout: LifeStyleCreateBottomSheetType,
     closeSheet: () -> Unit,
 ) {
     when (sheetLayout) {
-        CURRENTACTIVITIES -> ItemSelectionBtmSheetLayout()
-        PREFERREDACTIVITIES -> ItemSelectionBtmSheetLayout()
-        LIFESTYLETARGETS -> ItemSelectionBtmSheetLayout()
+        CURRENTACTIVITIES -> {
+            when (val state = viewModel.stateHp.collectAsState().value) {
+                is HPropState.Empty -> {}
+                is HPropState.Error -> {}
+                is HPropState.Loading -> {}
+                is HPropState.NoInternet -> {}
+                is HPropState.Success -> {
+                    ItemSelectionBtmSheetLayout(cardList = state.properties)
+                }
+            }
+        }
+        PREFERREDACTIVITIES -> {
+            when (val state = viewModel.stateHp.collectAsState().value) {
+                is HPropState.Empty -> {}
+                is HPropState.Error -> {}
+                is HPropState.Loading -> {}
+                is HPropState.NoInternet -> {}
+                is HPropState.Success -> {
+                    ItemSelectionBtmSheetLayout(cardList = state.properties)
+                }
+            }
+        }
+        LIFESTYLETARGETS -> {
+            when (val state = viewModel.stateHp.collectAsState().value) {
+                is HPropState.Empty -> {}
+                is HPropState.Error -> {}
+                is HPropState.Loading -> {}
+                is HPropState.NoInternet -> {}
+                is HPropState.Success -> {
+                    ItemSelectionBtmSheetLayout(cardList = state.properties)
+                }
+            }
+        }
     }
 }

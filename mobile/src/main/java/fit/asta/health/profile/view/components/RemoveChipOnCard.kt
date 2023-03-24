@@ -14,11 +14,12 @@ import androidx.compose.ui.unit.dp
 fun RemoveChipOnCard(
     textOnChip: String,
     checkedState: (MutableState<Boolean>)? = null,
+    onClick: () -> Unit,
 ) {
 
     checkedState?.let {
         Chip(
-            onClick = { /*TODO*/ },
+            onClick = onClick,
             shape = RoundedCornerShape(32.dp),
             colors = ChipDefaults.chipColors(backgroundColor = Color(0x80D6D6D6)),
             enabled = it.value
@@ -43,10 +44,11 @@ fun RemoveChipOnCard(
 @Composable
 fun AddChipOnCard(
     textOnChip: String,
+    onClick: () -> Unit,
 ) {
 
     Chip(
-        onClick = { /*TODO*/ },
+        onClick = onClick,
         shape = RoundedCornerShape(32.dp),
         colors = ChipDefaults.chipColors(backgroundColor = Color(0x80D6D6D6)),
     ) {

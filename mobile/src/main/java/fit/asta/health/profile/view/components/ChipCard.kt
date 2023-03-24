@@ -70,7 +70,7 @@ fun ChipCard(
 
             FlowRow(mainAxisSpacing = 8.dp, crossAxisSpacing = 4.dp) {
                 list.forEach {
-                    RemoveChipOnCard(textOnChip = it.name, editState)
+                    RemoveChipOnCard(textOnChip = it.name, editState, onClick = {})
                 }
             }
         }

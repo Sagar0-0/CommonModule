@@ -1,5 +1,6 @@
 package fit.asta.health.profile.viewmodel
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -175,11 +176,10 @@ class ProfileViewModel
         _selectedFoodResOption.value = option
     }
 
-    var isSameItemRemovedAndAdded = false
+    private var isSameItemRemovedAndAdded = false
 
-    private val myArrayList = ArrayList<HealthProperties>()
+    private val myArrayList = mutableStateListOf<HealthProperties>()
     val list = MutableStateFlow(myArrayList)
-
 
     private fun addItemFrmHp(item: HealthProperties) {
 
@@ -203,8 +203,6 @@ class ProfileViewModel
             }
         }
 
-//        myArrayList.remove(item)
-//        setChanged()
     }
 
     val profileData = savedState.getStateFlow(PROFILE_DATA, UserProfile())
@@ -271,7 +269,7 @@ class ProfileViewModel
                         pregnancyWeek = pregnancyWeek.value.value,
                         weight = weight.value.value
                     ), health = Health(
-                        ailments = list.value
+
                     )
                 )
             )
