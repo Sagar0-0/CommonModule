@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package fit.asta.health.profile.view
 
 import androidx.compose.foundation.layout.*
@@ -11,6 +13,7 @@ import fit.asta.health.feedback.view.SubmitButton
 import fit.asta.health.profile.model.domain.Diet
 import fit.asta.health.profile.model.domain.UserPropertyType
 import fit.asta.health.profile.view.components.ChipCard
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 // Health Screen Layout
@@ -31,19 +34,23 @@ fun DietLayout(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ChipCard(icon = UserPropertyType.FoodAllergies.icon,
+        ChipCard(
+            icon = UserPropertyType.FoodAllergies.icon,
             title = UserPropertyType.FoodAllergies.title,
             list = diet.allergies,
             editState = editState,
-            onFoodAllergies)
+            onClick = onFoodAllergies
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ChipCard(icon = UserPropertyType.Cuisines.icon,
+        ChipCard(
+            icon = UserPropertyType.Cuisines.icon,
             title = UserPropertyType.Cuisines.title,
             list = diet.cuisines,
             editState = editState,
-            onCuisines)
+            onClick = onCuisines
+        )
 
         /*Spacer(modifier = Modifier.height(16.dp))
 
@@ -65,11 +72,13 @@ fun DietLayout(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ChipCard(icon = UserPropertyType.FoodRestrictions.icon,
+        ChipCard(
+            icon = UserPropertyType.FoodRestrictions.icon,
             title = UserPropertyType.FoodRestrictions.title,
             list = diet.foodRestrictions,
             editState = editState,
-            onFoodRes)
+            onClick = onFoodRes
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 

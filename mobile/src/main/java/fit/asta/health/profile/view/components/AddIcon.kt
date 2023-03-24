@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalCoroutinesApi::class)
-
 package fit.asta.health.profile.view.components
 
 import androidx.compose.foundation.layout.size
@@ -12,16 +10,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.common.ui.theme.customSize
-import fit.asta.health.profile.viewmodel.ProfileViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @Composable
 fun AddIcon(
-    viewModel: ProfileViewModel = hiltViewModel(),
     onClick: (() -> Unit)? = null,
 ) {
+
 
     onClick?.let {
         IconButton(
@@ -40,4 +35,8 @@ fun AddIcon(
             )
         }
     }
+
+
 }
+
+

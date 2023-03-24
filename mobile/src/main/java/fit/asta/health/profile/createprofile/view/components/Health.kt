@@ -1,4 +1,8 @@
-@file:OptIn(ExperimentalCoroutinesApi::class, ExperimentalCoroutinesApi::class)
+@file:OptIn(
+    ExperimentalCoroutinesApi::class,
+    ExperimentalCoroutinesApi::class,
+    ExperimentalCoroutinesApi::class
+)
 
 package fit.asta.health.profile.createprofile.view.components
 
@@ -69,6 +73,7 @@ fun HealthContent(
     val selectedMed by viewModel.selectedMedOption.collectAsStateWithLifecycle()
     val selectedHealthTar by viewModel.selectedHealthTarOption.collectAsStateWithLifecycle()
     val selectedInjury by viewModel.selectedInjOption.collectAsStateWithLifecycle()
+    val healthHisList by viewModel.list.collectAsStateWithLifecycle()
 
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
@@ -86,7 +91,7 @@ fun HealthContent(
 
             SelectionCardCreateProfile(
                 cardType = "Any Significant Health history?",
-                cardList = healthHistoryList,
+                cardList = healthHisList,
                 radioButtonList = radioButtonList,
                 checkedState = checkedState,
                 onItemsSelect = onHealthHistory,
@@ -117,7 +122,7 @@ fun HealthContent(
 
             SelectionCardCreateProfile(
                 cardType = "Any Ailments?",
-                cardList = healthHistoryList,
+                cardList = healthHisList,
                 radioButtonList = radioButtonList,
                 checkedState = checkedState,
                 onItemsSelect = onAilments,
@@ -132,7 +137,7 @@ fun HealthContent(
 
             SelectionCardCreateProfile(
                 cardType = "Any Medications?",
-                cardList = healthHistoryList,
+                cardList = healthHisList,
                 radioButtonList = radioButtonList,
                 checkedState = checkedState,
                 onItemsSelect = onMedications,
@@ -147,7 +152,7 @@ fun HealthContent(
 
             SelectionCardCreateProfile(
                 cardType = "Any Health Targets?",
-                cardList = healthHistoryList,
+                cardList = healthHisList,
                 radioButtonList = radioButtonList,
                 checkedState = checkedState,
                 onItemsSelect = onHealthTargets,
@@ -345,6 +350,7 @@ fun HealthCreateBtmSheetLayout(
 
 @Composable
 fun InjuriesLayout(
+    viewModel: ProfileViewModel = hiltViewModel(),
     cardType: String,
     cardType2: String,
     cardList: List<String>,

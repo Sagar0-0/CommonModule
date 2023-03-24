@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package fit.asta.health.profile.view
 
 import androidx.compose.foundation.layout.*
@@ -11,6 +13,7 @@ import fit.asta.health.feedback.view.SubmitButton
 import fit.asta.health.profile.model.domain.Health
 import fit.asta.health.profile.model.domain.UserPropertyType
 import fit.asta.health.profile.view.components.ChipCard
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 @Composable
@@ -48,19 +51,23 @@ fun HealthLayout(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ChipCard(icon = UserPropertyType.Medications.icon,
+        ChipCard(
+            icon = UserPropertyType.Medications.icon,
             title = UserPropertyType.Medications.title,
             list = health.medications,
             editState = editState,
-            onMedications)
+            onClick = onMedications
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ChipCard(icon = UserPropertyType.HealthTargets.icon,
+        ChipCard(
+            icon = UserPropertyType.HealthTargets.icon,
             title = UserPropertyType.HealthTargets.title,
             list = health.targets,
             editState = editState,
-            onHealthTargets)
+            onClick = onHealthTargets
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
         Row(Modifier.fillMaxWidth()) {

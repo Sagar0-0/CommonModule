@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalCoroutinesApi::class)
+@file:OptIn(ExperimentalCoroutinesApi::class, ExperimentalCoroutinesApi::class)
 
 package fit.asta.health.profile.createprofile.view.components
 
@@ -48,6 +48,7 @@ fun DietContent(
     val healthHistoryList = listOf("Diabetes", "Heart Disease", "Stroke", "Depression")
 
     val selectedFoodRes by viewModel.selectedFoodResOption.collectAsStateWithLifecycle()
+    val list by viewModel.list.collectAsStateWithLifecycle()
 
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
@@ -98,7 +99,7 @@ fun DietContent(
 
             SelectionCardCreateProfile(
                 cardType = "Food Restrictions?",
-                cardList = healthHistoryList,
+                cardList = list,
                 radioButtonList = radioButtonList,
                 checkedState = checkedState,
                 onItemsSelect = onFoodRes,

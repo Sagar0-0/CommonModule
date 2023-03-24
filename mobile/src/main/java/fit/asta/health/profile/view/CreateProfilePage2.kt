@@ -1,6 +1,7 @@
 @file:OptIn(
     ExperimentalCoroutinesApi::class,
     ExperimentalCoroutinesApi::class,
+    ExperimentalCoroutinesApi::class, ExperimentalCoroutinesApi::class,
     ExperimentalCoroutinesApi::class
 )
 
@@ -21,17 +22,19 @@ import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.profile.model.domain.HealthProperties
 import fit.asta.health.profile.model.domain.TwoToggleSelections
 import fit.asta.health.profile.view.components.AddIcon
 import fit.asta.health.profile.view.components.RemoveChipOnCard
 import fit.asta.health.profile.viewmodel.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun SelectionCardCreateProfile(
     viewModel: ProfileViewModel = hiltViewModel(),
     cardType: String,
-    cardList: List<String>,
+    cardList: ArrayList<HealthProperties>,
     radioButtonList: List<ButtonListTypes>,
     checkedState: MutableState<Boolean>? = null,
     onItemsSelect: () -> Unit,
@@ -79,7 +82,6 @@ fun SelectionCardCreateProfile(
             }
 
 
-
             TwoTogglesGroup(
                 selectionTypeText = null,
                 selectedOption = selectedOption,
@@ -94,7 +96,7 @@ fun SelectionCardCreateProfile(
                     modifier = Modifier.padding(start = spacing.medium),
                 ) {
                     cardList.forEach {
-                        RemoveChipOnCard(textOnChip = it, checkedState = checkedState)
+                        RemoveChipOnCard(textOnChip = it.name, checkedState = checkedState)
                     }
                 }
 

@@ -13,12 +13,10 @@ import fit.asta.health.profile.viewmodel.ProfileConstants.BODY_TYPE
 import fit.asta.health.profile.viewmodel.ProfileConstants.DOB
 import fit.asta.health.profile.viewmodel.ProfileConstants.EMAIL
 import fit.asta.health.profile.viewmodel.ProfileConstants.HEIGHT
-import fit.asta.health.profile.viewmodel.ProfileConstants.IS_PREGNANT
 import fit.asta.health.profile.viewmodel.ProfileConstants.NAME
 import fit.asta.health.profile.viewmodel.ProfileConstants.PREGNANCY_WEEK
 import fit.asta.health.profile.viewmodel.ProfileConstants.PROFILE_DATA
 import fit.asta.health.profile.viewmodel.ProfileConstants.USER_IMG
-import fit.asta.health.profile.viewmodel.ProfileConstants.USER_SELECTION
 import fit.asta.health.profile.viewmodel.ProfileConstants.WEIGHT
 import fit.asta.health.testimonials.model.domain.InputIntWrapper
 import fit.asta.health.testimonials.model.domain.InputWrapper
@@ -177,29 +175,36 @@ class ProfileViewModel
         _selectedFoodResOption.value = option
     }
 
+    var isSameItemRemovedAndAdded = false
+
     private val myArrayList = ArrayList<HealthProperties>()
-    val list: ArrayList<HealthProperties>
-        get() = myArrayList
+    val list = MutableStateFlow(myArrayList)
 
-    var isDataChanged = false
-        private set
 
-    private fun setChanged() {
-        isDataChanged = true
+    private fun addItemFrmHp(item: HealthProperties) {
+
+        if (!myArrayList.contains(item)) {
+            if (myArrayList.contains(item) && isSameItemRemovedAndAdded) {
+                isSameItemRemovedAndAdded = false
+            } else {
+                myArrayList.add(item)
+            }
+        }
+
     }
 
-    fun validateDataChanged() {
-        setChanged()
-    }
+    private fun removeItemFrmHp(item: HealthProperties) {
 
-    fun addItem(item: HealthProperties) {
-        myArrayList.add(item)
-        setChanged()
-    }
+        if (myArrayList.contains(item)) {
+            if (myArrayList.contains(item) && !isSameItemRemovedAndAdded) {
+                isSameItemRemovedAndAdded = true
+            } else {
+                myArrayList.remove(item)
+            }
+        }
 
-    fun removeItem(item: HealthProperties) {
-        myArrayList.remove(item)
-        setChanged()
+//        myArrayList.remove(item)
+//        setChanged()
     }
 
     val profileData = savedState.getStateFlow(PROFILE_DATA, UserProfile())
@@ -219,10 +224,6 @@ class ProfileViewModel
     val pregnancyWeek = savedState.getStateFlow(PREGNANCY_WEEK, InputIntWrapper())
     val bodyType = savedState.getStateFlow(BODY_TYPE, InputIntWrapper())
 
-    //Health/LifeStyle/Diet Selection
-    val gender = savedState.getStateFlow(ProfileConstants.GENDER, initialValue = null)
-    val userSelection = savedState.getStateFlow(USER_SELECTION, initialValue = null)
-    val isPregnant = savedState.getStateFlow(IS_PREGNANT, initialValue = null)
 
     init {
 
@@ -270,7 +271,7 @@ class ProfileViewModel
                         pregnancyWeek = pregnancyWeek.value.value,
                         weight = weight.value.value
                     ), health = Health(
-                        ailments = list
+                        ailments = list.value
                     )
                 )
             )
@@ -330,8 +331,11 @@ class ProfileViewModel
             is ProfileEvent.SetSelectedWorkingEnvOption -> setSelectedWorkingEnvOption(event.option)
             is ProfileEvent.SetSelectedWorkingHrsOption -> setSelectedWorkingHrsOption(event.option)
             is ProfileEvent.SetSelectedWorkingStyleOption -> setSelectedWorkingStyleOption(event.option)
+            is ProfileEvent.SetSelectedAddItemOption -> addItemFrmHp(event.item)
+            is ProfileEvent.SetSelectedRemoveItemOption -> removeItemFrmHp(event.item)
         }
     }
+
 
 }
 
