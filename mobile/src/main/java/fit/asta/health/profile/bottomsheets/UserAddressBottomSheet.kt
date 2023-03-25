@@ -23,9 +23,11 @@ import fit.asta.health.profile.bottomsheets.components.UserAddressBottomSheetLay
 @Composable
 fun UserAddressBottomSheet() {
 
-    val textFieldList = listOf(TextFieldListData(placeHolderText = "Address"),
-        TextFieldListData(placeHolderText = "Flat No and Building Name "),
-        TextFieldListData(placeHolderText = "Landmark(Optional)"))
+    val textFieldList = listOf(
+        TextFieldListData(placeHolderText = "Address"),
+        TextFieldListData(placeHolderText = "Flat Second and Building Name "),
+        TextFieldListData(placeHolderText = "Landmark(Optional)")
+    )
 
     val buttonTypeList = listOf(
         ButtonListTypes(buttonType = "Home"),

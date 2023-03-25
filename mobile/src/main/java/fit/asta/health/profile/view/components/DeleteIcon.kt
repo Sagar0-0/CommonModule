@@ -2,6 +2,7 @@ package fit.asta.health.profile.view.components
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.RemoveCircle
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -16,5 +17,15 @@ fun DeleteIcon() {
         contentDescription = null,
         Modifier.size(20.dp),
         tint = MaterialTheme.colorScheme.error
+    )
+}
+
+@Composable
+fun OnlyAddIcon() {
+    Icon(
+        imageVector = Icons.Filled.AddCircle,
+        contentDescription = null,
+        Modifier.size(20.dp),
+        tint = MaterialTheme.colorScheme.primary
     )
 }

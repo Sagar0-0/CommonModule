@@ -34,12 +34,11 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.profile.viewmodel.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateProfileLayout(viewModel: ProfileViewModel) {
+fun CreateProfileLayout() {
 
     /* TODO Paddings, Font, Elevations (4dp and 6dp), BottomSheets, Colors */
 
@@ -163,8 +162,7 @@ fun CreateProfileLayout(viewModel: ProfileViewModel) {
                     }, onSkipEvent = {
                         currentStep += 1
                         isSkipPressed = true
-                    }, viewModel = viewModel
-                    )
+                    })
                 }
                 4 -> {
                     LifeStyleCreateScreen(

@@ -22,4 +22,5 @@ interface ProfileApiService {
 
     @GET("health/property/get/all/?")
     suspend fun getHealthProperties(@Query("property") propertyType: String): NetHealthPropertiesRes
+
 }

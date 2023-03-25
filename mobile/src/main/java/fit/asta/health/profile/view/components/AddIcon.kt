@@ -13,13 +13,19 @@ import androidx.compose.ui.graphics.Color
 import fit.asta.health.common.ui.theme.customSize
 
 @Composable
-fun AddIcon(onClick: (() -> Unit)? = null) {
+fun AddIcon(
+    onClick: (() -> Unit)? = null,
+) {
+
 
     onClick?.let {
         IconButton(
             onClick = it,
             Modifier.size(customSize.extraMedium),
-            colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.primary)
+            colors = IconButtonDefaults.iconButtonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                disabledContainerColor = MaterialTheme.colorScheme.onTertiaryContainer
+            ),
         ) {
             Icon(
                 imageVector = Icons.Filled.Add,
@@ -30,4 +36,7 @@ fun AddIcon(onClick: (() -> Unit)? = null) {
         }
     }
 
+
 }
+
+

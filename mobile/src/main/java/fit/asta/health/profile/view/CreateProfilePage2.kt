@@ -1,3 +1,11 @@
+@file:OptIn(
+    ExperimentalCoroutinesApi::class,
+    ExperimentalCoroutinesApi::class,
+    ExperimentalCoroutinesApi::class,
+    ExperimentalCoroutinesApi::class,
+    ExperimentalCoroutinesApi::class
+)
+
 package fit.asta.health.profile.view
 
 import androidx.compose.foundation.layout.*
@@ -7,29 +15,36 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowRow
-import fit.asta.health.profile.view.components.AddIcon
-import fit.asta.health.profile.view.components.ChipsOnCards
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.profile.model.domain.HealthProperties
+import fit.asta.health.profile.model.domain.TwoToggleSelections
+import fit.asta.health.profile.view.components.AddIcon
+import fit.asta.health.profile.view.components.RemoveChipOnCard
+import fit.asta.health.profile.viewmodel.ProfileEvent
+import fit.asta.health.profile.viewmodel.ProfileViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun SelectionCardCreateProfile(
+    viewModel: ProfileViewModel = hiltViewModel(),
     cardType: String,
-    cardList: List<String>,
+    cardList: SnapshotStateList<HealthProperties>,
     radioButtonList: List<ButtonListTypes>,
-    checkedState: (MutableState<Boolean>)? = null,
+    checkedState: MutableState<Boolean>? = null,
     onItemsSelect: () -> Unit,
+    selectedOption: TwoToggleSelections?,
+    onStateChange: (TwoToggleSelections) -> Unit,
+    enabled: Boolean?,
 ) {
-
-
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf("") }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -43,6 +58,7 @@ fun SelectionCardCreateProfile(
         ) {
 
             Spacer(modifier = Modifier.height(spacing.small))
+
 
             Row(
                 Modifier
@@ -62,28 +78,34 @@ fun SelectionCardCreateProfile(
                     )
                 }
 
-                AddIcon(onClick = onItemsSelect)
+                if (selectedOption == TwoToggleSelections.First) {
+                    AddIcon(onClick = onItemsSelect)
+                }
 
             }
 
-            MultiToggleLayout(
+
+            TwoTogglesGroup(
                 selectionTypeText = null,
-                radioButtonList = radioButtonList,
                 selectedOption = selectedOption,
-                onOptionSelected = onOptionSelected
+                onStateChange = onStateChange
             )
 
-            if (selectedOption == radioButtonList[0].buttonType) {
+
+            if (selectedOption == TwoToggleSelections.First) {
 
                 FlowRow(
                     mainAxisSpacing = spacing.minSmall,
                     modifier = Modifier.padding(start = spacing.medium),
                 ) {
                     cardList.forEach {
-                        ChipsOnCards(textOnChip = it, checkedState = checkedState)
+                        RemoveChipOnCard(textOnChip = it.name,
+                            checkedState = checkedState,
+                            onClick = {
+                                viewModel.onEvent(ProfileEvent.SetSelectedRemoveItemOption(it))
+                            })
                     }
                 }
-
 
             }
             Spacer(modifier = Modifier.height(spacing.small))
@@ -93,8 +115,9 @@ fun SelectionCardCreateProfile(
 
 @Composable
 fun OnlyChipSelectionCard(
+    viewModel: ProfileViewModel = hiltViewModel(),
     cardType: String,
-    cardList: List<String>,
+    cardList: SnapshotStateList<HealthProperties>,
     checkedState: (MutableState<Boolean>)? = null,
     onItemsSelect: () -> Unit,
 ) {
@@ -139,7 +162,9 @@ fun OnlyChipSelectionCard(
                 modifier = Modifier.padding(start = spacing.medium),
             ) {
                 cardList.forEach {
-                    ChipsOnCards(textOnChip = it, checkedState = checkedState)
+                    RemoveChipOnCard(textOnChip = it.name, checkedState = checkedState, onClick = {
+                        viewModel.onEvent(ProfileEvent.SetSelectedRemoveItemOption(item = it))
+                    })
                 }
             }
 

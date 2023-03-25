@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package fit.asta.health.profile.createprofile.view.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -22,22 +24,28 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import fit.asta.health.R
-import fit.asta.health.common.ui.components.NextButton
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import fit.asta.health.common.ui.components.PrimaryButton
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiString
 import fit.asta.health.profile.bottomsheets.components.BodyTypeBottomSheetLayout
-import fit.asta.health.profile.bottomsheets.components.BodyTypes
-import fit.asta.health.profile.view.ButtonListTypes
-import fit.asta.health.profile.view.MultiToggleLayout
+import fit.asta.health.profile.model.domain.ThreeToggleSelections
+import fit.asta.health.profile.model.domain.TwoToggleSelections
+import fit.asta.health.profile.view.ThreeTogglesGroups
+import fit.asta.health.profile.view.TwoTogglesGroup
+import fit.asta.health.profile.viewmodel.ProfileEvent
+import fit.asta.health.profile.viewmodel.ProfileViewModel
 import fit.asta.health.testimonials.view.components.ValidateNumberField
 import fit.asta.health.testimonials.view.components.ValidatedTextField
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PhysiqueContent(
+    viewModel: ProfileViewModel = hiltViewModel(),
     eventPrevious: (() -> Unit)? = null,
     eventNext: (() -> Unit)? = null,
     onSkipEvent: (Int) -> Unit,
@@ -45,28 +53,8 @@ fun PhysiqueContent(
 
     val placeHolderDOB = listOf("DAY", "MONTH", "YEAR")
 
-    val buttonTypeList = listOf(
-        ButtonListTypes(buttonType = "Female"),
-        ButtonListTypes(buttonType = "Male"),
-        ButtonListTypes(buttonType = "Others")
-    )
-
-    val isPregnantList =
-        listOf(ButtonListTypes(buttonType = "Yes"), ButtonListTypes(buttonType = "No"))
-
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf("") }
-    val (isPregnantSelectedOption, onPregnantOptionSelected) = remember {
-        mutableStateOf(
-            ""
-        )
-    }
-
-    val bodyTypeList = mutableListOf(
-        BodyTypes(bodyTypeImg = R.drawable.underweight, bodyTypeTitle = "Under Weight"),
-        BodyTypes(bodyTypeImg = R.drawable.normal, bodyTypeTitle = "Normal"),
-        BodyTypes(bodyTypeImg = R.drawable.overweight, bodyTypeTitle = "Over Weight"),
-        BodyTypes(bodyTypeImg = R.drawable.obese, bodyTypeTitle = "Obese")
-    )
+    val selectedIsPregnantOption by viewModel.selectedIsPregnant.collectAsStateWithLifecycle()
+    val selectedGenderOption by viewModel.selectedGender.collectAsStateWithLifecycle()
 
     var text by remember { mutableStateOf(("")) }
     val focusManager = LocalFocusManager.current
@@ -215,20 +203,21 @@ fun PhysiqueContent(
                     elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
                 ) {
 
-                    MultiToggleLayout("Gender", buttonTypeList, selectedOption, onOptionSelected)
+                    ThreeTogglesGroups(selectionTypeText = "Gender",
+                        selectedOption = selectedGenderOption,
+                        onStateChange = { state ->
+                            viewModel.onEvent(ProfileEvent.SetSelectedGenderOption(state))
+                        })
 
-                    if (selectedOption == buttonTypeList[0].buttonType) {
+                    if (selectedGenderOption == ThreeToggleSelections.Second) {
 
-                        MultiToggleLayout(
-                            selectionTypeText = "Are you Pregnant",
-                            radioButtonList = isPregnantList,
-                            selectedOption = isPregnantSelectedOption,
-                            onOptionSelected = onPregnantOptionSelected
-                        )
+                        TwoTogglesGroup(selectionTypeText = "Are you Pregnant",
+                            selectedOption = selectedIsPregnantOption,
+                            onStateChange = { state ->
+                                viewModel.onEvent(ProfileEvent.SetSelectedIsPregnantOption(state))
+                            })
 
-                        if (isPregnantSelectedOption == isPregnantList[0].buttonType) {
-
-                            Spacer(modifier = Modifier.height(spacing.medium))
+                        if (selectedIsPregnantOption == TwoToggleSelections.First) {
 
                             Row(
                                 modifier = Modifier
@@ -297,9 +286,11 @@ fun CreateProfileButtons(
 ) {
 
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(spacing.small)) {
-        NextButton(text = "Previous", modifier = Modifier.fillMaxWidth(0.5f), event = eventPrevious)
+        PrimaryButton(
+            text = "Previous", modifier = Modifier.fillMaxWidth(0.5f), event = eventPrevious
+        )
         if (text != null) {
-            NextButton(text = text, modifier = Modifier.fillMaxWidth(1f), event = eventNext)
+            PrimaryButton(text = text, modifier = Modifier.fillMaxWidth(1f), event = eventNext)
         }
     }
 

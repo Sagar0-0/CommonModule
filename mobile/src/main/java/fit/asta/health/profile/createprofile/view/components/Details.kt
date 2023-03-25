@@ -20,7 +20,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.input.ImeAction
-import fit.asta.health.common.ui.components.NextButton
+import fit.asta.health.common.ui.components.PrimaryButton
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiString
 import fit.asta.health.profile.view.PrivacyStatement
@@ -110,7 +110,7 @@ fun DetailsContent(
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            NextButton(text = "Next", modifier = Modifier.fillMaxWidth(), event = eventNext)
+            PrimaryButton(text = "Next", modifier = Modifier.fillMaxWidth(), event = eventNext)
 
             Spacer(modifier = Modifier.height(spacing.small))
 

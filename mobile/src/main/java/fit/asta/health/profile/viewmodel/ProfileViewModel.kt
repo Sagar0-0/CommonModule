@@ -1,5 +1,6 @@
 package fit.asta.health.profile.viewmodel
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,18 +14,17 @@ import fit.asta.health.profile.viewmodel.ProfileConstants.BODY_TYPE
 import fit.asta.health.profile.viewmodel.ProfileConstants.DOB
 import fit.asta.health.profile.viewmodel.ProfileConstants.EMAIL
 import fit.asta.health.profile.viewmodel.ProfileConstants.HEIGHT
-import fit.asta.health.profile.viewmodel.ProfileConstants.IS_PREGNANT
 import fit.asta.health.profile.viewmodel.ProfileConstants.NAME
 import fit.asta.health.profile.viewmodel.ProfileConstants.PREGNANCY_WEEK
 import fit.asta.health.profile.viewmodel.ProfileConstants.PROFILE_DATA
 import fit.asta.health.profile.viewmodel.ProfileConstants.USER_IMG
-import fit.asta.health.profile.viewmodel.ProfileConstants.USER_SELECTION
 import fit.asta.health.profile.viewmodel.ProfileConstants.WEIGHT
 import fit.asta.health.testimonials.model.domain.InputIntWrapper
 import fit.asta.health.testimonials.model.domain.InputWrapper
 import fit.asta.health.testimonials.model.domain.Media
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
@@ -50,29 +50,159 @@ class ProfileViewModel
     private val mutableState = MutableStateFlow<ProfileState>(ProfileState.Loading)
     val state = mutableState.asStateFlow()
 
-    private val myArrayList = ArrayList<HealthProperties>()
-    val list: ArrayList<HealthProperties>
-        get() = myArrayList
+    // Any Significant Health History
+    private val _selectedHealthHisOption =
+        MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
+    val selectedHealthHisOption: StateFlow<TwoToggleSelections?>
+        get() = _selectedHealthHisOption
 
-    var isDataChanged = false
-        private set
+    //Any Injury
+    private val _selectedInjOption =
+        MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
+    val selectedInjOption: StateFlow<TwoToggleSelections?>
+        get() = _selectedInjOption
 
-    private fun setChanged() {
-        isDataChanged = true
+    //Body Part
+    private val _selectedBodyPartOption =
+        MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
+    val selectedBdyPartOption: StateFlow<TwoToggleSelections?>
+        get() = _selectedBodyPartOption
+
+    //Any Ailments
+    private val _selectedAilOption =
+        MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
+    val selectedAilOption: StateFlow<TwoToggleSelections?>
+        get() = _selectedAilOption
+
+    //Any Medications
+    private val _selectedMedOption =
+        MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
+    val selectedMedOption: StateFlow<TwoToggleSelections?>
+        get() = _selectedMedOption
+
+    //Any Health Target
+    private val _selectedHealthTarOption =
+        MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
+    val selectedHealthTarOption: StateFlow<TwoToggleSelections?>
+        get() = _selectedHealthTarOption
+
+    //Food Res
+    private val _selectedFoodResOption =
+        MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
+    val selectedFoodResOption: StateFlow<TwoToggleSelections?>
+        get() = _selectedFoodResOption
+
+
+    //Is Pregnant
+    private val _isPregnantOption =
+        MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
+    val selectedIsPregnant: StateFlow<TwoToggleSelections?>
+        get() = _isPregnantOption
+
+    //Gender
+    private val _selectedGenderOption = MutableStateFlow<ThreeToggleSelections?>(null)
+    val selectedGender: StateFlow<ThreeToggleSelections?>
+        get() = _selectedGenderOption
+
+    //Physically Active
+    private val _selectedPhyActOption = MutableStateFlow<ThreeToggleSelections?>(null)
+    val selectedPhyAct: StateFlow<ThreeToggleSelections?>
+        get() = _selectedPhyActOption
+
+    //Working Hours
+    private val _selectedWorkingHrsOption = MutableStateFlow<ThreeToggleSelections?>(null)
+    val selectedWorkingHrs: StateFlow<ThreeToggleSelections?>
+        get() = _selectedWorkingHrsOption
+
+    //Working Env
+    private val _selectedWorkingEnvOption = MutableStateFlow<TwoToggleSelections?>(null)
+    val selectedWorkingEnv: StateFlow<TwoToggleSelections?>
+        get() = _selectedWorkingEnvOption
+
+    //Working Style
+    private val _selectedWorkStyleOption = MutableStateFlow<TwoToggleSelections?>(null)
+    val selectedWorkStyle: StateFlow<TwoToggleSelections?>
+        get() = _selectedWorkStyleOption
+
+    private fun setSelectedPhysicalActiveOption(option: ThreeToggleSelections) {
+        _selectedPhyActOption.value = option
     }
 
-    fun validateDataChanged() {
-        setChanged()
+    private fun setSelectedWorkingHrsOption(option: ThreeToggleSelections) {
+        _selectedWorkingHrsOption.value = option
     }
 
-    fun addItem(item: HealthProperties) {
-        myArrayList.add(item)
-        setChanged()
+    private fun setSelectedWorkingEnvOption(option: TwoToggleSelections) {
+        _selectedWorkingEnvOption.value = option
     }
 
-    fun removeItem(item: HealthProperties) {
-        myArrayList.remove(item)
-        setChanged()
+    private fun setSelectedWorkingStyleOption(option: TwoToggleSelections) {
+        _selectedWorkStyleOption.value = option
+    }
+
+    private fun setSelectedHealthHisOption(option: TwoToggleSelections) {
+        _selectedHealthHisOption.value = option
+    }
+
+    private fun setSelectedGenderOption(option: ThreeToggleSelections) {
+        _selectedGenderOption.value = option
+    }
+
+    private fun setSelectedIsPregnantOption(option: TwoToggleSelections) {
+        _isPregnantOption.value = option
+    }
+
+    private fun setSelectedInjOption(option: TwoToggleSelections) {
+        _selectedInjOption.value = option
+    }
+
+    private fun setSelectedBodyPrtOption(option: TwoToggleSelections) {
+        _selectedBodyPartOption.value = option
+    }
+
+    private fun setSelectedAilOption(option: TwoToggleSelections) {
+        _selectedAilOption.value = option
+    }
+
+    private fun setSelectedMedOption(option: TwoToggleSelections) {
+        _selectedMedOption.value = option
+    }
+
+    private fun setSelectedHealthTarOption(option: TwoToggleSelections) {
+        _selectedHealthTarOption.value = option
+    }
+
+    private fun setSelectedFoodResOption(option: TwoToggleSelections) {
+        _selectedFoodResOption.value = option
+    }
+
+    private var isSameItemRemovedAndAdded = false
+
+    private val myArrayList = mutableStateListOf<HealthProperties>()
+    val list = MutableStateFlow(myArrayList)
+
+    private fun addItemFrmHp(item: HealthProperties) {
+
+        if (!myArrayList.contains(item)) {
+            if (myArrayList.contains(item) && isSameItemRemovedAndAdded) {
+                isSameItemRemovedAndAdded = false
+            } else {
+                myArrayList.add(item)
+            }
+        }
+
+    }
+
+    private fun removeItemFrmHp(item: HealthProperties) {
+
+        if (myArrayList.contains(item)) {
+            if (myArrayList.contains(item) && !isSameItemRemovedAndAdded) {
+                isSameItemRemovedAndAdded = true
+            } else {
+                myArrayList.remove(item)
+            }
+        }
+
     }
 
     val profileData = savedState.getStateFlow(PROFILE_DATA, UserProfile())
@@ -92,10 +222,6 @@ class ProfileViewModel
     val pregnancyWeek = savedState.getStateFlow(PREGNANCY_WEEK, InputIntWrapper())
     val bodyType = savedState.getStateFlow(BODY_TYPE, InputIntWrapper())
 
-    //Health/LifeStyle/Diet Selection
-    val gender = savedState.getStateFlow(ProfileConstants.GENDER, initialValue = null)
-    val userSelection = savedState.getStateFlow(USER_SELECTION, initialValue = null)
-    val isPregnant = savedState.getStateFlow(IS_PREGNANT, initialValue = null)
 
     init {
 
@@ -143,7 +269,7 @@ class ProfileViewModel
                         pregnancyWeek = pregnancyWeek.value.value,
                         weight = weight.value.value
                     ), health = Health(
-                        ailments = list
+
                     )
                 )
             )
@@ -190,9 +316,25 @@ class ProfileViewModel
 
         when (event) {
             is ProfileEvent.GetHealthProperties -> getHealthProperties(propertyType = event.propertyType)
+            is ProfileEvent.SetSelectHealthHisOption -> setSelectedHealthHisOption(option = event.option)
+            is ProfileEvent.SetSelectedAilOption -> setSelectedAilOption(event.option)
+            is ProfileEvent.SetSelectedBodyPrtOption -> setSelectedBodyPrtOption(event.option)
+            is ProfileEvent.SetSelectedFoodResOption -> setSelectedFoodResOption(event.option)
+            is ProfileEvent.SetSelectedHealthTarOption -> setSelectedHealthTarOption(event.option)
+            is ProfileEvent.SetSelectedInjOption -> setSelectedInjOption(event.option)
+            is ProfileEvent.SetSelectedMedOption -> setSelectedMedOption(event.option)
+            is ProfileEvent.SetSelectedIsPregnantOption -> setSelectedIsPregnantOption(event.option)
+            is ProfileEvent.SetSelectedGenderOption -> setSelectedGenderOption(event.option)
+            is ProfileEvent.SetSelectedPhyActOption -> setSelectedPhysicalActiveOption(event.option)
+            is ProfileEvent.SetSelectedWorkingEnvOption -> setSelectedWorkingEnvOption(event.option)
+            is ProfileEvent.SetSelectedWorkingHrsOption -> setSelectedWorkingHrsOption(event.option)
+            is ProfileEvent.SetSelectedWorkingStyleOption -> setSelectedWorkingStyleOption(event.option)
+            is ProfileEvent.SetSelectedAddItemOption -> addItemFrmHp(event.item)
+            is ProfileEvent.SetSelectedRemoveItemOption -> removeItemFrmHp(event.item)
         }
-
     }
+
 
 }
 
+// viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "injury"))

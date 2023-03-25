@@ -11,14 +11,15 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ChipsOnCards(
+fun RemoveChipOnCard(
     textOnChip: String,
     checkedState: (MutableState<Boolean>)? = null,
+    onClick: () -> Unit,
 ) {
 
     checkedState?.let {
         Chip(
-            onClick = { /*TODO*/ },
+            onClick = onClick,
             shape = RoundedCornerShape(32.dp),
             colors = ChipDefaults.chipColors(backgroundColor = Color(0x80D6D6D6)),
             enabled = it.value
@@ -29,7 +30,6 @@ fun ChipsOnCards(
                 color = Color(0x99000000)
             )
 
-
             if (checkedState.value) {
                 Spacer(modifier = Modifier.width(4.dp))
                 DeleteIcon()
@@ -37,4 +37,31 @@ fun ChipsOnCards(
 
         }
     }
+}
+
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun AddChipOnCard(
+    textOnChip: String,
+    onClick: () -> Unit,
+) {
+
+    Chip(
+        onClick = onClick,
+        shape = RoundedCornerShape(32.dp),
+        colors = ChipDefaults.chipColors(backgroundColor = Color(0x80D6D6D6)),
+    ) {
+        Text(
+            text = textOnChip,
+            style = androidx.compose.material3.MaterialTheme.typography.labelSmall,
+            color = Color(0x99000000)
+        )
+
+        Spacer(modifier = Modifier.width(4.dp))
+
+        OnlyAddIcon()
+
+    }
+
 }

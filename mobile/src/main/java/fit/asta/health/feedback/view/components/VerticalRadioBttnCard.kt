@@ -26,7 +26,7 @@ import fit.asta.health.testimonials.view.create.MyTextField
 fun VerticalRadioBttnCard() {
 
     val isConsentList =
-        listOf(ButtonListTypes(buttonType = "Yes"), ButtonListTypes(buttonType = "No"))
+        listOf(ButtonListTypes(buttonType = "First"), ButtonListTypes(buttonType = "Second"))
 
 
     VerticalRadioButton(selectionTypeText = "Will you Recommend our App?",

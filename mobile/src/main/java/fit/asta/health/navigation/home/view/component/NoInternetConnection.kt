@@ -86,7 +86,7 @@ private fun NoInternetScreen(openFullDialogCustom: MutableState<Boolean>, onTryA
 
                 //.........................Text : description
                 Text(
-                    text = "No Internet connection was found. Check your connection or try again.",
+                    text = "Second Internet connection was found. Check your connection or try again.",
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(top = 10.dp, start = 25.dp, end = 25.dp)

@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package fit.asta.health.profile.view
 
 import androidx.compose.foundation.layout.*
@@ -13,6 +15,7 @@ import fit.asta.health.profile.model.domain.UserPropertyType
 import fit.asta.health.profile.view.components.ChipCard
 import fit.asta.health.profile.view.components.SessionCard
 import fit.asta.health.profile.view.components.SingleSelectionCard
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 // Health Screen Layout
@@ -71,19 +74,23 @@ fun LifeStyleLayout(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ChipCard(icon = UserPropertyType.CurActivities.icon,
+        ChipCard(
+            icon = UserPropertyType.CurActivities.icon,
             title = UserPropertyType.CurActivities.title,
             list = lifeStyle.curActivities,
             editState = editState,
-            onCurrentActive)
+            onClick = onCurrentActive
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ChipCard(icon = UserPropertyType.PrefActivities.icon,
+        ChipCard(
+            icon = UserPropertyType.PrefActivities.icon,
             title = UserPropertyType.PrefActivities.title,
             list = lifeStyle.prefActivities,
             editState = editState,
-            onPreferredActivity)
+            onClick = onPreferredActivity
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -92,7 +99,7 @@ fun LifeStyleLayout(
             title = UserPropertyType.LifeStyleTargets.title,
             list = lifeStyle.lifeStyleTargets,
             editState = editState,
-            onLifeStyleTargets
+            onClick = onLifeStyleTargets
         )
 
         Spacer(modifier = Modifier.height(16.dp))

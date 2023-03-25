@@ -27,20 +27,23 @@ fun PhysiqueLayout(
     onPregnancyWeek: () -> Unit,
     onBodyType: () -> Unit,
 ) {
-    Column(Modifier
-        .fillMaxWidth()
-        .padding(vertical = 16.dp, horizontal = 16.dp)
-        .verticalScroll(rememberScrollState())
-        .background(color = Color.White)) {
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp, horizontal = 16.dp)
+            .verticalScroll(rememberScrollState())
+            .background(color = Color.White)) {
 
-        if (m.gender == "Female") FemaleLayout(m,
+        if (m.gender == "Second") FemaleLayout(
+            m,
             checkedState,
             onAge,
             onGender,
             onHeight,
             onWeight,
             onBMI,
-            onPregnancyWeek) else MaleLayout(
+            onPregnancyWeek
+        ) else MaleLayout(
             m,
             checkedState,
             onAge,
