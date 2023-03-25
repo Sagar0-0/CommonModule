@@ -18,14 +18,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
+import fit.asta.health.common.ui.theme.imageHeight
+import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.testimonials.view.components.ClearTstMedia
 import fit.asta.health.testimonials.view.components.UploadTstMediaView
 import fit.asta.health.testimonials.viewmodel.create.MediaType
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
 import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
-import fit.asta.health.common.ui.theme.imageHeight
-import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.common.utils.getImageUrl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -61,7 +61,8 @@ fun ImageLayout(
 
                 Box(modifier = Modifier.fillMaxWidth(0.5f)) {
                     if (imgBefore.url.isEmpty() && imgBefore.localUrl == null) {
-                        UploadTstMediaView(title = imgBefore.title,
+                        UploadTstMediaView(
+                            title = imgBefore.title,
                             onClick = { beforeLauncher.launch("image/*") })
                     } else {
                         SelectedImageView(title = imgBefore.title,
@@ -79,7 +80,8 @@ fun ImageLayout(
 
                 Box(modifier = Modifier.fillMaxWidth(1f)) {
                     if (imgAfter.url.isEmpty() && imgAfter.localUrl == null) {
-                        UploadTstMediaView(title = imgAfter.title,
+                        UploadTstMediaView(
+                            title = imgAfter.title,
                             onClick = { afterLauncher.launch("image/*") })
                     } else {
                         SelectedImageView(title = imgAfter.title,

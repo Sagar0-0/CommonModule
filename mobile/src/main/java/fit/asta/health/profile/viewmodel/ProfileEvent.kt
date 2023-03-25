@@ -1,5 +1,6 @@
 package fit.asta.health.profile.viewmodel
 
+import android.net.Uri
 import fit.asta.health.profile.model.domain.HealthProperties
 import fit.asta.health.profile.model.domain.ThreeToggleSelections
 import fit.asta.health.profile.model.domain.TwoToggleSelections
@@ -21,4 +22,7 @@ sealed class ProfileEvent {
     data class SetSelectedGenderOption(val option: ThreeToggleSelections) : ProfileEvent()
     data class SetSelectedAddItemOption(val item: HealthProperties) : ProfileEvent()
     data class SetSelectedRemoveItemOption(val item: HealthProperties) : ProfileEvent()
+    data class OnNameChange(val name: String) : ProfileEvent()
+    data class OnEmailChange(val email: String) : ProfileEvent()
+    data class OnUserImgChange(val url: Uri?) : ProfileEvent()
 }

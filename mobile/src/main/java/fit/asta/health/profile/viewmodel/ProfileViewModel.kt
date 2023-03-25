@@ -1,10 +1,13 @@
 package fit.asta.health.profile.viewmodel
 
+import android.net.Uri
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.R
+import fit.asta.health.common.utils.UiString
 import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.network.NetworkHelper
 import fit.asta.health.profile.model.ProfileRepo
@@ -210,9 +213,12 @@ class ProfileViewModel
     //Details
     val name = savedState.getStateFlow(NAME, InputWrapper())
     val email = savedState.getStateFlow(EMAIL, InputWrapper())
+
+
     val userImg = savedState.getStateFlow(
         USER_IMG, Media(name = "user_img", title = "User Profile Image")
     )
+
 
     //Physique
     val dob = savedState.getStateFlow(DOB, InputIntWrapper())
@@ -312,6 +318,34 @@ class ProfileViewModel
     }
 
 
+    private fun onValidateProfileText(value: String, min: Int, max: Int): UiString {
+        return when {
+            value.isBlank() -> UiString.Resource(R.string.the_field_can_not_be_blank)
+            value.length > max -> UiString.Resource(R.string.data_length_more, max.toString())
+            value.length in 1 until min -> UiString.Resource(
+                R.string.data_length_less, min.toString()
+            )
+            else -> UiString.Empty
+        }
+    }
+
+    private fun onValidateProfileEmail(value: String): UiString {
+        return when {
+            value.isBlank() -> UiString.Resource(R.string.the_field_can_not_be_blank)
+
+            !android.util.Patterns.EMAIL_ADDRESS.matcher(value).matches() -> UiString.Resource(
+                R.string.that_is_not_a_valid_email
+            )
+            else -> UiString.Empty
+        }
+    }
+
+    private fun onValidateProfileMedia(localUrl: Uri?, url: String): UiString {
+        return if (localUrl != null || url.isNotBlank()) UiString.Empty
+        else UiString.Resource(R.string.the_media_can_not_be_blank)
+    }
+
+
     fun onEvent(event: ProfileEvent) {
 
         when (event) {
@@ -331,10 +365,27 @@ class ProfileViewModel
             is ProfileEvent.SetSelectedWorkingStyleOption -> setSelectedWorkingStyleOption(event.option)
             is ProfileEvent.SetSelectedAddItemOption -> addItemFrmHp(event.item)
             is ProfileEvent.SetSelectedRemoveItemOption -> removeItemFrmHp(event.item)
+            is ProfileEvent.OnEmailChange -> {
+                savedState[EMAIL] = email.value.copy(
+                    value = event.email, error = onValidateProfileEmail(event.email)
+                )
+            }
+            is ProfileEvent.OnNameChange -> {
+                savedState[NAME] = name.value.copy(
+                    value = event.name, error = onValidateProfileText(event.name, 1, 20)
+                )
+            }
+
+
+            is ProfileEvent.OnUserImgChange -> {
+                savedState[USER_IMG] = userImg.value.copy(
+                    localUrl = event.url
+                )
+            }
+
+
         }
+
     }
 
-
 }
-
-// viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "injury"))

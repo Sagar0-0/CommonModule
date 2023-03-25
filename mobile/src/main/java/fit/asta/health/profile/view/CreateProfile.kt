@@ -8,6 +8,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -17,10 +19,10 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.R
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.customSize
@@ -36,19 +38,24 @@ data class ButtonListTypes(
 )
 
 @Composable
-fun UserCircleImage() {
+fun UserCircleImage(url: String, onClick: () -> Unit) {
 
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.padding(start = spacing.extraSmall1, end = spacing.extraSmall1)
     ) {
+
         Image(
-            painter = painterResource(id = R.drawable.userphoto),
+            painter = if (url.isEmpty()) {
+                painterResource(id = R.drawable.userphoto)
+            } else {
+                rememberAsyncImagePainter(model = url)
+            },
             contentDescription = null,
             modifier = Modifier
+                .size(customSize.extraLarge5)
                 .clip(shape = CircleShape)
-                .size(customSize.extraLarge5),
-            contentScale = ContentScale.Crop
+
         )
 
         Row(
@@ -56,14 +63,16 @@ fun UserCircleImage() {
             modifier = Modifier.align(alignment = Alignment.BottomEnd)
         ) {
             Box {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Image(
-                        painter = painterResource(id = R.drawable.profileediticon),
+                IconButton(onClick = onClick) {
+
+                    Icon(
+                        imageVector = Icons.Filled.Edit,
                         contentDescription = null,
                         modifier = Modifier
                             .size(customSize.largeSmall)
                             .clip(shape = CircleShape)
                     )
+
                 }
 
             }

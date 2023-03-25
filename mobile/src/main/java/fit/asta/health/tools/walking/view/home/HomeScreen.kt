@@ -87,6 +87,7 @@ fun HomeScreen(
 
 }
 
+
 @OptIn(ExperimentalMaterialApi::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun StepsBottomSheet(
@@ -121,6 +122,7 @@ fun StepsBottomSheet(
         HomeLayout(paddingValues = paddingValues, state, apiState)
     }
 }
+
 
 @Composable
 fun HomeLayout(paddingValues: PaddingValues, state: HomeUIState, apiState: WalkingTool) {
@@ -159,6 +161,7 @@ fun HomeLayout(paddingValues: PaddingValues, state: HomeUIState, apiState: Walki
         Spacer(modifier = Modifier.height(200.dp))
     }
 }
+
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
@@ -249,6 +252,7 @@ fun WalkingBottomSheetView(
     }
 }
 
+
 @Composable
 fun MainCircularSlider(modifier: Modifier = Modifier, apiState: WalkingTool, onClick: () -> Unit) {
     val isDuration = remember {
@@ -301,6 +305,7 @@ fun MainCircularSlider(modifier: Modifier = Modifier, apiState: WalkingTool, onC
     }
 }
 
+
 @Composable
 fun StepsDetailsCard(modifier: Modifier, distance: Int, duration: Long, steps: Int) {
     Card(
@@ -333,6 +338,7 @@ fun StepsDetailsCard(modifier: Modifier, distance: Int, duration: Long, steps: I
         }
     }
 }
+
 
 @Composable
 fun DetailsCard(
@@ -376,6 +382,7 @@ fun DetailsCard(
         }
     }
 }
+
 
 @Composable
 fun DetailsItem(
@@ -429,6 +436,7 @@ fun ProgressBarItem(modifier: Modifier, value: Int, name: String, isDuration: Bo
     }
 }
 
+
 @Composable
 fun CustomProgressBar(
     modifier: Modifier, width: Dp, backgroundColor: Color, foregroundColor: Brush, percent: Int
@@ -474,6 +482,7 @@ fun VitaminCard(modifier: Modifier, recommendedValue: Int, achievedValue: Int) {
     }
 }
 
+
 @Composable
 fun RowItem(name: String, value: String) {
     Column(
@@ -485,6 +494,7 @@ fun RowItem(name: String, value: String) {
         Text(text = "$value IU", fontSize = 12.sp, fontWeight = FontWeight.Bold)
     }
 }
+
 
 @Composable
 fun SunlightCard(modifier: Modifier) {

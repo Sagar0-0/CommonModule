@@ -1,7 +1,10 @@
 package fit.asta.health.profile.model.domain
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class UserProfile(
     @SerializedName("uid") val uid: String = "",
     @SerializedName("cont") val contact: Contact = Contact(),
@@ -9,8 +12,10 @@ data class UserProfile(
     @SerializedName("hlt") val health: Health = Health(),
     @SerializedName("ls") val lifeStyle: LifeStyle = LifeStyle(),
     @SerializedName("diet") val diet: Diet = Diet(),
-)
+) : Parcelable
 
+
+@Parcelize
 data class Contact(
     @SerializedName("adr") val address: Address = Address(),
     @SerializedName("dob") val dob: String = "",
@@ -18,16 +23,18 @@ data class Contact(
     @SerializedName("name") val name: String = "",
     @SerializedName("ph") val phone: String = "",
     @SerializedName("url") val url: String = "",
-)
+) : Parcelable
 
+@Parcelize
 data class Address(
     @SerializedName("adr1") val address: String = "",
     @SerializedName("cnt") val country: String = "",
     @SerializedName("cty") val city: String = "",
     @SerializedName("pin") val pin: String = "",
     @SerializedName("st") val street: String = "",
-)
+) : Parcelable
 
+@Parcelize
 data class Physique(
     @SerializedName("age") val age: Int = 0, //NOT DONE
     @SerializedName("bdt") val bodyType: Int = 0,
@@ -37,17 +44,20 @@ data class Physique(
     @SerializedName("prg") val isPregnant: Boolean = false,
     @SerializedName("pw") val pregnancyWeek: Int = 0,
     @SerializedName("wt") val weight: Int = 0,
-)
+) : Parcelable
 
+
+@Parcelize
 data class Health(
     @SerializedName("ail") val ailments: ArrayList<HealthProperties> = arrayListOf(),
     @SerializedName("med") val medications: ArrayList<HealthProperties> = arrayListOf(),
     @SerializedName("inj") val injuries: ArrayList<Injury> = arrayListOf(),  // Body Part list missing
     @SerializedName("htg") val targets: ArrayList<HealthProperties> = arrayListOf(),
-)
+) : Parcelable
 
 
 //working env missing
+@Parcelize
 data class LifeStyle(
     @SerializedName("slp") var sleep: Session = Session(), // missing in UI
     @SerializedName("act") var physicalActivity: HealthProperties = HealthProperties(),
@@ -56,27 +66,32 @@ data class LifeStyle(
     @SerializedName("cat") val curActivities: ArrayList<HealthProperties> = arrayListOf(),
     @SerializedName("pat") val prefActivities: ArrayList<HealthProperties> = arrayListOf(),
     @SerializedName("lst") val lifeStyleTargets: ArrayList<HealthProperties> = arrayListOf(),
-)
+) : Parcelable
 
+@Parcelize
 data class Diet(
     @SerializedName("pref") var preference: Int = 0,
     @SerializedName("nv") val nonVegDays: ArrayList<String> = arrayListOf(),
     @SerializedName("alg") val allergies: ArrayList<HealthProperties> = arrayListOf(),
     @SerializedName("cns") val cuisines: ArrayList<HealthProperties> = arrayListOf(),
     @SerializedName("frs") val foodRestrictions: ArrayList<HealthProperties> = arrayListOf(),
-)
+) : Parcelable
 
+
+@Parcelize
 data class Session(
     @SerializedName("str") val from: Double = 0.0,
     @SerializedName("end") val to: Double = 0.0,
-)
+) : Parcelable
 
+
+@Parcelize
 data class Injury(
     @SerializedName("id") val id: String = "",
     @SerializedName("code") val code: String = "",
     @SerializedName("name") val name: String = "",
     @SerializedName("dur") val sinceWhen: Double = 0.0,
-)
+) : Parcelable
 
 /*
 data class UserProfile(
