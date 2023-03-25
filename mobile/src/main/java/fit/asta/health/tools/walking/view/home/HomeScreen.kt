@@ -1,5 +1,6 @@
 package fit.asta.health.tools.walking.view.home
 
+import android.app.Activity
 import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
@@ -35,7 +36,6 @@ import fit.asta.health.tools.walking.model.domain.WalkingTool
 import fit.asta.health.tools.walking.nav.StepsCounterScreen
 import fit.asta.health.tools.walking.view.component.*
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
-import fit.asta.health.tools.walking.viewmodel.foregroundStartService
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -171,6 +171,7 @@ fun WalkingBottomSheetView(
 ) {
     val selectedGoal by homeViewModel.selectedGoal.collectAsState(emptyList())
     val selectedWalkTypes by homeViewModel.selectedWalkTypes.collectAsState("")
+    val activity = LocalContext.current as Activity
     Column(
         modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(spacing.medium)
@@ -236,9 +237,11 @@ fun WalkingBottomSheetView(
             ) {
                 if (startWorking.value) {
                     homeViewModel.onUIEvent(StepCounterUIEvent.StopButtonClicked)
+                    homeViewModel.stopService(activity)
                     navController.navigate(route = StepsCounterScreen.DistanceScreen.route)
                 } else {
                     homeViewModel.onUIEvent(StepCounterUIEvent.StartButtonClicked)
+                    homeViewModel.startService(activity)
                 }
             }
         }

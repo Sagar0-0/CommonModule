@@ -33,6 +33,7 @@ class HealthCareApp : MultiDexApplication() {
         instance = this
         setupDb()
         createNotificationChannel()
+        createNotificationChannelForActivity()
         WorkManager.initialize(
             this, Configuration.Builder().setWorkerFactory(
                 workerFactory
@@ -71,4 +72,15 @@ class HealthCareApp : MultiDexApplication() {
             manager.createNotificationChannel(serviceChannel)
         }
     }
+     private fun createNotificationChannelForActivity(){
+         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+             val channel = NotificationChannel(
+                 "location",
+                 "Location",
+                 NotificationManager.IMPORTANCE_LOW
+             )
+             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+             notificationManager.createNotificationChannel(channel)
+         }
+     }
 }

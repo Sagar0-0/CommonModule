@@ -1,12 +1,18 @@
 package fit.asta.health.tools.walking.view
 
 import android.Manifest
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material3.*
@@ -21,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import androidx.work.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,12 +36,44 @@ import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.tools.walking.nav.StepsCounterNavigation
 import fit.asta.health.tools.walking.view.component.WalkingBottomSheet
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
+import fit.asta.health.tools.walking.work.CountStepsService
 import fit.asta.health.tools.walking.work.StepWorker
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
+@OptIn(ExperimentalCoroutinesApi::class)
 class WalkingActivity : ComponentActivity() {
+
+    private lateinit var mService: CountStepsService
+    private lateinit var stepCountFlow: StateFlow<Int>
+    private var mBound: Boolean = false
+    private val viewModel: WalkingViewModel by viewModels()
+
+
+    private val connection = object : ServiceConnection {
+
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance.
+            val binder = service as CountStepsService.LocalBinder
+            mService = binder.getService()
+            mBound = true
+            stepCountFlow = binder.getStepCountFlow()
+            lifecycleScope.launch {
+                stepCountFlow.collect { stepCount ->
+                    viewModel.changeUi(stepCount)
+                    Log.d("TAG", "onServiceConnected: $stepCount")
+                }
+            }
+
+        }
+
+        override fun onServiceDisconnected(arg0: ComponentName) {
+            mBound = false
+        }
+    }
     companion object {
 
         fun launch(context: Context) {
@@ -44,23 +83,43 @@ class WalkingActivity : ComponentActivity() {
             }
         }
     }
-    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         val PHYSICAL_ACTIVITY = 123
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_DENIED) {
             //ask for permission
-            ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.ACTIVITY_RECOGNITION), PHYSICAL_ACTIVITY)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.ACTIVITY_RECOGNITION), PHYSICAL_ACTIVITY)
+            }
         }
 
         super.onCreate(savedInstanceState)
         setContent {
             MyApp {
+//                if (mBound) {
+//                   val num = mService.stepsData.collectAsState()
+//                    hiltViewModel<WalkingViewModel>().changeUi(num.value)
+//                    Log.d("TAG", "onCreate: $num")
+//                }
                 StepsCounterNavigation(navController = rememberNavController(), hiltViewModel<WalkingViewModel>())
             }
         }
         setupWorker(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // Bind to LocalService.
+        Intent(this, CountStepsService::class.java).also { intent ->
+            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unbindService(connection)
+        mBound = false
     }
 }
 @Composable

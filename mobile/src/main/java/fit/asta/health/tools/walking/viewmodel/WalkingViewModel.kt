@@ -1,8 +1,11 @@
 package fit.asta.health.tools.walking.viewmodel
 
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +18,7 @@ import fit.asta.health.tools.walking.sensor.MeasurableSensor
 import fit.asta.health.tools.walking.view.home.HomeUIState
 import fit.asta.health.tools.walking.view.home.StepCounterUIEvent
 import fit.asta.health.tools.walking.view.steps_counter.StepCounterUIState
+import fit.asta.health.tools.walking.work.CountStepsService
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,6 +36,7 @@ class WalkingViewModel
     private val localRepo: LocalRepo
 ) : ViewModel() {
     val date = LocalDate.now().dayOfMonth
+    private var serviceIntent: Intent? = null
     private val _homeUiState = mutableStateOf(HomeUIState())
     val homeUiState: State<HomeUIState> = _homeUiState
 
@@ -41,7 +46,6 @@ class WalkingViewModel
     val startWorking = mutableStateOf(false)
 
     init {
-        stepsSensor.startListening()
         loadWalkingToolData()
         viewModelScope.launch {
             val date = localRepo.getStepsData(LocalDate.now().dayOfMonth)
@@ -61,7 +65,7 @@ class WalkingViewModel
                         steps = date.allSteps,
                         duration = ((System.nanoTime() - date.time) / 1_000_000_000L / 60L)
                     )
-                    startSteps()
+//                    startSteps()
                 }
             }
         }
@@ -104,9 +108,8 @@ class WalkingViewModel
             is StepCounterUIEvent.StartButtonClicked -> {
                 changeStatus("active")
                 changeTime()
-                startSteps()
+//                startSteps()
                 startWorking.value = true
-
             }
             is StepCounterUIEvent.StopButtonClicked -> {
                 startWorking.value = false
@@ -119,9 +122,11 @@ class WalkingViewModel
 
 
     private fun startSteps() {
+        Log.d("TAG", "startSteps: start")
         stepsSensor.startListening()
         stepsSensor.setOnSensorValuesChangedListener { step ->
             viewModelScope.launch {
+                Log.d("TAG", "startSteps: start runing")
                 val data = localRepo.getStepsData(date)
                 if (data != null && data.date == date) {
                     if (data.initialSteps > 1) {
@@ -174,7 +179,7 @@ class WalkingViewModel
 
     private val _uiStateStep = mutableStateOf(StepCounterUIState())
     val uiStateStep: State<StepCounterUIState> = _uiStateStep
-    fun endScreen() {
+    private fun endScreen() {
         viewModelScope.launch {
             val data = localRepo.getStepsData(date)
             if (data != null && data.date == date) {
@@ -192,15 +197,32 @@ class WalkingViewModel
         }
     }
 
-    fun changeStatus(status: String) {
+    private fun changeStatus(status: String) {
         viewModelScope.launch {
             localRepo.updateStatus(date, status)
         }
     }
 
-    fun changeTime() {
+    private fun changeTime() {
         viewModelScope.launch {
             localRepo.updateTime(date, System.nanoTime())
         }
+    }
+
+    fun startService(context: Context) {
+        if (serviceIntent == null) {
+            serviceIntent = Intent(context, CountStepsService::class.java)
+            ContextCompat.startForegroundService(context, serviceIntent!!)
+        }
+    }
+
+    fun stopService(context: Context) {
+        if (serviceIntent != null) {
+            context.stopService(serviceIntent!!)
+            serviceIntent = null
+        }
+    }
+    fun changeUi(data:Int){
+        _homeUiState.value=_homeUiState.value.copy(steps = data)
     }
 }

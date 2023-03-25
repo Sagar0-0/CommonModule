@@ -4,44 +4,59 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.os.Binder
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
+import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.R
 import fit.asta.health.tools.walking.model.LocalRepo
 import fit.asta.health.tools.walking.sensor.MeasurableSensor
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import java.time.LocalDate
 import javax.inject.Inject
 
-class CountStepsService @Inject()constructor(
-    private val stepsSensor: MeasurableSensor,
-    private val localRepo: LocalRepo
-): Service() {
+@AndroidEntryPoint
+class CountStepsService : Service() {
+    @Inject
+    lateinit var localRepo: LocalRepo
+
+    @Inject
+    lateinit var stepsSensor: MeasurableSensor
 
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
 
-    override fun onBind(p0: Intent?): IBinder? {
-        return null
+    private val binder = LocalBinder()
+
+    private val stepCountFlow = MutableStateFlow(0)
+
+
+    inner class LocalBinder : Binder() {
+        fun getService(): CountStepsService = this@CountStepsService
+        fun getStepCountFlow(): StateFlow<Int> = stepCountFlow
+    }
+
+    override fun onBind(intent: Intent): IBinder {
+        return binder
     }
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        when(intent?.action) {
-            ACTION_START -> start()
-            ACTION_STOP -> stop()
-        }
+        start()
         return super.onStartCommand(intent, flags, startId)
     }
 
     private fun start() {
         val notification = NotificationCompat.Builder(this, "location")
             .setContentTitle("Tracking Steps...")
-            .setContentText("Steps: ")
+            .setContentText("Start Walking")
             .setSmallIcon(R.drawable.runing)
             .setOngoing(true)
 
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         stepsSensor.startListening()
         stepsSensor.setOnSensorValuesChangedListener { step ->
             val date = LocalDate.now().dayOfMonth
@@ -57,9 +72,11 @@ class CountStepsService @Inject()constructor(
                         localRepo.updateSteps(date = date, step = step[0].toInt())
                     }
                     val updatedNotification = notification.setContentText(
-                        "steps: (${step[0].toInt() - data.initialSteps})"
+                        "steps: ${step[0].toInt() - data.initialSteps}"
                     )
                     notificationManager.notify(1, updatedNotification.build())
+                    stepCountFlow.value=(step[0].toInt() - data.initialSteps)
+
                 }
             }
         }
@@ -67,25 +84,18 @@ class CountStepsService @Inject()constructor(
         startForeground(1, notification.build())
     }
 
-    private fun stop() {
-        stopSteps()
-        stopForeground(true)
-        stopSelf()
-    }
+
 
     override fun onDestroy() {
         super.onDestroy()
+        stopSteps()
+        stopSelf()
         serviceScope.cancel()
     }
-
 
 
     private fun stopSteps() {
         stepsSensor.stopListening()
     }
 
-    companion object {
-        const val ACTION_START = "ACTION_START"
-        const val ACTION_STOP = "ACTION_STOP"
-    }
 }
