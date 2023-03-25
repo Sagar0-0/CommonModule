@@ -5,15 +5,20 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import androidx.core.app.NotificationManagerCompat
+import androidx.hilt.work.HiltWorkerFactory
 import androidx.multidex.MultiDexApplication
+import androidx.work.Configuration
+import androidx.work.WorkManager
 import dagger.hilt.android.HiltAndroidApp
 import fit.asta.health.common.db.AppDb
-import fit.asta.health.notify.util.createNotificationChannel
 import fit.asta.health.common.utils.getUriFromResourceId
+import fit.asta.health.notify.util.createNotificationChannel
+import javax.inject.Inject
 
 @HiltAndroidApp
 class HealthCareApp : MultiDexApplication() {
-
+    @Inject
+    lateinit var workerFactory: HiltWorkerFactory
     companion object {
         const val CHANNEL_ID = "ALARM_SERVICE_CHANNEL"
         var mContext: Context? = null
@@ -28,7 +33,11 @@ class HealthCareApp : MultiDexApplication() {
         instance = this
         setupDb()
         createNotificationChannel()
-
+        WorkManager.initialize(
+            this, Configuration.Builder().setWorkerFactory(
+                workerFactory
+            ).build()
+        )
         /*this.createNotificationChannel(
             getString(R.string.breakfast_notification_channel_id),
             getString(R.string.breakfast_notification_channel_name)

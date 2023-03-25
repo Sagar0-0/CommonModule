@@ -41,7 +41,8 @@ fun CircularSlider(
     backgroundColor: Color = Color.LightGray,
     isDuration: Boolean,
     onChange: ((Float) -> Unit)? = null,
-    onChangeType: () -> Unit
+    onChangeType: () -> Unit,
+
 ) {
     var size by remember { mutableStateOf(IntSize.Zero) }
     var width by remember { mutableStateOf(0) }

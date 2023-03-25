@@ -21,7 +21,7 @@ interface StepsDataDao {
     suspend fun updateStepsonRunning(date: Int,all_steps:Int)
 
     @Query("UPDATE steps_data SET time = :time WHERE date = :date")
-    suspend fun updateTime(date: Int,time: Int)
+    suspend fun updateTime(date: Int,time: Long)
 
     @Query("UPDATE steps_data SET initial_steps = :initial_steps WHERE date = :date")
     suspend fun updateSteps(date: Int, initial_steps: Int)

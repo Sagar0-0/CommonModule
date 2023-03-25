@@ -5,7 +5,7 @@ data class HomeUIState(
     val durationTarget: Float = 60f,
 
     val distance: Int = 0,
-    val duration: Int = 0,
+    val duration: Long = 0,
     val steps: Int = 0,
     val heartRate: Int = 0,
     val calories: Int = 0,

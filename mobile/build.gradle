@@ -207,6 +207,7 @@ dependencies {
     kapt "com.google.dagger:hilt-android-compiler:$dagger_version"
     kapt "androidx.hilt:hilt-compiler:1.0.0"
     implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
+    implementation 'androidx.hilt:hilt-work:1.0.0'
     /*annotationProcessor "com.google.dagger:hilt-compiler:$dagger_version"*/
 
     // Toothpick
@@ -339,6 +340,9 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+
+    //work manager
+    implementation "androidx.work:work-runtime-ktx:2.8.1"
 }
 
 kapt {

@@ -10,6 +10,6 @@ data class StepsData(
     @ColumnInfo(name = "initial_steps") val initialSteps: Int,
     @ColumnInfo(name = "status") val status: String,
     @ColumnInfo(name = "all_steps") val allSteps: Int,
-    @ColumnInfo(name = "time") val time: Int
+    @ColumnInfo(name = "time") val time: Long
 
 )

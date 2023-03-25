@@ -20,7 +20,7 @@ class LocalRepoImpl(private val stepsDataDao: StepsDataDao):LocalRepo {
         stepsDataDao.updateStepsonRunning(date,all_steps)
     }
 
-    override suspend fun updateTime(date: Int, time: Int) {
+    override suspend fun updateTime(date: Int, time: Long) {
        stepsDataDao.updateTime(date, time)
     }
 

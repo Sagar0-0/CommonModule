@@ -7,6 +7,6 @@ interface LocalRepo {
     suspend fun insert(stepsData: StepsData)
     suspend fun updateStatus(date: Int, status: String)
     suspend fun updateStepsonRunning(date: Int,all_steps:Int)
-    suspend fun updateTime(date: Int,time:Int)
+    suspend fun updateTime(date: Int,time:Long)
     suspend fun updateSteps(date: Int,step:Int)
 }

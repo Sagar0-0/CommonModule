@@ -22,13 +22,16 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
+import androidx.work.*
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.R
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.tools.walking.nav.StepsCounterNavigation
 import fit.asta.health.tools.walking.view.component.WalkingBottomSheet
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
+import fit.asta.health.tools.walking.work.StepWorker
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
 class WalkingActivity : ComponentActivity() {
@@ -57,6 +60,7 @@ class WalkingActivity : ComponentActivity() {
                 StepsCounterNavigation(navController = rememberNavController(), hiltViewModel<WalkingViewModel>())
             }
         }
+        setupWorker(this)
     }
 }
 @Composable
@@ -112,4 +116,18 @@ fun DefaultPreview() {
         WalkingToolHomeScreen()
     }
 
+}
+fun setupWorker(context: Context) {
+    val constraint = Constraints.Builder()
+        .setRequiredNetworkType(NetworkType.CONNECTED)
+        .build()
+    val workRequest = PeriodicWorkRequestBuilder<StepWorker>(15, TimeUnit.MINUTES)
+        .setConstraints(constraint)
+        .setInitialDelay(5,TimeUnit.MINUTES)
+        .build()
+    WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+        "unique_periodic_work",
+        ExistingPeriodicWorkPolicy.UPDATE,
+        workRequest
+    )
 }

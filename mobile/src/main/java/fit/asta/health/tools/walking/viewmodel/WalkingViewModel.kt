@@ -38,11 +38,11 @@ class WalkingViewModel
     private val _apiState = mutableStateOf(WalkingTool())
     val ApiState: State<WalkingTool> = _apiState
 
-    val startWorking= mutableStateOf(false)
+    val startWorking = mutableStateOf(false)
 
     init {
+        stepsSensor.startListening()
         loadWalkingToolData()
-
         viewModelScope.launch {
             val date = localRepo.getStepsData(LocalDate.now().dayOfMonth)
             if (date == null) {
@@ -54,8 +54,14 @@ class WalkingViewModel
                 localRepo.insert(stepsData)
             }
             if (date != null) {
-                if (date.date==LocalDate.now().dayOfMonth){
-
+                if (date.date == LocalDate.now().dayOfMonth && (date.status == "active")) {
+                    startWorking.value = true
+                    _homeUiState.value = _homeUiState.value.copy(
+                        distance = date.allSteps / 1408,
+                        steps = date.allSteps,
+                        duration = ((System.nanoTime() - date.time) / 1_000_000_000L / 60L)
+                    )
+                    startSteps()
                 }
             }
         }
@@ -99,11 +105,11 @@ class WalkingViewModel
                 changeStatus("active")
                 changeTime()
                 startSteps()
-                startWorking.value=true
+                startWorking.value = true
+
             }
             is StepCounterUIEvent.StopButtonClicked -> {
-                startWorking.value=false
-                stopSteps()
+                startWorking.value = false
                 changeStatus("inactive")
                 endScreen()
             }
@@ -115,8 +121,6 @@ class WalkingViewModel
     private fun startSteps() {
         stepsSensor.startListening()
         stepsSensor.setOnSensorValuesChangedListener { step ->
-            Log.d("Subhash", "start:${step[0].toInt()}")
-            Log.d("Subhash", "out:  $date")
             viewModelScope.launch {
                 val data = localRepo.getStepsData(date)
                 if (data != null && data.date == date) {
@@ -125,18 +129,13 @@ class WalkingViewModel
                             date = data.date,
                             all_steps = step[0].toInt() - data.initialSteps,
                         )
-                        Log.d(
-                            "Subhash",
-                            "update:  steps distance${((step[0].toInt() - data.initialSteps))}"
-                        )
                     } else {
-                        Log.d("Subhash", "startSteps: start steps")
                         localRepo.updateSteps(date = date, step = step[0].toInt())
                     }
                     _homeUiState.value = _homeUiState.value.copy(
                         distance = (data.allSteps / 1408),
                         steps = data.allSteps,
-                        duration = (System.nanoTime() - data.time).toInt()
+                        duration = ((System.nanoTime() - data.time) / 1_000_000_000L / 60L)
                     )
                 } else {
                     Log.d("Subhash", "startSteps: null")
@@ -144,8 +143,6 @@ class WalkingViewModel
             }
         }
     }
-
-
 
 
     private fun stopSteps() {
@@ -183,26 +180,27 @@ class WalkingViewModel
             if (data != null && data.date == date) {
                 val steps = data.allSteps
                 val stepLength = 0.7f
-                val timeNs = System.nanoTime() - data.time
+                val timeNs = (System.nanoTime() - data.time)
                 val speed = calculateSpeed(steps, stepLength, timeNs)
-                val distance = ((data.allSteps - data.initialSteps) / 1408)
+                val distance = (data.allSteps / 1408)
                 _uiStateStep.value = _uiStateStep.value.copy(
                     calories = 0, steps = steps,
-                    distance = distance, speed = speed, time = timeNs
+                    distance = distance, speed = speed,
+                    time = (timeNs / 1_000_000_000L / 60L)
                 )
             }
         }
     }
 
-    fun changeStatus(status:String){
+    fun changeStatus(status: String) {
         viewModelScope.launch {
             localRepo.updateStatus(date, status)
         }
     }
 
-    fun changeTime(){
+    fun changeTime() {
         viewModelScope.launch {
-            localRepo.updateTime(date,System.nanoTime().toInt())
+            localRepo.updateTime(date, System.nanoTime())
         }
     }
 }

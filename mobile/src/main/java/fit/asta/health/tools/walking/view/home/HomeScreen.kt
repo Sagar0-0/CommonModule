@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -34,6 +35,7 @@ import fit.asta.health.tools.walking.model.domain.WalkingTool
 import fit.asta.health.tools.walking.nav.StepsCounterScreen
 import fit.asta.health.tools.walking.view.component.*
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
+import fit.asta.health.tools.walking.viewmodel.foregroundStartService
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -297,7 +299,7 @@ fun MainCircularSlider(modifier: Modifier = Modifier, apiState: WalkingTool, onC
 }
 
 @Composable
-fun StepsDetailsCard(modifier: Modifier, distance: Int, duration: Int, steps: Int) {
+fun StepsDetailsCard(modifier: Modifier, distance: Int, duration: Long, steps: Int) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
