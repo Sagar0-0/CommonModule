@@ -196,7 +196,7 @@ class ProfileViewModel
             2 to mutableStateListOf<HealthProperties>(),
             3 to mutableStateListOf<HealthProperties>(),
             4 to mutableStateListOf<HealthProperties>(),
-            5 to mutableStateListOf<HealthProperties>()
+            5 to mutableStateListOf<HealthProperties>(),
         )
     )
 
@@ -204,20 +204,8 @@ class ProfileViewModel
     val healthPropertiesData: StateFlow<Map<Int, SnapshotStateList<HealthProperties>>> =
         _healthPropertiesData
 
-    // Create a function to add or remove a HealthProperty from the list for a specific card view
-//    fun addOrRemoveHealthProperty(cardViewIndex: Int, healthProperty: HealthProperties) {
-//        val currentList = _healthPropertiesData.value[cardViewIndex] ?: mutableStateListOf()
-//        if (currentList.contains(healthProperty)) {
-//            currentList.remove(healthProperty)
-//        } else {
-//            currentList.add(healthProperty)
-//        }
-//        val updatedData = _healthPropertiesData.value.toMutableMap()
-//        updatedData[cardViewIndex] = currentList
-//        _healthPropertiesData.value = updatedData.toMap()
-//    }
 
-    fun demoAdd(cardViewIndex: Int, item: HealthProperties) {
+    private fun demoAdd(cardViewIndex: Int, item: HealthProperties) {
         val currentList = _healthPropertiesData.value[cardViewIndex] ?: mutableStateListOf()
         if (!currentList.contains(item)) {
             if (currentList.contains(item) && isSameItemRemovedAndAdded) {
@@ -231,7 +219,7 @@ class ProfileViewModel
         _healthPropertiesData.value = updatedData.toMap()
     }
 
-    fun demoRemove(cardViewIndex: Int, item: HealthProperties) {
+    private fun demoRemove(cardViewIndex: Int, item: HealthProperties) {
         val currentList = _healthPropertiesData.value[cardViewIndex] ?: mutableStateListOf()
         if (currentList.contains(item)) {
             if (currentList.contains(item) && !isSameItemRemovedAndAdded) {
@@ -323,6 +311,9 @@ class ProfileViewModel
 
     }
 
+    private val ailments: ArrayList<HealthProperties>? =
+        _healthPropertiesData.value[0]?.let { ArrayList(it) }
+
     private fun submit() {
 
         authRepo.getUser()?.let {
@@ -339,7 +330,7 @@ class ProfileViewModel
                         pregnancyWeek = pregnancyWeek.value.value,
                         weight = weight.value.value
                     ), health = Health(
-                        ailments = _healthPropertiesData.value[0] as ArrayList<HealthProperties>
+                        ailments = ailments
                     )
                 )
             )

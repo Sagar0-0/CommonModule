@@ -59,8 +59,6 @@ fun HealthContent(
     val selectedMed by viewModel.selectedMedOption.collectAsStateWithLifecycle()
     val selectedHealthTar by viewModel.selectedHealthTarOption.collectAsStateWithLifecycle()
     val selectedInjury by viewModel.selectedInjOption.collectAsStateWithLifecycle()
-//    val healthHisList by viewModel.healthHisList.collectAsStateWithLifecycle()
-//    val injuriesList by viewModel.injuriesList.collectAsStateWithLifecycle()
 
     val healthHisList by viewModel.healthPropertiesData.collectAsStateWithLifecycle()
 
@@ -81,28 +79,28 @@ fun HealthContent(
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            healthHisList[0]?.let {
-                SelectionCardCreateProfile(
-                    cardType = "Any Significant Health History?",
-                    cardList = it,
-                    radioButtonList = radioButtonList,
-                    checkedState = checkedState,
-                    onItemsSelect = onHealthHistory,
-                    selectedOption = selectedHealthHis,
-                    onStateChange = { state ->
-                        viewModel.onEvent(ProfileEvent.SetSelectHealthHisOption(state))
-                    },
-                    enabled = selectedHealthHis == TwoToggleSelections.First,
-                    cardIndex = 0
-                )
-            }
+
+            SelectionCardCreateProfile(
+                cardType = "Any Significant Health History?",
+                cardList = healthHisList.getValue(0),
+                radioButtonList = radioButtonList,
+                checkedState = checkedState,
+                onItemsSelect = onHealthHistory,
+                selectedOption = selectedHealthHis,
+                onStateChange = { state ->
+                    viewModel.onEvent(ProfileEvent.SetSelectHealthHisOption(state))
+                },
+                enabled = selectedHealthHis == TwoToggleSelections.First,
+                cardIndex = 0
+            )
+
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
             InjuriesLayout(cardType = "Any Injuries",
                 cardType2 = "Body Part?",
-                cardList = healthHisList[1]!!,
-                cardList2 = healthHisList[2]!!,
+                cardList = healthHisList.getValue(1),
+                cardList2 = healthHisList.getValue(2),
                 radioButtonList = radioButtonList,
                 checkedState = checkedState,
                 checkedState2 = checkedState,
@@ -117,55 +115,54 @@ fun HealthContent(
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            healthHisList[3]?.let {
-                SelectionCardCreateProfile(
-                    cardType = "Any Ailments?",
-                    cardList = it,
-                    radioButtonList = radioButtonList,
-                    checkedState = checkedState,
-                    onItemsSelect = onAilments,
-                    selectedOption = selectedAil,
-                    onStateChange = { state ->
-                        viewModel.onEvent(ProfileEvent.SetSelectedAilOption(state))
-                    },
-                    enabled = selectedAil == TwoToggleSelections.First,
-                    cardIndex = 3
-                )
-            }
+            SelectionCardCreateProfile(
+                cardType = "Any Ailments?",
+                cardList = healthHisList.getValue(3),
+                radioButtonList = radioButtonList,
+                checkedState = checkedState,
+                onItemsSelect = onAilments,
+                selectedOption = selectedAil,
+                onStateChange = { state ->
+                    viewModel.onEvent(ProfileEvent.SetSelectedAilOption(state))
+                },
+                enabled = selectedAil == TwoToggleSelections.First,
+                cardIndex = 3
+            )
+
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            healthHisList[4]?.let {
-                SelectionCardCreateProfile(
-                    cardType = "Any Medications?",
-                    cardList = it,
-                    radioButtonList = radioButtonList,
-                    checkedState = checkedState,
-                    onItemsSelect = onMedications,
-                    selectedOption = selectedMed,
-                    onStateChange = { state ->
-                        viewModel.onEvent(ProfileEvent.SetSelectedMedOption(state))
-                    },
-                    enabled = selectedMed == TwoToggleSelections.First
-                )
-            }
+            SelectionCardCreateProfile(
+                cardType = "Any Medications?",
+                cardList = healthHisList.getValue(4),
+                radioButtonList = radioButtonList,
+                checkedState = checkedState,
+                onItemsSelect = onMedications,
+                selectedOption = selectedMed,
+                onStateChange = { state ->
+                    viewModel.onEvent(ProfileEvent.SetSelectedMedOption(state))
+                },
+                enabled = selectedMed == TwoToggleSelections.First,
+                cardIndex = 4
+            )
+
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            healthHisList[5]?.let {
-                SelectionCardCreateProfile(
-                    cardType = "Any Health Targets?",
-                    cardList = it,
-                    radioButtonList = radioButtonList,
-                    checkedState = checkedState,
-                    onItemsSelect = onHealthTargets,
-                    selectedOption = selectedHealthTar,
-                    onStateChange = { state ->
-                        viewModel.onEvent(ProfileEvent.SetSelectedHealthTarOption(state))
-                    },
-                    enabled = selectedHealthTar == TwoToggleSelections.First
-                )
-            }
+            SelectionCardCreateProfile(
+                cardType = "Any Health Targets?",
+                cardList = healthHisList.getValue(5),
+                radioButtonList = radioButtonList,
+                checkedState = checkedState,
+                onItemsSelect = onHealthTargets,
+                selectedOption = selectedHealthTar,
+                onStateChange = { state ->
+                    viewModel.onEvent(ProfileEvent.SetSelectedHealthTarOption(state))
+                },
+                enabled = selectedHealthTar == TwoToggleSelections.First,
+                cardIndex = 5
+            )
+
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
@@ -250,12 +247,12 @@ fun HealthCreateScreen(
             onMedications = {
                 currentBottomSheet = MEDICATIONS
                 openSheet()
-                viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "injury"))
+                viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "med"))
             },
             onHealthTargets = {
                 currentBottomSheet = HEALTHTARGETS
                 openSheet()
-                viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "goal"))
+                viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "tgt"))
             },
             onBodyInjurySelect = {
                 currentBottomSheet = BODYINJURIY
@@ -301,7 +298,7 @@ fun HealthCreateBtmSheetLayout(
                 }
             }
         }
-        AILMENTS -> {
+        BODYINJURIY -> {
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}
@@ -312,7 +309,7 @@ fun HealthCreateBtmSheetLayout(
                 }
             }
         }
-        MEDICATIONS -> {
+        AILMENTS -> {
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}
@@ -323,7 +320,7 @@ fun HealthCreateBtmSheetLayout(
                 }
             }
         }
-        HEALTHTARGETS -> {
+        MEDICATIONS -> {
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}
@@ -334,7 +331,7 @@ fun HealthCreateBtmSheetLayout(
                 }
             }
         }
-        BODYINJURIY -> {
+        HEALTHTARGETS -> {
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}

@@ -46,6 +46,8 @@ fun DietContent(
     val selectedFoodRes by viewModel.selectedFoodResOption.collectAsStateWithLifecycle()
     val dietList by viewModel.healthHisList.collectAsStateWithLifecycle()
 
+    val dietData by viewModel.healthPropertiesData.collectAsStateWithLifecycle()
+
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
     ) {
@@ -189,6 +191,7 @@ fun DietCreateScreen(
         }, onDietaryPref = {
             currentBottomSheet = DIETARYPREF
             openSheet()
+            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "dp"))
         })
 
     }
