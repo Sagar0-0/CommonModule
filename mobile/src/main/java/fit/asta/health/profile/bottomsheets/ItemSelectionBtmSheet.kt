@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalCoroutinesApi::class)
+@file:OptIn(ExperimentalCoroutinesApi::class, ExperimentalCoroutinesApi::class)
 
 package fit.asta.health.profile.bottomsheets
 
@@ -35,6 +35,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 fun ItemSelectionBtmSheetLayout(
     viewModel: ProfileViewModel = hiltViewModel(),
     cardList: List<HealthProperties>? = null,
+    cardIndex: Int? = null,
 ) {
 
     val focusManager = LocalFocusManager.current
@@ -88,9 +89,17 @@ fun ItemSelectionBtmSheetLayout(
                 modifier = Modifier.padding(start = spacing.medium),
             ) {
 
-                cardList?.forEach {
-                    AddChipOnCard(textOnChip = it.name, onClick = {
-                        viewModel.onEvent(ProfileEvent.SetSelectedAddItemOption(it))
+                cardList?.forEach { healthProperties ->
+                    AddChipOnCard(textOnChip = healthProperties.name, onClick = {
+                        cardIndex?.let {
+                            ProfileEvent.SetSelectedAddItemOption(
+                                item = healthProperties, index = it
+                            )
+                        }?.let {
+                            viewModel.onEvent(
+                                it
+                            )
+                        }
                     })
                 }
             }

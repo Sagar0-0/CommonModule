@@ -44,6 +44,7 @@ fun SelectionCardCreateProfile(
     selectedOption: TwoToggleSelections?,
     onStateChange: (TwoToggleSelections) -> Unit,
     enabled: Boolean?,
+    cardIndex: Int? = null,
 ) {
 
     Card(
@@ -102,7 +103,15 @@ fun SelectionCardCreateProfile(
                         RemoveChipOnCard(textOnChip = it.name,
                             checkedState = checkedState,
                             onClick = {
-                                viewModel.onEvent(ProfileEvent.SetSelectedRemoveItemOption(it))
+                                cardIndex?.let { it1 ->
+                                    ProfileEvent.SetSelectedRemoveItemOption(
+                                        it, index = it1
+                                    )
+                                }?.let { it2 ->
+                                    viewModel.onEvent(
+                                        it2
+                                    )
+                                }
                             })
                     }
                 }
@@ -120,8 +129,8 @@ fun OnlyChipSelectionCard(
     cardList: SnapshotStateList<HealthProperties>,
     checkedState: (MutableState<Boolean>)? = null,
     onItemsSelect: () -> Unit,
+    cardIndex: Int? = null,
 ) {
-
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -163,7 +172,11 @@ fun OnlyChipSelectionCard(
             ) {
                 cardList.forEach {
                     RemoveChipOnCard(textOnChip = it.name, checkedState = checkedState, onClick = {
-                        viewModel.onEvent(ProfileEvent.SetSelectedRemoveItemOption(item = it))
+                        cardIndex?.let { it1 ->
+                            ProfileEvent.SetSelectedRemoveItemOption(
+                                item = it, index = it1
+                            )
+                        }?.let { it2 -> viewModel.onEvent(it2) }
                     })
                 }
             }

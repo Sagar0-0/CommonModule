@@ -10,7 +10,7 @@ import retrofit2.http.*
 //Testimonial Endpoints
 interface TestimonialApiService {
 
-    @GET("testimonial/list/get?")
+    @GET("testimonial/healthHisList/get?")
     suspend fun getTestimonials(
         @Query("index") index: Int,
         @Query("limit") limit: Int

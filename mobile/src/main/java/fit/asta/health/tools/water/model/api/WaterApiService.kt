@@ -26,6 +26,6 @@ interface WaterApiService {
     @PUT("tools/water/beverage/add/put")
     suspend fun updateBeverage(@Body beverage: NetBeverage): Status
 
-    @GET("tools/water/beverage/list/get/?")
+    @GET("tools/water/beverage/healthHisList/get/?")
     suspend fun getBeverageList(@Query("uid") userId: String): NetBeverageRes*/
 }

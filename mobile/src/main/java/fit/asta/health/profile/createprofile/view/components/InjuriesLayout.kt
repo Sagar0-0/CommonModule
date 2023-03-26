@@ -47,6 +47,8 @@ fun InjuriesLayout(
     onItemsSelect2: () -> Unit,
     selectedOption: TwoToggleSelections?,
     onStateChange: (TwoToggleSelections) -> Unit,
+    cardIndex1: Int,
+    cardIndex2: Int,
 ) {
 
     var text by remember { mutableStateOf(("")) }
@@ -105,7 +107,12 @@ fun InjuriesLayout(
                         RemoveChipOnCard(textOnChip = it.name,
                             checkedState = checkedState,
                             onClick = {
-                                viewModel.onEvent(ProfileEvent.SetSelectedRemoveItemOption(item = it))
+                                viewModel.onEvent(
+                                    ProfileEvent.SetSelectedRemoveItemOption(
+                                        item = it,
+                                        index = cardIndex1
+                                    )
+                                )
                             })
                     }
                 }
@@ -184,7 +191,12 @@ fun InjuriesLayout(
                         RemoveChipOnCard(textOnChip = it.name,
                             checkedState = checkedState2,
                             onClick = {
-                                viewModel.onEvent(ProfileEvent.SetSelectedRemoveItemOption(item = it))
+                                viewModel.onEvent(
+                                    ProfileEvent.SetSelectedRemoveItemOption(
+                                        item = it,
+                                        index = cardIndex2
+                                    )
+                                )
                             })
                     }
                 }

@@ -16,12 +16,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.switchmaterial.SwitchMaterial
 import fit.asta.health.R
+import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.view.adapters.AlarmAdapter
 import fit.asta.health.scheduler.view.alarmsetting.AlarmSettingActivity
 import fit.asta.health.scheduler.viewmodel.AlarmViewModel
 import fit.asta.health.scheduler.viewmodel.SchedulerBackendViewModel
-import fit.asta.health.common.utils.NetworkResult
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import java.io.Serializable
 
@@ -98,7 +98,7 @@ class MainActivityBindingAdapter {
                                         )
                                             .setAction("Undo") {
                                                 // adding on click listener to our action of snack bar.
-                                                // below line is to add our item to array list with a position.
+                                                // below line is to add our item to array healthHisList with a position.
                                                 viewModel.insertAlarm(deletedAlarm)
                                             }.show()
                                     } else {

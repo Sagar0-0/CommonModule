@@ -47,7 +47,7 @@ fun LifeStyleContent(
     val selectedWorkingEnvOption by viewModel.selectedWorkingEnv.collectAsStateWithLifecycle()
     val selectedWorkingStyOption by viewModel.selectedWorkStyle.collectAsStateWithLifecycle()
     val selectedWorkingHrsOption by viewModel.selectedWorkingHrs.collectAsStateWithLifecycle()
-    val lifeStyleList by viewModel.list.collectAsStateWithLifecycle()
+    val lifeStyleList by viewModel.healthHisList.collectAsStateWithLifecycle()
 
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null

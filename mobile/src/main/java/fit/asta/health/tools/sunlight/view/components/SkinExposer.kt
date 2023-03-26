@@ -113,7 +113,7 @@ fun SkinExposureCard(
 
 class SkinExposerDataState(val list: MutableList<SkinExposerData>) {
 
-    // were updating the entire list in a single pass using its iterator
+    // were updating the entire healthHisList in a single pass using its iterator
     fun onItemSelected(selectedItemData: SkinExposerData) {
         val iterator = list.listIterator()
 
@@ -139,9 +139,10 @@ fun SkinExposureList(
 
 
     Column(Modifier.fillMaxWidth()) {
-        Row(Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)) {
             androidx.compose.material.Text(text = rowTitle,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Normal,

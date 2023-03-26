@@ -25,7 +25,7 @@ interface SchedulerApiService {
         @Query("sid") scheduleId: String
     ): Response<AstaSchedulerGetResponse>
 
-    @GET("schedule/list/get/")
+    @GET("schedule/healthHisList/get/")
     suspend fun getScheduleListDataFromBackend(
         @Query("uid") userID: String
     ): Response<AstaSchedulerGetListResponse>
@@ -36,7 +36,7 @@ interface SchedulerApiService {
     ): Response<AstaSchedulerDeleteResponse>
 
     // Tags Endpoints
-    @GET("tag/list/get/")
+    @GET("tag/healthHisList/get/")
     suspend fun getTagListFromBackend(
         @Query("uid") userID: String
     ): Response<AstaGetTagsListResponse>
@@ -45,7 +45,7 @@ interface SchedulerApiService {
     suspend fun updateScheduleTag(@Body schedule: ScheduleTagNetData): Status
 
     // Media Endpoints
-    @GET("sound/list/get/?")
+    @GET("sound/healthHisList/get/?")
     suspend fun getAllUserMedia(@Query("uid") userID: String): Status
 
     @PUT("sound/put")

@@ -2,11 +2,11 @@ package fit.asta.health.network.repo
 
 import android.content.Context
 import androidx.documentfile.provider.DocumentFile
+import fit.asta.health.common.utils.InputStreamRequestBody
 import fit.asta.health.network.api.RemoteApis
 import fit.asta.health.network.data.MultiFileUpload
 import fit.asta.health.network.data.SingleFileUpload
 import fit.asta.health.network.data.UploadInfo
-import fit.asta.health.common.utils.InputStreamRequestBody
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -61,9 +61,9 @@ class FileUploadRepo(
         val multipart = MultipartBody.Builder().setType(MultipartBody.FORM)
 
         /*val id = fileInfo.id.toRequestBody("multipart/form-data".toMediaTypeOrNull()),
-        val body: RequestBody = list[0].toString()
+        val body: RequestBody = healthHisList[0].toString()
             .toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
-        multipart.addFormDataPart(name = "json", filename = "", list)*/
+        multipart.addFormDataPart(name = "json", filename = "", healthHisList)*/
 
         list.forEach {
 

@@ -53,7 +53,7 @@ class TagsBindingAdapter {
                         )
                             .setAction("Undo") {
                                 // adding on click listener to our action of snack bar.
-                                // below line is to add our item to array list with a position.
+                                // below line is to add our item to array healthHisList with a position.
                                 viewModel.insertTag(deletedTag)
                             }.show()
                     }

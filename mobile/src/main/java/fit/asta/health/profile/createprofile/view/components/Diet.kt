@@ -44,7 +44,7 @@ fun DietContent(
         listOf(ButtonListTypes(buttonType = "First"), ButtonListTypes(buttonType = "Second"))
 
     val selectedFoodRes by viewModel.selectedFoodResOption.collectAsStateWithLifecycle()
-    val dietList by viewModel.list.collectAsStateWithLifecycle()
+    val dietList by viewModel.healthHisList.collectAsStateWithLifecycle()
 
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null

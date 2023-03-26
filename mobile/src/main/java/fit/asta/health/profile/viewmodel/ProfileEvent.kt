@@ -20,8 +20,10 @@ sealed class ProfileEvent {
     data class SetSelectedWorkingEnvOption(val option: TwoToggleSelections) : ProfileEvent()
     data class SetSelectedWorkingStyleOption(val option: TwoToggleSelections) : ProfileEvent()
     data class SetSelectedGenderOption(val option: ThreeToggleSelections) : ProfileEvent()
-    data class SetSelectedAddItemOption(val item: HealthProperties) : ProfileEvent()
-    data class SetSelectedRemoveItemOption(val item: HealthProperties) : ProfileEvent()
+    data class SetSelectedAddItemOption(val item: HealthProperties, val index: Int) : ProfileEvent()
+    data class SetSelectedRemoveItemOption(val item: HealthProperties, val index: Int) :
+        ProfileEvent()
+
     data class OnNameChange(val name: String) : ProfileEvent()
     data class OnEmailChange(val email: String) : ProfileEvent()
     data class OnUserImgChange(val url: Uri?) : ProfileEvent()

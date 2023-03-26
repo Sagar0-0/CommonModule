@@ -3,8 +3,6 @@ package fit.asta.health.tools.water.model
 import android.util.Log
 import fit.asta.health.tools.water.model.domain.BeverageDetails
 import fit.asta.health.tools.water.model.domain.WaterTool
-import fit.asta.health.tools.water.model.network.AllBeverageData
-import fit.asta.health.tools.water.model.network.NetWaterTool
 import fit.asta.health.tools.water.model.network.NetWaterToolRes
 import fit.asta.health.tools.water.model.network.UserBeverageData
 
@@ -51,7 +49,7 @@ class WaterToolDataMapper {
             }
 //        }else{
 //            networkModel.waterTool.allBeveragesList.forEach {
-//                list.add(
+//                healthHisList.add(
 //                    BeverageDetails(
 //                        beverageId = it.id,
 //                        title = it.title,

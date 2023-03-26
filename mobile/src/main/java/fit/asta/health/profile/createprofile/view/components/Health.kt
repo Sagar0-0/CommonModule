@@ -1,6 +1,8 @@
 @file:OptIn(
     ExperimentalCoroutinesApi::class,
     ExperimentalCoroutinesApi::class,
+    ExperimentalCoroutinesApi::class,
+    ExperimentalCoroutinesApi::class,
     ExperimentalCoroutinesApi::class
 )
 
@@ -57,7 +59,11 @@ fun HealthContent(
     val selectedMed by viewModel.selectedMedOption.collectAsStateWithLifecycle()
     val selectedHealthTar by viewModel.selectedHealthTarOption.collectAsStateWithLifecycle()
     val selectedInjury by viewModel.selectedInjOption.collectAsStateWithLifecycle()
-    val healthHisList by viewModel.list.collectAsStateWithLifecycle()
+//    val healthHisList by viewModel.healthHisList.collectAsStateWithLifecycle()
+//    val injuriesList by viewModel.injuriesList.collectAsStateWithLifecycle()
+
+    val healthHisList by viewModel.healthPropertiesData.collectAsStateWithLifecycle()
+
 
     Log.d("validate", "Health History List -> $healthHisList")
 
@@ -75,81 +81,91 @@ fun HealthContent(
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            SelectionCardCreateProfile(
-                cardType = "Any Significant Health History?",
-                cardList = healthHisList,
-                radioButtonList = radioButtonList,
-                checkedState = checkedState,
-                onItemsSelect = onHealthHistory,
-                selectedOption = selectedHealthHis,
-                onStateChange = { state ->
-                    viewModel.onEvent(ProfileEvent.SetSelectHealthHisOption(state))
-                },
-                enabled = selectedHealthHis == TwoToggleSelections.First
-            )
+            healthHisList[0]?.let {
+                SelectionCardCreateProfile(
+                    cardType = "Any Significant Health History?",
+                    cardList = it,
+                    radioButtonList = radioButtonList,
+                    checkedState = checkedState,
+                    onItemsSelect = onHealthHistory,
+                    selectedOption = selectedHealthHis,
+                    onStateChange = { state ->
+                        viewModel.onEvent(ProfileEvent.SetSelectHealthHisOption(state))
+                    },
+                    enabled = selectedHealthHis == TwoToggleSelections.First,
+                    cardIndex = 0
+                )
+            }
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            InjuriesLayout(
-                cardType = "Any Injuries",
+            InjuriesLayout(cardType = "Any Injuries",
                 cardType2 = "Body Part?",
-                cardList = healthHisList,
-                cardList2 = healthHisList,
+                cardList = healthHisList[1]!!,
+                cardList2 = healthHisList[2]!!,
                 radioButtonList = radioButtonList,
                 checkedState = checkedState,
                 checkedState2 = checkedState,
                 onItemsSelect = onInjuries,
                 onItemsSelect2 = onBodyInjurySelect,
-                selectedOption = selectedInjury
-            ) { state ->
-                viewModel.onEvent(ProfileEvent.SetSelectedInjOption(state))
+                selectedOption = selectedInjury,
+                cardIndex1 = 1,
+                cardIndex2 = 2,
+                onStateChange = { state ->
+                    viewModel.onEvent(ProfileEvent.SetSelectedInjOption(state))
+                })
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            healthHisList[3]?.let {
+                SelectionCardCreateProfile(
+                    cardType = "Any Ailments?",
+                    cardList = it,
+                    radioButtonList = radioButtonList,
+                    checkedState = checkedState,
+                    onItemsSelect = onAilments,
+                    selectedOption = selectedAil,
+                    onStateChange = { state ->
+                        viewModel.onEvent(ProfileEvent.SetSelectedAilOption(state))
+                    },
+                    enabled = selectedAil == TwoToggleSelections.First,
+                    cardIndex = 3
+                )
             }
 
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            healthHisList[4]?.let {
+                SelectionCardCreateProfile(
+                    cardType = "Any Medications?",
+                    cardList = it,
+                    radioButtonList = radioButtonList,
+                    checkedState = checkedState,
+                    onItemsSelect = onMedications,
+                    selectedOption = selectedMed,
+                    onStateChange = { state ->
+                        viewModel.onEvent(ProfileEvent.SetSelectedMedOption(state))
+                    },
+                    enabled = selectedMed == TwoToggleSelections.First
+                )
+            }
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            SelectionCardCreateProfile(
-                cardType = "Any Ailments?",
-                cardList = healthHisList,
-                radioButtonList = radioButtonList,
-                checkedState = checkedState,
-                onItemsSelect = onAilments,
-                selectedOption = selectedAil,
-                onStateChange = { state ->
-                    viewModel.onEvent(ProfileEvent.SetSelectedAilOption(state))
-                },
-                enabled = selectedAil == TwoToggleSelections.First
-            )
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            SelectionCardCreateProfile(
-                cardType = "Any Medications?",
-                cardList = healthHisList,
-                radioButtonList = radioButtonList,
-                checkedState = checkedState,
-                onItemsSelect = onMedications,
-                selectedOption = selectedMed,
-                onStateChange = { state ->
-                    viewModel.onEvent(ProfileEvent.SetSelectedMedOption(state))
-                },
-                enabled = selectedMed == TwoToggleSelections.First
-            )
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            SelectionCardCreateProfile(
-                cardType = "Any Health Targets?",
-                cardList = healthHisList,
-                radioButtonList = radioButtonList,
-                checkedState = checkedState,
-                onItemsSelect = onHealthTargets,
-                selectedOption = selectedHealthTar,
-                onStateChange = { state ->
-                    viewModel.onEvent(ProfileEvent.SetSelectedHealthTarOption(state))
-                },
-                enabled = selectedHealthTar == TwoToggleSelections.First
-            )
+            healthHisList[5]?.let {
+                SelectionCardCreateProfile(
+                    cardType = "Any Health Targets?",
+                    cardList = it,
+                    radioButtonList = radioButtonList,
+                    checkedState = checkedState,
+                    onItemsSelect = onHealthTargets,
+                    selectedOption = selectedHealthTar,
+                    onStateChange = { state ->
+                        viewModel.onEvent(ProfileEvent.SetSelectedHealthTarOption(state))
+                    },
+                    enabled = selectedHealthTar == TwoToggleSelections.First
+                )
+            }
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
@@ -270,7 +286,7 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.Loading -> {}
                 is HPropState.NoInternet -> {}
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(cardList = state.properties)
+                    ItemSelectionBtmSheetLayout(cardList = state.properties, cardIndex = 0)
                 }
             }
         }
@@ -281,7 +297,7 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.Loading -> {}
                 is HPropState.NoInternet -> {}
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(cardList = state.properties)
+                    ItemSelectionBtmSheetLayout(cardList = state.properties, cardIndex = 1)
                 }
             }
         }
@@ -292,7 +308,7 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.Loading -> {}
                 is HPropState.NoInternet -> {}
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(cardList = state.properties)
+                    ItemSelectionBtmSheetLayout(cardList = state.properties, cardIndex = 2)
                 }
             }
         }
@@ -303,7 +319,7 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.Loading -> {}
                 is HPropState.NoInternet -> {}
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(cardList = state.properties)
+                    ItemSelectionBtmSheetLayout(cardList = state.properties, cardIndex = 3)
                 }
             }
         }
@@ -314,7 +330,7 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.Loading -> {}
                 is HPropState.NoInternet -> {}
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(cardList = state.properties)
+                    ItemSelectionBtmSheetLayout(cardList = state.properties, cardIndex = 4)
                 }
             }
         }
@@ -325,7 +341,7 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.Loading -> {}
                 is HPropState.NoInternet -> {}
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(cardList = state.properties)
+                    ItemSelectionBtmSheetLayout(cardList = state.properties, cardIndex = 5)
                 }
             }
         }
