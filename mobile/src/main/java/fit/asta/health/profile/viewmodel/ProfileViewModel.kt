@@ -201,20 +201,21 @@ class ProfileViewModel
     )
 
 
-    val healthPropertiesData: StateFlow<Map<Int, SnapshotStateList<HealthProperties>>> = _healthPropertiesData
+    val healthPropertiesData: StateFlow<Map<Int, SnapshotStateList<HealthProperties>>> =
+        _healthPropertiesData
 
     // Create a function to add or remove a HealthProperty from the list for a specific card view
-    fun addOrRemoveHealthProperty(cardViewIndex: Int, healthProperty: HealthProperties) {
-        val currentList = _healthPropertiesData.value[cardViewIndex] ?: mutableStateListOf()
-        if (currentList.contains(healthProperty)) {
-            currentList.remove(healthProperty)
-        } else {
-            currentList.add(healthProperty)
-        }
-        val updatedData = _healthPropertiesData.value.toMutableMap()
-        updatedData[cardViewIndex] = currentList
-        _healthPropertiesData.value = updatedData.toMap()
-    }
+//    fun addOrRemoveHealthProperty(cardViewIndex: Int, healthProperty: HealthProperties) {
+//        val currentList = _healthPropertiesData.value[cardViewIndex] ?: mutableStateListOf()
+//        if (currentList.contains(healthProperty)) {
+//            currentList.remove(healthProperty)
+//        } else {
+//            currentList.add(healthProperty)
+//        }
+//        val updatedData = _healthPropertiesData.value.toMutableMap()
+//        updatedData[cardViewIndex] = currentList
+//        _healthPropertiesData.value = updatedData.toMap()
+//    }
 
     fun demoAdd(cardViewIndex: Int, item: HealthProperties) {
         val currentList = _healthPropertiesData.value[cardViewIndex] ?: mutableStateListOf()
