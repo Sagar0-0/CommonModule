@@ -200,6 +200,7 @@ class ProfileViewModel
         )
     )
 
+
     val healthPropertiesData: StateFlow<Map<Int, SnapshotStateList<HealthProperties>>> = _healthPropertiesData
 
     // Create a function to add or remove a HealthProperty from the list for a specific card view
