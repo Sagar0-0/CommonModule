@@ -22,12 +22,14 @@ import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.bottomsheets.ItemSelectionBtmSheetLayout
 import fit.asta.health.profile.createprofile.view.components.LifeStyleCreateBottomSheetType.*
+import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.view.*
 import fit.asta.health.profile.viewmodel.HPropState
 import fit.asta.health.profile.viewmodel.ProfileEvent
 import fit.asta.health.profile.viewmodel.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
+import java.util.*
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -47,7 +49,8 @@ fun LifeStyleContent(
     val selectedWorkingEnvOption by viewModel.selectedWorkingEnv.collectAsStateWithLifecycle()
     val selectedWorkingStyOption by viewModel.selectedWorkStyle.collectAsStateWithLifecycle()
     val selectedWorkingHrsOption by viewModel.selectedWorkingHrs.collectAsStateWithLifecycle()
-    val lifeStyleList by viewModel.healthHisList.collectAsStateWithLifecycle()
+
+    val lfList by viewModel.lfPropertiesData.collectAsState()
 
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
@@ -144,27 +147,33 @@ fun LifeStyleContent(
 
             OnlyChipSelectionCard(
                 cardType = "Current Activities?",
-                cardList = lifeStyleList,
+                cardList = lfList.getValue(0),
                 checkedState = checkedState,
-                onItemsSelect = onCurrentActivity
+                onItemsSelect = onCurrentActivity,
+                cardIndex = 0,
+                composeIndex = ComposeIndex.Second
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
             OnlyChipSelectionCard(
                 cardType = "Preferred Activities?",
-                cardList = lifeStyleList,
+                cardList = lfList.getValue(1),
                 checkedState = checkedState,
-                onItemsSelect = onPreferredActivity
+                onItemsSelect = onPreferredActivity,
+                cardIndex = 1,
+                composeIndex = ComposeIndex.Second
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
             OnlyChipSelectionCard(
                 cardType = "LifeStyleTargets?",
-                cardList = lifeStyleList,
+                cardList = lfList.getValue(2),
                 checkedState = checkedState,
-                onItemsSelect = onLifeStyleTargets
+                onItemsSelect = onLifeStyleTargets,
+                cardIndex = 2,
+                composeIndex = ComposeIndex.Second
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
@@ -218,8 +227,7 @@ fun LifeStyleCreateScreen(
         }
     }
 
-    ModalBottomSheetLayout(
-        modifier = Modifier.fillMaxSize(),
+    ModalBottomSheetLayout(modifier = Modifier.fillMaxSize(),
         sheetState = modalBottomSheetState,
         sheetContent = {
             Spacer(modifier = Modifier.height(1.dp))
@@ -227,7 +235,8 @@ fun LifeStyleCreateScreen(
                 LifeStyleCreateBottomSheetLayout(sheetLayout = it, closeSheet = { closeSheet() })
             }
         }) {
-        LifeStyleContent(eventPrevious = eventPrevious,
+        LifeStyleContent(
+            eventPrevious = eventPrevious,
             eventNext = eventNext,
             onSkipEvent = onSkipEvent,
             onCurrentActivity = {
@@ -270,7 +279,11 @@ fun LifeStyleCreateBottomSheetLayout(
                 is HPropState.Loading -> {}
                 is HPropState.NoInternet -> {}
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(cardList = state.properties)
+                    ItemSelectionBtmSheetLayout(
+                        cardList = state.properties,
+                        cardIndex = 0,
+                        composeIndex = ComposeIndex.Second
+                    )
                 }
             }
         }
@@ -281,7 +294,11 @@ fun LifeStyleCreateBottomSheetLayout(
                 is HPropState.Loading -> {}
                 is HPropState.NoInternet -> {}
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(cardList = state.properties)
+                    ItemSelectionBtmSheetLayout(
+                        cardList = state.properties,
+                        cardIndex = 1,
+                        composeIndex = ComposeIndex.Second
+                    )
                 }
             }
         }
@@ -292,7 +309,11 @@ fun LifeStyleCreateBottomSheetLayout(
                 is HPropState.Loading -> {}
                 is HPropState.NoInternet -> {}
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(cardList = state.properties)
+                    ItemSelectionBtmSheetLayout(
+                        cardList = state.properties,
+                        cardIndex = 2,
+                        composeIndex = ComposeIndex.Second
+                    )
                 }
             }
         }

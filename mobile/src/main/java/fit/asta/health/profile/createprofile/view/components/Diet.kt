@@ -18,6 +18,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.bottomsheets.ItemSelectionBtmSheetLayout
 import fit.asta.health.profile.createprofile.view.components.DietCreateBottomSheetType.*
+import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.TwoToggleSelections
 import fit.asta.health.profile.view.*
 import fit.asta.health.profile.viewmodel.HPropState
@@ -27,7 +28,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun DietContent(
     viewModel: ProfileViewModel = hiltViewModel(),
@@ -44,9 +45,8 @@ fun DietContent(
         listOf(ButtonListTypes(buttonType = "First"), ButtonListTypes(buttonType = "Second"))
 
     val selectedFoodRes by viewModel.selectedFoodResOption.collectAsStateWithLifecycle()
-    val dietList by viewModel.healthHisList.collectAsStateWithLifecycle()
 
-    val dietData by viewModel.healthPropertiesData.collectAsStateWithLifecycle()
+    val dietList by viewModel.dpData.collectAsState()
 
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
@@ -64,43 +64,51 @@ fun DietContent(
 
             OnlyChipSelectionCard(
                 cardType = "Dietary Preferences",
-                cardList = dietList,
+                cardList = dietList.getValue(0),
                 checkedState = checkedState,
-                onItemsSelect = onDietaryPref
+                onItemsSelect = onDietaryPref,
+                cardIndex = 0,
+                composeIndex = ComposeIndex.Third
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
             OnlyChipSelectionCard(
                 cardType = "Non-Veg Consumption Days?",
-                cardList = dietList,
+                cardList = dietList.getValue(1),
                 checkedState = checkedState,
-                onItemsSelect = onNonVegDays
+                onItemsSelect = onNonVegDays,
+                cardIndex = 1,
+                composeIndex = ComposeIndex.Third
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
             OnlyChipSelectionCard(
                 cardType = "Food Allergies?",
-                cardList = dietList,
+                cardList = dietList.getValue(2),
                 checkedState = checkedState,
-                onItemsSelect = onFoodAllergies
+                onItemsSelect = onFoodAllergies,
+                cardIndex = 2,
+                composeIndex = ComposeIndex.Third
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
             OnlyChipSelectionCard(
                 cardType = "Cuisines?",
-                cardList = dietList,
+                cardList = dietList.getValue(3),
                 checkedState = checkedState,
-                onItemsSelect = onCuisines
+                onItemsSelect = onCuisines,
+                cardIndex = 3,
+                composeIndex = ComposeIndex.Third
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
             SelectionCardCreateProfile(
                 cardType = "Food Restrictions?",
-                cardList = dietList,
+                cardList = dietList.getValue(4),
                 radioButtonList = radioButtonList,
                 checkedState = checkedState,
                 onItemsSelect = onFoodRes,
@@ -112,7 +120,9 @@ fun DietContent(
                         )
                     )
                 },
-                enabled = selectedFoodRes == TwoToggleSelections.First
+                enabled = selectedFoodRes == TwoToggleSelections.First,
+                cardIndex = 4,
+                composeIndex = ComposeIndex.Third
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
@@ -217,7 +227,11 @@ fun DietCreateBottomSheetLayout(
                 is HPropState.Loading -> {}
                 is HPropState.NoInternet -> {}
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(cardList = state.properties)
+                    ItemSelectionBtmSheetLayout(
+                        cardList = state.properties,
+                        cardIndex = 0,
+                        composeIndex = ComposeIndex.Third
+                    )
                 }
             }
         }
@@ -228,7 +242,11 @@ fun DietCreateBottomSheetLayout(
                 is HPropState.Loading -> {}
                 is HPropState.NoInternet -> {}
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(cardList = state.properties)
+                    ItemSelectionBtmSheetLayout(
+                        cardList = state.properties,
+                        cardIndex = 1,
+                        composeIndex = ComposeIndex.Third
+                    )
                 }
             }
         }
@@ -239,7 +257,11 @@ fun DietCreateBottomSheetLayout(
                 is HPropState.Loading -> {}
                 is HPropState.NoInternet -> {}
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(cardList = state.properties)
+                    ItemSelectionBtmSheetLayout(
+                        cardList = state.properties,
+                        cardIndex = 2,
+                        composeIndex = ComposeIndex.Third
+                    )
                 }
             }
         }
@@ -250,7 +272,11 @@ fun DietCreateBottomSheetLayout(
                 is HPropState.Loading -> {}
                 is HPropState.NoInternet -> {}
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(cardList = state.properties)
+                    ItemSelectionBtmSheetLayout(
+                        cardList = state.properties,
+                        cardIndex = 3,
+                        composeIndex = ComposeIndex.Third
+                    )
                 }
             }
         }
@@ -261,7 +287,11 @@ fun DietCreateBottomSheetLayout(
                 is HPropState.Loading -> {}
                 is HPropState.NoInternet -> {}
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(cardList = state.properties)
+                    ItemSelectionBtmSheetLayout(
+                        cardList = state.properties,
+                        cardIndex = 4,
+                        composeIndex = ComposeIndex.Third
+                    )
                 }
             }
         }

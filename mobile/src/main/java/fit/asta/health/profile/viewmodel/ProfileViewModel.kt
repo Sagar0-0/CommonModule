@@ -188,7 +188,7 @@ class ProfileViewModel
     val injuriesList = MutableStateFlow(demoArrayList)
 
 
-    // Create a MutableStateFlow object to hold the ViewModel data
+    // health section
     private val _healthPropertiesData = MutableStateFlow(
         mapOf(
             0 to mutableStateListOf<HealthProperties>(),
@@ -200,13 +200,16 @@ class ProfileViewModel
         )
     )
 
-
     val healthPropertiesData: StateFlow<Map<Int, SnapshotStateList<HealthProperties>>> =
         _healthPropertiesData
 
-
-    private fun demoAdd(cardViewIndex: Int, item: HealthProperties) {
-        val currentList = _healthPropertiesData.value[cardViewIndex] ?: mutableStateListOf()
+    private fun healthAdd(cardViewIndex: Int, item: HealthProperties, composeIndex: ComposeIndex) {
+        val propertyData = when (composeIndex) {
+            ComposeIndex.First -> _healthPropertiesData
+            ComposeIndex.Second -> _lfPropertiesData
+            ComposeIndex.Third -> _dietPropertiesData
+        }
+        val currentList = propertyData.value[cardViewIndex] ?: mutableStateListOf()
         if (!currentList.contains(item)) {
             if (currentList.contains(item) && isSameItemRemovedAndAdded) {
                 isSameItemRemovedAndAdded = false
@@ -214,13 +217,24 @@ class ProfileViewModel
                 currentList.add(item)
             }
         }
-        val updatedData = _healthPropertiesData.value.toMutableMap()
+        val updatedData = propertyData.value.toMutableMap()
         updatedData[cardViewIndex] = currentList
-        _healthPropertiesData.value = updatedData.toMap()
+        propertyData.value = updatedData.toMap()
     }
 
-    private fun demoRemove(cardViewIndex: Int, item: HealthProperties) {
-        val currentList = _healthPropertiesData.value[cardViewIndex] ?: mutableStateListOf()
+    private fun healthRemove(
+        cardViewIndex: Int,
+        item: HealthProperties,
+        composeIndex: ComposeIndex,
+    ) {
+
+        val propertyData = when (composeIndex) {
+            ComposeIndex.First -> _healthPropertiesData
+            ComposeIndex.Second -> _lfPropertiesData
+            ComposeIndex.Third -> _dietPropertiesData
+        }
+
+        val currentList = propertyData.value[cardViewIndex] ?: mutableStateListOf()
         if (currentList.contains(item)) {
             if (currentList.contains(item) && !isSameItemRemovedAndAdded) {
                 isSameItemRemovedAndAdded = true
@@ -228,37 +242,37 @@ class ProfileViewModel
                 currentList.remove(item)
             }
         }
-        val updatedData = _healthPropertiesData.value.toMutableMap()
+        val updatedData = propertyData.value.toMutableMap()
         updatedData[cardViewIndex] = currentList
-        _healthPropertiesData.value = updatedData.toMap()
+        propertyData.value = updatedData.toMap()
     }
 
+    //LifeStyleSection
+    private val _lfPropertiesData = MutableStateFlow(
+        mapOf(
+            0 to mutableStateListOf<HealthProperties>(),
+            1 to mutableStateListOf<HealthProperties>(),
+            2 to mutableStateListOf<HealthProperties>(),
+        )
+    )
 
-    private fun addItemFrmHp(
-        item: HealthProperties,
-    ) {
+    val lfPropertiesData: StateFlow<Map<Int, SnapshotStateList<HealthProperties>>> =
+        _lfPropertiesData
 
-        if (!myArrayList.contains(item)) {
-            if (myArrayList.contains(item) && isSameItemRemovedAndAdded) {
-                isSameItemRemovedAndAdded = false
-            } else {
-                myArrayList.add(item)
-            }
-        }
 
-    }
+    //Diet
+    private val _dietPropertiesData = MutableStateFlow(
+        mapOf(
+            0 to mutableStateListOf<HealthProperties>(),
+            1 to mutableStateListOf<HealthProperties>(),
+            2 to mutableStateListOf<HealthProperties>(),
+            3 to mutableStateListOf<HealthProperties>(),
+            4 to mutableStateListOf<HealthProperties>(),
+        )
+    )
 
-    private fun removeItemFrmHp(item: HealthProperties) {
+    val dpData: StateFlow<Map<Int, SnapshotStateList<HealthProperties>>> = _dietPropertiesData
 
-        if (myArrayList.contains(item)) {
-            if (myArrayList.contains(item) && !isSameItemRemovedAndAdded) {
-                isSameItemRemovedAndAdded = true
-            } else {
-                myArrayList.remove(item)
-            }
-        }
-
-    }
 
     val profileData = savedState.getStateFlow(PROFILE_DATA, UserProfile())
 
@@ -418,11 +432,11 @@ class ProfileViewModel
             is ProfileEvent.SetSelectedWorkingEnvOption -> setSelectedWorkingEnvOption(event.option)
             is ProfileEvent.SetSelectedWorkingHrsOption -> setSelectedWorkingHrsOption(event.option)
             is ProfileEvent.SetSelectedWorkingStyleOption -> setSelectedWorkingStyleOption(event.option)
-            is ProfileEvent.SetSelectedAddItemOption -> demoAdd(
-                cardViewIndex = event.index, item = event.item
+            is ProfileEvent.SetSelectedAddItemOption -> healthAdd(
+                cardViewIndex = event.index, item = event.item, composeIndex = event.composeIndex
             )
-            is ProfileEvent.SetSelectedRemoveItemOption -> demoRemove(
-                cardViewIndex = event.index, item = event.item
+            is ProfileEvent.SetSelectedRemoveItemOption -> healthRemove(
+                cardViewIndex = event.index, item = event.item, composeIndex = event.composeIndex
             )
 
             is ProfileEvent.OnEmailChange -> {

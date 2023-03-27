@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.HealthProperties
 import fit.asta.health.profile.model.domain.TwoToggleSelections
 import fit.asta.health.profile.view.ButtonListTypes
@@ -110,7 +111,8 @@ fun InjuriesLayout(
                                 viewModel.onEvent(
                                     ProfileEvent.SetSelectedRemoveItemOption(
                                         item = it,
-                                        index = cardIndex1
+                                        index = cardIndex1,
+                                        composeIndex = ComposeIndex.First
                                     )
                                 )
                             })
@@ -194,7 +196,8 @@ fun InjuriesLayout(
                                 viewModel.onEvent(
                                     ProfileEvent.SetSelectedRemoveItemOption(
                                         item = it,
-                                        index = cardIndex2
+                                        index = cardIndex2,
+                                        composeIndex = ComposeIndex.First
                                     )
                                 )
                             })

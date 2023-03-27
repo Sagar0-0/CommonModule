@@ -25,6 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.bottomsheets.ItemSelectionBtmSheetLayout
 import fit.asta.health.profile.createprofile.view.components.HealthCreateBottomSheetTypes.*
+import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.TwoToggleSelections
 import fit.asta.health.profile.view.ButtonListTypes
 import fit.asta.health.profile.view.SelectionCardCreateProfile
@@ -91,7 +92,8 @@ fun HealthContent(
                     viewModel.onEvent(ProfileEvent.SetSelectHealthHisOption(state))
                 },
                 enabled = selectedHealthHis == TwoToggleSelections.First,
-                cardIndex = 0
+                cardIndex = 0,
+                composeIndex = ComposeIndex.First
             )
 
 
@@ -126,7 +128,8 @@ fun HealthContent(
                     viewModel.onEvent(ProfileEvent.SetSelectedAilOption(state))
                 },
                 enabled = selectedAil == TwoToggleSelections.First,
-                cardIndex = 3
+                cardIndex = 3,
+                composeIndex = ComposeIndex.First
             )
 
 
@@ -143,7 +146,8 @@ fun HealthContent(
                     viewModel.onEvent(ProfileEvent.SetSelectedMedOption(state))
                 },
                 enabled = selectedMed == TwoToggleSelections.First,
-                cardIndex = 4
+                cardIndex = 4,
+                composeIndex = ComposeIndex.First
             )
 
 
@@ -160,7 +164,8 @@ fun HealthContent(
                     viewModel.onEvent(ProfileEvent.SetSelectedHealthTarOption(state))
                 },
                 enabled = selectedHealthTar == TwoToggleSelections.First,
-                cardIndex = 5
+                cardIndex = 5,
+                composeIndex = ComposeIndex.First
             )
 
 
@@ -283,7 +288,11 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.Loading -> {}
                 is HPropState.NoInternet -> {}
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(cardList = state.properties, cardIndex = 0)
+                    ItemSelectionBtmSheetLayout(
+                        cardList = state.properties,
+                        cardIndex = 0,
+                        composeIndex = ComposeIndex.First
+                    )
                 }
             }
         }
@@ -294,7 +303,11 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.Loading -> {}
                 is HPropState.NoInternet -> {}
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(cardList = state.properties, cardIndex = 1)
+                    ItemSelectionBtmSheetLayout(
+                        cardList = state.properties,
+                        cardIndex = 1,
+                        composeIndex = ComposeIndex.First
+                    )
                 }
             }
         }
@@ -305,7 +318,11 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.Loading -> {}
                 is HPropState.NoInternet -> {}
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(cardList = state.properties, cardIndex = 2)
+                    ItemSelectionBtmSheetLayout(
+                        cardList = state.properties,
+                        cardIndex = 2,
+                        composeIndex = ComposeIndex.First
+                    )
                 }
             }
         }
@@ -316,7 +333,11 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.Loading -> {}
                 is HPropState.NoInternet -> {}
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(cardList = state.properties, cardIndex = 3)
+                    ItemSelectionBtmSheetLayout(
+                        cardList = state.properties,
+                        cardIndex = 3,
+                        composeIndex = ComposeIndex.First
+                    )
                 }
             }
         }
@@ -327,7 +348,11 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.Loading -> {}
                 is HPropState.NoInternet -> {}
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(cardList = state.properties, cardIndex = 4)
+                    ItemSelectionBtmSheetLayout(
+                        cardList = state.properties,
+                        cardIndex = 4,
+                        composeIndex = ComposeIndex.First
+                    )
                 }
             }
         }
@@ -338,7 +363,11 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.Loading -> {}
                 is HPropState.NoInternet -> {}
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(cardList = state.properties, cardIndex = 5)
+                    ItemSelectionBtmSheetLayout(
+                        cardList = state.properties,
+                        cardIndex = 5,
+                        composeIndex = ComposeIndex.First
+                    )
                 }
             }
         }
