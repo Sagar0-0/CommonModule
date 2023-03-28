@@ -287,13 +287,12 @@ class ProfileViewModel
 
 
     //Physique
-    private val dob = savedState.getStateFlow(DOB, InputIntWrapper())
-    val age = savedState.getStateFlow(AGE, InputIntWrapper())
-    val weight = savedState.getStateFlow(WEIGHT, InputIntWrapper())
-    val height = savedState.getStateFlow(HEIGHT, InputIntWrapper())
-    private val pregnancyWeek = savedState.getStateFlow(PREGNANCY_WEEK, InputIntWrapper())
+    val dob = savedState.getStateFlow(DOB, InputWrapper())
+    val age = savedState.getStateFlow(AGE, InputWrapper())
+    val weight = savedState.getStateFlow(WEIGHT, InputWrapper())
+    val height = savedState.getStateFlow(HEIGHT, InputWrapper())
+    val pregnancyWeek = savedState.getStateFlow(PREGNANCY_WEEK, InputWrapper())
     private val bodyType = savedState.getStateFlow(BODY_TYPE, InputIntWrapper())
-
 
     init {
 
@@ -340,9 +339,9 @@ class ProfileViewModel
                         url = userImg.value.url
                     ), physique = Physique(
                         bodyType = bodyType.value.value,
-                        height = height.value.value,
-                        pregnancyWeek = pregnancyWeek.value.value,
-                        weight = weight.value.value
+                        height = height.value.value.toInt(),
+                        pregnancyWeek = pregnancyWeek.value.value.toInt(),
+                        weight = weight.value.value.toInt()
                     ), health = Health(
                         ailments = ailments
                     )
@@ -418,6 +417,7 @@ class ProfileViewModel
     fun onEvent(event: ProfileEvent) {
 
         when (event) {
+
             is ProfileEvent.GetHealthProperties -> getHealthProperties(propertyType = event.propertyType)
             is ProfileEvent.SetSelectHealthHisOption -> setSelectedHealthHisOption(option = event.option)
             is ProfileEvent.SetSelectedAilOption -> setSelectedAilOption(event.option)
@@ -456,7 +456,31 @@ class ProfileViewModel
                     localUrl = event.url
                 )
             }
-
+            is ProfileEvent.OnUserHeightChange -> {
+                savedState[HEIGHT] = height.value.copy(
+                    value = event.height
+                )
+            }
+            is ProfileEvent.OnUserWeightChange -> {
+                savedState[WEIGHT] = weight.value.copy(
+                    value = event.weight
+                )
+            }
+            is ProfileEvent.OnUserAGEChange -> {
+                savedState[AGE] = age.value.copy(
+                    value = event.age
+                )
+            }
+            is ProfileEvent.OnUserDOBChange -> {
+                savedState[DOB] = dob.value.copy(
+                    value = event.dob
+                )
+            }
+            is ProfileEvent.OnUserPregWeekChange -> {
+                savedState[PREGNANCY_WEEK] = pregnancyWeek.value.copy(
+                    value = event.week
+                )
+            }
         }
 
     }

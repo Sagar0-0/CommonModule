@@ -36,4 +36,9 @@ sealed class ProfileEvent {
     data class OnNameChange(val name: String) : ProfileEvent()
     data class OnEmailChange(val email: String) : ProfileEvent()
     data class OnUserImgChange(val url: Uri?) : ProfileEvent()
+    data class OnUserWeightChange(val weight: String) : ProfileEvent()
+    data class OnUserHeightChange(val height: String) : ProfileEvent()
+    data class OnUserDOBChange(val dob: String) : ProfileEvent()
+    data class OnUserAGEChange(val age: String) : ProfileEvent()
+    data class OnUserPregWeekChange(val week: String) : ProfileEvent()
 }
