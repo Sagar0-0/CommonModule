@@ -52,16 +52,16 @@ class WalkingViewModel
             if (date == null) {
                 val stepsData = StepsData(
                     date = LocalDate.now().dayOfMonth, status = "",
-                    initialSteps = 0, allSteps = 0,
-                    time = 0
+                    initialSteps = 0, allSteps = 0, time = 0,
+                    realtime = 0, distanceRecommend = 0.0, durationRecommend = 0,
+                    distanceTarget = 0.0, durationTarget = 0
                 )
                 localRepo.insert(stepsData)
-            }
-            else {
+            } else {
                 if (date.status == "active") {
                     startWorking.value = true
                     _homeUiState.value = _homeUiState.value.copy(
-                        distance = date.allSteps / 1408,
+                        distance = (date.allSteps / 1408).toDouble(),
                         steps = date.allSteps,
                         duration = ((System.nanoTime() - date.time) / 1_000_000_000L / 60L)
                     )
@@ -78,6 +78,16 @@ class WalkingViewModel
                         is NetworkResult.Loading -> {}
                         is NetworkResult.Success -> {
                             _apiState.value = it.data!!
+                            val date = localRepo.getStepsData(LocalDate.now().dayOfMonth)
+                            if (date != null) {
+                                localRepo.updateTargetAndRecommend(
+                                    date = date.date,
+                                    distanceRecommend = it.data.distanceRecommend,
+                                    durationRecommend = it.data.durationRecommend,
+                                    distanceTarget = it.data.distanceTarget,
+                                    durationTarget = it.data.durationTarget
+                                )
+                            }
                         }
                         is NetworkResult.Error -> {}
                         else -> {}
@@ -114,13 +124,11 @@ class WalkingViewModel
                 changeStatus("inactive")
                 endScreen()
             }
-            is StepCounterUIEvent.PutDataButtonClicked->{
+            is StepCounterUIEvent.PutDataButtonClicked -> {
                 putDataToServer()
             }
         }
     }
-
-
 
 
     private fun calculateSpeed(steps: Int, stepLength: Float, timeNs: Long): Float {
@@ -138,8 +146,8 @@ class WalkingViewModel
     fun putDataToServer() {
         viewModelScope.launch {
             try {
-             val result= walkingToolRepo.putData(setData())
-                Log.d("TAG", "putDataToServer: ${result.status}")
+                val result = walkingToolRepo.putData(setData())
+                Log.d("TAG", "putDataToServer: ${result.status.msg}")
             } catch (e: Exception) {
                 Log.d("TAG", "putDataToServer error: ${e.message}")
             }
@@ -195,7 +203,8 @@ class WalkingViewModel
     fun changeUi(data: HomeUIState) {
         _homeUiState.value = data
     }
-    fun setData():PutData {
+
+    fun setData(): PutData {
         return PutData(
             code = 3,
             id = "6309a9379af54f142c65fbfe",

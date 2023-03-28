@@ -19,10 +19,22 @@ interface StepsDataDao {
 
     @Query("UPDATE steps_data SET all_steps = :all_steps WHERE date = :date")
     suspend fun updateStepsonRunning(date: Int,all_steps:Int)
+    @Query("UPDATE steps_data SET initial_steps = :initial_steps WHERE date = :date")
+    suspend fun updateSteps(date: Int,initial_steps:Int)
 
     @Query("UPDATE steps_data SET time = :time WHERE date = :date")
     suspend fun updateTime(date: Int,time: Long)
 
-    @Query("UPDATE steps_data SET initial_steps = :initial_steps WHERE date = :date")
-    suspend fun updateSteps(date: Int, initial_steps: Int)
+    @Query("UPDATE steps_data SET realtime = :realtime WHERE date = :date")
+    suspend fun updateRealTime(date: Int, realtime: Int)
+
+    @Query("UPDATE steps_data SET distanceRecommend = :distanceRecommend,durationRecommend = :durationRecommend,distanceTarget = :distanceTarget,durationTarget = :durationTarget WHERE date = :date")
+    suspend fun updateTargetAndRecommend(
+        date: Int,
+        distanceRecommend: Double,
+        durationRecommend: Int,
+        distanceTarget: Double,
+        durationTarget: Int
+    )
+
 }

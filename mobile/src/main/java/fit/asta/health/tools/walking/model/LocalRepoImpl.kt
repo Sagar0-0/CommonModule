@@ -28,5 +28,19 @@ class LocalRepoImpl(private val stepsDataDao: StepsDataDao):LocalRepo {
        stepsDataDao.updateSteps(date,step)
     }
 
+    override suspend fun updateRealTime(date: Int, time: Int) {
+      stepsDataDao.updateRealTime(date, time)
+    }
+
+    override suspend fun updateTargetAndRecommend(
+        date: Int,
+        distanceRecommend: Double,
+        durationRecommend: Int,
+        distanceTarget: Double,
+        durationTarget: Int
+    ) {
+       stepsDataDao.updateTargetAndRecommend(date, distanceRecommend, durationRecommend, distanceTarget, durationTarget)
+    }
+
 
 }

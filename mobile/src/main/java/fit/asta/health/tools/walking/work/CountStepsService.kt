@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.R
@@ -66,24 +67,33 @@ class CountStepsService : Service() {
                 if (data != null && data.date == date) {
                     if (data.initialSteps > 1) {
                         localRepo.updateStepsonRunning(
-                            date = data.date,
+                            date = date,
                             all_steps = step[0].toInt() - data.initialSteps,
+                        )
+                        localRepo.updateRealTime(
+                            date = date,
+                            time = ((System.nanoTime() - data.time) / 1_000_000_000L / 60L).toInt()
                         )
                     } else {
                         localRepo.updateSteps(date = date, step = step[0].toInt())
                     }
                     val updatedNotification = notification.setContentText(
-                        "steps: ${step[0].toInt() - data.initialSteps}"
+                        "steps: ${step[0].toInt() - data.initialSteps} time: ${((System.nanoTime() - data.time) / 1_000_000_000L / 60L)}"
                     )
                     notificationManager.notify(1, updatedNotification.build())
-                    stepCountFlow.value= stepCountFlow.value.copy(
-                        distance = ((step[0].toInt() - data.initialSteps) / 1408),
+                    stepCountFlow.value = stepCountFlow.value.copy(
+                        distance = ((step[0].toInt() - data.initialSteps) / 1408).toDouble(),
                         steps = (step[0].toInt() - data.initialSteps),
-                        duration = ((System.nanoTime() - data.time) / 1_000_000_000L / 60L)
+                        duration = ((System.nanoTime() - data.time) / 1_000_000_000L / 60L),
+                        valueDistanceRecommendation = (((step[0].toInt() - data.initialSteps) / 1408) / data.distanceRecommend)*100,
+                        valueDurationRecommendation = (data.realtime*100)/data.durationRecommend,
+                        valueDistanceGoal = (((step[0].toInt() - data.initialSteps) / 1408) / data.distanceTarget)*100,
+                        valueDurationGoal = (data.realtime *100)/data.durationTarget,
                     )
+                    Log.d("TAG", "change value : ${stepCountFlow.value}")
 
-                }
-                else{
+
+                } else {
 
                 }
             }
@@ -91,7 +101,6 @@ class CountStepsService : Service() {
 
         startForeground(1, notification.build())
     }
-
 
 
     override fun onDestroy() {

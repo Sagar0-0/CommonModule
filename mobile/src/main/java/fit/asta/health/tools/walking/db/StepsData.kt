@@ -10,6 +10,10 @@ data class StepsData(
     @ColumnInfo(name = "initial_steps") val initialSteps: Int,
     @ColumnInfo(name = "status") val status: String,
     @ColumnInfo(name = "all_steps") val allSteps: Int,
-    @ColumnInfo(name = "time") val time: Long
-
+    @ColumnInfo(name = "time") val time: Long,
+    @ColumnInfo(name = "realtime") val realtime: Int,
+    @ColumnInfo(name = "distanceRecommend")  val distanceRecommend: Double,
+    @ColumnInfo(name = "durationRecommend") val durationRecommend: Int,
+    @ColumnInfo(name = "distanceTarget")  val distanceTarget: Double,
+    @ColumnInfo(name = "durationTarget") val durationTarget: Int,
 )

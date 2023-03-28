@@ -139,7 +139,7 @@ fun HomeLayout(paddingValues: PaddingValues, state: HomeUIState, apiState: Walki
     ) {
         Spacer(modifier = Modifier.height(8.dp))
 
-        MainCircularSlider(apiState = apiState) { }
+        MainCircularSlider(apiState = apiState, state = state) { }
         StepsDetailsCard(
             modifier = Modifier,
             distance = state.distance,
@@ -235,8 +235,16 @@ fun WalkingBottomSheetView(
             }
             ButtonWithColor(
                 modifier = Modifier.weight(0.5f),
-                color = if (!startWorking.value) { Color.Blue } else { Color.Red },
-                text = if (!startWorking.value) { "START" } else { "END" }
+                color = if (!startWorking.value) {
+                    Color.Blue
+                } else {
+                    Color.Red
+                },
+                text = if (!startWorking.value) {
+                    "START"
+                } else {
+                    "END"
+                }
             ) {
                 if (startWorking.value) {
                     homeViewModel.onUIEvent(StepCounterUIEvent.StopButtonClicked)
@@ -254,7 +262,12 @@ fun WalkingBottomSheetView(
 
 
 @Composable
-fun MainCircularSlider(modifier: Modifier = Modifier, apiState: WalkingTool, onClick: () -> Unit) {
+fun MainCircularSlider(
+    modifier: Modifier = Modifier,
+    apiState: WalkingTool,
+    state: HomeUIState,
+    onClick: () -> Unit
+) {
     val isDuration = remember {
         mutableStateOf(true)
     }
@@ -281,23 +294,28 @@ fun MainCircularSlider(modifier: Modifier = Modifier, apiState: WalkingTool, onC
                 ProgressBarItem(
                     isDuration = isDuration.value,
                     modifier = Modifier.weight(0.3f),
-                    value = (if (isDuration.value) {
-                        apiState.durationRecommend
-                    } else {
-                        apiState.distanceRecommend.toInt()
-                    }),
+                    targetDistance = apiState.distanceRecommend,
+                    targetDuration = apiState.durationRecommend,
+                    valueDistance = state.valueDistanceRecommendation.toInt(),
+                    valueDuration =state.valueDurationRecommendation ,
                     name = "Recommended"
                 )
                 ProgressBarItem(
                     isDuration = isDuration.value,
                     modifier = Modifier.weight(0.3f),
-                    value = 10,
+                    targetDistance = apiState.distanceTarget,
+                    targetDuration = apiState.durationTarget,
+                    valueDistance = state.valueDistanceGoal.toInt(),
+                    valueDuration =state.valueDurationGoal ,
                     name = "Goal"
                 )
                 ProgressBarItem(
                     isDuration = isDuration.value,
                     modifier = Modifier.weight(0.3f),
-                    value = 30,
+                    targetDistance = 50.0,
+                    targetDuration = 50,
+                    valueDistance = 0,
+                    valueDuration = 0,
                     name = "Achieved"
                 )
             }
@@ -307,7 +325,7 @@ fun MainCircularSlider(modifier: Modifier = Modifier, apiState: WalkingTool, onC
 
 
 @Composable
-fun StepsDetailsCard(modifier: Modifier, distance: Int, duration: Long, steps: Int) {
+fun StepsDetailsCard(modifier: Modifier, distance: Double, duration: Long, steps: Int) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
@@ -409,7 +427,15 @@ fun DetailsItem(
 
 
 @Composable
-fun ProgressBarItem(modifier: Modifier, value: Int, name: String, isDuration: Boolean) {
+fun ProgressBarItem(
+    modifier: Modifier,
+    valueDistance: Int,
+    valueDuration: Int,
+    targetDistance: Double,
+    targetDuration: Int,
+    name: String,
+    isDuration: Boolean
+) {
 
     Column(
         modifier = modifier,
@@ -417,7 +443,7 @@ fun ProgressBarItem(modifier: Modifier, value: Int, name: String, isDuration: Bo
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "$value" + if (isDuration) " min" else " Km",
+            text = if (isDuration) "$targetDuration min" else "$targetDistance Km",
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold
         )
@@ -428,7 +454,7 @@ fun ProgressBarItem(modifier: Modifier, value: Int, name: String, isDuration: Bo
             100.dp,
             Color.Gray,
             Brush.horizontalGradient(listOf(Color(0xffFD7D20), Color(0xffFBE41A))),
-            value
+            percent = if (isDuration) valueDuration else valueDistance,
         )
         Text(
             text = name, fontSize = 12.sp, fontWeight = FontWeight.Bold

@@ -9,4 +9,12 @@ interface LocalRepo {
     suspend fun updateStepsonRunning(date: Int,all_steps:Int)
     suspend fun updateTime(date: Int,time:Long)
     suspend fun updateSteps(date: Int,step:Int)
+    suspend fun updateRealTime(date: Int,time: Int)
+    suspend fun updateTargetAndRecommend(
+        date: Int,
+        distanceRecommend: Double,
+        durationRecommend: Int,
+        distanceTarget: Double,
+        durationTarget: Int
+    )
 }
