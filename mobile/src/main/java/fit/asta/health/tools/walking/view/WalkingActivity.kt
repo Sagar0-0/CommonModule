@@ -9,7 +9,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -35,6 +34,7 @@ import fit.asta.health.R
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.tools.walking.nav.StepsCounterNavigation
 import fit.asta.health.tools.walking.view.component.WalkingBottomSheet
+import fit.asta.health.tools.walking.view.home.HomeUIState
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
 import fit.asta.health.tools.walking.work.CountStepsService
 import fit.asta.health.tools.walking.work.StepWorker
@@ -48,8 +48,7 @@ import java.util.concurrent.TimeUnit
 class WalkingActivity : ComponentActivity() {
 
     private lateinit var mService: CountStepsService
-    private lateinit var stepCountFlow: StateFlow<Int>
-    private var mBound: Boolean = false
+    private lateinit var stepCountFlow: StateFlow<HomeUIState>
     private val viewModel: WalkingViewModel by viewModels()
 
 
@@ -59,21 +58,19 @@ class WalkingActivity : ComponentActivity() {
             // We've bound to LocalService, cast the IBinder and get LocalService instance.
             val binder = service as CountStepsService.LocalBinder
             mService = binder.getService()
-            mBound = true
             stepCountFlow = binder.getStepCountFlow()
             lifecycleScope.launch {
                 stepCountFlow.collect { stepCount ->
                     viewModel.changeUi(stepCount)
-                    Log.d("TAG", "onServiceConnected: $stepCount")
                 }
             }
 
         }
 
         override fun onServiceDisconnected(arg0: ComponentName) {
-            mBound = false
         }
     }
+
     companion object {
 
         fun launch(context: Context) {
@@ -83,26 +80,30 @@ class WalkingActivity : ComponentActivity() {
             }
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         val PHYSICAL_ACTIVITY = 123
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_DENIED) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACTIVITY_RECOGNITION
+            ) == PackageManager.PERMISSION_DENIED
+        ) {
             //ask for permission
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                ActivityCompat.requestPermissions(this,
-                    arrayOf(Manifest.permission.ACTIVITY_RECOGNITION), PHYSICAL_ACTIVITY)
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.ACTIVITY_RECOGNITION), PHYSICAL_ACTIVITY
+                )
             }
         }
 
         super.onCreate(savedInstanceState)
         setContent {
             MyApp {
-//                if (mBound) {
-//                   val num = mService.stepsData.collectAsState()
-//                    hiltViewModel<WalkingViewModel>().changeUi(num.value)
-//                    Log.d("TAG", "onCreate: $num")
-//                }
-                StepsCounterNavigation(navController = rememberNavController(), hiltViewModel<WalkingViewModel>())
+                StepsCounterNavigation(
+                    navController = rememberNavController(),
+                    hiltViewModel<WalkingViewModel>()
+                )
             }
         }
         setupWorker(this)
@@ -119,15 +120,16 @@ class WalkingActivity : ComponentActivity() {
     override fun onStop() {
         super.onStop()
         unbindService(connection)
-        mBound = false
     }
 }
+
 @Composable
 fun MyApp(context: @Composable () -> Unit) {
     AppTheme {
         context()
     }
 }
+
 @Preview
 @Composable
 fun WalkingToolHomeScreen() {
@@ -176,13 +178,14 @@ fun DefaultPreview() {
     }
 
 }
+
 fun setupWorker(context: Context) {
     val constraint = Constraints.Builder()
         .setRequiredNetworkType(NetworkType.CONNECTED)
         .build()
     val workRequest = PeriodicWorkRequestBuilder<StepWorker>(15, TimeUnit.MINUTES)
         .setConstraints(constraint)
-        .setInitialDelay(5,TimeUnit.MINUTES)
+        .setInitialDelay(5, TimeUnit.MINUTES)
         .build()
     WorkManager.getInstance(context).enqueueUniquePeriodicWork(
         "unique_periodic_work",

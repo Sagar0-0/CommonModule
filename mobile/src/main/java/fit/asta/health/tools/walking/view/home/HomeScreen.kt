@@ -231,7 +231,7 @@ fun WalkingBottomSheetView(
             ButtonWithColor(
                 modifier = Modifier.weight(0.5f), color = Color.Green, text = "SCHEDULE"
             ) {
-
+                homeViewModel.onUIEvent(StepCounterUIEvent.PutDataButtonClicked)
             }
             ButtonWithColor(
                 modifier = Modifier.weight(0.5f),

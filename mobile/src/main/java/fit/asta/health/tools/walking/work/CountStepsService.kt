@@ -11,6 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.R
 import fit.asta.health.tools.walking.model.LocalRepo
 import fit.asta.health.tools.walking.sensor.MeasurableSensor
+import fit.asta.health.tools.walking.view.home.HomeUIState
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,12 +31,12 @@ class CountStepsService : Service() {
 
     private val binder = LocalBinder()
 
-    private val stepCountFlow = MutableStateFlow(0)
+    private val stepCountFlow = MutableStateFlow(HomeUIState())
 
 
     inner class LocalBinder : Binder() {
         fun getService(): CountStepsService = this@CountStepsService
-        fun getStepCountFlow(): StateFlow<Int> = stepCountFlow
+        fun getStepCountFlow(): StateFlow<HomeUIState> = stepCountFlow
     }
 
     override fun onBind(intent: Intent): IBinder {
@@ -75,7 +76,14 @@ class CountStepsService : Service() {
                         "steps: ${step[0].toInt() - data.initialSteps}"
                     )
                     notificationManager.notify(1, updatedNotification.build())
-                    stepCountFlow.value=(step[0].toInt() - data.initialSteps)
+                    stepCountFlow.value= stepCountFlow.value.copy(
+                        distance = ((step[0].toInt() - data.initialSteps) / 1408),
+                        steps = (step[0].toInt() - data.initialSteps),
+                        duration = ((System.nanoTime() - data.time) / 1_000_000_000L / 60L)
+                    )
+
+                }
+                else{
 
                 }
             }

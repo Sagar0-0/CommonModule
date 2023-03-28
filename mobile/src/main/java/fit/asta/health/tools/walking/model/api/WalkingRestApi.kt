@@ -1,7 +1,9 @@
 package fit.asta.health.tools.walking.model.api
 
 import fit.asta.health.common.utils.NetworkUtil
+import fit.asta.health.tools.walking.model.network.request.PutData
 import fit.asta.health.tools.walking.model.network.response.HomeData
+import fit.asta.health.tools.walking.model.network.response.PutResponse
 import okhttp3.OkHttpClient
 
 
@@ -15,6 +17,10 @@ class WalkingRestApi(baseUrl: String, client: OkHttpClient) :
 
     override suspend fun getHomeData(userId: String): HomeData {
         return apiService.getHomeData(userId)
+    }
+
+    override suspend fun putData(putData: PutData): PutResponse {
+        return apiService.putData(putData)
     }
 
 }

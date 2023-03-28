@@ -14,7 +14,8 @@ import fit.asta.health.tools.walking.db.StepsData
 import fit.asta.health.tools.walking.model.LocalRepo
 import fit.asta.health.tools.walking.model.WalkingToolRepo
 import fit.asta.health.tools.walking.model.domain.WalkingTool
-import fit.asta.health.tools.walking.sensor.MeasurableSensor
+import fit.asta.health.tools.walking.model.network.request.*
+import fit.asta.health.tools.walking.model.network.request.Target
 import fit.asta.health.tools.walking.view.home.HomeUIState
 import fit.asta.health.tools.walking.view.home.StepCounterUIEvent
 import fit.asta.health.tools.walking.view.steps_counter.StepCounterUIState
@@ -32,7 +33,6 @@ import javax.inject.Inject
 class WalkingViewModel
 @Inject constructor(
     private val walkingToolRepo: WalkingToolRepo,
-    private val stepsSensor: MeasurableSensor,
     private val localRepo: LocalRepo
 ) : ViewModel() {
     val date = LocalDate.now().dayOfMonth
@@ -57,15 +57,14 @@ class WalkingViewModel
                 )
                 localRepo.insert(stepsData)
             }
-            if (date != null) {
-                if (date.date == LocalDate.now().dayOfMonth && (date.status == "active")) {
+            else {
+                if (date.status == "active") {
                     startWorking.value = true
                     _homeUiState.value = _homeUiState.value.copy(
                         distance = date.allSteps / 1408,
                         steps = date.allSteps,
                         duration = ((System.nanoTime() - date.time) / 1_000_000_000L / 60L)
                     )
-//                    startSteps()
                 }
             }
         }
@@ -108,7 +107,6 @@ class WalkingViewModel
             is StepCounterUIEvent.StartButtonClicked -> {
                 changeStatus("active")
                 changeTime()
-//                startSteps()
                 startWorking.value = true
             }
             is StepCounterUIEvent.StopButtonClicked -> {
@@ -116,43 +114,14 @@ class WalkingViewModel
                 changeStatus("inactive")
                 endScreen()
             }
-            else -> {}
-        }
-    }
-
-
-    private fun startSteps() {
-        Log.d("TAG", "startSteps: start")
-        stepsSensor.startListening()
-        stepsSensor.setOnSensorValuesChangedListener { step ->
-            viewModelScope.launch {
-                Log.d("TAG", "startSteps: start runing")
-                val data = localRepo.getStepsData(date)
-                if (data != null && data.date == date) {
-                    if (data.initialSteps > 1) {
-                        localRepo.updateStepsonRunning(
-                            date = data.date,
-                            all_steps = step[0].toInt() - data.initialSteps,
-                        )
-                    } else {
-                        localRepo.updateSteps(date = date, step = step[0].toInt())
-                    }
-                    _homeUiState.value = _homeUiState.value.copy(
-                        distance = (data.allSteps / 1408),
-                        steps = data.allSteps,
-                        duration = ((System.nanoTime() - data.time) / 1_000_000_000L / 60L)
-                    )
-                } else {
-                    Log.d("Subhash", "startSteps: null")
-                }
+            is StepCounterUIEvent.PutDataButtonClicked->{
+                putDataToServer()
             }
         }
     }
 
 
-    private fun stopSteps() {
-        stepsSensor.stopListening()
-    }
+
 
     private fun calculateSpeed(steps: Int, stepLength: Float, timeNs: Long): Float {
         val distance = steps * stepLength
@@ -169,10 +138,10 @@ class WalkingViewModel
     fun putDataToServer() {
         viewModelScope.launch {
             try {
-
-
+             val result= walkingToolRepo.putData(setData())
+                Log.d("TAG", "putDataToServer: ${result.status}")
             } catch (e: Exception) {
-
+                Log.d("TAG", "putDataToServer error: ${e.message}")
             }
         }
     }
@@ -222,7 +191,80 @@ class WalkingViewModel
             serviceIntent = null
         }
     }
-    fun changeUi(data:Int){
-        _homeUiState.value=_homeUiState.value.copy(steps = data)
+
+    fun changeUi(data: HomeUIState) {
+        _homeUiState.value = data
+    }
+    fun setData():PutData {
+        return PutData(
+            code = 3,
+            id = "6309a9379af54f142c65fbfe",
+            name = "walking",
+            sType = 1,
+            uid = "6309a9379af54f142c65fbfe",
+            wea = true,
+            tgt = Target(
+                dis = Distance(
+                    dis = 2,
+                    unit = "km"
+                ),
+                dur = Duration(
+                    dur = 20,
+                    unit = "mins"
+                ),
+                steps = Steps(
+                    steps = 2000,
+                    unit = "steps"
+                )
+            ),
+            prc = listOf(
+                Prc(
+                    id = "",
+                    ttl = "mode",
+                    dsc = "mode",
+                    values = listOf(
+                        Value(
+                            id = "",
+                            name = "indoor",
+                            value = "indoor"
+                        )
+                    )
+                ),
+                Prc(
+                    id = "",
+                    ttl = "music",
+                    code = "music_tool",
+                    dsc = "music",
+                    values = listOf(
+                        Value(
+                            id = "",
+                            name = "spotify",
+                            value = "spotify"
+                        )
+                    )
+                ),
+                Prc(
+                    id = "",
+                    ttl = "goal",
+                    dsc = "goal",
+                    values = _selectedGoal.value.map {
+                        Value(id = "", name = it, value = it)
+                    }
+                ),
+                Prc(
+                    id = "",
+                    ttl = "type",
+                    dsc = "type",
+                    values = listOf(
+                        Value(
+                            id = "",
+                            name = _selectedWalkTypes.value,
+                            value = _selectedWalkTypes.value
+                        )
+                    )
+                )
+            )
+        )
+
     }
 }

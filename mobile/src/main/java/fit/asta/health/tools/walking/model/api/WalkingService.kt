@@ -20,8 +20,8 @@ interface WalkingService {
     ): HomeData
 
 
-    @PUT()
-    suspend fun putData( @Body putData: PutData)
+    @PUT("tools/steps/put/")
+    suspend fun putData( @Body putData: PutData):PutResponse
 
 //    @GET("tools/steps/start/session/get")
 //    suspend fun getDataWithUid(

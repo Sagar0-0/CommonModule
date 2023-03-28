@@ -25,7 +25,7 @@ data class PutData(
 
 data class Prc(
     @SerializedName("code")
-    val code: String,
+    val code: String?=null,
     @SerializedName("dsc")
     val dsc: String,
     @SerializedName("id")
