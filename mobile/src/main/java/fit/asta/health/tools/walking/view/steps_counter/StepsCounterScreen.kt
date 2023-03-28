@@ -22,14 +22,15 @@ import androidx.navigation.NavController
 import fit.asta.health.R
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.tools.walking.view.component.ButtonWithColor
+import fit.asta.health.tools.walking.view.home.StepCounterUIEvent
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun StepsCounterScreen(navController: NavController,homeViewModel:WalkingViewModel) {
-    val state=homeViewModel.uiStateStep.value
+fun StepsCounterScreen(navController: NavController, homeViewModel: WalkingViewModel) {
+    val state = homeViewModel.uiStateStep.value
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         backgroundColor = MaterialTheme.colors.background,
@@ -69,7 +70,12 @@ fun StepsCounterScreen(navController: NavController,homeViewModel:WalkingViewMod
             )
         }
     ) {
-        StepsItem(modifier = Modifier.padding(it),state, viewModel = homeViewModel)
+        StepsItem(
+            modifier = Modifier.padding(it),
+            state,
+            viewModel = homeViewModel,
+            navController = navController
+        )
     }
 
 }
@@ -77,7 +83,12 @@ fun StepsCounterScreen(navController: NavController,homeViewModel:WalkingViewMod
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun StepsItem(modifier: Modifier = Modifier,state: StepCounterUIState,viewModel:WalkingViewModel) {
+fun StepsItem(
+    modifier: Modifier = Modifier,
+    state: StepCounterUIState,
+    viewModel: WalkingViewModel,
+    navController: NavController
+) {
 
     Column(
         modifier = modifier
@@ -111,11 +122,11 @@ fun StepsItem(modifier: Modifier = Modifier,state: StepCounterUIState,viewModel:
         )
 
         LazyVerticalGrid(
-            horizontalArrangement =Arrangement.spacedBy(spacing.small),
+            horizontalArrangement = Arrangement.spacedBy(spacing.small),
             verticalArrangement = Arrangement.spacedBy(spacing.medium),
             columns = GridCells.Fixed(2),
             contentPadding = PaddingValues(
-               horizontal = 16.dp
+                horizontal = 16.dp
             )
         ) {
             item {
@@ -157,13 +168,13 @@ fun StepsItem(modifier: Modifier = Modifier,state: StepCounterUIState,viewModel:
                 modifier = Modifier
                     .weight(0.5f), color = Color.Red, text = "END"
             ) {
-
+                viewModel.onUIEvent(StepCounterUIEvent.EndButtonClicked)
             }
             ButtonWithColor(
                 modifier = Modifier
                     .weight(0.5f), color = Color.Blue, text = "RESUME"
             ) {
-
+                navController.popBackStack()
             }
         }
     }
@@ -175,7 +186,7 @@ fun SessionCard(
     modifier: Modifier = Modifier,
     type: String = "Distance",
     count: String = "500Km",
-    onClick: () -> Unit={}
+    onClick: () -> Unit = {}
 ) {
     Card(
         modifier = modifier

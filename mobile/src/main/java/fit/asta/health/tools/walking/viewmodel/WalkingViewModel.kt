@@ -120,13 +120,17 @@ class WalkingViewModel
                 startWorking.value = true
             }
             is StepCounterUIEvent.StopButtonClicked -> {
-                startWorking.value = false
-                changeStatus("inactive")
                 endScreen()
             }
             is StepCounterUIEvent.PutDataButtonClicked -> {
                 putDataToServer()
             }
+            is StepCounterUIEvent.EndButtonClicked->{
+                startWorking.value = false
+                changeStatus("inactive")
+            }
+
+            else-> {}
         }
     }
 
