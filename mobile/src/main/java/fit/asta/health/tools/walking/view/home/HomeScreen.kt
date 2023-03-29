@@ -297,7 +297,7 @@ fun MainCircularSlider(
                     targetDistance = apiState.distanceRecommend,
                     targetDuration = apiState.durationRecommend,
                     valueDistance = state.valueDistanceRecommendation.toInt(),
-                    valueDuration =state.valueDurationRecommendation ,
+                    valueDuration = state.valueDurationRecommendation,
                     name = "Recommended"
                 )
                 ProgressBarItem(
@@ -306,17 +306,17 @@ fun MainCircularSlider(
                     targetDistance = apiState.distanceTarget,
                     targetDuration = apiState.durationTarget,
                     valueDistance = state.valueDistanceGoal.toInt(),
-                    valueDuration =state.valueDurationGoal ,
+                    valueDuration = state.valueDurationGoal,
                     name = "Goal"
                 )
                 ProgressBarItem(
                     isDuration = isDuration.value,
                     modifier = Modifier.weight(0.3f),
-                    targetDistance = 50.0,
-                    targetDuration = 50,
-                    valueDistance = 0,
-                    valueDuration = 0,
-                    name = "Achieved"
+                    targetDistance = apiState.distanceTarget,
+                    targetDuration = apiState.durationTarget,
+                    valueDistance = 100 - state.valueDistanceGoal.toInt(),
+                    valueDuration = 100 - state.valueDurationGoal,
+                    name = "Remaining"
                 )
             }
         }

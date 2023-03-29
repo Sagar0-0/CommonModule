@@ -20,7 +20,7 @@ interface WalkingService {
     ): HomeData
 
 
-    @PUT("tools/walking/put")
+    @PUT("tools/walking/put/")
     suspend fun putData( @Body putData: PutData):PutResponse
 
 //    @GET("tools/steps/start/session/get")

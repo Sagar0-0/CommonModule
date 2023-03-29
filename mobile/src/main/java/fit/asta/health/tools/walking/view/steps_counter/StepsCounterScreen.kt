@@ -154,7 +154,7 @@ fun StepsItem(
                 }
             }
             item {
-                SessionCard(type = "Weight Loosed", count = "${state.weightLoosed} kg") {
+                SessionCard(type = "Weight Loosed", count = "${state.weightLoosed} grams") {
                 }
             }
         }

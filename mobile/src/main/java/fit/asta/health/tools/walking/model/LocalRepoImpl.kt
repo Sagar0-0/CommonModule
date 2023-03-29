@@ -42,5 +42,17 @@ class LocalRepoImpl(private val stepsDataDao: StepsDataDao):LocalRepo {
        stepsDataDao.updateTargetAndRecommend(date, distanceRecommend, durationRecommend, distanceTarget, durationTarget)
     }
 
+    override suspend fun updateIdForPutData(date: Int, id: String) {
+        stepsDataDao.updateIdForPutData(date, id)
+    }
+
+    override suspend fun updateCaloriesAndWeightLoosed(
+        date: Int,
+        calories: Double,
+        weightLoosed: Double
+    ) {
+        stepsDataDao.updateCaloriesAndWeightLoosed(date, calories, weightLoosed)
+    }
+
 
 }

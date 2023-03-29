@@ -47,23 +47,27 @@ class WalkingViewModel
 
     init {
         loadWalkingToolData()
+        setupDatabaseAndUpdateUi()
+    }
+
+    private fun setupDatabaseAndUpdateUi() {
         viewModelScope.launch {
-            val date = localRepo.getStepsData(LocalDate.now().dayOfMonth)
-            if (date == null) {
+            val data = localRepo.getStepsData(LocalDate.now().dayOfMonth)
+            if (data == null) {
                 val stepsData = StepsData(
-                    date = LocalDate.now().dayOfMonth, status = "",
-                    initialSteps = 0, allSteps = 0, time = 0,
-                    realtime = 0, distanceRecommend = 0.0, durationRecommend = 0,
-                    distanceTarget = 0.0, durationTarget = 0
+                    date = LocalDate.now().dayOfMonth, status = "", initialSteps = 0,
+                    allSteps = 0, time = 0, realtime = 0, distanceRecommend = 0.0,
+                    durationRecommend = 0, distanceTarget = 0.0, durationTarget = 0,
+                    id = "", calories = 0.0, weightLoosed = 0.0
                 )
                 localRepo.insert(stepsData)
             } else {
-                if (date.status == "active") {
+                if (data.status == "active") {
                     startWorking.value = true
                     _homeUiState.value = _homeUiState.value.copy(
-                        distance = (date.allSteps / 1408).toDouble(),
-                        steps = date.allSteps,
-                        duration = ((System.nanoTime() - date.time) / 1_000_000_000L / 60L)
+                        distance = (data.allSteps / 1408).toDouble(),
+                        steps = data.allSteps,
+                        duration = ((System.nanoTime() - data.time) / 1_000_000_000L / 60L)
                     )
                 }
             }
@@ -72,7 +76,7 @@ class WalkingViewModel
 
     private fun loadWalkingToolData() {
         viewModelScope.launch {
-            walkingToolRepo.getHomeData(userId = "6309a9379af54f142c65fbfe")
+            walkingToolRepo.getHomeData(userId = "6383745840efcc8cdeb289e1")
                 .collect {
                     when (it) {
                         is NetworkResult.Loading -> {}
@@ -125,12 +129,12 @@ class WalkingViewModel
             is StepCounterUIEvent.PutDataButtonClicked -> {
                 putDataToServer()
             }
-            is StepCounterUIEvent.EndButtonClicked->{
+            is StepCounterUIEvent.EndButtonClicked -> {
                 startWorking.value = false
                 changeStatus("inactive")
             }
 
-            else-> {}
+            else -> {}
         }
     }
 
@@ -147,11 +151,14 @@ class WalkingViewModel
     }
 
 
-    fun putDataToServer() {
+    private fun putDataToServer() {
         viewModelScope.launch {
             try {
-                val result = walkingToolRepo.putData(setData())
+                val id = localRepo.getStepsData(date)
+                val result = walkingToolRepo.putData(setData(id = id?.id ?: ""))
+                localRepo.updateIdForPutData(date, id = result.data.id)
                 Log.d("TAG", "putDataToServer: ${result.status.msg}")
+                loadWalkingToolData()
             } catch (e: Exception) {
                 Log.d("TAG", "putDataToServer error: ${e.message}")
             }
@@ -169,10 +176,14 @@ class WalkingViewModel
                 val timeNs = (System.nanoTime() - data.time)
                 val speed = calculateSpeed(steps, stepLength, timeNs)
                 val distance = (data.allSteps / 1408)
+                val calories = calculateCaloriesBurned(stepsCount = steps)
+                val weight = calculateWeightLoss(calories)
+                localRepo.updateCaloriesAndWeightLoosed(date, calories, weight)
                 _uiStateStep.value = _uiStateStep.value.copy(
-                    calories = 0, steps = steps,
+                    calories = calories, steps = steps,
                     distance = distance, speed = speed,
-                    time = (timeNs / 1_000_000_000L / 60L)
+                    time = (timeNs / 1_000_000_000L / 60L),
+                    weightLoosed = weight
                 )
             }
         }
@@ -208,17 +219,17 @@ class WalkingViewModel
         _homeUiState.value = data
     }
 
-    fun setData(): PutData {
+    fun setData(id: String): PutData {
         return PutData(
             code = 3,
-            id = "6309a9379af54f142c65fbfe",
+            id = id,
             name = "walking",
             sType = 1,
-            uid = "6309a9379af54f142c65fbfe",
+            uid = "6383745840efcc8cdeb289e1",
             wea = true,
             tgt = Target(
                 dis = Distance(
-                    dis = 2,
+                    dis = 3,
                     unit = "km"
                 ),
                 dur = Duration(
@@ -279,5 +290,19 @@ class WalkingViewModel
             )
         )
 
+    }
+
+    fun calculateWeightLoss(caloriesBurned: Double): Double {
+        return caloriesBurned / 7.7 // 7700 calories per kilogram of body fat
+    }
+
+    fun calculateCaloriesBurned(
+        bodyWeight: Double = 50.0,
+        distancePerStep: Double = 0.7,
+        stepsCount: Int
+    ): Double {
+        val metersPerStep = distancePerStep * 0.3048 // convert feet to meters
+        val caloriesPerKilogramPerMeter = 0.57 // average value for walking/running
+        return bodyWeight * stepsCount * metersPerStep * caloriesPerKilogramPerMeter
     }
 }

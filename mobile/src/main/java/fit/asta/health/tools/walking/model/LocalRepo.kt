@@ -17,4 +17,6 @@ interface LocalRepo {
         distanceTarget: Double,
         durationTarget: Int
     )
+    suspend fun updateIdForPutData(date: Int, id:String)
+    suspend fun updateCaloriesAndWeightLoosed(date: Int, calories: Double, weightLoosed: Double)
 }

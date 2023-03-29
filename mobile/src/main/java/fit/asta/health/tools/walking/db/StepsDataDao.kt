@@ -18,12 +18,13 @@ interface StepsDataDao {
     suspend fun updateStatus(date: Int, status: String)
 
     @Query("UPDATE steps_data SET all_steps = :all_steps WHERE date = :date")
-    suspend fun updateStepsonRunning(date: Int,all_steps:Int)
+    suspend fun updateStepsonRunning(date: Int, all_steps: Int)
+
     @Query("UPDATE steps_data SET initial_steps = :initial_steps WHERE date = :date")
-    suspend fun updateSteps(date: Int,initial_steps:Int)
+    suspend fun updateSteps(date: Int, initial_steps: Int)
 
     @Query("UPDATE steps_data SET time = :time WHERE date = :date")
-    suspend fun updateTime(date: Int,time: Long)
+    suspend fun updateTime(date: Int, time: Long)
 
     @Query("UPDATE steps_data SET realtime = :realtime WHERE date = :date")
     suspend fun updateRealTime(date: Int, realtime: Int)
@@ -36,5 +37,12 @@ interface StepsDataDao {
         distanceTarget: Double,
         durationTarget: Int
     )
+
+    @Query("UPDATE steps_data SET id = :id WHERE date = :date")
+    suspend fun updateIdForPutData(date: Int, id: String)
+
+    @Query("UPDATE steps_data SET calories = :calories,weightLoosed = :weightLoosed WHERE date = :date")
+    suspend fun updateCaloriesAndWeightLoosed(date: Int, calories: Double, weightLoosed: Double)
+
 
 }

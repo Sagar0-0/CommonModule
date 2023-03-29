@@ -16,4 +16,8 @@ data class StepsData(
     @ColumnInfo(name = "durationRecommend") val durationRecommend: Int,
     @ColumnInfo(name = "distanceTarget")  val distanceTarget: Double,
     @ColumnInfo(name = "durationTarget") val durationTarget: Int,
+    @ColumnInfo(name = "id") val id: String,
+    @ColumnInfo(name = "calories") val calories: Double,
+    @ColumnInfo(name = "weightLoosed") val weightLoosed: Double,
+
 )
