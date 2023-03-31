@@ -2,6 +2,10 @@ package fit.asta.health.tools.walking.view.component
 
 
 import android.view.MotionEvent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,6 +26,7 @@ import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.sp
 import fit.asta.health.common.ui.theme.spacing
@@ -31,7 +36,10 @@ import kotlin.math.*
 @Composable
 fun CircularSlider(
     modifier: Modifier = Modifier,
-    scaleRange: Float = 60f,
+    indicatorValue: Float = 2f,
+    maxIndicatorValue: Float = 120f,
+    bigTextColor: Color = MaterialTheme.colors.onSurface,
+    bigTextSuffix: String = "min",
     padding: Float = 50f,
     stroke: Float = 20f,
     cap: StrokeCap = StrokeCap.Round,
@@ -40,9 +48,9 @@ fun CircularSlider(
     progressColor: Color = Color.Red,
     backgroundColor: Color = Color.LightGray,
     isDuration: Boolean,
+    isStarted: Boolean,
     onChange: ((Float) -> Unit)? = null,
-    onChangeType: () -> Unit,
-
+    onChangeType: () -> Unit
 ) {
     var size by remember { mutableStateOf(IntSize.Zero) }
     var width by remember { mutableStateOf(0) }
@@ -55,21 +63,64 @@ fun CircularSlider(
     var appliedAngle by remember { mutableStateOf(0f) }
     LaunchedEffect(key1 = angle) {
         var a = angle
-        a += 60
+        a += 40
         if (a <= 0f) {
             a += 360
         }
-        a = a.coerceIn(0f, 300f)
-        if (last < 150f && a == 300f) {
+        a = a.coerceIn(0f, 250f)
+        if (last < 150f && a == 250f) {
             a = 0f
         }
         last = a
         appliedAngle = a
     }
     LaunchedEffect(key1 = appliedAngle) {
-        onChange?.invoke(appliedAngle / 300f)
+        onChange?.invoke(
+            range(
+                appliedAngle / 250f * 100,
+                maxIndicatorValue
+            )
+        )
     }
 
+
+    //new code
+    var allowedIndicatorValue by remember {
+        mutableStateOf(maxIndicatorValue)
+    }
+    allowedIndicatorValue = if (indicatorValue <= maxIndicatorValue) {
+        indicatorValue
+    } else {
+        maxIndicatorValue
+    }
+
+    var animatedIndicatorValue by remember { mutableStateOf(0f) }
+    LaunchedEffect(key1 = allowedIndicatorValue) {
+        animatedIndicatorValue = allowedIndicatorValue
+    }
+
+    val percentage =
+        (animatedIndicatorValue / maxIndicatorValue)
+
+    val sweepAngle by animateFloatAsState(
+        targetValue = (250 * percentage),
+        animationSpec = tween(1000)
+    )
+
+    val receivedValue by animateFloatAsState(
+        targetValue = allowedIndicatorValue,
+        animationSpec = tween(1000)
+    )
+    LaunchedEffect(key1 = receivedValue) {
+        onChange?.invoke(receivedValue)
+    }
+    val animatedBigTextColor by animateColorAsState(
+        targetValue = if (allowedIndicatorValue == 0f)
+            MaterialTheme.colors.onSurface.copy(alpha = 0.3f)
+        else
+            bigTextColor,
+        animationSpec = tween(1000)
+    )
 
     Box(
         contentAlignment = Alignment.Center,
@@ -115,10 +166,11 @@ fun CircularSlider(
                     return@pointerInteropFilter true
                 }
         ) {
+
             drawArc(
                 color = backgroundColor,
-                startAngle = -240f,
-                sweepAngle = 300f,
+                startAngle = 145f, //120,-240
+                sweepAngle = 250f,  // 300
                 topLeft = center - Offset(radius, radius),
                 size = Size(radius * 2, radius * 2),
                 useCenter = false,
@@ -127,27 +179,41 @@ fun CircularSlider(
                     cap = cap
                 )
             )
-            drawArc(
-                color = progressColor,
-                startAngle = 120f,
-                sweepAngle = appliedAngle,
-                topLeft = center - Offset(radius, radius),
-                size = Size(radius * 2, radius * 2),
-                useCenter = false,
-                style = Stroke(
-                    width = stroke,
-                    cap = cap
+            if (isStarted) {
+                drawArc(
+                    color = progressColor,
+                    startAngle = 145f,
+                    sweepAngle = sweepAngle,
+                    topLeft = center - Offset(radius, radius),
+                    size = Size(radius * 2, radius * 2),
+                    useCenter = false,
+                    style = Stroke(
+                        width = stroke,
+                        cap = cap
+                    )
                 )
-            )
-            drawCircle(
-                color = thumbColor,
-                radius = stroke,
-                center = center + Offset(
-                    radius * cos((120 + appliedAngle) * PI / 180f).toFloat(),
-                    radius * sin((120 + appliedAngle) * PI / 180f).toFloat()
+            } else {
+                drawArc(
+                    color = progressColor,
+                    startAngle = 145f,
+                    sweepAngle = appliedAngle,
+                    topLeft = center - Offset(radius, radius),
+                    size = Size(radius * 2, radius * 2),
+                    useCenter = false,
+                    style = Stroke(
+                        width = stroke,
+                        cap = cap
+                    )
                 )
-            )
-
+                drawCircle(
+                    color = thumbColor,
+                    radius = stroke,
+                    center = center + Offset(
+                        radius * cos((145 + appliedAngle) * PI / 180f).toFloat(),
+                        radius * sin((145 + appliedAngle) * PI / 180f).toFloat()
+                    )
+                )
+            }
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -157,14 +223,42 @@ fun CircularSlider(
                 modifier = Modifier.clickable { onChangeType() },
                 text = if (isDuration) "Duration" else "Distance", fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colors.onBackground
+                color = bigTextColor
             )
-            Text(
-                text = "%.0f minutes".format(range(appliedAngle / 300f * 100, scaleRange)),
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colors.onBackground
-            )
+            AnimatedVisibility(visible = isStarted) {
+                Text(
+                    text = if (isDuration) {
+                        "%.0f $bigTextSuffix".format(
+                            receivedValue
+                        )
+                    } else {
+                        "%.1f $bigTextSuffix".format(
+                            receivedValue
+                        )
+                    },
+                    color = animatedBigTextColor,
+                    fontSize = 14.sp,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            AnimatedVisibility(visible = !isStarted) {
+                Text(
+                    text = if (isDuration) {
+                        "%.0f $bigTextSuffix".format(
+                            range(appliedAngle / 250f * 100f, maxIndicatorValue)
+                        )
+                    } else {
+                        "%.1f $bigTextSuffix".format(
+                            range(appliedAngle / 250f * 100f, maxIndicatorValue)
+                        )
+                    },
+                    color = animatedBigTextColor,
+                    fontSize = 14.sp,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold
+                )
+            }
 
         }
     }
@@ -185,12 +279,12 @@ fun distance(first: Offset, second: Offset): Float {
 fun Float.square(): Float {
     return this * this
 }
-
-fun range(value: Float, scaleRange: Float): Float {
+fun range(value: Float, maxIndicatorValue: Float): Float {
     val old_value = value
-    val old_min = 0
-    val old_max = 100
-    val new_min = 0
-    val new_max = scaleRange
-    return ((old_value - old_min) / (old_max - old_min)) * (new_max - new_min) + new_min
+    val old_min = 0f
+    val old_max = 100f
+    val new_min = 0f
+    val new_max = maxIndicatorValue
+    return (((old_value - old_min) * (new_max - new_min)) / (old_max - old_min)) + new_min
 }
+

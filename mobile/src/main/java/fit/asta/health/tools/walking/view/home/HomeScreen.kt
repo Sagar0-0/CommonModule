@@ -119,13 +119,21 @@ fun StepsBottomSheet(
         scaffoldState = scaffoldState
     ) {
         visible = !sheetState.isCollapsed
-        HomeLayout(paddingValues = paddingValues, state, apiState)
+        HomeLayout(paddingValues = paddingValues, state = state, apiState = apiState,
+            onTargetDistance = { homeViewModel.onUIEvent(StepCounterUIEvent.ChangeTargetDistance(it)) },
+            onTargetDuration = { homeViewModel.onUIEvent(StepCounterUIEvent.ChangeTargetDuration(it)) })
     }
 }
 
 
 @Composable
-fun HomeLayout(paddingValues: PaddingValues, state: HomeUIState, apiState: WalkingTool) {
+fun HomeLayout(
+    paddingValues: PaddingValues,
+    state: HomeUIState,
+    apiState: WalkingTool,
+    onTargetDistance: (Float) -> Unit,
+    onTargetDuration: (Float) -> Unit
+) {
 
     Column(
         modifier = Modifier
@@ -139,7 +147,12 @@ fun HomeLayout(paddingValues: PaddingValues, state: HomeUIState, apiState: Walki
     ) {
         Spacer(modifier = Modifier.height(8.dp))
 
-        MainCircularSlider(apiState = apiState, state = state) { }
+        MainCircularSlider(
+            apiState = apiState,
+            state = state,
+            onTargetDistance = onTargetDistance,
+            onTargetDuration = onTargetDuration
+        )
         StepsDetailsCard(
             modifier = Modifier,
             distance = state.distance,
@@ -266,10 +279,18 @@ fun MainCircularSlider(
     modifier: Modifier = Modifier,
     apiState: WalkingTool,
     state: HomeUIState,
-    onClick: () -> Unit
+    onTargetDistance: (Float) -> Unit,
+    onTargetDuration: (Float) -> Unit
 ) {
-    val isDuration = remember {
+
+    var isDuration by remember {
         mutableStateOf(true)
+    }
+    var maxIndicatorValue by remember {
+        mutableStateOf(120f)
+    }
+    var bigTextSuffix by remember {
+        mutableStateOf("min")
     }
     Surface(
         color = MaterialTheme.colors.background,
@@ -280,19 +301,38 @@ fun MainCircularSlider(
             verticalArrangement = Arrangement.spacedBy(spacing.medium),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CircularSlider(modifier = Modifier.size(160.dp),
-                scaleRange = 60f,
-                isDuration = isDuration.value,
-                onChange = {
-                    Log.d("progress", it.toString())
+            CircularSlider(modifier = Modifier.size(200.dp),
+                isDuration = isDuration,
+                isStarted = state.start,
+                maxIndicatorValue = maxIndicatorValue,
+                indicatorValue = if (isDuration) state.valueDurationGoal.toFloat() else state.valueDistanceGoal.toFloat(),
+                bigTextSuffix = bigTextSuffix,
+                onChangeType = {
+                    isDuration = !isDuration
+                    if (isDuration) {
+                        maxIndicatorValue = 120f
+                        bigTextSuffix = "min"
+                    } else {
+                        maxIndicatorValue = 3.0f
+                        bigTextSuffix = "km"
+                    }
                 },
-                onChangeType = { isDuration.value = !isDuration.value })
+                onChange = {
+                    if (isDuration) {
+                        onTargetDuration(it)
+                        Log.d("TAG", "CustomComponentPreview duration: $it")
+                    } else {
+                        onTargetDistance(it)
+                        Log.d("TAG", "CustomComponentPreview distance: $it")
+                    }
+                }
+            )
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(spacing.medium)
             ) {
                 ProgressBarItem(
-                    isDuration = isDuration.value,
+                    isDuration = isDuration,
                     modifier = Modifier.weight(0.3f),
                     targetDistance = apiState.distanceRecommend,
                     targetDuration = apiState.durationRecommend,
@@ -301,7 +341,7 @@ fun MainCircularSlider(
                     name = "Recommended"
                 )
                 ProgressBarItem(
-                    isDuration = isDuration.value,
+                    isDuration = isDuration,
                     modifier = Modifier.weight(0.3f),
                     targetDistance = apiState.distanceTarget,
                     targetDuration = apiState.durationTarget,
@@ -310,7 +350,7 @@ fun MainCircularSlider(
                     name = "Goal"
                 )
                 ProgressBarItem(
-                    isDuration = isDuration.value,
+                    isDuration = isDuration,
                     modifier = Modifier.weight(0.3f),
                     targetDistance = apiState.distanceTarget,
                     targetDuration = apiState.durationTarget,

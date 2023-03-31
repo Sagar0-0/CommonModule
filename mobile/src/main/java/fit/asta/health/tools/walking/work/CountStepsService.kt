@@ -85,10 +85,10 @@ class CountStepsService : Service() {
                         distance = ((step[0].toInt() - data.initialSteps) / 1408).toDouble(),
                         steps = (step[0].toInt() - data.initialSteps),
                         duration = ((System.nanoTime() - data.time) / 1_000_000_000L / 60L),
-                        valueDistanceRecommendation = (((step[0].toInt() - data.initialSteps) / 1408) / data.distanceRecommend)*100,
-                        valueDurationRecommendation = (data.realtime*100)/data.durationRecommend,
-                        valueDistanceGoal = ((((step[0].toInt() - data.initialSteps)*100)/1408) / data.distanceTarget),
-                        valueDurationGoal = (data.realtime *100)/data.durationTarget,
+                        valueDistanceRecommendation = (((step[0].toInt() - data.initialSteps) / 1408) / data.distanceRecommend) * 100,
+                        valueDurationRecommendation = if (data.durationRecommend > 0) (data.realtime * 100) / data.durationRecommend else 0,
+                        valueDistanceGoal = ((((step[0].toInt() - data.initialSteps) * 100) / 1408) / data.distanceTarget),
+                        valueDurationGoal = if(data.durationTarget>0)(data.realtime * 100) / data.durationTarget else 0,
                     )
                     Log.d("TAG", "change value : ${stepCountFlow.value}")
 

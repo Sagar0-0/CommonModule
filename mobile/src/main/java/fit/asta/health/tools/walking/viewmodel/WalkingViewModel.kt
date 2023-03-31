@@ -82,6 +82,10 @@ class WalkingViewModel
                         is NetworkResult.Loading -> {}
                         is NetworkResult.Success -> {
                             _apiState.value = it.data!!
+                            _homeUiState.value = _homeUiState.value.copy(
+                                distanceTarget = it.data.distanceRecommend.toFloat(),
+                                durationTarget = it.data.durationRecommend.toFloat()
+                            )
                             val date = localRepo.getStepsData(LocalDate.now().dayOfMonth)
                             if (date != null) {
                                 localRepo.updateTargetAndRecommend(
@@ -122,6 +126,7 @@ class WalkingViewModel
                 changeStatus("active")
                 changeTime()
                 startWorking.value = true
+                _homeUiState.value = _homeUiState.value.copy(start = true)
             }
             is StepCounterUIEvent.StopButtonClicked -> {
                 endScreen()
@@ -131,7 +136,14 @@ class WalkingViewModel
             }
             is StepCounterUIEvent.EndButtonClicked -> {
                 startWorking.value = false
+                _homeUiState.value = _homeUiState.value.copy(start = false)
                 changeStatus("inactive")
+            }
+            is StepCounterUIEvent.ChangeTargetDuration->{
+                setTargetDuration(uiEvent.input)
+            }
+            is StepCounterUIEvent.ChangeTargetDistance ->{
+                setTargetDistance(uiEvent.input)
             }
 
             else -> {}
@@ -220,6 +232,7 @@ class WalkingViewModel
     }
 
     fun setData(id: String): PutData {
+        Log.d("TAG", "setData: ${_homeUiState.value}")
         return PutData(
             code = 3,
             id = id,
@@ -229,15 +242,15 @@ class WalkingViewModel
             wea = true,
             tgt = Target(
                 dis = Distance(
-                    dis = 3,
+                    dis = _homeUiState.value.distanceTarget.toInt(),
                     unit = "km"
                 ),
                 dur = Duration(
-                    dur = 20,
+                    dur = _homeUiState.value.durationTarget.toInt(),
                     unit = "mins"
                 ),
                 steps = Steps(
-                    steps = 2000,
+                    steps = _homeUiState.value.distanceTarget.toInt() * 1408,
                     unit = "steps"
                 )
             ),
@@ -304,5 +317,15 @@ class WalkingViewModel
         val metersPerStep = distancePerStep * 0.3048 // convert feet to meters
         val caloriesPerKilogramPerMeter = 0.57 // average value for walking/running
         return bodyWeight * stepsCount * metersPerStep * caloriesPerKilogramPerMeter
+    }
+
+    fun setTargetDuration(durationTarget: Float) {
+        _homeUiState.value = _homeUiState.value.copy(durationTarget = durationTarget)
+        Log.d("TAG", "setTargetDuration: $durationTarget")
+    }
+
+    fun setTargetDistance(distanceTarget: Float) {
+        _homeUiState.value = _homeUiState.value.copy(distanceTarget = distanceTarget)
+        Log.d("TAG", "setTargetDistance: $distanceTarget")
     }
 }

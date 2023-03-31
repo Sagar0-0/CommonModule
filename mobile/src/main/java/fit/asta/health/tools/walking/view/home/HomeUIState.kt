@@ -1,14 +1,15 @@
 package fit.asta.health.tools.walking.view.home
 
 data class HomeUIState(
-    val durationValue: Int = 0,
-    val durationTarget: Float = 60f,
-    val valueDistanceRecommendation: Double=0.0,
-    val valueDurationRecommendation: Int=0,
-    val valueDistanceGoal: Double=0.0,
-    val valueDurationGoal: Int=0,
+    val distanceTarget: Float = 0f,  // for put request to server
+    val durationTarget: Float = 0f,   // for put request
 
-    val distance: Double=0.0, //change all value there it's used
+    val valueDistanceRecommendation: Double=0.0,  // for change progress bar
+    val valueDurationRecommendation: Int=0,  // for change progress bar
+    val valueDistanceGoal: Double=0.0,     // for change progress bar
+    val valueDurationGoal: Int=0,    // for change progress bar
+
+    val distance: Double=0.0,  // for change card view
     val duration: Long = 0,
     val steps: Int = 0,
 
