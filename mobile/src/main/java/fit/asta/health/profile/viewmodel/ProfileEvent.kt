@@ -1,6 +1,7 @@
 package fit.asta.health.profile.viewmodel
 
 import android.net.Uri
+import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.HealthProperties
 import fit.asta.health.profile.model.domain.ThreeToggleSelections
 import fit.asta.health.profile.model.domain.TwoToggleSelections
@@ -20,9 +21,24 @@ sealed class ProfileEvent {
     data class SetSelectedWorkingEnvOption(val option: TwoToggleSelections) : ProfileEvent()
     data class SetSelectedWorkingStyleOption(val option: TwoToggleSelections) : ProfileEvent()
     data class SetSelectedGenderOption(val option: ThreeToggleSelections) : ProfileEvent()
-    data class SetSelectedAddItemOption(val item: HealthProperties) : ProfileEvent()
-    data class SetSelectedRemoveItemOption(val item: HealthProperties) : ProfileEvent()
+    data class SetSelectedAddItemOption(
+        val item: HealthProperties,
+        val index: Int,
+        val composeIndex: ComposeIndex,
+    ) : ProfileEvent()
+
+    data class SetSelectedRemoveItemOption(
+        val item: HealthProperties,
+        val index: Int,
+        val composeIndex: ComposeIndex,
+    ) : ProfileEvent()
+
     data class OnNameChange(val name: String) : ProfileEvent()
     data class OnEmailChange(val email: String) : ProfileEvent()
     data class OnUserImgChange(val url: Uri?) : ProfileEvent()
+    data class OnUserWeightChange(val weight: String) : ProfileEvent()
+    data class OnUserHeightChange(val height: String) : ProfileEvent()
+    data class OnUserDOBChange(val dob: String) : ProfileEvent()
+    data class OnUserAGEChange(val age: String) : ProfileEvent()
+    data class OnUserPregWeekChange(val week: String) : ProfileEvent()
 }

@@ -5,13 +5,13 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
+import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.databinding.SchedulerHomeActivityBinding
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.view.adapters.AlarmAdapter
 import fit.asta.health.scheduler.viewmodel.AlarmViewModel
 import fit.asta.health.scheduler.viewmodel.SchedulerBackendViewModel
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.TAG
-import fit.asta.health.common.utils.NetworkResult
 
 @AndroidEntryPoint
 class SchedulerHomeActivity : AppCompatActivity() {
@@ -42,7 +42,7 @@ class SchedulerHomeActivity : AppCompatActivity() {
         backendViewModel.lisOfSchedules.observe(this) { result ->
             when (result) {
                 is NetworkResult.Success -> {
-                    Log.d(TAG, "onCreate list result: ${result.data}")
+                    Log.d(TAG, "onCreate healthHisList result: ${result.data}")
                     val offlineSchedules = viewModel.allAlarms.value
                     val onlineSchedules = result.data?.data
 
@@ -70,10 +70,10 @@ class SchedulerHomeActivity : AppCompatActivity() {
                     }
                 }
                 is NetworkResult.Error -> {
-                    Log.d(TAG, "onCreate list result: ${result.data}")
+                    Log.d(TAG, "onCreate healthHisList result: ${result.data}")
                 }
                 is NetworkResult.Loading -> {
-                    Log.d(TAG, "onCreate list result: ${result.data}")
+                    Log.d(TAG, "onCreate healthHisList result: ${result.data}")
                 }
             }
         }

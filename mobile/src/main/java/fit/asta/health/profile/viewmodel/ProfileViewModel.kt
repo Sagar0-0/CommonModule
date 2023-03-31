@@ -2,6 +2,7 @@ package fit.asta.health.profile.viewmodel
 
 import android.net.Uri
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -95,7 +96,6 @@ class ProfileViewModel
     val selectedFoodResOption: StateFlow<TwoToggleSelections?>
         get() = _selectedFoodResOption
 
-
     //Is Pregnant
     private val _isPregnantOption =
         MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
@@ -182,31 +182,97 @@ class ProfileViewModel
     private var isSameItemRemovedAndAdded = false
 
     private val myArrayList = mutableStateListOf<HealthProperties>()
-    val list = MutableStateFlow(myArrayList)
+    private val demoArrayList = mutableStateListOf<HealthProperties>()
 
-    private fun addItemFrmHp(item: HealthProperties) {
+    val healthHisList = MutableStateFlow(myArrayList)
+    val injuriesList = MutableStateFlow(demoArrayList)
 
-        if (!myArrayList.contains(item)) {
-            if (myArrayList.contains(item) && isSameItemRemovedAndAdded) {
+
+    // health section
+    private val _healthPropertiesData = MutableStateFlow(
+        mapOf(
+            0 to mutableStateListOf<HealthProperties>(),
+            1 to mutableStateListOf<HealthProperties>(),
+            2 to mutableStateListOf<HealthProperties>(),
+            3 to mutableStateListOf<HealthProperties>(),
+            4 to mutableStateListOf<HealthProperties>(),
+            5 to mutableStateListOf<HealthProperties>(),
+        )
+    )
+
+    val healthPropertiesData: StateFlow<Map<Int, SnapshotStateList<HealthProperties>>> =
+        _healthPropertiesData
+
+    private fun healthAdd(cardViewIndex: Int, item: HealthProperties, composeIndex: ComposeIndex) {
+        val propertyData = when (composeIndex) {
+            ComposeIndex.First -> _healthPropertiesData
+            ComposeIndex.Second -> _lfPropertiesData
+            ComposeIndex.Third -> _dietPropertiesData
+        }
+        val currentList = propertyData.value[cardViewIndex] ?: mutableStateListOf()
+        if (!currentList.contains(item)) {
+            if (currentList.contains(item) && isSameItemRemovedAndAdded) {
                 isSameItemRemovedAndAdded = false
             } else {
-                myArrayList.add(item)
+                currentList.add(item)
             }
         }
-
+        val updatedData = propertyData.value.toMutableMap()
+        updatedData[cardViewIndex] = currentList
+        propertyData.value = updatedData.toMap()
     }
 
-    private fun removeItemFrmHp(item: HealthProperties) {
+    private fun healthRemove(
+        cardViewIndex: Int,
+        item: HealthProperties,
+        composeIndex: ComposeIndex,
+    ) {
 
-        if (myArrayList.contains(item)) {
-            if (myArrayList.contains(item) && !isSameItemRemovedAndAdded) {
+        val propertyData = when (composeIndex) {
+            ComposeIndex.First -> _healthPropertiesData
+            ComposeIndex.Second -> _lfPropertiesData
+            ComposeIndex.Third -> _dietPropertiesData
+        }
+
+        val currentList = propertyData.value[cardViewIndex] ?: mutableStateListOf()
+        if (currentList.contains(item)) {
+            if (currentList.contains(item) && !isSameItemRemovedAndAdded) {
                 isSameItemRemovedAndAdded = true
             } else {
-                myArrayList.remove(item)
+                currentList.remove(item)
             }
         }
-
+        val updatedData = propertyData.value.toMutableMap()
+        updatedData[cardViewIndex] = currentList
+        propertyData.value = updatedData.toMap()
     }
+
+    //LifeStyleSection
+    private val _lfPropertiesData = MutableStateFlow(
+        mapOf(
+            0 to mutableStateListOf<HealthProperties>(),
+            1 to mutableStateListOf<HealthProperties>(),
+            2 to mutableStateListOf<HealthProperties>(),
+        )
+    )
+
+    val lfPropertiesData: StateFlow<Map<Int, SnapshotStateList<HealthProperties>>> =
+        _lfPropertiesData
+
+
+    //Diet
+    private val _dietPropertiesData = MutableStateFlow(
+        mapOf(
+            0 to mutableStateListOf<HealthProperties>(),
+            1 to mutableStateListOf<HealthProperties>(),
+            2 to mutableStateListOf<HealthProperties>(),
+            3 to mutableStateListOf<HealthProperties>(),
+            4 to mutableStateListOf<HealthProperties>(),
+        )
+    )
+
+    val dpData: StateFlow<Map<Int, SnapshotStateList<HealthProperties>>> = _dietPropertiesData
+
 
     val profileData = savedState.getStateFlow(PROFILE_DATA, UserProfile())
 
@@ -221,13 +287,12 @@ class ProfileViewModel
 
 
     //Physique
-    val dob = savedState.getStateFlow(DOB, InputIntWrapper())
-    val age = savedState.getStateFlow(AGE, InputIntWrapper())
-    val weight = savedState.getStateFlow(WEIGHT, InputIntWrapper())
-    val height = savedState.getStateFlow(HEIGHT, InputIntWrapper())
-    val pregnancyWeek = savedState.getStateFlow(PREGNANCY_WEEK, InputIntWrapper())
-    val bodyType = savedState.getStateFlow(BODY_TYPE, InputIntWrapper())
-
+    val dob = savedState.getStateFlow(DOB, InputWrapper())
+    val age = savedState.getStateFlow(AGE, InputWrapper())
+    val weight = savedState.getStateFlow(WEIGHT, InputWrapper())
+    val height = savedState.getStateFlow(HEIGHT, InputWrapper())
+    val pregnancyWeek = savedState.getStateFlow(PREGNANCY_WEEK, InputWrapper())
+    private val bodyType = savedState.getStateFlow(BODY_TYPE, InputIntWrapper())
 
     init {
 
@@ -259,6 +324,9 @@ class ProfileViewModel
 
     }
 
+    private val ailments: ArrayList<HealthProperties>? =
+        _healthPropertiesData.value[0]?.let { ArrayList(it) }
+
     private fun submit() {
 
         authRepo.getUser()?.let {
@@ -271,11 +339,11 @@ class ProfileViewModel
                         url = userImg.value.url
                     ), physique = Physique(
                         bodyType = bodyType.value.value,
-                        height = height.value.value,
-                        pregnancyWeek = pregnancyWeek.value.value,
-                        weight = weight.value.value
+                        height = height.value.value.toInt(),
+                        pregnancyWeek = pregnancyWeek.value.value.toInt(),
+                        weight = weight.value.value.toInt()
                     ), health = Health(
-
+                        ailments = ailments
                     )
                 )
             )
@@ -349,6 +417,7 @@ class ProfileViewModel
     fun onEvent(event: ProfileEvent) {
 
         when (event) {
+
             is ProfileEvent.GetHealthProperties -> getHealthProperties(propertyType = event.propertyType)
             is ProfileEvent.SetSelectHealthHisOption -> setSelectedHealthHisOption(option = event.option)
             is ProfileEvent.SetSelectedAilOption -> setSelectedAilOption(event.option)
@@ -363,27 +432,55 @@ class ProfileViewModel
             is ProfileEvent.SetSelectedWorkingEnvOption -> setSelectedWorkingEnvOption(event.option)
             is ProfileEvent.SetSelectedWorkingHrsOption -> setSelectedWorkingHrsOption(event.option)
             is ProfileEvent.SetSelectedWorkingStyleOption -> setSelectedWorkingStyleOption(event.option)
-            is ProfileEvent.SetSelectedAddItemOption -> addItemFrmHp(event.item)
-            is ProfileEvent.SetSelectedRemoveItemOption -> removeItemFrmHp(event.item)
+            is ProfileEvent.SetSelectedAddItemOption -> healthAdd(
+                cardViewIndex = event.index, item = event.item, composeIndex = event.composeIndex
+            )
+            is ProfileEvent.SetSelectedRemoveItemOption -> healthRemove(
+                cardViewIndex = event.index, item = event.item, composeIndex = event.composeIndex
+            )
+
             is ProfileEvent.OnEmailChange -> {
                 savedState[EMAIL] = email.value.copy(
                     value = event.email, error = onValidateProfileEmail(event.email)
                 )
             }
+
             is ProfileEvent.OnNameChange -> {
                 savedState[NAME] = name.value.copy(
                     value = event.name, error = onValidateProfileText(event.name, 1, 20)
                 )
             }
 
-
             is ProfileEvent.OnUserImgChange -> {
                 savedState[USER_IMG] = userImg.value.copy(
                     localUrl = event.url
                 )
             }
-
-
+            is ProfileEvent.OnUserHeightChange -> {
+                savedState[HEIGHT] = height.value.copy(
+                    value = event.height
+                )
+            }
+            is ProfileEvent.OnUserWeightChange -> {
+                savedState[WEIGHT] = weight.value.copy(
+                    value = event.weight
+                )
+            }
+            is ProfileEvent.OnUserAGEChange -> {
+                savedState[AGE] = age.value.copy(
+                    value = event.age
+                )
+            }
+            is ProfileEvent.OnUserDOBChange -> {
+                savedState[DOB] = dob.value.copy(
+                    value = event.dob
+                )
+            }
+            is ProfileEvent.OnUserPregWeekChange -> {
+                savedState[PREGNANCY_WEEK] = pregnancyWeek.value.copy(
+                    value = event.week
+                )
+            }
         }
 
     }

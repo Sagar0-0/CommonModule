@@ -24,6 +24,7 @@ import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.HealthProperties
 import fit.asta.health.profile.model.domain.TwoToggleSelections
 import fit.asta.health.profile.view.components.AddIcon
@@ -44,6 +45,8 @@ fun SelectionCardCreateProfile(
     selectedOption: TwoToggleSelections?,
     onStateChange: (TwoToggleSelections) -> Unit,
     enabled: Boolean?,
+    cardIndex: Int? = null,
+    composeIndex: ComposeIndex,
 ) {
 
     Card(
@@ -102,7 +105,15 @@ fun SelectionCardCreateProfile(
                         RemoveChipOnCard(textOnChip = it.name,
                             checkedState = checkedState,
                             onClick = {
-                                viewModel.onEvent(ProfileEvent.SetSelectedRemoveItemOption(it))
+                                cardIndex?.let { index ->
+                                    ProfileEvent.SetSelectedRemoveItemOption(
+                                        it, index = index, composeIndex = composeIndex
+                                    )
+                                }?.let { event ->
+                                    viewModel.onEvent(
+                                        event
+                                    )
+                                }
                             })
                     }
                 }
@@ -118,10 +129,11 @@ fun OnlyChipSelectionCard(
     viewModel: ProfileViewModel = hiltViewModel(),
     cardType: String,
     cardList: SnapshotStateList<HealthProperties>,
-    checkedState: (MutableState<Boolean>)? = null,
+    checkedState: MutableState<Boolean>? = null,
     onItemsSelect: () -> Unit,
+    cardIndex: Int? = null,
+    composeIndex: ComposeIndex,
 ) {
-
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -163,7 +175,11 @@ fun OnlyChipSelectionCard(
             ) {
                 cardList.forEach {
                     RemoveChipOnCard(textOnChip = it.name, checkedState = checkedState, onClick = {
-                        viewModel.onEvent(ProfileEvent.SetSelectedRemoveItemOption(item = it))
+                        cardIndex?.let { index ->
+                            ProfileEvent.SetSelectedRemoveItemOption(
+                                item = it, index = index, composeIndex = composeIndex
+                            )
+                        }?.let { event -> viewModel.onEvent(event) }
                     })
                 }
             }

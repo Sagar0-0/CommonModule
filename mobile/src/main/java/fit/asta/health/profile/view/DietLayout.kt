@@ -57,7 +57,7 @@ fun DietLayout(
         ChipCard(
             icon = UserPropertyType.NvDays.icon,
             title = UserPropertyType.NvDays.title,
-            list = diet.nonVegDays,
+            healthHisList = diet.nonVegDays,
             editState = editState
         )
 

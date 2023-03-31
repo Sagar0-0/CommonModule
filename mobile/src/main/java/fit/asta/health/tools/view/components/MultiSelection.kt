@@ -26,7 +26,7 @@ data class ItemData(
 
 class ItemDataState(val list: MutableList<ItemData>) {
 
-    // were updating the entire list in a single pass using its iterator
+    // were updating the entire healthHisList in a single pass using its iterator
     fun onItemSelected(selectedItemData: ItemData) {
         val iterator = list.listIterator()
 

@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalCoroutinesApi::class)
+@file:OptIn(ExperimentalCoroutinesApi::class, ExperimentalCoroutinesApi::class)
 
 package fit.asta.health.profile.bottomsheets
 
@@ -25,6 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.bottomsheets.components.DividerLine
+import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.HealthProperties
 import fit.asta.health.profile.view.components.AddChipOnCard
 import fit.asta.health.profile.viewmodel.ProfileEvent
@@ -35,6 +36,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 fun ItemSelectionBtmSheetLayout(
     viewModel: ProfileViewModel = hiltViewModel(),
     cardList: List<HealthProperties>? = null,
+    cardIndex: Int? = null,
+    composeIndex: ComposeIndex,
 ) {
 
     val focusManager = LocalFocusManager.current
@@ -88,9 +91,17 @@ fun ItemSelectionBtmSheetLayout(
                 modifier = Modifier.padding(start = spacing.medium),
             ) {
 
-                cardList?.forEach {
-                    AddChipOnCard(textOnChip = it.name, onClick = {
-                        viewModel.onEvent(ProfileEvent.SetSelectedAddItemOption(it))
+                cardList?.forEach { healthProperties ->
+                    AddChipOnCard(textOnChip = healthProperties.name, onClick = {
+                        cardIndex?.let { index ->
+                            ProfileEvent.SetSelectedAddItemOption(
+                                item = healthProperties, index = index, composeIndex = composeIndex
+                            )
+                        }?.let { item ->
+                            viewModel.onEvent(
+                                item
+                            )
+                        }
                     })
                 }
             }

@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.HealthProperties
 import fit.asta.health.profile.model.domain.TwoToggleSelections
 import fit.asta.health.profile.view.ButtonListTypes
@@ -47,6 +48,8 @@ fun InjuriesLayout(
     onItemsSelect2: () -> Unit,
     selectedOption: TwoToggleSelections?,
     onStateChange: (TwoToggleSelections) -> Unit,
+    cardIndex1: Int,
+    cardIndex2: Int,
 ) {
 
     var text by remember { mutableStateOf(("")) }
@@ -105,7 +108,13 @@ fun InjuriesLayout(
                         RemoveChipOnCard(textOnChip = it.name,
                             checkedState = checkedState,
                             onClick = {
-                                viewModel.onEvent(ProfileEvent.SetSelectedRemoveItemOption(item = it))
+                                viewModel.onEvent(
+                                    ProfileEvent.SetSelectedRemoveItemOption(
+                                        item = it,
+                                        index = cardIndex1,
+                                        composeIndex = ComposeIndex.First
+                                    )
+                                )
                             })
                     }
                 }
@@ -184,7 +193,13 @@ fun InjuriesLayout(
                         RemoveChipOnCard(textOnChip = it.name,
                             checkedState = checkedState2,
                             onClick = {
-                                viewModel.onEvent(ProfileEvent.SetSelectedRemoveItemOption(item = it))
+                                viewModel.onEvent(
+                                    ProfileEvent.SetSelectedRemoveItemOption(
+                                        item = it,
+                                        index = cardIndex2,
+                                        composeIndex = ComposeIndex.First
+                                    )
+                                )
                             })
                     }
                 }

@@ -1,20 +1,16 @@
-@file:OptIn(ExperimentalCoroutinesApi::class)
+@file:OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class)
 
 package fit.asta.health.profile.createprofile.view.components
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.LocalOverscrollConfiguration
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.EditCalendar
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,10 +22,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import com.maxkeppeler.sheets.calendar.CalendarDialog
+import com.maxkeppeler.sheets.calendar.models.CalendarConfig
+import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import fit.asta.health.common.ui.components.PrimaryButton
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.common.utils.UiString
 import fit.asta.health.profile.bottomsheets.components.BodyTypeBottomSheetLayout
 import fit.asta.health.profile.model.domain.ThreeToggleSelections
 import fit.asta.health.profile.model.domain.TwoToggleSelections
@@ -38,9 +37,9 @@ import fit.asta.health.profile.view.TwoTogglesGroup
 import fit.asta.health.profile.viewmodel.ProfileEvent
 import fit.asta.health.profile.viewmodel.ProfileViewModel
 import fit.asta.health.testimonials.view.components.ValidateNumberField
-import fit.asta.health.testimonials.view.components.ValidatedTextField
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -51,12 +50,17 @@ fun PhysiqueContent(
     onSkipEvent: (Int) -> Unit,
 ) {
 
-    val placeHolderDOB = listOf("DAY", "MONTH", "YEAR")
+    val c = Calendar.getInstance()
+    val calendarState = rememberUseCaseState()
 
+    val userWeight by viewModel.weight.collectAsStateWithLifecycle()
+    val userDOB by viewModel.dob.collectAsStateWithLifecycle()
+    val userAge by viewModel.age.collectAsStateWithLifecycle()
+    val userHeight by viewModel.height.collectAsStateWithLifecycle()
+    val pregnancyWeek by viewModel.pregnancyWeek.collectAsStateWithLifecycle()
     val selectedIsPregnantOption by viewModel.selectedIsPregnant.collectAsStateWithLifecycle()
     val selectedGenderOption by viewModel.selectedGender.collectAsStateWithLifecycle()
 
-    var text by remember { mutableStateOf(("")) }
     val focusManager = LocalFocusManager.current
 
     CompositionLocalProvider(
@@ -76,122 +80,116 @@ fun PhysiqueContent(
                 modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Date of Birth",
+                    text = "Age",
                     color = MaterialTheme.colorScheme.onTertiaryContainer,
                     style = MaterialTheme.typography.titleSmall
                 )
 
-                Text(
-                    text = "24yr",
-                    color = MaterialTheme.colorScheme.onTertiaryContainer,
-                    style = MaterialTheme.typography.titleSmall
-                )
-            }
-
-            Spacer(modifier = Modifier.height(spacing.small))
-
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(3),
-                userScrollEnabled = false,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp),
-                horizontalArrangement = Arrangement.spacedBy(spacing.small)
-            ) {
-
-                placeHolderDOB.forEach { placeHolder ->
-                    item {
-                        ValidateNumberField(
-                            value = text,
-                            onValueChange = { text = it },
-                            placeholder = placeHolder,
-                            singleLine = true,
-                            modifier = Modifier.height(48.dp),
-                            keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Number, imeAction = ImeAction.Next
-                            ),
-                            keyboardActions = KeyboardActions(onNext = {
-                                focusManager.moveFocus(
-                                    FocusDirection.Next
-                                )
-                            })
-                        )
-                    }
+                if (userAge.value.isNotEmpty()) {
+                    Text(
+                        text = userAge.value,
+                        color = MaterialTheme.colorScheme.onTertiaryContainer,
+                        style = MaterialTheme.typography.titleSmall
+                    )
                 }
 
             }
 
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(spacing.small))
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Weight",
-                    color = MaterialTheme.colorScheme.onTertiaryContainer,
-                    style = MaterialTheme.typography.titleSmall
-                )
-                RowToggleButtonGroup(
-                    buttonCount = 2,
-                    onButtonClick = { index -> println(index) },
-                    buttonTexts = arrayOf("kg", "lb"),
-                    modifier = Modifier.size(width = 80.dp, height = 24.dp)
-                )
-            }
-
-            Spacer(modifier = Modifier.height(spacing.extraSmall))
-
-            ValidatedTextField(
-                value = text,
-                onValueChange = { text = it },
-                errorMessage = UiString.Empty,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number, imeAction = ImeAction.Next
-                ),
-                keyboardActions = KeyboardActions(onNext = {
-                    focusManager.moveFocus(
-                        FocusDirection.Next
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(
+                        border = BorderStroke(
+                            width = 1.dp,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+                        ), shape = MaterialTheme.shapes.medium
                     )
-                }),
-            )
+            ) {
+                Row(
+                    Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = userDOB.value.ifEmpty {
+                        "Date of Birth"
+                    }, modifier = Modifier.padding(spacing.small))
+                    IconButton(onClick = { calendarState.show() }) {
+                        Icon(imageVector = Icons.Filled.EditCalendar, contentDescription = null)
+                    }
+                }
+            }
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                userScrollEnabled = false,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp),
+                horizontalArrangement = Arrangement.spacedBy(spacing.small)
             ) {
-                Text(
-                    text = "Height",
-                    color = MaterialTheme.colorScheme.onTertiaryContainer,
-                    style = MaterialTheme.typography.titleSmall
-                )
-                RowToggleButtonGroup(
-                    buttonCount = 2,
-                    onButtonClick = { index -> println(index) },
-                    buttonTexts = arrayOf("in", "cm"),
-                    modifier = Modifier.size(width = 80.dp, height = 24.dp)
-                )
+
+                listOf(userWeight.value, userHeight.value).forEachIndexed { componentIndex, s ->
+                    item {
+                        Column {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = when (componentIndex) {
+                                        0 -> "Weight"
+                                        1 -> "Height"
+                                        else -> {
+                                            ""
+                                        }
+                                    },
+                                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                                    style = MaterialTheme.typography.titleSmall
+                                )
+                                RowToggleButtonGroup(
+                                    buttonCount = 2,
+                                    onButtonClick = { index -> println(index) },
+                                    buttonTexts = when (componentIndex) {
+                                        0 -> arrayOf("kg", "lb")
+                                        1 -> arrayOf("in", "cm")
+                                        else -> emptyArray()
+                                    },
+                                    modifier = Modifier.size(width = 80.dp, height = 24.dp)
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(spacing.small))
+                            ValidateNumberField(
+                                value = s,
+                                onValueChange = {
+                                    when (componentIndex) {
+                                        0 -> {
+                                            viewModel.onEvent(ProfileEvent.OnUserWeightChange(weight = it))
+                                        }
+                                        1 -> {
+                                            viewModel.onEvent(ProfileEvent.OnUserHeightChange(height = it))
+                                        }
+                                    }
+                                },
+                                singleLine = true,
+                                modifier = Modifier.height(48.dp),
+                                keyboardOptions = KeyboardOptions(
+                                    keyboardType = KeyboardType.Number, imeAction = ImeAction.Next
+                                ),
+                                keyboardActions = KeyboardActions(onNext = {
+                                    focusManager.moveFocus(
+                                        FocusDirection.Next
+                                    )
+                                })
+                            )
+                        }
+                    }
+                }
+
             }
-
-            Spacer(modifier = Modifier.height(spacing.extraSmall))
-
-            ValidatedTextField(
-                value = text,
-                onValueChange = { text = it },
-                errorMessage = UiString.Empty,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number, imeAction = ImeAction.Next
-                ),
-                keyboardActions = KeyboardActions(onNext = {
-                    focusManager.moveFocus(
-                        FocusDirection.Next
-                    )
-                }),
-            )
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
@@ -233,8 +231,14 @@ fun PhysiqueContent(
                             }
 
                             ValidateNumberField(
-                                value = text,
-                                onValueChange = { text = it },
+                                value = pregnancyWeek.value,
+                                onValueChange = {
+                                    viewModel.onEvent(
+                                        ProfileEvent.OnUserPregWeekChange(
+                                            week = it
+                                        )
+                                    )
+                                },
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(
@@ -275,6 +279,15 @@ fun PhysiqueContent(
             Spacer(modifier = Modifier.height(spacing.medium))
         }
     }
+
+    CalendarDialog(state = calendarState, selection = CalendarSelection.Date {
+        viewModel.onEvent(
+            ProfileEvent.OnUserDOBChange(
+                dob = it.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString()
+            )
+        )
+        viewModel.onEvent(ProfileEvent.OnUserAGEChange(age = "${c.get(Calendar.YEAR) - it.year}"))
+    }, config = CalendarConfig(monthSelection = true, yearSelection = true))
 
 }
 

@@ -4,10 +4,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.common.utils.ResultState
 import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.firebase.model.domain.User
 import fit.asta.health.firebase.model.domain.UserCred
-import fit.asta.health.common.utils.ResultState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel
 @Inject constructor(
-    private val authRepo: AuthRepo
+    private val authRepo: AuthRepo,
 ) : ViewModel() {
 
     var state = mutableStateOf(AuthState.Loading)

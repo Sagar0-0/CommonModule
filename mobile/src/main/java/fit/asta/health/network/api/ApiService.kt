@@ -45,14 +45,14 @@ interface ApiService {
     ): SingleFileUploadRes
 
     @Multipart
-    @PUT("file/upload/list/put/")
+    @PUT("file/upload/healthHisList/put/")
     suspend fun uploadFiles(
         @Body body: RequestBody?,
         @Part file: MultipartBody
     ): MultiFileUploadRes
 
     @Multipart
-    @PUT("file/upload/list/put/")
+    @PUT("file/upload/healthHisList/put/")
     suspend fun uploadFiles(
         @Body body: RequestBody?,
         @Part file: MultipartBody,
@@ -62,6 +62,6 @@ interface ApiService {
     @DELETE("file/upload/delete/")
     suspend fun deleteFile(@Query("uid") Id: String, @Query("feature") feature: String): Status
 
-    @DELETE("file/upload/list/delete/")
+    @DELETE("file/upload/healthHisList/delete/")
     suspend fun deleteFiles(@Query("uid") Id: String, @Query("feature") feature: String): Status
 }

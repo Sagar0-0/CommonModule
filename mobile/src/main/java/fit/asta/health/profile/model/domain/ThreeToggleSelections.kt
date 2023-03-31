@@ -10,3 +10,10 @@ sealed class TwoToggleSelections {
     object First : TwoToggleSelections()
     object Second : TwoToggleSelections()
 }
+
+
+sealed class ComposeIndex {
+    object First : ComposeIndex()
+    object Second : ComposeIndex()
+    object Third : ComposeIndex()
+}
