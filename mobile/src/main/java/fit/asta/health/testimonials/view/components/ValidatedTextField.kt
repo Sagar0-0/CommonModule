@@ -81,23 +81,44 @@ fun ValidateNumberField(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     placeholder: String = "",
     singleLine: Boolean = false,
+    showError: Boolean = false,
+    errorMessage: UiString = UiString.Empty,
 ) {
 
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        keyboardActions = keyboardActions,
-        keyboardOptions = keyboardOptions,
-        placeholder = {
-            Text(
-                text = placeholder,
-                style = MaterialTheme.typography.bodySmall,
-                textAlign = TextAlign.Center
-            )
-        },
-        singleLine = singleLine,
-        modifier = modifier,
-        shape = MaterialTheme.shapes.medium
-    )
+    Column(Modifier.fillMaxWidth()) {
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            isError = showError,
+            keyboardActions = keyboardActions,
+            trailingIcon = {
+                if (showError) Icon(
+                    imageVector = Icons.Filled.Error, contentDescription = "Show Error Icon"
+                )
+            },
+            keyboardOptions = keyboardOptions,
+            placeholder = {
+                Text(
+                    text = placeholder,
+                    style = MaterialTheme.typography.bodySmall,
+                    textAlign = TextAlign.Center
+                )
+            },
+            singleLine = singleLine,
+            modifier = modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.medium,
+        )
+
+        Row(Modifier.fillMaxWidth()) {
+            if (showError) {
+                Text(
+                    text = errorMessage.asString(),
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.titleSmall
+                )
+            }
+        }
+    }
+
 
 }

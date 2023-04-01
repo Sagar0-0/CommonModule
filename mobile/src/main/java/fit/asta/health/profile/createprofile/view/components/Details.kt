@@ -101,6 +101,7 @@ fun DetailsContent(
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
                 label = "Name",
+                singleLine = true,
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
@@ -124,7 +125,8 @@ fun DetailsContent(
                 errorMessage = email.error,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-                label = "E-mail"
+                label = "E-mail",
+                singleLine = true,
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))

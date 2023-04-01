@@ -35,8 +35,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun ItemSelectionBtmSheetLayout(
     viewModel: ProfileViewModel = hiltViewModel(),
-    cardList: List<HealthProperties>? = null,
-    cardIndex: Int? = null,
+    cardList: ArrayList<HealthProperties>,
+    cardIndex: Int,
     composeIndex: ComposeIndex,
 ) {
 
@@ -91,17 +91,15 @@ fun ItemSelectionBtmSheetLayout(
                 modifier = Modifier.padding(start = spacing.medium),
             ) {
 
-                cardList?.forEach { healthProperties ->
+                cardList.forEach { healthProperties ->
                     AddChipOnCard(textOnChip = healthProperties.name, onClick = {
-                        cardIndex?.let { index ->
+                        viewModel.onEvent(
                             ProfileEvent.SetSelectedAddItemOption(
-                                item = healthProperties, index = index, composeIndex = composeIndex
+                                item = healthProperties,
+                                index = cardIndex,
+                                composeIndex = composeIndex
                             )
-                        }?.let { item ->
-                            viewModel.onEvent(
-                                item
-                            )
-                        }
+                        )
                     })
                 }
             }

@@ -262,8 +262,8 @@ fun ThreeTogglesGroups(
 
             items(
                 listOf(
-                    ThreeToggleSelections.Second,
                     ThreeToggleSelections.First,
+                    ThreeToggleSelections.Second,
                     ThreeToggleSelections.Third
                 )
             ) { option ->

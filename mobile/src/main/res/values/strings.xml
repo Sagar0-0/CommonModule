@@ -282,6 +282,10 @@
         The password needs to consist of at least 8 characters</string>
     <string name="data_length_more">The length should not be more than %s characters</string>
     <string name="data_length_less">The length should not be less than %s characters</string>
+    <string name="validate_age">The age should not be less than %s</string>
+    <string name="validate_min_phy">The %s should not be less than %s</string>
+    <string name="validate_emptyList">The %s list should not be empty</string>
+    <string name="validate_max_phy">The %s should not be more than %s</string>
     <string name="testimonial_title_create">Create your Testimonial</string>
     <string name="testimonial_title_edit">Edit your Testimonial?</string>
 

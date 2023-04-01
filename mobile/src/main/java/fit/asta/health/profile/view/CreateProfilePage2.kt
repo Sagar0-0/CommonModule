@@ -47,81 +47,100 @@ fun SelectionCardCreateProfile(
     enabled: Boolean?,
     cardIndex: Int? = null,
     composeIndex: ComposeIndex,
+    listName: String = "",
 ) {
 
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.medium,
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
-    ) {
-
-        Column(
-            modifier = Modifier.fillMaxWidth()
+    Column(Modifier.fillMaxWidth()) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.medium,
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
         ) {
 
-            Spacer(modifier = Modifier.height(spacing.small))
-
-
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = spacing.medium),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier.fillMaxWidth()
             ) {
+
+                Spacer(modifier = Modifier.height(spacing.small))
+
+
                 Row(
-                    horizontalArrangement = Arrangement.Center,
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = spacing.medium),
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = cardType,
-                        color = MaterialTheme.colorScheme.onTertiaryContainer,
-                        style = MaterialTheme.typography.titleSmall
-                    )
+
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = cardType,
+                            color = MaterialTheme.colorScheme.onTertiaryContainer,
+                            style = MaterialTheme.typography.titleSmall
+                        )
+                    }
+
+                    if (selectedOption == TwoToggleSelections.First) {
+                        AddIcon(onClick = onItemsSelect)
+                    }
+
                 }
+
+
+                TwoTogglesGroup(
+                    selectionTypeText = null,
+                    selectedOption = selectedOption,
+                    onStateChange = onStateChange
+                )
+
 
                 if (selectedOption == TwoToggleSelections.First) {
-                    AddIcon(onClick = onItemsSelect)
-                }
 
-            }
-
-
-            TwoTogglesGroup(
-                selectionTypeText = null,
-                selectedOption = selectedOption,
-                onStateChange = onStateChange
-            )
-
-
-            if (selectedOption == TwoToggleSelections.First) {
-
-                FlowRow(
-                    mainAxisSpacing = spacing.minSmall,
-                    modifier = Modifier.padding(start = spacing.medium),
-                ) {
-                    cardList.forEach {
-                        RemoveChipOnCard(textOnChip = it.name,
-                            checkedState = checkedState,
-                            onClick = {
-                                cardIndex?.let { index ->
-                                    ProfileEvent.SetSelectedRemoveItemOption(
-                                        it, index = index, composeIndex = composeIndex
-                                    )
-                                }?.let { event ->
-                                    viewModel.onEvent(
-                                        event
-                                    )
-                                }
-                            })
+                    FlowRow(
+                        mainAxisSpacing = spacing.minSmall,
+                        modifier = Modifier.padding(start = spacing.medium),
+                    ) {
+                        cardList.forEach {
+                            RemoveChipOnCard(textOnChip = it.name,
+                                checkedState = checkedState,
+                                onClick = {
+                                    cardIndex?.let { index ->
+                                        ProfileEvent.SetSelectedRemoveItemOption(
+                                            it, index = index, composeIndex = composeIndex
+                                        )
+                                    }?.let { event ->
+                                        viewModel.onEvent(
+                                            event
+                                        )
+                                    }
+                                })
+                        }
                     }
-                }
 
+                }
+                Spacer(modifier = Modifier.height(spacing.small))
             }
-            Spacer(modifier = Modifier.height(spacing.small))
         }
+
+        Row(Modifier.fillMaxWidth()) {
+            if (selectedOption is TwoToggleSelections.First && cardList.isEmpty()) {
+                Text(
+                    text = viewModel.validateDataList(
+                        list = cardList, listName = listName
+                    ).asString(),
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.titleSmall
+                )
+            }
+        }
+
     }
+
+
 }
 
 @Composable

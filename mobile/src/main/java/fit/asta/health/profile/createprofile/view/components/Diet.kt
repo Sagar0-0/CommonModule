@@ -2,6 +2,7 @@
 
 package fit.asta.health.profile.createprofile.view.components
 
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
@@ -16,14 +17,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.navigation.home.view.component.LoadingAnimation
+import fit.asta.health.navigation.home.view.component.NoInternetLayout
 import fit.asta.health.profile.bottomsheets.ItemSelectionBtmSheetLayout
 import fit.asta.health.profile.createprofile.view.components.DietCreateBottomSheetType.*
 import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.TwoToggleSelections
 import fit.asta.health.profile.view.*
-import fit.asta.health.profile.viewmodel.HPropState
-import fit.asta.health.profile.viewmodel.ProfileEvent
-import fit.asta.health.profile.viewmodel.ProfileViewModel
+import fit.asta.health.profile.viewmodel.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
@@ -47,6 +48,11 @@ fun DietContent(
     val selectedFoodRes by viewModel.selectedFoodResOption.collectAsStateWithLifecycle()
 
     val dietList by viewModel.dpData.collectAsState()
+
+    val event = viewModel.stateEdit.collectAsState()
+    val events = event.value
+
+    var buttonClicked by remember { mutableStateOf(false) }
 
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
@@ -127,7 +133,27 @@ fun DietContent(
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            CreateProfileButtons(eventPrevious, eventNext, text = "Done")
+            CreateProfileButtons(
+                eventPrevious, eventNext = {
+                    buttonClicked = !buttonClicked
+                    viewModel.onEvent(ProfileEvent.OnSubmit)
+                }, text = "Done"
+            )
+
+
+            if (buttonClicked) {
+                when (events) {
+                    is ProfileEditState.Empty -> {}
+                    is ProfileEditState.Error -> {
+                        Log.d("validate", "Error -> ${events.error}")
+                    }
+                    is ProfileEditState.Loading -> LoadingAnimation()
+                    is ProfileEditState.NoInternet -> NoInternetLayout(onTryAgain = {})
+                    is ProfileEditState.Success -> {
+                        Log.d("validate", "Success -> ${events.userProfile}")
+                    }
+                }
+            }
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
@@ -173,8 +199,7 @@ fun DietCreateScreen(
     }
 
 
-    ModalBottomSheetLayout(
-        modifier = Modifier.fillMaxSize(),
+    ModalBottomSheetLayout(modifier = Modifier.fillMaxSize(),
         sheetState = modalBottomSheetState,
         sheetContent = {
             Spacer(modifier = Modifier.height(1.dp))

@@ -11,3 +11,13 @@ sealed class ProfileState {
     class Error(val error: Throwable) : ProfileState()
 
 }
+
+
+sealed class ProfileCreateState {
+    object Loading : ProfileCreateState()
+    object Empty : ProfileCreateState()
+    object NoInternet : ProfileCreateState()
+    class Success(val userProfile: UserProfile) : ProfileCreateState()
+    class Error(val error: Throwable) : ProfileCreateState()
+
+}

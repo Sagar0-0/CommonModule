@@ -52,6 +52,7 @@ fun LifeStyleContent(
 
     val lfList by viewModel.lfPropertiesData.collectAsState()
 
+
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
     ) {
@@ -78,8 +79,8 @@ fun LifeStyleContent(
                     onStateChange = { state ->
                         viewModel.onEvent(ProfileEvent.SetSelectedPhyActOption(state))
                     },
-                    firstOption = "Moderate",
-                    secondOption = "Less",
+                    firstOption = "Less",
+                    secondOption = "Moderate",
                     thirdOption = "Very"
                 )
             }
@@ -137,8 +138,8 @@ fun LifeStyleContent(
                     onStateChange = { state ->
                         viewModel.onEvent(ProfileEvent.SetSelectedWorkingHrsOption(state))
                     },
-                    firstOption = "Afternoon",
-                    secondOption = "Morning",
+                    firstOption = "Morning",
+                    secondOption = "Afternoon",
                     thirdOption = "Night"
                 )
             }

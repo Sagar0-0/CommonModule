@@ -7,5 +7,5 @@ import fit.asta.health.profile.model.domain.HealthProperties
 
 data class NetHealthPropertiesRes(
     @SerializedName("status") val status: Status,
-    @SerializedName("data") val healthProperties: List<HealthProperties>,
+    @SerializedName("data") val healthProperties: ArrayList<HealthProperties>,
 )

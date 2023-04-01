@@ -1,4 +1,8 @@
-@file:OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class)
+@file:OptIn(
+    ExperimentalCoroutinesApi::class,
+    ExperimentalMaterial3Api::class,
+    ExperimentalCoroutinesApi::class
+)
 
 package fit.asta.health.profile.createprofile.view.components
 
@@ -29,6 +33,7 @@ import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import fit.asta.health.common.ui.components.PrimaryButton
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.common.utils.UiString
 import fit.asta.health.profile.bottomsheets.components.BodyTypeBottomSheetLayout
 import fit.asta.health.profile.model.domain.ThreeToggleSelections
 import fit.asta.health.profile.model.domain.TwoToggleSelections
@@ -59,7 +64,9 @@ fun PhysiqueContent(
     val userHeight by viewModel.height.collectAsStateWithLifecycle()
     val pregnancyWeek by viewModel.pregnancyWeek.collectAsStateWithLifecycle()
     val selectedIsPregnantOption by viewModel.selectedIsPregnant.collectAsStateWithLifecycle()
+    val selectedOnPeriodOption by viewModel.selectedOnPeriod.collectAsStateWithLifecycle()
     val selectedGenderOption by viewModel.selectedGender.collectAsStateWithLifecycle()
+
 
     val focusManager = LocalFocusManager.current
 
@@ -102,22 +109,54 @@ fun PhysiqueContent(
                     .fillMaxWidth()
                     .border(
                         border = BorderStroke(
-                            width = 1.dp,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+                            width = 1.dp, color = if (userAge.error is UiString.Empty) {
+                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+                            } else {
+                                MaterialTheme.colorScheme.error
+                            }
                         ), shape = MaterialTheme.shapes.medium
                     )
             ) {
+                Column(Modifier.fillMaxWidth()) {
+                    Row(
+                        Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(text = userDOB.value.ifEmpty {
+                            "Date of Birth"
+                        }, modifier = Modifier.padding(spacing.small))
+                        IconButton(onClick = { calendarState.show() }) {
+                            Icon(
+                                imageVector = Icons.Filled.EditCalendar,
+                                contentDescription = null,
+                                tint = if (userAge.error is UiString.Empty) {
+                                    MaterialTheme.colorScheme.onBackground
+                                } else {
+                                    MaterialTheme.colorScheme.error
+                                }
+                            )
+                        }
+                    }
+
+                }
+            }
+
+
+            if (userAge.error !is UiString.Empty) {
+
+                Spacer(modifier = Modifier.height(spacing.minSmall))
+
                 Row(
                     Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = userDOB.value.ifEmpty {
-                        "Date of Birth"
-                    }, modifier = Modifier.padding(spacing.small))
-                    IconButton(onClick = { calendarState.show() }) {
-                        Icon(imageVector = Icons.Filled.EditCalendar, contentDescription = null)
-                    }
+                    Text(
+                        text = userAge.error.asString(),
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.error
+                    )
                 }
             }
 
@@ -128,11 +167,11 @@ fun PhysiqueContent(
                 userScrollEnabled = false,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(80.dp),
+                    .height(100.dp),
                 horizontalArrangement = Arrangement.spacedBy(spacing.small)
             ) {
 
-                listOf(userWeight.value, userHeight.value).forEachIndexed { componentIndex, s ->
+                listOf(userWeight, userHeight).forEachIndexed { componentIndex, inputType ->
                     item {
                         Column {
                             Row(
@@ -163,7 +202,7 @@ fun PhysiqueContent(
                             }
                             Spacer(modifier = Modifier.height(spacing.small))
                             ValidateNumberField(
-                                value = s,
+                                value = inputType.value,
                                 onValueChange = {
                                     when (componentIndex) {
                                         0 -> {
@@ -183,15 +222,15 @@ fun PhysiqueContent(
                                     focusManager.moveFocus(
                                         FocusDirection.Next
                                     )
-                                })
+                                }),
+                                showError = inputType.error !is UiString.Empty,
+                                errorMessage = inputType.error
                             )
                         }
                     }
                 }
 
             }
-
-            Spacer(modifier = Modifier.height(spacing.medium))
 
             Row(Modifier.fillMaxWidth()) {
                 Card(
@@ -201,57 +240,79 @@ fun PhysiqueContent(
                     elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
                 ) {
 
-                    ThreeTogglesGroups(selectionTypeText = "Gender",
-                        selectedOption = selectedGenderOption,
-                        onStateChange = { state ->
-                            viewModel.onEvent(ProfileEvent.SetSelectedGenderOption(state))
-                        })
-
-                    if (selectedGenderOption == ThreeToggleSelections.Second) {
-
-                        TwoTogglesGroup(selectionTypeText = "Are you Pregnant",
-                            selectedOption = selectedIsPregnantOption,
+                    Column(
+                        Modifier.fillMaxWidth()
+                    ) {
+                        ThreeTogglesGroups(selectionTypeText = "Gender",
+                            selectedOption = selectedGenderOption,
                             onStateChange = { state ->
-                                viewModel.onEvent(ProfileEvent.SetSelectedIsPregnantOption(state))
+                                viewModel.onEvent(ProfileEvent.SetSelectedGenderOption(state))
                             })
 
-                        if (selectedIsPregnantOption == TwoToggleSelections.First) {
+                        if (selectedGenderOption == ThreeToggleSelections.Second) {
 
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = spacing.medium),
-                                horizontalArrangement = Arrangement.Start
-                            ) {
-                                Text(
-                                    "Please Enter your Pregnancy Week",
-                                    color = MaterialTheme.colorScheme.onTertiaryContainer,
-                                    style = MaterialTheme.typography.titleSmall
-                                )
+
+                            TwoTogglesGroup(selectionTypeText = "Are you having periods?",
+                                selectedOption = selectedOnPeriodOption,
+                                onStateChange = { state ->
+                                    viewModel.onEvent(ProfileEvent.SetSelectedIsOnPeriodOption(state))
+                                })
+
+                            TwoTogglesGroup(selectionTypeText = "Are you Pregnant",
+                                selectedOption = selectedIsPregnantOption,
+                                onStateChange = { state ->
+                                    viewModel.onEvent(ProfileEvent.SetSelectedIsPregnantOption(state))
+                                })
+
+                            if (selectedIsPregnantOption == TwoToggleSelections.First) {
+
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(start = spacing.medium),
+                                    horizontalArrangement = Arrangement.Start
+                                ) {
+                                    Text(
+                                        "Please Enter your Pregnancy Week",
+                                        color = MaterialTheme.colorScheme.onTertiaryContainer,
+                                        style = MaterialTheme.typography.titleSmall
+                                    )
+                                }
+
+                                Spacer(modifier = Modifier.height(spacing.medium))
+
+                                Row(
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = spacing.medium)
+                                ) {
+                                    ValidateNumberField(
+                                        value = pregnancyWeek.value,
+                                        onValueChange = {
+                                            viewModel.onEvent(
+                                                ProfileEvent.OnUserPregWeekChange(
+                                                    week = it
+                                                )
+                                            )
+                                        },
+                                        modifier = Modifier.fillMaxWidth(),
+                                        keyboardOptions = KeyboardOptions(
+                                            keyboardType = KeyboardType.Number,
+                                            imeAction = ImeAction.Done
+                                        ),
+                                        keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+                                        showError = pregnancyWeek.error !is UiString.Empty,
+                                        errorMessage = pregnancyWeek.error
+                                    )
+                                }
+
                             }
 
-                            ValidateNumberField(
-                                value = pregnancyWeek.value,
-                                onValueChange = {
-                                    viewModel.onEvent(
-                                        ProfileEvent.OnUserPregWeekChange(
-                                            week = it
-                                        )
-                                    )
-                                },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(
-                                        horizontal = spacing.medium, vertical = spacing.medium
-                                    ),
-                                keyboardOptions = KeyboardOptions(
-                                    keyboardType = KeyboardType.Number, imeAction = ImeAction.Done
-                                ),
-                                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
-                            )
                         }
-
                     }
+
+                    Spacer(modifier = Modifier.height(spacing.medium))
+
                 }
             }
 

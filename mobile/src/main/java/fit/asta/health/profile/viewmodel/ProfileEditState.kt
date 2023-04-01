@@ -4,6 +4,7 @@ import fit.asta.health.network.data.Status
 
 
 sealed class ProfileEditState {
+
     object Loading : ProfileEditState()
     object Empty : ProfileEditState()
     object NoInternet : ProfileEditState()

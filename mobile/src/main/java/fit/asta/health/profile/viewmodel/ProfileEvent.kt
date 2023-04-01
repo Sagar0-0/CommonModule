@@ -16,6 +16,7 @@ sealed class ProfileEvent {
     data class SetSelectedHealthTarOption(val option: TwoToggleSelections) : ProfileEvent()
     data class SetSelectedFoodResOption(val option: TwoToggleSelections) : ProfileEvent()
     data class SetSelectedIsPregnantOption(val option: TwoToggleSelections) : ProfileEvent()
+    data class SetSelectedIsOnPeriodOption(val option: TwoToggleSelections) : ProfileEvent()
     data class SetSelectedPhyActOption(val option: ThreeToggleSelections) : ProfileEvent()
     data class SetSelectedWorkingHrsOption(val option: ThreeToggleSelections) : ProfileEvent()
     data class SetSelectedWorkingEnvOption(val option: TwoToggleSelections) : ProfileEvent()
@@ -41,4 +42,7 @@ sealed class ProfileEvent {
     data class OnUserDOBChange(val dob: String) : ProfileEvent()
     data class OnUserAGEChange(val age: String) : ProfileEvent()
     data class OnUserPregWeekChange(val week: String) : ProfileEvent()
+    data class OnUserInjuryTimeChange(val time: String) : ProfileEvent()
+
+    object OnSubmit : ProfileEvent()
 }

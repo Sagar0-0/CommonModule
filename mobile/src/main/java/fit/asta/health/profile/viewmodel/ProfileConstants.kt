@@ -17,6 +17,8 @@ object ProfileConstants {
     const val IS_PREGNANT = "isPregnant"
     const val PREGNANCY_WEEK = "pregnancyWeek"
 
+    const val INJURIES_SINCE = "injuries_since"
+
     const val USER_SELECTION = "userSelection"
     const val PROFILE_DATA = "profileData"
     const val UID = "6309a9379af54f142c65fbfe"

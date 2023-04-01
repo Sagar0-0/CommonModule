@@ -50,9 +50,9 @@ fun InjuriesLayout(
     onStateChange: (TwoToggleSelections) -> Unit,
     cardIndex1: Int,
     cardIndex2: Int,
+    time: String,
 ) {
 
-    var text by remember { mutableStateOf(("")) }
     val focusManager = LocalFocusManager.current
 
     Card(
@@ -144,8 +144,14 @@ fun InjuriesLayout(
 
                     Box(Modifier.fillMaxWidth(0.5f)) {
                         ValidateNumberField(
-                            value = text,
-                            onValueChange = { text = it },
+                            value = time,
+                            onValueChange = {
+                                viewModel.onEvent(
+                                    ProfileEvent.OnUserInjuryTimeChange(
+                                        time = it
+                                    )
+                                )
+                            },
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Number, imeAction = ImeAction.Done
                             ),
