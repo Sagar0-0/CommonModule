@@ -1,7 +1,6 @@
 package fit.asta.health.tools.walking.view.home
 
 import android.app.Activity
-import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
@@ -121,7 +120,10 @@ fun StepsBottomSheet(
         visible = !sheetState.isCollapsed
         HomeLayout(paddingValues = paddingValues, state = state, apiState = apiState,
             onTargetDistance = { homeViewModel.onUIEvent(StepCounterUIEvent.ChangeTargetDistance(it)) },
-            onTargetDuration = { homeViewModel.onUIEvent(StepCounterUIEvent.ChangeTargetDuration(it)) })
+            onTargetDuration = { homeViewModel.onUIEvent(StepCounterUIEvent.ChangeTargetDuration(it)) },
+            onChangeAngleDistance = {homeViewModel.onUIEvent(StepCounterUIEvent.ChangeAngleDistance(it))},
+            onChangeAngleDuration = {homeViewModel.onUIEvent(StepCounterUIEvent.ChangeAngelDuration(it))}
+        )
     }
 }
 
@@ -132,7 +134,9 @@ fun HomeLayout(
     state: HomeUIState,
     apiState: WalkingTool,
     onTargetDistance: (Float) -> Unit,
-    onTargetDuration: (Float) -> Unit
+    onTargetDuration: (Float) -> Unit,
+    onChangeAngleDistance: (Float) -> Unit,
+    onChangeAngleDuration: (Float) -> Unit
 ) {
 
     Column(
@@ -151,7 +155,9 @@ fun HomeLayout(
             apiState = apiState,
             state = state,
             onTargetDistance = onTargetDistance,
-            onTargetDuration = onTargetDuration
+            onTargetDuration = onTargetDuration,
+            onChangeAngleDuration = onChangeAngleDuration,
+            onChangeAngleDistance = onChangeAngleDistance
         )
         StepsDetailsCard(
             modifier = Modifier,
@@ -280,7 +286,10 @@ fun MainCircularSlider(
     apiState: WalkingTool,
     state: HomeUIState,
     onTargetDistance: (Float) -> Unit,
-    onTargetDuration: (Float) -> Unit
+    onTargetDuration: (Float) -> Unit,
+    onChangeAngleDistance: (Float) -> Unit,
+    onChangeAngleDuration: (Float) -> Unit
+
 ) {
 
     var isDuration by remember {
@@ -304,8 +313,10 @@ fun MainCircularSlider(
             CircularSlider(modifier = Modifier.size(200.dp),
                 isDuration = isDuration,
                 isStarted = state.start,
+                appliedAngleDurationValue=state.appliedAngleDuration,
+                appliedAngleDistanceValue = state.appliedAngleDistance,
                 maxIndicatorValue = maxIndicatorValue,
-                indicatorValue = if (isDuration) state.valueDurationGoal.toFloat() else state.valueDistanceGoal.toFloat(),
+                indicatorValue = if (isDuration) state.duration.toFloat() else state.distance.toFloat(),
                 bigTextSuffix = bigTextSuffix,
                 onChangeType = {
                     isDuration = !isDuration
@@ -317,15 +328,10 @@ fun MainCircularSlider(
                         bigTextSuffix = "km"
                     }
                 },
-                onChange = {
-                    if (isDuration) {
-                        onTargetDuration(it)
-                        Log.d("TAG", "CustomComponentPreview duration: $it")
-                    } else {
-                        onTargetDistance(it)
-                        Log.d("TAG", "CustomComponentPreview distance: $it")
-                    }
-                }
+                onChangeDuration = { onTargetDuration(it) },
+                onChangeDistance = { onTargetDistance(it) },
+                onChangeAngleDuration = { onChangeAngleDuration(it) },
+                onChangeAngelDistance = { onChangeAngleDistance(it) }
             )
 
             Row(
@@ -483,7 +489,8 @@ fun ProgressBarItem(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = if (isDuration) "$targetDuration min" else "$targetDistance Km",
+            text = if (isDuration) "$targetDuration min"
+            else "%.1f km".format(targetDistance),
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold
         )

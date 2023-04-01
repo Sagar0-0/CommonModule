@@ -46,8 +46,8 @@ class WalkingViewModel
     val startWorking = mutableStateOf(false)
 
     init {
-        loadWalkingToolData()
         setupDatabaseAndUpdateUi()
+        loadWalkingToolData()
     }
 
     private fun setupDatabaseAndUpdateUi() {
@@ -58,7 +58,8 @@ class WalkingViewModel
                     date = LocalDate.now().dayOfMonth, status = "", initialSteps = 0,
                     allSteps = 0, time = 0, realtime = 0, distanceRecommend = 0.0,
                     durationRecommend = 0, distanceTarget = 0.0, durationTarget = 0,
-                    id = "", calories = 0.0, weightLoosed = 0.0
+                    id = "6427fc83baf761e33a2859ef", calories = 0.0, weightLoosed = 0.0, appliedAngleDistance = 0f,
+                    appliedAngleDuration = 0f
                 )
                 localRepo.insert(stepsData)
             } else {
@@ -67,7 +68,10 @@ class WalkingViewModel
                     _homeUiState.value = _homeUiState.value.copy(
                         distance = (data.allSteps / 1408).toDouble(),
                         steps = data.allSteps,
-                        duration = ((System.nanoTime() - data.time) / 1_000_000_000L / 60L)
+                        duration = ((System.nanoTime() - data.time) / 1_000_000_000L / 60L),
+                        appliedAngleDuration = data.appliedAngleDuration,
+                        appliedAngleDistance = data.appliedAngleDistance,
+                        start = true
                     )
                 }
             }
@@ -139,11 +143,17 @@ class WalkingViewModel
                 _homeUiState.value = _homeUiState.value.copy(start = false)
                 changeStatus("inactive")
             }
-            is StepCounterUIEvent.ChangeTargetDuration->{
+            is StepCounterUIEvent.ChangeTargetDuration -> {
                 setTargetDuration(uiEvent.input)
             }
-            is StepCounterUIEvent.ChangeTargetDistance ->{
+            is StepCounterUIEvent.ChangeTargetDistance -> {
                 setTargetDistance(uiEvent.input)
+            }
+            is StepCounterUIEvent.ChangeAngelDuration->{
+                _homeUiState.value=_homeUiState.value.copy(appliedAngleDuration = uiEvent.input)
+            }
+            is StepCounterUIEvent.ChangeAngleDistance->{
+                _homeUiState.value=_homeUiState.value.copy(appliedAngleDistance = uiEvent.input)
             }
 
             else -> {}
@@ -228,7 +238,15 @@ class WalkingViewModel
     }
 
     fun changeUi(data: HomeUIState) {
-        _homeUiState.value = data
+        _homeUiState.value = _homeUiState.value.copy(
+            distance = data.distance,
+            steps = data.steps,
+            duration = data.duration,
+            valueDistanceRecommendation = data.valueDistanceRecommendation,
+            valueDurationRecommendation = data.valueDurationRecommendation,
+            valueDistanceGoal = data.valueDistanceGoal,
+            valueDurationGoal = data.valueDurationGoal
+        )
     }
 
     fun setData(id: String): PutData {
@@ -242,7 +260,7 @@ class WalkingViewModel
             wea = true,
             tgt = Target(
                 dis = Distance(
-                    dis = _homeUiState.value.distanceTarget.toInt(),
+                    dis = _homeUiState.value.distanceTarget,
                     unit = "km"
                 ),
                 dur = Duration(
@@ -304,6 +322,7 @@ class WalkingViewModel
         )
 
     }
+
 
     fun calculateWeightLoss(caloriesBurned: Double): Double {
         return caloriesBurned / 7.7 // 7700 calories per kilogram of body fat

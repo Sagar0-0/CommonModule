@@ -32,7 +32,7 @@ class CountStepsService : Service() {
 
     private val binder = LocalBinder()
 
-    private val stepCountFlow = MutableStateFlow(HomeUIState())
+    private val stepCountFlow = MutableStateFlow(HomeUIState(start = true))
 
 
     inner class LocalBinder : Binder() {

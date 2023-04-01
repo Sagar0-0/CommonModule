@@ -6,10 +6,13 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.tools.walking.db.StepsData
 import fit.asta.health.tools.walking.model.LocalRepo
 import fit.asta.health.tools.walking.model.WalkingToolRepo
+import fit.asta.health.tools.walking.model.network.request.Distance
+import fit.asta.health.tools.walking.model.network.request.Duration
+import fit.asta.health.tools.walking.model.network.request.PutDayData
+import fit.asta.health.tools.walking.model.network.request.Steps
 import fit.asta.health.tools.walking.notification.CreateNotification
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,38 +29,64 @@ class StepWorker @AssistedInject constructor(
     override fun doWork(): Result {
         CoroutineScope(Dispatchers.IO).launch {
             val data = localRepo.getStepsData(LocalDate.now().dayOfMonth)
-            if (data==null) return@launch
-            else runServerRequest(walkingToolRepo,data,applicationContext)
+            if (data == null) return@launch
+            else runServerRequest(walkingToolRepo, data, applicationContext)
         }
         return Result.success()
     }
 
 }
+
 private suspend fun runServerRequest(
     walkingToolRepo: WalkingToolRepo,
     data: StepsData,
     applicationContext: Context
-){
-    walkingToolRepo.getHomeData(userId = "6309a9379af54f142c65fbfe")
-        .collect {
-            when (it) {
-                is NetworkResult.Loading -> {}
-                is NetworkResult.Success -> {
-                    if ( it.data == null) { return@collect}
-                    else {
-                        val steps = it.data.stepsTarget
-                        if (data.status == "active" && steps >= data.allSteps) {
-                            val createNotification = CreateNotification(
-                                applicationContext,
-                                " Walking ",
-                                "Today your steps progress is ${(data.allSteps / steps) * 100} % completed"
-                            )
-                            createNotification.showNotification()
-                        }
-                    }
-                }
-                is NetworkResult.Error -> {}
-                else -> {}
-            }
-        }
+) {
+
+    val dayData = createPutDayData(
+        bpm = 0,
+        id = "",
+        uid = "6383745840efcc8cdeb289e1",
+        weightLoose = data.weightLoosed.toFloat(),
+        date = "${LocalDate.now()}",
+        calories = data.calories.toInt(),
+        heartRate = 72,
+        steps = Steps(steps = data.allSteps, unit = "steps"),
+        duration = Duration(dur = data.realtime, unit = "mins"),
+        distance = Distance(dis = data.allSteps.toFloat() * 1408, unit = "km")
+    )
+    val result = walkingToolRepo.putDayData(putDayData = dayData)
+    val createNotification = CreateNotification(
+        applicationContext,
+        " Walking ",
+        "Day data is uploaded to server ${result.status.msg}"
+    )
+    createNotification.showNotification()
 }
+
+fun createPutDayData(
+    bpm: Int,
+    calories: Int,
+    date: String,
+    distance: Distance,
+    duration: Duration,
+    heartRate: Int,
+    id: String,
+    steps: Steps,
+    uid: String,
+    weightLoose: Float
+): PutDayData {
+    return PutDayData(
+        bpm = bpm,
+        calories = calories,
+        date = date,
+        distance = distance,
+        duration = duration,
+        heartRate = heartRate,
+        id = id,
+        steps = steps,
+        uid = uid,
+        weightLoose = weightLoose
+    )
+}
+

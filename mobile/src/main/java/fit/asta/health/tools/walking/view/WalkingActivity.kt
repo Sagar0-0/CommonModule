@@ -41,6 +41,10 @@ import fit.asta.health.tools.walking.work.StepWorker
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.ZoneId
 import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
@@ -180,16 +184,20 @@ fun DefaultPreview() {
 }
 
 fun setupWorker(context: Context) {
+    // Calculate the time until 11 PM
+    val currentTime = System.currentTimeMillis()
+    val elevenPm = LocalTime.of(23, 0)
+    val elevenPmMillis = LocalDateTime.of(LocalDate.now(), elevenPm).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+    val initialDelay = elevenPmMillis - currentTime
     val constraint = Constraints.Builder()
         .setRequiredNetworkType(NetworkType.CONNECTED)
         .build()
-    val workRequest = PeriodicWorkRequestBuilder<StepWorker>(15, TimeUnit.MINUTES)
+    val workRequest = OneTimeWorkRequestBuilder<StepWorker>()
         .setConstraints(constraint)
-        .setInitialDelay(5, TimeUnit.MINUTES)
+        .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
+        .setBackoffCriteria(BackoffPolicy.LINEAR, 30, TimeUnit.SECONDS)
         .build()
-    WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-        "unique_periodic_work",
-        ExistingPeriodicWorkPolicy.UPDATE,
-        workRequest
+    WorkManager.getInstance(context).enqueueUniqueWork(
+        "worker_for_upload_data", ExistingWorkPolicy.REPLACE, workRequest
     )
 }

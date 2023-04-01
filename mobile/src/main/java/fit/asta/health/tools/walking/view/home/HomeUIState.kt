@@ -4,6 +4,9 @@ data class HomeUIState(
     val distanceTarget: Float = 0f,  // for put request to server
     val durationTarget: Float = 0f,   // for put request
 
+    val appliedAngleDuration: Float=0f,//for slider angle to create canvas
+    val appliedAngleDistance: Float=0f,
+
     val valueDistanceRecommendation: Double=0.0,  // for change progress bar
     val valueDurationRecommendation: Int=0,  // for change progress bar
     val valueDistanceGoal: Double=0.0,     // for change progress bar

@@ -54,5 +54,13 @@ class LocalRepoImpl(private val stepsDataDao: StepsDataDao):LocalRepo {
         stepsDataDao.updateCaloriesAndWeightLoosed(date, calories, weightLoosed)
     }
 
+    override suspend fun updateAppliedAngleDistance(date: Int, appliedAngleDistance: Float) {
+       stepsDataDao.updateAppliedAngleDistance(date, appliedAngleDistance)
+    }
+
+    override suspend fun updateAppliedAngleDuration(date: Int, appliedAngleDuration: Float) {
+        stepsDataDao.updateAppliedAngleDuration(date, appliedAngleDuration)
+    }
+
 
 }

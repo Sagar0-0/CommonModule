@@ -19,5 +19,7 @@ data class StepsData(
     @ColumnInfo(name = "id") val id: String,
     @ColumnInfo(name = "calories") val calories: Double,
     @ColumnInfo(name = "weightLoosed") val weightLoosed: Double,
+    @ColumnInfo(name = "appliedAngleDuration") val appliedAngleDuration: Float,
+    @ColumnInfo(name = "appliedAngleDistance") val appliedAngleDistance: Float,
 
 )

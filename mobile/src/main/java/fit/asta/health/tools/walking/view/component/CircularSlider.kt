@@ -1,6 +1,7 @@
 package fit.asta.health.tools.walking.view.component
 
 
+import android.util.Log
 import android.view.MotionEvent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -49,36 +51,80 @@ fun CircularSlider(
     backgroundColor: Color = Color.LightGray,
     isDuration: Boolean,
     isStarted: Boolean,
-    onChange: ((Float) -> Unit)? = null,
+    appliedAngleDurationValue: Float = 0f,
+    appliedAngleDistanceValue: Float = 0f,
+    onChangeDuration: ((Float) -> Unit)? = null,
+    onChangeDistance: ((Float) -> Unit)? = null,
+    onChangeAngleDuration: ((Float) -> Unit)? = null,
+    onChangeAngelDistance: ((Float) -> Unit)? = null,
     onChangeType: () -> Unit
 ) {
     var size by remember { mutableStateOf(IntSize.Zero) }
     var width by remember { mutableStateOf(0) }
     var height by remember { mutableStateOf(0) }
-    var angle by remember { mutableStateOf(-60f) }
-    var last by remember { mutableStateOf(0f) }
+    var angleDuration by rememberSaveable { mutableStateOf(-60f) }
+    var angleDistance by rememberSaveable { mutableStateOf(-60f) }
+    var lastDuration by rememberSaveable { mutableStateOf(0f) }
+    var lastDistance by rememberSaveable { mutableStateOf(0f) }
     var down by remember { mutableStateOf(false) }
     var radius by remember { mutableStateOf(0f) }
     var center by remember { mutableStateOf(Offset.Zero) }
-    var appliedAngle by remember { mutableStateOf(0f) }
-    LaunchedEffect(key1 = angle) {
-        var a = angle
+    var appliedAngleDuration by remember(appliedAngleDurationValue) {
+        mutableStateOf(
+            appliedAngleDurationValue
+        )
+    }
+    var appliedAngleDistance by remember(appliedAngleDistanceValue) {
+        mutableStateOf(
+            appliedAngleDistanceValue
+        )
+    }
+    LaunchedEffect(key1 = angleDuration) {
+        Log.d("TAG", "angleDuration change: $angleDuration")
+        var a = angleDuration
         a += 40
         if (a <= 0f) {
             a += 360
         }
         a = a.coerceIn(0f, 250f)
-        if (last < 150f && a == 250f) {
+        if (lastDuration < 150f && a == 250f) {
             a = 0f
         }
-        last = a
-        appliedAngle = a
+        lastDuration = a
+        appliedAngleDuration = a
     }
-    LaunchedEffect(key1 = appliedAngle) {
-        onChange?.invoke(
+    LaunchedEffect(key1 = appliedAngleDuration) {
+        Log.d("TAG", "valueAngleDuration change: $appliedAngleDuration")
+        onChangeAngleDuration?.invoke(appliedAngleDuration)
+        onChangeDuration?.invoke(
             range(
-                appliedAngle / 250f * 100,
-                maxIndicatorValue
+                value = appliedAngleDuration / 250f * 100,
+                maxIndicatorValue = 120f
+            )
+        )
+    }
+
+    LaunchedEffect(key1 = angleDistance) {
+        Log.d("TAG", "angleDistance change: $angleDistance")
+        var a = angleDistance
+        a += 40    // this 40 create error when recompose this angle will added in previous value and change output
+        if (a <= 0f) {
+            a += 360
+        }
+        a = a.coerceIn(0f, 250f)
+        if (lastDistance < 150f && a == 250f) {
+            a = 0f
+        }
+        lastDistance = a
+        appliedAngleDistance = a
+    }
+    LaunchedEffect(key1 = appliedAngleDistance) {
+        Log.d("TAG", "valueAngleDistance change: $appliedAngleDistance")
+        onChangeAngelDistance?.invoke(appliedAngleDistance)
+        onChangeDistance?.invoke(
+            range(
+                value = appliedAngleDistance / 250f * 100,
+                maxIndicatorValue = 3f
             )
         )
     }
@@ -111,9 +157,6 @@ fun CircularSlider(
         targetValue = allowedIndicatorValue,
         animationSpec = tween(1000)
     )
-    LaunchedEffect(key1 = receivedValue) {
-        onChange?.invoke(receivedValue)
-    }
     val animatedBigTextColor by animateColorAsState(
         targetValue = if (allowedIndicatorValue == 0f)
             MaterialTheme.colors.onSurface.copy(alpha = 0.3f)
@@ -146,16 +189,18 @@ fun CircularSlider(
                         MotionEvent.ACTION_DOWN -> {
                             val d = distance(offset, center)
                             val a = angle(center, offset)
-                            if (d >= radius - touchStroke / 2f && d <= radius + touchStroke / 2f && a !in -120f..-60f) {
+                            if (!isStarted && d >= radius - touchStroke / 2f && d <= radius + touchStroke / 2f && a !in -120f..-60f) {
                                 down = true
-                                angle = a
+                                if (isDuration) angleDuration = a
+                                else angleDistance = a
                             } else {
                                 down = false
                             }
                         }
                         MotionEvent.ACTION_MOVE -> {
                             if (down) {
-                                angle = angle(center, offset)
+                                if (isDuration) angleDuration = angle(center, offset)
+                                else angleDistance = angle(center, offset)
                             }
                         }
                         MotionEvent.ACTION_UP -> {
@@ -192,27 +237,69 @@ fun CircularSlider(
                         cap = cap
                     )
                 )
+                if (isDuration) {
+                    drawCircle(
+                        color = thumbColor,
+                        radius = stroke,
+                        center = center + Offset(
+                            radius * cos((145 + appliedAngleDuration) * PI / 180f).toFloat(),
+                            radius * sin((145 + appliedAngleDuration) * PI / 180f).toFloat()
+                        )
+                    )
+                } else {
+                    drawCircle(
+                        color = thumbColor,
+                        radius = stroke,
+                        center = center + Offset(
+                            radius * cos((145 + appliedAngleDistance) * PI / 180f).toFloat(),
+                            radius * sin((145 + appliedAngleDistance) * PI / 180f).toFloat()
+                        )
+                    )
+                }
             } else {
-                drawArc(
-                    color = progressColor,
-                    startAngle = 145f,
-                    sweepAngle = appliedAngle,
-                    topLeft = center - Offset(radius, radius),
-                    size = Size(radius * 2, radius * 2),
-                    useCenter = false,
-                    style = Stroke(
-                        width = stroke,
-                        cap = cap
+                if (isDuration) {
+                    drawArc(
+                        color = progressColor,
+                        startAngle = 145f,
+                        sweepAngle = appliedAngleDuration,
+                        topLeft = center - Offset(radius, radius),
+                        size = Size(radius * 2, radius * 2),
+                        useCenter = false,
+                        style = Stroke(
+                            width = stroke,
+                            cap = cap
+                        )
                     )
-                )
-                drawCircle(
-                    color = thumbColor,
-                    radius = stroke,
-                    center = center + Offset(
-                        radius * cos((145 + appliedAngle) * PI / 180f).toFloat(),
-                        radius * sin((145 + appliedAngle) * PI / 180f).toFloat()
+                    drawCircle(
+                        color = thumbColor,
+                        radius = stroke,
+                        center = center + Offset(
+                            radius * cos((145 + appliedAngleDuration) * PI / 180f).toFloat(),
+                            radius * sin((145 + appliedAngleDuration) * PI / 180f).toFloat()
+                        )
                     )
-                )
+                } else {
+                    drawArc(
+                        color = progressColor,
+                        startAngle = 145f,
+                        sweepAngle = appliedAngleDistance,
+                        topLeft = center - Offset(radius, radius),
+                        size = Size(radius * 2, radius * 2),
+                        useCenter = false,
+                        style = Stroke(
+                            width = stroke,
+                            cap = cap
+                        )
+                    )
+                    drawCircle(
+                        color = thumbColor,
+                        radius = stroke,
+                        center = center + Offset(
+                            radius * cos((145 + appliedAngleDistance) * PI / 180f).toFloat(),
+                            radius * sin((145 + appliedAngleDistance) * PI / 180f).toFloat()
+                        )
+                    )
+                }
             }
         }
         Column(
@@ -246,11 +333,11 @@ fun CircularSlider(
                 Text(
                     text = if (isDuration) {
                         "%.0f $bigTextSuffix".format(
-                            range(appliedAngle / 250f * 100f, maxIndicatorValue)
+                            range(appliedAngleDuration / 250f * 100f, maxIndicatorValue)
                         )
                     } else {
                         "%.1f $bigTextSuffix".format(
-                            range(appliedAngle / 250f * 100f, maxIndicatorValue)
+                            range(appliedAngleDistance / 250f * 100f, maxIndicatorValue)
                         )
                     },
                     color = animatedBigTextColor,
@@ -279,6 +366,7 @@ fun distance(first: Offset, second: Offset): Float {
 fun Float.square(): Float {
     return this * this
 }
+
 fun range(value: Float, maxIndicatorValue: Float): Float {
     val old_value = value
     val old_min = 0f
