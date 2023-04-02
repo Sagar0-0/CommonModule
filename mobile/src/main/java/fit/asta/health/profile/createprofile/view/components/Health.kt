@@ -4,6 +4,7 @@
     ExperimentalCoroutinesApi::class,
     ExperimentalCoroutinesApi::class,
     ExperimentalCoroutinesApi::class,
+    ExperimentalCoroutinesApi::class,
     ExperimentalCoroutinesApi::class
 )
 
@@ -50,24 +51,55 @@ fun HealthContent(
 
     val checkedState = remember { mutableStateOf(true) }
 
-    var enableButton by remember {
-        mutableStateOf(false)
-    }
-
     val radioButtonList =
         listOf(ButtonListTypes(buttonType = "First"), ButtonListTypes(buttonType = "Second"))
 
+    //Inputs
     val injurySince by viewModel.injuriesSince.collectAsStateWithLifecycle()
+
+    //Selection Inputs
     val selectedHealthHis by viewModel.selectedHealthHisOption.collectAsStateWithLifecycle()
     val selectedAil by viewModel.selectedAilOption.collectAsStateWithLifecycle()
     val selectedMed by viewModel.selectedMedOption.collectAsStateWithLifecycle()
     val selectedHealthTar by viewModel.selectedHealthTarOption.collectAsStateWithLifecycle()
     val selectedInjury by viewModel.selectedInjOption.collectAsStateWithLifecycle()
 
+    //Data
     val healthHisList by viewModel.healthPropertiesData.collectAsStateWithLifecycle()
-    val selectedHealthValidity by viewModel.selectedHealthOptions.collectAsStateWithLifecycle()
 
-    val healthButtonEnable by viewModel.healthInputsValid.collectAsStateWithLifecycle()
+    //Inputs Validity
+    val areSelectedHealthOptionsValid by viewModel.areSelectedHealthOptionsNull.collectAsStateWithLifecycle()
+
+    val isHealthHisValid = when (selectedHealthHis) {
+        TwoToggleSelections.First -> healthHisList.getValue(0).isNotEmpty()
+        TwoToggleSelections.Second -> true
+        null -> false
+    }
+
+    val isInjuryValid = when (selectedInjury) {
+        TwoToggleSelections.First -> healthHisList.getValue(1)
+            .isNotEmpty() && healthHisList.getValue(2).isNotEmpty()
+        TwoToggleSelections.Second -> true
+        null -> false
+    }
+
+    val isAilmentsValid = when (selectedAil) {
+        TwoToggleSelections.First -> healthHisList.getValue(3).isNotEmpty()
+        TwoToggleSelections.Second -> true
+        null -> false
+    }
+
+    val isMedValid = when (selectedMed) {
+        TwoToggleSelections.First -> healthHisList.getValue(4).isNotEmpty()
+        TwoToggleSelections.Second -> true
+        null -> false
+    }
+
+    val isHealthTarValid = when (selectedHealthTar) {
+        TwoToggleSelections.First -> healthHisList.getValue(5).isNotEmpty()
+        TwoToggleSelections.Second -> true
+        null -> false
+    }
 
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
@@ -177,25 +209,13 @@ fun HealthContent(
                 listName = "Health Targets"
             )
 
-            if (selectedHealthValidity) {
-                viewModel.onEvent(
-                    ProfileEvent.IsHealthValid(
-                        valid = (healthHisList.getValue(0).isNotEmpty() && healthHisList.getValue(1)
-                            .isNotEmpty() && healthHisList.getValue(2)
-                            .isNotEmpty() && healthHisList.getValue(3)
-                            .isNotEmpty() && healthHisList.getValue(4)
-                            .isNotEmpty() && healthHisList.getValue(5)
-                            .isNotEmpty())
-                    )
-                )
-            }
-
-
-
             Spacer(modifier = Modifier.height(spacing.medium))
 
             CreateProfileButtons(
-                eventPrevious, eventNext, text = "Next", enableButton = healthButtonEnable
+                eventPrevious,
+                eventNext,
+                text = "Next",
+                enableButton = areSelectedHealthOptionsValid && isHealthHisValid && isInjuryValid && isAilmentsValid && isMedValid && isHealthTarValid
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))

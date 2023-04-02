@@ -11,7 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,10 +65,13 @@ fun BreathingBottomSheetGridView(cardList: List<PracticeGridView>) {
                 FlowRow(mainAxisSize = SizeMode.Expand,
                     mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween) {
                     cardList.forEachIndexed { index, _ ->
-                        PracticeExpandedCard(cardTitle = cardList[index].cardTitle,
+                        PracticeExpandedCard(
+                            cardTitle = cardList[index].cardTitle,
                             cardImg = cardList[index].cardImg,
                             cardValue = cardList[index].cardValue,
-                            modifier = Modifier.size(width = itemSize, height = 100.dp))
+                            modifier = Modifier.size(width = itemSize, height = 100.dp),
+                            onclick = cardList[index].onClick
+                        )
                     }
                 }
             }
