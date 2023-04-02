@@ -53,6 +53,7 @@ fun DetailsContent(
     val name by viewModel.name.collectAsStateWithLifecycle()
     val email by viewModel.email.collectAsStateWithLifecycle()
     val userImg by viewModel.userImg.collectAsStateWithLifecycle()
+    val areInputsValid by viewModel.areDetailsInputsValid.collectAsStateWithLifecycle()
 
     val imgLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
@@ -139,7 +140,12 @@ fun DetailsContent(
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            PrimaryButton(text = "Next", modifier = Modifier.fillMaxWidth(), event = eventNext)
+            PrimaryButton(
+                text = "Next",
+                modifier = Modifier.fillMaxWidth(),
+                event = eventNext,
+                enableButton = areInputsValid
+            )
 
             Spacer(modifier = Modifier.height(spacing.small))
 

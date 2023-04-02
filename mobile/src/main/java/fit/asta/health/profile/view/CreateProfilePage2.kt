@@ -24,6 +24,7 @@ import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.profile.createprofile.view.components.ValidateListError
 import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.HealthProperties
 import fit.asta.health.profile.model.domain.TwoToggleSelections
@@ -126,17 +127,7 @@ fun SelectionCardCreateProfile(
             }
         }
 
-        Row(Modifier.fillMaxWidth()) {
-            if (selectedOption is TwoToggleSelections.First && cardList.isEmpty()) {
-                Text(
-                    text = viewModel.validateDataList(
-                        list = cardList, listName = listName
-                    ).asString(),
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.titleSmall
-                )
-            }
-        }
+        ValidateListError(selectedOption = selectedOption, cardList = cardList, listName = listName)
 
     }
 

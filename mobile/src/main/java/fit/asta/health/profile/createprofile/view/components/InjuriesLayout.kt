@@ -51,121 +51,23 @@ fun InjuriesLayout(
     cardIndex1: Int,
     cardIndex2: Int,
     time: String,
+    listName: String,
+    listName2: String,
 ) {
 
     val focusManager = LocalFocusManager.current
 
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.medium,
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
-    ) {
-
-        Column(
-            modifier = Modifier.fillMaxWidth()
+    Column(Modifier.fillMaxWidth()) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.medium,
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
         ) {
 
-            Spacer(modifier = Modifier.height(spacing.small))
-
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = spacing.medium),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = cardType,
-                        color = MaterialTheme.colorScheme.onTertiaryContainer,
-                        style = MaterialTheme.typography.titleSmall
-                    )
-                }
-
-                if (selectedOption == TwoToggleSelections.First) {
-                    AddIcon(onClick = onItemsSelect)
-                }
-
-            }
-
-            TwoTogglesGroup(
-                selectionTypeText = null,
-                selectedOption = selectedOption,
-                onStateChange = onStateChange
-            )
-
-            if (selectedOption == TwoToggleSelections.First) {
-
-                FlowRow(
-                    mainAxisSpacing = spacing.minSmall,
-                    modifier = Modifier.padding(start = spacing.medium),
-                ) {
-                    cardList.forEach {
-                        RemoveChipOnCard(textOnChip = it.name,
-                            checkedState = checkedState,
-                            onClick = {
-                                viewModel.onEvent(
-                                    ProfileEvent.SetSelectedRemoveItemOption(
-                                        item = it,
-                                        index = cardIndex1,
-                                        composeIndex = ComposeIndex.First
-                                    )
-                                )
-                            })
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(spacing.medium))
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = spacing.medium),
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    Text(
-                        "Please Enter when you were Injured",
-                        color = MaterialTheme.colorScheme.onTertiaryContainer,
-                        style = MaterialTheme.typography.titleSmall
-                    )
-                }
-
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(spacing.medium),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(spacing.small)
-                ) {
-
-                    Box(Modifier.fillMaxWidth(0.5f)) {
-                        ValidateNumberField(
-                            value = time,
-                            onValueChange = {
-                                viewModel.onEvent(
-                                    ProfileEvent.OnUserInjuryTimeChange(
-                                        time = it
-                                    )
-                                )
-                            },
-                            keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Number, imeAction = ImeAction.Done
-                            ),
-                            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
-                        )
-                    }
-
-                    RowToggleButtonGroup(
-                        buttonCount = 2,
-                        onButtonClick = { index -> println(index) },
-                        buttonTexts = arrayOf("Month", "Year"),
-                        modifier = Modifier.size(width = 130.dp, height = 24.dp)
-                    )
-                }
 
                 Spacer(modifier = Modifier.height(spacing.small))
 
@@ -181,40 +83,172 @@ fun InjuriesLayout(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = cardType2,
+                            text = cardType,
                             color = MaterialTheme.colorScheme.onTertiaryContainer,
                             style = MaterialTheme.typography.titleSmall
                         )
                     }
-                    AddIcon(onClick = onItemsSelect2)
-                }
 
-                Spacer(modifier = Modifier.height(spacing.small))
-
-                FlowRow(
-                    mainAxisSpacing = spacing.minSmall,
-                    modifier = Modifier.padding(start = spacing.medium),
-                ) {
-                    cardList2.forEach {
-                        RemoveChipOnCard(textOnChip = it.name,
-                            checkedState = checkedState2,
-                            onClick = {
-                                viewModel.onEvent(
-                                    ProfileEvent.SetSelectedRemoveItemOption(
-                                        item = it,
-                                        index = cardIndex2,
-                                        composeIndex = ComposeIndex.First
-                                    )
-                                )
-                            })
+                    if (selectedOption == TwoToggleSelections.First) {
+                        AddIcon(onClick = onItemsSelect)
                     }
+
                 }
 
-                Spacer(modifier = Modifier.height(spacing.small))
+                TwoTogglesGroup(
+                    selectionTypeText = null,
+                    selectedOption = selectedOption,
+                    onStateChange = onStateChange
+                )
+
+                if (selectedOption == TwoToggleSelections.First) {
+
+                    FlowRow(
+                        mainAxisSpacing = spacing.minSmall,
+                        modifier = Modifier.padding(start = spacing.medium),
+                    ) {
+                        cardList.forEach {
+                            RemoveChipOnCard(
+                                textOnChip = it.name,
+                                checkedState = checkedState,
+                                onClick = {
+                                    viewModel.onEvent(
+                                        ProfileEvent.SetSelectedRemoveItemOption(
+                                            item = it,
+                                            index = cardIndex1,
+                                            composeIndex = ComposeIndex.First
+                                        )
+                                    )
+                                })
+                        }
+                    }
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = spacing.medium),
+                        horizontalArrangement = Arrangement.Start
+                    ) {
+                        Text(
+                            "Please Enter when you were Injured",
+                            color = MaterialTheme.colorScheme.onTertiaryContainer,
+                            style = MaterialTheme.typography.titleSmall
+                        )
+                    }
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(spacing.medium),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(spacing.small)
+                    ) {
+
+                        Box(Modifier.fillMaxWidth(0.5f)) {
+                            ValidateNumberField(
+                                value = time,
+                                onValueChange = {
+                                    viewModel.onEvent(
+                                        ProfileEvent.OnUserInjuryTimeChange(
+                                            time = it
+                                        )
+                                    )
+                                },
+                                keyboardOptions = KeyboardOptions(
+                                    keyboardType = KeyboardType.Number, imeAction = ImeAction.Done
+                                ),
+                                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
+                            )
+                        }
+
+                        RowToggleButtonGroup(
+                            buttonCount = 2,
+                            onButtonClick = { index -> println(index) },
+                            buttonTexts = arrayOf("Month", "Year"),
+                            modifier = Modifier.size(width = 130.dp, height = 24.dp)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(spacing.small))
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = spacing.medium),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = cardType2,
+                                color = MaterialTheme.colorScheme.onTertiaryContainer,
+                                style = MaterialTheme.typography.titleSmall
+                            )
+                        }
+                        AddIcon(onClick = onItemsSelect2)
+                    }
+
+                    Spacer(modifier = Modifier.height(spacing.small))
+
+                    FlowRow(
+                        mainAxisSpacing = spacing.minSmall,
+                        modifier = Modifier.padding(start = spacing.medium),
+                    ) {
+                        cardList2.forEach {
+                            RemoveChipOnCard(
+                                textOnChip = it.name,
+                                checkedState = checkedState2,
+                                onClick = {
+                                    viewModel.onEvent(
+                                        ProfileEvent.SetSelectedRemoveItemOption(
+                                            item = it,
+                                            index = cardIndex2,
+                                            composeIndex = ComposeIndex.First
+                                        )
+                                    )
+                                })
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(spacing.small))
+
+                }
 
             }
-
         }
+
+        ValidateListError(selectedOption = selectedOption, cardList = cardList, listName = listName)
+
+        Spacer(modifier = Modifier.height(spacing.minSmall))
+
+        ValidateListError(
+            selectedOption = selectedOption, cardList = cardList2, listName = listName2
+        )
+
     }
 
+
+}
+
+@Composable
+fun ValidateListError(
+    viewModel: ProfileViewModel = hiltViewModel(),
+    selectedOption: TwoToggleSelections?,
+    cardList: SnapshotStateList<HealthProperties>,
+    listName: String,
+) {
+    Row(Modifier.fillMaxWidth()) {
+        if (selectedOption is TwoToggleSelections.First && cardList.isEmpty()) {
+            Text(
+                text = viewModel.validateDataList(
+                    list = cardList, listName = listName
+                ).asString(),
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.titleSmall
+            )
+        }
+    }
 }

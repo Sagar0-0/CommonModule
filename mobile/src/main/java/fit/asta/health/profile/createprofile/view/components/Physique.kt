@@ -1,6 +1,7 @@
 @file:OptIn(
     ExperimentalCoroutinesApi::class,
     ExperimentalMaterial3Api::class,
+    ExperimentalCoroutinesApi::class,
     ExperimentalCoroutinesApi::class
 )
 
@@ -66,6 +67,12 @@ fun PhysiqueContent(
     val selectedIsPregnantOption by viewModel.selectedIsPregnant.collectAsStateWithLifecycle()
     val selectedOnPeriodOption by viewModel.selectedOnPeriod.collectAsStateWithLifecycle()
     val selectedGenderOption by viewModel.selectedGender.collectAsStateWithLifecycle()
+    val areInputsValid by viewModel.arePhysiqueInputsValid.collectAsStateWithLifecycle()
+    val arePregInputsValid by viewModel.arePregnancyInputValid.collectAsStateWithLifecycle()
+
+    val genderSelectionValidity by viewModel.selectedPhyOption.collectAsStateWithLifecycle()
+
+    val phyValid by viewModel.phyInputsValid.collectAsStateWithLifecycle()
 
 
     val focusManager = LocalFocusManager.current
@@ -329,9 +336,17 @@ fun PhysiqueContent(
                 }
             }
 
+            if (genderSelectionValidity) {
+                viewModel.onEvent(ProfileEvent.IsPhyValid(arePregInputsValid))
+            } else {
+                viewModel.onEvent(ProfileEvent.IsPhyValid(areInputsValid))
+            }
+
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            CreateProfileButtons(eventPrevious, eventNext, text = "Next")
+            CreateProfileButtons(
+                eventPrevious, eventNext, text = "Next", enableButton = phyValid
+            )
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
@@ -357,14 +372,23 @@ fun CreateProfileButtons(
     eventPrevious: (() -> Unit)? = null,
     eventNext: (() -> Unit)? = null,
     text: String? = null,
+    enableButton: Boolean = false,
 ) {
 
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(spacing.small)) {
         PrimaryButton(
-            text = "Previous", modifier = Modifier.fillMaxWidth(0.5f), event = eventPrevious
+            text = "Previous",
+            modifier = Modifier.fillMaxWidth(0.5f),
+            event = eventPrevious,
+            enableButton = true
         )
         if (text != null) {
-            PrimaryButton(text = text, modifier = Modifier.fillMaxWidth(1f), event = eventNext)
+            PrimaryButton(
+                text = text,
+                modifier = Modifier.fillMaxWidth(1f),
+                event = eventNext,
+                enableButton = enableButton
+            )
         }
     }
 

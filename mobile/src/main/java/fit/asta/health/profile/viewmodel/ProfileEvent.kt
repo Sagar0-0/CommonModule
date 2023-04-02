@@ -43,6 +43,8 @@ sealed class ProfileEvent {
     data class OnUserAGEChange(val age: String) : ProfileEvent()
     data class OnUserPregWeekChange(val week: String) : ProfileEvent()
     data class OnUserInjuryTimeChange(val time: String) : ProfileEvent()
+    data class IsHealthValid(val valid: Boolean) : ProfileEvent()
+    data class IsPhyValid(val valid: Boolean) : ProfileEvent()
 
     object OnSubmit : ProfileEvent()
 }

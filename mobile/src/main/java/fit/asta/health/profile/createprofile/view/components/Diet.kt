@@ -128,16 +128,19 @@ fun DietContent(
                 },
                 enabled = selectedFoodRes == TwoToggleSelections.First,
                 cardIndex = 4,
-                composeIndex = ComposeIndex.Third
+                composeIndex = ComposeIndex.Third,
+                listName = "Diet"
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
             CreateProfileButtons(
-                eventPrevious, eventNext = {
+                eventPrevious,
+                eventNext = {
                     buttonClicked = !buttonClicked
                     viewModel.onEvent(ProfileEvent.OnSubmit)
-                }, text = "Done"
+                },
+                text = "Done",
             )
 
 
@@ -199,7 +202,8 @@ fun DietCreateScreen(
     }
 
 
-    ModalBottomSheetLayout(modifier = Modifier.fillMaxSize(),
+    ModalBottomSheetLayout(
+        modifier = Modifier.fillMaxSize(),
         sheetState = modalBottomSheetState,
         sheetContent = {
             Spacer(modifier = Modifier.height(1.dp))

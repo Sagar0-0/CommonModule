@@ -17,9 +17,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
-import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.common.ui.components.PrimaryButton
 import fit.asta.health.common.ui.theme.*
+import fit.asta.health.navigation.home.view.component.LoadingAnimation
 
 @Composable
 fun SuccessfulCard(

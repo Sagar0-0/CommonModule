@@ -49,6 +49,7 @@ fun LifeStyleContent(
     val selectedWorkingEnvOption by viewModel.selectedWorkingEnv.collectAsStateWithLifecycle()
     val selectedWorkingStyOption by viewModel.selectedWorkStyle.collectAsStateWithLifecycle()
     val selectedWorkingHrsOption by viewModel.selectedWorkingHrs.collectAsStateWithLifecycle()
+    val areLSValidInput by viewModel.areLSValid.collectAsStateWithLifecycle()
 
     val lfList by viewModel.lfPropertiesData.collectAsState()
 
@@ -179,7 +180,9 @@ fun LifeStyleContent(
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            CreateProfileButtons(eventPrevious, eventNext, text = "Next")
+            CreateProfileButtons(
+                eventPrevious, eventNext, text = "Next", enableButton = areLSValidInput
+            )
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
@@ -228,7 +231,8 @@ fun LifeStyleCreateScreen(
         }
     }
 
-    ModalBottomSheetLayout(modifier = Modifier.fillMaxSize(),
+    ModalBottomSheetLayout(
+        modifier = Modifier.fillMaxSize(),
         sheetState = modalBottomSheetState,
         sheetContent = {
             Spacer(modifier = Modifier.height(1.dp))

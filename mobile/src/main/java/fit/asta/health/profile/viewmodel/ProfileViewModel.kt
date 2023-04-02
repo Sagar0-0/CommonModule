@@ -63,6 +63,24 @@ class ProfileViewModel
     val selectedHealthHisOption: StateFlow<TwoToggleSelections?>
         get() = _selectedHealthHisOption
 
+
+    private val areHealthInputsValid = MutableStateFlow(false)
+    val healthInputsValid: StateFlow<Boolean>
+        get() = areHealthInputsValid
+
+    private fun isHealthValid(valid: Boolean) {
+        areHealthInputsValid.value = valid
+    }
+
+
+    private val arePhyInputsValid = MutableStateFlow(false)
+    val phyInputsValid: StateFlow<Boolean>
+        get() = arePhyInputsValid
+
+    private fun isPhyValid(valid: Boolean) {
+        arePhyInputsValid.value = valid
+    }
+
     //Any Injury
     private val _selectedInjOption =
         MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
@@ -353,7 +371,6 @@ class ProfileViewModel
         }
     }
 
-
     private fun convertDietArrayList(cardViewIndex: Int): ArrayList<HealthProperties> {
         return when (cardViewIndex) {
             0 -> _dietPropertiesData.value[0]?.let { ArrayList(it) }!!
@@ -364,7 +381,6 @@ class ProfileViewModel
             else -> arrayListOf()
         }
     }
-
 
     private fun submit() {
 
@@ -449,7 +465,6 @@ class ProfileViewModel
 
     }
 
-
     //create+edit+update after edit
     private fun updateProfile(userProfile: UserProfile) {
 
@@ -525,7 +540,7 @@ class ProfileViewModel
                 R.string.validate_min_phy, type, min.toString()
             )
             value.toDouble() > max -> UiString.Resource(
-                R.string.validate_min_phy, type, max.toString()
+                R.string.validate_max_phy, type, max.toString()
             )
             else -> UiString.Empty
         }
@@ -631,7 +646,12 @@ class ProfileViewModel
             ProfileEvent.OnSubmit -> {
                 submit()
             }
-
+            is ProfileEvent.IsHealthValid -> {
+                isHealthValid(valid = event.valid)
+            }
+            is ProfileEvent.IsPhyValid -> {
+                isPhyValid(event.valid)
+            }
         }
 
     }
@@ -640,9 +660,46 @@ class ProfileViewModel
         return profileData.value.contact.name != name.value.value || profileData.value.contact.email != email.value.value || profileData.value.contact.url != userImg.value.url || profileData.value.contact.dob != dob.value.value || profileData.value.physique.age != age.value.value.toInt() || profileData.value.physique.weight != weight.value.value.toFloat() || profileData.value.physique.height != height.value.value.toFloat() || profileData.value.physique.pregnancyWeek != pregnancyWeek.value.value.toInt() || profileData.value.health.injurySince != injuriesSince.value.value.toInt()
     }
 
-    val areDetailsInputsValid = combine(userImg, name, email) { userImg, name, email ->
-        userImg.url.isNotEmpty() && name.value.isNotEmpty() && name.error is UiString.Empty && email.value.isNotEmpty() && email.error is UiString.Empty
+    val areDetailsInputsValid = combine(name, email) { name, email ->
+        name.value.isNotEmpty() && name.error is UiString.Empty && email.value.isNotEmpty() && email.error is UiString.Empty
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
+    val arePhysiqueInputsValid = combine(
+        age, weight, height, _selectedGenderOption
+    ) { age, weight, height, _selectedGenderOption ->
+        age.error is UiString.Empty && weight.value.isNotEmpty() && weight.error is UiString.Empty && height.value.isNotEmpty() && height.error is UiString.Empty && _selectedGenderOption != null
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
+
+    val arePregnancyInputValid = combine(
+        pregnancyWeek, arePhysiqueInputsValid, _isOnPeriodOption
+    ) { pregnancyWeek, arePhyValid, _isOnPeriodOption ->
+        pregnancyWeek.value.isNotEmpty() && pregnancyWeek.error is UiString.Empty && arePhyValid && _isOnPeriodOption != null
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
+
+    val areLSValid = combine(
+        _selectedPhyActOption,
+        _selectedWorkingEnvOption,
+        _selectedWorkStyleOption,
+        _selectedWorkingHrsOption
+    ) { _selectedPhyActOption, _selectedWorkingEnvOption, _selectedWorkStyleOption, _selectedWorkingHrsOption ->
+        _selectedPhyActOption != null && _selectedWorkingEnvOption != null && _selectedWorkStyleOption != null && _selectedWorkingHrsOption != null
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
+
+    val selectedHealthOptions = combine(
+        _selectedHealthHisOption,
+        _selectedInjOption,
+        _selectedAilOption,
+        _selectedMedOption,
+        _selectedHealthTarOption
+    ) { selectedHealthHis, selectedInjury, selectedAil, selectedMed, selectedHealthTar ->
+        selectedHealthHis is TwoToggleSelections.First && selectedInjury is TwoToggleSelections.First && selectedAil is TwoToggleSelections.First && selectedMed is TwoToggleSelections.First && selectedHealthTar is TwoToggleSelections.First
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
+
+
+    val selectedPhyOption = combine(
+        _selectedGenderOption, _isPregnantOption
+    ) { selectedGenderOption, selectedIsPregnantOption -> selectedGenderOption is ThreeToggleSelections.Second && selectedIsPregnantOption is TwoToggleSelections.First }.stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(1000), false
+    )
 
 }
