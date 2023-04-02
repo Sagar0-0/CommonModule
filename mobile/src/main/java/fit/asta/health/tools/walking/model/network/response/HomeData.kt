@@ -75,7 +75,7 @@ data class Recommend(
 )
 data class Distance(
     @SerializedName("dis")
-    val distance: Double,
+    val distance: Float,
     @SerializedName("unit")
     val unit: String
 )

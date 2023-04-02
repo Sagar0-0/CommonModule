@@ -4,7 +4,7 @@ buildscript {
         kotlin_version = '1.8.0'
         compose_version = '1.4.0'
         dagger_version = '2.44.2'
-        gradle_version = '7.3.1'
+        gradle_version = '7.4.2'
         gms_version = '4.3.14'
     }
 

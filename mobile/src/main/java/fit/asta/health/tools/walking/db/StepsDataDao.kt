@@ -44,5 +44,8 @@ interface StepsDataDao {
     @Query("UPDATE steps_data SET calories = :calories,weightLoosed = :weightLoosed WHERE date = :date")
     suspend fun updateCaloriesAndWeightLoosed(date: Int, calories: Double, weightLoosed: Double)
 
-
+    @Query("UPDATE steps_data SET appliedAngleDuration = :appliedAngleDuration WHERE date = :date")
+    suspend fun updateAppliedAngleDuration(date: Int,appliedAngleDuration: Float)
+    @Query("UPDATE steps_data SET appliedAngleDistance = :appliedAngleDistance WHERE date = :date")
+    suspend fun updateAppliedAngleDistance(date: Int, appliedAngleDistance: Float)
 }

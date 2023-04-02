@@ -19,4 +19,6 @@ interface LocalRepo {
     )
     suspend fun updateIdForPutData(date: Int, id:String)
     suspend fun updateCaloriesAndWeightLoosed(date: Int, calories: Double, weightLoosed: Double)
+    suspend fun updateAppliedAngleDistance(date: Int, appliedAngleDistance: Float)
+    suspend fun updateAppliedAngleDuration(date: Int,appliedAngleDuration: Float)
 }

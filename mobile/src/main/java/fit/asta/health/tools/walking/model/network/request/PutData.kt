@@ -53,7 +53,7 @@ data class Target(
 )
 data class Distance(
     @SerializedName("dis")
-    val dis: Int,
+    val dis: Float,
     @SerializedName("unit")
     val unit: String
 )

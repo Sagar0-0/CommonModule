@@ -4,6 +4,7 @@ import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.tools.walking.model.api.WalkingApi
 import fit.asta.health.tools.walking.model.domain.WalkingTool
 import fit.asta.health.tools.walking.model.network.request.PutData
+import fit.asta.health.tools.walking.model.network.request.PutDayData
 import fit.asta.health.tools.walking.model.network.response.PutResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -28,5 +29,8 @@ class WalkingToolRepoImpl(
 
     override suspend fun putData(putData: PutData): PutResponse {
         return remoteApi.putData(putData)
+    }
+    override suspend fun putDayData(putDayData: PutDayData): PutResponse {
+        return remoteApi.putDayData(putDayData)
     }
 }

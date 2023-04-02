@@ -6,7 +6,7 @@ import fit.asta.health.tools.walking.model.network.response.HomeData
 fun HomeData.mapToDomain(): WalkingTool {
     return WalkingTool(
 
-        distanceRecommend = this.data.walkingRecommendation.recommend.distance.distance,
+        distanceRecommend = this.data.walkingRecommendation.recommend.distance.distance.toDouble(),
         durationRecommend = this.data.walkingRecommendation.recommend.duration.duration,
         stepsRecommend = this.data.walkingRecommendation.recommend.steps.steps,
 
@@ -14,7 +14,7 @@ fun HomeData.mapToDomain(): WalkingTool {
         id = this.data.walkingTool.id,
         name = this.data.walkingTool.name,
         sType = this.data.walkingTool.sType,
-        distanceTarget = this.data.walkingTool.target.distance.distance,
+        distanceTarget = this.data.walkingTool.target.distance.distance.toDouble(),
         durationTarget = this.data.walkingTool.target.duration.duration,
         stepsTarget = this.data.walkingTool.target.steps.steps,
         uid = this.data.walkingTool.uid,
