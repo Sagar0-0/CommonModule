@@ -13,13 +13,19 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 
 @Composable
-fun PrimaryButton(text: String, modifier: Modifier = Modifier, event: (() -> Unit)? = null) {
+fun PrimaryButton(
+    text: String,
+    modifier: Modifier = Modifier,
+    event: (() -> Unit)? = null,
+    enableButton: Boolean = false,
+) {
     event?.let {
         Button(
             modifier = modifier.clip(shape = RectangleShape),
             shape = MaterialTheme.shapes.small,
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-            onClick = it
+            onClick = it,
+            enabled = enableButton
         ) {
             Text(
                 text = text,

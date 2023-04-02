@@ -25,6 +25,7 @@ data class Contact(
     @SerializedName("url") val url: String = "",
 ) : Parcelable
 
+
 @Parcelize
 data class Address(
     @SerializedName("adr1") val address: String = "",
@@ -38,43 +39,49 @@ data class Address(
 data class Physique(
     @SerializedName("age") val age: Int = 0, //NOT DONE
     @SerializedName("bdt") val bodyType: Int = 0,
-    @SerializedName("bmi") val bmi: Int = 0,  //NOT DONE
+    @SerializedName("bmi") val bmi: Float = 0f,  //NOT DONE
     @SerializedName("gen") val gender: String = "", //recheck
-    @SerializedName("ht") val height: Int = 0,
+    @SerializedName("ht") val height: Float = 0f,
     @SerializedName("prg") val isPregnant: Boolean = false,
-    @SerializedName("pw") val pregnancyWeek: Int = 0,
-    @SerializedName("wt") val weight: Int = 0,
+    @SerializedName("pw") val pregnancyWeek: Int? = 0,
+    @SerializedName("wt") val weight: Float = 0f,
 ) : Parcelable
 
 
 @Parcelize
 data class Health(
+    @SerializedName("hh") val healthHistory: ArrayList<HealthProperties>? = arrayListOf(),
     @SerializedName("ail") val ailments: ArrayList<HealthProperties>? = arrayListOf(),
-    @SerializedName("med") val medications: ArrayList<HealthProperties> = arrayListOf(),
-    @SerializedName("inj") val injuries: ArrayList<Injury> = arrayListOf(),  // Body Part healthHisList missing
-    @SerializedName("htg") val targets: ArrayList<HealthProperties> = arrayListOf(),
+    @SerializedName("med") val medications: ArrayList<HealthProperties>? = arrayListOf(),
+    @SerializedName("inj") val injuries: ArrayList<HealthProperties>? = arrayListOf(),
+    @SerializedName("bp") val bodyPart: ArrayList<HealthProperties>? = arrayListOf(),// Body Part healthHisList missing
+    @SerializedName("htg") val targets: ArrayList<HealthProperties>? = arrayListOf(),
+    @SerializedName("is") val injurySince: Int? = 0,
 ) : Parcelable
 
 
 //working env missing
 @Parcelize
 data class LifeStyle(
-    @SerializedName("slp") var sleep: Session = Session(), // missing in UI
-    @SerializedName("act") var physicalActivity: HealthProperties = HealthProperties(),
+    @SerializedName("act") var physicalActivity: HealthProperties? = HealthProperties(),
+    @SerializedName("env") var workingEnv: HealthProperties = HealthProperties(),
     @SerializedName("ws") var workStyle: HealthProperties = HealthProperties(),
-    @SerializedName("whr") var workingHours: Session = Session(),
-    @SerializedName("cat") val curActivities: ArrayList<HealthProperties> = arrayListOf(),
-    @SerializedName("pat") val prefActivities: ArrayList<HealthProperties> = arrayListOf(),
-    @SerializedName("lst") val lifeStyleTargets: ArrayList<HealthProperties> = arrayListOf(),
+    @SerializedName("whr") var workingHours: HealthProperties = HealthProperties(),
+    @SerializedName("cat") val curActivities: ArrayList<HealthProperties>? = arrayListOf(),
+    @SerializedName("pat") val prefActivities: ArrayList<HealthProperties>? = arrayListOf(),
+    @SerializedName("lst") val lifeStyleTargets: ArrayList<HealthProperties>? = arrayListOf(),
+
+    @SerializedName("wt") var workingTime: Session = Session(),
+    @SerializedName("slp") var sleep: Session = Session(), // missing in UI
 ) : Parcelable
 
 @Parcelize
 data class Diet(
-    @SerializedName("pref") var preference: Int = 0,
-    @SerializedName("nv") val nonVegDays: ArrayList<String> = arrayListOf(),
-    @SerializedName("alg") val allergies: ArrayList<HealthProperties> = arrayListOf(),
-    @SerializedName("cns") val cuisines: ArrayList<HealthProperties> = arrayListOf(),
-    @SerializedName("frs") val foodRestrictions: ArrayList<HealthProperties> = arrayListOf(),
+    @SerializedName("pref") var preference: ArrayList<HealthProperties>? = arrayListOf(),
+    @SerializedName("nv") val nonVegDays: ArrayList<HealthProperties>? = arrayListOf(),
+    @SerializedName("alg") val allergies: ArrayList<HealthProperties>? = arrayListOf(),
+    @SerializedName("cns") val cuisines: ArrayList<HealthProperties>? = arrayListOf(),
+    @SerializedName("frs") val foodRestrictions: ArrayList<HealthProperties>? = arrayListOf(),
 ) : Parcelable
 
 

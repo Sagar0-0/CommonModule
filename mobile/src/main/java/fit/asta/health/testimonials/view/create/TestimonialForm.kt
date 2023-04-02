@@ -197,10 +197,13 @@ fun TestimonialForm(
         if (showCustomDialogWithResult) {
 
             when (events) {
+
                 is TestimonialSubmitState.Error -> {
                     Log.d("validate", "Error -> ${events.error}")
                 }
+
                 is TestimonialSubmitState.Loading -> LoadingAnimation()
+
                 is TestimonialSubmitState.Success -> {
                     OnSuccessfulSubmit(onDismiss = {
                         showCustomDialogWithResult = !showCustomDialogWithResult

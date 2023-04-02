@@ -53,6 +53,7 @@ fun DetailsContent(
     val name by viewModel.name.collectAsStateWithLifecycle()
     val email by viewModel.email.collectAsStateWithLifecycle()
     val userImg by viewModel.userImg.collectAsStateWithLifecycle()
+    val areInputsValid by viewModel.areDetailsInputsValid.collectAsStateWithLifecycle()
 
     val imgLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
@@ -101,6 +102,7 @@ fun DetailsContent(
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
                 label = "Name",
+                singleLine = true,
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
@@ -124,7 +126,8 @@ fun DetailsContent(
                 errorMessage = email.error,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-                label = "E-mail"
+                label = "E-mail",
+                singleLine = true,
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
@@ -137,7 +140,12 @@ fun DetailsContent(
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            PrimaryButton(text = "Next", modifier = Modifier.fillMaxWidth(), event = eventNext)
+            PrimaryButton(
+                text = "Next",
+                modifier = Modifier.fillMaxWidth(),
+                event = eventNext,
+                enableButton = areInputsValid
+            )
 
             Spacer(modifier = Modifier.height(spacing.small))
 

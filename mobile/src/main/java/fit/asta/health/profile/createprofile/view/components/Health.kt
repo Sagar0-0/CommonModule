@@ -3,18 +3,15 @@
     ExperimentalCoroutinesApi::class,
     ExperimentalCoroutinesApi::class,
     ExperimentalCoroutinesApi::class,
+    ExperimentalCoroutinesApi::class,
     ExperimentalCoroutinesApi::class
 )
 
 package fit.asta.health.profile.createprofile.view.components
 
-import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -52,9 +49,15 @@ fun HealthContent(
 ) {
 
     val checkedState = remember { mutableStateOf(true) }
+
+    var enableButton by remember {
+        mutableStateOf(false)
+    }
+
     val radioButtonList =
         listOf(ButtonListTypes(buttonType = "First"), ButtonListTypes(buttonType = "Second"))
 
+    val injurySince by viewModel.injuriesSince.collectAsStateWithLifecycle()
     val selectedHealthHis by viewModel.selectedHealthHisOption.collectAsStateWithLifecycle()
     val selectedAil by viewModel.selectedAilOption.collectAsStateWithLifecycle()
     val selectedMed by viewModel.selectedMedOption.collectAsStateWithLifecycle()
@@ -62,9 +65,9 @@ fun HealthContent(
     val selectedInjury by viewModel.selectedInjOption.collectAsStateWithLifecycle()
 
     val healthHisList by viewModel.healthPropertiesData.collectAsStateWithLifecycle()
+    val selectedHealthValidity by viewModel.selectedHealthOptions.collectAsStateWithLifecycle()
 
-
-    Log.d("validate", "Health History List -> $healthHisList")
+    val healthButtonEnable by viewModel.healthInputsValid.collectAsStateWithLifecycle()
 
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
@@ -80,7 +83,6 @@ fun HealthContent(
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-
             SelectionCardCreateProfile(
                 cardType = "Any Significant Health History?",
                 cardList = healthHisList.getValue(0),
@@ -93,13 +95,14 @@ fun HealthContent(
                 },
                 enabled = selectedHealthHis == TwoToggleSelections.First,
                 cardIndex = 0,
-                composeIndex = ComposeIndex.First
+                composeIndex = ComposeIndex.First,
+                listName = "Health History"
             )
-
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            InjuriesLayout(cardType = "Any Injuries",
+            InjuriesLayout(
+                cardType = "Any Injuries",
                 cardType2 = "Body Part?",
                 cardList = healthHisList.getValue(1),
                 cardList2 = healthHisList.getValue(2),
@@ -113,7 +116,11 @@ fun HealthContent(
                 cardIndex2 = 2,
                 onStateChange = { state ->
                     viewModel.onEvent(ProfileEvent.SetSelectedInjOption(state))
-                })
+                },
+                time = injurySince.value,
+                listName = "Injuries",
+                listName2 = "Body Part"
+            )
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
@@ -129,7 +136,8 @@ fun HealthContent(
                 },
                 enabled = selectedAil == TwoToggleSelections.First,
                 cardIndex = 3,
-                composeIndex = ComposeIndex.First
+                composeIndex = ComposeIndex.First,
+                listName = "Ailments"
             )
 
 
@@ -147,9 +155,9 @@ fun HealthContent(
                 },
                 enabled = selectedMed == TwoToggleSelections.First,
                 cardIndex = 4,
-                composeIndex = ComposeIndex.First
+                composeIndex = ComposeIndex.First,
+                listName = "Medication"
             )
-
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
@@ -165,13 +173,30 @@ fun HealthContent(
                 },
                 enabled = selectedHealthTar == TwoToggleSelections.First,
                 cardIndex = 5,
-                composeIndex = ComposeIndex.First
+                composeIndex = ComposeIndex.First,
+                listName = "Health Targets"
             )
+
+            if (selectedHealthValidity) {
+                viewModel.onEvent(
+                    ProfileEvent.IsHealthValid(
+                        valid = (healthHisList.getValue(0).isNotEmpty() && healthHisList.getValue(1)
+                            .isNotEmpty() && healthHisList.getValue(2)
+                            .isNotEmpty() && healthHisList.getValue(3)
+                            .isNotEmpty() && healthHisList.getValue(4)
+                            .isNotEmpty() && healthHisList.getValue(5)
+                            .isNotEmpty())
+                    )
+                )
+            }
+
 
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            CreateProfileButtons(eventPrevious, eventNext, text = "Next")
+            CreateProfileButtons(
+                eventPrevious, eventNext, text = "Next", enableButton = healthButtonEnable
+            )
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
@@ -260,7 +285,7 @@ fun HealthCreateScreen(
                 viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "tgt"))
             },
             onBodyInjurySelect = {
-                currentBottomSheet = BODYINJURIY
+                currentBottomSheet = BODYPARTS
                 openSheet()
                 viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "bp"))
             })
@@ -270,7 +295,7 @@ fun HealthCreateScreen(
 }
 
 enum class HealthCreateBottomSheetTypes {
-    HEALTHHISTORY, INJURIES, AILMENTS, MEDICATIONS, HEALTHTARGETS, BODYINJURIY
+    HEALTHHISTORY, INJURIES, AILMENTS, MEDICATIONS, HEALTHTARGETS, BODYPARTS
 }
 
 @Composable
@@ -311,7 +336,7 @@ fun HealthCreateBtmSheetLayout(
                 }
             }
         }
-        BODYINJURIY -> {
+        BODYPARTS -> {
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}

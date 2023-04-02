@@ -33,10 +33,12 @@ fun LifeStyleLayout(
     onLifeStyleTargets: () -> Unit,
 ) {
 
-    Column(modifier = Modifier
-        .verticalScroll(rememberScrollState())
-        .fillMaxWidth()
-        .padding(16.dp)) {
+    Column(
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -45,62 +47,76 @@ fun LifeStyleLayout(
             title = UserPropertyType.SleepSchedule.title,
             session = lifeStyle.sleep,
             editState = editState,
-            onSleepSchedule)
+            onSleepSchedule
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        SingleSelectionCard(icon = UserPropertyType.WorkStyle.icon,
+        SingleSelectionCard(
+            icon = UserPropertyType.WorkStyle.icon,
             title = UserPropertyType.WorkStyle.title,
             value = lifeStyle.workStyle.name,
             editState = editState,
-            onWorkStyle)
+            onWorkStyle
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         SessionCard(
             //icon = UserPropertyType.WorkSchedule.icon,
             title = UserPropertyType.WorkSchedule.title,
-            session = lifeStyle.workingHours,
+            session = lifeStyle.workingTime,
             editState = editState,
-            onWorkSchedule)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        SingleSelectionCard(icon = UserPropertyType.PhysActive.icon,
-            title = UserPropertyType.PhysActive.title,
-            value = lifeStyle.physicalActivity.name,
-            editState = editState,
-            onPhysicallyActive)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        ChipCard(
-            icon = UserPropertyType.CurActivities.icon,
-            title = UserPropertyType.CurActivities.title,
-            list = lifeStyle.curActivities,
-            editState = editState,
-            onClick = onCurrentActive
+            onWorkSchedule
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ChipCard(
-            icon = UserPropertyType.PrefActivities.icon,
-            title = UserPropertyType.PrefActivities.title,
-            list = lifeStyle.prefActivities,
-            editState = editState,
-            onClick = onPreferredActivity
-        )
+        lifeStyle.physicalActivity?.let {
+            SingleSelectionCard(
+                icon = UserPropertyType.PhysActive.icon,
+                title = UserPropertyType.PhysActive.title,
+                value = it.name,
+                editState = editState,
+                onPhysicallyActive
+            )
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ChipCard(
-            icon = UserPropertyType.LifeStyleTargets.icon,
-            title = UserPropertyType.LifeStyleTargets.title,
-            list = lifeStyle.lifeStyleTargets,
-            editState = editState,
-            onClick = onLifeStyleTargets
-        )
+        lifeStyle.curActivities?.let {
+            ChipCard(
+                icon = UserPropertyType.CurActivities.icon,
+                title = UserPropertyType.CurActivities.title,
+                list = it,
+                editState = editState,
+                onClick = onCurrentActive
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        lifeStyle.prefActivities?.let {
+            ChipCard(
+                icon = UserPropertyType.PrefActivities.icon,
+                title = UserPropertyType.PrefActivities.title,
+                list = it,
+                editState = editState,
+                onClick = onPreferredActivity
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        lifeStyle.lifeStyleTargets?.let {
+            ChipCard(
+                icon = UserPropertyType.LifeStyleTargets.icon,
+                title = UserPropertyType.LifeStyleTargets.title,
+                list = it,
+                editState = editState,
+                onClick = onLifeStyleTargets
+            )
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -110,4 +126,5 @@ fun LifeStyleLayout(
             }
         }
     }
+
 }

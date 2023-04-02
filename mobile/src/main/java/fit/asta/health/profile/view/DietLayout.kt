@@ -34,23 +34,27 @@ fun DietLayout(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ChipCard(
-            icon = UserPropertyType.FoodAllergies.icon,
-            title = UserPropertyType.FoodAllergies.title,
-            list = diet.allergies,
-            editState = editState,
-            onClick = onFoodAllergies
-        )
+        diet.allergies?.let {
+            ChipCard(
+                icon = UserPropertyType.FoodAllergies.icon,
+                title = UserPropertyType.FoodAllergies.title,
+                list = it,
+                editState = editState,
+                onClick = onFoodAllergies
+            )
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ChipCard(
-            icon = UserPropertyType.Cuisines.icon,
-            title = UserPropertyType.Cuisines.title,
-            list = diet.cuisines,
-            editState = editState,
-            onClick = onCuisines
-        )
+        diet.cuisines?.let {
+            ChipCard(
+                icon = UserPropertyType.Cuisines.icon,
+                title = UserPropertyType.Cuisines.title,
+                list = it,
+                editState = editState,
+                onClick = onCuisines
+            )
+        }
 
         /*Spacer(modifier = Modifier.height(16.dp))
 
@@ -72,13 +76,15 @@ fun DietLayout(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ChipCard(
-            icon = UserPropertyType.FoodRestrictions.icon,
-            title = UserPropertyType.FoodRestrictions.title,
-            list = diet.foodRestrictions,
-            editState = editState,
-            onClick = onFoodRes
-        )
+        diet.foodRestrictions?.let {
+            ChipCard(
+                icon = UserPropertyType.FoodRestrictions.icon,
+                title = UserPropertyType.FoodRestrictions.title,
+                list = it,
+                editState = editState,
+                onClick = onFoodRes
+            )
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 

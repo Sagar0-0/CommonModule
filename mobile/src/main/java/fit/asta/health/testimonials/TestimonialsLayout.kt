@@ -14,9 +14,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.testimonials.view.TestimonialsList
 import fit.asta.health.testimonials.viewmodel.list.TestimonialListViewModel
-import fit.asta.health.common.ui.theme.cardElevation
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -67,4 +67,6 @@ fun TestimonialsLayout(
         ), modifier = Modifier.shadow(elevation = cardElevation.medium)
         )
     }, containerColor = MaterialTheme.colorScheme.background)
+
+
 }
