@@ -62,8 +62,8 @@ fun CircularSlider(
     var size by remember { mutableStateOf(IntSize.Zero) }
     var width by remember { mutableStateOf(0) }
     var height by remember { mutableStateOf(0) }
-    var angleDuration by rememberSaveable { mutableStateOf(-60f) }
-    var angleDistance by rememberSaveable { mutableStateOf(-60f) }
+    var angleDuration by rememberSaveable { mutableStateOf(-35f) }
+    var angleDistance by rememberSaveable { mutableStateOf(-35f) }
     var lastDuration by rememberSaveable { mutableStateOf(0f) }
     var lastDistance by rememberSaveable { mutableStateOf(0f) }
     var down by remember { mutableStateOf(false) }
@@ -71,7 +71,7 @@ fun CircularSlider(
     var center by remember { mutableStateOf(Offset.Zero) }
     var appliedAngleDuration by remember(appliedAngleDurationValue) {
         mutableStateOf(
-            appliedAngleDurationValue
+            70f
         )
     }
     var appliedAngleDistance by remember(appliedAngleDistanceValue) {
@@ -80,21 +80,26 @@ fun CircularSlider(
         )
     }
     LaunchedEffect(key1 = angleDuration) {
-        Log.d("TAG", "angleDuration change: $angleDuration")
+        Log.d("ashish", "angleDuration start: $angleDuration")
         var a = angleDuration
-        a += 40
+        a += 35
+        Log.d("ashish", "angleDuration +40: $a")
         if (a <= 0f) {
             a += 360
+            Log.d("ashish", "angleDuration if a<=0: $a")
         }
         a = a.coerceIn(0f, 250f)
-        if (lastDuration < 150f && a == 250f) {
+        Log.d("TAG", "angleDuration 0to250: $a")
+        if (lastDuration < 145f && a == 250f) {
             a = 0f
+            Log.d("ashish", "angleDuration if  a< 145 a==250 : $a")
         }
         lastDuration = a
         appliedAngleDuration = a
+        Log.d("ashish", "angleDuration in  end: $a")
     }
     LaunchedEffect(key1 = appliedAngleDuration) {
-        Log.d("TAG", "valueAngleDuration change: $appliedAngleDuration")
+        Log.d("manish", "valueAngleDuration change: $appliedAngleDuration")
         onChangeAngleDuration?.invoke(appliedAngleDuration)
         onChangeDuration?.invoke(
             range(
@@ -107,12 +112,12 @@ fun CircularSlider(
     LaunchedEffect(key1 = angleDistance) {
         Log.d("TAG", "angleDistance change: $angleDistance")
         var a = angleDistance
-        a += 40    // this 40 create error when recompose this angle will added in previous value and change output
+        a += 35    // this 40 create error when recompose this angle will added in previous value and change output
         if (a <= 0f) {
             a += 360
         }
         a = a.coerceIn(0f, 250f)
-        if (lastDistance < 150f && a == 250f) {
+        if (lastDistance < 145f && a == 250f) {
             a = 0f
         }
         lastDistance = a
@@ -189,22 +194,27 @@ fun CircularSlider(
                         MotionEvent.ACTION_DOWN -> {
                             val d = distance(offset, center)
                             val a = angle(center, offset)
-                            if (!isStarted && d >= radius - touchStroke / 2f && d <= radius + touchStroke / 2f && a !in -120f..-60f) {
+                            if (!isStarted && d >= radius - touchStroke / 2f && d <= radius + touchStroke / 2f && a !in -135f..-40f) {
                                 down = true
                                 if (isDuration) angleDuration = a
                                 else angleDistance = a
+                                Log.d("rohit", "CircularSlider: action_down if box $a")
                             } else {
                                 down = false
+                                Log.d("rohit", "CircularSlider: action_down else box ")
                             }
                         }
                         MotionEvent.ACTION_MOVE -> {
-                            if (down) {
-                                if (isDuration) angleDuration = angle(center, offset)
-                                else angleDistance = angle(center, offset)
+                            val a = angle(center, offset)
+                            if (down && a !in -135f..-40f) {
+                                if (isDuration) angleDuration = a
+                                else angleDistance = a
+                                Log.d("rohit", "CircularSlider: action_move else ${a}")
                             }
                         }
                         MotionEvent.ACTION_UP -> {
                             down = false
+                            Log.d("rohit", "CircularSlider: action_up ")
                         }
                         else -> return@pointerInteropFilter false
                     }

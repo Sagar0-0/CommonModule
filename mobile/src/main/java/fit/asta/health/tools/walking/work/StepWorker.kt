@@ -55,11 +55,11 @@ private suspend fun runServerRequest(
         duration = Duration(dur = data.realtime, unit = "mins"),
         distance = Distance(dis = data.allSteps.toFloat() * 1408, unit = "km")
     )
-    val result = walkingToolRepo.putDayData(putDayData = dayData)
+//    val result = walkingToolRepo.putDayData(putDayData = dayData)
     val createNotification = CreateNotification(
         applicationContext,
         " Walking ",
-        "Day data is uploaded to server ${result.status.msg}"
+        "Day data is uploaded to server"
     )
     createNotification.showNotification()
 }

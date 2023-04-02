@@ -27,10 +27,18 @@ class WalkingToolRepoImpl(
         }.flowOn(Dispatchers.IO)
     }
 
-    override suspend fun putData(putData: PutData): PutResponse {
-        return remoteApi.putData(putData)
+    override suspend fun putData(putData: PutData): NetworkResult<PutResponse> {
+        return try {
+            NetworkResult.Success(remoteApi.putData(putData))
+        } catch (e:Exception){
+            NetworkResult.Error(message = e.message)
+        }
     }
-    override suspend fun putDayData(putDayData: PutDayData): PutResponse {
-        return remoteApi.putDayData(putDayData)
+    override suspend fun putDayData(putDayData: PutDayData): NetworkResult<PutResponse> {
+        return try {
+            NetworkResult.Success(remoteApi.putDayData(putDayData))
+        } catch (e:Exception){
+            NetworkResult.Error(message = e.message)
+        }
     }
 }

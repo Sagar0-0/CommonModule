@@ -316,7 +316,7 @@ fun MainCircularSlider(
                 appliedAngleDurationValue=state.appliedAngleDuration,
                 appliedAngleDistanceValue = state.appliedAngleDistance,
                 maxIndicatorValue = maxIndicatorValue,
-                indicatorValue = if (isDuration) state.duration.toFloat() else state.distance.toFloat(),
+                indicatorValue = if (isDuration) state.durationProgress.toFloat() else state.distance.toFloat(),
                 bigTextSuffix = bigTextSuffix,
                 onChangeType = {
                     isDuration = !isDuration
@@ -371,7 +371,7 @@ fun MainCircularSlider(
 
 
 @Composable
-fun StepsDetailsCard(modifier: Modifier, distance: Double, duration: Long, steps: Int) {
+fun StepsDetailsCard(modifier: Modifier, distance: Double, duration: Int, steps: Int) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
