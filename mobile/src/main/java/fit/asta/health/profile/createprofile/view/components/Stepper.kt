@@ -3,6 +3,7 @@
 package fit.asta.health.profile.createprofile.view.components
 
 
+import android.util.Log
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.BorderStroke
@@ -32,21 +33,29 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.profile.viewmodel.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateProfileLayout() {
+fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
 
     /* TODO Paddings, Font, Elevations (4dp and 6dp), BottomSheets, Colors */
+
+    //ValidInputs
+    val isDetailValid by viewModel.areDetailsInputsValid.collectAsStateWithLifecycle()
+    val isPhyValid by viewModel.phyInputsValid.collectAsStateWithLifecycle()
+    val isHealthValid by viewModel.healthInputsValid.collectAsStateWithLifecycle()
+    val isLSValid by viewModel.areLSValid.collectAsStateWithLifecycle()
+    val isDietValid by viewModel.dietInputsValid.collectAsStateWithLifecycle()
 
     val numberOfSteps = 5
 
     var currentStep by rememberSaveable { mutableStateOf(1) }
-
-    var content by remember { mutableStateOf(1) }
 
     val stepDescriptionList = arrayListOf("Details", "Physique", "Heath", "LifeStyle", "Diet")
 
@@ -68,10 +77,43 @@ fun CreateProfileLayout() {
         if (index < numberOfSteps) descriptionList[index] = element
     }
 
-    val iconColor = if (isSkipPressed) {
-        MaterialTheme.colorScheme.error
-    } else {
-        MaterialTheme.colorScheme.primary
+    val iconTint = when (currentStep) {
+        2 -> {
+            if (isDetailValid && !isSkipPressed) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.error
+            }
+        }
+        3 -> {
+            if (isPhyValid && !isSkipPressed) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.error
+            }
+        }
+        4 -> {
+            if (isHealthValid && !isSkipPressed) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.error
+            }
+        }
+        5 -> {
+            if (isLSValid && !isSkipPressed) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.error
+            }
+        }
+        6 -> {
+            if (isDietValid && !isSkipPressed) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.error
+            }
+        }
+        else -> Color.Yellow
     }
 
     Scaffold(topBar = {
@@ -116,12 +158,16 @@ fun CreateProfileLayout() {
                         selectedColor = null,
                         icons = iconList[step - 1],
                         logic = {
-                            content = step
                             currentStep = step
+                            Log.d(
+                                "currSteps",
+                                "Steps -> $step and Current Step -> $currentStep and Boolean Values -> CurrentStep $currentStep -> ${isDetailValid && !isSkipPressed} and Color -> $iconTint"
+                            )
                         },
-                        isPressed = isSkipPressed,
-                        iconTint = iconColor
+
+                        iconTint = iconTint
                     )
+
                 }
             }
             Spacer(modifier = Modifier.height(spacing.medium))
@@ -199,7 +245,6 @@ fun Stepper(
     isCurrent: Boolean,
     isComplete: Boolean,
     isRainbow: Boolean,
-    isPressed: Boolean,
     stepDescription: String,
     unSelectedColor: Color,
     selectedColor: Color?,
@@ -260,18 +305,18 @@ fun Stepper(
 
                 IconButton(onClick = logic) {
 
+                    //after click
+
                     if (isCompete) {
                         Icon(
                             imageVector = icons,
                             contentDescription = "done",
                             modifier = modifier.padding(4.dp),
-                            tint = if (isPressed) {
-                                MaterialTheme.colorScheme.error
-                            } else {
-                                MaterialTheme.colorScheme.primary
-                            }
+                            tint = iconTint
                         )
                     } else {
+
+                        //before click
                         IconButton(onClick = logic) {
                             Icon(
                                 imageVector = icons,
@@ -280,8 +325,8 @@ fun Stepper(
                                 tint = Color.Black
                             )
                         }
-                    }
 
+                    }
                 }
             }
         }

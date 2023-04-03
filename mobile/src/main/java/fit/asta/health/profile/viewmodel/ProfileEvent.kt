@@ -45,6 +45,7 @@ sealed class ProfileEvent {
     data class OnUserInjuryTimeChange(val time: String) : ProfileEvent()
     data class IsHealthValid(val valid: Boolean) : ProfileEvent()
     data class IsPhyValid(val valid: Boolean) : ProfileEvent()
+    data class IsDietValid(val valid: Boolean) : ProfileEvent()
     data class DoAllInputsValid(val valid: Boolean) : ProfileEvent()
 
     object OnSubmit : ProfileEvent()

@@ -73,6 +73,15 @@ class ProfileViewModel
     }
 
 
+    private val areDietInputsValid = MutableStateFlow(false)
+    val dietInputsValid: StateFlow<Boolean>
+        get() = areDietInputsValid
+
+    private fun isDietValid(valid: Boolean) {
+        areDietInputsValid.value = valid
+    }
+
+
     private val areAllInputsValid = MutableStateFlow(false)
     val allInputsValid: StateFlow<Boolean>
         get() = areAllInputsValid
@@ -662,6 +671,7 @@ class ProfileViewModel
                 isPhyValid(event.valid)
             }
             is ProfileEvent.DoAllInputsValid -> doAllInputsValid(valid = event.valid)
+            is ProfileEvent.IsDietValid -> isDietValid(event.valid)
         }
 
     }
@@ -721,9 +731,13 @@ class ProfileViewModel
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
     val doAllDataInputsClear = combine(
-        areDetailsInputsValid, arePhyInputsValid, areHealthInputsValid, areLSValid
-    ) { areDetailsInputsValid, arePhyInputsValid, areHealthInputsValid, areLSValid ->
-        areDetailsInputsValid && arePhyInputsValid && areHealthInputsValid && areLSValid
+        areDetailsInputsValid,
+        arePhyInputsValid,
+        areHealthInputsValid,
+        areLSValid,
+        areDietInputsValid
+    ) { areDetailsInputsValid, arePhyInputsValid, areHealthInputsValid, areLSValid, areDietInputsValid ->
+        areDetailsInputsValid && arePhyInputsValid && areHealthInputsValid && areLSValid && areDietInputsValid
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
 }

@@ -52,6 +52,7 @@ fun DietContent(
 
 
     val selectedFoodRes by viewModel.selectedFoodResOption.collectAsStateWithLifecycle()
+    val isDietInputValid by viewModel.dietInputsValid.collectAsStateWithLifecycle()
     val doAllInputsClear by viewModel.doAllDataInputsClear.collectAsStateWithLifecycle()
     val enableSubmitButton by viewModel.allInputsValid.collectAsStateWithLifecycle()
 
@@ -61,10 +62,10 @@ fun DietContent(
         null -> false
     }
 
-    if (doAllInputsClear && isFoodResValid) {
-        viewModel.onEvent(ProfileEvent.DoAllInputsValid(true))
+    if (isFoodResValid) {
+        viewModel.onEvent(ProfileEvent.IsDietValid(true))
     } else {
-        viewModel.onEvent(ProfileEvent.DoAllInputsValid(false))
+        viewModel.onEvent(ProfileEvent.IsDietValid(false))
     }
 
 
@@ -151,7 +152,7 @@ fun DietContent(
                 eventPrevious, eventNext = {
                     buttonClicked = !buttonClicked
                     viewModel.onEvent(ProfileEvent.OnSubmit)
-                }, text = "Done", enableButton = enableSubmitButton
+                }, text = "Done", enableButton = doAllInputsClear
             )
 
 
