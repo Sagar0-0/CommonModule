@@ -42,10 +42,6 @@ fun DietContent(
     onDietaryPref: () -> Unit,
 ) {
     val checkedState = remember { mutableStateOf(true) }
-    val radioButtonList =
-        listOf(ButtonListTypes(buttonType = "First"), ButtonListTypes(buttonType = "Second"))
-
-    val selectedFoodRes by viewModel.selectedFoodResOption.collectAsStateWithLifecycle()
 
     val dietList by viewModel.dpData.collectAsState()
 
@@ -53,6 +49,24 @@ fun DietContent(
     val events = event.value
 
     var buttonClicked by remember { mutableStateOf(false) }
+
+
+    val selectedFoodRes by viewModel.selectedFoodResOption.collectAsStateWithLifecycle()
+    val doAllInputsClear by viewModel.doAllDataInputsClear.collectAsStateWithLifecycle()
+    val enableSubmitButton by viewModel.allInputsValid.collectAsStateWithLifecycle()
+
+    val isFoodResValid = when (selectedFoodRes) {
+        TwoToggleSelections.First -> dietList.getValue(4).isNotEmpty()
+        TwoToggleSelections.Second -> true
+        null -> false
+    }
+
+    if (doAllInputsClear && isFoodResValid) {
+        viewModel.onEvent(ProfileEvent.DoAllInputsValid(true))
+    } else {
+        viewModel.onEvent(ProfileEvent.DoAllInputsValid(false))
+    }
+
 
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
@@ -115,7 +129,6 @@ fun DietContent(
             SelectionCardCreateProfile(
                 cardType = "Food Restrictions?",
                 cardList = dietList.getValue(4),
-                radioButtonList = radioButtonList,
                 checkedState = checkedState,
                 onItemsSelect = onFoodRes,
                 selectedOption = selectedFoodRes,
@@ -135,12 +148,10 @@ fun DietContent(
             Spacer(modifier = Modifier.height(spacing.medium))
 
             CreateProfileButtons(
-                eventPrevious,
-                eventNext = {
+                eventPrevious, eventNext = {
                     buttonClicked = !buttonClicked
                     viewModel.onEvent(ProfileEvent.OnSubmit)
-                },
-                text = "Done",
+                }, text = "Done", enableButton = enableSubmitButton
             )
 
 

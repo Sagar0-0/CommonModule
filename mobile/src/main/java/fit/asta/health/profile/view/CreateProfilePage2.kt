@@ -40,7 +40,6 @@ fun SelectionCardCreateProfile(
     viewModel: ProfileViewModel = hiltViewModel(),
     cardType: String,
     cardList: SnapshotStateList<HealthProperties>,
-    radioButtonList: List<ButtonListTypes>,
     checkedState: MutableState<Boolean>? = null,
     onItemsSelect: () -> Unit,
     selectedOption: TwoToggleSelections?,

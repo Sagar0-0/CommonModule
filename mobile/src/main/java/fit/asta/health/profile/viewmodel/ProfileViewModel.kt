@@ -73,6 +73,15 @@ class ProfileViewModel
     }
 
 
+    private val areAllInputsValid = MutableStateFlow(false)
+    val allInputsValid: StateFlow<Boolean>
+        get() = areAllInputsValid
+
+    private fun doAllInputsValid(valid: Boolean) {
+        areAllInputsValid.value = valid
+    }
+
+
     private val arePhyInputsValid = MutableStateFlow(false)
     val phyInputsValid: StateFlow<Boolean>
         get() = arePhyInputsValid
@@ -652,6 +661,7 @@ class ProfileViewModel
             is ProfileEvent.IsPhyValid -> {
                 isPhyValid(event.valid)
             }
+            is ProfileEvent.DoAllInputsValid -> doAllInputsValid(valid = event.valid)
         }
 
     }
@@ -708,6 +718,12 @@ class ProfileViewModel
         _selectedWorkingHrsOption
     ) { _selectedPhyActOption, _selectedWorkingEnvOption, _selectedWorkStyleOption, _selectedWorkingHrsOption ->
         _selectedPhyActOption != null && _selectedWorkingEnvOption != null && _selectedWorkStyleOption != null && _selectedWorkingHrsOption != null
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
+
+    val doAllDataInputsClear = combine(
+        areDetailsInputsValid, arePhyInputsValid, areHealthInputsValid, areLSValid
+    ) { areDetailsInputsValid, arePhyInputsValid, areHealthInputsValid, areLSValid ->
+        areDetailsInputsValid && arePhyInputsValid && areHealthInputsValid && areLSValid
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
 }

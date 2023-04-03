@@ -49,6 +49,8 @@ fun LifeStyleContent(
     val selectedWorkingEnvOption by viewModel.selectedWorkingEnv.collectAsStateWithLifecycle()
     val selectedWorkingStyOption by viewModel.selectedWorkStyle.collectAsStateWithLifecycle()
     val selectedWorkingHrsOption by viewModel.selectedWorkingHrs.collectAsStateWithLifecycle()
+
+
     val areLSValidInput by viewModel.areLSValid.collectAsStateWithLifecycle()
 
     val lfList by viewModel.lfPropertiesData.collectAsState()

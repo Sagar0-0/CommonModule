@@ -69,6 +69,7 @@ fun HealthContent(
 
     //Inputs Validity
     val areSelectedHealthOptionsValid by viewModel.areSelectedHealthOptionsNull.collectAsStateWithLifecycle()
+    val enableHealthButton by viewModel.healthInputsValid.collectAsStateWithLifecycle()
 
     val isHealthHisValid = when (selectedHealthHis) {
         TwoToggleSelections.First -> healthHisList.getValue(0).isNotEmpty()
@@ -101,6 +102,12 @@ fun HealthContent(
         null -> false
     }
 
+    if (areSelectedHealthOptionsValid && isHealthHisValid && isInjuryValid && isAilmentsValid && isMedValid && isHealthTarValid) {
+        viewModel.onEvent(ProfileEvent.IsHealthValid(true))
+    } else {
+        viewModel.onEvent(ProfileEvent.IsHealthValid(false))
+    }
+
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
     ) {
@@ -118,7 +125,6 @@ fun HealthContent(
             SelectionCardCreateProfile(
                 cardType = "Any Significant Health History?",
                 cardList = healthHisList.getValue(0),
-                radioButtonList = radioButtonList,
                 checkedState = checkedState,
                 onItemsSelect = onHealthHistory,
                 selectedOption = selectedHealthHis,
@@ -159,7 +165,6 @@ fun HealthContent(
             SelectionCardCreateProfile(
                 cardType = "Any Ailments?",
                 cardList = healthHisList.getValue(3),
-                radioButtonList = radioButtonList,
                 checkedState = checkedState,
                 onItemsSelect = onAilments,
                 selectedOption = selectedAil,
@@ -178,7 +183,6 @@ fun HealthContent(
             SelectionCardCreateProfile(
                 cardType = "Any Medications?",
                 cardList = healthHisList.getValue(4),
-                radioButtonList = radioButtonList,
                 checkedState = checkedState,
                 onItemsSelect = onMedications,
                 selectedOption = selectedMed,
@@ -196,7 +200,6 @@ fun HealthContent(
             SelectionCardCreateProfile(
                 cardType = "Any Health Targets?",
                 cardList = healthHisList.getValue(5),
-                radioButtonList = radioButtonList,
                 checkedState = checkedState,
                 onItemsSelect = onHealthTargets,
                 selectedOption = selectedHealthTar,
@@ -212,10 +215,7 @@ fun HealthContent(
             Spacer(modifier = Modifier.height(spacing.medium))
 
             CreateProfileButtons(
-                eventPrevious,
-                eventNext,
-                text = "Next",
-                enableButton = areSelectedHealthOptionsValid && isHealthHisValid && isInjuryValid && isAilmentsValid && isMedValid && isHealthTarValid
+                eventPrevious, eventNext, text = "Next", enableButton = enableHealthButton
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
