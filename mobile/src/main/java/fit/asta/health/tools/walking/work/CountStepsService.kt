@@ -5,6 +5,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Binder
+import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import dagger.hilt.android.AndroidEntryPoint
@@ -69,23 +70,19 @@ class CountStepsService : Service() {
                             date = date,
                             all_steps = step[0].toInt() - data.initialSteps,
                         )
-//                        localRepo.updateRealTime(
-//                            date = date,
-//                            time = ((System.nanoTime() - data.time) / 1_000_000_000L / 60L).toInt()
-//                        )
                     } else {
                         localRepo.updateSteps(date = date, step = step[0].toInt())
                     }
-                    val time=((System.nanoTime() - data.time) / 1_000_000_000L / 60L)
+                    val time = ((System.nanoTime() - data.time) / 1_000_000_000L / 60L).toInt()
                     stepCountFlow.value = stepCountFlow.value.copy(
-                        distance = ((step[0].toInt() - data.initialSteps) / 1408).toDouble(),
+                        distance = ((step[0] - data.initialSteps).toDouble() / 1408.0),
                         steps = (step[0].toInt() - data.initialSteps),
                         duration = data.realtime,
-                        durationProgress=time.toInt(),
-                        valueDistanceRecommendation = (((step[0].toDouble() - data.initialSteps.toDouble()) / 1408.0) / data.distanceRecommend) * 100.0,
-                        valueDurationRecommendation = if (data.durationRecommend > 0) (time.toInt() * 100) / data.durationRecommend else 0,
-                        valueDistanceGoal = ((((step[0].toDouble() - data.initialSteps.toDouble()) * 100.0) / 1408.0) / data.distanceTarget),
-                        valueDurationGoal = if (data.durationTarget > 0) (time.toInt() * 100) / data.durationTarget else 0,
+                        durationProgress = time,
+                        valueDistanceRecommendation = (((step[0] - data.initialSteps) * 100.0 / 1408.0) / data.distanceRecommend),
+                        valueDurationRecommendation = if (data.durationRecommend > 0) (time * 100) / data.durationRecommend else 0,
+                        valueDistanceGoal = ((((step[0] - data.initialSteps) * 100.0) / 1408.0) / data.distanceTarget),
+                        valueDurationGoal = if (data.durationTarget > 0) (time * 100) / data.durationTarget else 0,
                         appliedAngleDuration = data.appliedAngleDuration,
                         appliedAngleDistance = data.appliedAngleDistance
                     )
@@ -94,7 +91,12 @@ class CountStepsService : Service() {
                     )
                     notificationManager.notify(1, updatedNotification.build())
                 } else {
-
+                    stopSteps()
+                    stopSelf()
+                    serviceScope.cancel()
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        stopForeground(STOP_FOREGROUND_REMOVE)
+                    }
                 }
             }
         }

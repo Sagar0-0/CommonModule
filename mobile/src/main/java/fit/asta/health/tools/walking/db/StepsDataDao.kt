@@ -45,7 +45,15 @@ interface StepsDataDao {
     suspend fun updateCaloriesAndWeightLoosed(date: Int, calories: Double, weightLoosed: Double)
 
     @Query("UPDATE steps_data SET appliedAngleDuration = :appliedAngleDuration WHERE date = :date")
-    suspend fun updateAppliedAngleDuration(date: Int,appliedAngleDuration: Float)
+    suspend fun updateAppliedAngleDuration(date: Int, appliedAngleDuration: Float)
+
     @Query("UPDATE steps_data SET appliedAngleDistance = :appliedAngleDistance WHERE date = :date")
     suspend fun updateAppliedAngleDistance(date: Int, appliedAngleDistance: Float)
+
+    @Query("SELECT * FROM steps_data")
+    suspend fun getAllStepsData(): List<StepsData>
+
+    @Query("DELETE FROM steps_data WHERE date NOT IN (:today, :yesterday)")
+    suspend fun deleteOldData(today: Int, yesterday: Int)
+
 }

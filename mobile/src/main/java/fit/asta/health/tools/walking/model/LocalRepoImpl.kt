@@ -62,5 +62,13 @@ class LocalRepoImpl(private val stepsDataDao: StepsDataDao):LocalRepo {
         stepsDataDao.updateAppliedAngleDuration(date, appliedAngleDuration)
     }
 
+    override suspend fun getAllStepsData(): List<StepsData> {
+       return stepsDataDao.getAllStepsData()
+    }
+
+    override suspend fun deleteOldData(today: Int, yesterday: Int) {
+       stepsDataDao.deleteOldData(today, yesterday)
+    }
+
 
 }
