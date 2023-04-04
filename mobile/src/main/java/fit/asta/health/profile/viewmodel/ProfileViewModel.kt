@@ -450,6 +450,7 @@ class ProfileViewModel
                         ailments = convertHealthArrayList(3),
                         medications = convertHealthArrayList(4),
                         targets = convertHealthArrayList(5),
+                        addiction = convertHealthArrayList(6),
                         injurySince = if (injuriesSince.value.value == "") {
                             0
                         } else {

@@ -56,6 +56,7 @@ data class Health(
     @SerializedName("inj") val injuries: ArrayList<HealthProperties>? = arrayListOf(),
     @SerializedName("bp") val bodyPart: ArrayList<HealthProperties>? = arrayListOf(),// Body Part healthHisList missing
     @SerializedName("htg") val targets: ArrayList<HealthProperties>? = arrayListOf(),
+    @SerializedName("add") val addiction: ArrayList<HealthProperties>? = arrayListOf(),
     @SerializedName("is") val injurySince: Int? = 0,
 ) : Parcelable
 

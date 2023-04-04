@@ -33,7 +33,6 @@ import fit.asta.health.profile.viewmodel.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HealthContent(
@@ -47,6 +46,7 @@ fun HealthContent(
     onMedications: () -> Unit,
     onHealthTargets: () -> Unit,
     onBodyInjurySelect: () -> Unit,
+    onAddictionSelect: () -> Unit,
 ) {
 
     val checkedState = remember { mutableStateOf(true) }
@@ -103,7 +103,13 @@ fun HealthContent(
         null -> false
     }
 
-    if (areSelectedHealthOptionsValid && isHealthHisValid && isInjuryValid && isAilmentsValid && isMedValid && isHealthTarValid) {
+    val isAddictionValid = when (selectedAddiction) {
+        TwoToggleSelections.First -> healthHisList.getValue(6).isNotEmpty()
+        TwoToggleSelections.Second -> true
+        null -> false
+    }
+
+    if (areSelectedHealthOptionsValid && isHealthHisValid && isInjuryValid && isAilmentsValid && isMedValid && isHealthTarValid && isAddictionValid) {
         viewModel.onEvent(ProfileEvent.IsHealthValid(true))
     } else {
         viewModel.onEvent(ProfileEvent.IsHealthValid(false))
@@ -213,6 +219,24 @@ fun HealthContent(
                 listName = "Health Targets"
             )
 
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            SelectionCardCreateProfile(
+                cardType = "Any Addiction?",
+                cardList = healthHisList.getValue(6),
+                checkedState = checkedState,
+                onItemsSelect = onAddictionSelect,
+                selectedOption = selectedAddiction,
+                onStateChange = { state ->
+                    viewModel.onEvent(ProfileEvent.SetSelectedAddictionOption(state))
+                },
+                enabled = selectedAddiction == TwoToggleSelections.First,
+                cardIndex = 6,
+                composeIndex = ComposeIndex.First,
+                listName = "Addictions"
+            )
+
             Spacer(modifier = Modifier.height(spacing.medium))
 
             CreateProfileButtons(
@@ -228,7 +252,6 @@ fun HealthContent(
     }
 
 }
-
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalCoroutinesApi::class)
 @Composable
@@ -309,6 +332,11 @@ fun HealthCreateScreen(
                 currentBottomSheet = BODYPARTS
                 openSheet()
                 viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "bp"))
+            },
+            onAddictionSelect = {
+                currentBottomSheet = ADDICTION
+                openSheet()
+                viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "add"))
             })
 
     }
