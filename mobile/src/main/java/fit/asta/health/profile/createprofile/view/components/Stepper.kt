@@ -77,44 +77,39 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
         if (index < numberOfSteps) descriptionList[index] = element
     }
 
-    val iconTint = when (currentStep) {
-        2 -> {
-            if (isDetailValid && !isSkipPressed) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.error
-            }
-        }
-        3 -> {
-            if (isPhyValid && !isSkipPressed) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.error
-            }
-        }
-        4 -> {
-            if (isHealthValid && !isSkipPressed) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.error
-            }
-        }
-        5 -> {
-            if (isLSValid && !isSkipPressed) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.error
-            }
-        }
-        6 -> {
-            if (isDietValid && !isSkipPressed) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.error
-            }
-        }
-        else -> Color.Yellow
+    val primaryColor = MaterialTheme.colorScheme.primary
+    val errorColor = MaterialTheme.colorScheme.error
+
+    val detailsColor = if (isDetailValid) {
+        primaryColor
+    } else {
+        errorColor
     }
+
+    val phyColor = if (isPhyValid && !isSkipPressed) {
+        primaryColor
+    } else {
+        errorColor
+    }
+
+    val healthColor = if (isHealthValid && !isSkipPressed) {
+        primaryColor
+    } else {
+        errorColor
+    }
+
+    val lifeStyleColor = if (isLSValid && !isSkipPressed) {
+        primaryColor
+    } else {
+        errorColor
+    }
+
+    val dietColor = if (isDietValid && !isSkipPressed) {
+        primaryColor
+    } else {
+        errorColor
+    }
+
 
     Scaffold(topBar = {
 
@@ -145,7 +140,7 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
             )
 
             Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
-                for (step in 1..numberOfSteps) {
+                (1..numberOfSteps).forEachIndexed { _, step ->
                     Stepper(
                         modifier = Modifier.weight(1F),
                         step = step,
@@ -160,16 +155,23 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
                         logic = {
                             currentStep = step
                             Log.d(
-                                "currSteps",
-                                "Steps -> $step and Current Step -> $currentStep and Boolean Values -> CurrentStep $currentStep -> ${isDetailValid && !isSkipPressed} and Color -> $iconTint"
+                                "currSteps", " LS Boolean -> ${isLSValid && !isSkipPressed}"
                             )
                         },
-
-                        iconTint = iconTint
+                        detailsColor = detailsColor,
+                        phyColor = phyColor,
+                        healthColor = healthColor,
+                        lifeStyleColor = lifeStyleColor,
+                        dietColor = dietColor,
+                        isDetailValid,
+                        isPhyValid,
+                        isHealthValid,
+                        isLSValid,
+                        isDietValid,
                     )
-
                 }
             }
+
             Spacer(modifier = Modifier.height(spacing.medium))
         }
     }, content = { p ->
@@ -250,7 +252,16 @@ fun Stepper(
     selectedColor: Color?,
     icons: ImageVector,
     logic: () -> Unit,
-    iconTint: Color,
+    detailsColor: Color,
+    phyColor: Color,
+    healthColor: Color,
+    lifeStyleColor: Color,
+    dietColor: Color,
+    isDetailValid: Boolean,
+    isPhyValid: Boolean,
+    isHealthValid: Boolean,
+    isLSValid: Boolean,
+    isDietValid: Boolean,
 ) {
 
     val rainBowColor = Brush.linearGradient(
@@ -312,19 +323,35 @@ fun Stepper(
                             imageVector = icons,
                             contentDescription = "done",
                             modifier = modifier.padding(4.dp),
-                            tint = iconTint
+                            tint = when (step) {
+                                1 -> {
+                                    detailsColor
+                                }
+                                2 -> {
+                                    phyColor
+                                }
+                                3 -> {
+                                    healthColor
+                                }
+                                4 -> {
+                                    lifeStyleColor
+                                }
+                                else -> {
+                                    dietColor
+                                }
+                            }
                         )
                     } else {
 
                         //before click
-                        IconButton(onClick = logic) {
-                            Icon(
-                                imageVector = icons,
-                                contentDescription = "done",
-                                modifier = modifier.padding(4.dp),
-                                tint = Color.Black
-                            )
-                        }
+//                        IconButton(onClick = logic) {
+                        Icon(
+                            imageVector = icons,
+                            contentDescription = "done",
+                            modifier = modifier.padding(4.dp),
+                            tint = Color.Black
+                        )
+//                        }
 
                     }
                 }

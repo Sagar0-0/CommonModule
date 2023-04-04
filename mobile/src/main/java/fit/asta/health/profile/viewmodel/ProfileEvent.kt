@@ -14,6 +14,7 @@ sealed class ProfileEvent {
     data class SetSelectedAilOption(val option: TwoToggleSelections) : ProfileEvent()
     data class SetSelectedMedOption(val option: TwoToggleSelections) : ProfileEvent()
     data class SetSelectedHealthTarOption(val option: TwoToggleSelections) : ProfileEvent()
+    data class SetSelectedAddictionOption(val option: TwoToggleSelections) : ProfileEvent()
     data class SetSelectedFoodResOption(val option: TwoToggleSelections) : ProfileEvent()
     data class SetSelectedIsPregnantOption(val option: TwoToggleSelections) : ProfileEvent()
     data class SetSelectedIsOnPeriodOption(val option: TwoToggleSelections) : ProfileEvent()

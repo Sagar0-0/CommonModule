@@ -129,6 +129,12 @@ class ProfileViewModel
     val selectedHealthTarOption: StateFlow<TwoToggleSelections?>
         get() = _selectedHealthTarOption
 
+    //Addiction Option
+    private val _selectedAddictionOption =
+        MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
+    val selectedAddictionOption: StateFlow<TwoToggleSelections?>
+        get() = _selectedAddictionOption
+
     //Food Res
     private val _selectedFoodResOption =
         MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
@@ -224,6 +230,10 @@ class ProfileViewModel
         _selectedHealthTarOption.value = option
     }
 
+    private fun setSelectedAddictionOption(option: TwoToggleSelections) {
+        _selectedAddictionOption.value = option
+    }
+
     private fun setSelectedFoodResOption(option: TwoToggleSelections) {
         _selectedFoodResOption.value = option
     }
@@ -240,6 +250,7 @@ class ProfileViewModel
             3 to mutableStateListOf<HealthProperties>(),
             4 to mutableStateListOf<HealthProperties>(),
             5 to mutableStateListOf<HealthProperties>(),
+            6 to mutableStateListOf<HealthProperties>()
         )
     )
 
@@ -584,6 +595,7 @@ class ProfileViewModel
             is ProfileEvent.SetSelectedBodyPrtOption -> setSelectedBodyPrtOption(event.option)
             is ProfileEvent.SetSelectedFoodResOption -> setSelectedFoodResOption(event.option)
             is ProfileEvent.SetSelectedHealthTarOption -> setSelectedHealthTarOption(event.option)
+            is ProfileEvent.SetSelectedAddictionOption -> setSelectedAddictionOption(event.option)
             is ProfileEvent.SetSelectedInjOption -> setSelectedInjOption(event.option)
             is ProfileEvent.SetSelectedMedOption -> setSelectedMedOption(event.option)
             is ProfileEvent.SetSelectedIsPregnantOption -> setSelectedIsPregnantOption(event.option)

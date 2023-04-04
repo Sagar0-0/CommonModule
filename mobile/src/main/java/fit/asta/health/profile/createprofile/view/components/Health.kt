@@ -63,6 +63,7 @@ fun HealthContent(
     val selectedMed by viewModel.selectedMedOption.collectAsStateWithLifecycle()
     val selectedHealthTar by viewModel.selectedHealthTarOption.collectAsStateWithLifecycle()
     val selectedInjury by viewModel.selectedInjOption.collectAsStateWithLifecycle()
+    val selectedAddiction by viewModel.selectedAddictionOption.collectAsStateWithLifecycle()
 
     //Data
     val healthHisList by viewModel.healthPropertiesData.collectAsStateWithLifecycle()
@@ -315,7 +316,7 @@ fun HealthCreateScreen(
 }
 
 enum class HealthCreateBottomSheetTypes {
-    HEALTHHISTORY, INJURIES, AILMENTS, MEDICATIONS, HEALTHTARGETS, BODYPARTS
+    HEALTHHISTORY, INJURIES, AILMENTS, MEDICATIONS, HEALTHTARGETS, BODYPARTS, ADDICTION
 }
 
 @Composable
@@ -411,6 +412,21 @@ fun HealthCreateBtmSheetLayout(
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,
                         cardIndex = 5,
+                        composeIndex = ComposeIndex.First
+                    )
+                }
+            }
+        }
+        ADDICTION -> {
+            when (val state = viewModel.stateHp.collectAsState().value) {
+                is HPropState.Empty -> {}
+                is HPropState.Error -> {}
+                is HPropState.Loading -> {}
+                is HPropState.NoInternet -> {}
+                is HPropState.Success -> {
+                    ItemSelectionBtmSheetLayout(
+                        cardList = state.properties,
+                        cardIndex = 6,
                         composeIndex = ComposeIndex.First
                     )
                 }
