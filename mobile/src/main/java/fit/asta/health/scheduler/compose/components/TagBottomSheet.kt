@@ -32,6 +32,7 @@ import fit.asta.health.R
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
+@Preview
 @Composable
 fun TagCard() {
 

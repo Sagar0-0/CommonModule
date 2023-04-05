@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
@@ -21,18 +22,17 @@ import fit.asta.health.scheduler.compose.components.DigitalDemo
 import fit.asta.health.scheduler.compose.components.OnlyToggleButton
 import fit.asta.health.scheduler.compose.components.RepeatAlarm
 
-
+@Preview
 @RequiresApi(Build.VERSION_CODES.N)
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlarmSettingLayout(
-    onNavigateToTag: (() -> Unit)?,
-    onNavigateToLabel: (() -> Unit)?,
-    onNavigateToDesc: (() -> Unit)?,
-    onNavigateToIntervalSettings: (() -> Unit)?,
-    onNavigateToReminderMode: (() -> Unit)?,
-    onNavigateToVibration: (() -> Unit)?,
-    onNavigateToSound: (() -> Unit)?,
+    onNavigateToTag: (() -> Unit) = {},
+    onNavigateToLabel: (() -> Unit) = {},
+    onNavigateToDesc: (() -> Unit) = {},
+    onNavigateToIntervalSettings: (() -> Unit) = {},
+    onNavigateToReminderMode: (() -> Unit) = {},
+    onNavigateToVibration: (() -> Unit) = {},
+    onNavigateToSound: (() -> Unit) = {},
 ) {
     Scaffold(topBar = {
         BottomNavigation(content = {
@@ -80,48 +80,38 @@ fun AlarmSettingLayout(
                 switchTitle = "",
                 onNavigateToClickText = null
             )
-            onNavigateToTag?.let { it1 ->
-                AlarmIconButton(
-                    image = R.drawable.ic_ic24_alarm_snooze,
-                    title = "Tag",
-                    arrowTitle = "Water",
-                    arrowImage = R.drawable.ic_ic24_right_arrow, onNavigateToScreen = it1
-                )
-            }
-            onNavigateToLabel?.let { it1 ->
-                AlarmIconButton(
-                    image = R.drawable.ic_ic24_label,
-                    title = "Label",
-                    arrowTitle = "Power Nap",
-                    arrowImage = R.drawable.ic_ic24_right_arrow, onNavigateToScreen = it1
-                )
-            }
-            onNavigateToDesc?.let { it1 ->
-                AlarmIconButton(
-                    image = R.drawable.ic_ic24_description,
-                    title = "Description",
-                    arrowTitle = "Relax to energise",
-                    arrowImage = R.drawable.ic_ic24_right_arrow, onNavigateToScreen = it1
-                )
-            }
-            onNavigateToIntervalSettings?.let { it1 ->
-                AlarmIconButton(
-                    image = R.drawable.ic_ic24_time,
-                    title = "Intervals Settings",
-                    arrowTitle = "Power Nap",
-                    arrowImage = R.drawable.ic_ic24_right_arrow,
-                    onNavigateToScreen = it1
-                )
-            }
-            onNavigateToReminderMode?.let { it1 ->
-                AlarmIconButton(
-                    image = R.drawable.ic_ic24_notification,
-                    title = "Reminder Mode",
-                    arrowTitle = "Notification",
-                    arrowImage = R.drawable.ic_ic24_right_arrow,
-                    onNavigateToScreen = it1
-                )
-            }
+            AlarmIconButton(
+                image = R.drawable.ic_ic24_alarm_snooze,
+                title = "Tag",
+                arrowTitle = "Water",
+                arrowImage = R.drawable.ic_ic24_right_arrow, onNavigateToScreen = onNavigateToTag
+            )
+            AlarmIconButton(
+                image = R.drawable.ic_ic24_label,
+                title = "Label",
+                arrowTitle = "Power Nap",
+                arrowImage = R.drawable.ic_ic24_right_arrow, onNavigateToScreen = onNavigateToLabel
+            )
+            AlarmIconButton(
+                image = R.drawable.ic_ic24_description,
+                title = "Description",
+                arrowTitle = "Relax to energise",
+                arrowImage = R.drawable.ic_ic24_right_arrow, onNavigateToScreen = onNavigateToDesc
+            )
+            AlarmIconButton(
+                image = R.drawable.ic_ic24_time,
+                title = "Intervals Settings",
+                arrowTitle = "Power Nap",
+                arrowImage = R.drawable.ic_ic24_right_arrow,
+                onNavigateToScreen = onNavigateToIntervalSettings
+            )
+            AlarmIconButton(
+                image = R.drawable.ic_ic24_notification,
+                title = "Reminder Mode",
+                arrowTitle = "Notification",
+                arrowImage = R.drawable.ic_ic24_right_arrow,
+                onNavigateToScreen = onNavigateToReminderMode
+            )
             OnlyToggleButton(
                 icon = R.drawable.ic_ic24_vibrate,
                 title = "Vibration ",

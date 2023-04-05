@@ -1,5 +1,6 @@
 package fit.asta.health.scheduler.compose
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -15,11 +16,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.plusAssign
-import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
-import com.google.accompanist.navigation.material.ModalBottomSheetLayout
-import com.google.accompanist.navigation.material.bottomSheet
-import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
+import com.google.accompanist.navigation.material.*
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.scheduler.compose.components.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -34,30 +31,29 @@ class SchedulerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
         setContent {
-            navController = rememberNavController()
+            MyApp()
         }
     }
 
 }
 
-
 @RequiresApi(Build.VERSION_CODES.N)
 @OptIn(ExperimentalMaterialNavigationApi::class)
 @Composable
 fun MyApp() {
-    val navController = rememberNavController()
-    val bottomSheetNavigator = rememberBottomSheetNavigator()
-    navController.navigatorProvider += bottomSheetNavigator
 
-    ModalBottomSheetLayout(bottomSheetNavigator = bottomSheetNavigator) {
+    val bottomSheetNavigator = rememberBottomSheetNavigator()
+    val navController = rememberNavController(bottomSheetNavigator)
+
+    ModalBottomSheetLayout(bottomSheetNavigator) {
 
         NavHost(
-            navController = navController,
-            startDestination = SchedulerScreen.AlarmSettingHome.route
+            navController = navController, startDestination = SchedulerScreen.AlarmSettingHome.route
         ) {
 
             composable(route = SchedulerScreen.AlarmSettingHome.route) {
-                AlarmSettingLayout(onNavigateToTag = { navController.navigate(route = SchedulerScreen.TagSelection.route) },
+                AlarmSettingLayout(
+                    onNavigateToTag = { navController.navigate(route = SchedulerScreen.TagSelection.route) },
                     onNavigateToLabel = { navController.navigate(route = SchedulerScreen.LabelSelection.route) },
                     onNavigateToDesc = { navController.navigate(route = SchedulerScreen.DescSelection.route) },
                     onNavigateToIntervalSettings = { navController.navigate(route = SchedulerScreen.IntervalSettingsSelection.route) },
@@ -136,7 +132,7 @@ fun MyApp() {
 }
 
 
-@RequiresApi(Build.VERSION_CODES.N)
+@SuppressLint("NewApi")
 @Preview
 @Composable
 fun ScreenPreview() {

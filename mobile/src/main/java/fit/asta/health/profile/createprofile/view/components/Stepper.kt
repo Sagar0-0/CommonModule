@@ -227,9 +227,7 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
                     )
                 }
                 5 -> {
-                    DietCreateScreen(eventDone = {
-                        currentStep += 1
-                    }, eventPrevious = {
+                    DietCreateScreen(eventPrevious = {
                         currentStep -= 1
                     })
                 }

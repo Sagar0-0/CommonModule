@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.navigation.home.view.component.LoadingAnimation
+import fit.asta.health.navigation.home.view.component.NoInternetLayout
 import fit.asta.health.profile.bottomsheets.ItemSelectionBtmSheetLayout
 import fit.asta.health.profile.createprofile.view.components.HealthCreateBottomSheetTypes.*
 import fit.asta.health.profile.model.domain.ComposeIndex
@@ -359,8 +361,10 @@ fun HealthCreateBtmSheetLayout(
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}
-                is HPropState.Loading -> {}
-                is HPropState.NoInternet -> {}
+                is HPropState.Loading -> LoadingAnimation()
+                is HPropState.NoInternet -> {
+                    NoInternetLayout(onTryAgain = {})
+                }
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,
@@ -374,8 +378,10 @@ fun HealthCreateBtmSheetLayout(
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}
-                is HPropState.Loading -> {}
-                is HPropState.NoInternet -> {}
+                is HPropState.Loading -> LoadingAnimation()
+                is HPropState.NoInternet -> {
+                    NoInternetLayout(onTryAgain = {})
+                }
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,
@@ -389,8 +395,10 @@ fun HealthCreateBtmSheetLayout(
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}
-                is HPropState.Loading -> {}
-                is HPropState.NoInternet -> {}
+                is HPropState.Loading -> LoadingAnimation()
+                is HPropState.NoInternet -> {
+                    NoInternetLayout(onTryAgain = {})
+                }
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,
@@ -404,8 +412,10 @@ fun HealthCreateBtmSheetLayout(
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}
-                is HPropState.Loading -> {}
-                is HPropState.NoInternet -> {}
+                is HPropState.Loading -> LoadingAnimation()
+                is HPropState.NoInternet -> {
+                    NoInternetLayout(onTryAgain = {})
+                }
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,
@@ -419,8 +429,10 @@ fun HealthCreateBtmSheetLayout(
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}
-                is HPropState.Loading -> {}
-                is HPropState.NoInternet -> {}
+                is HPropState.Loading -> LoadingAnimation()
+                is HPropState.NoInternet -> {
+                    NoInternetLayout(onTryAgain = {})
+                }
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,
@@ -434,8 +446,10 @@ fun HealthCreateBtmSheetLayout(
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}
-                is HPropState.Loading -> {}
-                is HPropState.NoInternet -> {}
+                is HPropState.Loading -> LoadingAnimation()
+                is HPropState.NoInternet -> {
+                    NoInternetLayout(onTryAgain = {})
+                }
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,
@@ -449,8 +463,10 @@ fun HealthCreateBtmSheetLayout(
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}
-                is HPropState.Loading -> {}
-                is HPropState.NoInternet -> {}
+                is HPropState.Loading -> LoadingAnimation()
+                is HPropState.NoInternet -> {
+                    NoInternetLayout(onTryAgain = {})
+                }
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,

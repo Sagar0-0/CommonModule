@@ -23,17 +23,20 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
 import fit.asta.health.common.ui.theme.TSelected
 
+
+@Preview
 @Composable
 fun OnlyToggleButton(
-    icon: Int,
-    title: String,
-    switchTitle: String,
-    onNavigateToClickText: (() -> Unit)?,
+    icon: Int = R.drawable.upload,
+    title: String = "Title",
+    switchTitle: String = "Switch",
+    onNavigateToClickText: (() -> Unit)? = {},
 ) {
 
     val mCheckedState = remember { mutableStateOf(false) }
