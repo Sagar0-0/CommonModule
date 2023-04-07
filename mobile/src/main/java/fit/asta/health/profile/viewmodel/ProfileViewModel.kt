@@ -46,11 +46,14 @@ class ProfileViewModel
     private val mutableEditState = MutableStateFlow<ProfileEditState>(ProfileEditState.Loading)
     val stateEdit = mutableEditState.asStateFlow()
 
+
     private val mutableHPropState = MutableStateFlow<HPropState>(HPropState.Loading)
     val stateHp = mutableHPropState.asStateFlow()
 
+
     private val mutableState = MutableStateFlow<ProfileState>(ProfileState.Loading)
     val state = mutableState.asStateFlow()
+
 
     private val mutableCreateState =
         MutableStateFlow<ProfileCreateState>(ProfileCreateState.Loading)
@@ -67,6 +70,7 @@ class ProfileViewModel
     private val areHealthInputsValid = MutableStateFlow(false)
     val healthInputsValid: StateFlow<Boolean>
         get() = areHealthInputsValid
+
 
     private fun isHealthValid(valid: Boolean) {
         areHealthInputsValid.value = valid
@@ -214,29 +218,36 @@ class ProfileViewModel
         _selectedInjOption.value = option
     }
 
+
     private fun setSelectedBodyPrtOption(option: TwoToggleSelections) {
         _selectedBodyPartOption.value = option
     }
+
 
     private fun setSelectedAilOption(option: TwoToggleSelections) {
         _selectedAilOption.value = option
     }
 
+
     private fun setSelectedMedOption(option: TwoToggleSelections) {
         _selectedMedOption.value = option
     }
+
 
     private fun setSelectedHealthTarOption(option: TwoToggleSelections) {
         _selectedHealthTarOption.value = option
     }
 
+
     private fun setSelectedAddictionOption(option: TwoToggleSelections) {
         _selectedAddictionOption.value = option
     }
 
+
     private fun setSelectedFoodResOption(option: TwoToggleSelections) {
         _selectedFoodResOption.value = option
     }
+
 
     private var isSameItemRemovedAndAdded = false
 
@@ -254,8 +265,10 @@ class ProfileViewModel
         )
     )
 
+
     val healthPropertiesData: StateFlow<Map<Int, SnapshotStateList<HealthProperties>>> =
         _healthPropertiesData
+
 
     private fun healthAdd(cardViewIndex: Int, item: HealthProperties, composeIndex: ComposeIndex) {
         val propertyData = when (composeIndex) {
@@ -275,6 +288,7 @@ class ProfileViewModel
         updatedData[cardViewIndex] = currentList
         propertyData.value = updatedData.toMap()
     }
+
 
     private fun healthRemove(
         cardViewIndex: Int,
@@ -301,6 +315,7 @@ class ProfileViewModel
         propertyData.value = updatedData.toMap()
     }
 
+
     //LifeStyleSection
     private val _lfPropertiesData = MutableStateFlow(
         mapOf(
@@ -310,8 +325,10 @@ class ProfileViewModel
         )
     )
 
+
     val lfPropertiesData: StateFlow<Map<Int, SnapshotStateList<HealthProperties>>> =
         _lfPropertiesData
+
 
     //Diet
     private val _dietPropertiesData = MutableStateFlow(
@@ -324,9 +341,12 @@ class ProfileViewModel
         )
     )
 
+
     val dpData: StateFlow<Map<Int, SnapshotStateList<HealthProperties>>> = _dietPropertiesData
 
+
     private val profileData = savedState.getStateFlow(PROFILE_DATA, UserProfile())
+
 
     //Details
     val name = savedState.getStateFlow(NAME, InputWrapper())
@@ -346,12 +366,15 @@ class ProfileViewModel
     val pregnancyWeek = savedState.getStateFlow(PREGNANCY_WEEK, InputWrapper())
     private val bodyType = savedState.getStateFlow(BODY_TYPE, InputIntWrapper())
 
+
     //Health
     val injuriesSince = savedState.getStateFlow(INJURIES_SINCE, InputWrapper())
+
 
     init {
 
     }
+
 
     private fun loadUserProfile() {
 
@@ -364,6 +387,7 @@ class ProfileViewModel
         }
 
     }
+
 
     //view only
     private fun loadUserProfileResponse(userId: String) {
@@ -379,6 +403,7 @@ class ProfileViewModel
 
     }
 
+
     private fun convertHealthArrayList(cardViewIndex: Int): ArrayList<HealthProperties> {
         return when (cardViewIndex) {
             0 -> _healthPropertiesData.value[0]?.let { ArrayList(it) }!!
@@ -391,6 +416,7 @@ class ProfileViewModel
         }
     }
 
+
     private fun convertLSArrayList(cardViewIndex: Int): ArrayList<HealthProperties> {
         return when (cardViewIndex) {
             0 -> _lfPropertiesData.value[0]?.let { ArrayList(it) }!!
@@ -399,6 +425,7 @@ class ProfileViewModel
             else -> arrayListOf()
         }
     }
+
 
     private fun convertDietArrayList(cardViewIndex: Int): ArrayList<HealthProperties> {
         return when (cardViewIndex) {
@@ -411,6 +438,7 @@ class ProfileViewModel
         }
     }
 
+
     private fun submit() {
 
         authRepo.getUser()?.let {
@@ -420,12 +448,13 @@ class ProfileViewModel
                         dob = dob.value.value,
                         email = email.value.value.trim(),
                         name = name.value.value.trim(),
-                        url = userImg.value.url
+                        url = userImg.value.url,
+                        localUrl = userImg.value.localUrl
                     ), physique = Physique(
                         weight = weight.value.value.toFloat(),
                         age = age.value.value.toInt(),
                         height = height.value.value.toFloat(),
-                        pregnancyWeek = if (pregnancyWeek.value.value == "") {
+                        pregnancyWeek = if (pregnancyWeek.value.value.isEmpty()) {
                             0
                         } else {
                             pregnancyWeek.value.value.toInt()
@@ -495,6 +524,7 @@ class ProfileViewModel
 
     }
 
+
     //create+edit+update after edit
     private fun updateProfile(userProfile: UserProfile) {
 
@@ -512,6 +542,7 @@ class ProfileViewModel
 
     }
 
+
     private fun getHealthProperties(propertyType: String) {
 
         if (networkHelper.isConnected()) {
@@ -528,6 +559,7 @@ class ProfileViewModel
 
     }
 
+
     private fun onValidateDetailsText(value: String, min: Int, max: Int): UiString {
         return when {
             value.isBlank() -> UiString.Resource(R.string.the_field_can_not_be_blank)
@@ -538,6 +570,7 @@ class ProfileViewModel
             else -> UiString.Empty
         }
     }
+
 
     private fun onValidateDetailsEmail(value: String): UiString {
         return when {
@@ -550,10 +583,12 @@ class ProfileViewModel
         }
     }
 
+
     private fun onValidateProfileMedia(localUrl: Uri?, url: String): UiString {
         return if (localUrl != null || url.isNotBlank()) UiString.Empty
         else UiString.Resource(R.string.the_media_can_not_be_blank)
     }
+
 
     private fun onValidateAge(value: String, min: Int): UiString {
         return when {
@@ -562,6 +597,7 @@ class ProfileViewModel
             else -> UiString.Empty
         }
     }
+
 
     private fun onValidatePhy(type: String, value: String, min: Double, max: Double): UiString {
         return when {
@@ -576,6 +612,7 @@ class ProfileViewModel
         }
     }
 
+
     fun validateDataList(
         list: SnapshotStateList<HealthProperties>,
         listName: String,
@@ -585,6 +622,7 @@ class ProfileViewModel
             else -> UiString.Empty
         }
     }
+
 
     fun onEvent(event: ProfileEvent) {
 
@@ -689,8 +727,9 @@ class ProfileViewModel
 
     }
 
+
     private fun isCreateUserProfileDirty(): Boolean {
-        return profileData.value.contact.name != name.value.value || profileData.value.contact.email != email.value.value || profileData.value.contact.url != userImg.value.url || profileData.value.contact.dob != dob.value.value || profileData.value.physique.age != age.value.value.toInt() || profileData.value.physique.weight != weight.value.value.toFloat() || profileData.value.physique.height != height.value.value.toFloat() || profileData.value.physique.pregnancyWeek != pregnancyWeek.value.value.toInt() || profileData.value.health.injurySince != injuriesSince.value.value.toInt()
+        return profileData.value.contact.name != name.value.value || profileData.value.contact.email != email.value.value || profileData.value.contact.url != userImg.value.url || profileData.value.contact.dob != dob.value.value || profileData.value.physique.age != age.value.value.toInt() || profileData.value.physique.weight != weight.value.value.toFloat() || profileData.value.physique.height != height.value.value.toFloat() || profileData.value.physique.pregnancyWeek != pregnancyWeek.value.value.toInt() || profileData.value.health.injurySince != injuriesSince.value.value.toInt() || profileData.value.contact.url != userImg.value.localUrl?.path
     }
 
 
@@ -716,11 +755,13 @@ class ProfileViewModel
         _isOnPeriodOption != null && _isPregnantOption != null && areBasicPhysiqueInputsValid
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
+
     val arePregnancyInputValid = combine(
         areFemaleInputNull, _isPregnantOption, pregnancyWeek
     ) { areFemaleInputNull, _isPregnantOption, pregnancyWeek ->
         areFemaleInputNull && _isPregnantOption == TwoToggleSelections.First && pregnancyWeek.value.isNotEmpty() && pregnancyWeek.error is UiString.Empty
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
+
 
     //Health Inputs Valid
     val areSelectedHealthOptionsNull = combine(
@@ -733,6 +774,7 @@ class ProfileViewModel
         selectedHealthHis != null && selectedInjury != null && selectedAil != null && selectedMed != null && selectedHealthTar != null
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
+
     //LifeStyle Inputs Valid
     val areLSValid = combine(
         _selectedPhyActOption,
@@ -743,6 +785,7 @@ class ProfileViewModel
         _selectedPhyActOption != null && _selectedWorkingEnvOption != null && _selectedWorkStyleOption != null && _selectedWorkingHrsOption != null
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
+
     val doAllDataInputsClear = combine(
         areDetailsInputsValid,
         arePhyInputsValid,
@@ -752,5 +795,6 @@ class ProfileViewModel
     ) { areDetailsInputsValid, arePhyInputsValid, areHealthInputsValid, areLSValid, areDietInputsValid ->
         areDetailsInputsValid && arePhyInputsValid && areHealthInputsValid && areLSValid && areDietInputsValid
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
+
 
 }

@@ -228,12 +228,10 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         if (result.resultCode == Activity.RESULT_OK) {
 
             if (authViewModel.isAuthenticated()) {
-
                 authViewModel.getUserId()?.let {
                     createProfile()
                     profileViewModel.isUserProfileAvailable(it)
                 }
-                loadAppScreen()
             }
 
         } else {
@@ -261,6 +259,8 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
                     is ProfileAvailState.Success -> {
                         if (!it.isAvailable) {
                             CreateUserProfileActivity.launch(this@MainActivity)
+                        } else {
+                            loadAppScreen()
                         }
                     }
                     ProfileAvailState.NoInternet -> {

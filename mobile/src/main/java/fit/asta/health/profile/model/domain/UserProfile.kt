@@ -1,5 +1,6 @@
 package fit.asta.health.profile.model.domain
 
+import android.net.Uri
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
@@ -23,6 +24,7 @@ data class Contact(
     @SerializedName("name") val name: String = "",
     @SerializedName("ph") val phone: String = "",
     @SerializedName("url") val url: String = "",
+    val localUrl: Uri? = null,
 ) : Parcelable
 
 
@@ -34,6 +36,7 @@ data class Address(
     @SerializedName("pin") val pin: String = "",
     @SerializedName("st") val street: String = "",
 ) : Parcelable
+
 
 @Parcelize
 data class Physique(
@@ -75,6 +78,7 @@ data class LifeStyle(
     @SerializedName("wt") var workingTime: Session = Session(),
     @SerializedName("slp") var sleep: Session = Session(), // missing in UI
 ) : Parcelable
+
 
 @Parcelize
 data class Diet(

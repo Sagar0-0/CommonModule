@@ -1,8 +1,10 @@
 package fit.asta.health.profile.di
 
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.BuildConfig
 import fit.asta.health.profile.model.ProfileDataMapper
@@ -32,7 +34,11 @@ object ProfileModule {
 
     @Singleton
     @Provides
-    fun provideProfileRepo(remoteApi: ProfileApi, recipeMapper: ProfileDataMapper): ProfileRepo {
-        return ProfileRepoImpl(remoteApi = remoteApi, mapper = recipeMapper)
+    fun provideProfileRepo(
+        @ApplicationContext context: Context,
+        remoteApi: ProfileApi,
+        recipeMapper: ProfileDataMapper,
+    ): ProfileRepo {
+        return ProfileRepoImpl(remoteApi = remoteApi, mapper = recipeMapper, context = context)
     }
 }

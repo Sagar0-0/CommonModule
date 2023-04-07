@@ -16,12 +16,14 @@ interface TestimonialApiService {
         @Query("limit") limit: Int
     ): NetTestimonialsRes
 
+
     @PUT("testimonial/put/")
     @Multipart
     suspend fun createTestimonial(
         @Part("json") netTestimonial: NetTestimonial,
         @Part files: List<MultipartBody.Part>
     ): Status
+
 
     @GET("testimonial/get/?")
     suspend fun getUserTestimonial(@Query("uid") userId: String): NetTestimonialRes
