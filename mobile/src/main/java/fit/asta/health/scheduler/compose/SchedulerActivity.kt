@@ -1,5 +1,7 @@
 package fit.asta.health.scheduler.compose
 
+import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -15,42 +17,57 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.plusAssign
-import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
-import com.google.accompanist.navigation.material.ModalBottomSheetLayout
-import com.google.accompanist.navigation.material.bottomSheet
-import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
+import com.google.accompanist.navigation.material.*
 import dagger.hilt.android.AndroidEntryPoint
+import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.scheduler.compose.components.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
+@OptIn(ExperimentalMaterialNavigationApi::class)
 @AndroidEntryPoint
 class SchedulerActivity : AppCompatActivity() {
 
     private lateinit var navController: NavHostController
 
+    private lateinit var  bottomSheetNavigator: BottomSheetNavigator
+    companion object {
+
+        fun launch(context: Context) {
+            val intent = Intent(context, SchedulerActivity::class.java)
+            intent.apply {
+                context.startActivity(this)
+            }
+        }
+    }
+
+    @OptIn(ExperimentalMaterialNavigationApi::class)
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
         setContent {
             navController = rememberNavController()
+            bottomSheetNavigator= rememberBottomSheetNavigator()
+            MainCompose(navController, bottomSheetNavigator)
         }
     }
 
 }
-
+@Composable
+fun MyApp(context: @Composable () -> Unit) {
+    AppTheme {
+        context()
+    }
+}
 
 @RequiresApi(Build.VERSION_CODES.N)
 @OptIn(ExperimentalMaterialNavigationApi::class)
 @Composable
-fun MyApp() {
-    val navController = rememberNavController()
-    val bottomSheetNavigator = rememberBottomSheetNavigator()
-    navController.navigatorProvider += bottomSheetNavigator
+fun MainCompose( navController: NavHostController, bottomSheetNavigator: BottomSheetNavigator) {
+
+    navController.navigatorProvider.addNavigator(bottomSheetNavigator)
 
     ModalBottomSheetLayout(bottomSheetNavigator = bottomSheetNavigator) {
-
         NavHost(
             navController = navController,
             startDestination = SchedulerScreen.AlarmSettingHome.route
@@ -140,5 +157,5 @@ fun MyApp() {
 @Preview
 @Composable
 fun ScreenPreview() {
-    MyApp()
+
 }

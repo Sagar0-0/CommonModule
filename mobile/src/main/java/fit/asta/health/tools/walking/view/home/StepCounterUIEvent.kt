@@ -7,6 +7,5 @@ sealed class StepCounterUIEvent {
     data class ChangeAngleDistance(val input: Float) :StepCounterUIEvent()
     object StartButtonClicked : StepCounterUIEvent()
     object StopButtonClicked : StepCounterUIEvent()
-    object PutDataButtonClicked:StepCounterUIEvent()
     object EndButtonClicked : StepCounterUIEvent()
 }

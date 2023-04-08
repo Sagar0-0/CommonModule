@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.NetworkResult
+import fit.asta.health.scheduler.compose.SchedulerActivity
 import fit.asta.health.tools.walking.db.StepsData
 import fit.asta.health.tools.walking.model.LocalRepo
 import fit.asta.health.tools.walking.model.WalkingToolRepo
@@ -134,12 +135,10 @@ class WalkingViewModel
                 changeTime()
                 startWorking.value = true
                 _homeUiState.value = _homeUiState.value.copy(start = true)
+                checkPutDataIsRecommend()
             }
             is StepCounterUIEvent.StopButtonClicked -> {
                 endScreen()
-            }
-            is StepCounterUIEvent.PutDataButtonClicked -> {
-                checkPutDataIsRecommend()
             }
             is StepCounterUIEvent.EndButtonClicked -> {
                 startWorking.value = false
@@ -241,6 +240,9 @@ class WalkingViewModel
         }
     }
 
+    fun startSchedulerActivity(context: Context)  {
+        SchedulerActivity.launch(context =context)
+    }
 
     fun startService(context: Context) {
         if (serviceIntent == null) {
@@ -250,8 +252,8 @@ class WalkingViewModel
     }
 
     fun stopService(context: Context) {
-            serviceIntent = Intent(context, CountStepsService::class.java)
-            context.stopService(serviceIntent!!)
+        serviceIntent = Intent(context, CountStepsService::class.java)
+        context.stopService(serviceIntent!!)
     }
 
     fun changeUi(data: HomeUIState) {

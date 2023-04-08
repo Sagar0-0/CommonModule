@@ -28,9 +28,7 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
     var postNotificationAlarmEntity: AlarmEntity? = null
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        if (Intent.ACTION_BOOT_COMPLETED.equals(intent!!.action) || Intent.ACTION_LOCKED_BOOT_COMPLETED.equals(
-                intent.action
-            )
+        if (Intent.ACTION_BOOT_COMPLETED == intent!!.action || Intent.ACTION_LOCKED_BOOT_COMPLETED == intent.action
         ) {
             val toastText = String.format("Alarm Reboot")
             Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()

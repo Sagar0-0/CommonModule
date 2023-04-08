@@ -4,8 +4,12 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.common.utils.NetworkResult
+import fit.asta.health.scheduler.compose.screen.UiState
+import fit.asta.health.scheduler.model.AlarmBackendRepo
 import fit.asta.health.scheduler.model.db.AlarmRepository
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerDeleteResponse
@@ -15,7 +19,8 @@ import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerPutResponse
 import fit.asta.health.scheduler.model.net.tag.AstaGetTagsListResponse
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.TAG
-import fit.asta.health.common.utils.NetworkResult
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
@@ -23,9 +28,21 @@ import javax.inject.Inject
 @HiltViewModel
 class SchedulerBackendViewModel @Inject constructor(
     private val repository: AlarmRepository,
+    private val backendRepo:AlarmBackendRepo,
+    private val savedStateHandle: SavedStateHandle,
     application: Application
 ) : AndroidViewModel(application) {
 
+
+    lateinit var state: StateFlow<UiState>
+
+    init {
+        viewModelScope.launch {
+            state = savedStateHandle.getStateFlow(loginScreenStateKey, UiState()).stateIn(
+                scope = viewModelScope
+            )
+        }
+    }
     val lisOfSchedules: MutableLiveData<NetworkResult<AstaSchedulerGetListResponse>> =
         MutableLiveData()
 
@@ -175,5 +192,8 @@ class SchedulerBackendViewModel @Inject constructor(
                 data = response.body()
             )
         }
+    }
+    companion object {
+        const val loginScreenStateKey = "loginScreenState"
     }
 }

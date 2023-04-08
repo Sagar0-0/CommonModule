@@ -232,7 +232,7 @@ data class AlarmEntity(
         val alarmPendingIntent =
             PendingIntent.getBroadcast(
                 context, this.alarmId, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_UPDATE_CURRENT,
             )
 
         val calendar = Calendar.getInstance()
