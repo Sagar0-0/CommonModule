@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
@@ -23,16 +24,17 @@ import fit.asta.health.scheduler.compose.components.RepeatAlarm
 
 
 @RequiresApi(Build.VERSION_CODES.N)
+@Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlarmSettingLayout(
-    onNavigateToTag: (() -> Unit)?,
-    onNavigateToLabel: (() -> Unit)?,
-    onNavigateToDesc: (() -> Unit)?,
-    onNavigateToIntervalSettings: (() -> Unit)?,
-    onNavigateToReminderMode: (() -> Unit)?,
-    onNavigateToVibration: (() -> Unit)?,
-    onNavigateToSound: (() -> Unit)?,
+    onNavigateToTag: (() -> Unit)?={},
+    onNavigateToLabel: (() -> Unit)?={},
+    onNavigateToDesc: (() -> Unit)?={},
+    onNavigateToIntervalSettings: (() -> Unit)?={},
+    onNavigateToReminderMode: (() -> Unit)?={},
+    onNavigateToVibration: (() -> Unit)?={},
+    onNavigateToSound: (() -> Unit)?={},
 ) {
     Scaffold(topBar = {
         BottomNavigation(content = {

@@ -215,6 +215,7 @@ fun WalkingBottomSheetView(
     val selectedGoal by homeViewModel.selectedGoal.collectAsState(emptyList())
     val selectedWalkTypes by homeViewModel.selectedWalkTypes.collectAsState("")
     val activity = LocalContext.current as Activity
+    val context =LocalContext.current
     Column(
         modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(spacing.medium)
@@ -271,7 +272,7 @@ fun WalkingBottomSheetView(
             ButtonWithColor(
                 modifier = Modifier.weight(0.5f), color = Color.Green, text = "SCHEDULE"
             ) {
-                homeViewModel.startSchedulerActivity(context = activity)
+                homeViewModel.startSchedulerActivity(context = context)
             }
             ButtonWithColor(
                 modifier = Modifier.weight(0.5f),

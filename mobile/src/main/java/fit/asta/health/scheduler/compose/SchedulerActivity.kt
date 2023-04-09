@@ -4,10 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.PersistableBundle
+import android.util.Log
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
@@ -21,19 +21,18 @@ import com.google.accompanist.navigation.material.*
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.scheduler.compose.components.*
+import fit.asta.health.scheduler.navigation.SchedulerNavigation
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
-@OptIn(ExperimentalMaterialNavigationApi::class)
 @AndroidEntryPoint
-class SchedulerActivity : AppCompatActivity() {
+class SchedulerActivity : ComponentActivity() {
 
-    private lateinit var navController: NavHostController
 
-    private lateinit var  bottomSheetNavigator: BottomSheetNavigator
     companion object {
 
         fun launch(context: Context) {
+            Log.d("sj", "launch: Start ${context}")
             val intent = Intent(context, SchedulerActivity::class.java)
             intent.apply {
                 context.startActivity(this)
@@ -41,18 +40,21 @@ class SchedulerActivity : AppCompatActivity() {
         }
     }
 
-    @OptIn(ExperimentalMaterialNavigationApi::class)
-    @RequiresApi(Build.VERSION_CODES.N)
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContent {
-            navController = rememberNavController()
-            bottomSheetNavigator= rememberBottomSheetNavigator()
-            MainCompose(navController, bottomSheetNavigator)
+            MyApp {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    SchedulerNavigation(
+                        navController = rememberNavController()
+                    )
+                }
+            }
         }
     }
 
 }
+
 @Composable
 fun MyApp(context: @Composable () -> Unit) {
     AppTheme {
@@ -63,7 +65,7 @@ fun MyApp(context: @Composable () -> Unit) {
 @RequiresApi(Build.VERSION_CODES.N)
 @OptIn(ExperimentalMaterialNavigationApi::class)
 @Composable
-fun MainCompose( navController: NavHostController, bottomSheetNavigator: BottomSheetNavigator) {
+fun MainCompose(navController: NavHostController, bottomSheetNavigator: BottomSheetNavigator) {
 
     navController.navigatorProvider.addNavigator(bottomSheetNavigator)
 

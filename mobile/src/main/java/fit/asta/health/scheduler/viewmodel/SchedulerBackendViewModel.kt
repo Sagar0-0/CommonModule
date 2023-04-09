@@ -20,7 +20,6 @@ import fit.asta.health.scheduler.model.net.tag.AstaGetTagsListResponse
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.TAG
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
@@ -33,15 +32,14 @@ class SchedulerBackendViewModel @Inject constructor(
     application: Application
 ) : AndroidViewModel(application) {
 
-
     lateinit var state: StateFlow<UiState>
 
     init {
-        viewModelScope.launch {
-            state = savedStateHandle.getStateFlow(loginScreenStateKey, UiState()).stateIn(
-                scope = viewModelScope
-            )
-        }
+//        viewModelScope.launch {
+//            state = savedStateHandle.getStateFlow(loginScreenStateKey, UiState()).stateIn(
+//                scope = viewModelScope
+//            )
+//        }
     }
     val lisOfSchedules: MutableLiveData<NetworkResult<AstaSchedulerGetListResponse>> =
         MutableLiveData()
