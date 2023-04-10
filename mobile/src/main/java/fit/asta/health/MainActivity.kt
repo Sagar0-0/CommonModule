@@ -42,6 +42,7 @@ import fit.asta.health.profile.CreateUserProfileActivity
 import fit.asta.health.profile.UserProfileActivity
 import fit.asta.health.profile.viewmodel.ProfileAvailState
 import fit.asta.health.profile.viewmodel.ProfileAvailViewModel
+import fit.asta.health.profile.viewmodel.ProfileViewModel
 import fit.asta.health.settings.SettingsActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
@@ -59,7 +60,8 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         private const val REQUEST_IMMEDIATE_UPDATE: Int = 1789
     }
 
-    private val profileViewModel: ProfileAvailViewModel by viewModels()
+    private val profileAvailViewModel: ProfileAvailViewModel by viewModels()
+    private val profileViewModel: ProfileViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
     private var settingsLauncher: ActivityResultLauncher<Intent>? = null
     private lateinit var networkConnectivity: NetworkConnectivity
@@ -91,7 +93,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         } else {
             /*authViewModel.getUserId()?.let {
                 createProfile()
-                profileViewModel.isUserProfileAvailable(it)
+                profileAvailViewModel.isUserProfileAvailable(it)
             }*/
 
             loadAppScreen()
@@ -117,7 +119,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         FirebaseAuth.getInstance().addIdTokenListener(this)
     }
 
-    private fun loadAppScreen() {
+    fun loadAppScreen() {
 
         applicationContext.setAppTheme()
         setContentView(R.layout.main_activity)
@@ -127,15 +129,14 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         registerConnectivityReceiver()
         bottomNavBar()
         showUserImage()
+
     }
 
     private fun bottomNavBar() {
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home,
-                R.id.navigation_today,
-                R.id.navigation_track
+                R.id.navigation_home, R.id.navigation_today, R.id.navigation_track
             )
         )
 
@@ -198,22 +199,18 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
                 this.onSignInResult(res)
             }
 
-        val signInIntent = AuthUI.getInstance()
-            .createSignInIntentBuilder()
-            .setIsSmartLockEnabled(false)
-            .setAvailableProviders(
-                arrayListOf(
-                    AuthUI.IdpConfig.PhoneBuilder().build(),
-                    AuthUI.IdpConfig.GoogleBuilder().build()
-                )
-            )
-            .setLogo(R.mipmap.ic_launcher_foreground)
-            .setTheme(R.style.LoginTheme)
-            .setTosAndPrivacyPolicyUrls(
-                getPublicStorageUrl(this, resources.getString(R.string.url_terms_of_use)),
-                getPublicStorageUrl(this, resources.getString(R.string.url_privacy_policy))
-            )
-            .build()
+        val signInIntent =
+            AuthUI.getInstance().createSignInIntentBuilder().setIsSmartLockEnabled(false)
+                .setAvailableProviders(
+                    arrayListOf(
+                        AuthUI.IdpConfig.PhoneBuilder().build(),
+                        AuthUI.IdpConfig.GoogleBuilder().build()
+                    )
+                ).setLogo(R.mipmap.ic_launcher_foreground).setTheme(R.style.LoginTheme)
+                .setTosAndPrivacyPolicyUrls(
+                    getPublicStorageUrl(this, resources.getString(R.string.url_terms_of_use)),
+                    getPublicStorageUrl(this, resources.getString(R.string.url_privacy_policy))
+                ).build()
 
         signInLauncher.launch(signInIntent)
     }
@@ -230,7 +227,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
             if (authViewModel.isAuthenticated()) {
                 authViewModel.getUserId()?.let {
                     createProfile()
-                    profileViewModel.isUserProfileAvailable(it)
+                    profileAvailViewModel.isUserProfileAvailable(it)
                 }
             }
 
@@ -243,12 +240,13 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
                 Log.d("Error: ", response.error?.toString()!!)
             }
         }
+
     }
 
     private fun createProfile() {
 
         lifecycleScope.launchWhenStarted {
-            profileViewModel.state.collectLatest {
+            profileAvailViewModel.state.collectLatest {
                 when (it) {
                     ProfileAvailState.Loading -> {
                         //Do nothing
@@ -257,10 +255,10 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
                         //Error Handling
                     }
                     is ProfileAvailState.Success -> {
-                        if (!it.isAvailable) {
-                            CreateUserProfileActivity.launch(this@MainActivity)
-                        } else {
+                        if (it.isAvailable) {
                             loadAppScreen()
+                        } else {
+                            CreateUserProfileActivity.launch(this@MainActivity)
                         }
                     }
                     ProfileAvailState.NoInternet -> {
@@ -304,8 +302,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
                         appUpdateInfo,
                         this,
                         AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE)
-                            .setAllowAssetPackDeletion(true)
-                            .build(),
+                            .setAllowAssetPackDeletion(true).build(),
                         REQUEST_IMMEDIATE_UPDATE
                     )
                 } else if (appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
@@ -314,8 +311,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
                         appUpdateInfo,
                         this,
                         AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE)
-                            .setAllowAssetPackDeletion(true)
-                            .build(),
+                            .setAllowAssetPackDeletion(true).build(),
                         REQUEST_FLEXIBLE_UPDATE
                     )
                 }
@@ -325,8 +321,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
                     appUpdateInfo,
                     this,
                     AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE)
-                        .setAllowAssetPackDeletion(true)
-                        .build(),
+                        .setAllowAssetPackDeletion(true).build(),
                     REQUEST_IMMEDIATE_UPDATE
                 )
             }

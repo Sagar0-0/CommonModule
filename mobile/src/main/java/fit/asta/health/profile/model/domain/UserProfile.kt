@@ -3,6 +3,7 @@ package fit.asta.health.profile.model.domain
 import android.net.Uri
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import fit.asta.health.testimonials.model.domain.Media
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -23,7 +24,7 @@ data class Contact(
     @SerializedName("mail") val email: String = "",
     @SerializedName("name") val name: String = "",
     @SerializedName("ph") val phone: String = "",
-    @SerializedName("url") val url: String = "",
+    @SerializedName("url") val url: Media = Media(),
     val localUrl: Uri? = null,
 ) : Parcelable
 

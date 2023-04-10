@@ -255,6 +255,7 @@ fun HealthContent(
 
 }
 
+
 @OptIn(ExperimentalMaterialApi::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun HealthCreateScreen(
@@ -297,7 +298,7 @@ fun HealthCreateScreen(
             Spacer(modifier = Modifier.height(1.dp))
             currentBottomSheet?.let {
                 HealthCreateBtmSheetLayout(
-                    sheetLayout = it, closeSheet = { closeSheet() }, viewModel = viewModel
+                    sheetLayout = it, sheetState = { closeSheet() }, viewModel = viewModel
                 )
             }
         }) {
@@ -345,15 +346,17 @@ fun HealthCreateScreen(
 
 }
 
+
 enum class HealthCreateBottomSheetTypes {
     HEALTHHISTORY, INJURIES, AILMENTS, MEDICATIONS, HEALTHTARGETS, BODYPARTS, ADDICTION
 }
+
 
 @Composable
 fun HealthCreateBtmSheetLayout(
     viewModel: ProfileViewModel = hiltViewModel(),
     sheetLayout: HealthCreateBottomSheetTypes,
-    closeSheet: () -> Unit,
+    sheetState: () -> Unit,
 ) {
 
     when (sheetLayout) {

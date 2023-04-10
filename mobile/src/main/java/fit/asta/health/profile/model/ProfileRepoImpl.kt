@@ -26,11 +26,11 @@ class ProfileRepoImpl(
     override suspend fun updateUserProfile(userProfile: UserProfile): Flow<Status> {
 
         val parts: ArrayList<MultipartBody.Part> = ArrayList()
-        if (userProfile.contact.localUrl != null) {
+        if (userProfile.contact.url.localUrl != null) {
             parts.add(
                 MultipartBody.Part.createFormData(
-                    name = "userProfilePic", body = InputStreamRequestBody(
-                        context.contentResolver, userProfile.contact.localUrl
+                    name = "file", body = InputStreamRequestBody(
+                        context.contentResolver, userProfile.contact.url.localUrl!!
                     ), filename = userProfile.uid
                 )
             )

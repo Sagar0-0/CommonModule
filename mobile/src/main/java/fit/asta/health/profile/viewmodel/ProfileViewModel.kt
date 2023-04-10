@@ -55,8 +55,7 @@ class ProfileViewModel
     val state = mutableState.asStateFlow()
 
 
-    private val mutableCreateState =
-        MutableStateFlow<ProfileCreateState>(ProfileCreateState.Loading)
+    private val mutableCreateState = MutableStateFlow<ProfileAvailState>(ProfileAvailState.Loading)
     val createState = mutableCreateState.asStateFlow()
 
 
@@ -448,7 +447,7 @@ class ProfileViewModel
                         dob = dob.value.value,
                         email = email.value.value.trim(),
                         name = name.value.value.trim(),
-                        url = userImg.value.url,
+                        url = userImg.value,
                         localUrl = userImg.value.localUrl
                     ), physique = Physique(
                         weight = weight.value.value.toFloat(),
@@ -729,7 +728,7 @@ class ProfileViewModel
 
 
     private fun isCreateUserProfileDirty(): Boolean {
-        return profileData.value.contact.name != name.value.value || profileData.value.contact.email != email.value.value || profileData.value.contact.url != userImg.value.url || profileData.value.contact.dob != dob.value.value || profileData.value.physique.age != age.value.value.toInt() || profileData.value.physique.weight != weight.value.value.toFloat() || profileData.value.physique.height != height.value.value.toFloat() || profileData.value.physique.pregnancyWeek != pregnancyWeek.value.value.toInt() || profileData.value.health.injurySince != injuriesSince.value.value.toInt() || profileData.value.contact.url != userImg.value.localUrl?.path
+        return profileData.value.contact.name != name.value.value || profileData.value.contact.email != email.value.value || profileData.value.contact.dob != dob.value.value || profileData.value.physique.age != age.value.value.toInt() || profileData.value.physique.weight != weight.value.value.toFloat() || profileData.value.physique.height != height.value.value.toFloat() || profileData.value.physique.pregnancyWeek != pregnancyWeek.value.value.toInt() || profileData.value.health.injurySince != injuriesSince.value.value.toInt() // || profileData.value.contact.url != userImg.value.url  || profileData.value.contact.url != userImg.value.localUrl?.path
     }
 
 

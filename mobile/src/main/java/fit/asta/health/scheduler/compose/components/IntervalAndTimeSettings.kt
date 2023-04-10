@@ -36,7 +36,6 @@ data class CustomInterval(
 )
 
 @Preview
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IntervalTimeLayout(
     onNavigateBack: () -> Unit = {},
