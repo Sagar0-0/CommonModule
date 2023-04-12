@@ -346,7 +346,6 @@ class ProfileViewModel
 
     private val profileData = savedState.getStateFlow(PROFILE_DATA, UserProfile())
 
-
     //Details
     val name = savedState.getStateFlow(NAME, InputWrapper())
     val email = savedState.getStateFlow(EMAIL, InputWrapper())

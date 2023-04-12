@@ -246,10 +246,6 @@ fun HealthContent(
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
-
-            SkipPage(onSkipEvent = onSkipEvent)
-
-            Spacer(modifier = Modifier.height(spacing.medium))
         }
     }
 

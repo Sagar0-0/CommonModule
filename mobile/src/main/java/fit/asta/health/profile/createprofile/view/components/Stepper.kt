@@ -29,15 +29,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import fit.asta.health.MainActivity
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.viewmodel.ProfileViewModel
+import fit.asta.health.testimonials.view.create.CustomDialogWithResultExample
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,12 +49,18 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
 
     /* TODO Paddings, Font, Elevations (4dp and 6dp), BottomSheets, Colors */
 
+    val context = LocalContext.current
+
     //ValidInputs
     val isDetailValid by viewModel.areDetailsInputsValid.collectAsStateWithLifecycle()
     val isPhyValid by viewModel.phyInputsValid.collectAsStateWithLifecycle()
     val isHealthValid by viewModel.healthInputsValid.collectAsStateWithLifecycle()
     val isLSValid by viewModel.areLSValid.collectAsStateWithLifecycle()
     val isDietValid by viewModel.dietInputsValid.collectAsStateWithLifecycle()
+
+    //Custom Dialog
+    var showCustomDialogWithResult by remember { mutableStateOf(false) }
+
 
     val numberOfSteps = 5
 
@@ -125,12 +134,12 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
                 navigationIcon = {
                     IconButton(
                         onClick = {
-                            currentStep -= 1
+                            showCustomDialogWithResult = !showCustomDialogWithResult
                         },
                     ) {
                         Icon(
                             Icons.Filled.Close,
-                            contentDescription = "back",
+                            contentDescription = "close",
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
@@ -233,6 +242,26 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
                 }
             }
         }
+
+        if (showCustomDialogWithResult) {
+            CustomDialogWithResultExample(
+                onDismiss = {
+                    showCustomDialogWithResult = !showCustomDialogWithResult
+                },
+                onNegativeClick = {
+                    (context as MainActivity).loadAppScreen()
+                },
+                onPositiveClick = {
+                    showCustomDialogWithResult = !showCustomDialogWithResult
+                },
+                btnTitle = "Discard Profile Creation",
+                btnWarn = "You will miss important FUTURE UPDATES like CUSTOM PLANS based on your PROFILE." + "CLICK Cancel to complete your PROFILE",
+                btn1Title = "Discard Profile Creation and Move to Home Screen",
+                btn2Title = "Cancel And Continue to Create Profile"
+            )
+        }
+
+
     }, containerColor = MaterialTheme.colorScheme.background)
 
 }

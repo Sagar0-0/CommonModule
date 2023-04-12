@@ -150,10 +150,6 @@ fun DetailsContent(
                 enableButton = areInputsValid
             )
 
-            Spacer(modifier = Modifier.height(spacing.small))
-
-            SkipPage(onSkipEvent)
-
             Spacer(modifier = Modifier.height(spacing.medium))
         }
     }

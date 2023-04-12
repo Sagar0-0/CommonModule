@@ -14,18 +14,20 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.profile.model.domain.UserProfile
 import fit.asta.health.profile.view.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun ProfileReadyScreen(userProfile: UserProfile) {
 
     var content by remember { mutableStateOf(1) }
 
-    val checkedState = remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     Scaffold(topBar = {
         Column {
@@ -38,9 +40,7 @@ fun ProfileReadyScreen(userProfile: UserProfile) {
                 }
 
             }, actions = {
-                IconToggleButton(checked = checkedState.value, onCheckedChange = {
-                    checkedState.value = !checkedState.value
-                }) {
+                IconButton(onClick = { CreateUserProfileActivity.launch(context) }) {
                     Icon(
                         imageVector = Icons.Filled.Edit,
                         contentDescription = null,
