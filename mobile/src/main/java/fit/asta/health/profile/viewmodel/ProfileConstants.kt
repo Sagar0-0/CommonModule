@@ -16,6 +16,7 @@ object ProfileConstants {
     const val HEIGHT = "height"
     const val IS_PREGNANT = "isPregnant"
     const val PREGNANCY_WEEK = "pregnancyWeek"
+    const val BMI = "bmi"
 
     const val INJURIES_SINCE = "injuries_since"
 

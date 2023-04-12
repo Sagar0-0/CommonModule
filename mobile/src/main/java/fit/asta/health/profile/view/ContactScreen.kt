@@ -46,10 +46,7 @@ fun ContactScreen(
             }
         }) {
 
-        ContactLayout(mainProfile = mainProfile, checkedState = checkedState, onClick = {
-            currentBottomSheet = BottomSheetType.TYPE1
-            openSheet()
-        })
+        ContactLayout(basicDetails = mainProfile)
 
     }
 
@@ -62,11 +59,14 @@ enum class BottomSheetType {
 @Composable
 fun Screen1(closeSheet: () -> Unit) {
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.White)) {
-        Column(modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Spacer(modifier = Modifier.height(100.dp))
             Text(text = "Bottom sheet type 1")
             Spacer(modifier = Modifier.height(16.dp))
@@ -81,11 +81,14 @@ fun Screen1(closeSheet: () -> Unit) {
 
 @Composable
 fun Screen2(closeSheet: () -> Unit) {
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .background(Color.White)) {
-        Column(modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White)
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Spacer(modifier = Modifier.height(100.dp))
             Text(text = "Bottom sheet type 2")
             Spacer(modifier = Modifier.height(16.dp))
@@ -99,11 +102,14 @@ fun Screen2(closeSheet: () -> Unit) {
 
 @Composable
 fun Screen3(closeSheet: () -> Unit) {
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .background(Color.White)) {
-        Column(modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White)
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Spacer(modifier = Modifier.height(100.dp))
             Text(text = "Bottom sheet type 2")
             Spacer(modifier = Modifier.height(16.dp))

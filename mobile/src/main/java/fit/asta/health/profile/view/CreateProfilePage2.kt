@@ -105,7 +105,9 @@ fun SelectionCardCreateProfile(
                         modifier = Modifier.padding(start = spacing.medium),
                     ) {
                         cardList.forEach {
-                            RemoveChipOnCard(textOnChip = it.name,
+                            RemoveChipOnCard(
+                                textOnChip = it.name,
+                                isEnabled = true,
                                 checkedState = checkedState,
                                 onClick = {
                                     cardIndex?.let { index ->
@@ -189,7 +191,7 @@ fun OnlyChipSelectionCard(
                                 item = it, index = index, composeIndex = composeIndex
                             )
                         }?.let { event -> viewModel.onEvent(event) }
-                    })
+                    }, isEnabled = true)
                 }
             }
 

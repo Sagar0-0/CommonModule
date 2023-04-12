@@ -20,7 +20,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun HealthScreen(
     health: Health,
-    editState: MutableState<Boolean>,
 ) {
 
     var currentBottomSheet: HealthBottomSheetType? by remember {
@@ -62,16 +61,7 @@ fun HealthScreen(
         sheetShape = MaterialTheme.shapes.medium
     ) {
 
-        HealthLayout(health = health, editState = editState, onAilments = {
-            currentBottomSheet = AILMENTS
-            openSheet()
-        }, onMedications = {
-            currentBottomSheet = MEDICATIONS
-            openSheet()
-        }, onHealthTargets = {
-            currentBottomSheet = HEALTHTARGETS
-            openSheet()
-        })
+        HealthLayout(health = health)
 
     }
 

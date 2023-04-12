@@ -5,9 +5,7 @@ import fit.asta.health.R
 
 enum class ProfileItemType(val value: Int) {
 
-    SessionCard(1),
-    PlainCard(2),
-    ChipsCard(3);
+    SessionCard(1), PlainCard(2), ChipsCard(3);
 
     companion object {
         fun valueOf(value: Int) = values().first { it.value == value }
@@ -20,8 +18,62 @@ sealed class UserPropertyType(
     val name: String,
     val title: String,
     val type: ProfileItemType,
-    @DrawableRes val icon: Int
+    @DrawableRes val icon: Int,
 ) {
+
+    //Health Section
+    object SignificantHealthHis : UserPropertyType(
+        name = "significanthealthhis",
+        type = ProfileItemType.ChipsCard,
+        title = "SIGNIFICANT HEALTH HISTORY",
+        icon = R.drawable.ailements
+    )
+
+    object Injuries : UserPropertyType(
+        name = "injuries",
+        type = ProfileItemType.ChipsCard,
+        title = "INJURIES",
+        icon = R.drawable.targets
+    )
+
+    object BodyParts : UserPropertyType(
+        name = "bodyParts",
+        type = ProfileItemType.ChipsCard,
+        title = "BODY PARTS",
+        icon = R.drawable.targets
+    )
+
+
+    object Ailments : UserPropertyType(
+        name = "ailments",
+        type = ProfileItemType.ChipsCard,
+        title = "AILMENTS",
+        icon = R.drawable.ailements
+    )
+
+    object Medications : UserPropertyType(
+        name = "medications",
+        type = ProfileItemType.ChipsCard,
+        title = "MEDICATIONS",
+        icon = R.drawable.medications
+    )
+
+
+    object HealthTargets : UserPropertyType(
+        name = "health-lifeStyleTargets",
+        type = ProfileItemType.ChipsCard,
+        title = "HEALTH TARGETS",
+        icon = R.drawable.targets
+    )
+
+    object Addictions : UserPropertyType(
+        name = "addictions",
+        type = ProfileItemType.ChipsCard,
+        title = "ADDICTIONS",
+        icon = R.drawable.targets
+    )
+
+    //LifeStyle Section
 
     object SleepSchedule : UserPropertyType(
         name = "sleep-schedule",
@@ -37,6 +89,20 @@ sealed class UserPropertyType(
         icon = R.drawable.ic_sunny
     )
 
+    object PhysActive : UserPropertyType(
+        name = "physically-active",
+        type = ProfileItemType.ChipsCard,
+        title = "PHYSICALLY ACTIVE",
+        icon = R.drawable.indoorwork
+    )
+
+    object WorkingEnv : UserPropertyType(
+        name = "working-env",
+        type = ProfileItemType.ChipsCard,
+        title = "WORKING ENVIRONMENT",
+        icon = R.drawable.indoorwork
+    )
+
     object WorkStyle : UserPropertyType(
         name = "work-style",
         type = ProfileItemType.PlainCard,
@@ -44,10 +110,10 @@ sealed class UserPropertyType(
         icon = R.drawable.indoorwork
     )
 
-    object PhysActive : UserPropertyType(
-        name = "physically-active",
-        type = ProfileItemType.ChipsCard,
-        title = "PHYSICALLY ACTIVE",
+    object WorkingHours : UserPropertyType(
+        name = "work-hours",
+        type = ProfileItemType.PlainCard,
+        title = "WORKING HOURS",
         icon = R.drawable.indoorwork
     )
 
@@ -72,33 +138,7 @@ sealed class UserPropertyType(
         icon = R.drawable.targets
     )
 
-    object Ailments : UserPropertyType(
-        name = "ailments",
-        type = ProfileItemType.ChipsCard,
-        title = "AILMENTS",
-        icon = R.drawable.ailements
-    )
-
-    object Medications : UserPropertyType(
-        name = "medications",
-        type = ProfileItemType.ChipsCard,
-        title = "MEDICATIONS",
-        icon = R.drawable.medications
-    )
-
-    object Injuries : UserPropertyType(
-        name = "injuries",
-        type = ProfileItemType.ChipsCard,
-        title = "INJURIES",
-        icon = R.drawable.targets
-    )
-
-    object HealthTargets : UserPropertyType(
-        name = "health-lifeStyleTargets",
-        type = ProfileItemType.ChipsCard,
-        title = "HEALTH TARGETS",
-        icon = R.drawable.targets
-    )
+    //Diet Section
 
     object DietPref : UserPropertyType(
         name = "dietary-preferences",
@@ -114,18 +154,18 @@ sealed class UserPropertyType(
         icon = R.drawable.nonveg
     )
 
-    object Cuisines : UserPropertyType(
-        name = "cuisines",
-        type = ProfileItemType.ChipsCard,
-        title = "CUISINES",
-        icon = R.drawable.cuisine
-    )
-
     object FoodAllergies : UserPropertyType(
         name = "food-allergies",
         type = ProfileItemType.ChipsCard,
         title = "FOOD ALLERGIES",
         icon = R.drawable.foodrestrictions
+    )
+
+    object Cuisines : UserPropertyType(
+        name = "cuisines",
+        type = ProfileItemType.ChipsCard,
+        title = "CUISINES",
+        icon = R.drawable.cuisine
     )
 
     object FoodRestrictions : UserPropertyType(
@@ -136,10 +176,7 @@ sealed class UserPropertyType(
     )
 
     object NONE : UserPropertyType(
-        name = "",
-        type = ProfileItemType.PlainCard,
-        title = "",
-        icon = 0
+        name = "", type = ProfileItemType.PlainCard, title = "", icon = 0
     )
 
     companion object {

@@ -226,7 +226,8 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
             if (authViewModel.isAuthenticated()) {
                 authViewModel.getUserId()?.let {
-                    createProfile()
+
+                createProfile()
                     profileAvailViewModel.isUserProfileAvailable(it)
                 }
             }

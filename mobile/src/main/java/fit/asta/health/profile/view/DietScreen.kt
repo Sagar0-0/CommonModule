@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun DietScreen(
     diet: Diet,
-    editState: MutableState<Boolean>,
 ) {
 
     var currentBottomSheet: DietBottomSheetType? by remember {
@@ -46,16 +45,7 @@ fun DietScreen(
             }
         }) {
 
-        DietLayout(diet = diet, editState = editState, onFoodAllergies = {
-            currentBottomSheet = FOODALLERGIES
-            openSheet()
-        }, onCuisines = {
-            currentBottomSheet = CUISINES
-            openSheet()
-        }, onFoodRes = {
-            currentBottomSheet = FOODRES
-            openSheet()
-        })
+        DietLayout(diet = diet)
 
     }
 

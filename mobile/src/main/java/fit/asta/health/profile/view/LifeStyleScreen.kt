@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun LifeStyleScreen(
     lifeStyle: LifeStyle,
-    editState: MutableState<Boolean>,
 ) {
 
     var currentBottomSheet: LifeStyleBottomSheetType? by remember {
@@ -46,28 +45,7 @@ fun LifeStyleScreen(
             }
         }) {
 
-        LifeStyleLayout(lifeStyle = lifeStyle, editState = editState, onSleepSchedule = {
-            currentBottomSheet = SLEEPSCHEDULE
-            openSheet()
-        }, onWorkStyle = {
-            currentBottomSheet = WORKSTYLE
-            openSheet()
-        }, onWorkSchedule = {
-            currentBottomSheet = WORKSCHEDULE
-            openSheet()
-        }, onPhysicallyActive = {
-            currentBottomSheet = PHYSICALLYACTIVE
-            openSheet()
-        }, onCurrentActive = {
-            currentBottomSheet = CURRENTACTIVITIES
-            openSheet()
-        }, onPreferredActivity = {
-            currentBottomSheet = PREFERREDACTIVITIES
-            openSheet()
-        }, onLifeStyleTargets = {
-            currentBottomSheet = LIFESTYLETARGETS
-            openSheet()
-        })
+        LifeStyleLayout(lifeStyle = lifeStyle)
     }
 
 }

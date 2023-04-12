@@ -14,6 +14,7 @@ import fit.asta.health.network.NetworkHelper
 import fit.asta.health.profile.model.ProfileRepo
 import fit.asta.health.profile.model.domain.*
 import fit.asta.health.profile.viewmodel.ProfileConstants.AGE
+import fit.asta.health.profile.viewmodel.ProfileConstants.BMI
 import fit.asta.health.profile.viewmodel.ProfileConstants.BODY_TYPE
 import fit.asta.health.profile.viewmodel.ProfileConstants.DOB
 import fit.asta.health.profile.viewmodel.ProfileConstants.EMAIL
@@ -26,7 +27,6 @@ import fit.asta.health.profile.viewmodel.ProfileConstants.USER_IMG
 import fit.asta.health.profile.viewmodel.ProfileConstants.WEIGHT
 import fit.asta.health.testimonials.model.domain.InputIntWrapper
 import fit.asta.health.testimonials.model.domain.InputWrapper
-import fit.asta.health.testimonials.model.domain.Media
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -353,7 +353,7 @@ class ProfileViewModel
 
 
     val userImg = savedState.getStateFlow(
-        USER_IMG, Media(name = "user_img", title = "User Profile Image")
+        USER_IMG, ProfileMedia(name = "user_img", title = "User Profile Image")
     )
 
 
@@ -364,6 +364,7 @@ class ProfileViewModel
     val height = savedState.getStateFlow(HEIGHT, InputWrapper())
     val pregnancyWeek = savedState.getStateFlow(PREGNANCY_WEEK, InputWrapper())
     private val bodyType = savedState.getStateFlow(BODY_TYPE, InputIntWrapper())
+    val bmi = savedState.getStateFlow(BMI, InputWrapper())
 
 
     //Health
@@ -371,7 +372,7 @@ class ProfileViewModel
 
 
     init {
-
+        loadUserProfile()
     }
 
 
@@ -470,7 +471,11 @@ class ProfileViewModel
                             else -> {
                                 false
                             }
-                        }
+                        },
+                        bmi = userBMI(
+                            userWeight = weight.value.value.toFloat(),
+                            userHeight = height.value.value.toFloat()
+                        )
                     ), health = Health(
                         healthHistory = convertHealthArrayList(0),
                         injuries = convertHealthArrayList(1),
@@ -611,6 +616,9 @@ class ProfileViewModel
         }
     }
 
+    private fun userBMI(userWeight: Float, userHeight: Float): Float {
+        return ((userWeight / (userHeight * userHeight)) * 10000)
+    }
 
     fun validateDataList(
         list: SnapshotStateList<HealthProperties>,
@@ -785,7 +793,7 @@ class ProfileViewModel
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
 
-    val doAllDataInputsClear = combine(
+    val doAllDataInputsValid = combine(
         areDetailsInputsValid,
         arePhyInputsValid,
         areHealthInputsValid,

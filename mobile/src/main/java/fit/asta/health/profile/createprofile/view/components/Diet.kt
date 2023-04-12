@@ -13,9 +13,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import fit.asta.health.MainActivity
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.navigation.home.view.component.NoInternetLayout
@@ -41,6 +43,8 @@ fun DietContent(
     onDietaryPref: () -> Unit,
 ) {
 
+    val context = LocalContext.current
+
     val checkedState = remember { mutableStateOf(true) }
 
     val dietList by viewModel.dpData.collectAsState()
@@ -51,7 +55,7 @@ fun DietContent(
     var buttonClicked by remember { mutableStateOf(false) }
 
     val selectedFoodRes by viewModel.selectedFoodResOption.collectAsStateWithLifecycle()
-    val doAllInputsClear by viewModel.doAllDataInputsClear.collectAsStateWithLifecycle()
+    val doAllInputsValid by viewModel.doAllDataInputsValid.collectAsStateWithLifecycle()
 
     val isFoodResValid = when (selectedFoodRes) {
         TwoToggleSelections.First -> dietList.getValue(4).isNotEmpty()
@@ -149,7 +153,7 @@ fun DietContent(
                 eventPrevious, eventNext = {
                     buttonClicked = !buttonClicked
                     viewModel.onEvent(ProfileEvent.OnSubmit)
-                }, text = "Submit", enableButton = doAllInputsClear
+                }, text = "Submit", enableButton = doAllInputsValid
             )
 
             if (buttonClicked) {
@@ -161,6 +165,7 @@ fun DietContent(
                     is ProfileEditState.Loading -> LoadingAnimation()
                     is ProfileEditState.NoInternet -> NoInternetLayout(onTryAgain = {})
                     is ProfileEditState.Success -> {
+                        (context as MainActivity).loadAppScreen()
                         Log.d("validate", "Success -> ${events.userProfile}")
                     }
                 }
