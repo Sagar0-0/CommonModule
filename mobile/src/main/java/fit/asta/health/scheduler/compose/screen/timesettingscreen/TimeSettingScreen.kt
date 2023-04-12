@@ -24,11 +24,12 @@ import fit.asta.health.scheduler.compose.components.SettingsLayout
 import fit.asta.health.scheduler.compose.components.SnoozeBottomSheet
 import fit.asta.health.scheduler.compose.components.TimePickerDemo
 import fit.asta.health.scheduler.compose.screen.timesettingscreen.TimeSettingCreateBottomSheetTypes.*
+import fit.asta.health.scheduler.viewmodel.SchedulerViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun TimeSettingScreen(navController: NavHostController) {
+fun TimeSettingScreen(navController: NavHostController, schedulerViewModel: SchedulerViewModel) {
     var currentBottomSheet: TimeSettingCreateBottomSheetTypes? by remember {
         mutableStateOf(null)
     }

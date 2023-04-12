@@ -74,7 +74,7 @@ fun AlarmSettingLayout(
                 .padding(it)
                 .verticalScroll(rememberScrollState())
         ) {
-            DigitalDemo()
+            DigitalDemo(onTimeChange = {})
             RepeatAlarm()
             OnlyToggleButton(
                 icon = R.drawable.ic_ic24_alert,

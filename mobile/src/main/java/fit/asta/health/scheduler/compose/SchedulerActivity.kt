@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -22,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.scheduler.compose.components.*
 import fit.asta.health.scheduler.navigation.SchedulerNavigation
+import fit.asta.health.scheduler.viewmodel.SchedulerViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -46,7 +48,8 @@ class SchedulerActivity : ComponentActivity() {
             MyApp {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     SchedulerNavigation(
-                        navController = rememberNavController()
+                        navController = rememberNavController(),
+                        hiltViewModel<SchedulerViewModel>()
                     )
                 }
             }

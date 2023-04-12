@@ -10,10 +10,11 @@ import fit.asta.health.scheduler.compose.components.*
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AlarmSettingScreen
 import fit.asta.health.scheduler.compose.screen.tagscreen.TagsScreen
 import fit.asta.health.scheduler.compose.screen.timesettingscreen.TimeSettingScreen
+import fit.asta.health.scheduler.viewmodel.SchedulerViewModel
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
-fun SchedulerNavigation(navController: NavHostController) {
+fun SchedulerNavigation(navController: NavHostController,schedulerViewModel: SchedulerViewModel) {
 
     NavHost(
         navController = navController,
@@ -21,14 +22,14 @@ fun SchedulerNavigation(navController: NavHostController) {
     ) {
 
         composable(route = AlarmSchedulerScreen.AlarmSettingHome.route) {
-            AlarmSettingScreen(navController)
+            AlarmSettingScreen(navController,schedulerViewModel)
         }
 
         composable(route = AlarmSchedulerScreen.TagSelection.route) {
-            TagsScreen(navController)
+            TagsScreen(navController,schedulerViewModel)
         }
         composable(route = AlarmSchedulerScreen.IntervalSettingsSelection.route) {
-            TimeSettingScreen(navController)
+            TimeSettingScreen(navController,schedulerViewModel)
         }
 
     }

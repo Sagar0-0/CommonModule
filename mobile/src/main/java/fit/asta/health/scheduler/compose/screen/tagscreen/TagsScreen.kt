@@ -23,11 +23,12 @@ import androidx.navigation.NavHostController
 import fit.asta.health.scheduler.compose.components.CustomTagBottomSheetLayout
 import fit.asta.health.scheduler.compose.components.SwipeDemo
 import fit.asta.health.scheduler.compose.screen.tagscreen.TagCreateBottomSheetTypes.*
+import fit.asta.health.scheduler.viewmodel.SchedulerViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-fun TagsScreen(navController: NavHostController) {
+fun TagsScreen(navController: NavHostController, schedulerViewModel: SchedulerViewModel) {
 
     var currentBottomSheet: TagCreateBottomSheetTypes? by remember {
         mutableStateOf(null)

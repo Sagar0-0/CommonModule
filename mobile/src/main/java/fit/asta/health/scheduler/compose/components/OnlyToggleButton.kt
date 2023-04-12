@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
 import fit.asta.health.common.ui.theme.TSelected
+import fit.asta.health.scheduler.model.net.scheduler.Time
 
 @Composable
 fun OnlyToggleButton(
@@ -63,14 +64,21 @@ fun OnlyToggleButton(
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = title, fontSize = 16.sp, color = MaterialTheme.colorScheme.onTertiaryContainer)
+                    Text(
+                        text = title,
+                        fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.onTertiaryContainer
+                    )
                 }
             }
             Box {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     ClickableText(text = AnnotatedString(
                         text = switchTitle,
-                        spanStyle = SpanStyle(fontSize = 16.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        spanStyle = SpanStyle(
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     ),
                         onClick = {
                             if (enabled) {
@@ -126,13 +134,21 @@ fun AlarmIconButton(
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = title, fontSize = 16.sp, color = MaterialTheme.colorScheme.onTertiaryContainer)
+                    Text(
+                        text = title,
+                        fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.onTertiaryContainer
+                    )
                 }
             }
 
             Box {
                 Row {
-                    Text(text = arrowTitle, fontSize = 16.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(
+                        text = arrowTitle,
+                        fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
 
                     Spacer(modifier = Modifier.width(8.dp))
 
@@ -155,7 +171,7 @@ fun AlarmIconButton(
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
-fun DigitalDemo() {
+fun DigitalDemo(onTimeChange: (Time) -> Unit) {
 
 
     val interactionSource = remember { MutableInteractionSource() }
@@ -173,6 +189,13 @@ fun DigitalDemo() {
     val timePickerDialog = TimePickerDialog(LocalContext.current, { _, hour: Int, minute: Int ->
         minuteDemo.value = "$minute"
         hourDemo.value = "$hour"
+        onTimeChange(
+            Time(
+                hours = hour.toString(),
+                minutes = minute.toString(),
+                midDay = hour > 12
+            )
+        )
     }, initHour, initMinute, false)
 
     if (isPressed) timePickerDialog.show()
@@ -229,9 +252,17 @@ fun RepeatAlarm() {
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                     Column {
-                        Text(text = "Repeat", fontSize = 16.sp, color = MaterialTheme.colorScheme.onTertiaryContainer)
+                        Text(
+                            text = "Repeat",
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.onTertiaryContainer
+                        )
                         Spacer(modifier = Modifier.height(1.dp))
-                        Text(text = "Everyday", fontSize = 16.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(
+                            text = "Everyday",
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     }
                 }
             }
@@ -246,6 +277,7 @@ fun RepeatAlarm() {
 @Composable
 fun DaysCircleButton(
     day: String,
+    onDaySelect:(String)->Unit={}
 ) {
 
     var selected by remember { mutableStateOf(true) }
@@ -255,7 +287,8 @@ fun DaysCircleButton(
     val colorState2: Color = if (!selected) Color.White else Color.Black
 
     Button(
-        onClick = { selected = !selected },
+        onClick = { selected = !selected
+            onDaySelect(day)},
         shape = CircleShape,
         modifier = Modifier.size(40.dp),
         colors = ButtonDefaults.buttonColors(backgroundColor = colorState)

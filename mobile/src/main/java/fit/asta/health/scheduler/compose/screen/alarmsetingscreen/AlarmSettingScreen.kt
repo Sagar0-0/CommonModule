@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -26,14 +25,15 @@ import fit.asta.health.R
 import fit.asta.health.scheduler.compose.components.*
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AlarmCreateBottomSheetTypes.*
 import fit.asta.health.scheduler.navigation.AlarmSchedulerScreen
+import fit.asta.health.scheduler.viewmodel.SchedulerViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @RequiresApi(Build.VERSION_CODES.N)
-@Preview
 @Composable
 fun AlarmSettingScreen(
     navController: NavHostController = rememberNavController(),
+    schedulerViewModel: SchedulerViewModel,
 ) {
 
     var currentBottomSheet: AlarmCreateBottomSheetTypes? by remember {
@@ -104,15 +104,15 @@ fun AlarmSettingScreen(
                     }
                 }
             }, elevation = 10.dp, backgroundColor = Color.White)
-        }, content = {
+        }, content = { paddingValues ->
 
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(it)
+                    .padding(paddingValues)
                     .verticalScroll(rememberScrollState())
             ) {
-                DigitalDemo()
+                DigitalDemo(onTimeChange = {schedulerViewModel.ASEvent(AlarmSettingEvent.SetAlarmTime(it))})
                 RepeatAlarm()
                 OnlyToggleButton(
                     icon = R.drawable.ic_ic24_alert,
