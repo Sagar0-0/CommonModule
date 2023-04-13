@@ -88,11 +88,11 @@ fun TimeSettingScreen(navController: NavHostController, schedulerViewModel: Sche
                     openSheet()
                 },
                 onNavigateAdvanced = {
-                    currentBottomSheet = SnoozeSelection
+                    currentBottomSheet = Advanced
                     openSheet()
                 },
                 onNavigateDuration = {
-                    currentBottomSheet = SnoozeSelection
+                    currentBottomSheet = Duration
                     openSheet()
                 },
                 onNavigateRepetitiveInterval = {

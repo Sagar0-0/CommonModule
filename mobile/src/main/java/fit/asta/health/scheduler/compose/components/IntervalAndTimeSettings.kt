@@ -109,14 +109,14 @@ fun SettingsLayout(
             title = "Advanced\nReminder",
             switchTitle = "${timeSettingUiState.AdvancedDuration} Minutes",
             mCheckedState = timeSettingUiState.AdvancedStatus,
-            onCheckClicked = { onChoice(it)},
+            onCheckClicked = { onChoice(it) },
             onNavigateToClickText = onNavigateAdvanced
         )
         Spacer(modifier = Modifier.height(16.dp))
         TextSelection(
             image = R.drawable.ic_round_access_alarm_24,
             title = "Duration",
-            arrowTitle = "30 Minutes",
+            arrowTitle = "${timeSettingUiState.Duration} Minutes",
             arrowImage = R.drawable.ic_ic24_right_arrow,
             onNavigateAction = onNavigateDuration
         )
@@ -322,16 +322,23 @@ fun SnoozeBottomSheet(onNavigateBack: () -> Unit, onValueChange: (Int) -> Unit =
         view
     }, update = {
         val durationUnitPicker = it.findViewById<NumberPicker>(R.id.durationUnitPicker)
+        val durationPicker = it.findViewById<NumberPicker>(R.id.durationPicker)
         val cancelButton = it.findViewById<Button>(R.id.cancelButton)
+        val okButton = it.findViewById<Button>(R.id.okButton)
 
         val data = arrayOf("Minute")
-        durationUnitPicker.setOnValueChangedListener { picker, _, _ ->
-            onValueChange(picker.value)
+        durationPicker.setOnValueChangedListener { picker, _, _ ->
+            Log.d("manish", "SnoozeBottomSheet: ${picker.value}")
+            onValueChange.invoke(picker.value)
         }
         durationUnitPicker.minValue = 1
         durationUnitPicker.maxValue = data.size
         durationUnitPicker.displayedValues = data
         cancelButton.setOnClickListener {
+            onNavigateBack.invoke()
+        }
+        okButton.setOnClickListener {
+            onValueChange.invoke(durationPicker.value)
             onNavigateBack.invoke()
         }
     })
@@ -356,7 +363,7 @@ fun TimePickerDemo(onNavigateBack: () -> Unit, onValueChange: (Int) -> Unit = {}
 
         var amOrPm: String
         minOrHourPicker.setOnValueChangedListener { picker, _, _ ->
-            onValueChange(picker.value)
+            onValueChange.invoke(picker.value)
         }
         durationUnitPicker.setOnValueChangedListener { picker, _, _ ->
             val i = picker.value

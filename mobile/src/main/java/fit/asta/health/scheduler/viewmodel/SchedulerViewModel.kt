@@ -75,7 +75,7 @@ class SchedulerViewModel
 
     init {
 
-//        refreshData()   primary key is alwase constant 1 so change this when get from server
+        refreshData()
 
     }
 
@@ -229,12 +229,12 @@ class SchedulerViewModel
                 _timeSettingUiState.value = _timeSettingUiState.value.copy(Duration = uiEvent.time)
             }
             is TimeSettingEvent.SetAdvancedDuration -> {
-                _timeSettingUiState.value = _timeSettingUiState.value.
-                copy(AdvancedDuration = uiEvent.time)
+                _timeSettingUiState.value =
+                    _timeSettingUiState.value.copy(AdvancedDuration = uiEvent.time)
             }
             is TimeSettingEvent.SetAdvancedStatus -> {
-                _timeSettingUiState.value = _timeSettingUiState.value.
-                copy(AdvancedStatus = uiEvent.choice)
+                _timeSettingUiState.value =
+                    _timeSettingUiState.value.copy(AdvancedStatus = uiEvent.choice)
             }
             else -> {}
         }
@@ -246,27 +246,14 @@ class SchedulerViewModel
                 when (result) {
                     is NetworkResult.Success -> {
                         Log.d(SpotifyConstants.TAG, "onCreate list result: ${result.data}")
-                        alarmLocalRepo.getAllAlarm().collect {
-                            val offlineSchedules = it
-                            val onlineSchedules = result.data?.list
-
-                            val offlineIds = ArrayList<String>()
-                            val onlineIds = ArrayList<String>()
-
-                            onlineSchedules?.forEach {
-                                onlineIds.add(it.idFromServer)
+                        alarmLocalRepo.getAllAlarm().collect {list->
+                            val map = hashMapOf<String, Boolean>()
+                            list.forEach { alarmData ->
+                                map[alarmData.idFromServer] = true
                             }
-
-                            offlineSchedules.forEach {
-                                offlineIds.add(it.idFromServer)
-                            }
-
-                            onlineIds.minus(offlineIds.toSet()).forEach { id ->
-                                onlineSchedules?.forEach { entity ->
-                                    Log.d(SpotifyConstants.TAG, "total alarm: ${entity}")
-                                    if (entity.idFromServer == id) {
-                                        alarmLocalRepo.insertAlarm(alarmEntity = entity)
-                                    }
+                            result.data?.list?.forEach { alarmEntity ->
+                                if (map[alarmEntity.idFromServer] != true) {
+                                    alarmLocalRepo.insertAlarm(alarmEntity = alarmEntity)
                                 }
                             }
                         }
