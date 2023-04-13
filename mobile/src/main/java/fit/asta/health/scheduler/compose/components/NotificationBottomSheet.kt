@@ -9,7 +9,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -21,6 +20,7 @@ import fit.asta.health.R
 fun NotificationBottomSheetLayout(
     text: String,
     onNavigateBack: () -> Unit,
+    onSave:(String)->Unit={}
 ) {
 
     val radioOptions = listOf("Notification", "Splash")
@@ -51,7 +51,7 @@ fun NotificationBottomSheetLayout(
                 color = MaterialTheme.colorScheme.onTertiaryContainer,
                 textAlign = TextAlign.Center
             )
-            androidx.compose.material3.IconButton(onClick = { /*TODO*/ }) {
+            androidx.compose.material3.IconButton(onClick = { onSave(selectedOption) }) {
                 androidx.compose.material3.Icon(
                     painter = painterResource(id = R.drawable.ic_baseline_check_24),
                     contentDescription = null,

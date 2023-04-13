@@ -3,13 +3,9 @@ package fit.asta.health.scheduler.compose.components
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.BottomNavigation
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.shawnlin.numberpicker.NumberPicker
 import fit.asta.health.R
+import fit.asta.health.scheduler.compose.screen.timesettingscreen.TimeSettingUiState
 
 
 data class CustomInterval(
@@ -35,78 +32,85 @@ data class CustomInterval(
 )
 
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun IntervalTimeLayout(
-    onNavigateBack: () -> Unit,
-    onNavigateSnooze: () -> Unit,
-    onNavigateRepetitiveInterval: (() -> Unit)?,
-) {
-    Scaffold(content = {
-
-        SettingsLayout(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(it)
-                .verticalScroll(rememberScrollState())
-                .background(color = MaterialTheme.colorScheme.secondaryContainer),
-            onNavigateAction = onNavigateSnooze,
-            onNavigateRepetitiveInterval = onNavigateRepetitiveInterval
-        )
-    }, topBar = {
-        BottomNavigation(content = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                IconButton(onClick = onNavigateBack) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_round_close_24),
-                        contentDescription = null,
-                        Modifier.size(24.dp)
-                    )
-                }
-                Text(
-                    text = "Intervals and Time Settings",
-                    fontSize = 20.sp,
-                    color = MaterialTheme.colorScheme.onTertiaryContainer,
-                    textAlign = TextAlign.Center
-                )
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_baseline_check_24),
-                        contentDescription = null,
-                        Modifier.size(24.dp),
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
-            }
-        }, elevation = 10.dp, backgroundColor = Color.White)
-    })
-}
+//@OptIn(ExperimentalMaterial3Api::class)
+//@Composable
+//fun IntervalTimeLayout(
+//    onNavigateBack: () -> Unit,
+//    onNavigateSnooze: () -> Unit,
+//    onNavigateRepetitiveInterval: (() -> Unit)?,
+//) {
+//    Scaffold(content = {
+//
+//        SettingsLayout(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .padding(it)
+//                .verticalScroll(rememberScrollState())
+//                .background(color = MaterialTheme.colorScheme.secondaryContainer),
+//            onNavigateAction = onNavigateSnooze,
+//            onNavigateRepetitiveInterval = onNavigateRepetitiveInterval
+//        )
+//    }, topBar = {
+//        BottomNavigation(content = {
+//            Row(
+//                verticalAlignment = Alignment.CenterVertically,
+//                horizontalArrangement = Arrangement.SpaceBetween,
+//                modifier = Modifier.fillMaxWidth()
+//            ) {
+//                IconButton(onClick = onNavigateBack) {
+//                    Icon(
+//                        painter = painterResource(id = R.drawable.ic_round_close_24),
+//                        contentDescription = null,
+//                        Modifier.size(24.dp)
+//                    )
+//                }
+//                Text(
+//                    text = "Intervals and Time Settings",
+//                    fontSize = 20.sp,
+//                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+//                    textAlign = TextAlign.Center
+//                )
+//                IconButton(onClick = { /*TODO*/ }) {
+//                    Icon(
+//                        painter = painterResource(id = R.drawable.ic_baseline_check_24),
+//                        contentDescription = null,
+//                        Modifier.size(24.dp),
+//                        tint = MaterialTheme.colorScheme.primary
+//                    )
+//                }
+//            }
+//        }, elevation = 10.dp, backgroundColor = Color.White)
+//    })
+//}
 
 
 @Composable
 fun SettingsLayout(
-    modifier: Modifier = Modifier, onNavigateAction: () -> Unit,
+    modifier: Modifier = Modifier,
+    onNavigateSnooze: () -> Unit,
+    onNavigateAdvanced: () -> Unit,
+    onNavigateDuration: () -> Unit,
+    onChoice: (Boolean) -> Unit,
     onNavigateRepetitiveInterval: (() -> Unit)?,
+    timeSettingUiState: TimeSettingUiState,
 ) {
 
     Column(modifier = modifier) {
         TextSelection(
             image = R.drawable.ic_ic24_alarm_snooze,
             title = "Snooze",
-            arrowTitle = "5 Minutes",
+            arrowTitle = "${timeSettingUiState.SnoozeTime} Minutes",
             arrowImage = R.drawable.ic_ic24_right_arrow,
-            onNavigateAction = onNavigateAction
+            onNavigateAction = onNavigateSnooze
         )
         Spacer(modifier = Modifier.height(16.dp))
         OnlyToggleButton(
             icon = R.drawable.ic_ic24_notification,
             title = "Advanced\nReminder",
-            switchTitle = "15 Minutes",
-            onNavigateToClickText = onNavigateAction
+            switchTitle = "${timeSettingUiState.AdvancedDuration} Minutes",
+            mCheckedState = timeSettingUiState.AdvancedStatus,
+            onCheckClicked = { onChoice(it)},
+            onNavigateToClickText = onNavigateAdvanced
         )
         Spacer(modifier = Modifier.height(16.dp))
         TextSelection(
@@ -114,7 +118,7 @@ fun SettingsLayout(
             title = "Duration",
             arrowTitle = "30 Minutes",
             arrowImage = R.drawable.ic_ic24_right_arrow,
-            onNavigateAction = onNavigateAction
+            onNavigateAction = onNavigateDuration
         )
         Spacer(modifier = Modifier.height(16.dp))
         OnlyToggleButton(
@@ -174,14 +178,21 @@ fun ShowMoreContent(
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = title, fontSize = 16.sp, color = MaterialTheme.colorScheme.onTertiaryContainer)
+                    Text(
+                        text = title,
+                        fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.onTertiaryContainer
+                    )
                 }
             }
             Box {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     ClickableText(text = AnnotatedString(
                         text = switchTitle,
-                        spanStyle = SpanStyle(fontSize = 16.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        spanStyle = SpanStyle(
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     ),
                         onClick = {
                             if (enabled) {
@@ -256,7 +267,11 @@ fun TextSelection(
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = title, fontSize = 16.sp, color = MaterialTheme.colorScheme.onSecondaryContainer)
+                    Text(
+                        text = title,
+                        fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
                 }
             }
 
@@ -289,14 +304,17 @@ private fun SelectableText(arrowTitle: String) {
         onClick = {},
         text = AnnotatedString(
             text = arrowTitle,
-            spanStyle = SpanStyle(fontSize = 16.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            spanStyle = SpanStyle(
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         )
     )
 }
 
 
 @Composable
-fun SnoozeBottomSheet(onNavigateBack: () -> Unit) {
+fun SnoozeBottomSheet(onNavigateBack: () -> Unit, onValueChange: (Int) -> Unit = {}) {
 
     AndroidView(modifier = Modifier.fillMaxWidth(), factory = {
         val view = View.inflate(it, R.layout.scheduler_layout_dialog_number_picker, null)
@@ -307,7 +325,9 @@ fun SnoozeBottomSheet(onNavigateBack: () -> Unit) {
         val cancelButton = it.findViewById<Button>(R.id.cancelButton)
 
         val data = arrayOf("Minute")
-
+        durationUnitPicker.setOnValueChangedListener { picker, _, _ ->
+            onValueChange(picker.value)
+        }
         durationUnitPicker.minValue = 1
         durationUnitPicker.maxValue = data.size
         durationUnitPicker.displayedValues = data
@@ -320,7 +340,7 @@ fun SnoozeBottomSheet(onNavigateBack: () -> Unit) {
 
 
 @Composable
-fun TimePickerDemo(onNavigateBack: () -> Unit) {
+fun TimePickerDemo(onNavigateBack: () -> Unit, onValueChange: (Int) -> Unit = {}) {
     AndroidView(modifier = Modifier.fillMaxWidth(), factory = {
         val view = View.inflate(it, R.layout.scheduler_layout_dialog_number_picker, null)
 
@@ -335,7 +355,9 @@ fun TimePickerDemo(onNavigateBack: () -> Unit) {
         val data = arrayOf("Minute", "Hour")
 
         var amOrPm: String
-
+        minOrHourPicker.setOnValueChangedListener { picker, _, _ ->
+            onValueChange(picker.value)
+        }
         durationUnitPicker.setOnValueChangedListener { picker, _, _ ->
             val i = picker.value
             amOrPm = data[i]
@@ -394,14 +416,21 @@ fun CustomIntervalToggleButton(
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = title, fontSize = 16.sp, color = MaterialTheme.colorScheme.onSecondaryContainer)
+                    Text(
+                        text = title,
+                        fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
                 }
             }
             Box {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     ClickableText(text = AnnotatedString(
                         text = switchTitle,
-                        spanStyle = SpanStyle(fontSize = 16.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        spanStyle = SpanStyle(
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     ),
                         onClick = {
                             if (enabled) {
@@ -465,7 +494,11 @@ fun CustomIntervalTextSelection(
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = title, fontSize = 16.sp, color = MaterialTheme.colorScheme.onTertiaryContainer)
+                    Text(
+                        text = title,
+                        fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.onTertiaryContainer
+                    )
                 }
             }
 
@@ -563,7 +596,11 @@ fun CustomVariantInterval(
                             )
                         }
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = time, fontSize = 16.sp, color = MaterialTheme.colorScheme.onTertiaryContainer)
+                        Text(
+                            text = time,
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.onTertiaryContainer
+                        )
                     }
                 }
 

@@ -7,6 +7,7 @@ data class TimeSettingUiState(
     val SnoozeTime: Int = 0,
     // advanced duration
     val AdvancedDuration: Int = 0,
+    val AdvancedStatus: Boolean = false,
     // duration
     val Duration: Int = 0,
     // repeat

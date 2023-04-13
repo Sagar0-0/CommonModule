@@ -5,9 +5,10 @@ data class AlarmSettingUiState(
     val Label: String = "",
     val Description: String = "",
     // reminder mode
-    val Choice: String = "",
+    val Choice: String = "Notification",
     // vibration slider
-    val Vibration: String = "",
+    val Vibration: String = "Pattern 1",
+    val Sound: VibUiState=VibUiState(),
     // custom tag
     val CustomTagName :TagUiState= TagUiState(),
     val Week:WkUiState= WkUiState()
@@ -85,14 +86,14 @@ data class ToneUiState(
 )
 
 data class WkUiState(
-    val friday: Boolean=false,
-    val monday: Boolean=false,
-    val saturday: Boolean=false,
-    val sunday: Boolean=false,
-    val thursday: Boolean=false,
-    val tuesday: Boolean=false,
-    val wednesday: Boolean=false,
-    val recurring: Boolean=false
+    var friday: Boolean=false,
+    var monday: Boolean=false,
+    var saturday: Boolean=false,
+    var sunday: Boolean=false,
+    var thursday: Boolean=false,
+    var tuesday: Boolean=false,
+    var wednesday: Boolean=false,
+    var recurring: Boolean=false
 )
 
 data class VibUiState(

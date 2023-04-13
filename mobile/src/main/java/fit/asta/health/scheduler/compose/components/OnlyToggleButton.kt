@@ -14,6 +14,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,6 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
 import fit.asta.health.common.ui.theme.TSelected
+import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AlarmSettingUiState
+import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.WkUiState
 import fit.asta.health.scheduler.model.net.scheduler.Time
 
 @Composable
@@ -35,9 +38,9 @@ fun OnlyToggleButton(
     title: String,
     switchTitle: String,
     onNavigateToClickText: (() -> Unit)?,
+    onCheckClicked: (Boolean) -> Unit = {},
+    mCheckedState:Boolean =false
 ) {
-
-    val mCheckedState = remember { mutableStateOf(false) }
 
     val enabled by remember { mutableStateOf(true) }
 
@@ -89,8 +92,10 @@ fun OnlyToggleButton(
                     Spacer(modifier = Modifier.width(8.dp))
 
                     Switch(
-                        checked = mCheckedState.value,
-                        onCheckedChange = { mCheckedState.value = it },
+                        checked = mCheckedState,
+                        onCheckedChange = {
+                            onCheckClicked(it)
+                        },
                         colors = SwitchDefaults.colors(
                             uncheckedThumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
                             checkedThumbColor = MaterialTheme.colorScheme.primary
@@ -227,7 +232,8 @@ fun DigitalDemo(onTimeChange: (Time) -> Unit) {
 }
 
 @Composable
-fun RepeatAlarm() {
+fun RepeatAlarm(onDaySelect: (WkUiState) -> Unit = {}, alarmSettingUiState: AlarmSettingUiState) {
+    var text by remember { mutableStateOf("") }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -259,7 +265,7 @@ fun RepeatAlarm() {
                         )
                         Spacer(modifier = Modifier.height(1.dp))
                         Text(
-                            text = "Everyday",
+                            text =text ,
                             fontSize = 16.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -268,7 +274,9 @@ fun RepeatAlarm() {
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
-        AllDays()
+        AllDays(onDaySelect = onDaySelect, weekUiState = alarmSettingUiState.Week, repeatText = {
+            text= if (alarmSettingUiState.Week.recurring) "EveryDay" else "OneTime"
+        })
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
@@ -277,18 +285,18 @@ fun RepeatAlarm() {
 @Composable
 fun DaysCircleButton(
     day: String,
-    onDaySelect:(String)->Unit={}
+    isSelected: Boolean = false,
+    onDaySelect: () -> Unit = {}
 ) {
 
-    var selected by remember { mutableStateOf(true) }
+    var selected by remember(isSelected) { mutableStateOf(isSelected) }
 
-    val colorState: Color = if (selected) TSelected else MaterialTheme.colorScheme.primary
+    val colorState: Color = if (!isSelected) TSelected else MaterialTheme.colorScheme.primary
 
-    val colorState2: Color = if (!selected) Color.White else Color.Black
+    val colorState2: Color = if (isSelected) Color.White else Color.Black
 
     Button(
-        onClick = { selected = !selected
-            onDaySelect(day)},
+        onClick = { onDaySelect() },
         shape = CircleShape,
         modifier = Modifier.size(40.dp),
         colors = ButtonDefaults.buttonColors(backgroundColor = colorState)
@@ -298,13 +306,74 @@ fun DaysCircleButton(
 }
 
 @Composable
-fun AllDays() {
+fun AllDays(
+    weekUiState: WkUiState,
+    onDaySelect: (WkUiState) -> Unit = {},
+    repeatText:()->Unit
+) {
 
-    val daysList = listOf("S", "M", "T", "W", "T", "F", "S")
+    var sunday by remember(weekUiState) { mutableStateOf(weekUiState.sunday) }
+    var monday by remember(weekUiState) { mutableStateOf(weekUiState.monday) }
+    var tuesday by remember(weekUiState) { mutableStateOf(weekUiState.tuesday) }
+    var wednesday by remember(weekUiState) { mutableStateOf(weekUiState.wednesday) }
+    var thursday by remember(weekUiState) { mutableStateOf(weekUiState.thursday) }
+    var friday by remember(weekUiState) { mutableStateOf(weekUiState.friday) }
+    var saturday by remember(weekUiState) { mutableStateOf(weekUiState.saturday) }
+    var dayCount by rememberSaveable { mutableStateOf(0) }
+    LaunchedEffect(key1 = dayCount) {
+        if (dayCount < 0) dayCount = 0
+        repeatText()
+    }
 
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-        daysList.forEach {
-            DaysCircleButton(day = it)
+        DaysCircleButton(day = "S", isSelected = sunday) {
+            sunday = !sunday
+            if (sunday) dayCount++ else dayCount--
+            weekUiState.sunday = sunday
+            weekUiState.recurring = (dayCount > 1)
+            onDaySelect(weekUiState)
+        }
+        DaysCircleButton(day = "M", isSelected = monday) {
+            monday = !monday
+            if (monday) dayCount++ else dayCount--
+            weekUiState.monday = monday
+            weekUiState.recurring = (dayCount > 1)
+            onDaySelect(weekUiState)
+        }
+        DaysCircleButton(day = "T", isSelected = tuesday) {
+            tuesday = !tuesday
+            if (tuesday) dayCount++ else dayCount--
+            weekUiState.tuesday = tuesday
+            weekUiState.recurring = (dayCount > 1)
+            onDaySelect(weekUiState)
+        }
+        DaysCircleButton(day = "W", isSelected = wednesday) {
+            wednesday = !wednesday
+            if (wednesday) dayCount++ else dayCount--
+            weekUiState.wednesday = wednesday
+            weekUiState.recurring = (dayCount > 1)
+            onDaySelect(weekUiState)
+        }
+        DaysCircleButton(day = "T", isSelected = thursday) {
+            thursday = !thursday
+            if (thursday) dayCount++ else dayCount--
+            weekUiState.thursday = thursday
+            weekUiState.recurring = (dayCount > 1)
+            onDaySelect(weekUiState)
+        }
+        DaysCircleButton(day = "F", isSelected = friday) {
+            friday = !friday
+            if (friday) dayCount++ else dayCount--
+            weekUiState.friday = friday
+            weekUiState.recurring = (dayCount > 1)
+            onDaySelect(weekUiState)
+        }
+        DaysCircleButton(day = "S", isSelected = saturday) {
+            saturday = !saturday
+            if (saturday) dayCount++ else dayCount--
+            weekUiState.saturday = saturday
+            weekUiState.recurring = (dayCount > 1)
+            onDaySelect(weekUiState)
         }
     }
 }

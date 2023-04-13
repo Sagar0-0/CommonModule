@@ -49,7 +49,11 @@ fun AlarmSettingScreen(
     val scope = rememberCoroutineScope()
 
     val closeSheet = {
-        scope.launch { modalBottomSheetState.hide() }
+        scope.launch { modalBottomSheetState.hide()
+            if (modalBottomSheetValue == ModalBottomSheetValue.Expanded) {
+                modalBottomSheetValue = ModalBottomSheetValue.Hidden
+            }
+        }
     }
 
     val openSheet = {
@@ -70,10 +74,13 @@ fun AlarmSettingScreen(
             currentBottomSheet?.let {
                 AlarmCreateBtmSheetLayout(
                     sheetLayout = it,
-                    closeSheet = { closeSheet() }
+                    closeSheet = { closeSheet() },
+                    schedulerViewModel
                 )
             }
         }) {
+        val alarmSettingUiState=  schedulerViewModel.alarmSettingUiState.value
+        val tagUiState=schedulerViewModel.tagsUiState.value
         Scaffold(topBar = {
             BottomNavigation(content = {
                 Row(
@@ -113,25 +120,28 @@ fun AlarmSettingScreen(
                     .verticalScroll(rememberScrollState())
             ) {
                 DigitalDemo(onTimeChange = {schedulerViewModel.ASEvent(AlarmSettingEvent.SetAlarmTime(it))})
-                RepeatAlarm()
+                RepeatAlarm(alarmSettingUiState=alarmSettingUiState,onDaySelect = {schedulerViewModel.ASEvent(AlarmSettingEvent.SetWeek(it))})
                 OnlyToggleButton(
                     icon = R.drawable.ic_ic24_alert,
                     title = "Status",
                     switchTitle = "",
-                    onNavigateToClickText = null
+                    onNavigateToClickText = null,
+                    mCheckedState = alarmSettingUiState.CustomTagName.meta.status,
+                    onCheckClicked = { schedulerViewModel.ASEvent(AlarmSettingEvent.SetStatus(it)) }
                 )
                 AlarmIconButton(
                     image = R.drawable.ic_ic24_alarm_snooze,
                     title = "Tag",
-                    arrowTitle = "Water",
+                    arrowTitle = tagUiState.selectedTag.meta.name,
                     arrowImage = R.drawable.ic_ic24_right_arrow, onNavigateToScreen = {
+                        schedulerViewModel.ASEvent(AlarmSettingEvent.GotoTagScreen)
                         navController.navigate(route = AlarmSchedulerScreen.TagSelection.route)
                     }
                 )
                 AlarmIconButton(
                     image = R.drawable.ic_ic24_label,
                     title = "Label",
-                    arrowTitle = "Power Nap",
+                    arrowTitle = alarmSettingUiState.Label,
                     arrowImage = R.drawable.ic_ic24_right_arrow, onNavigateToScreen = {
                         currentBottomSheet = LABEL
                         openSheet()
@@ -140,7 +150,7 @@ fun AlarmSettingScreen(
                 AlarmIconButton(
                     image = R.drawable.ic_ic24_description,
                     title = "Description",
-                    arrowTitle = "Relax to energise",
+                    arrowTitle = alarmSettingUiState.Description,
                     arrowImage = R.drawable.ic_ic24_right_arrow, onNavigateToScreen = {
                         currentBottomSheet = DESCRIPTION
                         openSheet()
@@ -152,13 +162,14 @@ fun AlarmSettingScreen(
                     arrowTitle = "Power Nap",
                     arrowImage = R.drawable.ic_ic24_right_arrow,
                     onNavigateToScreen = {
+                        schedulerViewModel.ASEvent(AlarmSettingEvent.GotoTimeSettingScreen)
                         navController.navigate(route = AlarmSchedulerScreen.IntervalSettingsSelection.route)
                     }
                 )
                 AlarmIconButton(
                     image = R.drawable.ic_ic24_notification,
                     title = "Reminder Mode",
-                    arrowTitle = "Notification",
+                    arrowTitle = alarmSettingUiState.Choice,
                     arrowImage = R.drawable.ic_ic24_right_arrow,
                     onNavigateToScreen = {
                         currentBottomSheet = REMINDER
@@ -168,7 +179,11 @@ fun AlarmSettingScreen(
                 OnlyToggleButton(
                     icon = R.drawable.ic_ic24_vibrate,
                     title = "Vibration ",
-                    switchTitle = "Pattern 1", onNavigateToClickText = {
+                    mCheckedState =alarmSettingUiState.CustomTagName.meta.vibration.status ,
+                    onCheckClicked = {
+                        schedulerViewModel.ASEvent(AlarmSettingEvent.SetVibration(it))
+                    },
+                    switchTitle = alarmSettingUiState.Vibration, onNavigateToClickText = {
                         currentBottomSheet = VIBRATION
                         openSheet()
                     }
@@ -176,6 +191,10 @@ fun AlarmSettingScreen(
                 OnlyToggleButton(
                     icon = R.drawable.ic_ic24_voice,
                     title = "Sound",
+                    mCheckedState =alarmSettingUiState.Sound.status ,
+                    onCheckClicked = {
+                        schedulerViewModel.ASEvent(AlarmSettingEvent.SetSound(it))
+                    },
                     switchTitle = "Spring", onNavigateToClickText = {
                         currentBottomSheet = SOUND
                         openSheet()
@@ -184,6 +203,10 @@ fun AlarmSettingScreen(
                 OnlyToggleButton(
                     icon = R.drawable.ic_ic24_warning,
                     title = "Important",
+                    mCheckedState = alarmSettingUiState.CustomTagName.meta.important,
+                    onCheckClicked = {
+                     schedulerViewModel.ASEvent(AlarmSettingEvent.SetImportant(it))
+                    },
                     switchTitle = "", onNavigateToClickText = null
                 )
                 Text(
@@ -211,7 +234,7 @@ enum class AlarmCreateBottomSheetTypes {
 fun AlarmCreateBtmSheetLayout(
     sheetLayout: AlarmCreateBottomSheetTypes,
     closeSheet: () -> Unit,
-
+    schedulerViewModel: SchedulerViewModel
     ) {
 
     when (sheetLayout) {
@@ -220,7 +243,11 @@ fun AlarmCreateBtmSheetLayout(
                 CustomLabelBottomSheetLayout(
                     text = "Labels",
                     label = "Enter your Label",
-                    onNavigateBack = closeSheet
+                    onNavigateBack = closeSheet,
+                    onSave = {
+                        closeSheet()
+                        schedulerViewModel.ASEvent(AlarmSettingEvent.SetLabel(it))
+                    }
                 )
             }
         }
@@ -229,7 +256,11 @@ fun AlarmCreateBtmSheetLayout(
                 CustomLabelBottomSheetLayout(
                     text = "Add Description",
                     label = "Enter Description",
-                    onNavigateBack = closeSheet
+                    onNavigateBack = closeSheet,
+                    onSave = {
+                        closeSheet()
+                        schedulerViewModel.ASEvent(AlarmSettingEvent.SetDescription(it))
+                    }
                 )
             }
         }
@@ -237,7 +268,11 @@ fun AlarmCreateBtmSheetLayout(
             Column(modifier = Modifier.fillMaxWidth()) {
                 NotificationBottomSheetLayout(
                     text = "Select Reminder Mode",
-                    onNavigateBack = closeSheet
+                    onNavigateBack = closeSheet,
+                    onSave = {
+                        closeSheet()
+                        schedulerViewModel.ASEvent(AlarmSettingEvent.SetReminderMode(it))
+                    }
                 )
             }
         }
@@ -245,15 +280,23 @@ fun AlarmCreateBtmSheetLayout(
             Column(modifier = Modifier.fillMaxWidth()) {
                 VibrationBottomSheetLayout(
                     text = "Select Vibration Intensity",
-                    onNavigateBack = closeSheet
+                    onNavigateBack = closeSheet,
+                    onSave = {
+                        closeSheet()
+                        schedulerViewModel.ASEvent(AlarmSettingEvent.SetVibrationIntensity(it))
+                    }
                 )
             }
         }
         SOUND -> {
             Column(modifier = Modifier.fillMaxWidth()) {
                 VibrationBottomSheetLayout(
-                    text = "Select Vibration Intensity",
-                    onNavigateBack = closeSheet
+                    text = "Select Sound Intensity",
+                    onNavigateBack = closeSheet,
+                    onSave = {
+                        closeSheet()
+                        schedulerViewModel.ASEvent(AlarmSettingEvent.SetSoundIntensity(it))
+                    }
                 )
             }
         }

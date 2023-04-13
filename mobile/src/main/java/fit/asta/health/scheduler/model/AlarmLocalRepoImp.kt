@@ -1,7 +1,5 @@
 package fit.asta.health.scheduler.model
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
 import fit.asta.health.scheduler.model.db.AlarmDao
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.db.entity.TagEntity
@@ -30,9 +28,6 @@ class AlarmLocalRepoImp(
         alarmDao.deleteAllAlarms()
     }
 
-    override fun getAlarmLiveData(): LiveData<List<AlarmEntity>> {
-        return alarmDao.getAll().asLiveData()
-    }
 
     override fun getAllTags(): Flow<List<TagEntity>> {
         return alarmDao.getAllTags()

@@ -43,7 +43,12 @@ fun TimeSettingScreen(navController: NavHostController, schedulerViewModel: Sche
     val scope = rememberCoroutineScope()
 
     val closeSheet = {
-        scope.launch { modalBottomSheetState.hide() }
+        scope.launch {
+            modalBottomSheetState.hide()
+            if (modalBottomSheetValue == ModalBottomSheetValue.Expanded) {
+                modalBottomSheetValue = ModalBottomSheetValue.Hidden
+            }
+        }
     }
 
     val openSheet = {
@@ -64,26 +69,37 @@ fun TimeSettingScreen(navController: NavHostController, schedulerViewModel: Sche
             currentBottomSheet?.let {
                 TimeSettingCreateBtmSheetLayout(
                     sheetLayout = it,
-                    closeSheet = { closeSheet() }
+                    closeSheet = { closeSheet() },
+                    schedulerViewModel = schedulerViewModel
                 )
             }
         }) {
-        Scaffold(content = {
-
+        val timeSettingUiState=schedulerViewModel.timeSettingUiState.value
+        Scaffold(content = { paddingValues ->
             SettingsLayout(
+                timeSettingUiState=timeSettingUiState,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(it)
+                    .padding(paddingValues)
                     .verticalScroll(rememberScrollState())
                     .background(color = MaterialTheme.colorScheme.secondaryContainer),
-                onNavigateAction = {
+                onNavigateSnooze = {
+                    currentBottomSheet = SnoozeSelection
+                    openSheet()
+                },
+                onNavigateAdvanced = {
+                    currentBottomSheet = SnoozeSelection
+                    openSheet()
+                },
+                onNavigateDuration = {
                     currentBottomSheet = SnoozeSelection
                     openSheet()
                 },
                 onNavigateRepetitiveInterval = {
                     currentBottomSheet = RepetitiveInterval
                     openSheet()
-                }
+                },
+                onChoice = {schedulerViewModel.TSEvent(TimeSettingEvent.SetAdvancedStatus(it))}
             )
         }, topBar = {
             BottomNavigation(content = {
@@ -122,26 +138,37 @@ fun TimeSettingScreen(navController: NavHostController, schedulerViewModel: Sche
 }
 
 enum class TimeSettingCreateBottomSheetTypes {
-    SnoozeSelection, RepetitiveInterval
+    SnoozeSelection, RepetitiveInterval,Advanced,Duration
 }
 
 @Composable
 fun TimeSettingCreateBtmSheetLayout(
+    schedulerViewModel: SchedulerViewModel,
     sheetLayout: TimeSettingCreateBottomSheetTypes,
     closeSheet: () -> Unit,
 
     ) {
 
     when (sheetLayout) {
+        Advanced->{
+            SnoozeBottomSheet(onNavigateBack = {  closeSheet()}, onValueChange = {
+                schedulerViewModel.TSEvent(TimeSettingEvent.SetAdvancedDuration(it))
+            })
+        }
+        Duration->{
+            SnoozeBottomSheet(onNavigateBack = {  closeSheet()}, onValueChange = {
+                schedulerViewModel.TSEvent(TimeSettingEvent.SetDuration(it))
+            })
+        }
         SnoozeSelection -> {
-            SnoozeBottomSheet {
-                closeSheet()
-            }
+            SnoozeBottomSheet(onNavigateBack = {  closeSheet()}, onValueChange = {
+                schedulerViewModel.TSEvent(TimeSettingEvent.SetSnooze(it))
+            })
         }
         RepetitiveInterval -> {
-            TimePickerDemo {
-                closeSheet()
-            }
+            TimePickerDemo(onNavigateBack = { closeSheet()}, onValueChange = {
+                schedulerViewModel.TSEvent(TimeSettingEvent.SetDuration(it))
+            })
         }
     }
 

@@ -5,10 +5,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -20,7 +19,11 @@ fun CustomLabelBottomSheetLayout(
     text: String,
     label: String,
     onNavigateBack: () -> Unit,
+    onSave: (String) -> Unit = {},
 ) {
+    var value by remember {
+        mutableStateOf("")
+    }
     Column(
         Modifier
             .fillMaxWidth()
@@ -46,7 +49,7 @@ fun CustomLabelBottomSheetLayout(
                 color = MaterialTheme.colorScheme.onTertiaryContainer,
                 textAlign = TextAlign.Center
             )
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { onSave(value) }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_baseline_check_24),
                     contentDescription = null,
@@ -57,6 +60,8 @@ fun CustomLabelBottomSheetLayout(
         }
         Spacer(modifier = Modifier.height(20.dp))
 
-        CustomTagTextField(label = label)
+        CustomTagTextField(
+            label = label,
+            onValueChange = { value = it })
     }
 }

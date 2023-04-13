@@ -77,8 +77,11 @@ class AlarmBackendRepoImp(
         return flow {
             emit(NetworkResult.Loading())
             val result = remoteApi.getTagListFromBackend(userId)
+            Log.d("manish", "getTagListFromBackend: ${result.isSuccessful}")
             if (result.isSuccessful) {
-                emit(NetworkResult.Success(result.body()!!.mapToSchedulerGetTagsList()))
+                val data=result.body()!!.mapToSchedulerGetTagsList()
+                emit(NetworkResult.Success(data))
+                Log.d("manish", "getTagListFromBackend: ${data}")
             } else {
                 NetworkResult.Error<SchedulerGetTagsList>(message = result.message())
             }

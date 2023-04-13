@@ -18,14 +18,16 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.R
 import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.*
+import fit.asta.health.scheduler.compose.screen.tagscreen.TagState
+import fit.asta.health.scheduler.compose.screen.tagscreen.TagsEvent
 import fit.asta.health.scheduler.compose.screen.tagscreen.TagsUiState
+import fit.asta.health.scheduler.compose.screen.timesettingscreen.TimeSettingEvent
 import fit.asta.health.scheduler.compose.screen.timesettingscreen.TimeSettingUiState
 import fit.asta.health.scheduler.model.AlarmBackendRepo
 import fit.asta.health.scheduler.model.AlarmLocalRepo
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.db.entity.TagEntity
 import fit.asta.health.scheduler.model.net.scheduler.*
-import fit.asta.health.scheduler.model.net.tag.Data
 import fit.asta.health.scheduler.util.Constants
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,13 +43,13 @@ class SchedulerViewModel
 ) : ViewModel() {
 
     private val _alarmSettingUiState = mutableStateOf(AlarmSettingUiState())
-    private val alarmSettingUiState: State<AlarmSettingUiState> = _alarmSettingUiState
+    val alarmSettingUiState: State<AlarmSettingUiState> = _alarmSettingUiState
 
     private val _timeSettingUiState = mutableStateOf(TimeSettingUiState())
-    private val timeSettingUiState: State<TimeSettingUiState> = _timeSettingUiState
+    val timeSettingUiState: State<TimeSettingUiState> = _timeSettingUiState
 
     private val _tagsUiState = mutableStateOf(TagsUiState())
-    private val tagsUiState: State<TagsUiState> = _tagsUiState
+    val tagsUiState: State<TagsUiState> = _tagsUiState
 
     private val userId = "6309a9379af54f142c65fbff"
     private val newAlarmItem: AlarmEntity? = null
@@ -62,6 +64,7 @@ class SchedulerViewModel
     private val info = MutableStateFlow(InfoUiState())
     private val interval = MutableStateFlow(IvlUiState())
     private val meta = MutableStateFlow(MetaDataUiState())
+    private val sound = MutableStateFlow(VibUiState())
 
 
     //timeSettingActivity
@@ -72,7 +75,7 @@ class SchedulerViewModel
 
     init {
 
-        refreshData()
+//        refreshData()   primary key is alwase constant 1 so change this when get from server
 
     }
 
@@ -85,12 +88,13 @@ class SchedulerViewModel
                     midDay = uiEvent.Time.midDay,
                     minutes = uiEvent.Time.minutes
                 )
-                alarmData.value=alarmData.value.copy(time = time.value)
-                customTagName.value=customTagName.value.copy(meta = alarmData.value)
-                _alarmSettingUiState.value =_alarmSettingUiState.value.copy(CustomTagName=customTagName.value)
+                alarmData.value = alarmData.value.copy(time = time.value)
+                customTagName.value = customTagName.value.copy(meta = alarmData.value)
+                _alarmSettingUiState.value =
+                    _alarmSettingUiState.value.copy(CustomTagName = customTagName.value)
             }
-            is AlarmSettingEvent.SetWeek->{
-                week.value=week.value.copy(
+            is AlarmSettingEvent.SetWeek -> {
+                week.value = week.value.copy(
                     friday = uiEvent.week.friday,
                     saturday = uiEvent.week.saturday,
                     sunday = uiEvent.week.sunday,
@@ -100,35 +104,137 @@ class SchedulerViewModel
                     wednesday = uiEvent.week.wednesday,
                     recurring = uiEvent.week.recurring
                 )
-                _alarmSettingUiState.value=_alarmSettingUiState.value.copy(Week = week.value)
+                _alarmSettingUiState.value = _alarmSettingUiState.value.copy(Week = week.value)
+                Log.d("rupa", "ASEvent: ${alarmSettingUiState.value.Week}")
             }
-            is AlarmSettingEvent.SetStatus->{
-                alarmData.value=alarmData.value.copy(status = uiEvent.status)
-                customTagName.value=customTagName.value.copy(meta = alarmData.value)
-                _alarmSettingUiState.value =_alarmSettingUiState.value.copy(CustomTagName=customTagName.value)
+            is AlarmSettingEvent.SetStatus -> {
+                alarmData.value = alarmData.value.copy(status = uiEvent.status)
+                customTagName.value = customTagName.value.copy(meta = alarmData.value)
+                _alarmSettingUiState.value =
+                    _alarmSettingUiState.value.copy(CustomTagName = customTagName.value)
             }
-            is AlarmSettingEvent.SetLabel->{
-                _alarmSettingUiState.value=_alarmSettingUiState.value.copy(Label = uiEvent.label)
+            is AlarmSettingEvent.SetLabel -> {
+                _alarmSettingUiState.value = _alarmSettingUiState.value.copy(Label = uiEvent.label)
             }
-            is AlarmSettingEvent.SetDescription->{
-                _alarmSettingUiState.value=_alarmSettingUiState.value.copy(Description = uiEvent.description)
+            is AlarmSettingEvent.SetDescription -> {
+                _alarmSettingUiState.value =
+                    _alarmSettingUiState.value.copy(Description = uiEvent.description)
             }
-            is AlarmSettingEvent.SetReminderMode->{
-                _alarmSettingUiState.value=_alarmSettingUiState.value.copy(Choice = uiEvent.choice)
+            is AlarmSettingEvent.SetReminderMode -> {
+                _alarmSettingUiState.value =
+                    _alarmSettingUiState.value.copy(Choice = uiEvent.choice)
             }
-            is AlarmSettingEvent.SetVibration->{
-                vibration.value=vibration.value.copy(
-                    percentage = uiEvent.vibration.percentage,
-                    status = uiEvent.vibration.status
+            is AlarmSettingEvent.SetVibration -> {
+                vibration.value = vibration.value.copy(
+                    status = uiEvent.choice
                 )
-                alarmData.value=alarmData.value.copy(vibration = vibration.value)
-                customTagName.value=customTagName.value.copy(meta = alarmData.value)
-                _alarmSettingUiState.value =_alarmSettingUiState.value.copy(CustomTagName=customTagName.value)
+                alarmData.value = alarmData.value.copy(vibration = vibration.value)
+                customTagName.value = customTagName.value.copy(meta = alarmData.value)
+                _alarmSettingUiState.value =
+                    _alarmSettingUiState.value.copy(CustomTagName = customTagName.value)
             }
-            is AlarmSettingEvent.SetImportant->{
-                alarmData.value=alarmData.value.copy(important = uiEvent.important)
-                customTagName.value=customTagName.value.copy(meta = alarmData.value)
-                _alarmSettingUiState.value =_alarmSettingUiState.value.copy(CustomTagName=customTagName.value)
+            is AlarmSettingEvent.SetVibrationIntensity -> {
+                vibration.value = vibration.value.copy(
+                    percentage = uiEvent.vibration.toString()
+                )
+                alarmData.value = alarmData.value.copy(vibration = vibration.value)
+                customTagName.value = customTagName.value.copy(meta = alarmData.value)
+                _alarmSettingUiState.value =
+                    _alarmSettingUiState.value.copy(CustomTagName = customTagName.value)
+            }
+            is AlarmSettingEvent.SetSound -> {
+                sound.value = sound.value.copy(status = uiEvent.choice)
+                _alarmSettingUiState.value = _alarmSettingUiState.value.copy(Sound = sound.value)
+            }
+            is AlarmSettingEvent.SetSoundIntensity -> {
+                sound.value = sound.value.copy(percentage = uiEvent.sound.toString())
+                _alarmSettingUiState.value = _alarmSettingUiState.value.copy(Sound = sound.value)
+            }
+            is AlarmSettingEvent.SetImportant -> {
+                alarmData.value = alarmData.value.copy(important = uiEvent.important)
+                customTagName.value = customTagName.value.copy(meta = alarmData.value)
+                _alarmSettingUiState.value =
+                    _alarmSettingUiState.value.copy(CustomTagName = customTagName.value)
+            }
+            is AlarmSettingEvent.GotoTagScreen -> {
+                Log.d("manish", "GotoTagScreen: ")
+                refreshTagData()
+                getTagData()
+            }
+            is AlarmSettingEvent.GotoTimeSettingScreen -> {}
+
+            else -> {}
+        }
+    }
+
+    private fun getTagData() {
+        viewModelScope.launch {
+            alarmLocalRepo.getAllTags().collect {
+                _tagsUiState.value = _tagsUiState.value.copy(tagsList = it)
+            }
+        }
+    }
+
+    fun TagsEvent(uiEvent: TagsEvent) {
+        when (uiEvent) {
+            is TagsEvent.DeleteTag -> {
+                viewModelScope.launch {
+                    alarmLocalRepo.deleteTag(uiEvent.tag)
+                    getTagData()
+                }
+            }
+            is TagsEvent.UndoTag -> {
+                viewModelScope.launch {
+                    alarmLocalRepo.insertTag(uiEvent.tag)
+                    getTagData()
+                }
+            }
+            is TagsEvent.SelectedTag -> {
+                if (_tagsUiState.value.selectedTag.selected) {
+                    viewModelScope.launch {
+                        alarmLocalRepo.updateTag(
+                            TagEntity(
+                                selected = false,
+                                meta = _tagsUiState.value.selectedTag.meta,
+                                id = _tagsUiState.value.selectedTag.id
+                            )
+                        )
+                    }
+                }
+                val tag = uiEvent.tag
+                tag.selected = !tag.selected
+                _tagsUiState.value = _tagsUiState.value.copy(
+                    selectedTag = TagState(
+                        selected = tag.selected,
+                        meta = tag.meta,
+                        id = tag.id
+                    )
+                )
+                viewModelScope.launch {
+                    alarmLocalRepo.updateTag(tag)
+                    getTagData()
+                }
+            }
+            else -> {}
+        }
+    }
+
+    fun TSEvent(uiEvent: TimeSettingEvent) {
+        when (uiEvent) {
+            is TimeSettingEvent.SetSnooze -> {
+                _timeSettingUiState.value =
+                    _timeSettingUiState.value.copy(SnoozeTime = uiEvent.time)
+            }
+            is TimeSettingEvent.SetDuration -> {
+                _timeSettingUiState.value = _timeSettingUiState.value.copy(Duration = uiEvent.time)
+            }
+            is TimeSettingEvent.SetAdvancedDuration -> {
+                _timeSettingUiState.value = _timeSettingUiState.value.
+                copy(AdvancedDuration = uiEvent.time)
+            }
+            is TimeSettingEvent.SetAdvancedStatus -> {
+                _timeSettingUiState.value = _timeSettingUiState.value.
+                copy(AdvancedStatus = uiEvent.choice)
             }
             else -> {}
         }
@@ -155,15 +261,9 @@ class SchedulerViewModel
                                 offlineIds.add(it.idFromServer)
                             }
 
-                            Log.d(SpotifyConstants.TAG, "onlineIds: $onlineIds")
-                            Log.d(SpotifyConstants.TAG, "offlineIds: $offlineIds")
-                            Log.d(
-                                SpotifyConstants.TAG,
-                                "minus: ${onlineIds.minus(offlineIds.toSet())}"
-                            )
-
                             onlineIds.minus(offlineIds.toSet()).forEach { id ->
                                 onlineSchedules?.forEach { entity ->
+                                    Log.d(SpotifyConstants.TAG, "total alarm: ${entity}")
                                     if (entity.idFromServer == id) {
                                         alarmLocalRepo.insertAlarm(alarmEntity = entity)
                                     }
@@ -189,39 +289,34 @@ class SchedulerViewModel
             backendRepo.getTagListFromBackend(userId).collect { result ->
                 when (result) {
                     is NetworkResult.Success -> {
-                        Log.d(SpotifyConstants.TAG, "onCreate: ${result.data} ${result.message}")
-                        alarmLocalRepo.getAllTags().collect {
-                            val list = it
-                            val offlineListOfTags: MutableList<Data> = ArrayList()
-                            val onlineListOfTags: MutableList<Data> = ArrayList()
-                            result.data?.list?.forEach { meta ->
-                                onlineListOfTags.add(meta)
+                        Log.d("manish", "Success: ")
+                        Log.d("manish", "onCreate: ${result.data} ${result.message}")
+                        alarmLocalRepo.getAllTags().collect { list ->
+                            Log.d("manish", "local: ")
+                            val map = hashMapOf<String, Boolean>()
+                            list.forEach {
+                                map[it.meta.id] = true
+                                Log.d("manish", "map: ${map}")
                             }
-                            result.data?.customTagList?.forEach { meta ->
-                                onlineListOfTags.add(meta)
+                            result.data?.list?.forEach {
+                                if (map[it.id] != true) {
+                                    Log.d("manish", "refreshTagData: ")
+                                    alarmLocalRepo.insertTag(TagEntity(false, it))
+                                }
                             }
-                            list.forEach { tag ->
-                                offlineListOfTags.add(tag.meta)
-                            }
-
-                            offlineListOfTags.containsAll(onlineListOfTags).let { bool ->
-                                if (bool) {
-                                    Log.d(SpotifyConstants.TAG, "onCreate: Same")
-                                } else {
-                                    Log.d(SpotifyConstants.TAG, "onCreate: Diff")
-                                    onlineListOfTags.minus(offlineListOfTags.toSet())
-                                        .forEach { tag ->
-                                            alarmLocalRepo.insertTag(TagEntity(false, tag))
-                                        }
+                            result.data?.customTagList?.forEach {
+                                if (map[it.id] != true) {
+                                    Log.d("manish", "refreshTagData: ")
+                                    alarmLocalRepo.insertTag(TagEntity(false, it))
                                 }
                             }
                         }
                     }
                     is NetworkResult.Error -> {
-                        Log.d(SpotifyConstants.TAG, "onCreate: ${result.data} ${result.message}")
+                        Log.d("manish", "onCreate: ${result.data} ${result.message}")
                     }
                     is NetworkResult.Loading -> {
-                        Log.d(SpotifyConstants.TAG, "onCreate: ${result.data} ${result.message}")
+                        Log.d("manish", "onCreate: ${result.data} ${result.message}")
                     }
                 }
 

@@ -1,6 +1,5 @@
 package fit.asta.health.scheduler.model
 
-import androidx.lifecycle.LiveData
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.db.entity.TagEntity
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +16,6 @@ interface AlarmLocalRepo {
 
     suspend fun deleteAllAlarm()
 
-    fun getAlarmLiveData(): LiveData<List<AlarmEntity>>
 
     fun getAllTags(): Flow<List<TagEntity>>
 
