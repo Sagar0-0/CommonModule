@@ -24,7 +24,7 @@ class ProfileDataMapper {
 //        health[UserPropertyType.Ailments] = mapChipCard(profile.health.ailments!!)
 //        health[UserPropertyType.Medications] = mapChipCard(profile.health.medications!!)
 //        health[UserPropertyType.Injuries] = mapInjuryChipCard(profile.health.injuries!!)
-//        health[UserPropertyType.HealthTargets] = mapChipCard(profile.health.targets!!)
+//        health[UserPropertyType.HealthTargets] = mapChipCard(profile.health.healthTargets!!)
 //
 //        diet[UserPropertyType.DietPref] = mapChipCard(profile.diet.preference!!)
 //        diet[UserPropertyType.NvDays] = mapChipCard(profile.diet.nonVegDays!!)

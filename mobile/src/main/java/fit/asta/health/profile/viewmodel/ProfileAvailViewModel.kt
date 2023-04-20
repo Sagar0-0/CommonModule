@@ -24,7 +24,6 @@ constructor(
     private val mutableState = MutableStateFlow<ProfileAvailState>(ProfileAvailState.Loading)
     val state = mutableState.asStateFlow()
 
-
     fun isUserProfileAvailable(userId: String) {
         viewModelScope.launch {
             profileRepo.isUserProfileAvailable(userId)

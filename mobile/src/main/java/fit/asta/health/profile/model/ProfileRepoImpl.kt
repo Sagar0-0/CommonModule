@@ -2,6 +2,7 @@ package fit.asta.health.profile.model
 
 import android.content.Context
 import fit.asta.health.common.utils.InputStreamRequestBody
+import fit.asta.health.network.data.ApiResponse
 import fit.asta.health.network.data.Status
 import fit.asta.health.profile.model.api.ProfileApi
 import fit.asta.health.profile.model.domain.UserProfile
@@ -9,6 +10,8 @@ import fit.asta.health.profile.model.network.NetHealthPropertiesRes
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okhttp3.MultipartBody
+import retrofit2.HttpException
+import java.io.IOException
 
 
 class ProfileRepoImpl(
@@ -17,9 +20,20 @@ class ProfileRepoImpl(
     private val mapper: ProfileDataMapper,
 ) : ProfileRepo {
 
-    override suspend fun getUserProfile(uid: String): Flow<UserProfile> {
-        return flow {
-            emit(remoteApi.getUserProfile(uid).userProfile)
+//    override suspend fun getUserProfile(uid: String): Flow<UserProfile> {
+//        return flow {
+//            emit(remoteApi.getUserProfile(uid).userProfile)
+//        }
+//    }
+
+    override suspend fun getUserProfile(uid: String): ApiResponse<UserProfile> {
+        return try {
+            val response = remoteApi.getUserProfile(uid)
+            ApiResponse.Success(data = response.userProfile)
+        } catch (e: HttpException) {
+            ApiResponse.HttpError(code = e.code(), msg = e.message(), ex = e)
+        } catch (e: IOException) {
+            ApiResponse.Error(exception = e)
         }
     }
 
@@ -51,6 +65,17 @@ class ProfileRepoImpl(
     override suspend fun getHealthProperties(propertyType: String): Flow<NetHealthPropertiesRes> {
         return flow {
             emit(remoteApi.getHealthProperties(propertyType))
+        }
+    }
+
+    override suspend fun editUserProfile(uid: String): ApiResponse<UserProfile> {
+        return try {
+            val response = remoteApi.getUserProfile(userId = uid)
+            ApiResponse.Success(data = response.userProfile)
+        } catch (e: HttpException) {
+            ApiResponse.HttpError(code = e.code(), msg = e.message(), ex = e)
+        } catch (e: IOException) {
+            ApiResponse.Error(exception = e)
         }
     }
 

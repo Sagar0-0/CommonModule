@@ -49,7 +49,7 @@ fun DietContent(
 
     val dietList by viewModel.dpData.collectAsState()
 
-    val event = viewModel.stateEdit.collectAsState()
+    val event = viewModel.stateSubmit.collectAsState()
     val events = event.value
 
     var buttonClicked by remember { mutableStateOf(false) }
@@ -158,13 +158,14 @@ fun DietContent(
 
             if (buttonClicked) {
                 when (events) {
-                    is ProfileEditState.Empty -> {}
-                    is ProfileEditState.Error -> {
+                    is ProfileSubmitState.Empty -> {}
+                    is ProfileSubmitState.Error -> {
                         Log.d("validate", "Error -> ${events.error}")
                     }
-                    is ProfileEditState.Loading -> LoadingAnimation()
-                    is ProfileEditState.NoInternet -> NoInternetLayout(onTryAgain = {})
-                    is ProfileEditState.Success -> {
+
+                    is ProfileSubmitState.Loading -> LoadingAnimation()
+                    is ProfileSubmitState.NoInternet -> NoInternetLayout(onTryAgain = {})
+                    is ProfileSubmitState.Success -> {
                         (context as MainActivity).loadAppScreen()
                         Log.d("validate", "Success -> ${events.userProfile}")
                     }

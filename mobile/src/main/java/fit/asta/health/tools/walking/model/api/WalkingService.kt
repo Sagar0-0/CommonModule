@@ -14,6 +14,7 @@ interface WalkingService {
 //        @Query("uid") userId: String,
 //        @Query("date") date:Double
 //    ): StepsDataWithUidDate
+
     @GET("tools/walking/get/")
     suspend fun getHomeData(
         @Query("uid") userId: String = "6309a9379af54f142c65fbfe"
@@ -22,6 +23,7 @@ interface WalkingService {
 
     @PUT()
     suspend fun putData( @Body putData: PutData)
+
 
 //    @GET("tools/steps/start/session/get")
 //    suspend fun getDataWithUid(

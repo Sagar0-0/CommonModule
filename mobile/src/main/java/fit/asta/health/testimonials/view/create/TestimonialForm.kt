@@ -212,7 +212,11 @@ fun TestimonialForm(
                     })
                 }
 
-                is TestimonialSubmitState.NoInternet -> NoInternetLayout(onTryAgain = {})
+                is TestimonialSubmitState.NoInternet -> NoInternetLayout(onTryAgain = {
+                    editViewModel.onEvent(
+                        TestimonialEvent.OnSubmit
+                    )
+                })
             }
         }
 

@@ -342,11 +342,9 @@ fun HealthCreateScreen(
 
 }
 
-
 enum class HealthCreateBottomSheetTypes {
     HEALTHHISTORY, INJURIES, AILMENTS, MEDICATIONS, HEALTHTARGETS, BODYPARTS, ADDICTION
 }
-
 
 @Composable
 fun HealthCreateBtmSheetLayout(

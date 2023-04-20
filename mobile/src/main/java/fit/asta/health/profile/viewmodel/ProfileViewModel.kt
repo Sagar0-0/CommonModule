@@ -11,8 +11,20 @@ import fit.asta.health.R
 import fit.asta.health.common.utils.UiString
 import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.network.NetworkHelper
+import fit.asta.health.network.data.ApiResponse
 import fit.asta.health.profile.model.ProfileRepo
-import fit.asta.health.profile.model.domain.*
+import fit.asta.health.profile.model.domain.ComposeIndex
+import fit.asta.health.profile.model.domain.Contact
+import fit.asta.health.profile.model.domain.Diet
+import fit.asta.health.profile.model.domain.Health
+import fit.asta.health.profile.model.domain.HealthProperties
+import fit.asta.health.profile.model.domain.LifeStyle
+import fit.asta.health.profile.model.domain.Physique
+import fit.asta.health.profile.model.domain.ProfileMedia
+import fit.asta.health.profile.model.domain.ThreeToggleSelections
+import fit.asta.health.profile.model.domain.TwoToggleSelections
+import fit.asta.health.profile.model.domain.UserProfile
+import fit.asta.health.profile.viewmodel.ProfileConstants.ADDRESS
 import fit.asta.health.profile.viewmodel.ProfileConstants.AGE
 import fit.asta.health.profile.viewmodel.ProfileConstants.BMI
 import fit.asta.health.profile.viewmodel.ProfileConstants.BODY_TYPE
@@ -21,6 +33,7 @@ import fit.asta.health.profile.viewmodel.ProfileConstants.EMAIL
 import fit.asta.health.profile.viewmodel.ProfileConstants.HEIGHT
 import fit.asta.health.profile.viewmodel.ProfileConstants.INJURIES_SINCE
 import fit.asta.health.profile.viewmodel.ProfileConstants.NAME
+import fit.asta.health.profile.viewmodel.ProfileConstants.PHONE
 import fit.asta.health.profile.viewmodel.ProfileConstants.PREGNANCY_WEEK
 import fit.asta.health.profile.viewmodel.ProfileConstants.PROFILE_DATA
 import fit.asta.health.profile.viewmodel.ProfileConstants.USER_IMG
@@ -28,7 +41,13 @@ import fit.asta.health.profile.viewmodel.ProfileConstants.WEIGHT
 import fit.asta.health.testimonials.model.domain.InputIntWrapper
 import fit.asta.health.testimonials.model.domain.InputWrapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -43,20 +62,19 @@ class ProfileViewModel
     private val savedState: SavedStateHandle,
 ) : ViewModel() {
 
-    private val mutableEditState = MutableStateFlow<ProfileEditState>(ProfileEditState.Loading)
-    val stateEdit = mutableEditState.asStateFlow()
+    private val _stateSubmit = MutableStateFlow<ProfileSubmitState>(ProfileSubmitState.Loading)
+    val stateSubmit = _stateSubmit.asStateFlow()
 
 
     private val mutableHPropState = MutableStateFlow<HPropState>(HPropState.Loading)
     val stateHp = mutableHPropState.asStateFlow()
 
 
-    private val mutableState = MutableStateFlow<ProfileState>(ProfileState.Loading)
-    val state = mutableState.asStateFlow()
+    private val _mutableState = MutableStateFlow<ProfileGetState>(ProfileGetState.Loading)
+    val state = _mutableState.asStateFlow()
 
-
-    private val mutableCreateState = MutableStateFlow<ProfileAvailState>(ProfileAvailState.Loading)
-    val createState = mutableCreateState.asStateFlow()
+    private val _mutableEditState = MutableStateFlow<ProfileGetState>(ProfileGetState.Loading)
+    val stateEdit = _mutableEditState.asStateFlow()
 
 
     // Any Significant Health History
@@ -79,6 +97,7 @@ class ProfileViewModel
     private val areDietInputsValid = MutableStateFlow(false)
     val dietInputsValid: StateFlow<Boolean>
         get() = areDietInputsValid
+
 
     private fun isDietValid(valid: Boolean) {
         areDietInputsValid.value = valid
@@ -166,52 +185,64 @@ class ProfileViewModel
     val selectedPhyAct: StateFlow<ThreeToggleSelections?>
         get() = _selectedPhyActOption
 
+
     //Working Hours
     private val _selectedWorkingHrsOption = MutableStateFlow<ThreeToggleSelections?>(null)
     val selectedWorkingHrs: StateFlow<ThreeToggleSelections?>
         get() = _selectedWorkingHrsOption
+
 
     //Working Env
     private val _selectedWorkingEnvOption = MutableStateFlow<TwoToggleSelections?>(null)
     val selectedWorkingEnv: StateFlow<TwoToggleSelections?>
         get() = _selectedWorkingEnvOption
 
+
     //Working Style
     private val _selectedWorkStyleOption = MutableStateFlow<TwoToggleSelections?>(null)
     val selectedWorkStyle: StateFlow<TwoToggleSelections?>
         get() = _selectedWorkStyleOption
 
+
     private fun setSelectedPhysicalActiveOption(option: ThreeToggleSelections) {
         _selectedPhyActOption.value = option
     }
+
 
     private fun setSelectedWorkingHrsOption(option: ThreeToggleSelections) {
         _selectedWorkingHrsOption.value = option
     }
 
+
     private fun setSelectedWorkingEnvOption(option: TwoToggleSelections) {
         _selectedWorkingEnvOption.value = option
     }
+
 
     private fun setSelectedWorkingStyleOption(option: TwoToggleSelections) {
         _selectedWorkStyleOption.value = option
     }
 
+
     private fun setSelectedHealthHisOption(option: TwoToggleSelections) {
         _selectedHealthHisOption.value = option
     }
+
 
     private fun setSelectedGenderOption(option: ThreeToggleSelections) {
         _selectedGenderOption.value = option
     }
 
+
     private fun setSelectedIsPregnantOption(option: TwoToggleSelections) {
         _isPregnantOption.value = option
     }
 
+
     private fun setSelectedOnPeriodOption(option: TwoToggleSelections) {
         _isOnPeriodOption.value = option
     }
+
 
     private fun setSelectedInjOption(option: TwoToggleSelections) {
         _selectedInjOption.value = option
@@ -375,28 +406,246 @@ class ProfileViewModel
     }
 
 
-    private fun loadUserProfile() {
+    fun loadUserProfile() {
 
         if (networkHelper.isConnected()) {
             authRepo.getUser()?.let {
                 loadUserProfileResponse(userId = it.uid)
             }
         } else {
-            mutableState.value = ProfileState.NoInternet
+            _mutableState.value = ProfileGetState.NoInternet
         }
 
     }
 
+    private fun loadEditProfile(userID: String) {
+        viewModelScope.launch {
+            when (val result = profileRepo.editUserProfile(userID)) {
+                is ApiResponse.Error -> {}
+                is ApiResponse.HttpError -> {
+                    _mutableEditState.value = ProfileGetState.Empty
+                }
+
+                is ApiResponse.Success -> {
+
+                    savedState[PROFILE_DATA] = result.data
+
+
+                    savedState[NAME] = result.data.contact.name
+
+                    _mutableEditState.value = ProfileGetState.Success(result.data)
+                }
+            }
+        }
+    }
 
     //view only
     private fun loadUserProfileResponse(userId: String) {
 
         viewModelScope.launch {
-            profileRepo.getUserProfile(userId).catch { exception ->
-                mutableState.value = ProfileState.Error(exception)
-            }.collect { profile ->
-                //User Profile Data
-                mutableState.value = ProfileState.Success(profile)
+//            profileRepo.getUserProfile(userId).catch { exception ->
+//                _mutableState.value = ProfileGetState.Error(exception)
+//            }.collect { profile ->
+//                //User Profile Data
+//                _mutableState.value = ProfileGetState.Success(profile)
+//            }
+
+            when (val result = profileRepo.getUserProfile(userId)) {
+                is ApiResponse.Error -> {}
+                is ApiResponse.HttpError -> {
+                    _mutableState.value = ProfileGetState.Empty
+                }
+
+                is ApiResponse.Success -> {
+
+                    //Profile Data Replica
+                    savedState[PROFILE_DATA] = result.data
+
+                    //Access Data
+                    //Contact
+                    savedState[NAME] = InputWrapper(value = result.data.contact.name)
+                    savedState[EMAIL] = InputWrapper(value = result.data.contact.email)
+                    savedState[PHONE] = InputWrapper(value = result.data.contact.phone)
+                    savedState[USER_IMG] = result.data.contact.url
+                    savedState[ADDRESS] = result.data.contact.address
+
+                    //Physique
+                    savedState[AGE] = InputWrapper(value = result.data.physique.age.toString())
+                    savedState[DOB] = InputWrapper(value = result.data.contact.dob)
+                    savedState[WEIGHT] =
+                        InputWrapper(value = result.data.physique.weight.toString())
+                    savedState[HEIGHT] =
+                        InputWrapper(value = result.data.physique.height.toString())
+                    _selectedGenderOption.value = when (result.data.physique.gender) {
+                        "male" -> ThreeToggleSelections.First
+                        "female" -> ThreeToggleSelections.Second
+                        "others" -> ThreeToggleSelections.Third
+                        else -> {
+                            null
+                        }
+                    }
+                    _isPregnantOption.value = when (result.data.physique.isPregnant) {
+                        true -> {
+                            TwoToggleSelections.First
+                        }
+
+                        false -> TwoToggleSelections.Second
+                    }
+                    savedState[PREGNANCY_WEEK] =
+                        InputWrapper(value = result.data.physique.pregnancyWeek.toString())
+
+                    //Health
+                    _selectedHealthHisOption.value =
+                        if (result.data.health.healthHistory.isNullOrEmpty()) {
+                            TwoToggleSelections.Second
+                        } else {
+                            TwoToggleSelections.First
+                        }
+                    _selectedInjOption.value = if (result.data.health.injuries.isNullOrEmpty()) {
+                        TwoToggleSelections.Second
+                    } else {
+                        TwoToggleSelections.First
+                    }
+                    savedState[INJURIES_SINCE] =
+                        InputWrapper(value = result.data.health.injurySince.toString())
+                    _selectedBodyPartOption.value =
+                        if (result.data.health.bodyPart.isNullOrEmpty()) {
+                            TwoToggleSelections.Second
+                        } else {
+                            TwoToggleSelections.First
+                        }
+                    _selectedAilOption.value = if (result.data.health.ailments.isNullOrEmpty()) {
+                        TwoToggleSelections.Second
+                    } else {
+                        TwoToggleSelections.First
+                    }
+                    _selectedMedOption.value = if (result.data.health.medications.isNullOrEmpty()) {
+                        TwoToggleSelections.Second
+                    } else {
+                        TwoToggleSelections.First
+                    }
+                    _selectedHealthTarOption.value =
+                        if (result.data.health.healthTargets.isNullOrEmpty()) {
+                            TwoToggleSelections.Second
+                        } else {
+                            TwoToggleSelections.First
+                        }
+                    _selectedAddictionOption.value =
+                        if (result.data.health.addiction.isNullOrEmpty()) {
+                            TwoToggleSelections.Second
+                        } else {
+                            TwoToggleSelections.First
+                        }
+                    _healthPropertiesData.value = _healthPropertiesData.value.toMutableMap().apply {
+                        put(
+                            key = 0,
+                            value = mutableStateListOf(*result.data.health.healthHistory!!.toTypedArray())
+                        )
+                        put(
+                            key = 1,
+                            value = mutableStateListOf(*result.data.health.injuries!!.toTypedArray())
+                        )
+                        put(
+                            key = 2,
+                            value = mutableStateListOf(*result.data.health.bodyPart!!.toTypedArray())
+                        )
+                        put(
+                            key = 3,
+                            value = mutableStateListOf(*result.data.health.ailments!!.toTypedArray())
+                        )
+                        put(
+                            key = 4,
+                            value = mutableStateListOf(*result.data.health.medications!!.toTypedArray())
+                        )
+                        put(
+                            key = 5,
+                            value = mutableStateListOf(*result.data.health.healthTargets!!.toTypedArray())
+                        )
+                        put(
+                            key = 6,
+                            value = mutableStateListOf(*result.data.health.addiction!!.toTypedArray())
+                        )
+                    }
+
+                    //LifeStyle
+                    _selectedPhyActOption.value = when (result.data.lifeStyle.physicalActivity) {
+                        HealthProperties(name = "Less") -> ThreeToggleSelections.First
+                        HealthProperties(name = "Moderate") -> ThreeToggleSelections.Second
+                        HealthProperties(name = "Very") -> ThreeToggleSelections.Third
+                        else -> {
+                            null
+                        }
+                    }
+                    _selectedWorkingEnvOption.value = when (result.data.lifeStyle.workingEnv) {
+                        HealthProperties(name = "Standing") -> TwoToggleSelections.First
+                        HealthProperties(name = "Sitting") -> TwoToggleSelections.Second
+                        else -> {
+                            null
+                        }
+                    }
+                    _selectedWorkStyleOption.value = when (result.data.lifeStyle.workStyle) {
+                        HealthProperties(name = "Indoor") -> TwoToggleSelections.First
+                        HealthProperties(name = "Outdoor") -> TwoToggleSelections.Second
+                        else -> {
+                            null
+                        }
+                    }
+                    _selectedWorkingHrsOption.value = when (result.data.lifeStyle.workingHours) {
+                        HealthProperties(name = "Morning") -> ThreeToggleSelections.First
+                        HealthProperties(name = "Afternoon") -> ThreeToggleSelections.Second
+                        HealthProperties(name = "Night") -> ThreeToggleSelections.Third
+                        else -> {
+                            null
+                        }
+                    }
+                    _lfPropertiesData.value = _lfPropertiesData.value.toMutableMap().apply {
+                        put(
+                            key = 0,
+                            value = mutableStateListOf(*result.data.lifeStyle.curActivities!!.toTypedArray())
+                        )
+                        put(
+                            key = 1,
+                            value = mutableStateListOf(*result.data.lifeStyle.prefActivities!!.toTypedArray())
+                        )
+                        put(
+                            key = 2,
+                            value = mutableStateListOf(*result.data.lifeStyle.lifeStyleTargets!!.toTypedArray())
+                        )
+                    }
+
+                    //Diet
+                    _dietPropertiesData.value = _dietPropertiesData.value.toMutableMap().apply {
+                        put(
+                            key = 0,
+                            value = mutableStateListOf(*result.data.diet.preference!!.toTypedArray())
+                        )
+                        put(
+                            key = 1,
+                            value = mutableStateListOf(*result.data.diet.nonVegDays!!.toTypedArray())
+                        )
+                        put(
+                            key = 2,
+                            value = mutableStateListOf(*result.data.diet.allergies!!.toTypedArray())
+                        )
+                        put(
+                            key = 3,
+                            value = mutableStateListOf(*result.data.diet.cuisines!!.toTypedArray())
+                        )
+                        put(
+                            key = 4,
+                            value = mutableStateListOf(*result.data.diet.foodRestrictions!!.toTypedArray())
+                        )
+                    }
+                    _selectedFoodResOption.value =
+                        if (result.data.diet.foodRestrictions.isNullOrEmpty()) {
+                            TwoToggleSelections.Second
+                        } else {
+                            TwoToggleSelections.First
+                        }
+
+                    //Profile Data
+                    _mutableState.value = ProfileGetState.Success(result.data)
+                }
             }
         }
 
@@ -481,7 +730,7 @@ class ProfileViewModel
                         bodyPart = convertHealthArrayList(2),
                         ailments = convertHealthArrayList(3),
                         medications = convertHealthArrayList(4),
-                        targets = convertHealthArrayList(5),
+                        healthTargets = convertHealthArrayList(5),
                         addiction = convertHealthArrayList(6),
                         injurySince = if (injuriesSince.value.value == "") {
                             0
@@ -534,13 +783,13 @@ class ProfileViewModel
         if (networkHelper.isConnected()) {
             viewModelScope.launch {
                 profileRepo.updateUserProfile(userProfile).catch { exception ->
-                    mutableEditState.value = ProfileEditState.Error(exception)
+                    _stateSubmit.value = ProfileSubmitState.Error(exception)
                 }.collect { profile ->
-                    mutableEditState.value = ProfileEditState.Success(profile)
+                    _stateSubmit.value = ProfileSubmitState.Success(profile)
                 }
             }
         } else {
-            mutableEditState.value = ProfileEditState.NoInternet
+            _stateSubmit.value = ProfileSubmitState.NoInternet
         }
 
     }
@@ -570,6 +819,7 @@ class ProfileViewModel
             value.length in 1 until min -> UiString.Resource(
                 R.string.data_length_less, min.toString()
             )
+
             else -> UiString.Empty
         }
     }
@@ -582,6 +832,7 @@ class ProfileViewModel
             !android.util.Patterns.EMAIL_ADDRESS.matcher(value).matches() -> UiString.Resource(
                 R.string.that_is_not_a_valid_email
             )
+
             else -> UiString.Empty
         }
     }
@@ -608,16 +859,20 @@ class ProfileViewModel
             value.toDouble() < min -> UiString.Resource(
                 R.string.validate_min_phy, type, min.toString()
             )
+
             value.toDouble() > max -> UiString.Resource(
                 R.string.validate_max_phy, type, max.toString()
             )
+
             else -> UiString.Empty
         }
     }
 
+
     private fun userBMI(userWeight: Float, userHeight: Float): Float {
         return ((userWeight / (userHeight * userHeight)) * 10000)
     }
+
 
     fun validateDataList(
         list: SnapshotStateList<HealthProperties>,
@@ -721,14 +976,18 @@ class ProfileViewModel
             ProfileEvent.OnSubmit -> {
                 submit()
             }
+
             is ProfileEvent.IsHealthValid -> {
                 isHealthValid(valid = event.valid)
             }
+
             is ProfileEvent.IsPhyValid -> {
                 isPhyValid(event.valid)
             }
+
             is ProfileEvent.DoAllInputsValid -> doAllInputsValid(valid = event.valid)
             is ProfileEvent.IsDietValid -> isDietValid(event.valid)
+
         }
 
     }

@@ -78,7 +78,7 @@ fun HealthLayout(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        health.targets?.let {
+        health.healthTargets?.let {
             ChipCard(
                 icon = UserPropertyType.HealthTargets.icon,
                 title = UserPropertyType.HealthTargets.title,

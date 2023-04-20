@@ -42,7 +42,6 @@ import fit.asta.health.profile.CreateUserProfileActivity
 import fit.asta.health.profile.UserProfileActivity
 import fit.asta.health.profile.viewmodel.ProfileAvailState
 import fit.asta.health.profile.viewmodel.ProfileAvailViewModel
-import fit.asta.health.profile.viewmodel.ProfileViewModel
 import fit.asta.health.settings.SettingsActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
@@ -61,7 +60,6 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
     }
 
     private val profileAvailViewModel: ProfileAvailViewModel by viewModels()
-    private val profileViewModel: ProfileViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
     private var settingsLauncher: ActivityResultLauncher<Intent>? = null
     private lateinit var networkConnectivity: NetworkConnectivity
