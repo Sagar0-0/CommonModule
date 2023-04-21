@@ -33,7 +33,8 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
             val toastText = String.format("Alarm Reboot")
             Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
             startRescheduleAlarmsService(context!!)
-        } else {
+        }
+        else {
             val bundleForAlarm = intent.getBundleExtra(BUNDLE_ALARM_OBJECT)
             if (bundleForAlarm != null) {
                 alarmEntity = bundleForAlarm.getSerializable(ARG_ALARM_OBJET) as AlarmEntity?

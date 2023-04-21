@@ -288,7 +288,7 @@ class WalkingViewModel
                     unit = "km"
                 ),
                 dur = Duration(
-                    dur = _homeUiState.value.durationTarget.toInt(),
+                    dur = _homeUiState.value.durationTarget,
                     unit = "mins"
                 ),
                 steps = Steps(
@@ -453,15 +453,15 @@ class WalkingViewModel
                     yesterday -> {}
                     else -> {
                         val dayData = createPutDayData(
-                            bpm = 0,
+                            bpm = 0f,
                             id = "",
                             uid = uid,
                             weightLoose = it.weightLoosed.toFloat(),
                             date_of = "${LocalDate.now().withDayOfMonth(it.date)}",
                             calories = it.calories.toInt(),
-                            heartRate = 72,
+                            heartRate = 72f,
                             steps = Steps(steps = it.allSteps, unit = "steps"),
-                            duration = Duration(dur = it.realtime, unit = "mins"),
+                            duration = Duration(dur = it.realtime.toFloat(), unit = "mins"),
                             distance = Distance(dis = it.allSteps.toFloat() / 1408f, unit = "km")
                         )
                         val result = walkingToolRepo.putDayData(putDayData = dayData)
@@ -474,12 +474,12 @@ class WalkingViewModel
     }
 
     private fun createPutDayData(
-        bpm: Int,
+        bpm: Float,
         calories: Int,
         date_of: String,
         distance: Distance,
         duration: Duration,
-        heartRate: Int,
+        heartRate: Float,
         id: String,
         steps: Steps,
         uid: String,

@@ -1,15 +1,9 @@
 package fit.asta.health.scheduler.compose.screen.timesettingscreen
 
-import fit.asta.health.scheduler.model.net.scheduler.Rep
+import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.IvlUiState
+import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.StatUiState
 
 data class TimeSettingUiState(
-    // snooze
-    val SnoozeTime: Int = 0,
-    // advanced duration
-    val AdvancedDuration: Int = 0,
-    val AdvancedStatus: Boolean = false,
-    // duration
-    val Duration: Int = 0,
-    // repeat
-    val Repeat: Rep = Rep(time = 0, unit = "")
+    val interval: IvlUiState = IvlUiState(),
+    val listOfVariantIntervals: List<StatUiState> = emptyList()
 )

@@ -19,8 +19,6 @@ data class Ivl(
     var snoozeTime: Int, // 10
     @SerializedName("stat")
     var staticIntervals: List<Stat>,
-    @SerializedName("sts")
-    val status: Boolean, // true
     @SerializedName("vars")
     val variantIntervals: List<Stat>,
     @SerializedName("vit")

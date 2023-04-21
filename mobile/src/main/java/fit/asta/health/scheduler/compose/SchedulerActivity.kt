@@ -5,21 +5,25 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.ui.AppTheme
+import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.navigation.SchedulerNavigation
 import fit.asta.health.scheduler.viewmodel.SchedulerViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class SchedulerActivity : ComponentActivity() {
+class SchedulerActivity : AppCompatActivity() {
 
+    private var alarmEntity: AlarmEntity? = null
+    private lateinit var schedulerViewModel: SchedulerViewModel
 
     companion object {
 
@@ -33,6 +37,7 @@ class SchedulerActivity : ComponentActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContent {
             MyApp {
@@ -43,6 +48,13 @@ class SchedulerActivity : ComponentActivity() {
                     )
                 }
             }
+        }
+        schedulerViewModel = ViewModelProvider(this)[SchedulerViewModel::class.java]
+        schedulerViewModel.context = this
+
+        if (intent.getParcelableExtra<AlarmEntity>("alarmItem") != null) {
+            alarmEntity = intent.getParcelableExtra("alarmItem")
+            schedulerViewModel.setAlarmEntityIntent(alarmEntity)
         }
     }
 

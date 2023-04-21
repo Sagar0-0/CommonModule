@@ -7,13 +7,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CustomLabelBottomSheetLayout(
     text: String,
@@ -21,6 +24,7 @@ fun CustomLabelBottomSheetLayout(
     onNavigateBack: () -> Unit,
     onSave: (String) -> Unit = {},
 ) {
+
     var value by remember {
         mutableStateOf("")
     }
@@ -49,7 +53,9 @@ fun CustomLabelBottomSheetLayout(
                 color = MaterialTheme.colorScheme.onTertiaryContainer,
                 textAlign = TextAlign.Center
             )
-            IconButton(onClick = { onSave(value) }) {
+            IconButton(onClick = {
+                onSave(value)
+            }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_baseline_check_24),
                     contentDescription = null,

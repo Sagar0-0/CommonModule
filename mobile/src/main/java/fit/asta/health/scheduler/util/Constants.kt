@@ -61,9 +61,9 @@ class Constants {
                 customSection = UltimateRingtonePicker.SystemRingtonePicker.CustomSection(),
                 defaultSection = UltimateRingtonePicker.SystemRingtonePicker.DefaultSection(),
                 ringtoneTypes = listOf(
+                    RingtoneManager.TYPE_ALARM,
                     RingtoneManager.TYPE_RINGTONE,
-                    RingtoneManager.TYPE_NOTIFICATION,
-                    RingtoneManager.TYPE_ALARM
+                    RingtoneManager.TYPE_NOTIFICATION
                 )
             ),
             deviceRingtonePicker = UltimateRingtonePicker.DeviceRingtonePicker(

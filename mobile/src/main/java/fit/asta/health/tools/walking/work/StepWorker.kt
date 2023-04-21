@@ -44,15 +44,15 @@ private suspend fun runServerRequest(
 ) {
 
     val dayData = createPutDayData(
-        bpm = 0,
+        bpm = 0f,
         id = "",
         uid = "6383745840efcc8cdeb289e1",
         weightLoose = data.weightLoosed.toFloat(),
         date = "${LocalDate.now()}",
         calories = data.calories.toInt(),
-        heartRate = 72,
+        heartRate = 72f,
         steps = Steps(steps = data.allSteps, unit = "steps"),
-        duration = Duration(dur = data.realtime, unit = "mins"),
+        duration = Duration(dur = data.realtime.toFloat(), unit = "mins"),
         distance = Distance(dis = data.allSteps.toFloat() * 1408, unit = "km")
     )
 //    val result = walkingToolRepo.putDayData(putDayData = dayData)
@@ -65,12 +65,12 @@ private suspend fun runServerRequest(
 }
 
 fun createPutDayData(
-    bpm: Int,
+    bpm: Float,
     calories: Int,
     date: String,
     distance: Distance,
     duration: Duration,
-    heartRate: Int,
+    heartRate: Float,
     id: String,
     steps: Steps,
     uid: String,

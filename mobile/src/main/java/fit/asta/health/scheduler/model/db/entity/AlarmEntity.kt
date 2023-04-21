@@ -63,7 +63,7 @@ data class AlarmEntity(
     var week: Wk,
     @PrimaryKey(autoGenerate = true)
     @SerializedName("almId")
-    val alarmId: Int = 0
+    var alarmId: Int = 0
 ) : Serializable, Parcelable {
 
     private fun schedulerPreNotification(
@@ -76,17 +76,9 @@ data class AlarmEntity(
         val preNotificationIntent = Intent(context, AlarmBroadcastReceiver::class.java)
         val bundle = Bundle()
         val hour = if (isInterval) {
-            if (interval!!.midDay) {
-                interval.hours.toInt() + 12
-            } else {
-                interval.hours.toInt()
-            }
+            interval!!.hours.toInt()
         } else {
-            if (this.time.midDay) {
-                this.time.hours.toInt() + 12
-            } else {
-                this.time.hours.toInt()
-            }
+            this.time.hours.toInt()
         }
         val millie = if (isInterval) {
             (hour * 60 * 60000) + (interval!!.minutes.toInt() * 60000) - (this.interval.advancedReminder.time * 60000)
@@ -117,7 +109,7 @@ data class AlarmEntity(
                 context,
                 (id + 1),
                 preNotificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
 
         val calendar = Calendar.getInstance()
@@ -155,17 +147,9 @@ data class AlarmEntity(
         val postNotificationIntent = Intent(context, AlarmBroadcastReceiver::class.java)
         val bundle = Bundle()
         val hour = if (isInterval) {
-            if (interval!!.midDay) {
-                interval.hours.toInt() + 12
-            } else {
-                interval.hours.toInt()
-            }
+            interval!!.hours.toInt()
         } else {
-            if (this.time.midDay) {
-                this.time.hours.toInt() + 12
-            } else {
-                this.time.hours.toInt()
-            }
+            this.time.hours.toInt()
         }
         val millie = if (isInterval) {
             (hour * 60 * 60000) + (interval!!.minutes.toInt() * 60000) + (this.interval.duration * 60000)
@@ -195,7 +179,7 @@ data class AlarmEntity(
                 context,
                 (id + 4),
                 postNotificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
 
         val calendar = Calendar.getInstance()
@@ -232,16 +216,12 @@ data class AlarmEntity(
         val alarmPendingIntent =
             PendingIntent.getBroadcast(
                 context, this.alarmId, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
 
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = System.currentTimeMillis()
-        if (this.time.midDay) {
-            calendar[Calendar.HOUR_OF_DAY] = this.time.hours.toInt() + 12
-        } else {
-            calendar[Calendar.HOUR_OF_DAY] = this.time.hours.toInt()
-        }
+        calendar[Calendar.HOUR_OF_DAY] = this.time.hours.toInt()
         calendar[Calendar.MINUTE] = this.time.minutes.toInt()
         calendar[Calendar.SECOND] = 0
         calendar[Calendar.MILLISECOND] = 0
@@ -294,52 +274,36 @@ data class AlarmEntity(
             )
         }
 
-        if (this.interval.status) {
-            if (this.interval.isVariantInterval) {
-                if (this.interval.staticIntervals.isNotEmpty()) {
-                    this.interval.staticIntervals.forEach {
-                        cancelInterval(context, it)
-                    }
-                }
-                scheduleInterval(
-                    context,
-                    this.interval.variantIntervals,
-                    isAlarmHasAlreadyPassed
-                )
-            } else {
-                if (this.interval.variantIntervals.isNotEmpty()) {
-                    this.interval.variantIntervals.forEach {
-                        cancelInterval(context, it)
-                    }
-                }
-                scheduleInterval(
-                    context,
-                    this.interval.staticIntervals,
-                    isAlarmHasAlreadyPassed
-                )
-            }
-        } else {
-            if (this.interval.isVariantInterval) {
-                if (this.interval.variantIntervals.isNotEmpty()) {
-                    this.interval.variantIntervals.forEach {
-                        cancelInterval(context, it)
-                    }
-                }
-            } else {
-                if (this.interval.staticIntervals.isNotEmpty()) {
-                    this.interval.staticIntervals.forEach {
-                        cancelInterval(context, it)
-                    }
+
+        if (this.interval.isVariantInterval) {
+            if (this.interval.staticIntervals.isNotEmpty()) {
+                this.interval.staticIntervals.forEach {
+                    cancelInterval(context, it)
                 }
             }
+            scheduleInterval(
+                context,
+                this.interval.variantIntervals,
+                isAlarmHasAlreadyPassed
+            )
         }
+        else {
+            if (this.interval.variantIntervals.isNotEmpty()) {
+                this.interval.variantIntervals.forEach {
+                    cancelInterval(context, it)
+                }
+            }
+            scheduleInterval(
+                context,
+                this.interval.staticIntervals,
+                isAlarmHasAlreadyPassed
+            )
+        }
+
 
         if (this.interval.advancedReminder.status) {
             schedulerPreNotification(context, false, null, this.alarmId)
         }
-//        if (this.alarmInterval!!.isRemainderAtTheEnd) {
-//            schedulerPostNotification(context, false, null, this.alarmId)
-//        }
         this.status = true
     }
 
@@ -368,16 +332,12 @@ data class AlarmEntity(
                     context,
                     variantInterval.id,
                     intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )
 
             val calendar = Calendar.getInstance()
             calendar.timeInMillis = System.currentTimeMillis()
-            if (variantInterval.midDay) {
-                calendar[Calendar.HOUR_OF_DAY] = variantInterval.hours.toInt() + 12
-            } else {
-                calendar[Calendar.HOUR_OF_DAY] = variantInterval.hours.toInt()
-            }
+            calendar[Calendar.HOUR_OF_DAY] = variantInterval.hours.toInt()
             calendar[Calendar.MINUTE] = variantInterval.minutes.toInt()
             calendar[Calendar.SECOND] = 0
             calendar[Calendar.MILLISECOND] = 0
@@ -435,24 +395,14 @@ data class AlarmEntity(
                     variantInterval.id
                 )
             }
-//            if (this.alarmInterval!!.isRemainderAtTheEnd) {
-//                schedulerPostNotification(
-//                    context,
-//                    true,
-//                    variantInterval,
-//                    variantInterval.alarmTimeId
-//                )
-//            }
         }
-
-//        this.alarmStatus = true
     }
 
     fun cancelAlarm(context: Context, id: Int, cancelAllIntervals: Boolean) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmBroadcastReceiver::class.java)
         val alarmPendingIntent =
-            PendingIntent.getBroadcast(context, id, intent, 0)
+            PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_IMMUTABLE)
         alarmManager.cancel(alarmPendingIntent)
         this.status = false
         @SuppressLint("DefaultLocale") val toastText =
@@ -476,16 +426,20 @@ data class AlarmEntity(
                 }
             }
         }
-        Log.i("cancel", toastText)
+        Log.d("cancel", toastText)
     }
 
     fun cancelInterval(context: Context, variantInterval: Stat) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmBroadcastReceiver::class.java)
         val alarmPendingIntent =
-            PendingIntent.getBroadcast(context, variantInterval.id, intent, 0)
+            PendingIntent.getBroadcast(
+                context,
+                variantInterval.id,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE
+            )
         alarmManager.cancel(alarmPendingIntent)
-//        this.alarmStatus = false
         @SuppressLint("DefaultLocale") val toastText =
             String.format(
                 "Alarm cancelled for %02d:%02d",
@@ -500,9 +454,8 @@ data class AlarmEntity(
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmBroadcastReceiver::class.java)
         val alarmPendingIntent =
-            PendingIntent.getBroadcast(context, id + 4, intent, 0)
+            PendingIntent.getBroadcast(context, id + 4, intent, PendingIntent.FLAG_IMMUTABLE)
         alarmManager.cancel(alarmPendingIntent)
-//        this.alarmStatus = false
         val toastText = "Notification Canceled"
         Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
         Log.i("cancel", toastText)

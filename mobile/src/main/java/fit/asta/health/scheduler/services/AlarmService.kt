@@ -70,7 +70,7 @@ class AlarmService : Service() {
                 this,
                 if (alarmEntity != null) alarmEntity!!.alarmId else Random.nextInt(999999999),
                 notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
 
             var alarmName = getString(R.string.app_name)
@@ -105,7 +105,7 @@ class AlarmService : Service() {
                         .setCategory(NotificationCompat.CATEGORY_ALARM)
                         .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                         .setPriority(NotificationCompat.PRIORITY_MAX)
-                        .setFullScreenIntent(pendingIntent, true)
+                        .setFullScreenIntent(pendingIntent, true) // set base on important in alarm entity
                         .build()
                 }
                 "Splash" -> {
@@ -113,7 +113,7 @@ class AlarmService : Service() {
                         .setContentTitle("Scheduler")
                         .setContentText(alarmName)
                         .setSmallIcon(R.drawable.ic_round_access_alarm_24)
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT) // set base on important in alarm entity
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true)
                         .build()
@@ -167,7 +167,7 @@ class AlarmService : Service() {
                     999999999
                 ),
                 notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
 
             var alarmName = getString(R.string.app_name)
@@ -263,7 +263,7 @@ class AlarmService : Service() {
                 this,
                 bundleForPreNotification.getInt("id", 1),
                 notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_UPDATE_CURRENT  or PendingIntent.FLAG_IMMUTABLE
             )
 
             var alarmName = getString(R.string.notification)
@@ -281,9 +281,6 @@ class AlarmService : Service() {
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setContentIntent(pendingIntent)
                 .build()
-//            val mNotificationManager =
-//                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//            mNotificationManager.notify(bundleForPreNotification.getInt("id"), notification)
             startForeground(bundleForPreNotification.getInt("id", 1), notification)
             stopForeground(false)
             return START_STICKY
@@ -301,7 +298,7 @@ class AlarmService : Service() {
                 this,
                 bundleForPostNotification.getInt("id", 1),
                 notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
 
             var alarmName = getString(R.string.notification)
@@ -319,11 +316,6 @@ class AlarmService : Service() {
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setContentIntent(pendingIntent)
                 .build()
-//            val mNotificationManager =
-//                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//            mNotificationManager.notify(
-//                bundleForPostNotification.getInt("id", 1), notification
-//            )
             startForeground(
                 bundleForPostNotification.getInt("id", 1),
                 notification
@@ -340,8 +332,6 @@ class AlarmService : Service() {
             mediaPlayer.stop()
         }
         vibrator.cancel()
-//        if (vibrator.hasVibrator()) {
-//        }
     }
 
     override fun onBind(intent: Intent?): IBinder? {

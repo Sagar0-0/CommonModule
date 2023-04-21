@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class PutDayData(
     @SerializedName("bpm")
-    val bpm: Int,
+    val bpm: Float,
     @SerializedName("cal")
     val calories: Int,
     @SerializedName("date")
@@ -15,7 +15,7 @@ data class PutDayData(
     @SerializedName("dur")
     val duration: Duration,
     @SerializedName("hr")
-    val heartRate: Int,
+    val heartRate: Float,
     @SerializedName("id")
     val id: String,
     @SerializedName("steps")

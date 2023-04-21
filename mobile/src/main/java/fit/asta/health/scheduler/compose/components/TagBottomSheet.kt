@@ -22,8 +22,10 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -31,23 +33,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import fit.asta.health.R
 import fit.asta.health.scheduler.model.db.entity.TagEntity
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
 @Composable
-fun TagCard(text: String, image: String, isSelected: Boolean, onClick: () -> Unit = {}) {
+fun TagCard(text: String, image: String, onClick: () -> Unit = {}) {
 
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
-    val bgcolor = if (isSelected) {
-        ButtonDefaults.buttonColors(containerColor = Color.Green)
-    } else {
-        ButtonDefaults.buttonColors(containerColor = Color.White)
-    }
 
-    val color=  if (isPressed) MaterialTheme.colorScheme.primary else Color.Transparent
+    val color = if (isPressed) MaterialTheme.colorScheme.primary else Color.Transparent
 
     Button(
         onClick = { onClick() },
@@ -56,7 +55,7 @@ fun TagCard(text: String, image: String, isSelected: Boolean, onClick: () -> Uni
             .padding(16.dp),
         elevation = ButtonDefaults.buttonElevation(5.dp),
         shape = RoundedCornerShape(8.dp),
-        colors = bgcolor,
+        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
         interactionSource = interactionSource,
         contentPadding = PaddingValues(0.dp),
         border = BorderStroke(width = 3.dp, color = color)
@@ -69,10 +68,17 @@ fun TagCard(text: String, image: String, isSelected: Boolean, onClick: () -> Uni
 private fun SwipeAbleArea(text: String, image: String) {
     Box {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-            Image(
-                painter = painterResource(id = R.drawable.placeholder_tag),
-                contentDescription = null,
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data("https://img1.asta.fit${image}")
+                    .crossfade(true)
+                    .build(),
+                placeholder = painterResource(R.drawable.placeholder_tag),
+                contentDescription = stringResource(R.string.description),
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
+                    .width(120.dp)
+                    .height(80.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .padding(8.dp)
             )
@@ -100,7 +106,7 @@ fun SwipeDemo(onSwipe: () -> Unit = {}, onClick: () -> Unit = {}, data: TagEntit
     SwipeableActionsBox(
         startActions = listOf(archive),
     ) {
-        TagCard(text = data.meta.name, image = data.meta.url, isSelected = data.selected) { onClick() }
+        TagCard(text = data.meta.name, image = data.meta.url) { onClick() }
     }
 
 }
@@ -124,11 +130,16 @@ fun CustomTagCard() {
 }
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CustomTagBottomSheetLayout(
+    image: String,
     onNavigateBack: () -> Unit,
+    onSave: () -> Unit,
+    onImageSelect: () -> Unit,
+    onValueChange: (String) -> Unit
 ) {
-
+    val keyboardController = LocalSoftwareKeyboardController.current
     Column(
         Modifier
             .fillMaxWidth()
@@ -141,7 +152,10 @@ fun CustomTagBottomSheetLayout(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
-            IconButton(onClick = onNavigateBack) {
+            IconButton(onClick = {
+                onNavigateBack()
+                keyboardController?.hide()
+            }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_round_close_24),
                     contentDescription = null,
@@ -154,7 +168,10 @@ fun CustomTagBottomSheetLayout(
                 color = MaterialTheme.colorScheme.onTertiaryContainer,
                 textAlign = TextAlign.Center
             )
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = {
+                onSave()
+                keyboardController?.hide()
+            }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_baseline_check_24),
                     contentDescription = null,
@@ -163,33 +180,41 @@ fun CustomTagBottomSheetLayout(
                 )
             }
         }
-
         Spacer(modifier = Modifier.height(20.dp))
-
-        CustomTagImage()
-
+        CustomTagImage(onImageSelect = onImageSelect, image = image)
         Spacer(modifier = Modifier.height(20.dp))
-
-        CustomTagTextField(label = "Enter Custom Tag")
+        CustomTagTextField(label = "Tag Name", onValueChange = onValueChange)
 
     }
 }
 
 
 @Composable
-fun CustomTagImage() {
+fun CustomTagImage(image: String, onImageSelect: () -> Unit) {
 
     IconButton(
-        onClick = { /*TODO*/ }, modifier = Modifier
+        onClick = onImageSelect, modifier = Modifier
             .size(180.dp)
             .clip(CircleShape)
+            .border(width = 2.dp, color = MaterialTheme.colorScheme.primary, shape = CircleShape)
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.placeholder_tag),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
-        )
+        Box(contentAlignment = Alignment.Center) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(image)
+                    .crossfade(true)
+                    .build(),
+                placeholder = painterResource(R.drawable.placeholder_tag),
+                contentDescription = stringResource(R.string.description),
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+            Image(
+                painter = painterResource(id = R.drawable.cameraicon),
+                contentDescription = "Camera Icon",
+                contentScale = ContentScale.FillBounds
+            )
+        }
     }
 }
 
@@ -198,7 +223,6 @@ fun CustomTagImage() {
 @Composable
 fun CustomTagTextField(
     label: String, onValueChange: (String) -> Unit = {},
-    onSave: () -> Unit = {},
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Done
 ) {

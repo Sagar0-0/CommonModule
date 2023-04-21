@@ -4,34 +4,37 @@ import android.content.Context
 import android.media.RingtoneManager
 import android.net.Uri
 import android.util.Log
-import android.widget.TextView
-import android.widget.TimePicker
 import android.widget.Toast
-import androidx.appcompat.widget.SwitchCompat
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.R
 import fit.asta.health.common.utils.NetworkResult
+import fit.asta.health.scheduler.compose.SchedulerActivity
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.*
+import fit.asta.health.scheduler.compose.screen.homescreen.HomeEvent
+import fit.asta.health.scheduler.compose.screen.homescreen.HomeUiState
 import fit.asta.health.scheduler.compose.screen.tagscreen.TagState
 import fit.asta.health.scheduler.compose.screen.tagscreen.TagsEvent
 import fit.asta.health.scheduler.compose.screen.tagscreen.TagsUiState
 import fit.asta.health.scheduler.compose.screen.timesettingscreen.TimeSettingEvent
-import fit.asta.health.scheduler.compose.screen.timesettingscreen.TimeSettingUiState
 import fit.asta.health.scheduler.model.AlarmBackendRepo
 import fit.asta.health.scheduler.model.AlarmLocalRepo
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.db.entity.TagEntity
 import fit.asta.health.scheduler.model.net.scheduler.*
-import fit.asta.health.scheduler.util.Constants
+import fit.asta.health.scheduler.model.net.tag.ScheduleTagNetData
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,127 +44,156 @@ class SchedulerViewModel
     private val backendRepo: AlarmBackendRepo,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+    @OptIn(ExperimentalCoroutinesApi::class)
+    lateinit var context: SchedulerActivity
+    private var alarmEntity: AlarmEntity? = null
 
-    private val _alarmSettingUiState = mutableStateOf(AlarmSettingUiState())
-    val alarmSettingUiState: State<AlarmSettingUiState> = _alarmSettingUiState
+    private val _staticIntervalsList = mutableStateListOf<StatUiState>()
+    val staticIntervalsList = MutableStateFlow(_staticIntervalsList)
+    private val _variantIntervalsList = mutableStateListOf<StatUiState>()
+    val variantIntervalsList = MutableStateFlow(_variantIntervalsList)
 
-    private val _timeSettingUiState = mutableStateOf(TimeSettingUiState())
-    val timeSettingUiState: State<TimeSettingUiState> = _timeSettingUiState
+    private val _homeUiState = mutableStateOf(HomeUiState())
+    val homeUiState: State<HomeUiState> = _homeUiState
+
+    private val _alarmSettingUiState = mutableStateOf(ASUiState())
+    val alarmSettingUiState: State<ASUiState> = _alarmSettingUiState
+
+    private val interval = mutableStateOf(IvlUiState())
+    private val advancedReminder = mutableStateOf(AdvUiState())
+    val timeSettingUiState: State<IvlUiState> = interval
 
     private val _tagsUiState = mutableStateOf(TagsUiState())
     val tagsUiState: State<TagsUiState> = _tagsUiState
 
     private val userId = "6309a9379af54f142c65fbff"
-    private val newAlarmItem: AlarmEntity? = null
-
-    //alarmSetting
-    private val week = MutableStateFlow(WkUiState())
-    private val customTagName = MutableStateFlow(TagUiState())
-    private val alarmData = MutableStateFlow(MetaUiState())
-    private val time = MutableStateFlow(TimeUiState())
-    private val tone = MutableStateFlow(ToneUiState())
-    private val vibration = MutableStateFlow(VibUiState())
-    private val info = MutableStateFlow(InfoUiState())
-    private val interval = MutableStateFlow(IvlUiState())
-    private val meta = MutableStateFlow(MetaDataUiState())
-    private val sound = MutableStateFlow(VibUiState())
-
-
-    //timeSettingActivity
-    private var listOfVariantIntervals: MutableList<Stat> =
-        emptyList<Stat>().toMutableList()
-    private var listOfStaticIntervals: MutableList<Stat> =
-        emptyList<Stat>().toMutableList()
 
     init {
 
         refreshData()
+        getAlarms()
+    }
 
+    fun HSEvent(uiEvent: HomeEvent) {
+        when (uiEvent) {
+            is HomeEvent.AddAlarm -> {}
+            is HomeEvent.SetAlarmState -> {}
+            is HomeEvent.DeleteAlarm -> {
+                deleteAlarm(uiEvent.alarm, uiEvent.context)
+            }
+            is HomeEvent.InsertAlarm -> {
+                viewModelScope.launch {
+                    backendRepo.updateScheduleDataOnBackend(uiEvent.alarm)
+                    alarmLocalRepo.insertAlarm(uiEvent.alarm)
+                }
+            }
+            else -> {}
+        }
     }
 
 
-    fun ASEvent(uiEvent: AlarmSettingEvent) {
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun aSEvent(uiEvent: AlarmSettingEvent) {
         when (uiEvent) {
-            is AlarmSettingEvent.SetAlarmTime -> {
-                time.value = time.value.copy(
-                    hours = uiEvent.Time.hours,
-                    midDay = uiEvent.Time.midDay,
-                    minutes = uiEvent.Time.minutes
-                )
-                alarmData.value = alarmData.value.copy(time = time.value)
-                customTagName.value = customTagName.value.copy(meta = alarmData.value)
+            is AlarmSettingEvent.SetWeekStatus -> {
                 _alarmSettingUiState.value =
-                    _alarmSettingUiState.value.copy(CustomTagName = customTagName.value)
+                    _alarmSettingUiState.value.copy(recurring = uiEvent.status)
+            }
+            is AlarmSettingEvent.SetAlarmTime -> {
+                _alarmSettingUiState.value =
+                    _alarmSettingUiState.value.copy(
+                        time_hours = uiEvent.Time.hours,
+                        time_midDay = uiEvent.Time.midDay,
+                        time_minutes = uiEvent.Time.minutes
+                    )
             }
             is AlarmSettingEvent.SetWeek -> {
-                week.value = week.value.copy(
-                    friday = uiEvent.week.friday,
-                    saturday = uiEvent.week.saturday,
-                    sunday = uiEvent.week.sunday,
-                    monday = uiEvent.week.monday,
-                    thursday = uiEvent.week.thursday,
-                    tuesday = uiEvent.week.tuesday,
-                    wednesday = uiEvent.week.wednesday,
-                    recurring = uiEvent.week.recurring
-                )
-                _alarmSettingUiState.value = _alarmSettingUiState.value.copy(Week = week.value)
-                Log.d("rupa", "ASEvent: ${alarmSettingUiState.value.Week}")
+                when (uiEvent.week) {
+                    0 -> {
+                        _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+                            sunday = !_alarmSettingUiState.value.sunday
+                        )
+                    }
+                    1 -> {
+                        _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+                            monday = !_alarmSettingUiState.value.monday
+                        )
+                    }
+                    2 -> {
+                        _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+                            tuesday = !_alarmSettingUiState.value.tuesday
+                        )
+                    }
+                    3 -> {
+                        _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+                            wednesday = !_alarmSettingUiState.value.wednesday
+                        )
+                    }
+                    4 -> {
+                        _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+                            thursday = !_alarmSettingUiState.value.thursday
+                        )
+                    }
+                    5 -> {
+                        _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+                            friday = !_alarmSettingUiState.value.friday
+                        )
+                    }
+                    6 -> {
+                        _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+                            saturday = !_alarmSettingUiState.value.saturday
+                        )
+                    }
+                }
             }
             is AlarmSettingEvent.SetStatus -> {
-                alarmData.value = alarmData.value.copy(status = uiEvent.status)
-                customTagName.value = customTagName.value.copy(meta = alarmData.value)
                 _alarmSettingUiState.value =
-                    _alarmSettingUiState.value.copy(CustomTagName = customTagName.value)
+                    _alarmSettingUiState.value.copy(status = uiEvent.status)
             }
             is AlarmSettingEvent.SetLabel -> {
-                _alarmSettingUiState.value = _alarmSettingUiState.value.copy(Label = uiEvent.label)
+                _alarmSettingUiState.value =
+                    _alarmSettingUiState.value.copy(alarm_name = uiEvent.label)
             }
             is AlarmSettingEvent.SetDescription -> {
                 _alarmSettingUiState.value =
-                    _alarmSettingUiState.value.copy(Description = uiEvent.description)
+                    _alarmSettingUiState.value.copy(alarm_description = uiEvent.description)
             }
             is AlarmSettingEvent.SetReminderMode -> {
                 _alarmSettingUiState.value =
-                    _alarmSettingUiState.value.copy(Choice = uiEvent.choice)
+                    _alarmSettingUiState.value.copy(mode = uiEvent.choice)
             }
             is AlarmSettingEvent.SetVibration -> {
-                vibration.value = vibration.value.copy(
-                    status = uiEvent.choice
-                )
-                alarmData.value = alarmData.value.copy(vibration = vibration.value)
-                customTagName.value = customTagName.value.copy(meta = alarmData.value)
                 _alarmSettingUiState.value =
-                    _alarmSettingUiState.value.copy(CustomTagName = customTagName.value)
+                    _alarmSettingUiState.value.copy(vibration_status = uiEvent.choice)
             }
             is AlarmSettingEvent.SetVibrationIntensity -> {
-                vibration.value = vibration.value.copy(
-                    percentage = uiEvent.vibration.toString()
-                )
-                alarmData.value = alarmData.value.copy(vibration = vibration.value)
-                customTagName.value = customTagName.value.copy(meta = alarmData.value)
                 _alarmSettingUiState.value =
-                    _alarmSettingUiState.value.copy(CustomTagName = customTagName.value)
+                    _alarmSettingUiState.value.copy(vibration_percentage = uiEvent.vibration.toString())
             }
             is AlarmSettingEvent.SetSound -> {
-                sound.value = sound.value.copy(status = uiEvent.choice)
-                _alarmSettingUiState.value = _alarmSettingUiState.value.copy(Sound = sound.value)
-            }
-            is AlarmSettingEvent.SetSoundIntensity -> {
-                sound.value = sound.value.copy(percentage = uiEvent.sound.toString())
-                _alarmSettingUiState.value = _alarmSettingUiState.value.copy(Sound = sound.value)
-            }
-            is AlarmSettingEvent.SetImportant -> {
-                alarmData.value = alarmData.value.copy(important = uiEvent.important)
-                customTagName.value = customTagName.value.copy(meta = alarmData.value)
                 _alarmSettingUiState.value =
-                    _alarmSettingUiState.value.copy(CustomTagName = customTagName.value)
+                    _alarmSettingUiState.value.copy(
+                        tone_name = uiEvent.tone.name,
+                        tone_type = uiEvent.tone.type, tone_uri = uiEvent.tone.uri
+                    )
+            }
+
+            is AlarmSettingEvent.SetImportant -> {
+                _alarmSettingUiState.value =
+                    _alarmSettingUiState.value.copy(important = uiEvent.important)
             }
             is AlarmSettingEvent.GotoTagScreen -> {
                 Log.d("manish", "GotoTagScreen: ")
                 refreshTagData()
                 getTagData()
             }
-            is AlarmSettingEvent.GotoTimeSettingScreen -> {}
+            is AlarmSettingEvent.GotoTimeSettingScreen -> {
+                _variantIntervalsList.addAll(interval.value.variantIntervals)
+                _staticIntervalsList.addAll(interval.value.staticIntervals)
+            }
+            is AlarmSettingEvent.Save -> {
+                setDataAndSaveAlarm(context, alarmEntity)
+            }
 
             else -> {}
         }
@@ -175,7 +207,7 @@ class SchedulerViewModel
         }
     }
 
-    fun TagsEvent(uiEvent: TagsEvent) {
+    fun tagsEvent(uiEvent: TagsEvent) {
         when (uiEvent) {
             is TagsEvent.DeleteTag -> {
                 viewModelScope.launch {
@@ -190,73 +222,122 @@ class SchedulerViewModel
                 }
             }
             is TagsEvent.SelectedTag -> {
-                if (_tagsUiState.value.selectedTag.selected) {
-                    viewModelScope.launch {
-                        alarmLocalRepo.updateTag(
-                            TagEntity(
-                                selected = false,
-                                meta = _tagsUiState.value.selectedTag.meta,
-                                id = _tagsUiState.value.selectedTag.id
-                            )
-                        )
-                    }
-                }
                 val tag = uiEvent.tag
                 tag.selected = !tag.selected
                 _tagsUiState.value = _tagsUiState.value.copy(
                     selectedTag = TagState(
-                        selected = tag.selected,
-                        meta = tag.meta,
-                        id = tag.id
+                        selected = tag.selected, meta = tag.meta, id = tag.id
                     )
                 )
+                _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+                    tagId = tag.meta.id, tag_name = tag.meta.name, tag_url = tag.meta.url
+                )
+            }
+            is TagsEvent.UpdateTag -> {
                 viewModelScope.launch {
-                    alarmLocalRepo.updateTag(tag)
-                    getTagData()
+                    val result = backendRepo.updateScheduleTag(
+                        schedule = ScheduleTagNetData(
+                            uid = userId, type = 1, tag = uiEvent.label, url = uiEvent.url
+                        )
+                    )
+                    when (result) {
+                        is NetworkResult.Success -> {
+                            refreshTagData()
+                            getTagData()
+                        }
+                        is NetworkResult.Error -> {}
+                        is NetworkResult.Loading -> {}
+                    }
                 }
             }
+
             else -> {}
         }
     }
 
-    fun TSEvent(uiEvent: TimeSettingEvent) {
+    fun tSEvent(uiEvent: TimeSettingEvent) {
         when (uiEvent) {
             is TimeSettingEvent.SetSnooze -> {
-                _timeSettingUiState.value =
-                    _timeSettingUiState.value.copy(SnoozeTime = uiEvent.time)
+                interval.value = interval.value.copy(snoozeTime = uiEvent.time)
             }
             is TimeSettingEvent.SetDuration -> {
-                _timeSettingUiState.value = _timeSettingUiState.value.copy(Duration = uiEvent.time)
+                interval.value = interval.value.copy(duration = uiEvent.time)
             }
             is TimeSettingEvent.SetAdvancedDuration -> {
-                _timeSettingUiState.value =
-                    _timeSettingUiState.value.copy(AdvancedDuration = uiEvent.time)
+                advancedReminder.value = advancedReminder.value.copy(time = uiEvent.time)
+                interval.value = interval.value.copy(advancedReminder = advancedReminder.value)
             }
             is TimeSettingEvent.SetAdvancedStatus -> {
-                _timeSettingUiState.value =
-                    _timeSettingUiState.value.copy(AdvancedStatus = uiEvent.choice)
+                advancedReminder.value = advancedReminder.value.copy(status = uiEvent.choice)
+                interval.value = interval.value.copy(advancedReminder = advancedReminder.value)
             }
+            is TimeSettingEvent.RemindAtEndOfDuration -> {
+                interval.value = interval.value.copy(isRemainderAtTheEnd = uiEvent.choice)
+            }
+            is TimeSettingEvent.SetVariantStatus -> {
+                interval.value = interval.value.copy(isVariantInterval = uiEvent.choice)
+            }
+            is TimeSettingEvent.AddVariantInterval -> {
+                if (isValidState(uiEvent.variantInterval) && !_variantIntervalsList.contains(uiEvent.variantInterval)) {
+                    _variantIntervalsList.add(uiEvent.variantInterval)
+                    interval.value =
+                        interval.value.copy(variantIntervals = variantIntervalsList.value)
+                }
+            }
+            is TimeSettingEvent.DeleteVariantInterval -> {
+                if (_variantIntervalsList.contains(uiEvent.variantInterval)) {
+                    _variantIntervalsList.remove(uiEvent.variantInterval)
+                    interval.value =
+                        interval.value.copy(variantIntervals = variantIntervalsList.value)
+                }
+            }
+            is TimeSettingEvent.SetRepetitiveIntervals -> {
+                interval.value = interval.value.copy(repeatableInterval = uiEvent.interval)
+                _staticIntervalsList.addAll(getSlots())
+                interval.value = interval.value.copy(staticIntervals = staticIntervalsList.value)
+            }
+            is TimeSettingEvent.Save -> {
+                setIvl()
+            }
+
             else -> {}
         }
     }
 
+
+    fun isIntervalDataValid(interval: IvlUiState): Boolean {
+        return interval.duration > 0 && interval.snoozeTime > 0 && interval.variantIntervals.isNotEmpty()
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun refreshData() {
         viewModelScope.launch {
             backendRepo.getScheduleListDataFromBackend(userId).collect { result ->
                 when (result) {
                     is NetworkResult.Success -> {
                         Log.d(SpotifyConstants.TAG, "onCreate list result: ${result.data}")
-                        alarmLocalRepo.getAllAlarm().collect {list->
+                        alarmLocalRepo.getAllAlarm().collect { list ->
                             val map = hashMapOf<String, Boolean>()
+                            result.data?.list?.forEach { alarmEntity ->
+                                map[alarmEntity.idFromServer] = false
+                            }
                             list.forEach { alarmData ->
                                 map[alarmData.idFromServer] = true
                             }
+                            Log.d(SpotifyConstants.TAG, "  result: ${list}")
                             result.data?.list?.forEach { alarmEntity ->
-                                if (map[alarmEntity.idFromServer] != true) {
+                                if (map[alarmEntity.idFromServer] == false) {
                                     alarmLocalRepo.insertAlarm(alarmEntity = alarmEntity)
+                                    if (alarmEntity.status) {
+                                        alarmEntity.schedule(context)
+                                    } else{
+                                        alarmEntity.cancelAlarm(context, id = alarmEntity.alarmId, cancelAllIntervals = true)
+                                    }
                                 }
                             }
                         }
+
+                        getAlarms()
                     }
                     is NetworkResult.Error -> {
                         Log.d(SpotifyConstants.TAG, "onCreate list result: ${result.data}")
@@ -268,6 +349,16 @@ class SchedulerViewModel
 
             }
         }
+    }
+
+    private fun getAlarms() {
+        viewModelScope.launch {
+            alarmLocalRepo.getAllAlarm().collect { list ->
+                Log.d(SpotifyConstants.TAG, " list result: ${list}")
+                _homeUiState.value = _homeUiState.value.copy(alarmList = list)
+            }
+        }
+
     }
 
     // start when go to tagActivity
@@ -311,388 +402,323 @@ class SchedulerViewModel
         }
     }
 
-    // alarmSettingActivity
-    private fun setAlarm(context: Context) {
+
+    private fun setDataAndSaveAlarm(
+        context: Context,
+        alarmItem: AlarmEntity?,
+    ) {
         val alarmTone: Uri = RingtoneManager.getActualDefaultRingtoneUri(
             context,
             RingtoneManager.TYPE_ALARM
         )
-        AlarmEntity(
-            status = false,
+        if (alarmItem == null) {
+            _alarmSettingUiState.value =
+                _alarmSettingUiState.value.copy(tone_uri = alarmTone.toString())
+        }
+        val newAlarmItem: AlarmEntity?
+        newAlarmItem = AlarmEntity(
+            status = alarmSettingUiState.value.status,
             week = Wk(
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false
-            ),
-            time = Time(
-                hours = "",
-                minutes = "",
-                midDay = true,
+                friday = alarmSettingUiState.value.friday,
+                monday = alarmSettingUiState.value.monday,
+                saturday = alarmSettingUiState.value.saturday,
+                sunday = alarmSettingUiState.value.sunday,
+                thursday = alarmSettingUiState.value.thursday,
+                tuesday = alarmSettingUiState.value.tuesday,
+                wednesday = alarmSettingUiState.value.wednesday,
+                recurring = alarmSettingUiState.value.recurring
             ),
             info = Info(
-                description = "description",
-                name = "Label",
-                tag = "Nap",
-                tagId = "1",
-                url = "url"
+                name = alarmSettingUiState.value.alarm_name,
+                description = alarmSettingUiState.value.alarm_description,
+                tag = alarmSettingUiState.value.tag_name,
+                tagId = alarmSettingUiState.value.tagId,
+                url = alarmSettingUiState.value.tag_url
+            ),
+            time = Time(
+                hours = alarmSettingUiState.value.time_hours,
+                minutes = alarmSettingUiState.value.time_minutes,
+                midDay = alarmSettingUiState.value.time_midDay,
             ),
             interval = setIvl(),
-
-            mode = "Notification",
-            important = false,
+            mode = alarmSettingUiState.value.mode,
+            important = alarmSettingUiState.value.important,
             vibration = Vib(
-                "50",
-                false
+                percentage = alarmSettingUiState.value.vibration_percentage,
+                status = alarmSettingUiState.value.vibration_status
             ),
             tone = Tone(
-                "Default",
-                1,
-                alarmTone.toString()
+                name = alarmSettingUiState.value.tone_name,
+                type = alarmSettingUiState.value.tone_type,
+                uri = alarmSettingUiState.value.tone_uri
             ),
-            idFromServer = "",
-            userId = Constants.USER_ID,
+            userId = alarmItem?.userId ?: userId,
+            idFromServer = alarmItem?.idFromServer ?: "",
+            alarmId = alarmItem?.alarmId ?: System.currentTimeMillis().mod(199999),
             meta = Meta(
-                cBy = 1,
-                cDate = "1",
-                sync = 1,
-                uDate = "1"
+                cDate = alarmSettingUiState.value.cDate,
+                cBy = alarmSettingUiState.value.cBy,
+                sync = alarmSettingUiState.value.sync,
+                uDate = alarmSettingUiState.value.uDate
             )
         )
+
+        val map: LinkedHashMap<String, Any> = LinkedHashMap()
+        map["id"] = newAlarmItem.idFromServer
+        map["uid"] = newAlarmItem.userId
+        map["almId"] = newAlarmItem.alarmId
+        map["meta"] = newAlarmItem.meta
+        map["info"] = newAlarmItem.info
+        map["time"] = newAlarmItem.time
+        map["sts"] = newAlarmItem.status
+        map["imp"] = newAlarmItem.important
+        map["mode"] = newAlarmItem.mode
+        map["wk"] = newAlarmItem.week
+        map["ivl"] = newAlarmItem.interval
+        map["vib"] = newAlarmItem.vibration
+        map["tone"] = newAlarmItem.tone
+        val jsonObject: String? = Gson().toJson(map)
+        val simpleObject = Gson().fromJson(jsonObject, AlarmEntity::class.java)
+        viewModelScope.launch {
+            backendRepo.updateScheduleDataOnBackend(simpleObject).let { result ->
+                when (result) {
+                    is NetworkResult.Success -> {
+                        val results = if (result.data?.data?.id == null) {
+                            backendRepo.getScheduleDataFromBackend(simpleObject.idFromServer)
+                        } else {
+                            backendRepo.getScheduleDataFromBackend(result.data.data.id)
+                        }
+                        results.collect { schedule ->
+                            when (schedule) {
+                                is NetworkResult.Success -> {
+                                    if (schedule.data?.data!!.status) {
+                                        schedule.data.data.schedule(context)
+                                        alarmLocalRepo.insertAlarm(schedule.data.data)
+                                        resetUi()
+                                    }
+                                }
+                                is NetworkResult.Error -> {}
+                                is NetworkResult.Loading -> {}
+                            }
+                        }
+                    }
+                    is NetworkResult.Error -> {}
+                    is NetworkResult.Loading -> {}
+                }
+            }
+        }
     }
 
-    private fun setDataAndSaveAlarm(
-        context: Context,
-        alarmStatus: SwitchCompat,
-        alarmRepeat: TextView,
-        alarmTag: TextView,
-        timePicker: TimePicker,
-        alarmName: TextView,
-        alarmDescription: TextView,
-        alarmMode: TextView,
-        alarmImportant: SwitchCompat,
-        alarmVibratePercentage: TextView,
-        alarmVibrateStatus: SwitchCompat,
-        alarmTone: TextView,
-        alarmItem: AlarmEntity?,
-    ) {
-
-        var newAlarmItem = newAlarmItem
-        val tag = alarmTag.getTag(R.id.tagMeta) as TagEntity?
-        if (alarmItem != null) {
-            if (!alarmItem.interval.isVariantInterval) {
-                alarmItem.interval.staticIntervals =
-                    Constants.getSlots(
-                        context, alarmItem.copy(
-                            time = Time(
-                                hours = if (timePicker.hour >= 12) "${timePicker.hour - 12}" else "${timePicker.hour}",
-                                minutes = "${timePicker.minute}",
-                                midDay = timePicker.hour >= 12,
-                            ),
-                            info = alarmItem.info.copy(
-                                name = alarmName.tag.toString()
-                            )
-                        )
-                    )
-            }
-
-            if (timePicker.hour >= 12) {
-                newAlarmItem = AlarmEntity(
-                    status = alarmStatus.isChecked,
-                    week = Constants.extractDaysOfAlarm(alarmRepeat.tag.toString()),
-                    info = Info(
-                        name = alarmName.tag.toString(),
-                        description = alarmDescription.tag.toString(),
-                        tag = tag?.meta?.name!!,
-                        tagId = tag.meta.id,
-                        url = tag.meta.url
-                    ),
-                    time = Time(
-                        hours = "${timePicker.hour - 12}",
-                        minutes = "${timePicker.minute}",
-                        midDay = true,
-                    ),
-                    interval = alarmItem.interval,
-                    mode = alarmMode.tag.toString(),
-                    important = alarmImportant.tag.toString().toBoolean(),
-                    vibration = Vib(
-                        alarmVibratePercentage.tag.toString(),
-                        alarmVibrateStatus.tag.toString().toBoolean()
-                    ),
-                    tone = Tone(
-                        alarmTone.text.toString(),
-                        1,
-                        alarmTone.tag.toString()
-                    ),
-                    alarmId = alarmItem.alarmId,
-                    userId = userId,
-                    idFromServer = alarmItem.idFromServer,
-                    meta = alarmItem.meta
-                )
-            } else {
-                newAlarmItem = AlarmEntity(
-                    status = alarmStatus.isChecked,
-                    week = Constants.extractDaysOfAlarm(alarmRepeat.tag.toString()),
-                    info = Info(
-                        name = alarmName.tag.toString(),
-                        description = alarmDescription.tag.toString(),
-                        tag = tag?.meta?.name!!,
-                        tagId = tag.meta.id,
-                        url = tag.meta.url
-                    ),
-                    time = Time(
-                        hours = "${timePicker.hour}",
-                        minutes = "${timePicker.minute}",
-                        midDay = true,
-                    ),
-                    interval = alarmItem.interval,
-                    mode = alarmMode.tag.toString(),
-                    important = alarmImportant.tag.toString().toBoolean(),
-                    vibration = Vib(
-                        alarmVibratePercentage.tag.toString(),
-                        alarmVibrateStatus.tag.toString().toBoolean()
-                    ),
-                    tone = Tone(
-                        alarmTone.text.toString(),
-                        1,
-                        alarmTone.tag.toString()
-                    ),
-                    alarmId = alarmItem.alarmId,
-                    userId = Constants.USER_ID,
-                    idFromServer = alarmItem.idFromServer,
-                    meta = alarmItem.meta
-                )
-            }
-        }
-        if (newAlarmItem != null) {
-            if (newAlarmItem.interval.isVariantInterval) {
-                newAlarmItem.interval.variantIntervals.forEach {
-                    if (newAlarmItem.time.midDay) {
-                        if (it.midDay) {
-                            if (it.hours.toInt() + 12 < newAlarmItem.time.hours.toInt() + 12) {
-                                Toast.makeText(
-                                    alarmName.context,
-                                    "Please select interval which are only after main alarm!",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            } else if (it.hours.toInt() + 12 == newAlarmItem.time.hours.toInt() + 12) {
-                                if (it.hours.toInt() < newAlarmItem.time.hours.toInt()) {
-                                    Toast.makeText(
-                                        alarmName.context,
-                                        "Please select interval which are only after main alarm!",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-
-                                } else if (it.minutes.toInt() == newAlarmItem.time.minutes.toInt()) {
-                                    Toast.makeText(
-                                        alarmName.context,
-                                        "Please select interval which are only after main alarm!",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-
-                                } else {
-                                    Toast.makeText(
-                                        alarmName.context,
-                                        "Successful",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                }
-                            } else {
-                                Toast.makeText(
-                                    alarmName.context,
-                                    "Successful",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
-                        } else {
-                            if (it.hours.toInt() < newAlarmItem.time.hours.toInt() + 12) {
-                                Toast.makeText(
-                                    alarmName.context,
-                                    "Please select interval which are only after main alarm!",
-                                    Toast.LENGTH_LONG
-                                ).show()
-
-                            } else if (it.hours.toInt() == newAlarmItem.time.hours.toInt() + 12) {
-                                if (it.minutes.toInt() < newAlarmItem.time.minutes.toInt()) {
-                                    Toast.makeText(
-                                        alarmName.context,
-                                        "Please select interval which are only after main alarm!",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-
-                                } else if (it.minutes.toInt() == newAlarmItem.time.minutes.toInt()) {
-                                    Toast.makeText(
-                                        alarmName.context,
-                                        "Please select interval which are only after main alarm!",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-
-                                } else {
-                                    Toast.makeText(
-                                        alarmName.context,
-                                        "Successful",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                }
-                            } else {
-                                Toast.makeText(
-                                    alarmName.context,
-                                    "Successful",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
-                        }
-                    } else {
-                        if (it.midDay) {
-                            if (it.hours.toInt() + 12 < newAlarmItem.time.hours.toInt()) {
-                                Toast.makeText(
-                                    alarmName.context,
-                                    "Please select interval which are only after main alarm!",
-                                    Toast.LENGTH_LONG
-                                ).show()
-
-                            } else if (it.hours.toInt() + 12 == newAlarmItem.time.hours.toInt()) {
-                                if (it.minutes.toInt() < newAlarmItem.time.minutes.toInt()) {
-                                    Toast.makeText(
-                                        alarmName.context,
-                                        "Please select interval which are only after main alarm!",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-
-                                } else if (it.minutes.toInt() == newAlarmItem.time.minutes.toInt()) {
-                                    Toast.makeText(
-                                        alarmName.context,
-                                        "Please select interval which are only after main alarm!",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-
-                                } else {
-                                    Toast.makeText(
-                                        alarmName.context,
-                                        "Successful",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                }
-                            } else {
-                                Toast.makeText(
-                                    alarmName.context,
-                                    "Successful",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
-                        } else {
-                            if (it.hours.toInt() < newAlarmItem.time.hours.toInt()) {
-                                Toast.makeText(
-                                    alarmName.context,
-                                    "Please select interval which are only after main alarm!",
-                                    Toast.LENGTH_LONG
-                                ).show()
-
-                            } else if (it.hours.toInt() == newAlarmItem.time.hours.toInt()) {
-                                if (it.minutes.toInt() < newAlarmItem.time.minutes.toInt()) {
-                                    Toast.makeText(
-                                        alarmName.context,
-                                        "Please select interval which are only after main alarm!",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-
-                                } else if (it.minutes.toInt() == newAlarmItem.time.minutes.toInt()) {
-                                    Toast.makeText(
-                                        alarmName.context,
-                                        "Please select interval which are only after main alarm!",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-
-                                } else {
-                                    Toast.makeText(
-                                        alarmName.context,
-                                        "Successful",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                }
-                            } else {
-                                Toast.makeText(
-                                    alarmName.context,
-                                    "Successful",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
-                        }
-                    }
-                }
-            }
-            val map: LinkedHashMap<String, Any> = LinkedHashMap()
-            map["id"] = newAlarmItem.idFromServer
-            map["uid"] = newAlarmItem.userId
-            map["almId"] = newAlarmItem.alarmId
-            map["meta"] = newAlarmItem.meta
-            map["info"] = newAlarmItem.info
-            map["time"] = newAlarmItem.time
-            map["sts"] = newAlarmItem.status
-            map["imp"] = newAlarmItem.important
-            map["mode"] = newAlarmItem.mode
-            map["wk"] = newAlarmItem.week
-            map["ivl"] = newAlarmItem.interval
-            map["vib"] = newAlarmItem.vibration
-            map["tone"] = newAlarmItem.tone
-
-            val jsonObject: String? = Gson().toJson(map)
-            val simpleObject = Gson().fromJson(jsonObject, AlarmEntity::class.java)
-
-            viewModelScope.launch {
-                backendRepo.updateScheduleDataOnBackend(simpleObject).let { result ->
-                    when (result) {
-                        is NetworkResult.Success -> {
-                            val results = if (result.data?.data?.id == null) {
-                                backendRepo.getScheduleDataFromBackend(simpleObject.idFromServer)
-                            } else {
-                                backendRepo.getScheduleDataFromBackend(result.data.data.id)
-                            }
-                            results.collect { schedule ->
-                                when (schedule) {
-                                    is NetworkResult.Success -> {
-                                        alarmLocalRepo.insertAlarm(schedule.data?.data!!)
-                                        if (alarmStatus.isChecked) {
-                                            newAlarmItem.schedule(context)
-                                        }
-                                    }
-                                    is NetworkResult.Error -> {}
-                                    is NetworkResult.Loading -> {}
-                                }
-                            }
-                        }
-                        is NetworkResult.Error -> {}
-                        is NetworkResult.Loading -> {}
-                    }
-                }
-            }
-        }
+    private fun resetUi() {
+        _alarmSettingUiState.value = ASUiState()
+        interval.value = IvlUiState()
     }
 
     //timeSettingActivity
     private fun setIvl(): Ivl {
         return Ivl(
             advancedReminder = Adv(
-                false, 15
+                status = timeSettingUiState.value.advancedReminder.status,
+                time = timeSettingUiState.value.advancedReminder.time
             ),
-            duration = 30,
-            isRemainderAtTheEnd = false,
+            duration = timeSettingUiState.value.duration,
+            isRemainderAtTheEnd = timeSettingUiState.value.isRemainderAtTheEnd,
             repeatableInterval = Rep(
-                1, "Hour"
+                time = timeSettingUiState.value.repeatableInterval.time,
+                unit = timeSettingUiState.value.repeatableInterval.unit
             ),
-            snoozeTime = 5,
-            staticIntervals = listOfStaticIntervals,
-            status = false,
-            variantIntervals = listOfVariantIntervals,
-            isVariantInterval = false
+            snoozeTime = timeSettingUiState.value.snoozeTime,
+            staticIntervals = timeSettingUiState.value.staticIntervals.map {
+                Stat(
+                    hours = it.hours,
+                    midDay = it.midDay,
+                    minutes = it.minutes,
+                    name = it.name,
+                    id = it.id
+                )
+            },
+            variantIntervals = timeSettingUiState.value.variantIntervals.map {
+                Stat(
+                    hours = it.hours,
+                    midDay = it.midDay,
+                    minutes = it.minutes,
+                    name = it.name,
+                    id = it.id
+                )
+            },
+            isVariantInterval = timeSettingUiState.value.isVariantInterval
         )
     }
 
+    private fun deleteAlarm(alarmItem: AlarmEntity, context: Context) {
+        viewModelScope.launch {
+            val result = backendRepo.deleteScheduleDataFromBackend(alarmItem.idFromServer)
+            when (result) {
+                is NetworkResult.Error -> {}
+                is NetworkResult.Success -> {
+                    if (alarmItem.status) alarmItem.cancelAlarm(
+                        context, alarmItem.alarmId, true
+                    )
+                    alarmLocalRepo.deleteAlarm(alarmItem)
+                    alarmLocalRepo.getAllAlarm().collect {
+                        _homeUiState.value = _homeUiState.value.copy(alarmList = it)
+                    }
+                }
+                is NetworkResult.Loading -> {}
+            }
+        }
+    }
+
+    fun setAlarmEntityIntent(alarmEntity: AlarmEntity?) {
+        this@SchedulerViewModel.alarmEntity = alarmEntity
+        alarmEntity?.let { updateUi(it) }
+    }
+
+    private fun updateUi(it: AlarmEntity) {
+        interval.value = interval.value.copy(
+            advancedReminder = AdvUiState(
+                status = it.interval.advancedReminder.status,
+                time = it.interval.advancedReminder.time
+            ),
+            duration = it.interval.duration,
+            isRemainderAtTheEnd = it.interval.isRemainderAtTheEnd,
+            repeatableInterval = RepUiState(
+                time = it.interval.repeatableInterval.time,
+                unit = it.interval.repeatableInterval.unit
+            ),
+            staticIntervals = it.interval.staticIntervals.map {
+                StatUiState(
+                    hours = it.hours,
+                    midDay = it.midDay,
+                    minutes = it.minutes,
+                    name = it.name,
+                    id = it.id
+                )
+            },
+            snoozeTime = it.interval.snoozeTime,
+            variantIntervals = it.interval.variantIntervals.map {
+                StatUiState(
+                    hours = it.hours,
+                    midDay = it.midDay,
+                    minutes = it.minutes,
+                    name = it.name,
+                    id = it.id
+                )
+            },
+            isVariantInterval = it.interval.isVariantInterval
+        )
+
+        _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+            important = it.important,
+            alarm_description = it.info.description,
+            alarm_name = it.info.name,
+            tag_name = it.info.tag,
+            tagId = it.info.tagId,
+            tag_url = it.info.url,
+            cBy = it.meta.cBy, cDate = it.meta.cDate,
+            sync = it.meta.sync, uDate = it.meta.uDate,
+            status = it.status,
+            time_hours = it.time.hours,
+            time_midDay = it.time.midDay,
+            time_minutes = it.time.minutes,
+            tone_name = it.tone.name,
+            tone_type = it.tone.type,
+            tone_uri = it.tone.uri,
+            vibration_percentage = it.vibration.percentage,
+            vibration_status = it.vibration.status,
+            friday = it.week.friday,
+            saturday = it.week.saturday,
+            sunday = it.week.sunday,
+            monday = it.week.monday,
+            thursday = it.week.thursday,
+            tuesday = it.week.tuesday,
+            wednesday = it.week.wednesday,
+            recurring = it.week.recurring,
+            mode = it.mode
+        )
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun getSlots(): ArrayList<StatUiState> {
+        val slots = ArrayList<StatUiState>()
+        try {
+            val dateFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val date = Date()
+            val format = "yyyy-MM-dd HH:mm"
+            val sdf = SimpleDateFormat(format, Locale.getDefault())
+            val dateObj1: Date = sdf.parse(
+                dateFormat.format(date) + " " + alarmSettingUiState.value.time_hours + ":" + alarmSettingUiState.value.time_minutes
+            )!!
+
+            val dateObj2: Date = sdf.parse(
+                dateFormat.format(date) + " " + "23:59"
+            )!!
+            Toast.makeText(context, "$dateObj1 $dateObj2", Toast.LENGTH_LONG).show()
+            var dif = dateObj1.time
+            while (dif < dateObj2.time) {
+                val slot = Date(dif)
+                val sformat = "HH:mm:a"
+                val aDateFormat = SimpleDateFormat(sformat, Locale.getDefault())
+                val timeParts = aDateFormat.format(slot).toString().split(":")
+                Log.d("TAGTAGTAGTAG", "getSlots: $timeParts")
+                slots.add(
+                    StatUiState(
+                        id = (1..999999999).random(),
+                        name = alarmSettingUiState.value.alarm_name,
+                        hours = timeParts[0],
+                        minutes = timeParts[1],
+                        midDay = timeParts[2].lowercase() != "am"
+                    )
+                )
+                dif += if (interval.value.repeatableInterval.unit == "Hour") {
+                    (interval.value.repeatableInterval.time * 60 * 60000).toLong()
+                } else {
+                    (interval.value.repeatableInterval.time * 60000).toLong()
+                }
+                if (slots.size > 2) {
+                    break
+                }
+            }
+            Log.d("TAGTAGTAG", "getSlots: $slots")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(context, "${e.printStackTrace()}", Toast.LENGTH_LONG).show()
+        }
+        slots.removeAt(0)
+        return slots
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun isValidState(state: StatUiState): Boolean {
+        try {
+            val dateFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val date = Date()
+            val format = "yyyy-MM-dd HH:mm"
+            val sdf = SimpleDateFormat(format, Locale.getDefault())
+            val dateObj1: Date = sdf.parse(
+                dateFormat.format(date) + " " + alarmSettingUiState.value.time_hours + ":" + alarmSettingUiState.value.time_minutes
+            )!!
+            val dateObj2: Date = sdf.parse(
+                dateFormat.format(date) + " " + state.hours + ":" + state.minutes
+            )!!
+            return if (dateObj1.time < dateObj2.time) {
+                true
+            } else {
+                Toast.makeText(context, "select variant time after alarm time ", Toast.LENGTH_LONG)
+                    .show()
+                false
+            }
+
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(context, "${e.printStackTrace()}", Toast.LENGTH_LONG).show()
+        }
+        return false
+    }
+
     companion object {
+        val TAG = "debug_spotify"
         val ALARMSETTINGKEY: String = "alarmSettingUiState"
         val TAGSKEY: String = "tagsUiState"
         val TIMESETTINGKEY: String = "timeSettingUiState"

@@ -5,7 +5,8 @@ import fit.asta.health.scheduler.model.net.tag.Data
 
 data class TagsUiState(
     val tagsList: List<TagEntity> = emptyList(),
-    val selectedTag: TagState = TagState()
+    val selectedTag: TagState = TagState(),
+    val newTag: Data = Data(id = "", name = "", uid = "", url = ""),
 )
 
 data class TagState(

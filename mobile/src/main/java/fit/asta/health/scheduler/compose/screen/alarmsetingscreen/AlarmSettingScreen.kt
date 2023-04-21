@@ -1,7 +1,9 @@
 package fit.asta.health.scheduler.compose.screen.alarmsetingscreen
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -13,8 +15,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -25,8 +30,11 @@ import fit.asta.health.R
 import fit.asta.health.scheduler.compose.components.*
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AlarmCreateBottomSheetTypes.*
 import fit.asta.health.scheduler.navigation.AlarmSchedulerScreen
+import fit.asta.health.scheduler.util.Constants
 import fit.asta.health.scheduler.viewmodel.SchedulerViewModel
 import kotlinx.coroutines.launch
+import xyz.aprildown.ultimateringtonepicker.RingtonePickerDialog
+import xyz.aprildown.ultimateringtonepicker.UltimateRingtonePicker
 
 @OptIn(ExperimentalMaterialApi::class)
 @RequiresApi(Build.VERSION_CODES.N)
@@ -49,7 +57,8 @@ fun AlarmSettingScreen(
     val scope = rememberCoroutineScope()
 
     val closeSheet = {
-        scope.launch { modalBottomSheetState.hide()
+        scope.launch {
+            modalBottomSheetState.hide()
             if (modalBottomSheetValue == ModalBottomSheetValue.Expanded) {
                 modalBottomSheetValue = ModalBottomSheetValue.Hidden
             }
@@ -73,14 +82,11 @@ fun AlarmSettingScreen(
             Spacer(modifier = Modifier.height(1.dp))
             currentBottomSheet?.let {
                 AlarmCreateBtmSheetLayout(
-                    sheetLayout = it,
-                    closeSheet = { closeSheet() },
-                    schedulerViewModel
+                    sheetLayout = it, closeSheet = { closeSheet() }, schedulerViewModel
                 )
             }
         }) {
-        val alarmSettingUiState=  schedulerViewModel.alarmSettingUiState.value
-        val tagUiState=schedulerViewModel.tagsUiState.value
+        val alarmSettingUiState = schedulerViewModel.alarmSettingUiState.value
         Scaffold(topBar = {
             BottomNavigation(content = {
                 Row(
@@ -101,7 +107,7 @@ fun AlarmSettingScreen(
                         color = MaterialTheme.colorScheme.onTertiaryContainer,
                         textAlign = TextAlign.Center
                     )
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { schedulerViewModel.aSEvent(AlarmSettingEvent.Save) }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_baseline_check_24),
                             contentDescription = null,
@@ -119,95 +125,91 @@ fun AlarmSettingScreen(
                     .padding(paddingValues)
                     .verticalScroll(rememberScrollState())
             ) {
-                DigitalDemo(onTimeChange = {schedulerViewModel.ASEvent(AlarmSettingEvent.SetAlarmTime(it))})
-                RepeatAlarm(alarmSettingUiState=alarmSettingUiState,onDaySelect = {schedulerViewModel.ASEvent(AlarmSettingEvent.SetWeek(it))})
-                OnlyToggleButton(
-                    icon = R.drawable.ic_ic24_alert,
+                DigitalDemo(onTimeChange = {
+                    schedulerViewModel.aSEvent(
+                        AlarmSettingEvent.SetAlarmTime(
+                            it
+                        )
+                    )
+                })
+                RepeatAlarm(alarmSettingUiState = alarmSettingUiState,
+                    onDaySelect = { schedulerViewModel.aSEvent(AlarmSettingEvent.SetWeek(it)) }
+                ) { schedulerViewModel.aSEvent(AlarmSettingEvent.SetWeekStatus(it)) }
+                OnlyToggleButton(icon = R.drawable.ic_ic24_alert,
                     title = "Status",
                     switchTitle = "",
                     onNavigateToClickText = null,
-                    mCheckedState = alarmSettingUiState.CustomTagName.meta.status,
-                    onCheckClicked = { schedulerViewModel.ASEvent(AlarmSettingEvent.SetStatus(it)) }
-                )
-                AlarmIconButton(
-                    image = R.drawable.ic_ic24_alarm_snooze,
+                    mCheckedState = alarmSettingUiState.status,
+                    onCheckClicked = { schedulerViewModel.aSEvent(AlarmSettingEvent.SetStatus(it)) })
+                AlarmIconButton(image = R.drawable.ic_ic24_alarm_snooze,
                     title = "Tag",
-                    arrowTitle = tagUiState.selectedTag.meta.name,
-                    arrowImage = R.drawable.ic_ic24_right_arrow, onNavigateToScreen = {
-                        schedulerViewModel.ASEvent(AlarmSettingEvent.GotoTagScreen)
-                        navController.navigate(route = AlarmSchedulerScreen.TagSelection.route)
-                    }
-                )
-                AlarmIconButton(
-                    image = R.drawable.ic_ic24_label,
-                    title = "Label",
-                    arrowTitle = alarmSettingUiState.Label,
-                    arrowImage = R.drawable.ic_ic24_right_arrow, onNavigateToScreen = {
-                        currentBottomSheet = LABEL
-                        openSheet()
-                    }
-                )
-                AlarmIconButton(
-                    image = R.drawable.ic_ic24_description,
-                    title = "Description",
-                    arrowTitle = alarmSettingUiState.Description,
-                    arrowImage = R.drawable.ic_ic24_right_arrow, onNavigateToScreen = {
-                        currentBottomSheet = DESCRIPTION
-                        openSheet()
-                    }
-                )
-                AlarmIconButton(
-                    image = R.drawable.ic_ic24_time,
-                    title = "Intervals Settings",
-                    arrowTitle = "Power Nap",
+                    arrowTitle = alarmSettingUiState.tag_name,
                     arrowImage = R.drawable.ic_ic24_right_arrow,
                     onNavigateToScreen = {
-                        schedulerViewModel.ASEvent(AlarmSettingEvent.GotoTimeSettingScreen)
+                        schedulerViewModel.aSEvent(AlarmSettingEvent.GotoTagScreen)
+                        navController.navigate(route = AlarmSchedulerScreen.TagSelection.route)
+                    })
+                AlarmIconButton(image = R.drawable.ic_ic24_label,
+                    title = "Label",
+                    arrowTitle = alarmSettingUiState.alarm_name,
+                    arrowImage = R.drawable.ic_ic24_right_arrow,
+                    onNavigateToScreen = {
+                        currentBottomSheet = LABEL
+                        openSheet()
+                    })
+                AlarmIconButton(image = R.drawable.ic_ic24_description,
+                    title = "Description",
+                    arrowTitle = alarmSettingUiState.alarm_description,
+                    arrowImage = R.drawable.ic_ic24_right_arrow,
+                    onNavigateToScreen = {
+                        currentBottomSheet = DESCRIPTION
+                        openSheet()
+                    })
+                AlarmIconButton(image = R.drawable.ic_ic24_time,
+                    title = "Intervals Settings",
+                    arrowTitle = alarmSettingUiState.interval,
+                    arrowImage = R.drawable.ic_ic24_right_arrow,
+                    onNavigateToScreen = {
+                        schedulerViewModel.aSEvent(AlarmSettingEvent.GotoTimeSettingScreen)
                         navController.navigate(route = AlarmSchedulerScreen.IntervalSettingsSelection.route)
-                    }
-                )
-                AlarmIconButton(
-                    image = R.drawable.ic_ic24_notification,
+                    })
+                AlarmIconButton(image = R.drawable.ic_ic24_notification,
                     title = "Reminder Mode",
-                    arrowTitle = alarmSettingUiState.Choice,
+                    arrowTitle = alarmSettingUiState.mode,
                     arrowImage = R.drawable.ic_ic24_right_arrow,
                     onNavigateToScreen = {
                         currentBottomSheet = REMINDER
                         openSheet()
-                    }
-                )
-                OnlyToggleButton(
-                    icon = R.drawable.ic_ic24_vibrate,
+                    })
+                OnlyToggleButton(icon = R.drawable.ic_ic24_vibrate,
                     title = "Vibration ",
-                    mCheckedState =alarmSettingUiState.CustomTagName.meta.vibration.status ,
+                    mCheckedState = alarmSettingUiState.vibration_status,
                     onCheckClicked = {
-                        schedulerViewModel.ASEvent(AlarmSettingEvent.SetVibration(it))
+                        schedulerViewModel.aSEvent(AlarmSettingEvent.SetVibration(it))
                     },
-                    switchTitle = alarmSettingUiState.Vibration, onNavigateToClickText = {
+                    switchTitle = alarmSettingUiState.vibration,
+                    onNavigateToClickText = {
                         currentBottomSheet = VIBRATION
                         openSheet()
-                    }
-                )
-                OnlyToggleButton(
-                    icon = R.drawable.ic_ic24_voice,
+                    })
+                OnlyToggleButton(icon = R.drawable.ic_ic24_voice,
                     title = "Sound",
-                    mCheckedState =alarmSettingUiState.Sound.status ,
-                    onCheckClicked = {
-                        schedulerViewModel.ASEvent(AlarmSettingEvent.SetSound(it))
-                    },
-                    switchTitle = "Spring", onNavigateToClickText = {
+                    mCheckedState =false,
+                    onCheckClicked = {},
+                    switchTitle =alarmSettingUiState.tone_name,
+                    onNavigateToClickText = {
                         currentBottomSheet = SOUND
                         openSheet()
-                    }
-                )
+                    })
                 OnlyToggleButton(
                     icon = R.drawable.ic_ic24_warning,
                     title = "Important",
-                    mCheckedState = alarmSettingUiState.CustomTagName.meta.important,
+                    mCheckedState = alarmSettingUiState.important,
                     onCheckClicked = {
-                     schedulerViewModel.ASEvent(AlarmSettingEvent.SetImportant(it))
+                        schedulerViewModel.aSEvent(AlarmSettingEvent.SetImportant(it))
                     },
-                    switchTitle = "", onNavigateToClickText = null
+                    switchTitle = "",
+                    onNavigateToClickText = null
                 )
                 Text(
                     text = "This will make sure you attempt with the help of flashlight, sound changes, vibration etc.",
@@ -223,45 +225,46 @@ fun AlarmSettingScreen(
 }
 
 enum class AlarmCreateBottomSheetTypes {
-    LABEL,
-    DESCRIPTION,
-    REMINDER,
-    VIBRATION,
-    SOUND
+    LABEL, DESCRIPTION, REMINDER, VIBRATION, SOUND
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AlarmCreateBtmSheetLayout(
     sheetLayout: AlarmCreateBottomSheetTypes,
     closeSheet: () -> Unit,
     schedulerViewModel: SchedulerViewModel
-    ) {
-
+) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     when (sheetLayout) {
         LABEL -> {
             Column(modifier = Modifier.fillMaxWidth()) {
-                CustomLabelBottomSheetLayout(
-                    text = "Labels",
+                CustomLabelBottomSheetLayout(text = "Labels",
                     label = "Enter your Label",
-                    onNavigateBack = closeSheet,
+                    onNavigateBack = {
+                        closeSheet()
+                        keyboardController?.hide()
+                    },
                     onSave = {
                         closeSheet()
-                        schedulerViewModel.ASEvent(AlarmSettingEvent.SetLabel(it))
-                    }
-                )
+                        keyboardController?.hide()
+                        schedulerViewModel.aSEvent(AlarmSettingEvent.SetLabel(it))
+                    })
             }
         }
         DESCRIPTION -> {
             Column(modifier = Modifier.fillMaxWidth()) {
-                CustomLabelBottomSheetLayout(
-                    text = "Add Description",
+                CustomLabelBottomSheetLayout(text = "Add Description",
                     label = "Enter Description",
-                    onNavigateBack = closeSheet,
+                    onNavigateBack = {
+                        closeSheet()
+                        keyboardController?.hide()
+                    },
                     onSave = {
                         closeSheet()
-                        schedulerViewModel.ASEvent(AlarmSettingEvent.SetDescription(it))
-                    }
-                )
+                        keyboardController?.hide()
+                        schedulerViewModel.aSEvent(AlarmSettingEvent.SetDescription(it))
+                    })
             }
         }
         REMINDER -> {
@@ -271,9 +274,8 @@ fun AlarmCreateBtmSheetLayout(
                     onNavigateBack = closeSheet,
                     onSave = {
                         closeSheet()
-                        schedulerViewModel.ASEvent(AlarmSettingEvent.SetReminderMode(it))
-                    }
-                )
+                        schedulerViewModel.aSEvent(AlarmSettingEvent.SetReminderMode(it))
+                    })
             }
         }
         VIBRATION -> {
@@ -283,23 +285,46 @@ fun AlarmCreateBtmSheetLayout(
                     onNavigateBack = closeSheet,
                     onSave = {
                         closeSheet()
-                        schedulerViewModel.ASEvent(AlarmSettingEvent.SetVibrationIntensity(it))
-                    }
-                )
+                        schedulerViewModel.aSEvent(AlarmSettingEvent.SetVibrationIntensity(it))
+                    })
             }
         }
         SOUND -> {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                VibrationBottomSheetLayout(
-                    text = "Select Sound Intensity",
-                    onNavigateBack = closeSheet,
-                    onSave = {
-                        closeSheet()
-                        schedulerViewModel.ASEvent(AlarmSettingEvent.SetSoundIntensity(it))
-                    }
-                )
-            }
+            RingtonePickerDialog(dialogTitle = "Select Sound", onRingtonePicked = {
+                closeSheet()
+                schedulerViewModel.aSEvent(AlarmSettingEvent.SetSound(it))
+            }, onClose = closeSheet)
         }
     }
 
 }
+
+@Composable
+fun RingtonePickerDialog(
+    dialogTitle: String,
+    onRingtonePicked: (ToneUiState) -> Unit,
+    onClose: () -> Unit
+) {
+    val fragmentManager = (LocalContext.current as AppCompatActivity).supportFragmentManager
+    val callback = remember {
+        object : UltimateRingtonePicker.RingtonePickerListener {
+            override fun onRingtonePicked(ringtones: List<UltimateRingtonePicker.RingtoneEntry>) {
+                Log.d("TAGTAGTAG", "callback: ")
+                if (ringtones.isNotEmpty()) {
+                    onRingtonePicked(ToneUiState(
+                        name =ringtones[0].name , uri =ringtones[0].uri.toString()
+                    ))
+                }
+                onClose()
+            }
+        }
+    }
+    val dialog = RingtonePickerDialog.createEphemeralInstance(
+        settings = Constants.settings, dialogTitle, callback
+    )
+    dialog.show(fragmentManager, null)
+    Log.d("TAGTAGTAG", "show: ")
+
+
+}
+

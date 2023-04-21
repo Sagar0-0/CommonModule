@@ -73,8 +73,7 @@ class TimeSettingActivity : AppCompatActivity(), DialogInterface, TimeActivityBo
             }
         }
 
-        binding.switchIntervalStatus.isChecked =
-            binding.alarmItem?.interval?.status!!
+        binding.switchIntervalStatus.isChecked =true
 
         binding.switchVariantInterval.setOnCheckedChangeListener { compoundButton, isChecked ->
             if (isChecked) {
@@ -120,7 +119,6 @@ class TimeSettingActivity : AppCompatActivity(), DialogInterface, TimeActivityBo
                 ),
                 binding.selectedSnoozeDuration.tag.toString().toInt(),
                 listOfStaticIntervals,
-                binding.switchIntervalStatus.isChecked,
                 listOfVariantIntervals,
                 binding.switchVariantInterval.isChecked,
             )

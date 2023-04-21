@@ -1,5 +1,7 @@
 package fit.asta.health.scheduler.compose.screen.timesettingscreen
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -18,15 +20,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import fit.asta.health.R
-import fit.asta.health.scheduler.compose.components.SettingsLayout
-import fit.asta.health.scheduler.compose.components.SnoozeBottomSheet
-import fit.asta.health.scheduler.compose.components.TimePickerDemo
+import fit.asta.health.scheduler.compose.components.*
 import fit.asta.health.scheduler.compose.screen.timesettingscreen.TimeSettingCreateBottomSheetTypes.*
 import fit.asta.health.scheduler.viewmodel.SchedulerViewModel
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.N)
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TimeSettingScreen(navController: NavHostController, schedulerViewModel: SchedulerViewModel) {
@@ -74,10 +76,12 @@ fun TimeSettingScreen(navController: NavHostController, schedulerViewModel: Sche
                 )
             }
         }) {
-        val timeSettingUiState=schedulerViewModel.timeSettingUiState.value
+        val timeSettingUiState = schedulerViewModel.timeSettingUiState.value
+        val list by schedulerViewModel.variantIntervalsList.collectAsStateWithLifecycle()
         Scaffold(content = { paddingValues ->
             SettingsLayout(
-                timeSettingUiState=timeSettingUiState,
+                timeSettingUiState = timeSettingUiState,
+                variantIntervals = list,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
@@ -99,7 +103,18 @@ fun TimeSettingScreen(navController: NavHostController, schedulerViewModel: Sche
                     currentBottomSheet = RepetitiveInterval
                     openSheet()
                 },
-                onChoice = {schedulerViewModel.TSEvent(TimeSettingEvent.SetAdvancedStatus(it))}
+                onChoice = { schedulerViewModel.tSEvent(TimeSettingEvent.SetAdvancedStatus(it)) },
+                onRemainderAtEnd = {
+                    schedulerViewModel.tSEvent(TimeSettingEvent.RemindAtEndOfDuration(it))
+                },
+                onVariantStateChange = {
+                    schedulerViewModel.tSEvent(TimeSettingEvent.SetVariantStatus(it))
+                },
+                onAddVariantInterval = {
+                    currentBottomSheet = VariantInterval
+                    openSheet()
+                },
+                onDelete = { schedulerViewModel.tSEvent(TimeSettingEvent.DeleteVariantInterval(it)) }
             )
         }, topBar = {
             BottomNavigation(content = {
@@ -121,7 +136,12 @@ fun TimeSettingScreen(navController: NavHostController, schedulerViewModel: Sche
                         color = MaterialTheme.colorScheme.onTertiaryContainer,
                         textAlign = TextAlign.Center
                     )
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = {
+                        schedulerViewModel.tSEvent(TimeSettingEvent.Save)
+                        if (schedulerViewModel.isIntervalDataValid(interval = timeSettingUiState)) {
+                            navController.popBackStack()
+                        }
+                    }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_baseline_check_24),
                             contentDescription = null,
@@ -138,9 +158,10 @@ fun TimeSettingScreen(navController: NavHostController, schedulerViewModel: Sche
 }
 
 enum class TimeSettingCreateBottomSheetTypes {
-    SnoozeSelection, RepetitiveInterval,Advanced,Duration
+    SnoozeSelection, RepetitiveInterval, Advanced, Duration, VariantInterval
 }
 
+@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun TimeSettingCreateBtmSheetLayout(
     schedulerViewModel: SchedulerViewModel,
@@ -150,25 +171,39 @@ fun TimeSettingCreateBtmSheetLayout(
     ) {
 
     when (sheetLayout) {
-        Advanced->{
-            SnoozeBottomSheet(onNavigateBack = {  closeSheet()}, onValueChange = {
-                schedulerViewModel.TSEvent(TimeSettingEvent.SetAdvancedDuration(it))
+        Advanced -> {
+            SnoozeBottomSheet(onNavigateBack = { closeSheet() }, onValueChange = {
+                schedulerViewModel.tSEvent(TimeSettingEvent.SetAdvancedDuration(it))
             })
         }
-        Duration->{
-            SnoozeBottomSheet(onNavigateBack = {  closeSheet()}, onValueChange = {
-                schedulerViewModel.TSEvent(TimeSettingEvent.SetDuration(it))
+        Duration -> {
+            SnoozeBottomSheet(onNavigateBack = { closeSheet() }, onValueChange = {
+                schedulerViewModel.tSEvent(TimeSettingEvent.SetDuration(it))
             })
         }
         SnoozeSelection -> {
-            SnoozeBottomSheet(onNavigateBack = {  closeSheet()}, onValueChange = {
-                schedulerViewModel.TSEvent(TimeSettingEvent.SetSnooze(it))
+            SnoozeBottomSheet(onNavigateBack = { closeSheet() }, onValueChange = {
+                schedulerViewModel.tSEvent(TimeSettingEvent.SetSnooze(it))
             })
         }
         RepetitiveInterval -> {
-            TimePickerDemo(onNavigateBack = { closeSheet()}, onValueChange = {
-                schedulerViewModel.TSEvent(TimeSettingEvent.SetDuration(it))
+            TimePickerDemo(onNavigateBack = { closeSheet() }, onValueChange = {},
+            onSave = {
+                schedulerViewModel.tSEvent(TimeSettingEvent.SetRepetitiveIntervals(it))
+                closeSheet()
             })
+        }
+        VariantInterval -> {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                AddVariantIntervalBottomSheet(
+                    text = "Variant Interval",
+                    onNavigateBack = closeSheet,
+                    onSave = {
+                        closeSheet()
+                        schedulerViewModel.tSEvent(TimeSettingEvent.AddVariantInterval(it))
+                    }
+                )
+            }
         }
     }
 

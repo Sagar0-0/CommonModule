@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import fit.asta.health.scheduler.compose.components.*
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AlarmSettingScreen
+import fit.asta.health.scheduler.compose.screen.homescreen.HomeScreen
 import fit.asta.health.scheduler.compose.screen.tagscreen.TagsScreen
 import fit.asta.health.scheduler.compose.screen.timesettingscreen.TimeSettingScreen
 import fit.asta.health.scheduler.viewmodel.SchedulerViewModel
@@ -18,9 +19,12 @@ fun SchedulerNavigation(navController: NavHostController,schedulerViewModel: Sch
 
     NavHost(
         navController = navController,
-        startDestination = AlarmSchedulerScreen.AlarmSettingHome.route
+        startDestination = AlarmSchedulerScreen.AlarmHome.route
     ) {
 
+        composable(route = AlarmSchedulerScreen.AlarmHome.route) {
+            HomeScreen(navController = navController,schedulerViewModel=schedulerViewModel)
+        }
         composable(route = AlarmSchedulerScreen.AlarmSettingHome.route) {
             AlarmSettingScreen(navController,schedulerViewModel)
         }

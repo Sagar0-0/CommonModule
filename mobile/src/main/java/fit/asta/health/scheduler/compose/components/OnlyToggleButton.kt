@@ -14,7 +14,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,8 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
 import fit.asta.health.common.ui.theme.TSelected
-import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AlarmSettingUiState
-import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.WkUiState
+import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ASUiState
 import fit.asta.health.scheduler.model.net.scheduler.Time
 
 @Composable
@@ -39,7 +37,7 @@ fun OnlyToggleButton(
     switchTitle: String,
     onNavigateToClickText: (() -> Unit)?,
     onCheckClicked: (Boolean) -> Unit = {},
-    mCheckedState:Boolean =false
+    mCheckedState: Boolean = false
 ) {
 
     val enabled by remember { mutableStateOf(true) }
@@ -97,9 +95,12 @@ fun OnlyToggleButton(
                             onCheckClicked(it)
                         },
                         colors = SwitchDefaults.colors(
+                            checkedThumbColor = MaterialTheme.colorScheme.primary,
                             uncheckedThumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            checkedThumbColor = MaterialTheme.colorScheme.primary
-                        )
+                            checkedTrackColor=Color.LightGray,
+                            uncheckedTrackColor=MaterialTheme.colorScheme.background,
+                            checkedBorderColor=MaterialTheme.colorScheme.primary,
+                            uncheckedBorderColor=MaterialTheme.colorScheme.primary, )
                     )
                 }
             }
@@ -188,12 +189,12 @@ fun DigitalDemo(onTimeChange: (Time) -> Unit) {
     val initMinute = calendar[Calendar.MINUTE]
 
 
-    val minuteDemo = remember { mutableStateOf("$initMinute") }
-    val hourDemo = remember { mutableStateOf("$initHour") }
+    val minuteDemo = remember { mutableStateOf(initMinute) }
+    val hourDemo = remember { mutableStateOf(initHour) }
 
     val timePickerDialog = TimePickerDialog(LocalContext.current, { _, hour: Int, minute: Int ->
-        minuteDemo.value = "$minute"
-        hourDemo.value = "$hour"
+        minuteDemo.value = minute
+        hourDemo.value = hour
         onTimeChange(
             Time(
                 hours = hour.toString(),
@@ -213,7 +214,7 @@ fun DigitalDemo(onTimeChange: (Time) -> Unit) {
     ) {
         TextButton(onClick = { }, interactionSource = interactionSource) {
             Text(
-                text = "${hourDemo.value}:${minuteDemo.value}",
+                text = if (hourDemo.value > 12) "${hourDemo.value - 12}:${minuteDemo.value}" else "${hourDemo.value}:${minuteDemo.value}",
                 color = Color.White,
                 fontSize = 48.sp,
                 fontWeight = FontWeight.Bold,
@@ -221,7 +222,7 @@ fun DigitalDemo(onTimeChange: (Time) -> Unit) {
             )
             Spacer(modifier = Modifier.width(2.dp))
             Text(
-                text = "am",
+                text = if (hourDemo.value > 12) "pm" else "am",
                 color = Color.White,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
@@ -232,8 +233,11 @@ fun DigitalDemo(onTimeChange: (Time) -> Unit) {
 }
 
 @Composable
-fun RepeatAlarm(onDaySelect: (WkUiState) -> Unit = {}, alarmSettingUiState: AlarmSettingUiState) {
-    var text by remember { mutableStateOf("") }
+fun RepeatAlarm(
+    onDaySelect: (Int) -> Unit, alarmSettingUiState: ASUiState,
+    onCheckClicked: (Boolean) -> Unit
+) {
+    var text by remember { mutableStateOf("One Time") }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -265,18 +269,31 @@ fun RepeatAlarm(onDaySelect: (WkUiState) -> Unit = {}, alarmSettingUiState: Alar
                         )
                         Spacer(modifier = Modifier.height(1.dp))
                         Text(
-                            text =text ,
+                            text = text,
                             fontSize = 16.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Switch(
+                        checked = alarmSettingUiState.recurring,
+                        onCheckedChange = {
+                            onCheckClicked(it)
+                        },
+                        colors = SwitchDefaults.colors(
+                            checkedThumbColor = MaterialTheme.colorScheme.primary,
+                            uncheckedThumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            checkedTrackColor=Color.LightGray,
+                            uncheckedTrackColor=MaterialTheme.colorScheme.background,
+                            checkedBorderColor=MaterialTheme.colorScheme.primary,
+                            uncheckedBorderColor=MaterialTheme.colorScheme.primary, )
+                    )
+
                 }
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
-        AllDays(onDaySelect = onDaySelect, weekUiState = alarmSettingUiState.Week, repeatText = {
-            text= if (alarmSettingUiState.Week.recurring) "EveryDay" else "OneTime"
-        })
+        AllDays(onDaySelect = onDaySelect, alarmSettingUiState = alarmSettingUiState)
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
@@ -288,8 +305,6 @@ fun DaysCircleButton(
     isSelected: Boolean = false,
     onDaySelect: () -> Unit = {}
 ) {
-
-    var selected by remember(isSelected) { mutableStateOf(isSelected) }
 
     val colorState: Color = if (!isSelected) TSelected else MaterialTheme.colorScheme.primary
 
@@ -307,73 +322,18 @@ fun DaysCircleButton(
 
 @Composable
 fun AllDays(
-    weekUiState: WkUiState,
-    onDaySelect: (WkUiState) -> Unit = {},
-    repeatText:()->Unit
+    alarmSettingUiState: ASUiState,
+    onDaySelect: (Int) -> Unit
 ) {
 
-    var sunday by remember(weekUiState) { mutableStateOf(weekUiState.sunday) }
-    var monday by remember(weekUiState) { mutableStateOf(weekUiState.monday) }
-    var tuesday by remember(weekUiState) { mutableStateOf(weekUiState.tuesday) }
-    var wednesday by remember(weekUiState) { mutableStateOf(weekUiState.wednesday) }
-    var thursday by remember(weekUiState) { mutableStateOf(weekUiState.thursday) }
-    var friday by remember(weekUiState) { mutableStateOf(weekUiState.friday) }
-    var saturday by remember(weekUiState) { mutableStateOf(weekUiState.saturday) }
-    var dayCount by rememberSaveable { mutableStateOf(0) }
-    LaunchedEffect(key1 = dayCount) {
-        if (dayCount < 0) dayCount = 0
-        repeatText()
-    }
 
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-        DaysCircleButton(day = "S", isSelected = sunday) {
-            sunday = !sunday
-            if (sunday) dayCount++ else dayCount--
-            weekUiState.sunday = sunday
-            weekUiState.recurring = (dayCount > 1)
-            onDaySelect(weekUiState)
-        }
-        DaysCircleButton(day = "M", isSelected = monday) {
-            monday = !monday
-            if (monday) dayCount++ else dayCount--
-            weekUiState.monday = monday
-            weekUiState.recurring = (dayCount > 1)
-            onDaySelect(weekUiState)
-        }
-        DaysCircleButton(day = "T", isSelected = tuesday) {
-            tuesday = !tuesday
-            if (tuesday) dayCount++ else dayCount--
-            weekUiState.tuesday = tuesday
-            weekUiState.recurring = (dayCount > 1)
-            onDaySelect(weekUiState)
-        }
-        DaysCircleButton(day = "W", isSelected = wednesday) {
-            wednesday = !wednesday
-            if (wednesday) dayCount++ else dayCount--
-            weekUiState.wednesday = wednesday
-            weekUiState.recurring = (dayCount > 1)
-            onDaySelect(weekUiState)
-        }
-        DaysCircleButton(day = "T", isSelected = thursday) {
-            thursday = !thursday
-            if (thursday) dayCount++ else dayCount--
-            weekUiState.thursday = thursday
-            weekUiState.recurring = (dayCount > 1)
-            onDaySelect(weekUiState)
-        }
-        DaysCircleButton(day = "F", isSelected = friday) {
-            friday = !friday
-            if (friday) dayCount++ else dayCount--
-            weekUiState.friday = friday
-            weekUiState.recurring = (dayCount > 1)
-            onDaySelect(weekUiState)
-        }
-        DaysCircleButton(day = "S", isSelected = saturday) {
-            saturday = !saturday
-            if (saturday) dayCount++ else dayCount--
-            weekUiState.saturday = saturday
-            weekUiState.recurring = (dayCount > 1)
-            onDaySelect(weekUiState)
-        }
+        DaysCircleButton(day = "S", isSelected = alarmSettingUiState.sunday) { onDaySelect(0) }
+        DaysCircleButton(day = "M", isSelected = alarmSettingUiState.monday) { onDaySelect(1) }
+        DaysCircleButton(day = "T", isSelected = alarmSettingUiState.tuesday) { onDaySelect(2) }
+        DaysCircleButton(day = "W", isSelected = alarmSettingUiState.wednesday) { onDaySelect(3) }
+        DaysCircleButton(day = "T", isSelected = alarmSettingUiState.thursday) { onDaySelect(4) }
+        DaysCircleButton(day = "F", isSelected = alarmSettingUiState.friday) { onDaySelect(5) }
+        DaysCircleButton(day = "S", isSelected = alarmSettingUiState.saturday) { onDaySelect(6) }
     }
 }

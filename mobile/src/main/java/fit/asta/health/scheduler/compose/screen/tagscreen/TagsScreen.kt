@@ -1,5 +1,7 @@
 package fit.asta.health.scheduler.compose.screen.tagscreen
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -47,7 +49,8 @@ fun TagsScreen(navController: NavHostController, schedulerViewModel: SchedulerVi
     val scope = rememberCoroutineScope()
 
     val closeSheet = {
-        scope.launch { modalBottomSheetState.hide()
+        scope.launch {
+            modalBottomSheetState.hide()
             if (modalBottomSheetValue == ModalBottomSheetValue.Expanded) {
                 modalBottomSheetValue = ModalBottomSheetValue.Hidden
             }
@@ -72,24 +75,25 @@ fun TagsScreen(navController: NavHostController, schedulerViewModel: SchedulerVi
             currentBottomSheet?.let {
                 TagCreateBtmSheetLayout(
                     sheetLayout = it,
-                    closeSheet = { closeSheet() }
+                    closeSheet = { closeSheet() },
+                    schedulerViewModel = schedulerViewModel
                 )
             }
         }) {
-        val tagsUiState=  schedulerViewModel.tagsUiState.value
+        val tagsUiState = schedulerViewModel.tagsUiState.value
         val scaffoldState: ScaffoldState = rememberScaffoldState()
         val coroutineScope: CoroutineScope = rememberCoroutineScope()
-        Scaffold(scaffoldState = scaffoldState,content = {
+        Scaffold(scaffoldState = scaffoldState, content = {
             LazyColumn(
                 Modifier
                     .fillMaxWidth()
                     .padding(it)
                     .background(color = MaterialTheme.colorScheme.secondaryContainer)
             ) {
-                items(tagsUiState.tagsList){data->
-                    SwipeDemo(data=data,onSwipe = {
-                        val deletedTag =data
-                        schedulerViewModel.TagsEvent(TagsEvent.DeleteTag(deletedTag))
+                items(tagsUiState.tagsList) { data ->
+                    SwipeDemo(data = data, onSwipe = {
+                        val deletedTag = data
+                        schedulerViewModel.tagsEvent(TagsEvent.DeleteTag(deletedTag))
                         coroutineScope.launch {
                             val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
                                 message = "Deleted ${deletedTag.meta.name}",
@@ -98,13 +102,14 @@ fun TagsScreen(navController: NavHostController, schedulerViewModel: SchedulerVi
                             )
                             when (snackbarResult) {
                                 SnackbarResult.ActionPerformed -> {
-                                    schedulerViewModel.TagsEvent(TagsEvent.UndoTag(deletedTag))
+                                    schedulerViewModel.tagsEvent(TagsEvent.UndoTag(deletedTag))
                                 }
                                 else -> {}
                             }
                         }
                     }, onClick = {
-                        schedulerViewModel.TagsEvent(TagsEvent.SelectedTag(data))
+                        schedulerViewModel.tagsEvent(TagsEvent.SelectedTag(data))
+                        navController.popBackStack()
                     })
                 }
             }
@@ -130,7 +135,9 @@ fun TagsScreen(navController: NavHostController, schedulerViewModel: SchedulerVi
                     fontSize = 20.sp
                 )
             }, navigationIcon = {
-                IconButton(onClick = { navController.popBackStack() }) {
+                IconButton(onClick = {
+                    navController.popBackStack()
+                }) {
                     Icon(
                         Icons.Outlined.NavigateBefore,
                         "back",
@@ -149,15 +156,42 @@ enum class TagCreateBottomSheetTypes {
 
 @Composable
 fun TagCreateBtmSheetLayout(
+    schedulerViewModel: SchedulerViewModel,
     sheetLayout: TagCreateBottomSheetTypes,
     closeSheet: () -> Unit,
 
     ) {
+    val selectedImage = remember {
 
+        mutableStateOf("")
+    }
+    val label = remember {
+        mutableStateOf("")
+    }
+    val galleryLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            selectedImage.value = uri.toString()
+        }
     when (sheetLayout) {
         CUSTOMTAGCREATION -> {
             Column(modifier = Modifier.fillMaxWidth()) {
-                CustomTagBottomSheetLayout(onNavigateBack = closeSheet)
+                CustomTagBottomSheetLayout(
+                    onNavigateBack = closeSheet,
+                    onImageSelect = { galleryLauncher.launch("image/*") },
+                    onValueChange = { label.value = it },
+                    onSave = {
+                        if (label.value.length < 2 && selectedImage.value.length < 2) {
+                            return@CustomTagBottomSheetLayout
+                        }
+                        schedulerViewModel.tagsEvent(
+                            TagsEvent.UpdateTag(
+                                label = label.value, url = selectedImage.value
+                            )
+                        )
+                        closeSheet()
+                    },
+                    image = selectedImage.value
+                )
             }
         }
     }
