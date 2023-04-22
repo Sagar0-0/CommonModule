@@ -12,12 +12,14 @@ import okhttp3.MultipartBody
 interface ProfileApi {
 
     suspend fun isUserProfileAvailable(userId: String): NetUserProfileAvailableRes
+
     suspend fun updateUserProfile(
         userProfile: UserProfile,
         files: List<MultipartBody.Part>,
     ): Status // create,update,or edit
 
     suspend fun getUserProfile(userId: String): NetUserProfileRes
+
     suspend fun getHealthProperties(propertyType: String): NetHealthPropertiesRes
 
 }

@@ -2,7 +2,11 @@
 
 package fit.asta.health.profile.view
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -52,7 +56,14 @@ fun LifeStyleLayout(
             SingleSelectionCard(
                 icon = UserPropertyType.PhysActive.icon,
                 title = UserPropertyType.PhysActive.title,
-                value = it.name,
+                value = when (it) {
+                    1 -> "Less"
+                    2 -> "Moderate"
+                    3 -> "Very"
+                    else -> {
+                        null
+                    }
+                }.toString(),
             )
         }
 
@@ -61,7 +72,7 @@ fun LifeStyleLayout(
         SingleSelectionCard(
             icon = UserPropertyType.WorkingEnv.icon,
             title = UserPropertyType.WorkingEnv.title,
-            value = lifeStyle.workingEnv.name,
+            value = lifeStyle.workingEnv.toString(),
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -69,7 +80,7 @@ fun LifeStyleLayout(
         SingleSelectionCard(
             icon = UserPropertyType.WorkStyle.icon,
             title = UserPropertyType.WorkStyle.title,
-            value = lifeStyle.workStyle.name,
+            value = lifeStyle.workStyle.toString(),
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -77,7 +88,7 @@ fun LifeStyleLayout(
         SingleSelectionCard(
             icon = UserPropertyType.WorkingHours.icon,
             title = UserPropertyType.WorkingHours.title,
-            value = lifeStyle.workingHours.name,
+            value = lifeStyle.workingHours.toString(),
         )
 
         Spacer(modifier = Modifier.height(16.dp))

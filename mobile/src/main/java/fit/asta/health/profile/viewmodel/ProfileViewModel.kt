@@ -31,6 +31,7 @@ import fit.asta.health.profile.viewmodel.ProfileConstants.BODY_TYPE
 import fit.asta.health.profile.viewmodel.ProfileConstants.DOB
 import fit.asta.health.profile.viewmodel.ProfileConstants.EMAIL
 import fit.asta.health.profile.viewmodel.ProfileConstants.HEIGHT
+import fit.asta.health.profile.viewmodel.ProfileConstants.ID
 import fit.asta.health.profile.viewmodel.ProfileConstants.INJURIES_SINCE
 import fit.asta.health.profile.viewmodel.ProfileConstants.NAME
 import fit.asta.health.profile.viewmodel.ProfileConstants.PHONE
@@ -386,6 +387,8 @@ class ProfileViewModel
         USER_IMG, ProfileMedia(name = "user_img", title = "User Profile Image")
     )
 
+    private val userID = savedState.getStateFlow(ID, "")
+
 
     //Physique
     val dob = savedState.getStateFlow(DOB, InputWrapper())
@@ -468,6 +471,7 @@ class ProfileViewModel
                     savedState[PHONE] = InputWrapper(value = result.data.contact.phone)
                     savedState[USER_IMG] = result.data.contact.url
                     savedState[ADDRESS] = result.data.contact.address
+                    savedState[ID] = result.data.id
 
                     //Physique
                     savedState[AGE] = InputWrapper(value = result.data.physique.age.toString())
@@ -477,19 +481,32 @@ class ProfileViewModel
                     savedState[HEIGHT] =
                         InputWrapper(value = result.data.physique.height.toString())
                     _selectedGenderOption.value = when (result.data.physique.gender) {
-                        "male" -> ThreeToggleSelections.First
-                        "female" -> ThreeToggleSelections.Second
-                        "others" -> ThreeToggleSelections.Third
+                        1 -> ThreeToggleSelections.First
+                        2 -> ThreeToggleSelections.Second
+                        3 -> ThreeToggleSelections.Third
                         else -> {
                             null
                         }
                     }
                     _isPregnantOption.value = when (result.data.physique.isPregnant) {
-                        true -> {
+                        1 -> {
                             TwoToggleSelections.First
                         }
 
-                        false -> TwoToggleSelections.Second
+                        2 -> TwoToggleSelections.Second
+                        else -> {
+                            null
+                        }
+                    }
+                    _isOnPeriodOption.value = when (result.data.physique.onPeriod) {
+                        1 -> {
+                            TwoToggleSelections.First
+                        }
+
+                        2 -> TwoToggleSelections.Second
+                        else -> {
+                            null
+                        }
                     }
                     savedState[PREGNANCY_WEEK] =
                         InputWrapper(value = result.data.physique.pregnancyWeek.toString())
@@ -569,31 +586,31 @@ class ProfileViewModel
 
                     //LifeStyle
                     _selectedPhyActOption.value = when (result.data.lifeStyle.physicalActivity) {
-                        HealthProperties(name = "Less") -> ThreeToggleSelections.First
-                        HealthProperties(name = "Moderate") -> ThreeToggleSelections.Second
-                        HealthProperties(name = "Very") -> ThreeToggleSelections.Third
+                        1 -> ThreeToggleSelections.First
+                        2 -> ThreeToggleSelections.Second
+                        3 -> ThreeToggleSelections.Third
                         else -> {
                             null
                         }
                     }
                     _selectedWorkingEnvOption.value = when (result.data.lifeStyle.workingEnv) {
-                        HealthProperties(name = "Standing") -> TwoToggleSelections.First
-                        HealthProperties(name = "Sitting") -> TwoToggleSelections.Second
+                        1 -> TwoToggleSelections.First
+                        2 -> TwoToggleSelections.Second
                         else -> {
                             null
                         }
                     }
                     _selectedWorkStyleOption.value = when (result.data.lifeStyle.workStyle) {
-                        HealthProperties(name = "Indoor") -> TwoToggleSelections.First
-                        HealthProperties(name = "Outdoor") -> TwoToggleSelections.Second
+                        1 -> TwoToggleSelections.First
+                        2 -> TwoToggleSelections.Second
                         else -> {
                             null
                         }
                     }
                     _selectedWorkingHrsOption.value = when (result.data.lifeStyle.workingHours) {
-                        HealthProperties(name = "Morning") -> ThreeToggleSelections.First
-                        HealthProperties(name = "Afternoon") -> ThreeToggleSelections.Second
-                        HealthProperties(name = "Night") -> ThreeToggleSelections.Third
+                        1 -> ThreeToggleSelections.First
+                        2 -> ThreeToggleSelections.Second
+                        3 -> ThreeToggleSelections.Third
                         else -> {
                             null
                         }
@@ -692,7 +709,7 @@ class ProfileViewModel
         authRepo.getUser()?.let {
             updateProfile(
                 UserProfile(
-                    uid = it.uid, contact = Contact(
+                    uid = it.uid, id = userID.value, contact = Contact(
                         dob = dob.value.value,
                         email = email.value.value.trim(),
                         name = name.value.value.trim(),
@@ -709,21 +726,27 @@ class ProfileViewModel
                         },
                         bodyType = bodyType.value.value,
                         gender = when (_selectedGenderOption.value) {
-                            ThreeToggleSelections.First -> "male"
-                            ThreeToggleSelections.Second -> "female"
-                            ThreeToggleSelections.Third -> "others"
-                            null -> ""
+                            ThreeToggleSelections.First -> 1
+                            ThreeToggleSelections.Second -> 2
+                            ThreeToggleSelections.Third -> 3
+                            null -> 0
                         },
                         isPregnant = when (_isPregnantOption.value) {
-                            TwoToggleSelections.First -> true
+                            TwoToggleSelections.First -> 1
                             else -> {
-                                false
+                                2
                             }
                         },
                         bmi = userBMI(
                             userWeight = weight.value.value.toFloat(),
                             userHeight = height.value.value.toFloat()
-                        )
+                        ),
+                        onPeriod = when (_isOnPeriodOption.value) {
+                            TwoToggleSelections.First -> 1
+                            else -> {
+                                2
+                            }
+                        }
                     ), health = Health(
                         healthHistory = convertHealthArrayList(0),
                         injuries = convertHealthArrayList(1),
@@ -742,26 +765,26 @@ class ProfileViewModel
                         prefActivities = convertLSArrayList(1),
                         lifeStyleTargets = convertLSArrayList(2),
                         physicalActivity = when (_selectedPhyActOption.value) {
-                            ThreeToggleSelections.First -> HealthProperties(name = "Less")
-                            ThreeToggleSelections.Second -> HealthProperties(name = "Moderate")
-                            ThreeToggleSelections.Third -> HealthProperties(name = "Very")
-                            null -> HealthProperties()
+                            ThreeToggleSelections.First -> 1
+                            ThreeToggleSelections.Second -> 2
+                            ThreeToggleSelections.Third -> 3
+                            null -> 0
                         },
                         workingEnv = when (_selectedWorkingEnvOption.value) {
-                            TwoToggleSelections.First -> HealthProperties(name = "Standing")
-                            TwoToggleSelections.Second -> HealthProperties(name = "Sitting")
-                            null -> HealthProperties()
+                            TwoToggleSelections.First -> 1
+                            TwoToggleSelections.Second -> 2
+                            null -> 0
                         },
                         workStyle = when (_selectedWorkStyleOption.value) {
-                            TwoToggleSelections.First -> HealthProperties(name = "Indoor")
-                            TwoToggleSelections.Second -> HealthProperties(name = "Outdoor")
-                            null -> HealthProperties()
+                            TwoToggleSelections.First -> 1
+                            TwoToggleSelections.Second -> 2
+                            null -> 0
                         },
                         workingHours = when (_selectedWorkingHrsOption.value) {
-                            ThreeToggleSelections.First -> HealthProperties(name = "Morning")
-                            ThreeToggleSelections.Second -> HealthProperties(name = "Afternoon")
-                            ThreeToggleSelections.Third -> HealthProperties(name = "Night")
-                            null -> HealthProperties()
+                            ThreeToggleSelections.First -> 1
+                            ThreeToggleSelections.Second -> 2
+                            ThreeToggleSelections.Third -> 3
+                            null -> 0
                         },
                     ), Diet(
                         preference = convertDietArrayList(0),

@@ -8,6 +8,7 @@ object ProfileConstants {
     const val PHONE = "phone"
     const val EMAIL = "email"
     const val ADDRESS = "address"
+    const val ID = "id"
 
     //Physique
     const val DOB = "dob"

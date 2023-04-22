@@ -1,6 +1,10 @@
 package fit.asta.health.profile.view.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
@@ -9,7 +13,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
 import fit.asta.health.profile.model.domain.Physique
-import java.util.*
 
 @Composable
 fun FemaleLayout(
@@ -35,9 +38,15 @@ fun FemaleLayout(
                 .shadow(elevation = 5.dp),
             shape = RoundedCornerShape(8.dp)
         ) {
-            UserBasicDetailsCardLayout(cardImg = R.drawable.gender,
-                cardType = "GENDER",
-                cardValue = m.gender.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() })
+            UserBasicDetailsCardLayout(
+                cardImg = R.drawable.gender, cardType = "GENDER", cardValue = when (m.gender) {
+                    1 -> "Male"
+                    2 -> "Female"
+                    else -> {
+                        "Others"
+                    }
+                }
+            )
         }
     }
     Spacer(modifier = Modifier.height(16.dp))

@@ -160,7 +160,10 @@ fun DietContent(
                 when (events) {
                     is ProfileSubmitState.Empty -> {}
                     is ProfileSubmitState.Error -> {
-                        Log.d("validate", "Error -> ${events.error}")
+                        Log.d(
+                            "validate",
+                            "Error -> ${events.error} and message -> ${events.error.message} and ${events.error.localizedMessage}"
+                        )
                     }
 
                     is ProfileSubmitState.Loading -> LoadingAnimation()
@@ -215,8 +218,7 @@ fun DietCreateScreen(
     }
 
 
-    ModalBottomSheetLayout(
-        modifier = Modifier.fillMaxSize(),
+    ModalBottomSheetLayout(modifier = Modifier.fillMaxSize(),
         sheetState = modalBottomSheetState,
         sheetContent = {
             Spacer(modifier = Modifier.height(1.dp))
@@ -270,6 +272,7 @@ fun DietCreateBottomSheetLayout(
                 is HPropState.NoInternet -> {
                     NoInternetLayout(onTryAgain = {})
                 }
+
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,
@@ -279,6 +282,7 @@ fun DietCreateBottomSheetLayout(
                 }
             }
         }
+
         NONVEGDAYS -> {
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
@@ -287,6 +291,7 @@ fun DietCreateBottomSheetLayout(
                 is HPropState.NoInternet -> {
                     NoInternetLayout(onTryAgain = {})
                 }
+
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,
@@ -296,6 +301,7 @@ fun DietCreateBottomSheetLayout(
                 }
             }
         }
+
         FOODALLERGIES -> {
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
@@ -304,6 +310,7 @@ fun DietCreateBottomSheetLayout(
                 is HPropState.NoInternet -> {
                     NoInternetLayout(onTryAgain = {})
                 }
+
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,
@@ -313,6 +320,7 @@ fun DietCreateBottomSheetLayout(
                 }
             }
         }
+
         CUISINES -> {
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
@@ -321,6 +329,7 @@ fun DietCreateBottomSheetLayout(
                 is HPropState.NoInternet -> {
                     NoInternetLayout(onTryAgain = {})
                 }
+
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,
@@ -330,6 +339,7 @@ fun DietCreateBottomSheetLayout(
                 }
             }
         }
+
         FOODRES -> {
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
@@ -338,6 +348,7 @@ fun DietCreateBottomSheetLayout(
                 is HPropState.NoInternet -> {
                     NoInternetLayout(onTryAgain = {})
                 }
+
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,
