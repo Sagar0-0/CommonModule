@@ -1,5 +1,6 @@
 package fit.asta.health.scheduler.util
 
+import android.app.KeyguardManager
 import android.content.Context
 import android.media.RingtoneManager
 import android.os.Build
@@ -18,6 +19,14 @@ import java.util.*
 
 class Constants {
     companion object {
+        const val sun = 111
+        const val mon = 222
+        const val tue = 333
+        const val wed = 444
+        const val thu = 555
+        const val fri = 666
+        const val sat = 777
+
         const val BUNDLE_ALARM_OBJECT = "bundle_alarm_object"
         const val ARG_ALARM_OBJET = "arg_alarm_object"
 
@@ -48,6 +57,8 @@ class Constants {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
                 (context as AppCompatActivity).setShowWhenLocked(true)
                 context.setTurnScreenOn(true)
+                val keyguardManager = context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+                keyguardManager.requestDismissKeyguard(context, null)
             } else {
                 window.addFlags(
                     WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON

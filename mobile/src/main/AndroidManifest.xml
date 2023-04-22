@@ -149,7 +149,7 @@
         <activity
             android:name=".scheduler.view.alarmsetting.AlarmSettingActivity"
             android:exported="false" />
-        <activity
+        <activity android:showOnLockScreen="true"
             android:name=".scheduler.view.alarmsplashscreen.AlarmScreenActivity"
             android:exported="false" />
         <activity

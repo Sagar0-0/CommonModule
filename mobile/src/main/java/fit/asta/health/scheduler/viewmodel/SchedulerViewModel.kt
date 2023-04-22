@@ -70,7 +70,7 @@ class SchedulerViewModel
 
     init {
 
-        refreshData()
+//        refreshData()
         getAlarms()
     }
 
@@ -329,9 +329,9 @@ class SchedulerViewModel
                                 if (map[alarmEntity.idFromServer] == false) {
                                     alarmLocalRepo.insertAlarm(alarmEntity = alarmEntity)
                                     if (alarmEntity.status) {
-                                        alarmEntity.schedule(context)
+                                        alarmEntity.scheduleAlarm(context)
                                     } else{
-                                        alarmEntity.cancelAlarm(context, id = alarmEntity.alarmId, cancelAllIntervals = true)
+                                        alarmEntity.cancelScheduleAlarm(context, alarmId = alarmEntity.alarmId, cancelAllIntervals = true)
                                     }
                                 }
                             }
@@ -492,7 +492,7 @@ class SchedulerViewModel
                             when (schedule) {
                                 is NetworkResult.Success -> {
                                     if (schedule.data?.data!!.status) {
-                                        schedule.data.data.schedule(context)
+                                        schedule.data.data.scheduleAlarm(context)
                                         alarmLocalRepo.insertAlarm(schedule.data.data)
                                         resetUi()
                                     }
@@ -556,7 +556,7 @@ class SchedulerViewModel
             when (result) {
                 is NetworkResult.Error -> {}
                 is NetworkResult.Success -> {
-                    if (alarmItem.status) alarmItem.cancelAlarm(
+                    if (alarmItem.status) alarmItem.cancelScheduleAlarm(
                         context, alarmItem.alarmId, true
                     )
                     alarmLocalRepo.deleteAlarm(alarmItem)
