@@ -24,6 +24,8 @@ import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_ALARM_OBJECT
 import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_POST_NOTIFICATION_OBJECT
 import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_PRE_NOTIFICATION_OBJECT
 import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_VARIANT_INTERVAL_OBJECT
+import fit.asta.health.scheduler.util.SerializableAndParcelable.parcelable
+import fit.asta.health.scheduler.util.SerializableAndParcelable.serializable
 import fit.asta.health.scheduler.view.alarmsplashscreen.AlarmScreenActivity
 import kotlin.random.Random
 
@@ -62,7 +64,7 @@ class AlarmService : Service() {
         val bundle = intent?.getBundleExtra(BUNDLE_ALARM_OBJECT)
         if (bundle != null) {
             // getting alarm item data from bundle
-            alarmEntity = bundle.getSerializable(ARG_ALARM_OBJET) as AlarmEntity
+            alarmEntity = bundle.serializable(ARG_ALARM_OBJET)
             Log.d("TAGTAGTAG", "onStartCommand: alarm $alarmEntity")
             // creating notification-pending intent to redirect on notification click
             val notificationIntent = Intent(this, AlarmScreenActivity::class.java)
@@ -155,9 +157,9 @@ class AlarmService : Service() {
         if (bundleForVariantInterval != null) {
             // getting alarm item data from bundle
             alarmEntity =
-                bundleForVariantInterval.getSerializable(ARG_VARIANT_INTERVAL_ALARM_OBJECT) as AlarmEntity
+                bundleForVariantInterval.serializable(ARG_VARIANT_INTERVAL_ALARM_OBJECT)
             variantInterval =
-                bundleForVariantInterval.getParcelable(ARG_VARIANT_INTERVAL_OBJECT) as Stat?
+                bundleForVariantInterval.parcelable(ARG_VARIANT_INTERVAL_OBJECT)
             Log.d("TAGTAGTAG", "onStartCommand:variant $alarmEntity \n $variantInterval")
             // creating notification-pending intent to redirect on notification click
             val notificationIntent = Intent(this, AlarmScreenActivity::class.java)
@@ -252,7 +254,7 @@ class AlarmService : Service() {
         if (bundleForPreNotification != null) {
             // getting alarm item data from bundle
             preNotificationAlarmEntity =
-                bundleForPreNotification.getSerializable(ARG_PRE_NOTIFICATION_OBJET) as AlarmEntity
+                bundleForPreNotification.serializable(ARG_PRE_NOTIFICATION_OBJET)
             Log.d("TAGTAGTAG", "onStartCommand:preNotification $preNotificationAlarmEntity")
             // creating notification-pending intent to redirect on notification click
             val notificationIntent = Intent(this, SchedulerHomeActivity::class.java)
@@ -288,7 +290,7 @@ class AlarmService : Service() {
         if (bundleForPostNotification != null) {
             // getting alarm item data from bundle
             postNotificationAlarmEntity =
-                bundleForPostNotification.getSerializable(ARG_POST_NOTIFICATION_OBJET) as AlarmEntity
+                bundleForPostNotification.serializable(ARG_POST_NOTIFICATION_OBJET)
             // creating notification-pending intent to redirect on notification click
             Log.d("TAGTAGTAG", "onStartCommand:postNotification $postNotificationAlarmEntity")
 

@@ -14,6 +14,8 @@ import fit.asta.health.scheduler.compose.screen.alarmscreen.AlarmScreen
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.net.scheduler.Stat
 import fit.asta.health.scheduler.util.Constants
+import fit.asta.health.scheduler.util.SerializableAndParcelable.parcelable
+import fit.asta.health.scheduler.util.SerializableAndParcelable.serializable
 import fit.asta.health.scheduler.viewmodel.AlarmScreenViewModel
 
 @AndroidEntryPoint
@@ -59,6 +61,7 @@ class AlarmScreenActivity : AppCompatActivity() {
         Constants.changeStatusBarColor(R.color.black, window, this)
         Constants.setShowWhenLocked(window, this)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Constants.changeStatusBarColor(R.color.black, window, this)
         Constants.setShowWhenLocked(window, this)
@@ -73,15 +76,15 @@ class AlarmScreenActivity : AppCompatActivity() {
         alarmScreenViewModel = ViewModelProvider(this)[AlarmScreenViewModel::class.java]
 
         val bundle = intent.getBundleExtra(Constants.BUNDLE_ALARM_OBJECT)
-        if (bundle != null) {
-            Log.d("TAGTAG", " alarm screen activity onCreate:bundel$bundle ")
-            alarmEntity = bundle.getSerializable(Constants.ARG_ALARM_OBJET) as AlarmEntity
-            val bundleForVariantInterval = intent.getBundleExtra(Constants.BUNDLE_VARIANT_INTERVAL_OBJECT)
-            if (bundleForVariantInterval != null) {
-                alarmEntity = bundleForVariantInterval.getSerializable(Constants.ARG_VARIANT_INTERVAL_ALARM_OBJECT) as AlarmEntity?
-                variantInterval = bundleForVariantInterval.getParcelable(Constants.ARG_VARIANT_INTERVAL_OBJECT) as Stat?
-            }
+        val bundleForVariantInterval = intent.getBundleExtra(Constants.BUNDLE_VARIANT_INTERVAL_OBJECT)
+        if (bundleForVariantInterval != null) {
+            alarmEntity = bundleForVariantInterval.serializable(Constants.ARG_VARIANT_INTERVAL_ALARM_OBJECT)
+            variantInterval = bundleForVariantInterval.parcelable(Constants.ARG_VARIANT_INTERVAL_OBJECT)
         }
+        if (bundle != null) {
+                alarmEntity = bundle.serializable(Constants.ARG_ALARM_OBJET)
+        }
+            Log.d("TAGTAG", " alarm screen activity onCreate: ")
             alarmScreenViewModel.setAlarmAndVariant(alarmEntity,variantInterval)
     }
 
