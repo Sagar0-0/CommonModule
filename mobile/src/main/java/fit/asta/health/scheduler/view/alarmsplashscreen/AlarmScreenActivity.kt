@@ -1,6 +1,7 @@
 package fit.asta.health.scheduler.view.alarmsplashscreen
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
@@ -64,21 +65,24 @@ class AlarmScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyApp {
-               AlarmScreen(alarmScreenViewModel = hiltViewModel<AlarmScreenViewModel>())
+                val alarmScreenViewModel=hiltViewModel<AlarmScreenViewModel>()
+                val uiState=alarmScreenViewModel.alarmUiState.value
+               AlarmScreen(uiState = uiState, event = alarmScreenViewModel::event )
             }
         }
         alarmScreenViewModel = ViewModelProvider(this)[AlarmScreenViewModel::class.java]
 
         val bundle = intent.getBundleExtra(Constants.BUNDLE_ALARM_OBJECT)
         if (bundle != null) {
+            Log.d("TAGTAG", " alarm screen activity onCreate:bundel$bundle ")
             alarmEntity = bundle.getSerializable(Constants.ARG_ALARM_OBJET) as AlarmEntity
             val bundleForVariantInterval = intent.getBundleExtra(Constants.BUNDLE_VARIANT_INTERVAL_OBJECT)
             if (bundleForVariantInterval != null) {
                 alarmEntity = bundleForVariantInterval.getSerializable(Constants.ARG_VARIANT_INTERVAL_ALARM_OBJECT) as AlarmEntity?
                 variantInterval = bundleForVariantInterval.getParcelable(Constants.ARG_VARIANT_INTERVAL_OBJECT) as Stat?
-                alarmScreenViewModel.setAlarmAndVariant(alarmEntity,variantInterval)
             }
         }
+            alarmScreenViewModel.setAlarmAndVariant(alarmEntity,variantInterval)
     }
 
 }

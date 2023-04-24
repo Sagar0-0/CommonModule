@@ -3,6 +3,8 @@ package fit.asta.health.scheduler.navigation
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -15,7 +17,7 @@ import fit.asta.health.scheduler.viewmodel.SchedulerViewModel
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
-fun SchedulerNavigation(navController: NavHostController,schedulerViewModel: SchedulerViewModel) {
+fun SchedulerNavigation(navController: NavHostController, schedulerViewModel: SchedulerViewModel) {
 
     NavHost(
         navController = navController,
@@ -23,17 +25,42 @@ fun SchedulerNavigation(navController: NavHostController,schedulerViewModel: Sch
     ) {
 
         composable(route = AlarmSchedulerScreen.AlarmHome.route) {
-            HomeScreen(navController = navController,schedulerViewModel=schedulerViewModel)
+            val homeUiState = schedulerViewModel.homeUiState.value
+            HomeScreen(
+                homeUiState = homeUiState,
+                hSEvent = schedulerViewModel::hSEvent,
+                navAlarmSettingHome = {
+                    navController.navigate(route = AlarmSchedulerScreen.AlarmSettingHome.route)
+                })
         }
         composable(route = AlarmSchedulerScreen.AlarmSettingHome.route) {
-            AlarmSettingScreen(navController,schedulerViewModel)
+            val alarmSettingUiState = schedulerViewModel.alarmSettingUiState.value
+            AlarmSettingScreen(
+                alarmSettingUiState = alarmSettingUiState,
+                aSEvent = schedulerViewModel::aSEvent,
+                navTagSelection = { navController.navigate(route = AlarmSchedulerScreen.TagSelection.route) },
+                navTimeSetting = { navController.navigate(route = AlarmSchedulerScreen.IntervalSettingsSelection.route) }
+            )
         }
 
         composable(route = AlarmSchedulerScreen.TagSelection.route) {
-            TagsScreen(navController,schedulerViewModel)
+            val tagsUiState = schedulerViewModel.tagsUiState.value
+            TagsScreen(
+                onNavBack = { navController.popBackStack() },
+                tagsEvent = schedulerViewModel::tagsEvent,
+                tagsUiState = tagsUiState
+            )
         }
         composable(route = AlarmSchedulerScreen.IntervalSettingsSelection.route) {
-            TimeSettingScreen(navController,schedulerViewModel)
+            val timeSettingUiState = schedulerViewModel.timeSettingUiState.value
+            val list by schedulerViewModel.variantIntervalsList.collectAsStateWithLifecycle()
+            TimeSettingScreen(
+                list = list,
+                timeSettingUiState = timeSettingUiState,
+                isIntervalDataValid = schedulerViewModel::isIntervalDataValid,
+                tSEvent = schedulerViewModel::tSEvent,
+                navBack = { navController.popBackStack() }
+            )
         }
 
     }

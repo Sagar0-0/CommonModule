@@ -235,9 +235,11 @@ fun DigitalDemo(onTimeChange: (Time) -> Unit) {
 @Composable
 fun RepeatAlarm(
     onDaySelect: (Int) -> Unit, alarmSettingUiState: ASUiState,
-    onCheckClicked: (Boolean) -> Unit
 ) {
-    var text by remember { mutableStateOf("One Time") }
+    var text by remember {
+        mutableStateOf("One Time") }
+    text=if (alarmSettingUiState.recurring){ "base on Day"}
+    else {"One Time"}
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -274,21 +276,6 @@ fun RepeatAlarm(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Switch(
-                        checked = alarmSettingUiState.recurring,
-                        onCheckedChange = {
-                            onCheckClicked(it)
-                        },
-                        colors = SwitchDefaults.colors(
-                            checkedThumbColor = MaterialTheme.colorScheme.primary,
-                            uncheckedThumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            checkedTrackColor=Color.LightGray,
-                            uncheckedTrackColor=MaterialTheme.colorScheme.background,
-                            checkedBorderColor=MaterialTheme.colorScheme.primary,
-                            uncheckedBorderColor=MaterialTheme.colorScheme.primary, )
-                    )
-
                 }
             }
         }

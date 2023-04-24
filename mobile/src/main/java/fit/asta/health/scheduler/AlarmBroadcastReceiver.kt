@@ -38,7 +38,7 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
             val bundleForAlarm = intent.getBundleExtra(BUNDLE_ALARM_OBJECT)
             if (bundleForAlarm != null) {
                 alarmEntity = bundleForAlarm.getSerializable(ARG_ALARM_OBJET) as AlarmEntity?
-                Log.d("TAGTAGTAG", "onReceive: $alarmEntity")
+                Log.d("TAGTAGTAG", "onReceive:alarm $alarmEntity")
                 val toastText = String.format("Alarm Received")
                 Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
                 if (alarmEntity != null) {
@@ -68,7 +68,7 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
             if (bundleForVariantInterval != null) {
                 alarmEntity =
                     bundleForVariantInterval.getSerializable(ARG_VARIANT_INTERVAL_ALARM_OBJECT) as AlarmEntity?
-                Log.d("TAGTAGTAG", "onReceive: $alarmEntity")
+                Log.d("TAGTAGTAG", "onReceive:variant $alarmEntity")
                 val toastText = String.format("Variant Received")
                 Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
                 if (alarmEntity != null) {
@@ -106,7 +106,7 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
                 val id = bundleForPreNotification.getInt(
                     "id", 1
                 )
-                Log.d("TAGTAGTAG", "onReceive: $preNotificationAlarmEntity $id")
+                Log.d("TAGTAGTAG", "onReceive:prenotification $preNotificationAlarmEntity $id")
                 val toastText = String.format("Pre Notification Received")
                 Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
                 if (preNotificationAlarmEntity != null) {
@@ -124,7 +124,7 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
                 postNotificationAlarmEntity = bundleForPostNotification.getSerializable(
                     ARG_POST_NOTIFICATION_OBJET
                 ) as AlarmEntity?
-                Log.d("TAGTAGTAG", "onReceive: $postNotificationAlarmEntity")
+                Log.d("TAGTAGTAG", "onReceive:postnotification $postNotificationAlarmEntity")
                 val toastText = String.format("Post Notification Received")
                 Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
                 if (postNotificationAlarmEntity != null) {

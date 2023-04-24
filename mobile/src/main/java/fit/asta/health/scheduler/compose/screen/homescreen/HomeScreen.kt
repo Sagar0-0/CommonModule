@@ -37,22 +37,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.R
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
-import fit.asta.health.scheduler.navigation.AlarmSchedulerScreen
-import fit.asta.health.scheduler.viewmodel.SchedulerViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(schedulerViewModel: SchedulerViewModel, navController: NavController) {
-    val homeUiState = schedulerViewModel.homeUiState.value
+fun HomeScreen(homeUiState:HomeUiState,hSEvent:(HomeEvent)->Unit,navAlarmSettingHome:()->Unit) {
+
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
     val activity = LocalContext.current as Activity
@@ -67,7 +64,7 @@ fun HomeScreen(schedulerViewModel: SchedulerViewModel, navController: NavControl
             items(homeUiState.alarmList) { data ->
                 SwipeAlarm(data = data, onSwipe = {
                     val deletedTag = data
-                    schedulerViewModel.HSEvent(HomeEvent.DeleteAlarm(data,context))
+                    hSEvent(HomeEvent.DeleteAlarm(data,context))
                     coroutineScope.launch {
                         val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
                             message = "Deleted ${data.info.name}",
@@ -76,7 +73,7 @@ fun HomeScreen(schedulerViewModel: SchedulerViewModel, navController: NavControl
                         )
                         when (snackbarResult) {
                             SnackbarResult.ActionPerformed -> {
-                                schedulerViewModel.HSEvent(HomeEvent.InsertAlarm(deletedTag))
+                                hSEvent(HomeEvent.InsertAlarm(deletedTag))
                             }
                             else -> {}
                         }
@@ -89,9 +86,7 @@ fun HomeScreen(schedulerViewModel: SchedulerViewModel, navController: NavControl
     },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {
-                    navController.navigate(route = AlarmSchedulerScreen.AlarmSettingHome.route)
-                },
+                onClick =  navAlarmSettingHome,
                 containerColor = MaterialTheme.colorScheme.primary,
                 shape = CircleShape,
                 modifier = Modifier.size(80.dp),

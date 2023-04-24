@@ -50,7 +50,6 @@ class SchedulerActivity : AppCompatActivity() {
             }
         }
         schedulerViewModel = ViewModelProvider(this)[SchedulerViewModel::class.java]
-        schedulerViewModel.context = this
 
         if (intent.getParcelableExtra<AlarmEntity>("alarmItem") != null) {
             alarmEntity = intent.getParcelableExtra("alarmItem")

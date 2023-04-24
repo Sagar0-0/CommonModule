@@ -22,28 +22,28 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import fit.asta.health.R
 import fit.asta.health.scheduler.compose.components.*
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AlarmCreateBottomSheetTypes.*
-import fit.asta.health.scheduler.navigation.AlarmSchedulerScreen
 import fit.asta.health.scheduler.util.Constants
-import fit.asta.health.scheduler.viewmodel.SchedulerViewModel
 import kotlinx.coroutines.launch
 import xyz.aprildown.ultimateringtonepicker.RingtonePickerDialog
 import xyz.aprildown.ultimateringtonepicker.UltimateRingtonePicker
 
 @OptIn(ExperimentalMaterialApi::class)
 @RequiresApi(Build.VERSION_CODES.N)
+@Preview
 @Composable
 fun AlarmSettingScreen(
-    navController: NavHostController = rememberNavController(),
-    schedulerViewModel: SchedulerViewModel,
+    alarmSettingUiState:ASUiState=ASUiState(),
+    aSEvent:(AlarmSettingEvent)->Unit={},
+    navTagSelection:()->Unit={},
+    navTimeSetting:()->Unit={}
 ) {
-
+    val context= LocalContext.current
     var currentBottomSheet: AlarmCreateBottomSheetTypes? by remember {
         mutableStateOf(null)
     }
@@ -82,11 +82,11 @@ fun AlarmSettingScreen(
             Spacer(modifier = Modifier.height(1.dp))
             currentBottomSheet?.let {
                 AlarmCreateBtmSheetLayout(
-                    sheetLayout = it, closeSheet = { closeSheet() }, schedulerViewModel
+                    sheetLayout = it, closeSheet = { closeSheet() }, aSEvent = aSEvent
                 )
             }
         }) {
-        val alarmSettingUiState = schedulerViewModel.alarmSettingUiState.value
+
         Scaffold(topBar = {
             BottomNavigation(content = {
                 Row(
@@ -107,7 +107,7 @@ fun AlarmSettingScreen(
                         color = MaterialTheme.colorScheme.onTertiaryContainer,
                         textAlign = TextAlign.Center
                     )
-                    IconButton(onClick = { schedulerViewModel.aSEvent(AlarmSettingEvent.Save) }) {
+                    IconButton(onClick = { aSEvent(AlarmSettingEvent.Save(context = context)) }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_baseline_check_24),
                             contentDescription = null,
@@ -126,28 +126,28 @@ fun AlarmSettingScreen(
                     .verticalScroll(rememberScrollState())
             ) {
                 DigitalDemo(onTimeChange = {
-                    schedulerViewModel.aSEvent(
+                    aSEvent(
                         AlarmSettingEvent.SetAlarmTime(
                             it
                         )
                     )
                 })
                 RepeatAlarm(alarmSettingUiState = alarmSettingUiState,
-                    onDaySelect = { schedulerViewModel.aSEvent(AlarmSettingEvent.SetWeek(it)) }
-                ) { schedulerViewModel.aSEvent(AlarmSettingEvent.SetWeekStatus(it)) }
+                    onDaySelect = { aSEvent(AlarmSettingEvent.SetWeek(it)) }
+                )
                 OnlyToggleButton(icon = R.drawable.ic_ic24_alert,
                     title = "Status",
                     switchTitle = "",
                     onNavigateToClickText = null,
                     mCheckedState = alarmSettingUiState.status,
-                    onCheckClicked = { schedulerViewModel.aSEvent(AlarmSettingEvent.SetStatus(it)) })
+                    onCheckClicked = { aSEvent(AlarmSettingEvent.SetStatus(it)) })
                 AlarmIconButton(image = R.drawable.ic_ic24_alarm_snooze,
                     title = "Tag",
                     arrowTitle = alarmSettingUiState.tag_name,
                     arrowImage = R.drawable.ic_ic24_right_arrow,
                     onNavigateToScreen = {
-                        schedulerViewModel.aSEvent(AlarmSettingEvent.GotoTagScreen)
-                        navController.navigate(route = AlarmSchedulerScreen.TagSelection.route)
+                        aSEvent(AlarmSettingEvent.GotoTagScreen)
+                        navTagSelection()
                     })
                 AlarmIconButton(image = R.drawable.ic_ic24_label,
                     title = "Label",
@@ -170,8 +170,8 @@ fun AlarmSettingScreen(
                     arrowTitle = alarmSettingUiState.interval,
                     arrowImage = R.drawable.ic_ic24_right_arrow,
                     onNavigateToScreen = {
-                        schedulerViewModel.aSEvent(AlarmSettingEvent.GotoTimeSettingScreen)
-                        navController.navigate(route = AlarmSchedulerScreen.IntervalSettingsSelection.route)
+                        aSEvent(AlarmSettingEvent.GotoTimeSettingScreen)
+                        navTimeSetting()
                     })
                 AlarmIconButton(image = R.drawable.ic_ic24_notification,
                     title = "Reminder Mode",
@@ -185,7 +185,7 @@ fun AlarmSettingScreen(
                     title = "Vibration ",
                     mCheckedState = alarmSettingUiState.vibration_status,
                     onCheckClicked = {
-                        schedulerViewModel.aSEvent(AlarmSettingEvent.SetVibration(it))
+                        aSEvent(AlarmSettingEvent.SetVibration(it))
                     },
                     switchTitle = alarmSettingUiState.vibration,
                     onNavigateToClickText = {
@@ -206,7 +206,7 @@ fun AlarmSettingScreen(
                     title = "Important",
                     mCheckedState = alarmSettingUiState.important,
                     onCheckClicked = {
-                        schedulerViewModel.aSEvent(AlarmSettingEvent.SetImportant(it))
+                        aSEvent(AlarmSettingEvent.SetImportant(it))
                     },
                     switchTitle = "",
                     onNavigateToClickText = null
@@ -233,7 +233,7 @@ enum class AlarmCreateBottomSheetTypes {
 fun AlarmCreateBtmSheetLayout(
     sheetLayout: AlarmCreateBottomSheetTypes,
     closeSheet: () -> Unit,
-    schedulerViewModel: SchedulerViewModel
+    aSEvent:(AlarmSettingEvent)->Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     when (sheetLayout) {
@@ -248,7 +248,7 @@ fun AlarmCreateBtmSheetLayout(
                     onSave = {
                         closeSheet()
                         keyboardController?.hide()
-                        schedulerViewModel.aSEvent(AlarmSettingEvent.SetLabel(it))
+                        aSEvent(AlarmSettingEvent.SetLabel(it))
                     })
             }
         }
@@ -263,7 +263,7 @@ fun AlarmCreateBtmSheetLayout(
                     onSave = {
                         closeSheet()
                         keyboardController?.hide()
-                        schedulerViewModel.aSEvent(AlarmSettingEvent.SetDescription(it))
+                        aSEvent(AlarmSettingEvent.SetDescription(it))
                     })
             }
         }
@@ -274,7 +274,7 @@ fun AlarmCreateBtmSheetLayout(
                     onNavigateBack = closeSheet,
                     onSave = {
                         closeSheet()
-                        schedulerViewModel.aSEvent(AlarmSettingEvent.SetReminderMode(it))
+                        aSEvent(AlarmSettingEvent.SetReminderMode(it))
                     })
             }
         }
@@ -285,14 +285,14 @@ fun AlarmCreateBtmSheetLayout(
                     onNavigateBack = closeSheet,
                     onSave = {
                         closeSheet()
-                        schedulerViewModel.aSEvent(AlarmSettingEvent.SetVibrationIntensity(it))
+                        aSEvent(AlarmSettingEvent.SetVibrationIntensity(it))
                     })
             }
         }
         SOUND -> {
             RingtonePickerDialog(dialogTitle = "Select Sound", onRingtonePicked = {
                 closeSheet()
-                schedulerViewModel.aSEvent(AlarmSettingEvent.SetSound(it))
+                aSEvent(AlarmSettingEvent.SetSound(it))
             }, onClose = closeSheet)
         }
     }
@@ -327,4 +327,3 @@ fun RingtonePickerDialog(
 
 
 }
-
