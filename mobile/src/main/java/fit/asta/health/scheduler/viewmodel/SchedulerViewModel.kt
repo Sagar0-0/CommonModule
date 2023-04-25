@@ -34,6 +34,7 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.hours
 
 @HiltViewModel
 class SchedulerViewModel
@@ -419,6 +420,15 @@ class SchedulerViewModel
         context: Context,
         alarmItem: AlarmEntity?,
     ) {
+        _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+           saveButtonEnable = false
+        )
+        alarmItem?.let {
+            _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+                saveProgress = "cancel old alarm"
+            )
+            it.cancelScheduleAlarm(context,it.alarmId,true)
+        }
         val alarmTone: Uri = RingtoneManager.getActualDefaultRingtoneUri(
             context, RingtoneManager.TYPE_ALARM
         )
@@ -494,6 +504,9 @@ class SchedulerViewModel
             backendRepo.updateScheduleDataOnBackend(simpleObject).let { result ->
                 when (result) {
                     is NetworkResult.Success -> {
+                        _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+                            saveProgress = "Success from server"
+                        )
                         if (result.data?.data?.flag == true) {
                             val results = if (result.data.data.id.isEmpty()) {
                                 backendRepo.getScheduleDataFromBackend(simpleObject.idFromServer)
@@ -503,20 +516,41 @@ class SchedulerViewModel
                             results.collect { schedule ->
                                 when (schedule) {
                                     is NetworkResult.Success -> {
+                                        _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+                                            saveProgress = "Success.."
+                                        )
                                         if (schedule.data?.data!!.status) {
                                             schedule.data.data.scheduleAlarm(context)
-                                            alarmLocalRepo.insertAlarm(schedule.data.data)
-                                            resetUi()
                                         }
+                                        alarmLocalRepo.insertAlarm(schedule.data.data)
+                                        resetUi()
                                     }
-                                    is NetworkResult.Error -> {}
-                                    is NetworkResult.Loading -> {}
+                                    is NetworkResult.Error -> {
+                                        _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+                                            saveProgress = "Error..",
+                                            saveButtonEnable = true
+                                        )
+                                    }
+                                    is NetworkResult.Loading -> {
+                                        _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+                                            saveProgress = "get alarm .."
+                                        )
+                                    }
                                 }
                             }
                         }
                     }
-                    is NetworkResult.Error -> {}
-                    is NetworkResult.Loading -> {}
+                    is NetworkResult.Error -> {
+                        _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+                            saveProgress = "Error on uploading..",
+                            saveButtonEnable = true
+                        )
+                    }
+                    is NetworkResult.Loading -> {
+                        _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+                            saveProgress = "Updating server.."
+                        )
+                    }
                 }
             }
         }
@@ -525,6 +559,8 @@ class SchedulerViewModel
     private fun resetUi() {
         _alarmSettingUiState.value = ASUiState()
         interval.value = IvlUiState()
+        _variantIntervalsList.clear()
+        _staticIntervalsList.clear()
     }
 
     //timeSettingActivity
@@ -716,6 +752,7 @@ class SchedulerViewModel
             val dateObj2: Date = sdf.parse(
                 dateFormat.format(date) + " " + state.hours + ":" + state.minutes
             )!!
+            dateObj1.time.hours
             return if (dateObj1.time < dateObj2.time) {
                 true
             } else {

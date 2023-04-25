@@ -15,9 +15,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -169,6 +171,7 @@ enum class TimeSettingCreateBottomSheetTypes {
     SnoozeSelection, RepetitiveInterval, Advanced, Duration, VariantInterval
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun TimeSettingCreateBtmSheetLayout(
@@ -202,11 +205,16 @@ fun TimeSettingCreateBtmSheetLayout(
         }
         VariantInterval -> {
             Column(modifier = Modifier.fillMaxWidth()) {
+                val keyboardController = LocalSoftwareKeyboardController.current
                 AddVariantIntervalBottomSheet(
                     text = "Variant Interval",
-                    onNavigateBack = closeSheet,
+                    onNavigateBack = {
+                        closeSheet()
+                        keyboardController?.hide()
+                    },
                     onSave = {
                         closeSheet()
+                        keyboardController?.hide()
                         tSEvent(TimeSettingEvent.AddVariantInterval(it,context))
                     }
                 )

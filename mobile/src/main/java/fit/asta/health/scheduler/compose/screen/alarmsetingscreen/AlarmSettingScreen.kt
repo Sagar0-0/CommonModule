@@ -38,12 +38,13 @@ import xyz.aprildown.ultimateringtonepicker.UltimateRingtonePicker
 @Preview
 @Composable
 fun AlarmSettingScreen(
-    alarmSettingUiState:ASUiState=ASUiState(),
-    aSEvent:(AlarmSettingEvent)->Unit={},
-    navTagSelection:()->Unit={},
-    navTimeSetting:()->Unit={}
+    alarmSettingUiState: ASUiState = ASUiState(),
+    aSEvent: (AlarmSettingEvent) -> Unit = {},
+    navTagSelection: () -> Unit = {},
+    navTimeSetting: () -> Unit = {},
+    navBack: () -> Unit = {}
 ) {
-    val context= LocalContext.current
+    val context = LocalContext.current
     var currentBottomSheet: AlarmCreateBottomSheetTypes? by remember {
         mutableStateOf(null)
     }
@@ -94,7 +95,7 @@ fun AlarmSettingScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = navBack) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_round_close_24),
                             contentDescription = null,
@@ -102,12 +103,14 @@ fun AlarmSettingScreen(
                         )
                     }
                     Text(
-                        text = "Alarm Setting",
+                        text = alarmSettingUiState.saveProgress,
                         fontSize = 20.sp,
                         color = MaterialTheme.colorScheme.onTertiaryContainer,
                         textAlign = TextAlign.Center
                     )
-                    IconButton(onClick = { aSEvent(AlarmSettingEvent.Save(context = context)) }) {
+                    IconButton(
+                        enabled = alarmSettingUiState.saveButtonEnable,
+                        onClick = { aSEvent(AlarmSettingEvent.Save(context = context)) }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_baseline_check_24),
                             contentDescription = null,
@@ -194,9 +197,9 @@ fun AlarmSettingScreen(
                     })
                 OnlyToggleButton(icon = R.drawable.ic_ic24_voice,
                     title = "Sound",
-                    mCheckedState =false,
+                    mCheckedState = false,
                     onCheckClicked = {},
-                    switchTitle =alarmSettingUiState.tone_name,
+                    switchTitle = alarmSettingUiState.tone_name,
                     onNavigateToClickText = {
                         currentBottomSheet = SOUND
                         openSheet()
@@ -233,7 +236,7 @@ enum class AlarmCreateBottomSheetTypes {
 fun AlarmCreateBtmSheetLayout(
     sheetLayout: AlarmCreateBottomSheetTypes,
     closeSheet: () -> Unit,
-    aSEvent:(AlarmSettingEvent)->Unit
+    aSEvent: (AlarmSettingEvent) -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     when (sheetLayout) {
@@ -311,9 +314,11 @@ fun RingtonePickerDialog(
             override fun onRingtonePicked(ringtones: List<UltimateRingtonePicker.RingtoneEntry>) {
                 Log.d("TAGTAGTAG", "callback: ")
                 if (ringtones.isNotEmpty()) {
-                    onRingtonePicked(ToneUiState(
-                        name =ringtones[0].name , uri =ringtones[0].uri.toString()
-                    ))
+                    onRingtonePicked(
+                        ToneUiState(
+                            name = ringtones[0].name, uri = ringtones[0].uri.toString()
+                        )
+                    )
                 }
                 onClose()
             }

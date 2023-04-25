@@ -39,7 +39,8 @@ fun SchedulerNavigation(navController: NavHostController, schedulerViewModel: Sc
                 alarmSettingUiState = alarmSettingUiState,
                 aSEvent = schedulerViewModel::aSEvent,
                 navTagSelection = { navController.navigate(route = AlarmSchedulerScreen.TagSelection.route) },
-                navTimeSetting = { navController.navigate(route = AlarmSchedulerScreen.IntervalSettingsSelection.route) }
+                navTimeSetting = { navController.navigate(route = AlarmSchedulerScreen.IntervalSettingsSelection.route) },
+                navBack = {navController.popBackStack()}
             )
         }
 
