@@ -9,7 +9,6 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import fit.asta.health.scheduler.model.AlarmBackendRepo
 import fit.asta.health.scheduler.model.AlarmLocalRepo
-import fit.asta.health.tools.walking.notification.CreateNotification
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -67,12 +66,12 @@ class SchedulerWorker @AssistedInject constructor(
                 }
             }
         }
-        val createNotification = CreateNotification(
-            applicationContext,
-            " Scheduler ",
-            "alarm data is uploaded to server $count"
-        )
-        createNotification.showNotification()
+//        val createNotification = CreateNotification(
+//            applicationContext,
+//            " Scheduler ",
+//            "alarm data is uploaded to server $count"
+//        )
+//        createNotification.showNotification()
         count=0
         return Result.success()
     }
