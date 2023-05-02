@@ -13,6 +13,7 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.databinding.BindingAdapter
 import com.google.gson.Gson
 import fit.asta.health.R
+import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.db.entity.TagEntity
 import fit.asta.health.scheduler.model.net.scheduler.Info
@@ -26,7 +27,6 @@ import fit.asta.health.scheduler.view.alarmsetting.bottomsheets.*
 import fit.asta.health.scheduler.view.interfaces.BottomSheetInterface
 import fit.asta.health.scheduler.viewmodel.AlarmViewModel
 import fit.asta.health.scheduler.viewmodel.SchedulerBackendViewModel
-import fit.asta.health.common.utils.NetworkResult
 import xyz.aprildown.ultimateringtonepicker.RingtonePickerDialog
 import xyz.aprildown.ultimateringtonepicker.UltimateRingtonePicker
 
@@ -151,7 +151,8 @@ class AlarmSettingActivityBindingAdapter {
                             meta = alarmItem.meta
                         )
                     }
-                } else {
+                }
+                else {
 //                    if (timePicker.hour >= 12) {
 //                        newAlarmItem = AlarmEntity(
 //                            alarmStatus = alarmStatus.isChecked,

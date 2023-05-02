@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a9369181bc68f83f9f64b2f0e4f3bd49",
+    "identityHash": "7aa9dbc5f225910223495f6963615eb1",
     "entities": [
       {
         "tableName": "steps_data",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`date` INTEGER NOT NULL, `initial_steps` INTEGER NOT NULL, `status` TEXT NOT NULL, `all_steps` INTEGER NOT NULL, `time` INTEGER NOT NULL, PRIMARY KEY(`date`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`date` INTEGER NOT NULL, `initial_steps` INTEGER NOT NULL, `status` TEXT NOT NULL, `all_steps` INTEGER NOT NULL, `time` INTEGER NOT NULL, `realtime` INTEGER NOT NULL, `distanceRecommend` REAL NOT NULL, `durationRecommend` INTEGER NOT NULL, `distanceTarget` REAL NOT NULL, `durationTarget` INTEGER NOT NULL, `id` TEXT NOT NULL, `calories` REAL NOT NULL, `weightLoosed` REAL NOT NULL, `appliedAngleDuration` REAL NOT NULL, `appliedAngleDistance` REAL NOT NULL, PRIMARY KEY(`date`))",
         "fields": [
           {
             "fieldPath": "date",
@@ -37,6 +37,66 @@
             "columnName": "time",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "realtime",
+            "columnName": "realtime",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "distanceRecommend",
+            "columnName": "distanceRecommend",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "durationRecommend",
+            "columnName": "durationRecommend",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "distanceTarget",
+            "columnName": "distanceTarget",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "durationTarget",
+            "columnName": "durationTarget",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "calories",
+            "columnName": "calories",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "weightLoosed",
+            "columnName": "weightLoosed",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "appliedAngleDuration",
+            "columnName": "appliedAngleDuration",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "appliedAngleDistance",
+            "columnName": "appliedAngleDistance",
+            "affinity": "REAL",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -52,7 +112,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a9369181bc68f83f9f64b2f0e4f3bd49')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7aa9dbc5f225910223495f6963615eb1')"
     ]
   }
 }

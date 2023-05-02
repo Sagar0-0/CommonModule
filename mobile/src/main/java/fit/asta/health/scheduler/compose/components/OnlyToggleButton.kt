@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
 import fit.asta.health.common.ui.theme.TSelected
+import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ASUiState
+import fit.asta.health.scheduler.model.net.scheduler.Time
 
 @Composable
 fun OnlyToggleButton(
@@ -34,9 +36,9 @@ fun OnlyToggleButton(
     title: String,
     switchTitle: String,
     onNavigateToClickText: (() -> Unit)?,
+    onCheckClicked: (Boolean) -> Unit = {},
+    mCheckedState: Boolean = false
 ) {
-
-    val mCheckedState = remember { mutableStateOf(false) }
 
     val enabled by remember { mutableStateOf(true) }
 
@@ -63,14 +65,21 @@ fun OnlyToggleButton(
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = title, fontSize = 16.sp, color = MaterialTheme.colorScheme.onTertiaryContainer)
+                    Text(
+                        text = title,
+                        fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.onTertiaryContainer
+                    )
                 }
             }
             Box {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     ClickableText(text = AnnotatedString(
                         text = switchTitle,
-                        spanStyle = SpanStyle(fontSize = 16.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        spanStyle = SpanStyle(
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     ),
                         onClick = {
                             if (enabled) {
@@ -81,12 +90,17 @@ fun OnlyToggleButton(
                     Spacer(modifier = Modifier.width(8.dp))
 
                     Switch(
-                        checked = mCheckedState.value,
-                        onCheckedChange = { mCheckedState.value = it },
+                        checked = mCheckedState,
+                        onCheckedChange = {
+                            onCheckClicked(it)
+                        },
                         colors = SwitchDefaults.colors(
+                            checkedThumbColor = MaterialTheme.colorScheme.primary,
                             uncheckedThumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            checkedThumbColor = MaterialTheme.colorScheme.primary
-                        )
+                            checkedTrackColor=Color.LightGray,
+                            uncheckedTrackColor=MaterialTheme.colorScheme.background,
+                            checkedBorderColor=MaterialTheme.colorScheme.primary,
+                            uncheckedBorderColor=MaterialTheme.colorScheme.primary, )
                     )
                 }
             }
@@ -126,13 +140,21 @@ fun AlarmIconButton(
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = title, fontSize = 16.sp, color = MaterialTheme.colorScheme.onTertiaryContainer)
+                    Text(
+                        text = title,
+                        fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.onTertiaryContainer
+                    )
                 }
             }
 
             Box {
                 Row {
-                    Text(text = arrowTitle, fontSize = 16.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(
+                        text = arrowTitle,
+                        fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
 
                     Spacer(modifier = Modifier.width(8.dp))
 
@@ -155,7 +177,7 @@ fun AlarmIconButton(
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
-fun DigitalDemo() {
+fun DigitalDemo(onTimeChange: (Time) -> Unit) {
 
 
     val interactionSource = remember { MutableInteractionSource() }
@@ -167,12 +189,19 @@ fun DigitalDemo() {
     val initMinute = calendar[Calendar.MINUTE]
 
 
-    val minuteDemo = remember { mutableStateOf("$initMinute") }
-    val hourDemo = remember { mutableStateOf("$initHour") }
+    val minuteDemo = remember { mutableStateOf(initMinute) }
+    val hourDemo = remember { mutableStateOf(initHour) }
 
     val timePickerDialog = TimePickerDialog(LocalContext.current, { _, hour: Int, minute: Int ->
-        minuteDemo.value = "$minute"
-        hourDemo.value = "$hour"
+        minuteDemo.value = minute
+        hourDemo.value = hour
+        onTimeChange(
+            Time(
+                hours = hour.toString(),
+                minutes = minute.toString(),
+                midDay = hour > 12
+            )
+        )
     }, initHour, initMinute, false)
 
     if (isPressed) timePickerDialog.show()
@@ -185,7 +214,7 @@ fun DigitalDemo() {
     ) {
         TextButton(onClick = { }, interactionSource = interactionSource) {
             Text(
-                text = "${hourDemo.value}:${minuteDemo.value}",
+                text = if (hourDemo.value > 12) "${hourDemo.value - 12}:${minuteDemo.value}" else "${hourDemo.value}:${minuteDemo.value}",
                 color = Color.White,
                 fontSize = 48.sp,
                 fontWeight = FontWeight.Bold,
@@ -193,7 +222,7 @@ fun DigitalDemo() {
             )
             Spacer(modifier = Modifier.width(2.dp))
             Text(
-                text = "am",
+                text = if (hourDemo.value > 12) "pm" else "am",
                 color = Color.White,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
@@ -204,7 +233,13 @@ fun DigitalDemo() {
 }
 
 @Composable
-fun RepeatAlarm() {
+fun RepeatAlarm(
+    onDaySelect: (Int) -> Unit, alarmSettingUiState: ASUiState,
+) {
+    var text by remember {
+        mutableStateOf("One Time") }
+    text=if (alarmSettingUiState.recurring){ "base on Day"}
+    else {"One Time"}
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -229,15 +264,23 @@ fun RepeatAlarm() {
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                     Column {
-                        Text(text = "Repeat", fontSize = 16.sp, color = MaterialTheme.colorScheme.onTertiaryContainer)
+                        Text(
+                            text = "Repeat",
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.onTertiaryContainer
+                        )
                         Spacer(modifier = Modifier.height(1.dp))
-                        Text(text = "Everyday", fontSize = 16.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(
+                            text = text,
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     }
                 }
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
-        AllDays()
+        AllDays(onDaySelect = onDaySelect, alarmSettingUiState = alarmSettingUiState)
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
@@ -246,16 +289,16 @@ fun RepeatAlarm() {
 @Composable
 fun DaysCircleButton(
     day: String,
+    isSelected: Boolean = false,
+    onDaySelect: () -> Unit = {}
 ) {
 
-    var selected by remember { mutableStateOf(true) }
+    val colorState: Color = if (!isSelected) TSelected else MaterialTheme.colorScheme.primary
 
-    val colorState: Color = if (selected) TSelected else MaterialTheme.colorScheme.primary
-
-    val colorState2: Color = if (!selected) Color.White else Color.Black
+    val colorState2: Color = if (isSelected) Color.White else Color.Black
 
     Button(
-        onClick = { selected = !selected },
+        onClick = { onDaySelect() },
         shape = CircleShape,
         modifier = Modifier.size(40.dp),
         colors = ButtonDefaults.buttonColors(backgroundColor = colorState)
@@ -265,13 +308,19 @@ fun DaysCircleButton(
 }
 
 @Composable
-fun AllDays() {
+fun AllDays(
+    alarmSettingUiState: ASUiState,
+    onDaySelect: (Int) -> Unit
+) {
 
-    val daysList = listOf("S", "M", "T", "W", "T", "F", "S")
 
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-        daysList.forEach {
-            DaysCircleButton(day = it)
-        }
+        DaysCircleButton(day = "S", isSelected = alarmSettingUiState.sunday) { onDaySelect(0) }
+        DaysCircleButton(day = "M", isSelected = alarmSettingUiState.monday) { onDaySelect(1) }
+        DaysCircleButton(day = "T", isSelected = alarmSettingUiState.tuesday) { onDaySelect(2) }
+        DaysCircleButton(day = "W", isSelected = alarmSettingUiState.wednesday) { onDaySelect(3) }
+        DaysCircleButton(day = "T", isSelected = alarmSettingUiState.thursday) { onDaySelect(4) }
+        DaysCircleButton(day = "F", isSelected = alarmSettingUiState.friday) { onDaySelect(5) }
+        DaysCircleButton(day = "S", isSelected = alarmSettingUiState.saturday) { onDaySelect(6) }
     }
 }

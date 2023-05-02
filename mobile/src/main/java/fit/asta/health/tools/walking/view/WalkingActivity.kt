@@ -110,7 +110,7 @@ class WalkingActivity : ComponentActivity() {
                 )
             }
         }
-        setupWorker(this)
+//        setupWorker(this)
     }
 
     override fun onStart() {

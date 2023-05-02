@@ -49,51 +49,6 @@ class AlarmScreenActivityBindingAdapter {
                         alarmEntity.time.minutes = calendar.get(Calendar.MINUTE).toString()
                         alarmEntity.info.name = "Snooze ${alarmEntity.info.name}"
                         alarmEntity.schedule(swiperView.context.applicationContext)
-//                    } else {
-//                        val newAlarmEntity = AlarmEntity(
-//                            status = true,
-//                            week = WeekItem(
-//                                false,
-//                                false,
-//                                false,
-//                                false,
-//                                false,
-//                                false,
-//                                false,
-//                                false
-//                            ),
-//                            alarmTag = "Default",
-//                            alarmHour = if (calendar.get(Calendar.HOUR_OF_DAY) >= 12) (calendar.get(
-//                                Calendar.HOUR_OF_DAY
-//                            ) - 12).toString() else calendar.get(Calendar.HOUR_OF_DAY).toString(),
-//                            alarmMinute = calendar.get(Calendar.MINUTE).toString(),
-//                            alarmMidDay = calendar.get(Calendar.HOUR_OF_DAY) >= 12,
-//                            alarmName = "Snooze",
-//                            alarmDescription = "Default",
-//                            alarmInterval = IntervalItem(
-//                                false,
-//                                false,
-//                                RepeatItem(1, "Hour"),
-//                                emptyList(),
-//                                emptyList(),
-//                                0,
-//                                AdvancedReminderItem(false, 0),
-//                                false,
-//                                0
-//                            ),
-//                            alarmMode = "Notification",
-//                            alarmImportant = false,
-//                            alarmVibrate = VibrationItem(false, 50),
-//                            alarmTone = RingtoneItem(
-//                                "Default",
-//                                RingtoneManager.getActualDefaultRingtoneUri(
-//                                    swiperView.context,
-//                                    RingtoneManager.TYPE_ALARM
-//                                ).toString()
-//                            ),
-//                            Random().nextInt(Integer.MAX_VALUE)
-//                        )
-//                        newAlarmEntity.schedule(swiperView.context.applicationContext)
                     }
 
                     val intentService =
@@ -105,7 +60,6 @@ class AlarmScreenActivityBindingAdapter {
 
                 override fun onSwipedRight(swipeActionView: SwipeActionView): Boolean {
                     if (alarmEntity != null) {
-//                        alarmEntity.alarmStatus = false
                         if (variantIntervalItem != null) {
                             alarmEntity.cancelInterval(
                                 swiperView.context.applicationContext,

@@ -15,10 +15,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -121,13 +123,26 @@ fun StepsBottomSheet(
         HomeLayout(paddingValues = paddingValues, state = state, apiState = apiState,
             onTargetDistance = { homeViewModel.onUIEvent(StepCounterUIEvent.ChangeTargetDistance(it)) },
             onTargetDuration = { homeViewModel.onUIEvent(StepCounterUIEvent.ChangeTargetDuration(it)) },
-            onChangeAngleDistance = {homeViewModel.onUIEvent(StepCounterUIEvent.ChangeAngleDistance(it))},
-            onChangeAngleDuration = {homeViewModel.onUIEvent(StepCounterUIEvent.ChangeAngelDuration(it))}
+            onChangeAngleDistance = {
+                homeViewModel.onUIEvent(
+                    StepCounterUIEvent.ChangeAngleDistance(
+                        it
+                    )
+                )
+            },
+            onChangeAngleDuration = {
+                homeViewModel.onUIEvent(
+                    StepCounterUIEvent.ChangeAngelDuration(
+                        it
+                    )
+                )
+            }
         )
     }
 }
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun HomeLayout(
     paddingValues: PaddingValues,
@@ -138,7 +153,8 @@ fun HomeLayout(
     onChangeAngleDistance: (Float) -> Unit,
     onChangeAngleDuration: (Float) -> Unit
 ) {
-
+    val scrollState = rememberScrollState()
+    var isScrollEnabled by remember(state.start) { mutableStateOf(state.start) }
     Column(
         modifier = Modifier
             .padding(
@@ -146,7 +162,7 @@ fun HomeLayout(
             )
             .fillMaxWidth()
             .fillMaxHeight()
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(scrollState, enabled = isScrollEnabled),
         verticalArrangement = Arrangement.spacedBy(spacing.medium),
     ) {
         Spacer(modifier = Modifier.height(8.dp))
@@ -157,10 +173,15 @@ fun HomeLayout(
             onTargetDistance = onTargetDistance,
             onTargetDuration = onTargetDuration,
             onChangeAngleDuration = onChangeAngleDuration,
-            onChangeAngleDistance = onChangeAngleDistance
+            onChangeAngleDistance = onChangeAngleDistance,
+            onScroll = { isScrollEnabled = it}
         )
         StepsDetailsCard(
-            modifier = Modifier,
+            modifier = Modifier
+                .pointerInteropFilter {
+                    isScrollEnabled = true
+                    return@pointerInteropFilter true
+                },
             distance = state.distance,
             duration = state.duration,
             steps = state.steps
@@ -194,6 +215,7 @@ fun WalkingBottomSheetView(
     val selectedGoal by homeViewModel.selectedGoal.collectAsState(emptyList())
     val selectedWalkTypes by homeViewModel.selectedWalkTypes.collectAsState("")
     val activity = LocalContext.current as Activity
+    val context =LocalContext.current
     Column(
         modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(spacing.medium)
@@ -250,7 +272,7 @@ fun WalkingBottomSheetView(
             ButtonWithColor(
                 modifier = Modifier.weight(0.5f), color = Color.Green, text = "SCHEDULE"
             ) {
-                homeViewModel.onUIEvent(StepCounterUIEvent.PutDataButtonClicked)
+                homeViewModel.startSchedulerActivity(context = context)
             }
             ButtonWithColor(
                 modifier = Modifier.weight(0.5f),
@@ -288,8 +310,8 @@ fun MainCircularSlider(
     onTargetDistance: (Float) -> Unit,
     onTargetDuration: (Float) -> Unit,
     onChangeAngleDistance: (Float) -> Unit,
-    onChangeAngleDuration: (Float) -> Unit
-
+    onChangeAngleDuration: (Float) -> Unit,
+    onScroll: (Boolean) -> Unit
 ) {
 
     var isDuration by remember {
@@ -310,13 +332,14 @@ fun MainCircularSlider(
             verticalArrangement = Arrangement.spacedBy(spacing.medium),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CircularSlider(modifier = Modifier.size(200.dp),
+            CircularSlider(
+                modifier = Modifier.size(200.dp),
                 isDuration = isDuration,
                 isStarted = state.start,
-                appliedAngleDurationValue=state.appliedAngleDuration,
+                appliedAngleDurationValue = state.appliedAngleDuration,
                 appliedAngleDistanceValue = state.appliedAngleDistance,
                 maxIndicatorValue = maxIndicatorValue,
-                indicatorValue = if (isDuration) state.duration.toFloat() else state.distance.toFloat(),
+                indicatorValue = if (isDuration) state.durationProgress.toFloat() else state.distance.toFloat(),
                 bigTextSuffix = bigTextSuffix,
                 onChangeType = {
                     isDuration = !isDuration
@@ -328,10 +351,11 @@ fun MainCircularSlider(
                         bigTextSuffix = "km"
                     }
                 },
-                onChangeDuration = { onTargetDuration(it) },
-                onChangeDistance = { onTargetDistance(it) },
-                onChangeAngleDuration = { onChangeAngleDuration(it) },
-                onChangeAngelDistance = { onChangeAngleDistance(it) }
+                onChangeDuration = onTargetDuration,
+                onChangeDistance = onTargetDistance,
+                onChangeAngleDuration = onChangeAngleDuration,
+                onChangeAngelDistance = onChangeAngleDistance,
+                onScroll = onScroll
             )
 
             Row(
@@ -371,7 +395,7 @@ fun MainCircularSlider(
 
 
 @Composable
-fun StepsDetailsCard(modifier: Modifier, distance: Double, duration: Long, steps: Int) {
+fun StepsDetailsCard(modifier: Modifier, distance: Double, duration: Int, steps: Int) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
@@ -384,7 +408,9 @@ fun StepsDetailsCard(modifier: Modifier, distance: Double, duration: Long, steps
             horizontalArrangement = Arrangement.SpaceAround
         ) {
             DetailsItem(
-                type = "Distance", value = "$distance Km", id = R.drawable.total_distance
+                type = "Distance",
+                value = "%.2f km".format(distance),
+                id = R.drawable.total_distance
             ) {
 
             }
@@ -434,7 +460,9 @@ fun DetailsCard(
 
             }
             DetailsItem(
-                type = "Weight Loosed", value = "$weightLoosed kg", id = R.drawable.pulse_rate
+                type = "Weight Loosed",
+                value = "%.1f kg".format(weightLoosed),
+                id = R.drawable.pulse_rate
             ) {
 
             }

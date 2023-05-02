@@ -1,13 +1,13 @@
 package fit.asta.health.scheduler.model.api
 
 import fit.asta.health.network.data.Status
-import fit.asta.health.old.scheduler.tags.networkdata.ScheduleTagNetData
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerDeleteResponse
 import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerGetListResponse
 import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerGetResponse
 import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerPutResponse
 import fit.asta.health.scheduler.model.net.tag.AstaGetTagsListResponse
+import fit.asta.health.scheduler.model.net.tag.ScheduleTagNetData
 import retrofit2.Response
 import retrofit2.http.*
 

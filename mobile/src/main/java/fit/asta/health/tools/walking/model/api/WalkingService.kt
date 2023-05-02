@@ -18,7 +18,7 @@ interface WalkingService {
     @PUT("tools/walking/put/")
     suspend fun putData( @Body putData: PutData):PutResponse
 
-    @PUT("tools/walking/put/")
+    @POST("tools/walking/day/post/")
     suspend fun putDayData( @Body putDayData: PutDayData):PutResponse
 
 

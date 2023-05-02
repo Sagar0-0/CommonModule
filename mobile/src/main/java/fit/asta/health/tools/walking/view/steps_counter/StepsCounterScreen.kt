@@ -134,7 +134,7 @@ fun StepsItem(
                 }
             }
             item {
-                SessionCard(type = "Calories burned", count = "${state.calories} Cal") {
+                SessionCard(type = "Calories burned", count = "%.2f Cal".format(state.calories)) {
                 }
             }
             item {
@@ -146,7 +146,7 @@ fun StepsItem(
                 }
             }
             item {
-                SessionCard(type = "Avg.Speed(Km/Hr)", count = "${state.speed} Km/Hr") {
+                SessionCard(type = "Avg.Speed(Km/Hr)", count = "%.2f Km/Hr".format(state.speed)) {
                 }
             }
             item {
@@ -154,7 +154,7 @@ fun StepsItem(
                 }
             }
             item {
-                SessionCard(type = "Weight Loosed", count = "${state.weightLoosed} grams") {
+                SessionCard(type = "Weight Loosed", count = "%.2f grams".format(state.weightLoosed)) {
                 }
             }
         }

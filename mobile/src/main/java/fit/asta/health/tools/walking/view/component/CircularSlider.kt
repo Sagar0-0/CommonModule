@@ -1,7 +1,6 @@
 package fit.asta.health.tools.walking.view.component
 
 
-import android.util.Log
 import android.view.MotionEvent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -57,44 +56,39 @@ fun CircularSlider(
     onChangeDistance: ((Float) -> Unit)? = null,
     onChangeAngleDuration: ((Float) -> Unit)? = null,
     onChangeAngelDistance: ((Float) -> Unit)? = null,
-    onChangeType: () -> Unit
+    onChangeType: () -> Unit,
+    onScroll:(Boolean)->Unit
 ) {
     var size by remember { mutableStateOf(IntSize.Zero) }
     var width by remember { mutableStateOf(0) }
     var height by remember { mutableStateOf(0) }
-    var angleDuration by rememberSaveable { mutableStateOf(-60f) }
-    var angleDistance by rememberSaveable { mutableStateOf(-60f) }
+    var angleDuration by rememberSaveable { mutableStateOf(-35f) }
+    var angleDistance by rememberSaveable { mutableStateOf(-35f) }
     var lastDuration by rememberSaveable { mutableStateOf(0f) }
     var lastDistance by rememberSaveable { mutableStateOf(0f) }
     var down by remember { mutableStateOf(false) }
     var radius by remember { mutableStateOf(0f) }
     var center by remember { mutableStateOf(Offset.Zero) }
     var appliedAngleDuration by remember(appliedAngleDurationValue) {
-        mutableStateOf(
-            appliedAngleDurationValue
-        )
+        mutableStateOf(appliedAngleDurationValue)
     }
     var appliedAngleDistance by remember(appliedAngleDistanceValue) {
-        mutableStateOf(
-            appliedAngleDistanceValue
-        )
+        mutableStateOf(appliedAngleDistanceValue)
     }
     LaunchedEffect(key1 = angleDuration) {
-        Log.d("TAG", "angleDuration change: $angleDuration")
         var a = angleDuration
-        a += 40
+        a += 35
         if (a <= 0f) {
             a += 360
         }
         a = a.coerceIn(0f, 250f)
-        if (lastDuration < 150f && a == 250f) {
+        if (lastDuration < 145f && a == 250f) {
             a = 0f
         }
         lastDuration = a
         appliedAngleDuration = a
     }
     LaunchedEffect(key1 = appliedAngleDuration) {
-        Log.d("TAG", "valueAngleDuration change: $appliedAngleDuration")
         onChangeAngleDuration?.invoke(appliedAngleDuration)
         onChangeDuration?.invoke(
             range(
@@ -105,21 +99,19 @@ fun CircularSlider(
     }
 
     LaunchedEffect(key1 = angleDistance) {
-        Log.d("TAG", "angleDistance change: $angleDistance")
         var a = angleDistance
-        a += 40    // this 40 create error when recompose this angle will added in previous value and change output
+        a += 35
         if (a <= 0f) {
             a += 360
         }
         a = a.coerceIn(0f, 250f)
-        if (lastDistance < 150f && a == 250f) {
+        if (lastDistance < 145f && a == 250f) {
             a = 0f
         }
         lastDistance = a
         appliedAngleDistance = a
     }
     LaunchedEffect(key1 = appliedAngleDistance) {
-        Log.d("TAG", "valueAngleDistance change: $appliedAngleDistance")
         onChangeAngelDistance?.invoke(appliedAngleDistance)
         onChangeDistance?.invoke(
             range(
@@ -129,8 +121,6 @@ fun CircularSlider(
         )
     }
 
-
-    //new code
     var allowedIndicatorValue by remember {
         mutableStateOf(maxIndicatorValue)
     }
@@ -146,7 +136,7 @@ fun CircularSlider(
     }
 
     val percentage =
-        (animatedIndicatorValue / maxIndicatorValue)
+        (allowedIndicatorValue / maxIndicatorValue)
 
     val sweepAngle by animateFloatAsState(
         targetValue = (250 * percentage),
@@ -185,11 +175,10 @@ fun CircularSlider(
                     val y = it.y
                     val offset = Offset(x, y)
                     when (it.action) {
-
                         MotionEvent.ACTION_DOWN -> {
                             val d = distance(offset, center)
                             val a = angle(center, offset)
-                            if (!isStarted && d >= radius - touchStroke / 2f && d <= radius + touchStroke / 2f && a !in -120f..-60f) {
+                            if (!isStarted && d >= radius - touchStroke / 2f && d <= radius + touchStroke / 2f && a !in -135f..-40f) {
                                 down = true
                                 if (isDuration) angleDuration = a
                                 else angleDistance = a
@@ -198,9 +187,11 @@ fun CircularSlider(
                             }
                         }
                         MotionEvent.ACTION_MOVE -> {
-                            if (down) {
-                                if (isDuration) angleDuration = angle(center, offset)
-                                else angleDistance = angle(center, offset)
+                            if (isStarted)onScroll(true) else onScroll(false)
+                            val a = angle(center, offset)
+                            if (down && a !in -135f..-40f) {
+                                if (isDuration) angleDuration = a
+                                else angleDistance = a
                             }
                         }
                         MotionEvent.ACTION_UP -> {
@@ -214,8 +205,8 @@ fun CircularSlider(
 
             drawArc(
                 color = backgroundColor,
-                startAngle = 145f, //120,-240
-                sweepAngle = 250f,  // 300
+                startAngle = 145f,
+                sweepAngle = 250f,
                 topLeft = center - Offset(radius, radius),
                 size = Size(radius * 2, radius * 2),
                 useCenter = false,

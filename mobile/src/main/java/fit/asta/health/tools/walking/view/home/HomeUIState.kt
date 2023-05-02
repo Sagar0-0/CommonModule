@@ -13,7 +13,8 @@ data class HomeUIState(
     val valueDurationGoal: Int=0,    // for change progress bar
 
     val distance: Double=0.0,  // for change card view
-    val duration: Long = 0,
+    val duration: Int = 0,
+    val durationProgress:Int = 0,
     val steps: Int = 0,
 
     val heartRate: Int = 0,

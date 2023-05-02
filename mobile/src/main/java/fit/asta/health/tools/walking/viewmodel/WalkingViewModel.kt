@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.NetworkResult
+import fit.asta.health.scheduler.compose.SchedulerActivity
 import fit.asta.health.tools.walking.db.StepsData
 import fit.asta.health.tools.walking.model.LocalRepo
 import fit.asta.health.tools.walking.model.WalkingToolRepo
@@ -36,6 +37,8 @@ class WalkingViewModel
     private val localRepo: LocalRepo
 ) : ViewModel() {
     val date = LocalDate.now().dayOfMonth
+    val uid = "6309a9379af54f142c65fbfe"
+    val id = "6417eeca8231fd62c072f3d9"
     private var serviceIntent: Intent? = null
     private val _homeUiState = mutableStateOf(HomeUIState())
     val homeUiState: State<HomeUIState> = _homeUiState
@@ -48,6 +51,8 @@ class WalkingViewModel
     init {
         setupDatabaseAndUpdateUi()
         loadWalkingToolData()
+        getYesterdayData()
+        updateServerIn24Hr()
     }
 
     private fun setupDatabaseAndUpdateUi() {
@@ -58,7 +63,7 @@ class WalkingViewModel
                     date = LocalDate.now().dayOfMonth, status = "", initialSteps = 0,
                     allSteps = 0, time = 0, realtime = 0, distanceRecommend = 0.0,
                     durationRecommend = 0, distanceTarget = 0.0, durationTarget = 0,
-                    id = "6427fc83baf761e33a2859ef", calories = 0.0, weightLoosed = 0.0, appliedAngleDistance = 0f,
+                    id = id, calories = 0.0, weightLoosed = 0.0, appliedAngleDistance = 0f,
                     appliedAngleDuration = 0f
                 )
                 localRepo.insert(stepsData)
@@ -66,30 +71,29 @@ class WalkingViewModel
                 if (data.status == "active") {
                     startWorking.value = true
                     _homeUiState.value = _homeUiState.value.copy(
-                        distance = (data.allSteps / 1408).toDouble(),
-                        steps = data.allSteps,
-                        duration = ((System.nanoTime() - data.time) / 1_000_000_000L / 60L),
-                        appliedAngleDuration = data.appliedAngleDuration,
-                        appliedAngleDistance = data.appliedAngleDistance,
+                        durationProgress = ((System.nanoTime() - data.time) / 1_000_000_000L / 60L).toInt(),
                         start = true
                     )
                 }
+                _homeUiState.value = _homeUiState.value.copy(
+                    distance = (data.allSteps.toDouble() / 1408.0),
+                    steps = data.allSteps,
+                    duration = data.realtime,
+                    appliedAngleDuration = data.appliedAngleDuration,
+                    appliedAngleDistance = data.appliedAngleDistance,
+                )
             }
         }
     }
 
     private fun loadWalkingToolData() {
         viewModelScope.launch {
-            walkingToolRepo.getHomeData(userId = "6383745840efcc8cdeb289e1")
+            walkingToolRepo.getHomeData(userId = uid)
                 .collect {
                     when (it) {
                         is NetworkResult.Loading -> {}
                         is NetworkResult.Success -> {
                             _apiState.value = it.data!!
-                            _homeUiState.value = _homeUiState.value.copy(
-                                distanceTarget = it.data.distanceRecommend.toFloat(),
-                                durationTarget = it.data.durationRecommend.toFloat()
-                            )
                             val date = localRepo.getStepsData(LocalDate.now().dayOfMonth)
                             if (date != null) {
                                 localRepo.updateTargetAndRecommend(
@@ -131,17 +135,17 @@ class WalkingViewModel
                 changeTime()
                 startWorking.value = true
                 _homeUiState.value = _homeUiState.value.copy(start = true)
+                checkPutDataIsRecommend()
             }
             is StepCounterUIEvent.StopButtonClicked -> {
                 endScreen()
-            }
-            is StepCounterUIEvent.PutDataButtonClicked -> {
-                putDataToServer()
             }
             is StepCounterUIEvent.EndButtonClicked -> {
                 startWorking.value = false
                 _homeUiState.value = _homeUiState.value.copy(start = false)
                 changeStatus("inactive")
+                changeRealTime()
+                setupDatabaseAndUpdateUi()
             }
             is StepCounterUIEvent.ChangeTargetDuration -> {
                 setTargetDuration(uiEvent.input)
@@ -149,17 +153,16 @@ class WalkingViewModel
             is StepCounterUIEvent.ChangeTargetDistance -> {
                 setTargetDistance(uiEvent.input)
             }
-            is StepCounterUIEvent.ChangeAngelDuration->{
-                _homeUiState.value=_homeUiState.value.copy(appliedAngleDuration = uiEvent.input)
+            is StepCounterUIEvent.ChangeAngelDuration -> {
+                setAngleDuration(uiEvent.input)
             }
-            is StepCounterUIEvent.ChangeAngleDistance->{
-                _homeUiState.value=_homeUiState.value.copy(appliedAngleDistance = uiEvent.input)
+            is StepCounterUIEvent.ChangeAngleDistance -> {
+                setAngleDistance(uiEvent.input)
             }
 
             else -> {}
         }
     }
-
 
     private fun calculateSpeed(steps: Int, stepLength: Float, timeNs: Long): Float {
         val distance = steps * stepLength
@@ -175,14 +178,17 @@ class WalkingViewModel
 
     private fun putDataToServer() {
         viewModelScope.launch {
-            try {
-                val id = localRepo.getStepsData(date)
-                val result = walkingToolRepo.putData(setData(id = id?.id ?: ""))
-                localRepo.updateIdForPutData(date, id = result.data.id)
-                Log.d("TAG", "putDataToServer: ${result.status.msg}")
-                loadWalkingToolData()
-            } catch (e: Exception) {
-                Log.d("TAG", "putDataToServer error: ${e.message}")
+            val id = localRepo.getStepsData(date)
+            val result = walkingToolRepo.putData(setData(id = id?.id ?: "", uid = uid))
+            when (result) {
+                is NetworkResult.Success -> {
+                    localRepo.updateIdForPutData(date, id = result.data!!.data.id)
+                    loadWalkingToolData()
+                }
+                is NetworkResult.Error -> {
+                    Log.d("angle", "putDataToServer: ${result.message}")
+                }
+                else -> {}
             }
         }
     }
@@ -223,6 +229,21 @@ class WalkingViewModel
         }
     }
 
+    private fun changeRealTime() {
+        viewModelScope.launch {
+            val data = localRepo.getStepsData(date)
+            if (data != null) {
+                val time =
+                    ((System.nanoTime() - data.time) / 1_000_000_000L / 60L).toInt() + data.realtime
+                localRepo.updateRealTime(date, time)
+            }
+        }
+    }
+
+    fun startSchedulerActivity(context: Context)  {
+        SchedulerActivity.launch(context =context)
+    }
+
     fun startService(context: Context) {
         if (serviceIntent == null) {
             serviceIntent = Intent(context, CountStepsService::class.java)
@@ -231,32 +252,35 @@ class WalkingViewModel
     }
 
     fun stopService(context: Context) {
-        if (serviceIntent != null) {
-            context.stopService(serviceIntent!!)
-            serviceIntent = null
-        }
+        serviceIntent = Intent(context, CountStepsService::class.java)
+        context.stopService(serviceIntent!!)
     }
 
     fun changeUi(data: HomeUIState) {
-        _homeUiState.value = _homeUiState.value.copy(
-            distance = data.distance,
-            steps = data.steps,
-            duration = data.duration,
-            valueDistanceRecommendation = data.valueDistanceRecommendation,
-            valueDurationRecommendation = data.valueDurationRecommendation,
-            valueDistanceGoal = data.valueDistanceGoal,
-            valueDurationGoal = data.valueDurationGoal
-        )
+        if (startWorking.value) {
+            _homeUiState.value = _homeUiState.value.copy(
+                distance = data.distance,
+                steps = data.steps,
+                duration = data.duration,
+                durationProgress = data.durationProgress,
+                valueDistanceRecommendation = data.valueDistanceRecommendation,
+                valueDurationRecommendation = data.valueDurationRecommendation,
+                valueDistanceGoal = data.valueDistanceGoal,
+                valueDurationGoal = data.valueDurationGoal,
+                appliedAngleDuration = data.appliedAngleDuration,
+                appliedAngleDistance = data.appliedAngleDistance
+            )
+        }
     }
 
-    fun setData(id: String): PutData {
-        Log.d("TAG", "setData: ${_homeUiState.value}")
+    fun setData(id: String, uid: String): PutData {
+        Log.d("angle", "setdata: ${_homeUiState.value}")
         return PutData(
             code = 3,
             id = id,
             name = "walking",
             sType = 1,
-            uid = "6383745840efcc8cdeb289e1",
+            uid = uid,
             wea = true,
             tgt = Target(
                 dis = Distance(
@@ -264,11 +288,11 @@ class WalkingViewModel
                     unit = "km"
                 ),
                 dur = Duration(
-                    dur = _homeUiState.value.durationTarget.toInt(),
+                    dur = _homeUiState.value.durationTarget,
                     unit = "mins"
                 ),
                 steps = Steps(
-                    steps = _homeUiState.value.distanceTarget.toInt() * 1408,
+                    steps = (_homeUiState.value.distanceTarget * 1408f).toInt(),
                     unit = "steps"
                 )
             ),
@@ -324,11 +348,11 @@ class WalkingViewModel
     }
 
 
-    fun calculateWeightLoss(caloriesBurned: Double): Double {
+    private fun calculateWeightLoss(caloriesBurned: Double): Double {
         return caloriesBurned / 7.7 // 7700 calories per kilogram of body fat
     }
 
-    fun calculateCaloriesBurned(
+    private fun calculateCaloriesBurned(
         bodyWeight: Double = 50.0,
         distancePerStep: Double = 0.7,
         stepsCount: Int
@@ -338,13 +362,142 @@ class WalkingViewModel
         return bodyWeight * stepsCount * metersPerStep * caloriesPerKilogramPerMeter
     }
 
-    fun setTargetDuration(durationTarget: Float) {
+    private fun setTargetDuration(durationTarget: Float) {
         _homeUiState.value = _homeUiState.value.copy(durationTarget = durationTarget)
-        Log.d("TAG", "setTargetDuration: $durationTarget")
     }
 
-    fun setTargetDistance(distanceTarget: Float) {
+    private fun setTargetDistance(distanceTarget: Float) {
         _homeUiState.value = _homeUiState.value.copy(distanceTarget = distanceTarget)
-        Log.d("TAG", "setTargetDistance: $distanceTarget")
     }
+
+    private fun setAngleDistance(input: Float) {
+        _homeUiState.value = _homeUiState.value.copy(appliedAngleDistance = input)
+    }
+
+    private fun setAngleDuration(input: Float) {
+        _homeUiState.value = _homeUiState.value.copy(appliedAngleDuration = input)
+    }
+
+    private fun checkPutDataIsRecommend() {
+        viewModelScope.launch {
+            val targetDistance = _homeUiState.value.distanceTarget
+            val targetDuration = _homeUiState.value.durationTarget
+            val distanceTarget = _apiState.value.distanceRecommend.toFloat()
+            val durationTarget = _apiState.value.durationRecommend.toFloat()
+            if (targetDistance <= 0) {
+                val angle = valueToAngle(value = distanceTarget, maxIndicatorValue = 3.0f)
+                _homeUiState.value = _homeUiState.value.copy(
+                    distanceTarget = distanceTarget,
+                    appliedAngleDistance = angle
+                )
+                localRepo.updateAppliedAngleDistance(date = date, appliedAngleDistance = angle)
+
+            } else {
+                localRepo.updateAppliedAngleDistance(
+                    date = date,
+                    appliedAngleDistance = _homeUiState.value.appliedAngleDistance
+                )
+            }
+            if (targetDuration <= 0) {
+                val angle = valueToAngle(value = durationTarget, maxIndicatorValue = 120f)
+                _homeUiState.value = _homeUiState.value.copy(
+                    durationTarget = durationTarget,
+                    appliedAngleDuration = angle
+                )
+                localRepo.updateAppliedAngleDuration(date = date, appliedAngleDuration = angle)
+            } else {
+                localRepo.updateAppliedAngleDuration(
+                    date = date,
+                    appliedAngleDuration = _homeUiState.value.appliedAngleDuration
+                )
+            }
+            putDataToServer()
+        }
+
+    }
+
+    private fun valueToAngle(value: Float, maxIndicatorValue: Float): Float {
+        Log.d("angle", "valueToAngle: $value")
+        val new_value = value
+        val old_min = 0f
+        val old_max = 100f
+        val new_min = 0f
+        val new_max = maxIndicatorValue
+        val old_value =
+            (((new_value - old_min) * (old_max - old_min)) / (new_max - new_min)) + old_min    //return old_value
+        return (old_value * 250) / 100  //change to angle   0 maxIndicator  0 250
+    }
+
+    private fun getYesterdayData() {
+        viewModelScope.launch {
+            val data = localRepo.getStepsData(date = date - 1)
+            data?.let {
+                _homeUiState.value = _homeUiState.value.copy(
+                    calories = it.calories.toInt(),
+                    weightLoosed = it.weightLoosed,
+                )
+                Log.d("subhash", "yesterday: ${_homeUiState.value}")
+            }
+        }
+    }
+
+    private fun updateServerIn24Hr() {
+        viewModelScope.launch {
+            val list = localRepo.getAllStepsData()
+            if (list.isEmpty()) return@launch
+            val today = date
+            val yesterday = date - 1
+            list.forEach {
+                when (it.date) {
+                    today -> {}
+                    yesterday -> {}
+                    else -> {
+                        val dayData = createPutDayData(
+                            bpm = 0f,
+                            id = "",
+                            uid = uid,
+                            weightLoose = it.weightLoosed.toFloat(),
+                            date_of = "${LocalDate.now().withDayOfMonth(it.date)}",
+                            calories = it.calories.toInt(),
+                            heartRate = 72f,
+                            steps = Steps(steps = it.allSteps, unit = "steps"),
+                            duration = Duration(dur = it.realtime.toFloat(), unit = "mins"),
+                            distance = Distance(dis = it.allSteps.toFloat() / 1408f, unit = "km")
+                        )
+                        val result = walkingToolRepo.putDayData(putDayData = dayData)
+                        Log.d("daydata", "updateServerIn24Hr: ${result.data?.status?.msg}")
+                    }
+                }
+                localRepo.deleteOldData(today, yesterday)
+            }
+        }
+    }
+
+    private fun createPutDayData(
+        bpm: Float,
+        calories: Int,
+        date_of: String,
+        distance: Distance,
+        duration: Duration,
+        heartRate: Float,
+        id: String,
+        steps: Steps,
+        uid: String,
+        weightLoose: Float
+    ): PutDayData {
+        return PutDayData(
+            bpm = bpm,
+            calories = calories,
+            date = date_of,
+            distance = distance,
+            duration = duration,
+            heartRate = heartRate,
+            id = id,
+            steps = steps,
+            uid = uid,
+            weightLoose = weightLoose
+        )
+    }
+
+
 }

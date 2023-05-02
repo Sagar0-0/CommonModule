@@ -59,7 +59,7 @@ data class Distance(
 )
 data class Duration(
     @SerializedName("dur")
-    val dur: Int,
+    val dur: Float,
     @SerializedName("unit")
     val unit: String
 )

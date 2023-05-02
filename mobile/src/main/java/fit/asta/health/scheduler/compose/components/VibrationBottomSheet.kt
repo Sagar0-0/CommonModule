@@ -8,7 +8,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -17,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import fit.asta.health.R
 
 @Composable
-fun VibrationBottomSheetLayout(text: String, onNavigateBack: () -> Unit) {
+fun VibrationBottomSheetLayout(text: String, onNavigateBack: () -> Unit,onSave:(Float)->Unit={}) {
 
     var value by remember {
         mutableStateOf(0f)
@@ -47,7 +46,7 @@ fun VibrationBottomSheetLayout(text: String, onNavigateBack: () -> Unit) {
                 color = MaterialTheme.colorScheme.onTertiaryContainer,
                 textAlign = TextAlign.Center
             )
-            androidx.compose.material3.IconButton(onClick = { /*TODO*/ }) {
+            androidx.compose.material3.IconButton(onClick = {onSave(value) }) {
                 androidx.compose.material3.Icon(
                     painter = painterResource(id = R.drawable.ic_baseline_check_24),
                     contentDescription = null,

@@ -79,7 +79,8 @@ class AlarmSettingActivity : AppCompatActivity(), BottomSheetInterface {
         if (intent.getParcelableExtra<AlarmEntity>("alarmItem") != null) {
             alarmEntity = intent.getParcelableExtra("alarmItem")
             _binding.alarmItem = alarmEntity
-        } else {
+        }
+        else {
             _binding.alarmItem = AlarmEntity(
                 status = false,
                 week = Wk(
@@ -115,7 +116,6 @@ class AlarmSettingActivity : AppCompatActivity(), BottomSheetInterface {
                     ),
                     snoozeTime = 5,
                     staticIntervals = emptyList(),
-                    status = false,
                     variantIntervals = ArrayList<Stat>(),
                     isVariantInterval = false
                 ),

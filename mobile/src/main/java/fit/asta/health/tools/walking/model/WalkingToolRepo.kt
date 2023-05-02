@@ -12,6 +12,6 @@ interface WalkingToolRepo {
 
     suspend fun getHomeData(userId: String):Flow<NetworkResult<WalkingTool>>
 
-    suspend fun putData(putData: PutData):PutResponse
-    suspend fun putDayData(putDayData: PutDayData):PutResponse
+    suspend fun putData(putData: PutData):NetworkResult<PutResponse>
+    suspend fun putDayData(putDayData: PutDayData):NetworkResult<PutResponse>
 }

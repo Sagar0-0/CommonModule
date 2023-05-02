@@ -24,6 +24,8 @@ import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_ALARM_OBJECT
 import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_POST_NOTIFICATION_OBJECT
 import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_PRE_NOTIFICATION_OBJECT
 import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_VARIANT_INTERVAL_OBJECT
+import fit.asta.health.scheduler.util.SerializableAndParcelable.parcelable
+import fit.asta.health.scheduler.util.SerializableAndParcelable.serializable
 import fit.asta.health.scheduler.view.alarmsplashscreen.AlarmScreenActivity
 import kotlin.random.Random
 
@@ -62,7 +64,8 @@ class AlarmService : Service() {
         val bundle = intent?.getBundleExtra(BUNDLE_ALARM_OBJECT)
         if (bundle != null) {
             // getting alarm item data from bundle
-            alarmEntity = bundle.getSerializable(ARG_ALARM_OBJET) as AlarmEntity
+            alarmEntity = bundle.serializable(ARG_ALARM_OBJET)
+            Log.d("TAGTAGTAG", "onStartCommand: alarm $alarmEntity")
             // creating notification-pending intent to redirect on notification click
             val notificationIntent = Intent(this, AlarmScreenActivity::class.java)
             notificationIntent.putExtra(BUNDLE_ALARM_OBJECT, bundle)
@@ -70,7 +73,7 @@ class AlarmService : Service() {
                 this,
                 if (alarmEntity != null) alarmEntity!!.alarmId else Random.nextInt(999999999),
                 notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
 
             var alarmName = getString(R.string.app_name)
@@ -105,7 +108,7 @@ class AlarmService : Service() {
                         .setCategory(NotificationCompat.CATEGORY_ALARM)
                         .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                         .setPriority(NotificationCompat.PRIORITY_MAX)
-                        .setFullScreenIntent(pendingIntent, true)
+                        .setFullScreenIntent(pendingIntent, true) // set base on important in alarm entity
                         .build()
                 }
                 "Splash" -> {
@@ -113,7 +116,7 @@ class AlarmService : Service() {
                         .setContentTitle("Scheduler")
                         .setContentText(alarmName)
                         .setSmallIcon(R.drawable.ic_round_access_alarm_24)
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT) // set base on important in alarm entity
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true)
                         .build()
@@ -154,20 +157,18 @@ class AlarmService : Service() {
         if (bundleForVariantInterval != null) {
             // getting alarm item data from bundle
             alarmEntity =
-                bundleForVariantInterval.getSerializable(ARG_VARIANT_INTERVAL_ALARM_OBJECT) as AlarmEntity
+                bundleForVariantInterval.serializable(ARG_VARIANT_INTERVAL_ALARM_OBJECT)
             variantInterval =
-                bundleForVariantInterval.getParcelable(ARG_VARIANT_INTERVAL_OBJECT) as Stat?
-            Log.d("TAGTAGTAG", "onStartCommand: $alarmEntity \n $variantInterval")
+                bundleForVariantInterval.parcelable(ARG_VARIANT_INTERVAL_OBJECT)
+            Log.d("TAGTAGTAG", "onStartCommand:variant $alarmEntity \n $variantInterval")
             // creating notification-pending intent to redirect on notification click
             val notificationIntent = Intent(this, AlarmScreenActivity::class.java)
             notificationIntent.putExtra(BUNDLE_VARIANT_INTERVAL_OBJECT, bundleForVariantInterval)
             val pendingIntent = PendingIntent.getActivity(
                 this,
-                if (variantInterval != null) variantInterval!!.id else Random.nextInt(
-                    999999999
-                ),
+                if (variantInterval != null) variantInterval!!.id else Random.nextInt(999999999),
                 notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
 
             var alarmName = getString(R.string.app_name)
@@ -250,12 +251,11 @@ class AlarmService : Service() {
 
 
         val bundleForPreNotification = intent?.getBundleExtra(BUNDLE_PRE_NOTIFICATION_OBJECT)
-        Log.d("TAGTAGTAG", "onStartCommand: $bundleForPreNotification")
         if (bundleForPreNotification != null) {
             // getting alarm item data from bundle
             preNotificationAlarmEntity =
-                bundleForPreNotification.getSerializable(ARG_PRE_NOTIFICATION_OBJET) as AlarmEntity
-            Log.d("TAGTAGTAG", "onStartCommand: $preNotificationAlarmEntity")
+                bundleForPreNotification.serializable(ARG_PRE_NOTIFICATION_OBJET)
+            Log.d("TAGTAGTAG", "onStartCommand:preNotification $preNotificationAlarmEntity")
             // creating notification-pending intent to redirect on notification click
             val notificationIntent = Intent(this, SchedulerHomeActivity::class.java)
             notificationIntent.putExtra(BUNDLE_PRE_NOTIFICATION_OBJECT, bundleForPreNotification)
@@ -263,7 +263,7 @@ class AlarmService : Service() {
                 this,
                 bundleForPreNotification.getInt("id", 1),
                 notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_UPDATE_CURRENT  or PendingIntent.FLAG_IMMUTABLE
             )
 
             var alarmName = getString(R.string.notification)
@@ -281,9 +281,6 @@ class AlarmService : Service() {
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setContentIntent(pendingIntent)
                 .build()
-//            val mNotificationManager =
-//                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//            mNotificationManager.notify(bundleForPreNotification.getInt("id"), notification)
             startForeground(bundleForPreNotification.getInt("id", 1), notification)
             stopForeground(false)
             return START_STICKY
@@ -293,15 +290,17 @@ class AlarmService : Service() {
         if (bundleForPostNotification != null) {
             // getting alarm item data from bundle
             postNotificationAlarmEntity =
-                bundleForPostNotification.getSerializable(ARG_POST_NOTIFICATION_OBJET) as AlarmEntity
+                bundleForPostNotification.serializable(ARG_POST_NOTIFICATION_OBJET)
             // creating notification-pending intent to redirect on notification click
+            Log.d("TAGTAGTAG", "onStartCommand:postNotification $postNotificationAlarmEntity")
+
             val notificationIntent = Intent(this, SchedulerHomeActivity::class.java)
             notificationIntent.putExtra(BUNDLE_POST_NOTIFICATION_OBJECT, bundleForPostNotification)
             val pendingIntent = PendingIntent.getActivity(
                 this,
                 bundleForPostNotification.getInt("id", 1),
                 notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
 
             var alarmName = getString(R.string.notification)
@@ -319,11 +318,6 @@ class AlarmService : Service() {
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setContentIntent(pendingIntent)
                 .build()
-//            val mNotificationManager =
-//                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//            mNotificationManager.notify(
-//                bundleForPostNotification.getInt("id", 1), notification
-//            )
             startForeground(
                 bundleForPostNotification.getInt("id", 1),
                 notification
@@ -340,8 +334,6 @@ class AlarmService : Service() {
             mediaPlayer.stop()
         }
         vibrator.cancel()
-//        if (vibrator.hasVibrator()) {
-//        }
     }
 
     override fun onBind(intent: Intent?): IBinder? {

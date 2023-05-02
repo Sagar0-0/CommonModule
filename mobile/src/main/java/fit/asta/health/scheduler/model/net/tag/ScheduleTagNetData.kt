@@ -1,4 +1,4 @@
-package fit.asta.health.old.scheduler.tags.networkdata
+package fit.asta.health.scheduler.model.net.tag
 
 import com.google.gson.annotations.SerializedName
 import fit.asta.health.network.data.Status

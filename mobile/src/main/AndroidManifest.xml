@@ -71,6 +71,7 @@
 
         <activity android:name=".tools.water.WaterToolActivity"/>
         <activity android:name=".tools.walking.view.WalkingActivity"/>
+        <activity android:name=".scheduler.compose.SchedulerActivity"/>
         <!--
  <activity
              android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
@@ -148,7 +149,7 @@
         <activity
             android:name=".scheduler.view.alarmsetting.AlarmSettingActivity"
             android:exported="false" />
-        <activity
+        <activity android:showOnLockScreen="true"
             android:name=".scheduler.view.alarmsplashscreen.AlarmScreenActivity"
             android:exported="false" />
         <activity
