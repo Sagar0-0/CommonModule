@@ -1,5 +1,6 @@
 package fit.asta.health.tools.water.view
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -12,11 +13,18 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun WaterToolForm(viewModel: WaterViewModel = hiltViewModel()) {
-
-    when (val state = viewModel.state.collectAsState().value) {
-        is WaterState.Loading -> LoadingAnimation()
-        is WaterState.Error -> ServerErrorLayout(state.error)
+    val state = viewModel.state.collectAsState()
+    when (state.value) {
+        is WaterState.Loading -> {
+            Log.d("water", "WaterToolForm: loading")
+            LoadingAnimation()
+        }
+        is WaterState.Error -> {
+            Log.d("water", "WaterToolForm: error")
+            ServerErrorLayout((state.value as WaterState.Error).error)
+        }
         else -> {
+            Log.d("water", "WaterToolForm: ok")
             WaterHomeScreen()
         }
     }

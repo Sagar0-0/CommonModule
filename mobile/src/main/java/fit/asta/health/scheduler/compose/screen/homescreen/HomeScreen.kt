@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -48,23 +49,27 @@ import me.saket.swipe.SwipeableActionsBox
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(homeUiState:HomeUiState,hSEvent:(HomeEvent)->Unit,navAlarmSettingHome:()->Unit) {
+fun HomeScreen(
+    homeUiState: HomeUiState,
+    list: SnapshotStateList<AlarmEntity>,
+    hSEvent: (HomeEvent) -> Unit,
+    navAlarmSettingHome: () -> Unit
+) {
 
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
     val activity = LocalContext.current as Activity
     val context = LocalContext.current
-    Scaffold(scaffoldState = scaffoldState, content = {
+    Scaffold(scaffoldState = scaffoldState, content = { paddingValues ->
         LazyColumn(
             Modifier
                 .fillMaxWidth()
-                .padding(it)
+                .padding(paddingValues)
                 .background(color = MaterialTheme.colorScheme.secondaryContainer)
         ) {
-            items(homeUiState.alarmList) { data ->
-                SwipeAlarm(data = data, onSwipe = {
-                    val deletedTag = data
-                    hSEvent(HomeEvent.DeleteAlarm(data,context))
+            items(list) { data ->
+                SwipeAlarm(homeUiState = homeUiState, data = data, onSwipe = {
+                    hSEvent(HomeEvent.DeleteAlarm(data, context))
                     coroutineScope.launch {
                         val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
                             message = "Deleted ${data.info.name}",
@@ -73,20 +78,24 @@ fun HomeScreen(homeUiState:HomeUiState,hSEvent:(HomeEvent)->Unit,navAlarmSetting
                         )
                         when (snackbarResult) {
                             SnackbarResult.ActionPerformed -> {
-                                hSEvent(HomeEvent.InsertAlarm(deletedTag))
+                                hSEvent(HomeEvent.UndoAlarm(data, context))
                             }
                             else -> {}
                         }
                     }
                 }, onClick = {
-
-                })
+                    hSEvent(HomeEvent.SetAlarmState(data, it, context))
+                }, onEdit = {
+                    navAlarmSettingHome()
+                    hSEvent(HomeEvent.EditAlarm(data))
+                }
+                )
             }
         }
     },
         floatingActionButton = {
             FloatingActionButton(
-                onClick =  navAlarmSettingHome,
+                onClick = navAlarmSettingHome,
                 containerColor = MaterialTheme.colorScheme.primary,
                 shape = CircleShape,
                 modifier = Modifier.size(80.dp),
@@ -104,7 +113,7 @@ fun HomeScreen(homeUiState:HomeUiState,hSEvent:(HomeEvent)->Unit,navAlarmSetting
                     fontSize = 20.sp
                 )
             }, navigationIcon = {
-                androidx.compose.material3.IconButton(onClick = {  }) {
+                androidx.compose.material3.IconButton(onClick = { }) {
                     Icon(
                         Icons.Outlined.NavigateBefore,
                         "back",
@@ -117,14 +126,40 @@ fun HomeScreen(homeUiState:HomeUiState,hSEvent:(HomeEvent)->Unit,navAlarmSetting
 
 
 @Composable
+fun SwipeAlarm(
+    onSwipe: () -> Unit = {},
+    onClick: (Boolean) -> Unit = {},
+    onEdit: () -> Unit = {},
+    data: AlarmEntity,
+    homeUiState: HomeUiState
+) {
+
+    val archive = SwipeAction(
+        icon = painterResource(id = R.drawable.ic_baseline_delete_24),
+        background = Color.Red,
+        onSwipe = { onSwipe() }
+    )
+
+    SwipeableActionsBox(
+        startActions = listOf(archive),
+    ) {
+        AlarmCard(
+            data = data,
+            homeUiState = homeUiState,
+            onClick = onClick,
+            onEdit = onEdit
+        )
+    }
+
+}
+
+
+@Composable
 fun AlarmCard(
     onClick: (Boolean) -> Unit = {},
-    isSelected: Boolean,
-    description: String,
-    name: String,
-    tag: String,
-    url: String
-
+    onEdit: () -> Unit = {},
+    data: AlarmEntity,
+    homeUiState: HomeUiState
 ) {
 
     val interactionSource = remember { MutableInteractionSource() }
@@ -132,8 +167,8 @@ fun AlarmCard(
 
     val color = if (isPressed) MaterialTheme.colorScheme.primary else Color.Transparent
 
-    androidx.compose.material3.Button(
-        onClick = { },
+    Button(
+        onClick = onEdit,
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
@@ -144,7 +179,15 @@ fun AlarmCard(
         contentPadding = PaddingValues(0.dp),
         border = BorderStroke(width = 3.dp, color = color)
     ) {
-        SwipeAbleAreaAlarm(isSelected, description, name, tag, url, onCheckClicked = onClick)
+        SwipeAbleAreaAlarm(
+            isSelected =data.status,
+            description =data.info.description,
+            name =data.info.name,
+            tag =data.info.tag,
+            url =data.info.url,
+            buttonState = homeUiState.buttonState,
+            onCheckClicked = onClick
+        )
     }
 }
 
@@ -155,6 +198,7 @@ private fun SwipeAbleAreaAlarm(
     name: String,
     tag: String,
     url: String,
+    buttonState:Boolean,
     onCheckClicked: (Boolean) -> Unit
 ) {
     Box {
@@ -168,7 +212,8 @@ private fun SwipeAbleAreaAlarm(
                 placeholder = painterResource(R.drawable.placeholder_tag),
                 contentDescription = stringResource(R.string.description),
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.size(width = 120.dp, height = 100.dp)
+                modifier = Modifier
+                    .size(width = 120.dp, height = 100.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .padding(8.dp)
             )
@@ -188,42 +233,19 @@ private fun SwipeAbleAreaAlarm(
             }
             androidx.compose.material3.Switch(
                 checked = isSelected,
+                enabled = buttonState,
                 onCheckedChange = {
                     onCheckClicked(it)
                 },
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = MaterialTheme.colorScheme.primary,
                     uncheckedThumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    checkedTrackColor=Color.LightGray,
-                    uncheckedTrackColor=MaterialTheme.colorScheme.background,
-                    checkedBorderColor=MaterialTheme.colorScheme.primary,
-                    uncheckedBorderColor=MaterialTheme.colorScheme.primary,)
+                    checkedTrackColor = Color.LightGray,
+                    uncheckedTrackColor = MaterialTheme.colorScheme.background,
+                    checkedBorderColor = MaterialTheme.colorScheme.primary,
+                    uncheckedBorderColor = MaterialTheme.colorScheme.primary,
+                )
             )
         }
     }
-}
-
-
-@Composable
-fun SwipeAlarm(onSwipe: () -> Unit = {}, onClick: () -> Unit = {}, data: AlarmEntity) {
-
-    val archive = SwipeAction(
-        icon = painterResource(id = R.drawable.ic_baseline_delete_24),
-        background = Color.Red,
-        onSwipe = { onSwipe() }
-    )
-
-    SwipeableActionsBox(
-        startActions = listOf(archive),
-    ) {
-        AlarmCard(
-            name = data.info.name,
-            description = data.info.description,
-            url = data.info.url,
-            isSelected = data.status,
-            tag = data.info.tag,
-            onClick = {}
-        )
-    }
-
 }

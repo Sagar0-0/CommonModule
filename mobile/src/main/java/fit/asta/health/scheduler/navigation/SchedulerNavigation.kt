@@ -26,7 +26,9 @@ fun SchedulerNavigation(navController: NavHostController, schedulerViewModel: Sc
 
         composable(route = AlarmSchedulerScreen.AlarmHome.route) {
             val homeUiState = schedulerViewModel.homeUiState.value
+            val list by schedulerViewModel.alarmList.collectAsStateWithLifecycle()
             HomeScreen(
+                list=list,
                 homeUiState = homeUiState,
                 hSEvent = schedulerViewModel::hSEvent,
                 navAlarmSettingHome = {

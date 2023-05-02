@@ -13,8 +13,8 @@ interface WaterApiService {
         @Query("uid") userId: String,
         @Query("lat") latitude: String,
         @Query("lon") longitude: String,
-        @Query("loc") location: String,
-        @Query("date") date: String
+        @Query("date") date: String,
+        @Query("loc") location: String
     ): NetWaterToolRes
 
     @POST("tools/water/beverage/quantity/post")

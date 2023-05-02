@@ -5,13 +5,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.common.utils.getCurrentDate
 import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.tools.water.model.WaterToolRepo
 import fit.asta.health.tools.water.model.domain.WaterTool
 import fit.asta.health.tools.water.model.network.NetBevQtyPut
-import fit.asta.health.common.utils.getCurrentDate
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -67,33 +73,45 @@ class WaterViewModel
     val changedTgt = mutableStateOf<Int?>(null)
 
     init {
+        Log.d("water", "state: ${state.value}")
         loadWaterToolData()
+        Log.d("water", "state: ${state.value}")
     }
 
     private fun loadWaterToolData() {
         viewModelScope.launch {
             authRepo.getUser()?.let { user->
                 Log.i("User Id","------------------>${user.uid}")
-                waterToolRepo.getWaterTool(
-                    userId = user.uid,
+                Log.d("water", "user: ${user.uid}")
+              val result=  waterToolRepo.getWaterTool(
+                    userId = "6309a9379af54f142c65fbfe",
                     latitude = "28.6353",
                     longitude = "77.2250",
                     location = "bangalore",
                     date = getCurrentDate()
                 ).catch { exception ->
+                  Log.d("water", "loadWaterToolData: ${exception.message}")
                     mutableState.value = WaterState.Error(exception)
-                }.collect {
-                    _waterTool.value = it
+                }.collect { it ->
+                  _waterTool.value = it
                     _modifiedWaterTool.value = it
                     somethingChanged.value=false
                     if(_choosenBeverageIndexCode.value==null){
                         if(_modifiedWaterTool.value?.selectedListId?.isNotEmpty() == true){
-                            _choosenBeverageIndexCode.value = _modifiedWaterTool.value?.selectedListId!![0]
+                            _modifiedWaterTool.value?.selectedListId.let {list->
+                                if (list != null) {
+                                    if (list.isNotEmpty())
+                                        _choosenBeverageIndexCode.value = list[0]
+                                }
+                            }
+
                         }
                     }
                     mutableState.value = WaterState.Success
                     Log.i("Water Tool",it.toString())
+                    Log.d("water", "loadWaterToolData: ${it}")
                 }
+                Log.d("water", "result: ${result}")
             }
 
         }

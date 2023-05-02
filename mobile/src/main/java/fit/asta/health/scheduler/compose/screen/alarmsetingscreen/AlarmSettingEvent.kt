@@ -17,6 +17,7 @@ sealed class AlarmSettingEvent{
     data class Save(val context: Context):AlarmSettingEvent()
     object GotoTagScreen:AlarmSettingEvent()
     object GotoTimeSettingScreen:AlarmSettingEvent()
+    object ResetUi:AlarmSettingEvent()
 
 
 }

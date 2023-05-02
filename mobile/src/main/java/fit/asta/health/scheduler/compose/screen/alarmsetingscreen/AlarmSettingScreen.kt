@@ -95,7 +95,9 @@ fun AlarmSettingScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    IconButton(onClick = navBack) {
+                    IconButton(onClick = { navBack()
+                        aSEvent(AlarmSettingEvent.ResetUi)
+                    }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_round_close_24),
                             contentDescription = null,
