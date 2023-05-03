@@ -14,7 +14,12 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.NetworkResult
-import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.*
+import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ASUiState
+import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AdvUiState
+import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AlarmSettingEvent
+import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.IvlUiState
+import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.RepUiState
+import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.StatUiState
 import fit.asta.health.scheduler.compose.screen.homescreen.HomeEvent
 import fit.asta.health.scheduler.compose.screen.homescreen.HomeUiState
 import fit.asta.health.scheduler.compose.screen.tagscreen.TagState
@@ -24,15 +29,26 @@ import fit.asta.health.scheduler.compose.screen.timesettingscreen.TimeSettingEve
 import fit.asta.health.scheduler.model.AlarmBackendRepo
 import fit.asta.health.scheduler.model.AlarmLocalRepo
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
+import fit.asta.health.scheduler.model.db.entity.AlarmSync
 import fit.asta.health.scheduler.model.db.entity.TagEntity
-import fit.asta.health.scheduler.model.net.scheduler.*
+import fit.asta.health.scheduler.model.net.scheduler.Adv
+import fit.asta.health.scheduler.model.net.scheduler.Info
+import fit.asta.health.scheduler.model.net.scheduler.Ivl
+import fit.asta.health.scheduler.model.net.scheduler.Meta
+import fit.asta.health.scheduler.model.net.scheduler.Rep
+import fit.asta.health.scheduler.model.net.scheduler.Stat
+import fit.asta.health.scheduler.model.net.scheduler.Time
+import fit.asta.health.scheduler.model.net.scheduler.Tone
+import fit.asta.health.scheduler.model.net.scheduler.Vib
+import fit.asta.health.scheduler.model.net.scheduler.Wk
 import fit.asta.health.scheduler.model.net.tag.ScheduleTagNetData
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.hours
 
@@ -49,6 +65,8 @@ class SchedulerViewModel
     val staticIntervalsList = MutableStateFlow(_staticIntervalsList)
     private val _variantIntervalsList = mutableStateListOf<StatUiState>()
     val variantIntervalsList = MutableStateFlow(_variantIntervalsList)
+    private val _alarmList = mutableStateListOf<AlarmEntity>()
+    val alarmList = MutableStateFlow(_alarmList)
 
     private val _homeUiState = mutableStateOf(HomeUiState())
     val homeUiState: State<HomeUiState> = _homeUiState
@@ -73,18 +91,57 @@ class SchedulerViewModel
 
     fun hSEvent(uiEvent: HomeEvent) {
         when (uiEvent) {
-            is HomeEvent.AddAlarm -> {}
-            is HomeEvent.SetAlarmState -> {}
+            is HomeEvent.EditAlarm -> {
+                alarmEntity = uiEvent.alarm
+                updateUi(uiEvent.alarm)
+            }
+
+            is HomeEvent.SetAlarmState -> {
+                updateAlarmState(uiEvent.alarm, uiEvent.state, uiEvent.context)
+            }
+
             is HomeEvent.DeleteAlarm -> {
                 deleteAlarm(uiEvent.alarm, uiEvent.context)
             }
-            is HomeEvent.InsertAlarm -> {
-                viewModelScope.launch {
-                    backendRepo.updateScheduleDataOnBackend(uiEvent.alarm)
-                    alarmLocalRepo.insertAlarm(uiEvent.alarm)
-                }
+
+            is HomeEvent.UndoAlarm -> {
+                undoAlarm(uiEvent.alarm,uiEvent.context)
             }
+
             else -> {}
+        }
+    }
+
+    private fun undoAlarm(alarm: AlarmEntity,context: Context) {
+        viewModelScope.launch {
+            alarmLocalRepo.insertAlarm(alarm)
+            if (alarm.status){alarm.scheduleAlarm(context)}
+            if (alarm.idFromServer.isNotEmpty()) {
+                alarmLocalRepo.deleteSyncData(
+                    AlarmSync(
+                        alarmId = alarm.alarmId,
+                        scheduleId = alarm.idFromServer
+                    )
+                )
+            }
+            _alarmList.add(alarm)
+        }
+    }
+
+    private fun updateAlarmState(alarm: AlarmEntity, state: Boolean, context: Context) {
+        val newAlarm = alarm.copy(status = state)
+        _homeUiState.value = _homeUiState.value.copy(buttonState = false)
+        if (state) {
+            newAlarm.scheduleAlarm(context)
+        } else {
+            alarm.cancelScheduleAlarm(context, alarm.alarmId, true)
+        }
+        viewModelScope.launch {
+            alarmLocalRepo.insertAlarm(newAlarm)
+            if (newAlarm.idFromServer.isEmpty()) {
+                alarmLocalRepo.insertSyncData(AlarmSync(alarmId = newAlarm.alarmId))
+            }
+            _homeUiState.value = _homeUiState.value.copy(buttonState = true)
         }
     }
 
@@ -97,6 +154,7 @@ class SchedulerViewModel
                     time_minutes = uiEvent.Time.minutes
                 )
             }
+
             is AlarmSettingEvent.SetWeek -> {
                 when (uiEvent.week) {
                     0 -> {
@@ -105,6 +163,7 @@ class SchedulerViewModel
                         _alarmSettingUiState.value =
                             _alarmSettingUiState.value.copy(recurring = checkRecurring())
                     }
+
                     1 -> {
                         _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
                             monday = !_alarmSettingUiState.value.monday
@@ -112,6 +171,7 @@ class SchedulerViewModel
                         _alarmSettingUiState.value =
                             _alarmSettingUiState.value.copy(recurring = checkRecurring())
                     }
+
                     2 -> {
                         _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
                             tuesday = !_alarmSettingUiState.value.tuesday
@@ -119,6 +179,7 @@ class SchedulerViewModel
                         _alarmSettingUiState.value =
                             _alarmSettingUiState.value.copy(recurring = checkRecurring())
                     }
+
                     3 -> {
                         _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
                             wednesday = !_alarmSettingUiState.value.wednesday
@@ -126,6 +187,7 @@ class SchedulerViewModel
                         _alarmSettingUiState.value =
                             _alarmSettingUiState.value.copy(recurring = checkRecurring())
                     }
+
                     4 -> {
                         _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
                             thursday = !_alarmSettingUiState.value.thursday
@@ -133,6 +195,7 @@ class SchedulerViewModel
                         _alarmSettingUiState.value =
                             _alarmSettingUiState.value.copy(recurring = checkRecurring())
                     }
+
                     5 -> {
                         _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
                             friday = !_alarmSettingUiState.value.friday
@@ -140,6 +203,7 @@ class SchedulerViewModel
                         _alarmSettingUiState.value =
                             _alarmSettingUiState.value.copy(recurring = checkRecurring())
                     }
+
                     6 -> {
                         _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
                             saturday = !_alarmSettingUiState.value.saturday
@@ -149,29 +213,36 @@ class SchedulerViewModel
                     }
                 }
             }
+
             is AlarmSettingEvent.SetStatus -> {
                 _alarmSettingUiState.value =
                     _alarmSettingUiState.value.copy(status = uiEvent.status)
             }
+
             is AlarmSettingEvent.SetLabel -> {
                 _alarmSettingUiState.value =
                     _alarmSettingUiState.value.copy(alarm_name = uiEvent.label)
             }
+
             is AlarmSettingEvent.SetDescription -> {
                 _alarmSettingUiState.value =
                     _alarmSettingUiState.value.copy(alarm_description = uiEvent.description)
             }
+
             is AlarmSettingEvent.SetReminderMode -> {
                 _alarmSettingUiState.value = _alarmSettingUiState.value.copy(mode = uiEvent.choice)
             }
+
             is AlarmSettingEvent.SetVibration -> {
                 _alarmSettingUiState.value =
                     _alarmSettingUiState.value.copy(vibration_status = uiEvent.choice)
             }
+
             is AlarmSettingEvent.SetVibrationIntensity -> {
                 _alarmSettingUiState.value =
                     _alarmSettingUiState.value.copy(vibration_percentage = uiEvent.vibration.toString())
             }
+
             is AlarmSettingEvent.SetSound -> {
                 _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
                     tone_name = uiEvent.tone.name,
@@ -184,17 +255,24 @@ class SchedulerViewModel
                 _alarmSettingUiState.value =
                     _alarmSettingUiState.value.copy(important = uiEvent.important)
             }
+
             is AlarmSettingEvent.GotoTagScreen -> {
                 Log.d("manish", "GotoTagScreen: ")
                 refreshTagData()
                 getTagData()
             }
+
             is AlarmSettingEvent.GotoTimeSettingScreen -> {
                 _variantIntervalsList.addAll(interval.value.variantIntervals)
                 _staticIntervalsList.addAll(interval.value.staticIntervals)
             }
+
             is AlarmSettingEvent.Save -> {
                 setDataAndSaveAlarm(uiEvent.context, alarmEntity)
+            }
+
+            is AlarmSettingEvent.ResetUi -> {
+                resetUi()
             }
 
             else -> {}
@@ -217,12 +295,14 @@ class SchedulerViewModel
                     getTagData()
                 }
             }
+
             is TagsEvent.UndoTag -> {
                 viewModelScope.launch {
                     alarmLocalRepo.insertTag(uiEvent.tag)
                     getTagData()
                 }
             }
+
             is TagsEvent.SelectedTag -> {
                 val tag = uiEvent.tag
                 tag.selected = !tag.selected
@@ -235,6 +315,7 @@ class SchedulerViewModel
                     tagId = tag.meta.id, tag_name = tag.meta.name, tag_url = tag.meta.url
                 )
             }
+
             is TagsEvent.UpdateTag -> {
                 viewModelScope.launch {
                     val result = backendRepo.updateScheduleTag(
@@ -247,6 +328,7 @@ class SchedulerViewModel
                             refreshTagData()
                             getTagData()
                         }
+
                         is NetworkResult.Error -> {}
                         is NetworkResult.Loading -> {}
                     }
@@ -262,9 +344,11 @@ class SchedulerViewModel
             is TimeSettingEvent.SetSnooze -> {
                 interval.value = interval.value.copy(snoozeTime = uiEvent.time)
             }
+
             is TimeSettingEvent.SetDuration -> {
                 interval.value = interval.value.copy(duration = uiEvent.time)
             }
+
             is TimeSettingEvent.SetAdvancedDuration -> {
                 if (isValidAdvancedDuration(uiEvent.time)) {
                     advancedReminder.value = advancedReminder.value.copy(time = uiEvent.time)
@@ -274,16 +358,20 @@ class SchedulerViewModel
                         .show()
                 }
             }
+
             is TimeSettingEvent.SetAdvancedStatus -> {
                 advancedReminder.value = advancedReminder.value.copy(status = uiEvent.choice)
                 interval.value = interval.value.copy(advancedReminder = advancedReminder.value)
             }
+
             is TimeSettingEvent.RemindAtEndOfDuration -> {
                 interval.value = interval.value.copy(isRemainderAtTheEnd = uiEvent.choice)
             }
+
             is TimeSettingEvent.SetVariantStatus -> {
                 interval.value = interval.value.copy(isVariantInterval = uiEvent.choice)
             }
+
             is TimeSettingEvent.AddVariantInterval -> {
                 if (isValidState(
                         uiEvent.variantInterval,
@@ -295,6 +383,7 @@ class SchedulerViewModel
                         interval.value.copy(variantIntervals = variantIntervalsList.value)
                 }
             }
+
             is TimeSettingEvent.DeleteVariantInterval -> {
                 if (_variantIntervalsList.contains(uiEvent.variantInterval)) {
                     _variantIntervalsList.remove(uiEvent.variantInterval)
@@ -302,11 +391,13 @@ class SchedulerViewModel
                         interval.value.copy(variantIntervals = variantIntervalsList.value)
                 }
             }
+
             is TimeSettingEvent.SetRepetitiveIntervals -> {
                 interval.value = interval.value.copy(repeatableInterval = uiEvent.interval)
                 _staticIntervalsList.addAll(getSlots(uiEvent.context))
                 interval.value = interval.value.copy(staticIntervals = staticIntervalsList.value)
             }
+
             is TimeSettingEvent.Save -> {
                 setIvl()
             }
@@ -351,11 +442,13 @@ class SchedulerViewModel
                                 }
                             }
                         }
-                        getAlarms()
+
                     }
+
                     is NetworkResult.Error -> {
                         Log.d(SpotifyConstants.TAG, "onCreate list result: ${result.data}")
                     }
+
                     is NetworkResult.Loading -> {
                         Log.d(SpotifyConstants.TAG, "onCreate list result: ${result.data}")
                     }
@@ -369,7 +462,8 @@ class SchedulerViewModel
         viewModelScope.launch {
             alarmLocalRepo.getAllAlarm().collect { list ->
                 Log.d(SpotifyConstants.TAG, " list result: $list")
-                _homeUiState.value = _homeUiState.value.copy(alarmList = list)
+                _alarmList.clear()
+                _alarmList.addAll(list)
             }
         }
 
@@ -403,9 +497,11 @@ class SchedulerViewModel
                             }
                         }
                     }
+
                     is NetworkResult.Error -> {
                         Log.d("manish", "onCreate: ${result.data} ${result.message}")
                     }
+
                     is NetworkResult.Loading -> {
                         Log.d("manish", "onCreate: ${result.data} ${result.message}")
                     }
@@ -421,18 +517,18 @@ class SchedulerViewModel
         alarmItem: AlarmEntity?,
     ) {
         _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
-           saveButtonEnable = false
+            saveButtonEnable = false
         )
         alarmItem?.let {
             _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
                 saveProgress = "cancel old alarm"
             )
-            it.cancelScheduleAlarm(context,it.alarmId,true)
+            it.cancelScheduleAlarm(context, it.alarmId, true)
         }
         val alarmTone: Uri = RingtoneManager.getActualDefaultRingtoneUri(
             context, RingtoneManager.TYPE_ALARM
         )
-        if (alarmItem == null) {
+        if (_alarmSettingUiState.value.tone_uri.isEmpty()) {
             _alarmSettingUiState.value =
                 _alarmSettingUiState.value.copy(tone_uri = alarmTone.toString())
         }
@@ -501,58 +597,20 @@ class SchedulerViewModel
         val jsonObject: String? = Gson().toJson(map)
         val simpleObject = Gson().fromJson(jsonObject, AlarmEntity::class.java)
         viewModelScope.launch {
-            backendRepo.updateScheduleDataOnBackend(simpleObject).let { result ->
-                when (result) {
-                    is NetworkResult.Success -> {
-                        _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
-                            saveProgress = "Success from server"
-                        )
-                        if (result.data?.data?.flag == true) {
-                            val results = if (result.data.data.id.isEmpty()) {
-                                backendRepo.getScheduleDataFromBackend(simpleObject.idFromServer)
-                            } else {
-                                backendRepo.getScheduleDataFromBackend(result.data.data.id)
-                            }
-                            results.collect { schedule ->
-                                when (schedule) {
-                                    is NetworkResult.Success -> {
-                                        _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
-                                            saveProgress = "Success.."
-                                        )
-                                        if (schedule.data?.data!!.status) {
-                                            schedule.data.data.scheduleAlarm(context)
-                                        }
-                                        alarmLocalRepo.insertAlarm(schedule.data.data)
-                                        resetUi()
-                                    }
-                                    is NetworkResult.Error -> {
-                                        _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
-                                            saveProgress = "Error..",
-                                            saveButtonEnable = true
-                                        )
-                                    }
-                                    is NetworkResult.Loading -> {
-                                        _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
-                                            saveProgress = "get alarm .."
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    is NetworkResult.Error -> {
-                        _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
-                            saveProgress = "Error on uploading..",
-                            saveButtonEnable = true
-                        )
-                    }
-                    is NetworkResult.Loading -> {
-                        _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
-                            saveProgress = "Updating server.."
-                        )
-                    }
-                }
+            _alarmSettingUiState.value = _alarmSettingUiState.value.copy(saveProgress = "Success..")
+            if (simpleObject.status) {
+                simpleObject.scheduleAlarm(context)
             }
+            if (alarmItem != null) {
+                alarmLocalRepo.insertSyncData(
+                    AlarmSync(
+                        alarmId = simpleObject.alarmId,
+                        scheduleId = simpleObject.idFromServer
+                    )
+                )
+            }
+            alarmLocalRepo.insertAlarm(simpleObject)
+            resetUi()
         }
     }
 
@@ -600,20 +658,16 @@ class SchedulerViewModel
     }
 
     private fun deleteAlarm(alarmItem: AlarmEntity, context: Context) {
+        _alarmList.remove(alarmItem)
         viewModelScope.launch {
-            val result = backendRepo.deleteScheduleDataFromBackend(alarmItem.idFromServer)
-            when (result) {
-                is NetworkResult.Error -> {}
-                is NetworkResult.Success -> {
-                    if (alarmItem.status) alarmItem.cancelScheduleAlarm(
-                        context, alarmItem.alarmId, true
-                    )
-                    alarmLocalRepo.deleteAlarm(alarmItem)
-                    alarmLocalRepo.getAllAlarm().collect {
-                        _homeUiState.value = _homeUiState.value.copy(alarmList = it)
-                    }
-                }
-                is NetworkResult.Loading -> {}
+            if (alarmItem.status) alarmItem.cancelScheduleAlarm(
+                context, alarmItem.alarmId, true
+            )
+            alarmLocalRepo.deleteAlarm(alarmItem)
+            if (alarmItem.idFromServer.isNotEmpty()) {
+                alarmLocalRepo.insertSyncData(
+                    AlarmSync(alarmId = alarmItem.alarmId, scheduleId = alarmItem.idFromServer)
+                )
             }
         }
     }

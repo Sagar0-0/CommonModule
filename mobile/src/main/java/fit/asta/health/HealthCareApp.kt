@@ -7,12 +7,19 @@ import android.os.Build
 import androidx.core.app.NotificationManagerCompat
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.multidex.MultiDexApplication
+import androidx.work.BackoffPolicy
 import androidx.work.Configuration
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import dagger.hilt.android.HiltAndroidApp
 import fit.asta.health.common.db.AppDb
 import fit.asta.health.common.utils.getUriFromResourceId
 import fit.asta.health.notify.util.createNotificationChannel
+import fit.asta.health.scheduler.services.SchedulerWorker
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltAndroidApp
@@ -39,10 +46,7 @@ class HealthCareApp : MultiDexApplication() {
                 workerFactory
             ).build()
         )
-        /*this.createNotificationChannel(
-            getString(R.string.breakfast_notification_channel_id),
-            getString(R.string.breakfast_notification_channel_name)
-        )*/
+        setupWorker(this)
     }
 
     private fun setupDb() {
@@ -77,10 +81,22 @@ class HealthCareApp : MultiDexApplication() {
              val channel = NotificationChannel(
                  "location",
                  "Location",
-                 NotificationManager.IMPORTANCE_LOW
+                 NotificationManager.IMPORTANCE_HIGH
              )
              val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
              notificationManager.createNotificationChannel(channel)
          }
      }
+}
+fun setupWorker(context: Context) {
+    val constraint = Constraints.Builder()
+        .setRequiredNetworkType(NetworkType.CONNECTED)
+        .build()
+    val workRequest = PeriodicWorkRequestBuilder<SchedulerWorker>(1, TimeUnit.HOURS)
+        .setConstraints(constraint)
+        .setBackoffCriteria(BackoffPolicy.LINEAR, 5, TimeUnit.MINUTES)
+        .build()
+    WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+        "worker_for_upload_data", ExistingPeriodicWorkPolicy.UPDATE, workRequest
+    )
 }

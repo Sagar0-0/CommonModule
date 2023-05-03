@@ -1,8 +1,20 @@
 package fit.asta.health.tools.water.view
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.BottomNavigation
-import androidx.compose.material3.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.FabPosition
+import androidx.compose.material.Scaffold
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -21,54 +33,61 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 @Preview
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class,
+    ExperimentalMaterialApi::class
+)
 @Composable
 fun WaterHomeScreen(viewModel: WaterViewModel = hiltViewModel()) {
 
     val showSaveButton by viewModel.saveData.collectAsStateWithLifecycle()
 
-    Scaffold(topBar = {
-        BottomNavigation(content = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_exercise_back),
-                        contentDescription = null,
-                        Modifier.size(24.dp)
+    Scaffold(
+        topBar = {
+            BottomNavigation(content = {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_exercise_back),
+                            contentDescription = null,
+                            Modifier.size(24.dp)
+                        )
+                    }
+                    Text(
+                        text = "Water Tool",
+                        fontSize = 20.sp,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        textAlign = TextAlign.Center
                     )
+                    IconButton(onClick = { }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_physique),
+                            contentDescription = null,
+                            Modifier.size(24.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
                 }
-                Text(
-                    text = "Water Tool",
-                    fontSize = 20.sp,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    textAlign = TextAlign.Center
-                )
-                IconButton(onClick = { }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_physique),
-                        contentDescription = null,
-                        Modifier.size(24.dp),
-                        tint = MaterialTheme.colorScheme.primary
-                    )
+            }, elevation = 10.dp, backgroundColor = MaterialTheme.colorScheme.onPrimary)
+        },
+        floatingActionButton = {
+            if (showSaveButton) {
+                ExtendedFloatingActionButton(
+                    onClick = {
+                        //viewModel.onSaved()
+                    }, modifier = Modifier.height(35.dp)
+                ) {
+                    Text(text = "SAVE")
                 }
             }
-        }, elevation = 10.dp, backgroundColor = MaterialTheme.colorScheme.onPrimary)
-    }, floatingActionButton = {
-        if (showSaveButton) {
-            ExtendedFloatingActionButton(
-                onClick = {
-                    //viewModel.onSaved()
-                }, modifier = Modifier.height(35.dp)
-            ) {
-                Text(text = "SAVE")
-            }
+        },
+        floatingActionButtonPosition = FabPosition.Center,
+        content = {
+            WaterBottomSheet(paddingValues = it)
         }
-    }, floatingActionButtonPosition = FabPosition.Center, content = {
-        WaterBottomSheet(paddingValues = it)
-    })
+    )
 
 }
