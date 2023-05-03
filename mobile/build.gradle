@@ -163,7 +163,7 @@ dependencies {
 
     //Firebase authentication
     implementation platform('com.google.firebase:firebase-bom:31.2.0')
-    implementation "com.google.firebase:firebase-auth-ktx:21.3.0"
+    implementation "com.google.firebase:firebase-auth-ktx:22.0.0"
     implementation "com.google.android.gms:play-services-auth:20.5.0"
     implementation "com.firebaseui:firebase-ui-auth:8.0.2"
 
@@ -173,15 +173,15 @@ dependencies {
     //Firebase analytics
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4"
     implementation "com.google.firebase:firebase-analytics-ktx:21.2.2"
-    implementation "com.google.firebase:firebase-crashlytics-ktx:18.3.6"
-    implementation "com.google.firebase:firebase-perf-ktx:20.3.1"
-    implementation "com.google.firebase:firebase-config-ktx:21.3.0"
+    implementation "com.google.firebase:firebase-crashlytics-ktx:18.3.7"
+    implementation "com.google.firebase:firebase-perf-ktx:20.3.2"
+    implementation "com.google.firebase:firebase-config-ktx:21.4.0"
 
     //Firebase storage for media files
-    implementation "com.google.firebase:firebase-storage-ktx:20.1.0"
+    implementation "com.google.firebase:firebase-storage-ktx:20.2.0"
 
     //Firestore for nosql
-    implementation "com.google.firebase:firebase-firestore-ktx:24.5.0"
+    implementation "com.google.firebase:firebase-firestore-ktx:24.6.0"
 
     /*implementation "android.arch.work:work-runtime:1.0.1"
     implementation "com.google.guava:guava:27.0.1-android"
