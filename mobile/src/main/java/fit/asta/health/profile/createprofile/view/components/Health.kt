@@ -4,6 +4,7 @@
     ExperimentalCoroutinesApi::class,
     ExperimentalCoroutinesApi::class,
     ExperimentalCoroutinesApi::class,
+    ExperimentalCoroutinesApi::class,
     ExperimentalCoroutinesApi::class
 )
 
@@ -20,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.navigation.home.view.component.LoadingAnimation
+import fit.asta.health.navigation.home.view.component.NoInternetLayout
 import fit.asta.health.profile.bottomsheets.ItemSelectionBtmSheetLayout
 import fit.asta.health.profile.createprofile.view.components.HealthCreateBottomSheetTypes.*
 import fit.asta.health.profile.model.domain.ComposeIndex
@@ -31,7 +34,6 @@ import fit.asta.health.profile.viewmodel.ProfileEvent
 import fit.asta.health.profile.viewmodel.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -46,28 +48,74 @@ fun HealthContent(
     onMedications: () -> Unit,
     onHealthTargets: () -> Unit,
     onBodyInjurySelect: () -> Unit,
+    onAddictionSelect: () -> Unit,
 ) {
 
     val checkedState = remember { mutableStateOf(true) }
 
-    var enableButton by remember {
-        mutableStateOf(false)
-    }
-
     val radioButtonList =
         listOf(ButtonListTypes(buttonType = "First"), ButtonListTypes(buttonType = "Second"))
 
+    //Inputs
     val injurySince by viewModel.injuriesSince.collectAsStateWithLifecycle()
+
+    //Selection Inputs
     val selectedHealthHis by viewModel.selectedHealthHisOption.collectAsStateWithLifecycle()
     val selectedAil by viewModel.selectedAilOption.collectAsStateWithLifecycle()
     val selectedMed by viewModel.selectedMedOption.collectAsStateWithLifecycle()
     val selectedHealthTar by viewModel.selectedHealthTarOption.collectAsStateWithLifecycle()
     val selectedInjury by viewModel.selectedInjOption.collectAsStateWithLifecycle()
+    val selectedAddiction by viewModel.selectedAddictionOption.collectAsStateWithLifecycle()
 
+    //Data
     val healthHisList by viewModel.healthPropertiesData.collectAsStateWithLifecycle()
-    val selectedHealthValidity by viewModel.selectedHealthOptions.collectAsStateWithLifecycle()
 
-    val healthButtonEnable by viewModel.healthInputsValid.collectAsStateWithLifecycle()
+    //Inputs Validity
+    val areSelectedHealthOptionsValid by viewModel.areSelectedHealthOptionsNull.collectAsStateWithLifecycle()
+    val enableHealthButton by viewModel.healthInputsValid.collectAsStateWithLifecycle()
+
+    val isHealthHisValid = when (selectedHealthHis) {
+        TwoToggleSelections.First -> healthHisList.getValue(0).isNotEmpty()
+        TwoToggleSelections.Second -> true
+        null -> false
+    }
+
+    val isInjuryValid = when (selectedInjury) {
+        TwoToggleSelections.First -> healthHisList.getValue(1)
+            .isNotEmpty() && healthHisList.getValue(2).isNotEmpty()
+        TwoToggleSelections.Second -> true
+        null -> false
+    }
+
+    val isAilmentsValid = when (selectedAil) {
+        TwoToggleSelections.First -> healthHisList.getValue(3).isNotEmpty()
+        TwoToggleSelections.Second -> true
+        null -> false
+    }
+
+    val isMedValid = when (selectedMed) {
+        TwoToggleSelections.First -> healthHisList.getValue(4).isNotEmpty()
+        TwoToggleSelections.Second -> true
+        null -> false
+    }
+
+    val isHealthTarValid = when (selectedHealthTar) {
+        TwoToggleSelections.First -> healthHisList.getValue(5).isNotEmpty()
+        TwoToggleSelections.Second -> true
+        null -> false
+    }
+
+    val isAddictionValid = when (selectedAddiction) {
+        TwoToggleSelections.First -> healthHisList.getValue(6).isNotEmpty()
+        TwoToggleSelections.Second -> true
+        null -> false
+    }
+
+    if (areSelectedHealthOptionsValid && isHealthHisValid && isInjuryValid && isAilmentsValid && isMedValid && isHealthTarValid && isAddictionValid) {
+        viewModel.onEvent(ProfileEvent.IsHealthValid(true))
+    } else {
+        viewModel.onEvent(ProfileEvent.IsHealthValid(false))
+    }
 
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
@@ -86,7 +134,6 @@ fun HealthContent(
             SelectionCardCreateProfile(
                 cardType = "Any Significant Health History?",
                 cardList = healthHisList.getValue(0),
-                radioButtonList = radioButtonList,
                 checkedState = checkedState,
                 onItemsSelect = onHealthHistory,
                 selectedOption = selectedHealthHis,
@@ -127,7 +174,6 @@ fun HealthContent(
             SelectionCardCreateProfile(
                 cardType = "Any Ailments?",
                 cardList = healthHisList.getValue(3),
-                radioButtonList = radioButtonList,
                 checkedState = checkedState,
                 onItemsSelect = onAilments,
                 selectedOption = selectedAil,
@@ -146,7 +192,6 @@ fun HealthContent(
             SelectionCardCreateProfile(
                 cardType = "Any Medications?",
                 cardList = healthHisList.getValue(4),
-                radioButtonList = radioButtonList,
                 checkedState = checkedState,
                 onItemsSelect = onMedications,
                 selectedOption = selectedMed,
@@ -164,7 +209,6 @@ fun HealthContent(
             SelectionCardCreateProfile(
                 cardType = "Any Health Targets?",
                 cardList = healthHisList.getValue(5),
-                radioButtonList = radioButtonList,
                 checkedState = checkedState,
                 onItemsSelect = onHealthTargets,
                 selectedOption = selectedHealthTar,
@@ -177,30 +221,29 @@ fun HealthContent(
                 listName = "Health Targets"
             )
 
-            if (selectedHealthValidity) {
-                viewModel.onEvent(
-                    ProfileEvent.IsHealthValid(
-                        valid = (healthHisList.getValue(0).isNotEmpty() && healthHisList.getValue(1)
-                            .isNotEmpty() && healthHisList.getValue(2)
-                            .isNotEmpty() && healthHisList.getValue(3)
-                            .isNotEmpty() && healthHisList.getValue(4)
-                            .isNotEmpty() && healthHisList.getValue(5)
-                            .isNotEmpty())
-                    )
-                )
-            }
-
-
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            CreateProfileButtons(
-                eventPrevious, eventNext, text = "Next", enableButton = healthButtonEnable
+            SelectionCardCreateProfile(
+                cardType = "Any Addiction?",
+                cardList = healthHisList.getValue(6),
+                checkedState = checkedState,
+                onItemsSelect = onAddictionSelect,
+                selectedOption = selectedAddiction,
+                onStateChange = { state ->
+                    viewModel.onEvent(ProfileEvent.SetSelectedAddictionOption(state))
+                },
+                enabled = selectedAddiction == TwoToggleSelections.First,
+                cardIndex = 6,
+                composeIndex = ComposeIndex.First,
+                listName = "Addictions"
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            SkipPage(onSkipEvent = onSkipEvent)
+            CreateProfileButtons(
+                eventPrevious, eventNext, text = "Next", enableButton = enableHealthButton
+            )
 
             Spacer(modifier = Modifier.height(spacing.medium))
         }
@@ -251,7 +294,7 @@ fun HealthCreateScreen(
             Spacer(modifier = Modifier.height(1.dp))
             currentBottomSheet?.let {
                 HealthCreateBtmSheetLayout(
-                    sheetLayout = it, closeSheet = { closeSheet() }, viewModel = viewModel
+                    sheetLayout = it, sheetState = { closeSheet() }, viewModel = viewModel
                 )
             }
         }) {
@@ -288,6 +331,11 @@ fun HealthCreateScreen(
                 currentBottomSheet = BODYPARTS
                 openSheet()
                 viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "bp"))
+            },
+            onAddictionSelect = {
+                currentBottomSheet = ADDICTION
+                openSheet()
+                viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "add"))
             })
 
     }
@@ -295,14 +343,14 @@ fun HealthCreateScreen(
 }
 
 enum class HealthCreateBottomSheetTypes {
-    HEALTHHISTORY, INJURIES, AILMENTS, MEDICATIONS, HEALTHTARGETS, BODYPARTS
+    HEALTHHISTORY, INJURIES, AILMENTS, MEDICATIONS, HEALTHTARGETS, BODYPARTS, ADDICTION
 }
 
 @Composable
 fun HealthCreateBtmSheetLayout(
     viewModel: ProfileViewModel = hiltViewModel(),
     sheetLayout: HealthCreateBottomSheetTypes,
-    closeSheet: () -> Unit,
+    sheetState: () -> Unit,
 ) {
 
     when (sheetLayout) {
@@ -310,8 +358,10 @@ fun HealthCreateBtmSheetLayout(
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}
-                is HPropState.Loading -> {}
-                is HPropState.NoInternet -> {}
+                is HPropState.Loading -> LoadingAnimation()
+                is HPropState.NoInternet -> {
+                    NoInternetLayout(onTryAgain = {})
+                }
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,
@@ -325,8 +375,10 @@ fun HealthCreateBtmSheetLayout(
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}
-                is HPropState.Loading -> {}
-                is HPropState.NoInternet -> {}
+                is HPropState.Loading -> LoadingAnimation()
+                is HPropState.NoInternet -> {
+                    NoInternetLayout(onTryAgain = {})
+                }
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,
@@ -340,8 +392,10 @@ fun HealthCreateBtmSheetLayout(
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}
-                is HPropState.Loading -> {}
-                is HPropState.NoInternet -> {}
+                is HPropState.Loading -> LoadingAnimation()
+                is HPropState.NoInternet -> {
+                    NoInternetLayout(onTryAgain = {})
+                }
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,
@@ -355,8 +409,10 @@ fun HealthCreateBtmSheetLayout(
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}
-                is HPropState.Loading -> {}
-                is HPropState.NoInternet -> {}
+                is HPropState.Loading -> LoadingAnimation()
+                is HPropState.NoInternet -> {
+                    NoInternetLayout(onTryAgain = {})
+                }
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,
@@ -370,8 +426,10 @@ fun HealthCreateBtmSheetLayout(
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}
-                is HPropState.Loading -> {}
-                is HPropState.NoInternet -> {}
+                is HPropState.Loading -> LoadingAnimation()
+                is HPropState.NoInternet -> {
+                    NoInternetLayout(onTryAgain = {})
+                }
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,
@@ -385,12 +443,31 @@ fun HealthCreateBtmSheetLayout(
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}
-                is HPropState.Loading -> {}
-                is HPropState.NoInternet -> {}
+                is HPropState.Loading -> LoadingAnimation()
+                is HPropState.NoInternet -> {
+                    NoInternetLayout(onTryAgain = {})
+                }
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,
                         cardIndex = 5,
+                        composeIndex = ComposeIndex.First
+                    )
+                }
+            }
+        }
+        ADDICTION -> {
+            when (val state = viewModel.stateHp.collectAsState().value) {
+                is HPropState.Empty -> {}
+                is HPropState.Error -> {}
+                is HPropState.Loading -> LoadingAnimation()
+                is HPropState.NoInternet -> {
+                    NoInternetLayout(onTryAgain = {})
+                }
+                is HPropState.Success -> {
+                    ItemSelectionBtmSheetLayout(
+                        cardList = state.properties,
+                        cardIndex = 6,
                         composeIndex = ComposeIndex.First
                     )
                 }

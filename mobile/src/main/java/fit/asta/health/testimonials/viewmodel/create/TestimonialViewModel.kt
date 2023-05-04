@@ -11,9 +11,18 @@ import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.network.NetworkHelper
 import fit.asta.health.network.data.ApiResponse
 import fit.asta.health.testimonials.model.TestimonialRepo
-import fit.asta.health.testimonials.model.domain.*
+import fit.asta.health.testimonials.model.domain.InputWrapper
+import fit.asta.health.testimonials.model.domain.Media
+import fit.asta.health.testimonials.model.domain.Testimonial
+import fit.asta.health.testimonials.model.domain.TestimonialType
+import fit.asta.health.testimonials.model.domain.TestimonialUser
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -43,6 +52,7 @@ class TestimonialViewModel
     private val _mutableState = MutableStateFlow<TestimonialGetState>(TestimonialGetState.Loading)
     val state = _mutableState.asStateFlow()
 
+
     private val testimonialData = savedState.getStateFlow(TESTIMONIAL_DATA, Testimonial())
     val id = savedState.getStateFlow(ID, "")
     val type = savedState.getStateFlow<TestimonialType>(TYPE, TestimonialType.TEXT)
@@ -65,15 +75,10 @@ class TestimonialViewModel
                 TestimonialType.TEXT -> testimonial.value.isNotBlank() && testimonial.error is UiString.Empty
                 TestimonialType.IMAGE -> true
                 TestimonialType.VIDEO -> true
-            } && title.value.isNotEmpty()
-                    && title.error is UiString.Empty
-                    && org.value.isNotEmpty()
-                    && org.error is UiString.Empty
-                    && role.value.isNotEmpty()
-                    && role.error is UiString.Empty
-                    && isTestimonialDirty()
+            } && title.value.isNotEmpty() && title.error is UiString.Empty && org.value.isNotEmpty() && org.error is UiString.Empty && role.value.isNotEmpty() && role.error is UiString.Empty && isTestimonialDirty()
 
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
+
 
     val areMediaValid = combine(type, imgBefore, imgAfter, video) { type, before, after, video ->
 
@@ -85,13 +90,16 @@ class TestimonialViewModel
 
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
+
     private val _stateSubmit =
         MutableStateFlow<TestimonialSubmitState>(TestimonialSubmitState.Loading)
     val stateSubmit = _stateSubmit.asStateFlow()
 
+
     init {
         onLoad()
     }
+
 
     fun onLoad() {
         if (networkHelper.isConnected()) {
@@ -103,16 +111,20 @@ class TestimonialViewModel
         }
     }
 
+
     private fun loadTestimonial(userId: String) {
         viewModelScope.launch {
 
             when (val result = testimonialRepo.getTestimonial(userId)) {
+
                 is ApiResponse.Error -> {
 
                 }
+
                 is ApiResponse.HttpError -> {
                     _mutableState.value = TestimonialGetState.Empty
                 }
+
                 is ApiResponse.Success -> {
 
                     savedState[TESTIMONIAL_DATA] = result.data
@@ -142,6 +154,7 @@ class TestimonialViewModel
         }
     }
 
+
     private fun submit() {
 
         authRepo.getUser()?.let {
@@ -168,6 +181,7 @@ class TestimonialViewModel
         }
 
     }
+
 
     private fun updateTestimonial(netTestimonial: Testimonial) {
         viewModelScope.launch {
@@ -289,10 +303,7 @@ class TestimonialViewModel
     }
 
     private fun isTestimonialDirty(): Boolean {
-        return testimonialData.value.title != title.value.value
-                || testimonialData.value.testimonial != testimonial.value.value
-                || testimonialData.value.user.org != org.value.value
-                || testimonialData.value.user.role != role.value.value
+        return testimonialData.value.title != title.value.value || testimonialData.value.testimonial != testimonial.value.value || testimonialData.value.user.org != org.value.value || testimonialData.value.user.role != role.value.value
     }
 
 }

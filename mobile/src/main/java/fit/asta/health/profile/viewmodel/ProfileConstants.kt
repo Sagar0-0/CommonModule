@@ -2,20 +2,24 @@ package fit.asta.health.profile.viewmodel
 
 object ProfileConstants {
 
-    const val DOB = "dob"
-    const val EMAIL = "email"
+    //Contact
+    const val USER_IMG = "profile_img_before"
     const val NAME = "name"
     const val PHONE = "phone"
+    const val EMAIL = "email"
+    const val ADDRESS = "address"
+    const val ID = "id"
 
-    const val USER_IMG = "profile_img_before"
-
+    //Physique
+    const val DOB = "dob"
     const val AGE = "age"
-    const val BODY_TYPE = "bodyType"
     const val WEIGHT = "weight"
-    const val GENDER = "gender"
     const val HEIGHT = "height"
+    const val GENDER = "gender"
     const val IS_PREGNANT = "isPregnant"
     const val PREGNANCY_WEEK = "pregnancyWeek"
+    const val BODY_TYPE = "bodyType"
+    const val BMI = "bmi"
 
     const val INJURIES_SINCE = "injuries_since"
 

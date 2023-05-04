@@ -74,11 +74,14 @@ fun DetailsContent(
             Spacer(modifier = Modifier.height(spacing.medium))
 
             UserCircleImage(
-                url = getOneUrl(localUrl = userImg.localUrl, remoteUrl = userImg.url)
-            ) {
-                imgLauncher.launch("image/*")
-                Log.d("validate", "User Image URL -> ${userImg.url} and ${userImg.localUrl}")
-            }
+                url = getOneUrl(localUrl = userImg.localUrl, remoteUrl = userImg.url),
+                onClick = {
+                    imgLauncher.launch("image/*")
+                    Log.d(
+                        "validate",
+                        "User Image URL -> URL -> ${userImg.url} and localURL -> ${userImg.localUrl}"
+                    )
+                })
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
@@ -146,10 +149,6 @@ fun DetailsContent(
                 event = eventNext,
                 enableButton = areInputsValid
             )
-
-            Spacer(modifier = Modifier.height(spacing.small))
-
-            SkipPage(onSkipEvent)
 
             Spacer(modifier = Modifier.height(spacing.medium))
         }

@@ -2,7 +2,7 @@
     ExperimentalCoroutinesApi::class,
     ExperimentalMaterial3Api::class,
     ExperimentalCoroutinesApi::class,
-    ExperimentalCoroutinesApi::class
+    ExperimentalCoroutinesApi::class, ExperimentalCoroutinesApi::class
 )
 
 package fit.asta.health.profile.createprofile.view.components
@@ -56,26 +56,39 @@ fun PhysiqueContent(
     onSkipEvent: (Int) -> Unit,
 ) {
 
+    //Calendar
     val c = Calendar.getInstance()
     val calendarState = rememberUseCaseState()
 
+    //Basic Input
     val userWeight by viewModel.weight.collectAsStateWithLifecycle()
     val userDOB by viewModel.dob.collectAsStateWithLifecycle()
     val userAge by viewModel.age.collectAsStateWithLifecycle()
     val userHeight by viewModel.height.collectAsStateWithLifecycle()
     val pregnancyWeek by viewModel.pregnancyWeek.collectAsStateWithLifecycle()
+
+    //Selection
     val selectedIsPregnantOption by viewModel.selectedIsPregnant.collectAsStateWithLifecycle()
     val selectedOnPeriodOption by viewModel.selectedOnPeriod.collectAsStateWithLifecycle()
     val selectedGenderOption by viewModel.selectedGender.collectAsStateWithLifecycle()
-    val areInputsValid by viewModel.arePhysiqueInputsValid.collectAsStateWithLifecycle()
+
+
+    //Inputs Validity
+    val areBasicInputsValid by viewModel.areBasicPhysiqueInputsValid.collectAsStateWithLifecycle()
+    val areFemaleInputsNull by viewModel.areFemaleInputNull.collectAsStateWithLifecycle()
     val arePregInputsValid by viewModel.arePregnancyInputValid.collectAsStateWithLifecycle()
-
-    val genderSelectionValidity by viewModel.selectedPhyOption.collectAsStateWithLifecycle()
-
     val phyValid by viewModel.phyInputsValid.collectAsStateWithLifecycle()
 
-
     val focusManager = LocalFocusManager.current
+
+    if (selectedGenderOption == ThreeToggleSelections.Second) {
+        viewModel.onEvent(ProfileEvent.IsPhyValid(areFemaleInputsNull))
+        if (selectedIsPregnantOption == TwoToggleSelections.First) {
+            viewModel.onEvent(ProfileEvent.IsPhyValid(arePregInputsValid))
+        }
+    } else {
+        viewModel.onEvent(ProfileEvent.IsPhyValid(areBasicInputsValid))
+    }
 
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
@@ -336,21 +349,11 @@ fun PhysiqueContent(
                 }
             }
 
-            if (genderSelectionValidity) {
-                viewModel.onEvent(ProfileEvent.IsPhyValid(arePregInputsValid))
-            } else {
-                viewModel.onEvent(ProfileEvent.IsPhyValid(areInputsValid))
-            }
-
             Spacer(modifier = Modifier.height(spacing.medium))
 
             CreateProfileButtons(
                 eventPrevious, eventNext, text = "Next", enableButton = phyValid
             )
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            SkipPage(onSkipEvent = onSkipEvent)
 
             Spacer(modifier = Modifier.height(spacing.medium))
         }
@@ -391,5 +394,6 @@ fun CreateProfileButtons(
             )
         }
     }
+
 
 }

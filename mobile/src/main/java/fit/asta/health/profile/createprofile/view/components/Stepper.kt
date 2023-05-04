@@ -3,6 +3,7 @@
 package fit.asta.health.profile.createprofile.view.components
 
 
+import android.util.Log
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.BorderStroke
@@ -28,25 +29,42 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import fit.asta.health.MainActivity
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.profile.viewmodel.ProfileViewModel
+import fit.asta.health.testimonials.view.create.CustomDialogWithResultExample
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateProfileLayout() {
+fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
 
     /* TODO Paddings, Font, Elevations (4dp and 6dp), BottomSheets, Colors */
+
+    val context = LocalContext.current
+
+    //ValidInputs
+    val isDetailValid by viewModel.areDetailsInputsValid.collectAsStateWithLifecycle()
+    val isPhyValid by viewModel.phyInputsValid.collectAsStateWithLifecycle()
+    val isHealthValid by viewModel.healthInputsValid.collectAsStateWithLifecycle()
+    val isLSValid by viewModel.areLSValid.collectAsStateWithLifecycle()
+    val isDietValid by viewModel.dietInputsValid.collectAsStateWithLifecycle()
+
+    //Custom Dialog
+    var showCustomDialogWithResult by remember { mutableStateOf(false) }
+
 
     val numberOfSteps = 5
 
     var currentStep by rememberSaveable { mutableStateOf(1) }
-
-    var content by remember { mutableStateOf(1) }
 
     val stepDescriptionList = arrayListOf("Details", "Physique", "Heath", "LifeStyle", "Diet")
 
@@ -68,11 +86,39 @@ fun CreateProfileLayout() {
         if (index < numberOfSteps) descriptionList[index] = element
     }
 
-    val iconColor = if (isSkipPressed) {
-        MaterialTheme.colorScheme.error
+    val primaryColor = MaterialTheme.colorScheme.primary
+    val errorColor = MaterialTheme.colorScheme.error
+
+    val detailsColor = if (isDetailValid) {
+        primaryColor
     } else {
-        MaterialTheme.colorScheme.primary
+        errorColor
     }
+
+    val phyColor = if (isPhyValid && !isSkipPressed) {
+        primaryColor
+    } else {
+        errorColor
+    }
+
+    val healthColor = if (isHealthValid && !isSkipPressed) {
+        primaryColor
+    } else {
+        errorColor
+    }
+
+    val lifeStyleColor = if (isLSValid && !isSkipPressed) {
+        primaryColor
+    } else {
+        errorColor
+    }
+
+    val dietColor = if (isDietValid && !isSkipPressed) {
+        primaryColor
+    } else {
+        errorColor
+    }
+
 
     Scaffold(topBar = {
 
@@ -88,12 +134,12 @@ fun CreateProfileLayout() {
                 navigationIcon = {
                     IconButton(
                         onClick = {
-                            currentStep -= 1
+                            showCustomDialogWithResult = !showCustomDialogWithResult
                         },
                     ) {
                         Icon(
                             Icons.Filled.Close,
-                            contentDescription = "back",
+                            contentDescription = "close",
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
@@ -103,7 +149,7 @@ fun CreateProfileLayout() {
             )
 
             Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
-                for (step in 1..numberOfSteps) {
+                (1..numberOfSteps).forEachIndexed { _, step ->
                     Stepper(
                         modifier = Modifier.weight(1F),
                         step = step,
@@ -116,14 +162,25 @@ fun CreateProfileLayout() {
                         selectedColor = null,
                         icons = iconList[step - 1],
                         logic = {
-                            content = step
                             currentStep = step
+                            Log.d(
+                                "currSteps", " LS Boolean -> ${isLSValid && !isSkipPressed}"
+                            )
                         },
-                        isPressed = isSkipPressed,
-                        iconTint = iconColor
+                        detailsColor = detailsColor,
+                        phyColor = phyColor,
+                        healthColor = healthColor,
+                        lifeStyleColor = lifeStyleColor,
+                        dietColor = dietColor,
+                        isDetailValid,
+                        isPhyValid,
+                        isHealthValid,
+                        isLSValid,
+                        isDietValid,
                     )
                 }
             }
+
             Spacer(modifier = Modifier.height(spacing.medium))
         }
     }, content = { p ->
@@ -179,14 +236,32 @@ fun CreateProfileLayout() {
                     )
                 }
                 5 -> {
-                    DietCreateScreen(eventDone = {
-                        currentStep += 1
-                    }, eventPrevious = {
+                    DietCreateScreen(eventPrevious = {
                         currentStep -= 1
                     })
                 }
             }
         }
+
+        if (showCustomDialogWithResult) {
+            CustomDialogWithResultExample(
+                onDismiss = {
+                    showCustomDialogWithResult = !showCustomDialogWithResult
+                },
+                onNegativeClick = {
+                    (context as MainActivity).loadAppScreen()
+                },
+                onPositiveClick = {
+                    showCustomDialogWithResult = !showCustomDialogWithResult
+                },
+                btnTitle = "Discard Profile Creation",
+                btnWarn = "You will miss important FUTURE UPDATES like CUSTOM PLANS based on your PROFILE." + "CLICK Cancel to complete your PROFILE",
+                btn1Title = "Discard Profile Creation and Move to Home Screen",
+                btn2Title = "Cancel And Continue to Create Profile"
+            )
+        }
+
+
     }, containerColor = MaterialTheme.colorScheme.background)
 
 }
@@ -199,13 +274,21 @@ fun Stepper(
     isCurrent: Boolean,
     isComplete: Boolean,
     isRainbow: Boolean,
-    isPressed: Boolean,
     stepDescription: String,
     unSelectedColor: Color,
     selectedColor: Color?,
     icons: ImageVector,
     logic: () -> Unit,
-    iconTint: Color,
+    detailsColor: Color,
+    phyColor: Color,
+    healthColor: Color,
+    lifeStyleColor: Color,
+    dietColor: Color,
+    isDetailValid: Boolean,
+    isPhyValid: Boolean,
+    isHealthValid: Boolean,
+    isLSValid: Boolean,
+    isDietValid: Boolean,
 ) {
 
     val rainBowColor = Brush.linearGradient(
@@ -260,28 +343,44 @@ fun Stepper(
 
                 IconButton(onClick = logic) {
 
+                    //after click
+
                     if (isCompete) {
                         Icon(
                             imageVector = icons,
                             contentDescription = "done",
                             modifier = modifier.padding(4.dp),
-                            tint = if (isPressed) {
-                                MaterialTheme.colorScheme.error
-                            } else {
-                                MaterialTheme.colorScheme.primary
+                            tint = when (step) {
+                                1 -> {
+                                    detailsColor
+                                }
+                                2 -> {
+                                    phyColor
+                                }
+                                3 -> {
+                                    healthColor
+                                }
+                                4 -> {
+                                    lifeStyleColor
+                                }
+                                else -> {
+                                    dietColor
+                                }
                             }
                         )
                     } else {
-                        IconButton(onClick = logic) {
-                            Icon(
-                                imageVector = icons,
-                                contentDescription = "done",
-                                modifier = modifier.padding(4.dp),
-                                tint = Color.Black
-                            )
-                        }
-                    }
 
+                        //before click
+//                        IconButton(onClick = logic) {
+                        Icon(
+                            imageVector = icons,
+                            contentDescription = "done",
+                            modifier = modifier.padding(4.dp),
+                            tint = Color.Black
+                        )
+//                        }
+
+                    }
                 }
             }
         }

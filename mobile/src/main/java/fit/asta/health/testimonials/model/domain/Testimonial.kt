@@ -17,6 +17,7 @@ data class Testimonial(
     val media: List<Media> = listOf()
 ) : Parcelable
 
+
 @Parcelize
 data class TestimonialUser(
     val name: String = "",
@@ -24,6 +25,7 @@ data class TestimonialUser(
     val role: String = "",
     val url: String = ""
 ) : Parcelable
+
 
 @Parcelize
 data class Media(

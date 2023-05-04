@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 
 
 @Parcelize
-data class InputWrapper(val value: String = "", val error: UiString = UiString.Empty) :
+data class InputWrapper(var value: String = "", val error: UiString = UiString.Empty) :
     Parcelable  //for fields only
 
 @Parcelize

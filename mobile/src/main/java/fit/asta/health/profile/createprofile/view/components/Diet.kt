@@ -13,9 +13,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import fit.asta.health.MainActivity
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.navigation.home.view.component.NoInternetLayout
@@ -34,25 +36,39 @@ import kotlinx.coroutines.launch
 fun DietContent(
     viewModel: ProfileViewModel = hiltViewModel(),
     eventPrevious: (() -> Unit)? = null,
-    eventNext: (() -> Unit)? = null,
     onNonVegDays: () -> Unit,
     onFoodAllergies: () -> Unit,
     onCuisines: () -> Unit,
     onFoodRes: () -> Unit,
     onDietaryPref: () -> Unit,
 ) {
-    val checkedState = remember { mutableStateOf(true) }
-    val radioButtonList =
-        listOf(ButtonListTypes(buttonType = "First"), ButtonListTypes(buttonType = "Second"))
 
-    val selectedFoodRes by viewModel.selectedFoodResOption.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
+    val checkedState = remember { mutableStateOf(true) }
 
     val dietList by viewModel.dpData.collectAsState()
 
-    val event = viewModel.stateEdit.collectAsState()
+    val event = viewModel.stateSubmit.collectAsState()
     val events = event.value
 
     var buttonClicked by remember { mutableStateOf(false) }
+
+    val selectedFoodRes by viewModel.selectedFoodResOption.collectAsStateWithLifecycle()
+    val doAllInputsValid by viewModel.doAllDataInputsValid.collectAsStateWithLifecycle()
+
+    val isFoodResValid = when (selectedFoodRes) {
+        TwoToggleSelections.First -> dietList.getValue(4).isNotEmpty()
+        TwoToggleSelections.Second -> true
+        null -> false
+    }
+
+    if (isFoodResValid) {
+        viewModel.onEvent(ProfileEvent.IsDietValid(true))
+    } else {
+        viewModel.onEvent(ProfileEvent.IsDietValid(false))
+    }
+
 
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
@@ -115,7 +131,6 @@ fun DietContent(
             SelectionCardCreateProfile(
                 cardType = "Food Restrictions?",
                 cardList = dietList.getValue(4),
-                radioButtonList = radioButtonList,
                 checkedState = checkedState,
                 onItemsSelect = onFoodRes,
                 selectedOption = selectedFoodRes,
@@ -135,24 +150,26 @@ fun DietContent(
             Spacer(modifier = Modifier.height(spacing.medium))
 
             CreateProfileButtons(
-                eventPrevious,
-                eventNext = {
+                eventPrevious, eventNext = {
                     buttonClicked = !buttonClicked
                     viewModel.onEvent(ProfileEvent.OnSubmit)
-                },
-                text = "Done",
+                }, text = "Submit", enableButton = doAllInputsValid
             )
-
 
             if (buttonClicked) {
                 when (events) {
-                    is ProfileEditState.Empty -> {}
-                    is ProfileEditState.Error -> {
-                        Log.d("validate", "Error -> ${events.error}")
+                    is ProfileSubmitState.Empty -> {}
+                    is ProfileSubmitState.Error -> {
+                        Log.d(
+                            "validate",
+                            "Error -> ${events.error} and message -> ${events.error.message} and ${events.error.localizedMessage}"
+                        )
                     }
-                    is ProfileEditState.Loading -> LoadingAnimation()
-                    is ProfileEditState.NoInternet -> NoInternetLayout(onTryAgain = {})
-                    is ProfileEditState.Success -> {
+
+                    is ProfileSubmitState.Loading -> LoadingAnimation()
+                    is ProfileSubmitState.NoInternet -> NoInternetLayout(onTryAgain = {})
+                    is ProfileSubmitState.Success -> {
+                        (context as MainActivity).loadAppScreen()
                         Log.d("validate", "Success -> ${events.userProfile}")
                     }
                 }
@@ -172,7 +189,6 @@ fun DietContent(
 fun DietCreateScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     eventPrevious: (() -> Unit)? = null,
-    eventDone: (() -> Unit)? = null,
 ) {
     var currentBottomSheet: DietCreateBottomSheetType? by remember {
         mutableStateOf(null)
@@ -202,8 +218,7 @@ fun DietCreateScreen(
     }
 
 
-    ModalBottomSheetLayout(
-        modifier = Modifier.fillMaxSize(),
+    ModalBottomSheetLayout(modifier = Modifier.fillMaxSize(),
         sheetState = modalBottomSheetState,
         sheetContent = {
             Spacer(modifier = Modifier.height(1.dp))
@@ -212,7 +227,7 @@ fun DietCreateScreen(
             }
         }) {
 
-        DietContent(eventPrevious = eventPrevious, eventNext = eventDone, onNonVegDays = {
+        DietContent(eventPrevious = eventPrevious, onNonVegDays = {
             currentBottomSheet = NONVEGDAYS
             openSheet()
         }, onFoodAllergies = {
@@ -253,8 +268,11 @@ fun DietCreateBottomSheetLayout(
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}
-                is HPropState.Loading -> {}
-                is HPropState.NoInternet -> {}
+                is HPropState.Loading -> LoadingAnimation()
+                is HPropState.NoInternet -> {
+                    NoInternetLayout(onTryAgain = {})
+                }
+
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,
@@ -264,12 +282,16 @@ fun DietCreateBottomSheetLayout(
                 }
             }
         }
+
         NONVEGDAYS -> {
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}
-                is HPropState.Loading -> {}
-                is HPropState.NoInternet -> {}
+                is HPropState.Loading -> LoadingAnimation()
+                is HPropState.NoInternet -> {
+                    NoInternetLayout(onTryAgain = {})
+                }
+
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,
@@ -279,12 +301,16 @@ fun DietCreateBottomSheetLayout(
                 }
             }
         }
+
         FOODALLERGIES -> {
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}
-                is HPropState.Loading -> {}
-                is HPropState.NoInternet -> {}
+                is HPropState.Loading -> LoadingAnimation()
+                is HPropState.NoInternet -> {
+                    NoInternetLayout(onTryAgain = {})
+                }
+
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,
@@ -294,12 +320,16 @@ fun DietCreateBottomSheetLayout(
                 }
             }
         }
+
         CUISINES -> {
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}
-                is HPropState.Loading -> {}
-                is HPropState.NoInternet -> {}
+                is HPropState.Loading -> LoadingAnimation()
+                is HPropState.NoInternet -> {
+                    NoInternetLayout(onTryAgain = {})
+                }
+
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,
@@ -309,12 +339,16 @@ fun DietCreateBottomSheetLayout(
                 }
             }
         }
+
         FOODRES -> {
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}
-                is HPropState.Loading -> {}
-                is HPropState.NoInternet -> {}
+                is HPropState.Loading -> LoadingAnimation()
+                is HPropState.NoInternet -> {
+                    NoInternetLayout(onTryAgain = {})
+                }
+
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,

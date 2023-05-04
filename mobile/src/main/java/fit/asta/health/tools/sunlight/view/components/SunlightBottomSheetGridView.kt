@@ -1,5 +1,6 @@
 package fit.asta.health.tools.sunlight.view.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
@@ -42,12 +43,14 @@ fun SunlightBottomSheetGridView(cardList: List<PracticeGridView>) {
             }
 
             item {
-                Text("PRACTICE",
+                Text(
+                    "PRACTICE",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     lineHeight = 22.4.sp,
                     color = Color.Black,
-                    modifier = Modifier.padding(horizontal = 16.dp))
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
             }
 
             item {
@@ -57,13 +60,18 @@ fun SunlightBottomSheetGridView(cardList: List<PracticeGridView>) {
             item {
                 val itemSize: Dp = LocalConfiguration.current.screenWidthDp.dp / 2
 
-                FlowRow(mainAxisSize = SizeMode.Expand,
-                    mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween) {
+                FlowRow(
+                    mainAxisSize = SizeMode.Expand,
+                    mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween
+                ) {
                     cardList.forEachIndexed { index, _ ->
-                        PracticeExpandedCard(cardTitle = cardList[index].cardTitle,
+                        PracticeExpandedCard(
+                            cardTitle = cardList[index].cardTitle,
                             cardImg = cardList[index].cardImg,
                             cardValue = cardList[index].cardValue,
-                            modifier = Modifier.size(width = itemSize, height = 100.dp))
+                            modifier = Modifier.size(width = itemSize, height = 100.dp),
+                            onclick = cardList[index].onClick
+                        )
                     }
                 }
             }
@@ -93,19 +101,24 @@ fun SunlightPracticeGridView() {
     val cardList = listOf(
         PracticeGridView(cardTitle = "Sunscreen",
             cardValue = "40 SPF",
-            cardImg = R.drawable.ic_baseline_favorite_24),
+            cardImg = R.drawable.ic_baseline_favorite_24,
+            onClick = { Log.d("onClick", "Sunscreen 1") }),
         PracticeGridView(cardTitle = "Sunscreen",
             cardValue = "40 SPF",
-            cardImg = R.drawable.ic_baseline_favorite_24),
+            cardImg = R.drawable.ic_baseline_favorite_24,
+            onClick = { Log.d("onClick", "Sunscreen 2") }),
         PracticeGridView(cardTitle = "Sunscreen",
             cardValue = "40 SPF",
-            cardImg = R.drawable.ic_baseline_favorite_24),
+            cardImg = R.drawable.ic_baseline_favorite_24,
+            onClick = { Log.d("onClick", "Sunscreen 3") }),
         PracticeGridView(cardTitle = "Sunscreen",
             cardValue = "40 SPF",
-            cardImg = R.drawable.ic_baseline_favorite_24),
+            cardImg = R.drawable.ic_baseline_favorite_24,
+            onClick = { Log.d("onClick", "Sunscreen 4") }),
         PracticeGridView(cardTitle = "Sunscreen",
             cardValue = "40 SPF",
-            cardImg = R.drawable.ic_baseline_favorite_24),
+            cardImg = R.drawable.ic_baseline_favorite_24,
+            onClick = { Log.d("onClick", "Sunscreen 5") }),
     )
 
     SunlightBottomSheetGridView(cardList = cardList)

@@ -40,6 +40,7 @@ import fit.asta.health.scheduler.model.db.entity.TagEntity
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
+@Preview
 @Composable
 fun TagCard(text: String, image: String, onClick: () -> Unit = {}) {
 

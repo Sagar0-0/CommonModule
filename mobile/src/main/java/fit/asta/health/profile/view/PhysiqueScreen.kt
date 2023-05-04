@@ -38,7 +38,8 @@ fun PhysiqueScreen(
         scope.launch { modalBottomSheetState.show() }
     }
 
-    ModalBottomSheetLayout(modifier = Modifier.fillMaxSize(),
+    ModalBottomSheetLayout(
+        modifier = Modifier.fillMaxSize(),
         sheetState = modalBottomSheetState,
         sheetContent = {
             Spacer(modifier = Modifier.height(1.dp))
@@ -46,29 +47,7 @@ fun PhysiqueScreen(
                 PhysiqueSheetLayout(sheetLayout = it, closeSheet = { closeSheet() })
             }
         }) {
-        PhysiqueLayout(m = m, checkedState = checkedState, onAge = {
-            currentBottomSheet = AGE
-            openSheet()
-        }, onGender = {
-            currentBottomSheet = GENDER
-            openSheet()
-        }, onHeight = {
-            currentBottomSheet = HEIGHT
-            openSheet()
-        }, onWeight = {
-            currentBottomSheet = WEIGHT
-            openSheet()
-        }, onBMI = {
-            currentBottomSheet = BMI
-            openSheet()
-        }, onPregnancyWeek = {
-            currentBottomSheet = PREGNANCYWEEK
-            openSheet()
-        }, onBodyType = {
-            currentBottomSheet = BODYTYPE
-            openSheet()
-        })
-
+        PhysiqueLayout(phy = m)
     }
 
 }

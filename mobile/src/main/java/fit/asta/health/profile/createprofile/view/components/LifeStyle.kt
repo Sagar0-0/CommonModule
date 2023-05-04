@@ -20,6 +20,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.navigation.home.view.component.LoadingAnimation
+import fit.asta.health.navigation.home.view.component.NoInternetLayout
 import fit.asta.health.profile.bottomsheets.ItemSelectionBtmSheetLayout
 import fit.asta.health.profile.createprofile.view.components.LifeStyleCreateBottomSheetType.*
 import fit.asta.health.profile.model.domain.ComposeIndex
@@ -49,6 +51,8 @@ fun LifeStyleContent(
     val selectedWorkingEnvOption by viewModel.selectedWorkingEnv.collectAsStateWithLifecycle()
     val selectedWorkingStyOption by viewModel.selectedWorkStyle.collectAsStateWithLifecycle()
     val selectedWorkingHrsOption by viewModel.selectedWorkingHrs.collectAsStateWithLifecycle()
+
+
     val areLSValidInput by viewModel.areLSValid.collectAsStateWithLifecycle()
 
     val lfList by viewModel.lfPropertiesData.collectAsState()
@@ -185,10 +189,6 @@ fun LifeStyleContent(
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
-
-            SkipPage(onSkipEvent = onSkipEvent)
-
-            Spacer(modifier = Modifier.height(spacing.medium))
         }
     }
 
@@ -281,8 +281,10 @@ fun LifeStyleCreateBottomSheetLayout(
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}
-                is HPropState.Loading -> {}
-                is HPropState.NoInternet -> {}
+                is HPropState.Loading -> LoadingAnimation()
+                is HPropState.NoInternet -> {
+                    NoInternetLayout(onTryAgain = {})
+                }
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,
@@ -296,8 +298,10 @@ fun LifeStyleCreateBottomSheetLayout(
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}
-                is HPropState.Loading -> {}
-                is HPropState.NoInternet -> {}
+                is HPropState.Loading -> LoadingAnimation()
+                is HPropState.NoInternet -> {
+                    NoInternetLayout(onTryAgain = {})
+                }
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,
@@ -311,8 +315,10 @@ fun LifeStyleCreateBottomSheetLayout(
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
                 is HPropState.Error -> {}
-                is HPropState.Loading -> {}
-                is HPropState.NoInternet -> {}
+                is HPropState.Loading -> LoadingAnimation()
+                is HPropState.NoInternet -> {
+                    NoInternetLayout(onTryAgain = {})
+                }
                 is HPropState.Success -> {
                     ItemSelectionBtmSheetLayout(
                         cardList = state.properties,

@@ -42,8 +42,6 @@ class CreateUserProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        val viewModelProvider = ViewModelProvider(this)
-//        viewModel = viewModelProvider[ProfileViewModel::class.java]
         setContent {
             AppTheme {
                 CreateProfileLayout()

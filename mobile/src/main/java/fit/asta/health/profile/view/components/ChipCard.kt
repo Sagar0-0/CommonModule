@@ -8,7 +8,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,8 +27,6 @@ fun ChipCard(
     icon: Int,
     title: String,
     list: List<HealthProperties>,
-    editState: MutableState<Boolean>,
-    onClick: () -> Unit,
 ) {
 
     Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp), elevation = 5.dp) {
@@ -61,16 +58,13 @@ fun ChipCard(
                         color = Color.Black
                     )
                 }
-                if (editState.value) {
-                    AddIcon(onClick = onClick)
-                }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
             FlowRow(mainAxisSpacing = 8.dp, crossAxisSpacing = 4.dp) {
                 list.forEach {
-                    RemoveChipOnCard(textOnChip = it.name, editState, onClick = {})
+                    ChipsForList(textOnChip = it.name)
                 }
             }
         }

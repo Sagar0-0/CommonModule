@@ -29,12 +29,14 @@ class SplashScreen : AppCompatActivity() {
         }
     }
 
+
     private fun startMain() {
 
         val mainIntent = Intent(this, MainActivity::class.java)
         startActivity(mainIntent)
         finish()
     }
+
 
     private fun registerConnectivityReceiver() {
 
@@ -50,6 +52,7 @@ class SplashScreen : AppCompatActivity() {
             showNetworkMessage(status)
         })
     }
+
 
     private fun showNetworkMessage(isConnected: Boolean) {
 

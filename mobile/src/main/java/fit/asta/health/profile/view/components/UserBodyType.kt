@@ -7,22 +7,16 @@ import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.profile.view.EditIcon
 
 @Composable
 fun UserBodyType(
     bodyType: String,
     bodyImg: Int,
-    checkedState: MutableState<Boolean>,
-    onBodyType: () -> Unit,
 ) {
     Card(modifier = Modifier
         .fillMaxWidth()
@@ -40,14 +34,6 @@ fun UserBodyType(
                     letterSpacing = 1.5.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground)
-
-                Box(modifier = Modifier.size(24.dp), contentAlignment = Alignment.Center) {
-                    if (checkedState.value) {
-                        EditIcon(onBodyType)
-                    }
-                }
-
-
             }
             Spacer(modifier = Modifier.height(15.dp))
             Row(Modifier

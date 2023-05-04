@@ -1,12 +1,15 @@
 package fit.asta.health.profile.model.domain
 
+import android.net.Uri
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import fit.asta.health.common.utils.UiString
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class UserProfile(
     @SerializedName("uid") val uid: String = "",
+    @SerializedName("id") val id: String = "",
     @SerializedName("cont") val contact: Contact = Contact(),
     @SerializedName("phq") val physique: Physique = Physique(),
     @SerializedName("hlt") val health: Health = Health(),
@@ -22,9 +25,18 @@ data class Contact(
     @SerializedName("mail") val email: String = "",
     @SerializedName("name") val name: String = "",
     @SerializedName("ph") val phone: String = "",
-    @SerializedName("url") val url: String = "",
+    @SerializedName("media") val url: ProfileMedia = ProfileMedia(),
+    val localUrl: Uri? = null,
 ) : Parcelable
 
+@Parcelize
+data class ProfileMedia(
+    val name: String = "",
+    val title: String = "",
+    @SerializedName("url") var url: String = "",
+    var localUrl: Uri? = null,
+    val error: UiString = UiString.Empty,
+) : Parcelable
 
 @Parcelize
 data class Address(
@@ -35,14 +47,16 @@ data class Address(
     @SerializedName("st") val street: String = "",
 ) : Parcelable
 
+
 @Parcelize
 data class Physique(
     @SerializedName("age") val age: Int = 0, //NOT DONE
     @SerializedName("bdt") val bodyType: Int = 0,
     @SerializedName("bmi") val bmi: Float = 0f,  //NOT DONE
-    @SerializedName("gen") val gender: String = "", //recheck
+    @SerializedName("gen") val gender: Int = 0, //recheck
     @SerializedName("ht") val height: Float = 0f,
-    @SerializedName("prg") val isPregnant: Boolean = false,
+    @SerializedName("prg") val isPregnant: Int = 0,
+    @SerializedName("prd") val onPeriod: Int = 0,
     @SerializedName("pw") val pregnancyWeek: Int? = 0,
     @SerializedName("wt") val weight: Float = 0f,
 ) : Parcelable
@@ -55,7 +69,8 @@ data class Health(
     @SerializedName("med") val medications: ArrayList<HealthProperties>? = arrayListOf(),
     @SerializedName("inj") val injuries: ArrayList<HealthProperties>? = arrayListOf(),
     @SerializedName("bp") val bodyPart: ArrayList<HealthProperties>? = arrayListOf(),// Body Part healthHisList missing
-    @SerializedName("htg") val targets: ArrayList<HealthProperties>? = arrayListOf(),
+    @SerializedName("htg") val healthTargets: ArrayList<HealthProperties>? = arrayListOf(),
+    @SerializedName("add") val addiction: ArrayList<HealthProperties>? = arrayListOf(),
     @SerializedName("is") val injurySince: Int? = 0,
 ) : Parcelable
 
@@ -63,10 +78,10 @@ data class Health(
 //working env missing
 @Parcelize
 data class LifeStyle(
-    @SerializedName("act") var physicalActivity: HealthProperties? = HealthProperties(),
-    @SerializedName("env") var workingEnv: HealthProperties = HealthProperties(),
-    @SerializedName("ws") var workStyle: HealthProperties = HealthProperties(),
-    @SerializedName("whr") var workingHours: HealthProperties = HealthProperties(),
+    @SerializedName("act") var physicalActivity: Int? = 0,
+    @SerializedName("env") var workingEnv: Int? = 0,
+    @SerializedName("ws") var workStyle: Int? = 0,
+    @SerializedName("whr") var workingHours: Int? = 0,
     @SerializedName("cat") val curActivities: ArrayList<HealthProperties>? = arrayListOf(),
     @SerializedName("pat") val prefActivities: ArrayList<HealthProperties>? = arrayListOf(),
     @SerializedName("lst") val lifeStyleTargets: ArrayList<HealthProperties>? = arrayListOf(),
@@ -74,6 +89,7 @@ data class LifeStyle(
     @SerializedName("wt") var workingTime: Session = Session(),
     @SerializedName("slp") var sleep: Session = Session(), // missing in UI
 ) : Parcelable
+
 
 @Parcelize
 data class Diet(
