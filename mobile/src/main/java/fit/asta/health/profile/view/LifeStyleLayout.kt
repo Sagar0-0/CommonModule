@@ -14,9 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fit.asta.health.profile.model.domain.LifeStyle
 import fit.asta.health.profile.model.domain.UserPropertyType
-import fit.asta.health.profile.view.components.ChipCard
-import fit.asta.health.profile.view.components.SessionCard
-import fit.asta.health.profile.view.components.SingleSelectionCard
+import fit.asta.health.profile.view.components.ProfileChipCard
+import fit.asta.health.profile.view.components.ProfileSessionCard
+import fit.asta.health.profile.view.components.ProfileSingleSelectionCard
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -36,7 +36,7 @@ fun LifeStyleLayout(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        SessionCard(
+        ProfileSessionCard(
             //icon = UserPropertyType.SleepSchedule.icon,
             title = UserPropertyType.SleepSchedule.title,
             session = lifeStyle.sleep,
@@ -44,7 +44,7 @@ fun LifeStyleLayout(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        SessionCard(
+        ProfileSessionCard(
             //icon = UserPropertyType.WorkSchedule.icon,
             title = UserPropertyType.WorkSchedule.title,
             session = lifeStyle.workingTime,
@@ -53,7 +53,7 @@ fun LifeStyleLayout(
         Spacer(modifier = Modifier.height(16.dp))
 
         lifeStyle.physicalActivity?.let {
-            SingleSelectionCard(
+            ProfileSingleSelectionCard(
                 icon = UserPropertyType.PhysActive.icon,
                 title = UserPropertyType.PhysActive.title,
                 value = when (it) {
@@ -69,7 +69,7 @@ fun LifeStyleLayout(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        SingleSelectionCard(
+        ProfileSingleSelectionCard(
             icon = UserPropertyType.WorkingEnv.icon,
             title = UserPropertyType.WorkingEnv.title,
             value = lifeStyle.workingEnv.toString(),
@@ -77,7 +77,7 @@ fun LifeStyleLayout(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        SingleSelectionCard(
+        ProfileSingleSelectionCard(
             icon = UserPropertyType.WorkStyle.icon,
             title = UserPropertyType.WorkStyle.title,
             value = lifeStyle.workStyle.toString(),
@@ -85,7 +85,7 @@ fun LifeStyleLayout(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        SingleSelectionCard(
+        ProfileSingleSelectionCard(
             icon = UserPropertyType.WorkingHours.icon,
             title = UserPropertyType.WorkingHours.title,
             value = lifeStyle.workingHours.toString(),
@@ -94,7 +94,7 @@ fun LifeStyleLayout(
         Spacer(modifier = Modifier.height(16.dp))
 
         lifeStyle.curActivities?.let {
-            ChipCard(
+            ProfileChipCard(
                 icon = UserPropertyType.CurActivities.icon,
                 title = UserPropertyType.CurActivities.title,
                 list = it,
@@ -104,7 +104,7 @@ fun LifeStyleLayout(
         Spacer(modifier = Modifier.height(16.dp))
 
         lifeStyle.prefActivities?.let {
-            ChipCard(
+            ProfileChipCard(
                 icon = UserPropertyType.PrefActivities.icon,
                 title = UserPropertyType.PrefActivities.title,
                 list = it,
@@ -114,7 +114,7 @@ fun LifeStyleLayout(
         Spacer(modifier = Modifier.height(16.dp))
 
         lifeStyle.lifeStyleTargets?.let {
-            ChipCard(
+            ProfileChipCard(
                 icon = UserPropertyType.LifeStyleTargets.icon,
                 title = UserPropertyType.LifeStyleTargets.title,
                 list = it,

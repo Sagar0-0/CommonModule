@@ -1,18 +1,26 @@
 package fit.asta.health.profile.view
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +43,92 @@ import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.profile.model.domain.Address
 import fit.asta.health.profile.model.domain.Contact
 import fit.asta.health.profile.model.domain.ProfileMedia
+
+
+@Composable
+fun ContactLayout(
+    basicDetails: Contact,
+) {
+
+    Column(
+        modifier = Modifier
+            .padding(top = 16.dp)
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        //User Profile Photo with Spiral Design
+        UserProfileImg(userProfilePic = basicDetails.url)
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        // User Details
+        UserDetails(
+            basicDetails.name,
+            basicDetails.phone,
+            basicDetails.email,
+            basicDetails.address,
+        )
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        //User's Achievement
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            UserAchievCard(
+                scoreBoard = "24/346", cardType = "LeaderBoard", imageID = R.drawable.leaderboard
+            )
+            UserAchievCard(
+                scoreBoard = "12", cardType = "Badges Earned", imageID = R.drawable.badgecompleted
+            )
+        }
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        // User's Profile Details
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ProfileDetails(
+                imageID = R.drawable.ssidchart,
+                profileType = "Level",
+                verticalPadding = 13,
+                horizontalPadding = 13.0
+            )
+            ProfileDetails(
+                imageID = R.drawable.description,
+                profileType = "Plan",
+                verticalPadding = 13,
+                horizontalPadding = 17.0
+            )
+            ProfileDetails(
+                imageID = R.drawable.sportsscore,
+                profileType = "Goal",
+                verticalPadding = 13,
+                horizontalPadding = 16.0
+            )
+            ProfileDetails(
+                imageID = R.drawable.healthandsafety,
+                profileType = "Health",
+                verticalPadding = 13,
+                horizontalPadding = 8.88
+            )
+        }
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+    }
+
+}
 
 // User's Detail Layout
 @Composable
@@ -156,28 +250,10 @@ fun UserProfileImg(userProfilePic: ProfileMedia) {
 
 }
 
-//Edit Icon Layout
-@Composable
-fun EditIcon(onClick: (() -> Unit)? = null) {
-
-
-    onClick?.let {
-        IconButton(onClick = it) {
-            Icon(
-                imageVector = Icons.Filled.Edit,
-                contentDescription = null,
-                modifier = Modifier.size(24.dp),
-                tint = MaterialTheme.colorScheme.primary
-            )
-        }
-    }
-
-
-}
 
 // User's Achievement Card Layout
 @Composable
-fun DetailsCard(
+fun UserAchievCard(
     scoreBoard: String,
     cardType: String,
     imageID: Int,
@@ -249,89 +325,4 @@ fun ProfileDetails(
     }
 }
 
-@Composable
-fun ContactLayout(
-    basicDetails: Contact,
-) {
 
-    Column(
-        modifier = Modifier
-            .padding(top = 16.dp)
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        //User Profile Photo with Spiral Design
-        UserProfileImg(userProfilePic = basicDetails.url)
-
-        Log.d("validate", "profile pic url -> ${getImageUrl(url = basicDetails.url.url)}")
-
-        Spacer(modifier = Modifier.height(30.dp))
-
-        // User Details
-        UserDetails(
-            basicDetails.name,
-            basicDetails.phone,
-            basicDetails.email,
-            basicDetails.address,
-        )
-
-        Spacer(modifier = Modifier.height(30.dp))
-
-        //User's Achievement
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            DetailsCard(
-                scoreBoard = "24/346", cardType = "LeaderBoard", imageID = R.drawable.leaderboard
-            )
-            DetailsCard(
-                scoreBoard = "12", cardType = "Badges Earned", imageID = R.drawable.badgecompleted
-            )
-        }
-
-        Spacer(modifier = Modifier.height(30.dp))
-
-        // User's Profile Details
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            ProfileDetails(
-                imageID = R.drawable.ssidchart,
-                profileType = "Level",
-                verticalPadding = 13,
-                horizontalPadding = 13.0
-            )
-            ProfileDetails(
-                imageID = R.drawable.description,
-                profileType = "Plan",
-                verticalPadding = 13,
-                horizontalPadding = 17.0
-            )
-            ProfileDetails(
-                imageID = R.drawable.sportsscore,
-                profileType = "Goal",
-                verticalPadding = 13,
-                horizontalPadding = 16.0
-            )
-            ProfileDetails(
-                imageID = R.drawable.healthandsafety,
-                profileType = "Health",
-                verticalPadding = 13,
-                horizontalPadding = 8.88
-            )
-        }
-
-        Spacer(modifier = Modifier.height(30.dp))
-
-    }
-
-}

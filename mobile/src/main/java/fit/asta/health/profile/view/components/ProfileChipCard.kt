@@ -22,7 +22,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 @Composable
-fun ChipCard(
+fun ProfileChipCard(
     viewModel: ProfileViewModel = hiltViewModel(),
     icon: Int,
     title: String,

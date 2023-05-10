@@ -1,38 +1,45 @@
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
-package fit.asta.health.profile.createprofile.view.components
+package fit.asta.health.profile.createprofile.view
 
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.rememberAsyncImagePainter
+import fit.asta.health.R
 import fit.asta.health.common.ui.components.PrimaryButton
+import fit.asta.health.common.ui.theme.customSize
+import fit.asta.health.common.ui.theme.imageSize
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiString
-import fit.asta.health.profile.view.PrivacyStatement
-import fit.asta.health.profile.view.UserCircleImage
-import fit.asta.health.profile.view.UserConsent
 import fit.asta.health.profile.viewmodel.ProfileEvent
 import fit.asta.health.profile.viewmodel.ProfileViewModel
 import fit.asta.health.testimonials.view.components.ValidatedTextField
@@ -42,7 +49,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @OptIn(ExperimentalFoundationApi::class)
 @ExperimentalMaterial3Api
 @Composable
-fun DetailsContent(
+fun DetailsCreateScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     eventNext: (() -> Unit)? = null,
     onSkipEvent: (Int) -> Unit,
@@ -157,13 +164,103 @@ fun DetailsContent(
 
 }
 
+
 @Composable
-fun SkipPage(onSkipEvent: (Int) -> Unit) {
-    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-        ClickableText(
-            text = AnnotatedString(
-                text = "Skip", spanStyle = SpanStyle(color = Color(0xff4d4d4d))
-            ), onClick = onSkipEvent, style = MaterialTheme.typography.bodyLarge
+fun PrivacyStatement() {
+    Row(
+        modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Box {
+            Image(
+                painter = painterResource(id = R.drawable.privacy),
+                contentDescription = null,
+                modifier = Modifier.size(imageSize.extraMedium)
+            )
+        }
+        Spacer(modifier = Modifier.width(spacing.medium))
+        Column {
+            Text(
+                text = "Privacy Statement",
+                style = MaterialTheme.typography.labelMedium,
+                color = Color(0xDE000000)
+            )
+            Spacer(modifier = Modifier.height(spacing.extraSmall))
+            Text(
+                text = "We value your privacy. We are committed to protecting your privacy and ask for your consent for the use of your personal health information as required during you health care.",
+                color = Color(0xDE000000),
+                style = MaterialTheme.typography.bodySmall,
+                softWrap = true
+            )
+        }
+    }
+}
+
+@Composable
+fun UserConsent() {
+
+    val checkedState = remember { mutableStateOf(false) }
+
+    Row(
+        modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Box {
+            Checkbox(
+                checked = checkedState.value,
+                onCheckedChange = { checkedState.value = it },
+                modifier = Modifier.size(imageSize.extraMedium)
+            )
+        }
+        Spacer(modifier = Modifier.width(spacing.medium))
+        Column {
+            Text(
+                text = "I CONSENT TO THE USE OF MY PERSONAL HEALTH INFORMATION AS REQUIRED DURING YOUR HEALTH CARE.",
+                color = Color(0xFF375369),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+    }
+}
+
+@Composable
+fun UserCircleImage(url: String, onClick: () -> Unit) {
+
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.padding(start = spacing.extraSmall1, end = spacing.extraSmall1)
+    ) {
+
+        Image(
+            painter = if (url.isEmpty()) {
+                painterResource(id = R.drawable.userphoto)
+            } else {
+                rememberAsyncImagePainter(model = url)
+            },
+            contentDescription = null,
+            modifier = Modifier
+                .size(customSize.extraLarge5)
+                .clip(shape = CircleShape)
+
         )
+
+        Row(
+            horizontalArrangement = Arrangement.End,
+            modifier = Modifier.align(alignment = Alignment.BottomEnd)
+        ) {
+            Box {
+                IconButton(onClick = onClick) {
+
+                    Icon(
+                        imageVector = Icons.Filled.Edit,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(customSize.largeSmall)
+                            .clip(shape = CircleShape)
+                    )
+
+                }
+
+            }
+        }
+
     }
 }

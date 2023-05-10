@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
-package fit.asta.health.profile.createprofile.view.components
+package fit.asta.health.profile.createprofile.view
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -22,8 +22,8 @@ import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.navigation.home.view.component.NoInternetLayout
-import fit.asta.health.profile.bottomsheets.ItemSelectionBtmSheetLayout
-import fit.asta.health.profile.createprofile.view.components.LifeStyleCreateBottomSheetType.*
+import fit.asta.health.profile.createprofile.view.LifeStyleCreateBottomSheetType.*
+import fit.asta.health.profile.createprofile.view.components.ItemSelectionLayout
 import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.view.*
 import fit.asta.health.profile.viewmodel.HPropState
@@ -286,7 +286,7 @@ fun LifeStyleCreateBottomSheetLayout(
                     NoInternetLayout(onTryAgain = {})
                 }
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(
+                    ItemSelectionLayout(
                         cardList = state.properties,
                         cardIndex = 0,
                         composeIndex = ComposeIndex.Second
@@ -303,7 +303,7 @@ fun LifeStyleCreateBottomSheetLayout(
                     NoInternetLayout(onTryAgain = {})
                 }
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(
+                    ItemSelectionLayout(
                         cardList = state.properties,
                         cardIndex = 1,
                         composeIndex = ComposeIndex.Second
@@ -320,7 +320,7 @@ fun LifeStyleCreateBottomSheetLayout(
                     NoInternetLayout(onTryAgain = {})
                 }
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(
+                    ItemSelectionLayout(
                         cardList = state.properties,
                         cardIndex = 2,
                         composeIndex = ComposeIndex.Second

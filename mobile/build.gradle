@@ -53,7 +53,7 @@ android {
     productFlavors {
         dev {
             dimension "endpoints"
-            resConfigs 'en', 'xxhdpi'
+            resourceConfigurations += ['en', 'xxhdpi']
             buildConfigField("String", "BASE_URL", "\"${dev_base_url}\"")
         }
 

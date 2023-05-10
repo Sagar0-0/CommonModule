@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fit.asta.health.profile.model.domain.Health
 import fit.asta.health.profile.model.domain.UserPropertyType
-import fit.asta.health.profile.view.components.ChipCard
+import fit.asta.health.profile.view.components.ProfileChipCard
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -29,7 +29,7 @@ fun HealthLayout(
         Spacer(modifier = Modifier.height(16.dp))
 
         health.healthHistory?.let { healthHistoryList ->
-            ChipCard(
+            ProfileChipCard(
                 icon = UserPropertyType.SignificantHealthHis.icon,
                 title = UserPropertyType.SignificantHealthHis.title,
                 list = healthHistoryList
@@ -39,7 +39,7 @@ fun HealthLayout(
         Spacer(modifier = Modifier.height(16.dp))
 
         health.injuries?.let { injuriesList ->
-            ChipCard(
+            ProfileChipCard(
                 icon = UserPropertyType.Injuries.icon,
                 title = UserPropertyType.Injuries.title,
                 list = injuriesList
@@ -49,7 +49,7 @@ fun HealthLayout(
         Spacer(modifier = Modifier.height(16.dp))
 
         health.bodyPart?.let { bodyPartsList ->
-            ChipCard(
+            ProfileChipCard(
                 icon = UserPropertyType.BodyParts.icon,
                 title = UserPropertyType.BodyParts.title,
                 list = bodyPartsList
@@ -59,7 +59,7 @@ fun HealthLayout(
         Spacer(modifier = Modifier.height(16.dp))
 
         health.ailments?.let {
-            ChipCard(
+            ProfileChipCard(
                 icon = UserPropertyType.Ailments.icon,
                 title = UserPropertyType.Ailments.title,
                 list = it,
@@ -69,7 +69,7 @@ fun HealthLayout(
         Spacer(modifier = Modifier.height(16.dp))
 
         health.medications?.let {
-            ChipCard(
+            ProfileChipCard(
                 icon = UserPropertyType.Medications.icon,
                 title = UserPropertyType.Medications.title,
                 list = it,
@@ -79,7 +79,7 @@ fun HealthLayout(
         Spacer(modifier = Modifier.height(16.dp))
 
         health.healthTargets?.let {
-            ChipCard(
+            ProfileChipCard(
                 icon = UserPropertyType.HealthTargets.icon,
                 title = UserPropertyType.HealthTargets.title,
                 list = it,
@@ -89,7 +89,7 @@ fun HealthLayout(
         Spacer(modifier = Modifier.height(16.dp))
 
         health.addiction?.let { addictionList ->
-            ChipCard(
+            ProfileChipCard(
                 icon = UserPropertyType.Addictions.icon,
                 title = UserPropertyType.Addictions.title,
                 list = addictionList

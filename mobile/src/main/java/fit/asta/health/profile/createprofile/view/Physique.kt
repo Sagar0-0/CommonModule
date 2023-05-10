@@ -5,7 +5,7 @@
     ExperimentalCoroutinesApi::class, ExperimentalCoroutinesApi::class
 )
 
-package fit.asta.health.profile.createprofile.view.components
+package fit.asta.health.profile.createprofile.view
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -35,7 +35,8 @@ import fit.asta.health.common.ui.components.PrimaryButton
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiString
-import fit.asta.health.profile.bottomsheets.components.BodyTypeBottomSheetLayout
+import fit.asta.health.profile.createprofile.view.components.BodyTypeLayout
+import fit.asta.health.profile.createprofile.view.components.RowToggleButtonGroup
 import fit.asta.health.profile.model.domain.ThreeToggleSelections
 import fit.asta.health.profile.model.domain.TwoToggleSelections
 import fit.asta.health.profile.view.ThreeTogglesGroups
@@ -49,7 +50,7 @@ import java.util.*
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PhysiqueContent(
+fun PhysiqueCreateScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     eventPrevious: (() -> Unit)? = null,
     eventNext: (() -> Unit)? = null,
@@ -345,7 +346,7 @@ fun PhysiqueContent(
                     colors = CardDefaults.cardColors(containerColor = Color.White),
                     elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
                 ) {
-                    BodyTypeBottomSheetLayout()
+                    BodyTypeLayout()
                 }
             }
 

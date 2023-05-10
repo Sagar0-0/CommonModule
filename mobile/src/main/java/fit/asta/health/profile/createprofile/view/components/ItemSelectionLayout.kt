@@ -1,9 +1,18 @@
 @file:OptIn(ExperimentalCoroutinesApi::class, ExperimentalCoroutinesApi::class)
 
-package fit.asta.health.profile.bottomsheets
+package fit.asta.health.profile.createprofile.view.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
@@ -24,16 +33,16 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.profile.bottomsheets.components.DividerLine
 import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.HealthProperties
 import fit.asta.health.profile.view.components.AddChipOnCard
 import fit.asta.health.profile.viewmodel.ProfileEvent
 import fit.asta.health.profile.viewmodel.ProfileViewModel
+import fit.asta.health.tools.sunlight.view.components.bottomsheet.DividerLine
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @Composable
-fun ItemSelectionBtmSheetLayout(
+fun ItemSelectionLayout(
     viewModel: ProfileViewModel = hiltViewModel(),
     cardList: ArrayList<HealthProperties>,
     cardIndex: Int,

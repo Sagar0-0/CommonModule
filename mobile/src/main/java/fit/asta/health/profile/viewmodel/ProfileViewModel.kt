@@ -63,6 +63,7 @@ class ProfileViewModel
     private val savedState: SavedStateHandle,
 ) : ViewModel() {
 
+
     private val _stateSubmit = MutableStateFlow<ProfileSubmitState>(ProfileSubmitState.Loading)
     val stateSubmit = _stateSubmit.asStateFlow()
 
@@ -73,6 +74,7 @@ class ProfileViewModel
 
     private val _mutableState = MutableStateFlow<ProfileGetState>(ProfileGetState.Loading)
     val state = _mutableState.asStateFlow()
+
 
     private val _mutableEditState = MutableStateFlow<ProfileGetState>(ProfileGetState.Loading)
     val stateEdit = _mutableEditState.asStateFlow()
@@ -109,6 +111,7 @@ class ProfileViewModel
     val allInputsValid: StateFlow<Boolean>
         get() = areAllInputsValid
 
+
     private fun doAllInputsValid(valid: Boolean) {
         areAllInputsValid.value = valid
     }
@@ -118,9 +121,11 @@ class ProfileViewModel
     val phyInputsValid: StateFlow<Boolean>
         get() = arePhyInputsValid
 
+
     private fun isPhyValid(valid: Boolean) {
         arePhyInputsValid.value = valid
     }
+
 
     //Any Injury
     private val _selectedInjOption =
@@ -128,11 +133,13 @@ class ProfileViewModel
     val selectedInjOption: StateFlow<TwoToggleSelections?>
         get() = _selectedInjOption
 
+
     //Body Part
     private val _selectedBodyPartOption =
         MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
     val selectedBdyPartOption: StateFlow<TwoToggleSelections?>
         get() = _selectedBodyPartOption
+
 
     //Any Ailments
     private val _selectedAilOption =
@@ -140,11 +147,13 @@ class ProfileViewModel
     val selectedAilOption: StateFlow<TwoToggleSelections?>
         get() = _selectedAilOption
 
+
     //Any Medications
     private val _selectedMedOption =
         MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
     val selectedMedOption: StateFlow<TwoToggleSelections?>
         get() = _selectedMedOption
+
 
     //Any Health Target
     private val _selectedHealthTarOption =
@@ -152,11 +161,13 @@ class ProfileViewModel
     val selectedHealthTarOption: StateFlow<TwoToggleSelections?>
         get() = _selectedHealthTarOption
 
+
     //Addiction Option
     private val _selectedAddictionOption =
         MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
     val selectedAddictionOption: StateFlow<TwoToggleSelections?>
         get() = _selectedAddictionOption
+
 
     //Food Res
     private val _selectedFoodResOption =
@@ -164,11 +175,13 @@ class ProfileViewModel
     val selectedFoodResOption: StateFlow<TwoToggleSelections?>
         get() = _selectedFoodResOption
 
+
     //Is Pregnant
     private val _isPregnantOption =
         MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
     val selectedIsPregnant: StateFlow<TwoToggleSelections?>
         get() = _isPregnantOption
+
 
     //Is onPeriod
     private val _isOnPeriodOption =
@@ -180,6 +193,7 @@ class ProfileViewModel
     private val _selectedGenderOption = MutableStateFlow<ThreeToggleSelections?>(null)
     val selectedGender: StateFlow<ThreeToggleSelections?>
         get() = _selectedGenderOption
+
 
     //Physically Active
     private val _selectedPhyActOption = MutableStateFlow<ThreeToggleSelections?>(null)

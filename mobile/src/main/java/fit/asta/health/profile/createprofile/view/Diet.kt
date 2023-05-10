@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalCoroutinesApi::class, ExperimentalCoroutinesApi::class)
 
-package fit.asta.health.profile.createprofile.view.components
+package fit.asta.health.profile.createprofile.view
 
 import android.util.Log
 import androidx.compose.foundation.*
@@ -21,8 +21,8 @@ import fit.asta.health.MainActivity
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.navigation.home.view.component.NoInternetLayout
-import fit.asta.health.profile.bottomsheets.ItemSelectionBtmSheetLayout
-import fit.asta.health.profile.createprofile.view.components.DietCreateBottomSheetType.*
+import fit.asta.health.profile.createprofile.view.DietCreateBottomSheetType.*
+import fit.asta.health.profile.createprofile.view.components.ItemSelectionLayout
 import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.TwoToggleSelections
 import fit.asta.health.profile.view.*
@@ -274,7 +274,7 @@ fun DietCreateBottomSheetLayout(
                 }
 
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(
+                    ItemSelectionLayout(
                         cardList = state.properties,
                         cardIndex = 0,
                         composeIndex = ComposeIndex.Third
@@ -293,7 +293,7 @@ fun DietCreateBottomSheetLayout(
                 }
 
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(
+                    ItemSelectionLayout(
                         cardList = state.properties,
                         cardIndex = 1,
                         composeIndex = ComposeIndex.Third
@@ -312,7 +312,7 @@ fun DietCreateBottomSheetLayout(
                 }
 
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(
+                    ItemSelectionLayout(
                         cardList = state.properties,
                         cardIndex = 2,
                         composeIndex = ComposeIndex.Third
@@ -331,7 +331,7 @@ fun DietCreateBottomSheetLayout(
                 }
 
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(
+                    ItemSelectionLayout(
                         cardList = state.properties,
                         cardIndex = 3,
                         composeIndex = ComposeIndex.Third
@@ -350,7 +350,7 @@ fun DietCreateBottomSheetLayout(
                 }
 
                 is HPropState.Success -> {
-                    ItemSelectionBtmSheetLayout(
+                    ItemSelectionLayout(
                         cardList = state.properties,
                         cardIndex = 4,
                         composeIndex = ComposeIndex.Third

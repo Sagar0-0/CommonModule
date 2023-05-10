@@ -26,7 +26,7 @@ fun FemaleLayout(
                 .shadow(elevation = 5.dp),
             shape = RoundedCornerShape(8.dp)
         ) {
-            UserBasicDetailsCardLayout(
+            GenderOptionsLayout(
                 cardImg = R.drawable.age, cardType = "AGE", cardValue = m.age.toString()
             )
         }
@@ -38,7 +38,7 @@ fun FemaleLayout(
                 .shadow(elevation = 5.dp),
             shape = RoundedCornerShape(8.dp)
         ) {
-            UserBasicDetailsCardLayout(
+            GenderOptionsLayout(
                 cardImg = R.drawable.gender, cardType = "GENDER", cardValue = when (m.gender) {
                     1 -> "Male"
                     2 -> "Female"
@@ -58,7 +58,7 @@ fun FemaleLayout(
                 .shadow(elevation = 5.dp),
             shape = RoundedCornerShape(8.dp)
         ) {
-            UserBasicDetailsCardLayout(
+            GenderOptionsLayout(
                 cardImg = R.drawable.height, cardType = "HEIGHT", cardValue = "${m.height}Cm"
             )
         }
@@ -70,7 +70,7 @@ fun FemaleLayout(
                 .shadow(elevation = 5.dp),
             shape = RoundedCornerShape(8.dp)
         ) {
-            UserBasicDetailsCardLayout(
+            GenderOptionsLayout(
                 cardImg = R.drawable.weight, cardType = "WEIGHT", cardValue = "${m.weight}Kg"
             )
         }
@@ -84,7 +84,7 @@ fun FemaleLayout(
                 .shadow(elevation = 5.dp),
             shape = RoundedCornerShape(8.dp)
         ) {
-            UserBasicDetailsCardLayout(
+            GenderOptionsLayout(
                 cardImg = R.drawable.bmi, cardType = "BMI", cardValue = "${m.bmi}"
             )
         }
@@ -96,7 +96,7 @@ fun FemaleLayout(
                 .shadow(elevation = 5.dp),
             shape = RoundedCornerShape(8.dp)
         ) {
-            UserBasicDetailsCardLayout(
+            GenderOptionsLayout(
                 cardImg = R.drawable.pregnant,
                 cardType = "PREGNANCY",
                 cardValue = "${m.pregnancyWeek}Week"
