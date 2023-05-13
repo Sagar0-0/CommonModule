@@ -2,7 +2,8 @@
     ExperimentalCoroutinesApi::class,
     ExperimentalMaterial3Api::class,
     ExperimentalCoroutinesApi::class,
-    ExperimentalCoroutinesApi::class, ExperimentalCoroutinesApi::class
+    ExperimentalCoroutinesApi::class,
+    ExperimentalCoroutinesApi::class
 )
 
 package fit.asta.health.profile.createprofile.view
@@ -229,6 +230,7 @@ fun PhysiqueCreateScreen(
                                         0 -> {
                                             viewModel.onEvent(ProfileEvent.OnUserWeightChange(weight = it))
                                         }
+
                                         1 -> {
                                             viewModel.onEvent(ProfileEvent.OnUserHeightChange(height = it))
                                         }
@@ -239,11 +241,23 @@ fun PhysiqueCreateScreen(
                                 keyboardOptions = KeyboardOptions(
                                     keyboardType = KeyboardType.Number, imeAction = ImeAction.Next
                                 ),
-                                keyboardActions = KeyboardActions(onNext = {
-                                    focusManager.moveFocus(
-                                        FocusDirection.Next
-                                    )
-                                }),
+                                keyboardActions = when (componentIndex) {
+                                    0 -> KeyboardActions(onNext = {
+                                        focusManager.moveFocus(
+                                            FocusDirection.Next
+                                        )
+                                    })
+
+                                    1 -> KeyboardActions(onNext = {
+                                        focusManager.clearFocus()
+                                    })
+
+                                    else -> KeyboardActions(onNext = {
+                                        focusManager.moveFocus(
+                                            FocusDirection.Next
+                                        )
+                                    })
+                                },
                                 showError = inputType.error !is UiString.Empty,
                                 errorMessage = inputType.error
                             )
