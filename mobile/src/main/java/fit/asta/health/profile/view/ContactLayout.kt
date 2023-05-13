@@ -2,6 +2,7 @@ package fit.asta.health.profile.view
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -78,7 +79,7 @@ fun ContactLayout(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             UserAchievCard(
                 scoreBoard = "24/346", cardType = "LeaderBoard", imageID = R.drawable.leaderboard
@@ -158,13 +159,15 @@ private fun UserDetails(
                     textAlign = TextAlign.Center,
                     color = Color.Black
                 )
-                Text(
-                    text = "+91 $phoneNumber",
-                    fontFamily = FontFamily.Default,
-                    fontSize = 14.sp,
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
+                if (phoneNumber.isNotEmpty()) {
+                    Text(
+                        text = "+91 $phoneNumber",
+                        fontFamily = FontFamily.Default,
+                        fontSize = 14.sp,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                }
                 Text(
                     text = email,
                     fontFamily = FontFamily.Default,
@@ -178,29 +181,34 @@ private fun UserDetails(
 
     }
 
-    Spacer(modifier = Modifier.height(30.dp))
-
     val adr =
         address.address + " " + address.street + " " + address.city + " " + address.country + " - " + address.pin
-    Row(modifier = Modifier.padding(horizontal = 32.dp, vertical = 16.dp)) {
-        Box(
-            Modifier
-                .width(305.dp)
-                .padding(end = 16.dp), contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = adr,
-                fontFamily = FontFamily.Default,
-                fontWeight = FontWeight.Normal,
-                fontSize = 14.sp,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onBackground,
-                lineHeight = 22.4.sp
-            )
+
+    if (address.address.isNotEmpty() && address.street.isNotEmpty() && address.city.isNotEmpty() && address.country.isNotEmpty() && address.pin.isNotEmpty()) {
+        Row(modifier = Modifier.padding(horizontal = 32.dp, vertical = 16.dp)) {
+            Box(
+                Modifier
+                    .width(305.dp)
+                    .padding(end = 16.dp), contentAlignment = Alignment.Center
+            ) {
+
+                Spacer(modifier = Modifier.height(30.dp))
+                Text(
+                    text = adr,
+                    fontFamily = FontFamily.Default,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 14.sp,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    lineHeight = 22.4.sp
+                )
+
+            }
+
+
         }
-
-
     }
+
 
 }
 
@@ -225,7 +233,11 @@ fun UserProfileImg(userProfilePic: ProfileMedia) {
                 .clip(
                     CircleShape
                 )
-                .size(imageSize.picSize),
+                .size(imageSize.picSize)
+                .border(
+                    border = BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.primary),
+                    shape = CircleShape
+                ),
             contentScale = ContentScale.Crop
         )
         Surface(
@@ -283,7 +295,7 @@ fun UserAchievCard(
 
                 Text(
                     text = cardType,
-                    fontSize = 12.sp,
+                    fontSize = 10.sp,
                     fontFamily = FontFamily.Default,
                     fontWeight = FontWeight.Normal,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
