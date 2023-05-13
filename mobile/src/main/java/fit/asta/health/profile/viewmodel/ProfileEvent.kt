@@ -48,6 +48,6 @@ sealed class ProfileEvent {
     data class IsPhyValid(val valid: Boolean) : ProfileEvent()
     data class IsDietValid(val valid: Boolean) : ProfileEvent()
     data class DoAllInputsValid(val valid: Boolean) : ProfileEvent()
-
+    object OnProfilePicClear : ProfileEvent()
     object OnSubmit : ProfileEvent()
 }

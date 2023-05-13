@@ -61,8 +61,7 @@ fun ImageLayout(
 
                 Box(modifier = Modifier.fillMaxWidth(0.5f)) {
                     if (imgBefore.url.isEmpty() && imgBefore.localUrl == null) {
-                        UploadTstMediaView(
-                            title = imgBefore.title,
+                        UploadTstMediaView(title = imgBefore.title,
                             onClick = { beforeLauncher.launch("image/*") })
                     } else {
                         SelectedImageView(title = imgBefore.title,
@@ -80,8 +79,7 @@ fun ImageLayout(
 
                 Box(modifier = Modifier.fillMaxWidth(1f)) {
                     if (imgAfter.url.isEmpty() && imgAfter.localUrl == null) {
-                        UploadTstMediaView(
-                            title = imgAfter.title,
+                        UploadTstMediaView(title = imgAfter.title,
                             onClick = { afterLauncher.launch("image/*") })
                     } else {
                         SelectedImageView(title = imgAfter.title,

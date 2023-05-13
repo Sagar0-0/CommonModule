@@ -1024,7 +1024,11 @@ class ProfileViewModel
 
             is ProfileEvent.DoAllInputsValid -> doAllInputsValid(valid = event.valid)
             is ProfileEvent.IsDietValid -> isDietValid(event.valid)
-
+            is ProfileEvent.OnProfilePicClear -> {
+                savedState[USER_IMG] = userImg.value.copy(
+                    localUrl = null, url = ""
+                )
+            }
         }
 
     }

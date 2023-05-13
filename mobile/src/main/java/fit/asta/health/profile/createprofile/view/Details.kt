@@ -2,12 +2,13 @@
 
 package fit.asta.health.profile.createprofile.view
 
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.LocalOverscrollConfiguration
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -15,6 +16,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
@@ -46,7 +49,7 @@ import fit.asta.health.testimonials.view.components.ValidatedTextField
 import fit.asta.health.testimonials.view.create.getOneUrl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalCoroutinesApi::class)
 @ExperimentalMaterial3Api
 @Composable
 fun DetailsCreateScreen(
@@ -70,6 +73,7 @@ fun DetailsCreateScreen(
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
     ) {
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -80,14 +84,12 @@ fun DetailsCreateScreen(
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            UserCircleImage(
-                url = getOneUrl(localUrl = userImg.localUrl, remoteUrl = userImg.url),
-                onClick = {
+            UserCircleImage(url = getOneUrl(localUrl = userImg.localUrl, remoteUrl = userImg.url),
+                onUserProfileSelection = {
                     imgLauncher.launch("image/*")
-                    Log.d(
-                        "validate",
-                        "User Image URL -> URL -> ${userImg.url} and localURL -> ${userImg.localUrl}"
-                    )
+                },
+                onProfilePicClear = {
+                    viewModel.onEvent(ProfileEvent.OnProfilePicClear)
                 })
 
             Spacer(modifier = Modifier.height(spacing.medium))
@@ -222,7 +224,11 @@ fun UserConsent() {
 }
 
 @Composable
-fun UserCircleImage(url: String, onClick: () -> Unit) {
+fun UserCircleImage(
+    url: String,
+    onUserProfileSelection: () -> Unit,
+    onProfilePicClear: () -> Unit,
+) {
 
     Box(
         contentAlignment = Alignment.Center,
@@ -239,22 +245,45 @@ fun UserCircleImage(url: String, onClick: () -> Unit) {
             modifier = Modifier
                 .size(customSize.extraLarge5)
                 .clip(shape = CircleShape)
+                .border(
+                    border = BorderStroke(
+                        width = 2.dp, color = MaterialTheme.colorScheme.primary
+                    ), shape = CircleShape
+                )
 
         )
+
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            modifier = Modifier.align(alignment = Alignment.TopEnd)
+        ) {
+            Box {
+                IconButton(onClick = onProfilePicClear) {
+
+                    Icon(
+                        imageVector = Icons.Filled.DeleteForever,
+                        contentDescription = null,
+                        modifier = Modifier.size(customSize.extraLarge),
+                        tint = MaterialTheme.colorScheme.error
+                    )
+
+                }
+
+            }
+        }
 
         Row(
             horizontalArrangement = Arrangement.End,
             modifier = Modifier.align(alignment = Alignment.BottomEnd)
         ) {
             Box {
-                IconButton(onClick = onClick) {
+                IconButton(onClick = onUserProfileSelection) {
 
                     Icon(
                         imageVector = Icons.Filled.Edit,
                         contentDescription = null,
-                        modifier = Modifier
-                            .size(customSize.largeSmall)
-                            .clip(shape = CircleShape)
+                        modifier = Modifier.size(customSize.extraLarge),
+                        tint = MaterialTheme.colorScheme.secondary
                     )
 
                 }
