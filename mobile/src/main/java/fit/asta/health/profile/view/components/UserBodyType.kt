@@ -1,7 +1,14 @@
 package fit.asta.health.profile.view.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
@@ -18,15 +25,17 @@ fun UserBodyType(
     bodyType: String,
     bodyImg: Int,
 ) {
-    Card(modifier = Modifier
-        .fillMaxWidth()
-        .padding(vertical = 16.dp),
+    Card(
+        modifier = Modifier
+            .fillMaxWidth(),
         elevation = 5.dp,
-        shape = RoundedCornerShape(8.dp)) {
+        shape = RoundedCornerShape(8.dp)
+    ) {
         Column(modifier = Modifier.padding(vertical = 16.dp)) {
-            Row(Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 8.dp),
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(text = bodyType,
                     fontSize = 10.sp,
@@ -36,17 +45,19 @@ fun UserBodyType(
                     color = MaterialTheme.colorScheme.onBackground)
             }
             Spacer(modifier = Modifier.height(15.dp))
-            Row(Modifier
-                .fillMaxWidth()
-                .padding(start = 55.dp)) {
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(start = 55.dp)) {
                 Image(painter = painterResource(id = bodyImg),
                     contentDescription = null,
                     modifier = Modifier.size(width = 70.dp, height = 109.dp))
             }
             Spacer(modifier = Modifier.height(15.dp))
-            Row(Modifier
-                .fillMaxWidth()
-                .padding(end = 16.dp),
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(end = 16.dp),
                 horizontalArrangement = Arrangement.End) {
                 Text(text = "bodyStatus",
                     fontSize = 14.sp,

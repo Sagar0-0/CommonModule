@@ -9,7 +9,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
 import fit.asta.health.profile.model.domain.Physique
@@ -22,9 +21,9 @@ fun FemaleLayout(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f)
-                .shadow(elevation = 5.dp),
-            shape = RoundedCornerShape(8.dp)
+                .weight(1f),
+            shape = RoundedCornerShape(8.dp),
+            elevation = 5.dp
         ) {
             GenderOptionsLayout(
                 cardImg = R.drawable.age, cardType = "AGE", cardValue = m.age.toString()
@@ -34,9 +33,9 @@ fun FemaleLayout(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f)
-                .shadow(elevation = 5.dp),
-            shape = RoundedCornerShape(8.dp)
+                .weight(1f),
+            shape = RoundedCornerShape(8.dp),
+            elevation = 5.dp
         ) {
             GenderOptionsLayout(
                 cardImg = R.drawable.gender, cardType = "GENDER", cardValue = when (m.gender) {
@@ -54,9 +53,9 @@ fun FemaleLayout(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f)
-                .shadow(elevation = 5.dp),
-            shape = RoundedCornerShape(8.dp)
+                .weight(1f),
+            shape = RoundedCornerShape(8.dp),
+            elevation = 5.dp
         ) {
             GenderOptionsLayout(
                 cardImg = R.drawable.height, cardType = "HEIGHT", cardValue = "${m.height}Cm"
@@ -66,9 +65,9 @@ fun FemaleLayout(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f)
-                .shadow(elevation = 5.dp),
-            shape = RoundedCornerShape(8.dp)
+                .weight(1f),
+            shape = RoundedCornerShape(8.dp),
+            elevation = 5.dp
         ) {
             GenderOptionsLayout(
                 cardImg = R.drawable.weight, cardType = "WEIGHT", cardValue = "${m.weight}Kg"
@@ -80,9 +79,9 @@ fun FemaleLayout(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f)
-                .shadow(elevation = 5.dp),
-            shape = RoundedCornerShape(8.dp)
+                .weight(1f),
+            shape = RoundedCornerShape(8.dp),
+            elevation = 5.dp
         ) {
             GenderOptionsLayout(
                 cardImg = R.drawable.bmi, cardType = "BMI", cardValue = "${m.bmi}"
@@ -92,9 +91,9 @@ fun FemaleLayout(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f)
-                .shadow(elevation = 5.dp),
-            shape = RoundedCornerShape(8.dp)
+                .weight(1f),
+            shape = RoundedCornerShape(8.dp),
+            elevation = 5.dp
         ) {
             GenderOptionsLayout(
                 cardImg = R.drawable.pregnant,
