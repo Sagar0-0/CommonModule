@@ -116,19 +116,15 @@ fun Stepper(
                                 1 -> {
                                     detailsColor
                                 }
-
                                 2 -> {
                                     phyColor
                                 }
-
                                 3 -> {
                                     healthColor
                                 }
-
                                 4 -> {
                                     lifeStyleColor
                                 }
-
                                 else -> {
                                     dietColor
                                 }

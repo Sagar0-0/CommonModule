@@ -50,14 +50,13 @@ fun ProfileSessionCard(
             Spacer(modifier = Modifier.height(15.dp))
 
             Row(
-                Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
+                Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
             ) {
-                UserSleepCycles(columnType = "BED TIME", columnValue = "${session.from} PM")
+                UserSleepCycles(columnType = "BED TIME", columnValue = "${session.from}")
                 Spacer(modifier = Modifier.width(40.dp))
-                UserSleepCycles(columnType = "WAKE UP", columnValue = "${session.to} AM")
+                UserSleepCycles(columnType = "WAKE UP", columnValue = "${session.to}")
             }
+
         }
     }
 }

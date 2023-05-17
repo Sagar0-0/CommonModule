@@ -18,12 +18,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.ui.AppTheme
+import fit.asta.health.profile.viewmodel.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class CreateUserProfileActivity : AppCompatActivity() {
+
+    private lateinit var viewModel: ProfileViewModel
 
     companion object {
 

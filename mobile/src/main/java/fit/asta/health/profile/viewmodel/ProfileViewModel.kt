@@ -166,7 +166,6 @@ class ProfileViewModel
     val selectedHealthTarOption: StateFlow<TwoToggleSelections?>
         get() = _selectedHealthTarOption
 
-
     //Addiction Option
     private val _selectedAddictionOption =
         MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
@@ -1074,12 +1073,6 @@ class ProfileViewModel
 
     }
 
-
-    private fun isCreateUserProfileDirty(): Boolean {
-        return profileData.value.contact.name != name.value.value || profileData.value.contact.email != email.value.value || profileData.value.contact.dob != dob.value.value || profileData.value.physique.age != age.value.value.toInt() || profileData.value.physique.weight != weight.value.value.toFloat() || profileData.value.physique.height != height.value.value.toFloat() || profileData.value.physique.pregnancyWeek != pregnancyWeek.value.value.toInt() || profileData.value.health.injurySince != injuriesSince.value.value.toInt() // || profileData.value.contact.url != userImg.value.url  || profileData.value.contact.url != userImg.value.localUrl?.path
-    }
-
-
     // Details Input Validity
     val areDetailsInputsValid = combine(name, email) { name, email ->
         name.value.isNotEmpty() && name.error is UiString.Empty && email.value.isNotEmpty() && email.error is UiString.Empty
@@ -1102,13 +1095,11 @@ class ProfileViewModel
         _isOnPeriodOption != null && _isPregnantOption != null && areBasicPhysiqueInputsValid
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
-
     val arePregnancyInputValid = combine(
         areFemaleInputNull, _isPregnantOption, pregnancyWeek
     ) { areFemaleInputNull, _isPregnantOption, pregnancyWeek ->
         areFemaleInputNull && _isPregnantOption == TwoToggleSelections.First && pregnancyWeek.value.isNotEmpty() && pregnancyWeek.error is UiString.Empty
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
-
 
     //Health Inputs Valid
     val areSelectedHealthOptionsNull = combine(
@@ -1121,7 +1112,6 @@ class ProfileViewModel
         selectedHealthHis != null && selectedInjury != null && selectedAil != null && selectedMed != null && selectedHealthTar != null
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
-
     //LifeStyle Inputs Valid
     val areLSValid = combine(
         _selectedPhyActOption,
@@ -1131,7 +1121,6 @@ class ProfileViewModel
     ) { _selectedPhyActOption, _selectedWorkingEnvOption, _selectedWorkStyleOption, _selectedWorkingHrsOption ->
         _selectedPhyActOption != null && _selectedWorkingEnvOption != null && _selectedWorkStyleOption != null && _selectedWorkingHrsOption != null
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
-
 
     val doAllDataInputsValid = combine(
         areDetailsInputsValid,

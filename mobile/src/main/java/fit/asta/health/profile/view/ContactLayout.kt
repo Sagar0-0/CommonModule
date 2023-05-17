@@ -79,13 +79,19 @@ fun ContactLayout(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             UserAchievCard(
-                scoreBoard = "24/346", cardType = "LeaderBoard", imageID = R.drawable.leaderboard
+                scoreBoard = "24/346",
+                cardType = "LeaderBoard",
+                imageID = R.drawable.leaderboard,
+                modifier = Modifier.weight(1f)
             )
             UserAchievCard(
-                scoreBoard = "12", cardType = "Badges Earned", imageID = R.drawable.badgecompleted
+                scoreBoard = "12",
+                cardType = "Badges Earned",
+                imageID = R.drawable.badgecompleted,
+                modifier = Modifier.weight(1f)
             )
         }
 
@@ -178,13 +184,12 @@ private fun UserDetails(
             }
         }
 
-
     }
 
     val adr =
         address.address + " " + address.street + " " + address.city + " " + address.country + " - " + address.pin
 
-    if (address.address.isNotEmpty() && address.street.isNotEmpty() && address.city.isNotEmpty() && address.country.isNotEmpty() && address.pin.isNotEmpty()) {
+    if (address.pin.isNotEmpty()) {
         Row(modifier = Modifier.padding(horizontal = 32.dp, vertical = 16.dp)) {
             Box(
                 Modifier
@@ -227,9 +232,11 @@ fun UserProfileImg(userProfilePic: ProfileMedia) {
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
         ) {}
         AsyncImage(
-            model = getImageUrl(url = userProfilePic.url),
-            contentDescription = "User Profile Pic",
-            modifier = Modifier
+            model = if (userProfilePic.url.isEmpty()) {
+                "https://img2.asta.fit/profile/Men_Default.png"
+            } else {
+                getImageUrl(url = userProfilePic.url)
+            }, contentDescription = "User Profile Pic", modifier = Modifier
                 .clip(
                     CircleShape
                 )
@@ -237,8 +244,7 @@ fun UserProfileImg(userProfilePic: ProfileMedia) {
                 .border(
                     border = BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.primary),
                     shape = CircleShape
-                ),
-            contentScale = ContentScale.Crop
+                ), contentScale = ContentScale.Crop
         )
         Surface(
             shape = CircleShape,
@@ -269,11 +275,13 @@ fun UserAchievCard(
     scoreBoard: String,
     cardType: String,
     imageID: Int,
+    modifier: Modifier = Modifier,
 ) {
     Card(
         elevation = CardDefaults.cardElevation(),
         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onPrimary),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(8.dp),
+        modifier = modifier
     ) {
         Row(modifier = Modifier.padding(16.dp)) {
             Image(

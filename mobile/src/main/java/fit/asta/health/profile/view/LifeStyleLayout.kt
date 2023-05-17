@@ -69,27 +69,53 @@ fun LifeStyleLayout(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ProfileSingleSelectionCard(
-            icon = UserPropertyType.WorkingEnv.icon,
-            title = UserPropertyType.WorkingEnv.title,
-            value = lifeStyle.workingEnv.toString(),
-        )
+        lifeStyle.workingEnv?.let {
+            ProfileSingleSelectionCard(
+                icon = UserPropertyType.WorkingEnv.icon,
+                title = UserPropertyType.WorkingEnv.title,
+                value = when (it) {
+                    1 -> "Standing"
+                    2 -> "Sitting"
+                    else -> {
+                        null
+                    }
+                }.toString(),
+            )
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ProfileSingleSelectionCard(
-            icon = UserPropertyType.WorkStyle.icon,
-            title = UserPropertyType.WorkStyle.title,
-            value = lifeStyle.workStyle.toString(),
-        )
+        lifeStyle.workStyle?.let {
+            ProfileSingleSelectionCard(
+                icon = UserPropertyType.WorkStyle.icon,
+                title = UserPropertyType.WorkStyle.title,
+                value = when (it) {
+                    1 -> "Indoor"
+                    2 -> "Outdoor"
+                    else -> {
+                        null
+                    }
+                }.toString(),
+            )
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ProfileSingleSelectionCard(
-            icon = UserPropertyType.WorkingHours.icon,
-            title = UserPropertyType.WorkingHours.title,
-            value = lifeStyle.workingHours.toString(),
-        )
+        lifeStyle.workingHours?.let {
+            ProfileSingleSelectionCard(
+                icon = UserPropertyType.WorkingHours.icon,
+                title = UserPropertyType.WorkingHours.title,
+                value = when (it) {
+                    1 -> "Morning"
+                    2 -> "Afternoon"
+                    3 -> "Evening"
+                    else -> {
+                        null
+                    }
+                }.toString(),
+            )
+        }
+
 
         Spacer(modifier = Modifier.height(16.dp))
 

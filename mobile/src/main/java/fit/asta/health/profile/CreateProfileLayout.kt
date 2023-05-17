@@ -3,7 +3,6 @@
 package fit.asta.health.profile
 
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -50,20 +49,16 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
     val isHealthValid by viewModel.healthInputsValid.collectAsStateWithLifecycle()
     val isLSValid by viewModel.areLSValid.collectAsStateWithLifecycle()
     val isDietValid by viewModel.dietInputsValid.collectAsStateWithLifecycle()
+    val doAllInputsValid by viewModel.doAllDataInputsValid.collectAsStateWithLifecycle()
 
     //Custom Dialog
     var showCustomDialogWithResult by remember { mutableStateOf(false) }
-
 
     val numberOfSteps = 5
 
     var currentStep by rememberSaveable { mutableStateOf(1) }
 
     val stepDescriptionList = arrayListOf("Details", "Physique", "Heath", "LifeStyle", "Diet")
-
-    var isSkipPressed by remember {
-        mutableStateOf(false)
-    }
 
     val iconList = listOf(
         Icons.Outlined.AccountCircle,
@@ -88,25 +83,25 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
         errorColor
     }
 
-    val phyColor = if (isPhyValid && !isSkipPressed) {
+    val phyColor = if (isPhyValid) {
         primaryColor
     } else {
         errorColor
     }
 
-    val healthColor = if (isHealthValid && !isSkipPressed) {
+    val healthColor = if (isHealthValid) {
         primaryColor
     } else {
         errorColor
     }
 
-    val lifeStyleColor = if (isLSValid && !isSkipPressed) {
+    val lifeStyleColor = if (isLSValid) {
         primaryColor
     } else {
         errorColor
     }
 
-    val dietColor = if (isDietValid && !isSkipPressed) {
+    val dietColor = if (isDietValid) {
         primaryColor
     } else {
         errorColor
@@ -156,9 +151,6 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
                         icons = iconList[step - 1],
                         logic = {
                             currentStep = step
-                            Log.d(
-                                "currSteps", " LS Boolean -> ${isLSValid && !isSkipPressed}"
-                            )
                         },
                         detailsColor = detailsColor,
                         phyColor = phyColor,
@@ -187,9 +179,9 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
                         currentStep += 1
                     }, onSkipEvent = {
                         currentStep += 1
-                        isSkipPressed = true
                     })
                 }
+
                 2 -> {
                     PhysiqueCreateScreen(
                         eventNext = {
@@ -200,10 +192,10 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
                         },
                         onSkipEvent = {
                             currentStep += 1
-                            isSkipPressed = true
                         },
                     )
                 }
+
                 3 -> {
                     HealthCreateScreen(eventNext = {
                         currentStep += 1
@@ -211,9 +203,9 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
                         currentStep -= 1
                     }, onSkipEvent = {
                         currentStep += 1
-                        isSkipPressed = true
                     })
                 }
+
                 4 -> {
                     LifeStyleCreateScreen(
                         eventNext = {
@@ -224,10 +216,10 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
                         },
                         onSkipEvent = {
                             currentStep += 1
-                            isSkipPressed = true
                         },
                     )
                 }
+
                 5 -> {
                     DietCreateScreen(eventPrevious = {
                         currentStep -= 1
