@@ -60,22 +60,18 @@ fun LifeStyleContent(
     val selectedWorkingStyOption by viewModel.selectedWorkStyle.collectAsStateWithLifecycle()
     val selectedWorkingHrsOption by viewModel.selectedWorkingHrs.collectAsStateWithLifecycle()
 
-
     val areLSValidInput by viewModel.areLSValid.collectAsStateWithLifecycle()
-
     val lfList by viewModel.lfPropertiesData.collectAsState()
 
-
     //Time Picker Params
-
     val clockWakeUpState = rememberUseCaseState()
     val clockBedState = rememberUseCaseState()
     val clockJStartState = rememberUseCaseState()
     val clockJEndState = rememberUseCaseState()
-    val bedTime = remember { mutableStateOf("") }
-    val wakeUpTime = remember { mutableStateOf("") }
-    val jobStartTime = remember { mutableStateOf("") }
-    val jobEndTime = remember { mutableStateOf("") }
+    val wakeUpTime by viewModel.wakeUpTime.collectAsStateWithLifecycle()
+    val bedTime by viewModel.bedTime.collectAsStateWithLifecycle()
+    val jStart by viewModel.jStartTime.collectAsStateWithLifecycle()
+    val jEnd by viewModel.jEndTime.collectAsStateWithLifecycle()
     val showBedTimeContent = remember { mutableStateOf(false) }
     val showWakeUpTimeContent = remember { mutableStateOf(false) }
     val showJobStartContent = remember { mutableStateOf(false) }
@@ -125,8 +121,8 @@ fun LifeStyleContent(
                     showJobEndContent.value = true
                     clockJEndState.show()
                 },
-                firstColValue = jobStartTime.value,
-                secColValue = jobEndTime.value,
+                firstColValue = jStart.value,
+                secColValue = jEnd.value,
                 firstColType = "JOB START TIME",
                 secColType = "JOB END TIME",
                 firstButtonType = "Select Job Start Time",
@@ -134,34 +130,30 @@ fun LifeStyleContent(
             )
 
             if (showWakeUpTimeContent.value) {
-                CreateProfileTimePicker(
-                    clockState = clockWakeUpState,
+                CreateProfileTimePicker(clockState = clockWakeUpState,
                     onPositiveClick = { hours, minutes ->
-                        wakeUpTime.value = "$hours:$minutes"
+                        viewModel.onEvent(event = ProfileEvent.OnUserWakeUpTimeChange("$hours:$minutes"))
                     })
             }
 
             if (showBedTimeContent.value) {
-                CreateProfileTimePicker(
-                    clockState = clockBedState,
+                CreateProfileTimePicker(clockState = clockBedState,
                     onPositiveClick = { hours, minutes ->
-                        bedTime.value = "$hours:$minutes"
+                        viewModel.onEvent(event = ProfileEvent.OnUserBedTimeChange("$hours:$minutes"))
                     })
             }
 
             if (showJobStartContent.value) {
-                CreateProfileTimePicker(
-                    clockState = clockJStartState,
+                CreateProfileTimePicker(clockState = clockJStartState,
                     onPositiveClick = { hours, minutes ->
-                        jobStartTime.value = "$hours:$minutes"
+                        viewModel.onEvent(event = ProfileEvent.OnUserJStartTimeChange("$hours:$minutes"))
                     })
             }
 
             if (showJobEndContent.value) {
-                CreateProfileTimePicker(
-                    clockState = clockJEndState,
+                CreateProfileTimePicker(clockState = clockJEndState,
                     onPositiveClick = { hours, minutes ->
-                        jobEndTime.value = "$hours:$minutes"
+                        viewModel.onEvent(event = ProfileEvent.OnUserJEndTimeChange("$hours:$minutes"))
                     })
             }
 
@@ -325,7 +317,8 @@ fun LifeStyleCreateScreen(
         }
     }
 
-    ModalBottomSheetLayout(modifier = Modifier.fillMaxSize(),
+    ModalBottomSheetLayout(
+        modifier = Modifier.fillMaxSize(),
         sheetState = modalBottomSheetState,
         sheetContent = {
             Spacer(modifier = Modifier.height(1.dp))

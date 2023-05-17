@@ -21,11 +21,13 @@ import fit.asta.health.profile.model.domain.HealthProperties
 import fit.asta.health.profile.model.domain.LifeStyle
 import fit.asta.health.profile.model.domain.Physique
 import fit.asta.health.profile.model.domain.ProfileMedia
+import fit.asta.health.profile.model.domain.Session
 import fit.asta.health.profile.model.domain.ThreeToggleSelections
 import fit.asta.health.profile.model.domain.TwoToggleSelections
 import fit.asta.health.profile.model.domain.UserProfile
 import fit.asta.health.profile.viewmodel.ProfileConstants.ADDRESS
 import fit.asta.health.profile.viewmodel.ProfileConstants.AGE
+import fit.asta.health.profile.viewmodel.ProfileConstants.BEDTIME
 import fit.asta.health.profile.viewmodel.ProfileConstants.BMI
 import fit.asta.health.profile.viewmodel.ProfileConstants.BODY_TYPE
 import fit.asta.health.profile.viewmodel.ProfileConstants.DOB
@@ -33,11 +35,14 @@ import fit.asta.health.profile.viewmodel.ProfileConstants.EMAIL
 import fit.asta.health.profile.viewmodel.ProfileConstants.HEIGHT
 import fit.asta.health.profile.viewmodel.ProfileConstants.ID
 import fit.asta.health.profile.viewmodel.ProfileConstants.INJURIES_SINCE
+import fit.asta.health.profile.viewmodel.ProfileConstants.JENDTIME
+import fit.asta.health.profile.viewmodel.ProfileConstants.JSTARTTIME
 import fit.asta.health.profile.viewmodel.ProfileConstants.NAME
 import fit.asta.health.profile.viewmodel.ProfileConstants.PHONE
 import fit.asta.health.profile.viewmodel.ProfileConstants.PREGNANCY_WEEK
 import fit.asta.health.profile.viewmodel.ProfileConstants.PROFILE_DATA
 import fit.asta.health.profile.viewmodel.ProfileConstants.USER_IMG
+import fit.asta.health.profile.viewmodel.ProfileConstants.WAKEUPTIME
 import fit.asta.health.profile.viewmodel.ProfileConstants.WEIGHT
 import fit.asta.health.testimonials.model.domain.InputIntWrapper
 import fit.asta.health.testimonials.model.domain.InputWrapper
@@ -413,10 +418,14 @@ class ProfileViewModel
     private val bodyType = savedState.getStateFlow(BODY_TYPE, InputIntWrapper())
     val bmi = savedState.getStateFlow(BMI, InputWrapper())
 
-
     //Health
     val injuriesSince = savedState.getStateFlow(INJURIES_SINCE, InputWrapper())
 
+    //LifeStyle
+    val wakeUpTime = savedState.getStateFlow(WAKEUPTIME, InputWrapper())
+    val bedTime = savedState.getStateFlow(BEDTIME, InputWrapper())
+    val jStartTime = savedState.getStateFlow(JSTARTTIME, InputWrapper())
+    val jEndTime = savedState.getStateFlow(JENDTIME, InputWrapper())
 
     init {
         loadUserProfile()
@@ -800,6 +809,14 @@ class ProfileViewModel
                             ThreeToggleSelections.Third -> 3
                             null -> 0
                         },
+                        workingTime = Session(
+                            from = bedTime.value.value.toDouble(),
+                            to = wakeUpTime.value.value.toDouble()
+                        ),
+                        sleep = Session(
+                            from = jStartTime.value.value.toDouble(),
+                            to = jEndTime.value.value.toDouble()
+                        ),
                     ), Diet(
                         preference = convertDietArrayList(0),
                         nonVegDays = convertDietArrayList(1),
@@ -1027,6 +1044,30 @@ class ProfileViewModel
             is ProfileEvent.OnProfilePicClear -> {
                 savedState[USER_IMG] = userImg.value.copy(
                     localUrl = null, url = ""
+                )
+            }
+
+            is ProfileEvent.OnUserJEndTimeChange -> {
+                savedState[JENDTIME] = jEndTime.value.copy(
+                    value = event.jEndTime
+                )
+            }
+
+            is ProfileEvent.OnUserJStartTimeChange -> {
+                savedState[JSTARTTIME] = jStartTime.value.copy(
+                    value = event.jStartTime
+                )
+            }
+
+            is ProfileEvent.OnUserBedTimeChange -> {
+                savedState[BEDTIME] = bedTime.value.copy(
+                    value = event.bedTime
+                )
+            }
+
+            is ProfileEvent.OnUserWakeUpTimeChange -> {
+                savedState[WAKEUPTIME] = wakeUpTime.value.copy(
+                    value = event.wakeUpTime
                 )
             }
         }
