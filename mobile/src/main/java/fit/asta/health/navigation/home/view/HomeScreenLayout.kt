@@ -116,21 +116,20 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(560.dp)
+                            .height(320.dp)
                             .padding(horizontal = 16.dp),
-                        userScrollEnabled = false
+                        userScrollEnabled = true
                     ) {
                         it.forEachIndexed { _, tool ->
                             item {
                                 ToolsCardLayoutDemo(
-                                    type = tool.name,
-                                    cardTitle = tool.title,
-                                    imgUrl = tool.url
+                                    type = tool.name, cardTitle = tool.title, imgUrl = tool.url
                                 ) {
                                     when (it.lowercase(Locale.getDefault())) {
                                         "water" -> {
                                             WaterToolActivity.launch(context = context)
                                         }
+
                                         "steps" -> {
                                             WalkingActivity.launch(context = context)
                                         }

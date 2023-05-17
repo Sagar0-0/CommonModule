@@ -1124,10 +1124,10 @@ class ProfileViewModel
 
     val doAllDataInputsValid = combine(
         areDetailsInputsValid,
-        arePhyInputsValid,
-        areHealthInputsValid,
+        areBasicPhysiqueInputsValid,
+        areSelectedHealthOptionsNull,
         areLSValid,
-        areDietInputsValid
+        areDietInputsValid,
     ) { areDetailsInputsValid, arePhyInputsValid, areHealthInputsValid, areLSValid, areDietInputsValid ->
         areDetailsInputsValid && arePhyInputsValid && areHealthInputsValid && areLSValid && areDietInputsValid
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
