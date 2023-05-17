@@ -353,6 +353,8 @@ dependencies {
     def cal_version = "1.1.1"
     implementation "com.maxkeppeler.sheets-compose-dialogs:core:$cal_version"
     implementation "com.maxkeppeler.sheets-compose-dialogs:calendar:$cal_version"
+    // CLOCK
+    implementation "com.maxkeppeler.sheets-compose-dialogs:clock:$cal_version"
 
 }
 

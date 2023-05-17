@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.Text
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -15,17 +16,24 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import fit.asta.health.common.ui.components.PrimaryButton
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.navigation.home.view.component.NoInternetLayout
 import fit.asta.health.profile.createprofile.view.LifeStyleCreateBottomSheetType.*
+import fit.asta.health.profile.createprofile.view.components.CreateProfileTimePicker
 import fit.asta.health.profile.createprofile.view.components.ItemSelectionLayout
 import fit.asta.health.profile.model.domain.ComposeIndex
+import fit.asta.health.profile.model.domain.UserPropertyType
 import fit.asta.health.profile.view.*
+import fit.asta.health.profile.view.components.UserSleepCycles
 import fit.asta.health.profile.viewmodel.HPropState
 import fit.asta.health.profile.viewmodel.ProfileEvent
 import fit.asta.health.profile.viewmodel.ProfileViewModel
@@ -58,6 +66,21 @@ fun LifeStyleContent(
     val lfList by viewModel.lfPropertiesData.collectAsState()
 
 
+    //Time Picker Params
+
+    val clockWakeUpState = rememberUseCaseState()
+    val clockBedState = rememberUseCaseState()
+    val clockJStartState = rememberUseCaseState()
+    val clockJEndState = rememberUseCaseState()
+    val bedTime = remember { mutableStateOf("") }
+    val wakeUpTime = remember { mutableStateOf("") }
+    val jobStartTime = remember { mutableStateOf("") }
+    val jobEndTime = remember { mutableStateOf("") }
+    val showBedTimeContent = remember { mutableStateOf(false) }
+    val showWakeUpTimeContent = remember { mutableStateOf(false) }
+    val showJobStartContent = remember { mutableStateOf(false) }
+    val showJobEndContent = remember { mutableStateOf(false) }
+
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
     ) {
@@ -69,6 +92,78 @@ fun LifeStyleContent(
                 .background(color = MaterialTheme.colorScheme.background),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            //Sleep Schedule
+            LifeStyleTimePicker(
+                firstEvent = {
+                    showWakeUpTimeContent.value = true
+                    clockWakeUpState.show()
+                },
+                secondEvent = {
+                    showBedTimeContent.value = true
+                    clockBedState.show()
+                },
+                firstColValue = wakeUpTime.value,
+                secColValue = bedTime.value,
+                firstColType = "WAKE UP TIME ",
+                secColType = "BED TIME",
+                firstButtonType = "Select Wake Up Time",
+                secButtonType = "Select Bed Time"
+            )
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            //Job Schedule
+            LifeStyleTimePicker(
+                firstEvent = {
+                    showJobStartContent.value = true
+                    clockJStartState.show()
+                },
+                secondEvent = {
+                    showJobEndContent.value = true
+                    clockJEndState.show()
+                },
+                firstColValue = jobStartTime.value,
+                secColValue = jobEndTime.value,
+                firstColType = "JOB START TIME",
+                secColType = "JOB END TIME",
+                firstButtonType = "Select Job Start Time",
+                secButtonType = "Select Job End Time"
+            )
+
+            if (showWakeUpTimeContent.value) {
+                CreateProfileTimePicker(
+                    clockState = clockWakeUpState,
+                    onPositiveClick = { hours, minutes ->
+                        wakeUpTime.value = "$hours:$minutes"
+                    })
+            }
+
+            if (showBedTimeContent.value) {
+                CreateProfileTimePicker(
+                    clockState = clockBedState,
+                    onPositiveClick = { hours, minutes ->
+                        bedTime.value = "$hours:$minutes"
+                    })
+            }
+
+            if (showJobStartContent.value) {
+                CreateProfileTimePicker(
+                    clockState = clockJStartState,
+                    onPositiveClick = { hours, minutes ->
+                        jobStartTime.value = "$hours:$minutes"
+                    })
+            }
+
+            if (showJobEndContent.value) {
+                CreateProfileTimePicker(
+                    clockState = clockJEndState,
+                    onPositiveClick = { hours, minutes ->
+                        jobEndTime.value = "$hours:$minutes"
+                    })
+            }
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
@@ -89,7 +184,6 @@ fun LifeStyleContent(
                     thirdOption = "Very"
                 )
             }
-
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
@@ -231,8 +325,7 @@ fun LifeStyleCreateScreen(
         }
     }
 
-    ModalBottomSheetLayout(
-        modifier = Modifier.fillMaxSize(),
+    ModalBottomSheetLayout(modifier = Modifier.fillMaxSize(),
         sheetState = modalBottomSheetState,
         sheetContent = {
             Spacer(modifier = Modifier.height(1.dp))
@@ -285,6 +378,7 @@ fun LifeStyleCreateBottomSheetLayout(
                 is HPropState.NoInternet -> {
                     NoInternetLayout(onTryAgain = {})
                 }
+
                 is HPropState.Success -> {
                     ItemSelectionLayout(
                         cardList = state.properties,
@@ -294,6 +388,7 @@ fun LifeStyleCreateBottomSheetLayout(
                 }
             }
         }
+
         PREFERREDACTIVITIES -> {
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
@@ -302,6 +397,7 @@ fun LifeStyleCreateBottomSheetLayout(
                 is HPropState.NoInternet -> {
                     NoInternetLayout(onTryAgain = {})
                 }
+
                 is HPropState.Success -> {
                     ItemSelectionLayout(
                         cardList = state.properties,
@@ -311,6 +407,7 @@ fun LifeStyleCreateBottomSheetLayout(
                 }
             }
         }
+
         LIFESTYLETARGETS -> {
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
@@ -319,6 +416,7 @@ fun LifeStyleCreateBottomSheetLayout(
                 is HPropState.NoInternet -> {
                     NoInternetLayout(onTryAgain = {})
                 }
+
                 is HPropState.Success -> {
                     ItemSelectionLayout(
                         cardList = state.properties,
@@ -327,6 +425,82 @@ fun LifeStyleCreateBottomSheetLayout(
                     )
                 }
             }
+        }
+    }
+}
+
+
+@Composable
+private fun LifeStyleTimePicker(
+    firstEvent: () -> Unit,
+    secondEvent: () -> Unit,
+    firstColValue: String,
+    secColValue: String,
+    firstColType: String,
+    secColType: String,
+    firstButtonType: String,
+    secButtonType: String,
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.medium,
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
+    ) {
+
+        Column(modifier = Modifier.padding(vertical = 16.dp)) {
+
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+
+                Text(
+                    text = UserPropertyType.SleepSchedule.title,
+                    fontSize = 10.sp,
+                    lineHeight = 16.sp,
+                    letterSpacing = 1.5.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+                )
+
+            }
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                PrimaryButton(
+                    text = firstButtonType,
+                    event = firstEvent,
+                    enableButton = true,
+                    modifier = Modifier.weight(1f)
+                )
+                PrimaryButton(
+                    text = secButtonType,
+                    event = secondEvent,
+                    enableButton = true,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            Row(
+                Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
+            ) {
+                UserSleepCycles(columnType = firstColType, columnValue = firstColValue)
+                Spacer(modifier = Modifier.width(40.dp))
+                UserSleepCycles(columnType = secColType, columnValue = secColValue)
+            }
+
         }
     }
 }
