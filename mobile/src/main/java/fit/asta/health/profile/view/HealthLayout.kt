@@ -7,7 +7,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.model.domain.Health
 import fit.asta.health.profile.model.domain.UserPropertyType
 import fit.asta.health.profile.view.components.ProfileChipCard
@@ -23,10 +23,10 @@ fun HealthLayout(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(spacing.medium)
     ) {
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         health.healthHistory?.let { healthHistoryList ->
             ProfileChipCard(
@@ -36,7 +36,7 @@ fun HealthLayout(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         health.injuries?.let { injuriesList ->
             ProfileChipCard(
@@ -46,7 +46,7 @@ fun HealthLayout(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         health.bodyPart?.let { bodyPartsList ->
             ProfileChipCard(
@@ -56,7 +56,7 @@ fun HealthLayout(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         health.ailments?.let {
             ProfileChipCard(
@@ -66,7 +66,7 @@ fun HealthLayout(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         health.medications?.let {
             ProfileChipCard(
@@ -76,7 +76,7 @@ fun HealthLayout(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         health.healthTargets?.let {
             ProfileChipCard(
@@ -86,7 +86,7 @@ fun HealthLayout(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         health.addiction?.let { addictionList ->
             ProfileChipCard(
@@ -96,6 +96,6 @@ fun HealthLayout(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
     }
 }

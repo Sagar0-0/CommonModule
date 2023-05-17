@@ -12,10 +12,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowRow
+import fit.asta.health.common.ui.theme.cardElevation
+import fit.asta.health.common.ui.theme.imageSize
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.model.domain.HealthProperties
 import fit.asta.health.profile.viewmodel.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,11 +31,15 @@ fun ProfileChipCard(
     list: List<HealthProperties>,
 ) {
 
-    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp), elevation = 5.dp) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(spacing.small),
+        elevation = cardElevation.smallExtraMedium
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(spacing.medium)
         ) {
             Row(
                 Modifier.fillMaxWidth(),
@@ -47,9 +53,9 @@ fun ProfileChipCard(
                     Image(
                         painter = painterResource(id = icon),
                         contentDescription = null,
-                        modifier = Modifier.size(40.dp)
+                        modifier = Modifier.size(imageSize.largeMedium)
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(spacing.small))
                     Text(
                         text = title,
                         fontSize = 10.sp,
@@ -60,9 +66,9 @@ fun ProfileChipCard(
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
-            FlowRow(mainAxisSpacing = 8.dp, crossAxisSpacing = 4.dp) {
+            FlowRow(mainAxisSpacing = spacing.small, crossAxisSpacing = spacing.extraSmall) {
                 list.forEach {
                     ChipsForList(textOnChip = it.name)
                 }

@@ -45,11 +45,11 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
 
     //ValidInputs
     val isDetailValid by viewModel.areDetailsInputsValid.collectAsStateWithLifecycle()
-    val isPhyValid by viewModel.phyInputsValid.collectAsStateWithLifecycle()
-    val isHealthValid by viewModel.healthInputsValid.collectAsStateWithLifecycle()
+    val isPhyValid by viewModel.areBasicPhysiqueInputsValid.collectAsStateWithLifecycle()
+    val isHealthValid by viewModel.areSelectedHealthOptionsNull.collectAsStateWithLifecycle()
     val isLSValid by viewModel.areLSValid.collectAsStateWithLifecycle()
     val isDietValid by viewModel.dietInputsValid.collectAsStateWithLifecycle()
-    val doAllInputsValid by viewModel.doAllDataInputsValid.collectAsStateWithLifecycle()
+
 
     //Custom Dialog
     var showCustomDialogWithResult by remember { mutableStateOf(false) }

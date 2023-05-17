@@ -17,6 +17,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fit.asta.health.common.ui.theme.cardElevation
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.model.domain.Session
 
 
@@ -25,14 +27,18 @@ fun ProfileSessionCard(
     title: String,
     session: Session,
 ) {
-    Card(modifier = Modifier.fillMaxWidth(), elevation = 5.dp, shape = RoundedCornerShape(8.dp)) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = cardElevation.smallExtraMedium,
+        shape = RoundedCornerShape(spacing.small)
+    ) {
 
-        Column(modifier = Modifier.padding(vertical = 16.dp)) {
+        Column(modifier = Modifier.padding(vertical = spacing.medium)) {
 
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 8.dp),
+                    .padding(start = spacing.medium, end = spacing.small),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
 
@@ -47,7 +53,7 @@ fun ProfileSessionCard(
 
             }
 
-            Spacer(modifier = Modifier.height(15.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
             Row(
                 Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center

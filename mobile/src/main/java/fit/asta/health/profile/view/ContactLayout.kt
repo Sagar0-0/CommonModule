@@ -40,6 +40,7 @@ import fit.asta.health.common.ui.theme.ProfileBorder1
 import fit.asta.health.common.ui.theme.ProfileBorder2
 import fit.asta.health.common.ui.theme.ProfileBorder3
 import fit.asta.health.common.ui.theme.imageSize
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.profile.model.domain.Address
 import fit.asta.health.profile.model.domain.Contact
@@ -53,7 +54,7 @@ fun ContactLayout(
 
     Column(
         modifier = Modifier
-            .padding(top = 16.dp)
+            .padding(top = spacing.medium)
             .fillMaxWidth()
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -62,7 +63,7 @@ fun ContactLayout(
         //User Profile Photo with Spiral Design
         UserProfileImg(userProfilePic = basicDetails.url)
 
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(spacing.large))
 
         // User Details
         UserDetails(
@@ -72,14 +73,14 @@ fun ContactLayout(
             basicDetails.address,
         )
 
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(spacing.large))
 
         //User's Achievement
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(horizontal = spacing.medium),
+            horizontalArrangement = Arrangement.spacedBy(spacing.small)
         ) {
             UserAchievCard(
                 scoreBoard = "24/346",
@@ -95,13 +96,13 @@ fun ContactLayout(
             )
         }
 
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(spacing.large))
 
         // User's Profile Details
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = spacing.medium),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -131,7 +132,7 @@ fun ContactLayout(
             )
         }
 
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(spacing.large))
 
     }
 
@@ -150,7 +151,7 @@ private fun UserDetails(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 32.dp, end = 32.dp),
+            .padding(start = spacing.large, end = spacing.large),
         horizontalArrangement = Arrangement.Center
     ) {
         Box(Modifier.width(305.dp), contentAlignment = Alignment.Center) {
@@ -190,14 +191,15 @@ private fun UserDetails(
         address.address + " " + address.street + " " + address.city + " " + address.country + " - " + address.pin
 
     if (address.pin.isNotEmpty()) {
-        Row(modifier = Modifier.padding(horizontal = 32.dp, vertical = 16.dp)) {
+        Row(modifier = Modifier.padding(horizontal = spacing.large, vertical = spacing.medium)) {
             Box(
                 Modifier
                     .width(305.dp)
-                    .padding(end = 16.dp), contentAlignment = Alignment.Center
+                    .padding(end = spacing.medium),
+                contentAlignment = Alignment.Center
             ) {
 
-                Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(spacing.large))
                 Text(
                     text = adr,
                     fontFamily = FontFamily.Default,
@@ -223,7 +225,7 @@ fun UserProfileImg(userProfilePic: ProfileMedia) {
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.padding(start = 7.5.dp, end = 7.5.dp)
+        modifier = Modifier.padding(start = spacing.small, end = spacing.small)
     ) {
         Surface(
             shape = CircleShape,
@@ -280,16 +282,16 @@ fun UserAchievCard(
     Card(
         elevation = CardDefaults.cardElevation(),
         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onPrimary),
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(spacing.small),
         modifier = modifier
     ) {
-        Row(modifier = Modifier.padding(16.dp)) {
+        Row(modifier = Modifier.padding(spacing.medium)) {
             Image(
                 painter = painterResource(id = imageID),
                 contentDescription = null,
-                modifier = Modifier.size(42.dp)
+                modifier = Modifier.size(imageSize.largeMedium)
             )
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(spacing.medium))
             Column {
                 Text(
                     text = scoreBoard,
@@ -299,7 +301,7 @@ fun UserAchievCard(
                     color = Color.Black
                 )
 
-                Spacer(modifier = Modifier.height(2.dp))
+                Spacer(modifier = Modifier.height(spacing.minSmall))
 
                 Text(
                     text = cardType,
@@ -320,7 +322,7 @@ fun ProfileDetails(
     horizontalPadding: Double,
     verticalPadding: Int,
 ) {
-    Card(shape = RoundedCornerShape(8.dp), modifier = Modifier.width(67.75.dp)) {
+    Card(shape = RoundedCornerShape(spacing.small), modifier = Modifier.width(67.75.dp)) {
         Column(
             modifier = Modifier.padding(
                 horizontal = horizontalPadding.dp, vertical = verticalPadding.dp
@@ -332,9 +334,9 @@ fun ProfileDetails(
                 painter = painterResource(id = imageID),
                 contentDescription = null,
                 alignment = Alignment.Center,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(imageSize.extraMedium)
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(spacing.small))
             Text(
                 text = profileType,
                 fontFamily = FontFamily.Default,

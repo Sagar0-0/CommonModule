@@ -9,8 +9,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import fit.asta.health.R
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.model.domain.Physique
 import fit.asta.health.profile.view.components.FemaleLayout
 import fit.asta.health.profile.view.components.MaleLayout
@@ -23,11 +23,11 @@ fun PhysiqueLayout(
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(spacing.medium)
             .verticalScroll(rememberScrollState())
     ) {
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         if (phy.gender == 2) FemaleLayout(
             phy
@@ -35,13 +35,13 @@ fun PhysiqueLayout(
             phy
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         UserBodyType(
             bodyType = phy.bodyType.toString(), bodyImg = R.drawable.bodyfat
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
     }
 }

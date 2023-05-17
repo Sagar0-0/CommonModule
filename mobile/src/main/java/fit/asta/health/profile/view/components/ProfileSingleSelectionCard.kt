@@ -20,6 +20,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fit.asta.health.common.ui.theme.cardElevation
+import fit.asta.health.common.ui.theme.spacing
 
 @Composable
 fun ProfileSingleSelectionCard(
@@ -27,11 +29,15 @@ fun ProfileSingleSelectionCard(
     title: String,
     value: String,
 ) {
-    Card(modifier = Modifier.fillMaxWidth(), elevation = 5.dp, shape = RoundedCornerShape(8.dp)) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = cardElevation.smallExtraMedium,
+        shape = RoundedCornerShape(spacing.small)
+    ) {
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(spacing.medium),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -40,7 +46,7 @@ fun ProfileSingleSelectionCard(
                     contentDescription = null,
                     modifier = Modifier.size(40.dp)
                 )
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.width(spacing.medium))
                 Column {
                     androidx.compose.material3.Text(
                         text = title,
@@ -51,7 +57,7 @@ fun ProfileSingleSelectionCard(
                         color = Color.Black
                     )
 
-                    Spacer(modifier = Modifier.height(2.dp))
+                    Spacer(modifier = Modifier.height(spacing.minSmall))
 
                     androidx.compose.material3.Text(
                         text = value,

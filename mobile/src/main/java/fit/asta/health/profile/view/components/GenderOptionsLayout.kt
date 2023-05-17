@@ -17,8 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fit.asta.health.common.ui.theme.imageSize
+import fit.asta.health.common.ui.theme.spacing
 
 @Composable
 fun GenderOptionsLayout(
@@ -26,9 +27,8 @@ fun GenderOptionsLayout(
     cardType: String,
     cardValue: String,
 ) {
-    Column {
-
-        Box(Modifier.padding(start = 16.dp)) {
+    Column(modifier = Modifier.padding(spacing.medium)) {
+        Box {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
@@ -37,28 +37,30 @@ fun GenderOptionsLayout(
                     painter = painterResource(id = cardImg),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.size(40.dp))
+                    modifier = Modifier.size(imageSize.largeMedium)
+                )
 
-                Spacer(modifier = Modifier.padding(8.dp))
+                Spacer(modifier = Modifier.padding(spacing.small))
 
                 Column {
-                    Text(text = cardType,
+                    Text(
+                        text = cardType,
                         fontSize = 10.sp,
                         color = MaterialTheme.colorScheme.onBackground,
                         lineHeight = 16.sp,
-                        letterSpacing = 1.5.sp)
-                    Spacer(modifier = Modifier.height(11.dp))
-                    Text(text = cardValue,
-                        fontSize = 20.sp,
+                        letterSpacing = 1.5.sp
+                    )
+                    Spacer(modifier = Modifier.height(spacing.small))
+                    Text(
+                        text = cardValue,
+                        fontSize = 16.sp,
                         color = MaterialTheme.colorScheme.onBackground,
                         lineHeight = 24.sp,
                         letterSpacing = 0.15.sp,
-                        fontWeight = FontWeight.Bold)
+                        fontWeight = FontWeight.Bold
+                    )
                 }
             }
         }
-
-        Spacer(modifier = Modifier.height(41.dp))
-
     }
 }

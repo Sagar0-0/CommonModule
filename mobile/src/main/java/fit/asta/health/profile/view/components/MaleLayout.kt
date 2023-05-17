@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
+import fit.asta.health.common.ui.theme.cardElevation
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.model.domain.Physique
 
 @Composable
@@ -22,19 +24,20 @@ fun MaleLayout(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-            shape = RoundedCornerShape(8.dp), elevation = 5.dp
+            shape = RoundedCornerShape(spacing.small),
+            elevation = cardElevation.smallExtraMedium
         ) {
             GenderOptionsLayout(
                 cardImg = R.drawable.age, cardType = "AGE", cardValue = m.age.toString()
             )
         }
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(spacing.medium))
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-            shape = RoundedCornerShape(8.dp),
-            elevation = 5.dp
+            shape = RoundedCornerShape(spacing.small),
+            elevation = cardElevation.smallExtraMedium
         ) {
             GenderOptionsLayout(
                 cardImg = R.drawable.gender, cardType = "GENDER", cardValue = when (m.gender) {
@@ -47,45 +50,49 @@ fun MaleLayout(
             )
         }
     }
-    Spacer(modifier = Modifier.height(16.dp))
+    Spacer(modifier = Modifier.height(spacing.medium))
     Row(modifier = Modifier.fillMaxWidth()) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-            shape = RoundedCornerShape(8.dp),
-            elevation = 5.dp
+            shape = RoundedCornerShape(spacing.small),
+            elevation = cardElevation.smallExtraMedium
         ) {
             GenderOptionsLayout(
-                cardImg = R.drawable.height, cardType = "HEIGHT", cardValue = "${m.height}Cm"
+                cardImg = R.drawable.height,
+                cardType = "HEIGHT",
+                cardValue = "${m.height.toInt()} Cm"
             )
         }
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(spacing.medium))
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-            shape = RoundedCornerShape(8.dp),
-            elevation = 5.dp
+            shape = RoundedCornerShape(spacing.small),
+            elevation = cardElevation.smallExtraMedium
         ) {
             GenderOptionsLayout(
-                cardImg = R.drawable.weight, cardType = "WEIGHT", cardValue = "${m.weight}Kg"
+                cardImg = R.drawable.weight,
+                cardType = "WEIGHT",
+                cardValue = "${m.weight.toInt()} Kg"
             )
         }
     }
     Spacer(modifier = Modifier.height(16.dp))
-    Row(modifier = Modifier.fillMaxWidth(0.52f)) {
+    Row(modifier = Modifier.fillMaxWidth(0.53f)) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-            shape = RoundedCornerShape(8.dp),
-            elevation = 5.dp
+            shape = RoundedCornerShape(spacing.small),
+            elevation = cardElevation.smallExtraMedium
         ) {
             GenderOptionsLayout(
-                cardImg = R.drawable.bmi, cardType = "BMI", cardValue = m.bmi.toString()
+                cardImg = R.drawable.bmi, cardType = "BMI", cardValue = m.bmi.toInt().toString()
             )
         }
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(spacing.medium))
     }
 }

@@ -11,7 +11,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.model.domain.LifeStyle
 import fit.asta.health.profile.model.domain.UserPropertyType
 import fit.asta.health.profile.view.components.ProfileChipCard
@@ -31,10 +31,10 @@ fun LifeStyleLayout(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(spacing.medium)
     ) {
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         ProfileSessionCard(
             //icon = UserPropertyType.SleepSchedule.icon,
@@ -42,7 +42,7 @@ fun LifeStyleLayout(
             session = lifeStyle.sleep,
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         ProfileSessionCard(
             //icon = UserPropertyType.WorkSchedule.icon,
@@ -50,7 +50,7 @@ fun LifeStyleLayout(
             session = lifeStyle.workingTime,
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         lifeStyle.physicalActivity?.let {
             ProfileSingleSelectionCard(
@@ -67,7 +67,7 @@ fun LifeStyleLayout(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         lifeStyle.workingEnv?.let {
             ProfileSingleSelectionCard(
@@ -83,7 +83,7 @@ fun LifeStyleLayout(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         lifeStyle.workStyle?.let {
             ProfileSingleSelectionCard(
@@ -99,7 +99,7 @@ fun LifeStyleLayout(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         lifeStyle.workingHours?.let {
             ProfileSingleSelectionCard(
@@ -117,7 +117,7 @@ fun LifeStyleLayout(
         }
 
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         lifeStyle.curActivities?.let {
             ProfileChipCard(
@@ -127,7 +127,7 @@ fun LifeStyleLayout(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         lifeStyle.prefActivities?.let {
             ProfileChipCard(
@@ -137,7 +137,7 @@ fun LifeStyleLayout(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         lifeStyle.lifeStyleTargets?.let {
             ProfileChipCard(
@@ -147,7 +147,7 @@ fun LifeStyleLayout(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
     }
 
 }

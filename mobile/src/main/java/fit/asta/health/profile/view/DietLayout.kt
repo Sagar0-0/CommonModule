@@ -11,7 +11,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.model.domain.Diet
 import fit.asta.health.profile.model.domain.UserPropertyType
 import fit.asta.health.profile.view.components.ProfileChipCard
@@ -30,10 +30,10 @@ fun DietLayout(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(spacing.medium)
     ) {
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         diet.preference?.let {
             ProfileChipCard(
@@ -43,7 +43,7 @@ fun DietLayout(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         diet.nonVegDays?.let {
             ProfileChipCard(
@@ -53,7 +53,7 @@ fun DietLayout(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         diet.allergies?.let {
             ProfileChipCard(
@@ -63,7 +63,7 @@ fun DietLayout(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         diet.cuisines?.let {
             ProfileChipCard(
@@ -73,7 +73,7 @@ fun DietLayout(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         diet.foodRestrictions?.let {
             ProfileChipCard(
@@ -83,6 +83,6 @@ fun DietLayout(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
     }
 }
