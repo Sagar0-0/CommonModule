@@ -1,17 +1,9 @@
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
-package fit.asta.health.profile.createprofile.view.components
+package fit.asta.health.profile
 
 
-import android.util.Log
-import androidx.compose.animation.animateColor
-import androidx.compose.animation.core.updateTransition
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Divider
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
@@ -26,19 +18,19 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.MainActivity
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.profile.createprofile.view.DetailsCreateScreen
+import fit.asta.health.profile.createprofile.view.DietCreateScreen
+import fit.asta.health.profile.createprofile.view.HealthCreateScreen
+import fit.asta.health.profile.createprofile.view.LifeStyleCreateScreen
+import fit.asta.health.profile.createprofile.view.PhysiqueCreateScreen
+import fit.asta.health.profile.createprofile.view.components.Stepper
 import fit.asta.health.profile.viewmodel.ProfileViewModel
 import fit.asta.health.testimonials.view.create.CustomDialogWithResultExample
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -53,24 +45,20 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
 
     //ValidInputs
     val isDetailValid by viewModel.areDetailsInputsValid.collectAsStateWithLifecycle()
-    val isPhyValid by viewModel.phyInputsValid.collectAsStateWithLifecycle()
-    val isHealthValid by viewModel.healthInputsValid.collectAsStateWithLifecycle()
+    val isPhyValid by viewModel.areBasicPhysiqueInputsValid.collectAsStateWithLifecycle()
+    val isHealthValid by viewModel.areSelectedHealthOptionsNull.collectAsStateWithLifecycle()
     val isLSValid by viewModel.areLSValid.collectAsStateWithLifecycle()
     val isDietValid by viewModel.dietInputsValid.collectAsStateWithLifecycle()
 
+
     //Custom Dialog
     var showCustomDialogWithResult by remember { mutableStateOf(false) }
-
 
     val numberOfSteps = 5
 
     var currentStep by rememberSaveable { mutableStateOf(1) }
 
     val stepDescriptionList = arrayListOf("Details", "Physique", "Heath", "LifeStyle", "Diet")
-
-    var isSkipPressed by remember {
-        mutableStateOf(false)
-    }
 
     val iconList = listOf(
         Icons.Outlined.AccountCircle,
@@ -95,25 +83,25 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
         errorColor
     }
 
-    val phyColor = if (isPhyValid && !isSkipPressed) {
+    val phyColor = if (isPhyValid) {
         primaryColor
     } else {
         errorColor
     }
 
-    val healthColor = if (isHealthValid && !isSkipPressed) {
+    val healthColor = if (isHealthValid) {
         primaryColor
     } else {
         errorColor
     }
 
-    val lifeStyleColor = if (isLSValid && !isSkipPressed) {
+    val lifeStyleColor = if (isLSValid) {
         primaryColor
     } else {
         errorColor
     }
 
-    val dietColor = if (isDietValid && !isSkipPressed) {
+    val dietColor = if (isDietValid) {
         primaryColor
     } else {
         errorColor
@@ -163,9 +151,6 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
                         icons = iconList[step - 1],
                         logic = {
                             currentStep = step
-                            Log.d(
-                                "currSteps", " LS Boolean -> ${isLSValid && !isSkipPressed}"
-                            )
                         },
                         detailsColor = detailsColor,
                         phyColor = phyColor,
@@ -190,15 +175,15 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
         ) {
             when (currentStep) {
                 1 -> {
-                    DetailsContent(eventNext = {
+                    DetailsCreateScreen(eventNext = {
                         currentStep += 1
                     }, onSkipEvent = {
                         currentStep += 1
-                        isSkipPressed = true
                     })
                 }
+
                 2 -> {
-                    PhysiqueContent(
+                    PhysiqueCreateScreen(
                         eventNext = {
                             currentStep += 1
                         },
@@ -207,10 +192,10 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
                         },
                         onSkipEvent = {
                             currentStep += 1
-                            isSkipPressed = true
                         },
                     )
                 }
+
                 3 -> {
                     HealthCreateScreen(eventNext = {
                         currentStep += 1
@@ -218,9 +203,9 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
                         currentStep -= 1
                     }, onSkipEvent = {
                         currentStep += 1
-                        isSkipPressed = true
                     })
                 }
+
                 4 -> {
                     LifeStyleCreateScreen(
                         eventNext = {
@@ -231,10 +216,10 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
                         },
                         onSkipEvent = {
                             currentStep += 1
-                            isSkipPressed = true
                         },
                     )
                 }
+
                 5 -> {
                     DietCreateScreen(eventPrevious = {
                         currentStep -= 1
@@ -266,164 +251,3 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
 
 }
 
-@Composable
-fun Stepper(
-    modifier: Modifier = Modifier,
-    step: Int,
-    isCompete: Boolean,
-    isCurrent: Boolean,
-    isComplete: Boolean,
-    isRainbow: Boolean,
-    stepDescription: String,
-    unSelectedColor: Color,
-    selectedColor: Color?,
-    icons: ImageVector,
-    logic: () -> Unit,
-    detailsColor: Color,
-    phyColor: Color,
-    healthColor: Color,
-    lifeStyleColor: Color,
-    dietColor: Color,
-    isDetailValid: Boolean,
-    isPhyValid: Boolean,
-    isHealthValid: Boolean,
-    isLSValid: Boolean,
-    isDietValid: Boolean,
-) {
-
-    val rainBowColor = Brush.linearGradient(
-        listOf(
-            Color.Magenta,
-            Color.Blue,
-            Color.Cyan,
-            Color.Green,
-            Color.Yellow,
-            Color.Red,
-        )
-    )
-
-    val transition = updateTransition(isCompete, label = "")
-
-    val innerCircleColor by transition.animateColor(label = "innerCircleColor") {
-        if (it) selectedColor ?: MaterialTheme.colorScheme.primary else unSelectedColor
-    }
-
-    val txtColor by transition.animateColor(label = "txtColor") {
-        if (it || isCurrent) selectedColor ?: MaterialTheme.colorScheme.primary else unSelectedColor
-    }
-
-    val color by transition.animateColor(label = "color") {
-        if (it || isCurrent) selectedColor ?: MaterialTheme.colorScheme.primary else Color.Gray
-    }
-
-    val borderStroke: BorderStroke = if (isRainbow) {
-        BorderStroke(2.dp, rainBowColor)
-    } else {
-        BorderStroke(2.dp, color)
-    }
-
-    val textSize by remember { mutableStateOf(12.sp) }
-
-    ConstraintLayout(modifier = modifier) {
-
-        val (circle, txt, line) = createRefs()
-
-        Surface(shape = CircleShape,
-            border = borderStroke,
-            modifier = Modifier
-                .size(30.dp)
-                .constrainAs(circle) {
-                    top.linkTo(parent.top)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
-                    start.linkTo(parent.start)
-                }) {
-
-            Box(contentAlignment = Alignment.Center) {
-
-                IconButton(onClick = logic) {
-
-                    //after click
-
-                    if (isCompete) {
-                        Icon(
-                            imageVector = icons,
-                            contentDescription = "done",
-                            modifier = modifier.padding(4.dp),
-                            tint = when (step) {
-                                1 -> {
-                                    detailsColor
-                                }
-                                2 -> {
-                                    phyColor
-                                }
-                                3 -> {
-                                    healthColor
-                                }
-                                4 -> {
-                                    lifeStyleColor
-                                }
-                                else -> {
-                                    dietColor
-                                }
-                            }
-                        )
-                    } else {
-
-                        //before click
-//                        IconButton(onClick = logic) {
-                        Icon(
-                            imageVector = icons,
-                            contentDescription = "done",
-                            modifier = modifier.padding(4.dp),
-                            tint = Color.Black
-                        )
-//                        }
-
-                    }
-                }
-            }
-        }
-
-        Text(
-            modifier = Modifier.constrainAs(txt) {
-                top.linkTo(circle.bottom, margin = 3.dp)
-                start.linkTo(circle.start)
-                end.linkTo(circle.end)
-                bottom.linkTo(parent.bottom)
-            },
-            fontSize = textSize,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            text = stepDescription,
-            color = txtColor,
-        )
-
-        if (!isComplete) {
-            //Line
-            if (isRainbow) {
-                Divider(
-                    modifier = Modifier
-                        .constrainAs(line) {
-                            top.linkTo(circle.top)
-                            bottom.linkTo(circle.bottom)
-                            start.linkTo(circle.end)
-                        }
-                        .background(rainBowColor),
-                    thickness = 1.dp,
-                )
-            } else {
-                Divider(
-                    modifier = Modifier.constrainAs(line) {
-                        top.linkTo(circle.top)
-                        bottom.linkTo(circle.bottom)
-                        start.linkTo(circle.end)
-                    },
-                    color = innerCircleColor,
-                    thickness = 1.dp,
-                )
-            }
-        }
-    }
-
-}

@@ -21,6 +21,12 @@ object ProfileConstants {
     const val BODY_TYPE = "bodyType"
     const val BMI = "bmi"
 
+    //LifeStyle
+    const val WAKEUPTIME = "wakeUpTime"
+    const val BEDTIME = "bedTime"
+    const val JSTARTTIME = "jStartTime"
+    const val JENDTIME = "jEndTime"
+
     const val INJURIES_SINCE = "injuries_since"
 
     const val USER_SELECTION = "userSelection"

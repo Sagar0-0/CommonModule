@@ -11,12 +11,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.model.domain.LifeStyle
 import fit.asta.health.profile.model.domain.UserPropertyType
-import fit.asta.health.profile.view.components.ChipCard
-import fit.asta.health.profile.view.components.SessionCard
-import fit.asta.health.profile.view.components.SingleSelectionCard
+import fit.asta.health.profile.view.components.ProfileChipCard
+import fit.asta.health.profile.view.components.ProfileSessionCard
+import fit.asta.health.profile.view.components.ProfileSingleSelectionCard
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -31,29 +31,29 @@ fun LifeStyleLayout(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(spacing.medium)
     ) {
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
-        SessionCard(
+        ProfileSessionCard(
             //icon = UserPropertyType.SleepSchedule.icon,
             title = UserPropertyType.SleepSchedule.title,
             session = lifeStyle.sleep,
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
-        SessionCard(
+        ProfileSessionCard(
             //icon = UserPropertyType.WorkSchedule.icon,
             title = UserPropertyType.WorkSchedule.title,
             session = lifeStyle.workingTime,
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         lifeStyle.physicalActivity?.let {
-            SingleSelectionCard(
+            ProfileSingleSelectionCard(
                 icon = UserPropertyType.PhysActive.icon,
                 title = UserPropertyType.PhysActive.title,
                 value = when (it) {
@@ -67,61 +67,87 @@ fun LifeStyleLayout(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
-        SingleSelectionCard(
-            icon = UserPropertyType.WorkingEnv.icon,
-            title = UserPropertyType.WorkingEnv.title,
-            value = lifeStyle.workingEnv.toString(),
-        )
+        lifeStyle.workingEnv?.let {
+            ProfileSingleSelectionCard(
+                icon = UserPropertyType.WorkingEnv.icon,
+                title = UserPropertyType.WorkingEnv.title,
+                value = when (it) {
+                    1 -> "Standing"
+                    2 -> "Sitting"
+                    else -> {
+                        null
+                    }
+                }.toString(),
+            )
+        }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
-        SingleSelectionCard(
-            icon = UserPropertyType.WorkStyle.icon,
-            title = UserPropertyType.WorkStyle.title,
-            value = lifeStyle.workStyle.toString(),
-        )
+        lifeStyle.workStyle?.let {
+            ProfileSingleSelectionCard(
+                icon = UserPropertyType.WorkStyle.icon,
+                title = UserPropertyType.WorkStyle.title,
+                value = when (it) {
+                    1 -> "Indoor"
+                    2 -> "Outdoor"
+                    else -> {
+                        null
+                    }
+                }.toString(),
+            )
+        }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
-        SingleSelectionCard(
-            icon = UserPropertyType.WorkingHours.icon,
-            title = UserPropertyType.WorkingHours.title,
-            value = lifeStyle.workingHours.toString(),
-        )
+        lifeStyle.workingHours?.let {
+            ProfileSingleSelectionCard(
+                icon = UserPropertyType.WorkingHours.icon,
+                title = UserPropertyType.WorkingHours.title,
+                value = when (it) {
+                    1 -> "Morning"
+                    2 -> "Afternoon"
+                    3 -> "Evening"
+                    else -> {
+                        null
+                    }
+                }.toString(),
+            )
+        }
 
-        Spacer(modifier = Modifier.height(16.dp))
+
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         lifeStyle.curActivities?.let {
-            ChipCard(
+            ProfileChipCard(
                 icon = UserPropertyType.CurActivities.icon,
                 title = UserPropertyType.CurActivities.title,
                 list = it,
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         lifeStyle.prefActivities?.let {
-            ChipCard(
+            ProfileChipCard(
                 icon = UserPropertyType.PrefActivities.icon,
                 title = UserPropertyType.PrefActivities.title,
                 list = it,
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
 
         lifeStyle.lifeStyleTargets?.let {
-            ChipCard(
+            ProfileChipCard(
                 icon = UserPropertyType.LifeStyleTargets.icon,
                 title = UserPropertyType.LifeStyleTargets.title,
                 list = it,
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.medium))
     }
 
 }

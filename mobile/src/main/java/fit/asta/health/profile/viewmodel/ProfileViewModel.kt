@@ -21,11 +21,13 @@ import fit.asta.health.profile.model.domain.HealthProperties
 import fit.asta.health.profile.model.domain.LifeStyle
 import fit.asta.health.profile.model.domain.Physique
 import fit.asta.health.profile.model.domain.ProfileMedia
+import fit.asta.health.profile.model.domain.Session
 import fit.asta.health.profile.model.domain.ThreeToggleSelections
 import fit.asta.health.profile.model.domain.TwoToggleSelections
 import fit.asta.health.profile.model.domain.UserProfile
 import fit.asta.health.profile.viewmodel.ProfileConstants.ADDRESS
 import fit.asta.health.profile.viewmodel.ProfileConstants.AGE
+import fit.asta.health.profile.viewmodel.ProfileConstants.BEDTIME
 import fit.asta.health.profile.viewmodel.ProfileConstants.BMI
 import fit.asta.health.profile.viewmodel.ProfileConstants.BODY_TYPE
 import fit.asta.health.profile.viewmodel.ProfileConstants.DOB
@@ -33,11 +35,14 @@ import fit.asta.health.profile.viewmodel.ProfileConstants.EMAIL
 import fit.asta.health.profile.viewmodel.ProfileConstants.HEIGHT
 import fit.asta.health.profile.viewmodel.ProfileConstants.ID
 import fit.asta.health.profile.viewmodel.ProfileConstants.INJURIES_SINCE
+import fit.asta.health.profile.viewmodel.ProfileConstants.JENDTIME
+import fit.asta.health.profile.viewmodel.ProfileConstants.JSTARTTIME
 import fit.asta.health.profile.viewmodel.ProfileConstants.NAME
 import fit.asta.health.profile.viewmodel.ProfileConstants.PHONE
 import fit.asta.health.profile.viewmodel.ProfileConstants.PREGNANCY_WEEK
 import fit.asta.health.profile.viewmodel.ProfileConstants.PROFILE_DATA
 import fit.asta.health.profile.viewmodel.ProfileConstants.USER_IMG
+import fit.asta.health.profile.viewmodel.ProfileConstants.WAKEUPTIME
 import fit.asta.health.profile.viewmodel.ProfileConstants.WEIGHT
 import fit.asta.health.testimonials.model.domain.InputIntWrapper
 import fit.asta.health.testimonials.model.domain.InputWrapper
@@ -63,6 +68,7 @@ class ProfileViewModel
     private val savedState: SavedStateHandle,
 ) : ViewModel() {
 
+
     private val _stateSubmit = MutableStateFlow<ProfileSubmitState>(ProfileSubmitState.Loading)
     val stateSubmit = _stateSubmit.asStateFlow()
 
@@ -73,6 +79,7 @@ class ProfileViewModel
 
     private val _mutableState = MutableStateFlow<ProfileGetState>(ProfileGetState.Loading)
     val state = _mutableState.asStateFlow()
+
 
     private val _mutableEditState = MutableStateFlow<ProfileGetState>(ProfileGetState.Loading)
     val stateEdit = _mutableEditState.asStateFlow()
@@ -109,6 +116,7 @@ class ProfileViewModel
     val allInputsValid: StateFlow<Boolean>
         get() = areAllInputsValid
 
+
     private fun doAllInputsValid(valid: Boolean) {
         areAllInputsValid.value = valid
     }
@@ -118,9 +126,11 @@ class ProfileViewModel
     val phyInputsValid: StateFlow<Boolean>
         get() = arePhyInputsValid
 
+
     private fun isPhyValid(valid: Boolean) {
         arePhyInputsValid.value = valid
     }
+
 
     //Any Injury
     private val _selectedInjOption =
@@ -128,11 +138,13 @@ class ProfileViewModel
     val selectedInjOption: StateFlow<TwoToggleSelections?>
         get() = _selectedInjOption
 
+
     //Body Part
     private val _selectedBodyPartOption =
         MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
     val selectedBdyPartOption: StateFlow<TwoToggleSelections?>
         get() = _selectedBodyPartOption
+
 
     //Any Ailments
     private val _selectedAilOption =
@@ -140,11 +152,13 @@ class ProfileViewModel
     val selectedAilOption: StateFlow<TwoToggleSelections?>
         get() = _selectedAilOption
 
+
     //Any Medications
     private val _selectedMedOption =
         MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
     val selectedMedOption: StateFlow<TwoToggleSelections?>
         get() = _selectedMedOption
+
 
     //Any Health Target
     private val _selectedHealthTarOption =
@@ -158,17 +172,20 @@ class ProfileViewModel
     val selectedAddictionOption: StateFlow<TwoToggleSelections?>
         get() = _selectedAddictionOption
 
+
     //Food Res
     private val _selectedFoodResOption =
         MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
     val selectedFoodResOption: StateFlow<TwoToggleSelections?>
         get() = _selectedFoodResOption
 
+
     //Is Pregnant
     private val _isPregnantOption =
         MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
     val selectedIsPregnant: StateFlow<TwoToggleSelections?>
         get() = _isPregnantOption
+
 
     //Is onPeriod
     private val _isOnPeriodOption =
@@ -180,6 +197,7 @@ class ProfileViewModel
     private val _selectedGenderOption = MutableStateFlow<ThreeToggleSelections?>(null)
     val selectedGender: StateFlow<ThreeToggleSelections?>
         get() = _selectedGenderOption
+
 
     //Physically Active
     private val _selectedPhyActOption = MutableStateFlow<ThreeToggleSelections?>(null)
@@ -399,10 +417,14 @@ class ProfileViewModel
     private val bodyType = savedState.getStateFlow(BODY_TYPE, InputIntWrapper())
     val bmi = savedState.getStateFlow(BMI, InputWrapper())
 
-
     //Health
     val injuriesSince = savedState.getStateFlow(INJURIES_SINCE, InputWrapper())
 
+    //LifeStyle
+    val wakeUpTime = savedState.getStateFlow(WAKEUPTIME, InputWrapper())
+    val bedTime = savedState.getStateFlow(BEDTIME, InputWrapper())
+    val jStartTime = savedState.getStateFlow(JSTARTTIME, InputWrapper())
+    val jEndTime = savedState.getStateFlow(JENDTIME, InputWrapper())
 
     init {
         loadUserProfile()
@@ -786,6 +808,14 @@ class ProfileViewModel
                             ThreeToggleSelections.Third -> 3
                             null -> 0
                         },
+                        workingTime = Session(
+                            from = bedTime.value.value.toDouble(),
+                            to = wakeUpTime.value.value.toDouble()
+                        ),
+                        sleep = Session(
+                            from = jStartTime.value.value.toDouble(),
+                            to = jEndTime.value.value.toDouble()
+                        ),
                     ), Diet(
                         preference = convertDietArrayList(0),
                         nonVegDays = convertDietArrayList(1),
@@ -1010,16 +1040,38 @@ class ProfileViewModel
 
             is ProfileEvent.DoAllInputsValid -> doAllInputsValid(valid = event.valid)
             is ProfileEvent.IsDietValid -> isDietValid(event.valid)
+            is ProfileEvent.OnProfilePicClear -> {
+                savedState[USER_IMG] = userImg.value.copy(
+                    localUrl = null, url = ""
+                )
+            }
 
+            is ProfileEvent.OnUserJEndTimeChange -> {
+                savedState[JENDTIME] = jEndTime.value.copy(
+                    value = event.jEndTime
+                )
+            }
+
+            is ProfileEvent.OnUserJStartTimeChange -> {
+                savedState[JSTARTTIME] = jStartTime.value.copy(
+                    value = event.jStartTime
+                )
+            }
+
+            is ProfileEvent.OnUserBedTimeChange -> {
+                savedState[BEDTIME] = bedTime.value.copy(
+                    value = event.bedTime
+                )
+            }
+
+            is ProfileEvent.OnUserWakeUpTimeChange -> {
+                savedState[WAKEUPTIME] = wakeUpTime.value.copy(
+                    value = event.wakeUpTime
+                )
+            }
         }
 
     }
-
-
-    private fun isCreateUserProfileDirty(): Boolean {
-        return profileData.value.contact.name != name.value.value || profileData.value.contact.email != email.value.value || profileData.value.contact.dob != dob.value.value || profileData.value.physique.age != age.value.value.toInt() || profileData.value.physique.weight != weight.value.value.toFloat() || profileData.value.physique.height != height.value.value.toFloat() || profileData.value.physique.pregnancyWeek != pregnancyWeek.value.value.toInt() || profileData.value.health.injurySince != injuriesSince.value.value.toInt() // || profileData.value.contact.url != userImg.value.url  || profileData.value.contact.url != userImg.value.localUrl?.path
-    }
-
 
     // Details Input Validity
     val areDetailsInputsValid = combine(name, email) { name, email ->
@@ -1043,13 +1095,11 @@ class ProfileViewModel
         _isOnPeriodOption != null && _isPregnantOption != null && areBasicPhysiqueInputsValid
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
-
     val arePregnancyInputValid = combine(
         areFemaleInputNull, _isPregnantOption, pregnancyWeek
     ) { areFemaleInputNull, _isPregnantOption, pregnancyWeek ->
         areFemaleInputNull && _isPregnantOption == TwoToggleSelections.First && pregnancyWeek.value.isNotEmpty() && pregnancyWeek.error is UiString.Empty
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
-
 
     //Health Inputs Valid
     val areSelectedHealthOptionsNull = combine(
@@ -1062,7 +1112,6 @@ class ProfileViewModel
         selectedHealthHis != null && selectedInjury != null && selectedAil != null && selectedMed != null && selectedHealthTar != null
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
-
     //LifeStyle Inputs Valid
     val areLSValid = combine(
         _selectedPhyActOption,
@@ -1073,13 +1122,12 @@ class ProfileViewModel
         _selectedPhyActOption != null && _selectedWorkingEnvOption != null && _selectedWorkStyleOption != null && _selectedWorkingHrsOption != null
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
-
     val doAllDataInputsValid = combine(
         areDetailsInputsValid,
-        arePhyInputsValid,
-        areHealthInputsValid,
+        areBasicPhysiqueInputsValid,
+        areSelectedHealthOptionsNull,
         areLSValid,
-        areDietInputsValid
+        areDietInputsValid,
     ) { areDetailsInputsValid, arePhyInputsValid, areHealthInputsValid, areLSValid, areDietInputsValid ->
         areDetailsInputsValid && arePhyInputsValid && areHealthInputsValid && areLSValid && areDietInputsValid
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)

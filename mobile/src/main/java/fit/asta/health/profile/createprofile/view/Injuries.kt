@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
-package fit.asta.health.profile.createprofile.view.components
+package fit.asta.health.profile.createprofile.view
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -22,12 +22,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.profile.createprofile.view.components.RowToggleButtonGroup
 import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.HealthProperties
 import fit.asta.health.profile.model.domain.TwoToggleSelections
 import fit.asta.health.profile.view.ButtonListTypes
 import fit.asta.health.profile.view.TwoTogglesGroup
-import fit.asta.health.profile.view.components.AddIcon
+import fit.asta.health.profile.view.components.ProfileAddIcon
 import fit.asta.health.profile.view.components.RemoveChipOnCard
 import fit.asta.health.profile.viewmodel.ProfileEvent
 import fit.asta.health.profile.viewmodel.ProfileViewModel
@@ -90,7 +91,7 @@ fun InjuriesLayout(
                     }
 
                     if (selectedOption == TwoToggleSelections.First) {
-                        AddIcon(onClick = onItemsSelect)
+                        ProfileAddIcon(onClick = onItemsSelect)
                     }
 
                 }
@@ -188,7 +189,7 @@ fun InjuriesLayout(
                                 style = MaterialTheme.typography.titleSmall
                             )
                         }
-                        AddIcon(onClick = onItemsSelect2)
+                        ProfileAddIcon(onClick = onItemsSelect2)
                     }
 
                     Spacer(modifier = Modifier.height(spacing.small))

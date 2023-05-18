@@ -18,7 +18,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.ui.AppTheme
-import fit.asta.health.profile.createprofile.view.components.CreateProfileLayout
 import fit.asta.health.profile.viewmodel.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 

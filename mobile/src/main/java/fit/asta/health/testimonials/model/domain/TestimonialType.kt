@@ -24,6 +24,7 @@ sealed class TestimonialType(
                 else -> TEXT
             }
         }
+
     }
 
 

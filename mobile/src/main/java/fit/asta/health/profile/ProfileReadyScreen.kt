@@ -9,16 +9,34 @@ import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Emergency
-import androidx.compose.material.icons.outlined.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.Egg
+import androidx.compose.material.icons.outlined.Face
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.NavigateBefore
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.profile.model.domain.UserProfile
-import fit.asta.health.profile.view.*
+import fit.asta.health.profile.view.ContactLayout
+import fit.asta.health.profile.view.DietLayout
+import fit.asta.health.profile.view.HealthLayout
+import fit.asta.health.profile.view.LifeStyleLayout
+import fit.asta.health.profile.view.PhysiqueLayout
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
@@ -31,6 +49,7 @@ fun ProfileReadyScreen(userProfile: UserProfile) {
 
     Scaffold(topBar = {
         Column {
+
             TopAppBar(title = {
                 Text(text = "Profile Screen")
             }, navigationIcon = {
@@ -50,7 +69,7 @@ fun ProfileReadyScreen(userProfile: UserProfile) {
                 }
             })
 
-            BottomNavigation(backgroundColor = Color.White) {
+            BottomNavigation(backgroundColor = Color.White, elevation = 0.dp) {
                 BottomNavigationItem(selected = false, onClick = { content = 1 }, icon = {
                     Icon(Icons.Outlined.AccountCircle, contentDescription = "Profile Screen 1")
                 }, label = {
@@ -85,15 +104,19 @@ fun ProfileReadyScreen(userProfile: UserProfile) {
                 1 -> {
                     ContactLayout(basicDetails = userProfile.contact)
                 }
+
                 2 -> {
                     PhysiqueLayout(phy = userProfile.physique)
                 }
+
                 3 -> {
                     HealthLayout(health = userProfile.health)
                 }
+
                 4 -> {
                     LifeStyleLayout(lifeStyle = userProfile.lifeStyle)
                 }
+
                 5 -> {
                     DietLayout(diet = userProfile.diet)
                 }

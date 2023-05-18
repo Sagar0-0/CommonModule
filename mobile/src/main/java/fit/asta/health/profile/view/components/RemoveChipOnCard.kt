@@ -41,7 +41,7 @@ fun RemoveChipOnCard(
 
             if (checkedState.value) {
                 Spacer(modifier = Modifier.width(4.dp))
-                DeleteIcon()
+                ProfileDeleteIcon()
             }
 
         }
@@ -69,7 +69,7 @@ fun AddChipOnCard(
 
         Spacer(modifier = Modifier.width(4.dp))
 
-        OnlyAddIcon()
+        ProfileOnlyAddIcon()
 
     }
 

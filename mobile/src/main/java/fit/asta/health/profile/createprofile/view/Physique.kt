@@ -2,15 +2,14 @@
     ExperimentalCoroutinesApi::class,
     ExperimentalMaterial3Api::class,
     ExperimentalCoroutinesApi::class,
-    ExperimentalCoroutinesApi::class, ExperimentalCoroutinesApi::class
+    ExperimentalCoroutinesApi::class,
+    ExperimentalCoroutinesApi::class
 )
 
-package fit.asta.health.profile.createprofile.view.components
+package fit.asta.health.profile.createprofile.view
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -35,7 +34,8 @@ import fit.asta.health.common.ui.components.PrimaryButton
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiString
-import fit.asta.health.profile.bottomsheets.components.BodyTypeBottomSheetLayout
+import fit.asta.health.profile.createprofile.view.components.BodyTypeLayout
+import fit.asta.health.profile.createprofile.view.components.RowToggleButtonGroup
 import fit.asta.health.profile.model.domain.ThreeToggleSelections
 import fit.asta.health.profile.model.domain.TwoToggleSelections
 import fit.asta.health.profile.view.ThreeTogglesGroups
@@ -49,7 +49,7 @@ import java.util.*
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PhysiqueContent(
+fun PhysiqueCreateScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     eventPrevious: (() -> Unit)? = null,
     eventNext: (() -> Unit)? = null,
@@ -182,75 +182,104 @@ fun PhysiqueContent(
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                userScrollEnabled = false,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(100.dp),
-                horizontalArrangement = Arrangement.spacedBy(spacing.small)
-            ) {
-
-                listOf(userWeight, userHeight).forEachIndexed { componentIndex, inputType ->
-                    item {
-                        Column {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Text(
-                                    text = when (componentIndex) {
-                                        0 -> "Weight"
-                                        1 -> "Height"
-                                        else -> {
-                                            ""
-                                        }
-                                    },
-                                    color = MaterialTheme.colorScheme.onTertiaryContainer,
-                                    style = MaterialTheme.typography.titleSmall
-                                )
-                                RowToggleButtonGroup(
-                                    buttonCount = 2,
-                                    onButtonClick = { index -> println(index) },
-                                    buttonTexts = when (componentIndex) {
-                                        0 -> arrayOf("kg", "lb")
-                                        1 -> arrayOf("in", "cm")
-                                        else -> emptyArray()
-                                    },
-                                    modifier = Modifier.size(width = 80.dp, height = 24.dp)
-                                )
-                            }
-                            Spacer(modifier = Modifier.height(spacing.small))
-                            ValidateNumberField(
-                                value = inputType.value,
-                                onValueChange = {
-                                    when (componentIndex) {
-                                        0 -> {
-                                            viewModel.onEvent(ProfileEvent.OnUserWeightChange(weight = it))
-                                        }
-                                        1 -> {
-                                            viewModel.onEvent(ProfileEvent.OnUserHeightChange(height = it))
-                                        }
-                                    }
-                                },
-                                singleLine = true,
-                                modifier = Modifier.height(48.dp),
-                                keyboardOptions = KeyboardOptions(
-                                    keyboardType = KeyboardType.Number, imeAction = ImeAction.Next
-                                ),
-                                keyboardActions = KeyboardActions(onNext = {
-                                    focusManager.moveFocus(
-                                        FocusDirection.Next
-                                    )
-                                }),
-                                showError = inputType.error !is UiString.Empty,
-                                errorMessage = inputType.error
+            Column(Modifier.fillMaxWidth()) {
+                Row(
+                    Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(spacing.small)
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = "Weight",
+                                color = MaterialTheme.colorScheme.onTertiaryContainer,
+                                style = MaterialTheme.typography.titleSmall
+                            )
+                            RowToggleButtonGroup(
+                                buttonCount = 2,
+                                onButtonClick = { index -> println(index) },
+                                buttonTexts = arrayOf("kg", "lb"),
+                                modifier = Modifier.size(width = 80.dp, height = 24.dp)
                             )
                         }
+                        Spacer(modifier = Modifier.height(spacing.small))
+                        ValidateNumberField(
+                            value = userWeight.value,
+                            onValueChange = {
+                                viewModel.onEvent(ProfileEvent.OnUserWeightChange(weight = it))
+                            },
+                            singleLine = true,
+                            modifier = Modifier.height(48.dp),
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Number, imeAction = ImeAction.Next
+                            ),
+                            keyboardActions = KeyboardActions(onNext = {
+                                focusManager.moveFocus(
+                                    FocusDirection.Next
+                                )
+                            })
+                        )
+                    }
+                    Column(modifier = Modifier.weight(1f)) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = "Height",
+                                color = MaterialTheme.colorScheme.onTertiaryContainer,
+                                style = MaterialTheme.typography.titleSmall
+                            )
+                            RowToggleButtonGroup(
+                                buttonCount = 2,
+                                onButtonClick = { index -> println(index) },
+                                buttonTexts = arrayOf("cm", "in"),
+                                modifier = Modifier.size(width = 80.dp, height = 24.dp)
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(spacing.small))
+                        ValidateNumberField(
+                            value = userHeight.value,
+                            onValueChange = {
+                                viewModel.onEvent(ProfileEvent.OnUserHeightChange(height = it))
+                            },
+                            singleLine = true,
+                            modifier = Modifier.height(48.dp),
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Number, imeAction = ImeAction.Done
+                            ),
+                            keyboardActions = KeyboardActions(onDone = {
+                                focusManager.clearFocus()
+                            })
+                        )
                     }
                 }
-
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    if (userWeight.error !is UiString.Empty) {
+                        Spacer(modifier = Modifier.height(spacing.minSmall))
+                        Text(
+                            text = userWeight.error.asString(),
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.titleSmall
+                        )
+                    }
+                }
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    if (userHeight.error !is UiString.Empty) {
+                        Spacer(modifier = Modifier.height(spacing.minSmall))
+                        Text(
+                            text = userHeight.error.asString(),
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.titleSmall
+                        )
+                    }
+                }
             }
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
 
             Row(Modifier.fillMaxWidth()) {
                 Card(
@@ -345,7 +374,7 @@ fun PhysiqueContent(
                     colors = CardDefaults.cardColors(containerColor = Color.White),
                     elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
                 ) {
-                    BodyTypeBottomSheetLayout()
+                    BodyTypeLayout()
                 }
             }
 
