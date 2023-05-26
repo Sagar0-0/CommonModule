@@ -1,6 +1,5 @@
 package fit.asta.health.tools.water.view.component
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,13 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -72,8 +66,8 @@ fun WaterBottomSheetGridView(
 
     val openDialog = remember { mutableStateOf(false) }
     val waterLive by viewModel.modifiedWaterTool.collectAsStateWithLifecycle()
-    val selectedBeverageData by viewModel.containerInCharge.collectAsStateWithLifecycle()
-    val showSlider by viewModel.showSlider.collectAsStateWithLifecycle()
+//    val selectedBeverageData by viewModel.containerInCharge.collectAsStateWithLifecycle()
+//    val showSlider by viewModel.showSlider.collectAsStateWithLifecycle()
 
     if (openDialog.value) {
         AlertDialog(
@@ -159,14 +153,14 @@ fun WaterBottomSheetGridView(
                     }
                 } else {
                     item {
-                        Text(
-                            "QUANTITY-${selectedBeverageData?.title}",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
-                            lineHeight = 22.4.sp,
-                            color = MaterialTheme.colorScheme.onBackground,
-                            modifier = Modifier.padding(horizontal = 16.dp)
-                        )
+//                        Text(
+//                            "QUANTITY-${selectedBeverageData?.title}",
+//                            fontSize = 16.sp,
+//                            fontWeight = FontWeight.Bold,
+//                            lineHeight = 22.4.sp,
+//                            color = MaterialTheme.colorScheme.onBackground,
+//                            modifier = Modifier.padding(horizontal = 16.dp)
+//                        )
                     }
                 }
 
@@ -178,35 +172,35 @@ fun WaterBottomSheetGridView(
                     QuantityLayout()
                 }
 
-                if (showSlider) {
-                    item {
-                        Card(modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 0.dp, bottom = 5.dp, start = 5.dp, end = 5.dp)) {
-                            Column (modifier = Modifier.padding(bottom = 10.dp)){
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.End
-                                ) {
-                                    IconButton(
-                                        onClick = {
-                                            viewModel.closeSlider()
-                                        }
-                                    ) {
-                                        Icon(Icons.Rounded.Close, "close")
-                                    }
-                                }
-                                ForecastSlider(
-                                    onValueChange = {
-                                        Log.i("Water Bottom Sheet Grid View 189", it.toString())
-                                        viewModel.sliderValueChanged(it)
-                                    }
-                                )
-                            }
-                        }
-
-                    }
-                }
+//                if (showSlider) {
+//                    item {
+//                        Card(modifier = Modifier
+//                            .fillMaxWidth()
+//                            .padding(top = 0.dp, bottom = 5.dp, start = 5.dp, end = 5.dp)) {
+//                            Column (modifier = Modifier.padding(bottom = 10.dp)){
+//                                Row(
+//                                    modifier = Modifier.fillMaxWidth(),
+//                                    horizontalArrangement = Arrangement.End
+//                                ) {
+//                                    IconButton(
+//                                        onClick = {
+////                                            viewModel.closeSlider()
+//                                        }
+//                                    ) {
+//                                        Icon(Icons.Rounded.Close, "close")
+//                                    }
+//                                }
+//                                ForecastSlider(
+//                                    onValueChange = {
+//                                        Log.i("Water Bottom Sheet Grid View 189", it.toString())
+////                                        viewModel.sliderValueChanged(it)
+//                                    }
+//                                )
+//                            }
+//                        }
+//
+//                    }
+//                }
 
                 item {
                     Spacer(modifier = Modifier.height(16.dp))

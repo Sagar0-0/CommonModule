@@ -111,6 +111,7 @@ fun StepsBottomSheet(
         mutableStateOf(false)
     }
     BottomSheetScaffold(
+        sheetShape = RoundedCornerShape(16.dp),
         sheetContent = {
             WalkingBottomSheetView(homeViewModel, visible, navController, apiState, startWorking)
         },

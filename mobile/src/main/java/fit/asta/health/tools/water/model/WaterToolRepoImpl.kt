@@ -4,6 +4,7 @@ import fit.asta.health.network.data.Status
 import fit.asta.health.tools.water.model.api.WaterApi
 import fit.asta.health.tools.water.model.domain.WaterTool
 import fit.asta.health.tools.water.model.network.NetBevQtyPut
+import fit.asta.health.tools.water.model.network.NetWaterTargetPut
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -41,6 +42,10 @@ class WaterToolRepoImpl(
                 remoteApi.updateBeverageQty(beverage)
             )
         }
+    }
+
+    override suspend fun updateWaterTool(netWaterTargetPut: NetWaterTargetPut): Flow<Status> {
+        return flow { emit(remoteApi.updateWaterTool(netWaterTargetPut)) }
     }
 
     /*override suspend fun updateWaterTool(modifiedWaterTool: ModifiedWaterTool):Flow<Status>{

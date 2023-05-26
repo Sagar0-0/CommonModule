@@ -4,6 +4,7 @@ import android.util.Log
 import fit.asta.health.common.utils.NetworkUtil
 import fit.asta.health.network.data.Status
 import fit.asta.health.tools.water.model.network.NetBevQtyPut
+import fit.asta.health.tools.water.model.network.NetWaterTargetPut
 import fit.asta.health.tools.water.model.network.NetWaterToolRes
 import okhttp3.OkHttpClient
 
@@ -31,6 +32,10 @@ class WaterRestApi(baseUrl: String, client: OkHttpClient) :
 
     override suspend fun updateBeverageQty(beverage: NetBevQtyPut): Status {
         return apiService.updateBeverageQty(beverage)
+    }
+
+    override suspend fun updateWaterTool(netWaterTargetPut: NetWaterTargetPut): Status {
+        return apiService.updateWaterTool(netWaterTargetPut)
     }
 
     /*override suspend fun updateWaterTool(modifiedWaterTool: ModifiedWaterTool): Status {

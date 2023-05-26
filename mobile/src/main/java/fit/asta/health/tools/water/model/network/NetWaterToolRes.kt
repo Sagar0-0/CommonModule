@@ -29,13 +29,13 @@ data class ProgressData(
     @SerializedName("time")
     val time: String,
     @SerializedName("tgt")
-    val goal: Int,
+    val goal: Double,
     @SerializedName("con")
-    val consumed: Int,
+    val consumed: Double,
     @SerializedName("rcm")
     val recommendation: Double,
     @SerializedName("rem")
-    val remaining: Int,
+    val remaining: Double,
     @SerializedName("meta")
     val meta:Meta
 )

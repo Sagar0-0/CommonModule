@@ -28,7 +28,7 @@ fun WaterHomeScreen(paddingValues: PaddingValues, viewModel: WaterViewModel = hi
     fun valueChanged(value: Float) {
         val x = (6.0 * value) / 1.0
         //wT=(x.toInt()+1).toString()
-        viewModel.changedTarget(x.toInt() + 1)
+//        viewModel.changedTarget(x.toInt() + 1)
         Log.i("Liters", (x.toInt() + 1).toString())
     }
 
