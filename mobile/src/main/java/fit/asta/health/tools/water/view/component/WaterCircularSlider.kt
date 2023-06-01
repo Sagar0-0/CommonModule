@@ -19,6 +19,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -182,7 +183,18 @@ fun WaterCircularSlider(
             )
             if (isStarted) {
                 drawArc(
-                    color = progressColor,
+                    brush = Brush.linearGradient(
+                        0f to Color.Yellow,
+                        0.2f to Color.Green,
+                        0.3f to Color.Red,
+                        0.4f to Color.Magenta,
+                        0.5f to Color.Blue,
+                        0.6f to Color.Yellow,
+                        0.7f to Color.Green,
+                        0.8f to Color.Red,
+                        0.9f to Color.Magenta,
+                        1f to Color(0x00EF7B7B)
+                    ),
                     startAngle = 145f,
                     sweepAngle = sweepAngle,
                     topLeft = center - Offset(radius, radius),
@@ -203,7 +215,18 @@ fun WaterCircularSlider(
                 )
             } else {
                 drawArc(
-                    color = progressColor,
+                    brush = Brush.linearGradient(
+                        0f to Color.Yellow,
+                        0.2f to Color.Green,
+                        0.3f to Color.Red,
+                        0.4f to Color.Magenta,
+                        0.5f to Color.Blue,
+                        0.6f to Color.Yellow,
+                        0.7f to Color.Green,
+                        0.8f to Color.Red,
+                        0.9f to Color.Magenta,
+                        1f to Color(0x00EF7B7B)
+                    ),
                     startAngle = 145f,
                     sweepAngle = appliedAngleDistance,
                     topLeft = center - Offset(radius, radius),

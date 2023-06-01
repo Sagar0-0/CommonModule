@@ -9,15 +9,22 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.BottomSheetValue
@@ -46,11 +53,14 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -91,6 +101,8 @@ fun WaterToolScreen(
         Event(WTEvent.SheetState(sheetState.isCollapsed))
     }
     BottomSheetScaffold(
+        modifier = Modifier.fillMaxSize(),
+        backgroundColor = MaterialTheme.colorScheme.onPrimary,
         sheetShape = RoundedCornerShape(16.dp),
         sheetContent = {
             WaterBottomSheet(
@@ -137,67 +149,94 @@ fun WaterToolScreen(
             }
         }
     ) {
-        Surface(
+        val scrollState = rememberScrollState()
+        var isScrollEnabled by remember { mutableStateOf(true) }
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
+                .verticalScroll(scrollState, enabled = isScrollEnabled)
                 .padding(16.dp),
-            color = Color.Green,
-            shape = RoundedCornerShape(corner = CornerSize(15.dp)),
+            verticalArrangement = Arrangement.spacedBy(spacing.medium)
         ) {
-            if (uiState.showCustomDialog) {
-                CustomAlertDialog(dialogString = uiState.dialogString,
-                    onDismiss = {
-                        Event(WTEvent.DialogState(false))
-                    },
-                    onUpdate = {
-                        Event(WTEvent.UpdateQuantity)
-                        Event(WTEvent.DialogState(false))
-                    }
-                )
-            }
-            Column(
+            Surface(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(spacing.medium),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .fillMaxWidth(),
+                shape = RoundedCornerShape(corner = CornerSize(15.dp)),
             ) {
-
-                WaterCircularSlider(
-                    modifier = Modifier.size(200.dp),
-                    isStarted = uiState.start,
-                    appliedAngleDistanceValue = if (uiState.start) uiState.angle else uiState.targetAngle,
-                    indicatorValue = waterTool.progressData.consumed.toFloat(),
-                    onChangeDistance = {
-                        Event(WTEvent.SelectTarget(it))
-                    },
-                    onChangeAngleDistance = {
-                        Event(WTEvent.SelectAngle(it))
-                    }
-                )
-
-                Row(horizontalArrangement = Arrangement.spacedBy(spacing.medium)) {
-                    ProgressBarItem(
-                        modifier = Modifier.weight(0.3f),
-                        targetDistance = waterTool.progressData.recommendation.toFloat(),
-                        progress = (waterTool.progressData.consumed / waterTool.progressData.recommendation).toFloat(),
-                        name = "Recommended"
-                    )
-                    ProgressBarItem(
-                        modifier = Modifier.weight(0.3f),
-                        targetDistance = waterTool.progressData.goal.toFloat(),
-                        progress = (waterTool.progressData.consumed / waterTool.progressData.goal).toFloat(),
-                        name = "Goal"
-                    )
-                    ProgressBarItem(
-                        modifier = Modifier.weight(0.3f),
-                        targetDistance = waterTool.progressData.goal.toFloat(),
-                        progress = (waterTool.progressData.remaining / waterTool.progressData.goal).toFloat(),
-                        name = "Remaining"
+                if (uiState.showCustomDialog) {
+                    CustomAlertDialog(dialogString = uiState.dialogString,
+                        onDismiss = {
+                            Event(WTEvent.DialogState(false))
+                        },
+                        onUpdate = {
+                            Event(WTEvent.UpdateQuantity)
+                            Event(WTEvent.DialogState(false))
+                        }
                     )
                 }
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(spacing.medium),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+
+                    WaterCircularSlider(
+                        modifier = Modifier.size(200.dp),
+                        isStarted = uiState.start,
+                        appliedAngleDistanceValue = if (uiState.start) uiState.angle else uiState.targetAngle,
+                        indicatorValue = waterTool.progressData.consumed.toFloat(),
+                        onChangeDistance = {
+                            Event(WTEvent.SelectTarget(it))
+                        },
+                        onChangeAngleDistance = {
+                            Event(WTEvent.SelectAngle(it))
+                        }
+                    )
+
+                    Row(horizontalArrangement = Arrangement.spacedBy(spacing.medium)) {
+                        ProgressBarItem(
+                            modifier = Modifier.weight(0.3f),
+                            targetDistance = waterTool.progressData.recommendation.toFloat(),
+                            progress = (waterTool.progressData.consumed / waterTool.progressData.recommendation).toFloat(),
+                            name = "Recommended"
+                        )
+                        ProgressBarItem(
+                            modifier = Modifier.weight(0.3f),
+                            targetDistance = waterTool.progressData.goal.toFloat(),
+                            progress = (waterTool.progressData.consumed / waterTool.progressData.goal).toFloat(),
+                            name = "Goal"
+                        )
+                        ProgressBarItem(
+                            modifier = Modifier.weight(0.3f),
+                            targetDistance = waterTool.progressData.goal.toFloat(),
+                            progress = (waterTool.progressData.remaining / waterTool.progressData.goal).toFloat(),
+                            name = "Remaining"
+                        )
+                    }
+
+                    val daily = listOf("Water", "Milk", "Fruit Juice")
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(spacing.small)
+                    ) {
+                        Text(
+                            text = "Recommendation ",
+                            style = MaterialTheme.typography.titleMedium,
+                            textAlign = TextAlign.Start
+                        )
+                        daily.forEach {
+                            RecommendItem(title = it, value = 700f, progress = 30)
+                        }
+                    }
+                }
             }
+            DailyActivity()
+            Spacer(modifier = Modifier.height(240.dp))
         }
+
     }
 }
 
@@ -216,7 +255,6 @@ fun WaterBottomSheet(
     Column(
         modifier = Modifier
             .heightIn(min = 200.dp, max = 320.dp)
-            .background(Color.Magenta)
             .fillMaxSize()
             .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 16.dp),
         verticalArrangement = Arrangement.spacedBy(spacing.small)
@@ -233,7 +271,7 @@ fun WaterBottomSheet(
                     "BEVERAGES",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.background
                 )
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(spacing.medium)) {
                     beverageList.forEach {
@@ -251,7 +289,7 @@ fun WaterBottomSheet(
                     "QUANTITY-${beverageName(selectedBeverage)}",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.background
                 )
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(spacing.medium)) {
                     containerList.forEachIndexed { index, value ->
@@ -275,7 +313,7 @@ fun WaterBottomSheet(
                     "QUANTITY-${beverageName(selectedBeverage)}",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.background
                 )
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(spacing.medium)) {
                     containerList.forEachIndexed { index, value ->
@@ -329,6 +367,7 @@ fun ProgressBarItem(
         ).value
 
         LinearProgressIndicator(
+            modifier = Modifier.clip(RoundedCornerShape(6.dp)),
             progress = animatedProgress,
             backgroundColor = Color.LightGray,
             color = Color.Magenta
@@ -374,6 +413,163 @@ fun QuantityContainerComponent(
         }
     }
 
+}
+
+@Composable
+@Preview
+fun DailyActivity() {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(300.dp),
+//        color = Color.Green,
+        shape = RoundedCornerShape(corner = CornerSize(15.dp)),
+    ) {
+        Column ( modifier = Modifier
+            .fillMaxSize().padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(spacing.small)) {
+            Text(
+                text = "Today Activity",
+                style = MaterialTheme.typography.titleMedium,
+                textAlign = TextAlign.Start
+            )
+            Row(modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween) {
+                Text(
+                    text = "Beverages",
+                    style = MaterialTheme.typography.bodySmall,
+                    textAlign = TextAlign.Start
+                )
+                Text(
+                    text = "Consume",
+                    style = MaterialTheme.typography.bodySmall,
+                    textAlign = TextAlign.Start
+                )
+                Text(
+                    text = "Time",
+                    style = MaterialTheme.typography.bodySmall,
+                    textAlign = TextAlign.Start
+                )
+            }
+            val daily = listOf("W", "SD", "FG", "M", "BM", "C")
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(spacing.small)
+            ) {
+                items(daily) {
+                    ActivityItem(
+                        title = beverageName(it),
+                        consumeValue = 500,
+                        icon_code = it,
+                        time = "5:30 am"
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ActivityItem(title: String, consumeValue: Int, icon_code: String, time: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.Bottom
+    ) {
+        Icon(
+            painter = painterResource(id = beverageIcons(icon_code)),
+            contentDescription = null,
+            modifier = Modifier
+                .size(24.dp)
+                .weight(.15f),
+            tint = Color.Green
+        )
+        Text(
+            modifier = Modifier.weight(.35f),
+            text = title,
+            style = MaterialTheme.typography.titleSmall
+        )
+        Text(
+            modifier = Modifier.weight(.3f),
+            text = "$consumeValue ml",
+            style = MaterialTheme.typography.titleSmall
+        )
+        Text(
+            modifier = Modifier.weight(.2f),
+            text = time,
+            style = MaterialTheme.typography.bodySmall
+        )
+    }
+}
+
+@Composable
+@Preview
+fun RecommendBeverage() {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth(),
+//        color = Color.Green,
+        shape = RoundedCornerShape(corner = CornerSize(15.dp)),
+    ) {
+        val daily = listOf("W", "SD", "FG", "M", "BM", "C")
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(spacing.medium)
+        ) {
+            item {
+                Text(
+                    text = "Recommend ",
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Start
+                )
+            }
+            items(daily) {
+                RecommendItem(title = "Water", value = 700f, progress = 30)
+            }
+        }
+    }
+}
+
+@Composable
+fun RecommendItem(modifier: Modifier = Modifier, title: String, value: Float, progress: Int) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(spacing.small),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row(
+            modifier = modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.Bottom
+        ) {
+            Text(
+                text = title,
+                modifier = Modifier.weight(.3f),
+                style = MaterialTheme.typography.titleSmall,
+                textAlign = TextAlign.Start
+            )
+            Text(
+                text = "$value ml",
+                modifier = Modifier.weight(.2f),
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Start
+            )
+            Text(
+                text = "$progress %",
+                modifier = Modifier.weight(.5f),
+                style = MaterialTheme.typography.bodySmall,
+                textAlign = TextAlign.End
+            )
+        }
+        CustomProgressBar(
+            modifier = Modifier
+                .clip(shape = RoundedCornerShape(6.dp))
+                .height(6.dp),
+            backgroundColor = Color.LightGray,
+            percent = progress
+        )
+    }
 }
 
 @Composable
@@ -549,32 +745,46 @@ fun beverageName(code: String): String {
 }
 
 @Composable
-fun TestC() {
-    var angle by remember {
-        mutableStateOf(100f)
-    }
-    var progress by remember {
-        mutableStateOf(3f)
-    }
-
-    Column(
+@Preview
+fun Test() {
+    CustomProgressBar(
         modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Green),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .clip(shape = RoundedCornerShape(6.dp))
+            .height(14.dp),
+        backgroundColor = Color.LightGray,
+        percent = 80
+    )
+}
+
+
+@Composable
+fun CustomProgressBar(
+    modifier: Modifier, backgroundColor: Color,
+    foregroundColor: Brush = Brush.horizontalGradient(
+        0f to Color.Yellow,
+        0.3f to Color.Green,
+        0.6f to Color.Red,
+        0.9f to Color.Magenta,
+        1f to Color(0x00EF7B7B)
+    ),
+    percent: Int
+) {
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp - 32
+    val animatedProgress = animateFloatAsState(
+        targetValue = (screenWidth * percent / 100).toFloat(),
+        animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
+    ).value
+
+    Box(
+        modifier = modifier
+            .background(backgroundColor)
+            .width(screenWidth.dp)
     ) {
-        WaterCircularSlider(
-            modifier = Modifier.size(200.dp),
-            isStarted = false,
-            appliedAngleDistanceValue = angle,
-            indicatorValue = progress,
-            onChangeDistance = {
-                progress = it
-            },
-            onChangeAngleDistance = {
-                angle = it
-            }
+        Box(
+            modifier = modifier
+                .background(foregroundColor)
+                .width(animatedProgress.dp)
         )
     }
 }

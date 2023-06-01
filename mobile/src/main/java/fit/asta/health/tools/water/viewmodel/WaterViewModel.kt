@@ -37,7 +37,7 @@ class WaterViewModel
     private val authRepo: AuthRepo,
     private val localRepo: WaterLocalRepo
 ) : ViewModel() {
-    val list = listOf(250, 500, 750, 1000, 1250, 1500)
+    val list = listOf(250,300,500,600,750,900,1000)
     private val mutableState = MutableStateFlow<WaterState>(WaterState.Loading)
     val state = mutableState.asStateFlow()
 
