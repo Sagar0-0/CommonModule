@@ -295,7 +295,11 @@ fun PhysiqueCreateScreen(
                         ThreeTogglesGroups(selectionTypeText = "Gender",
                             selectedOption = selectedGenderOption,
                             onStateChange = { state ->
-                                viewModel.onEvent(ProfileEvent.SetSelectedGenderOption(state))
+                                viewModel.onEvent(
+                                    ProfileEvent.SetSelectedGenderOption(
+                                        option = state, optionIndex = 2
+                                    )
+                                )
                             })
 
                         if (selectedGenderOption == ThreeToggleSelections.Second) {
@@ -304,13 +308,21 @@ fun PhysiqueCreateScreen(
                             TwoTogglesGroup(selectionTypeText = "Are you having periods?",
                                 selectedOption = selectedOnPeriodOption,
                                 onStateChange = { state ->
-                                    viewModel.onEvent(ProfileEvent.SetSelectedIsOnPeriodOption(state))
+                                    viewModel.onEvent(
+                                        ProfileEvent.SetSelectedIsOnPeriodOption(
+                                            state, 4
+                                        )
+                                    )
                                 })
 
                             TwoTogglesGroup(selectionTypeText = "Are you Pregnant",
                                 selectedOption = selectedIsPregnantOption,
                                 onStateChange = { state ->
-                                    viewModel.onEvent(ProfileEvent.SetSelectedIsPregnantOption(state))
+                                    viewModel.onEvent(
+                                        ProfileEvent.SetSelectedIsPregnantOption(
+                                            state, 3
+                                        )
+                                    )
                                 })
 
                             if (selectedIsPregnantOption == TwoToggleSelections.First) {

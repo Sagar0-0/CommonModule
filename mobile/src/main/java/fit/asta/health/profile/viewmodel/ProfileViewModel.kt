@@ -69,6 +69,7 @@ class ProfileViewModel
 ) : ViewModel() {
 
 
+    //States
     private val _stateSubmit = MutableStateFlow<ProfileSubmitState>(ProfileSubmitState.Loading)
     val stateSubmit = _stateSubmit.asStateFlow()
 
@@ -85,51 +86,50 @@ class ProfileViewModel
     val stateEdit = _mutableEditState.asStateFlow()
 
 
-    // Any Significant Health History
-    private val _selectedHealthHisOption =
-        MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
-    val selectedHealthHisOption: StateFlow<TwoToggleSelections?>
-        get() = _selectedHealthHisOption
+    //Inputs Validity
 
+    //Phy Inputs Validity
+    private val arePhyInputsValid = MutableStateFlow(false)
+    val phyInputsValid: StateFlow<Boolean>
+        get() = arePhyInputsValid
 
+    private fun isPhyValid(valid: Boolean) {
+        arePhyInputsValid.value = valid
+    }
+
+    //Health Validity
     private val areHealthInputsValid = MutableStateFlow(false)
     val healthInputsValid: StateFlow<Boolean>
         get() = areHealthInputsValid
-
 
     private fun isHealthValid(valid: Boolean) {
         areHealthInputsValid.value = valid
     }
 
-
+    //Diet Validity
     private val areDietInputsValid = MutableStateFlow(false)
     val dietInputsValid: StateFlow<Boolean>
         get() = areDietInputsValid
-
 
     private fun isDietValid(valid: Boolean) {
         areDietInputsValid.value = valid
     }
 
-
+    //All Inputs Validity
     private val areAllInputsValid = MutableStateFlow(false)
     val allInputsValid: StateFlow<Boolean>
         get() = areAllInputsValid
-
 
     private fun doAllInputsValid(valid: Boolean) {
         areAllInputsValid.value = valid
     }
 
 
-    private val arePhyInputsValid = MutableStateFlow(false)
-    val phyInputsValid: StateFlow<Boolean>
-        get() = arePhyInputsValid
-
-
-    private fun isPhyValid(valid: Boolean) {
-        arePhyInputsValid.value = valid
-    }
+    // Any Significant Health History
+    private val _selectedHealthHisOption =
+        MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
+    val selectedHealthHisOption: StateFlow<TwoToggleSelections?>
+        get() = _selectedHealthHisOption
 
 
     //Any Injury
@@ -166,6 +166,7 @@ class ProfileViewModel
     val selectedHealthTarOption: StateFlow<TwoToggleSelections?>
         get() = _selectedHealthTarOption
 
+
     //Addiction Option
     private val _selectedAddictionOption =
         MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
@@ -192,6 +193,7 @@ class ProfileViewModel
         MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
     val selectedOnPeriod: StateFlow<TwoToggleSelections?>
         get() = _isOnPeriodOption
+
 
     //Gender
     private val _selectedGenderOption = MutableStateFlow<ThreeToggleSelections?>(null)
@@ -222,79 +224,90 @@ class ProfileViewModel
     val selectedWorkStyle: StateFlow<TwoToggleSelections?>
         get() = _selectedWorkStyleOption
 
+    /*
+    * _selectedPhyActOption
+    * _selectedWorkingHrsOption
+    * _selectedWorkingEnvOption
+    * _selectedWorkStyleOption
+    * _selectedHealthHisOption
+    * _selectedGenderOption
+    * _isPregnantOption
+    * _isOnPeriodOption
+    * _selectedInjOption
+    * _selectedBodyPartOption
+    * _selectedAilOption
+    * _selectedMedOption
+    * _selectedHealthTarOption
+    * _selectedAddictionOption
+    * _selectedFoodResOption
+    * */
 
-    private fun setSelectedPhysicalActiveOption(option: ThreeToggleSelections) {
-        _selectedPhyActOption.value = option
+    private fun setSelectedThreeOptions(option: ThreeToggleSelections, optionIndex: Int) {
+        when (optionIndex) {
+            0 -> {
+                _selectedPhyActOption.value = option
+            }
+
+            1 -> {
+                _selectedWorkingHrsOption.value = option
+            }
+
+            2 -> {
+                _selectedGenderOption.value = option
+            }
+        }
     }
 
+    private fun setSelectedTwoOptions(option: TwoToggleSelections, optionIndex: Int) {
+        when (optionIndex) {
+            0 -> {
+                _selectedWorkingEnvOption.value = option
+            }
 
-    private fun setSelectedWorkingHrsOption(option: ThreeToggleSelections) {
-        _selectedWorkingHrsOption.value = option
-    }
+            1 -> {
+                _selectedWorkStyleOption.value = option
+            }
 
+            2 -> {
+                _selectedHealthHisOption.value = option
+            }
 
-    private fun setSelectedWorkingEnvOption(option: TwoToggleSelections) {
-        _selectedWorkingEnvOption.value = option
-    }
+            3 -> {
+                _isPregnantOption.value = option
+            }
 
+            4 -> {
+                _isOnPeriodOption.value = option
+            }
 
-    private fun setSelectedWorkingStyleOption(option: TwoToggleSelections) {
-        _selectedWorkStyleOption.value = option
-    }
+            5 -> {
+                _selectedInjOption.value = option
+            }
 
+            6 -> {
+                _selectedBodyPartOption.value = option
+            }
 
-    private fun setSelectedHealthHisOption(option: TwoToggleSelections) {
-        _selectedHealthHisOption.value = option
-    }
+            7 -> {
+                _selectedAilOption.value = option
+            }
 
+            8 -> {
+                _selectedMedOption.value = option
+            }
 
-    private fun setSelectedGenderOption(option: ThreeToggleSelections) {
-        _selectedGenderOption.value = option
-    }
+            9 -> {
+                _selectedHealthTarOption.value = option
+            }
 
+            10 -> {
+                _selectedAddictionOption.value = option
+            }
 
-    private fun setSelectedIsPregnantOption(option: TwoToggleSelections) {
-        _isPregnantOption.value = option
-    }
-
-
-    private fun setSelectedOnPeriodOption(option: TwoToggleSelections) {
-        _isOnPeriodOption.value = option
-    }
-
-
-    private fun setSelectedInjOption(option: TwoToggleSelections) {
-        _selectedInjOption.value = option
-    }
-
-
-    private fun setSelectedBodyPrtOption(option: TwoToggleSelections) {
-        _selectedBodyPartOption.value = option
-    }
-
-
-    private fun setSelectedAilOption(option: TwoToggleSelections) {
-        _selectedAilOption.value = option
-    }
-
-
-    private fun setSelectedMedOption(option: TwoToggleSelections) {
-        _selectedMedOption.value = option
-    }
-
-
-    private fun setSelectedHealthTarOption(option: TwoToggleSelections) {
-        _selectedHealthTarOption.value = option
-    }
-
-
-    private fun setSelectedAddictionOption(option: TwoToggleSelections) {
-        _selectedAddictionOption.value = option
-    }
-
-
-    private fun setSelectedFoodResOption(option: TwoToggleSelections) {
-        _selectedFoodResOption.value = option
+            11 -> {
+                _selectedFoodResOption.value = option
+            }
+        }
     }
 
 
@@ -443,6 +456,7 @@ class ProfileViewModel
 
     }
 
+
     private fun loadEditProfile(userID: String) {
         viewModelScope.launch {
             when (val result = profileRepo.editUserProfile(userID)) {
@@ -468,12 +482,6 @@ class ProfileViewModel
     private fun loadUserProfileResponse(userId: String) {
 
         viewModelScope.launch {
-//            profileRepo.getUserProfile(userId).catch { exception ->
-//                _mutableState.value = ProfileGetState.Error(exception)
-//            }.collect { profile ->
-//                //User Profile Data
-//                _mutableState.value = ProfileGetState.Success(profile)
-//            }
 
             when (val result = profileRepo.getUserProfile(userId)) {
                 is ApiResponse.Error -> {}
@@ -607,6 +615,11 @@ class ProfileViewModel
                     }
 
                     //LifeStyle
+                    savedState[WAKEUPTIME] =
+                        InputWrapper(value = result.data.lifeStyle.sleep.from.toString())
+                    savedState[BEDTIME] =
+                        InputWrapper(value = result.data.lifeStyle.sleep.to.toString())
+
                     _selectedPhyActOption.value = when (result.data.lifeStyle.physicalActivity) {
                         1 -> ThreeToggleSelections.First
                         2 -> ThreeToggleSelections.Second
@@ -808,13 +821,13 @@ class ProfileViewModel
                             ThreeToggleSelections.Third -> 3
                             null -> 0
                         },
-                        workingTime = Session(
+//                        workingTime = Session(
+//                            from = jStartTime.value.value.toDouble(),
+//                            to = jEndTime.value.value.toDouble()
+//                        ),
+                        sleep = Session(
                             from = bedTime.value.value.toDouble(),
                             to = wakeUpTime.value.value.toDouble()
-                        ),
-                        sleep = Session(
-                            from = jStartTime.value.value.toDouble(),
-                            to = jEndTime.value.value.toDouble()
                         ),
                     ), Diet(
                         preference = convertDietArrayList(0),
@@ -943,21 +956,66 @@ class ProfileViewModel
         when (event) {
 
             is ProfileEvent.GetHealthProperties -> getHealthProperties(propertyType = event.propertyType)
-            is ProfileEvent.SetSelectHealthHisOption -> setSelectedHealthHisOption(option = event.option)
-            is ProfileEvent.SetSelectedAilOption -> setSelectedAilOption(event.option)
-            is ProfileEvent.SetSelectedBodyPrtOption -> setSelectedBodyPrtOption(event.option)
-            is ProfileEvent.SetSelectedFoodResOption -> setSelectedFoodResOption(event.option)
-            is ProfileEvent.SetSelectedHealthTarOption -> setSelectedHealthTarOption(event.option)
-            is ProfileEvent.SetSelectedAddictionOption -> setSelectedAddictionOption(event.option)
-            is ProfileEvent.SetSelectedInjOption -> setSelectedInjOption(event.option)
-            is ProfileEvent.SetSelectedMedOption -> setSelectedMedOption(event.option)
-            is ProfileEvent.SetSelectedIsPregnantOption -> setSelectedIsPregnantOption(event.option)
-            is ProfileEvent.SetSelectedIsOnPeriodOption -> setSelectedOnPeriodOption(event.option)
-            is ProfileEvent.SetSelectedGenderOption -> setSelectedGenderOption(event.option)
-            is ProfileEvent.SetSelectedPhyActOption -> setSelectedPhysicalActiveOption(event.option)
-            is ProfileEvent.SetSelectedWorkingEnvOption -> setSelectedWorkingEnvOption(event.option)
-            is ProfileEvent.SetSelectedWorkingHrsOption -> setSelectedWorkingHrsOption(event.option)
-            is ProfileEvent.SetSelectedWorkingStyleOption -> setSelectedWorkingStyleOption(event.option)
+            is ProfileEvent.SetSelectHealthHisOption -> setSelectedTwoOptions(
+                option = event.option, event.optionIndex
+            )
+
+            is ProfileEvent.SetSelectedAilOption -> setSelectedTwoOptions(
+                option = event.option, event.optionIndex
+            )
+
+            is ProfileEvent.SetSelectedBodyPrtOption -> setSelectedTwoOptions(
+                option = event.option, event.optionIndex
+            )
+
+            is ProfileEvent.SetSelectedFoodResOption -> setSelectedTwoOptions(
+                option = event.option, event.optionIndex
+            )
+
+            is ProfileEvent.SetSelectedHealthTarOption -> setSelectedTwoOptions(
+                option = event.option, event.optionIndex
+            )
+
+            is ProfileEvent.SetSelectedAddictionOption -> setSelectedTwoOptions(
+                option = event.option, event.optionIndex
+            )
+
+            is ProfileEvent.SetSelectedInjOption -> setSelectedTwoOptions(
+                option = event.option, event.optionIndex
+            )
+
+            is ProfileEvent.SetSelectedMedOption -> setSelectedTwoOptions(
+                option = event.option, event.optionIndex
+            )
+
+            is ProfileEvent.SetSelectedIsPregnantOption -> setSelectedTwoOptions(
+                option = event.option, event.optionIndex
+            )
+
+            is ProfileEvent.SetSelectedIsOnPeriodOption -> setSelectedTwoOptions(
+                option = event.option, event.optionIndex
+            )
+
+            is ProfileEvent.SetSelectedGenderOption -> setSelectedThreeOptions(
+                event.option, event.optionIndex
+            )
+
+            is ProfileEvent.SetSelectedPhyActOption -> setSelectedThreeOptions(
+                event.option, event.optionIndex
+            )
+
+            is ProfileEvent.SetSelectedWorkingEnvOption -> setSelectedTwoOptions(
+                event.option, event.optionIndex
+            )
+
+            is ProfileEvent.SetSelectedWorkingHrsOption -> setSelectedThreeOptions(
+                event.option, event.optionIndex
+            )
+
+            is ProfileEvent.SetSelectedWorkingStyleOption -> setSelectedTwoOptions(
+                event.option, event.optionIndex
+            )
+
             is ProfileEvent.SetSelectedAddItemOption -> healthAdd(
                 cardViewIndex = event.index, item = event.item, composeIndex = event.composeIndex
             )
@@ -1015,7 +1073,7 @@ class ProfileViewModel
             is ProfileEvent.OnUserPregWeekChange -> {
                 savedState[PREGNANCY_WEEK] = pregnancyWeek.value.copy(
                     value = event.week, error = onValidatePhy(
-                        type = "Pregnancy Week", value = event.week, min = 19.0, max = 55.0
+                        type = "Pregnancy Week", value = event.week, min = 1.0, max = 55.0
                     )
                 )
             }
@@ -1096,9 +1154,9 @@ class ProfileViewModel
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
     val arePregnancyInputValid = combine(
-        areFemaleInputNull, _isPregnantOption, pregnancyWeek
-    ) { areFemaleInputNull, _isPregnantOption, pregnancyWeek ->
-        areFemaleInputNull && _isPregnantOption == TwoToggleSelections.First && pregnancyWeek.value.isNotEmpty() && pregnancyWeek.error is UiString.Empty
+        _isPregnantOption, pregnancyWeek
+    ) { _isPregnantOption, pregnancyWeek ->
+        _isPregnantOption == TwoToggleSelections.First && pregnancyWeek.value.isNotEmpty() && pregnancyWeek.error is UiString.Empty
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
     //Health Inputs Valid
@@ -1128,9 +1186,8 @@ class ProfileViewModel
         areSelectedHealthOptionsNull,
         areLSValid,
         areDietInputsValid,
-    ) { areDetailsInputsValid, arePhyInputsValid, areHealthInputsValid, areLSValid, areDietInputsValid ->
-        areDetailsInputsValid && arePhyInputsValid && areHealthInputsValid && areLSValid && areDietInputsValid
+    ) { areDetailsInputsValid, areBasicPhysiqueInputsValid, areHealthInputsValid, areLSValid, areDietInputsValid ->
+        areDetailsInputsValid && areBasicPhysiqueInputsValid && areHealthInputsValid && areLSValid && areDietInputsValid
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
-
 
 }

@@ -1,6 +1,7 @@
 package fit.asta.health.navigation.home.view
 
 import android.app.Activity
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -19,6 +20,8 @@ import fit.asta.health.navigation.home.view.component.*
 import fit.asta.health.tools.walking.view.WalkingActivity
 import fit.asta.health.tools.water.WaterToolActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 @ExperimentalCoroutinesApi
@@ -27,6 +30,9 @@ import java.util.*
 fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
 
     val context = LocalContext.current
+
+
+    Log.d("SunSlot", "${toolsHome.sunSlots}")
 
     Box(Modifier.fillMaxSize()) {
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
@@ -40,7 +46,7 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
                     WeatherCardImage(
                         temperature = it.temperature,
                         location = it.location,
-                        date = "Friday,24 October"
+                        date = dateFormattedScreen()
                     )
                 }
             }
@@ -50,6 +56,8 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
             item {
                 toolsHome.banners?.let { BannerAutoSlider(bannerList = it) }
             }
+
+            item { Spacer(modifier = Modifier.height(24.dp)) }
 
             item {
 
@@ -156,4 +164,12 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
             item { Spacer(modifier = Modifier.height(130.dp)) }
         }
     }
+}
+
+@Composable
+fun dateFormattedScreen(): String {
+    val dateFormatter = DateTimeFormatter.ofPattern("EEEE, d MMMM", Locale.ENGLISH)
+    val currentDate = LocalDate.now()
+
+    return dateFormatter.format(currentDate)
 }

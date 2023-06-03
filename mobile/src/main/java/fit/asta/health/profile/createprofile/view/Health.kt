@@ -83,6 +83,7 @@ fun HealthContent(
     val isInjuryValid = when (selectedInjury) {
         TwoToggleSelections.First -> healthHisList.getValue(1)
             .isNotEmpty() && healthHisList.getValue(2).isNotEmpty()
+
         TwoToggleSelections.Second -> true
         null -> false
     }
@@ -138,7 +139,7 @@ fun HealthContent(
                 onItemsSelect = onHealthHistory,
                 selectedOption = selectedHealthHis,
                 onStateChange = { state ->
-                    viewModel.onEvent(ProfileEvent.SetSelectHealthHisOption(state))
+                    viewModel.onEvent(ProfileEvent.SetSelectHealthHisOption(state, 2))
                 },
                 enabled = selectedHealthHis == TwoToggleSelections.First,
                 cardIndex = 0,
@@ -162,7 +163,7 @@ fun HealthContent(
                 cardIndex1 = 1,
                 cardIndex2 = 2,
                 onStateChange = { state ->
-                    viewModel.onEvent(ProfileEvent.SetSelectedInjOption(state))
+                    viewModel.onEvent(ProfileEvent.SetSelectedInjOption(state, 5))
                 },
                 time = injurySince.value,
                 listName = "Injuries",
@@ -178,7 +179,7 @@ fun HealthContent(
                 onItemsSelect = onAilments,
                 selectedOption = selectedAil,
                 onStateChange = { state ->
-                    viewModel.onEvent(ProfileEvent.SetSelectedAilOption(state))
+                    viewModel.onEvent(ProfileEvent.SetSelectedAilOption(state, 7))
                 },
                 enabled = selectedAil == TwoToggleSelections.First,
                 cardIndex = 3,
@@ -196,7 +197,7 @@ fun HealthContent(
                 onItemsSelect = onMedications,
                 selectedOption = selectedMed,
                 onStateChange = { state ->
-                    viewModel.onEvent(ProfileEvent.SetSelectedMedOption(state))
+                    viewModel.onEvent(ProfileEvent.SetSelectedMedOption(state, 8))
                 },
                 enabled = selectedMed == TwoToggleSelections.First,
                 cardIndex = 4,
@@ -213,7 +214,7 @@ fun HealthContent(
                 onItemsSelect = onHealthTargets,
                 selectedOption = selectedHealthTar,
                 onStateChange = { state ->
-                    viewModel.onEvent(ProfileEvent.SetSelectedHealthTarOption(state))
+                    viewModel.onEvent(ProfileEvent.SetSelectedHealthTarOption(state, 9))
                 },
                 enabled = selectedHealthTar == TwoToggleSelections.First,
                 cardIndex = 5,
@@ -231,7 +232,7 @@ fun HealthContent(
                 onItemsSelect = onAddictionSelect,
                 selectedOption = selectedAddiction,
                 onStateChange = { state ->
-                    viewModel.onEvent(ProfileEvent.SetSelectedAddictionOption(state))
+                    viewModel.onEvent(ProfileEvent.SetSelectedAddictionOption(state, 11))
                 },
                 enabled = selectedAddiction == TwoToggleSelections.First,
                 cardIndex = 6,
@@ -362,6 +363,7 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.NoInternet -> {
                     NoInternetLayout(onTryAgain = {})
                 }
+
                 is HPropState.Success -> {
                     ItemSelectionLayout(
                         cardList = state.properties,
@@ -371,6 +373,7 @@ fun HealthCreateBtmSheetLayout(
                 }
             }
         }
+
         INJURIES -> {
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
@@ -379,6 +382,7 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.NoInternet -> {
                     NoInternetLayout(onTryAgain = {})
                 }
+
                 is HPropState.Success -> {
                     ItemSelectionLayout(
                         cardList = state.properties,
@@ -388,6 +392,7 @@ fun HealthCreateBtmSheetLayout(
                 }
             }
         }
+
         BODYPARTS -> {
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
@@ -396,6 +401,7 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.NoInternet -> {
                     NoInternetLayout(onTryAgain = {})
                 }
+
                 is HPropState.Success -> {
                     ItemSelectionLayout(
                         cardList = state.properties,
@@ -405,6 +411,7 @@ fun HealthCreateBtmSheetLayout(
                 }
             }
         }
+
         AILMENTS -> {
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
@@ -413,6 +420,7 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.NoInternet -> {
                     NoInternetLayout(onTryAgain = {})
                 }
+
                 is HPropState.Success -> {
                     ItemSelectionLayout(
                         cardList = state.properties,
@@ -422,6 +430,7 @@ fun HealthCreateBtmSheetLayout(
                 }
             }
         }
+
         MEDICATIONS -> {
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
@@ -430,6 +439,7 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.NoInternet -> {
                     NoInternetLayout(onTryAgain = {})
                 }
+
                 is HPropState.Success -> {
                     ItemSelectionLayout(
                         cardList = state.properties,
@@ -439,6 +449,7 @@ fun HealthCreateBtmSheetLayout(
                 }
             }
         }
+
         HEALTHTARGETS -> {
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
@@ -447,6 +458,7 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.NoInternet -> {
                     NoInternetLayout(onTryAgain = {})
                 }
+
                 is HPropState.Success -> {
                     ItemSelectionLayout(
                         cardList = state.properties,
@@ -456,6 +468,7 @@ fun HealthCreateBtmSheetLayout(
                 }
             }
         }
+
         ADDICTION -> {
             when (val state = viewModel.stateHp.collectAsState().value) {
                 is HPropState.Empty -> {}
@@ -464,6 +477,7 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.NoInternet -> {
                     NoInternetLayout(onTryAgain = {})
                 }
+
                 is HPropState.Success -> {
                     ItemSelectionLayout(
                         cardList = state.properties,
