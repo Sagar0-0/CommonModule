@@ -17,7 +17,8 @@ import fit.asta.health.tools.water.model.WaterToolRepo
 import fit.asta.health.tools.water.model.domain.BeverageDetails
 import fit.asta.health.tools.water.model.domain.WaterTool
 import fit.asta.health.tools.water.model.network.NetBevQtyPut
-import fit.asta.health.tools.water.model.network.NetWaterTargetPut
+import fit.asta.health.tools.water.model.network.TodayActivityData
+import fit.asta.health.tools.water.model.network.WaterToolData
 import fit.asta.health.tools.water.view.screen.WTEvent
 import fit.asta.health.tools.water.view.screen.WaterUiState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -37,7 +38,7 @@ class WaterViewModel
     private val authRepo: AuthRepo,
     private val localRepo: WaterLocalRepo
 ) : ViewModel() {
-    val list = listOf(250,300,500,600,750,900,1000)
+    val list = listOf(250, 300, 500, 600, 750, 900, 1000)
     private val mutableState = MutableStateFlow<WaterState>(WaterState.Loading)
     val state = mutableState.asStateFlow()
 
@@ -50,6 +51,9 @@ class WaterViewModel
     private val _beverageList = mutableStateListOf<BeverageDetails>()
     val beverageList = MutableStateFlow(_beverageList)
 
+    private val _todayActivity = mutableStateListOf<TodayActivityData>()
+    val todayActivity = MutableStateFlow(_todayActivity)
+
     private val _containerList = mutableStateListOf<Int>()
     val containerList = MutableStateFlow(_containerList)
 
@@ -58,7 +62,6 @@ class WaterViewModel
 
     private val _containerIndex = MutableStateFlow<Int>(-1)
     val containerIndex = _containerIndex.asStateFlow()
-
 
 
     init {
@@ -100,15 +103,15 @@ class WaterViewModel
             is WTEvent.SelectAngle -> {
                 _uiState.value = _uiState.value.copy(targetAngle = event.angle)
                 viewModelScope.launch {
-                    val data=localRepo.getWaterData(LocalDate.now().dayOfMonth)
-                    if (data!=null){
-                        if (!data.start){
+                    val data = localRepo.getWaterData(LocalDate.now().dayOfMonth)
+                    if (data != null) {
+                        if (!data.start) {
                             localRepo.updateAngle(
                                 date = LocalDate.now().dayOfMonth,
                                 appliedAngleDistance = event.angle
                             )
                         }
-                    }else{
+                    } else {
                         localRepo.updateAngle(
                             date = LocalDate.now().dayOfMonth,
                             appliedAngleDistance = event.angle
@@ -139,11 +142,10 @@ class WaterViewModel
             }
 
             is WTEvent.Start -> {
-                if (_uiState.value.target<0f){
-                mToast(context =event.context , text = "select target value of water")
-                }
-                else{
-                  setTargetData()
+                if (_uiState.value.target < 0f) {
+                    mToast(context = event.context, text = "select target value of water")
+                } else {
+                    setTargetData()
                 }
             }
 
@@ -173,7 +175,16 @@ class WaterViewModel
                     mutableState.value = WaterState.Error(exception)
                 }.collect {
                     _modifiedWaterTool.value = it
+                    _uiState.value= _uiState.value.copy(
+                        butterMilk = it.butterMilk,
+                        coconut = it.coconut,
+                        fruitJuice = it.fruitJuice,
+                        milk = it.milk,
+                        water = it.water,
+                        meta = it.meta,
+                    )
                     _beverageList.addAll(it.beveragesDetails)
+                    _todayActivity.addAll(it.todayActivityData)
                     mutableState.value = WaterState.Success
                     Log.i("Water Tool", it.toString())
                     Log.d("subhash", "loadWaterToolData: ${it}")
@@ -199,7 +210,17 @@ class WaterViewModel
                 }.collect {
                     _modifiedWaterTool.value = it
                     _beverageList.clear()
+                    _todayActivity.clear()
+                    _uiState.value= _uiState.value.copy(
+                        butterMilk = it.butterMilk,
+                        coconut = it.coconut,
+                        fruitJuice = it.fruitJuice,
+                        milk = it.milk,
+                        water = it.water,
+                        meta = it.meta,
+                    )
                     _beverageList.addAll(it.beveragesDetails)
+                    _todayActivity.addAll(it.todayActivityData)
                 }
                 Log.d("subhash", "result: ${result}")
             }
@@ -210,20 +231,25 @@ class WaterViewModel
     private fun setTargetData() {
         viewModelScope.launch {
             waterToolRepo.updateWaterTool(
-                NetWaterTargetPut(
+                WaterToolData(
                     code = _modifiedWaterTool.value?.waterToolData!!.code,
                     id = _modifiedWaterTool.value?.waterToolData!!.id,
                     prc = _modifiedWaterTool.value?.waterToolData!!.prc,
-                    tgt = _uiState.value.target.toString(),
                     type = _modifiedWaterTool.value?.waterToolData!!.type,
+                    weather =_modifiedWaterTool.value?.waterToolData!!.weather ,
                     uid = _modifiedWaterTool.value?.waterToolData!!.uid,
-                    wea = _modifiedWaterTool.value?.waterToolData!!.wea
+                    waterTarget =_uiState.value.target.toString() ,
+                    butterMilkTarget ="0.8",
+                    milkTarget ="0.6" ,
+                    juiceTarget = "1.0",
+                    coconutTarget ="1.5" ,
                 )
             ).catch { exception ->
                 Log.d("subhash", "setTargetData: ${exception.message}")
             }.collect {
                 localRepo.updateState(date = LocalDate.now().dayOfMonth, start = true)
                 loadLocalData()
+                updateUi()
                 Log.d("subhash", "setTargetData: ${it.msg}")
             }
         }
@@ -252,6 +278,7 @@ class WaterViewModel
         }
     }
 }
-private fun mToast(context: Context,text:String){
+
+private fun mToast(context: Context, text: String) {
     Toast.makeText(context, text, Toast.LENGTH_LONG).show()
 }

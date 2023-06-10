@@ -70,7 +70,7 @@ import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.ui.DividerLineCenter
 import fit.asta.health.tools.walking.view.component.ButtonWithColor
 import fit.asta.health.tools.water.model.domain.BeverageDetails
-import fit.asta.health.tools.water.model.domain.WaterTool
+import fit.asta.health.tools.water.model.network.TodayActivityData
 import fit.asta.health.tools.water.view.component.WaterCircularSlider
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -78,10 +78,10 @@ import fit.asta.health.tools.water.view.component.WaterCircularSlider
 fun WaterToolScreen(
     Event: (WTEvent) -> Unit,
     beverageList: SnapshotStateList<BeverageDetails>,
+    todayActivityData: SnapshotStateList<TodayActivityData>,
     selectedBeverage: String,
     containerIndex: Int,
     containerList: SnapshotStateList<Int>,
-    waterTool: WaterTool,
     uiState: WaterUiState
 ) {
     val sheetState = rememberBottomSheetState(
@@ -102,7 +102,7 @@ fun WaterToolScreen(
     }
     BottomSheetScaffold(
         modifier = Modifier.fillMaxSize(),
-        backgroundColor = MaterialTheme.colorScheme.onPrimary,
+        backgroundColor = MaterialTheme.colorScheme.tertiary,
         sheetShape = RoundedCornerShape(16.dp),
         sheetContent = {
             WaterBottomSheet(
@@ -186,7 +186,7 @@ fun WaterToolScreen(
                         modifier = Modifier.size(200.dp),
                         isStarted = uiState.start,
                         appliedAngleDistanceValue = if (uiState.start) uiState.angle else uiState.targetAngle,
-                        indicatorValue = waterTool.progressData.consumed.toFloat(),
+                        indicatorValue = uiState.water.consume.toFloat(),
                         onChangeDistance = {
                             Event(WTEvent.SelectTarget(it))
                         },
@@ -198,25 +198,24 @@ fun WaterToolScreen(
                     Row(horizontalArrangement = Arrangement.spacedBy(spacing.medium)) {
                         ProgressBarItem(
                             modifier = Modifier.weight(0.3f),
-                            targetDistance = waterTool.progressData.recommendation.toFloat(),
-                            progress = (waterTool.progressData.consumed / waterTool.progressData.recommendation).toFloat(),
+                            targetDistance = uiState.water.recommend.toFloat(),
+                            progress = (uiState.water.consume / uiState.water.recommend).toFloat(),
                             name = "Recommended"
                         )
                         ProgressBarItem(
                             modifier = Modifier.weight(0.3f),
-                            targetDistance = waterTool.progressData.goal.toFloat(),
-                            progress = (waterTool.progressData.consumed / waterTool.progressData.goal).toFloat(),
+                            targetDistance = uiState.water.target.toFloat(),
+                            progress = if(uiState.water.target==0.0) 0f else (uiState.water.consume / uiState.water.target).toFloat(),
                             name = "Goal"
                         )
                         ProgressBarItem(
                             modifier = Modifier.weight(0.3f),
-                            targetDistance = waterTool.progressData.goal.toFloat(),
-                            progress = (waterTool.progressData.remaining / waterTool.progressData.goal).toFloat(),
+                            targetDistance = uiState.water.target.toFloat(),
+                            progress =if(uiState.water.target==0.0) 0f else (uiState.water.remaining / uiState.water.target).toFloat(),
                             name = "Remaining"
                         )
                     }
 
-                    val daily = listOf("Water", "Milk", "Fruit Juice")
                     Column(
                         modifier = Modifier
                             .fillMaxWidth(),
@@ -227,13 +226,30 @@ fun WaterToolScreen(
                             style = MaterialTheme.typography.titleMedium,
                             textAlign = TextAlign.Start
                         )
-                        daily.forEach {
-                            RecommendItem(title = it, value = 700f, progress = 30)
-                        }
+                        RecommendItem(
+                            title = beverageName("M"),
+                            value = (uiState.milk.recommend*1000).toFloat(),
+                            progress = (uiState.milk.consume*100.0/uiState.milk.recommend).toInt()
+                        )
+                        RecommendItem(
+                            title = beverageName("C"),
+                            value = (uiState.coconut.recommend*1000).toFloat(),
+                            progress = (uiState.coconut.consume*100.0/uiState.coconut.recommend).toInt()
+                        )
+                        RecommendItem(
+                            title = beverageName("BM"),
+                            value = (uiState.butterMilk.recommend*1000).toFloat(),
+                            progress = (uiState.butterMilk.consume*100.0/uiState.butterMilk.recommend).toInt()
+                        )
+                        RecommendItem(
+                            title = beverageName("FJ"),
+                            value = (uiState.fruitJuice.recommend*1000).toFloat(),
+                            progress = (uiState.fruitJuice.consume*100.0/uiState.fruitJuice.recommend).toInt()
+                        )
                     }
                 }
             }
-            DailyActivity()
+            DailyActivity(todayActivityData)
             Spacer(modifier = Modifier.height(240.dp))
         }
 
@@ -271,7 +287,7 @@ fun WaterBottomSheet(
                     "BEVERAGES",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(spacing.medium)) {
                     beverageList.forEach {
@@ -289,7 +305,7 @@ fun WaterBottomSheet(
                     "QUANTITY-${beverageName(selectedBeverage)}",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(spacing.medium)) {
                     containerList.forEachIndexed { index, value ->
@@ -313,7 +329,7 @@ fun WaterBottomSheet(
                     "QUANTITY-${beverageName(selectedBeverage)}",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(spacing.medium)) {
                     containerList.forEachIndexed { index, value ->
@@ -416,25 +432,28 @@ fun QuantityContainerComponent(
 }
 
 @Composable
-@Preview
-fun DailyActivity() {
+fun DailyActivity( todayActivityData: SnapshotStateList<TodayActivityData> ) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
             .height(300.dp),
-//        color = Color.Green,
         shape = RoundedCornerShape(corner = CornerSize(15.dp)),
     ) {
-        Column ( modifier = Modifier
-            .fillMaxSize().padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(spacing.small)) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(spacing.small)
+        ) {
             Text(
                 text = "Today Activity",
                 style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Start
             )
-            Row(modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 Text(
                     text = "Beverages",
                     style = MaterialTheme.typography.bodySmall,
@@ -457,12 +476,12 @@ fun DailyActivity() {
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(spacing.small)
             ) {
-                items(daily) {
+                items(todayActivityData) {
                     ActivityItem(
-                        title = beverageName(it),
-                        consumeValue = 500,
-                        icon_code = it,
-                        time = "5:30 am"
+                        title = it.bev,
+                        consumeValue =(it.qty*1000).toFloat(),
+                        icon_code = beverageNameToIcon(it.bev),
+                        time = it.time
                     )
                 }
             }
@@ -471,13 +490,13 @@ fun DailyActivity() {
 }
 
 @Composable
-fun ActivityItem(title: String, consumeValue: Int, icon_code: String, time: String) {
+fun ActivityItem(title: String, consumeValue: Float, icon_code: Int, time: String) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.Bottom
     ) {
         Icon(
-            painter = painterResource(id = beverageIcons(icon_code)),
+            painter = painterResource(id = icon_code),
             contentDescription = null,
             modifier = Modifier
                 .size(24.dp)
@@ -741,6 +760,37 @@ fun beverageName(code: String): String {
         "C" -> "Coconut"
 
         else -> "Water"
+    }
+}
+fun beverageNameToIcon(name: String): Int {
+    return when (name) {
+        "Water" -> {
+            R.drawable.sparkling_water
+        }
+
+        "Fruit Juice" -> {
+            R.drawable.fruit_juice
+        }
+
+        "Soft Drinks" -> {
+            R.drawable.butter_milk_bottle
+        }
+
+        "Milk" -> {
+            R.drawable.milk_bottle
+        }
+
+        "Butter milk" -> {
+            R.drawable.butter_milk_bottle
+        }
+
+        "Coconut" -> {
+            R.drawable.coconut_cocktail
+        }
+
+        else -> {
+            R.drawable.ic_baseline_favorite_24
+        }
     }
 }
 

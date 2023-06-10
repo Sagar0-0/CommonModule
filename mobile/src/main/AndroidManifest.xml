@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-sdk />
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
 
     <dist:module dist:instant="true" />
 
@@ -175,6 +178,11 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".player.jetpack_video.VideoActivity"
+            android:configChanges="colorMode|density|fontScale|keyboard|keyboardHidden|layoutDirection|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode"
+            android:exported="true">
         </activity>
 
         <receiver android:name=".notify.receiver.AlarmReceiver" />

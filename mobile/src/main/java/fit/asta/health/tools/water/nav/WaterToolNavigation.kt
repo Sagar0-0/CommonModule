@@ -26,6 +26,7 @@ fun WaterToolNavigation(navController: NavHostController,viewModel: WaterViewMod
             val waterTool by viewModel.modifiedWaterTool.collectAsStateWithLifecycle()
             val beverageList by viewModel.beverageList.collectAsStateWithLifecycle()
             val containerList by viewModel.containerList.collectAsStateWithLifecycle()
+            val todayActivityData by viewModel.todayActivity.collectAsStateWithLifecycle()
             val selectedBeverage by viewModel.selectedBeverage.collectAsStateWithLifecycle()
             val containerIndex by viewModel.containerIndex.collectAsStateWithLifecycle()
             Log.d("subhash", "WaterToolNavigation:${uiState} \n"+"${waterTool}\n"+"$containerIndex")
@@ -36,7 +37,7 @@ fun WaterToolNavigation(navController: NavHostController,viewModel: WaterViewMod
                     beverageList =beverageList ,
                     containerList =containerList ,
                     selectedBeverage = selectedBeverage,
-                    waterTool = waterTool!!,
+                    todayActivityData = todayActivityData,
                     containerIndex = containerIndex,
                     uiState = uiState
                 )

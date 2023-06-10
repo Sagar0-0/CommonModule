@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.navigation.home.model.domain.ToolsHome
 import fit.asta.health.navigation.home.view.component.*
+import fit.asta.health.player.jetpack_video.VideoActivity
 import fit.asta.health.tools.walking.view.WalkingActivity
 import fit.asta.health.tools.water.WaterToolActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -133,6 +134,9 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
                                         }
                                         "steps" -> {
                                             WalkingActivity.launch(context = context)
+                                        }
+                                        "workout" -> {
+                                            VideoActivity.launch(context = context)
                                         }
                                     }
                                 }
