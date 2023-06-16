@@ -1,24 +1,32 @@
 package fit.asta.health.tools.water.viewmodel
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.getCurrentDate
 import fit.asta.health.firebase.model.AuthRepo
+import fit.asta.health.tools.water.db.WaterData
+import fit.asta.health.tools.water.model.WaterLocalRepo
 import fit.asta.health.tools.water.model.WaterToolRepo
+import fit.asta.health.tools.water.model.domain.BeverageDetails
 import fit.asta.health.tools.water.model.domain.WaterTool
 import fit.asta.health.tools.water.model.network.NetBevQtyPut
+import fit.asta.health.tools.water.model.network.TodayActivityData
+import fit.asta.health.tools.water.model.network.WaterToolData
+import fit.asta.health.tools.water.view.screen.WTEvent
+import fit.asta.health.tools.water.view.screen.WaterUiState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 
@@ -27,261 +35,250 @@ import javax.inject.Inject
 class WaterViewModel
 @Inject constructor(
     private val waterToolRepo: WaterToolRepo,
-    private val authRepo: AuthRepo
+    private val authRepo: AuthRepo,
+    private val localRepo: WaterLocalRepo
 ) : ViewModel() {
-
+    val list = listOf(250, 300, 500, 600, 750, 900, 1000)
     private val mutableState = MutableStateFlow<WaterState>(WaterState.Loading)
     val state = mutableState.asStateFlow()
 
-    private val _waterTool = MutableStateFlow<WaterTool?>(null)
+    private val _uiState = mutableStateOf(WaterUiState())
+    val uiState: State<WaterUiState> = _uiState
 
     private val _modifiedWaterTool = MutableStateFlow<WaterTool?>(null)
     val modifiedWaterTool = _modifiedWaterTool.asStateFlow()
 
-    private val _choosenBeverageIndexCode = MutableStateFlow<String?>(null)
-    val choosenIndexCode = _choosenBeverageIndexCode.asStateFlow()
+    private val _beverageList = mutableStateListOf<BeverageDetails>()
+    val beverageList = MutableStateFlow(_beverageList)
 
-    val containerInCharge = _choosenBeverageIndexCode.combine(_modifiedWaterTool){ code,modifiedTool->
-        code?.let {
-            modifiedTool?.beveragesDetails?.find {BD->
-                BD.code==it
-            }
-        }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(),null)
+    private val _todayActivity = mutableStateListOf<TodayActivityData>()
+    val todayActivity = MutableStateFlow(_todayActivity)
 
+    private val _containerList = mutableStateListOf<Int>()
+    val containerList = MutableStateFlow(_containerList)
 
-    private val _selectedContainer = MutableStateFlow<String?>(null)
-    val selectedContainer = _selectedContainer.asStateFlow()
+    private val _selectedBeverage = MutableStateFlow<String>("W")
+    val selectedBeverage = _selectedBeverage.asStateFlow()
 
-    private val _changedContainerList = mutableListOf<Int>()
+    private val _containerIndex = MutableStateFlow<Int>(-1)
+    val containerIndex = _containerIndex.asStateFlow()
 
-    //-------------------slider-----------------------//
-    private val _showSlider = MutableStateFlow(false)
-    val showSlider = _showSlider.asStateFlow()
-
-    private val _sliderIndex = MutableStateFlow<Int?>(null)
-    val sliderIndex = _sliderIndex.asStateFlow()
-
-    private val _sliderInitialValue = MutableStateFlow<Float?>(null)
-    val sliderInitialValue = _sliderInitialValue.asStateFlow()
-
-    private val _saveData = MutableStateFlow(false)
-    val saveData = _saveData.asStateFlow()
-
-    val somethingChanged = MutableStateFlow<Boolean>(false)
-
-    val changedTgt = mutableStateOf<Int?>(null)
 
     init {
-        Log.d("water", "state: ${state.value}")
+        _containerList.addAll(list)
         loadWaterToolData()
-        Log.d("water", "state: ${state.value}")
+        loadLocalData()
+    }
+
+    private fun loadLocalData() {
+        viewModelScope.launch {
+            val data = localRepo.getWaterData(date = LocalDate.now().dayOfMonth)
+            if (data != null) {
+                _uiState.value = _uiState.value.copy(
+                    start = data.start,
+                    angle = data.appliedAngleDistance
+                )
+            } else {
+                localRepo.insert(
+                    WaterData(
+                        date = LocalDate.now().dayOfMonth,
+                        appliedAngleDistance = 0f,
+                        start = false
+                    )
+                )
+            }
+        }
+    }
+
+    fun event(event: WTEvent) {
+        when (event) {
+            is WTEvent.SelectBeverage -> {
+                _selectedBeverage.value = event.Index
+            }
+
+            is WTEvent.SelectTarget -> {
+                _uiState.value = _uiState.value.copy(target = event.target)
+            }
+
+            is WTEvent.SelectAngle -> {
+                _uiState.value = _uiState.value.copy(targetAngle = event.angle)
+                viewModelScope.launch {
+                    val data = localRepo.getWaterData(LocalDate.now().dayOfMonth)
+                    if (data != null) {
+                        if (!data.start) {
+                            localRepo.updateAngle(
+                                date = LocalDate.now().dayOfMonth,
+                                appliedAngleDistance = event.angle
+                            )
+                        }
+                    } else {
+                        localRepo.updateAngle(
+                            date = LocalDate.now().dayOfMonth,
+                            appliedAngleDistance = event.angle
+                        )
+                    }
+                }
+            }
+
+            is WTEvent.SelectContainer -> {
+                _containerIndex.value = event.Index
+                val title = _beverageList.find { BD ->
+                    BD.code == _selectedBeverage.value
+                }?.title
+                _uiState.value = _uiState.value.copy(
+                    showCustomDialog = true,
+                    dialogString = "This action cannot be undone. Please review the details carefully before proceeding.\n" +
+                            "$title Quantity: ${list[event.Index]} ml\n" +
+                            "Have you drunk that much ${title}? Confirming this update will reflect the new quantity in the system."
+                )
+            }
+
+            is WTEvent.UpdateQuantity -> {
+                updateBeverageData()
+            }
+
+            is WTEvent.SheetState -> {
+                if (event.state) _selectedBeverage.value = "W"
+            }
+
+            is WTEvent.Start -> {
+                if (_uiState.value.target < 0f) {
+                    mToast(context = event.context, text = "select target value of water")
+                } else {
+                    setTargetData()
+                }
+            }
+
+            is WTEvent.Schedule -> {}
+            is WTEvent.DialogState -> {
+                _uiState.value = _uiState.value.copy(showCustomDialog = event.state)
+                _containerIndex.value = -1
+            }
+
+            else -> {}
+        }
     }
 
     private fun loadWaterToolData() {
         viewModelScope.launch {
-            authRepo.getUser()?.let { user->
-                Log.i("User Id","------------------>${user.uid}")
-                Log.d("water", "user: ${user.uid}")
-              val result=  waterToolRepo.getWaterTool(
+            authRepo.getUser()?.let { user ->
+                Log.i("User Id", "------------------>${user.uid}")
+                Log.d("subhash", "user: ${user.uid}")
+                val result = waterToolRepo.getWaterTool(
                     userId = "6309a9379af54f142c65fbfe",
                     latitude = "28.6353",
                     longitude = "77.2250",
                     location = "bangalore",
                     date = getCurrentDate()
                 ).catch { exception ->
-                  Log.d("water", "loadWaterToolData: ${exception.message}")
+                    Log.d("subhash", "loadWaterToolData: ${exception.message}")
                     mutableState.value = WaterState.Error(exception)
-                }.collect { it ->
-                  _waterTool.value = it
+                }.collect {
                     _modifiedWaterTool.value = it
-                    somethingChanged.value=false
-                    if(_choosenBeverageIndexCode.value==null){
-                        if(_modifiedWaterTool.value?.selectedListId?.isNotEmpty() == true){
-                            _modifiedWaterTool.value?.selectedListId.let {list->
-                                if (list != null) {
-                                    if (list.isNotEmpty())
-                                        _choosenBeverageIndexCode.value = list[0]
-                                }
-                            }
-
-                        }
-                    }
-                    mutableState.value = WaterState.Success
-                    Log.i("Water Tool",it.toString())
-                    Log.d("water", "loadWaterToolData: ${it}")
-                }
-                Log.d("water", "result: ${result}")
-            }
-
-        }
-    }
-
-    fun updateSelectBeveragesTool(beveragesId: String){
-        _modifiedWaterTool.update {wT->
-            wT?.beveragesDetails?.forEach{it->
-                if(it.beverageId==beveragesId){
-                    it.isSelected=!it.isSelected
-                }
-            }
-            wT
-        }
-      /*  val temp = _modifiedWaterTool.value
-        temp?.beveragesDetails?.forEach{
-            if(it.beverageId==beveragesId){
-                it.isSelected=!it.isSelected
-            }
-        }
-        _modifiedWaterTool.value=temp*/
-    }
-
-    fun compareModifiedTool(){
-        Log.i("fit.asta.health.tools.water.viewmodel.WaterViewModel 122","presed------------->${_changedContainerList}")
-        _saveData.value = _changedContainerList.isNotEmpty()
-    }
-
-    fun updateTheChoosenIndex(code: String){
-        _choosenBeverageIndexCode.value = code
-        _selectedContainer.value = null
-        _showSlider.value=false
-        _sliderIndex.value=null
-    }
-
-    fun updateSelectedContainer(containerValue: String){
-        if(containerValue==_selectedContainer.value){
-            _selectedContainer.value=null
-        }else{
-            _selectedContainer.value=containerValue
-        }
-        compareModifiedTool()
-    }
-
-    fun updateSliderVisibitlity(index: Int,value: Int){
-        Log.i("Water Tool viewModel 131",value.toString())
-        if(_sliderIndex.value==null){
-            _showSlider.value=false
-            _sliderIndex.value=index
-            _sliderInitialValue.update { value.toFloat() }
-            _showSlider.value=true
-        }else{
-            if(_sliderIndex.value==index){
-                _sliderIndex.value=null
-                _showSlider.value=false
-                _sliderInitialValue.value=null
-            }else{
-                _showSlider.value=false
-                _sliderIndex.value=index
-                _sliderInitialValue.update { value.toFloat() }
-                _showSlider.value=true
-            }
-        }
-    }
-
-    fun closeSlider(){
-        _showSlider.value=false
-        _sliderIndex.value=null
-    }
-
-    fun onSavedQTY(){
-        val beverageName = containerInCharge.value?.name
-        viewModelScope.launch {
-            _selectedContainer.value?.let {selectedValue->
-                _modifiedWaterTool.value?.progressData?.let { it1 ->
-                    NetBevQtyPut(
-                        bev = beverageName.toString(),
-                        id = it1.id,
-                        uid = it1.uid,
-                        qty = selectedValue.toDouble()
+                    _uiState.value= _uiState.value.copy(
+                        butterMilk = it.butterMilk,
+                        coconut = it.coconut,
+                        fruitJuice = it.fruitJuice,
+                        milk = it.milk,
+                        water = it.water,
+                        meta = it.meta,
                     )
-                }
-            }?.let {
-                waterToolRepo.updateBeverageQty(
-                    beverage = it,
-                )
-            }
-        }
-    }
-
-    fun sliderValueChanged(value: Int){
-        //TODO: while updating _modifiedWaterTool _waterTool gets updated
-        if(_sliderIndex.value!=null) {
-            //val temp = _modifiedWaterTool.value
-
-            Log.i("test198","12345")
-            _modifiedWaterTool.update { wt->
-                wt?.beveragesDetails?.forEach {
-                    if (it.code == _choosenBeverageIndexCode.value) {
-                        it.containers[_sliderIndex.value!!] = value
-                    }
-                }
-                wt
-            }
-
-            val list1 = _modifiedWaterTool.value?.beveragesDetails!!
-            val list2 = _waterTool.value?.beveragesDetails!!
-
-            for(i in 0 until (list2.size)){
-                Log.i("test202","list1 = ${list1[i].containers}")
-                Log.i("test202","${list2[i].containers}")
-                if(list1[i].containers != list2[i].containers){
-
-                    Log.i("testbg206",i.toString())
-                    if (i !in _changedContainerList) {
-                        _changedContainerList.add(i)
-                    }
-                }else{
-                    if (i in _changedContainerList){
-                        _changedContainerList.remove(i)
-                    }
-                }
-            }
-            compareModifiedTool()
-        }
-    }
-
-    /*fun updateWaterTool(modifiedWaterTool: ModifiedWaterTool){
-        viewModelScope.launch {
-            waterToolRepo.updateWaterTool(modifiedWaterTool).catch { exception->
-                mutableState.value = WaterState.Error(exception)
-            }.collect{
-                if(it.code==200) {
+                    _beverageList.addAll(it.beveragesDetails)
+                    _todayActivity.addAll(it.todayActivityData)
                     mutableState.value = WaterState.Success
+                    Log.i("Water Tool", it.toString())
+                    Log.d("subhash", "loadWaterToolData: ${it}")
+                }
+                Log.d("subhash", "result: ${result}")
+            }
+
+        }
+    }
+
+    private fun updateUi() {
+
+        viewModelScope.launch {
+            authRepo.getUser()?.let { user ->
+                val result = waterToolRepo.getWaterTool(
+                    userId = "6309a9379af54f142c65fbfe",
+                    latitude = "28.6353",
+                    longitude = "77.2250",
+                    location = "bangalore",
+                    date = getCurrentDate()
+                ).catch { exception ->
+                    Log.d("subhash", "loadWaterToolData: ${exception.message}")
+                }.collect {
+                    _modifiedWaterTool.value = it
+                    _beverageList.clear()
+                    _todayActivity.clear()
+                    _uiState.value= _uiState.value.copy(
+                        butterMilk = it.butterMilk,
+                        coconut = it.coconut,
+                        fruitJuice = it.fruitJuice,
+                        milk = it.milk,
+                        water = it.water,
+                        meta = it.meta,
+                    )
+                    _beverageList.addAll(it.beveragesDetails)
+                    _todayActivity.addAll(it.todayActivityData)
+                }
+                Log.d("subhash", "result: ${result}")
+            }
+
+        }
+    }
+
+    private fun setTargetData() {
+        viewModelScope.launch {
+            waterToolRepo.updateWaterTool(
+                WaterToolData(
+                    code = _modifiedWaterTool.value?.waterToolData!!.code,
+                    id = _modifiedWaterTool.value?.waterToolData!!.id,
+                    prc = _modifiedWaterTool.value?.waterToolData!!.prc,
+                    type = _modifiedWaterTool.value?.waterToolData!!.type,
+                    weather =_modifiedWaterTool.value?.waterToolData!!.weather ,
+                    uid = _modifiedWaterTool.value?.waterToolData!!.uid,
+                    waterTarget =_uiState.value.target.toString() ,
+                    butterMilkTarget ="0.8",
+                    milkTarget ="0.6" ,
+                    juiceTarget = "1.0",
+                    coconutTarget ="1.5" ,
+                )
+            ).catch { exception ->
+                Log.d("subhash", "setTargetData: ${exception.message}")
+            }.collect {
+                localRepo.updateState(date = LocalDate.now().dayOfMonth, start = true)
+                loadLocalData()
+                updateUi()
+                Log.d("subhash", "setTargetData: ${it.msg}")
+            }
+        }
+    }
+
+    private fun updateBeverageData() {
+        val title = _beverageList.find { BD ->
+            BD.code == _selectedBeverage.value
+        }?.title
+        viewModelScope.launch {
+            authRepo.getUserId()?.let {
+                waterToolRepo.updateBeverageQty(
+                    NetBevQtyPut(
+                        bev = title!!,
+                        id = "",
+                        uid = "6309a9379af54f142c65fbfe",
+                        qty = list[_containerIndex.value].toDouble() / 1000
+                    )
+                ).catch { exception ->
+                    Log.d("subhash", "updateBeverageData: ${exception.message}")
+                }.collect {
+                    updateUi()
+                    Log.d("subhash", "updateBeverageData: ${it.msg}")
                 }
             }
         }
-    }*/
-
-    /*fun updateBeverage(beverage: NetBeverage) {
-        viewModelScope.launch {
-            waterToolRepo.updateBeverage(beverage).catch { exception ->
-                mutableState.value = WaterState.Error(exception)
-            }.collect {
-                //mutableState.value = WaterState.Success(it)
-            }
-        }
-    }*/
-
-    /*fun updateBeverageQty(beverage: NetBeverage) {
-        viewModelScope.launch {
-            waterToolRepo.updateBeverageQty(beverage).catch { exception ->
-                mutableState.value = WaterState.Error(exception)
-            }.collect {
-                //mutableState.value = WaterState.Success(it)
-            }
-        }
-    }*/
-
-   /* fun getBeverageList(userId: String) {
-        viewModelScope.launch {
-            waterToolRepo.getBeverageList(userId).catch { exception ->
-                mutableState.value = WaterState.Error(exception)
-            }.collect {
-                //mutableState.value = WaterState.Success(it)
-            }
-        }
-    }*/
-
-    fun changedTarget(x:Int){
-        changedTgt.value=x
     }
+}
+
+private fun mToast(context: Context, text: String) {
+    Toast.makeText(context, text, Toast.LENGTH_LONG).show()
 }

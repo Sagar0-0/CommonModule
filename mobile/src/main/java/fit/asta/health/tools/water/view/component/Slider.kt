@@ -1,12 +1,8 @@
 package fit.asta.health.tools.water.view.component
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Slider
-import androidx.compose.material.Text
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,8 +12,6 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import fit.asta.health.tools.water.viewmodel.WaterViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -26,10 +20,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 fun ForecastSlider(
     dates: List<String> = listOf("0","50","100","150","200","250","300","350","400","450","500","550","600","650","700","750","800","850","900","950","100"),
     onValueChange: (Int) -> Unit = {},
-    viewModel: WaterViewModel = hiltViewModel()
+//    viewModel: WaterViewModel = hiltViewModel()
 ) {
-    val value by viewModel.sliderInitialValue.collectAsState()
-    val (sliderValue, setSliderValue) = remember { mutableStateOf(value) }
+//    val value by viewModel.sliderInitialValue.collectAsState()
+    val (sliderValue, setSliderValue) = remember { mutableStateOf(0f) }
     val drawPadding = with(LocalDensity.current) { 10.dp.toPx() }
     val textSize = with(LocalDensity.current) { 10.dp.toPx() }
     val lineHeightDp = 10.dp

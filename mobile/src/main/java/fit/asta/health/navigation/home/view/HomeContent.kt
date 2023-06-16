@@ -2,6 +2,9 @@ package fit.asta.health.navigation.home.view
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -15,6 +18,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@ExperimentalMaterialApi
+@ExperimentalFoundationApi
+@ExperimentalAnimationApi
 @Composable
 fun HomeContent(activity: Activity, viewModel: HomeViewModel = hiltViewModel()) {
 

@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-sdk />
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
 
     <dist:module dist:instant="true" />
 
@@ -68,7 +71,26 @@
             android:launchMode="singleTop"
             android:screenOrientation="landscape"
             tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".player.jetpack_audio.AudioPlayerActivity"
+            android:exported="true"
+            android:theme="@style/Theme.MusicPlayer">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <service
+            android:name=".player.jetpack_audio.exo_player.MusicService"
+            android:exported="true"
+            android:foregroundServiceType="mediaPlayback"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="androidx.media3.session.MediaLibraryService" />
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
 
+        <activity android:name=".tools.meditation.MeditationActivity"/>
         <activity android:name=".tools.water.WaterToolActivity"/>
         <activity android:name=".tools.walking.view.WalkingActivity"/>
         <activity android:name=".scheduler.compose.SchedulerActivity"/>
@@ -175,6 +197,11 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".player.jetpack_video.VideoActivity"
+            android:configChanges="colorMode|density|fontScale|keyboard|keyboardHidden|layoutDirection|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode"
+            android:exported="true">
         </activity>
 
         <receiver android:name=".notify.receiver.AlarmReceiver" />

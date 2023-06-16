@@ -2,7 +2,8 @@ package fit.asta.health.tools.water.model.api
 
 import fit.asta.health.network.data.Status
 import fit.asta.health.tools.water.model.network.NetBevQtyPut
-import fit.asta.health.tools.water.model.network.NetWaterToolRes
+import fit.asta.health.tools.water.model.network.WaterToolData
+import fit.asta.health.tools.water.model.network.WaterToolResult
 import retrofit2.http.*
 
 //Health Tool - Water Endpoints
@@ -15,14 +16,14 @@ interface WaterApiService {
         @Query("lon") longitude: String,
         @Query("date") date: String,
         @Query("loc") location: String
-    ): NetWaterToolRes
+    ): WaterToolResult
 
     @POST("tools/water/beverage/quantity/post")
     suspend fun updateBeverageQty(@Body beverage: NetBevQtyPut): Status
 
-    /*@PUT("tools/water/put")
-    suspend fun updateWaterTool(@Body modifiedWaterTool: ModifiedWaterTool): Status
-
+    @PUT("tools/water/put")
+    suspend fun updateWaterTool(@Body waterToolData: WaterToolData): Status
+/*
     @PUT("tools/water/beverage/add/put")
     suspend fun updateBeverage(@Body beverage: NetBeverage): Status
 

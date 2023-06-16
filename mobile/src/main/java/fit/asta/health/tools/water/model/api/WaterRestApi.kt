@@ -1,10 +1,10 @@
 package fit.asta.health.tools.water.model.api
 
-import android.util.Log
 import fit.asta.health.common.utils.NetworkUtil
 import fit.asta.health.network.data.Status
 import fit.asta.health.tools.water.model.network.NetBevQtyPut
-import fit.asta.health.tools.water.model.network.NetWaterToolRes
+import fit.asta.health.tools.water.model.network.WaterToolData
+import fit.asta.health.tools.water.model.network.WaterToolResult
 import okhttp3.OkHttpClient
 
 
@@ -22,15 +22,16 @@ class WaterRestApi(baseUrl: String, client: OkHttpClient) :
         longitude: String,
         location: String,
         date: String
-    ): NetWaterToolRes {
-
-        val l = apiService.getWaterTool(userId, latitude, longitude, date, location)
-        Log.i("RestApiline 140", l.waterTool.toString())
-        return l
+    ): WaterToolResult {
+        return apiService.getWaterTool(userId, latitude, longitude, date, location)
     }
 
     override suspend fun updateBeverageQty(beverage: NetBevQtyPut): Status {
         return apiService.updateBeverageQty(beverage)
+    }
+
+    override suspend fun updateWaterTool(waterToolData: WaterToolData): Status {
+        return apiService.updateWaterTool(waterToolData)
     }
 
     /*override suspend fun updateWaterTool(modifiedWaterTool: ModifiedWaterTool): Status {

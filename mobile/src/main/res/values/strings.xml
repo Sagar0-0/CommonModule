@@ -267,7 +267,7 @@
     <string name="priority">High Priority</string>
     <string name="setting_priority">Setting High priority never fails to remind</string>
     <string name="btn_done">DONE</string>
-    <string name="media_url">https://img1.asta.fit</string>
+    <string name="media_url">https://img2.asta.fit</string>
     <string name="breathing_tool_title">Breathing Tool</string>
     <string name="tool_subtitle">Check your daily records to make it easy to analyze</string>
 
@@ -339,6 +339,29 @@
     <item name="tagMeta" type="id" />
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+<!--music player string-->
+    <string name="home_logo">home logo</string>
+    <string name="search_button">search button</string>
+    <string name="profile_button">profile button</string>
+    <string name="discover">Discover</string>
+    <string name="your_library">Your library</string>
+    <string name="play">play</string>
+    <string name="add">add</string>
+    <string name="more">More</string>
+    <string name="followers">%1$s FOLLOWERS</string>
+    <string name="nbAlbum"> %1$s ALBUMS</string>
+    <string name="back_button">back_button</string>
+    <string name="previous">Previous</string>
+    <string name="replay10">replay10</string>
+    <string name="forward10">forward10</string>
+    <string name="next">Next</string>
+    <string name="repeat_one">Repeat one</string>
+    <string name="shuffle">Shuffle</string>
+    <string name="skip_previous">Skip to previous</string>
+    <string name="pause">Pause</string>
+    <string name="skip_next">Skip to next</string>
+    <string name="music_notification_channel_name">Asta Music</string>
+    <string name="player_timestamp_format" translatable="false">%1$s:%2$s</string>
 
 </resources>
 
