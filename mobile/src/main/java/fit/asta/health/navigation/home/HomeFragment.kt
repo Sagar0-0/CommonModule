@@ -5,19 +5,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.navigation.home.view.HomeContent
 import fit.asta.health.common.ui.AppTheme
+import fit.asta.health.navigation.home.view.HomeContent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 @ExperimentalMaterialApi
 @ExperimentalCoroutinesApi
+@ExperimentalFoundationApi
+@ExperimentalAnimationApi
 @AndroidEntryPoint
-@Suppress("DEPRECATION")
 class HomeFragment : Fragment() {
 
     @SuppressLint("StateFlowValueCalledInComposition")

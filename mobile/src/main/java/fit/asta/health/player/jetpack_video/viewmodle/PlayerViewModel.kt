@@ -8,20 +8,28 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.Timeline
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.common.utils.NetworkResult
+import fit.asta.health.player.jetpack_audio.domain.data.Song
 import fit.asta.health.player.jetpack_video.data.model.VideoItem
 import fit.asta.health.player.jetpack_video.video.UiEvent
 import fit.asta.health.player.jetpack_video.video.UiState
 import fit.asta.health.player.jetpack_video.video.utils.Urls
+import fit.asta.health.tools.meditation.model.MeditationRepo
+import fit.asta.health.tools.meditation.model.domain.mapper.getMusicTool
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.io.Closeable
 import javax.inject.Inject
 
 @HiltViewModel
 class PlayerViewModel @Inject constructor(
+    private val meditationRepo: MeditationRepo,
     val player: Player
 ) : ViewModel() {
 
@@ -47,6 +55,7 @@ class PlayerViewModel @Inject constructor(
 
     private val _videoList = mutableStateListOf<VideoItem>()
     val videoList = MutableStateFlow(_videoList)
+    private val list = mutableListOf<Song>()
     private val _uiState = mutableStateOf(UiState())
     val uiState: State<UiState> = _uiState
 
@@ -54,7 +63,7 @@ class PlayerViewModel @Inject constructor(
     init {
         player.apply {
             playWhenReady = _uiState.value.playWhenReady
-            createFakeList()
+            loadMusicData()
             prepare()
             addListener(listener)
             Log.d("devil", "prepare")
@@ -78,6 +87,68 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun pause() = player.pause()
+    fun loadMusicData() {
+        viewModelScope.launch {
+            meditationRepo.getMusicTool(
+                uid = "6309a9379af54f142c65fbfe"
+            ).collectLatest { result ->
+                when (result) {
+                    is NetworkResult.Loading -> {}
+                    is NetworkResult.Success -> {
+                        result.data?.let { netMusicRes ->
+                            val data = netMusicRes.getMusicTool()
+                            list.add(
+                                Song(
+                                    id = 55,
+                                    artist = data.music.artist_name,
+                                    artistId = 333,
+                                    artworkUri = "https://img2.asta.fit${data.music.artist_url}".toUri(),
+                                    album = "",
+                                    albumId = 5566,
+                                    duration = 4,
+                                    mediaUri = "https://stream1.asta.fit/${data.music.music_url}".toUri(),
+                                    title = data.music.music_name,
+                                )
+                            )
+                            data.instructor.forEachIndexed {index,it->
+                                list.add(
+                                    Song(
+                                        id =index ,
+                                        artist = it.artist_name,
+                                        artistId = index.toLong(),
+                                        artworkUri = "https://img2.asta.fit/tags/Breathing+Tag.png".toUri(),
+                                        album = "hi",
+                                        albumId = index.toLong(),
+                                        duration = 4,
+                                        mediaUri = "https://stream1.asta.fit${it.music_url}".toUri(),
+                                        title = it.music_name,
+                                    )
+                                )
+                            }
+                            val fakeVideos = mutableListOf<VideoItem>()
+                            val music ="https://stream1.asta.fit/video/Day02.mp4"
+                            list.forEachIndexed { index, song ->
+                                fakeVideos.add(
+                                    VideoItem(
+                                        contentUri = song.mediaUri, name = song.title,
+                                        mediaItem = MediaItem.Builder().setMediaId(song.title).setUri(song.mediaUri).build()
+                                    )
+                                )
+                            }
+                            _videoList.addAll(fakeVideos)
+                            currentVideo.value = fakeVideos.first()
+                            player.addMediaItems(fakeVideos.map { it.mediaItem })
+                            Log.d("subhash", "loadMusicData: ${_videoList.toList()}")
+                        }
+                    }
+
+                    is NetworkResult.Error -> {}
+                    else -> {}
+                }
+            }
+
+        }
+    }
     fun event(event: UiEvent) {
         when (event) {
             is UiEvent.Start -> play()
@@ -138,7 +209,14 @@ class PlayerViewModel @Inject constructor(
     private fun createFakeList() {
         // Create a mutable list to store the fake video items
         val fakeVideos = mutableListOf<VideoItem>()
-        var count = 0
+        val music ="https://stream1.asta.fit/video/Day02.mp4"
+        fakeVideos.add(
+            VideoItem(
+                contentUri = music.toUri(), name = "Bunny 0",
+                mediaItem = MediaItem.Builder().setMediaId(music).setUri(music).build()
+            )
+        )
+        var count = 1
         Urls.forEach {
             fakeVideos.add(
                 VideoItem(

@@ -1,10 +1,13 @@
 package fit.asta.health.navigation.home.view
 
 import android.app.Activity
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -16,7 +19,9 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.navigation.home.model.domain.ToolsHome
 import fit.asta.health.navigation.home.view.component.*
+import fit.asta.health.player.jetpack_audio.AudioPlayerActivity
 import fit.asta.health.player.jetpack_video.VideoActivity
+import fit.asta.health.tools.meditation.MeditationActivity
 import fit.asta.health.tools.walking.view.WalkingActivity
 import fit.asta.health.tools.water.WaterToolActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -24,6 +29,9 @@ import java.util.*
 
 @ExperimentalCoroutinesApi
 @OptIn(ExperimentalPagerApi::class)
+@ExperimentalMaterialApi
+@ExperimentalFoundationApi
+@ExperimentalAnimationApi
 @Composable
 fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
 
@@ -137,6 +145,12 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
                                         }
                                         "workout" -> {
                                             VideoActivity.launch(context = context)
+                                        }
+                                        "yoga" -> {
+                                            AudioPlayerActivity.launch(context = context)
+                                        }
+                                        "meditation"->{
+                                            MeditationActivity.launch(context=context)
                                         }
                                     }
                                 }

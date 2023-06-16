@@ -128,6 +128,8 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:2.5.3"
     implementation "androidx.navigation:navigation-ui-ktx:2.5.3"
     implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'androidx.palette:palette-ktx:1.0.0'
+    implementation "androidx.window:window:1.1.0"
 
     //Jet-pack compose
 
@@ -243,9 +245,12 @@ dependencies {
     //Exoplayer new
 
     def exo_player_version = "1.0.0"
+    def  media3_version = "1.0.0-beta03"
     implementation "androidx.media3:media3-exoplayer:$exo_player_version"
     implementation "androidx.media3:media3-exoplayer-dash:$exo_player_version"
     implementation "androidx.media3:media3-ui:$exo_player_version"
+    implementation "androidx.media3:media3-common:$media3_version"
+    implementation "androidx.media3:media3-session:$media3_version"
     //Billing
     implementation "com.android.billingclient:billing:5.2.0"
     implementation "com.android.billingclient:billing-ktx:5.2.0"
@@ -300,6 +305,17 @@ dependencies {
     implementation "com.google.accompanist:accompanist-navigation-material:$accomp_version"
     implementation "com.google.accompanist:accompanist-navigation-material:$accomp_version"
 
+    implementation "com.google.accompanist:accompanist-navigation-animation:0.28.0"
+    //Paging Compose
+    implementation "com.google.accompanist:accompanist-pager:0.13.0"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.13.0"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.27.1"
+    implementation "com.google.accompanist:accompanist-insets:0.27.1"
+    implementation "com.google.accompanist:accompanist-drawablepainter:0.27.1"
+
+    implementation "com.google.accompanist:accompanist-coil:0.13.0"
+
+
     //Swipe
     implementation "me.saket.swipe:swipe:1.0.0"
 
@@ -315,12 +331,6 @@ dependencies {
     // optional - Jetpack Compose integration
     implementation "androidx.paging:paging-compose:1.0.0-alpha18"
 
-    //Paging Compose
-    implementation "com.google.accompanist:accompanist-pager:0.13.0"
-    implementation "com.google.accompanist:accompanist-pager-indicators:0.13.0"
-    implementation "com.google.accompanist:accompanist-systemuicontroller:0.27.1"
-    implementation "com.google.accompanist:accompanist-insets:0.27.1"
-    implementation "com.google.accompanist:accompanist-drawablepainter:0.27.1"
 
     // Integration with activities
     implementation "androidx.activity:activity-compose:1.7.1"

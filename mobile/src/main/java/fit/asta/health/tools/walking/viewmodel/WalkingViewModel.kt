@@ -15,8 +15,14 @@ import fit.asta.health.tools.walking.db.StepsData
 import fit.asta.health.tools.walking.model.LocalRepo
 import fit.asta.health.tools.walking.model.WalkingToolRepo
 import fit.asta.health.tools.walking.model.domain.WalkingTool
-import fit.asta.health.tools.walking.model.network.request.*
+import fit.asta.health.tools.walking.model.network.request.Distance
+import fit.asta.health.tools.walking.model.network.request.Duration
+import fit.asta.health.tools.walking.model.network.request.Prc
+import fit.asta.health.tools.walking.model.network.request.PutData
+import fit.asta.health.tools.walking.model.network.request.PutDayData
+import fit.asta.health.tools.walking.model.network.request.Steps
 import fit.asta.health.tools.walking.model.network.request.Target
+import fit.asta.health.tools.walking.model.network.request.Value
 import fit.asta.health.tools.walking.view.home.HomeUIState
 import fit.asta.health.tools.walking.view.home.StepCounterUIEvent
 import fit.asta.health.tools.walking.view.steps_counter.StepCounterUIState
@@ -63,7 +69,7 @@ class WalkingViewModel
                     date = LocalDate.now().dayOfMonth, status = "", initialSteps = 0,
                     allSteps = 0, time = 0, realtime = 0, distanceRecommend = 0.0,
                     durationRecommend = 0, distanceTarget = 0.0, durationTarget = 0,
-                    id = id, calories = 0.0, weightLoosed = 0.0, appliedAngleDistance = 0f,
+                    id = "", calories = 0.0, weightLoosed = 0.0, appliedAngleDistance = 0f,
                     appliedAngleDuration = 0f
                 )
                 localRepo.insert(stepsData)

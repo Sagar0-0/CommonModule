@@ -262,7 +262,7 @@ fun  Media(
 }
 
 @Composable
-private fun VideoSurface(
+ fun VideoSurface(
     state: MediaState,
     surfaceType: SurfaceType,
     modifier: Modifier

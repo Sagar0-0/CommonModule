@@ -10,17 +10,17 @@ import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.android.scopes.ViewModelScoped
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
-@InstallIn(ViewModelComponent::class)
+@InstallIn(SingletonComponent::class)
 object VideoPlayerModule {
 
     @Provides
     @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
-    @ViewModelScoped
+    @Singleton
     fun  provideVideoPlayer(@ApplicationContext context: Context): Player {
         val audioAttributes = AudioAttributes.Builder()
             .setContentType(C.AUDIO_CONTENT_TYPE_MOVIE)
