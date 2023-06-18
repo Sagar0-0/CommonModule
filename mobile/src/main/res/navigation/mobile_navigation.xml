@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/navigation_track"
-        android:name="fit.asta.health.navigation.track.ui.TrackFragment"
+        android:name="fit.asta.health.navigation.track.TrackFragment"
         android:label="@string/track"
         tools:layout="@layout/track_fragment" />
 
