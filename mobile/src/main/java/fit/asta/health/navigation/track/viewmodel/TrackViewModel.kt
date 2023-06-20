@@ -10,6 +10,7 @@ import fit.asta.health.navigation.track.model.TrackingBreathingRepo
 import fit.asta.health.navigation.track.model.TrackingWaterRepo
 import fit.asta.health.navigation.track.model.network.breathing.NetBreathingRes
 import fit.asta.health.navigation.track.model.network.water.NetWaterRes
+import fit.asta.health.navigation.track.model.network.water.NetWaterWeeklyRes
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -25,8 +26,11 @@ class TrackViewModel @Inject constructor(
     private val _breathingData = MutableStateFlow<NetBreathingRes?>(null)
     val breathingData = _breathingData.asStateFlow()
 
-    private val _waterData = MutableStateFlow<NetWaterRes?>(null)
-    val waterData = _waterData.asStateFlow()
+    private val _waterDailyData = MutableStateFlow<NetWaterRes?>(null)
+    val waterDailyData = _waterDailyData.asStateFlow()
+
+    private val _waterWeeklyData = MutableStateFlow<NetWaterWeeklyRes?>(null)
+    val waterWeeklyData = _waterWeeklyData.asStateFlow()
 
     private lateinit var currentSelectedTrackingOption: TrackingOptions
 
@@ -39,23 +43,17 @@ class TrackViewModel @Inject constructor(
     }
 
     fun getDailyData() {
-        viewModelScope.launch {
-            breathingRepository.getDailyData(
-                uid = "6309a9379af54f142c65fbfe",
-                date = "2023-June-11",
-                location = "bangalore"
-            ).catch { exception ->
-                d("View Model", exception.toString())
-            }.collect {
-                _breathingData.value = it
-                d("View Model", _breathingData.value.toString())
-            }
+        when (currentSelectedTrackingOption) {
+            TrackingOptions.WaterTrackingOption -> getWaterDaily()
+            TrackingOptions.BreathingTrackingOption -> getBreathingDaily()
+            else -> {}
         }
     }
 
-    fun getDaily() {
+
+    fun getWeeklyData() {
         when (currentSelectedTrackingOption) {
-            TrackingOptions.WaterTrackingOption -> getWaterDaily()
+            TrackingOptions.WaterTrackingOption -> getWaterWeekly()
             else -> {}
         }
     }
@@ -70,10 +68,40 @@ class TrackViewModel @Inject constructor(
             ).catch { exception ->
                 d("View Model", exception.toString())
             }.collect {
-                _waterData.value = it
-                d("View Model", _waterData.value.toString())
+                _waterDailyData.value = it
+                d("View Model", _waterDailyData.value.toString())
             }
         }
     }
 
+    private fun getWaterWeekly() {
+        viewModelScope.launch {
+
+            waterRepository.getWeeklyData(
+                uid = "6309a9379af54f142c65fbfe",
+                date = "2023-June-10",
+            ).catch { exception ->
+                d("View Model", exception.toString())
+            }.collect {
+                _waterWeeklyData.value = it
+                d("View Model", _waterWeeklyData.value.toString())
+            }
+        }
+    }
+
+
+    private fun getBreathingDaily() {
+        viewModelScope.launch {
+            breathingRepository.getDailyData(
+                uid = "6309a9379af54f142c65fbfe",
+                date = "2023-June-11",
+                location = "bangalore"
+            ).catch { exception ->
+                d("View Model", exception.toString())
+            }.collect {
+                _breathingData.value = it
+                d("View Model", _breathingData.value.toString())
+            }
+        }
+    }
 }

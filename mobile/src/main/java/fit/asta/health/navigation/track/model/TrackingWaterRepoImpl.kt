@@ -3,6 +3,7 @@ package fit.asta.health.navigation.track.model
 import fit.asta.health.navigation.track.model.api.water.TrackingWaterApi
 import fit.asta.health.navigation.track.model.network.breathing.NetBreathingRes
 import fit.asta.health.navigation.track.model.network.water.NetWaterRes
+import fit.asta.health.navigation.track.model.network.water.NetWaterWeeklyRes
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -23,9 +24,18 @@ class TrackingWaterRepoImpl @Inject constructor(
         }
     }
 
-    override suspend fun getWeeklyData(): Flow<NetBreathingRes> {
-        TODO("Not yet implemented")
+    override suspend fun getWeeklyData(
+        uid: String,
+        date: String
+    ): Flow<NetWaterWeeklyRes> {
+
+        return flow {
+            emit(
+                remoteApi.getWeeklyData(uid = uid, date = date)
+            )
+        }
     }
+
 
     override suspend fun getMonthlyData(): Flow<NetBreathingRes> {
         TODO("Not yet implemented")

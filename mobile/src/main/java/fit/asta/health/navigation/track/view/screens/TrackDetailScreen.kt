@@ -89,11 +89,15 @@ fun TrackDetailScreen(
         // Checking which tab option is selected by the User and showing the UI Accordingly
         when (selectedItem.value) {
             0 -> {
-                trackViewModel.getDaily()
+                trackViewModel.getDailyData()
                 TrackStatisticsUI(trackViewModel = trackViewModel)
             }
 
-            1 -> TrackStatisticsUI(trackViewModel = trackViewModel)
+            1 -> {
+                trackViewModel.getWeeklyData()
+                TrackStatisticsUI(trackViewModel = trackViewModel)
+            }
+
             2 -> TrackStatisticsUI(trackViewModel = trackViewModel)
             3 -> TrackStatisticsUI(trackViewModel = trackViewModel)
         }

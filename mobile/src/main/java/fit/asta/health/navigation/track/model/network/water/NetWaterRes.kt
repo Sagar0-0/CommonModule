@@ -9,13 +9,6 @@ data class NetWaterRes(
     val data: NetData
 )
 
-data class NetStatus(
-    @SerializedName("code")
-    val code: Int,
-    @SerializedName("msg")
-    val msg: String
-)
-
 data class NetProgress(
     @SerializedName("percent")
     val percent: Int,
@@ -36,44 +29,6 @@ data class NetWeather(
     val des: String
 )
 
-data class NetRatio(
-    @SerializedName("water")
-    val water: Double,
-    @SerializedName("juice")
-    val juice: Double,
-    @SerializedName("drink")
-    val drink: Int
-)
-
-data class NetDailyProgress(
-    @SerializedName("unit")
-    val unit: Int,
-    @SerializedName("xAxis")
-    val xAxis: List<String>,
-    @SerializedName("xData")
-    val xData: List<String>,
-    @SerializedName("yData")
-    val yData: List<Double>
-)
-
-data class NetBeverage(
-    @SerializedName("name")
-    val name: String,
-    @SerializedName("xVal")
-    val xVal: List<String>?,
-    @SerializedName("yVal")
-    val yVal: List<Double>?
-)
-
-data class NetBeverages(
-    @SerializedName("unit")
-    val unit: Int,
-    @SerializedName("xAxis")
-    val xAxis: List<String>,
-    @SerializedName("data")
-    val data: List<NetBeverage>
-)
-
 data class NetData(
     @SerializedName("id")
     val id: String,
@@ -90,5 +45,5 @@ data class NetData(
     @SerializedName("dailyProgress")
     val dailyProgress: NetDailyProgress,
     @SerializedName("beverages")
-    val beverages: NetBeverages
+    val beverages: NetBeveragesData
 )
