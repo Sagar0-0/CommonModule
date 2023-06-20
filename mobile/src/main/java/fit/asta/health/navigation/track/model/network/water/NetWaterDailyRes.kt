@@ -2,11 +2,30 @@ package fit.asta.health.navigation.track.model.network.water
 
 import com.google.gson.annotations.SerializedName
 
-data class NetWaterRes(
+data class NetWaterDailyRes(
     @SerializedName("status")
     val status: NetStatus,
     @SerializedName("data")
-    val data: NetData
+    val data: NetWaterDailyData
+)
+
+data class NetWaterDailyData(
+    @SerializedName("id")
+    val id: String,
+    @SerializedName("uid")
+    val uid: String,
+    @SerializedName("date")
+    val date: String,
+    @SerializedName("progress")
+    val progress: NetProgress,
+    @SerializedName("weather")
+    val weather: NetWeather,
+    @SerializedName("ratio")
+    val ratio: NetRatio,
+    @SerializedName("dailyProgress")
+    val dailyProgress: NetDailyProgress,
+    @SerializedName("beverages")
+    val beverages: NetBeveragesList
 )
 
 data class NetProgress(
@@ -27,23 +46,4 @@ data class NetWeather(
     val waterExtra: Int,
     @SerializedName("des")
     val des: String
-)
-
-data class NetData(
-    @SerializedName("id")
-    val id: String,
-    @SerializedName("uid")
-    val uid: String,
-    @SerializedName("date")
-    val date: String,
-    @SerializedName("progress")
-    val progress: NetProgress,
-    @SerializedName("weather")
-    val weather: NetWeather,
-    @SerializedName("ratio")
-    val ratio: NetRatio,
-    @SerializedName("dailyProgress")
-    val dailyProgress: NetDailyProgress,
-    @SerializedName("beverages")
-    val beverages: NetBeveragesData
 )

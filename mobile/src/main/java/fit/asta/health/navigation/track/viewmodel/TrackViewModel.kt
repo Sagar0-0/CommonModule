@@ -9,7 +9,8 @@ import kotlinx.coroutines.launch
 import fit.asta.health.navigation.track.model.TrackingBreathingRepo
 import fit.asta.health.navigation.track.model.TrackingWaterRepo
 import fit.asta.health.navigation.track.model.network.breathing.NetBreathingRes
-import fit.asta.health.navigation.track.model.network.water.NetWaterRes
+import fit.asta.health.navigation.track.model.network.water.NetWaterDailyRes
+import fit.asta.health.navigation.track.model.network.water.NetWaterMonthlyRes
 import fit.asta.health.navigation.track.model.network.water.NetWaterWeeklyRes
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,11 +27,14 @@ class TrackViewModel @Inject constructor(
     private val _breathingData = MutableStateFlow<NetBreathingRes?>(null)
     val breathingData = _breathingData.asStateFlow()
 
-    private val _waterDailyData = MutableStateFlow<NetWaterRes?>(null)
+    private val _waterDailyData = MutableStateFlow<NetWaterDailyRes?>(null)
     val waterDailyData = _waterDailyData.asStateFlow()
 
     private val _waterWeeklyData = MutableStateFlow<NetWaterWeeklyRes?>(null)
     val waterWeeklyData = _waterWeeklyData.asStateFlow()
+
+    private val _waterMonthlyData = MutableStateFlow<NetWaterMonthlyRes?>(null)
+    val waterMonthlyData = _waterMonthlyData.asStateFlow()
 
     private lateinit var currentSelectedTrackingOption: TrackingOptions
 
@@ -54,6 +58,13 @@ class TrackViewModel @Inject constructor(
     fun getWeeklyData() {
         when (currentSelectedTrackingOption) {
             TrackingOptions.WaterTrackingOption -> getWaterWeekly()
+            else -> {}
+        }
+    }
+
+    fun getMonthlyData() {
+        when (currentSelectedTrackingOption) {
+            TrackingOptions.WaterTrackingOption -> getWaterMonthly()
             else -> {}
         }
     }
@@ -89,6 +100,20 @@ class TrackViewModel @Inject constructor(
         }
     }
 
+    private fun getWaterMonthly() {
+        viewModelScope.launch {
+
+            waterRepository.getMonthlyData(
+                uid = "6309a9379af54f142c65fbfe",
+                month = "June-2023",
+            ).catch { exception ->
+                d("View Model", exception.toString())
+            }.collect {
+                _waterMonthlyData.value = it
+                d("View Model", _waterMonthlyData.value.toString())
+            }
+        }
+    }
 
     private fun getBreathingDaily() {
         viewModelScope.launch {

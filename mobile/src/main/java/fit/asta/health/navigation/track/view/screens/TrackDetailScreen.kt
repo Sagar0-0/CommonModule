@@ -98,7 +98,11 @@ fun TrackDetailScreen(
                 TrackStatisticsUI(trackViewModel = trackViewModel)
             }
 
-            2 -> TrackStatisticsUI(trackViewModel = trackViewModel)
+            2 -> {
+                trackViewModel.getMonthlyData()
+                TrackStatisticsUI(trackViewModel = trackViewModel)
+            }
+
             3 -> TrackStatisticsUI(trackViewModel = trackViewModel)
         }
     }

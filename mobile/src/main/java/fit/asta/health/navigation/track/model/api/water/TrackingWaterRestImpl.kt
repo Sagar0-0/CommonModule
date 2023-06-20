@@ -1,7 +1,8 @@
 package fit.asta.health.navigation.track.model.api.water
 
 import fit.asta.health.common.utils.NetworkUtil
-import fit.asta.health.navigation.track.model.network.water.NetWaterRes
+import fit.asta.health.navigation.track.model.network.water.NetWaterDailyRes
+import fit.asta.health.navigation.track.model.network.water.NetWaterMonthlyRes
 import fit.asta.health.navigation.track.model.network.water.NetWaterWeeklyRes
 import okhttp3.OkHttpClient
 import javax.inject.Inject
@@ -18,7 +19,7 @@ class TrackingWaterRestImpl @Inject constructor(
         uid: String,
         date: String,
         location: String
-    ): NetWaterRes {
+    ): NetWaterDailyRes {
         return apiService.getDailyData(
             trackingType = "water",
             uid = uid,
@@ -38,9 +39,15 @@ class TrackingWaterRestImpl @Inject constructor(
         )
     }
 
-
-    override suspend fun getMonthlyData() {
-        TODO("Not yet implemented")
+    override suspend fun getMonthlyData(
+        uid: String,
+        month: String
+    ): NetWaterMonthlyRes {
+        return apiService.getMonthlyData(
+            trackingType = "water",
+            uid = uid,
+            month = month
+        )
     }
 
     override suspend fun getYearlyData() {

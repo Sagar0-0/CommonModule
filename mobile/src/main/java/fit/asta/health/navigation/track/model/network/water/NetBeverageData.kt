@@ -2,7 +2,7 @@ package fit.asta.health.navigation.track.model.network.water
 
 import com.google.gson.annotations.SerializedName
 
-data class NetBeverageList(
+data class NetBeverageData(
     @SerializedName("name")
     val name: String,
     @SerializedName("xVal")
