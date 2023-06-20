@@ -50,8 +50,8 @@ class PlayerViewModel @Inject constructor(
     fun skipTo(position: Float) =
         musicServiceConnection.skipTo(convertToPosition(position, musicState.value.duration))
 
-    fun  forword()= musicServiceConnection.forword()
-    fun backword()= musicServiceConnection.backword()
+    fun  forword()= musicServiceConnection.forward()
+    fun backword()= musicServiceConnection.backward()
     fun calculateColorPalette(drawable: Bitmap, onFinish: (Color) -> Unit) {
         Palette.from(drawable).generate { palette ->
             palette?.dominantSwatch?.rgb?.let { colorValue ->

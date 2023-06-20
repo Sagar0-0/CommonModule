@@ -1,6 +1,6 @@
 package fit.asta.health.tools.meditation.model.api
 
-import fit.asta.health.network.data.Status
+import fit.asta.health.network.data.ServerRes
 import fit.asta.health.tools.meditation.model.network.*
 import retrofit2.http.*
 
@@ -19,10 +19,10 @@ interface MeditationService {
     ): NetMusicRes
 
     @PUT("tools/meditation/put/")
-    suspend fun putMeditationData( @Body putData: PutData): Status
+    suspend fun putMeditationData( @Body putData: PutData): ServerRes
 
     @POST("tools/meditation/activity/post/")
-    suspend fun postMeditationData( @Body postRes: PostRes): Status
+    suspend fun postMeditationData( @Body postRes: PostRes): ServerRes
 
 
 }

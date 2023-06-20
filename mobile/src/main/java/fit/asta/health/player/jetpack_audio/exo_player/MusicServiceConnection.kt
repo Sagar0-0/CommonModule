@@ -2,6 +2,7 @@ package fit.asta.health.player.jetpack_audio.exo_player
 
 import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
 import androidx.media3.common.Player
 import androidx.media3.common.Player.EVENT_MEDIA_METADATA_CHANGED
 import androidx.media3.common.Player.EVENT_PLAYBACK_STATE_CHANGED
@@ -28,7 +29,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
@@ -55,6 +58,15 @@ class MusicServiceConnection @Inject constructor(
             delay(POSITION_UPDATE_INTERVAL_MS)
         }
     }
+//    val currentProgress = flow {
+//        while (currentCoroutineContext().isActive) {
+//            val process= (mediaBrowser?.contentPosition?.div(1000) ?: 1) /60
+//            emit(process)
+//            delay(60000)
+//        }
+//    }
+    private val _currentProgress = MutableSharedFlow<Long>()
+    val currentProgress =_currentProgress.asSharedFlow()
 
     init {
         coroutineScope.launch {
@@ -62,17 +74,27 @@ class MusicServiceConnection @Inject constructor(
                 context,
                 SessionToken(context, ComponentName(context, MusicService::class.java))
             ).buildAsync().await().apply { addListener(PlayerListener()) }
+            while (currentCoroutineContext().isActive) {
+            val process= (mediaBrowser?.contentPosition?.div(1000) ?: 1) /60
+            _currentProgress.emit(process)
+            delay(60000)
+        }
         }
     }
 
+    fun release( context: Context){
+        mediaBrowser?.release()
+        val stopIntent = Intent(context,MusicService::class.java)
+        context.stopService(stopIntent)
+    }
     fun skipPrevious() = mediaBrowser?.run {
         seekToPrevious()
         play()
     }
-     fun forword()= mediaBrowser?.run {
+     fun forward()= mediaBrowser?.run {
          seekForward()
      }
-    fun backword()=mediaBrowser?.run {
+    fun backward()=mediaBrowser?.run {
         seekBack()
     }
     fun play() = mediaBrowser?.play()
@@ -98,6 +120,7 @@ class MusicServiceConnection @Inject constructor(
             prepare()
             play()
         }
+//        mediaBrowser?.release()
     }
 
     fun shuffleSongs(

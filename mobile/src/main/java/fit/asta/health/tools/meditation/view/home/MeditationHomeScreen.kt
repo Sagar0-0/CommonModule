@@ -40,20 +40,21 @@ import androidx.compose.ui.unit.sp
 import fit.asta.health.R
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.tools.meditation.view.component.MeditationCircularSlider
+import fit.asta.health.tools.meditation.view.component.ProgressBar
 import fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.ui.DividerLineCenter
 import fit.asta.health.tools.walking.view.component.ButtonWithColor
 import fit.asta.health.tools.walking.view.component.CardItem
 import fit.asta.health.tools.walking.view.home.SunlightCard
-import fit.asta.health.tools.water.view.screen.ProgressBarItem
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MeditationHomeScreen(
     Event: (MEvent) -> Unit,
     uiState: HomeUiState,
-    level:String,
-    language:String,
-    instructor:String,
+    level: String,
+    language: String,
+    instructor: String,
+    music: String,
     onClickMusic: () -> Unit,
     onClickLanguage: () -> Unit,
     onClickLevel: () -> Unit,
@@ -81,6 +82,7 @@ fun MeditationHomeScreen(
                 language = language,
                 level = level,
                 instructor = instructor,
+                music=music,
                 scaffoldState = scaffoldState,
                 Event = Event,
                 onClickMusic = onClickMusic,
@@ -123,60 +125,70 @@ fun MeditationHomeScreen(
             }
         }
     ) {
-       Column(modifier = Modifier.fillMaxSize(),
-           verticalArrangement = Arrangement.spacedBy(spacing.medium),
-           horizontalAlignment = Alignment.CenterHorizontally
-       ) {
-           Surface(
-               modifier = Modifier
-                   .fillMaxWidth(),
-               shape = RoundedCornerShape(corner = CornerSize(15.dp)),
-           ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(spacing.medium),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                shape = RoundedCornerShape(corner = CornerSize(15.dp)),
+            ) {
 
-               Column(
-                   modifier = Modifier
-                       .fillMaxWidth()
-                       .padding(16.dp),
-                   verticalArrangement = Arrangement.spacedBy(spacing.medium),
-                   horizontalAlignment = Alignment.CenterHorizontally
-               ) {
-                   MeditationCircularSlider(
-                       modifier = Modifier.size(200.dp),
-                       isStarted = uiState.start,
-                       appliedAngleDistanceValue = if (uiState.start) uiState.angle else uiState.targetAngle,
-                       indicatorValue = uiState.consume,
-                       maxIndicatorValue = 120f,
-                       onChangeDistance = {
-                           Event(MEvent.setTarget(it))
-                           
-                       },
-                       onChangeAngleDistance = {
-                           Event(MEvent.setTargetAngle(it))
-                       }
-                   )
-                   Row(horizontalArrangement = Arrangement.spacedBy(spacing.medium)) {
-                       ProgressBarItem(
-                           modifier = Modifier.weight(0.3f),
-                           targetDistance = uiState.recommended.toFloat(),
-                           progress = (uiState.consume / uiState.recommended),
-                           name = "Recommended"
-                       )
-                       ProgressBarItem(
-                           modifier = Modifier.weight(0.3f),
-                           targetDistance = uiState.target.toFloat(),
-                           progress = if(uiState.target==0) 0f else(uiState.consume / uiState.target),
-                           name = "Goal"
-                       )
-                       ProgressBarItem(
-                           modifier = Modifier.weight(0.3f),
-                           targetDistance = uiState.target.toFloat(),
-                           progress =if(uiState.target==0) 0f else 1f - (uiState.consume / uiState.target),
-                           name = "Remaining"
-                       )
-                   }
-               }
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(spacing.medium),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    MeditationCircularSlider(
+                        modifier = Modifier.size(200.dp),
+                        isStarted = uiState.start,
+                        appliedAngleDistanceValue = if (uiState.start) uiState.progress_angle else uiState.targetAngle,
+                        indicatorValue = uiState.consume,
+                        maxIndicatorValue = 120f,
+                        onChangeDistance = {
+                            Event(MEvent.SetTarget(it))
+                        },
+                        onChangeAngleDistance = {
+                            Event(MEvent.SetTargetAngle(it))
+                        }
+                    )
+                    Row(horizontalArrangement = Arrangement.spacedBy(spacing.medium)) {
+                        ProgressBar(
+                            modifier = Modifier.weight(0.3f),
+                            targetDistance = uiState.recommended.toFloat(),
+                            progress = (uiState.consume / uiState.recommended),
+                            name = "Recommended",
+                            postfix = "min"
+                        )
+                        ProgressBar(
+                            modifier = Modifier.weight(0.3f),
+                            targetDistance = uiState.target.toFloat(),
+                            progress = if (uiState.target == 0) 0f else (uiState.consume / uiState.target),
+                            name = "Goal",
+                            postfix = "min"
+                        )
+                        ProgressBar(
+                            modifier = Modifier.weight(0.3f),
+                            targetDistance = uiState.target.toFloat(),
+                            progress = if (uiState.target == 0) 0f else 1f - (uiState.consume / uiState.target),
+                            name = "Remaining",
+                            postfix = "min"
+                        )
+                    }
+                }
+            }
+           AnimatedVisibility(modifier = Modifier.fillMaxWidth(),visible = uiState.start) {
+               ButtonWithColor(
+                   modifier = Modifier.fillMaxWidth(), color = Color.Green, text = "Go To Music Screen"
+               ) {onClickMusic() }
            }
-       }
+        }
     }
 }
 
@@ -184,9 +196,10 @@ fun MeditationHomeScreen(
 @Composable
 fun MeditationBottomSheet(
     uiState: HomeUiState,
-    level:String,
-    language:String,
-    instructor:String,
+    level: String,
+    language: String,
+    instructor: String,
+    music: String,
     scaffoldState: BottomSheetScaffoldState,
     Event: (MEvent) -> Unit,
     onClickMusic: () -> Unit,
@@ -196,7 +209,8 @@ fun MeditationBottomSheet(
 ) {
     val context = LocalContext.current
     Column(
-        modifier = Modifier.background(Color.Yellow)
+        modifier = Modifier
+            .background(Color.Yellow)
             .heightIn(min = 250.dp, max = 525.dp)
             .fillMaxSize()
             .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 16.dp),
@@ -210,9 +224,11 @@ fun MeditationBottomSheet(
             CardItem(
                 modifier = Modifier.weight(0.5f),
                 name = "Music ",
-                type = "",
+                type = music,
                 id = R.drawable.baseline_music_note_24
-            ) { onClickMusic() }
+            ) {
+
+            }
 
             CardItem(
                 modifier = Modifier.weight(0.5f),
@@ -271,12 +287,17 @@ fun MeditationBottomSheet(
             ButtonWithColor(
                 modifier = Modifier.weight(0.5f), color = Color.Green, text = "SCHEDULE"
             ) { }
-            if (true) {
-                ButtonWithColor(
-                    modifier = Modifier.weight(0.5f),
-                    color = Color.Blue,
-                    text = "START"
-                ) { }
+            ButtonWithColor(
+                modifier = Modifier.weight(0.5f),
+                color = if (!uiState.start) Color.Blue else Color.Red,
+                text = if (!uiState.start) "START" else "STOP"
+            ) {
+                if (!uiState.start) {
+                    onClickMusic()
+                    Event(MEvent.Start(context))
+                } else {
+                    Event(MEvent.End(context))
+                }
             }
         }
     }

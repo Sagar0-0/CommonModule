@@ -1,7 +1,8 @@
 package fit.asta.health.tools.meditation.model
 
+import android.util.Log
 import fit.asta.health.common.utils.NetworkResult
-import fit.asta.health.network.data.Status
+import fit.asta.health.network.data.ServerRes
 import fit.asta.health.tools.meditation.model.api.MeditationApi
 import fit.asta.health.tools.meditation.model.network.NetMeditationToolRes
 import fit.asta.health.tools.meditation.model.network.NetMusicRes
@@ -19,9 +20,10 @@ class MeditationRepoImp(private val api: MeditationApi) : MeditationRepo {
         return flow {
             emit(NetworkResult.Loading())
             val result = api.getMeditationTool(uid, date)
-            emit(NetworkResult.Success(result))
+            if (result.status.msg == "Successful") emit(NetworkResult.Success(result))
+            else emit(NetworkResult.Error(message = result.status.msg))
         }.catch {
-          emit(NetworkResult.Error(message = it.message))
+            emit(NetworkResult.Error(message = it.message))
         }
     }
 
@@ -29,17 +31,33 @@ class MeditationRepoImp(private val api: MeditationApi) : MeditationRepo {
         return flow {
             emit(NetworkResult.Loading())
             val result = api.getMusicTool(uid)
-            emit(NetworkResult.Success(result))
+            if (result.status.msg == "Successful") emit(NetworkResult.Success(result))
+            else emit(NetworkResult.Error(message = result.status.msg))
         }.catch {
             emit(NetworkResult.Error(message = it.message))
         }
     }
 
-    override suspend fun putMeditationData(putData: PutData): Status {
-        TODO("Not yet implemented")
+    override suspend fun putMeditationData(putData: PutData): NetworkResult<ServerRes> {
+        return try {
+            NetworkResult.Loading<ServerRes>()
+            val result = api.putMeditationData(putData)
+            Log.d("subhash", "putMeditationData: result${result}")
+            if (result.status.msg == "Successful") NetworkResult.Success(result)
+            else NetworkResult.Error(message = result.status.msg)
+        } catch (e: Exception) {
+            NetworkResult.Error(message = e.message)
+        }
     }
 
-    override suspend fun postMeditationData(postData: PostRes): Status {
-        TODO("Not yet implemented")
+    override suspend fun postMeditationData(postData: PostRes): NetworkResult<ServerRes> {
+        return try {
+            NetworkResult.Loading<ServerRes>()
+            val result = api.postMeditationData(postData)
+            if (result.status.msg  == "Successful") NetworkResult.Success(result)
+            else NetworkResult.Error(message = result.status.msg)
+        } catch (e: Exception) {
+            NetworkResult.Error(message = e.message)
+        }
     }
 }

@@ -1,7 +1,7 @@
 package fit.asta.health.tools.meditation.model.api
 
 import fit.asta.health.common.utils.NetworkUtil
-import fit.asta.health.network.data.Status
+import fit.asta.health.network.data.ServerRes
 import fit.asta.health.tools.meditation.model.network.NetMeditationToolRes
 import fit.asta.health.tools.meditation.model.network.NetMusicRes
 import fit.asta.health.tools.meditation.model.network.PostRes
@@ -24,11 +24,11 @@ class MeditationRestApi(baseUrl: String, client: OkHttpClient) :
        return apiService.getMusicTool(uid)
     }
 
-    override suspend fun putMeditationData(putData: PutData): Status {
+    override suspend fun putMeditationData(putData: PutData): ServerRes{
         return apiService.putMeditationData(putData)
     }
 
-    override suspend fun postMeditationData(postRes: PostRes): Status {
+    override suspend fun postMeditationData(postRes: PostRes): ServerRes {
        return apiService.postMeditationData(postRes)
     }
 
