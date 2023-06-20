@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dev.anirban.chartlibrary.circular.center.CircularRingTextCenter
 import com.dev.anirban.chartlibrary.circular.charts.CircularDonutChartColumn
 import com.dev.anirban.chartlibrary.circular.charts.CircularDonutChartRow
@@ -59,7 +60,7 @@ private fun DefaultPreview() {
     AppTheme {
         Surface {
             TrackStatisticsUI(
-                trackViewModel = TrackViewModel()
+                trackViewModel = viewModel()
             )
         }
     }

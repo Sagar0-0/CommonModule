@@ -10,22 +10,21 @@ import androidx.compose.material.Surface
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.navigation.track.viewmodel.TrackViewModel
 
+@AndroidEntryPoint
 class TrackFragment : Fragment() {
 
-    private lateinit var viewModel: TrackViewModel
+    private val viewModel: TrackViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        // Creating ViewModel Object
-        viewModel = ViewModelProvider(this)[TrackViewModel::class.java]
 
         return ComposeView(requireContext()).apply {
             setContent {

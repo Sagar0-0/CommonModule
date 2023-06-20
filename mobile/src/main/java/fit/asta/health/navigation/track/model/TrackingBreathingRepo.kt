@@ -4,13 +4,13 @@ import fit.asta.health.navigation.track.model.network.NetBreathingRes
 import kotlinx.coroutines.flow.Flow
 
 
-interface TrackingRepo {
+interface TrackingBreathingRepo {
 
     suspend fun getDailyData(
         uid: String,
         date: String,
         location: String
-    ): NetBreathingRes
+    ): Flow<NetBreathingRes>
 
     suspend fun getWeeklyData(): Flow<NetBreathingRes>
 

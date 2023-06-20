@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.graphics.ColorUtils
+import androidx.lifecycle.viewmodel.compose.viewModel
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.navigation.track.view.components.TrackTopTabBar
 import fit.asta.health.navigation.track.viewmodel.TrackViewModel
@@ -34,7 +35,7 @@ private fun DefaultPreview() {
     AppTheme {
         Surface {
             TrackDetailScreen(
-                trackViewModel = TrackViewModel()
+                trackViewModel = viewModel()
             )
         }
     }
