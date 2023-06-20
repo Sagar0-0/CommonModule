@@ -20,12 +20,14 @@ import fit.asta.health.navigation.track.viewmodel.TrackViewModel
 
 // Preview Composable Function
 @Preview(
-    "Light"
+    "Light",
+    heightDp = 2000
 )
 @Preview(
     name = "Dark",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true
+    showBackground = true,
+    heightDp = 2000
 )
 @Composable
 private fun DefaultPreview() {
@@ -85,7 +87,11 @@ fun TrackDetailScreen(
 
         // Checking which tab option is selected by the User and showing the UI Accordingly
         when (selectedItem.value) {
-            0 -> TrackStatisticsUI(trackViewModel = trackViewModel)
+            0 -> {
+                trackViewModel.getDailyData()
+                TrackStatisticsUI(trackViewModel = trackViewModel)
+            }
+
             1 -> TrackStatisticsUI(trackViewModel = trackViewModel)
             2 -> TrackStatisticsUI(trackViewModel = trackViewModel)
             3 -> TrackStatisticsUI(trackViewModel = trackViewModel)
