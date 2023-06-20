@@ -7,8 +7,12 @@ import dagger.hilt.components.SingletonComponent
 import fit.asta.health.BuildConfig
 import fit.asta.health.navigation.track.model.TrackingBreathingRepo
 import fit.asta.health.navigation.track.model.TrackingBreathingRepoImpl
+import fit.asta.health.navigation.track.model.TrackingWaterRepo
+import fit.asta.health.navigation.track.model.TrackingWaterRepoImpl
 import fit.asta.health.navigation.track.model.api.breathing.TrackingBreathingApi
 import fit.asta.health.navigation.track.model.api.breathing.TrackingBreathingRestImpl
+import fit.asta.health.navigation.track.model.api.water.TrackingWaterApi
+import fit.asta.health.navigation.track.model.api.water.TrackingWaterRestImpl
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
@@ -31,4 +35,16 @@ object TrackingModule {
     fun provideTrackingBreathingRepo(
         remoteApi: TrackingBreathingApi,
     ): TrackingBreathingRepo = TrackingBreathingRepoImpl(remoteApi = remoteApi)
+
+    @Singleton
+    @Provides
+    fun provideTrackingWaterApi(client: OkHttpClient): TrackingWaterApi {
+        return TrackingWaterRestImpl(baseUrl = BuildConfig.BASE_URL, client = client)
+    }
+
+    @Singleton
+    @Provides
+    fun provideTrackingWaterRepo(
+        remoteApi: TrackingWaterApi,
+    ): TrackingWaterRepo = TrackingWaterRepoImpl(remoteApi = remoteApi)
 }
