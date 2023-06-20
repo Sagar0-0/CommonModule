@@ -1,6 +1,6 @@
 package fit.asta.health.navigation.track.model.api.breathing
 
-import fit.asta.health.navigation.track.model.network.NetBreathingRes
+import fit.asta.health.navigation.track.model.network.breathing.NetBreathingRes
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

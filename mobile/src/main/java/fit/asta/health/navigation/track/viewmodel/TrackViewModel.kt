@@ -7,7 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.navigation.track.TrackingOptions
 import kotlinx.coroutines.launch
 import fit.asta.health.navigation.track.model.TrackingBreathingRepo
-import fit.asta.health.navigation.track.model.network.NetBreathingRes
+import fit.asta.health.navigation.track.model.network.breathing.NetBreathingRes
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch

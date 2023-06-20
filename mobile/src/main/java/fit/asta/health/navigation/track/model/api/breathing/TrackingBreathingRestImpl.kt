@@ -1,7 +1,7 @@
 package fit.asta.health.navigation.track.model.api.breathing
 
 import fit.asta.health.common.utils.NetworkUtil
-import fit.asta.health.navigation.track.model.network.NetBreathingRes
+import fit.asta.health.navigation.track.model.network.breathing.NetBreathingRes
 import okhttp3.OkHttpClient
 import javax.inject.Inject
 

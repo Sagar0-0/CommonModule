@@ -1,6 +1,6 @@
 package fit.asta.health.navigation.track.model
 
-import fit.asta.health.navigation.track.model.network.NetBreathingRes
+import fit.asta.health.navigation.track.model.network.breathing.NetBreathingRes
 import kotlinx.coroutines.flow.Flow
 
 
