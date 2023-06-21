@@ -12,6 +12,7 @@ import fit.asta.health.navigation.track.model.network.breathing.NetBreathingRes
 import fit.asta.health.navigation.track.model.network.water.NetWaterDailyRes
 import fit.asta.health.navigation.track.model.network.water.NetWaterMonthlyRes
 import fit.asta.health.navigation.track.model.network.water.NetWaterWeeklyRes
+import fit.asta.health.navigation.track.model.network.water.NetWaterYearlyRes
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -35,6 +36,9 @@ class TrackViewModel @Inject constructor(
 
     private val _waterMonthlyData = MutableStateFlow<NetWaterMonthlyRes?>(null)
     val waterMonthlyData = _waterMonthlyData.asStateFlow()
+
+    private val _waterYearlyData = MutableStateFlow<NetWaterYearlyRes?>(null)
+    val waterYearlyData = _waterYearlyData.asStateFlow()
 
     private lateinit var currentSelectedTrackingOption: TrackingOptions
 
@@ -65,6 +69,13 @@ class TrackViewModel @Inject constructor(
     fun getMonthlyData() {
         when (currentSelectedTrackingOption) {
             TrackingOptions.WaterTrackingOption -> getWaterMonthly()
+            else -> {}
+        }
+    }
+
+    fun getYearlyData() {
+        when (currentSelectedTrackingOption) {
+            TrackingOptions.WaterTrackingOption -> getWaterYearly()
             else -> {}
         }
     }
@@ -111,6 +122,21 @@ class TrackViewModel @Inject constructor(
             }.collect {
                 _waterMonthlyData.value = it
                 d("View Model", _waterMonthlyData.value.toString())
+            }
+        }
+    }
+
+    private fun getWaterYearly() {
+        viewModelScope.launch {
+
+            waterRepository.getYearlyData(
+                uid = "6309a9379af54f142c65fbfe",
+                year = "2023"
+            ).catch { exception ->
+                d("View Model", exception.toString())
+            }.collect {
+                _waterYearlyData.value = it
+                d("View Model", _waterYearlyData.value.toString())
             }
         }
     }

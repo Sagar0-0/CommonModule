@@ -1,10 +1,10 @@
 package fit.asta.health.navigation.track.model
 
 import fit.asta.health.navigation.track.model.api.water.TrackingWaterApi
-import fit.asta.health.navigation.track.model.network.breathing.NetBreathingRes
 import fit.asta.health.navigation.track.model.network.water.NetWaterDailyRes
 import fit.asta.health.navigation.track.model.network.water.NetWaterMonthlyRes
 import fit.asta.health.navigation.track.model.network.water.NetWaterWeeklyRes
+import fit.asta.health.navigation.track.model.network.water.NetWaterYearlyRes
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -48,8 +48,15 @@ class TrackingWaterRepoImpl @Inject constructor(
         }
     }
 
+    override suspend fun getYearlyData(
+        uid: String,
+        year: String
+    ): Flow<NetWaterYearlyRes> {
 
-    override suspend fun getYearlyData(): Flow<NetBreathingRes> {
-        TODO("Not yet implemented")
+        return flow {
+            emit(
+                remoteApi.getYearlyData(uid = uid, year = year)
+            )
+        }
     }
 }

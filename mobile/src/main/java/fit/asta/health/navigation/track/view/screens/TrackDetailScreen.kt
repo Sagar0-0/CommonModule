@@ -103,7 +103,10 @@ fun TrackDetailScreen(
                 TrackStatisticsUI(trackViewModel = trackViewModel)
             }
 
-            3 -> TrackStatisticsUI(trackViewModel = trackViewModel)
+            3 -> {
+                trackViewModel.getYearlyData()
+                TrackStatisticsUI(trackViewModel = trackViewModel)
+            }
         }
     }
 }
