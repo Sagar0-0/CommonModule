@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.navigation.home.model.domain.ToolsHome
 import fit.asta.health.navigation.home.view.component.*
-import fit.asta.health.player.jetpack_audio.AudioPlayerActivity
 import fit.asta.health.player.jetpack_video.VideoActivity
 import fit.asta.health.tools.meditation.MeditationActivity
 import fit.asta.health.tools.walking.view.WalkingActivity
@@ -147,7 +146,7 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
                                             VideoActivity.launch(context = context)
                                         }
                                         "yoga" -> {
-                                            AudioPlayerActivity.launch(context = context)
+                                            VideoActivity.launch(context = context)
                                         }
                                         "meditation"->{
                                             MeditationActivity.launch(context=context)
