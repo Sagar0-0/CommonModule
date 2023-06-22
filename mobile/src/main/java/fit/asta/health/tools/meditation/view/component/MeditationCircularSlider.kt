@@ -49,7 +49,7 @@ fun MeditationCircularSlider(
     indicatorValue: Float = 2f,
     maxIndicatorValue: Float = 6f,
     bigTextColor: Color = MaterialTheme.colors.onSurface,
-    bigTextSuffix: String = "Litres",
+    bigTextSuffix: String = "Min",
     padding: Float = 50f,
     stroke: Float = 20f,
     cap: StrokeCap = StrokeCap.Round,
@@ -277,7 +277,7 @@ fun MeditationCircularSlider(
             }
             AnimatedVisibility(visible = !isStarted) {
                 Text(
-                    text = "%.1f $bigTextSuffix".format(
+                    text = "%.0f $bigTextSuffix".format(
                         range(appliedAngleDistance / 250f * 100f, maxIndicatorValue)
                     ),
                     color = animatedBigTextColor,

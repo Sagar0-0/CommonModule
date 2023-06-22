@@ -3,7 +3,7 @@ package fit.asta.health.player.jetpack_audio.domain.utils
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import fit.asta.health.R
-import java.util.*
+import java.util.Locale
 import kotlin.time.Duration.Companion.milliseconds
 
 @Composable

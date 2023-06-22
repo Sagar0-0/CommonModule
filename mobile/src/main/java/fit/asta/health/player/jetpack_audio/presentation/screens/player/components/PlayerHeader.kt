@@ -22,8 +22,8 @@ import fit.asta.health.player.jetpack_audio.presentation.ui.theme.LocalSpacing
 @Composable
 fun PlayerHeader(
     onBackPress: () -> Unit,
-    addToPlayList: () -> Unit,
-    more: () -> Unit,
+    addToPlayList: () -> Unit={},
+    more: () -> Unit={},
 ) {
     val spacing = LocalSpacing.current
     Row(
