@@ -366,6 +366,9 @@ dependencies {
     // CLOCK
     implementation "com.maxkeppeler.sheets-compose-dialogs:clock:$cal_version"
 
+    // Chart Library Dependency
+    implementation project(path: ':chartLibrary')
+
 }
 
 kapt {
