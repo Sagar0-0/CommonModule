@@ -15,6 +15,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name='Asta'
-include(':mobile')
+rootProject.name = 'Asta'
+include ':mobile'
 include ':chartLibrary'

@@ -3,6 +3,7 @@
     <color name="colorPrimary">#007EEC</color>
     <color name="colorOnPrimary">#FFFFFF</color>
     <color name="colorSecondary">#FFFFFF</color>
+    <color name="colorAccent">#007EEC</color>
     <color name="colorError">#B00020</color>
     <color name="colorWindowBackground">#F4F6F8</color>
     <color name="colorBackground">#F4F6F8</color>

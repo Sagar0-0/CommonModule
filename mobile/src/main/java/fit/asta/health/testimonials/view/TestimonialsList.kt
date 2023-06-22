@@ -19,8 +19,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import fit.asta.health.R
+import fit.asta.health.common.ui.theme.boxSize
+import fit.asta.health.common.ui.theme.cardElevation
+import fit.asta.health.common.ui.theme.imageHeight
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.navigation.home.view.component.NoInternetLayout
 import fit.asta.health.testimonials.model.domain.TestimonialType
@@ -28,10 +33,7 @@ import fit.asta.health.testimonials.view.list.TestimonialImageCard
 import fit.asta.health.testimonials.view.list.TestimonialTextCard
 import fit.asta.health.testimonials.view.list.TestimonialsVideoCard
 import fit.asta.health.testimonials.viewmodel.list.TestimonialListViewModel
-import fit.asta.health.common.ui.theme.boxSize
-import fit.asta.health.common.ui.theme.cardElevation
-import fit.asta.health.common.ui.theme.imageHeight
-import fit.asta.health.common.ui.theme.spacing
+
 
 @Composable
 fun TestimonialsList(
@@ -46,7 +48,10 @@ fun TestimonialsList(
         //.background(color = MaterialTheme.colorScheme.secondaryContainer)
     ) {
 
-        items(testimonials) { item ->
+        items(count = testimonials.itemCount,
+            key = testimonials.itemKey(),
+            contentType = testimonials.itemContentType()) { inx ->
+            val item = testimonials[inx]
             item?.let {
                 when (it.type) {
                     TestimonialType.TEXT -> TestimonialTextCard(it)
