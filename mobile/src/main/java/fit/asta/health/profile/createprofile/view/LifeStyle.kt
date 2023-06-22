@@ -141,6 +141,8 @@ fun LifeStyleContent(
                     onPositiveClick = { hours, minutes ->
                         viewModel.onEvent(event = ProfileEvent.OnUserBedTimeChange("$hours:$minutes"))
                     })
+
+
             }
 
             if (showJobStartContent.value) {
@@ -169,7 +171,11 @@ fun LifeStyleContent(
                     selectionTypeText = "Are you Physically Active",
                     selectedOption = selectedPhyActiveOption,
                     onStateChange = { state ->
-                        viewModel.onEvent(ProfileEvent.SetSelectedPhyActOption(state))
+                        viewModel.onEvent(
+                            ProfileEvent.SetSelectedPhyActOption(
+                                option = state, optionIndex = 0
+                            )
+                        )
                     },
                     firstOption = "Less",
                     secondOption = "Moderate",
@@ -189,7 +195,7 @@ fun LifeStyleContent(
                     selectionTypeText = "Current Working Environment",
                     selectedOption = selectedWorkingEnvOption,
                     onStateChange = { state ->
-                        viewModel.onEvent(ProfileEvent.SetSelectedWorkingEnvOption(state))
+                        viewModel.onEvent(ProfileEvent.SetSelectedWorkingEnvOption(state, 0))
                     },
                     firstOption = "Standing",
                     secondOption = "Sitting"
@@ -208,7 +214,7 @@ fun LifeStyleContent(
                     selectionTypeText = "Current WorkStyle",
                     selectedOption = selectedWorkingStyOption,
                     onStateChange = { state ->
-                        viewModel.onEvent(ProfileEvent.SetSelectedWorkingStyleOption(state))
+                        viewModel.onEvent(ProfileEvent.SetSelectedWorkingStyleOption(state, 1))
                     },
                     firstOption = "Indoor",
                     secondOption = "Outdoor"
@@ -227,7 +233,11 @@ fun LifeStyleContent(
                     selectionTypeText = "What are your working hours",
                     selectedOption = selectedWorkingHrsOption,
                     onStateChange = { state ->
-                        viewModel.onEvent(ProfileEvent.SetSelectedWorkingHrsOption(state))
+                        viewModel.onEvent(
+                            ProfileEvent.SetSelectedWorkingHrsOption(
+                                option = state, optionIndex = 1
+                            )
+                        )
                     },
                     firstOption = "Morning",
                     secondOption = "Afternoon",

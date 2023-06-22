@@ -137,7 +137,7 @@ fun DietContent(
                 onStateChange = { state ->
                     viewModel.onEvent(
                         ProfileEvent.SetSelectedFoodResOption(
-                            state
+                            state, 11
                         )
                     )
                 },

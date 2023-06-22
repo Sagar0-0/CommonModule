@@ -31,6 +31,8 @@ import fit.asta.health.profile.createprofile.view.HealthCreateScreen
 import fit.asta.health.profile.createprofile.view.LifeStyleCreateScreen
 import fit.asta.health.profile.createprofile.view.PhysiqueCreateScreen
 import fit.asta.health.profile.createprofile.view.components.Stepper
+import fit.asta.health.profile.model.domain.ThreeToggleSelections
+import fit.asta.health.profile.model.domain.TwoToggleSelections
 import fit.asta.health.profile.viewmodel.ProfileViewModel
 import fit.asta.health.testimonials.view.create.CustomDialogWithResultExample
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -50,6 +52,25 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
     val isLSValid by viewModel.areLSValid.collectAsStateWithLifecycle()
     val isDietValid by viewModel.dietInputsValid.collectAsStateWithLifecycle()
 
+    // pregnancy
+    val selectedIsPregnantOption by viewModel.selectedIsPregnant.collectAsStateWithLifecycle()
+    val selectedGenderOption by viewModel.selectedGender.collectAsStateWithLifecycle()
+
+    //Inputs Validity
+    val areFemaleInputsNull by viewModel.areFemaleInputNull.collectAsStateWithLifecycle()
+    val arePregInputsValid by viewModel.arePregnancyInputValid.collectAsStateWithLifecycle()
+
+
+    val isDemoPhyValid =
+        if (selectedGenderOption == ThreeToggleSelections.Second && areFemaleInputsNull) {
+            if (selectedIsPregnantOption == TwoToggleSelections.First) {
+                arePregInputsValid
+            } else {
+                true
+            }
+        } else {
+            isPhyValid
+        }
 
     //Custom Dialog
     var showCustomDialogWithResult by remember { mutableStateOf(false) }
@@ -83,7 +104,7 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
         errorColor
     }
 
-    val phyColor = if (isPhyValid) {
+    val phyColor = if (isDemoPhyValid) {
         primaryColor
     } else {
         errorColor
@@ -158,7 +179,7 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
                         lifeStyleColor = lifeStyleColor,
                         dietColor = dietColor,
                         isDetailValid,
-                        isPhyValid,
+                        isPhyValid = isPhyValid,
                         isHealthValid,
                         isLSValid,
                         isDietValid,

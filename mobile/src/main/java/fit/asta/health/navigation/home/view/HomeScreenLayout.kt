@@ -1,13 +1,11 @@
 package fit.asta.health.navigation.home.view
 
 import android.app.Activity
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.ExperimentalFoundationApi
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -25,17 +23,18 @@ import fit.asta.health.tools.meditation.MeditationActivity
 import fit.asta.health.tools.walking.view.WalkingActivity
 import fit.asta.health.tools.water.WaterToolActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 @ExperimentalCoroutinesApi
 @OptIn(ExperimentalPagerApi::class)
-@ExperimentalMaterialApi
-@ExperimentalFoundationApi
-@ExperimentalAnimationApi
 @Composable
 fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
 
     val context = LocalContext.current
+
+    Log.d("SunSlot", "${toolsHome.sunSlots}")
 
     Box(Modifier.fillMaxSize()) {
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
@@ -49,7 +48,7 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
                     WeatherCardImage(
                         temperature = it.temperature,
                         location = it.location,
-                        date = "Friday,24 October"
+                        date = dateFormattedScreen()
                     )
                 }
             }
@@ -59,6 +58,8 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
             item {
                 toolsHome.banners?.let { BannerAutoSlider(bannerList = it) }
             }
+
+            item { Spacer(modifier = Modifier.height(24.dp)) }
 
             item {
 
@@ -174,4 +175,12 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHome) {
             item { Spacer(modifier = Modifier.height(130.dp)) }
         }
     }
+}
+
+@Composable
+fun dateFormattedScreen(): String {
+    val dateFormatter = DateTimeFormatter.ofPattern("EEEE, d MMMM", Locale.ENGLISH)
+    val currentDate = LocalDate.now()
+
+    return dateFormatter.format(currentDate)
 }
