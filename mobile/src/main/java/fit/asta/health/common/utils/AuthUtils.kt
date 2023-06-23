@@ -10,8 +10,11 @@ import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import fit.asta.health.MainActivity
 import fit.asta.health.firebase.view.AuthActivity
 
@@ -40,7 +43,7 @@ fun Context.startAuthActivity() =
         activity.finishAffinity()
     }
 
-fun Context.signOut(view: View) =
+fun Context.signOut(showSnackBar: (message: String) -> Unit) =
     AuthUI.getInstance().signOut(this)
         .addOnCompleteListener { signOutTask ->
 
@@ -49,13 +52,13 @@ fun Context.signOut(view: View) =
                 startMainActivity()
             } else {
 
-                view.showSnackbar(signOutTask.exception?.message!!)
+                showSnackBar(signOutTask.exception?.message!!)
             }
         }
 
-fun Context.deleteAccount(view: View) {
+fun Context.deleteAccount(showSnackBar: (message: String) -> Unit) {
 
-    val currentUser = FirebaseAuth.getInstance().currentUser ?: return
+    val currentUser = Firebase.auth.currentUser ?: return
     val credential: AuthCredential = when (currentUser.providerData[1].providerId) {
         "google.com" -> {
 
@@ -72,16 +75,20 @@ fun Context.deleteAccount(view: View) {
         else -> return
     }
 
-    deleteAccount(credential, view)
+    deleteAccount(credential, currentUser, showSnackBar)
 }
 
-fun Context.deleteAccount(credential: AuthCredential, view: View) =
+fun Context.deleteAccount(
+    credential: AuthCredential,
+    user: FirebaseUser,
+    showSnackBar: (message: String) -> Unit
+) =
     reAuthenticateUser(credential)
-        ?.addOnCompleteListener { reAuthTask ->
+        .addOnCompleteListener { reAuthTask ->
 
             if (reAuthTask.isSuccessful) {
 
-                AuthUI.getInstance().delete(this)
+                user.delete()
                     .addOnCompleteListener { deleteTask ->
 
                         if (deleteTask.isSuccessful) {
@@ -89,19 +96,19 @@ fun Context.deleteAccount(credential: AuthCredential, view: View) =
                             startMainActivity()
                         } else {
 
-                            view.showSnackbar(deleteTask.exception?.message!!)
+                            showSnackBar(deleteTask.exception?.message!!)
                             Log.d("DeleteAccount", deleteTask.exception?.message!!)
                         }
                     }
             } else { //Handle the exception
 
-                view.showSnackbar(reAuthTask.exception?.message!!)
+                showSnackBar(reAuthTask.exception?.message!!)
                 Log.d("ReAuth", reAuthTask.exception?.message!!)
             }
         }
 
 fun reAuthenticateUser(credential: AuthCredential) =
-    FirebaseAuth.getInstance().currentUser?.reauthenticate(credential)
+    Firebase.auth.currentUser!!.reauthenticate(credential)
 
 fun Context.silentSignIn(view: View) =
     AuthUI.getInstance()

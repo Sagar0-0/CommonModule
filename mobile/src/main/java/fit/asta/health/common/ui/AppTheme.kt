@@ -7,8 +7,10 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.LocalContext
 import fit.asta.health.common.ui.theme.*
+import fit.asta.health.common.utils.PrefUtils
 
 
 private val LightColors = lightColorScheme(
@@ -71,12 +73,27 @@ private val DarkColors = darkColorScheme(
     surfaceTint = md_theme_dark_surfaceTint,
 )
 
+private val usingDarkMode = mutableStateOf<Boolean?>(null)
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AppTheme(
-    useDarkTheme: Boolean = isSystemInDarkTheme(),
+    useDarkTheme: Boolean = usingDarkMode.value ?: isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
+    val context = LocalContext.current
+    when (PrefUtils.getTheme(context)) {
+        "dark" -> {
+            usingDarkMode.value = true
+        }
+        "light" -> {
+            usingDarkMode.value = false
+        }
+        else -> {
+            usingDarkMode.value = null
+        }
+    }
+
     val useDynamicColors = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
     val colors = when {
         useDynamicColors && useDarkTheme -> dynamicDarkColorScheme(LocalContext.current)

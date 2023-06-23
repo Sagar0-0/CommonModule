@@ -20,12 +20,8 @@ val Gradient2NoInternet = Color(0xFFff8961)
 val RateUsGrad1 = Color(0xFF0075FF)
 val RateUsGrad2 = Color(0xFF00D1FF)
 val ScheduleBackground = Color(0xffCCEDFF)
-
-//Custom Colors
-val Red = Color(0xFFFF4747)
-val Green = Color(0xFF2FEC00)
-val Blue = Color(0xFF1A94FF)
-val Yellow = Color(0xFFFFCD1A)
+val MapIconColor = Color(0xFFF51506)
+val AddressSelected = Color(0xDA11FF00)
 
 //Neutral Colors
 val Dark01 = Color(0xFFFFFFFF)

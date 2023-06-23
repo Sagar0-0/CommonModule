@@ -3,7 +3,8 @@ package fit.asta.health.common.utils
 import android.content.Context
 import androidx.preference.PreferenceManager
 import fit.asta.health.R
-import java.util.*
+import java.util.Calendar
+import java.util.Locale
 
 class PrefUtils {
 
@@ -128,7 +129,7 @@ class PrefUtils {
 
         fun setTheme(type: String, context: Context) {
 
-            val themeType = if (type.isNotEmpty()) type else "system"
+            val themeType = type.ifEmpty { "system" }
             val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
             editor.putString(context.getString(R.string.user_pref_theme_key), themeType)
             editor.apply()

@@ -205,22 +205,20 @@ fun Context.setAppTheme() {
     )
 }
 
-fun setAppTheme(newValue: String?) {
+fun setAppTheme(newValue: String = "system", context: Context? = null) {
+    if (context != null) PrefUtils.setTheme(newValue, context)
 
     val mode = when (newValue) {
         "dark" -> {
             AppCompatDelegate.MODE_NIGHT_YES
         }
         "light" -> {
-
             AppCompatDelegate.MODE_NIGHT_NO
         }
         "system" -> {
-
             AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
         }
         "battery" -> {
-
             AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
         }
         else -> {
