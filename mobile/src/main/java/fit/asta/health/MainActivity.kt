@@ -1,33 +1,35 @@
 package fit.asta.health
 
+//import fit.asta.health.profile.UserProfileActivity
+//import fit.asta.health.profile.viewmodel.ProfileAvailViewModel
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.IntentSender
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.content.ContextCompat
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
-import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
-import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.behavior.HideBottomViewOnScrollBehavior
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.snackbar.Snackbar
+import androidx.navigation.compose.rememberNavController
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.LocationSettingsResponse
+import com.google.android.gms.location.SettingsClient
+import com.google.android.gms.tasks.Task
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
@@ -35,6 +37,10 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
+import fit.asta.health.auth.AuthNavHost
+import fit.asta.health.common.location.maps.MapsActivity
+import fit.asta.health.common.location.maps.MapsViewModel
+import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.common.utils.*
 import fit.asta.health.firebase.viewmodel.AuthViewModel
 import fit.asta.health.network.TokenProvider
@@ -45,10 +51,10 @@ import fit.asta.health.profile.viewmodel.ProfileAvailViewModel
 import fit.asta.health.settings.SettingsActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-@Suppress("DEPRECATION")
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
@@ -61,10 +67,15 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
     private val profileAvailViewModel: ProfileAvailViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
+    private val mapsViewModel: MapsViewModel by viewModels()
     private var settingsLauncher: ActivityResultLauncher<Intent>? = null
+    private var locationRequestLauncher: ActivityResultLauncher<IntentSenderRequest>? = null
     private lateinit var networkConnectivity: NetworkConnectivity
-    private var snackBar: Snackbar? = null
     private var profileImgView: ImageView? = null
+    private val profileImgUri = mutableStateOf<Uri?>(null)
+    private val notificationEnabled = mutableStateOf(true)
+    private val isConnected = mutableStateOf(true)
+    private val addressText = mutableStateOf("...")
 
     @Inject
     lateinit var tokenProvider: TokenProvider
@@ -86,21 +97,28 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
             )
         )
 
+        lifecycleScope.launch {
+            mapsViewModel.addressText.collect {
+                if (!it.isNullOrEmpty()) {
+                    addressText.value = it
+                }
+            }
+        }
+
+
         if (!authViewModel.isAuthenticated()) {
-            signIn()
+            loadAuthScreen()
         } else {
             /*authViewModel.getUserId()?.let {
                 createProfile()
-                profileAvailViewModel.isUserProfileAvailable(it)
+                profileViewModel.isUserProfileAvailable(it)
             }*/
-
             loadAppScreen()
         }
 
         onBackPressedDispatcher.addCallback(this) {
 
             if (!authViewModel.isAuthenticated()) {
-
                 finishAndRemoveTask()
             }
         }
@@ -113,37 +131,136 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
                 }
             }
 
+        locationRequestLauncher =
+            registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { activityResult ->
+                if (activityResult.resultCode == RESULT_OK)
+                    mapsViewModel.getCurrentAddressText(this)
+                else {
+                    Toast.makeText(this, "User location access required!!", Toast.LENGTH_SHORT)
+                        .show()
+                    finish()
+                }
+            }
+
         FirebaseAuth.getInstance().addAuthStateListener(this)
         FirebaseAuth.getInstance().addIdTokenListener(this)
+
+    }
+
+    private fun loadAuthScreen() {
+        setContent {
+            AppTheme {
+                val context = LocalContext.current
+                val navController = rememberNavController()
+                AuthNavHost(navController) {
+                    if (authViewModel.isAuthenticated()) {
+                        authViewModel.getUserId()?.let {
+                            createProfile()
+                            profileAvailViewModel.isUserProfileAvailable(it)
+                        }
+                        Toast.makeText(
+                            context,
+                            "Sign in Successful",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+        }
+    }
+
+    private fun setProfileImage() {
+        val user = authViewModel.getUser()
+        if (user?.photoUrl != null) {
+            profileImgUri.value = user.photoUrl
+        }
+    }
+
+
+    private fun createLocationRequest() {
+
+        val locationRequest = LocationRequest.create().apply {
+            interval = 10000
+            fastestInterval = 5000
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+        val builder = LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest)
+
+        val client: SettingsClient = LocationServices.getSettingsClient(this)
+        val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
+        task.addOnSuccessListener { locationSettingsResponse ->
+            // All location settings are satisfied. The client can initialize
+            // location requests here.
+            // ...
+            Log.d("Location", "createLocationRequest: Success")
+            mapsViewModel.getCurrentAddressText(this)
+        }
+        task.addOnFailureListener { exception ->
+            if (exception is ResolvableApiException) {
+                // Location settings are not satisfied, but this can be fixed
+                // by showing the user a dialog.
+                try {
+                    // Show the dialog by calling startResolutionForResult(),
+                    // and check the result in onActivityResult().
+                    val intentSenderRequest =
+                        IntentSenderRequest.Builder(exception.resolution).build()
+                    locationRequestLauncher!!.launch(intentSenderRequest)
+                } catch (sendEx: IntentSender.SendIntentException) {
+                    // Ignore the error.
+                }
+            }
+        }
+    }
+
+    private fun onOptionsItemClicked(key: MainTopBarActions) {
+        when (key) {
+            MainTopBarActions.LOCATION -> {
+                startActivity(Intent(this, MapsActivity::class.java))
+            }
+
+            MainTopBarActions.NOTIFICATION -> {
+                PrefUtils.setMasterNotification(!notificationEnabled.value, applicationContext)
+                notificationEnabled.value = PrefUtils.getMasterNotification(applicationContext)
+            }
+
+            MainTopBarActions.SETTINGS -> {
+                startUserSettingsActivity()
+            }
+
+            MainTopBarActions.PROFILE -> {
+                startUserProfileActivity()
+            }
+
+            MainTopBarActions.SHARE -> {
+                shareApp()
+            }
+        }
     }
 
     fun loadAppScreen() {
-
-        applicationContext.setAppTheme()
-        setContentView(R.layout.main_activity)
-        setSupportActionBar(findViewById(R.id.appToolbar))
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-
-        registerConnectivityReceiver()
-        bottomNavBar()
-        showUserImage()
-
-    }
-
-    private fun bottomNavBar() {
-
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_home, R.id.navigation_today, R.id.navigation_track
-            )
-        )
-
-        val navController = findNavController(R.id.navHostFragment)
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        findViewById<BottomNavigationView>(R.id.navView).setupWithNavController(navController)
-        navController.addOnDestinationChangedListener { _, _, _ ->
-
-            showViewBars()
+        notificationEnabled.value = PrefUtils.getMasterNotification(applicationContext)
+        networkConnectivity = NetworkConnectivity(this)
+        networkConnectivity.observe(this) { status ->
+            isConnected.value = status
+        }
+        setProfileImage()
+        createLocationRequest()
+        setContent {
+            Log.d("URI", "loadAppScreen: ${profileImgUri.value}")
+            AppTheme {
+                MainActivityLayout(
+                    addressText.value,
+                    profileImgUri.value,
+                    notificationEnabled.value,
+                    isConnected.value
+                ) {
+                    onOptionsItemClicked(
+                        it
+                    )
+                }
+            }
         }
     }
 
@@ -160,86 +277,10 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         FirebaseAuth.getInstance().removeIdTokenListener(this)
     }
 
-    private fun registerConnectivityReceiver() {
-
-        snackBar = Snackbar.make(
-            findViewById<CoordinatorLayout>(R.id.containerMain),
-            getString(R.string.OFFLINE_STATUS),
-            Snackbar.LENGTH_INDEFINITE
-        ).setAnchorView(findViewById<BottomNavigationView>(R.id.navView))
-
-        networkConnectivity = NetworkConnectivity(this)
-        networkConnectivity.observe(this) { status ->
-
-            showNetworkMessage(status)
-        }
-    }
-
-    private fun showNetworkMessage(isConnected: Boolean) {
-
-        if (!isConnected) {
-            snackBar?.show()
-        } else {
-            snackBar?.dismiss()
-        }
-    }
-
     private fun startUserSettingsActivity() {
 
         val intent = Intent(applicationContext, SettingsActivity::class.java)
         settingsLauncher?.launch(intent)
-    }
-
-    private fun signIn() {
-
-        val signInLauncher =
-            registerForActivityResult(FirebaseAuthUIActivityResultContract()) { res ->
-                this.onSignInResult(res)
-            }
-
-        val signInIntent =
-            AuthUI.getInstance().createSignInIntentBuilder().setIsSmartLockEnabled(false)
-                .setAvailableProviders(
-                    arrayListOf(
-                        AuthUI.IdpConfig.PhoneBuilder().build(),
-                        AuthUI.IdpConfig.GoogleBuilder().build()
-                    )
-                ).setLogo(R.mipmap.ic_launcher_foreground).setTheme(R.style.LoginTheme)
-                .setTosAndPrivacyPolicyUrls(
-                    getPublicStorageUrl(this, resources.getString(R.string.url_terms_of_use)),
-                    getPublicStorageUrl(this, resources.getString(R.string.url_privacy_policy))
-                ).build()
-
-        signInLauncher.launch(signInIntent)
-    }
-
-    private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
-
-        if (result.resultCode == Activity.RESULT_CANCELED) {
-
-            finishAndRemoveTask() // User pressed back button, exit the application
-        }
-
-        if (result.resultCode == Activity.RESULT_OK) {
-
-            if (authViewModel.isAuthenticated()) {
-                authViewModel.getUserId()?.let {
-
-                createProfile()
-                    profileAvailViewModel.isUserProfileAvailable(it)
-                }
-            }
-
-        } else {
-
-            val response = result.idpResponse
-            if (response?.error?.message != null) {
-
-                this.showToastMessage(response.error?.message!!)
-                Log.d("Error: ", response.error?.toString()!!)
-            }
-        }
-
     }
 
     private fun createProfile() {
@@ -301,7 +342,8 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
                         appUpdateInfo,
                         this,
                         AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE)
-                            .setAllowAssetPackDeletion(true).build(),
+                            .setAllowAssetPackDeletion(true)
+                            .build(),
                         REQUEST_IMMEDIATE_UPDATE
                     )
                 } else if (appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
@@ -310,7 +352,8 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
                         appUpdateInfo,
                         this,
                         AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE)
-                            .setAllowAssetPackDeletion(true).build(),
+                            .setAllowAssetPackDeletion(true)
+                            .build(),
                         REQUEST_FLEXIBLE_UPDATE
                     )
                 }
@@ -320,7 +363,8 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
                     appUpdateInfo,
                     this,
                     AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE)
-                        .setAllowAssetPackDeletion(true).build(),
+                        .setAllowAssetPackDeletion(true)
+                        .build(),
                     REQUEST_IMMEDIATE_UPDATE
                 )
             }
@@ -343,39 +387,6 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         }
     }
 
-    private fun showViewBars() {
-
-        findViewById<AppBarLayout>(R.id.appBarLayout)?.setExpanded(true, true)
-        val navView = findViewById<BottomNavigationView>(R.id.navView)
-        val paramsBNV = navView?.layoutParams as CoordinatorLayout.LayoutParams
-        val behaviorBNV = paramsBNV.behavior as? HideBottomViewOnScrollBehavior
-        behaviorBNV?.slideUp(navView)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-
-        menuInflater.inflate(R.menu.main_toolbar_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-
-        prepareUserProfileMenuItem(menu)
-        prepareNotifyMenuItem(menu)
-
-        return super.onPrepareOptionsMenu(menu)
-    }
-
-    private fun prepareUserProfileMenuItem(menu: Menu) {
-
-        val profileMenuItem = menu.findItem(R.id.user_profile_menu)
-        val rootView = profileMenuItem.actionView
-        rootView?.setOnClickListener { onOptionsItemSelected(profileMenuItem) }
-        profileImgView = rootView?.findViewById(R.id.app_toolbar_profile_image)
-
-        showUserImage()
-    }
-
     private fun showUserImage() {
 
         val user = authViewModel.getUser()
@@ -386,60 +397,10 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         }
     }
 
-    private fun prepareNotifyMenuItem(menu: Menu) {
-
-        val itemNotify = menu.findItem(R.id.notifications_menu)
-        val bMasterNotify = PrefUtils.getMasterNotification(applicationContext)
-        itemNotify.isChecked = bMasterNotify
-        itemNotify.icon = ContextCompat.getDrawable(
-            applicationContext,
-            if (bMasterNotify) R.drawable.ic_notifications_on else R.drawable.ic_notifications_off
-        )
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        when (item.itemId) {
-
-            R.id.notifications_menu -> {
-
-                toggleNotifications(item)
-                return true
-            }
-            R.id.settings_menu -> {
-
-                startUserSettingsActivity()
-                return true
-            }
-            R.id.user_profile_menu -> {
-
-                startUserProfileActivity()
-                return true
-            }
-            R.id.share_menu -> {
-
-                shareApp()
-                return true
-            }
-            else -> {
-
-                return super.onOptionsItemSelected(item)
-            }
-        }
-    }
-
-    private fun toggleNotifications(item: MenuItem) {
-
-        item.isChecked = !item.isChecked
-        item.icon = ContextCompat.getDrawable(
-            applicationContext,
-            if (item.isChecked) R.drawable.ic_notifications_off else R.drawable.ic_notifications_on
-        )
-
-        PrefUtils.setMasterNotification(item.isChecked, applicationContext)
-    }
-
     private fun startUserProfileActivity() {
-        UserProfileActivity.launch(this@MainActivity)
+        //UserProfileActivity.launch(this@MainActivity)
     }
+
 }
+
+

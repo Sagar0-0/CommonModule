@@ -113,6 +113,6 @@ class BillingActivity : AppCompatActivity() {
     }
 
     private fun processPurchases(purchasesList: List<Purchase>?) {
-        Log.e("TAG", "processPurchases: purchase healthHisList $purchasesList")
+        Log.e("TAG", "processPurchases: purchase list $purchasesList")
     }
 }
