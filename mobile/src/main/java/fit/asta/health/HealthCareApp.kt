@@ -1,12 +1,12 @@
 package fit.asta.health
 
+import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import androidx.core.app.NotificationManagerCompat
 import androidx.hilt.work.HiltWorkerFactory
-import androidx.multidex.MultiDexApplication
 import androidx.work.BackoffPolicy
 import androidx.work.Configuration
 import androidx.work.Constraints
@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltAndroidApp
-class HealthCareApp : MultiDexApplication() {
+class HealthCareApp : /*MultiDexApplication*/ Application() {
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
     companion object {
