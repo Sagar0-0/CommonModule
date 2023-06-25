@@ -28,52 +28,47 @@ fun MapBottomSheet(
     onCollapse: () -> Unit,
     mapsViewModel: MapsViewModel
 ) {
-    Box(
-        Modifier
-            .fillMaxSize()
-    ) {
-        if (sheetScaffoldState.bottomSheetState.currentValue == SheetValue.PartiallyExpanded) {
-            Column(
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.background)
-                    .padding(horizontal = spacing.medium),
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                CurrentLocationUi(
-                    name = (if (addressItem.area.isNotEmpty()) addressItem.area + ", " else "") + (address.locality
-                        ?: address.subAdminArea
-                        ?: address.adminArea ?: ""),
-                    area = (address.adminArea ?: "") + ", " + (address.countryName ?: "")
-                )
-
-                OutlinedButton(
-                    onClick = onButtonClick,
-                    modifier = Modifier
-                        .padding(bottom = spacing.medium)
-                        .fillMaxWidth()
-                        .clip(MaterialTheme.shapes.medium),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onSurface
-                    )
-                ) {
-                    Text(
-                        maxLines = 1,
-                        text = "Enter complete address",
-                        overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.titleLarge
-                    )
-                }
-            }
-        } else {
-            FillAddressSheet(
-                navHostController = navHostController,
-                onCloseIconClick = onCollapse,
-                address = address,
-                addressItem = addressItem,
-                mapsViewModel = mapsViewModel
+    if (sheetScaffoldState.bottomSheetState.currentValue == SheetValue.PartiallyExpanded) {
+        Column(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.background)
+                .padding(horizontal = spacing.medium),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CurrentLocationUi(
+                name = (if (addressItem.area.isNotEmpty()) addressItem.area + ", " else "") + (address.locality
+                    ?: address.subAdminArea
+                    ?: address.adminArea ?: ""),
+                area = (address.adminArea ?: "") + ", " + (address.countryName ?: "")
             )
+
+            OutlinedButton(
+                onClick = onButtonClick,
+                modifier = Modifier
+                    .padding(bottom = spacing.medium)
+                    .fillMaxWidth()
+                    .clip(MaterialTheme.shapes.medium),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onSurface
+                )
+            ) {
+                Text(
+                    maxLines = 1,
+                    text = "Enter complete address",
+                    overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.titleLarge
+                )
+            }
         }
+    } else {
+        FillAddressSheet(
+            navHostController = navHostController,
+            onCloseIconClick = onCollapse,
+            address = address,
+            addressItem = addressItem,
+            mapsViewModel = mapsViewModel
+        )
     }
 }

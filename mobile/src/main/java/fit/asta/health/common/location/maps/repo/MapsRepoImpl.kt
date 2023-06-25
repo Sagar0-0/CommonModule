@@ -1,6 +1,7 @@
 package fit.asta.health.common.location.maps.repo
 
 import android.content.Context
+import android.util.Log
 import fit.asta.health.R
 import fit.asta.health.common.location.maps.api.RemoteApi
 import fit.asta.health.common.location.maps.api.SearchApi
@@ -92,7 +93,17 @@ class MapsRepoImpl @Inject constructor(
             try {
                 ResultState.Success(remoteApi.deleteAddress(uid, id))
             } catch (e: Exception) {
-                ResultState.Failure(e)
+                Log.e("MAPS", "REPO deleteAddress: ${e.message}")
+                if (e.message.equals("HTTP 404 ")) {
+                    ResultState.Success(
+                        DeleteAddressResponse(
+                            true,
+                            DeleteAddressResponse.Status(200, "No Data found")
+                        )
+                    )
+                } else {
+                    ResultState.Failure(e)
+                }
             }
         )
         awaitClose {

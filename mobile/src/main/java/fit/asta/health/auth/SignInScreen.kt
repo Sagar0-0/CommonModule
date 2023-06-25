@@ -3,6 +3,7 @@ package fit.asta.health.auth
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -54,7 +55,7 @@ fun SignInScreen(navHostController: NavHostController, onSuccess: () -> Unit) {
         verticalArrangement = Arrangement.Bottom
     ) {
 
-        Icon(
+        Image(
             painter = painterResource(id = R.mipmap.ic_launcher_foreground),
             contentDescription = "",
             modifier = Modifier.weight(1f)
