@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.thirdparty.spotify.api.SpotifyApiService
 import fit.asta.health.thirdparty.spotify.api.SpotifyRemoteApis
+import fit.asta.health.thirdparty.spotify.api.SpotifyRestApi
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.SPOTIFY_BASE_URL
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -38,7 +39,7 @@ object SpotifyNetworkModule {
     @Singleton
     @Provides
     @Named("SPOTIFY")
-    fun provideSpotifyRemoteApis(@Named("SPOTIFY") retrofit: Retrofit): SpotifyRemoteApis {
-        return retrofit.create(SpotifyRemoteApis::class.java)
+    fun provideSpotifyRemoteApis(@Named("SPOTIFY") spotifyApiService: SpotifyApiService): SpotifyRemoteApis {
+        return SpotifyRestApi(spotifyApiService = spotifyApiService)
     }
 }

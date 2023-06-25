@@ -100,16 +100,19 @@ class SpotifyLoginActivity : AppCompatActivity() {
     private fun handleResponse(response: AuthorizationResponse) {
         when (response.type) {
             AuthorizationResponse.Type.TOKEN -> {
-                Log.d(tag, "onActivityResult: $response")
                 accessToken = response.accessToken
+                Log.d(tag, "onActivityResult: $accessToken")
                 fetchCurrentUserDetails()
             }
+
             AuthorizationResponse.Type.CODE -> {
                 Log.d(tag, "onActivityResult: $response")
             }
+
             AuthorizationResponse.Type.ERROR -> {
                 Log.d(tag, "onActivityResult: ${response.error}")
             }
+
             else -> {
                 Log.d(tag, "onActivityResult: $response")
             }
@@ -128,12 +131,15 @@ class SpotifyLoginActivity : AppCompatActivity() {
                     SPOTIFY_USER_ACCESS_TOKEN = accessToken
                     startActivity(intent)
                 }
+
                 is NetworkResult.Error -> {
                     Toast.makeText(this, response.message.toString(), Toast.LENGTH_SHORT).show()
                 }
+
                 is NetworkResult.Loading -> {
                     Toast.makeText(this, "Loading...", Toast.LENGTH_SHORT).show()
                 }
+
                 else -> {
                     Toast.makeText(this, response.toString(), Toast.LENGTH_SHORT).show()
                 }
