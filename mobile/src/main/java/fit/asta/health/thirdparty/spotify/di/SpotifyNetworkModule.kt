@@ -32,14 +32,14 @@ object SpotifyNetworkModule {
     @Singleton
     @Provides
     @Named("SPOTIFY")
-    fun provideApiService(@Named("SPOTIFY") retrofit: Retrofit): SpotifyApiService {
+    fun provideSpotifyApiService(@Named("SPOTIFY") retrofit: Retrofit): SpotifyApiService {
         return retrofit.create(SpotifyApiService::class.java)
     }
 
     @Singleton
     @Provides
     @Named("SPOTIFY")
-    fun provideSpotifyRemoteApis(@Named("SPOTIFY") spotifyApiService: SpotifyApiService): SpotifyApi {
+    fun provideSpotifyApi(@Named("SPOTIFY") spotifyApiService: SpotifyApiService): SpotifyApi {
         return SpotifyRestImpl(spotifyApiService = spotifyApiService)
     }
 }
