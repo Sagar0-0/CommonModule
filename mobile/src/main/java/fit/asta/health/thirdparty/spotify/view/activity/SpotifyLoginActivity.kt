@@ -4,46 +4,46 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.spotify.sdk.android.auth.AuthorizationClient
 import com.spotify.sdk.android.auth.AuthorizationRequest
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.ui.AppTheme
-import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.thirdparty.MusicHomeActivity
+import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
-import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModel
+import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
+import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyAuthViewModelX
 
 @AndroidEntryPoint
 class SpotifyLoginActivity : ComponentActivity() {
 
-    private val tag = this::class.simpleName
+    /**
+     * This variables is to provide a lock on the onResume code in this
+     * activity so that it works when we want it to
+     */
     private var isResume: Boolean = false
 
-    private val spotifyViewModel: SpotifyViewModel by viewModels()
-    private var accessToken: String = ""
+    /**
+     * This is the [SpotifyAuthViewModelX] viewModel which contains all the business logic of this
+     * activity
+     */
+    private val spotifyAuthViewModelX: SpotifyAuthViewModelX by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        if (isSpotifyInstalled())
-            sendAuthRequest()
-        else {
-            Toast.makeText(this, "Need to Download Spotify", Toast.LENGTH_SHORT).show()
-            isResume = true
-            openSpotifyInPlayStore()
-        }
-
         setContent {
             AppTheme {
                 Surface(
@@ -51,9 +51,77 @@ class SpotifyLoginActivity : ComponentActivity() {
                         .fillMaxSize()
                         .background(MaterialTheme.colors.background)
                 ) {
-//                    spotifyViewModel = hiltViewModel()
 
-                    /* TODO :- Getting the Views Here According to the Call State or
+                    // Handling the States of all the Authorization flow of spotify
+                    when (spotifyAuthViewModelX.currentUserData) {
+
+                        // Initial State when the Auth Flow hasn't Started yet
+                        is SpotifyNetworkCall.Initialized -> {
+
+                            // checking if spotify is installed or not
+                            if (isSpotifyInstalled()) {
+                                // Starting the Auth Flow from here
+                                sendAuthRequest()
+                            } else {
+
+                                // downloading Spotify App in the user's App so it can be used
+                                Toast.makeText(this, "Need to Download Spotify", Toast.LENGTH_SHORT)
+                                    .show()
+                                isResume = true
+                                openSpotifyInPlayStore()
+                            }
+                        }
+
+                        // Loading State when the Auth Flow has started and is fetching all the data
+                        is SpotifyNetworkCall.Loading -> {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator()
+                            }
+                        }
+
+                        // This is when the Auth Flow is completed and has executed Successfully
+                        is SpotifyNetworkCall.Success<SpotifyMeModel> -> {
+
+                            val intent = Intent(this, MusicHomeActivity::class.java)
+
+                            // Sending User Details to the next Activity
+                            intent.putExtra(
+                                SpotifyConstants.SPOTIFY_USER_DETAILS,
+                                spotifyAuthViewModelX.currentUserData.data
+                            )
+
+                            // Sending the User Token to the next Activity
+                            intent.putExtra(
+                                SpotifyConstants.SPOTIFY_USER_TOKEN,
+                                spotifyAuthViewModelX.accessToken
+                            )
+
+                            // TODO :- Try to delete this constant and keep it in a viewModel
+                            SpotifyConstants.SPOTIFY_USER_ACCESS_TOKEN =
+                                spotifyAuthViewModelX.accessToken
+
+                            // Starting the Activity
+                            startActivity(intent)
+                        }
+
+                        // This is when the Auth Flow is completed and has executed UnSuccessfully
+                        is SpotifyNetworkCall.Failure<SpotifyMeModel> -> {
+
+                            // This shows Error Message to the User
+                            Toast.makeText(
+                                this,
+                                spotifyAuthViewModelX.currentUserData.message.toString(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+
+                    /*
+                    TODO :- Getting the Views Here According to the Call State or
                         starting the navigation Graph according to our needs
                      */
                 }
@@ -61,18 +129,22 @@ class SpotifyLoginActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * This function creates the Authorization Request which authorizes our app so that we can read
+     * data according to these spotify scopes [SpotifyConstants.SPOTIFY_SCOPES]
+     */
     private fun sendAuthRequest() {
 
-        val builder = AuthorizationRequest.Builder(
+        val request = AuthorizationRequest.Builder(
             SpotifyConstants.SPOTIFY_CLIENT_ID,
             AuthorizationResponse.Type.TOKEN,
             SpotifyConstants.SPOTIFY_REDIRECT_URI
         )
             .setShowDialog(true)
             .setScopes(arrayOf(SpotifyConstants.SPOTIFY_SCOPES))
+            .build()
 
-        val request = builder.build()
-
+        // Starting the authorization window or intent
         AuthorizationClient.openLoginActivity(
             this,
             SpotifyConstants.SPOTIFY_AUTH_REQUEST_CODE,
@@ -80,6 +152,9 @@ class SpotifyLoginActivity : ComponentActivity() {
         )
     }
 
+    /**
+     * This function checks if the spotify is already installed in the current device
+     */
     @Suppress("DEPRECATION")
     private fun isSpotifyInstalled(): Boolean {
         val packageName = "com.spotify.music"
@@ -91,6 +166,10 @@ class SpotifyLoginActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * This function redirects the user to the google play store and prompts him to download the
+     * spotify app
+     */
     private fun openSpotifyInPlayStore() {
         val packageName = "com.spotify.music"
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName"))
@@ -98,6 +177,10 @@ class SpotifyLoginActivity : ComponentActivity() {
         startActivity(intent)
     }
 
+    /**
+     * Overridden this so we can check if the user has installed spotify after we redirect him to
+     * play store
+     */
     override fun onResume() {
         super.onResume()
 
@@ -126,7 +209,7 @@ class SpotifyLoginActivity : ComponentActivity() {
         // Check if result comes from the correct activity
         if (requestCode == SpotifyConstants.SPOTIFY_AUTH_REQUEST_CODE) {
             val response = AuthorizationClient.getResponse(resultCode, intent)
-            handleResponse(response)
+            spotifyAuthViewModelX.handleSpotifyAuthResponse(response)
         }
     }
 
@@ -135,53 +218,7 @@ class SpotifyLoginActivity : ComponentActivity() {
         val uri: Uri? = intent.data
         if (uri != null) {
             val response = AuthorizationResponse.fromUri(uri)
-            handleResponse(response)
-        }
-    }
-
-    private fun handleResponse(response: AuthorizationResponse) {
-        when (response.type) {
-            AuthorizationResponse.Type.TOKEN -> {
-                accessToken = response.accessToken
-                Log.d(tag, "onActivityResult: $accessToken")
-                fetchCurrentUserDetails()
-            }
-
-            AuthorizationResponse.Type.ERROR -> {
-                Log.d(tag, "onActivityResult: ${response.error}")
-            }
-
-            else -> {
-                Log.d(tag, "onActivityResult: $response")
-            }
-        }
-    }
-
-    private fun fetchCurrentUserDetails() {
-        spotifyViewModel.getCurrentUserDetails(accessToken)
-        spotifyViewModel.currentUserDetailsResponse.observe(this) { response ->
-            when (response) {
-                is NetworkResult.Success -> {
-                    Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, MusicHomeActivity::class.java)
-                    intent.putExtra(SpotifyConstants.SPOTIFY_USER_DETAILS, response.data)
-                    intent.putExtra(SpotifyConstants.SPOTIFY_USER_TOKEN, accessToken)
-                    SpotifyConstants.SPOTIFY_USER_ACCESS_TOKEN = accessToken
-                    startActivity(intent)
-                }
-
-                is NetworkResult.Error -> {
-                    Toast.makeText(this, response.message.toString(), Toast.LENGTH_SHORT).show()
-                }
-
-                is NetworkResult.Loading -> {
-                    Toast.makeText(this, "Loading...", Toast.LENGTH_SHORT).show()
-                }
-
-                else -> {
-                    Toast.makeText(this, response.toString(), Toast.LENGTH_SHORT).show()
-                }
-            }
+            spotifyAuthViewModelX.handleSpotifyAuthResponse(response)
         }
     }
 }
