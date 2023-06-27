@@ -1,88 +1,130 @@
 package fit.asta.health.thirdparty.spotify.view.activity
 
-import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.ui.Modifier
 import com.spotify.sdk.android.auth.AuthorizationClient
 import com.spotify.sdk.android.auth.AuthorizationRequest
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.databinding.SpotifyLoginActivityBinding
-import fit.asta.health.thirdparty.MusicHomeActivity
-import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.SHARED_PREF_SPOTIFY
-import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.SHARED_PREF_SPOTIFY_TOKEN
-import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.SPOTIFY_AUTH_REQUEST_CODE
-import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.SPOTIFY_CLIENT_ID
-import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.SPOTIFY_REDIRECT_URI
-import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.SPOTIFY_SCOPES
-import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.SPOTIFY_USER_ACCESS_TOKEN
-import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.SPOTIFY_USER_DETAILS
-import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.SPOTIFY_USER_TOKEN
-import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModel
+import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.common.utils.NetworkResult
+import fit.asta.health.thirdparty.MusicHomeActivity
+import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
+import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModel
 
 @AndroidEntryPoint
-class SpotifyLoginActivity : AppCompatActivity() {
+class SpotifyLoginActivity : ComponentActivity() {
 
-    private lateinit var binding: SpotifyLoginActivityBinding
     private val tag = this::class.simpleName
+    private var isResume: Boolean = false
 
-    private lateinit var builder: AuthorizationRequest.Builder
-    private lateinit var request: AuthorizationRequest
-
-    private lateinit var spotifyViewModel: SpotifyViewModel
+    private val spotifyViewModel: SpotifyViewModel by viewModels()
     private var accessToken: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = SpotifyLoginActivityBinding.inflate(layoutInflater)
 
-        setContentView(binding.root)
-
-        spotifyViewModel = ViewModelProvider(this)[SpotifyViewModel::class.java]
-
-        authenticateWithSpotify()
-
-    }
-
-    private fun authenticateWithSpotify() {
-        builder =
-            AuthorizationRequest.Builder(
-                SPOTIFY_CLIENT_ID,
-                AuthorizationResponse.Type.TOKEN,
-                SPOTIFY_REDIRECT_URI
-            )
-
-        builder.setShowDialog(true)
-        builder.setScopes(arrayOf(SPOTIFY_SCOPES))
-
-        request = builder.build()
-
-        binding.loginWithApp.setOnClickListener {
-            AuthorizationClient.openLoginActivity(this, SPOTIFY_AUTH_REQUEST_CODE, request)
+        if (isSpotifyInstalled())
+            sendAuthRequest()
+        else {
+            Toast.makeText(this, "Need to Download Spotify", Toast.LENGTH_SHORT).show()
+            isResume = true
+            openSpotifyInPlayStore()
         }
-        binding.loginWithBrowser.setOnClickListener {
-            AuthorizationClient.openLoginInBrowser(this, request)
+
+        setContent {
+            AppTheme {
+                Surface(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colors.background)
+                ) {
+//                    spotifyViewModel = hiltViewModel()
+
+                    /* TODO :- Getting the Views Here According to the Call State or
+                        starting the navigation Graph according to our needs
+                     */
+                }
+            }
         }
     }
 
-    private fun saveToken(token: String) {
-        val sharedPreference = getSharedPreferences(SHARED_PREF_SPOTIFY, Context.MODE_PRIVATE)
-        val editor = sharedPreference.edit()
-        editor.putString(SHARED_PREF_SPOTIFY_TOKEN, token)
-        editor.commit()
+    private fun sendAuthRequest() {
+
+        val builder = AuthorizationRequest.Builder(
+            SpotifyConstants.SPOTIFY_CLIENT_ID,
+            AuthorizationResponse.Type.TOKEN,
+            SpotifyConstants.SPOTIFY_REDIRECT_URI
+        )
+            .setShowDialog(true)
+            .setScopes(arrayOf(SpotifyConstants.SPOTIFY_SCOPES))
+
+        val request = builder.build()
+
+        AuthorizationClient.openLoginActivity(
+            this,
+            SpotifyConstants.SPOTIFY_AUTH_REQUEST_CODE,
+            request
+        )
     }
 
+    @Suppress("DEPRECATION")
+    private fun isSpotifyInstalled(): Boolean {
+        val packageName = "com.spotify.music"
+        return try {
+            packageManager.getPackageInfo(packageName, 0)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
+        }
+    }
+
+    private fun openSpotifyInPlayStore() {
+        val packageName = "com.spotify.music"
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName"))
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // Checking if the Spotify App is installed by the User or not
+        if (isResume) {
+            if (isSpotifyInstalled())
+                sendAuthRequest()
+            else
+                Toast.makeText(this, "Spotify Not Installed", Toast.LENGTH_SHORT).show()
+            isResume = false
+        }
+    }
+
+//    private fun saveToken(token: String) {
+//        val sharedPreference = getSharedPreferences(SHARED_PREF_SPOTIFY, Context.MODE_PRIVATE)
+//        val editor = sharedPreference.edit()
+//        editor.putString(SHARED_PREF_SPOTIFY_TOKEN, token)
+//        editor.commit()
+//    }
+
+    @Suppress("DEPRECATION")
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
 
         // Check if result comes from the correct activity
-        if (requestCode == SPOTIFY_AUTH_REQUEST_CODE) {
+        if (requestCode == SpotifyConstants.SPOTIFY_AUTH_REQUEST_CODE) {
             val response = AuthorizationClient.getResponse(resultCode, intent)
             handleResponse(response)
         }
@@ -105,10 +147,6 @@ class SpotifyLoginActivity : AppCompatActivity() {
                 fetchCurrentUserDetails()
             }
 
-            AuthorizationResponse.Type.CODE -> {
-                Log.d(tag, "onActivityResult: $response")
-            }
-
             AuthorizationResponse.Type.ERROR -> {
                 Log.d(tag, "onActivityResult: ${response.error}")
             }
@@ -125,10 +163,10 @@ class SpotifyLoginActivity : AppCompatActivity() {
             when (response) {
                 is NetworkResult.Success -> {
                     Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
-                    val intent: Intent = Intent(this, MusicHomeActivity::class.java)
-                    intent.putExtra(SPOTIFY_USER_DETAILS, response.data)
-                    intent.putExtra(SPOTIFY_USER_TOKEN, accessToken)
-                    SPOTIFY_USER_ACCESS_TOKEN = accessToken
+                    val intent = Intent(this, MusicHomeActivity::class.java)
+                    intent.putExtra(SpotifyConstants.SPOTIFY_USER_DETAILS, response.data)
+                    intent.putExtra(SpotifyConstants.SPOTIFY_USER_TOKEN, accessToken)
+                    SpotifyConstants.SPOTIFY_USER_ACCESS_TOKEN = accessToken
                     startActivity(intent)
                 }
 
