@@ -16,12 +16,13 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.rememberNavController
 import com.spotify.sdk.android.auth.AuthorizationClient
 import com.spotify.sdk.android.auth.AuthorizationRequest
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.ui.AppTheme
-import fit.asta.health.thirdparty.MusicHomeActivity
+import fit.asta.health.thirdparty.spotify.SpotifyNavGraph
 import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
@@ -86,26 +87,32 @@ class SpotifyLoginActivity : ComponentActivity() {
                         // This is when the Auth Flow is completed and has executed Successfully
                         is SpotifyNetworkCall.Success<SpotifyMeModel> -> {
 
-                            val intent = Intent(this, MusicHomeActivity::class.java)
+//                            val intent = Intent(this, MusicHomeActivity::class.java)
+//
+//                            // Sending User Details to the next Activity
+//                            intent.putExtra(
+//                                SpotifyConstants.SPOTIFY_USER_DETAILS,
+//                                spotifyAuthViewModelX.currentUserData.data
+//                            )
+//
+//                            // Sending the User Token to the next Activity
+//                            intent.putExtra(
+//                                SpotifyConstants.SPOTIFY_USER_TOKEN,
+//                                spotifyAuthViewModelX.accessToken
+//                            )
+//
+//                            // TODO :- Try to delete this constant and keep it in a viewModel
+//                            SpotifyConstants.SPOTIFY_USER_ACCESS_TOKEN =
+//                                spotifyAuthViewModelX.accessToken
+//
+//                            // Starting the Activity
+//                            startActivity(intent)
 
-                            // Sending User Details to the next Activity
-                            intent.putExtra(
-                                SpotifyConstants.SPOTIFY_USER_DETAILS,
-                                spotifyAuthViewModelX.currentUserData.data
+                            val navController = rememberNavController()
+                            SpotifyNavGraph(
+                                navController = navController,
+                                spotifyAuthViewModelX = spotifyAuthViewModelX
                             )
-
-                            // Sending the User Token to the next Activity
-                            intent.putExtra(
-                                SpotifyConstants.SPOTIFY_USER_TOKEN,
-                                spotifyAuthViewModelX.accessToken
-                            )
-
-                            // TODO :- Try to delete this constant and keep it in a viewModel
-                            SpotifyConstants.SPOTIFY_USER_ACCESS_TOKEN =
-                                spotifyAuthViewModelX.accessToken
-
-                            // Starting the Activity
-                            startActivity(intent)
                         }
 
                         // This is when the Auth Flow is completed and has executed UnSuccessfully
