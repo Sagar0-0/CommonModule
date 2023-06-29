@@ -26,10 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.common.ui.AppTheme
-import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
-import fit.asta.health.thirdparty.spotify.view.components.FailureScreen
-import fit.asta.health.thirdparty.spotify.view.components.LoadingScreen
 import fit.asta.health.thirdparty.spotify.view.components.MusicTrack
+import fit.asta.health.thirdparty.spotify.view.components.StateControl
 import fit.asta.health.thirdparty.spotify.viewmodel.FavouriteViewModelX
 
 // Preview Composable Function
@@ -103,6 +101,9 @@ fun FavouriteScreen(
 
         // This Draws all the Track Cards
         StateControl(
+            modifier = Modifier
+                .height(210.dp)
+                .fillMaxWidth(),
             networkState = favouriteViewModelX.allTracks.collectAsState().value,
             onCurrentStateInitialized = { favouriteViewModelX.getAllTracks() },
             onCurrentStateSuccess = { networkState ->
@@ -142,6 +143,9 @@ fun FavouriteScreen(
 
         // This Draws all the Albums Cards
         StateControl(
+            modifier = Modifier
+                .height(210.dp)
+                .fillMaxWidth(),
             networkState = favouriteViewModelX.allAlbums.collectAsState().value,
             onCurrentStateInitialized = { favouriteViewModelX.getAllAlbums() },
             onCurrentStateSuccess = { networkState ->
@@ -163,45 +167,5 @@ fun FavouriteScreen(
                 }
             }
         )
-    }
-}
-
-/**
- * This checks the state of the call and shows the UI Accordingly
- */
-@Composable
-fun <T : SpotifyNetworkCall<*>> StateControl(
-    networkState: T,
-    onCurrentStateInitialized: () -> Unit,
-    onCurrentStateSuccess: @Composable (T) -> Unit
-) {
-
-    // Checking which state is there
-    when (networkState) {
-
-        // Nothing is done yet and the fetching will be initiated here
-        is SpotifyNetworkCall.Initialized<*> -> onCurrentStateInitialized()
-
-        // The data is being fetched
-        is SpotifyNetworkCall.Loading<*> -> LoadingScreen(
-            modifier = Modifier
-                .height(210.dp)
-                .fillMaxWidth()
-        )
-
-        // Data fetched successfully
-        is SpotifyNetworkCall.Success<*> -> onCurrentStateSuccess(networkState)
-
-        // Data Fetched UnSuccessfully
-        is SpotifyNetworkCall.Failure<*> -> {
-            FailureScreen(
-                modifier = Modifier
-                    .height(210.dp)
-                    .fillMaxWidth(),
-                textToShow = networkState.message.toString()
-            ) {
-                onCurrentStateInitialized()
-            }
-        }
     }
 }
