@@ -1,4 +1,4 @@
-package fit.asta.health.thirdparty.spotify.api
+package fit.asta.health.thirdparty.spotify.model
 
 import fit.asta.health.thirdparty.spotify.model.net.albums.SpotifyAlbumDetailsModel
 import fit.asta.health.thirdparty.spotify.model.net.categories.SpotifyBrowseCategoriesModel
@@ -17,7 +17,7 @@ import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopTracksModel
 import fit.asta.health.thirdparty.spotify.model.net.tracks.SpotifyTrackDetailsModel
 import retrofit2.Response
 
-interface SpotifyRemoteApis {
+interface SpotifyRepo {
 
     suspend fun getCurrentUserDetails(accessToken: String): Response<SpotifyMeModel>
 

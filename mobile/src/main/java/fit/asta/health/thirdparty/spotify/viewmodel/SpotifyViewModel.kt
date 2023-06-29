@@ -6,7 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.thirdparty.spotify.model.SpotifyRepository
+import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
 import fit.asta.health.thirdparty.spotify.model.net.albums.SpotifyAlbumDetailsModel
 import fit.asta.health.thirdparty.spotify.model.net.categories.SpotifyBrowseCategoriesModel
 import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
@@ -30,7 +30,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SpotifyViewModel @Inject constructor(
-    private val repository: SpotifyRepository,
+    private val repository: SpotifyRepoImpl,
     application: Application
 ) : AndroidViewModel(application) {
 
@@ -46,7 +46,7 @@ class SpotifyViewModel @Inject constructor(
         currentUserDetailsResponse.value = NetworkResult.Loading()
 
         try {
-            val response = repository.remote.getCurrentUserDetails(accessToken)
+            val response = repository.getCurrentUserDetails(accessToken)
             currentUserDetailsResponse.value = handleResponse(response)
 //            for offline catching
 //            val result = currentUserDetailsResponse.value!!.data
@@ -68,7 +68,7 @@ class SpotifyViewModel @Inject constructor(
         currentUserFollowingArtistsResponse.value = NetworkResult.Loading()
 
         try {
-            val response = repository.remote.getCurrentUserFollowedArtists(accessToken)
+            val response = repository.getCurrentUserFollowedArtists(accessToken)
             currentUserFollowingArtistsResponse.value = handleResponse(response)
 //            for offline catching
 //            val result = currentUserDetailsResponse.value!!.data
@@ -90,7 +90,7 @@ class SpotifyViewModel @Inject constructor(
         currentUserTopTracksResponse.value = NetworkResult.Loading()
 
         try {
-            val response = repository.remote.getCurrentUserTopTracks(accessToken)
+            val response = repository.getCurrentUserTopTracks(accessToken)
             currentUserTopTracksResponse.value = handleResponse(response)
         } catch (e: Exception) {
             Log.e(TAG, "getCurrentUserTopTracksSafeCall: $e")
@@ -109,7 +109,7 @@ class SpotifyViewModel @Inject constructor(
         currentUserTopArtistsResponse.value = NetworkResult.Loading()
 
         try {
-            val response = repository.remote.getCurrentUserTopArtists(accessToken)
+            val response = repository.getCurrentUserTopArtists(accessToken)
             currentUserTopArtistsResponse.value = handleResponse(response)
         } catch (e: Exception) {
             Log.e(TAG, "getCurrentUserTopArtistsSafeCall: $e")
@@ -128,7 +128,7 @@ class SpotifyViewModel @Inject constructor(
         currentUserPlaylistsResponse.value = NetworkResult.Loading()
 
         try {
-            val response = repository.remote.getCurrentUserPlaylists(accessToken)
+            val response = repository.getCurrentUserPlaylists(accessToken)
             currentUserPlaylistsResponse.value = handleResponse(response)
         } catch (e: Exception) {
             Log.e(TAG, "getCurrentUserPlaylistsSafeCall: $e")
@@ -147,7 +147,7 @@ class SpotifyViewModel @Inject constructor(
         currentUserAlbumsResponse.value = NetworkResult.Loading()
 
         try {
-            val response = repository.remote.getCurrentUserAlbums(accessToken)
+            val response = repository.getCurrentUserAlbums(accessToken)
             currentUserAlbumsResponse.value = handleResponse(response)
         } catch (e: Exception) {
             Log.e(TAG, "getCurrentUserPlaylistsSafeCall: $e")
@@ -166,7 +166,7 @@ class SpotifyViewModel @Inject constructor(
         currentUserShowsResponse.value = NetworkResult.Loading()
 
         try {
-            val response = repository.remote.getCurrentUserShows(accessToken)
+            val response = repository.getCurrentUserShows(accessToken)
             currentUserShowsResponse.value = handleResponse(response)
         } catch (e: Exception) {
             Log.e(TAG, "getCurrentUserShowsSafeCall: $e")
@@ -185,7 +185,7 @@ class SpotifyViewModel @Inject constructor(
         currentUserEpisodesResponse.value = NetworkResult.Loading()
 
         try {
-            val response = repository.remote.getCurrentUserEpisodes(accessToken)
+            val response = repository.getCurrentUserEpisodes(accessToken)
             currentUserEpisodesResponse.value = handleResponse(response)
         } catch (e: Exception) {
             Log.e(TAG, "getCurrentUserEpisodesSafeCall: $e")
@@ -204,7 +204,7 @@ class SpotifyViewModel @Inject constructor(
         currentUserTracksResponse.value = NetworkResult.Loading()
 
         try {
-            val response = repository.remote.getCurrentUserTracks(accessToken)
+            val response = repository.getCurrentUserTracks(accessToken)
             currentUserTracksResponse.value = handleResponse(response)
         } catch (e: Exception) {
             Log.e(TAG, "getCurrentUserTracksSafeCall: $e")
@@ -222,7 +222,7 @@ class SpotifyViewModel @Inject constructor(
         currentUserRecentlyPlayed.value = NetworkResult.Loading()
 
         try {
-            val response = repository.remote.getCurrentUserRecentlyPlayedTracks(accessToken)
+            val response = repository.getCurrentUserRecentlyPlayedTracks(accessToken)
             currentUserRecentlyPlayed.value = handleResponse(response)
         } catch (e: Exception) {
             Log.e(TAG, "getCurrentUserRecentlyPlayedSafeCall: $e")
@@ -241,7 +241,7 @@ class SpotifyViewModel @Inject constructor(
         userPlaylistsResponse.value = NetworkResult.Loading()
 
         try {
-            val response = repository.remote.getUserPlaylists(accessToken, userID)
+            val response = repository.getUserPlaylists(accessToken, userID)
             userPlaylistsResponse.value = handleResponse(response)
         } catch (e: Exception) {
             Log.e(TAG, "getUserPlaylistsSafeCall: $e")
@@ -260,7 +260,7 @@ class SpotifyViewModel @Inject constructor(
         trackDetailsResponse.value = NetworkResult.Loading()
 
         try {
-            val response = repository.remote.getTrackDetails(accessToken, trackId)
+            val response = repository.getTrackDetails(accessToken, trackId)
             trackDetailsResponse.value = handleResponse(response)
         } catch (e: Exception) {
             Log.e(TAG, "getTrackDetailsSafeCall: $e")
@@ -279,7 +279,7 @@ class SpotifyViewModel @Inject constructor(
         albumDetailsResponse.value = NetworkResult.Loading()
 
         try {
-            val response = repository.remote.getAlbumDetails(accessToken, trackId)
+            val response = repository.getAlbumDetails(accessToken, trackId)
             albumDetailsResponse.value = handleResponse(response)
         } catch (e: Exception) {
             Log.e(TAG, "getAlbumDetailsSafeCall: $e")
@@ -298,7 +298,7 @@ class SpotifyViewModel @Inject constructor(
         categoriesResponse.value = NetworkResult.Loading()
 
         try {
-            val response = repository.remote.getCategories(accessToken, country)
+            val response = repository.getCategories(accessToken, country)
             categoriesResponse.value = handleResponse(response)
         } catch (e: Exception) {
             Log.e(TAG, "getCategoriesSafeCall: $e")
@@ -328,7 +328,7 @@ class SpotifyViewModel @Inject constructor(
         searchResponse.value = NetworkResult.Loading()
 
         try {
-            val response = repository.remote.searchQuery(
+            val response = repository.searchQuery(
                 accessToken,
                 query,
                 type,
@@ -364,7 +364,7 @@ class SpotifyViewModel @Inject constructor(
         recommendationResponse.value = NetworkResult.Loading()
 
         try {
-            val response = repository.remote.getRecommendations(
+            val response = repository.getRecommendations(
                 accessToken, seedArtists, seedGenres, seedTracks, limit
             )
             recommendationResponse.value = handleResponse(response)

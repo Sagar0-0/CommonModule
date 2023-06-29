@@ -1,6 +1,5 @@
-package fit.asta.health.thirdparty.spotify.api
+package fit.asta.health.thirdparty.spotify.model.api
 
-import android.util.Log
 import fit.asta.health.thirdparty.spotify.model.net.albums.SpotifyAlbumDetailsModel
 import fit.asta.health.thirdparty.spotify.model.net.categories.SpotifyBrowseCategoriesModel
 import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
@@ -16,20 +15,18 @@ import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopArtistsModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopTracksModel
 import fit.asta.health.thirdparty.spotify.model.net.tracks.SpotifyTrackDetailsModel
-import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.TAG
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Named
 
-class SpotifyRestApi @Inject constructor(
+class SpotifyRestImpl @Inject constructor(
     @Named("SPOTIFY")
     private val spotifyApiService: SpotifyApiService
-) : SpotifyRemoteApis {
+) : SpotifyApi {
     override suspend fun getCurrentUserDetails(accessToken: String): Response<SpotifyMeModel> {
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
-        Log.d(TAG, "getCurrentUserDetails: $headerMap")
         return spotifyApiService.getCurrentUserDetails(headerMap)
     }
 
@@ -37,7 +34,6 @@ class SpotifyRestApi @Inject constructor(
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
-        Log.d(TAG, "getCurrentUserFollowedArtists: $headerMap")
         return spotifyApiService.getCurrentUserFollowedArtists(headerMap)
     }
 
@@ -45,7 +41,6 @@ class SpotifyRestApi @Inject constructor(
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
-        Log.d(TAG, "getCurrentUserTopTracks: $headerMap")
         return spotifyApiService.getCurrentUserTopTracks(headerMap)
     }
 
@@ -53,7 +48,6 @@ class SpotifyRestApi @Inject constructor(
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
-        Log.d(TAG, "getCurrentUserTopArtists: $headerMap")
         return spotifyApiService.getCurrentUserTopArtists(headerMap)
     }
 
@@ -63,7 +57,6 @@ class SpotifyRestApi @Inject constructor(
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
-        Log.d(TAG, "getCurrentUserPlaylists: $headerMap")
         return spotifyApiService.getCurrentUserAlbums(headerMap)
     }
 
@@ -73,7 +66,6 @@ class SpotifyRestApi @Inject constructor(
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
-        Log.d(TAG, "getCurrentUserPlaylists: $headerMap")
         return spotifyApiService.getCurrentUserShows(headerMap)
     }
 
@@ -83,7 +75,6 @@ class SpotifyRestApi @Inject constructor(
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
-        Log.d(TAG, "getCurrentUserPlaylists: $headerMap")
         return spotifyApiService.getCurrentUserEpisodes(headerMap)
     }
 
@@ -93,7 +84,6 @@ class SpotifyRestApi @Inject constructor(
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
-        Log.d(TAG, "getCurrentUserPlaylists: $headerMap")
         return spotifyApiService.getCurrentUserTracks(headerMap)
     }
 
@@ -103,7 +93,6 @@ class SpotifyRestApi @Inject constructor(
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
-        Log.d(TAG, "getCurrentUserPlaylists: $headerMap")
         return spotifyApiService.getCurrentUserPlaylists(headerMap)
     }
 
@@ -114,7 +103,6 @@ class SpotifyRestApi @Inject constructor(
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
         val queryMap: HashMap<String, String> = HashMap()
-        Log.d(TAG, "getCurrentUserPlaylists: $headerMap")
         return spotifyApiService.getCurrentUserRecentlyPlayedTracks(headerMap, queryMap)
     }
 
@@ -125,7 +113,6 @@ class SpotifyRestApi @Inject constructor(
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
-        Log.d(TAG, "getUserPlaylists: $headerMap")
         return spotifyApiService.getUserPlaylists(headerMap, userID)
     }
 
@@ -136,7 +123,6 @@ class SpotifyRestApi @Inject constructor(
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
-        Log.d(TAG, "getTrackDetails: $headerMap")
         return spotifyApiService.getTrackDetails(headerMap, trackID)
     }
 
@@ -147,7 +133,6 @@ class SpotifyRestApi @Inject constructor(
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
-        Log.d(TAG, "getTrackDetails: $headerMap")
         return spotifyApiService.getAlbumDetails(headerMap, albumID)
     }
 
@@ -160,7 +145,6 @@ class SpotifyRestApi @Inject constructor(
         headerMap["Content-Type"] = "application/json"
         val queryMap: HashMap<String, String> = HashMap()
         queryMap["country"] = country
-        Log.d(TAG, "getCategories: $headerMap $queryMap")
         return spotifyApiService.getCategories(headerMap, queryMap)
     }
 
@@ -179,7 +163,6 @@ class SpotifyRestApi @Inject constructor(
         queryMap["type"] = type
         queryMap["include_external"] = includeExternal
         queryMap["market"] = market
-        Log.d(TAG, "getCategories: $headerMap $queryMap")
         return spotifyApiService.searchQuery(headerMap, queryMap)
     }
 
@@ -198,7 +181,6 @@ class SpotifyRestApi @Inject constructor(
         queryMap["seed_genres"] = seedGenres
         queryMap["seed_tracks"] = seedTracks
         queryMap["limit"] = limit
-        Log.d(TAG, "getRecommendations: $headerMap $queryMap")
         return spotifyApiService.getRecommendations(headerMap, queryMap)
     }
 }
