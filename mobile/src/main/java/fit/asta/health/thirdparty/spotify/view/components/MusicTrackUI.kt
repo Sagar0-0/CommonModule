@@ -87,21 +87,23 @@ fun MusicTrack(
             }
     ) {
 
-        // Track Image
-        Image(
-            painter = painter,
-            contentDescription = "Track Image",
+        // Showing the Loader or the Image accordingly
+        Box(
             modifier = Modifier
-                .size(widthOfImage)
-        )
+                .size(widthOfImage),
+            contentAlignment = Alignment.Center
+        ) {
 
-        // Circular Progress Bar
-        if (painter.state.painter == null) {
-            Box(
+            // Circular Progress Bar
+            if (painter.state.painter == null)
+                CircularProgressIndicator()
+
+            // Track Image
+            Image(
+                painter = painter,
+                contentDescription = "Track Image",
                 modifier = Modifier
-                    .size(widthOfImage),
-                contentAlignment = Alignment.Center,
-                content = { CircularProgressIndicator() }
+                    .size(widthOfImage)
             )
         }
 

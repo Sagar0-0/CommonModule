@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
 import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
 import fit.asta.health.thirdparty.spotify.model.net.me.player.recentlyplayed.SpotifyPlayerRecentlyPlayedModel
+import fit.asta.health.thirdparty.spotify.model.net.recommendations.SpotifyRecommendationModel
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -69,6 +70,54 @@ class SpotifyViewModelX @Inject constructor(
 
                 // Fetching the data from the Api
                 val response = repository.getCurrentUserRecentlyPlayedTracks(accessToken)
+                val state = handleResponse(response)
+
+                // Fetching the Recommendations Tracks List for the Users
+                if (state.data?.items?.isNotEmpty() == true) {
+
+                    // Setting for Future Purposes
+                    seedArtists = state.data.items[0].track.artists[0].id
+                    seedTracks = state.data.items[0].track.id
+
+                    // Fetching
+                    getRecommendationTracks()
+                }
+
+                state   // Assigning
+            } catch (e: Exception) {
+                SpotifyNetworkCall.Failure(message = e.message)
+            }
+        }
+    }
+
+    // Keeps the recommended Tracks
+    var recommendationTracks: SpotifyNetworkCall<SpotifyRecommendationModel> by mutableStateOf(
+        SpotifyNetworkCall.Initialized()
+    )
+        private set
+
+    // These Two are kept for Calling if needed (Ex - Failed to get data in the first time)
+    private var seedArtists: String = ""
+    private var seedTracks: String = ""
+
+    /**
+     * This function gets the Recommendation Tracks for the users
+     */
+    fun getRecommendationTracks(
+        seedGenres: String = "classical,country",
+        limit: String = "15"
+    ) {
+
+        // Starting the Loading State
+        recommendationTracks = SpotifyNetworkCall.Loading()
+
+        viewModelScope.launch {
+            recommendationTracks = try {
+
+                // Fetching the data from the Api
+                val response = repository.getRecommendations(
+                    accessToken, seedArtists, seedGenres, seedTracks, limit
+                )
                 handleResponse(response)
             } catch (e: Exception) {
                 SpotifyNetworkCall.Failure(message = e.message)

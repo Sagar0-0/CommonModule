@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.material.Text
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.thirdparty.spotify.model.net.me.player.recentlyplayed.Track
 import fit.asta.health.thirdparty.spotify.view.components.MusicSmallTrack
+import fit.asta.health.thirdparty.spotify.view.components.MusicTrack
 import fit.asta.health.thirdparty.spotify.view.components.StateControl
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 
@@ -177,5 +179,38 @@ fun ThirdPartyScreen(
             fontSize = 22.sp,
             color = MaterialTheme.colorScheme.onSurface
         )
+
+        // This function draws the recommendation Tracks for the User
+        StateControl(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(210.dp),
+            networkState = spotifyViewModelX.recommendationTracks,
+            onCurrentStateInitialized = {
+                spotifyViewModelX.getRecommendationTracks()
+            }
+        ) { networkResponse ->
+            networkResponse.data?.let { recommendations ->
+
+                // Showing the Tracks List UI inside a Lazy Row
+                LazyRow(
+                    modifier = Modifier
+                        .height(210.dp)
+                        .width(LocalConfiguration.current.screenWidthDp.dp)
+                ) {
+                    items(recommendations.tracks.size) {
+                        val currentItem = recommendations.tracks[it]
+
+                        // This function draws the Track UI
+                        MusicTrack(
+                            imageUri = currentItem.album.images[0].url,
+                            trackName = currentItem.name,
+                            trackArtists = currentItem.artists,
+                            trackUri = currentItem.id
+                        )
+                    }
+                }
+            }
+        }
     }
 }
