@@ -1,6 +1,7 @@
 package fit.asta.health.thirdparty.spotify.view.screens
 
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,6 +22,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -30,10 +31,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.common.ui.AppTheme
-import fit.asta.health.thirdparty.spotify.model.db.entity.TrackEntity
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import fit.asta.health.thirdparty.spotify.view.components.MusicTrack
-import fit.asta.health.thirdparty.spotify.viewmodel.FavoriteViewModelX
+import fit.asta.health.thirdparty.spotify.viewmodel.FavouriteViewModelX
 
 // Preview Composable Function
 @Preview(name = "Light")
@@ -53,11 +53,14 @@ private fun DefaultPreview() {
 
 /**
  * This function contains the UI of the Favourite Screen
+ *
+ * @param modifier THis is the modifier passed from the parent function
+ * @param favouriteViewModelX This variable contains the viewModel which contains the business logic
  */
 @Composable
 fun FavouriteScreen(
     modifier: Modifier = Modifier,
-    favoriteViewModelX: FavoriteViewModelX = hiltViewModel()
+    favouriteViewModelX: FavouriteViewModelX = hiltViewModel()
 ) {
 
     // Root Composable function
@@ -67,9 +70,14 @@ fun FavouriteScreen(
             .background(MaterialTheme.colorScheme.surface)
     ) {
 
+        val context = LocalContext.current
+
         Button(
             onClick = {
-                // TODO :-
+
+                Toast.makeText(context, "Not Yet Implemented", Toast.LENGTH_SHORT).show()
+
+                // TODO :- Write Code to import Local Music and Audio
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -96,15 +104,10 @@ fun FavouriteScreen(
             color = MaterialTheme.colorScheme.onSurface
         )
 
-        // This Draws all the Track Screens
-        TracksControl(
-            networkState = favoriteViewModelX.allTracks.collectAsState().value,
-            onCurrentStateInitialized = { favoriteViewModelX.getAllTracks() },
-            onCurrentStateFailure = {
-                FailureScreen(textToShow = "Can't Fetch the Tracks !! Retry Again ??") {
-                    favoriteViewModelX.getAllTracks()
-                }
-            },
+        // This Draws all the Track Cards
+        StateControl(
+            networkState = favouriteViewModelX.allTracks.collectAsState().value,
+            onCurrentStateInitialized = { favouriteViewModelX.getAllTracks() },
             onCurrentStateSuccess = { networkState ->
                 networkState.data?.let { trackList ->
                     LazyRow(
@@ -117,7 +120,46 @@ fun FavouriteScreen(
                             MusicTrack(
                                 imageUri = trackList[it].trackAlbum!!.images[0].url,
                                 trackName = trackList[it].trackName!!,
-                                trackArtists = trackList[it].trackArtists!!
+                                trackArtists = trackList[it].trackArtists!!,
+                                trackUri = trackList[it].trackUri!!
+                            )
+                        }
+                    }
+                }
+            }
+        )
+
+        // Albums Text
+        Text(
+            text = "Albums",
+
+            modifier = Modifier
+                .padding(top = 24.dp, bottom = 8.dp, start = 8.dp, end = 8.dp),
+
+            // Text and Font Properties
+            fontFamily = FontFamily.SansSerif,
+            fontWeight = FontWeight.W800,
+            fontSize = 22.sp,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+
+        // This Draws all the Albums Cards
+        StateControl(
+            networkState = favouriteViewModelX.allAlbums.collectAsState().value,
+            onCurrentStateInitialized = { favouriteViewModelX.getAllAlbums() },
+            onCurrentStateSuccess = { networkState ->
+                networkState.data?.let { albumList ->
+                    LazyRow(
+                        modifier = Modifier
+                            .height(210.dp)
+                            .width(LocalConfiguration.current.screenWidthDp.dp)
+                    ) {
+                        items(albumList.size) {
+                            MusicTrack(
+                                imageUri = albumList[it].images[0].url,
+                                trackName = albumList[it].name,
+                                trackArtists = albumList[it].artists,
+                                trackUri = albumList[it].uri
                             )
                         }
                     }
@@ -131,27 +173,30 @@ fun FavouriteScreen(
  * This checks the state of the call and shows the UI Accordingly
  */
 @Composable
-fun TracksControl(
-    networkState: SpotifyNetworkCall<List<TrackEntity>>,
+fun <T : SpotifyNetworkCall<*>> StateControl(
+    networkState: T,
     onCurrentStateInitialized: () -> Unit,
-    onCurrentStateSuccess: @Composable (SpotifyNetworkCall<List<TrackEntity>>) -> Unit,
-    onCurrentStateFailure: @Composable () -> Unit
+    onCurrentStateSuccess: @Composable (T) -> Unit
 ) {
 
     // Checking which state is there
     when (networkState) {
 
         // Nothing is done yet and the fetching will be initiated here
-        is SpotifyNetworkCall.Initialized -> onCurrentStateInitialized()
+        is SpotifyNetworkCall.Initialized<*> -> onCurrentStateInitialized()
 
         // The data is being fetched
-        is SpotifyNetworkCall.Loading -> LoadingScreen()
+        is SpotifyNetworkCall.Loading<*> -> LoadingScreen()
 
         // Data fetched successfully
-        is SpotifyNetworkCall.Success -> onCurrentStateSuccess(networkState)
+        is SpotifyNetworkCall.Success<*> -> onCurrentStateSuccess(networkState)
 
         // Data Fetched UnSuccessfully
-        is SpotifyNetworkCall.Failure -> onCurrentStateFailure()
+        is SpotifyNetworkCall.Failure<*> -> {
+            FailureScreen(textToShow = networkState.message.toString()) {
+                onCurrentStateInitialized()
+            }
+        }
     }
 }
 

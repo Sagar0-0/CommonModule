@@ -101,7 +101,6 @@ class SpotifyLoginActivity : ComponentActivity() {
 //                                spotifyAuthViewModelX.accessToken
 //                            )
 //
-//                            // TODO :- Try to delete this constant and keep it in a viewModel
 //                            SpotifyConstants.SPOTIFY_USER_ACCESS_TOKEN =
 //                                spotifyAuthViewModelX.accessToken
 //
@@ -126,11 +125,6 @@ class SpotifyLoginActivity : ComponentActivity() {
                             ).show()
                         }
                     }
-
-                    /*
-                    TODO :- Getting the Views Here According to the Call State or
-                        starting the navigation Graph according to our needs
-                     */
                 }
             }
         }

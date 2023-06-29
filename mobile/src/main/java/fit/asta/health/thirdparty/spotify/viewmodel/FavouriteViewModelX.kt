@@ -2,8 +2,6 @@ package fit.asta.health.thirdparty.spotify.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.thirdparty.spotify.model.db.MusicRepository
@@ -17,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FavoriteViewModelX @Inject constructor(
+class FavouriteViewModelX @Inject constructor(
     private val repository: MusicRepository,
     application: Application
 ) : AndroidViewModel(application) {
@@ -27,19 +25,22 @@ class FavoriteViewModelX @Inject constructor(
     )
     val allTracks = _allTracks.asStateFlow()
 
+    private val _allAlbums = MutableStateFlow<SpotifyNetworkCall<List<Album>>>(
+        SpotifyNetworkCall.Initialized()
+    )
+    val allAlbums = _allAlbums.asStateFlow()
 
-    var allAlbums: LiveData<List<Album>> = repository.local.getAllAlbums().asLiveData()
 
-    val tag: String = FavoriteViewModelX::class.java.simpleName
+    val tag: String = FavouriteViewModelX::class.java.simpleName
 
     fun getAllTracks() {
 
         _allTracks.value = SpotifyNetworkCall.Loading()
 
         viewModelScope.launch {
-            repository.local.getAllTracks().catch {
+            repository.local.getAllTracks().catch { exception ->
                 _allTracks.value = SpotifyNetworkCall.Failure(
-                    message = it.message
+                    message = exception.message
                 )
             }.collect {
                 _allTracks.value = SpotifyNetworkCall.Success(
@@ -49,6 +50,22 @@ class FavoriteViewModelX @Inject constructor(
         }
     }
 
+    fun getAllAlbums() {
+
+        _allAlbums.value = SpotifyNetworkCall.Loading()
+
+        viewModelScope.launch {
+            repository.local.getAllAlbums().catch { exception ->
+                _allAlbums.value = SpotifyNetworkCall.Failure(
+                    message = exception.message
+                )
+            }.collect {
+                _allAlbums.value = SpotifyNetworkCall.Success(
+                    data = it
+                )
+            }
+        }
+    }
 
 //    fun insertTrack(track: TrackEntity) = viewModelScope.launch {
 //        repository.local.insertTrack(track)
