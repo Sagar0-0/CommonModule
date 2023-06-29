@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.common.ui.AppTheme
-import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyAuthViewModelX
+import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 
 // Preview Composable Function
 @Preview(name = "Light")
@@ -27,7 +27,7 @@ import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyAuthViewModelX
 private fun DefaultPreview() {
     AppTheme {
         Surface {
-            AstaMusicScreen(spotifyAuthViewModelX = hiltViewModel())
+            AstaMusicScreen(spotifyViewModelX = hiltViewModel())
         }
     }
 }
@@ -35,7 +35,7 @@ private fun DefaultPreview() {
 @Composable
 fun AstaMusicScreen(
     modifier: Modifier = Modifier,
-    spotifyAuthViewModelX: SpotifyAuthViewModelX
+    spotifyViewModelX: SpotifyViewModelX
 ) {
     Column(
         modifier = Modifier

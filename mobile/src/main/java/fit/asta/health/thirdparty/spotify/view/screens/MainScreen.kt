@@ -15,7 +15,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.thirdparty.spotify.view.components.MusicTopTabBar
-import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyAuthViewModelX
+import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 
 // Preview Composable Function
 @Preview("Light")
@@ -30,7 +30,7 @@ private fun DefaultPreview() {
         Surface {
             MainScreen(
                 navController = rememberNavController(),
-                spotifyAuthViewModelX = hiltViewModel()
+                spotifyViewModelX = hiltViewModel()
             )
         }
     }
@@ -39,7 +39,7 @@ private fun DefaultPreview() {
 @Composable
 fun MainScreen(
     navController: NavController,
-    spotifyAuthViewModelX: SpotifyAuthViewModelX
+    spotifyViewModelX: SpotifyViewModelX
 ) {
     Column(
         modifier = Modifier
@@ -68,7 +68,7 @@ fun MainScreen(
         // Checking which UI to show according to the user Selection
         when (selectedItem.intValue) {
             0 -> {
-                AstaMusicScreen(spotifyAuthViewModelX = spotifyAuthViewModelX)
+                AstaMusicScreen(spotifyViewModelX = spotifyViewModelX)
             }
 
             1 -> {
@@ -76,7 +76,7 @@ fun MainScreen(
             }
 
             2 -> {
-                ThirdPartyScreen(spotifyAuthViewModelX = spotifyAuthViewModelX)
+                ThirdPartyScreen(spotifyViewModelX = spotifyViewModelX)
             }
         }
     }

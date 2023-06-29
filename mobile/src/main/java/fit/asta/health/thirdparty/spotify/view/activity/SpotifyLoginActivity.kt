@@ -26,7 +26,7 @@ import fit.asta.health.thirdparty.spotify.SpotifyNavGraph
 import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
-import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyAuthViewModelX
+import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 
 @AndroidEntryPoint
 class SpotifyLoginActivity : ComponentActivity() {
@@ -38,10 +38,10 @@ class SpotifyLoginActivity : ComponentActivity() {
     private var isResume: Boolean = false
 
     /**
-     * This is the [SpotifyAuthViewModelX] viewModel which contains all the business logic of this
+     * This is the [SpotifyViewModelX] viewModel which contains all the business logic of this
      * activity
      */
-    private val spotifyAuthViewModelX: SpotifyAuthViewModelX by viewModels()
+    private val spotifyViewModelX: SpotifyViewModelX by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +54,7 @@ class SpotifyLoginActivity : ComponentActivity() {
                 ) {
 
                     // Handling the States of all the Authorization flow of spotify
-                    when (spotifyAuthViewModelX.currentUserData) {
+                    when (spotifyViewModelX.currentUserData) {
 
                         // Initial State when the Auth Flow hasn't Started yet
                         is SpotifyNetworkCall.Initialized -> {
@@ -110,7 +110,7 @@ class SpotifyLoginActivity : ComponentActivity() {
                             val navController = rememberNavController()
                             SpotifyNavGraph(
                                 navController = navController,
-                                spotifyAuthViewModelX = spotifyAuthViewModelX
+                                spotifyViewModelX = spotifyViewModelX
                             )
                         }
 
@@ -120,7 +120,7 @@ class SpotifyLoginActivity : ComponentActivity() {
                             // This shows Error Message to the User
                             Toast.makeText(
                                 this,
-                                spotifyAuthViewModelX.currentUserData.message.toString(),
+                                spotifyViewModelX.currentUserData.message.toString(),
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
@@ -210,7 +210,7 @@ class SpotifyLoginActivity : ComponentActivity() {
         // Check if result comes from the correct activity
         if (requestCode == SpotifyConstants.SPOTIFY_AUTH_REQUEST_CODE) {
             val response = AuthorizationClient.getResponse(resultCode, intent)
-            spotifyAuthViewModelX.handleSpotifyAuthResponse(response)
+            spotifyViewModelX.handleSpotifyAuthResponse(response)
         }
     }
 
@@ -219,7 +219,7 @@ class SpotifyLoginActivity : ComponentActivity() {
         val uri: Uri? = intent.data
         if (uri != null) {
             val response = AuthorizationResponse.fromUri(uri)
-            spotifyAuthViewModelX.handleSpotifyAuthResponse(response)
+            spotifyViewModelX.handleSpotifyAuthResponse(response)
         }
     }
 }

@@ -9,13 +9,14 @@ import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
 import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
+import fit.asta.health.thirdparty.spotify.model.net.me.player.recentlyplayed.SpotifyPlayerRecentlyPlayedModel
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class SpotifyAuthViewModelX @Inject constructor(
+class SpotifyViewModelX @Inject constructor(
     private val repository: SpotifyRepoImpl
 ) : ViewModel() {
 
@@ -42,6 +43,32 @@ class SpotifyAuthViewModelX @Inject constructor(
 
                 // Fetching the data from the Api
                 val response = repository.getCurrentUserDetails(accessToken)
+                handleResponse(response)
+            } catch (e: Exception) {
+                SpotifyNetworkCall.Failure(message = e.message)
+            }
+        }
+    }
+
+    // Keeps the user Recently Played Tracks
+    var userRecentlyPlayedTracks: SpotifyNetworkCall<SpotifyPlayerRecentlyPlayedModel> by mutableStateOf(
+        SpotifyNetworkCall.Initialized()
+    )
+        private set
+
+    /**
+     * This function fetches the user Recently Played Tracks from the spotify api
+     */
+    fun getCurrentUserRecentlyPlayedTracks() {
+
+        // Starting the Loading State
+        userRecentlyPlayedTracks = SpotifyNetworkCall.Loading()
+
+        viewModelScope.launch {
+            userRecentlyPlayedTracks = try {
+
+                // Fetching the data from the Api
+                val response = repository.getCurrentUserRecentlyPlayedTracks(accessToken)
                 handleResponse(response)
             } catch (e: Exception) {
                 SpotifyNetworkCall.Failure(message = e.message)
