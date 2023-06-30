@@ -11,6 +11,7 @@ import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
 import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
 import fit.asta.health.thirdparty.spotify.model.net.me.player.recentlyplayed.SpotifyPlayerRecentlyPlayedModel
 import fit.asta.health.thirdparty.spotify.model.net.recommendations.SpotifyRecommendationModel
+import fit.asta.health.thirdparty.spotify.model.net.tracks.SpotifyTrackDetailsModel
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -118,6 +119,42 @@ class SpotifyViewModelX @Inject constructor(
                 val response = repository.getRecommendations(
                     accessToken, seedArtists, seedGenres, seedTracks, limit
                 )
+                handleResponse(response)
+            } catch (e: Exception) {
+                SpotifyNetworkCall.Failure(message = e.message)
+            }
+        }
+    }
+
+    // Keeps the recommended Tracks
+    var trackDetailsResponse: SpotifyNetworkCall<SpotifyTrackDetailsModel> by mutableStateOf(
+        SpotifyNetworkCall.Initialized()
+    )
+        private set
+
+    // Keeps the Track Id whose details would be shown
+    private var trackDetailId: String = ""
+
+    /**
+     * Setting the TrackId for the next screen
+     */
+    fun setTrackId(trackId: String) {
+        trackDetailId = trackId
+    }
+
+    /**
+     * This function fetches The Track Details
+     */
+    fun getTrackDetails() {
+
+        // Starting the Loading State
+        trackDetailsResponse = SpotifyNetworkCall.Loading()
+
+        viewModelScope.launch {
+            trackDetailsResponse = try {
+
+                // Fetching the data from the Api
+                val response = repository.getTrackDetails(accessToken, trackDetailId)
                 handleResponse(response)
             } catch (e: Exception) {
                 SpotifyNetworkCall.Failure(message = e.message)

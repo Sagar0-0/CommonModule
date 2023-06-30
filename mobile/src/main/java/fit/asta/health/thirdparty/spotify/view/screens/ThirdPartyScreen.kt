@@ -32,6 +32,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import fit.asta.health.thirdparty.spotify.SpotifyNavRoutes
 import fit.asta.health.thirdparty.spotify.model.net.me.player.recentlyplayed.Track
 import fit.asta.health.thirdparty.spotify.view.components.MusicSmallTrack
 import fit.asta.health.thirdparty.spotify.view.components.MusicTrack
@@ -43,11 +45,13 @@ import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
  * This function shows the spotify features and spotify integration in our app
  *
  * @param modifier THis is the modifier passed from the parent function
+ * @param navController This is used to navigate from one screen to a different screen
  * @param spotifyViewModelX This variable contains the viewModel which contains the business logic
  */
 @Composable
 fun ThirdPartyScreen(
     modifier: Modifier = Modifier,
+    navController: NavController,
     spotifyViewModelX: SpotifyViewModelX
 ) {
 
@@ -208,16 +212,13 @@ fun ThirdPartyScreen(
                             imageUri = currentItem.album.images[0].url,
                             trackName = currentItem.name,
                             trackArtists = currentItem.artists,
-                            trackUri = currentItem.id
-                        ) { uri ->
+                            trackUri = "Not Using"
+                        ) {
 
-                            Toast
-                                .makeText(context, "Not Yet Implemented", Toast.LENGTH_SHORT)
-                                .show()
-                            // TODO :- To be implemented
-//
-//                            val spotifyIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-//                            activity.startActivity(spotifyIntent)
+                            // Navigating to the Track Details Screen
+                            spotifyViewModelX.setTrackId(currentItem.id)
+                            spotifyViewModelX.getTrackDetails()
+                            navController.navigate(SpotifyNavRoutes.TrackDetailScreen.routes)
                         }
                     }
                 }

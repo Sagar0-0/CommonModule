@@ -7,7 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.thirdparty.spotify.view.components.MusicTopTabBar
+import fit.asta.health.thirdparty.spotify.viewmodel.FavouriteViewModelX
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 
 // Preview Composable Function
@@ -30,7 +31,8 @@ private fun DefaultPreview() {
         Surface {
             MainScreen(
                 navController = rememberNavController(),
-                spotifyViewModelX = hiltViewModel()
+                spotifyViewModelX = hiltViewModel(),
+                favouriteViewModelX = hiltViewModel()
             )
         }
     }
@@ -39,7 +41,8 @@ private fun DefaultPreview() {
 @Composable
 fun MainScreen(
     navController: NavController,
-    spotifyViewModelX: SpotifyViewModelX
+    spotifyViewModelX: SpotifyViewModelX,
+    favouriteViewModelX: FavouriteViewModelX
 ) {
     Column(
         modifier = Modifier
@@ -47,7 +50,7 @@ fun MainScreen(
     ) {
 
         // This is the Item which is selected in the Top Tab Bar Layout
-        val selectedItem = remember { mutableIntStateOf(0) }
+        val selectedItem = rememberSaveable { mutableIntStateOf(0) }
 
         // This Function makes the Tab Layout UI
         MusicTopTabBar(
@@ -72,11 +75,14 @@ fun MainScreen(
             }
 
             1 -> {
-                FavouriteScreen()
+                FavouriteScreen(favouriteViewModelX = favouriteViewModelX)
             }
 
             2 -> {
-                ThirdPartyScreen(spotifyViewModelX = spotifyViewModelX)
+                ThirdPartyScreen(
+                    spotifyViewModelX = spotifyViewModelX,
+                    navController = navController
+                )
             }
         }
     }

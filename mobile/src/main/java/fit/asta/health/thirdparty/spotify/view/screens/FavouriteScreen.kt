@@ -44,7 +44,7 @@ import fit.asta.health.thirdparty.spotify.viewmodel.FavouriteViewModelX
 private fun DefaultPreview() {
     AppTheme {
         Surface {
-            FavouriteScreen()
+            FavouriteScreen(favouriteViewModelX = hiltViewModel())
         }
     }
 }
@@ -58,7 +58,7 @@ private fun DefaultPreview() {
 @Composable
 fun FavouriteScreen(
     modifier: Modifier = Modifier,
-    favouriteViewModelX: FavouriteViewModelX = hiltViewModel()
+    favouriteViewModelX: FavouriteViewModelX
 ) {
 
     val context = LocalContext.current
