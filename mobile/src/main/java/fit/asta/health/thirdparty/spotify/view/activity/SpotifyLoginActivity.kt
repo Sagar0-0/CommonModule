@@ -10,12 +10,17 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.spotify.sdk.android.auth.AuthorizationClient
 import com.spotify.sdk.android.auth.AuthorizationRequest
@@ -23,9 +28,12 @@ import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.thirdparty.spotify.SpotifyNavGraph
+import fit.asta.health.thirdparty.spotify.SpotifyNavRoutes
 import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
+import fit.asta.health.thirdparty.spotify.view.components.FailureScreen
+import fit.asta.health.thirdparty.spotify.view.components.MusicTopTabBar
 import fit.asta.health.thirdparty.spotify.viewmodel.FavouriteViewModelX
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 
@@ -57,7 +65,7 @@ class SpotifyLoginActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(MaterialTheme.colors.background)
+                        .background(MaterialTheme.colorScheme.background)
                 ) {
 
                     // Handling the States of all the Authorization flow of spotify
@@ -116,15 +124,15 @@ class SpotifyLoginActivity : ComponentActivity() {
 //                            startActivity(intent)
 
                             val navController = rememberNavController()
-                            SpotifyNavGraph(
-                                navController = navController,
-                                spotifyViewModelX = spotifyViewModelX,
-                                favouriteViewModelX = favouriteViewModelX
-                            )
+                            DisplaySuccessUI(navController = navController)
                         }
 
                         // This is when the Auth Flow is completed and has executed UnSuccessfully
                         is SpotifyNetworkCall.Failure<SpotifyMeModel> -> {
+
+                            FailureScreen(textToShow = "Couldn't Get Access To Spotify!! Try Again") {
+                                sendAuthRequest()
+                            }
 
                             // This shows Error Message to the User
                             Toast.makeText(
@@ -138,6 +146,64 @@ class SpotifyLoginActivity : ComponentActivity() {
             }
         }
     }
+
+
+    /**
+     * This function shows UI when we get an authorization request auth token from the spotify api
+     */
+    @Composable
+    private fun DisplaySuccessUI(
+        navController: NavHostController
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface)
+        ) {
+
+            // This is the Item which is selected in the Top Tab Bar Layout
+            val selectedItem = rememberSaveable { mutableIntStateOf(0) }
+
+            // This Function makes the Tab Layout UI
+            MusicTopTabBar(
+                tabList = listOf(
+                    "Asta Music",
+                    "Favourite",
+                    "Third Party"
+                ),
+                selectedItem = selectedItem.intValue,
+                selectedColor = MaterialTheme.colorScheme.primary,
+                unselectedColor = MaterialTheme.colorScheme.secondary
+            ) {
+
+                // Changing the Current Selected Item according to the User Interactions
+                selectedItem.intValue = it
+            }
+
+            // Initializing the NavGraph
+            SpotifyNavGraph(
+                navController = navController,
+                spotifyViewModelX = spotifyViewModelX,
+                favouriteViewModelX = favouriteViewModelX
+            )
+
+            // Checking which UI to show according to the user Selection
+            when (selectedItem.intValue) {
+                0 -> {
+                    navController.navigate(SpotifyNavRoutes.AstaMusicScreen.routes)
+                }
+
+                1 -> {
+                    navController.navigate(SpotifyNavRoutes.FavouriteScreen.routes)
+                }
+
+                2 -> {
+                    navController.navigate(SpotifyNavRoutes.ThirdPartyScreen.routes)
+                }
+            }
+        }
+    }
+
 
     /**
      * This function creates the Authorization Request which authorizes our app so that we can read

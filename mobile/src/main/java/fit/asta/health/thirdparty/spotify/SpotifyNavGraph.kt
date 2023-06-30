@@ -4,7 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import fit.asta.health.thirdparty.spotify.view.screens.MainScreen
+import fit.asta.health.thirdparty.spotify.view.screens.AstaMusicScreen
+import fit.asta.health.thirdparty.spotify.view.screens.FavouriteScreen
+import fit.asta.health.thirdparty.spotify.view.screens.ThirdPartyScreen
 import fit.asta.health.thirdparty.spotify.view.screens.TrackDetailsScreen
 import fit.asta.health.thirdparty.spotify.viewmodel.FavouriteViewModelX
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
@@ -25,17 +27,28 @@ fun SpotifyNavGraph(
 
     NavHost(
         navController = navController,
-        startDestination = SpotifyNavRoutes.MainScreen.routes,
+        startDestination = SpotifyNavRoutes.AstaMusicScreen.routes,
         builder = {
 
-            // Main Screen Contains all the 3 Tabs to choose from
+            // Asta Music Screen
             composable(
-                SpotifyNavRoutes.MainScreen.routes,
+                SpotifyNavRoutes.AstaMusicScreen.routes,
+                content = { AstaMusicScreen(spotifyViewModelX = spotifyViewModelX) }
+            )
+
+            // Favourite Screen
+            composable(
+                SpotifyNavRoutes.FavouriteScreen.routes,
+                content = { FavouriteScreen(favouriteViewModelX = favouriteViewModelX) }
+            )
+
+            // Third Party Screen
+            composable(
+                SpotifyNavRoutes.ThirdPartyScreen.routes,
                 content = {
-                    MainScreen(
-                        navController = navController,
+                    ThirdPartyScreen(
                         spotifyViewModelX = spotifyViewModelX,
-                        favouriteViewModelX
+                        navController = navController
                     )
                 }
             )
