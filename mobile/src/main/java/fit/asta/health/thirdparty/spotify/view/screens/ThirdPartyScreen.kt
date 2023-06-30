@@ -224,5 +224,60 @@ fun ThirdPartyScreen(
                 }
             }
         }
+
+        // Top Tracks
+        Text(
+            text = "Top Tracks",
+
+            modifier = Modifier
+                .padding(12.dp),
+
+            // Text and Font Properties
+            fontFamily = FontFamily.SansSerif,
+            fontWeight = FontWeight.W800,
+            fontSize = 22.sp,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+
+        // This function draws the top tracks for the User
+        StateControl(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(210.dp),
+            networkState = spotifyViewModelX.userTopTracks,
+            onCurrentStateInitialized = {
+                spotifyViewModelX.getUserTopTracks()
+            }
+        ) { networkResponse ->
+            networkResponse.data?.itemTopTracks.let { itemTopTrack ->
+
+                // Showing the Tracks List UI inside a Lazy Row
+                LazyRow(
+                    modifier = Modifier
+                        .height(210.dp)
+                        .width(LocalConfiguration.current.screenWidthDp.dp)
+                ) {
+                    if (itemTopTrack != null) {
+                        items(itemTopTrack.size) {
+                            val currentItem = itemTopTrack[it]
+
+                            // This function draws the Track UI
+                            MusicTrack(
+                                imageUri = currentItem.album.images[0].url,
+                                trackName = currentItem.name,
+                                trackArtists = currentItem.artists,
+                                trackUri = "Not Using"
+                            ) {
+
+                                // Navigating to the Track Details Screen
+                                spotifyViewModelX.setTrackId(currentItem.id)
+                                spotifyViewModelX.getTrackDetails()
+                                navController.navigate(SpotifyNavRoutes.TrackDetailScreen.routes)
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
