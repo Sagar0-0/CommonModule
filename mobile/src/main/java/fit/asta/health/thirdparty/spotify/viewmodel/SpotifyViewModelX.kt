@@ -1,5 +1,6 @@
 package fit.asta.health.thirdparty.spotify.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -7,12 +8,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
 import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
 import fit.asta.health.thirdparty.spotify.model.net.me.player.recentlyplayed.SpotifyPlayerRecentlyPlayedModel
 import fit.asta.health.thirdparty.spotify.model.net.recommendations.SpotifyRecommendationModel
+import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopArtistsModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopTracksModel
 import fit.asta.health.thirdparty.spotify.model.net.tracks.SpotifyTrackDetailsModel
+import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -182,6 +186,32 @@ class SpotifyViewModelX @Inject constructor(
 
                 // Fetching the data from the Api
                 val response = repository.getCurrentUserTopTracks(accessToken)
+                handleResponse(response)
+            } catch (e: Exception) {
+                SpotifyNetworkCall.Failure(message = e.message)
+            }
+        }
+    }
+
+    // Keeps the User Top Tracks
+    var userTopArtists: SpotifyNetworkCall<SpotifyTopArtistsModel> by mutableStateOf(
+        SpotifyNetworkCall.Initialized()
+    )
+        private set
+
+    /**
+     * This function fetches the top Artists from the Spotify Api
+     */
+    fun getUserTopArtists() {
+
+        // Starting the Loading State
+        userTopArtists = SpotifyNetworkCall.Loading()
+
+        viewModelScope.launch {
+            userTopArtists = try {
+
+                // Fetching the data from the Api
+                val response = repository.getCurrentUserTopArtists(accessToken)
                 handleResponse(response)
             } catch (e: Exception) {
                 SpotifyNetworkCall.Failure(message = e.message)

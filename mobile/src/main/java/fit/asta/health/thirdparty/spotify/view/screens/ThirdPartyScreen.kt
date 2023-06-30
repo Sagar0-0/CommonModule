@@ -1,6 +1,8 @@
 package fit.asta.health.thirdparty.spotify.view.screens
 
 import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,6 +19,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Person
@@ -35,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fit.asta.health.thirdparty.spotify.SpotifyNavRoutes
 import fit.asta.health.thirdparty.spotify.model.net.me.player.recentlyplayed.Track
+import fit.asta.health.thirdparty.spotify.view.components.MusicArtistsUI
 import fit.asta.health.thirdparty.spotify.view.components.MusicSmallTrack
 import fit.asta.health.thirdparty.spotify.view.components.MusicTrack
 import fit.asta.health.thirdparty.spotify.view.components.StateControl
@@ -63,6 +68,7 @@ fun ThirdPartyScreen(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
+            .verticalScroll(rememberScrollState())
     ) {
 
         // Welcoming Text , Search Bar , Profile Icon
@@ -274,6 +280,58 @@ fun ThirdPartyScreen(
                                 spotifyViewModelX.getTrackDetails()
                                 navController.navigate(SpotifyNavRoutes.TrackDetailScreen.routes)
                             }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Top Artists
+        Text(
+            text = "Top Artists",
+
+            modifier = Modifier
+                .padding(12.dp),
+
+            // Text and Font Properties
+            fontFamily = FontFamily.SansSerif,
+            fontWeight = FontWeight.W800,
+            fontSize = 22.sp,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+
+        // This function draws the top Artists for the User
+        StateControl(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(210.dp),
+            networkState = spotifyViewModelX.userTopArtists,
+            onCurrentStateInitialized = {
+                spotifyViewModelX.getUserTopArtists()
+            }
+        ) { networkResponse ->
+
+            LazyRow(
+                modifier = Modifier
+                    .height(210.dp)
+                    .width(LocalConfiguration.current.screenWidthDp.dp)
+            ) {
+
+                networkResponse.data?.items?.let { topArtistsList ->
+                    items(topArtistsList.size) {
+
+                        // current Item
+                        val currentItem = topArtistsList[it]
+
+                        // Shows the Artists UI
+                        MusicArtistsUI(
+                            imageUri = currentItem.images[0].url,
+                            artistName = currentItem.name,
+                            artistsUri = currentItem.uri
+                        ) { uri ->
+
+                            val spotifyIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+                            activity.startActivity(spotifyIntent)
                         }
                     }
                 }

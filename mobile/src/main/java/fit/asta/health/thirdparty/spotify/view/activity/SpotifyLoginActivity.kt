@@ -99,17 +99,18 @@ class SpotifyLoginActivity : ComponentActivity() {
 //                            // Sending User Details to the next Activity
 //                            intent.putExtra(
 //                                SpotifyConstants.SPOTIFY_USER_DETAILS,
-//                                spotifyAuthViewModelX.currentUserData.data
+//                                spotifyViewModelX.currentUserData.data
 //                            )
 //
 //                            // Sending the User Token to the next Activity
 //                            intent.putExtra(
 //                                SpotifyConstants.SPOTIFY_USER_TOKEN,
-//                                spotifyAuthViewModelX.accessToken
+//                                spotifyViewModelX.accessToken
 //                            )
 //
 //                            SpotifyConstants.SPOTIFY_USER_ACCESS_TOKEN =
-//                                spotifyAuthViewModelX.accessToken
+//                                spotifyViewModelX.accessToken
+//
 //
 //                            // Starting the Activity
 //                            startActivity(intent)
