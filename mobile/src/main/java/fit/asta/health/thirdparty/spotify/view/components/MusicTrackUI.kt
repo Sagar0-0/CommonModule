@@ -1,9 +1,6 @@
 package fit.asta.health.thirdparty.spotify.view.components
 
-import android.app.Activity
-import android.content.Intent
 import android.content.res.Configuration
-import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -19,7 +16,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,7 +40,7 @@ private fun DefaultPreview() {
             "",
             listOf(),
             ""
-        )
+        ) {}
     }
 }
 
@@ -57,13 +53,16 @@ private fun DefaultPreview() {
  * @param trackArtists This function contains the names of the Artists for this particular track
  * @param trackUri This contains the URI which can be used to redirect the User to spotify app and
  * play the song
+ * @param onClick This function takes the trackUri and lets the parent decide what to do when it is
+ * clicked
  */
 @Composable
 fun MusicTrack(
     imageUri: String,
     trackName: String,
     trackArtists: List<ArtistX>,
-    trackUri: String
+    trackUri: String,
+    onClick: (trackUri: String) -> Unit
 ) {
 
     // Width of the Image of the Track
@@ -72,9 +71,6 @@ fun MusicTrack(
     // request for the image and load when it is fetched from the internet
     val painter = rememberAsyncImagePainter(imageUri)
 
-    // Current Activity of the function so that we can move to the spotify app
-    val activity = LocalContext.current as Activity
-
     Column(
         modifier = Modifier
             .padding(8.dp)
@@ -82,8 +78,7 @@ fun MusicTrack(
 
             // Redirecting the User to Spotify App
             .clickable {
-                val spotifyIntent = Intent(Intent.ACTION_VIEW, Uri.parse(trackUri))
-                activity.startActivity(spotifyIntent)
+                onClick(trackUri)
             }
     ) {
 

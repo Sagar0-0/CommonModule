@@ -1,6 +1,9 @@
 package fit.asta.health.thirdparty.spotify.view.screens
 
+import android.app.Activity
+import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -58,14 +61,17 @@ fun FavouriteScreen(
     favouriteViewModelX: FavouriteViewModelX = hiltViewModel()
 ) {
 
+    val context = LocalContext.current
+
+    // Current Activity of the function so that we can move to the spotify app
+    val activity = context as Activity
+
     // Root Composable function
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
     ) {
-
-        val context = LocalContext.current
 
         Button(
             onClick = {
@@ -120,7 +126,10 @@ fun FavouriteScreen(
                                 trackName = trackList[it].trackName!!,
                                 trackArtists = trackList[it].trackArtists!!,
                                 trackUri = trackList[it].trackUri!!
-                            )
+                            ) { uri ->
+                                val spotifyIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+                                activity.startActivity(spotifyIntent)
+                            }
                         }
                     }
                 }
@@ -161,7 +170,10 @@ fun FavouriteScreen(
                                 trackName = albumList[it].name,
                                 trackArtists = albumList[it].artists,
                                 trackUri = albumList[it].uri
-                            )
+                            ) { uri ->
+                                val spotifyIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+                                activity.startActivity(spotifyIntent)
+                            }
                         }
                     }
                 }

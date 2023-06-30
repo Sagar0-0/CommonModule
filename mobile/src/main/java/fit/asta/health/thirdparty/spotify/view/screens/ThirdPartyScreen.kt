@@ -1,5 +1,6 @@
 package fit.asta.health.thirdparty.spotify.view.screens
 
+import android.app.Activity
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -51,6 +52,7 @@ fun ThirdPartyScreen(
 ) {
 
     val context = LocalContext.current
+    val activity = context as Activity
 
     // Root Composable function
     Column(
@@ -207,7 +209,16 @@ fun ThirdPartyScreen(
                             trackName = currentItem.name,
                             trackArtists = currentItem.artists,
                             trackUri = currentItem.id
-                        )
+                        ) { uri ->
+
+                            Toast
+                                .makeText(context, "Not Yet Implemented", Toast.LENGTH_SHORT)
+                                .show()
+                            // TODO :- To be implemented
+//
+//                            val spotifyIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+//                            activity.startActivity(spotifyIntent)
+                        }
                     }
                 }
             }
