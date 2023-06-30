@@ -9,16 +9,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -29,11 +26,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.thirdparty.spotify.SpotifyNavGraph
 import fit.asta.health.thirdparty.spotify.SpotifyNavRoutes
-import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
-import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
-import fit.asta.health.thirdparty.spotify.view.components.FailureScreen
 import fit.asta.health.thirdparty.spotify.view.components.MusicTopTabBar
+import fit.asta.health.thirdparty.spotify.view.components.StateControl
 import fit.asta.health.thirdparty.spotify.viewmodel.FavouriteViewModelX
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 
@@ -69,10 +64,11 @@ class SpotifyLoginActivity : ComponentActivity() {
                 ) {
 
                     // Handling the States of all the Authorization flow of spotify
-                    when (spotifyViewModelX.currentUserData) {
-
-                        // Initial State when the Auth Flow hasn't Started yet
-                        is SpotifyNetworkCall.Initialized -> {
+                    StateControl(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        networkState = spotifyViewModelX.currentUserData,
+                        onCurrentStateInitialized = {
 
                             // checking if spotify is installed or not
                             if (isSpotifyInstalled()) {
@@ -87,22 +83,9 @@ class SpotifyLoginActivity : ComponentActivity() {
                                 openSpotifyInPlayStore()
                             }
                         }
+                    ) {
 
-                        // Loading State when the Auth Flow has started and is fetching all the data
-                        is SpotifyNetworkCall.Loading -> {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                CircularProgressIndicator()
-                            }
-                        }
-
-                        // This is when the Auth Flow is completed and has executed Successfully
-                        is SpotifyNetworkCall.Success<SpotifyMeModel> -> {
-
-//                            val intent = Intent(this, MusicHomeActivity::class.java)
+//                        val intent = Intent(this, MusicHomeActivity::class.java)
 //
 //                            // Sending User Details to the next Activity
 //                            intent.putExtra(
@@ -123,24 +106,8 @@ class SpotifyLoginActivity : ComponentActivity() {
 //                            // Starting the Activity
 //                            startActivity(intent)
 
-                            val navController = rememberNavController()
-                            DisplaySuccessUI(navController = navController)
-                        }
-
-                        // This is when the Auth Flow is completed and has executed UnSuccessfully
-                        is SpotifyNetworkCall.Failure<SpotifyMeModel> -> {
-
-                            FailureScreen(textToShow = "Couldn't Get Access To Spotify!! Try Again") {
-                                sendAuthRequest()
-                            }
-
-                            // This shows Error Message to the User
-                            Toast.makeText(
-                                this,
-                                spotifyViewModelX.currentUserData.message.toString(),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
+                        val navController = rememberNavController()
+                        DisplaySuccessUI(navController = navController)
                     }
                 }
             }
