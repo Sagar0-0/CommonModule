@@ -1,6 +1,13 @@
 package fit.asta.health.feedback.view.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.RadioButton
 import androidx.compose.material.RadioButtonDefaults
@@ -18,8 +25,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowColumn
-import fit.asta.health.profile.view.ButtonListTypes
 import fit.asta.health.testimonials.view.create.MyTextField
+
+data class ButtonListTypes(
+    val buttonType: String,
+)
 
 @Preview
 @Composable
@@ -29,7 +39,8 @@ fun VerticalRadioBttnCard() {
         listOf(ButtonListTypes(buttonType = "First"), ButtonListTypes(buttonType = "Second"))
 
 
-    VerticalRadioButton(selectionTypeText = "Will you Recommend our App?",
+    VerticalRadioButton(
+        selectionTypeText = "Will you Recommend our App?",
         radioButtonList = isConsentList)
 }
 
