@@ -22,9 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowColumn
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.testimonials.view.create.MyTextField
 
 data class ButtonListTypes(
@@ -40,8 +40,8 @@ fun VerticalRadioBttnCard() {
 
 
     VerticalRadioButton(
-        selectionTypeText = "Will you Recommend our App?",
-        radioButtonList = isConsentList)
+        selectionTypeText = "Will you Recommend our App?", radioButtonList = isConsentList
+    )
 }
 
 
@@ -50,42 +50,51 @@ fun VerticalRadioButton(selectionTypeText: String, radioButtonList: List<ButtonL
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioButtonList[0]) }
 
 
-    Card(modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 16.dp),
-        shape = RoundedCornerShape(8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = spacing.medium),
+        shape = RoundedCornerShape(spacing.small),
+        elevation = CardDefaults.cardElevation(defaultElevation = spacing.extraSmall),
+        colors = CardDefaults.cardColors(containerColor = Color.White)
+    ) {
         Column(
             Modifier
                 .fillMaxWidth()
-                .padding(16.dp)) {
-            Spacer(modifier = Modifier.height(16.dp))
+                .padding(spacing.medium)
+        ) {
+            Spacer(modifier = Modifier.height(spacing.medium))
             Row(Modifier.fillMaxWidth()) {
-                androidx.compose.material.Text(text = selectionTypeText,
+                androidx.compose.material.Text(
+                    text = selectionTypeText,
                     color = Color(0x99000000),
                     fontSize = 14.sp,
                     lineHeight = 19.6.sp,
-                    fontWeight = FontWeight.Bold)
+                    fontWeight = FontWeight.Bold
+                )
             }
             FlowColumn(Modifier.fillMaxWidth()) {
                 radioButtonList.forEach { text ->
-                    Row(horizontalArrangement = Arrangement.SpaceEvenly,
-                        verticalAlignment = Alignment.CenterVertically) {
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Box {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 RadioButton(selected = (text == selectedOption), onClick = {
                                     onOptionSelected(text)
                                 }, colors = RadioButtonDefaults.colors(Color(0xff2F80ED)))
-                                Text(text = text.buttonType,
+                                Text(
+                                    text = text.buttonType,
                                     fontSize = 16.sp,
-                                    color = Color(0xff575757))
+                                    color = Color(0xff575757)
+                                )
                             }
                         }
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
             MyTextField(textFieldTitle = "Do you like to tell us to improve?")
         }
     }

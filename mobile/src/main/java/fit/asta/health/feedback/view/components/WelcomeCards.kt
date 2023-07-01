@@ -1,7 +1,14 @@
 package fit.asta.health.feedback.view.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -17,26 +24,35 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
+import fit.asta.health.common.ui.theme.spacing
 
 
 @Preview
 @Composable
 fun WelcomeCard() {
-    Card(modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 16.dp),
-        shape = RoundedCornerShape(8.dp), elevation = CardDefaults.cardElevation(5.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)) {
-        Column(Modifier
+    Card(
+        modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)) {
+            .padding(horizontal = spacing.medium),
+        shape = RoundedCornerShape(spacing.small),
+        elevation = CardDefaults.cardElevation(spacing.extraSmall),
+        colors = CardDefaults.cardColors(containerColor = Color.White)
+    ) {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(spacing.medium)
+        ) {
             Row {
                 Box {
-                    Image(painter = painterResource(id = R.drawable.feedback1),
+                    Image(
+                        painter = painterResource(id = R.drawable.feedback1),
                         contentDescription = null,
-                        modifier = Modifier.width(150.dp), contentScale = ContentScale.Crop)
+                        modifier = Modifier.width(150.dp),
+                        contentScale = ContentScale.Crop
+                    )
                 }
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.width(spacing.medium))
                 Column {
                     Text(
                         text = "Your Feedback will help us to serve you better",
@@ -45,12 +61,14 @@ fun WelcomeCard() {
                         fontWeight = FontWeight.Medium,
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(spacing.small))
 
-                    Text(text = "Your feedback is important to us. We read every feedback we get and take it seriously.",
+                    Text(
+                        text = "Your feedback is important to us. We read every feedback we get and take it seriously.",
                         fontSize = 14.sp,
                         color = Color(0xff999999),
-                        textAlign = TextAlign.Left)
+                        textAlign = TextAlign.Left
+                    )
                 }
             }
         }

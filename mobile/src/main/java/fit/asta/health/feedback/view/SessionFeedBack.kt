@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.feedback.view.components.OnlyTextFieldCard
 import fit.asta.health.feedback.view.components.RatingCard
 import fit.asta.health.feedback.view.components.VerticalRadioBttnCard
@@ -36,41 +36,41 @@ fun SessionFeedback() {
                 .background(color = MaterialTheme.colorScheme.secondaryContainer)
         ) {
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
             WelcomeCard()
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
             RatingCard(
                 cardTitle = "How was you online session experience?",
                 textFieldTitle = "Do you like to tell us to improve?"
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
             RatingCard(
                 cardTitle = "How did you feel after the session? ",
                 textFieldTitle = "Do you like to tell us to improve?"
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
             VerticalRadioBttnCard()
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
             OnlyTextFieldCard()
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
             UploadFiles(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = spacing.medium)
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(spacing.medium))
 
             Text(
                 text = "By submitting review you give us consent to publish your review in our app. ",
@@ -78,14 +78,14 @@ fun SessionFeedback() {
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = spacing.medium)
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(spacing.small))
 
             SubmitButton(text = "Update")
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(spacing.small))
         }
     }, topBar = {
         TopAppBar(title = {
@@ -112,16 +112,14 @@ fun SubmitButton(
             onClick = it,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            shape = RoundedCornerShape(5.dp),
+                .padding(horizontal = spacing.medium),
+            shape = RoundedCornerShape(spacing.extraSmall),
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
         ) {
             Text(
                 text = text,
                 style = MaterialTheme.typography.labelLarge,
                 color = Color.White,
-                lineHeight = 16.sp,
-                letterSpacing = 1.25.sp
             )
         }
     }

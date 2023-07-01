@@ -224,24 +224,6 @@ class ProfileViewModel
     val selectedWorkStyle: StateFlow<TwoToggleSelections?>
         get() = _selectedWorkStyleOption
 
-    /*
-    * _selectedPhyActOption
-    * _selectedWorkingHrsOption
-    * _selectedWorkingEnvOption
-    * _selectedWorkStyleOption
-    * _selectedHealthHisOption
-    * _selectedGenderOption
-    * _isPregnantOption
-    * _isOnPeriodOption
-    * _selectedInjOption
-    * _selectedBodyPartOption
-    * _selectedAilOption
-    * _selectedMedOption
-    * _selectedHealthTarOption
-    * _selectedAddictionOption
-    * _selectedFoodResOption
-    * */
-
     private fun setSelectedThreeOptions(option: ThreeToggleSelections, optionIndex: Int) {
         when (optionIndex) {
             0 -> {
