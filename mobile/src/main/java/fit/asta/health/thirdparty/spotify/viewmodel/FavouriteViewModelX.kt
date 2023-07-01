@@ -20,19 +20,25 @@ class FavouriteViewModelX @Inject constructor(
     application: Application
 ) : AndroidViewModel(application) {
 
+    /**
+     * This variable contains details of all the Tracks calls and states
+     */
     private val _allTracks = MutableStateFlow<SpotifyNetworkCall<List<TrackEntity>>>(
         SpotifyNetworkCall.Initialized()
     )
     val allTracks = _allTracks.asStateFlow()
 
+    /**
+     * This variable contains details of all the albums calls and states
+     */
     private val _allAlbums = MutableStateFlow<SpotifyNetworkCall<List<Album>>>(
         SpotifyNetworkCall.Initialized()
     )
     val allAlbums = _allAlbums.asStateFlow()
 
-
-    val tag: String = FavouriteViewModelX::class.java.simpleName
-
+    /**
+     * This function fetches all the track from the local repository
+     */
     fun getAllTracks() {
 
         _allTracks.value = SpotifyNetworkCall.Loading()
@@ -50,6 +56,9 @@ class FavouriteViewModelX @Inject constructor(
         }
     }
 
+    /**
+     * This function fetches all the albums from the local repository
+     */
     fun getAllAlbums() {
 
         _allAlbums.value = SpotifyNetworkCall.Loading()
@@ -67,9 +76,15 @@ class FavouriteViewModelX @Inject constructor(
         }
     }
 
-//    fun insertTrack(track: TrackEntity) = viewModelScope.launch {
-//        repository.local.insertTrack(track)
-//    }
+    /**
+     * This function is used to insert a Track into the Database
+     */
+    fun insertTrack(track: TrackEntity) {
+        viewModelScope.launch {
+            repository.local.insertTrack(track)
+            getAllTracks()
+        }
+    }
 //
 //    fun updateTrack(track: TrackEntity) = viewModelScope.launch {
 //        repository.local.updateTrack(track)

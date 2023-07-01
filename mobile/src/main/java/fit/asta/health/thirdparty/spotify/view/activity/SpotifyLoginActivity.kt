@@ -9,13 +9,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.ui.Alignment
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.spotify.sdk.android.auth.AuthorizationClient
 import com.spotify.sdk.android.auth.AuthorizationRequest
@@ -23,10 +25,12 @@ import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.thirdparty.spotify.SpotifyNavGraph
-import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
+import fit.asta.health.thirdparty.spotify.SpotifyNavRoutes
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
-import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
-import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyAuthViewModelX
+import fit.asta.health.thirdparty.spotify.view.components.MusicTopTabBar
+import fit.asta.health.thirdparty.spotify.view.components.StateControl
+import fit.asta.health.thirdparty.spotify.viewmodel.FavouriteViewModelX
+import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 
 @AndroidEntryPoint
 class SpotifyLoginActivity : ComponentActivity() {
@@ -38,10 +42,16 @@ class SpotifyLoginActivity : ComponentActivity() {
     private var isResume: Boolean = false
 
     /**
-     * This is the [SpotifyAuthViewModelX] viewModel which contains all the business logic of this
+     * This is the [SpotifyViewModelX] viewModel which contains all the business logic of this
      * activity
      */
-    private val spotifyAuthViewModelX: SpotifyAuthViewModelX by viewModels()
+    private val spotifyViewModelX: SpotifyViewModelX by viewModels()
+
+    /**
+     * This is the [FavouriteViewModelX] viewModel which contains all the business logic with the
+     * local storage and favourite screen
+     */
+    private val favouriteViewModelX: FavouriteViewModelX by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,14 +60,15 @@ class SpotifyLoginActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(MaterialTheme.colors.background)
+                        .background(MaterialTheme.colorScheme.background)
                 ) {
 
                     // Handling the States of all the Authorization flow of spotify
-                    when (spotifyAuthViewModelX.currentUserData) {
-
-                        // Initial State when the Auth Flow hasn't Started yet
-                        is SpotifyNetworkCall.Initialized -> {
+                    StateControl(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        networkState = spotifyViewModelX.currentUserData,
+                        onCurrentStateInitialized = {
 
                             // checking if spotify is installed or not
                             if (isSpotifyInstalled()) {
@@ -72,63 +83,94 @@ class SpotifyLoginActivity : ComponentActivity() {
                                 openSpotifyInPlayStore()
                             }
                         }
+                    ) {
 
-                        // Loading State when the Auth Flow has started and is fetching all the data
-                        is SpotifyNetworkCall.Loading -> {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                CircularProgressIndicator()
-                            }
-                        }
-
-                        // This is when the Auth Flow is completed and has executed Successfully
-                        is SpotifyNetworkCall.Success<SpotifyMeModel> -> {
-
-//                            val intent = Intent(this, MusicHomeActivity::class.java)
+//                        val intent = Intent(this, MusicHomeActivity::class.java)
 //
 //                            // Sending User Details to the next Activity
 //                            intent.putExtra(
 //                                SpotifyConstants.SPOTIFY_USER_DETAILS,
-//                                spotifyAuthViewModelX.currentUserData.data
+//                                spotifyViewModelX.currentUserData.data
 //                            )
 //
 //                            // Sending the User Token to the next Activity
 //                            intent.putExtra(
 //                                SpotifyConstants.SPOTIFY_USER_TOKEN,
-//                                spotifyAuthViewModelX.accessToken
+//                                spotifyViewModelX.accessToken
 //                            )
 //
 //                            SpotifyConstants.SPOTIFY_USER_ACCESS_TOKEN =
-//                                spotifyAuthViewModelX.accessToken
+//                                spotifyViewModelX.accessToken
+//
 //
 //                            // Starting the Activity
 //                            startActivity(intent)
 
-                            val navController = rememberNavController()
-                            SpotifyNavGraph(
-                                navController = navController,
-                                spotifyAuthViewModelX = spotifyAuthViewModelX
-                            )
-                        }
-
-                        // This is when the Auth Flow is completed and has executed UnSuccessfully
-                        is SpotifyNetworkCall.Failure<SpotifyMeModel> -> {
-
-                            // This shows Error Message to the User
-                            Toast.makeText(
-                                this,
-                                spotifyAuthViewModelX.currentUserData.message.toString(),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
+                        val navController = rememberNavController()
+                        DisplaySuccessUI(navController = navController)
                     }
                 }
             }
         }
     }
+
+
+    /**
+     * This function shows UI when we get an authorization request auth token from the spotify api
+     */
+    @Composable
+    private fun DisplaySuccessUI(
+        navController: NavHostController
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface)
+        ) {
+
+            // This is the Item which is selected in the Top Tab Bar Layout
+            val selectedItem = rememberSaveable { mutableIntStateOf(0) }
+
+            // This Function makes the Tab Layout UI
+            MusicTopTabBar(
+                tabList = listOf(
+                    "Asta Music",
+                    "Favourite",
+                    "Third Party"
+                ),
+                selectedItem = selectedItem.intValue,
+                selectedColor = MaterialTheme.colorScheme.primary,
+                unselectedColor = MaterialTheme.colorScheme.secondary
+            ) {
+
+                // Changing the Current Selected Item according to the User Interactions
+                selectedItem.intValue = it
+            }
+
+            // Initializing the NavGraph
+            SpotifyNavGraph(
+                navController = navController,
+                spotifyViewModelX = spotifyViewModelX,
+                favouriteViewModelX = favouriteViewModelX
+            )
+
+            // Checking which UI to show according to the user Selection
+            when (selectedItem.intValue) {
+                0 -> {
+                    navController.navigate(SpotifyNavRoutes.AstaMusicScreen.routes)
+                }
+
+                1 -> {
+                    navController.navigate(SpotifyNavRoutes.FavouriteScreen.routes)
+                }
+
+                2 -> {
+                    navController.navigate(SpotifyNavRoutes.ThirdPartyScreen.routes)
+                }
+            }
+        }
+    }
+
 
     /**
      * This function creates the Authorization Request which authorizes our app so that we can read
@@ -210,7 +252,7 @@ class SpotifyLoginActivity : ComponentActivity() {
         // Check if result comes from the correct activity
         if (requestCode == SpotifyConstants.SPOTIFY_AUTH_REQUEST_CODE) {
             val response = AuthorizationClient.getResponse(resultCode, intent)
-            spotifyAuthViewModelX.handleSpotifyAuthResponse(response)
+            spotifyViewModelX.handleSpotifyAuthResponse(response)
         }
     }
 
@@ -219,7 +261,7 @@ class SpotifyLoginActivity : ComponentActivity() {
         val uri: Uri? = intent.data
         if (uri != null) {
             val response = AuthorizationResponse.fromUri(uri)
-            spotifyAuthViewModelX.handleSpotifyAuthResponse(response)
+            spotifyViewModelX.handleSpotifyAuthResponse(response)
         }
     }
 }

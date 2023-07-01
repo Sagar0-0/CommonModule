@@ -1,6 +1,9 @@
 package fit.asta.health.thirdparty.spotify.view.screens
 
+import android.app.Activity
+import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -26,10 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.common.ui.AppTheme
-import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
-import fit.asta.health.thirdparty.spotify.view.components.FailureScreen
-import fit.asta.health.thirdparty.spotify.view.components.LoadingScreen
 import fit.asta.health.thirdparty.spotify.view.components.MusicTrack
+import fit.asta.health.thirdparty.spotify.view.components.StateControl
 import fit.asta.health.thirdparty.spotify.viewmodel.FavouriteViewModelX
 
 // Preview Composable Function
@@ -43,7 +44,7 @@ import fit.asta.health.thirdparty.spotify.viewmodel.FavouriteViewModelX
 private fun DefaultPreview() {
     AppTheme {
         Surface {
-            FavouriteScreen()
+            FavouriteScreen(favouriteViewModelX = hiltViewModel())
         }
     }
 }
@@ -57,8 +58,13 @@ private fun DefaultPreview() {
 @Composable
 fun FavouriteScreen(
     modifier: Modifier = Modifier,
-    favouriteViewModelX: FavouriteViewModelX = hiltViewModel()
+    favouriteViewModelX: FavouriteViewModelX
 ) {
+
+    val context = LocalContext.current
+
+    // Current Activity of the function so that we can move to the spotify app
+    val activity = context as Activity
 
     // Root Composable function
     Column(
@@ -66,8 +72,6 @@ fun FavouriteScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
     ) {
-
-        val context = LocalContext.current
 
         Button(
             onClick = {
@@ -103,6 +107,9 @@ fun FavouriteScreen(
 
         // This Draws all the Track Cards
         StateControl(
+            modifier = Modifier
+                .height(210.dp)
+                .fillMaxWidth(),
             networkState = favouriteViewModelX.allTracks.collectAsState().value,
             onCurrentStateInitialized = { favouriteViewModelX.getAllTracks() },
             onCurrentStateSuccess = { networkState ->
@@ -119,7 +126,10 @@ fun FavouriteScreen(
                                 trackName = trackList[it].trackName!!,
                                 trackArtists = trackList[it].trackArtists!!,
                                 trackUri = trackList[it].trackUri!!
-                            )
+                            ) { uri ->
+                                val spotifyIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+                                activity.startActivity(spotifyIntent)
+                            }
                         }
                     }
                 }
@@ -142,6 +152,9 @@ fun FavouriteScreen(
 
         // This Draws all the Albums Cards
         StateControl(
+            modifier = Modifier
+                .height(210.dp)
+                .fillMaxWidth(),
             networkState = favouriteViewModelX.allAlbums.collectAsState().value,
             onCurrentStateInitialized = { favouriteViewModelX.getAllAlbums() },
             onCurrentStateSuccess = { networkState ->
@@ -157,51 +170,14 @@ fun FavouriteScreen(
                                 trackName = albumList[it].name,
                                 trackArtists = albumList[it].artists,
                                 trackUri = albumList[it].uri
-                            )
+                            ) { uri ->
+                                val spotifyIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+                                activity.startActivity(spotifyIntent)
+                            }
                         }
                     }
                 }
             }
         )
-    }
-}
-
-/**
- * This checks the state of the call and shows the UI Accordingly
- */
-@Composable
-fun <T : SpotifyNetworkCall<*>> StateControl(
-    networkState: T,
-    onCurrentStateInitialized: () -> Unit,
-    onCurrentStateSuccess: @Composable (T) -> Unit
-) {
-
-    // Checking which state is there
-    when (networkState) {
-
-        // Nothing is done yet and the fetching will be initiated here
-        is SpotifyNetworkCall.Initialized<*> -> onCurrentStateInitialized()
-
-        // The data is being fetched
-        is SpotifyNetworkCall.Loading<*> -> LoadingScreen(
-            modifier = Modifier
-                .height(210.dp)
-                .fillMaxWidth()
-        )
-
-        // Data fetched successfully
-        is SpotifyNetworkCall.Success<*> -> onCurrentStateSuccess(networkState)
-
-        // Data Fetched UnSuccessfully
-        is SpotifyNetworkCall.Failure<*> -> {
-            FailureScreen(
-                modifier = Modifier
-                    .height(210.dp)
-                    .fillMaxWidth(),
-                textToShow = networkState.message.toString()
-            ) {
-                onCurrentStateInitialized()
-            }
-        }
     }
 }
