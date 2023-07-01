@@ -12,8 +12,8 @@
 
     <fragment
         android:id="@+id/navigation_today"
-        android:name="fit.asta.health.navigation.today.ui.TodayFragment"
-        android:label= "@string/today"
+        android:name="fit.asta.health.navigation.today.TodayFragment"
+        android:label="@string/today"
         tools:layout="@layout/today_fragment" />
 
     <fragment

@@ -11,10 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
-import fit.asta.health.navigation.home.model.domain.HealthTool
+import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
 
 @Composable
-fun VerticalImageCards(toolsList: List<HealthTool>) {
+fun VerticalImageCards(toolsList: List<ToolsHomeRes.ToolsHome.HealthTool>) {
     val domainName = stringResource(id = R.string.media_url)
 
 //    FlowRow(mainAxisSpacing = 8.dp,
@@ -39,5 +39,4 @@ fun VerticalImageCards(toolsList: List<HealthTool>) {
             ToolsCardLayout(cardTitle = it.title, imgUrl = imgURl)
         }
     }
-
 }

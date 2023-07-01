@@ -8,7 +8,6 @@ import fit.asta.health.common.utils.getCurrentTime
 import fit.asta.health.common.utils.getNextDate
 import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.navigation.home.model.ToolsHomeRepo
-import fit.asta.health.navigation.home.model.network.NetSelectedTools
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,7 +33,7 @@ class HomeViewModel @Inject constructor(
     private fun loadHomeData() {
         viewModelScope.launch {
 
-            authRepo.getUser()?.let {
+            authRepo.getUser()?.let { it ->
                 toolsHomeRepo.getHomeData(
                     userId = it.uid,
                     latitude = "28.6353",
@@ -48,21 +47,6 @@ class HomeViewModel @Inject constructor(
                 }.collect {
                     _mutableState.value = HomeState.Success(it)
                 }
-            }
-        }
-    }
-
-    fun updateSelectedTools(toolIds: List<String>) {
-        viewModelScope.launch {
-            toolsHomeRepo.updateSelectedTools(
-                NetSelectedTools(
-                    userId = "62fcd8c098eb9d5ed038b563",
-                    tools = toolIds
-                )
-            ).catch { exception ->
-                _mutableState.value = HomeState.Error(exception)
-            }.collect {
-                //
             }
         }
     }

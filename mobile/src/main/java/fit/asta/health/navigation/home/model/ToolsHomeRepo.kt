@@ -1,8 +1,6 @@
 package fit.asta.health.navigation.home.model
 
-import fit.asta.health.navigation.home.model.domain.ToolsHome
-import fit.asta.health.navigation.home.model.network.NetSelectedTools
-import fit.asta.health.network.data.Status
+import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
 import kotlinx.coroutines.flow.Flow
 
 
@@ -15,7 +13,5 @@ interface ToolsHomeRepo {
         startDate: String,
         endDate: String,
         time: String
-    ): Flow<ToolsHome>
-
-    suspend fun updateSelectedTools(toolIds: NetSelectedTools): Flow<Status>
+    ): Flow<ToolsHomeRes.ToolsHome>
 }

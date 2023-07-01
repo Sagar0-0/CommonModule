@@ -10,7 +10,7 @@ import fit.asta.health.BuildConfig
 import fit.asta.health.network.AstaNetwork
 import fit.asta.health.network.NetworkHelper
 import fit.asta.health.network.TokenProvider
-import fit.asta.health.network.api.RemoteApis
+import fit.asta.health.network.api.Api
 import fit.asta.health.network.api.RestApi
 import fit.asta.health.network.interceptor.OnlineInterceptor
 import fit.asta.health.network.repo.FileUploadRepo
@@ -35,7 +35,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRemoteRestApi(client: OkHttpClient): RemoteApis {
+    fun provideRemoteRestApi(client: OkHttpClient): Api {
         return RestApi(baseUrl = BuildConfig.BASE_URL, client = client)
     }
 
@@ -72,7 +72,7 @@ object NetworkModule {
     @Provides
     fun provideFileRepo(
         @ApplicationContext context: Context,
-        remoteApi: RemoteApis
+        remoteApi: Api
     ): FileUploadRepo {
         return FileUploadRepo(context, remoteApi)
     }

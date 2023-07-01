@@ -13,7 +13,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
-import fit.asta.health.navigation.home.model.domain.ToolsHome
+import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
 import fit.asta.health.navigation.home.view.Testimonials
 import fit.asta.health.testimonials.TestimonialsActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,7 +21,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalCoroutinesApi
 @Composable
 @OptIn(ExperimentalPagerApi::class)
-fun ReadyScreen(activity: Activity, toolsHome: ToolsHome) {
+fun ReadyScreen(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
 
     val context = LocalContext.current
 
@@ -41,26 +41,16 @@ fun ReadyScreen(activity: Activity, toolsHome: ToolsHome) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            toolsHome.weather?.let {
-                WeatherCardImage(
-                    temperature = it.temperature,
-                    location = it.location,
-                    date = "Friday,24 October"
-                )
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            toolsHome.banners?.let { BannerAutoSlider(bannerList = it) }
+            toolsHome.banners.let { BannerAutoSlider(bannerList = it) }
 
             MyToolsAndViewAll(myTools = "My Tools", allTools = "All Tools", onClick = {
 
                 TestimonialsActivity.launch(context = context)
             })
 
-            toolsHome.tools?.let { VerticalImageCards(toolsList = it) }
+            toolsHome.tools.let { VerticalImageCards(toolsList = it) }
 
-            toolsHome.testimonials?.let { Testimonials(testimonialsList = it) }
+            toolsHome.testimonials.let { Testimonials(testimonialsList = it) }
 
             Spacer(modifier = Modifier.height(24.dp))
             RateUsCard(activity)

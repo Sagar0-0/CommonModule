@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.today.ui
+package fit.asta.health.navigation.today
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -26,7 +26,7 @@ class TodayFragment : Fragment() {
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         return ComposeView(requireContext()).apply {
             setContent {
 

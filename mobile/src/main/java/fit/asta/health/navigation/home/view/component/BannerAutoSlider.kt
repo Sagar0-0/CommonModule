@@ -1,6 +1,10 @@
 package fit.asta.health.navigation.home.view.component
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -12,14 +16,14 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
-import fit.asta.health.navigation.home.model.domain.Banner
+import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
 import kotlinx.coroutines.delay
 import kotlin.math.absoluteValue
 
 
 @ExperimentalPagerApi
 @Composable
-fun BannerAutoSlider(bannerList: List<Banner>) {
+fun BannerAutoSlider(bannerList: List<ToolsHomeRes.ToolsHome.Banner>) {
 
     val pagerState = rememberPagerState(pageCount = bannerList.size)
 
