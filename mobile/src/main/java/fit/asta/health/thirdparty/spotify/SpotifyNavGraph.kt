@@ -6,6 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import fit.asta.health.thirdparty.spotify.view.screens.AstaMusicScreen
 import fit.asta.health.thirdparty.spotify.view.screens.FavouriteScreen
+import fit.asta.health.thirdparty.spotify.view.screens.ProfileScreen
+import fit.asta.health.thirdparty.spotify.view.screens.SearchScreen
 import fit.asta.health.thirdparty.spotify.view.screens.ThirdPartyScreen
 import fit.asta.health.thirdparty.spotify.view.screens.TrackDetailsScreen
 import fit.asta.health.thirdparty.spotify.viewmodel.FavouriteViewModelX
@@ -60,6 +62,28 @@ fun SpotifyNavGraph(
                     TrackDetailsScreen(
                         spotifyViewModelX = spotifyViewModelX,
                         favouriteViewModelX = favouriteViewModelX
+                    )
+                }
+            )
+
+            // Search Screen
+            composable(
+                SpotifyNavRoutes.SearchScreen.routes,
+                content = {
+                    SearchScreen(
+                        navController = navController,
+                        spotifyViewModelX = spotifyViewModelX
+                    )
+                }
+            )
+
+            // Profile Screen
+            composable(
+                SpotifyNavRoutes.ProfileScreen.routes,
+                content = {
+                    ProfileScreen(
+                        navController = navController,
+                        spotifyViewModelX = spotifyViewModelX
                     )
                 }
             )

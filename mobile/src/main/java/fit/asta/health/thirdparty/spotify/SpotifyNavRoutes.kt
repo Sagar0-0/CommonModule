@@ -5,4 +5,6 @@ sealed class SpotifyNavRoutes(val routes: String) {
     object AstaMusicScreen : SpotifyNavRoutes("asta-music-screen")
     object FavouriteScreen : SpotifyNavRoutes("favourite-screen")
     object ThirdPartyScreen : SpotifyNavRoutes("third-party-screen")
+    object SearchScreen : SpotifyNavRoutes("search-screen")
+    object ProfileScreen : SpotifyNavRoutes("profile-screen")
 }

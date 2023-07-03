@@ -3,7 +3,6 @@ package fit.asta.health.thirdparty.spotify.view.screens
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -106,10 +105,9 @@ fun ThirdPartyScreen(
                     modifier = Modifier
                         .size(28.dp)
                         .clickable {
-                            Toast
-                                .makeText(context, "Not Yet Implemented", Toast.LENGTH_SHORT)
-                                .show()
-                            // TODO :- To be implemented
+
+                            // Redirecting to Spotify Search Screen
+                            navController.navigate(SpotifyNavRoutes.SearchScreen.routes)
                         }
                 )
 
@@ -126,10 +124,9 @@ fun ThirdPartyScreen(
                     modifier = Modifier
                         .size(28.dp)
                         .clickable {
-                            Toast
-                                .makeText(context, "Not Yet Implemented", Toast.LENGTH_SHORT)
-                                .show()
-                            // TODO :- To be implemented
+
+                            // Redirecting to Spotify Profile Screen
+                            navController.navigate(SpotifyNavRoutes.ProfileScreen.routes)
                         }
                 )
             }

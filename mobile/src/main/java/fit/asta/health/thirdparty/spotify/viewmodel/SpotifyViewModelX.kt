@@ -11,6 +11,7 @@ import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
 import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
 import fit.asta.health.thirdparty.spotify.model.net.me.player.recentlyplayed.SpotifyPlayerRecentlyPlayedModel
 import fit.asta.health.thirdparty.spotify.model.net.recommendations.SpotifyRecommendationModel
+import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopArtistsModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopTracksModel
 import fit.asta.health.thirdparty.spotify.model.net.tracks.SpotifyTrackDetailsModel
@@ -209,6 +210,61 @@ class SpotifyViewModelX @Inject constructor(
 
                 // Fetching the data from the Api
                 val response = repository.getCurrentUserTopArtists(accessToken)
+                handleResponse(response)
+            } catch (e: Exception) {
+                SpotifyNetworkCall.Failure(message = e.message)
+            }
+        }
+    }
+
+    /**
+     * Keeps the Spotify Search Result
+     */
+    var spotifySearch: SpotifyNetworkCall<SpotifySearchModel> by mutableStateOf(
+        SpotifyNetworkCall.Initialized()
+    )
+        private set
+
+    // All Related Data to the Searching Parameters needed are stored here
+    private var query = ""
+    private var type = ""
+    private var includeExternal = "audio"
+    private var market = ""
+
+    /**
+     * This function sets the variables and the Searching Params of the search option
+     */
+    fun setSearchQueriesAndVariables(
+        query: String,
+        type: String,
+        includeExternal: String = "audio",
+        market: String = currentUserData.data!!.country
+    ) {
+        this.query = query
+        this.type = type
+        this.includeExternal = includeExternal
+        this.market = market
+        getSpotifySearchResult()
+    }
+
+    /**
+     * This function fetches the spotify search result for the User
+     */
+    fun getSpotifySearchResult() {
+
+        // Returning to prevent showing error during the first composition during Initialized State
+        if (query.isEmpty() || type.isEmpty() || includeExternal.isEmpty() || market.isEmpty())
+            return
+
+        // Starting the Loading State
+        spotifySearch = SpotifyNetworkCall.Loading()
+
+        viewModelScope.launch {
+            spotifySearch = try {
+
+                // Fetching the data from the Api
+                val response =
+                    repository.searchQuery(accessToken, query, type, includeExternal, market)
                 handleResponse(response)
             } catch (e: Exception) {
                 SpotifyNetworkCall.Failure(message = e.message)
