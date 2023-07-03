@@ -85,7 +85,17 @@ class FavouriteViewModelX @Inject constructor(
             getAllTracks()
         }
     }
-//
+
+    /**
+     * This function is used to insert a Album into the Database
+     */
+    fun insertAlbum(album: Album) {
+        viewModelScope.launch {
+            repository.local.insertAlbum(album)
+            getAllAlbums()
+        }
+    }
+
 //    fun updateTrack(track: TrackEntity) = viewModelScope.launch {
 //        repository.local.updateTrack(track)
 //    }
@@ -98,9 +108,6 @@ class FavouriteViewModelX @Inject constructor(
 //        repository.local.deleteAllTrack()
 //    }
 //
-//    fun insertAlbum(album: Album) = viewModelScope.launch {
-//        repository.local.insertAlbum(album)
-//    }
 //
 //    fun updateAlbum(album: Album) = viewModelScope.launch {
 //        repository.local.updateAlbum(album)

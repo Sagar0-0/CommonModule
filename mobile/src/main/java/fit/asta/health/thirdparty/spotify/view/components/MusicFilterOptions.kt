@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun SortOptionsUI(
+fun MusicFilterOptions(
     modifier: Modifier = Modifier,
     filterList: MutableMap<String, Boolean>,
     onFilterOptionClicked: (Boolean, String) -> Unit

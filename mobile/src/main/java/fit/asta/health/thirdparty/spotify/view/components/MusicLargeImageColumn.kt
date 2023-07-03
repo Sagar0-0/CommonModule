@@ -1,6 +1,5 @@
 package fit.asta.health.thirdparty.spotify.view.components
 
-import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -18,31 +17,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.thirdparty.spotify.model.net.common.ArtistX
 
-// Preview Function
-@Preview("Light")
-@Preview(
-    name = "Dark",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true
-)
-@Composable
-private fun DefaultPreview() {
-    AppTheme {
-        MusicTrack(
-            "",
-            "",
-            listOf(),
-            ""
-        ) {}
-    }
-}
 
 /**
  * This function draws a Track Detail in the Screen by loading the Image provided from the parent
@@ -51,18 +30,15 @@ private fun DefaultPreview() {
  * @param imageUri This variables contains the url of the Image
  * @param headerText This function contains the name of the track
  * @param secondaryTexts This function contains the names of the Artists for this particular track
- * @param uri This contains the URI which can be used to redirect the User to spotify app and
- * play the song
  * @param onClick This function takes the trackUri and lets the parent decide what to do when it is
  * clicked
  */
 @Composable
-fun MusicTrack(
+fun MusicLargeImageColumn(
     imageUri: String?,
     headerText: String,
     secondaryTexts: List<ArtistX>,
-    uri: String?,
-    onClick: (trackUri: String?) -> Unit
+    onClick: () -> Unit
 ) {
 
     // Width of the Image of the Track
@@ -78,7 +54,7 @@ fun MusicTrack(
 
             // Redirecting the User to Spotify App
             .clickable {
-                onClick(uri)
+                onClick()
             }
     ) {
 

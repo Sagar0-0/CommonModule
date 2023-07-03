@@ -29,8 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.common.ui.AppTheme
-import fit.asta.health.thirdparty.spotify.view.components.MusicTrack
-import fit.asta.health.thirdparty.spotify.view.components.StateControl
+import fit.asta.health.thirdparty.spotify.view.components.MusicLargeImageColumn
+import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
 import fit.asta.health.thirdparty.spotify.viewmodel.FavouriteViewModelX
 
 // Preview Composable Function
@@ -106,7 +106,7 @@ fun FavouriteScreen(
         )
 
         // This Draws all the Track Cards
-        StateControl(
+        MusicStateControl(
             modifier = Modifier
                 .height(210.dp)
                 .fillMaxWidth(),
@@ -121,13 +121,13 @@ fun FavouriteScreen(
                     ) {
                         items(trackList.size) {
 
-                            MusicTrack(
+                            MusicLargeImageColumn(
                                 imageUri = trackList[it].trackAlbum?.images?.firstOrNull()?.url,
                                 headerText = trackList[it].trackName!!,
-                                secondaryTexts = trackList[it].trackArtists!!,
-                                uri = trackList[it].trackUri
-                            ) { uri ->
-                                val spotifyIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+                                secondaryTexts = trackList[it].trackArtists!!
+                            ) {
+                                val spotifyIntent =
+                                    Intent(Intent.ACTION_VIEW, Uri.parse(trackList[it].trackUri))
                                 activity.startActivity(spotifyIntent)
                             }
                         }
@@ -151,7 +151,7 @@ fun FavouriteScreen(
         )
 
         // This Draws all the Albums Cards
-        StateControl(
+        MusicStateControl(
             modifier = Modifier
                 .height(210.dp)
                 .fillMaxWidth(),
@@ -165,13 +165,13 @@ fun FavouriteScreen(
                             .width(LocalConfiguration.current.screenWidthDp.dp)
                     ) {
                         items(albumList.size) {
-                            MusicTrack(
+                            MusicLargeImageColumn(
                                 imageUri = albumList[it].images.firstOrNull()?.url,
                                 headerText = albumList[it].name,
-                                secondaryTexts = albumList[it].artists,
-                                uri = albumList[it].uri
-                            ) { uri ->
-                                val spotifyIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+                                secondaryTexts = albumList[it].artists
+                            ) {
+                                val spotifyIntent =
+                                    Intent(Intent.ACTION_VIEW, Uri.parse(albumList[it].uri))
                                 activity.startActivity(spotifyIntent)
                             }
                         }

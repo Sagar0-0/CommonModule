@@ -1,6 +1,5 @@
 package fit.asta.health.thirdparty.spotify.view.components
 
-import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -14,33 +13,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.common.ui.AppTheme
-
-// Preview Function
-@Preview("Light")
-@Preview(
-    name = "Dark",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true
-)
-@Composable
-private fun DefaultPreview() {
-    AppTheme {
-        MusicTopTabBar(
-            tabList = listOf(
-                "Asta Music",
-                "Favourite",
-                "Third Party"
-            ),
-            selectedItem = 0,
-            selectedColor = MaterialTheme.colorScheme.primary,
-            unselectedColor = MaterialTheme.colorScheme.secondary
-        ) { }
-    }
-}
 
 /**
  * This function draws Tab Options in the screen when called.

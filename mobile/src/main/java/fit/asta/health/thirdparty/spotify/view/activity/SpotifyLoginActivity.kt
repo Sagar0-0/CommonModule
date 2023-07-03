@@ -28,7 +28,7 @@ import fit.asta.health.thirdparty.spotify.SpotifyNavGraph
 import fit.asta.health.thirdparty.spotify.SpotifyNavRoutes
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
 import fit.asta.health.thirdparty.spotify.view.components.MusicTopTabBar
-import fit.asta.health.thirdparty.spotify.view.components.StateControl
+import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
 import fit.asta.health.thirdparty.spotify.viewmodel.FavouriteViewModelX
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 
@@ -64,7 +64,7 @@ class SpotifyLoginActivity : ComponentActivity() {
                 ) {
 
                     // Handling the States of all the Authorization flow of spotify
-                    StateControl(
+                    MusicStateControl(
                         modifier = Modifier
                             .fillMaxSize(),
                         networkState = spotifyViewModelX.currentUserData,

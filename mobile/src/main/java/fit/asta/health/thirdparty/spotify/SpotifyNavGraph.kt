@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import fit.asta.health.thirdparty.spotify.view.screens.AlbumDetailScreen
 import fit.asta.health.thirdparty.spotify.view.screens.AstaMusicScreen
 import fit.asta.health.thirdparty.spotify.view.screens.FavouriteScreen
 import fit.asta.health.thirdparty.spotify.view.screens.ProfileScreen
@@ -84,6 +85,17 @@ fun SpotifyNavGraph(
                     ProfileScreen(
                         navController = navController,
                         spotifyViewModelX = spotifyViewModelX
+                    )
+                }
+            )
+
+            // Album Details Screen Showing the Details of a Track
+            composable(
+                SpotifyNavRoutes.AlbumDetailScreen.routes,
+                content = {
+                    AlbumDetailScreen(
+                        spotifyViewModelX = spotifyViewModelX,
+                        favouriteViewModelX = favouriteViewModelX
                     )
                 }
             )

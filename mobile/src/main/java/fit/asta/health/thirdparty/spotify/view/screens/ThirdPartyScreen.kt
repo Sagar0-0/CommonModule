@@ -39,9 +39,9 @@ import androidx.navigation.NavController
 import fit.asta.health.thirdparty.spotify.SpotifyNavRoutes
 import fit.asta.health.thirdparty.spotify.model.net.me.player.recentlyplayed.Track
 import fit.asta.health.thirdparty.spotify.view.components.MusicArtistsUI
-import fit.asta.health.thirdparty.spotify.view.components.MusicSmallTrack
-import fit.asta.health.thirdparty.spotify.view.components.MusicTrack
-import fit.asta.health.thirdparty.spotify.view.components.StateControl
+import fit.asta.health.thirdparty.spotify.view.components.MusicPlayableSmallCards
+import fit.asta.health.thirdparty.spotify.view.components.MusicLargeImageColumn
+import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 
 
@@ -133,7 +133,7 @@ fun ThirdPartyScreen(
         }
 
         // This checks the state of the user recently Played Tracks and shows them
-        StateControl(
+        MusicStateControl(
             modifier = Modifier
                 .height(190.dp)
                 .fillMaxWidth(),
@@ -165,10 +165,10 @@ fun ThirdPartyScreen(
                     items(tracksList.size) {
 
                         // This draws the UI for the tracks
-                        MusicSmallTrack(
+                        MusicPlayableSmallCards(
                             imageUri = tracksList[it].album.images.firstOrNull()?.url,
-                            trackName = tracksList[it].name,
-                            trackUri = tracksList[it].uri
+                            name = tracksList[it].name,
+                            uri = tracksList[it].uri
                         )
                     }
                 }
@@ -190,7 +190,7 @@ fun ThirdPartyScreen(
         )
 
         // This function draws the recommendation Tracks for the User
-        StateControl(
+        MusicStateControl(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(210.dp),
@@ -211,11 +211,10 @@ fun ThirdPartyScreen(
                         val currentItem = recommendations.tracks[it]
 
                         // This function draws the Track UI
-                        MusicTrack(
+                        MusicLargeImageColumn(
                             imageUri = currentItem.album.images.firstOrNull()?.url,
                             headerText = currentItem.name,
-                            secondaryTexts = currentItem.artists,
-                            uri = null
+                            secondaryTexts = currentItem.artists
                         ) {
 
                             // Navigating to the Track Details Screen
@@ -243,7 +242,7 @@ fun ThirdPartyScreen(
         )
 
         // This function draws the top tracks for the User
-        StateControl(
+        MusicStateControl(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(210.dp),
@@ -265,11 +264,10 @@ fun ThirdPartyScreen(
                             val currentItem = itemTopTrack[it]
 
                             // This function draws the Track UI
-                            MusicTrack(
+                            MusicLargeImageColumn(
                                 imageUri = currentItem.album.images.firstOrNull()?.url,
                                 headerText = currentItem.name,
-                                secondaryTexts = currentItem.artists,
-                                uri = "Not Using"
+                                secondaryTexts = currentItem.artists
                             ) {
 
                                 // Navigating to the Track Details Screen
@@ -298,7 +296,7 @@ fun ThirdPartyScreen(
         )
 
         // This function draws the top Artists for the User
-        StateControl(
+        MusicStateControl(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(210.dp),

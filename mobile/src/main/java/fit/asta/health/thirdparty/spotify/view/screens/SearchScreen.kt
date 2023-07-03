@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -32,11 +33,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fit.asta.health.thirdparty.spotify.SpotifyNavRoutes
 import fit.asta.health.thirdparty.spotify.view.components.MusicArtistsUI
-import fit.asta.health.thirdparty.spotify.view.components.MusicPlaylistUI
-import fit.asta.health.thirdparty.spotify.view.components.MusicTrack
+import fit.asta.health.thirdparty.spotify.view.components.MusicSmallImageRow
+import fit.asta.health.thirdparty.spotify.view.components.MusicLargeImageColumn
 import fit.asta.health.thirdparty.spotify.view.components.SearchBar
-import fit.asta.health.thirdparty.spotify.view.components.SortOptionsUI
-import fit.asta.health.thirdparty.spotify.view.components.StateControl
+import fit.asta.health.thirdparty.spotify.view.components.MusicFilterOptions
+import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 
 /**
@@ -131,7 +132,7 @@ fun SearchScreen(
 
         // If the sort button is clicked then this UI will be rendered
         if (isSortActive.value) {
-            SortOptionsUI(
+            MusicFilterOptions(
                 filterList = filterList
             ) { newBoolean, key ->
                 filterList[key] = newBoolean
@@ -139,7 +140,7 @@ fun SearchScreen(
         }
 
         // This function controls all the UI state of this screen
-        StateControl(
+        MusicStateControl(
             modifier = Modifier
                 .fillMaxSize(),
             networkState = spotifyViewModelX.spotifySearch,
@@ -176,11 +177,10 @@ fun SearchScreen(
                             val currentItem = trackList[it]
 
                             // This function draws the Track UI
-                            MusicTrack(
+                            MusicLargeImageColumn(
                                 imageUri = currentItem.album.images.firstOrNull()?.url,
                                 headerText = currentItem.name,
-                                secondaryTexts = currentItem.artists,
-                                uri = "Not Using"
+                                secondaryTexts = currentItem.artists
                             ) {
 
                                 // Navigating to the Track Details Screen
@@ -261,14 +261,19 @@ fun SearchScreen(
                 ) {
                     if (albumList != null) {
                         items(albumList.size) {
-                            MusicTrack(
-                                imageUri = albumList[it].images.firstOrNull()?.url,
-                                headerText = albumList[it].name,
-                                secondaryTexts = albumList[it].artists,
-                                uri = albumList[it].uri
-                            ) { uri ->
-                                val spotifyIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-                                activity.startActivity(spotifyIntent)
+
+                            // Current Item
+                            val currentItem = albumList[it]
+                            MusicLargeImageColumn(
+                                imageUri = currentItem.images.firstOrNull()?.url,
+                                headerText = currentItem.name,
+                                secondaryTexts = currentItem.artists
+                            ) {
+
+                                // Navigating the Album Details Screen to get the Album Details
+                                spotifyViewModelX.setAlbumId(albumList[it].id)
+                                spotifyViewModelX.getAlbumDetails()
+                                navController.navigate(SpotifyNavRoutes.AlbumDetailScreen.routes)
                             }
                         }
                     }
@@ -292,24 +297,24 @@ fun SearchScreen(
                     color = MaterialTheme.colorScheme.onSurface
                 )
 
-                LazyRow(
+                LazyColumn(
                     modifier = Modifier
-                        .height(64.dp)
+                        .height(LocalConfiguration.current.screenHeightDp.dp)
                         .padding(start = 12.dp)
                         .width(LocalConfiguration.current.screenWidthDp.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                    horizontalAlignment = Alignment.Start
                 ) {
                     if (playlists != null) {
                         items(playlists.size) {
 
+                            // current Item
                             val currentItem = playlists[it]
-
-                            MusicPlaylistUI(
+                            MusicSmallImageRow(
                                 imageUri = currentItem.images.firstOrNull()?.url,
-                                playlistName = currentItem.name,
-                                playlistUri = currentItem.uri,
-                                playlistType = currentItem.type,
-                                playlistOwner = currentItem.owner.displayName
+                                name = currentItem.name,
+                                itemUri = currentItem.uri,
+                                type = currentItem.type,
+                                owner = currentItem.owner.displayName
                             )
                         }
                     }

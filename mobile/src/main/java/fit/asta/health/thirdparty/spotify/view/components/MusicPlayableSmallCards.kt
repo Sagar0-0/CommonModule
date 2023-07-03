@@ -28,14 +28,14 @@ import coil.compose.rememberAsyncImagePainter
  * This function draws the Small Track UI like which we have in User Most Recently Played Tracks UI
  *
  * @param imageUri This is the image Uri from where the image needs to be downloaded
- * @param trackName This is the name of the track
- * @param trackUri THis is the uri where the user needs to be redirected when they choose a track
+ * @param name This is the name of the track
+ * @param uri THis is the uri where the user needs to be redirected when they choose a track
  */
 @Composable
-fun MusicSmallTrack(
+fun MusicPlayableSmallCards(
     imageUri: String?,
-    trackName: String,
-    trackUri: String
+    name: String,
+    uri: String
 ) {
 
     // request for the image and load when it is fetched from the internet
@@ -52,7 +52,7 @@ fun MusicSmallTrack(
 
             // Redirecting the User to Spotify App
             .clickable {
-                val spotifyIntent = Intent(Intent.ACTION_VIEW, Uri.parse(trackUri))
+                val spotifyIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
                 activity.startActivity(spotifyIntent)
             }
     ) {
@@ -72,10 +72,10 @@ fun MusicSmallTrack(
                 )
             }
 
-            val textToShow = if (trackName.length > 40)
-                "${trackName.substring(0, 38)}..."
+            val textToShow = if (name.length > 40)
+                "${name.substring(0, 38)}..."
             else
-                trackName
+                name
 
             // track Name
             Text(

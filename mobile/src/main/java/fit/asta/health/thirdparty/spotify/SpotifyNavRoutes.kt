@@ -7,4 +7,5 @@ sealed class SpotifyNavRoutes(val routes: String) {
     object ThirdPartyScreen : SpotifyNavRoutes("third-party-screen")
     object SearchScreen : SpotifyNavRoutes("search-screen")
     object ProfileScreen : SpotifyNavRoutes("profile-screen")
+    object AlbumDetailScreen : SpotifyNavRoutes("album-details-screen")
 }

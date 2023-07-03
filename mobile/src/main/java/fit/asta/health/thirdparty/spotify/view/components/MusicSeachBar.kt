@@ -52,7 +52,11 @@ fun SearchBar(
     OutlinedTextField(
         value = userInput,
         onValueChange = {
+
+            val shouldDo = userInput.length < it.length
             onUserInputChange(it)
+            if (shouldDo)
+                onUserDone()
         },
 
         // This input field contains 1 line

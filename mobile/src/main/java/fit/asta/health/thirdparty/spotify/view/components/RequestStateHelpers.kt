@@ -16,9 +16,14 @@ import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 
 /**
  * This checks the state of the call and shows the UI Accordingly
+ *
+ * @param modifier This is the Modifier which will be followed by the Loading and the Failure Screen
+ * @param networkState This is the [SpotifyNetworkCall] state Object which tells us about the states
+ * @param onCurrentStateInitialized This function is run when the state is in initialized state
+ * @param onCurrentStateSuccess This function is run when the state is in successful state
  */
 @Composable
-fun <T : SpotifyNetworkCall<*>> StateControl(
+fun <T : SpotifyNetworkCall<*>> MusicStateControl(
     modifier: Modifier = Modifier,
     networkState: T,
     onCurrentStateInitialized: () -> Unit,

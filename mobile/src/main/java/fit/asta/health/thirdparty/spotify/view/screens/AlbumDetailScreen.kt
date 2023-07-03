@@ -18,27 +18,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import fit.asta.health.thirdparty.spotify.model.db.entity.TrackEntity
+import fit.asta.health.thirdparty.spotify.model.net.common.Album
 import fit.asta.health.thirdparty.spotify.view.components.MusicLargeImageColumn
 import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
 import fit.asta.health.thirdparty.spotify.viewmodel.FavouriteViewModelX
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 
-
 /**
- * This screen shows the details of the Tracks choose by the user and gives the options to either
- * add this to his favourites or open the track in spotify
+ * This screen shows the details of the Albums choose by the user and gives the options to either
+ * add this to his favourites or open the Album in spotify
  *
  * @param spotifyViewModelX This is the spotify ViewModel which contacts with the spotify apis
  * @param favouriteViewModelX This is the favourites ViewModels which contacts with the local database
  */
 @Composable
-fun TrackDetailsScreen(
-    modifier: Modifier = Modifier,
+fun AlbumDetailScreen(
     spotifyViewModelX: SpotifyViewModelX,
     favouriteViewModelX: FavouriteViewModelX
 ) {
-
     // context is stored to Show the Toast
     val context = LocalContext.current
 
@@ -47,54 +44,51 @@ fun TrackDetailsScreen(
 
     // Root Composable function
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        // Checks If the Track Details are fetched or not
+        // Checks If the Album Details is fetched or not
         MusicStateControl(
             modifier = Modifier
                 .fillMaxSize(),
-            networkState = spotifyViewModelX.trackDetailsResponse,
+            networkState = spotifyViewModelX.albumDetailsResponse,
             onCurrentStateInitialized = {
                 spotifyViewModelX.getTrackDetails()
             }
         ) { networkResponse ->
-            networkResponse.data.let { trackDetails ->
 
-                // Image of The Track
-                if (trackDetails != null) {
+            networkResponse.data.let { albumData ->
+
+                if (albumData != null) {
                     MusicLargeImageColumn(
-                        imageUri = trackDetails.album.images.firstOrNull()?.url,
-                        headerText = trackDetails.name,
-                        secondaryTexts = trackDetails.artists
+                        imageUri = albumData.images.firstOrNull()?.url,
+                        headerText = albumData.name,
+                        secondaryTexts = albumData.artists
                     ) {}
 
                     // Add to Favourites Button
                     Button(
                         onClick = {
-                            favouriteViewModelX.insertTrack(
-                                TrackEntity(
-                                    trackAlbum = trackDetails.album,
-                                    trackArtists = trackDetails.artists,
-                                    trackAvailableMarkets = trackDetails.availableMarkets,
-                                    trackDiscNumber = trackDetails.discNumber,
-                                    trackDurationMs = trackDetails.durationMs,
-                                    trackExplicit = trackDetails.explicit,
-                                    trackId = trackDetails.id,
-                                    trackExternalIds = trackDetails.externalIds,
-                                    trackExternalUrls = trackDetails.externalUrls,
-                                    trackHref = trackDetails.href,
-                                    trackIsLocal = trackDetails.isLocal,
-                                    trackName = trackDetails.name,
-                                    trackPopularity = trackDetails.popularity,
-                                    trackPreviewUrl = trackDetails.previewUrl,
-                                    trackTrackNumber = trackDetails.trackNumber,
-                                    trackType = trackDetails.type,
-                                    trackUri = trackDetails.uri
+
+                            favouriteViewModelX.insertAlbum(
+                                Album(
+                                    albumType = albumData.albumType,
+                                    artists = albumData.artists,
+                                    availableMarkets = albumData.availableMarkets,
+                                    externalUrls = albumData.externalUrls,
+                                    href = albumData.href,
+                                    id = albumData.id,
+                                    images = albumData.images,
+                                    name = albumData.name,
+                                    releaseDate = albumData.releaseDate,
+                                    releaseDatePrecision = albumData.releaseDatePrecision,
+                                    totalTracks = albumData.totalTracks,
+                                    type = albumData.type,
+                                    uri = albumData.uri
                                 )
                             )
 
@@ -116,7 +110,7 @@ fun TrackDetailsScreen(
                 Button(
                     onClick = {
                         val spotifyIntent =
-                            Intent(Intent.ACTION_VIEW, Uri.parse(trackDetails!!.uri))
+                            Intent(Intent.ACTION_VIEW, Uri.parse(albumData!!.uri))
                         activity.startActivity(spotifyIntent)
                     },
                     modifier = Modifier
