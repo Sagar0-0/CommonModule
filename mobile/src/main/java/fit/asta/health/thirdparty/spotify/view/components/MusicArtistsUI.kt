@@ -37,7 +37,7 @@ import coil.compose.rememberAsyncImagePainter
  */
 @Composable
 fun MusicArtistsUI(
-    imageUri: String,
+    imageUri: String?,
     artistName: String,
     artistsUri: String,
     onClick: (trackUri: String) -> Unit
@@ -74,7 +74,7 @@ fun MusicArtistsUI(
             // Artists Image
             Image(
                 painter = painter,
-                contentDescription = "Track Image",
+                contentDescription = "Artist Image",
                 modifier = Modifier
                     .size(widthOfImage)
                     .clip(CircleShape)
@@ -90,7 +90,7 @@ fun MusicArtistsUI(
             modifier = Modifier
                 .width(widthOfImage),
 
-            maxLines = 1,
+            maxLines = 2,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurface,
             fontWeight = FontWeight.Bold,

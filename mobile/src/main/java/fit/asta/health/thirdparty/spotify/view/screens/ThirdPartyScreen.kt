@@ -166,7 +166,7 @@ fun ThirdPartyScreen(
 
                         // This draws the UI for the tracks
                         MusicSmallTrack(
-                            imageUri = tracksList[it].album.images[0].url,
+                            imageUri = tracksList[it].album.images.firstOrNull()?.url,
                             trackName = tracksList[it].name,
                             trackUri = tracksList[it].uri
                         )
@@ -212,10 +212,10 @@ fun ThirdPartyScreen(
 
                         // This function draws the Track UI
                         MusicTrack(
-                            imageUri = currentItem.album.images[0].url,
-                            trackName = currentItem.name,
-                            trackArtists = currentItem.artists,
-                            trackUri = "Not Using"
+                            imageUri = currentItem.album.images.firstOrNull()?.url,
+                            headerText = currentItem.name,
+                            secondaryTexts = currentItem.artists,
+                            uri = null
                         ) {
 
                             // Navigating to the Track Details Screen
@@ -266,10 +266,10 @@ fun ThirdPartyScreen(
 
                             // This function draws the Track UI
                             MusicTrack(
-                                imageUri = currentItem.album.images[0].url,
-                                trackName = currentItem.name,
-                                trackArtists = currentItem.artists,
-                                trackUri = "Not Using"
+                                imageUri = currentItem.album.images.firstOrNull()?.url,
+                                headerText = currentItem.name,
+                                secondaryTexts = currentItem.artists,
+                                uri = "Not Using"
                             ) {
 
                                 // Navigating to the Track Details Screen
@@ -322,7 +322,7 @@ fun ThirdPartyScreen(
 
                         // Shows the Artists UI
                         MusicArtistsUI(
-                            imageUri = currentItem.images[0].url,
+                            imageUri = currentItem.images.firstOrNull()?.url,
                             artistName = currentItem.name,
                             artistsUri = currentItem.uri
                         ) { uri ->

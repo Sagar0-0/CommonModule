@@ -58,55 +58,58 @@ fun TrackDetailsScreen(
             networkResponse.data.let { trackDetails ->
 
                 // Image of The Track
-                MusicTrack(
-                    imageUri = trackDetails!!.album.images[0].url,
-                    trackName = trackDetails.name,
-                    trackArtists = trackDetails.artists,
-                    trackUri = trackDetails.uri,
-                ) {}
+                if (trackDetails != null) {
+                    MusicTrack(
+                        imageUri = trackDetails.album.images.firstOrNull()?.url,
+                        headerText = trackDetails.name,
+                        secondaryTexts = trackDetails.artists,
+                        uri = trackDetails.uri,
+                    ) {}
 
-                // Add to Favourites Button
-                Button(
-                    onClick = {
-                        favouriteViewModelX.insertTrack(
-                            TrackEntity(
-                                trackAlbum = trackDetails.album,
-                                trackArtists = trackDetails.artists,
-                                trackAvailableMarkets = trackDetails.availableMarkets,
-                                trackDiscNumber = trackDetails.discNumber,
-                                trackDurationMs = trackDetails.durationMs,
-                                trackExplicit = trackDetails.explicit,
-                                trackId = trackDetails.id,
-                                trackExternalIds = trackDetails.externalIds,
-                                trackExternalUrls = trackDetails.externalUrls,
-                                trackHref = trackDetails.href,
-                                trackIsLocal = trackDetails.isLocal,
-                                trackName = trackDetails.name,
-                                trackPopularity = trackDetails.popularity,
-                                trackPreviewUrl = trackDetails.previewUrl,
-                                trackTrackNumber = trackDetails.trackNumber,
-                                trackType = trackDetails.type,
-                                trackUri = trackDetails.uri
+                    // Add to Favourites Button
+                    Button(
+                        onClick = {
+                            favouriteViewModelX.insertTrack(
+                                TrackEntity(
+                                    trackAlbum = trackDetails.album,
+                                    trackArtists = trackDetails.artists,
+                                    trackAvailableMarkets = trackDetails.availableMarkets,
+                                    trackDiscNumber = trackDetails.discNumber,
+                                    trackDurationMs = trackDetails.durationMs,
+                                    trackExplicit = trackDetails.explicit,
+                                    trackId = trackDetails.id,
+                                    trackExternalIds = trackDetails.externalIds,
+                                    trackExternalUrls = trackDetails.externalUrls,
+                                    trackHref = trackDetails.href,
+                                    trackIsLocal = trackDetails.isLocal,
+                                    trackName = trackDetails.name,
+                                    trackPopularity = trackDetails.popularity,
+                                    trackPreviewUrl = trackDetails.previewUrl,
+                                    trackTrackNumber = trackDetails.trackNumber,
+                                    trackType = trackDetails.type,
+                                    trackUri = trackDetails.uri
+                                )
                             )
-                        )
 
-                        Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show()
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 32.dp, bottom = 12.dp, start = 12.dp, end = 12.dp)
-                ) {
-                    Text(
-                        text = "Add To Favourites",
+                            Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show()
+                        },
                         modifier = Modifier
-                            .padding(4.dp)
-                    )
+                            .fillMaxWidth()
+                            .padding(top = 32.dp, bottom = 12.dp, start = 12.dp, end = 12.dp)
+                    ) {
+                        Text(
+                            text = "Add To Favourites",
+                            modifier = Modifier
+                                .padding(4.dp)
+                        )
+                    }
                 }
 
                 // Play on Spotify Button
                 Button(
                     onClick = {
-                        val spotifyIntent = Intent(Intent.ACTION_VIEW, Uri.parse(trackDetails.uri))
+                        val spotifyIntent =
+                            Intent(Intent.ACTION_VIEW, Uri.parse(trackDetails!!.uri))
                         activity.startActivity(spotifyIntent)
                     },
                     modifier = Modifier

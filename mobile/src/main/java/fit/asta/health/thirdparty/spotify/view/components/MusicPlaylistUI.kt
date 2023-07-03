@@ -37,7 +37,7 @@ import coil.compose.rememberAsyncImagePainter
  */
 @Composable
 fun MusicPlaylistUI(
-    imageUri: String,
+    imageUri: String?,
     playlistName: String,
     playlistUri: String,
     playlistType: String,
@@ -77,7 +77,7 @@ fun MusicPlaylistUI(
             // Playlist Image
             Image(
                 painter = painter,
-                contentDescription = "Track Image",
+                contentDescription = "Playlist Image",
                 modifier = Modifier
                     .size(64.dp)
             )

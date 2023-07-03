@@ -122,10 +122,10 @@ fun FavouriteScreen(
                         items(trackList.size) {
 
                             MusicTrack(
-                                imageUri = trackList[it].trackAlbum!!.images[0].url,
-                                trackName = trackList[it].trackName!!,
-                                trackArtists = trackList[it].trackArtists!!,
-                                trackUri = trackList[it].trackUri!!
+                                imageUri = trackList[it].trackAlbum?.images?.firstOrNull()?.url,
+                                headerText = trackList[it].trackName!!,
+                                secondaryTexts = trackList[it].trackArtists!!,
+                                uri = trackList[it].trackUri
                             ) { uri ->
                                 val spotifyIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
                                 activity.startActivity(spotifyIntent)
@@ -166,10 +166,10 @@ fun FavouriteScreen(
                     ) {
                         items(albumList.size) {
                             MusicTrack(
-                                imageUri = albumList[it].images[0].url,
-                                trackName = albumList[it].name,
-                                trackArtists = albumList[it].artists,
-                                trackUri = albumList[it].uri
+                                imageUri = albumList[it].images.firstOrNull()?.url,
+                                headerText = albumList[it].name,
+                                secondaryTexts = albumList[it].artists,
+                                uri = albumList[it].uri
                             ) { uri ->
                                 val spotifyIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
                                 activity.startActivity(spotifyIntent)

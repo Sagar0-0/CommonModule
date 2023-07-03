@@ -33,7 +33,7 @@ import coil.compose.rememberAsyncImagePainter
  */
 @Composable
 fun MusicSmallTrack(
-    imageUri: String,
+    imageUri: String?,
     trackName: String,
     trackUri: String
 ) {
@@ -72,15 +72,20 @@ fun MusicSmallTrack(
                 )
             }
 
+            val textToShow = if (trackName.length > 40)
+                "${trackName.substring(0, 38)}..."
+            else
+                trackName
+
             // track Name
             Text(
-                text = trackName,
+                text = textToShow,
 
                 modifier = Modifier
                     .width(LocalConfiguration.current.screenWidthDp.dp)
                     .padding(start = 8.dp, top = 4.dp, end = 4.dp, bottom = 4.dp),
 
-                maxLines = 3,
+                maxLines = 2,
                 textAlign = TextAlign.Start,
                 color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Bold,

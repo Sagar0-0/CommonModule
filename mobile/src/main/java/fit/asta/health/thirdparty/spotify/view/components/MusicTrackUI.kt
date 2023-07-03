@@ -49,20 +49,20 @@ private fun DefaultPreview() {
  * function
  *
  * @param imageUri This variables contains the url of the Image
- * @param trackName This function contains the name of the track
- * @param trackArtists This function contains the names of the Artists for this particular track
- * @param trackUri This contains the URI which can be used to redirect the User to spotify app and
+ * @param headerText This function contains the name of the track
+ * @param secondaryTexts This function contains the names of the Artists for this particular track
+ * @param uri This contains the URI which can be used to redirect the User to spotify app and
  * play the song
  * @param onClick This function takes the trackUri and lets the parent decide what to do when it is
  * clicked
  */
 @Composable
 fun MusicTrack(
-    imageUri: String,
-    trackName: String,
-    trackArtists: List<ArtistX>,
-    trackUri: String,
-    onClick: (trackUri: String) -> Unit
+    imageUri: String?,
+    headerText: String,
+    secondaryTexts: List<ArtistX>,
+    uri: String?,
+    onClick: (trackUri: String?) -> Unit
 ) {
 
     // Width of the Image of the Track
@@ -78,7 +78,7 @@ fun MusicTrack(
 
             // Redirecting the User to Spotify App
             .clickable {
-                onClick(trackUri)
+                onClick(uri)
             }
     ) {
 
@@ -106,7 +106,7 @@ fun MusicTrack(
 
         // track Name
         Text(
-            text = trackName,
+            text = headerText,
 
             modifier = Modifier
                 .width(widthOfImage),
@@ -119,15 +119,21 @@ fun MusicTrack(
         )
 
         // Formulating the names of the Artist
-        val artistsNames = trackArtists
+        val artistsNames = secondaryTexts
             .map { it.name }
             .toString()
             .filter { it != '[' }
             .filter { it != ']' }
 
+
+        val textToShow = if (artistsNames.length > 20)
+            "${artistsNames.substring(0, 18)}..."
+        else
+            artistsNames
+
         // Artist Names
         Text(
-            text = artistsNames,
+            text = textToShow,
 
             modifier = Modifier
                 .width(widthOfImage),

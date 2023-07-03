@@ -177,10 +177,10 @@ fun SearchScreen(
 
                             // This function draws the Track UI
                             MusicTrack(
-                                imageUri = currentItem.album.images[0].url,
-                                trackName = currentItem.name,
-                                trackArtists = currentItem.artists,
-                                trackUri = "Not Using"
+                                imageUri = currentItem.album.images.firstOrNull()?.url,
+                                headerText = currentItem.name,
+                                secondaryTexts = currentItem.artists,
+                                uri = "Not Using"
                             ) {
 
                                 // Navigating to the Track Details Screen
@@ -224,7 +224,7 @@ fun SearchScreen(
 
                             // Shows the Artists UI
                             MusicArtistsUI(
-                                imageUri = if (currentItem.images.isNotEmpty()) currentItem.images[0].url else "",
+                                imageUri = currentItem.images.firstOrNull()?.url,
                                 artistName = currentItem.name,
                                 artistsUri = currentItem.uri
                             ) { uri ->
@@ -262,10 +262,10 @@ fun SearchScreen(
                     if (albumList != null) {
                         items(albumList.size) {
                             MusicTrack(
-                                imageUri = albumList[it].images[0].url,
-                                trackName = albumList[it].name,
-                                trackArtists = albumList[it].artists,
-                                trackUri = albumList[it].uri
+                                imageUri = albumList[it].images.firstOrNull()?.url,
+                                headerText = albumList[it].name,
+                                secondaryTexts = albumList[it].artists,
+                                uri = albumList[it].uri
                             ) { uri ->
                                 val spotifyIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
                                 activity.startActivity(spotifyIntent)
@@ -305,7 +305,7 @@ fun SearchScreen(
                             val currentItem = playlists[it]
 
                             MusicPlaylistUI(
-                                imageUri = currentItem.images[0].url,
+                                imageUri = currentItem.images.firstOrNull()?.url,
                                 playlistName = currentItem.name,
                                 playlistUri = currentItem.uri,
                                 playlistType = currentItem.type,
