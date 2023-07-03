@@ -49,7 +49,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity android:name=".profile.UserProfileActivity" />
         <activity android:name=".profile.CreateUserProfileActivity" />
         <activity android:name=".settings.SettingsActivity" />

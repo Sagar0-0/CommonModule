@@ -1,16 +1,11 @@
 package fit.asta.health.navigation.home.model
 
-import fit.asta.health.navigation.home.model.domain.ToolsHome
-import fit.asta.health.navigation.home.model.network.NetSelectedTools
-import fit.asta.health.network.api.RemoteApis
-import fit.asta.health.network.data.Status
+import fit.asta.health.navigation.home.model.api.ToolsApi
+import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class ToolsHomeRepoImpl(
-    private val remoteApi: RemoteApis,
-    private val mapper: ToolsHomeDataMapper,
-) : ToolsHomeRepo {
+class ToolsHomeRepoImpl(private val toolsApi: ToolsApi) : ToolsHomeRepo {
 
     override suspend fun getHomeData(
         userId: String,
@@ -20,27 +15,17 @@ class ToolsHomeRepoImpl(
         startDate: String,
         endDate: String,
         time: String
-    ): Flow<ToolsHome> {
+    ): Flow<ToolsHomeRes.ToolsHome> {
         return flow {
             emit(
-                mapper.mapToDomainModel(
-                    remoteApi.getHomeData(
-                        userId = userId,
-                        latitude = latitude,
-                        longitude = longitude,
-                        location = location,
-                        startDate = startDate,
-                        endDate = endDate,
-                        time = time
-                    )
-                )
+                toolsApi.getHomeData(
+                    userId = userId,
+                    latitude = latitude,
+                    longitude = longitude,
+                    location = location,
+                    startDate = startDate
+                ).data
             )
-        }
-    }
-
-    override suspend fun updateSelectedTools(toolIds: NetSelectedTools): Flow<Status> {
-        return flow {
-            emit(remoteApi.updateSelectedTools(toolIds))
         }
     }
 }

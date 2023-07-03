@@ -21,7 +21,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
@@ -45,7 +47,6 @@ import fit.asta.health.common.utils.*
 import fit.asta.health.firebase.viewmodel.AuthViewModel
 import fit.asta.health.network.TokenProvider
 import fit.asta.health.profile.CreateUserProfileActivity
-import fit.asta.health.profile.UserProfileActivity
 import fit.asta.health.profile.viewmodel.ProfileAvailState
 import fit.asta.health.profile.viewmodel.ProfileAvailViewModel
 import fit.asta.health.settings.SettingsActivity
@@ -98,13 +99,28 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         )
 
         lifecycleScope.launch {
-            mapsViewModel.addressText.collect {
-                if (!it.isNullOrEmpty()) {
-                    addressText.value = it
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mapsViewModel.getCurrentLatLng(this@MainActivity)
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                mapsViewModel.currentLatLng.collect {
+                    mapsViewModel.getCurrentAddress(this@MainActivity)
                 }
             }
         }
 
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                mapsViewModel.currentAddress.collect {
+                    if (it != null) {
+                        addressText.value = it.sub
+                    }
+                }
+            }
+        }
 
         if (!authViewModel.isAuthenticated()) {
             loadAuthScreen()
@@ -134,7 +150,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         locationRequestLauncher =
             registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { activityResult ->
                 if (activityResult.resultCode == RESULT_OK)
-                    mapsViewModel.getCurrentAddressText(this)
+                    mapsViewModel.getCurrentLatLng(this)
                 else {
                     Toast.makeText(this, "User location access required!!", Toast.LENGTH_SHORT)
                         .show()
@@ -144,7 +160,6 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
         FirebaseAuth.getInstance().addAuthStateListener(this)
         FirebaseAuth.getInstance().addIdTokenListener(this)
-
     }
 
     private fun loadAuthScreen() {
@@ -166,7 +181,6 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
                     }
                 }
             }
-
         }
     }
 
@@ -195,8 +209,9 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
             // location requests here.
             // ...
             Log.d("Location", "createLocationRequest: Success")
-            mapsViewModel.getCurrentAddressText(this)
+            mapsViewModel.getCurrentLatLng(this)
         }
+
         task.addOnFailureListener { exception ->
             if (exception is ResolvableApiException) {
                 // Location settings are not satisfied, but this can be fixed
@@ -307,7 +322,6 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
                 }
             }
         }
-
     }
 
     @Deprecated("Deprecated in Java")

@@ -22,13 +22,10 @@ fun CurrentLocationUi(name: String, area: String) {
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(spacing.small)
+            .padding(spacing.small),
+        horizontalAlignment = Alignment.Start
     ) {
-        Row(
-            Modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        Row {
             Icon(
                 modifier = Modifier
                     .padding(end = spacing.extraSmall1)

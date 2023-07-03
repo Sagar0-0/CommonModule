@@ -110,13 +110,13 @@ fun MapScreen(
         },
         sheetContent = {
             LaunchedEffect(cameraPositionState.position.target) {
-                mapsViewModel.getAddressDetails(
+                mapsViewModel.getMarkerAddressDetails(
                     cameraPositionState.position.target.latitude,
                     cameraPositionState.position.target.longitude,
                     context
                 )
             }
-            val address by mapsViewModel.addressDetail.collectAsStateWithLifecycle()
+            val address by mapsViewModel.markerAddressDetail.collectAsStateWithLifecycle()
             when (address) {
                 is ResultState.Loading -> {
                     LinearProgressIndicator(
@@ -168,11 +168,15 @@ fun MapScreen(
                                             sub = it.subLocality,
                                             uid = mapsViewModel.uId
                                         )
-                                        mapsViewModel.putAddress(newAddress)
-                                        Toast.makeText(context, "Address Saved", Toast.LENGTH_SHORT)
-                                            .show()
-                                        mapsViewModel.getAllAddresses()
-                                        navHostController.navigateUp()
+                                        Log.d(TAG, "MapScreen: onClick Save $newAddress")
+                                        mapsViewModel.putAddress(newAddress) {
+                                            Toast.makeText(
+                                                context,
+                                                "Address Saved",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                            navHostController.navigateUp()
+                                        }
                                     },
                                     modifier = Modifier
                                         .padding(bottom = spacing.medium)
@@ -208,7 +212,7 @@ fun MapScreen(
 
                 else -> {
                     LaunchedEffect(cameraPositionState.position.target) {
-                        mapsViewModel.getAddressDetails(
+                        mapsViewModel.getMarkerAddressDetails(
                             cameraPositionState.position.target.latitude,
                             cameraPositionState.position.target.longitude,
                             context
@@ -259,7 +263,17 @@ fun MapScreen(
                     Icon(imageVector = Icons.Default.Search, contentDescription = "")
                 },
                 colors = TextFieldDefaults.colors(
-                    unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer
+                    focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                    focusedPlaceholderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedPlaceholderColor = MaterialTheme.colorScheme.primary,
+                    focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                    unfocusedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                    focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
+                    disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    disabledPlaceholderColor = MaterialTheme.colorScheme.primary,
+                    disabledLeadingIconColor = MaterialTheme.colorScheme.primary
                 )
             )
 

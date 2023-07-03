@@ -3,7 +3,7 @@ package fit.asta.health.network.repo
 import android.content.Context
 import androidx.documentfile.provider.DocumentFile
 import fit.asta.health.common.utils.InputStreamRequestBody
-import fit.asta.health.network.api.RemoteApis
+import fit.asta.health.network.api.Api
 import fit.asta.health.network.data.MultiFileUpload
 import fit.asta.health.network.data.SingleFileUpload
 import fit.asta.health.network.data.UploadInfo
@@ -16,7 +16,7 @@ import okhttp3.MultipartBody
 
 class FileUploadRepo(
     private val context: Context,
-    private val remoteApi: RemoteApis,
+    private val remoteApi: Api,
 ) {
 
     suspend fun uploadFile(fileInfo: UploadInfo): Flow<SingleFileUpload> {

@@ -1,7 +1,5 @@
 package fit.asta.health.network.api
 
-import fit.asta.health.navigation.home.model.network.NetHealthToolsRes
-import fit.asta.health.navigation.home.model.network.NetSelectedTools
 import fit.asta.health.network.data.MultiFileUploadRes
 import fit.asta.health.network.data.SingleFileUploadRes
 import fit.asta.health.network.data.Status
@@ -12,21 +10,6 @@ import retrofit2.http.*
 
 
 interface ApiService {
-
-    //Home page
-    @GET("home/get?")
-    suspend fun getHomeData(
-        @Query("uid") userId: String,
-        @Query("lat") latitude: String,
-        @Query("lon") longitude: String,
-        @Query("loc") location: String,
-        @Query("start") startDate: String,
-        @Query("end") endDate: String,
-        @Query("time") time: String
-    ): NetHealthToolsRes
-
-    @PUT("tool/selected/put")
-    suspend fun updateSelectedTools(@Body toolIds: NetSelectedTools): Status
 
     //File upload Endpoints ------------------------------------------------------------------------
     @Multipart

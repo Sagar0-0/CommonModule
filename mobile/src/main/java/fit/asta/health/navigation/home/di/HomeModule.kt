@@ -8,11 +8,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.navigation.home.model.ToolsHomeDataMapper
+import fit.asta.health.BuildConfig
 import fit.asta.health.navigation.home.model.ToolsHomeRepo
 import fit.asta.health.navigation.home.model.ToolsHomeRepoImpl
-import fit.asta.health.network.api.RemoteApis
-import fit.asta.health.testimonials.model.TestimonialDataMapper
+import fit.asta.health.navigation.home.model.api.ToolsApi
+import fit.asta.health.navigation.home.model.api.ToolsRestApi
+import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
 @Module
@@ -21,20 +22,14 @@ object HomeModule {
 
     @Singleton
     @Provides
-    fun provideToolsHomeDataMapper(testimonialDataMapper: TestimonialDataMapper): ToolsHomeDataMapper {
-        return ToolsHomeDataMapper(testimonialDataMapper)
+    fun provideToolsApi(client: OkHttpClient): ToolsApi {
+        return ToolsRestApi(baseUrl = BuildConfig.BASE_URL, client = client)
     }
 
     @Singleton
     @Provides
-    fun provideHomeToolsRep(
-        remoteApi: RemoteApis,
-        toolsHomeMapper: ToolsHomeDataMapper,
-    ): ToolsHomeRepo {
-        return ToolsHomeRepoImpl(
-            remoteApi = remoteApi,
-            mapper = toolsHomeMapper
-        )
+    fun provideHomeToolsRep(toolsApi: ToolsApi): ToolsHomeRepo {
+        return ToolsHomeRepoImpl(toolsApi = toolsApi)
     }
 
     @Provides
