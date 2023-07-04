@@ -81,12 +81,7 @@ fun SpotifyNavGraph(
             // Profile Screen
             composable(
                 SpotifyNavRoutes.ProfileScreen.routes,
-                content = {
-                    ProfileScreen(
-                        navController = navController,
-                        spotifyViewModelX = spotifyViewModelX
-                    )
-                }
+                content = { ProfileScreen(spotifyViewModelX = spotifyViewModelX) }
             )
 
             // Album Details Screen Showing the Details of a Track

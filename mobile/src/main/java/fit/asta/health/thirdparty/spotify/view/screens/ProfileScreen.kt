@@ -1,14 +1,336 @@
 package fit.asta.health.thirdparty.spotify.view.screens
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import fit.asta.health.thirdparty.spotify.view.components.MusicSmallImageRow
+import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ProfileScreen(
-    navController: NavController,
     spotifyViewModelX: SpotifyViewModelX
 ) {
-    Text(text = "Profile Screen")
+
+    // This keeps the selected Item by the user
+    val selectedItem = remember { mutableIntStateOf(0) }
+
+    // Option List for the screen
+    val categoryList = listOf(
+        "Track",
+        "Playlist",
+        "Artist",
+        "Album",
+        "Show",
+        "Episode"
+    )
+
+    // Root Composable function
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surface)
+    ) {
+
+        FlowRow(
+            modifier = Modifier
+                .padding(12.dp)
+                .wrapContentWidth()
+        ) {
+
+
+            categoryList.forEachIndexed { index, option ->
+
+                OutlinedButton(
+                    onClick = {
+                        selectedItem.intValue = index
+                    },
+                    modifier = Modifier
+                        .padding(4.dp),
+
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = if (index == selectedItem.intValue)
+                            MaterialTheme.colorScheme.primary
+                        else
+                            MaterialTheme.colorScheme.secondary
+                    )
+                ) {
+
+                    // Category Name
+                    Text(
+                        text = option,
+                        fontSize = 12.sp
+                    )
+                }
+            }
+        }
+
+        when (selectedItem.intValue) {
+            0 -> TracksUI(spotifyViewModelX)
+            1 -> PlaylistUI(spotifyViewModelX)
+            2 -> ArtistsUI(spotifyViewModelX)
+            3 -> AlbumsUI(spotifyViewModelX)
+            4 -> ShowUI(spotifyViewModelX)
+            5 -> EpisodeUI(spotifyViewModelX)
+        }
+    }
+}
+
+@Composable
+fun TracksUI(spotifyViewModelX: SpotifyViewModelX) {
+    MusicStateControl(
+        modifier = Modifier
+            .fillMaxSize(),
+        networkState = spotifyViewModelX.currentUserTracks,
+        onCurrentStateInitialized = {
+            spotifyViewModelX.getCurrentUserTracks()
+        }
+    ) { networkResponse ->
+        networkResponse.data?.items.let { trackList ->
+
+            LazyColumn(
+                modifier = Modifier
+                    .height(LocalConfiguration.current.screenHeightDp.dp)
+                    .padding(start = 12.dp)
+                    .width(LocalConfiguration.current.screenWidthDp.dp),
+                horizontalAlignment = Alignment.Start
+            ) {
+                if (trackList != null) {
+                    items(trackList.size) {
+
+                        // current Item
+                        val currentItem = trackList[it]
+
+                        //
+                        MusicSmallImageRow(
+                            imageUri = currentItem.track.album.images.firstOrNull()?.url,
+                            name = currentItem.track.name,
+                            itemUri = currentItem.track.uri,
+                            type = currentItem.track.type,
+                            owner = currentItem.track.artists.firstOrNull()!!.name
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun PlaylistUI(spotifyViewModelX: SpotifyViewModelX) {
+
+    MusicStateControl(
+        modifier = Modifier
+            .fillMaxSize(),
+        networkState = spotifyViewModelX.currentUserPlaylist,
+        onCurrentStateInitialized = {
+            spotifyViewModelX.getCurrentUserPlaylist()
+        }
+    ) { networkResponse ->
+        networkResponse.data?.userPlaylistItems.let { playList ->
+
+            LazyColumn(
+                modifier = Modifier
+                    .height(LocalConfiguration.current.screenHeightDp.dp)
+                    .padding(start = 12.dp)
+                    .width(LocalConfiguration.current.screenWidthDp.dp),
+                horizontalAlignment = Alignment.Start
+            ) {
+                if (playList != null) {
+                    items(playList.size) {
+
+                        // current Item
+                        val currentItem = playList[it]
+
+                        //
+                        MusicSmallImageRow(
+                            imageUri = currentItem.images.firstOrNull()?.url,
+                            name = currentItem.name,
+                            itemUri = currentItem.uri,
+                            type = currentItem.type,
+                            owner = currentItem.owner.displayName
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ArtistsUI(spotifyViewModelX: SpotifyViewModelX) {
+
+    MusicStateControl(
+        modifier = Modifier
+            .fillMaxSize(),
+        networkState = spotifyViewModelX.currentUserFollowingArtist,
+        onCurrentStateInitialized = {
+            spotifyViewModelX.getCurrentUserFollowingArtists()
+        }
+    ) { networkResponse ->
+        networkResponse.data?.artists?.items.let { artistsList ->
+
+            LazyColumn(
+                modifier = Modifier
+                    .height(LocalConfiguration.current.screenHeightDp.dp)
+                    .padding(start = 12.dp)
+                    .width(LocalConfiguration.current.screenWidthDp.dp),
+                horizontalAlignment = Alignment.Start
+            ) {
+                if (artistsList != null) {
+                    items(artistsList.size) {
+
+                        // current Item
+                        val currentItem = artistsList[it]
+
+                        //
+                        MusicSmallImageRow(
+                            imageUri = currentItem.images.firstOrNull()?.url,
+                            name = currentItem.name,
+                            itemUri = currentItem.uri,
+                            type = "",
+                            owner = ""
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun AlbumsUI(spotifyViewModelX: SpotifyViewModelX) {
+    MusicStateControl(
+        modifier = Modifier
+            .fillMaxSize(),
+        networkState = spotifyViewModelX.currentUserAlbum,
+        onCurrentStateInitialized = {
+            spotifyViewModelX.getCurrentUserAlbum()
+        }
+    ) { networkResponse ->
+        networkResponse.data?.items.let { albumList ->
+
+            LazyColumn(
+                modifier = Modifier
+                    .height(LocalConfiguration.current.screenHeightDp.dp)
+                    .padding(start = 12.dp)
+                    .width(LocalConfiguration.current.screenWidthDp.dp),
+                horizontalAlignment = Alignment.Start
+            ) {
+                if (albumList != null) {
+                    items(albumList.size) {
+
+                        // current Item
+                        val currentItem = albumList[it]
+
+                        MusicSmallImageRow(
+                            imageUri = currentItem.album.images.firstOrNull()?.url,
+                            name = currentItem.album.name,
+                            itemUri = currentItem.album.uri,
+                            type = currentItem.album.type,
+                            owner = ""
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ShowUI(spotifyViewModelX: SpotifyViewModelX) {
+    MusicStateControl(
+        modifier = Modifier
+            .fillMaxSize(),
+        networkState = spotifyViewModelX.currentUserShow,
+        onCurrentStateInitialized = {
+            spotifyViewModelX.getCurrentUserShows()
+        }
+    ) { networkResponse ->
+        networkResponse.data?.items.let { showList ->
+
+            LazyColumn(
+                modifier = Modifier
+                    .height(LocalConfiguration.current.screenHeightDp.dp)
+                    .padding(start = 12.dp)
+                    .width(LocalConfiguration.current.screenWidthDp.dp),
+                horizontalAlignment = Alignment.Start
+            ) {
+                if (showList != null) {
+                    items(showList.size) {
+
+                        // current Item
+                        val currentItem = showList[it]
+
+                        MusicSmallImageRow(
+                            imageUri = currentItem.show.images.firstOrNull()?.url,
+                            name = currentItem.show.name,
+                            itemUri = currentItem.show.uri,
+                            type = currentItem.show.type,
+                            owner = ""
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun EpisodeUI(spotifyViewModelX: SpotifyViewModelX) {
+    MusicStateControl(
+        modifier = Modifier
+            .fillMaxSize(),
+        networkState = spotifyViewModelX.currentUserEpisode,
+        onCurrentStateInitialized = {
+            spotifyViewModelX.getCurrentUserEpisode()
+        }
+    ) { networkResponse ->
+        networkResponse.data?.items.let { episodeList ->
+
+            LazyColumn(
+                modifier = Modifier
+                    .height(LocalConfiguration.current.screenHeightDp.dp)
+                    .padding(start = 12.dp)
+                    .width(LocalConfiguration.current.screenWidthDp.dp),
+                horizontalAlignment = Alignment.Start
+            ) {
+                if (episodeList != null) {
+                    items(episodeList.size) {
+
+                        // current Item
+                        val currentItem = episodeList[it]
+
+                        MusicSmallImageRow(
+                            imageUri = currentItem.episode.images.firstOrNull()?.url,
+                            name = currentItem.episode.name,
+                            itemUri = currentItem.episode.uri,
+                            type = currentItem.episode.type,
+                            owner = ""
+                        )
+                    }
+                }
+            }
+        }
+    }
 }

@@ -1,6 +1,5 @@
 package fit.asta.health.thirdparty.spotify.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,17 +7,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
 import fit.asta.health.thirdparty.spotify.model.net.albums.SpotifyAlbumDetailsModel
 import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
+import fit.asta.health.thirdparty.spotify.model.net.me.albums.SpotifyLibraryAlbumModel
+import fit.asta.health.thirdparty.spotify.model.net.me.episodes.SpotifyLibraryEpisodesModel
+import fit.asta.health.thirdparty.spotify.model.net.me.following.SpotifyUserFollowingArtist
 import fit.asta.health.thirdparty.spotify.model.net.me.player.recentlyplayed.SpotifyPlayerRecentlyPlayedModel
+import fit.asta.health.thirdparty.spotify.model.net.me.shows.SpotifyLibraryShowsModel
+import fit.asta.health.thirdparty.spotify.model.net.me.tracks.SpotifyLibraryTracksModel
+import fit.asta.health.thirdparty.spotify.model.net.playlist.SpotifyUserPlaylistsModel
 import fit.asta.health.thirdparty.spotify.model.net.recommendations.SpotifyRecommendationModel
 import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopArtistsModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopTracksModel
 import fit.asta.health.thirdparty.spotify.model.net.tracks.SpotifyTrackDetailsModel
-import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -38,6 +41,29 @@ class SpotifyViewModelX @Inject constructor(
         SpotifyNetworkCall.Initialized()
     )
         private set
+
+
+    /**
+     * This function handles what we need to do after we get the Authorization request response
+     */
+    fun handleSpotifyAuthResponse(response: AuthorizationResponse) {
+        when (response.type) {
+
+            // If the Response is a token that means its a successful response
+            AuthorizationResponse.Type.TOKEN -> {
+                accessToken = response.accessToken
+
+                // Fetching the User Data from the api
+                getCurrentUserDetails(accessToken = accessToken)
+            }
+
+            // If the Response is an Error or anything else
+            else -> {
+                currentUserData = SpotifyNetworkCall.Failure(message = response.toString())
+            }
+        }
+    }
+
 
     /**
      * This function fetches the Current User Data from the spotify api
@@ -308,24 +334,170 @@ class SpotifyViewModelX @Inject constructor(
         }
     }
 
+    /**
+     * This variable keeps the current Spotify User All Tracks fetched from the spotify Api
+     */
+    var currentUserTracks: SpotifyNetworkCall<SpotifyLibraryTracksModel> by mutableStateOf(
+        SpotifyNetworkCall.Initialized()
+    )
+        private set
 
     /**
-     * This function handles what we need to do after we get the Authorization request response
+     * This function fetches all the current User Tracks from the spotify api
      */
-    fun handleSpotifyAuthResponse(response: AuthorizationResponse) {
-        when (response.type) {
+    fun getCurrentUserTracks() {
 
-            // If the Response is a token that means its a successful response
-            AuthorizationResponse.Type.TOKEN -> {
-                accessToken = response.accessToken
+        // Starting the Loading State
+        currentUserTracks = SpotifyNetworkCall.Loading()
 
-                // Fetching the User Data from the api
-                getCurrentUserDetails(accessToken = accessToken)
+        viewModelScope.launch {
+            currentUserTracks = try {
+
+                // Fetching the data from the Api
+                val response = repository.getCurrentUserTracks(accessToken)
+                handleResponse(response)
+            } catch (e: Exception) {
+                SpotifyNetworkCall.Failure(message = e.message)
             }
+        }
+    }
 
-            // If the Response is an Error or anything else
-            else -> {
-                currentUserData = SpotifyNetworkCall.Failure(message = response.toString())
+    /**
+     * This variable keeps the current User All playlist from the spotify Api
+     */
+    var currentUserPlaylist: SpotifyNetworkCall<SpotifyUserPlaylistsModel> by mutableStateOf(
+        SpotifyNetworkCall.Initialized()
+    )
+        private set
+
+    /**
+     * This function fetches all the current User Playlist from the spotify Api
+     */
+    fun getCurrentUserPlaylist() {
+
+        // Starting the Loading State
+        currentUserPlaylist = SpotifyNetworkCall.Loading()
+
+        viewModelScope.launch {
+            currentUserPlaylist = try {
+
+                // Fetching the data from the Api
+                val response = repository.getCurrentUserPlaylists(accessToken)
+                handleResponse(response)
+            } catch (e: Exception) {
+                SpotifyNetworkCall.Failure(message = e.message)
+            }
+        }
+    }
+
+    /**
+     * This variable contains the data of all the current User Artists from the spotify Api
+     */
+    var currentUserFollowingArtist: SpotifyNetworkCall<SpotifyUserFollowingArtist> by mutableStateOf(
+        SpotifyNetworkCall.Initialized()
+    )
+        private set
+
+    /**
+     * This function fetches all the current User Following Artists from the spotify Api
+     */
+    fun getCurrentUserFollowingArtists() {
+
+        // Starting the Loading State
+        currentUserFollowingArtist = SpotifyNetworkCall.Loading()
+
+        viewModelScope.launch {
+            currentUserFollowingArtist = try {
+
+                // Fetching the data from the Api
+                val response = repository.getCurrentUserFollowedArtists(accessToken)
+                handleResponse(response)
+            } catch (e: Exception) {
+                SpotifyNetworkCall.Failure(message = e.message)
+            }
+        }
+    }
+
+    /**
+     * This variable contains the current User all albums from the spotify Api
+     */
+    var currentUserAlbum: SpotifyNetworkCall<SpotifyLibraryAlbumModel> by mutableStateOf(
+        SpotifyNetworkCall.Initialized()
+    )
+        private set
+
+    /**
+     * This function fetches all the current User Albums from the spotify Api
+     */
+    fun getCurrentUserAlbum() {
+
+        // Starting the Loading State
+        currentUserAlbum = SpotifyNetworkCall.Loading()
+
+        viewModelScope.launch {
+            currentUserAlbum = try {
+
+                // Fetching the data from the Api
+                val response = repository.getCurrentUserAlbums(accessToken)
+                handleResponse(response)
+            } catch (e: Exception) {
+                SpotifyNetworkCall.Failure(message = e.message)
+            }
+        }
+    }
+
+    /**
+     * This variable contains the currentUserShows from the spotify Api
+     */
+    var currentUserShow: SpotifyNetworkCall<SpotifyLibraryShowsModel> by mutableStateOf(
+        SpotifyNetworkCall.Initialized()
+    )
+        private set
+
+    /**
+     * This function fetches all the shows data from the spotify Api
+     */
+    fun getCurrentUserShows() {
+
+        // Starting the Loading State
+        currentUserShow = SpotifyNetworkCall.Loading()
+
+        viewModelScope.launch {
+            currentUserShow = try {
+
+                // Fetching the data from the Api
+                val response = repository.getCurrentUserShows(accessToken)
+                handleResponse(response)
+            } catch (e: Exception) {
+                SpotifyNetworkCall.Failure(message = e.message)
+            }
+        }
+    }
+
+    /**
+     * This variable contains the current User All the Episodes from the spotify APi
+     */
+    var currentUserEpisode: SpotifyNetworkCall<SpotifyLibraryEpisodesModel> by mutableStateOf(
+        SpotifyNetworkCall.Initialized()
+    )
+        private set
+
+    /**
+     *  This function fetches the current User all the Episodes from the spotify APi
+     */
+    fun getCurrentUserEpisode() {
+
+        // Starting the Loading State
+        currentUserEpisode = SpotifyNetworkCall.Loading()
+
+        viewModelScope.launch {
+            currentUserEpisode = try {
+
+                // Fetching the data from the Api
+                val response = repository.getCurrentUserEpisodes(accessToken)
+                handleResponse(response)
+            } catch (e: Exception) {
+                SpotifyNetworkCall.Failure(message = e.message)
             }
         }
     }
