@@ -13,7 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.navigation.track.TrackNavGraph
 import fit.asta.health.navigation.track.viewmodel.TrackViewModel
-import fit.asta.health.thirdparty.spotify.view.activity.SpotifyLoginActivity
+import fit.asta.health.thirdparty.spotify.SpotifyLoginActivity
 
 @Composable
 fun TrackContent() {

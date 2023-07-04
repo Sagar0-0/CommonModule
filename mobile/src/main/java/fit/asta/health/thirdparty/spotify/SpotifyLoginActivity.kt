@@ -1,4 +1,4 @@
-package fit.asta.health.thirdparty.spotify.view.activity
+package fit.asta.health.thirdparty.spotify
 
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -24,8 +24,6 @@ import com.spotify.sdk.android.auth.AuthorizationRequest
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.ui.AppTheme
-import fit.asta.health.thirdparty.spotify.SpotifyNavGraph
-import fit.asta.health.thirdparty.spotify.SpotifyNavRoutes
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
 import fit.asta.health.thirdparty.spotify.view.components.MusicTopTabBar
 import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
@@ -84,28 +82,6 @@ class SpotifyLoginActivity : ComponentActivity() {
                             }
                         }
                     ) {
-
-//                        val intent = Intent(this, MusicHomeActivity::class.java)
-//
-//                            // Sending User Details to the next Activity
-//                            intent.putExtra(
-//                                SpotifyConstants.SPOTIFY_USER_DETAILS,
-//                                spotifyViewModelX.currentUserData.data
-//                            )
-//
-//                            // Sending the User Token to the next Activity
-//                            intent.putExtra(
-//                                SpotifyConstants.SPOTIFY_USER_TOKEN,
-//                                spotifyViewModelX.accessToken
-//                            )
-//
-//                            SpotifyConstants.SPOTIFY_USER_ACCESS_TOKEN =
-//                                spotifyViewModelX.accessToken
-//
-//
-//                            // Starting the Activity
-//                            startActivity(intent)
-
                         val navController = rememberNavController()
                         DisplaySuccessUI(navController = navController)
                     }

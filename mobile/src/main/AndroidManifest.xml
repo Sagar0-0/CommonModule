@@ -119,41 +119,7 @@
             tools:replace="android:launchMode" />
         -->
         <activity
-            android:name=".thirdparty.spotify.view.activity.SpotifyAlbumDetailsActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".thirdparty.spotify.view.activity.SpotifyTracksDetailsActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".thirdparty.spotify.view.activity.SpotifyUserLibraryActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".thirdparty.MusicHomeActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".thirdparty.spotify.view.activity.SpotifySearchActivity"
-            android:exported="false" />
-        <activity
-            android:name=".thirdparty.spotify.view.activity.SpotifyHomeScreenActivity"
-            android:exported="false" />
-        <activity
-            android:name=".thirdparty.spotify.view.activity.SpotifyLoginActivity"
+            android:name=".thirdparty.spotify.SpotifyLoginActivity"
             android:exported="true"
             android:launchMode="singleInstance">
             <intent-filter>
