@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
-import fit.asta.health.thirdparty.spotify.model.net.albums.SpotifyAlbumDetailsModel
+import fit.asta.health.thirdparty.spotify.model.netx.albums.SpotifyAlbumDetailsModelX
 import fit.asta.health.thirdparty.spotify.model.net.me.albums.SpotifyLibraryAlbumModel
 import fit.asta.health.thirdparty.spotify.model.net.me.episodes.SpotifyLibraryEpisodesModel
 import fit.asta.health.thirdparty.spotify.model.net.me.following.SpotifyUserFollowingArtist
@@ -304,7 +304,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * Keeps the Spotify Album Details
      */
-    var albumDetailsResponse: SpotifyNetworkCall<SpotifyAlbumDetailsModel> by mutableStateOf(
+    var albumDetailsResponse: SpotifyNetworkCall<SpotifyAlbumDetailsModelX> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set

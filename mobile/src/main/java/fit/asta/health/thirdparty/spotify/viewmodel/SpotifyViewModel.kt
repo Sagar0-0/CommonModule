@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
-import fit.asta.health.thirdparty.spotify.model.net.albums.SpotifyAlbumDetailsModel
+import fit.asta.health.thirdparty.spotify.model.netx.albums.SpotifyAlbumDetailsModelX
 import fit.asta.health.thirdparty.spotify.model.net.categories.SpotifyBrowseCategoriesModel
 import fit.asta.health.thirdparty.spotify.model.net.me.albums.SpotifyLibraryAlbumModel
 import fit.asta.health.thirdparty.spotify.model.net.me.episodes.SpotifyLibraryEpisodesModel
@@ -268,7 +268,7 @@ class SpotifyViewModel @Inject constructor(
     }
 
     // Get Album Details
-    val albumDetailsResponse: MutableLiveData<NetworkResult<SpotifyAlbumDetailsModel>> =
+    val albumDetailsResponse: MutableLiveData<NetworkResult<SpotifyAlbumDetailsModelX>> =
         MutableLiveData()
 
     fun getAlbumDetails(accessToken: String, albumId: String) = viewModelScope.launch {

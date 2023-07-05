@@ -1,6 +1,6 @@
 package fit.asta.health.thirdparty.spotify.model.api
 
-import fit.asta.health.thirdparty.spotify.model.net.albums.SpotifyAlbumDetailsModel
+import fit.asta.health.thirdparty.spotify.model.netx.albums.SpotifyAlbumDetailsModelX
 import fit.asta.health.thirdparty.spotify.model.net.categories.SpotifyBrowseCategoriesModel
 import fit.asta.health.thirdparty.spotify.model.net.me.albums.SpotifyLibraryAlbumModel
 import fit.asta.health.thirdparty.spotify.model.net.me.episodes.SpotifyLibraryEpisodesModel
@@ -52,7 +52,7 @@ interface SpotifyApi {
     suspend fun getAlbumDetails(
         accessToken: String,
         albumID: String
-    ): Response<SpotifyAlbumDetailsModel>
+    ): Response<SpotifyAlbumDetailsModelX>
 
     suspend fun getCategories(
         accessToken: String,
