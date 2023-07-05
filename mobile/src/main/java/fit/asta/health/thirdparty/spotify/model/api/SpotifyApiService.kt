@@ -5,7 +5,6 @@ import fit.asta.health.thirdparty.spotify.model.net.categories.SpotifyBrowseCate
 import fit.asta.health.thirdparty.spotify.model.net.me.albums.SpotifyLibraryAlbumModel
 import fit.asta.health.thirdparty.spotify.model.net.me.episodes.SpotifyLibraryEpisodesModel
 import fit.asta.health.thirdparty.spotify.model.net.me.following.SpotifyUserFollowingArtist
-import fit.asta.health.thirdparty.spotify.model.net.me.player.recentlyplayed.SpotifyPlayerRecentlyPlayedModel
 import fit.asta.health.thirdparty.spotify.model.net.me.shows.SpotifyLibraryShowsModel
 import fit.asta.health.thirdparty.spotify.model.net.me.tracks.SpotifyLibraryTracksModel
 import fit.asta.health.thirdparty.spotify.model.net.playlist.SpotifyUserPlaylistsModel
@@ -15,6 +14,7 @@ import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopArtistsModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopTracksModel
 import fit.asta.health.thirdparty.spotify.model.net.tracks.SpotifyTrackDetailsModel
 import fit.asta.health.thirdparty.spotify.model.netx.me.SpotifyMeModelX
+import fit.asta.health.thirdparty.spotify.model.netx.recently.SpotifyPlayerRecentlyPlayedModelX
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -70,7 +70,7 @@ interface SpotifyApiService {
     suspend fun getCurrentUserRecentlyPlayedTracks(
         @HeaderMap headers: Map<String, String>,
         @QueryMap queries: Map<String, String>
-    ): Response<SpotifyPlayerRecentlyPlayedModel>
+    ): Response<SpotifyPlayerRecentlyPlayedModelX>
 
     @GET("users/{user_id}/playlists")
     suspend fun getUserPlaylists(

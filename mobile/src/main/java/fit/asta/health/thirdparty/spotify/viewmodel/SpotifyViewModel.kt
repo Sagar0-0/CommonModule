@@ -12,7 +12,6 @@ import fit.asta.health.thirdparty.spotify.model.net.categories.SpotifyBrowseCate
 import fit.asta.health.thirdparty.spotify.model.net.me.albums.SpotifyLibraryAlbumModel
 import fit.asta.health.thirdparty.spotify.model.net.me.episodes.SpotifyLibraryEpisodesModel
 import fit.asta.health.thirdparty.spotify.model.net.me.following.SpotifyUserFollowingArtist
-import fit.asta.health.thirdparty.spotify.model.net.me.player.recentlyplayed.SpotifyPlayerRecentlyPlayedModel
 import fit.asta.health.thirdparty.spotify.model.net.me.shows.SpotifyLibraryShowsModel
 import fit.asta.health.thirdparty.spotify.model.net.me.tracks.SpotifyLibraryTracksModel
 import fit.asta.health.thirdparty.spotify.model.net.playlist.SpotifyUserPlaylistsModel
@@ -24,6 +23,7 @@ import fit.asta.health.thirdparty.spotify.model.net.tracks.SpotifyTrackDetailsMo
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.TAG
 import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.thirdparty.spotify.model.netx.me.SpotifyMeModelX
+import fit.asta.health.thirdparty.spotify.model.netx.recently.SpotifyPlayerRecentlyPlayedModelX
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
@@ -212,7 +212,7 @@ class SpotifyViewModel @Inject constructor(
     }
 
     // Get Current User's Recently Played
-    val currentUserRecentlyPlayed: MutableLiveData<NetworkResult<SpotifyPlayerRecentlyPlayedModel>> =
+    val currentUserRecentlyPlayed: MutableLiveData<NetworkResult<SpotifyPlayerRecentlyPlayedModelX>> =
         MutableLiveData()
 
     fun getCurrentUserRecentlyPlayed(accessToken: String) =

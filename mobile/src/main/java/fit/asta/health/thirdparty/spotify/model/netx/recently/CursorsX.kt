@@ -1,4 +1,4 @@
-package fit.asta.health.thirdparty.spotify.model.net.me.player.recentlyplayed
+package fit.asta.health.thirdparty.spotify.model.netx.recently
 
 
 import android.os.Parcelable
@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Cursors(
+data class CursorsX(
     @SerializedName("after")
     val after: String, // 1662988198900
     @SerializedName("before")

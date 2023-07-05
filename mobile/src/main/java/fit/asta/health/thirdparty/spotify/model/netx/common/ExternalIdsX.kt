@@ -1,4 +1,4 @@
-package fit.asta.health.thirdparty.spotify.model.net.me.player.recentlyplayed
+package fit.asta.health.thirdparty.spotify.model.netx.common
 
 
 import android.os.Parcelable
@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ExternalIds(
+data class ExternalIdsX(
     @SerializedName("isrc")
-    val isrc: String // QZMER2254575
+    val isrc: String
 ) : Parcelable

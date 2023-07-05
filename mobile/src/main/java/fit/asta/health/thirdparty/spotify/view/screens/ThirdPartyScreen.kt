@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fit.asta.health.thirdparty.spotify.SpotifyNavRoutes
-import fit.asta.health.thirdparty.spotify.model.net.me.player.recentlyplayed.Track
+import fit.asta.health.thirdparty.spotify.model.netx.recently.TrackX
 import fit.asta.health.thirdparty.spotify.view.components.MusicArtistsUI
 import fit.asta.health.thirdparty.spotify.view.components.MusicPlayableSmallCards
 import fit.asta.health.thirdparty.spotify.view.components.MusicLargeImageColumn
@@ -145,7 +145,7 @@ fun ThirdPartyScreen(
             networkState.data?.items.let { albumList ->
 
                 // making a list of tracks to be displayed into the screen
-                val tracksList = ArrayList<Track>()
+                val tracksList = ArrayList<TrackX>()
                 albumList?.forEach { item ->
                     if (!tracksList.contains(item.track)) {
                         tracksList.add(item.track)

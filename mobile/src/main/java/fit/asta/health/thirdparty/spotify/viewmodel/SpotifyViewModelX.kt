@@ -12,7 +12,6 @@ import fit.asta.health.thirdparty.spotify.model.net.albums.SpotifyAlbumDetailsMo
 import fit.asta.health.thirdparty.spotify.model.net.me.albums.SpotifyLibraryAlbumModel
 import fit.asta.health.thirdparty.spotify.model.net.me.episodes.SpotifyLibraryEpisodesModel
 import fit.asta.health.thirdparty.spotify.model.net.me.following.SpotifyUserFollowingArtist
-import fit.asta.health.thirdparty.spotify.model.net.me.player.recentlyplayed.SpotifyPlayerRecentlyPlayedModel
 import fit.asta.health.thirdparty.spotify.model.net.me.shows.SpotifyLibraryShowsModel
 import fit.asta.health.thirdparty.spotify.model.net.me.tracks.SpotifyLibraryTracksModel
 import fit.asta.health.thirdparty.spotify.model.net.playlist.SpotifyUserPlaylistsModel
@@ -22,6 +21,7 @@ import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopArtistsModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopTracksModel
 import fit.asta.health.thirdparty.spotify.model.net.tracks.SpotifyTrackDetailsModel
 import fit.asta.health.thirdparty.spotify.model.netx.me.SpotifyMeModelX
+import fit.asta.health.thirdparty.spotify.model.netx.recently.SpotifyPlayerRecentlyPlayedModelX
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -85,7 +85,7 @@ class SpotifyViewModelX @Inject constructor(
     }
 
     // Keeps the user Recently Played Tracks
-    var userRecentlyPlayedTracks: SpotifyNetworkCall<SpotifyPlayerRecentlyPlayedModel> by mutableStateOf(
+    var userRecentlyPlayedTracks: SpotifyNetworkCall<SpotifyPlayerRecentlyPlayedModelX> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set
