@@ -1,4 +1,4 @@
-package fit.asta.health.thirdparty.spotify.model.net.search
+package fit.asta.health.thirdparty.spotify.model.netx.common
 
 
 import android.os.Parcelable
@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ResumePoint(
     @SerializedName("fully_played")
-    val fullyPlayed: Boolean, // false
+    val fullyPlayed: Boolean,
     @SerializedName("resume_position_ms")
-    val resumePositionMs: Int // 0
+    val resumePositionMs: Int
 ) : Parcelable

@@ -8,7 +8,7 @@ import fit.asta.health.thirdparty.spotify.model.net.me.following.SpotifyUserFoll
 import fit.asta.health.thirdparty.spotify.model.net.me.shows.SpotifyLibraryShowsModel
 import fit.asta.health.thirdparty.spotify.model.net.me.tracks.SpotifyLibraryTracksModel
 import fit.asta.health.thirdparty.spotify.model.net.playlist.SpotifyUserPlaylistsModel
-import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
+import fit.asta.health.thirdparty.spotify.model.netx.search.SpotifySearchModelX
 import fit.asta.health.thirdparty.spotify.model.netx.top.SpotifyTopArtistsModelX
 import fit.asta.health.thirdparty.spotify.model.netx.top.SpotifyTopTracksModelX
 import fit.asta.health.thirdparty.spotify.model.netx.common.TrackX
@@ -100,7 +100,7 @@ interface SpotifyApiService {
     suspend fun searchQuery(
         @HeaderMap headers: Map<String, String>,
         @QueryMap queries: Map<String, String>
-    ): Response<SpotifySearchModel>
+    ): Response<SpotifySearchModelX>
 
     @GET("recommendations")
     suspend fun getRecommendations(

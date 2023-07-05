@@ -1,4 +1,4 @@
-package fit.asta.health.thirdparty.spotify.model.net.search
+package fit.asta.health.thirdparty.spotify.model.netx.search
 
 
 import android.os.Parcelable
@@ -6,17 +6,17 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class SpotifySearchModel(
+data class SpotifySearchModelX(
     @SerializedName("albums")
-    val albums: Albums,
+    val albums: AlbumListX,
     @SerializedName("artists")
-    val artists: Artists,
+    val artists: ArtistListX,
     @SerializedName("episodes")
-    val episodes: Episodes,
+    val episodes: EpisodeListX,
     @SerializedName("playlists")
-    val playlists: Playlists,
+    val playlists: PlaylistListX,
     @SerializedName("shows")
-    val shows: Shows,
+    val shows: ShowListX,
     @SerializedName("tracks")
-    val tracks: TracksX
+    val tracks: TrackListX
 ) : Parcelable
