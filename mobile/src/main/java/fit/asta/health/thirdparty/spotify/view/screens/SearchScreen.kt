@@ -150,7 +150,7 @@ fun SearchScreen(
         ) { networkResponse ->
 
             // Handling the Tracks UI here
-            networkResponse.data?.tracks?.items.let { trackList ->
+            networkResponse.data?.tracks?.trackList.let { trackList ->
 
                 // Tracks
                 Text(
@@ -194,7 +194,7 @@ fun SearchScreen(
             }
 
             // Handling the Artists UI here
-            networkResponse.data?.artists?.items.let { artistsList ->
+            networkResponse.data?.artists?.artistList.let { artistsList ->
 
                 // Artists
                 Text(

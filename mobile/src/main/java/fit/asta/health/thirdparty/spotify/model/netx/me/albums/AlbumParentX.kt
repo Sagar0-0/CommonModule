@@ -7,7 +7,7 @@ import fit.asta.health.thirdparty.spotify.model.netx.common.AlbumX
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ItemX(
+data class AlbumParentX(
     @SerializedName("added_at")
     val addedAt: String,
     @SerializedName("album")

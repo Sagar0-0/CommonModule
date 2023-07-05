@@ -1,7 +1,7 @@
 package fit.asta.health.thirdparty.spotify.model.api
 
-import fit.asta.health.thirdparty.spotify.model.netx.albums.SpotifyAlbumDetailsModelX
 import fit.asta.health.thirdparty.spotify.model.net.categories.SpotifyBrowseCategoriesModel
+import fit.asta.health.thirdparty.spotify.model.netx.common.AlbumX
 import fit.asta.health.thirdparty.spotify.model.netx.me.albums.SpotifyLibraryAlbumModelX
 import fit.asta.health.thirdparty.spotify.model.netx.me.episodes.SpotifyLibraryEpisodesModelX
 import fit.asta.health.thirdparty.spotify.model.netx.me.following.SpotifyUserFollowingArtistX
@@ -9,11 +9,11 @@ import fit.asta.health.thirdparty.spotify.model.netx.me.shows.SpotifyLibraryShow
 import fit.asta.health.thirdparty.spotify.model.netx.me.tracks.SpotifyLibraryTracksModelX
 import fit.asta.health.thirdparty.spotify.model.netx.me.playlist.SpotifyUserPlaylistsModelX
 import fit.asta.health.thirdparty.spotify.model.netx.search.SpotifySearchModelX
-import fit.asta.health.thirdparty.spotify.model.netx.top.SpotifyTopArtistsModelX
-import fit.asta.health.thirdparty.spotify.model.netx.top.SpotifyTopTracksModelX
+import fit.asta.health.thirdparty.spotify.model.netx.search.ArtistListX
+import fit.asta.health.thirdparty.spotify.model.netx.search.TrackListX
 import fit.asta.health.thirdparty.spotify.model.netx.common.TrackX
 import fit.asta.health.thirdparty.spotify.model.netx.me.SpotifyMeModelX
-import fit.asta.health.thirdparty.spotify.model.netx.recently.SpotifyPlayerRecentlyPlayedModelX
+import fit.asta.health.thirdparty.spotify.model.netx.recently.SpotifyUserRecentlyPlayedModelX
 import fit.asta.health.thirdparty.spotify.model.netx.recommendations.SpotifyRecommendationModelX
 import retrofit2.Response
 import retrofit2.http.*
@@ -34,12 +34,12 @@ interface SpotifyApiService {
     @GET("me/top/tracks")
     suspend fun getCurrentUserTopTracks(
         @HeaderMap headers: Map<String, String>
-    ): Response<SpotifyTopTracksModelX>
+    ): Response<TrackListX>
 
     @GET("me/top/artists")
     suspend fun getCurrentUserTopArtists(
         @HeaderMap headers: Map<String, String>
-    ): Response<SpotifyTopArtistsModelX>
+    ): Response<ArtistListX>
 
     @GET("me/playlists")
     suspend fun getCurrentUserPlaylists(
@@ -70,7 +70,7 @@ interface SpotifyApiService {
     suspend fun getCurrentUserRecentlyPlayedTracks(
         @HeaderMap headers: Map<String, String>,
         @QueryMap queries: Map<String, String>
-    ): Response<SpotifyPlayerRecentlyPlayedModelX>
+    ): Response<SpotifyUserRecentlyPlayedModelX>
 
     @GET("users/{user_id}/playlists")
     suspend fun getUserPlaylists(
@@ -88,7 +88,7 @@ interface SpotifyApiService {
     suspend fun getAlbumDetails(
         @HeaderMap headers: Map<String, String>,
         @Path("album_id") albumID: String
-    ): Response<SpotifyAlbumDetailsModelX>
+    ): Response<AlbumX>
 
     @GET("browse/categories")
     suspend fun getCategories(

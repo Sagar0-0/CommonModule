@@ -1,8 +1,8 @@
 package fit.asta.health.thirdparty.spotify.model
 
 import fit.asta.health.thirdparty.spotify.model.api.SpotifyApi
-import fit.asta.health.thirdparty.spotify.model.netx.albums.SpotifyAlbumDetailsModelX
 import fit.asta.health.thirdparty.spotify.model.net.categories.SpotifyBrowseCategoriesModel
+import fit.asta.health.thirdparty.spotify.model.netx.common.AlbumX
 import fit.asta.health.thirdparty.spotify.model.netx.me.albums.SpotifyLibraryAlbumModelX
 import fit.asta.health.thirdparty.spotify.model.netx.me.episodes.SpotifyLibraryEpisodesModelX
 import fit.asta.health.thirdparty.spotify.model.netx.me.following.SpotifyUserFollowingArtistX
@@ -10,11 +10,11 @@ import fit.asta.health.thirdparty.spotify.model.netx.me.shows.SpotifyLibraryShow
 import fit.asta.health.thirdparty.spotify.model.netx.me.tracks.SpotifyLibraryTracksModelX
 import fit.asta.health.thirdparty.spotify.model.netx.me.playlist.SpotifyUserPlaylistsModelX
 import fit.asta.health.thirdparty.spotify.model.netx.search.SpotifySearchModelX
-import fit.asta.health.thirdparty.spotify.model.netx.top.SpotifyTopArtistsModelX
-import fit.asta.health.thirdparty.spotify.model.netx.top.SpotifyTopTracksModelX
+import fit.asta.health.thirdparty.spotify.model.netx.search.ArtistListX
+import fit.asta.health.thirdparty.spotify.model.netx.search.TrackListX
 import fit.asta.health.thirdparty.spotify.model.netx.common.TrackX
 import fit.asta.health.thirdparty.spotify.model.netx.me.SpotifyMeModelX
-import fit.asta.health.thirdparty.spotify.model.netx.recently.SpotifyPlayerRecentlyPlayedModelX
+import fit.asta.health.thirdparty.spotify.model.netx.recently.SpotifyUserRecentlyPlayedModelX
 import fit.asta.health.thirdparty.spotify.model.netx.recommendations.SpotifyRecommendationModelX
 import retrofit2.Response
 import javax.inject.Inject
@@ -32,11 +32,11 @@ class SpotifyRepoImpl @Inject constructor(
         return spotifyApi.getCurrentUserFollowedArtists(accessToken = accessToken)
     }
 
-    override suspend fun getCurrentUserTopTracks(accessToken: String): Response<SpotifyTopTracksModelX> {
+    override suspend fun getCurrentUserTopTracks(accessToken: String): Response<TrackListX> {
         return spotifyApi.getCurrentUserTopTracks(accessToken = accessToken)
     }
 
-    override suspend fun getCurrentUserTopArtists(accessToken: String): Response<SpotifyTopArtistsModelX> {
+    override suspend fun getCurrentUserTopArtists(accessToken: String): Response<ArtistListX> {
         return spotifyApi.getCurrentUserTopArtists(accessToken = accessToken)
     }
 
@@ -60,7 +60,7 @@ class SpotifyRepoImpl @Inject constructor(
         return spotifyApi.getCurrentUserPlaylists(accessToken = accessToken)
     }
 
-    override suspend fun getCurrentUserRecentlyPlayedTracks(accessToken: String): Response<SpotifyPlayerRecentlyPlayedModelX> {
+    override suspend fun getCurrentUserRecentlyPlayedTracks(accessToken: String): Response<SpotifyUserRecentlyPlayedModelX> {
         return spotifyApi.getCurrentUserRecentlyPlayedTracks(accessToken = accessToken)
     }
 
@@ -87,7 +87,7 @@ class SpotifyRepoImpl @Inject constructor(
     override suspend fun getAlbumDetails(
         accessToken: String,
         albumID: String
-    ): Response<SpotifyAlbumDetailsModelX> {
+    ): Response<AlbumX> {
         return spotifyApi.getAlbumDetails(
             accessToken = accessToken,
             albumID = albumID

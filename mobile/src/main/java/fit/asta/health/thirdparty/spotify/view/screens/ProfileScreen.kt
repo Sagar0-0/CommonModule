@@ -106,7 +106,7 @@ fun TracksUI(spotifyViewModelX: SpotifyViewModelX) {
             spotifyViewModelX.getCurrentUserTracks()
         }
     ) { networkResponse ->
-        networkResponse.data?.items.let { trackList ->
+        networkResponse.data?.trackList.let { trackList ->
 
             LazyColumn(
                 modifier = Modifier
@@ -147,7 +147,7 @@ fun PlaylistUI(spotifyViewModelX: SpotifyViewModelX) {
             spotifyViewModelX.getCurrentUserPlaylist()
         }
     ) { networkResponse ->
-        networkResponse.data?.userPlaylistItems.let { playList ->
+        networkResponse.data?.playlistList.let { playList ->
 
             LazyColumn(
                 modifier = Modifier
@@ -188,7 +188,7 @@ fun ArtistsUI(spotifyViewModelX: SpotifyViewModelX) {
             spotifyViewModelX.getCurrentUserFollowingArtists()
         }
     ) { networkResponse ->
-        networkResponse.data?.artists?.items.let { artistsList ->
+        networkResponse.data?.artistList?.artistList.let { artistsList ->
 
             LazyColumn(
                 modifier = Modifier
@@ -228,7 +228,7 @@ fun AlbumsUI(spotifyViewModelX: SpotifyViewModelX) {
             spotifyViewModelX.getCurrentUserAlbum()
         }
     ) { networkResponse ->
-        networkResponse.data?.items.let { albumList ->
+        networkResponse.data?.albumList.let { albumList ->
 
             LazyColumn(
                 modifier = Modifier
@@ -267,7 +267,7 @@ fun ShowUI(spotifyViewModelX: SpotifyViewModelX) {
             spotifyViewModelX.getCurrentUserShows()
         }
     ) { networkResponse ->
-        networkResponse.data?.items.let { showList ->
+        networkResponse.data?.showList.let { showList ->
 
             LazyColumn(
                 modifier = Modifier
@@ -306,7 +306,7 @@ fun EpisodeUI(spotifyViewModelX: SpotifyViewModelX) {
             spotifyViewModelX.getCurrentUserEpisode()
         }
     ) { networkResponse ->
-        networkResponse.data?.items.let { episodeList ->
+        networkResponse.data?.episodeList.let { episodeList ->
 
             LazyColumn(
                 modifier = Modifier

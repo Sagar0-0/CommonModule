@@ -9,5 +9,5 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class SpotifyUserFollowingArtistX(
     @SerializedName("artists")
-    val artists: ArtistListX
+    val artistList: ArtistListX
 ) : Parcelable

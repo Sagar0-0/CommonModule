@@ -1,4 +1,4 @@
-package fit.asta.health.thirdparty.spotify.model.netx.me.tracks
+package fit.asta.health.thirdparty.spotify.model.netx.recently
 
 
 import android.os.Parcelable
@@ -7,9 +7,11 @@ import fit.asta.health.thirdparty.spotify.model.netx.common.TrackX
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class TrackListX(
-    @SerializedName("added_at")
-    val addedAt: String,
+data class TrackParentX(
+    @SerializedName("context")
+    val context: ContextX,
+    @SerializedName("played_at")
+    val playedAt: String,
     @SerializedName("track")
     val track: TrackX
 ) : Parcelable

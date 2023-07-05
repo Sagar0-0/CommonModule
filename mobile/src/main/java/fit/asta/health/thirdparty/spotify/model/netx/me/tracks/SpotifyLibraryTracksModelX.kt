@@ -10,7 +10,7 @@ data class SpotifyLibraryTracksModelX(
     @SerializedName("href")
     val href: String,
     @SerializedName("items")
-    val items: List<TrackListX>,
+    val trackList: List<TrackParentX>,
     @SerializedName("limit")
     val limit: Int,
     @SerializedName("next")

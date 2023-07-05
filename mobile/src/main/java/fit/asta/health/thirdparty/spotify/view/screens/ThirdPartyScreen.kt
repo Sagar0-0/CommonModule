@@ -142,11 +142,11 @@ fun ThirdPartyScreen(
                 spotifyViewModelX.getCurrentUserRecentlyPlayedTracks()
             }
         ) { networkState ->
-            networkState.data?.items.let { albumList ->
+            networkState.data?.trackList.let { trackList ->
 
                 // making a list of tracks to be displayed into the screen
                 val tracksList = ArrayList<TrackX>()
-                albumList?.forEach { item ->
+                trackList?.forEach { item ->
                     if (!tracksList.contains(item.track)) {
                         tracksList.add(item.track)
                     }
@@ -199,7 +199,7 @@ fun ThirdPartyScreen(
                 spotifyViewModelX.getRecommendationTracks()
             }
         ) { networkResponse ->
-            networkResponse.data?.let { recommendations ->
+            networkResponse.data?.trackList.let { trackList ->
 
                 // Showing the Tracks List UI inside a Lazy Row
                 LazyRow(
@@ -207,20 +207,22 @@ fun ThirdPartyScreen(
                         .height(210.dp)
                         .width(LocalConfiguration.current.screenWidthDp.dp)
                 ) {
-                    items(recommendations.tracks.size) {
-                        val currentItem = recommendations.tracks[it]
+                    if (trackList != null) {
+                        items(trackList.size) {
+                            val currentItem = trackList[it]
 
-                        // This function draws the Track UI
-                        MusicLargeImageColumn(
-                            imageUri = currentItem.album.images.firstOrNull()?.url,
-                            headerText = currentItem.name,
-                            secondaryTexts = currentItem.artists
-                        ) {
+                            // This function draws the Track UI
+                            MusicLargeImageColumn(
+                                imageUri = currentItem.album.images.firstOrNull()?.url,
+                                headerText = currentItem.name,
+                                secondaryTexts = currentItem.artists
+                            ) {
 
-                            // Navigating to the Track Details Screen
-                            spotifyViewModelX.setTrackId(currentItem.id)
-                            spotifyViewModelX.getTrackDetails()
-                            navController.navigate(SpotifyNavRoutes.TrackDetailScreen.routes)
+                                // Navigating to the Track Details Screen
+                                spotifyViewModelX.setTrackId(currentItem.id)
+                                spotifyViewModelX.getTrackDetails()
+                                navController.navigate(SpotifyNavRoutes.TrackDetailScreen.routes)
+                            }
                         }
                     }
                 }
@@ -251,7 +253,7 @@ fun ThirdPartyScreen(
                 spotifyViewModelX.getUserTopTracks()
             }
         ) { networkResponse ->
-            networkResponse.data?.itemTopTracks.let { itemTopTrack ->
+            networkResponse.data?.trackList.let { itemTopTrack ->
 
                 // Showing the Tracks List UI inside a Lazy Row
                 LazyRow(
@@ -312,7 +314,7 @@ fun ThirdPartyScreen(
                     .width(LocalConfiguration.current.screenWidthDp.dp)
             ) {
 
-                networkResponse.data?.items?.let { topArtistsList ->
+                networkResponse.data?.artistList?.let { topArtistsList ->
                     items(topArtistsList.size) {
 
                         // current Item

@@ -11,7 +11,7 @@ data class ArtistListX(
     @SerializedName("href")
     val href: String,
     @SerializedName("items")
-    val items: List<ArtistX>,
+    val artistList: List<ArtistX>,
     @SerializedName("limit")
     val limit: Int,
     @SerializedName("next")

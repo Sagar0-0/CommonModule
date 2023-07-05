@@ -11,5 +11,5 @@ data class SpotifyRecommendationModelX(
     @SerializedName("seeds")
     val seeds: List<SeedX>,
     @SerializedName("tracks")
-    val tracks: List<TrackX>
+    val trackList: List<TrackX>
 ) : Parcelable

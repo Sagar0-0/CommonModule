@@ -6,13 +6,13 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class SpotifyPlayerRecentlyPlayedModelX(
+data class SpotifyUserRecentlyPlayedModelX(
     @SerializedName("cursors")
     val cursors: CursorsX,
     @SerializedName("href")
     val href: String,
     @SerializedName("items")
-    val items: List<ItemX>,
+    val trackList: List<TrackParentX>,
     @SerializedName("limit")
     val limit: Int,
     @SerializedName("next")

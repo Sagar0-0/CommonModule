@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
-import fit.asta.health.thirdparty.spotify.model.netx.albums.SpotifyAlbumDetailsModelX
+import fit.asta.health.thirdparty.spotify.model.netx.common.AlbumX
 import fit.asta.health.thirdparty.spotify.model.netx.me.albums.SpotifyLibraryAlbumModelX
 import fit.asta.health.thirdparty.spotify.model.netx.me.episodes.SpotifyLibraryEpisodesModelX
 import fit.asta.health.thirdparty.spotify.model.netx.me.following.SpotifyUserFollowingArtistX
@@ -16,11 +16,11 @@ import fit.asta.health.thirdparty.spotify.model.netx.me.shows.SpotifyLibraryShow
 import fit.asta.health.thirdparty.spotify.model.netx.me.tracks.SpotifyLibraryTracksModelX
 import fit.asta.health.thirdparty.spotify.model.netx.me.playlist.SpotifyUserPlaylistsModelX
 import fit.asta.health.thirdparty.spotify.model.netx.search.SpotifySearchModelX
-import fit.asta.health.thirdparty.spotify.model.netx.top.SpotifyTopArtistsModelX
-import fit.asta.health.thirdparty.spotify.model.netx.top.SpotifyTopTracksModelX
+import fit.asta.health.thirdparty.spotify.model.netx.search.ArtistListX
+import fit.asta.health.thirdparty.spotify.model.netx.search.TrackListX
 import fit.asta.health.thirdparty.spotify.model.netx.common.TrackX
 import fit.asta.health.thirdparty.spotify.model.netx.me.SpotifyMeModelX
-import fit.asta.health.thirdparty.spotify.model.netx.recently.SpotifyPlayerRecentlyPlayedModelX
+import fit.asta.health.thirdparty.spotify.model.netx.recently.SpotifyUserRecentlyPlayedModelX
 import fit.asta.health.thirdparty.spotify.model.netx.recommendations.SpotifyRecommendationModelX
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import kotlinx.coroutines.launch
@@ -85,7 +85,7 @@ class SpotifyViewModelX @Inject constructor(
     }
 
     // Keeps the user Recently Played Tracks
-    var userRecentlyPlayedTracks: SpotifyNetworkCall<SpotifyPlayerRecentlyPlayedModelX> by mutableStateOf(
+    var userRecentlyPlayedTracks: SpotifyNetworkCall<SpotifyUserRecentlyPlayedModelX> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set
@@ -106,11 +106,11 @@ class SpotifyViewModelX @Inject constructor(
                 val state = handleResponse(response)
 
                 // Fetching the Recommendations Tracks List for the Users
-                if (state.data?.items?.isNotEmpty() == true) {
+                if (state.data?.trackList?.isNotEmpty() == true) {
 
                     // Setting for Future Purposes
-                    seedArtists = state.data.items[0].track.artists[0].id
-                    seedTracks = state.data.items[0].track.id
+                    seedArtists = state.data.trackList[0].track.artists[0].id
+                    seedTracks = state.data.trackList[0].track.id
 
                     // Fetching
                     getRecommendationTracks()
@@ -195,7 +195,7 @@ class SpotifyViewModelX @Inject constructor(
     }
 
     // Keeps the User Top Tracks
-    var userTopTracks: SpotifyNetworkCall<SpotifyTopTracksModelX> by mutableStateOf(
+    var userTopTracks: SpotifyNetworkCall<TrackListX> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set
@@ -221,7 +221,7 @@ class SpotifyViewModelX @Inject constructor(
     }
 
     // Keeps the User Top Tracks
-    var userTopArtists: SpotifyNetworkCall<SpotifyTopArtistsModelX> by mutableStateOf(
+    var userTopArtists: SpotifyNetworkCall<ArtistListX> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set
@@ -304,7 +304,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * Keeps the Spotify Album Details
      */
-    var albumDetailsResponse: SpotifyNetworkCall<SpotifyAlbumDetailsModelX> by mutableStateOf(
+    var albumDetailsResponse: SpotifyNetworkCall<AlbumX> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set
