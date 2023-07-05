@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.thirdparty.spotify.model.db.MusicRepository
 import fit.asta.health.thirdparty.spotify.model.db.entity.TrackEntity
-import fit.asta.health.thirdparty.spotify.model.netx.common.AlbumX
+import fit.asta.health.thirdparty.spotify.model.net.common.Album
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,17 +35,17 @@ class FavoriteViewModel @Inject constructor(
         repository.local.deleteAllTrack()
     }
 
-    var allAlbums: LiveData<List<AlbumX>> = repository.local.getAllAlbums().asLiveData()
+    var allAlbums: LiveData<List<Album>> = repository.local.getAllAlbums().asLiveData()
 
-    fun insertAlbum(album: AlbumX) = viewModelScope.launch {
+    fun insertAlbum(album: Album) = viewModelScope.launch {
         repository.local.insertAlbum(album)
     }
 
-    fun updateAlbum(album: AlbumX) = viewModelScope.launch {
+    fun updateAlbum(album: Album) = viewModelScope.launch {
         repository.local.updateAlbum(album)
     }
 
-    fun deleteAlbum(album: AlbumX) = viewModelScope.launch {
+    fun deleteAlbum(album: Album) = viewModelScope.launch {
         repository.local.deleteAlbum(album)
     }
 

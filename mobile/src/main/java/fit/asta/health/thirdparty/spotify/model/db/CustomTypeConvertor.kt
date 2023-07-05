@@ -2,28 +2,28 @@ package fit.asta.health.thirdparty.spotify.model.db
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import fit.asta.health.thirdparty.spotify.model.netx.common.AlbumX
-import fit.asta.health.thirdparty.spotify.model.netx.common.ArtistX
-import fit.asta.health.thirdparty.spotify.model.netx.common.ExternalUrlsX
-import fit.asta.health.thirdparty.spotify.model.netx.common.ImageX
-import fit.asta.health.thirdparty.spotify.model.netx.common.ExternalIdsX
+import fit.asta.health.thirdparty.spotify.model.net.common.Album
+import fit.asta.health.thirdparty.spotify.model.net.common.Artist
+import fit.asta.health.thirdparty.spotify.model.net.common.ExternalUrls
+import fit.asta.health.thirdparty.spotify.model.net.common.Image
+import fit.asta.health.thirdparty.spotify.model.net.common.ExternalIds
 
 class CustomTypeConvertor {
     @TypeConverter
-    fun listOfArtistToString(item: List<ArtistX>): String =
+    fun listOfArtistToString(item: List<Artist>): String =
         Gson().toJson(item)
 
     @TypeConverter
-    fun stringToListOfArtist(string: String): List<ArtistX> =
-        Gson().fromJson(string, Array<ArtistX>::class.java).toList()
+    fun stringToListOfArtist(string: String): List<Artist> =
+        Gson().fromJson(string, Array<Artist>::class.java).toList()
 
     @TypeConverter
-    fun listOfImagesToString(item: List<ImageX>): String =
+    fun listOfImagesToString(item: List<Image>): String =
         Gson().toJson(item)
 
     @TypeConverter
-    fun stringToListOfImages(string: String): List<ImageX> =
-        Gson().fromJson(string, Array<ImageX>::class.java).toList()
+    fun stringToListOfImages(string: String): List<Image> =
+        Gson().fromJson(string, Array<Image>::class.java).toList()
 
 
     @TypeConverter
@@ -35,23 +35,23 @@ class CustomTypeConvertor {
         Gson().fromJson(string, Array<String>::class.java).toList()
 
     @TypeConverter
-    fun externalUrlsToString(item: ExternalUrlsX): String = Gson().toJson(item)
+    fun externalUrlsToString(item: ExternalUrls): String = Gson().toJson(item)
 
     @TypeConverter
-    fun stringToExternalUrls(string: String): ExternalUrlsX =
-        Gson().fromJson(string, ExternalUrlsX::class.java)
+    fun stringToExternalUrls(string: String): ExternalUrls =
+        Gson().fromJson(string, ExternalUrls::class.java)
 
     @TypeConverter
-    fun albumToString(item: AlbumX): String = Gson().toJson(item)
+    fun albumToString(item: Album): String = Gson().toJson(item)
 
     @TypeConverter
-    fun stringToAlbum(string: String): AlbumX =
-        Gson().fromJson(string, AlbumX::class.java)
+    fun stringToAlbum(string: String): Album =
+        Gson().fromJson(string, Album::class.java)
 
     @TypeConverter
-    fun externalIdsToString(item: ExternalIdsX): String = Gson().toJson(item)
+    fun externalIdsToString(item: ExternalIds): String = Gson().toJson(item)
 
     @TypeConverter
-    fun stringToExternalIds(string: String): ExternalIdsX =
-        Gson().fromJson(string, ExternalIdsX::class.java)
+    fun stringToExternalIds(string: String): ExternalIds =
+        Gson().fromJson(string, ExternalIds::class.java)
 }

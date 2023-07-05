@@ -2,7 +2,7 @@ package fit.asta.health.thirdparty.spotify.model.db
 
 import androidx.room.*
 import fit.asta.health.thirdparty.spotify.model.db.entity.TrackEntity
-import fit.asta.health.thirdparty.spotify.model.netx.common.AlbumX
+import fit.asta.health.thirdparty.spotify.model.net.common.Album
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -24,16 +24,16 @@ interface MusicDao {
     suspend fun deleteAllTracks()
 
     @Query("SELECT * FROM fav_albums_table")
-    fun getAllAlbums(): Flow<List<AlbumX>>
+    fun getAllAlbums(): Flow<List<Album>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAlbum(album: AlbumX)
+    suspend fun insertAlbum(album: Album)
 
     @Update
-    suspend fun updateAlbum(album: AlbumX)
+    suspend fun updateAlbum(album: Album)
 
     @Delete
-    suspend fun deleteAlbum(album: AlbumX)
+    suspend fun deleteAlbum(album: Album)
 
     @Query("DELETE FROM fav_albums_table")
     suspend fun deleteAllAlbums()

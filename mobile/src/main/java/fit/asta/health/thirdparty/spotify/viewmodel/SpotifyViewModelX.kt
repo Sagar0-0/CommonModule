@@ -8,20 +8,20 @@ import androidx.lifecycle.viewModelScope
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
-import fit.asta.health.thirdparty.spotify.model.netx.common.AlbumX
-import fit.asta.health.thirdparty.spotify.model.netx.library.albums.SpotifyLibraryAlbumModelX
-import fit.asta.health.thirdparty.spotify.model.netx.library.episodes.SpotifyLibraryEpisodesModelX
-import fit.asta.health.thirdparty.spotify.model.netx.library.following.SpotifyUserFollowingArtistX
-import fit.asta.health.thirdparty.spotify.model.netx.library.shows.SpotifyLibraryShowsModelX
-import fit.asta.health.thirdparty.spotify.model.netx.library.tracks.SpotifyLibraryTracksModelX
-import fit.asta.health.thirdparty.spotify.model.netx.library.playlist.SpotifyUserPlaylistsModelX
-import fit.asta.health.thirdparty.spotify.model.netx.search.SpotifySearchModelX
-import fit.asta.health.thirdparty.spotify.model.netx.search.ArtistListX
-import fit.asta.health.thirdparty.spotify.model.netx.search.TrackListX
-import fit.asta.health.thirdparty.spotify.model.netx.common.TrackX
-import fit.asta.health.thirdparty.spotify.model.netx.me.SpotifyMeModelX
-import fit.asta.health.thirdparty.spotify.model.netx.recently.SpotifyUserRecentlyPlayedModelX
-import fit.asta.health.thirdparty.spotify.model.netx.recommendations.SpotifyRecommendationModelX
+import fit.asta.health.thirdparty.spotify.model.net.common.Album
+import fit.asta.health.thirdparty.spotify.model.net.library.albums.SpotifyLibraryAlbumModel
+import fit.asta.health.thirdparty.spotify.model.net.library.episodes.SpotifyLibraryEpisodesModel
+import fit.asta.health.thirdparty.spotify.model.net.library.following.SpotifyUserFollowingArtist
+import fit.asta.health.thirdparty.spotify.model.net.library.shows.SpotifyLibraryShowsModel
+import fit.asta.health.thirdparty.spotify.model.net.library.tracks.SpotifyLibraryTracksModel
+import fit.asta.health.thirdparty.spotify.model.net.library.playlist.SpotifyUserPlaylistsModel
+import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
+import fit.asta.health.thirdparty.spotify.model.net.search.ArtistList
+import fit.asta.health.thirdparty.spotify.model.net.search.TrackList
+import fit.asta.health.thirdparty.spotify.model.net.common.Track
+import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
+import fit.asta.health.thirdparty.spotify.model.net.recently.SpotifyUserRecentlyPlayedModel
+import fit.asta.health.thirdparty.spotify.model.net.recommendations.SpotifyRecommendationModel
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -36,7 +36,7 @@ class SpotifyViewModelX @Inject constructor(
     private var accessToken: String = ""
 
     // Keeps the current User Data so that it can be used
-    var currentUserData: SpotifyNetworkCall<SpotifyMeModelX> by mutableStateOf(
+    var currentUserData: SpotifyNetworkCall<SpotifyMeModel> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set
@@ -85,7 +85,7 @@ class SpotifyViewModelX @Inject constructor(
     }
 
     // Keeps the user Recently Played Tracks
-    var userRecentlyPlayedTracks: SpotifyNetworkCall<SpotifyUserRecentlyPlayedModelX> by mutableStateOf(
+    var userRecentlyPlayedTracks: SpotifyNetworkCall<SpotifyUserRecentlyPlayedModel> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set
@@ -124,7 +124,7 @@ class SpotifyViewModelX @Inject constructor(
     }
 
     // Keeps the recommended Tracks
-    var recommendationTracks: SpotifyNetworkCall<SpotifyRecommendationModelX> by mutableStateOf(
+    var recommendationTracks: SpotifyNetworkCall<SpotifyRecommendationModel> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set
@@ -159,7 +159,7 @@ class SpotifyViewModelX @Inject constructor(
     }
 
     // Keeps the recommended Tracks
-    var trackDetailsResponse: SpotifyNetworkCall<TrackX> by mutableStateOf(
+    var trackDetailsResponse: SpotifyNetworkCall<Track> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set
@@ -195,7 +195,7 @@ class SpotifyViewModelX @Inject constructor(
     }
 
     // Keeps the User Top Tracks
-    var userTopTracks: SpotifyNetworkCall<TrackListX> by mutableStateOf(
+    var userTopTracks: SpotifyNetworkCall<TrackList> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set
@@ -221,7 +221,7 @@ class SpotifyViewModelX @Inject constructor(
     }
 
     // Keeps the User Top Tracks
-    var userTopArtists: SpotifyNetworkCall<ArtistListX> by mutableStateOf(
+    var userTopArtists: SpotifyNetworkCall<ArtistList> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set
@@ -249,7 +249,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * Keeps the Spotify Search Result
      */
-    var spotifySearch: SpotifyNetworkCall<SpotifySearchModelX> by mutableStateOf(
+    var spotifySearch: SpotifyNetworkCall<SpotifySearchModel> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set
@@ -304,7 +304,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * Keeps the Spotify Album Details
      */
-    var albumDetailsResponse: SpotifyNetworkCall<AlbumX> by mutableStateOf(
+    var albumDetailsResponse: SpotifyNetworkCall<Album> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set
@@ -336,7 +336,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This variable keeps the current Spotify User All Tracks fetched from the spotify Api
      */
-    var currentUserTracks: SpotifyNetworkCall<SpotifyLibraryTracksModelX> by mutableStateOf(
+    var currentUserTracks: SpotifyNetworkCall<SpotifyLibraryTracksModel> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set
@@ -364,7 +364,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This variable keeps the current User All playlist from the spotify Api
      */
-    var currentUserPlaylist: SpotifyNetworkCall<SpotifyUserPlaylistsModelX> by mutableStateOf(
+    var currentUserPlaylist: SpotifyNetworkCall<SpotifyUserPlaylistsModel> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set
@@ -392,7 +392,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This variable contains the data of all the current User Artists from the spotify Api
      */
-    var currentUserFollowingArtist: SpotifyNetworkCall<SpotifyUserFollowingArtistX> by mutableStateOf(
+    var currentUserFollowingArtist: SpotifyNetworkCall<SpotifyUserFollowingArtist> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set
@@ -420,7 +420,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This variable contains the current User all albums from the spotify Api
      */
-    var currentUserAlbum: SpotifyNetworkCall<SpotifyLibraryAlbumModelX> by mutableStateOf(
+    var currentUserAlbum: SpotifyNetworkCall<SpotifyLibraryAlbumModel> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set
@@ -448,7 +448,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This variable contains the currentUserShows from the spotify Api
      */
-    var currentUserShow: SpotifyNetworkCall<SpotifyLibraryShowsModelX> by mutableStateOf(
+    var currentUserShow: SpotifyNetworkCall<SpotifyLibraryShowsModel> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set
@@ -476,7 +476,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This variable contains the current User All the Episodes from the spotify APi
      */
-    var currentUserEpisode: SpotifyNetworkCall<SpotifyLibraryEpisodesModelX> by mutableStateOf(
+    var currentUserEpisode: SpotifyNetworkCall<SpotifyLibraryEpisodesModel> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set

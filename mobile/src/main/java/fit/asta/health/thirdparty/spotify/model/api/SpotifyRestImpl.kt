@@ -1,19 +1,19 @@
 package fit.asta.health.thirdparty.spotify.model.api
 
-import fit.asta.health.thirdparty.spotify.model.netx.common.AlbumX
-import fit.asta.health.thirdparty.spotify.model.netx.library.albums.SpotifyLibraryAlbumModelX
-import fit.asta.health.thirdparty.spotify.model.netx.library.episodes.SpotifyLibraryEpisodesModelX
-import fit.asta.health.thirdparty.spotify.model.netx.library.following.SpotifyUserFollowingArtistX
-import fit.asta.health.thirdparty.spotify.model.netx.library.shows.SpotifyLibraryShowsModelX
-import fit.asta.health.thirdparty.spotify.model.netx.library.tracks.SpotifyLibraryTracksModelX
-import fit.asta.health.thirdparty.spotify.model.netx.library.playlist.SpotifyUserPlaylistsModelX
-import fit.asta.health.thirdparty.spotify.model.netx.search.SpotifySearchModelX
-import fit.asta.health.thirdparty.spotify.model.netx.search.ArtistListX
-import fit.asta.health.thirdparty.spotify.model.netx.search.TrackListX
-import fit.asta.health.thirdparty.spotify.model.netx.common.TrackX
-import fit.asta.health.thirdparty.spotify.model.netx.me.SpotifyMeModelX
-import fit.asta.health.thirdparty.spotify.model.netx.recently.SpotifyUserRecentlyPlayedModelX
-import fit.asta.health.thirdparty.spotify.model.netx.recommendations.SpotifyRecommendationModelX
+import fit.asta.health.thirdparty.spotify.model.net.common.Album
+import fit.asta.health.thirdparty.spotify.model.net.library.albums.SpotifyLibraryAlbumModel
+import fit.asta.health.thirdparty.spotify.model.net.library.episodes.SpotifyLibraryEpisodesModel
+import fit.asta.health.thirdparty.spotify.model.net.library.following.SpotifyUserFollowingArtist
+import fit.asta.health.thirdparty.spotify.model.net.library.shows.SpotifyLibraryShowsModel
+import fit.asta.health.thirdparty.spotify.model.net.library.tracks.SpotifyLibraryTracksModel
+import fit.asta.health.thirdparty.spotify.model.net.library.playlist.SpotifyUserPlaylistsModel
+import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
+import fit.asta.health.thirdparty.spotify.model.net.search.ArtistList
+import fit.asta.health.thirdparty.spotify.model.net.search.TrackList
+import fit.asta.health.thirdparty.spotify.model.net.common.Track
+import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
+import fit.asta.health.thirdparty.spotify.model.net.recently.SpotifyUserRecentlyPlayedModel
+import fit.asta.health.thirdparty.spotify.model.net.recommendations.SpotifyRecommendationModel
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Named
@@ -22,28 +22,28 @@ class SpotifyRestImpl @Inject constructor(
     @Named("SPOTIFY")
     private val spotifyApiService: SpotifyApiService
 ) : SpotifyApi {
-    override suspend fun getCurrentUserDetails(accessToken: String): Response<SpotifyMeModelX> {
+    override suspend fun getCurrentUserDetails(accessToken: String): Response<SpotifyMeModel> {
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
         return spotifyApiService.getCurrentUserDetails(headerMap)
     }
 
-    override suspend fun getCurrentUserFollowedArtists(accessToken: String): Response<SpotifyUserFollowingArtistX> {
+    override suspend fun getCurrentUserFollowedArtists(accessToken: String): Response<SpotifyUserFollowingArtist> {
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
         return spotifyApiService.getCurrentUserFollowedArtists(headerMap)
     }
 
-    override suspend fun getCurrentUserTopTracks(accessToken: String): Response<TrackListX> {
+    override suspend fun getCurrentUserTopTracks(accessToken: String): Response<TrackList> {
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
         return spotifyApiService.getCurrentUserTopTracks(headerMap)
     }
 
-    override suspend fun getCurrentUserTopArtists(accessToken: String): Response<ArtistListX> {
+    override suspend fun getCurrentUserTopArtists(accessToken: String): Response<ArtistList> {
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
@@ -52,7 +52,7 @@ class SpotifyRestImpl @Inject constructor(
 
     override suspend fun getCurrentUserAlbums(
         accessToken: String
-    ): Response<SpotifyLibraryAlbumModelX> {
+    ): Response<SpotifyLibraryAlbumModel> {
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
@@ -61,7 +61,7 @@ class SpotifyRestImpl @Inject constructor(
 
     override suspend fun getCurrentUserShows(
         accessToken: String
-    ): Response<SpotifyLibraryShowsModelX> {
+    ): Response<SpotifyLibraryShowsModel> {
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
@@ -70,7 +70,7 @@ class SpotifyRestImpl @Inject constructor(
 
     override suspend fun getCurrentUserEpisodes(
         accessToken: String
-    ): Response<SpotifyLibraryEpisodesModelX> {
+    ): Response<SpotifyLibraryEpisodesModel> {
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
@@ -79,7 +79,7 @@ class SpotifyRestImpl @Inject constructor(
 
     override suspend fun getCurrentUserTracks(
         accessToken: String
-    ): Response<SpotifyLibraryTracksModelX> {
+    ): Response<SpotifyLibraryTracksModel> {
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
@@ -88,7 +88,7 @@ class SpotifyRestImpl @Inject constructor(
 
     override suspend fun getCurrentUserPlaylists(
         accessToken: String
-    ): Response<SpotifyUserPlaylistsModelX> {
+    ): Response<SpotifyUserPlaylistsModel> {
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
@@ -97,7 +97,7 @@ class SpotifyRestImpl @Inject constructor(
 
     override suspend fun getCurrentUserRecentlyPlayedTracks(
         accessToken: String
-    ): Response<SpotifyUserRecentlyPlayedModelX> {
+    ): Response<SpotifyUserRecentlyPlayedModel> {
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
@@ -108,7 +108,7 @@ class SpotifyRestImpl @Inject constructor(
     override suspend fun getUserPlaylists(
         accessToken: String,
         userID: String
-    ): Response<SpotifyUserPlaylistsModelX> {
+    ): Response<SpotifyUserPlaylistsModel> {
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
@@ -118,7 +118,7 @@ class SpotifyRestImpl @Inject constructor(
     override suspend fun getTrackDetails(
         accessToken: String,
         trackID: String
-    ): Response<TrackX> {
+    ): Response<Track> {
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
@@ -128,7 +128,7 @@ class SpotifyRestImpl @Inject constructor(
     override suspend fun getAlbumDetails(
         accessToken: String,
         albumID: String
-    ): Response<AlbumX> {
+    ): Response<Album> {
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
@@ -141,7 +141,7 @@ class SpotifyRestImpl @Inject constructor(
         type: String,
         includeExternal: String,
         market: String
-    ): Response<SpotifySearchModelX> {
+    ): Response<SpotifySearchModel> {
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
@@ -159,7 +159,7 @@ class SpotifyRestImpl @Inject constructor(
         seedGenres: String,
         seedTracks: String,
         limit: String
-    ): Response<SpotifyRecommendationModelX> {
+    ): Response<SpotifyRecommendationModel> {
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"

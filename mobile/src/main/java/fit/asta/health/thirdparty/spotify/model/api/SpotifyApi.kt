@@ -1,57 +1,57 @@
 package fit.asta.health.thirdparty.spotify.model.api
 
-import fit.asta.health.thirdparty.spotify.model.netx.common.AlbumX
-import fit.asta.health.thirdparty.spotify.model.netx.library.albums.SpotifyLibraryAlbumModelX
-import fit.asta.health.thirdparty.spotify.model.netx.library.episodes.SpotifyLibraryEpisodesModelX
-import fit.asta.health.thirdparty.spotify.model.netx.library.following.SpotifyUserFollowingArtistX
-import fit.asta.health.thirdparty.spotify.model.netx.library.shows.SpotifyLibraryShowsModelX
-import fit.asta.health.thirdparty.spotify.model.netx.library.tracks.SpotifyLibraryTracksModelX
-import fit.asta.health.thirdparty.spotify.model.netx.library.playlist.SpotifyUserPlaylistsModelX
-import fit.asta.health.thirdparty.spotify.model.netx.search.SpotifySearchModelX
-import fit.asta.health.thirdparty.spotify.model.netx.search.ArtistListX
-import fit.asta.health.thirdparty.spotify.model.netx.search.TrackListX
-import fit.asta.health.thirdparty.spotify.model.netx.common.TrackX
-import fit.asta.health.thirdparty.spotify.model.netx.me.SpotifyMeModelX
-import fit.asta.health.thirdparty.spotify.model.netx.recently.SpotifyUserRecentlyPlayedModelX
-import fit.asta.health.thirdparty.spotify.model.netx.recommendations.SpotifyRecommendationModelX
+import fit.asta.health.thirdparty.spotify.model.net.common.Album
+import fit.asta.health.thirdparty.spotify.model.net.library.albums.SpotifyLibraryAlbumModel
+import fit.asta.health.thirdparty.spotify.model.net.library.episodes.SpotifyLibraryEpisodesModel
+import fit.asta.health.thirdparty.spotify.model.net.library.following.SpotifyUserFollowingArtist
+import fit.asta.health.thirdparty.spotify.model.net.library.shows.SpotifyLibraryShowsModel
+import fit.asta.health.thirdparty.spotify.model.net.library.tracks.SpotifyLibraryTracksModel
+import fit.asta.health.thirdparty.spotify.model.net.library.playlist.SpotifyUserPlaylistsModel
+import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
+import fit.asta.health.thirdparty.spotify.model.net.search.ArtistList
+import fit.asta.health.thirdparty.spotify.model.net.search.TrackList
+import fit.asta.health.thirdparty.spotify.model.net.common.Track
+import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
+import fit.asta.health.thirdparty.spotify.model.net.recently.SpotifyUserRecentlyPlayedModel
+import fit.asta.health.thirdparty.spotify.model.net.recommendations.SpotifyRecommendationModel
 import retrofit2.Response
 
 interface SpotifyApi {
 
-    suspend fun getCurrentUserDetails(accessToken: String): Response<SpotifyMeModelX>
+    suspend fun getCurrentUserDetails(accessToken: String): Response<SpotifyMeModel>
 
-    suspend fun getCurrentUserFollowedArtists(accessToken: String): Response<SpotifyUserFollowingArtistX>
+    suspend fun getCurrentUserFollowedArtists(accessToken: String): Response<SpotifyUserFollowingArtist>
 
-    suspend fun getCurrentUserTopTracks(accessToken: String): Response<TrackListX>
+    suspend fun getCurrentUserTopTracks(accessToken: String): Response<TrackList>
 
-    suspend fun getCurrentUserTopArtists(accessToken: String): Response<ArtistListX>
+    suspend fun getCurrentUserTopArtists(accessToken: String): Response<ArtistList>
 
-    suspend fun getCurrentUserAlbums(accessToken: String): Response<SpotifyLibraryAlbumModelX>
+    suspend fun getCurrentUserAlbums(accessToken: String): Response<SpotifyLibraryAlbumModel>
 
-    suspend fun getCurrentUserShows(accessToken: String): Response<SpotifyLibraryShowsModelX>
+    suspend fun getCurrentUserShows(accessToken: String): Response<SpotifyLibraryShowsModel>
 
-    suspend fun getCurrentUserEpisodes(accessToken: String): Response<SpotifyLibraryEpisodesModelX>
+    suspend fun getCurrentUserEpisodes(accessToken: String): Response<SpotifyLibraryEpisodesModel>
 
-    suspend fun getCurrentUserTracks(accessToken: String): Response<SpotifyLibraryTracksModelX>
+    suspend fun getCurrentUserTracks(accessToken: String): Response<SpotifyLibraryTracksModel>
 
-    suspend fun getCurrentUserPlaylists(accessToken: String): Response<SpotifyUserPlaylistsModelX>
+    suspend fun getCurrentUserPlaylists(accessToken: String): Response<SpotifyUserPlaylistsModel>
 
-    suspend fun getCurrentUserRecentlyPlayedTracks(accessToken: String): Response<SpotifyUserRecentlyPlayedModelX>
+    suspend fun getCurrentUserRecentlyPlayedTracks(accessToken: String): Response<SpotifyUserRecentlyPlayedModel>
 
     suspend fun getUserPlaylists(
         accessToken: String,
         userID: String
-    ): Response<SpotifyUserPlaylistsModelX>
+    ): Response<SpotifyUserPlaylistsModel>
 
     suspend fun getTrackDetails(
         accessToken: String,
         trackID: String
-    ): Response<TrackX>
+    ): Response<Track>
 
     suspend fun getAlbumDetails(
         accessToken: String,
         albumID: String
-    ): Response<AlbumX>
+    ): Response<Album>
 
     suspend fun searchQuery(
         accessToken: String,
@@ -59,7 +59,7 @@ interface SpotifyApi {
         type: String,
         includeExternal: String,
         market: String
-    ): Response<SpotifySearchModelX>
+    ): Response<SpotifySearchModel>
 
     suspend fun getRecommendations(
         accessToken: String,
@@ -67,5 +67,5 @@ interface SpotifyApi {
         seedGenres: String,
         seedTracks: String,
         limit: String
-    ): Response<SpotifyRecommendationModelX>
+    ): Response<SpotifyRecommendationModel>
 }

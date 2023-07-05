@@ -2,7 +2,7 @@ package fit.asta.health.thirdparty.spotify.model
 
 import fit.asta.health.thirdparty.spotify.model.db.MusicDao
 import fit.asta.health.thirdparty.spotify.model.db.entity.TrackEntity
-import fit.asta.health.thirdparty.spotify.model.netx.common.AlbumX
+import fit.asta.health.thirdparty.spotify.model.net.common.Album
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -30,19 +30,19 @@ class LocalDataSource @Inject constructor(
         musicDao.deleteAllTracks()
     }
 
-    fun getAllAlbums(): Flow<List<AlbumX>> {
+    fun getAllAlbums(): Flow<List<Album>> {
         return musicDao.getAllAlbums()
     }
 
-    suspend fun insertAlbum(album: AlbumX) {
+    suspend fun insertAlbum(album: Album) {
         musicDao.insertAlbum(album)
     }
 
-    suspend fun updateAlbum(album: AlbumX) {
+    suspend fun updateAlbum(album: Album) {
         musicDao.updateAlbum(album)
     }
 
-    suspend fun deleteAlbum(album: AlbumX) {
+    suspend fun deleteAlbum(album: Album) {
         musicDao.deleteAlbum(album)
     }
 
