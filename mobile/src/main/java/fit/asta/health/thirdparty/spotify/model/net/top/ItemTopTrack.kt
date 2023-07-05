@@ -3,15 +3,15 @@ package fit.asta.health.thirdparty.spotify.model.net.top
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import fit.asta.health.thirdparty.spotify.model.net.common.Album
+import fit.asta.health.thirdparty.spotify.model.netx.common.AlbumX
 import fit.asta.health.thirdparty.spotify.model.netx.common.ArtistX
-import fit.asta.health.thirdparty.spotify.model.net.common.ExternalUrls
+import fit.asta.health.thirdparty.spotify.model.netx.common.ExternalUrlsX
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ItemTopTrack(
     @SerializedName("album")
-    val album: Album,
+    val album: AlbumX,
     @SerializedName("artists")
     val artists: List<ArtistX>,
     @SerializedName("available_markets")
@@ -25,7 +25,7 @@ data class ItemTopTrack(
     @SerializedName("external_ids")
     val externalIds: ExternalIds,
     @SerializedName("external_urls")
-    val externalUrls: ExternalUrls,
+    val externalUrls: ExternalUrlsX,
     @SerializedName("href")
     val href: String, // https://api.spotify.com/v1/tracks/5MVzNM3PKjgMYh6SwK17w3
     @SerializedName("id")

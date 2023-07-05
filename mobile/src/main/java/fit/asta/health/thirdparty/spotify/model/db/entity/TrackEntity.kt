@@ -4,7 +4,7 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import fit.asta.health.thirdparty.spotify.model.net.common.Album
+import fit.asta.health.thirdparty.spotify.model.netx.common.AlbumX
 import fit.asta.health.thirdparty.spotify.model.netx.common.ArtistX
 import fit.asta.health.thirdparty.spotify.model.net.tracks.ExternalIds
 import fit.asta.health.thirdparty.spotify.model.net.tracks.ExternalUrlsXXX
@@ -13,7 +13,7 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "FAV_TRACKS_TABLE")
 @Parcelize
 data class TrackEntity(
-    @ColumnInfo(name = "track_album") var trackAlbum: Album?,
+    @ColumnInfo(name = "track_album") var trackAlbum: AlbumX?,
     @ColumnInfo(name = "track_artists") var trackArtists: List<ArtistX>?,
     @ColumnInfo(name = "track_available_markets") var trackAvailableMarkets: List<String>?,
     @ColumnInfo(name = "track_disk_number") var trackDiscNumber: Int?,

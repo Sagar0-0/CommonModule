@@ -3,8 +3,8 @@ package fit.asta.health.thirdparty.spotify.model.net.search
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import fit.asta.health.thirdparty.spotify.model.net.common.ExternalUrls
-import fit.asta.health.thirdparty.spotify.model.net.common.Image
+import fit.asta.health.thirdparty.spotify.model.netx.common.ExternalUrlsX
+import fit.asta.health.thirdparty.spotify.model.netx.common.ImageX
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -18,7 +18,7 @@ data class ShowItem(
     @SerializedName("explicit")
     val explicit: Boolean, // false
     @SerializedName("external_urls")
-    val externalUrls: ExternalUrls,
+    val externalUrls: ExternalUrlsX,
     @SerializedName("href")
     val href: String, // https://api.spotify.com/v1/shows/2vX82sIwqD1pWVTVTfIWtB
     @SerializedName("html_description")
@@ -26,7 +26,7 @@ data class ShowItem(
     @SerializedName("id")
     val id: String, // 2vX82sIwqD1pWVTVTfIWtB
     @SerializedName("images")
-    val images: List<Image>,
+    val images: List<ImageX>,
     @SerializedName("is_externally_hosted")
     val isExternallyHosted: Boolean, // false
     @SerializedName("languages")

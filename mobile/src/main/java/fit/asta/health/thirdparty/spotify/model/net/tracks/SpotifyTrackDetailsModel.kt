@@ -3,14 +3,14 @@ package fit.asta.health.thirdparty.spotify.model.net.tracks
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import fit.asta.health.thirdparty.spotify.model.net.common.Album
+import fit.asta.health.thirdparty.spotify.model.netx.common.AlbumX
 import fit.asta.health.thirdparty.spotify.model.netx.common.ArtistX
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class SpotifyTrackDetailsModel(
     @SerializedName("album")
-    val album: Album,
+    val album: AlbumX,
     @SerializedName("artists")
     val artists: List<ArtistX>,
     @SerializedName("available_markets")

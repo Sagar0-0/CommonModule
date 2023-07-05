@@ -18,7 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import fit.asta.health.thirdparty.spotify.model.net.common.Album
+import fit.asta.health.thirdparty.spotify.model.netx.common.AlbumX
 import fit.asta.health.thirdparty.spotify.view.components.MusicLargeImageColumn
 import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
 import fit.asta.health.thirdparty.spotify.viewmodel.FavouriteViewModelX
@@ -75,7 +75,7 @@ fun AlbumDetailScreen(
                         onClick = {
 
                             favouriteViewModelX.insertAlbum(
-                                Album(
+                                AlbumX(
                                     albumType = albumData.albumType,
                                     artists = albumData.artists,
                                     availableMarkets = albumData.availableMarkets,

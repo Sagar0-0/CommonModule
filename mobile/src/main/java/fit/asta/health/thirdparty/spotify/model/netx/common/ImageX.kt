@@ -8,9 +8,9 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ImageX(
     @SerializedName("height")
-    val height: Int, // 300
+    val height: Int,
     @SerializedName("url")
-    val url: String, // https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228
+    val url: String,
     @SerializedName("width")
-    val width: Int // 300
+    val width: Int
 ) : Parcelable

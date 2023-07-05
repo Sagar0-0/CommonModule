@@ -4,8 +4,8 @@ package fit.asta.health.thirdparty.spotify.model.net.albums
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import fit.asta.health.thirdparty.spotify.model.netx.common.ArtistX
-import fit.asta.health.thirdparty.spotify.model.net.common.ExternalUrls
-import fit.asta.health.thirdparty.spotify.model.net.common.Image
+import fit.asta.health.thirdparty.spotify.model.netx.common.ExternalUrlsX
+import fit.asta.health.thirdparty.spotify.model.netx.common.ImageX
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -21,7 +21,7 @@ data class SpotifyAlbumDetailsModel(
     @SerializedName("external_ids")
     val externalIds: ExternalIds,
     @SerializedName("external_urls")
-    val externalUrls: ExternalUrls,
+    val externalUrls: ExternalUrlsX,
     @SerializedName("genres")
     val genres: List<String?>,
     @SerializedName("href")
@@ -29,7 +29,7 @@ data class SpotifyAlbumDetailsModel(
     @SerializedName("id")
     val id: String, // 4aawyAB9vmqN3uQ7FjRGTy
     @SerializedName("images")
-    val images: List<Image>,
+    val images: List<ImageX>,
     @SerializedName("label")
     val label: String, // Mr.305/Polo Grounds Music/RCA Records
     @SerializedName("name")

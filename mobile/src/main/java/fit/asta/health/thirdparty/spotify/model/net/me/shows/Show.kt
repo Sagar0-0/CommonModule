@@ -3,7 +3,7 @@ package fit.asta.health.thirdparty.spotify.model.net.me.shows
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import fit.asta.health.thirdparty.spotify.model.net.common.Image
+import fit.asta.health.thirdparty.spotify.model.netx.common.ImageX
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -25,7 +25,7 @@ data class Show(
     @SerializedName("id")
     val id: String, // 6ZcvVBPQ2ToLXEWVbaw59P
     @SerializedName("images")
-    val images: List<Image>,
+    val images: List<ImageX>,
     @SerializedName("is_externally_hosted")
     val isExternallyHosted: Boolean, // false
     @SerializedName("languages")

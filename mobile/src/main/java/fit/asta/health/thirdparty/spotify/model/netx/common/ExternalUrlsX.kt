@@ -8,5 +8,5 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ExternalUrlsX(
     @SerializedName("spotify")
-    val spotify: String // string
+    val spotify: String
 ) : Parcelable

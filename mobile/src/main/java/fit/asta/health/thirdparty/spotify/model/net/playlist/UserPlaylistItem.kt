@@ -3,8 +3,8 @@ package fit.asta.health.thirdparty.spotify.model.net.playlist
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import fit.asta.health.thirdparty.spotify.model.net.common.ExternalUrls
-import fit.asta.health.thirdparty.spotify.model.net.common.Image
+import fit.asta.health.thirdparty.spotify.model.netx.common.ExternalUrlsX
+import fit.asta.health.thirdparty.spotify.model.netx.common.ImageX
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -14,13 +14,13 @@ data class UserPlaylistItem(
     @SerializedName("description")
     val description: String,
     @SerializedName("external_urls")
-    val externalUrls: ExternalUrls,
+    val externalUrls: ExternalUrlsX,
     @SerializedName("href")
     val href: String, // https://api.spotify.com/v1/playlists/4AyeT23Lb3jjt0vDewAp4y
     @SerializedName("id")
     val id: String, // 4AyeT23Lb3jjt0vDewAp4y
     @SerializedName("images")
-    val images: List<Image>,
+    val images: List<ImageX>,
     @SerializedName("name")
     val name: String, // Aesthetic
     @SerializedName("owner")

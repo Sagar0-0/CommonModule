@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.thirdparty.spotify.model.db.MusicRepository
 import fit.asta.health.thirdparty.spotify.model.db.entity.TrackEntity
-import fit.asta.health.thirdparty.spotify.model.net.common.Album
+import fit.asta.health.thirdparty.spotify.model.netx.common.AlbumX
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,7 +31,7 @@ class FavouriteViewModelX @Inject constructor(
     /**
      * This variable contains details of all the albums calls and states
      */
-    private val _allAlbums = MutableStateFlow<SpotifyNetworkCall<List<Album>>>(
+    private val _allAlbums = MutableStateFlow<SpotifyNetworkCall<List<AlbumX>>>(
         SpotifyNetworkCall.Initialized()
     )
     val allAlbums = _allAlbums.asStateFlow()
@@ -89,7 +89,7 @@ class FavouriteViewModelX @Inject constructor(
     /**
      * This function is used to insert a Album into the Database
      */
-    fun insertAlbum(album: Album) {
+    fun insertAlbum(album: AlbumX) {
         viewModelScope.launch {
             repository.local.insertAlbum(album)
             getAllAlbums()

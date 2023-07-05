@@ -3,7 +3,7 @@ package fit.asta.health.thirdparty.spotify.model.net.me.following
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import fit.asta.health.thirdparty.spotify.model.net.common.Image
+import fit.asta.health.thirdparty.spotify.model.netx.common.ImageX
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -19,7 +19,7 @@ data class Item(
     @SerializedName("id")
     val id: String, // 0bYMprIYMBYmNXdeKh7YDQ
     @SerializedName("images")
-    val images: List<Image>,
+    val images: List<ImageX>,
     @SerializedName("name")
     val name: String, // SARRA
     @SerializedName("popularity")

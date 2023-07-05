@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ExplicitContentX(
     @SerializedName("filter_enabled")
-    val filterEnabled: Boolean, // true
+    val filterEnabled: Boolean,
     @SerializedName("filter_locked")
-    val filterLocked: Boolean // true
+    val filterLocked: Boolean
 ) : Parcelable

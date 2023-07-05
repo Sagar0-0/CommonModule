@@ -3,17 +3,17 @@ package fit.asta.health.thirdparty.spotify.model.net.top
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import fit.asta.health.thirdparty.spotify.model.net.common.ExternalUrls
-import fit.asta.health.thirdparty.spotify.model.net.common.Followers
-import fit.asta.health.thirdparty.spotify.model.net.common.Image
+import fit.asta.health.thirdparty.spotify.model.netx.common.ExternalUrlsX
+import fit.asta.health.thirdparty.spotify.model.netx.common.FollowersX
+import fit.asta.health.thirdparty.spotify.model.netx.common.ImageX
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ItemTopArtist(
     @SerializedName("external_urls")
-    val externalUrls: ExternalUrls,
+    val externalUrls: ExternalUrlsX,
     @SerializedName("followers")
-    val followers: Followers,
+    val followers: FollowersX,
     @SerializedName("genres")
     val genres: List<String>,
     @SerializedName("href")
@@ -21,7 +21,7 @@ data class ItemTopArtist(
     @SerializedName("id")
     val id: String, // 4zCH9qm4R2DADamUHMCa6O
     @SerializedName("images")
-    val images: List<Image>,
+    val images: List<ImageX>,
     @SerializedName("name")
     val name: String, // Anirudh Ravichander
     @SerializedName("popularity")

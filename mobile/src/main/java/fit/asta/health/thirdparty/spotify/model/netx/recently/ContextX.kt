@@ -11,9 +11,9 @@ data class ContextX(
     @SerializedName("external_urls")
     val externalUrls: ExternalUrlsX,
     @SerializedName("href")
-    val href: String, // https://api.spotify.com/v1/playlists/223CbIY6UXgDWtX2BzfK0g
+    val href: String,
     @SerializedName("type")
-    val type: String, // playlist
+    val type: String,
     @SerializedName("uri")
-    val uri: String // spotify:playlist:223CbIY6UXgDWtX2BzfK0g
+    val uri: String
 ) : Parcelable

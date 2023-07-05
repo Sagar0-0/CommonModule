@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class CursorsX(
     @SerializedName("after")
-    val after: String, // 1662988198900
+    val after: String,
     @SerializedName("before")
-    val before: String // 1662901690206
+    val before: String
 ) : Parcelable

@@ -3,7 +3,7 @@ package fit.asta.health.thirdparty.spotify.model.net.me.tracks
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import fit.asta.health.thirdparty.spotify.model.net.common.Image
+import fit.asta.health.thirdparty.spotify.model.netx.common.ImageX
 import kotlinx.parcelize.Parcelize
 
 
@@ -22,7 +22,7 @@ data class Album(
     @SerializedName("id")
     val id: String, // 7nsHM24bHFNLBcx5frV8mF
     @SerializedName("images")
-    val images: List<Image>,
+    val images: List<ImageX>,
     @SerializedName("name")
     val name: String, // The Trinity
     @SerializedName("release_date")

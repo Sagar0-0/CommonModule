@@ -1,4 +1,4 @@
-package fit.asta.health.thirdparty.spotify.model.net.common
+package fit.asta.health.thirdparty.spotify.model.netx.common
 
 
 import android.os.Parcelable
@@ -6,9 +6,9 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Followers(
+data class FollowersX(
     @SerializedName("href")
-    val href: String?, // string
+    val href: String?,
     @SerializedName("total")
-    val total: Int // 0
+    val total: Int
 ) : Parcelable

@@ -8,15 +8,15 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class SeedX(
     @SerializedName("afterFilteringSize")
-    val afterFilteringSize: Int, // 250
+    val afterFilteringSize: Int,
     @SerializedName("afterRelinkingSize")
-    val afterRelinkingSize: Int, // 250
+    val afterRelinkingSize: Int,
     @SerializedName("href")
-    val href: String, // https://api.spotify.com/v1/artists/4NHQUGzhtTLFvgF5SZesLK
+    val href: String,
     @SerializedName("id")
-    val id: String, // 4NHQUGzhtTLFvgF5SZesLK
+    val id: String,
     @SerializedName("initialPoolSize")
-    val initialPoolSize: Int, // 250
+    val initialPoolSize: Int,
     @SerializedName("type")
-    val type: String // ARTIST
+    val type: String
 ) : Parcelable
