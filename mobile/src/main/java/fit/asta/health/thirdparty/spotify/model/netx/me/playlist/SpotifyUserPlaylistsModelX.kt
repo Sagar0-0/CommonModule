@@ -1,4 +1,4 @@
-package fit.asta.health.thirdparty.spotify.model.net.playlist
+package fit.asta.health.thirdparty.spotify.model.netx.me.playlist
 
 
 import android.os.Parcelable
@@ -7,19 +7,19 @@ import fit.asta.health.thirdparty.spotify.model.netx.common.PlaylistX
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class SpotifyUserPlaylistsModel(
+data class SpotifyUserPlaylistsModelX(
     @SerializedName("href")
-    val href: String, // https://api.spotify.com/v1/users/b2wpevgtgh78nfhzika5ou1bt/playlists?offset=0&limit=20
+    val href: String,
     @SerializedName("items")
     val userPlaylistItems: List<PlaylistX>,
     @SerializedName("limit")
-    val limit: Int, // 20
+    val limit: Int,
     @SerializedName("next")
-    val next: String, // https://api.spotify.com/v1/users/b2wpevgtgh78nfhzika5ou1bt/playlists?offset=20&limit=20
+    val next: String,
     @SerializedName("offset")
-    val offset: Int, // 0
+    val offset: Int,
     @SerializedName("previous")
-    val previous: String?, // null
+    val previous: String?,
     @SerializedName("total")
-    val total: Int // 35
+    val total: Int
 ) : Parcelable

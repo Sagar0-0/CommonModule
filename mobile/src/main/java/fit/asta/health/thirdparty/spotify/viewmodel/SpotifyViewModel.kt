@@ -9,12 +9,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
 import fit.asta.health.thirdparty.spotify.model.netx.albums.SpotifyAlbumDetailsModelX
 import fit.asta.health.thirdparty.spotify.model.net.categories.SpotifyBrowseCategoriesModel
-import fit.asta.health.thirdparty.spotify.model.net.me.albums.SpotifyLibraryAlbumModel
-import fit.asta.health.thirdparty.spotify.model.net.me.episodes.SpotifyLibraryEpisodesModel
-import fit.asta.health.thirdparty.spotify.model.net.me.following.SpotifyUserFollowingArtist
-import fit.asta.health.thirdparty.spotify.model.net.me.shows.SpotifyLibraryShowsModel
-import fit.asta.health.thirdparty.spotify.model.net.me.tracks.SpotifyLibraryTracksModel
-import fit.asta.health.thirdparty.spotify.model.net.playlist.SpotifyUserPlaylistsModel
+import fit.asta.health.thirdparty.spotify.model.netx.me.albums.SpotifyLibraryAlbumModelX
+import fit.asta.health.thirdparty.spotify.model.netx.me.episodes.SpotifyLibraryEpisodesModelX
+import fit.asta.health.thirdparty.spotify.model.netx.me.following.SpotifyUserFollowingArtistX
+import fit.asta.health.thirdparty.spotify.model.netx.me.shows.SpotifyLibraryShowsModelX
+import fit.asta.health.thirdparty.spotify.model.netx.me.tracks.SpotifyLibraryTracksModelX
+import fit.asta.health.thirdparty.spotify.model.netx.me.playlist.SpotifyUserPlaylistsModelX
 import fit.asta.health.thirdparty.spotify.model.netx.search.SpotifySearchModelX
 import fit.asta.health.thirdparty.spotify.model.netx.top.SpotifyTopArtistsModelX
 import fit.asta.health.thirdparty.spotify.model.netx.top.SpotifyTopTracksModelX
@@ -57,7 +57,7 @@ class SpotifyViewModel @Inject constructor(
     }
 
     // Get Current User Following Artists
-    val currentUserFollowingArtistsResponse: MutableLiveData<NetworkResult<SpotifyUserFollowingArtist>> =
+    val currentUserFollowingArtistsResponse: MutableLiveData<NetworkResult<SpotifyUserFollowingArtistX>> =
         MutableLiveData()
 
     fun getCurrentUserFollowingArtists(accessToken: String) = viewModelScope.launch {
@@ -117,7 +117,7 @@ class SpotifyViewModel @Inject constructor(
     }
 
     // Get Current User's Playlists
-    val currentUserPlaylistsResponse: MutableLiveData<NetworkResult<SpotifyUserPlaylistsModel>> =
+    val currentUserPlaylistsResponse: MutableLiveData<NetworkResult<SpotifyUserPlaylistsModelX>> =
         MutableLiveData()
 
     fun getCurrentUserPlaylists(accessToken: String) = viewModelScope.launch {
@@ -136,7 +136,7 @@ class SpotifyViewModel @Inject constructor(
     }
 
     // Get Current User's Albums
-    val currentUserAlbumsResponse: MutableLiveData<NetworkResult<SpotifyLibraryAlbumModel>> =
+    val currentUserAlbumsResponse: MutableLiveData<NetworkResult<SpotifyLibraryAlbumModelX>> =
         MutableLiveData()
 
     fun getCurrentUserAlbums(accessToken: String) = viewModelScope.launch {
@@ -155,7 +155,7 @@ class SpotifyViewModel @Inject constructor(
     }
 
     // Get Current User's Shows
-    val currentUserShowsResponse: MutableLiveData<NetworkResult<SpotifyLibraryShowsModel>> =
+    val currentUserShowsResponse: MutableLiveData<NetworkResult<SpotifyLibraryShowsModelX>> =
         MutableLiveData()
 
     fun getCurrentUserShows(accessToken: String) = viewModelScope.launch {
@@ -174,7 +174,7 @@ class SpotifyViewModel @Inject constructor(
     }
 
     // Get Current User's Episodes
-    val currentUserEpisodesResponse: MutableLiveData<NetworkResult<SpotifyLibraryEpisodesModel>> =
+    val currentUserEpisodesResponse: MutableLiveData<NetworkResult<SpotifyLibraryEpisodesModelX>> =
         MutableLiveData()
 
     fun getCurrentUserEpisodes(accessToken: String) = viewModelScope.launch {
@@ -193,7 +193,7 @@ class SpotifyViewModel @Inject constructor(
     }
 
     // Get Current User's Tracks
-    val currentUserTracksResponse: MutableLiveData<NetworkResult<SpotifyLibraryTracksModel>> =
+    val currentUserTracksResponse: MutableLiveData<NetworkResult<SpotifyLibraryTracksModelX>> =
         MutableLiveData()
 
     fun getCurrentUserTracks(accessToken: String) = viewModelScope.launch {
@@ -230,7 +230,7 @@ class SpotifyViewModel @Inject constructor(
     }
 
     // Get User's Playlists
-    val userPlaylistsResponse: MutableLiveData<NetworkResult<SpotifyUserPlaylistsModel>> =
+    val userPlaylistsResponse: MutableLiveData<NetworkResult<SpotifyUserPlaylistsModelX>> =
         MutableLiveData()
 
     fun getUserPlaylists(accessToken: String, userID: String) = viewModelScope.launch {

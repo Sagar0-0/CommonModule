@@ -9,12 +9,12 @@ import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
 import fit.asta.health.thirdparty.spotify.model.netx.albums.SpotifyAlbumDetailsModelX
-import fit.asta.health.thirdparty.spotify.model.net.me.albums.SpotifyLibraryAlbumModel
-import fit.asta.health.thirdparty.spotify.model.net.me.episodes.SpotifyLibraryEpisodesModel
-import fit.asta.health.thirdparty.spotify.model.net.me.following.SpotifyUserFollowingArtist
-import fit.asta.health.thirdparty.spotify.model.net.me.shows.SpotifyLibraryShowsModel
-import fit.asta.health.thirdparty.spotify.model.net.me.tracks.SpotifyLibraryTracksModel
-import fit.asta.health.thirdparty.spotify.model.net.playlist.SpotifyUserPlaylistsModel
+import fit.asta.health.thirdparty.spotify.model.netx.me.albums.SpotifyLibraryAlbumModelX
+import fit.asta.health.thirdparty.spotify.model.netx.me.episodes.SpotifyLibraryEpisodesModelX
+import fit.asta.health.thirdparty.spotify.model.netx.me.following.SpotifyUserFollowingArtistX
+import fit.asta.health.thirdparty.spotify.model.netx.me.shows.SpotifyLibraryShowsModelX
+import fit.asta.health.thirdparty.spotify.model.netx.me.tracks.SpotifyLibraryTracksModelX
+import fit.asta.health.thirdparty.spotify.model.netx.me.playlist.SpotifyUserPlaylistsModelX
 import fit.asta.health.thirdparty.spotify.model.netx.search.SpotifySearchModelX
 import fit.asta.health.thirdparty.spotify.model.netx.top.SpotifyTopArtistsModelX
 import fit.asta.health.thirdparty.spotify.model.netx.top.SpotifyTopTracksModelX
@@ -336,7 +336,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This variable keeps the current Spotify User All Tracks fetched from the spotify Api
      */
-    var currentUserTracks: SpotifyNetworkCall<SpotifyLibraryTracksModel> by mutableStateOf(
+    var currentUserTracks: SpotifyNetworkCall<SpotifyLibraryTracksModelX> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set
@@ -364,7 +364,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This variable keeps the current User All playlist from the spotify Api
      */
-    var currentUserPlaylist: SpotifyNetworkCall<SpotifyUserPlaylistsModel> by mutableStateOf(
+    var currentUserPlaylist: SpotifyNetworkCall<SpotifyUserPlaylistsModelX> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set
@@ -392,7 +392,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This variable contains the data of all the current User Artists from the spotify Api
      */
-    var currentUserFollowingArtist: SpotifyNetworkCall<SpotifyUserFollowingArtist> by mutableStateOf(
+    var currentUserFollowingArtist: SpotifyNetworkCall<SpotifyUserFollowingArtistX> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set
@@ -420,7 +420,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This variable contains the current User all albums from the spotify Api
      */
-    var currentUserAlbum: SpotifyNetworkCall<SpotifyLibraryAlbumModel> by mutableStateOf(
+    var currentUserAlbum: SpotifyNetworkCall<SpotifyLibraryAlbumModelX> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set
@@ -448,7 +448,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This variable contains the currentUserShows from the spotify Api
      */
-    var currentUserShow: SpotifyNetworkCall<SpotifyLibraryShowsModel> by mutableStateOf(
+    var currentUserShow: SpotifyNetworkCall<SpotifyLibraryShowsModelX> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set
@@ -476,7 +476,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This variable contains the current User All the Episodes from the spotify APi
      */
-    var currentUserEpisode: SpotifyNetworkCall<SpotifyLibraryEpisodesModel> by mutableStateOf(
+    var currentUserEpisode: SpotifyNetworkCall<SpotifyLibraryEpisodesModelX> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set

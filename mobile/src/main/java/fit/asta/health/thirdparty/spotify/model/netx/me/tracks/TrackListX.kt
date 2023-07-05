@@ -1,14 +1,15 @@
-package fit.asta.health.thirdparty.spotify.model.net.me.tracks
+package fit.asta.health.thirdparty.spotify.model.netx.me.tracks
 
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import fit.asta.health.thirdparty.spotify.model.netx.common.TrackX
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Item(
+data class TrackListX(
     @SerializedName("added_at")
-    val addedAt: String, // 2022-09-08T19:35:04Z
+    val addedAt: String,
     @SerializedName("track")
-    val track: Track
+    val track: TrackX
 ) : Parcelable

@@ -3,12 +3,12 @@ package fit.asta.health.thirdparty.spotify.model
 import fit.asta.health.thirdparty.spotify.model.api.SpotifyApi
 import fit.asta.health.thirdparty.spotify.model.netx.albums.SpotifyAlbumDetailsModelX
 import fit.asta.health.thirdparty.spotify.model.net.categories.SpotifyBrowseCategoriesModel
-import fit.asta.health.thirdparty.spotify.model.net.me.albums.SpotifyLibraryAlbumModel
-import fit.asta.health.thirdparty.spotify.model.net.me.episodes.SpotifyLibraryEpisodesModel
-import fit.asta.health.thirdparty.spotify.model.net.me.following.SpotifyUserFollowingArtist
-import fit.asta.health.thirdparty.spotify.model.net.me.shows.SpotifyLibraryShowsModel
-import fit.asta.health.thirdparty.spotify.model.net.me.tracks.SpotifyLibraryTracksModel
-import fit.asta.health.thirdparty.spotify.model.net.playlist.SpotifyUserPlaylistsModel
+import fit.asta.health.thirdparty.spotify.model.netx.me.albums.SpotifyLibraryAlbumModelX
+import fit.asta.health.thirdparty.spotify.model.netx.me.episodes.SpotifyLibraryEpisodesModelX
+import fit.asta.health.thirdparty.spotify.model.netx.me.following.SpotifyUserFollowingArtistX
+import fit.asta.health.thirdparty.spotify.model.netx.me.shows.SpotifyLibraryShowsModelX
+import fit.asta.health.thirdparty.spotify.model.netx.me.tracks.SpotifyLibraryTracksModelX
+import fit.asta.health.thirdparty.spotify.model.netx.me.playlist.SpotifyUserPlaylistsModelX
 import fit.asta.health.thirdparty.spotify.model.netx.search.SpotifySearchModelX
 import fit.asta.health.thirdparty.spotify.model.netx.top.SpotifyTopArtistsModelX
 import fit.asta.health.thirdparty.spotify.model.netx.top.SpotifyTopTracksModelX
@@ -28,7 +28,7 @@ class SpotifyRepoImpl @Inject constructor(
         return spotifyApi.getCurrentUserDetails(accessToken = accessToken)
     }
 
-    override suspend fun getCurrentUserFollowedArtists(accessToken: String): Response<SpotifyUserFollowingArtist> {
+    override suspend fun getCurrentUserFollowedArtists(accessToken: String): Response<SpotifyUserFollowingArtistX> {
         return spotifyApi.getCurrentUserFollowedArtists(accessToken = accessToken)
     }
 
@@ -40,23 +40,23 @@ class SpotifyRepoImpl @Inject constructor(
         return spotifyApi.getCurrentUserTopArtists(accessToken = accessToken)
     }
 
-    override suspend fun getCurrentUserAlbums(accessToken: String): Response<SpotifyLibraryAlbumModel> {
+    override suspend fun getCurrentUserAlbums(accessToken: String): Response<SpotifyLibraryAlbumModelX> {
         return spotifyApi.getCurrentUserAlbums(accessToken = accessToken)
     }
 
-    override suspend fun getCurrentUserShows(accessToken: String): Response<SpotifyLibraryShowsModel> {
+    override suspend fun getCurrentUserShows(accessToken: String): Response<SpotifyLibraryShowsModelX> {
         return spotifyApi.getCurrentUserShows(accessToken = accessToken)
     }
 
-    override suspend fun getCurrentUserEpisodes(accessToken: String): Response<SpotifyLibraryEpisodesModel> {
+    override suspend fun getCurrentUserEpisodes(accessToken: String): Response<SpotifyLibraryEpisodesModelX> {
         return spotifyApi.getCurrentUserEpisodes(accessToken = accessToken)
     }
 
-    override suspend fun getCurrentUserTracks(accessToken: String): Response<SpotifyLibraryTracksModel> {
+    override suspend fun getCurrentUserTracks(accessToken: String): Response<SpotifyLibraryTracksModelX> {
         return spotifyApi.getCurrentUserTracks(accessToken = accessToken)
     }
 
-    override suspend fun getCurrentUserPlaylists(accessToken: String): Response<SpotifyUserPlaylistsModel> {
+    override suspend fun getCurrentUserPlaylists(accessToken: String): Response<SpotifyUserPlaylistsModelX> {
         return spotifyApi.getCurrentUserPlaylists(accessToken = accessToken)
     }
 
@@ -67,7 +67,7 @@ class SpotifyRepoImpl @Inject constructor(
     override suspend fun getUserPlaylists(
         accessToken: String,
         userID: String
-    ): Response<SpotifyUserPlaylistsModel> {
+    ): Response<SpotifyUserPlaylistsModelX> {
         return spotifyApi.getUserPlaylists(
             accessToken = accessToken,
             userID = userID
