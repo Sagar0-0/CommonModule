@@ -1,4 +1,4 @@
-package fit.asta.health.thirdparty.spotify.model.netx.me.albums
+package fit.asta.health.thirdparty.spotify.model.netx.library.albums
 
 
 import android.os.Parcelable

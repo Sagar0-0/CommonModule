@@ -1,14 +1,13 @@
 package fit.asta.health.thirdparty.spotify.model
 
 import fit.asta.health.thirdparty.spotify.model.api.SpotifyApi
-import fit.asta.health.thirdparty.spotify.model.net.categories.SpotifyBrowseCategoriesModel
 import fit.asta.health.thirdparty.spotify.model.netx.common.AlbumX
-import fit.asta.health.thirdparty.spotify.model.netx.me.albums.SpotifyLibraryAlbumModelX
-import fit.asta.health.thirdparty.spotify.model.netx.me.episodes.SpotifyLibraryEpisodesModelX
-import fit.asta.health.thirdparty.spotify.model.netx.me.following.SpotifyUserFollowingArtistX
-import fit.asta.health.thirdparty.spotify.model.netx.me.shows.SpotifyLibraryShowsModelX
-import fit.asta.health.thirdparty.spotify.model.netx.me.tracks.SpotifyLibraryTracksModelX
-import fit.asta.health.thirdparty.spotify.model.netx.me.playlist.SpotifyUserPlaylistsModelX
+import fit.asta.health.thirdparty.spotify.model.netx.library.albums.SpotifyLibraryAlbumModelX
+import fit.asta.health.thirdparty.spotify.model.netx.library.episodes.SpotifyLibraryEpisodesModelX
+import fit.asta.health.thirdparty.spotify.model.netx.library.following.SpotifyUserFollowingArtistX
+import fit.asta.health.thirdparty.spotify.model.netx.library.shows.SpotifyLibraryShowsModelX
+import fit.asta.health.thirdparty.spotify.model.netx.library.tracks.SpotifyLibraryTracksModelX
+import fit.asta.health.thirdparty.spotify.model.netx.library.playlist.SpotifyUserPlaylistsModelX
 import fit.asta.health.thirdparty.spotify.model.netx.search.SpotifySearchModelX
 import fit.asta.health.thirdparty.spotify.model.netx.search.ArtistListX
 import fit.asta.health.thirdparty.spotify.model.netx.search.TrackListX
@@ -91,16 +90,6 @@ class SpotifyRepoImpl @Inject constructor(
         return spotifyApi.getAlbumDetails(
             accessToken = accessToken,
             albumID = albumID
-        )
-    }
-
-    override suspend fun getCategories(
-        accessToken: String,
-        country: String
-    ): Response<SpotifyBrowseCategoriesModel> {
-        return spotifyApi.getCategories(
-            accessToken = accessToken,
-            country = country
         )
     }
 

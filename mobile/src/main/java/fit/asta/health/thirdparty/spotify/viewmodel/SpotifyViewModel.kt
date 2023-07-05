@@ -7,13 +7,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
-import fit.asta.health.thirdparty.spotify.model.net.categories.SpotifyBrowseCategoriesModel
-import fit.asta.health.thirdparty.spotify.model.netx.me.albums.SpotifyLibraryAlbumModelX
-import fit.asta.health.thirdparty.spotify.model.netx.me.episodes.SpotifyLibraryEpisodesModelX
-import fit.asta.health.thirdparty.spotify.model.netx.me.following.SpotifyUserFollowingArtistX
-import fit.asta.health.thirdparty.spotify.model.netx.me.shows.SpotifyLibraryShowsModelX
-import fit.asta.health.thirdparty.spotify.model.netx.me.tracks.SpotifyLibraryTracksModelX
-import fit.asta.health.thirdparty.spotify.model.netx.me.playlist.SpotifyUserPlaylistsModelX
+import fit.asta.health.thirdparty.spotify.model.netx.library.albums.SpotifyLibraryAlbumModelX
+import fit.asta.health.thirdparty.spotify.model.netx.library.episodes.SpotifyLibraryEpisodesModelX
+import fit.asta.health.thirdparty.spotify.model.netx.library.following.SpotifyUserFollowingArtistX
+import fit.asta.health.thirdparty.spotify.model.netx.library.shows.SpotifyLibraryShowsModelX
+import fit.asta.health.thirdparty.spotify.model.netx.library.tracks.SpotifyLibraryTracksModelX
+import fit.asta.health.thirdparty.spotify.model.netx.library.playlist.SpotifyUserPlaylistsModelX
 import fit.asta.health.thirdparty.spotify.model.netx.search.SpotifySearchModelX
 import fit.asta.health.thirdparty.spotify.model.netx.search.ArtistListX
 import fit.asta.health.thirdparty.spotify.model.netx.search.TrackListX
@@ -283,25 +282,6 @@ class SpotifyViewModel @Inject constructor(
             albumDetailsResponse.value = handleResponse(response)
         } catch (e: Exception) {
             Log.e(TAG, "getAlbumDetailsSafeCall: $e")
-        }
-    }
-
-    // Get Categories
-    val categoriesResponse: MutableLiveData<NetworkResult<SpotifyBrowseCategoriesModel>> =
-        MutableLiveData()
-
-    fun getCategories(accessToken: String, coutry: String) = viewModelScope.launch {
-        getCategoriesSafeCall(accessToken, coutry)
-    }
-
-    private suspend fun getCategoriesSafeCall(accessToken: String, country: String) {
-        categoriesResponse.value = NetworkResult.Loading()
-
-        try {
-            val response = repository.getCategories(accessToken, country)
-            categoriesResponse.value = handleResponse(response)
-        } catch (e: Exception) {
-            Log.e(TAG, "getCategoriesSafeCall: $e")
         }
     }
 

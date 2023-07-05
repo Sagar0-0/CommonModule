@@ -1,4 +1,4 @@
-package fit.asta.health.thirdparty.spotify.model.netx.me.episodes
+package fit.asta.health.thirdparty.spotify.model.netx.library.albums
 
 
 import android.os.Parcelable
@@ -6,11 +6,11 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class SpotifyLibraryEpisodesModelX(
+data class SpotifyLibraryAlbumModelX(
     @SerializedName("href")
     val href: String,
     @SerializedName("items")
-    val episodeList: List<EpisodeParentX>,
+    val albumList: List<AlbumParentX>,
     @SerializedName("limit")
     val limit: Int,
     @SerializedName("next")
