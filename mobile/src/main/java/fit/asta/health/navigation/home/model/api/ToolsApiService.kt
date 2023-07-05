@@ -6,7 +6,7 @@ import retrofit2.http.*
 //Tools Endpoints
 interface ToolsApiService {
 
-    @GET("tool/screen/get?")
+    @GET("tool/home/get?")
     suspend fun getHomeData(
         @Query("uid") userId: String,
         @Query("lat") latitude: String,
