@@ -11,7 +11,7 @@ import fit.asta.health.thirdparty.spotify.model.net.playlist.SpotifyUserPlaylist
 import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopArtistsModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopTracksModel
-import fit.asta.health.thirdparty.spotify.model.net.tracks.SpotifyTrackDetailsModel
+import fit.asta.health.thirdparty.spotify.model.netx.common.TrackX
 import fit.asta.health.thirdparty.spotify.model.netx.me.SpotifyMeModelX
 import fit.asta.health.thirdparty.spotify.model.netx.recently.SpotifyPlayerRecentlyPlayedModelX
 import fit.asta.health.thirdparty.spotify.model.netx.recommendations.SpotifyRecommendationModelX
@@ -82,7 +82,7 @@ interface SpotifyApiService {
     suspend fun getTrackDetails(
         @HeaderMap headers: Map<String, String>,
         @Path("track_id") trackID: String
-    ): Response<SpotifyTrackDetailsModel>
+    ): Response<TrackX>
 
     @GET("albums/{album_id}")
     suspend fun getAlbumDetails(

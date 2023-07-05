@@ -12,7 +12,7 @@ data class TrackX(
     @SerializedName("artists")
     val artists: List<ArtistX>,
     @SerializedName("available_markets")
-    val availableMarkets: List<String>,
+    val availableMarkets: List<String>?,
     @SerializedName("disc_number")
     val discNumber: Int,
     @SerializedName("duration_ms")
@@ -34,7 +34,7 @@ data class TrackX(
     @SerializedName("popularity")
     val popularity: Int,
     @SerializedName("preview_url")
-    val previewUrl: String,
+    val previewUrl: String?,
     @SerializedName("track_number")
     val trackNumber: Int,
     @SerializedName("type")

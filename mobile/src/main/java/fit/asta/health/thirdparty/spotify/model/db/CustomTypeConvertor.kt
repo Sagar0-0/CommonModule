@@ -6,8 +6,7 @@ import fit.asta.health.thirdparty.spotify.model.netx.common.AlbumX
 import fit.asta.health.thirdparty.spotify.model.netx.common.ArtistX
 import fit.asta.health.thirdparty.spotify.model.netx.common.ExternalUrlsX
 import fit.asta.health.thirdparty.spotify.model.netx.common.ImageX
-import fit.asta.health.thirdparty.spotify.model.net.tracks.ExternalIds
-import fit.asta.health.thirdparty.spotify.model.net.tracks.ExternalUrlsXXX
+import fit.asta.health.thirdparty.spotify.model.netx.common.ExternalIdsX
 
 class CustomTypeConvertor {
     @TypeConverter
@@ -50,16 +49,9 @@ class CustomTypeConvertor {
         Gson().fromJson(string, AlbumX::class.java)
 
     @TypeConverter
-    fun externalIdsToString(item: ExternalIds): String = Gson().toJson(item)
+    fun externalIdsToString(item: ExternalIdsX): String = Gson().toJson(item)
 
     @TypeConverter
-    fun stringToExternalIds(string: String): ExternalIds =
-        Gson().fromJson(string, ExternalIds::class.java)
-
-    @TypeConverter
-    fun externalUrlsxToString(item: ExternalUrlsXXX): String = Gson().toJson(item)
-
-    @TypeConverter
-    fun stringToExternalUrlsx(string: String): ExternalUrlsXXX =
-        Gson().fromJson(string, ExternalUrlsXXX::class.java)
+    fun stringToExternalIds(string: String): ExternalIdsX =
+        Gson().fromJson(string, ExternalIdsX::class.java)
 }

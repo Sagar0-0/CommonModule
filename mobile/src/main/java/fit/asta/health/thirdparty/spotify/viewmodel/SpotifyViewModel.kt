@@ -18,7 +18,7 @@ import fit.asta.health.thirdparty.spotify.model.net.playlist.SpotifyUserPlaylist
 import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopArtistsModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopTracksModel
-import fit.asta.health.thirdparty.spotify.model.net.tracks.SpotifyTrackDetailsModel
+import fit.asta.health.thirdparty.spotify.model.netx.common.TrackX
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.TAG
 import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.thirdparty.spotify.model.netx.me.SpotifyMeModelX
@@ -249,7 +249,7 @@ class SpotifyViewModel @Inject constructor(
     }
 
     // Get Track Details
-    val trackDetailsResponse: MutableLiveData<NetworkResult<SpotifyTrackDetailsModel>> =
+    val trackDetailsResponse: MutableLiveData<NetworkResult<TrackX>> =
         MutableLiveData()
 
     fun getTrackDetails(accessToken: String, trackId: String) = viewModelScope.launch {
