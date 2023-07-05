@@ -9,7 +9,7 @@ import fit.asta.health.thirdparty.spotify.model.net.me.shows.SpotifyLibraryShows
 import fit.asta.health.thirdparty.spotify.model.net.me.tracks.SpotifyLibraryTracksModel
 import fit.asta.health.thirdparty.spotify.model.net.playlist.SpotifyUserPlaylistsModel
 import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
-import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopArtistsModel
+import fit.asta.health.thirdparty.spotify.model.netx.top.SpotifyTopArtistsModelX
 import fit.asta.health.thirdparty.spotify.model.netx.top.SpotifyTopTracksModelX
 import fit.asta.health.thirdparty.spotify.model.netx.common.TrackX
 import fit.asta.health.thirdparty.spotify.model.netx.me.SpotifyMeModelX
@@ -39,7 +39,7 @@ interface SpotifyApiService {
     @GET("me/top/artists")
     suspend fun getCurrentUserTopArtists(
         @HeaderMap headers: Map<String, String>
-    ): Response<SpotifyTopArtistsModel>
+    ): Response<SpotifyTopArtistsModelX>
 
     @GET("me/playlists")
     suspend fun getCurrentUserPlaylists(

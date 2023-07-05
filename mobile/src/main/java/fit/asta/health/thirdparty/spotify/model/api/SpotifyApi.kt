@@ -9,7 +9,7 @@ import fit.asta.health.thirdparty.spotify.model.net.me.shows.SpotifyLibraryShows
 import fit.asta.health.thirdparty.spotify.model.net.me.tracks.SpotifyLibraryTracksModel
 import fit.asta.health.thirdparty.spotify.model.net.playlist.SpotifyUserPlaylistsModel
 import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
-import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopArtistsModel
+import fit.asta.health.thirdparty.spotify.model.netx.top.SpotifyTopArtistsModelX
 import fit.asta.health.thirdparty.spotify.model.netx.top.SpotifyTopTracksModelX
 import fit.asta.health.thirdparty.spotify.model.netx.common.TrackX
 import fit.asta.health.thirdparty.spotify.model.netx.me.SpotifyMeModelX
@@ -25,7 +25,7 @@ interface SpotifyApi {
 
     suspend fun getCurrentUserTopTracks(accessToken: String): Response<SpotifyTopTracksModelX>
 
-    suspend fun getCurrentUserTopArtists(accessToken: String): Response<SpotifyTopArtistsModel>
+    suspend fun getCurrentUserTopArtists(accessToken: String): Response<SpotifyTopArtistsModelX>
 
     suspend fun getCurrentUserAlbums(accessToken: String): Response<SpotifyLibraryAlbumModel>
 
