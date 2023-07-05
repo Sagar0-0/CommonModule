@@ -121,13 +121,18 @@ fun TracksUI(spotifyViewModelX: SpotifyViewModelX) {
                         // current Item
                         val currentItem = trackList[it]
 
-                        //
+                        val textToShow = currentItem.track.artists
+                            .map { artist -> artist.name }
+                            .toString()
+                            .filterNot { char ->
+                                char == '[' || char == ']'
+                            }
+                            .trim()
                         MusicSmallImageRow(
                             imageUri = currentItem.track.album.images.firstOrNull()?.url,
                             name = currentItem.track.name,
                             itemUri = currentItem.track.uri,
-                            type = currentItem.track.type,
-                            owner = currentItem.track.artists.firstOrNull()!!.name
+                            secondaryText = textToShow
                         )
                     }
                 }
@@ -161,14 +166,13 @@ fun PlaylistUI(spotifyViewModelX: SpotifyViewModelX) {
 
                         // current Item
                         val currentItem = playList[it]
+                        val textToShow = "${currentItem.type} • ${currentItem.owner.displayName}"
 
-                        //
                         MusicSmallImageRow(
                             imageUri = currentItem.images.firstOrNull()?.url,
                             name = currentItem.name,
                             itemUri = currentItem.uri,
-                            type = currentItem.type,
-                            owner = currentItem.owner.displayName
+                            secondaryText = textToShow
                         )
                     }
                 }
@@ -203,13 +207,11 @@ fun ArtistsUI(spotifyViewModelX: SpotifyViewModelX) {
                         // current Item
                         val currentItem = artistsList[it]
 
-                        //
                         MusicSmallImageRow(
                             imageUri = currentItem.images.firstOrNull()?.url,
                             name = currentItem.name,
                             itemUri = currentItem.uri,
-                            type = "",
-                            owner = ""
+                            secondaryText = ""
                         )
                     }
                 }
@@ -247,8 +249,7 @@ fun AlbumsUI(spotifyViewModelX: SpotifyViewModelX) {
                             imageUri = currentItem.album.images.firstOrNull()?.url,
                             name = currentItem.album.name,
                             itemUri = currentItem.album.uri,
-                            type = currentItem.album.type,
-                            owner = ""
+                            secondaryText = currentItem.album.type
                         )
                     }
                 }
@@ -281,13 +282,13 @@ fun ShowUI(spotifyViewModelX: SpotifyViewModelX) {
 
                         // current Item
                         val currentItem = showList[it]
+                        val textToShow = "${currentItem.show.type} • ${currentItem.show.publisher}"
 
                         MusicSmallImageRow(
                             imageUri = currentItem.show.images.firstOrNull()?.url,
                             name = currentItem.show.name,
                             itemUri = currentItem.show.uri,
-                            type = currentItem.show.type,
-                            owner = ""
+                            secondaryText = textToShow
                         )
                     }
                 }
@@ -325,8 +326,7 @@ fun EpisodeUI(spotifyViewModelX: SpotifyViewModelX) {
                             imageUri = currentItem.episode.images.firstOrNull()?.url,
                             name = currentItem.episode.name,
                             itemUri = currentItem.episode.uri,
-                            type = currentItem.episode.type,
-                            owner = ""
+                            secondaryText = currentItem.episode.type
                         )
                     }
                 }

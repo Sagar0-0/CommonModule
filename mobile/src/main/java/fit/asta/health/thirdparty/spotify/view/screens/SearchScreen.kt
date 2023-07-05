@@ -309,12 +309,14 @@ fun SearchScreen(
 
                             // current Item
                             val currentItem = playlists[it]
+                            val textToShow =
+                                "${currentItem.type} • ${currentItem.owner.displayName}"
+
                             MusicSmallImageRow(
                                 imageUri = currentItem.images.firstOrNull()?.url,
                                 name = currentItem.name,
                                 itemUri = currentItem.uri,
-                                type = currentItem.type,
-                                owner = currentItem.owner.displayName
+                                secondaryText = textToShow
                             )
                         }
                     }

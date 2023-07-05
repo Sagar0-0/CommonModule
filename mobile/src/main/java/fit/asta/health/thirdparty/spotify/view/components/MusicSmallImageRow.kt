@@ -31,16 +31,14 @@ import coil.compose.rememberAsyncImagePainter
  * @param imageUri This is the uri from where we can fetch the image
  * @param name This is the name of the playlist
  * @param itemUri This is the URI of the playlist which redirects it to the spotify App
- * @param type This is the type of playlist
- * @param owner This is the name of the owner of the playlist
+ * @param secondaryText This is the 2nd Text in the UI
  */
 @Composable
 fun MusicSmallImageRow(
     imageUri: String?,
     name: String,
     itemUri: String,
-    type: String,
-    owner: String
+    secondaryText: String
 ) {
     // request for the image and load when it is fetched from the internet
     val painter = rememberAsyncImagePainter(imageUri)
@@ -97,14 +95,15 @@ fun MusicSmallImageRow(
                 fontSize = 14.sp
             )
 
-            // Playlist Type + Owner Name
-            Text(
-                text = "$type • $owner",
+            // Secondary Text
+            if (secondaryText.isNotEmpty())
+                Text(
+                    text = secondaryText,
 
-                textAlign = TextAlign.Start,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = .6f),
-                fontSize = 12.sp
-            )
+                    textAlign = TextAlign.Start,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = .6f),
+                    fontSize = 12.sp
+                )
         }
     }
 }
