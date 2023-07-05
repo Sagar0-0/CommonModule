@@ -17,7 +17,7 @@ import fit.asta.health.thirdparty.spotify.model.net.me.tracks.SpotifyLibraryTrac
 import fit.asta.health.thirdparty.spotify.model.net.playlist.SpotifyUserPlaylistsModel
 import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopArtistsModel
-import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopTracksModel
+import fit.asta.health.thirdparty.spotify.model.netx.top.SpotifyTopTracksModelX
 import fit.asta.health.thirdparty.spotify.model.netx.common.TrackX
 import fit.asta.health.thirdparty.spotify.model.netx.me.SpotifyMeModelX
 import fit.asta.health.thirdparty.spotify.model.netx.recently.SpotifyPlayerRecentlyPlayedModelX
@@ -195,7 +195,7 @@ class SpotifyViewModelX @Inject constructor(
     }
 
     // Keeps the User Top Tracks
-    var userTopTracks: SpotifyNetworkCall<SpotifyTopTracksModel> by mutableStateOf(
+    var userTopTracks: SpotifyNetworkCall<SpotifyTopTracksModelX> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set

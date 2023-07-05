@@ -3,7 +3,7 @@ package fit.asta.health.thirdparty.spotify.model.net.search
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import fit.asta.health.thirdparty.spotify.model.net.top.ItemTopTrack
+import fit.asta.health.thirdparty.spotify.model.netx.common.TrackX
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -11,7 +11,7 @@ data class TracksX(
     @SerializedName("href")
     val href: String, // https://api.spotify.com/v1/search?query=n&type=track&include_external=audio&offset=0&limit=20
     @SerializedName("items")
-    val items: List<ItemTopTrack>,
+    val items: List<TrackX>,
     @SerializedName("limit")
     val limit: Int, // 20
     @SerializedName("next")

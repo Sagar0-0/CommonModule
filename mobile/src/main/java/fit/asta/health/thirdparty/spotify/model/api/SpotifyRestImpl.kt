@@ -10,7 +10,7 @@ import fit.asta.health.thirdparty.spotify.model.net.me.tracks.SpotifyLibraryTrac
 import fit.asta.health.thirdparty.spotify.model.net.playlist.SpotifyUserPlaylistsModel
 import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopArtistsModel
-import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopTracksModel
+import fit.asta.health.thirdparty.spotify.model.netx.top.SpotifyTopTracksModelX
 import fit.asta.health.thirdparty.spotify.model.netx.common.TrackX
 import fit.asta.health.thirdparty.spotify.model.netx.me.SpotifyMeModelX
 import fit.asta.health.thirdparty.spotify.model.netx.recently.SpotifyPlayerRecentlyPlayedModelX
@@ -37,7 +37,7 @@ class SpotifyRestImpl @Inject constructor(
         return spotifyApiService.getCurrentUserFollowedArtists(headerMap)
     }
 
-    override suspend fun getCurrentUserTopTracks(accessToken: String): Response<SpotifyTopTracksModel> {
+    override suspend fun getCurrentUserTopTracks(accessToken: String): Response<SpotifyTopTracksModelX> {
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"
         headerMap["Content-Type"] = "application/json"
