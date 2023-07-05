@@ -9,7 +9,6 @@ import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
 import fit.asta.health.thirdparty.spotify.model.net.albums.SpotifyAlbumDetailsModel
-import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
 import fit.asta.health.thirdparty.spotify.model.net.me.albums.SpotifyLibraryAlbumModel
 import fit.asta.health.thirdparty.spotify.model.net.me.episodes.SpotifyLibraryEpisodesModel
 import fit.asta.health.thirdparty.spotify.model.net.me.following.SpotifyUserFollowingArtist
@@ -22,6 +21,7 @@ import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopArtistsModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopTracksModel
 import fit.asta.health.thirdparty.spotify.model.net.tracks.SpotifyTrackDetailsModel
+import fit.asta.health.thirdparty.spotify.model.netx.me.SpotifyMeModelX
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -33,11 +33,10 @@ class SpotifyViewModelX @Inject constructor(
 ) : ViewModel() {
 
     // Keeps the AccessToken of the Authorization
-    var accessToken: String = ""
-        private set
+    private var accessToken: String = ""
 
     // Keeps the current User Data so that it can be used
-    var currentUserData: SpotifyNetworkCall<SpotifyMeModel> by mutableStateOf(
+    var currentUserData: SpotifyNetworkCall<SpotifyMeModelX> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set
@@ -59,7 +58,7 @@ class SpotifyViewModelX @Inject constructor(
 
             // If the Response is an Error or anything else
             else -> {
-                currentUserData = SpotifyNetworkCall.Failure(message = response.toString())
+                currentUserData = SpotifyNetworkCall.Failure(message = response.error.toString())
             }
         }
     }

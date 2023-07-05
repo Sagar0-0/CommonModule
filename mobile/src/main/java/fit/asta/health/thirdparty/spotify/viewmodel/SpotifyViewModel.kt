@@ -9,7 +9,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
 import fit.asta.health.thirdparty.spotify.model.net.albums.SpotifyAlbumDetailsModel
 import fit.asta.health.thirdparty.spotify.model.net.categories.SpotifyBrowseCategoriesModel
-import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
 import fit.asta.health.thirdparty.spotify.model.net.me.albums.SpotifyLibraryAlbumModel
 import fit.asta.health.thirdparty.spotify.model.net.me.episodes.SpotifyLibraryEpisodesModel
 import fit.asta.health.thirdparty.spotify.model.net.me.following.SpotifyUserFollowingArtist
@@ -24,6 +23,7 @@ import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopTracksModel
 import fit.asta.health.thirdparty.spotify.model.net.tracks.SpotifyTrackDetailsModel
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.TAG
 import fit.asta.health.common.utils.NetworkResult
+import fit.asta.health.thirdparty.spotify.model.netx.me.SpotifyMeModelX
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
@@ -35,7 +35,7 @@ class SpotifyViewModel @Inject constructor(
 ) : AndroidViewModel(application) {
 
     // Get Current User Details
-    val currentUserDetailsResponse: MutableLiveData<NetworkResult<SpotifyMeModel>> =
+    val currentUserDetailsResponse: MutableLiveData<NetworkResult<SpotifyMeModelX>> =
         MutableLiveData()
 
     fun getCurrentUserDetails(accessToken: String) = viewModelScope.launch {

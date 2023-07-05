@@ -2,7 +2,6 @@ package fit.asta.health.thirdparty.spotify.model.api
 
 import fit.asta.health.thirdparty.spotify.model.net.albums.SpotifyAlbumDetailsModel
 import fit.asta.health.thirdparty.spotify.model.net.categories.SpotifyBrowseCategoriesModel
-import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
 import fit.asta.health.thirdparty.spotify.model.net.me.albums.SpotifyLibraryAlbumModel
 import fit.asta.health.thirdparty.spotify.model.net.me.episodes.SpotifyLibraryEpisodesModel
 import fit.asta.health.thirdparty.spotify.model.net.me.following.SpotifyUserFollowingArtist
@@ -15,6 +14,7 @@ import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopArtistsModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopTracksModel
 import fit.asta.health.thirdparty.spotify.model.net.tracks.SpotifyTrackDetailsModel
+import fit.asta.health.thirdparty.spotify.model.netx.me.SpotifyMeModelX
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -23,7 +23,7 @@ interface SpotifyApiService {
     @GET("me")
     suspend fun getCurrentUserDetails(
         @HeaderMap headers: Map<String, String>
-    ): Response<SpotifyMeModel>
+    ): Response<SpotifyMeModelX>
 
     @GET("me/following")
     suspend fun getCurrentUserFollowedArtists(

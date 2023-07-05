@@ -2,7 +2,6 @@ package fit.asta.health.thirdparty.spotify.model
 
 import fit.asta.health.thirdparty.spotify.model.net.albums.SpotifyAlbumDetailsModel
 import fit.asta.health.thirdparty.spotify.model.net.categories.SpotifyBrowseCategoriesModel
-import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
 import fit.asta.health.thirdparty.spotify.model.net.me.albums.SpotifyLibraryAlbumModel
 import fit.asta.health.thirdparty.spotify.model.net.me.episodes.SpotifyLibraryEpisodesModel
 import fit.asta.health.thirdparty.spotify.model.net.me.following.SpotifyUserFollowingArtist
@@ -15,11 +14,12 @@ import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopArtistsModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopTracksModel
 import fit.asta.health.thirdparty.spotify.model.net.tracks.SpotifyTrackDetailsModel
+import fit.asta.health.thirdparty.spotify.model.netx.me.SpotifyMeModelX
 import retrofit2.Response
 
 interface SpotifyRepo {
 
-    suspend fun getCurrentUserDetails(accessToken: String): Response<SpotifyMeModel>
+    suspend fun getCurrentUserDetails(accessToken: String): Response<SpotifyMeModelX>
 
     suspend fun getCurrentUserFollowedArtists(accessToken: String): Response<SpotifyUserFollowingArtist>
 
