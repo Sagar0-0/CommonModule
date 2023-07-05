@@ -9,13 +9,13 @@ import fit.asta.health.thirdparty.spotify.model.net.me.following.SpotifyUserFoll
 import fit.asta.health.thirdparty.spotify.model.net.me.shows.SpotifyLibraryShowsModel
 import fit.asta.health.thirdparty.spotify.model.net.me.tracks.SpotifyLibraryTracksModel
 import fit.asta.health.thirdparty.spotify.model.net.playlist.SpotifyUserPlaylistsModel
-import fit.asta.health.thirdparty.spotify.model.net.recommendations.SpotifyRecommendationModel
 import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopArtistsModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopTracksModel
 import fit.asta.health.thirdparty.spotify.model.net.tracks.SpotifyTrackDetailsModel
 import fit.asta.health.thirdparty.spotify.model.netx.me.SpotifyMeModelX
 import fit.asta.health.thirdparty.spotify.model.netx.recently.SpotifyPlayerRecentlyPlayedModelX
+import fit.asta.health.thirdparty.spotify.model.netx.recommendations.SpotifyRecommendationModelX
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Named
@@ -126,7 +126,7 @@ class SpotifyRepoImpl @Inject constructor(
         seedGenres: String,
         seedTracks: String,
         limit: String
-    ): Response<SpotifyRecommendationModel> {
+    ): Response<SpotifyRecommendationModelX> {
         return spotifyApi.getRecommendations(
             accessToken = accessToken,
             seedArtists = seedArtists,

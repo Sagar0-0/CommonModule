@@ -15,7 +15,6 @@ import fit.asta.health.thirdparty.spotify.model.net.me.following.SpotifyUserFoll
 import fit.asta.health.thirdparty.spotify.model.net.me.shows.SpotifyLibraryShowsModel
 import fit.asta.health.thirdparty.spotify.model.net.me.tracks.SpotifyLibraryTracksModel
 import fit.asta.health.thirdparty.spotify.model.net.playlist.SpotifyUserPlaylistsModel
-import fit.asta.health.thirdparty.spotify.model.net.recommendations.SpotifyRecommendationModel
 import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopArtistsModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopTracksModel
@@ -24,6 +23,7 @@ import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.TAG
 import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.thirdparty.spotify.model.netx.me.SpotifyMeModelX
 import fit.asta.health.thirdparty.spotify.model.netx.recently.SpotifyPlayerRecentlyPlayedModelX
+import fit.asta.health.thirdparty.spotify.model.netx.recommendations.SpotifyRecommendationModelX
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
@@ -341,7 +341,7 @@ class SpotifyViewModel @Inject constructor(
         }
     }
 
-    val recommendationResponse: MutableLiveData<NetworkResult<SpotifyRecommendationModel>> =
+    val recommendationResponse: MutableLiveData<NetworkResult<SpotifyRecommendationModelX>> =
         MutableLiveData()
 
     fun getRecommendations(

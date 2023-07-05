@@ -5,7 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import fit.asta.health.thirdparty.spotify.model.net.common.Album
-import fit.asta.health.thirdparty.spotify.model.net.common.ArtistX
+import fit.asta.health.thirdparty.spotify.model.netx.common.ArtistX
 import fit.asta.health.thirdparty.spotify.model.net.tracks.ExternalIds
 import fit.asta.health.thirdparty.spotify.model.net.tracks.ExternalUrlsXXX
 import kotlinx.parcelize.Parcelize

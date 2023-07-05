@@ -3,7 +3,7 @@ package fit.asta.health.thirdparty.spotify.model.net.albums
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import fit.asta.health.thirdparty.spotify.model.net.common.ArtistX
+import fit.asta.health.thirdparty.spotify.model.netx.common.ArtistX
 import fit.asta.health.thirdparty.spotify.model.net.common.ExternalUrls
 import fit.asta.health.thirdparty.spotify.model.net.common.Image
 import kotlinx.parcelize.Parcelize

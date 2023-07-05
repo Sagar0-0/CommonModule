@@ -15,13 +15,13 @@ import fit.asta.health.thirdparty.spotify.model.net.me.following.SpotifyUserFoll
 import fit.asta.health.thirdparty.spotify.model.net.me.shows.SpotifyLibraryShowsModel
 import fit.asta.health.thirdparty.spotify.model.net.me.tracks.SpotifyLibraryTracksModel
 import fit.asta.health.thirdparty.spotify.model.net.playlist.SpotifyUserPlaylistsModel
-import fit.asta.health.thirdparty.spotify.model.net.recommendations.SpotifyRecommendationModel
 import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopArtistsModel
 import fit.asta.health.thirdparty.spotify.model.net.top.SpotifyTopTracksModel
 import fit.asta.health.thirdparty.spotify.model.net.tracks.SpotifyTrackDetailsModel
 import fit.asta.health.thirdparty.spotify.model.netx.me.SpotifyMeModelX
 import fit.asta.health.thirdparty.spotify.model.netx.recently.SpotifyPlayerRecentlyPlayedModelX
+import fit.asta.health.thirdparty.spotify.model.netx.recommendations.SpotifyRecommendationModelX
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -124,7 +124,7 @@ class SpotifyViewModelX @Inject constructor(
     }
 
     // Keeps the recommended Tracks
-    var recommendationTracks: SpotifyNetworkCall<SpotifyRecommendationModel> by mutableStateOf(
+    var recommendationTracks: SpotifyNetworkCall<SpotifyRecommendationModelX> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
     )
         private set

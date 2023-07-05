@@ -3,6 +3,7 @@ package fit.asta.health.thirdparty.spotify.model.netx.recently
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import fit.asta.health.thirdparty.spotify.model.netx.common.TrackX
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

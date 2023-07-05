@@ -3,7 +3,7 @@ package fit.asta.health.thirdparty.spotify.model.db
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import fit.asta.health.thirdparty.spotify.model.net.common.Album
-import fit.asta.health.thirdparty.spotify.model.net.common.ArtistX
+import fit.asta.health.thirdparty.spotify.model.netx.common.ArtistX
 import fit.asta.health.thirdparty.spotify.model.net.common.ExternalUrls
 import fit.asta.health.thirdparty.spotify.model.net.common.Image
 import fit.asta.health.thirdparty.spotify.model.net.tracks.ExternalIds

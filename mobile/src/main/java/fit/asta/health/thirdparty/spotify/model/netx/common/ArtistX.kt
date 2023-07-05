@@ -1,8 +1,9 @@
-package fit.asta.health.thirdparty.spotify.model.net.common
+package fit.asta.health.thirdparty.spotify.model.netx.common
 
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import fit.asta.health.thirdparty.spotify.model.net.common.ExternalUrls
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

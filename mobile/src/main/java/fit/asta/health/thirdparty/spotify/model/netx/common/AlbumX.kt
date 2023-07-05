@@ -1,10 +1,8 @@
-package fit.asta.health.thirdparty.spotify.model.netx.recently
+package fit.asta.health.thirdparty.spotify.model.netx.common
 
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import fit.asta.health.thirdparty.spotify.model.netx.common.ExternalUrlsX
-import fit.asta.health.thirdparty.spotify.model.netx.common.ImageX
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

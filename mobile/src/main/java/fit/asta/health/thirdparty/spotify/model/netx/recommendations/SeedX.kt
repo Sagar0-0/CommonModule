@@ -1,4 +1,4 @@
-package fit.asta.health.thirdparty.spotify.model.net.recommendations
+package fit.asta.health.thirdparty.spotify.model.netx.recommendations
 
 
 import android.os.Parcelable
@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Seed(
+data class SeedX(
     @SerializedName("afterFilteringSize")
     val afterFilteringSize: Int, // 250
     @SerializedName("afterRelinkingSize")

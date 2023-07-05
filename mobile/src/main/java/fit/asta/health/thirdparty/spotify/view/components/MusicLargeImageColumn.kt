@@ -20,7 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import fit.asta.health.thirdparty.spotify.model.net.common.ArtistX
+import fit.asta.health.thirdparty.spotify.model.netx.common.ArtistX
 
 
 /**

@@ -6,6 +6,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import fit.asta.health.thirdparty.spotify.model.netx.common.ArtistX
 import kotlinx.parcelize.Parcelize
 
 @Entity(tableName = "FAV_ALBUMS_TABLE")
