@@ -9,17 +9,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.R
-import fit.asta.health.navigation.home.view.component.MyToolsAndViewAll
 import fit.asta.health.navigation.home.view.component.TestimonialAutoSliderAnimation
-import fit.asta.health.testimonials.TestimonialsActivity
 import fit.asta.health.testimonials.model.domain.Testimonial
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -30,18 +26,12 @@ fun Testimonials(
     testimonialsList: List<Testimonial>,
 ) {
 
-    val context = LocalContext.current
     FontFamily(Font(R.font.inter_regular, FontWeight.Normal))
     FontFamily(Font(R.font.inter_medium))
 
-    MyToolsAndViewAll(myTools = "Testimonials", allTools = "View All", onClick = {
-        TestimonialsActivity.launch(context = context)
-    })
 
     Column(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+        Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
