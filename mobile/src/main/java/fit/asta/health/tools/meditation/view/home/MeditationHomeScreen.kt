@@ -38,12 +38,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.CircularSliderInt
+import fit.asta.health.common.ui.components.ProgressBarInt
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.tools.meditation.view.component.MeditationCircularSlider
-import fit.asta.health.tools.meditation.view.component.ProgressBar
 import fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.ui.DividerLineCenter
-import fit.asta.health.tools.walking.view.component.ButtonWithColor
-import fit.asta.health.tools.walking.view.component.CardItem
+import fit.asta.health.common.ui.components.ButtonWithColor
+import fit.asta.health.common.ui.components.CardItem
 import fit.asta.health.tools.walking.view.home.SunlightCard
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -145,7 +145,7 @@ fun MeditationHomeScreen(
                     verticalArrangement = Arrangement.spacedBy(spacing.medium),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    MeditationCircularSlider(
+                    CircularSliderInt(
                         modifier = Modifier.size(200.dp),
                         isStarted = uiState.start,
                         appliedAngleDistanceValue = if (uiState.start) uiState.progress_angle else uiState.targetAngle,
@@ -159,21 +159,21 @@ fun MeditationHomeScreen(
                         }
                     )
                     Row(horizontalArrangement = Arrangement.spacedBy(spacing.medium)) {
-                        ProgressBar(
+                        ProgressBarInt(
                             modifier = Modifier.weight(0.3f),
                             targetDistance = uiState.recommended.toFloat(),
                             progress = (uiState.consume / uiState.recommended),
                             name = "Recommended",
                             postfix = "min"
                         )
-                        ProgressBar(
+                        ProgressBarInt(
                             modifier = Modifier.weight(0.3f),
                             targetDistance = uiState.target.toFloat(),
                             progress = if (uiState.target == 0) 0f else (uiState.consume / uiState.target),
                             name = "Goal",
                             postfix = "min"
                         )
-                        ProgressBar(
+                        ProgressBarInt(
                             modifier = Modifier.weight(0.3f),
                             targetDistance = uiState.target.toFloat(),
                             progress = if (uiState.target == 0) 0f else 1f - (uiState.consume / uiState.target),

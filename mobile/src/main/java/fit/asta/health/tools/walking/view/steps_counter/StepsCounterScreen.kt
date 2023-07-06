@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fit.asta.health.R
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.tools.walking.view.component.ButtonWithColor
+import fit.asta.health.common.ui.components.ButtonWithColor
 import fit.asta.health.tools.walking.view.home.StepCounterUIEvent
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi

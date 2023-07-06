@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
 import fit.asta.health.navigation.home.view.component.*
-import fit.asta.health.player.jetpack_video.VideoActivity
+import fit.asta.health.tools.exercise.ExerciseActivity
 import fit.asta.health.tools.meditation.MeditationActivity
 import fit.asta.health.tools.walking.view.WalkingActivity
 import fit.asta.health.tools.water.WaterToolActivity
@@ -75,11 +75,17 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
                                         }
 
                                         "workout" -> {
-                                            VideoActivity.launch(context = context)
+                                            ExerciseActivity.launch(context = context,activity="workout")
                                         }
 
                                         "yoga" -> {
-                                            VideoActivity.launch(context = context)
+                                            ExerciseActivity.launch(context = context,activity="yoga")
+                                        }
+                                        "hiit" -> {
+                                            ExerciseActivity.launch(context = context,activity="HIIT")
+                                        }
+                                        "dance" -> {
+                                            ExerciseActivity.launch(context = context,activity="dance")
                                         }
 
                                         "meditation"->{

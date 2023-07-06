@@ -24,7 +24,7 @@ class RescheduleAlarmService : LifecycleService() {
         ) { alarmItems ->
             for (alarm in alarmItems) {
                 if (alarm.status) {
-                    alarm.schedule(applicationContext)
+                    alarm.scheduleAlarm(applicationContext)
                 }
             }
         }

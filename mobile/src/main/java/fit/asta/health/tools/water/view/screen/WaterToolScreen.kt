@@ -30,7 +30,6 @@ import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.ProgressIndicatorDefaults
 import androidx.compose.material.Surface
 import androidx.compose.material.TopAppBar
@@ -66,12 +65,13 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.ProgressBarFloat
+import fit.asta.health.common.ui.components.CircularSliderFloat
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.ui.DividerLineCenter
-import fit.asta.health.tools.walking.view.component.ButtonWithColor
+import fit.asta.health.common.ui.components.ButtonWithColor
 import fit.asta.health.tools.water.model.domain.BeverageDetails
 import fit.asta.health.tools.water.model.network.TodayActivityData
-import fit.asta.health.tools.water.view.component.WaterCircularSlider
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -182,7 +182,7 @@ fun WaterToolScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
-                    WaterCircularSlider(
+                    CircularSliderFloat(
                         modifier = Modifier.size(200.dp),
                         isStarted = uiState.start,
                         appliedAngleDistanceValue = if (uiState.start) uiState.angle else uiState.targetAngle,
@@ -196,19 +196,19 @@ fun WaterToolScreen(
                     )
 
                     Row(horizontalArrangement = Arrangement.spacedBy(spacing.medium)) {
-                        ProgressBarItem(
+                        ProgressBarFloat(
                             modifier = Modifier.weight(0.3f),
                             targetDistance = uiState.water.recommend.toFloat(),
                             progress = (uiState.water.consume / uiState.water.recommend).toFloat(),
                             name = "Recommended"
                         )
-                        ProgressBarItem(
+                        ProgressBarFloat(
                             modifier = Modifier.weight(0.3f),
                             targetDistance = uiState.water.target.toFloat(),
                             progress = if(uiState.water.target==0.0) 0f else (uiState.water.consume / uiState.water.target).toFloat(),
                             name = "Goal"
                         )
-                        ProgressBarItem(
+                        ProgressBarFloat(
                             modifier = Modifier.weight(0.3f),
                             targetDistance = uiState.water.target.toFloat(),
                             progress =if(uiState.water.target==0.0) 0f else (uiState.water.remaining / uiState.water.target).toFloat(),
@@ -359,40 +359,7 @@ fun WaterBottomSheet(
     }
 }
 
-@Composable
-fun ProgressBarItem(
-    modifier: Modifier,
-    progress: Float,
-    targetDistance: Float,
-    name: String
-) {
 
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(spacing.small),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "%.1f Litres".format(targetDistance),
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Bold
-        )
-        val animatedProgress = animateFloatAsState(
-            targetValue = progress,
-            animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
-        ).value
-
-        LinearProgressIndicator(
-            modifier = Modifier.clip(RoundedCornerShape(6.dp)),
-            progress = animatedProgress,
-            backgroundColor = Color.LightGray,
-            color = Color.Magenta
-        )
-        Text(
-            text = name, fontSize = 12.sp, fontWeight = FontWeight.Bold
-        )
-    }
-}
 
 @Composable
 fun QuantityContainerComponent(

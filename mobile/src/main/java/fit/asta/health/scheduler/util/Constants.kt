@@ -4,18 +4,11 @@ import android.app.KeyguardManager
 import android.content.Context
 import android.media.RingtoneManager
 import android.os.Build
-import android.util.Log
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import fit.asta.health.scheduler.model.db.entity.AlarmEntity
-import fit.asta.health.scheduler.model.net.scheduler.Stat
 import fit.asta.health.scheduler.model.net.scheduler.Wk
 import xyz.aprildown.ultimateringtonepicker.UltimateRingtonePicker
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.*
 
 class Constants {
     companion object {
@@ -115,119 +108,6 @@ class Constants {
             }
             return days
         }
-
-        fun extractDaysOfAlarm(selectedDayString: String): Wk {
-            var isRecurring = false
-            var isMonday = false
-            var isTuesday = false
-            var isWednesday = false
-            var isThursday = false
-            var isFriday = false
-            var isSaturday = false
-            var isSunday = false
-
-            if (selectedDayString.lowercase().contains("mon")) {
-                isRecurring = true
-                isMonday = true
-            }
-
-            if (selectedDayString.lowercase().contains("tue")) {
-                isRecurring = true
-                isTuesday = true
-            }
-
-            if (selectedDayString.lowercase().contains("wed")) {
-                isRecurring = true
-                isWednesday = true
-            }
-
-            if (selectedDayString.lowercase().contains("thu")) {
-                isRecurring = true
-                isThursday = true
-            }
-
-            if (selectedDayString.lowercase().contains("fri")) {
-                isRecurring = true
-                isFriday = true
-            }
-
-            if (selectedDayString.lowercase().contains("sat")) {
-                isRecurring = true
-                isSaturday = true
-            }
-
-            if (selectedDayString.lowercase().contains("sun")) {
-                isRecurring = true
-                isSunday = true
-            }
-
-            return Wk(
-                monday = isMonday,
-                tuesday = isTuesday,
-                wednesday = isWednesday,
-                thursday = isThursday,
-                friday = isFriday,
-                saturday = isSaturday,
-                sunday = isSunday,
-                recurring = isRecurring
-            )
-        }
-
-        fun getSlots(context: Context, alarm: AlarmEntity): ArrayList<Stat> {
-            val slots = ArrayList<Stat>()
-            try {
-                val dateFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                val date = Date()
-                val format = "yyyy-MM-dd HH:mm"
-                val sdf = SimpleDateFormat(format, Locale.getDefault())
-                val dateObj1: Date = if (alarm.time.midDay) {
-                    sdf.parse(
-                        dateFormat.format(date) + " " + (alarm.time.hours.toInt() + 12) + ":" + alarm.time.minutes
-                    )!!
-                } else {
-                    sdf.parse(
-                        dateFormat.format(date) + " " + alarm.time.hours + ":" + alarm.time.minutes
-                    )!!
-                }
-
-                val dateObj2: Date = sdf.parse(
-                    dateFormat.format(date) + " " + "23:59"
-                )!!
-                Toast.makeText(context, "$dateObj1 $dateObj2", Toast.LENGTH_LONG).show()
-                var dif = dateObj1.time
-                while (dif < dateObj2.time) {
-                    val slot = Date(dif)
-                    val sformat = "HH:mm:a"
-                    val dateFormat = SimpleDateFormat(sformat, Locale.getDefault())
-                    val timeParts = dateFormat.format(slot).toString().split(":")
-                    Log.d("TAGTAGTAGTAG", "getSlots: $timeParts")
-                    slots.add(
-                        Stat(
-                            id = (1..999999999).random(),
-                            name = alarm.info.name.toString(),
-                            hours = (if (timeParts[0].toInt() >= 12) (timeParts[0].toInt() - 12) else timeParts[0].toInt()).toString(),
-                            minutes = timeParts[1],
-                            midDay = timeParts[2].lowercase() != "am"
-                        )
-                    )
-                    dif += if (alarm.interval.repeatableInterval.unit == "Hour") {
-                        (alarm.interval.repeatableInterval.time * 60 * 60000).toLong()
-                    } else {
-                        (alarm.interval.repeatableInterval.time * 60000).toLong()
-                    }
-                    if (slots.size > 2) {
-                        break
-                    }
-                }
-                Log.d("TAGTAGTAG", "getSlots: $slots")
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Toast.makeText(context, "${e.printStackTrace()}", Toast.LENGTH_LONG).show()
-            }
-            slots.removeAt(0)
-            return slots
-        }
-
 
         const val ASTA_BASE_URL = "https://asta.fit/"
     }
