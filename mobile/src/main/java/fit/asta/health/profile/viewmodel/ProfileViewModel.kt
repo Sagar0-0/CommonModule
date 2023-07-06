@@ -128,6 +128,7 @@ class ProfileViewModel
     // Any Significant Health History
     private val _selectedHealthHisOption =
         MutableStateFlow<TwoToggleSelections?>(null) // event raising -> lifecycle
+
     val selectedHealthHisOption: StateFlow<TwoToggleSelections?>
         get() = _selectedHealthHisOption
 
@@ -938,6 +939,7 @@ class ProfileViewModel
         when (event) {
 
             is ProfileEvent.GetHealthProperties -> getHealthProperties(propertyType = event.propertyType)
+
             is ProfileEvent.SetSelectHealthHisOption -> setSelectedTwoOptions(
                 option = event.option, event.optionIndex
             )

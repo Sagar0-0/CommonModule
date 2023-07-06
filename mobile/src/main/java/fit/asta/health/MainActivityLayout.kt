@@ -33,35 +33,32 @@ import fit.asta.health.common.ui.theme.elevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.MainTopBarActions
 import fit.asta.health.navigation.home.view.HomeContent
-import fit.asta.health.navigation.today.view.TodayContent
+import fit.asta.health.navigation.today.view.TodayScreenLayout
 import fit.asta.health.navigation.track.view.TrackContent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @Composable
 @Preview(
     uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_UNDEFINED,
-    showBackground = true, showSystemUi = true
+    showBackground = true,
+    showSystemUi = true
 )
 fun MainLayoutPreviewB() {
-    MainActivityLayout(
-        location = "Home",
+    MainActivityLayout(location = "Home",
         profileImageUri = null,
         isNotificationEnabled = true,
         isInternetAvailable = true,
-        onClick = {}
-    )
+        onClick = {})
 }
 
 @Composable
 @Preview(showSystemUi = true, showBackground = true)
 fun MainLayoutPreviewW() {
-    MainActivityLayout(
-        location = "Home",
+    MainActivityLayout(location = "Home",
         profileImageUri = null,
         isNotificationEnabled = true,
         isInternetAvailable = true,
-        onClick = {}
-    )
+        onClick = {})
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -71,131 +68,126 @@ fun MainActivityLayout(
     profileImageUri: Uri?,
     isNotificationEnabled: Boolean,
     isInternetAvailable: Boolean,
-    onClick: (key: MainTopBarActions) -> Unit
+    onClick: (key: MainTopBarActions) -> Unit,
 ) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val scaffoldState = rememberScaffoldState()
 
-    Scaffold(
-        scaffoldState = scaffoldState,
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(
-                modifier = Modifier.shadow(elevation = cardElevation.medium),
-                backgroundColor = MaterialTheme.colorScheme.onPrimary
+    Scaffold(scaffoldState = scaffoldState, modifier = Modifier.fillMaxSize(), topBar = {
+        TopAppBar(
+            modifier = Modifier.shadow(elevation = cardElevation.medium),
+            backgroundColor = MaterialTheme.colorScheme.onPrimary
+        ) {
+            Row(Modifier.clickable { onClick(MainTopBarActions.LOCATION) }) {
+                Icon(Icons.Default.LocationOn, contentDescription = "Location")
+                Text(
+                    text = location,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(spacing.minSmall)
+                )
+            }
+            Row(
+                Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
             ) {
-                Row(Modifier.clickable { onClick(MainTopBarActions.LOCATION) }) {
-                    Icon(Icons.Default.LocationOn, contentDescription = "Location")
-                    Text(
-                        text = location, textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(spacing.minSmall)
+                IconButton(onClick = { onClick(MainTopBarActions.NOTIFICATION) }) {
+                    Icon(
+                        painterResource(id = if (isNotificationEnabled) R.drawable.ic_notifications_on else R.drawable.ic_notifications_off),
+                        contentDescription = "Notifications"
                     )
                 }
-                Row(
-                    Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    IconButton(onClick = { onClick(MainTopBarActions.NOTIFICATION) }) {
-                        Icon(
-                            painterResource(id = if (isNotificationEnabled) R.drawable.ic_notifications_on else R.drawable.ic_notifications_off),
-                            contentDescription = "Notifications"
+                IconButton(onClick = { onClick(MainTopBarActions.SHARE) }) {
+                    Icon(
+                        painterResource(id = R.drawable.ic_share_app), contentDescription = "Share"
+                    )
+                }
+                if (profileImageUri != null) {
+                    IconButton(onClick = { onClick(MainTopBarActions.PROFILE) }) {
+                        Log.d("URI", profileImageUri.toString())
+                        Image(
+                            modifier = Modifier.clip(CircleShape),
+                            painter = rememberAsyncImagePainter(
+                                model = profileImageUri, placeholder = painterResource(
+                                    id = R.drawable.ic_person
+                                )
+                            ),
+                            contentDescription = "Profile"
                         )
                     }
-                    IconButton(onClick = { onClick(MainTopBarActions.SHARE) }) {
-                        Icon(
-                            painterResource(id = R.drawable.ic_share_app),
-                            contentDescription = "Share"
-                        )
-                    }
-                    if (profileImageUri != null) {
-                        IconButton(onClick = { onClick(MainTopBarActions.PROFILE) }) {
-                            Log.d("URI", profileImageUri.toString())
-                            Image(
-                                modifier = Modifier.clip(CircleShape),
-                                painter = rememberAsyncImagePainter(
-                                    model = profileImageUri, placeholder = painterResource(
-                                        id = R.drawable.ic_person
-                                    )
-                                ), contentDescription = "Profile"
-                            )
-                        }
-                    }
-                    IconButton(onClick = { onClick(MainTopBarActions.SETTINGS) }) {
-                        Icon(
-                            painterResource(id = R.drawable.ic_settings),
-                            contentDescription = "Settings"
-                        )
-                    }
+                }
+                IconButton(onClick = { onClick(MainTopBarActions.SETTINGS) }) {
+                    Icon(
+                        painterResource(id = R.drawable.ic_settings),
+                        contentDescription = "Settings"
+                    )
                 }
             }
-        },
-        bottomBar = {
-            BottomAppBar(
-                items = listOf(
-                    BottomNavItem("home", R.drawable.ic_home, "Home"),
-                    BottomNavItem("today", R.drawable.ic_today, "Today"),
-                    BottomNavItem("track", R.drawable.ic_track, "Track")
-                ),
-                currentRoute = navController.currentDestination?.route ?: "home",
-                onNavigate = { route ->
-                    if (route != currentDestination?.route) {
-                        Log.d("Navigation", "Try to navigate")
+        }
+    }, bottomBar = {
+        BottomAppBar(items = listOf(
+            BottomNavItem("tools", R.drawable.ic_home, "Tools"),
+            BottomNavItem("today", R.drawable.ic_today, "Today"),
+            BottomNavItem("track", R.drawable.ic_track, "Track")
+        ),
+            currentRoute = navController.currentDestination?.route ?: "tools",
+            onNavigate = { route ->
+                if (route != currentDestination?.route) {
+                    Log.d("Navigation", "Try to navigate")
 
-                        navController.navigate(route) {
-                            // Pop up to the start destination of the graph to
-                            // avoid building up a large stack of destinations
-                            // on the back stack as users select items
-                            // Avoid multiple copies of the same destination when
+                    navController.navigate(route) {
+                        // Pop up to the start destination of the graph to
+                        // avoid building up a large stack of destinations
+                        // on the back stack as users select items
+                        // Avoid multiple copies of the same destination when
 
-                            if (currentDestination != null) {
-                                Log.d("Navigation", "Pop up current destination")
-                                popUpTo(currentDestination.id) {
-                                    saveState = true
-                                    inclusive = true
-                                }
-                            } else {
-                                popUpTo(navController.graph.startDestinationId) {
-                                    saveState = true
-                                    inclusive = true
-                                }
+                        if (currentDestination != null) {
+                            Log.d("Navigation", "Pop up current destination")
+                            popUpTo(currentDestination.id) {
+                                saveState = true
+                                inclusive = true
                             }
-
-                            // reselecting the same item
-                            launchSingleTop = true
-                            // Restore state when reselecting a previously selected item
-                            restoreState = true
+                        } else {
+                            popUpTo(navController.graph.startDestinationId) {
+                                saveState = true
+                                inclusive = true
+                            }
                         }
+
+                        // reselecting the same item
+                        launchSingleTop = true
+                        // Restore state when reselecting a previously selected item
+                        restoreState = true
                     }
                 }
-            )
-        }
-    ) { innerPadding ->
+            })
+    }) { innerPadding ->
         NavHost(
-            navController, startDestination = "home",
-            Modifier.padding(innerPadding)
+            navController, startDestination = "tools", Modifier.padding(innerPadding)
         ) {
-            composable("home") {
+
+            composable("tools") {
                 val context = LocalContext.current
+                Modifier.height(spacing.medium)
                 HomeContent(context as Activity)
             }
 
             composable("today") {
-                TodayContent()
+                Modifier.height(spacing.medium)
+                TodayScreenLayout()
             }
 
             composable("track") {
+                Modifier.height(spacing.medium)
                 TrackContent()
             }
+
         }
         if (!isInternetAvailable) {
             val msg = stringResource(id = R.string.OFFLINE_STATUS)
             LaunchedEffect(Unit) {
                 scaffoldState.snackbarHostState.showSnackbar(
-                    message = msg,
-                    duration = SnackbarDuration.Indefinite
+                    message = msg, duration = SnackbarDuration.Indefinite
                 )
             }
         }
@@ -207,11 +199,10 @@ fun MainActivityLayout(
 fun BottomAppBar(
     items: List<BottomNavItem>,
     currentRoute: String,
-    onNavigate: (route: String) -> Unit
+    onNavigate: (route: String) -> Unit,
 ) {
     BottomNavigation(
-        modifier = Modifier
-            .fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         backgroundColor = MaterialTheme.colorScheme.background,
         elevation = elevation.high
     ) {
@@ -219,8 +210,7 @@ fun BottomAppBar(
             BottomNavigationItem(
                 icon = {
                     Icon(
-                        painter = painterResource(id = item.icon),
-                        contentDescription = item.title
+                        painter = painterResource(id = item.icon), contentDescription = item.title
                     )
                 },
                 label = { Text(text = item.title) },
@@ -236,5 +226,5 @@ fun BottomAppBar(
 data class BottomNavItem(
     val route: String,
     val icon: Int,
-    val title: String
+    val title: String,
 )

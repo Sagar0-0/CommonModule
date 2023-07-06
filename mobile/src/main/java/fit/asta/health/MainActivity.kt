@@ -47,6 +47,7 @@ import fit.asta.health.common.utils.*
 import fit.asta.health.firebase.viewmodel.AuthViewModel
 import fit.asta.health.network.TokenProvider
 import fit.asta.health.profile.CreateUserProfileActivity
+import fit.asta.health.profile.UserProfileActivity
 import fit.asta.health.profile.viewmodel.ProfileAvailState
 import fit.asta.health.profile.viewmodel.ProfileAvailViewModel
 import fit.asta.health.settings.SettingsActivity
@@ -124,8 +125,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
         if (!authViewModel.isAuthenticated()) {
             loadAuthScreen()
-        } else {
-            /*authViewModel.getUserId()?.let {
+        } else {/*authViewModel.getUserId()?.let {
                 createProfile()
                 profileViewModel.isUserProfileAvailable(it)
             }*/
@@ -149,8 +149,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
         locationRequestLauncher =
             registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { activityResult ->
-                if (activityResult.resultCode == RESULT_OK)
-                    mapsViewModel.getCurrentLatLng(this)
+                if (activityResult.resultCode == RESULT_OK) mapsViewModel.getCurrentLatLng(this)
                 else {
                     Toast.makeText(this, "User location access required!!", Toast.LENGTH_SHORT)
                         .show()
@@ -174,9 +173,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
                             profileAvailViewModel.isUserProfileAvailable(it)
                         }
                         Toast.makeText(
-                            context,
-                            "Sign in Successful",
-                            Toast.LENGTH_SHORT
+                            context, "Sign in Successful", Toast.LENGTH_SHORT
                         ).show()
                     }
                 }
@@ -199,8 +196,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
             fastestInterval = 5000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
-        val builder = LocationSettingsRequest.Builder()
-            .addLocationRequest(locationRequest)
+        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
 
         val client: SettingsClient = LocationServices.getSettingsClient(this)
         val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
@@ -306,9 +302,11 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
                     ProfileAvailState.Loading -> {
                         //Do nothing
                     }
+
                     is ProfileAvailState.Error -> {
                         //Error Handling
                     }
+
                     is ProfileAvailState.Success -> {
                         if (it.isAvailable) {
                             loadAppScreen()
@@ -316,6 +314,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
                             CreateUserProfileActivity.launch(this@MainActivity)
                         }
                     }
+
                     ProfileAvailState.NoInternet -> {
 
                     }
@@ -356,8 +355,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
                         appUpdateInfo,
                         this,
                         AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE)
-                            .setAllowAssetPackDeletion(true)
-                            .build(),
+                            .setAllowAssetPackDeletion(true).build(),
                         REQUEST_IMMEDIATE_UPDATE
                     )
                 } else if (appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
@@ -366,8 +364,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
                         appUpdateInfo,
                         this,
                         AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE)
-                            .setAllowAssetPackDeletion(true)
-                            .build(),
+                            .setAllowAssetPackDeletion(true).build(),
                         REQUEST_FLEXIBLE_UPDATE
                     )
                 }
@@ -377,8 +374,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
                     appUpdateInfo,
                     this,
                     AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE)
-                        .setAllowAssetPackDeletion(true)
-                        .build(),
+                        .setAllowAssetPackDeletion(true).build(),
                     REQUEST_IMMEDIATE_UPDATE
                 )
             }
@@ -412,7 +408,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
     }
 
     private fun startUserProfileActivity() {
-        //UserProfileActivity.launch(this@MainActivity)
+        UserProfileActivity.launch(this@MainActivity)
     }
 
 }
