@@ -7,7 +7,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.BuildConfig
-import fit.asta.health.testimonials.model.TestimonialDataMapper
 import fit.asta.health.testimonials.model.TestimonialRepo
 import fit.asta.health.testimonials.model.TestimonialRepoImpl
 import fit.asta.health.testimonials.model.api.TestimonialApi
@@ -27,21 +26,13 @@ object TestimonialsModule {
 
     @Singleton
     @Provides
-    fun provideTestimonialDataMapper(): TestimonialDataMapper {
-        return TestimonialDataMapper()
-    }
-
-    @Singleton
-    @Provides
     fun provideTestimonialRepo(
         @ApplicationContext context: Context,
-        remoteApi: TestimonialApi,
-        testimonialMapper: TestimonialDataMapper,
+        remoteApi: TestimonialApi
     ): TestimonialRepo {
         return TestimonialRepoImpl(
             context = context,
-            remoteApi = remoteApi,
-            mapper = testimonialMapper
+            remoteApi = remoteApi
         )
     }
 }
