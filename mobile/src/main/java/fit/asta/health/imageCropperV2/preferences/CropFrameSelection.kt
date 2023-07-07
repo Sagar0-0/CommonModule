@@ -1,0 +1,135 @@
+package fit.asta.health.imageCropperV2.preferences
+
+import CropFrameListDialog
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import com.smarttoolfactory.animatedlist.AnimatedInfiniteLazyRow
+import com.smarttoolfactory.animatedlist.model.AnimationProgress
+import fit.asta.health.imageCropperV2.cropper.model.AspectRatio
+import fit.asta.health.imageCropperV2.cropper.model.CropFrame
+import fit.asta.health.imageCropperV2.cropper.model.OutlineType
+import fit.asta.health.imageCropperV2.cropper.settings.CropFrameFactory
+import fit.asta.health.imageCropperV2.cropper.settings.CropOutlineProperty
+import fit.asta.health.imageCropperV2.cropper.widget.CropFrameDisplayCard
+
+/**
+ * Crop frame selection
+ */
+@Composable
+fun CropFrameSelection(
+    aspectRatio: AspectRatio,
+    cropFrameFactory: CropFrameFactory,
+    cropOutlineProperty: CropOutlineProperty,
+    conCropOutlinePropertyChange: (CropOutlineProperty) -> Unit,
+) {
+
+    var showEditDialog by remember { mutableStateOf(false) }
+
+    var cropFrame by remember {
+        mutableStateOf(
+            cropFrameFactory.getCropFrame(cropOutlineProperty.outlineType)
+        )
+    }
+
+    if (showEditDialog) {
+        CropFrameListDialog(
+            aspectRatio = aspectRatio,
+            cropFrame = cropFrame,
+            onConfirm = {
+                cropFrame = it
+                cropFrameFactory.editCropFrame(cropFrame)
+
+                conCropOutlinePropertyChange(
+                    CropOutlineProperty(
+                        it.outlineType,
+                        it.cropOutlineContainer.selectedItem
+                    )
+                )
+                showEditDialog = false
+            },
+            onDismiss = {
+                showEditDialog = false
+            }
+        )
+    }
+
+    val initialIndex = remember {
+        OutlineType.values().indexOfFirst {
+            it == cropOutlineProperty.outlineType
+        }
+    }
+
+    CropFrameSelectionList(
+        modifier = Modifier.fillMaxWidth(),
+        cropFrames = cropFrameFactory.getCropFrames(),
+        initialSelectedIndex = initialIndex,
+        onClick = {
+            cropFrame = it
+            showEditDialog = true
+        },
+        onCropFrameChange = {
+            conCropOutlinePropertyChange(
+                CropOutlineProperty(
+                    it.outlineType,
+                    it.cropOutlineContainer.selectedItem
+                )
+            )
+        }
+    )
+}
+
+/**
+ * Animated list for selecting [CropFrame]
+ */
+@Composable
+private fun CropFrameSelectionList(
+    modifier: Modifier = Modifier,
+    initialSelectedIndex: Int = 0,
+    cropFrames: List<CropFrame>,
+    onClick: (CropFrame) -> Unit,
+    onCropFrameChange: (CropFrame) -> Unit,
+) {
+
+    var currentIndex by remember { mutableStateOf(initialSelectedIndex) }
+
+    AnimatedInfiniteLazyRow(
+        modifier = modifier.padding(horizontal = 10.dp),
+        items = cropFrames,
+        inactiveItemPercent = 80,
+        initialFirstVisibleIndex = initialSelectedIndex - 2,
+    ) { animationProgress: AnimationProgress, index: Int, item: CropFrame, width: Dp ->
+
+        val scale = animationProgress.scale
+        val color = animationProgress.color
+
+        val selectedLocalIndex = animationProgress.itemIndex
+        val cropOutline = item.cropOutlineContainer.selectedItem
+
+        val editable = item.editable
+
+        CropFrameDisplayCard(
+            modifier = Modifier.width(width),
+            editable = editable,
+            scale = scale,
+            outlineColor = color,
+            title = cropOutline.title,
+            cropOutline = cropOutline
+        ) {
+            onClick(item)
+        }
+
+        if (currentIndex != selectedLocalIndex) {
+            currentIndex = selectedLocalIndex
+            onCropFrameChange(cropFrames[selectedLocalIndex])
+        }
+    }
+}
