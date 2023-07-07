@@ -1,7 +1,6 @@
 package fit.asta.health.imageCropperV2.cropper
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
@@ -10,7 +9,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
@@ -32,18 +37,23 @@ import fit.asta.health.imageCropperV2.cropper.draw.ImageDrawCanvas
 import fit.asta.health.imageCropperV2.cropper.image.ImageWithConstraints
 import fit.asta.health.imageCropperV2.cropper.image.getScaledImageBitmap
 import fit.asta.health.imageCropperV2.cropper.model.CropOutline
-import fit.asta.health.imageCropperV2.cropper.model.OutlineType
 import fit.asta.health.imageCropperV2.cropper.model.RectCropShape
 import fit.asta.health.imageCropperV2.cropper.settings.CropDefaults
 import fit.asta.health.imageCropperV2.cropper.settings.CropOutlineProperty
 import fit.asta.health.imageCropperV2.cropper.settings.CropProperties
 import fit.asta.health.imageCropperV2.cropper.settings.CropStyle
 import fit.asta.health.imageCropperV2.cropper.settings.CropType
+import fit.asta.health.imageCropperV2.cropper.settings.OutlineType
 import fit.asta.health.imageCropperV2.cropper.state.DynamicCropState
 import fit.asta.health.imageCropperV2.cropper.state.rememberCropState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
+
 
 @Composable
 fun ImageCropper(
@@ -51,9 +61,10 @@ fun ImageCropper(
     imageBitmap: ImageBitmap,
     contentDescription: String? = null,
     cropStyle: CropStyle = CropDefaults.style(),
-    cropProperties: CropProperties = CropDefaults.properties(cropOutlineProperty = CropOutlineProperty(
-        OutlineType.Rect, RectCropShape(0, "Rect")
-    ), handleSize = LocalDensity.current.run { 20.dp.toPx() }),
+    cropProperties: CropProperties = CropDefaults.properties(
+        cropOutlineProperty = CropOutlineProperty(
+            OutlineType.Rect, RectCropShape(0, "Rect")
+        ), handleSize = LocalDensity.current.run { 20.dp.toPx() }),
     filterQuality: FilterQuality = DrawScope.DefaultFilterQuality,
     crop: Boolean = false,
     onCropStart: () -> Unit = {},
@@ -187,7 +198,6 @@ fun ImageCropper(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun ImageCropper(
     modifier: Modifier,

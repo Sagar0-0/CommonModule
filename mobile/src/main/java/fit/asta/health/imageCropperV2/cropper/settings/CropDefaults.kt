@@ -11,12 +11,15 @@ import fit.asta.health.imageCropperV2.cropper.ImageCropper
 import fit.asta.health.imageCropperV2.cropper.crop
 import fit.asta.health.imageCropperV2.cropper.model.AspectRatio
 import fit.asta.health.imageCropperV2.cropper.model.CropOutline
-import fit.asta.health.imageCropperV2.cropper.model.OutlineType
 import fit.asta.health.imageCropperV2.cropper.model.aspectRatios
 import fit.asta.health.imageCropperV2.cropper.state.CropState
 import fit.asta.health.imageCropperV2.cropper.ui.theme.DefaultBackgroundColor
 import fit.asta.health.imageCropperV2.cropper.ui.theme.DefaultHandleColor
 import fit.asta.health.imageCropperV2.cropper.ui.theme.DefaultOverlayColor
+
+enum class OutlineType {
+    Rect
+}
 
 /**
  * Contains the default values used by [ImageCropper]
@@ -134,7 +137,5 @@ data class CropOutlineProperty(
  * Light, Dark or system controlled theme
  */
 enum class CropTheme {
-    Light,
-    Dark,
-    System
+    Light, Dark, System
 }
