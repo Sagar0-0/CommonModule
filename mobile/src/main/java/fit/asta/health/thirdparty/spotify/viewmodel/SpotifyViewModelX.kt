@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
@@ -81,6 +82,46 @@ class SpotifyViewModelX @Inject constructor(
             } catch (e: Exception) {
                 SpotifyNetworkCall.Failure(message = e.message)
             }
+        }
+    }
+
+
+    /**
+     * This is the Spotify Remote which helps to play songs using spotify directly
+     */
+    private var spotifyAppRemote: SpotifyAppRemote? = null
+
+
+    /**
+     * This function sets the Spotify App remote
+     */
+    fun setSpotifyAppRemote(appRemote: SpotifyAppRemote) {
+        this.spotifyAppRemote = appRemote
+    }
+
+
+    /**
+     * This function plays the Songs using the Spotify app Remote
+     */
+    fun playSpotifySong(url: String) {
+        spotifyAppRemote?.playerApi?.play(url)
+    }
+
+
+    /**
+     * This function is used to set the state as failed when the Spotify App Remote is not connected
+     */
+    fun unableToGetSpotifyRemote(e: Throwable) {
+        currentUserData = SpotifyNetworkCall.Failure(message = e.message.toString())
+    }
+
+
+    /**
+     * This function disconnects the Spotify App Remote
+     */
+    fun disconnectSpotifyRemote() {
+        spotifyAppRemote?.let {
+            SpotifyAppRemote.disconnect(it)
         }
     }
 

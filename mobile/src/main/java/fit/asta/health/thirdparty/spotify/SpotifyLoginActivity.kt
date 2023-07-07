@@ -19,6 +19,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.spotify.android.appremote.api.ConnectionParams
+import com.spotify.android.appremote.api.Connector
+import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.spotify.sdk.android.auth.AuthorizationClient
 import com.spotify.sdk.android.auth.AuthorizationRequest
 import com.spotify.sdk.android.auth.AuthorizationResponse
@@ -82,12 +85,43 @@ class SpotifyLoginActivity : ComponentActivity() {
                             }
                         }
                     ) {
+
+                        // Getting the Spotify App Remote
+                        getSpotifyRemote()
+
                         val navController = rememberNavController()
                         DisplaySuccessUI(navController = navController)
                     }
                 }
             }
         }
+    }
+
+    /**
+     * This function is getting the spotify App remote and Sharing it to the ViewModel so that it can
+     * be used everywhere
+     */
+    private fun getSpotifyRemote() {
+
+        // Setting a Connection Params which can be used to connect to the spotify and get the Remote
+        val connectionParams = ConnectionParams.Builder(SpotifyConstants.SPOTIFY_CLIENT_ID)
+            .setRedirectUri(SpotifyConstants.SPOTIFY_REDIRECT_URI)
+            .showAuthView(true)
+            .build()
+
+        // Connecting to Spotify
+        SpotifyAppRemote.connect(this, connectionParams, object : Connector.ConnectionListener {
+
+            // When Connection is established and we get the remote
+            override fun onConnected(appRemote: SpotifyAppRemote) {
+                spotifyViewModelX.setSpotifyAppRemote(appRemote)
+            }
+
+            // when connection is not established and we don't get the remote
+            override fun onFailure(throwable: Throwable) {
+                spotifyViewModelX.unableToGetSpotifyRemote(throwable)
+            }
+        })
     }
 
 
@@ -239,5 +273,13 @@ class SpotifyLoginActivity : ComponentActivity() {
             val response = AuthorizationResponse.fromUri(uri)
             spotifyViewModelX.handleSpotifyAuthResponse(response)
         }
+    }
+
+    /**
+     * This function removes the Spotify Remote and frees the Space and all
+     */
+    override fun onStop() {
+        super.onStop()
+        spotifyViewModelX.disconnectSpotifyRemote()
     }
 }
