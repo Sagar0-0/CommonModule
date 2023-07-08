@@ -33,7 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import fit.asta.health.thirdparty.spotify.SpotifyNavRoutes
+import fit.asta.health.thirdparty.spotify.view.navigation.SpotifyNavRoutes
 import fit.asta.health.thirdparty.spotify.model.net.common.Track
 import fit.asta.health.thirdparty.spotify.view.components.MusicArtistsUI
 import fit.asta.health.thirdparty.spotify.view.components.MusicPlayableSmallCards

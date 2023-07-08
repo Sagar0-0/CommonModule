@@ -1,4 +1,4 @@
-package fit.asta.health.thirdparty.spotify
+package fit.asta.health.thirdparty.spotify.view.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController

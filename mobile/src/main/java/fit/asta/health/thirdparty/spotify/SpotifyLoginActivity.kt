@@ -9,16 +9,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.spotify.android.appremote.api.ConnectionParams
 import com.spotify.android.appremote.api.Connector
@@ -29,8 +24,8 @@ import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
-import fit.asta.health.thirdparty.spotify.view.components.MusicTopTabBar
 import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
+import fit.asta.health.thirdparty.spotify.view.navigation.TopTabNavigation
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 
 @AndroidEntryPoint
@@ -84,7 +79,10 @@ class SpotifyLoginActivity : ComponentActivity() {
                         getSpotifyRemote()
 
                         val navController = rememberNavController()
-                        DisplaySuccessUI(navController = navController)
+                        TopTabNavigation(
+                            spotifyViewModelX = spotifyViewModelX,
+                            navController = navController
+                        )
                     }
                 }
             }
@@ -116,62 +114,6 @@ class SpotifyLoginActivity : ComponentActivity() {
                 spotifyViewModelX.unableToGetSpotifyRemote(throwable)
             }
         })
-    }
-
-
-    /**
-     * This function shows UI when we get an authorization request auth token from the spotify api
-     */
-    @Composable
-    private fun DisplaySuccessUI(
-        navController: NavHostController
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surface)
-        ) {
-
-            // This is the Item which is selected in the Top Tab Bar Layout
-            val selectedItem = rememberSaveable { mutableIntStateOf(0) }
-
-            // This Function makes the Tab Layout UI
-            MusicTopTabBar(
-                tabList = listOf(
-                    "Asta Music",
-                    "Favourite",
-                    "Third Party"
-                ),
-                selectedItem = selectedItem.intValue,
-                selectedColor = MaterialTheme.colorScheme.primary,
-                unselectedColor = MaterialTheme.colorScheme.secondary
-            ) {
-
-                // Changing the Current Selected Item according to the User Interactions
-                selectedItem.intValue = it
-            }
-
-            // Initializing the NavGraph
-            SpotifyNavGraph(
-                navController = navController,
-                spotifyViewModelX = spotifyViewModelX
-            )
-
-            // Checking which UI to show according to the user Selection
-            when (selectedItem.intValue) {
-                0 -> {
-                    navController.navigate(SpotifyNavRoutes.AstaMusicScreen.routes)
-                }
-
-                1 -> {
-                    navController.navigate(SpotifyNavRoutes.FavouriteScreen.routes)
-                }
-
-                2 -> {
-                    navController.navigate(SpotifyNavRoutes.ThirdPartyScreen.routes)
-                }
-            }
-        }
     }
 
 

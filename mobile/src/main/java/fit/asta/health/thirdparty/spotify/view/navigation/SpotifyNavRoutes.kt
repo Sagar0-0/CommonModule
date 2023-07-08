@@ -1,4 +1,4 @@
-package fit.asta.health.thirdparty.spotify
+package fit.asta.health.thirdparty.spotify.view.navigation
 
 sealed class SpotifyNavRoutes(val routes: String) {
     object TrackDetailScreen : SpotifyNavRoutes("track-details-screen")
