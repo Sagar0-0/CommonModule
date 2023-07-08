@@ -30,17 +30,14 @@ import coil.compose.rememberAsyncImagePainter
  *
  * @param imageUri This variables contains the url of the Image
  * @param artistName This function contains the name of the Artist
- * @param artistsUri This contains the URI which can be used to redirect the User to spotify app and
- * play the song
- * @param onClick This function takes the [artistsUri] and lets the parent decide what to do when it is
+ * @param onClick This function lets the parent decide what to do when it is
  * clicked
  */
 @Composable
 fun MusicArtistsUI(
     imageUri: String?,
     artistName: String,
-    artistsUri: String,
-    onClick: (trackUri: String) -> Unit
+    onClick: () -> Unit
 ) {
 
     // Width of the Image of the Track
@@ -56,7 +53,7 @@ fun MusicArtistsUI(
 
             // Redirecting the User to Spotify App
             .clickable {
-                onClick(artistsUri)
+                onClick()
             }
     ) {
 

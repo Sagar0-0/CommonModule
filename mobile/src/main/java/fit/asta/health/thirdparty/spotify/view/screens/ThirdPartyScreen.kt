@@ -1,8 +1,5 @@
 package fit.asta.health.thirdparty.spotify.view.screens
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -30,7 +27,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -59,8 +55,6 @@ fun ThirdPartyScreen(
     spotifyViewModelX: SpotifyViewModelX
 ) {
 
-    val context = LocalContext.current
-    val activity = context as Activity
 
     // Root Composable function
     Column(
@@ -142,11 +136,11 @@ fun ThirdPartyScreen(
                 spotifyViewModelX.getCurrentUserRecentlyPlayedTracks()
             }
         ) { networkState ->
-            networkState.data?.trackList.let { trackList ->
+            networkState.data?.trackList.let { networkTrackList ->
 
                 // making a list of tracks to be displayed into the screen
                 val tracksList = ArrayList<Track>()
-                trackList?.forEach { item ->
+                networkTrackList?.forEach { item ->
                     if (!tracksList.contains(item.track)) {
                         tracksList.add(item.track)
                     }
@@ -164,12 +158,16 @@ fun ThirdPartyScreen(
                 ) {
                     items(tracksList.size) {
 
+                        // Current Item
+                        val currentItem = tracksList[it]
+
                         // This draws the UI for the tracks
                         MusicPlayableSmallCards(
-                            imageUri = tracksList[it].album.images.firstOrNull()?.url,
-                            name = tracksList[it].name,
-                            uri = tracksList[it].uri
-                        )
+                            imageUri = currentItem.album.images.firstOrNull()?.url,
+                            name = currentItem.name
+                        ) {
+                            spotifyViewModelX.playSpotifySong(currentItem.uri)
+                        }
                     }
                 }
             }
@@ -323,12 +321,10 @@ fun ThirdPartyScreen(
                         // Shows the Artists UI
                         MusicArtistsUI(
                             imageUri = currentItem.images.firstOrNull()?.url,
-                            artistName = currentItem.name,
-                            artistsUri = currentItem.uri
-                        ) { uri ->
+                            artistName = currentItem.name
+                        ) {
 
-                            val spotifyIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-                            activity.startActivity(spotifyIntent)
+                            spotifyViewModelX.playSpotifySong(currentItem.uri)
                         }
                     }
                 }

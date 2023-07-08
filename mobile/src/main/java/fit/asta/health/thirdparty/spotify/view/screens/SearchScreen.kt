@@ -1,8 +1,5 @@
 package fit.asta.health.thirdparty.spotify.view.screens
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -55,7 +52,6 @@ fun SearchScreen(
 
     // Context and Activity of the Function
     val context = LocalContext.current
-    val activity = context as Activity
 
     // This is the Input of the User
     val userSearchInput = remember { mutableStateOf("") }
@@ -225,12 +221,10 @@ fun SearchScreen(
                             // Shows the Artists UI
                             MusicArtistsUI(
                                 imageUri = currentItem.images.firstOrNull()?.url,
-                                artistName = currentItem.name,
-                                artistsUri = currentItem.uri
-                            ) { uri ->
+                                artistName = currentItem.name
+                            ) {
 
-                                val spotifyIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-                                activity.startActivity(spotifyIntent)
+                                spotifyViewModelX.playSpotifySong(currentItem.uri)
                             }
                         }
                     }
@@ -315,9 +309,10 @@ fun SearchScreen(
                             MusicSmallImageRow(
                                 imageUri = currentItem.images.firstOrNull()?.url,
                                 name = currentItem.name,
-                                itemUri = currentItem.uri,
                                 secondaryText = textToShow
-                            )
+                            ) {
+                                spotifyViewModelX.playSpotifySong(currentItem.uri)
+                            }
                         }
                     }
                 }

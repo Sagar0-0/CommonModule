@@ -131,9 +131,10 @@ fun TracksUI(spotifyViewModelX: SpotifyViewModelX) {
                         MusicSmallImageRow(
                             imageUri = currentItem.track.album.images.firstOrNull()?.url,
                             name = currentItem.track.name,
-                            itemUri = currentItem.track.uri,
                             secondaryText = textToShow
-                        )
+                        ) {
+                            spotifyViewModelX.playSpotifySong(currentItem.track.uri)
+                        }
                     }
                 }
             }
@@ -171,9 +172,10 @@ fun PlaylistUI(spotifyViewModelX: SpotifyViewModelX) {
                         MusicSmallImageRow(
                             imageUri = currentItem.images.firstOrNull()?.url,
                             name = currentItem.name,
-                            itemUri = currentItem.uri,
                             secondaryText = textToShow
-                        )
+                        ) {
+                            spotifyViewModelX.playSpotifySong(currentItem.uri)
+                        }
                     }
                 }
             }
@@ -210,9 +212,10 @@ fun ArtistsUI(spotifyViewModelX: SpotifyViewModelX) {
                         MusicSmallImageRow(
                             imageUri = currentItem.images.firstOrNull()?.url,
                             name = currentItem.name,
-                            itemUri = currentItem.uri,
                             secondaryText = ""
-                        )
+                        ) {
+                            spotifyViewModelX.playSpotifySong(currentItem.uri)
+                        }
                     }
                 }
             }
@@ -248,9 +251,10 @@ fun AlbumsUI(spotifyViewModelX: SpotifyViewModelX) {
                         MusicSmallImageRow(
                             imageUri = currentItem.album.images.firstOrNull()?.url,
                             name = currentItem.album.name,
-                            itemUri = currentItem.album.uri,
                             secondaryText = currentItem.album.type
-                        )
+                        ) {
+                            spotifyViewModelX.playSpotifySong(currentItem.album.uri)
+                        }
                     }
                 }
             }
@@ -287,9 +291,10 @@ fun ShowUI(spotifyViewModelX: SpotifyViewModelX) {
                         MusicSmallImageRow(
                             imageUri = currentItem.show.images.firstOrNull()?.url,
                             name = currentItem.show.name,
-                            itemUri = currentItem.show.uri,
                             secondaryText = textToShow
-                        )
+                        ) {
+                            spotifyViewModelX.playSpotifySong(currentItem.show.uri)
+                        }
                     }
                 }
             }
@@ -325,9 +330,10 @@ fun EpisodeUI(spotifyViewModelX: SpotifyViewModelX) {
                         MusicSmallImageRow(
                             imageUri = currentItem.episode.images.firstOrNull()?.url,
                             name = currentItem.episode.name,
-                            itemUri = currentItem.episode.uri,
                             secondaryText = currentItem.episode.type
-                        )
+                        ) {
+                            spotifyViewModelX.playSpotifySong(currentItem.episode.uri)
+                        }
                     }
                 }
             }
