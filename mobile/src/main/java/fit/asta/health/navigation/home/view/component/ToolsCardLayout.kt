@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import fit.asta.health.R
 import fit.asta.health.common.utils.getImageUrl
 
 
@@ -45,7 +46,7 @@ fun ToolsCardLayout(
             ) {
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
-                        painter = painterResource(id = fit.asta.health.R.drawable.schedule),
+                        painter = painterResource(id = R.drawable.schedule),
                         contentDescription = null,
                         modifier = Modifier
                             .fillMaxSize()
@@ -115,7 +116,7 @@ fun ToolsCardLayoutDemo(
                 ) {
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(
-                            painter = painterResource(id = com.google.android.material.R.drawable.ic_clock_black_24dp),
+                            painter = painterResource(id = R.drawable.schedule),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(24.dp)

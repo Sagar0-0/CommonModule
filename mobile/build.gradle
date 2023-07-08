@@ -153,15 +153,12 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-compose:2.6.1"
     implementation "androidx.activity:activity-compose:1.7.2"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
-    implementation "androidx.compose.material:material-icons-extended:$compose_version"
     implementation "androidx.compose.foundation:foundation:$compose_version"
 
     //Material theme components
-    implementation "com.google.android.material:material:1.9.0"
-    implementation "androidx.compose.material:material:$compose_version"
-    implementation "androidx.compose.material3:material3:1.1.0"
-    implementation "androidx.compose.material3:material3-window-size-class:1.1.0"
-    //To re-use the color, typography and shape theming from your existing View-based themes
+    implementation "androidx.compose.material3:material3:1.1.1"
+    implementation "androidx.compose.material3:material3-window-size-class:1.1.1"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
     implementation "com.google.android.material:compose-theme-adapter:1.2.1"
 
     //In-app updates
@@ -312,15 +309,14 @@ dependencies {
     //Accompanist-BottomSheet Nav
     def accomp_version = "0.27.1"
     implementation "com.google.accompanist:accompanist-navigation-material:$accomp_version"
-    implementation "com.google.accompanist:accompanist-navigation-material:$accomp_version"
     implementation "com.google.accompanist:accompanist-navigation-animation:0.28.0"
+
     //Paging Compose
     implementation "com.google.accompanist:accompanist-pager:0.13.0"
     implementation "com.google.accompanist:accompanist-pager-indicators:0.13.0"
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.27.1"
     implementation "com.google.accompanist:accompanist-insets:0.27.1"
     implementation "com.google.accompanist:accompanist-drawablepainter:0.27.1"
-
     implementation "com.google.accompanist:accompanist-coil:0.13.0"
 
     //Swipe
