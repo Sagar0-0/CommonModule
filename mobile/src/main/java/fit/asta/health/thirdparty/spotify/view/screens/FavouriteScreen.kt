@@ -1,8 +1,5 @@
 package fit.asta.health.thirdparty.spotify.view.screens
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,11 +14,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import fit.asta.health.thirdparty.spotify.SpotifyNavRoutes
 import fit.asta.health.thirdparty.spotify.view.components.MusicLargeImageColumn
 import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
@@ -29,23 +27,18 @@ import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 /**
  * This function contains the UI of the Favourite Screen
  *
- * @param modifier THis is the modifier passed from the parent function
  * @param spotifyViewModelX This variable contains the viewModel which contains the business logic
+ * @param navController This helps to navigate through Different Screens
  */
 @Composable
 fun FavouriteScreen(
-    modifier: Modifier = Modifier,
-    spotifyViewModelX: SpotifyViewModelX
+    spotifyViewModelX: SpotifyViewModelX,
+    navController: NavController
 ) {
-
-    val context = LocalContext.current
-
-    // Current Activity of the function so that we can move to the spotify app
-    val activity = context as Activity
 
     // Root Composable function
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
     ) {
@@ -80,14 +73,19 @@ fun FavouriteScreen(
                     ) {
                         items(trackList.size) {
 
+                            // current Item
+                            val currentItem = trackList[it]
+
                             MusicLargeImageColumn(
-                                imageUri = trackList[it].album.images.firstOrNull()?.url,
-                                headerText = trackList[it].name,
-                                secondaryTexts = trackList[it].artists
+                                imageUri = currentItem.album.images.firstOrNull()?.url,
+                                headerText = currentItem.name,
+                                secondaryTexts = currentItem.artists
                             ) {
-                                val spotifyIntent =
-                                    Intent(Intent.ACTION_VIEW, Uri.parse(trackList[it].uri))
-                                activity.startActivity(spotifyIntent)
+
+                                // Navigating to the Track Details Screen
+                                spotifyViewModelX.setTrackId(currentItem.id)
+                                spotifyViewModelX.getTrackDetails()
+                                navController.navigate(SpotifyNavRoutes.TrackDetailScreen.routes)
                             }
                         }
                     }
@@ -124,14 +122,19 @@ fun FavouriteScreen(
                             .width(LocalConfiguration.current.screenWidthDp.dp)
                     ) {
                         items(albumList.size) {
+
+                            // Current Item
+                            val currentItem = albumList[it]
                             MusicLargeImageColumn(
-                                imageUri = albumList[it].images.firstOrNull()?.url,
-                                headerText = albumList[it].name,
-                                secondaryTexts = albumList[it].artists
+                                imageUri = currentItem.images.firstOrNull()?.url,
+                                headerText = currentItem.name,
+                                secondaryTexts = currentItem.artists
                             ) {
-                                val spotifyIntent =
-                                    Intent(Intent.ACTION_VIEW, Uri.parse(albumList[it].uri))
-                                activity.startActivity(spotifyIntent)
+
+                                // Navigating the Album Details Screen to get the Album Details
+                                spotifyViewModelX.setAlbumId(currentItem.id)
+                                spotifyViewModelX.getAlbumDetails()
+                                navController.navigate(SpotifyNavRoutes.AlbumDetailScreen.routes)
                             }
                         }
                     }

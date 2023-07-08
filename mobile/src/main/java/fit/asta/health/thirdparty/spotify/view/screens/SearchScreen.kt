@@ -265,7 +265,7 @@ fun SearchScreen(
                             ) {
 
                                 // Navigating the Album Details Screen to get the Album Details
-                                spotifyViewModelX.setAlbumId(albumList[it].id)
+                                spotifyViewModelX.setAlbumId(currentItem.id)
                                 spotifyViewModelX.getAlbumDetails()
                                 navController.navigate(SpotifyNavRoutes.AlbumDetailScreen.routes)
                             }

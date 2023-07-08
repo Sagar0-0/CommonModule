@@ -39,7 +39,12 @@ fun SpotifyNavGraph(
             // Favourite Screen
             composable(
                 SpotifyNavRoutes.FavouriteScreen.routes,
-                content = { FavouriteScreen(spotifyViewModelX = spotifyViewModelX) }
+                content = {
+                    FavouriteScreen(
+                        spotifyViewModelX = spotifyViewModelX,
+                        navController = navController
+                    )
+                }
             )
 
             // Third Party Screen
