@@ -18,7 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import fit.asta.health.thirdparty.spotify.model.db.entity.TrackEntity
+import fit.asta.health.thirdparty.spotify.model.net.common.Track
 import fit.asta.health.thirdparty.spotify.view.components.MusicLargeImageColumn
 import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
 import fit.asta.health.thirdparty.spotify.viewmodel.FavouriteViewModelX
@@ -77,24 +77,24 @@ fun TrackDetailsScreen(
                     Button(
                         onClick = {
                             favouriteViewModelX.insertTrack(
-                                TrackEntity(
-                                    trackAlbum = trackDetails.album,
-                                    trackArtists = trackDetails.artists,
-                                    trackAvailableMarkets = trackDetails.availableMarkets,
-                                    trackDiscNumber = trackDetails.discNumber,
-                                    trackDurationMs = trackDetails.durationMs,
-                                    trackExplicit = trackDetails.explicit,
-                                    trackId = trackDetails.id,
-                                    trackExternalIds = trackDetails.externalIds,
-                                    trackExternalUrls = trackDetails.externalUrls,
-                                    trackHref = trackDetails.href,
-                                    trackIsLocal = trackDetails.isLocal,
-                                    trackName = trackDetails.name,
-                                    trackPopularity = trackDetails.popularity,
-                                    trackPreviewUrl = trackDetails.previewUrl,
-                                    trackTrackNumber = trackDetails.trackNumber,
-                                    trackType = trackDetails.type,
-                                    trackUri = trackDetails.uri
+                                Track(
+                                    album = trackDetails.album,
+                                    artists = trackDetails.artists,
+                                    availableMarkets = trackDetails.availableMarkets,
+                                    discNumber = trackDetails.discNumber,
+                                    durationMs = trackDetails.durationMs,
+                                    explicit = trackDetails.explicit,
+                                    id = trackDetails.id,
+                                    externalIds = trackDetails.externalIds,
+                                    externalUrls = trackDetails.externalUrls,
+                                    href = trackDetails.href,
+                                    isLocal = trackDetails.isLocal,
+                                    name = trackDetails.name,
+                                    popularity = trackDetails.popularity,
+                                    previewUrl = trackDetails.previewUrl,
+                                    trackNumber = trackDetails.trackNumber,
+                                    type = trackDetails.type,
+                                    uri = trackDetails.uri
                                 )
                             )
 

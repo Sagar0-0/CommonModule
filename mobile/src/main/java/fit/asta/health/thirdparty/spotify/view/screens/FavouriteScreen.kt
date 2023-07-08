@@ -122,12 +122,12 @@ fun FavouriteScreen(
                         items(trackList.size) {
 
                             MusicLargeImageColumn(
-                                imageUri = trackList[it].trackAlbum?.images?.firstOrNull()?.url,
-                                headerText = trackList[it].trackName!!,
-                                secondaryTexts = trackList[it].trackArtists!!
+                                imageUri = trackList[it].album.images.firstOrNull()?.url,
+                                headerText = trackList[it].name,
+                                secondaryTexts = trackList[it].artists
                             ) {
                                 val spotifyIntent =
-                                    Intent(Intent.ACTION_VIEW, Uri.parse(trackList[it].trackUri))
+                                    Intent(Intent.ACTION_VIEW, Uri.parse(trackList[it].uri))
                                 activity.startActivity(spotifyIntent)
                             }
                         }

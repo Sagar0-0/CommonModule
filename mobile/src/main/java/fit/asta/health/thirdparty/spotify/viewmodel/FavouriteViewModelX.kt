@@ -5,7 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.thirdparty.spotify.model.db.MusicRepository
-import fit.asta.health.thirdparty.spotify.model.db.entity.TrackEntity
+import fit.asta.health.thirdparty.spotify.model.net.common.Track
 import fit.asta.health.thirdparty.spotify.model.net.common.Album
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +23,7 @@ class FavouriteViewModelX @Inject constructor(
     /**
      * This variable contains details of all the Tracks calls and states
      */
-    private val _allTracks = MutableStateFlow<SpotifyNetworkCall<List<TrackEntity>>>(
+    private val _allTracks = MutableStateFlow<SpotifyNetworkCall<List<Track>>>(
         SpotifyNetworkCall.Initialized()
     )
     val allTracks = _allTracks.asStateFlow()
@@ -79,7 +79,7 @@ class FavouriteViewModelX @Inject constructor(
     /**
      * This function is used to insert a Track into the Database
      */
-    fun insertTrack(track: TrackEntity) {
+    fun insertTrack(track: Track) {
         viewModelScope.launch {
             repository.local.insertTrack(track)
             getAllTracks()
