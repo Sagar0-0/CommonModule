@@ -25,7 +25,6 @@ import fit.asta.health.thirdparty.spotify.model.net.recommendations.SpotifyRecom
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -135,18 +134,9 @@ class SpotifyViewModelX @Inject constructor(
      * This function fetches all the track from the local repository
      */
     fun getAllTracks() {
-
-        _allTracks.value = SpotifyNetworkCall.Loading()
-
         viewModelScope.launch {
-            localRepository.local.getAllTracks().catch { exception ->
-                _allTracks.value = SpotifyNetworkCall.Failure(
-                    message = exception.message
-                )
-            }.collect {
-                _allTracks.value = SpotifyNetworkCall.Success(
-                    data = it
-                )
+            localRepository.local.getAllTracks().collect {
+                _allTracks.value = it
             }
         }
     }
@@ -164,18 +154,9 @@ class SpotifyViewModelX @Inject constructor(
      * This function fetches all the albums from the local repository
      */
     fun getAllAlbums() {
-
-        _allAlbums.value = SpotifyNetworkCall.Loading()
-
         viewModelScope.launch {
-            localRepository.local.getAllAlbums().catch { exception ->
-                _allAlbums.value = SpotifyNetworkCall.Failure(
-                    message = exception.message
-                )
-            }.collect {
-                _allAlbums.value = SpotifyNetworkCall.Success(
-                    data = it
-                )
+            localRepository.local.getAllAlbums().collect {
+                _allAlbums.value = it
             }
         }
     }
