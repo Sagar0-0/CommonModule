@@ -182,7 +182,6 @@ fun SearchScreen(
 
                                 // Navigating to the Track Details Screen
                                 spotifyViewModelX.setTrackId(currentItem.id)
-                                spotifyViewModelX.getTrackDetails()
                                 navController.navigate(SpotifyNavRoutes.TrackDetailScreen.routes)
                             }
                         }
@@ -267,7 +266,6 @@ fun SearchScreen(
 
                                 // Navigating the Album Details Screen to get the Album Details
                                 spotifyViewModelX.setAlbumId(currentItem.id)
-                                spotifyViewModelX.getAlbumDetails()
                                 navController.navigate(SpotifyNavRoutes.AlbumDetailScreen.routes)
                             }
                         }

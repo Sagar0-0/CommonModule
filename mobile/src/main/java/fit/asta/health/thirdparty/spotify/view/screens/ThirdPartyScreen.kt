@@ -219,7 +219,6 @@ fun ThirdPartyScreen(
 
                                 // Navigating to the Track Details Screen
                                 spotifyViewModelX.setTrackId(currentItem.id)
-                                spotifyViewModelX.getTrackDetails()
                                 navController.navigate(SpotifyNavRoutes.TrackDetailScreen.routes)
                             }
                         }
@@ -273,7 +272,6 @@ fun ThirdPartyScreen(
 
                                 // Navigating to the Track Details Screen
                                 spotifyViewModelX.setTrackId(currentItem.id)
-                                spotifyViewModelX.getTrackDetails()
                                 navController.navigate(SpotifyNavRoutes.TrackDetailScreen.routes)
                             }
                         }

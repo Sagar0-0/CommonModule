@@ -11,6 +11,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,6 +32,10 @@ import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 fun TrackDetailsScreen(
     spotifyViewModelX: SpotifyViewModelX
 ) {
+
+    LaunchedEffect(Unit) {
+        spotifyViewModelX.getTrackDetails()
+    }
 
     // Root Composable function
     Column(

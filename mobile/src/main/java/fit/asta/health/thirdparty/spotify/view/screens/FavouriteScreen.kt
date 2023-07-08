@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -35,6 +36,11 @@ fun FavouriteScreen(
     spotifyViewModelX: SpotifyViewModelX,
     navController: NavController
 ) {
+
+    LaunchedEffect(Unit) {
+        spotifyViewModelX.getAllTracks()
+        spotifyViewModelX.getAllAlbums()
+    }
 
     // Root Composable function
     Column(
@@ -84,7 +90,6 @@ fun FavouriteScreen(
 
                                 // Navigating to the Track Details Screen
                                 spotifyViewModelX.setTrackId(currentItem.id)
-                                spotifyViewModelX.getTrackDetails()
                                 navController.navigate(SpotifyNavRoutes.TrackDetailScreen.routes)
                             }
                         }
@@ -133,7 +138,6 @@ fun FavouriteScreen(
 
                                 // Navigating the Album Details Screen to get the Album Details
                                 spotifyViewModelX.setAlbumId(currentItem.id)
-                                spotifyViewModelX.getAlbumDetails()
                                 navController.navigate(SpotifyNavRoutes.AlbumDetailScreen.routes)
                             }
                         }

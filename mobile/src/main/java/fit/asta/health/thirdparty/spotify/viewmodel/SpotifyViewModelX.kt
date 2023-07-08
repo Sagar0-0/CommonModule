@@ -168,7 +168,6 @@ class SpotifyViewModelX @Inject constructor(
     fun insertTrack(track: Track) {
         viewModelScope.launch {
             localRepository.insertTrack(track)
-            getAllTracks()
         }
     }
 
@@ -179,7 +178,6 @@ class SpotifyViewModelX @Inject constructor(
     fun deleteTrack(track: Track) {
         viewModelScope.launch {
             localRepository.deleteTrack(track)
-            getAllTracks()
         }
     }
 
@@ -190,7 +188,6 @@ class SpotifyViewModelX @Inject constructor(
     fun insertAlbum(album: Album) {
         viewModelScope.launch {
             localRepository.insertAlbum(album)
-            getAllAlbums()
         }
     }
 
@@ -201,7 +198,6 @@ class SpotifyViewModelX @Inject constructor(
     fun deleteAlbum(album: Album) {
         viewModelScope.launch {
             localRepository.deleteAlbum(album)
-            getAllAlbums()
         }
     }
 

@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -99,6 +100,11 @@ fun ProfileScreen(
 
 @Composable
 fun TracksUI(spotifyViewModelX: SpotifyViewModelX) {
+
+    LaunchedEffect(Unit) {
+        spotifyViewModelX.getCurrentUserTracks()
+    }
+
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
@@ -146,6 +152,10 @@ fun TracksUI(spotifyViewModelX: SpotifyViewModelX) {
 @Composable
 fun PlaylistUI(spotifyViewModelX: SpotifyViewModelX) {
 
+    LaunchedEffect(Unit) {
+        spotifyViewModelX.getCurrentUserPlaylist()
+    }
+
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
@@ -187,6 +197,9 @@ fun PlaylistUI(spotifyViewModelX: SpotifyViewModelX) {
 @Composable
 fun ArtistsUI(spotifyViewModelX: SpotifyViewModelX) {
 
+    LaunchedEffect(Unit) {
+        spotifyViewModelX.getCurrentUserFollowingArtists()
+    }
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
@@ -226,6 +239,11 @@ fun ArtistsUI(spotifyViewModelX: SpotifyViewModelX) {
 
 @Composable
 fun AlbumsUI(spotifyViewModelX: SpotifyViewModelX) {
+
+    LaunchedEffect(Unit) {
+        spotifyViewModelX.getCurrentUserAlbum()
+    }
+
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
@@ -265,6 +283,11 @@ fun AlbumsUI(spotifyViewModelX: SpotifyViewModelX) {
 
 @Composable
 fun ShowUI(spotifyViewModelX: SpotifyViewModelX) {
+
+    LaunchedEffect(Unit) {
+        spotifyViewModelX.getCurrentUserShows()
+    }
+
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
@@ -305,6 +328,11 @@ fun ShowUI(spotifyViewModelX: SpotifyViewModelX) {
 
 @Composable
 fun EpisodeUI(spotifyViewModelX: SpotifyViewModelX) {
+
+    LaunchedEffect(Unit) {
+        spotifyViewModelX.getCurrentUserEpisode()
+    }
+
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
