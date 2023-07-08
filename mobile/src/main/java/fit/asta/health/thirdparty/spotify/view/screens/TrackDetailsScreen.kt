@@ -1,8 +1,5 @@
 package fit.asta.health.thirdparty.spotify.view.screens
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,11 +11,11 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import fit.asta.health.thirdparty.spotify.model.net.common.Track
 import fit.asta.health.thirdparty.spotify.view.components.MusicLargeImageColumn
 import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
 import fit.asta.health.thirdparty.spotify.viewmodel.FavouriteViewModelX
@@ -34,7 +31,29 @@ import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
  */
 @Composable
 fun TrackDetailsScreen(
-    modifier: Modifier = Modifier,
+    spotifyViewModelX: SpotifyViewModelX,
+    favouriteViewModelX: FavouriteViewModelX
+) {
+
+    // Root Composable function
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surface),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        TrackDetailHelper(
+            spotifyViewModelX = spotifyViewModelX,
+            favouriteViewModelX = favouriteViewModelX
+        )
+
+    }
+}
+
+@Composable
+private fun TrackDetailHelper(
     spotifyViewModelX: SpotifyViewModelX,
     favouriteViewModelX: FavouriteViewModelX
 ) {
@@ -42,92 +61,81 @@ fun TrackDetailsScreen(
     // context is stored to Show the Toast
     val context = LocalContext.current
 
-    // Current Activity of the function so that we can move to the spotify app
-    val activity = context as Activity
+    // This function checks for the Network Response from the API
+    MusicStateControl(
+        modifier = Modifier
+            .fillMaxSize(),
+        networkState = spotifyViewModelX.trackDetailsResponse,
+        onCurrentStateInitialized = {
+            spotifyViewModelX.getTrackDetails()
+        }
+    ) { networkResponse ->
 
-    // Root Composable function
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        // Checks If the Track Details are fetched or not
+        // This function checks for the Local Response from Local Database
         MusicStateControl(
-            modifier = Modifier
-                .fillMaxSize(),
-            networkState = spotifyViewModelX.trackDetailsResponse,
+            networkState = favouriteViewModelX.allTracks.collectAsState().value,
             onCurrentStateInitialized = {
-                spotifyViewModelX.getTrackDetails()
+                favouriteViewModelX.getAllTracks()
             }
-        ) { networkResponse ->
-            networkResponse.data.let { trackDetails ->
+        ) { localResponse ->
 
-                // Image of The Track
-                if (trackDetails != null) {
+            // Parsing the Network Track Data
+            networkResponse.data.let { networkTrack ->
+
+                // This variable stores if the Local Database contains this Track or not
+                val isPresent = localResponse.data.let {
+                    if (it != null && networkTrack != null)
+                        it.contains(networkTrack)
+                    else
+                        false
+                }
+
+                if (networkTrack != null) {
                     MusicLargeImageColumn(
-                        imageUri = trackDetails.album.images.firstOrNull()?.url,
-                        headerText = trackDetails.name,
-                        secondaryTexts = trackDetails.artists
+                        imageUri = networkTrack.album.images.firstOrNull()?.url,
+                        headerText = networkTrack.name,
+                        secondaryTexts = networkTrack.artists
                     ) {}
 
-                    // Add to Favourites Button
+                    // Add and Remove Favourites Button
                     Button(
                         onClick = {
-                            favouriteViewModelX.insertTrack(
-                                Track(
-                                    album = trackDetails.album,
-                                    artists = trackDetails.artists,
-                                    availableMarkets = trackDetails.availableMarkets,
-                                    discNumber = trackDetails.discNumber,
-                                    durationMs = trackDetails.durationMs,
-                                    explicit = trackDetails.explicit,
-                                    id = trackDetails.id,
-                                    externalIds = trackDetails.externalIds,
-                                    externalUrls = trackDetails.externalUrls,
-                                    href = trackDetails.href,
-                                    isLocal = trackDetails.isLocal,
-                                    name = trackDetails.name,
-                                    popularity = trackDetails.popularity,
-                                    previewUrl = trackDetails.previewUrl,
-                                    trackNumber = trackDetails.trackNumber,
-                                    type = trackDetails.type,
-                                    uri = trackDetails.uri
-                                )
-                            )
 
-                            Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show()
+                            if (!isPresent) {
+                                favouriteViewModelX.insertTrack(networkTrack)
+                                Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show()
+                            } else {
+                                favouriteViewModelX.deleteTrack(networkTrack)
+                                Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show()
+                            }
                         },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 32.dp, bottom = 12.dp, start = 12.dp, end = 12.dp)
                     ) {
                         Text(
-                            text = "Add To Favourites",
+                            text = if (!isPresent)
+                                "Add To Favourites" else "Remove From Favourites",
                             modifier = Modifier
                                 .padding(4.dp)
                         )
                     }
-                }
 
-                // Play on Spotify Button
-                Button(
-                    onClick = {
-                        val spotifyIntent =
-                            Intent(Intent.ACTION_VIEW, Uri.parse(trackDetails!!.uri))
-                        activity.startActivity(spotifyIntent)
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 12.dp, start = 12.dp, end = 12.dp)
-                ) {
-                    Text(
-                        text = "Open at Spotify",
+                    // Play on Spotify Button
+                    Button(
+                        onClick = {
+                            spotifyViewModelX.playSpotifySong(url = networkTrack.uri)
+                        },
                         modifier = Modifier
-                            .padding(4.dp)
-                    )
+                            .fillMaxWidth()
+                            .padding(bottom = 12.dp, start = 12.dp, end = 12.dp)
+                    ) {
+                        Text(
+                            text = "Play using Spotify",
+                            modifier = Modifier
+                                .padding(4.dp)
+                        )
+                    }
                 }
             }
         }

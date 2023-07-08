@@ -87,6 +87,17 @@ class FavouriteViewModelX @Inject constructor(
     }
 
     /**
+     * This function deletes Tracks from the Local Database
+     */
+    fun deleteTrack(track: Track) {
+        viewModelScope.launch {
+            repository.local.deleteTrack(track)
+            getAllTracks()
+        }
+    }
+
+
+    /**
      * This function is used to insert a Album into the Database
      */
     fun insertAlbum(album: Album) {
@@ -110,9 +121,7 @@ class FavouriteViewModelX @Inject constructor(
 //        repository.local.updateTrack(track)
 //    }
 //
-//    fun deleteTrack(track: TrackEntity) = viewModelScope.launch {
-//        repository.local.deleteTrack(track)
-//    }
+
 //
 //    fun deleteAllTracks() = viewModelScope.launch {
 //        repository.local.deleteAllTrack()
