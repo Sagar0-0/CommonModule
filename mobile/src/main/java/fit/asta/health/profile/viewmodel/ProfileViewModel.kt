@@ -809,8 +809,8 @@ class ProfileViewModel
 //                            to = jEndTime.value.value.toDouble()
 //                        ),
                         sleep = Session(
-                            from = bedTime.value.value.toDouble(),
-                            to = wakeUpTime.value.value.toDouble()
+                            from = bedTime.value.value.toFloat(),
+                            to = wakeUpTime.value.value.toFloat()
                         ),
                     ), Diet(
                         preference = convertDietArrayList(0),

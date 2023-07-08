@@ -103,8 +103,8 @@ data class Diet(
 
 @Parcelize
 data class Session(
-    @SerializedName("str") val from: Double = 0.0,
-    @SerializedName("end") val to: Double = 0.0,
+    @SerializedName("str") val from: Float = 0.0f,
+    @SerializedName("end") val to: Float = 0.0f,
 ) : Parcelable
 
 
