@@ -7,7 +7,7 @@ import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
-import fit.asta.health.thirdparty.spotify.model.db.MusicRepository
+import fit.asta.health.thirdparty.spotify.model.MusicRepository
 import fit.asta.health.thirdparty.spotify.model.net.common.Album
 import fit.asta.health.thirdparty.spotify.model.net.library.albums.SpotifyLibraryAlbumModel
 import fit.asta.health.thirdparty.spotify.model.net.library.episodes.SpotifyLibraryEpisodesModel
@@ -135,7 +135,7 @@ class SpotifyViewModelX @Inject constructor(
      */
     fun getAllTracks() {
         viewModelScope.launch {
-            localRepository.local.getAllTracks().collect {
+            localRepository.getAllTracks().collect {
                 _allTracks.value = it
             }
         }
@@ -155,7 +155,7 @@ class SpotifyViewModelX @Inject constructor(
      */
     fun getAllAlbums() {
         viewModelScope.launch {
-            localRepository.local.getAllAlbums().collect {
+            localRepository.getAllAlbums().collect {
                 _allAlbums.value = it
             }
         }
@@ -167,7 +167,7 @@ class SpotifyViewModelX @Inject constructor(
      */
     fun insertTrack(track: Track) {
         viewModelScope.launch {
-            localRepository.local.insertTrack(track)
+            localRepository.insertTrack(track)
             getAllTracks()
         }
     }
@@ -178,7 +178,7 @@ class SpotifyViewModelX @Inject constructor(
      */
     fun deleteTrack(track: Track) {
         viewModelScope.launch {
-            localRepository.local.deleteTrack(track)
+            localRepository.deleteTrack(track)
             getAllTracks()
         }
     }
@@ -189,7 +189,7 @@ class SpotifyViewModelX @Inject constructor(
      */
     fun insertAlbum(album: Album) {
         viewModelScope.launch {
-            localRepository.local.insertAlbum(album)
+            localRepository.insertAlbum(album)
             getAllAlbums()
         }
     }
@@ -200,7 +200,7 @@ class SpotifyViewModelX @Inject constructor(
      */
     fun deleteAlbum(album: Album) {
         viewModelScope.launch {
-            localRepository.local.deleteAlbum(album)
+            localRepository.deleteAlbum(album)
             getAllAlbums()
         }
     }

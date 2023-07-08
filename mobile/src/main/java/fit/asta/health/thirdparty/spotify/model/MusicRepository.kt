@@ -1,8 +1,9 @@
 package fit.asta.health.thirdparty.spotify.model
 
-import fit.asta.health.thirdparty.spotify.model.db.MusicDao
-import fit.asta.health.thirdparty.spotify.model.net.common.Track
+import dagger.hilt.android.scopes.ActivityRetainedScoped
+import fit.asta.health.thirdparty.spotify.model.db.LocalDataSource
 import fit.asta.health.thirdparty.spotify.model.net.common.Album
+import fit.asta.health.thirdparty.spotify.model.net.common.Track
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -11,14 +12,15 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class LocalDataSource @Inject constructor(
-    private val musicDao: MusicDao
+@ActivityRetainedScoped
+class MusicRepository @Inject constructor(
+    private val localDataSource: LocalDataSource
 ) {
 
     fun getAllTracks(): Flow<SpotifyNetworkCall<List<Track>>> {
         return flow {
             emit(SpotifyNetworkCall.Loading())
-            val response = musicDao.getAll()
+            val response = localDataSource.getAllTracks()
             emit(SpotifyNetworkCall.Success(response))
         }.catch {
             emit(SpotifyNetworkCall.Failure(message = it.message.toString()))
@@ -26,18 +28,18 @@ class LocalDataSource @Inject constructor(
     }
 
     suspend fun insertTrack(track: Track) {
-        musicDao.insertTrack(track)
+        localDataSource.insertTrack(track)
     }
 
     suspend fun deleteTrack(track: Track) {
-        musicDao.deleteTrack(track)
+        localDataSource.deleteTrack(track)
     }
 
     fun getAllAlbums(): Flow<SpotifyNetworkCall<List<Album>>> {
 
         return flow {
             emit(SpotifyNetworkCall.Loading())
-            val response = musicDao.getAllAlbums()
+            val response = localDataSource.getAllAlbums()
             emit(SpotifyNetworkCall.Success(response))
         }.catch {
             emit(SpotifyNetworkCall.Failure(message = it.message.toString()))
@@ -45,10 +47,10 @@ class LocalDataSource @Inject constructor(
     }
 
     suspend fun insertAlbum(album: Album) {
-        musicDao.insertAlbum(album)
+        localDataSource.insertAlbum(album)
     }
 
     suspend fun deleteAlbum(album: Album) {
-        musicDao.deleteAlbum(album)
+        localDataSource.deleteAlbum(album)
     }
 }
