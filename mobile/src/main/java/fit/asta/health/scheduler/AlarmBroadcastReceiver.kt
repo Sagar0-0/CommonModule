@@ -20,7 +20,7 @@ import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_POST_NOTIFICATI
 import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_PRE_NOTIFICATION_OBJECT
 import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_VARIANT_INTERVAL_OBJECT
 import fit.asta.health.scheduler.util.SerializableAndParcelable.serializable
-import java.util.*
+import java.util.Calendar
 
 class AlarmBroadcastReceiver : BroadcastReceiver() {
 
@@ -76,8 +76,6 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
                     if (!alarmEntity?.week!!.recurring) {
                         startAlarmService(
                             context!!,
-/*                            alarmEntity!!,
-                            bundleForVariantInterval.getParcelable(ARG_VARIANT_INTERVAL_OBJECT) as AlarmTimeItem?,*/
                             bundleForVariantInterval,
                             isNotification = false,
                             isPre = false,
@@ -142,31 +140,23 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
 
     private fun startAlarmService(
         context: Context,
-        /*   alarmEntity: AlarmEntity,
-           variantInterval: AlarmTimeItem?,*/
         bundle: Bundle,
         isNotification: Boolean,
         isPre: Boolean,
         isVariantInterval: Boolean
     ) {
         val intentService = Intent(context, AlarmService::class.java)
-//        val bundle = Bundle()
         if (isNotification) {
             if (isPre) {
-//                bundle.putParcelable(ARG_PRE_NOTIFICATION_OBJET, alarmEntity)
                 intentService.putExtra(BUNDLE_PRE_NOTIFICATION_OBJECT, bundle)
             } else {
-//                bundle.putParcelable(ARG_POST_NOTIFICATION_OBJET, alarmEntity)
                 intentService.putExtra(BUNDLE_POST_NOTIFICATION_OBJECT, bundle)
                 Log.d("TAGTAGTAG", "startAlarmService: inside else")
             }
         } else {
             if (isVariantInterval) {
-//                bundle.putParcelable(ARG_VARIANT_INTERVAL_ALARM_OBJECT, alarmEntity)
-//                bundle.putParcelable(ARG_VARIANT_INTERVAL_OBJECT, variantInterval)
                 intentService.putExtra(BUNDLE_VARIANT_INTERVAL_OBJECT, bundle)
             } else {
-//                bundle.putParcelable(ARG_ALARM_OBJET, alarmEntity)
                 intentService.putExtra(BUNDLE_ALARM_OBJECT, bundle)
             }
         }

@@ -12,7 +12,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import fit.asta.health.HealthCareApp.Companion.CHANNEL_ID
 import fit.asta.health.R
-import fit.asta.health.scheduler.SchedulerHomeActivity
+import fit.asta.health.scheduler.compose.AlarmScreenActivity
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.net.scheduler.Stat
 import fit.asta.health.scheduler.util.Constants.Companion.ARG_ALARM_OBJET
@@ -26,7 +26,6 @@ import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_PRE_NOTIFICATIO
 import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_VARIANT_INTERVAL_OBJECT
 import fit.asta.health.scheduler.util.SerializableAndParcelable.parcelable
 import fit.asta.health.scheduler.util.SerializableAndParcelable.serializable
-import fit.asta.health.scheduler.view.alarmsplashscreen.AlarmScreenActivity
 import kotlin.random.Random
 
 
@@ -257,7 +256,7 @@ class AlarmService : Service() {
                 bundleForPreNotification.serializable(ARG_PRE_NOTIFICATION_OBJET)
             Log.d("TAGTAGTAG", "onStartCommand:preNotification $preNotificationAlarmEntity")
             // creating notification-pending intent to redirect on notification click
-            val notificationIntent = Intent(this, SchedulerHomeActivity::class.java)
+            val notificationIntent = Intent(this, AlarmScreenActivity::class.java)
             notificationIntent.putExtra(BUNDLE_PRE_NOTIFICATION_OBJECT, bundleForPreNotification)
             val pendingIntent = PendingIntent.getActivity(
                 this,
@@ -294,7 +293,7 @@ class AlarmService : Service() {
             // creating notification-pending intent to redirect on notification click
             Log.d("TAGTAGTAG", "onStartCommand:postNotification $postNotificationAlarmEntity")
 
-            val notificationIntent = Intent(this, SchedulerHomeActivity::class.java)
+            val notificationIntent = Intent(this, AlarmScreenActivity::class.java)
             notificationIntent.putExtra(BUNDLE_POST_NOTIFICATION_OBJECT, bundleForPostNotification)
             val pendingIntent = PendingIntent.getActivity(
                 this,

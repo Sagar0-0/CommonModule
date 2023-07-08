@@ -32,6 +32,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.BottomSheetDragHandle
+import fit.asta.health.common.ui.components.ButtonWithColor
+import fit.asta.health.common.ui.components.CardItem
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.tools.walking.model.domain.WalkingTool
 import fit.asta.health.tools.walking.nav.StepsCounterScreen

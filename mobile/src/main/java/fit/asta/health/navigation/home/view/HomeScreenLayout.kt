@@ -14,6 +14,10 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
 import fit.asta.health.navigation.home.view.component.*
+import fit.asta.health.tools.exercise.ExerciseActivity
+import fit.asta.health.tools.meditation.MeditationActivity
+import fit.asta.health.tools.walking.view.WalkingActivity
+import fit.asta.health.tools.water.WaterToolActivity
 import fit.asta.health.testimonials.TestimonialsActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.time.LocalDate
@@ -44,7 +48,6 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
             BannerAutoSlider(bannerList = toolsHome.banners)
         }
 
-
         item(span = { GridItemSpan(3) }) {
             MyToolsAndViewAll(myTools = "My Tools", allTools = "All Tools", onClick = {
                 //TODO - Integrate All tools
@@ -55,11 +58,42 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
             Spacer(modifier = Modifier.height(spacing.medium))
         }
 
-        items(toolsHome.tools) { tools ->
-            ToolsCardLayoutDemo(cardTitle = tools.title,
-                type = tools.name,
-                imgUrl = tools.url,
-                onClick = {})
+        items(toolsHome.tools) { tool ->
+            ToolsCardLayoutDemo(
+                cardTitle = tool.title,
+                type = tool.name,
+                imgUrl = tool.url,
+                onClick = { type ->
+                    when (type.lowercase(Locale.getDefault())) {
+                        "water" -> {
+                            WaterToolActivity.launch(context = context)
+                        }
+
+                        "steps" -> {
+                            WalkingActivity.launch(context = context)
+                        }
+
+                        "workout" -> {
+                            ExerciseActivity.launch(context = context, activity = "workout")
+                        }
+
+                        "yoga" -> {
+                            ExerciseActivity.launch(context = context, activity = "yoga")
+                        }
+
+                        "hiit" -> {
+                            ExerciseActivity.launch(context = context, activity = "HIIT")
+                        }
+
+                        "dance" -> {
+                            ExerciseActivity.launch(context = context, activity = "dance")
+                        }
+
+                        "meditation" -> {
+                            MeditationActivity.launch(context = context)
+                        }
+                    }
+                })
         }
 
         item {
@@ -95,9 +129,7 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
         item {
             Spacer(modifier = Modifier.height(spacing.medium))
         }
-
     }
-
 }
 
 @Composable

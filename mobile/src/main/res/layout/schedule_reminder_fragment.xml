@@ -27,6 +27,7 @@
         app:layout_behavior="@string/fab_transformation_sheet_behavior"
         app:pressedTranslationZ="@dimen/dimen_12"
         app:srcCompat="@drawable/ic_add"
-        app:tint="@color/colorOnPrimary" />
+        app:tint="@color/colorOnPrimary"
+        android:contentDescription="TODO" />
 
 </FrameLayout>

@@ -13,9 +13,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -32,7 +29,6 @@ import fit.asta.health.common.location.maps.modal.MapScreens
 import fit.asta.health.common.location.maps.ui.MapScreen
 import fit.asta.health.common.location.maps.ui.SavedAddressesScreen
 import fit.asta.health.common.ui.AppTheme
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MapsActivity : AppCompatActivity() {
@@ -51,19 +47,6 @@ class MapsActivity : AppCompatActivity() {
         getLocationPermission()
         mapsViewModel.getAllAddresses()
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mapsViewModel.getCurrentLatLng(this@MapsActivity)
-            }
-        }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
-                mapsViewModel.currentLatLng.collect {
-                    mapsViewModel.getCurrentAddress(this@MapsActivity)
-                }
-            }
-        }
         setContent {
             AppTheme {
                 val navController = rememberNavController()

@@ -50,6 +50,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".tools.exercise.ExerciseActivity" />
         <activity android:name=".profile.UserProfileActivity" />
         <activity android:name=".profile.CreateUserProfileActivity" />
         <activity android:name=".settings.SettingsActivity" />
@@ -67,17 +68,15 @@
             android:name=".testimonials.TestimonialsActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".BillingActivity" />
+        <activity
+            android:name=".scheduler.compose.AlarmScreenActivity"
+            android:exported="false"
+            android:showOnLockScreen="true" />
 
         <meta-data
             android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
             android:value="com.google.android.exoplayer2.ext.cast.DefaultCastOptionsProvider" />
 
-        <activity
-            android:name=".player.video.VideoPlayerActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            android:launchMode="singleTop"
-            android:screenOrientation="landscape"
-            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".player.jetpack_audio.AudioPlayerActivity"
             android:exported="true"
@@ -101,7 +100,8 @@
         <activity android:name=".tools.meditation.MeditationActivity" />
         <activity android:name=".tools.water.WaterToolActivity" />
         <activity android:name=".tools.walking.view.WalkingActivity" />
-        <activity android:name=".scheduler.compose.SchedulerActivity" />
+        <activity android:name=".scheduler.compose.SchedulerActivity"
+            android:showOnLockScreen="true" />
         <!--
  <activity
              android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
@@ -136,23 +136,6 @@
         <activity
             android:name="com.spotify.sdk.android.auth.LoginActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity
-            android:name=".scheduler.view.alarmsetting.TagsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".scheduler.view.alarmsetting.TimeSettingActivity"
-            android:exported="false" />
-        <activity
-            android:name=".scheduler.view.alarmsetting.AlarmSettingActivity"
-            android:exported="false" />
-        <activity
-            android:name=".scheduler.view.alarmsplashscreen.AlarmScreenActivity"
-            android:exported="false"
-            android:showOnLockScreen="true" />
-        <activity
-            android:name=".scheduler.SchedulerHomeActivity"
-            android:exported="true" />
-
         <activity
             android:name=".SplashScreen"
             android:exported="true"
@@ -204,7 +187,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service android:name=".scheduler.services.AlarmService" />
         <service android:name=".scheduler.services.RescheduleAlarmService" />
         <service

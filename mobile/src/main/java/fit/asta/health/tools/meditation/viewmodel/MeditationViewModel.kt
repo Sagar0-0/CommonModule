@@ -41,6 +41,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -122,7 +123,7 @@ class MeditationViewModel @Inject constructor(
         viewModelScope.launch {
             meditationRepo.getMeditationTool(
                 uid = "6309a9379af54f142c65fbfe",
-                date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                date = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
                     .toString()//"2023-03-27"
             ).collectLatest { result ->
                 when (result) {
