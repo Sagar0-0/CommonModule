@@ -24,6 +24,7 @@ import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -74,7 +75,7 @@ fun ThirdPartyScreen(
         ) {
 
             // Welcoming Text with User Name
-            spotifyViewModelX.currentUserData.data?.displayName?.let {
+            spotifyViewModelX.currentUserData.collectAsState().value.data?.displayName?.let {
                 Text(
                     text = "Hey $it !!",
 
@@ -131,7 +132,7 @@ fun ThirdPartyScreen(
             modifier = Modifier
                 .height(190.dp)
                 .fillMaxWidth(),
-            networkState = spotifyViewModelX.userRecentlyPlayedTracks,
+            networkState = spotifyViewModelX.userRecentlyPlayedTracks.collectAsState().value,
             onCurrentStateInitialized = {
                 spotifyViewModelX.getCurrentUserRecentlyPlayedTracks()
             }
@@ -192,7 +193,7 @@ fun ThirdPartyScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(210.dp),
-            networkState = spotifyViewModelX.recommendationTracks,
+            networkState = spotifyViewModelX.recommendationTracks.collectAsState().value,
             onCurrentStateInitialized = {
                 spotifyViewModelX.getRecommendationTracks()
             }
@@ -246,7 +247,7 @@ fun ThirdPartyScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(210.dp),
-            networkState = spotifyViewModelX.userTopTracks,
+            networkState = spotifyViewModelX.userTopTracks.collectAsState().value,
             onCurrentStateInitialized = {
                 spotifyViewModelX.getUserTopTracks()
             }
@@ -300,7 +301,7 @@ fun ThirdPartyScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(210.dp),
-            networkState = spotifyViewModelX.userTopArtists,
+            networkState = spotifyViewModelX.userTopArtists.collectAsState().value,
             onCurrentStateInitialized = {
                 spotifyViewModelX.getUserTopArtists()
             }

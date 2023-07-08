@@ -60,7 +60,7 @@ private fun TrackDetailHelper(
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
-        networkState = spotifyViewModelX.trackDetailsResponse,
+        networkState = spotifyViewModelX.trackDetailsResponse.collectAsState().value,
         onCurrentStateInitialized = {
             spotifyViewModelX.getTrackDetails()
         }

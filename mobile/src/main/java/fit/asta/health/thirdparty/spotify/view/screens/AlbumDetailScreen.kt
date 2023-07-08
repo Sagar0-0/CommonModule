@@ -58,7 +58,7 @@ private fun AlbumDetailHelper(
 
     // This function checks for the Network Response from the API
     MusicStateControl(
-        networkState = spotifyViewModelX.albumDetailsResponse,
+        networkState = spotifyViewModelX.albumDetailsResponse.collectAsState().value,
         onCurrentStateInitialized = {
             spotifyViewModelX.getAlbumDetails()
         }

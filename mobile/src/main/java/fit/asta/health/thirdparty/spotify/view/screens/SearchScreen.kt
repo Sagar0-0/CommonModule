@@ -16,6 +16,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -139,7 +140,7 @@ fun SearchScreen(
         MusicStateControl(
             modifier = Modifier
                 .fillMaxSize(),
-            networkState = spotifyViewModelX.spotifySearch,
+            networkState = spotifyViewModelX.spotifySearch.collectAsState().value,
             onCurrentStateInitialized = {
                 spotifyViewModelX.getSpotifySearchResult()
             }

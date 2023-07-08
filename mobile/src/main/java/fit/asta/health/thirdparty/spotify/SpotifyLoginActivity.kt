@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -61,7 +62,7 @@ class SpotifyLoginActivity : ComponentActivity() {
                     MusicStateControl(
                         modifier = Modifier
                             .fillMaxSize(),
-                        networkState = spotifyViewModelX.currentUserData,
+                        networkState = spotifyViewModelX.currentUserData.collectAsState().value,
                         onCurrentStateInitialized = {
 
                             // checking if spotify is installed or not

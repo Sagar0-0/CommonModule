@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -101,7 +102,7 @@ fun TracksUI(spotifyViewModelX: SpotifyViewModelX) {
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
-        networkState = spotifyViewModelX.currentUserTracks,
+        networkState = spotifyViewModelX.currentUserTracks.collectAsState().value,
         onCurrentStateInitialized = {
             spotifyViewModelX.getCurrentUserTracks()
         }
@@ -148,7 +149,7 @@ fun PlaylistUI(spotifyViewModelX: SpotifyViewModelX) {
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
-        networkState = spotifyViewModelX.currentUserPlaylist,
+        networkState = spotifyViewModelX.currentUserPlaylist.collectAsState().value,
         onCurrentStateInitialized = {
             spotifyViewModelX.getCurrentUserPlaylist()
         }
@@ -189,7 +190,7 @@ fun ArtistsUI(spotifyViewModelX: SpotifyViewModelX) {
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
-        networkState = spotifyViewModelX.currentUserFollowingArtist,
+        networkState = spotifyViewModelX.currentUserFollowingArtist.collectAsState().value,
         onCurrentStateInitialized = {
             spotifyViewModelX.getCurrentUserFollowingArtists()
         }
@@ -228,7 +229,7 @@ fun AlbumsUI(spotifyViewModelX: SpotifyViewModelX) {
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
-        networkState = spotifyViewModelX.currentUserAlbum,
+        networkState = spotifyViewModelX.currentUserAlbum.collectAsState().value,
         onCurrentStateInitialized = {
             spotifyViewModelX.getCurrentUserAlbum()
         }
@@ -267,7 +268,7 @@ fun ShowUI(spotifyViewModelX: SpotifyViewModelX) {
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
-        networkState = spotifyViewModelX.currentUserShow,
+        networkState = spotifyViewModelX.currentUserShow.collectAsState().value,
         onCurrentStateInitialized = {
             spotifyViewModelX.getCurrentUserShows()
         }
@@ -307,7 +308,7 @@ fun EpisodeUI(spotifyViewModelX: SpotifyViewModelX) {
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
-        networkState = spotifyViewModelX.currentUserEpisode,
+        networkState = spotifyViewModelX.currentUserEpisode.collectAsState().value,
         onCurrentStateInitialized = {
             spotifyViewModelX.getCurrentUserEpisode()
         }
