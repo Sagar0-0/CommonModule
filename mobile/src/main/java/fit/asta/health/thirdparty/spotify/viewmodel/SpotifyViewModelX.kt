@@ -1,14 +1,16 @@
 package fit.asta.health.thirdparty.spotify.viewmodel
 
+import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
+import fit.asta.health.thirdparty.spotify.model.db.MusicRepository
 import fit.asta.health.thirdparty.spotify.model.net.common.Album
 import fit.asta.health.thirdparty.spotify.model.net.library.albums.SpotifyLibraryAlbumModel
 import fit.asta.health.thirdparty.spotify.model.net.library.episodes.SpotifyLibraryEpisodesModel
@@ -24,14 +26,20 @@ import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
 import fit.asta.health.thirdparty.spotify.model.net.recently.SpotifyUserRecentlyPlayedModel
 import fit.asta.health.thirdparty.spotify.model.net.recommendations.SpotifyRecommendationModel
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
 class SpotifyViewModelX @Inject constructor(
-    private val repository: SpotifyRepoImpl
-) : ViewModel() {
+    private val remoteRepository: SpotifyRepoImpl,
+    private val localRepository: MusicRepository,
+    application: Application
+) : AndroidViewModel(application) {
+
 
     // Keeps the AccessToken of the Authorization
     private var accessToken: String = ""
@@ -77,7 +85,7 @@ class SpotifyViewModelX @Inject constructor(
             currentUserData = try {
 
                 // Fetching the data from the Api
-                val response = repository.getCurrentUserDetails(accessToken)
+                val response = remoteRepository.getCurrentUserDetails(accessToken)
                 handleResponse(response)
             } catch (e: Exception) {
                 SpotifyNetworkCall.Failure(message = e.message)
@@ -125,6 +133,107 @@ class SpotifyViewModelX @Inject constructor(
         }
     }
 
+
+    /**
+     * This variable contains details of all the Tracks calls and states
+     */
+    private val _allTracks = MutableStateFlow<SpotifyNetworkCall<List<Track>>>(
+        SpotifyNetworkCall.Initialized()
+    )
+    val allTracks = _allTracks.asStateFlow()
+    /**
+     * This function fetches all the track from the local repository
+     */
+    fun getAllTracks() {
+
+        _allTracks.value = SpotifyNetworkCall.Loading()
+
+        viewModelScope.launch {
+            localRepository.local.getAllTracks().catch { exception ->
+                _allTracks.value = SpotifyNetworkCall.Failure(
+                    message = exception.message
+                )
+            }.collect {
+                _allTracks.value = SpotifyNetworkCall.Success(
+                    data = it
+                )
+            }
+        }
+    }
+
+
+    /**
+     * This variable contains details of all the albums calls and states
+     */
+    private val _allAlbums = MutableStateFlow<SpotifyNetworkCall<List<Album>>>(
+        SpotifyNetworkCall.Initialized()
+    )
+    val allAlbums = _allAlbums.asStateFlow()
+    /**
+     * This function fetches all the albums from the local repository
+     */
+    fun getAllAlbums() {
+
+        _allAlbums.value = SpotifyNetworkCall.Loading()
+
+        viewModelScope.launch {
+            localRepository.local.getAllAlbums().catch { exception ->
+                _allAlbums.value = SpotifyNetworkCall.Failure(
+                    message = exception.message
+                )
+            }.collect {
+                _allAlbums.value = SpotifyNetworkCall.Success(
+                    data = it
+                )
+            }
+        }
+    }
+
+
+    /**
+     * This function is used to insert a Track into the Database
+     */
+    fun insertTrack(track: Track) {
+        viewModelScope.launch {
+            localRepository.local.insertTrack(track)
+            getAllTracks()
+        }
+    }
+
+
+    /**
+     * This function deletes Tracks from the Local Database
+     */
+    fun deleteTrack(track: Track) {
+        viewModelScope.launch {
+            localRepository.local.deleteTrack(track)
+            getAllTracks()
+        }
+    }
+
+
+    /**
+     * This function is used to insert a Album into the Database
+     */
+    fun insertAlbum(album: Album) {
+        viewModelScope.launch {
+            localRepository.local.insertAlbum(album)
+            getAllAlbums()
+        }
+    }
+
+
+    /**
+     * This function deletes a certain album from the Database
+     */
+    fun deleteAlbum(album: Album) {
+        viewModelScope.launch {
+            localRepository.local.deleteAlbum(album)
+            getAllAlbums()
+        }
+    }
+
+
     // Keeps the user Recently Played Tracks
     var userRecentlyPlayedTracks: SpotifyNetworkCall<SpotifyUserRecentlyPlayedModel> by mutableStateOf(
         SpotifyNetworkCall.Initialized()
@@ -143,7 +252,7 @@ class SpotifyViewModelX @Inject constructor(
             userRecentlyPlayedTracks = try {
 
                 // Fetching the data from the Api
-                val response = repository.getCurrentUserRecentlyPlayedTracks(accessToken)
+                val response = remoteRepository.getCurrentUserRecentlyPlayedTracks(accessToken)
                 val state = handleResponse(response)
 
                 // Fetching the Recommendations Tracks List for the Users
@@ -189,7 +298,7 @@ class SpotifyViewModelX @Inject constructor(
             recommendationTracks = try {
 
                 // Fetching the data from the Api
-                val response = repository.getRecommendations(
+                val response = remoteRepository.getRecommendations(
                     accessToken, seedArtists, seedGenres, seedTracks, limit
                 )
                 handleResponse(response)
@@ -227,7 +336,7 @@ class SpotifyViewModelX @Inject constructor(
             trackDetailsResponse = try {
 
                 // Fetching the data from the Api
-                val response = repository.getTrackDetails(accessToken, trackDetailId)
+                val response = remoteRepository.getTrackDetails(accessToken, trackDetailId)
                 handleResponse(response)
             } catch (e: Exception) {
                 SpotifyNetworkCall.Failure(message = e.message)
@@ -253,7 +362,7 @@ class SpotifyViewModelX @Inject constructor(
             userTopTracks = try {
 
                 // Fetching the data from the Api
-                val response = repository.getCurrentUserTopTracks(accessToken)
+                val response = remoteRepository.getCurrentUserTopTracks(accessToken)
                 handleResponse(response)
             } catch (e: Exception) {
                 SpotifyNetworkCall.Failure(message = e.message)
@@ -279,7 +388,7 @@ class SpotifyViewModelX @Inject constructor(
             userTopArtists = try {
 
                 // Fetching the data from the Api
-                val response = repository.getCurrentUserTopArtists(accessToken)
+                val response = remoteRepository.getCurrentUserTopArtists(accessToken)
                 handleResponse(response)
             } catch (e: Exception) {
                 SpotifyNetworkCall.Failure(message = e.message)
@@ -334,7 +443,7 @@ class SpotifyViewModelX @Inject constructor(
 
                 // Fetching the data from the Api
                 val response =
-                    repository.searchQuery(accessToken, query, type, includeExternal, market)
+                    remoteRepository.searchQuery(accessToken, query, type, includeExternal, market)
                 handleResponse(response)
             } catch (e: Exception) {
                 SpotifyNetworkCall.Failure(message = e.message)
@@ -366,7 +475,7 @@ class SpotifyViewModelX @Inject constructor(
             albumDetailsResponse = try {
 
                 // Fetching the data from the Api
-                val response = repository.getAlbumDetails(accessToken, albumDetailId)
+                val response = remoteRepository.getAlbumDetails(accessToken, albumDetailId)
                 handleResponse(response)
             } catch (e: Exception) {
                 SpotifyNetworkCall.Failure(message = e.message)
@@ -394,7 +503,7 @@ class SpotifyViewModelX @Inject constructor(
             currentUserTracks = try {
 
                 // Fetching the data from the Api
-                val response = repository.getCurrentUserTracks(accessToken)
+                val response = remoteRepository.getCurrentUserTracks(accessToken)
                 handleResponse(response)
             } catch (e: Exception) {
                 SpotifyNetworkCall.Failure(message = e.message)
@@ -422,7 +531,7 @@ class SpotifyViewModelX @Inject constructor(
             currentUserPlaylist = try {
 
                 // Fetching the data from the Api
-                val response = repository.getCurrentUserPlaylists(accessToken)
+                val response = remoteRepository.getCurrentUserPlaylists(accessToken)
                 handleResponse(response)
             } catch (e: Exception) {
                 SpotifyNetworkCall.Failure(message = e.message)
@@ -450,7 +559,7 @@ class SpotifyViewModelX @Inject constructor(
             currentUserFollowingArtist = try {
 
                 // Fetching the data from the Api
-                val response = repository.getCurrentUserFollowedArtists(accessToken)
+                val response = remoteRepository.getCurrentUserFollowedArtists(accessToken)
                 handleResponse(response)
             } catch (e: Exception) {
                 SpotifyNetworkCall.Failure(message = e.message)
@@ -478,7 +587,7 @@ class SpotifyViewModelX @Inject constructor(
             currentUserAlbum = try {
 
                 // Fetching the data from the Api
-                val response = repository.getCurrentUserAlbums(accessToken)
+                val response = remoteRepository.getCurrentUserAlbums(accessToken)
                 handleResponse(response)
             } catch (e: Exception) {
                 SpotifyNetworkCall.Failure(message = e.message)
@@ -506,7 +615,7 @@ class SpotifyViewModelX @Inject constructor(
             currentUserShow = try {
 
                 // Fetching the data from the Api
-                val response = repository.getCurrentUserShows(accessToken)
+                val response = remoteRepository.getCurrentUserShows(accessToken)
                 handleResponse(response)
             } catch (e: Exception) {
                 SpotifyNetworkCall.Failure(message = e.message)
@@ -534,7 +643,7 @@ class SpotifyViewModelX @Inject constructor(
             currentUserEpisode = try {
 
                 // Fetching the data from the Api
-                val response = repository.getCurrentUserEpisodes(accessToken)
+                val response = remoteRepository.getCurrentUserEpisodes(accessToken)
                 handleResponse(response)
             } catch (e: Exception) {
                 SpotifyNetworkCall.Failure(message = e.message)

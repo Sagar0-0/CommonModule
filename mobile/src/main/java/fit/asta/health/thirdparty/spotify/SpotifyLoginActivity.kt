@@ -30,7 +30,6 @@ import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
 import fit.asta.health.thirdparty.spotify.view.components.MusicTopTabBar
 import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
-import fit.asta.health.thirdparty.spotify.viewmodel.FavouriteViewModelX
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 
 @AndroidEntryPoint
@@ -47,12 +46,6 @@ class SpotifyLoginActivity : ComponentActivity() {
      * activity
      */
     private val spotifyViewModelX: SpotifyViewModelX by viewModels()
-
-    /**
-     * This is the [FavouriteViewModelX] viewModel which contains all the business logic with the
-     * local storage and favourite screen
-     */
-    private val favouriteViewModelX: FavouriteViewModelX by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -160,8 +153,7 @@ class SpotifyLoginActivity : ComponentActivity() {
             // Initializing the NavGraph
             SpotifyNavGraph(
                 navController = navController,
-                spotifyViewModelX = spotifyViewModelX,
-                favouriteViewModelX = favouriteViewModelX
+                spotifyViewModelX = spotifyViewModelX
             )
 
             // Checking which UI to show according to the user Selection

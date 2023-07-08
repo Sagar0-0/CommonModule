@@ -18,7 +18,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import fit.asta.health.thirdparty.spotify.view.components.MusicLargeImageColumn
 import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
-import fit.asta.health.thirdparty.spotify.viewmodel.FavouriteViewModelX
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 
 
@@ -27,12 +26,10 @@ import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
  * add this to his favourites or open the track in spotify
  *
  * @param spotifyViewModelX This is the spotify ViewModel which contacts with the spotify apis
- * @param favouriteViewModelX This is the favourites ViewModels which contacts with the local database
  */
 @Composable
 fun TrackDetailsScreen(
-    spotifyViewModelX: SpotifyViewModelX,
-    favouriteViewModelX: FavouriteViewModelX
+    spotifyViewModelX: SpotifyViewModelX
 ) {
 
     // Root Composable function
@@ -45,8 +42,7 @@ fun TrackDetailsScreen(
     ) {
 
         TrackDetailHelper(
-            spotifyViewModelX = spotifyViewModelX,
-            favouriteViewModelX = favouriteViewModelX
+            spotifyViewModelX = spotifyViewModelX
         )
 
     }
@@ -54,8 +50,7 @@ fun TrackDetailsScreen(
 
 @Composable
 private fun TrackDetailHelper(
-    spotifyViewModelX: SpotifyViewModelX,
-    favouriteViewModelX: FavouriteViewModelX
+    spotifyViewModelX: SpotifyViewModelX
 ) {
 
     // context is stored to Show the Toast
@@ -73,9 +68,9 @@ private fun TrackDetailHelper(
 
         // This function checks for the Local Response from Local Database
         MusicStateControl(
-            networkState = favouriteViewModelX.allTracks.collectAsState().value,
+            networkState = spotifyViewModelX.allTracks.collectAsState().value,
             onCurrentStateInitialized = {
-                favouriteViewModelX.getAllTracks()
+                spotifyViewModelX.getAllTracks()
             }
         ) { localResponse ->
 
@@ -102,10 +97,10 @@ private fun TrackDetailHelper(
                         onClick = {
 
                             if (!isPresent) {
-                                favouriteViewModelX.insertTrack(networkTrack)
+                                spotifyViewModelX.insertTrack(networkTrack)
                                 Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show()
                             } else {
-                                favouriteViewModelX.deleteTrack(networkTrack)
+                                spotifyViewModelX.deleteTrack(networkTrack)
                                 Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show()
                             }
                         },

@@ -18,7 +18,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import fit.asta.health.thirdparty.spotify.view.components.MusicLargeImageColumn
 import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
-import fit.asta.health.thirdparty.spotify.viewmodel.FavouriteViewModelX
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 
 /**
@@ -26,12 +25,10 @@ import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
  * add this to his favourites or open the Album in spotify
  *
  * @param spotifyViewModelX This is the spotify ViewModel which contacts with the spotify apis
- * @param favouriteViewModelX This is the favourites ViewModels which contacts with the local database
  */
 @Composable
 fun AlbumDetailScreen(
-    spotifyViewModelX: SpotifyViewModelX,
-    favouriteViewModelX: FavouriteViewModelX
+    spotifyViewModelX: SpotifyViewModelX
 ) {
 
     // Root Composable function
@@ -45,8 +42,7 @@ fun AlbumDetailScreen(
 
         // This Function Draws the Album Details to the Screen according to the network and local responses
         AlbumDetailHelper(
-            spotifyViewModelX = spotifyViewModelX,
-            favouriteViewModelX = favouriteViewModelX
+            spotifyViewModelX = spotifyViewModelX
         )
 
     }
@@ -54,8 +50,7 @@ fun AlbumDetailScreen(
 
 @Composable
 private fun AlbumDetailHelper(
-    spotifyViewModelX: SpotifyViewModelX,
-    favouriteViewModelX: FavouriteViewModelX
+    spotifyViewModelX: SpotifyViewModelX
 ) {
 
     // context is stored to Show the Toast
@@ -71,9 +66,9 @@ private fun AlbumDetailHelper(
 
         // This function checks for the Local Response from Local Database
         MusicStateControl(
-            networkState = favouriteViewModelX.allAlbums.collectAsState().value,
+            networkState = spotifyViewModelX.allAlbums.collectAsState().value,
             onCurrentStateInitialized = {
-                favouriteViewModelX.getAllAlbums()
+                spotifyViewModelX.getAllAlbums()
             }
         ) { localResponse ->
 
@@ -102,10 +97,10 @@ private fun AlbumDetailHelper(
 
                             // Checking if the Album is already present or not
                             if (!isPresent) {
-                                favouriteViewModelX.insertAlbum(networkAlbumData)
+                                spotifyViewModelX.insertAlbum(networkAlbumData)
                                 Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show()
                             } else {
-                                favouriteViewModelX.deleteAlbum(networkAlbumData)
+                                spotifyViewModelX.deleteAlbum(networkAlbumData)
                                 Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show()
                             }
                         },

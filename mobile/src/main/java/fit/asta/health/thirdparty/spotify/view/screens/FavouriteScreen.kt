@@ -2,9 +2,7 @@ package fit.asta.health.thirdparty.spotify.view.screens
 
 import android.app.Activity
 import android.content.Intent
-import android.content.res.Configuration
 import android.net.Uri
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,10 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.material.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -24,41 +20,22 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.thirdparty.spotify.view.components.MusicLargeImageColumn
 import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
-import fit.asta.health.thirdparty.spotify.viewmodel.FavouriteViewModelX
-
-// Preview Composable Function
-@Preview(name = "Light")
-@Preview(
-    name = "Dark",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true
-)
-@Composable
-private fun DefaultPreview() {
-    AppTheme {
-        Surface {
-            FavouriteScreen(favouriteViewModelX = hiltViewModel())
-        }
-    }
-}
+import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 
 /**
  * This function contains the UI of the Favourite Screen
  *
  * @param modifier THis is the modifier passed from the parent function
- * @param favouriteViewModelX This variable contains the viewModel which contains the business logic
+ * @param spotifyViewModelX This variable contains the viewModel which contains the business logic
  */
 @Composable
 fun FavouriteScreen(
     modifier: Modifier = Modifier,
-    favouriteViewModelX: FavouriteViewModelX
+    spotifyViewModelX: SpotifyViewModelX
 ) {
 
     val context = LocalContext.current
@@ -72,24 +49,6 @@ fun FavouriteScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
     ) {
-
-        Button(
-            onClick = {
-
-                Toast.makeText(context, "Not Yet Implemented", Toast.LENGTH_SHORT).show()
-
-                // TODO :- Write Code to import Local Music and Audio
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 32.dp, bottom = 12.dp, start = 12.dp, end = 12.dp)
-        ) {
-            Text(
-                text = "Import Local Music",
-                modifier = Modifier
-                    .padding(4.dp)
-            )
-        }
 
         // Track Text
         Text(
@@ -110,8 +69,8 @@ fun FavouriteScreen(
             modifier = Modifier
                 .height(210.dp)
                 .fillMaxWidth(),
-            networkState = favouriteViewModelX.allTracks.collectAsState().value,
-            onCurrentStateInitialized = { favouriteViewModelX.getAllTracks() },
+            networkState = spotifyViewModelX.allTracks.collectAsState().value,
+            onCurrentStateInitialized = { spotifyViewModelX.getAllTracks() },
             onCurrentStateSuccess = { networkState ->
                 networkState.data?.let { trackList ->
                     LazyRow(
@@ -155,8 +114,8 @@ fun FavouriteScreen(
             modifier = Modifier
                 .height(210.dp)
                 .fillMaxWidth(),
-            networkState = favouriteViewModelX.allAlbums.collectAsState().value,
-            onCurrentStateInitialized = { favouriteViewModelX.getAllAlbums() },
+            networkState = spotifyViewModelX.allAlbums.collectAsState().value,
+            onCurrentStateInitialized = { spotifyViewModelX.getAllAlbums() },
             onCurrentStateSuccess = { networkState ->
                 networkState.data?.let { albumList ->
                     LazyRow(
