@@ -96,6 +96,16 @@ class FavouriteViewModelX @Inject constructor(
         }
     }
 
+    /**
+     * This function deletes a certain album from the Database
+     */
+    fun deleteAlbum(album: Album) {
+        viewModelScope.launch {
+            repository.local.deleteAlbum(album)
+            getAllAlbums()
+        }
+    }
+
 //    fun updateTrack(track: TrackEntity) = viewModelScope.launch {
 //        repository.local.updateTrack(track)
 //    }
@@ -113,9 +123,6 @@ class FavouriteViewModelX @Inject constructor(
 //        repository.local.updateAlbum(album)
 //    }
 //
-//    fun deleteAlbum(album: Album) = viewModelScope.launch {
-//        repository.local.deleteAlbum(album)
-//    }
 //
 //    fun deleteAllAlbums() = viewModelScope.launch {
 //        repository.local.deleteAllAlbum()
