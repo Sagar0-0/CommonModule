@@ -1,11 +1,7 @@
 package fit.asta.health.thirdparty.spotify.view.navigation
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import fit.asta.health.thirdparty.spotify.view.components.MusicTopTabBar
@@ -23,31 +19,26 @@ fun TopTabNavigation(
         Pair("Third Party", SpotifyNavRoutes.ThirdPartyScreen.routes)
     )
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
-    ) {
+    // This Variable keeps track of the Latest BackStack Entry
+    val backStackEntry = navController.currentBackStackEntryAsState()
 
-        // This Variable keeps track of the Latest BackStack Entry
-        val backStackEntry = navController.currentBackStackEntryAsState()
+    // Checking if the Current Route and the Item is Same so that the item can be decorated differently
+    val selectedItem = optionList.indexOfFirst {
+        it.second == backStackEntry.value?.destination?.route
+    }
 
-        // Checking if the Current Route and the Item is Same so that the item can be decorated differently
-        val selectedItem = optionList.indexOfFirst {
-            it.second == backStackEntry.value?.destination?.route
-        }
-
-        // This Function makes the Tab Layout UI
-        MusicTopTabBar(
-            tabList = optionList.map { it.first },
-            selectedItem = selectedItem,
-            selectedColor = MaterialTheme.colorScheme.primary,
-            unselectedColor = MaterialTheme.colorScheme.secondary
-        ) {
+    // This Function makes the Tab Layout UI
+    MusicTopTabBar(
+        tabList = optionList.map { it.first },
+        selectedItem = selectedItem,
+        selectedColor = MaterialTheme.colorScheme.primary,
+        unselectedColor = MaterialTheme.colorScheme.secondary,
+        onNewTabClicked = {
 
             // Changing the Current Selected Item according to the User Interactions
             navController.navigate(optionList[it].second)
         }
+    ) {
 
         // Initializing the NavGraph
         SpotifyNavGraph(

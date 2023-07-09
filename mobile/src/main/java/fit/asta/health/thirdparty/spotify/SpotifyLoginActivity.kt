@@ -78,10 +78,10 @@ class SpotifyLoginActivity : ComponentActivity() {
                         // Getting the Spotify App Remote
                         getSpotifyRemote()
 
-                        val navController = rememberNavController()
+                        val musicNavController = rememberNavController()
                         TopTabNavigation(
                             spotifyViewModelX = spotifyViewModelX,
-                            navController = navController
+                            navController = musicNavController
                         )
                     }
                 }
