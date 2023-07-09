@@ -9,7 +9,6 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
-import retrofit2.http.Path
 import retrofit2.http.Query
 
 
@@ -29,18 +28,19 @@ interface ExerciseService {
 
     @GET("tools/exercise/start/get/?")
     suspend fun getStart(
-        @Query("uid") userId: String = "6309a9379af54f142c65fbfe"
+        @Query("uid") userId: String = "6309a9379af54f142c65fbfe",
+        @Query("exName") name: String,
     ): NetGetStart
 
-    @PUT("tools/exercise/put/?exName={name}")
+    @PUT("tools/exercise/put/?")
     suspend fun putExerciseData(
-        @Path(value = "name") name: String,
+        @Query("exName") name: String,
         @Body netPutRes: NetPutRes
     ): ServerRes
 
-    @POST("tools/exercise/activity/post/?exName={name}")
+    @POST("tools/exercise/activity/post/?")
     suspend fun postExerciseData(
-        @Path(value = "name") name: String,
+        @Query("exName") name: String,
         @Body netPost: NetPost
     ): ServerRes
 }

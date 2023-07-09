@@ -1,24 +1,36 @@
 package fit.asta.health.tools.exercise.viewmodel
 
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import androidx.media3.common.Timeline
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.NetworkResult
+import fit.asta.health.player.jetpack_audio.domain.data.Song
+import fit.asta.health.player.jetpack_audio.domain.utils.convertToProgress
 import fit.asta.health.tools.exercise.db.ExerciseData
 import fit.asta.health.tools.exercise.model.ExerciseLocalRepo
 import fit.asta.health.tools.exercise.model.ExerciseRepo
 import fit.asta.health.tools.exercise.model.domain.mapper.getExerciseTool
 import fit.asta.health.tools.exercise.model.domain.mapper.getMusicTool
+import fit.asta.health.tools.exercise.model.domain.model.VideoItem
 import fit.asta.health.tools.exercise.model.network.NetPost
 import fit.asta.health.tools.exercise.model.network.NetPutRes
 import fit.asta.health.tools.exercise.model.network.PrcX
 import fit.asta.health.tools.exercise.model.network.Value
 import fit.asta.health.tools.exercise.view.home.ExerciseUiState
 import fit.asta.health.tools.exercise.view.home.HomeEvent
+import fit.asta.health.tools.exercise.view.video.VideoEvent
+import fit.asta.health.tools.exercise.view.video.VideoState
+import fit.asta.health.tools.exercise.view.video_player.VideoPlayerEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -32,20 +44,21 @@ import javax.inject.Inject
 @HiltViewModel
 class ExerciseViewModel @Inject constructor(
     private val exerciseRepo: ExerciseRepo,
-    private val exerciseLocalRepo: ExerciseLocalRepo
+    private val exerciseLocalRepo: ExerciseLocalRepo,
+    private val player: Player
 ) : ViewModel() {
     private var screen = "dance"
     private val date = LocalDate.now().dayOfMonth
     private val _selectedLevel = MutableStateFlow("Beginner 1")
     val selectedLevel: StateFlow<String> = _selectedLevel
 
-    private val _selectedMusic = MutableStateFlow("Quieting the Mind")
+    private val _selectedMusic = MutableStateFlow("relaxing")
     val selectedMusic: StateFlow<String> = _selectedMusic
 
     private val _selectedLanguage = MutableStateFlow("English")
     val selectedLanguage: StateFlow<String> = _selectedLanguage
 
-    private val _selectedInstructor = MutableStateFlow("john")
+    private val _selectedInstructor = MutableStateFlow("Darlene Robertson")
     val selectedInstructor: StateFlow<String> = _selectedInstructor
 
     private val _selectedQuick = MutableStateFlow("Full Body")
@@ -136,6 +149,7 @@ class ExerciseViewModel @Inject constructor(
                     Toast.makeText(event.context, "select target", Toast.LENGTH_SHORT).show()
                 } else {
                     putData(screen)
+                    setPlayer()
                 }
             }
 
@@ -254,29 +268,74 @@ class ExerciseViewModel @Inject constructor(
     }
 
 
-    private fun loadMusicData() {
+    private fun loadMusicData(code: String) {
         viewModelScope.launch {
-            exerciseRepo.getStart(uid = "").collectLatest { networkResult ->
-                when (networkResult) {
-                    is NetworkResult.Loading -> {}
-                    is NetworkResult.Success -> {
-                        networkResult.data?.let {
-                            val data = it.getMusicTool()
+            exerciseRepo.getStart(uid = "6309a9379af54f142c65fbfe", name = code)
+                .collectLatest { networkResult ->
+                    when (networkResult) {
+                        is NetworkResult.Loading -> {}
+                        is NetworkResult.Success -> {
+                            networkResult.data?.let {
+                                val data = it.getMusicTool()
+                                Log.d("subhash", "loadMusicData: $data")
+                                val fakeVideos = mutableListOf<VideoItem>()
+                                _videoList.clear()
+                                list.add(
+                                    Song(
+                                        id = 55,
+                                        artist = data.music.artist_name,
+                                        artistId = 333,
+                                        artworkUri = "https://img2.asta.fit${data.music.artist_url}".toUri(),
+                                        album = "",
+                                        albumId = 5566,
+                                        duration = 4,
+                                        mediaUri = "https://stream1.asta.fit/${data.music.music_url}".toUri(),
+                                        title = data.music.music_name,
+                                    )
+                                )
+                                data.instructor.forEachIndexed { index, it ->
+                                    fakeVideos.add(
+                                        VideoItem(
+                                            mediaUri = "https://stream1.asta.fit${it.music_url}".toUri(),
+                                            mediaItem = MediaItem.Builder()
+                                                .setMediaId(it.music_name)
+                                                .setUri("https://stream1.asta.fit${it.music_url}".toUri())
+                                                .build(),
+                                            title = it.music_name,
+                                            artworkUri = "https://img2.asta.fit/tags/Breathing+Tag.png".toUri(),
+                                            artist = data.music.artist_name,
+                                            duration = data.music.duration
+                                        )
+                                    )
 
+                                }
+
+                                val music = "https://stream1.asta.fit/video/Day02.mp4"
+                                _videoList.addAll(fakeVideos)
+//                            currentVideo.value = fakeVideos.first()
+//                            player.addMediaItems(fakeVideos.map { it.mediaItem })
+                                Log.d("subhash", "loadMusicData: ${_videoList.toList()}")
+                            }
                         }
-                    }
 
-                    is NetworkResult.Error -> {}
+                        is NetworkResult.Error -> {}
+                    }
                 }
-            }
         }
     }
 
     private fun putData(code: String) {
+        Log.d("subhash", "putData: ${_exerciseUiState.value}")
         val target = PrcX(
             dsc = "target",
             title = "target",
-            values = listOf(Value(id = "", name = "20", value = "20")),
+            values = listOf(
+                Value(
+                    id = "",
+                    name = _exerciseUiState.value.targetValue.toInt().toString(),
+                    value = _exerciseUiState.value.targetValue.toInt().toString()
+                )
+            ),
             id = ""
         )
         val style = PrcX(
@@ -369,29 +428,36 @@ class ExerciseViewModel @Inject constructor(
         prcList.add(instructor)
         prcList.add(music)
         if (code != "HIIT") prcList.add(language)
+        Log.d("subhash", "putData: $prcList")
         viewModelScope.launch {
             val result = exerciseRepo.putExerciseData(
                 netPutRes = NetPutRes(
-                    id = "",
-                    code = "",
+                    id = "63be470005dbba7af597e196",
+                    code = code,
                     prc = prcList,
                     type = 6,
                     uid = "6309a9379af54f142c65fbfe",
                     weather = true
                 ), name = code
             )
+            Log.d("subhash", "putData: $result")
             when (result) {
-                is NetworkResult.Loading -> {}
+                is NetworkResult.Loading -> {
+                    Log.d("subhash", "putData: $result")
+                }
+
                 is NetworkResult.Success -> {
                     loadData()
-                    loadMusicData()
+                    loadMusicData(code)
                     updateAnge(screen)
                     updateState(start = true, code = screen)
                     updateTime(time = 0, code = screen)
                     _exerciseUiState.value = _exerciseUiState.value.copy(start = true)
                 }
 
-                is NetworkResult.Error -> {}
+                is NetworkResult.Error -> {
+                    Log.d("subhash", "putData: ${result.message}")
+                }
             }
         }
 
@@ -578,4 +644,107 @@ class ExerciseViewModel @Inject constructor(
         "Ankle roll",
         "Child's Pose"
     )
+
+    val listener = object : Player.Listener {
+        override fun onEvents(player: Player, events: Player.Events) {
+            super.onEvents(player, events)
+            Log.d("subhash", "onEvents: $player.duration  progress ${ convertToProgress(count = player.currentPosition, total = 1000) } ")
+
+        }
+
+        override fun onTimelineChanged(timeline: Timeline, reason: Int) {
+            // recover the remembered state if media id matched
+            Log.d("subhash", "onTimelineChanged: ${timeline.windowCount},$reason")
+            rememberedState
+                ?.let { (id, index, position) ->
+                    if (!timeline.isEmpty
+                        && timeline.windowCount > index
+                        && id == timeline.getWindow(index, window).mediaItem.mediaId
+                    ) {
+                        player.seekTo(index, position)
+                    }
+                }
+                ?.also { rememberedState = null }
+        }
+    }
+
+
+    private val _videoList = mutableStateListOf<VideoItem>()
+    val videoList = MutableStateFlow(_videoList)
+    private val list = mutableListOf<Song>()
+    private val _uiState = mutableStateOf(VideoState())
+    val uiState: State<VideoState> = _uiState
+
+    fun setPlayer() {
+        player.apply {
+            playWhenReady = true
+            prepare()
+            addListener(listener)
+            Log.d("devil", "prepare")
+        }
+    }
+
+    fun player(): Player = player
+    private var rememberedState: Triple<String, Int, Long>? = null
+    private val window: Timeline.Window = Timeline.Window()
+
+    fun play() = { player.play() }
+
+    private fun saveState() {
+        player.currentMediaItem?.let { mediaItem ->
+            rememberedState = Triple(
+                mediaItem.mediaId,
+                player.currentMediaItemIndex,
+                player.currentPosition
+            )
+        }
+    }
+
+    fun pause() = player.pause()
+    fun eventVideo(event: VideoEvent) {
+        when (event) {
+            is VideoEvent.Start -> play()
+            is VideoEvent.Stop -> {
+                saveState()
+                pause()
+            }
+            is VideoEvent.UpdateProgress->{
+                  updateTime(time = event.value.toLong(),code=screen)
+                _exerciseUiState.value=_exerciseUiState.value.copy(
+                    consume = event.value
+                )
+            }
+            is VideoEvent.SetControllerType -> {
+                _uiState.value = _uiState.value.copy(controllerType = event.value)
+            }
+
+            is VideoEvent.SetResizeMode -> {
+                _uiState.value = _uiState.value.copy(resizeMode = event.value)
+            }
+        }
+    }
+
+    fun eventVideoPlayer(event: VideoPlayerEvent) {
+        when (event) {
+            is VideoPlayerEvent.PlaySound -> {
+                playVideo(uri = event.uri)
+            }
+        }
+
+    }
+
+
+    private fun playVideo(uri: Uri) {
+        player.setMediaItem(
+            MediaItem.fromUri(uri)
+        )
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        player.removeListener(listener)
+        player.release()
+    }
+
+
 }

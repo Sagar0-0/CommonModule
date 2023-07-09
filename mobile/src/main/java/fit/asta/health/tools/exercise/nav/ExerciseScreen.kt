@@ -12,4 +12,6 @@ sealed class ExerciseScreen(val route: String) {
     object Equipment:ExerciseScreen(route = "exercise_equipment_screen")
     object Duration:ExerciseScreen(route = "exercise_duration_screen")
     object Music:ExerciseScreen(route = "exercise_music_screen")
+    object VideoPlayer:ExerciseScreen(route = "exercise_video_player_screen")
+    object Video:ExerciseScreen(route = "exercise_video_screen")
 }

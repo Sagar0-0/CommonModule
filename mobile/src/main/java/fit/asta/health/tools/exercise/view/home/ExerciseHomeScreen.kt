@@ -26,11 +26,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,12 +35,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.ButtonWithColor
 import fit.asta.health.common.ui.components.CircularSliderInt
 import fit.asta.health.common.ui.components.ProgressBarInt
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.tools.exercise.view.components.CardItem
 import fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.ui.DividerLineCenter
-import fit.asta.health.common.ui.components.ButtonWithColor
 import fit.asta.health.tools.walking.view.home.SunlightCard
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -72,6 +67,8 @@ fun ExerciseHomeScreen(
     onEquipment: () -> Unit,
     onDuration: () -> Unit,
     onMusic: () -> Unit,
+    onSchedule: () -> Unit,
+    onPlayer: () -> Unit
 ) {
     val sheetState = rememberBottomSheetState(
         initialValue = BottomSheetValue.Collapsed
@@ -79,11 +76,6 @@ fun ExerciseHomeScreen(
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = sheetState
     )
-    val scope = rememberCoroutineScope()
-
-    var visible by remember {
-        mutableStateOf(false)
-    }
 
     BottomSheetScaffold(
         modifier = Modifier.fillMaxSize(),
@@ -92,7 +84,8 @@ fun ExerciseHomeScreen(
         sheetContent = {
             DanceBottomSheet(
                 scaffoldState = scaffoldState,
-                screen=screen,
+                start = uiState.start,
+                screen = screen,
                 style = style,
                 music = music,
                 level = level,
@@ -111,7 +104,10 @@ fun ExerciseHomeScreen(
                 onEquipment = onEquipment,
                 onDuration = onDuration,
                 onMusic = onMusic,
-                )
+                onSchedule = onSchedule,
+                onPlayer = onPlayer,
+                event = event
+            )
         },
         sheetPeekHeight = 200.dp,
         scaffoldState = scaffoldState,
@@ -214,6 +210,7 @@ fun ExerciseHomeScreen(
 @Composable
 fun DanceBottomSheet(
     scaffoldState: BottomSheetScaffoldState,
+    start: Boolean,
     screen: String,
     style: String,
     music: String,
@@ -233,10 +230,14 @@ fun DanceBottomSheet(
     onChallenges: () -> Unit,
     onDuration: () -> Unit,
     onEquipment: () -> Unit,
+    onSchedule: () -> Unit,
+    onPlayer: () -> Unit,
+    event: (HomeEvent) -> Unit
 ) {
     val context = LocalContext.current
     Column(
-        modifier = Modifier.background(Color.Yellow)
+        modifier = Modifier
+            .background(Color.Yellow)
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 16.dp),
         verticalArrangement = Arrangement.spacedBy(spacing.small)
@@ -249,17 +250,21 @@ fun DanceBottomSheet(
             verticalArrangement = Arrangement.spacedBy(spacing.medium),
             columns = GridCells.Fixed(2)
         ) {
-            item {  CardItem(
-                name = "Style",
-                type = style,
-                id = R.drawable.baseline_music_note_24
-            ) { onStyle() } }
-            item {  CardItem(
-                name = "Music",
-                type = music,
-                id = R.drawable.baseline_music_note_24,
-                onClick = { onMusic() }
-            ) }
+            item {
+                CardItem(
+                    name = "Style",
+                    type = style,
+                    id = R.drawable.baseline_music_note_24
+                ) { onStyle() }
+            }
+            item {
+                CardItem(
+                    name = "Music",
+                    type = music,
+                    id = R.drawable.baseline_music_note_24,
+                    onClick = { onMusic() }
+                )
+            }
         }
         AnimatedVisibility(visible = scaffoldState.bottomSheetState.isExpanded) {
             Column(
@@ -326,12 +331,19 @@ fun DanceBottomSheet(
         Row(horizontalArrangement = Arrangement.spacedBy(spacing.medium)) {
             ButtonWithColor(
                 modifier = Modifier.weight(0.5f), color = Color.Green, text = "SCHEDULE"
-            ) { }
+            ) { onSchedule() }
             ButtonWithColor(
                 modifier = Modifier.weight(0.5f),
-                color = Color.Blue,
-                text = "START"
-            ) { }
+                color =if (start)Color.Red else Color.Blue ,
+                text = if (start) "END" else "START"
+            ) {
+                if (start) {
+                    event(HomeEvent.End(context))
+                } else {
+                    event(HomeEvent.Start(context))
+                    onPlayer()
+                }
+            }
         }
     }
 }

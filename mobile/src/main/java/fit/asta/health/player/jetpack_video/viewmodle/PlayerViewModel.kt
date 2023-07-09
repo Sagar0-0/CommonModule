@@ -18,13 +18,11 @@ import fit.asta.health.player.jetpack_audio.domain.data.Song
 import fit.asta.health.player.jetpack_video.data.model.VideoItem
 import fit.asta.health.player.jetpack_video.video.UiEvent
 import fit.asta.health.player.jetpack_video.video.UiState
-import fit.asta.health.player.jetpack_video.video.utils.Urls
 import fit.asta.health.tools.meditation.model.MeditationRepo
 import fit.asta.health.tools.meditation.model.domain.mapper.getMusicTool
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.io.Closeable
 import javax.inject.Inject
 
 @HiltViewModel
@@ -206,30 +204,7 @@ class PlayerViewModel @Inject constructor(
         }
     }
 
-    private fun createFakeList() {
-        // Create a mutable list to store the fake video items
-        val fakeVideos = mutableListOf<VideoItem>()
-        val music ="https://stream1.asta.fit/video/Day02.mp4"
-        fakeVideos.add(
-            VideoItem(
-                contentUri = music.toUri(), name = "Bunny 0",
-                mediaItem = MediaItem.Builder().setMediaId(music).setUri(music).build()
-            )
-        )
-        var count = 1
-        Urls.forEach {
-            fakeVideos.add(
-                VideoItem(
-                    contentUri = it.toUri(), name = "Bunny $count",
-                    mediaItem = MediaItem.Builder().setMediaId(it).setUri(it).build()
-                )
-            )
-            count += 1
-        }
-        _videoList.addAll(fakeVideos)
-        currentVideo.value = fakeVideos.first()
-        player.addMediaItems(fakeVideos.map { it.mediaItem })
-    }
+
 
     fun playVideo(uri: Uri) {
         player.setMediaItem(
@@ -245,9 +220,5 @@ class PlayerViewModel @Inject constructor(
         Log.d(TAG, "onCleared: ")
     }
 
-    override fun addCloseable(closeable: Closeable) {
-        super.addCloseable(closeable)
-        Log.d(TAG, "addCloseable: ")
-    }
 
 }

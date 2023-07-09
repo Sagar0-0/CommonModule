@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface ExerciseRepo {
     suspend fun getExerciseTool(uid: String, date: String,name:String): Flow<NetworkResult<NetGetRes>>
 
-    suspend fun getStart(uid: String):Flow<NetworkResult<NetGetStart>>
+    suspend fun getStart(uid: String,name: String):Flow<NetworkResult<NetGetStart>>
 
     suspend fun putExerciseData(netPutRes: NetPutRes, name:String): NetworkResult<ServerRes>
 
