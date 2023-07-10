@@ -67,7 +67,7 @@ fun SearchBar(
         // This is the Label of the input which is shown to the top left when selected
         label = {
             Text(
-                "Search",
+                "Search from Spotify",
                 color = MaterialTheme.colorScheme.primary
             )
         },

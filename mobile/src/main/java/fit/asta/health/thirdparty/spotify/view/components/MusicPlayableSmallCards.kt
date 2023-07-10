@@ -1,8 +1,5 @@
 package fit.asta.health.thirdparty.spotify.view.components
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -17,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -29,20 +25,17 @@ import coil.compose.rememberAsyncImagePainter
  *
  * @param imageUri This is the image Uri from where the image needs to be downloaded
  * @param name This is the name of the track
- * @param uri THis is the uri where the user needs to be redirected when they choose a track
+ * @param onClick This Function is executed when the User Hits the Card
  */
 @Composable
 fun MusicPlayableSmallCards(
     imageUri: String?,
     name: String,
-    uri: String
+    onClick: () -> Unit
 ) {
 
     // request for the image and load when it is fetched from the internet
     val painter = rememberAsyncImagePainter(imageUri)
-
-    // Current Activity of the function so that we can move to the spotify app
-    val activity = LocalContext.current as Activity
 
     // Parent Composable of the small Tracks UI
     Card(
@@ -52,8 +45,7 @@ fun MusicPlayableSmallCards(
 
             // Redirecting the User to Spotify App
             .clickable {
-                val spotifyIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-                activity.startActivity(spotifyIntent)
+                onClick()
             }
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {

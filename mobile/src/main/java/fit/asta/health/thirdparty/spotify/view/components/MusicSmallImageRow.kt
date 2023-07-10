@@ -1,8 +1,5 @@
 package fit.asta.health.thirdparty.spotify.view.components
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -18,7 +15,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -30,21 +26,18 @@ import coil.compose.rememberAsyncImagePainter
  *
  * @param imageUri This is the uri from where we can fetch the image
  * @param name This is the name of the playlist
- * @param itemUri This is the URI of the playlist which redirects it to the spotify App
+ * @param onClick This function is executed when the Composable is clicked
  * @param secondaryText This is the 2nd Text in the UI
  */
 @Composable
 fun MusicSmallImageRow(
     imageUri: String?,
     name: String,
-    itemUri: String,
-    secondaryText: String
+    secondaryText: String,
+    onClick: () -> Unit
 ) {
     // request for the image and load when it is fetched from the internet
     val painter = rememberAsyncImagePainter(imageUri)
-
-    // Current Activity of the function so that we can move to the spotify app
-    val activity = LocalContext.current as Activity
 
     // Parent Composable of the Playlist UI
     Row(
@@ -54,8 +47,7 @@ fun MusicSmallImageRow(
 
             // Redirecting the User to Spotify App playlist
             .clickable {
-                val spotifyIntent = Intent(Intent.ACTION_VIEW, Uri.parse(itemUri))
-                activity.startActivity(spotifyIntent)
+                onClick()
             },
         verticalAlignment = Alignment.CenterVertically
     ) {

@@ -14,44 +14,45 @@ import fit.asta.health.thirdparty.spotify.model.net.common.Track
 import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
 import fit.asta.health.thirdparty.spotify.model.net.recently.SpotifyUserRecentlyPlayedModel
 import fit.asta.health.thirdparty.spotify.model.net.recommendations.SpotifyRecommendationModel
-import retrofit2.Response
+import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
+import kotlinx.coroutines.flow.Flow
 
 interface SpotifyRepo {
 
-    suspend fun getCurrentUserDetails(accessToken: String): Response<SpotifyMeModel>
+    suspend fun getCurrentUserDetails(accessToken: String): Flow<SpotifyNetworkCall<SpotifyMeModel>>
 
-    suspend fun getCurrentUserFollowedArtists(accessToken: String): Response<SpotifyUserFollowingArtist>
+    suspend fun getCurrentUserFollowedArtists(accessToken: String): Flow<SpotifyNetworkCall<SpotifyUserFollowingArtist>>
 
-    suspend fun getCurrentUserTopTracks(accessToken: String): Response<TrackList>
+    suspend fun getCurrentUserTopTracks(accessToken: String): Flow<SpotifyNetworkCall<TrackList>>
 
-    suspend fun getCurrentUserTopArtists(accessToken: String): Response<ArtistList>
+    suspend fun getCurrentUserTopArtists(accessToken: String): Flow<SpotifyNetworkCall<ArtistList>>
 
-    suspend fun getCurrentUserAlbums(accessToken: String): Response<SpotifyLibraryAlbumModel>
+    suspend fun getCurrentUserAlbums(accessToken: String): Flow<SpotifyNetworkCall<SpotifyLibraryAlbumModel>>
 
-    suspend fun getCurrentUserShows(accessToken: String): Response<SpotifyLibraryShowsModel>
+    suspend fun getCurrentUserShows(accessToken: String): Flow<SpotifyNetworkCall<SpotifyLibraryShowsModel>>
 
-    suspend fun getCurrentUserEpisodes(accessToken: String): Response<SpotifyLibraryEpisodesModel>
+    suspend fun getCurrentUserEpisodes(accessToken: String): Flow<SpotifyNetworkCall<SpotifyLibraryEpisodesModel>>
 
-    suspend fun getCurrentUserTracks(accessToken: String): Response<SpotifyLibraryTracksModel>
+    suspend fun getCurrentUserTracks(accessToken: String): Flow<SpotifyNetworkCall<SpotifyLibraryTracksModel>>
 
-    suspend fun getCurrentUserPlaylists(accessToken: String): Response<SpotifyUserPlaylistsModel>
+    suspend fun getCurrentUserPlaylists(accessToken: String): Flow<SpotifyNetworkCall<SpotifyUserPlaylistsModel>>
 
-    suspend fun getCurrentUserRecentlyPlayedTracks(accessToken: String): Response<SpotifyUserRecentlyPlayedModel>
+    suspend fun getCurrentUserRecentlyPlayedTracks(accessToken: String): Flow<SpotifyNetworkCall<SpotifyUserRecentlyPlayedModel>>
 
     suspend fun getUserPlaylists(
         accessToken: String,
         userID: String
-    ): Response<SpotifyUserPlaylistsModel>
+    ): Flow<SpotifyNetworkCall<SpotifyUserPlaylistsModel>>
 
     suspend fun getTrackDetails(
         accessToken: String,
         trackID: String
-    ): Response<Track>
+    ): Flow<SpotifyNetworkCall<Track>>
 
     suspend fun getAlbumDetails(
         accessToken: String,
         albumID: String
-    ): Response<Album>
+    ): Flow<SpotifyNetworkCall<Album>>
 
     suspend fun searchQuery(
         accessToken: String,
@@ -59,7 +60,7 @@ interface SpotifyRepo {
         type: String,
         includeExternal: String,
         market: String
-    ): Response<SpotifySearchModel>
+    ): Flow<SpotifyNetworkCall<SpotifySearchModel>>
 
     suspend fun getRecommendations(
         accessToken: String,
@@ -67,5 +68,5 @@ interface SpotifyRepo {
         seedGenres: String,
         seedTracks: String,
         limit: String
-    ): Response<SpotifyRecommendationModel>
+    ): Flow<SpotifyNetworkCall<SpotifyRecommendationModel>>
 }

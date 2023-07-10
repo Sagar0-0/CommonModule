@@ -1,8 +1,5 @@
 package fit.asta.health.thirdparty.spotify.view.screens
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -19,6 +16,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,7 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import fit.asta.health.thirdparty.spotify.SpotifyNavRoutes
+import fit.asta.health.thirdparty.spotify.view.navigation.SpotifyNavRoutes
 import fit.asta.health.thirdparty.spotify.view.components.MusicArtistsUI
 import fit.asta.health.thirdparty.spotify.view.components.MusicSmallImageRow
 import fit.asta.health.thirdparty.spotify.view.components.MusicLargeImageColumn
@@ -55,7 +53,6 @@ fun SearchScreen(
 
     // Context and Activity of the Function
     val context = LocalContext.current
-    val activity = context as Activity
 
     // This is the Input of the User
     val userSearchInput = remember { mutableStateOf("") }
@@ -143,7 +140,7 @@ fun SearchScreen(
         MusicStateControl(
             modifier = Modifier
                 .fillMaxSize(),
-            networkState = spotifyViewModelX.spotifySearch,
+            networkState = spotifyViewModelX.spotifySearch.collectAsState().value,
             onCurrentStateInitialized = {
                 spotifyViewModelX.getSpotifySearchResult()
             }
@@ -185,7 +182,6 @@ fun SearchScreen(
 
                                 // Navigating to the Track Details Screen
                                 spotifyViewModelX.setTrackId(currentItem.id)
-                                spotifyViewModelX.getTrackDetails()
                                 navController.navigate(SpotifyNavRoutes.TrackDetailScreen.routes)
                             }
                         }
@@ -225,12 +221,10 @@ fun SearchScreen(
                             // Shows the Artists UI
                             MusicArtistsUI(
                                 imageUri = currentItem.images.firstOrNull()?.url,
-                                artistName = currentItem.name,
-                                artistsUri = currentItem.uri
-                            ) { uri ->
+                                artistName = currentItem.name
+                            ) {
 
-                                val spotifyIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-                                activity.startActivity(spotifyIntent)
+                                spotifyViewModelX.playSpotifySong(currentItem.uri)
                             }
                         }
                     }
@@ -271,8 +265,7 @@ fun SearchScreen(
                             ) {
 
                                 // Navigating the Album Details Screen to get the Album Details
-                                spotifyViewModelX.setAlbumId(albumList[it].id)
-                                spotifyViewModelX.getAlbumDetails()
+                                spotifyViewModelX.setAlbumId(currentItem.id)
                                 navController.navigate(SpotifyNavRoutes.AlbumDetailScreen.routes)
                             }
                         }
@@ -315,9 +308,10 @@ fun SearchScreen(
                             MusicSmallImageRow(
                                 imageUri = currentItem.images.firstOrNull()?.url,
                                 name = currentItem.name,
-                                itemUri = currentItem.uri,
                                 secondaryText = textToShow
-                            )
+                            ) {
+                                spotifyViewModelX.playSpotifySong(currentItem.uri)
+                            }
                         }
                     }
                 }

@@ -15,6 +15,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -98,10 +100,15 @@ fun ProfileScreen(
 
 @Composable
 fun TracksUI(spotifyViewModelX: SpotifyViewModelX) {
+
+    LaunchedEffect(Unit) {
+        spotifyViewModelX.getCurrentUserTracks()
+    }
+
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
-        networkState = spotifyViewModelX.currentUserTracks,
+        networkState = spotifyViewModelX.currentUserTracks.collectAsState().value,
         onCurrentStateInitialized = {
             spotifyViewModelX.getCurrentUserTracks()
         }
@@ -131,9 +138,10 @@ fun TracksUI(spotifyViewModelX: SpotifyViewModelX) {
                         MusicSmallImageRow(
                             imageUri = currentItem.track.album.images.firstOrNull()?.url,
                             name = currentItem.track.name,
-                            itemUri = currentItem.track.uri,
                             secondaryText = textToShow
-                        )
+                        ) {
+                            spotifyViewModelX.playSpotifySong(currentItem.track.uri)
+                        }
                     }
                 }
             }
@@ -144,10 +152,14 @@ fun TracksUI(spotifyViewModelX: SpotifyViewModelX) {
 @Composable
 fun PlaylistUI(spotifyViewModelX: SpotifyViewModelX) {
 
+    LaunchedEffect(Unit) {
+        spotifyViewModelX.getCurrentUserPlaylist()
+    }
+
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
-        networkState = spotifyViewModelX.currentUserPlaylist,
+        networkState = spotifyViewModelX.currentUserPlaylist.collectAsState().value,
         onCurrentStateInitialized = {
             spotifyViewModelX.getCurrentUserPlaylist()
         }
@@ -171,9 +183,10 @@ fun PlaylistUI(spotifyViewModelX: SpotifyViewModelX) {
                         MusicSmallImageRow(
                             imageUri = currentItem.images.firstOrNull()?.url,
                             name = currentItem.name,
-                            itemUri = currentItem.uri,
                             secondaryText = textToShow
-                        )
+                        ) {
+                            spotifyViewModelX.playSpotifySong(currentItem.uri)
+                        }
                     }
                 }
             }
@@ -184,10 +197,13 @@ fun PlaylistUI(spotifyViewModelX: SpotifyViewModelX) {
 @Composable
 fun ArtistsUI(spotifyViewModelX: SpotifyViewModelX) {
 
+    LaunchedEffect(Unit) {
+        spotifyViewModelX.getCurrentUserFollowingArtists()
+    }
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
-        networkState = spotifyViewModelX.currentUserFollowingArtist,
+        networkState = spotifyViewModelX.currentUserFollowingArtist.collectAsState().value,
         onCurrentStateInitialized = {
             spotifyViewModelX.getCurrentUserFollowingArtists()
         }
@@ -210,9 +226,10 @@ fun ArtistsUI(spotifyViewModelX: SpotifyViewModelX) {
                         MusicSmallImageRow(
                             imageUri = currentItem.images.firstOrNull()?.url,
                             name = currentItem.name,
-                            itemUri = currentItem.uri,
                             secondaryText = ""
-                        )
+                        ) {
+                            spotifyViewModelX.playSpotifySong(currentItem.uri)
+                        }
                     }
                 }
             }
@@ -222,10 +239,15 @@ fun ArtistsUI(spotifyViewModelX: SpotifyViewModelX) {
 
 @Composable
 fun AlbumsUI(spotifyViewModelX: SpotifyViewModelX) {
+
+    LaunchedEffect(Unit) {
+        spotifyViewModelX.getCurrentUserAlbum()
+    }
+
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
-        networkState = spotifyViewModelX.currentUserAlbum,
+        networkState = spotifyViewModelX.currentUserAlbum.collectAsState().value,
         onCurrentStateInitialized = {
             spotifyViewModelX.getCurrentUserAlbum()
         }
@@ -248,9 +270,10 @@ fun AlbumsUI(spotifyViewModelX: SpotifyViewModelX) {
                         MusicSmallImageRow(
                             imageUri = currentItem.album.images.firstOrNull()?.url,
                             name = currentItem.album.name,
-                            itemUri = currentItem.album.uri,
                             secondaryText = currentItem.album.type
-                        )
+                        ) {
+                            spotifyViewModelX.playSpotifySong(currentItem.album.uri)
+                        }
                     }
                 }
             }
@@ -260,10 +283,15 @@ fun AlbumsUI(spotifyViewModelX: SpotifyViewModelX) {
 
 @Composable
 fun ShowUI(spotifyViewModelX: SpotifyViewModelX) {
+
+    LaunchedEffect(Unit) {
+        spotifyViewModelX.getCurrentUserShows()
+    }
+
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
-        networkState = spotifyViewModelX.currentUserShow,
+        networkState = spotifyViewModelX.currentUserShow.collectAsState().value,
         onCurrentStateInitialized = {
             spotifyViewModelX.getCurrentUserShows()
         }
@@ -287,9 +315,10 @@ fun ShowUI(spotifyViewModelX: SpotifyViewModelX) {
                         MusicSmallImageRow(
                             imageUri = currentItem.show.images.firstOrNull()?.url,
                             name = currentItem.show.name,
-                            itemUri = currentItem.show.uri,
                             secondaryText = textToShow
-                        )
+                        ) {
+                            spotifyViewModelX.playSpotifySong(currentItem.show.uri)
+                        }
                     }
                 }
             }
@@ -299,10 +328,15 @@ fun ShowUI(spotifyViewModelX: SpotifyViewModelX) {
 
 @Composable
 fun EpisodeUI(spotifyViewModelX: SpotifyViewModelX) {
+
+    LaunchedEffect(Unit) {
+        spotifyViewModelX.getCurrentUserEpisode()
+    }
+
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
-        networkState = spotifyViewModelX.currentUserEpisode,
+        networkState = spotifyViewModelX.currentUserEpisode.collectAsState().value,
         onCurrentStateInitialized = {
             spotifyViewModelX.getCurrentUserEpisode()
         }
@@ -325,9 +359,10 @@ fun EpisodeUI(spotifyViewModelX: SpotifyViewModelX) {
                         MusicSmallImageRow(
                             imageUri = currentItem.episode.images.firstOrNull()?.url,
                             name = currentItem.episode.name,
-                            itemUri = currentItem.episode.uri,
                             secondaryText = currentItem.episode.type
-                        )
+                        ) {
+                            spotifyViewModelX.playSpotifySong(currentItem.episode.uri)
+                        }
                     }
                 }
             }

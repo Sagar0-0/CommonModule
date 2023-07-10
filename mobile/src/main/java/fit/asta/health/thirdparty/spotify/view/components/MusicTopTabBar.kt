@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
  * @param selectedColor This is the color of the text and the underline when Selected
  * @param unselectedColor This is the color of the text and the underline when Unselected
  * @param onNewTabClicked This changes the Tab
+ * @param body This is the UI which will be shown on the Rest of the Screen
  */
 @Composable
 fun MusicTopTabBar(
@@ -35,66 +36,76 @@ fun MusicTopTabBar(
     strokeWidth: Float = 10f,
     selectedColor: Color,
     unselectedColor: Color,
-    onNewTabClicked: (Int) -> Unit
+    onNewTabClicked: (Int) -> Unit,
+    body: @Composable () -> Unit
 ) {
 
     // Card Layout Which is elevated
-    ElevatedCard(
-        elevation = CardDefaults.elevatedCardElevation(
-            defaultElevation = 8.dp
-        ),
-        colors = CardDefaults.elevatedCardColors(
-            containerColor = Color.Transparent
-        ),
-        shape = RectangleShape
+    Column(
+        Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surface)
     ) {
 
-        // Contains all the Text Options
-        Row(
-            modifier = modifier
-                .background(MaterialTheme.colorScheme.surface)
-                .fillMaxWidth()
+        ElevatedCard(
+            elevation = CardDefaults.elevatedCardElevation(
+                defaultElevation = 8.dp
+            ),
+            colors = CardDefaults.elevatedCardColors(
+                containerColor = Color.Transparent
+            ),
+            shape = RectangleShape
         ) {
 
-            // Taking Each Item of the Tab List Items and making the Tab layout
-            tabList.forEachIndexed { index: Int, option: String ->
+            // Contains all the Text Options
+            Row(
+                modifier = modifier
+                    .background(MaterialTheme.colorScheme.surface)
+                    .fillMaxWidth()
+            ) {
 
-                // Is Clickable and contains the underline when selected
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .size(54.dp)
-                        .clickable {
+                // Taking Each Item of the Tab List Items and making the Tab layout
+                tabList.forEachIndexed { index: Int, option: String ->
 
-                            // Changing the selected Item to the Item Index Clicked to move the State
-                            onNewTabClicked(index)
-                        }
-                        .drawBehind {
+                    // Is Clickable and contains the underline when selected
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .size(54.dp)
+                            .clickable {
 
-                            // Checking if the Option is selected
-                            if (index == selectedItem)
-                                drawLine(
-                                    color = selectedColor,
-                                    start = Offset(0f, size.height),
-                                    end = Offset(size.width, size.height),
-                                    strokeWidth = strokeWidth
-                                )
-                        },
-                    contentAlignment = Alignment.Center
-                ) {
+                                // Changing the selected Item to the Item Index Clicked to move the State
+                                onNewTabClicked(index)
+                            }
+                            .drawBehind {
 
-                    // Text of the Option to be showed
-                    Text(
-                        text = option,
+                                // Checking if the Option is selected
+                                if (index == selectedItem)
+                                    drawLine(
+                                        color = selectedColor,
+                                        start = Offset(0f, size.height),
+                                        end = Offset(size.width, size.height),
+                                        strokeWidth = strokeWidth
+                                    )
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
 
-                        // Text and Font Properties
-                        color = if (selectedItem == index) selectedColor else unselectedColor,
-                        fontFamily = FontFamily.Monospace,
-                        fontWeight = FontWeight.W800,
-                        fontSize = 16.sp
-                    )
+                        // Text of the Option to be showed
+                        Text(
+                            text = option,
+
+                            // Text and Font Properties
+                            color = if (selectedItem == index) selectedColor else unselectedColor,
+                            fontFamily = FontFamily.Monospace,
+                            fontWeight = FontWeight.W800,
+                            fontSize = 16.sp
+                        )
+                    }
                 }
             }
         }
+
+        body()
     }
 }

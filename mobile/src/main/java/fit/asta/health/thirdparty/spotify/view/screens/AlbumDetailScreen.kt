@@ -1,8 +1,5 @@
 package fit.asta.health.thirdparty.spotify.view.screens
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,14 +11,14 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import fit.asta.health.thirdparty.spotify.model.net.common.Album
 import fit.asta.health.thirdparty.spotify.view.components.MusicLargeImageColumn
 import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
-import fit.asta.health.thirdparty.spotify.viewmodel.FavouriteViewModelX
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 
 /**
@@ -29,18 +26,15 @@ import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
  * add this to his favourites or open the Album in spotify
  *
  * @param spotifyViewModelX This is the spotify ViewModel which contacts with the spotify apis
- * @param favouriteViewModelX This is the favourites ViewModels which contacts with the local database
  */
 @Composable
 fun AlbumDetailScreen(
-    spotifyViewModelX: SpotifyViewModelX,
-    favouriteViewModelX: FavouriteViewModelX
+    spotifyViewModelX: SpotifyViewModelX
 ) {
-    // context is stored to Show the Toast
-    val context = LocalContext.current
 
-    // Current Activity of the function so that we can move to the spotify app
-    val activity = context as Activity
+    LaunchedEffect(Unit) {
+        spotifyViewModelX.getAlbumDetails()
+    }
 
     // Root Composable function
     Column(
@@ -51,77 +45,97 @@ fun AlbumDetailScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        // Checks If the Album Details is fetched or not
+        // This Function Draws the Album Details to the Screen according to the network and local responses
+        AlbumDetailHelper(
+            spotifyViewModelX = spotifyViewModelX
+        )
+
+    }
+}
+
+@Composable
+private fun AlbumDetailHelper(
+    spotifyViewModelX: SpotifyViewModelX
+) {
+
+    // context is stored to Show the Toast
+    val context = LocalContext.current
+
+    // This function checks for the Network Response from the API
+    MusicStateControl(
+        networkState = spotifyViewModelX.albumDetailsResponse.collectAsState().value,
+        onCurrentStateInitialized = {
+            spotifyViewModelX.getAlbumDetails()
+        }
+    ) { networkResponse ->
+
+        // This function checks for the Local Response from Local Database
         MusicStateControl(
-            modifier = Modifier
-                .fillMaxSize(),
-            networkState = spotifyViewModelX.albumDetailsResponse,
+            networkState = spotifyViewModelX.allAlbums.collectAsState().value,
             onCurrentStateInitialized = {
-                spotifyViewModelX.getTrackDetails()
+                spotifyViewModelX.getAllAlbums()
             }
-        ) { networkResponse ->
+        ) { localResponse ->
 
-            networkResponse.data.let { albumData ->
+            // Parsing the Network Album Data
+            networkResponse.data.let { networkAlbumData ->
 
-                if (albumData != null) {
+                // This variable stores if the Local Database contains this Album or not
+                val isPresent = localResponse.data.let { albumList ->
+                    if (networkAlbumData != null && albumList != null)
+                        albumList.contains(networkAlbumData)
+                    else
+                        false
+                }
+
+                // Showing the Album Data at the Screen
+                if (networkAlbumData != null) {
                     MusicLargeImageColumn(
-                        imageUri = albumData.images.firstOrNull()?.url,
-                        headerText = albumData.name,
-                        secondaryTexts = albumData.artists
+                        imageUri = networkAlbumData.images.firstOrNull()?.url,
+                        headerText = networkAlbumData.name,
+                        secondaryTexts = networkAlbumData.artists
                     ) {}
 
                     // Add to Favourites Button
                     Button(
                         onClick = {
 
-                            favouriteViewModelX.insertAlbum(
-                                Album(
-                                    albumType = albumData.albumType,
-                                    artists = albumData.artists,
-                                    availableMarkets = albumData.availableMarkets,
-                                    externalUrls = albumData.externalUrls,
-                                    href = albumData.href,
-                                    id = albumData.id,
-                                    images = albumData.images,
-                                    name = albumData.name,
-                                    releaseDate = albumData.releaseDate,
-                                    releaseDatePrecision = albumData.releaseDatePrecision,
-                                    totalTracks = albumData.totalTracks,
-                                    type = albumData.type,
-                                    uri = albumData.uri
-                                )
-                            )
-
-                            Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show()
+                            // Checking if the Album is already present or not
+                            if (!isPresent) {
+                                spotifyViewModelX.insertAlbum(networkAlbumData)
+                                Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show()
+                            } else {
+                                spotifyViewModelX.deleteAlbum(networkAlbumData)
+                                Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show()
+                            }
                         },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 32.dp, bottom = 12.dp, start = 12.dp, end = 12.dp)
                     ) {
                         Text(
-                            text = "Add To Favourites",
+                            text = if (!isPresent)
+                                "Add To Favourites" else "Delete From Favourites",
                             modifier = Modifier
                                 .padding(4.dp)
                         )
                     }
-                }
 
-                // Play on Spotify Button
-                Button(
-                    onClick = {
-                        val spotifyIntent =
-                            Intent(Intent.ACTION_VIEW, Uri.parse(albumData!!.uri))
-                        activity.startActivity(spotifyIntent)
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 12.dp, start = 12.dp, end = 12.dp)
-                ) {
-                    Text(
-                        text = "Open at Spotify",
+                    // Play on Spotify Button
+                    Button(
+                        onClick = {
+                            spotifyViewModelX.playSpotifySong(networkAlbumData.uri)
+                        },
                         modifier = Modifier
-                            .padding(4.dp)
-                    )
+                            .fillMaxWidth()
+                            .padding(bottom = 12.dp, start = 12.dp, end = 12.dp)
+                    ) {
+                        Text(
+                            text = "Play using Spotify",
+                            modifier = Modifier
+                                .padding(4.dp)
+                        )
+                    }
                 }
             }
         }

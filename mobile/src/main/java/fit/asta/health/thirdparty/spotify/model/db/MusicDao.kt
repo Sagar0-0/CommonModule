@@ -1,30 +1,29 @@
 package fit.asta.health.thirdparty.spotify.model.db
 
 import androidx.room.*
-import fit.asta.health.thirdparty.spotify.model.db.entity.TrackEntity
+import fit.asta.health.thirdparty.spotify.model.net.common.Track
 import fit.asta.health.thirdparty.spotify.model.net.common.Album
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MusicDao {
 
     @Query("SELECT * FROM fav_tracks_table")
-    fun getAll(): Flow<List<TrackEntity>>
+    fun getAll(): List<Track>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTrack(trackEntity: TrackEntity)
+    suspend fun insertTrack(track: Track)
 
     @Update
-    suspend fun updateTrack(trackEntity: TrackEntity)
+    suspend fun updateTrack(track: Track)
 
     @Delete
-    suspend fun deleteTrack(trackEntity: TrackEntity)
+    suspend fun deleteTrack(track: Track)
 
     @Query("DELETE FROM fav_tracks_table")
     suspend fun deleteAllTracks()
 
     @Query("SELECT * FROM fav_albums_table")
-    fun getAllAlbums(): Flow<List<Album>>
+    fun getAllAlbums(): List<Album>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAlbum(album: Album)

@@ -9,25 +9,23 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.spotify.android.appremote.api.ConnectionParams
+import com.spotify.android.appremote.api.Connector
+import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.spotify.sdk.android.auth.AuthorizationClient
 import com.spotify.sdk.android.auth.AuthorizationRequest
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
-import fit.asta.health.thirdparty.spotify.view.components.MusicTopTabBar
 import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
-import fit.asta.health.thirdparty.spotify.viewmodel.FavouriteViewModelX
+import fit.asta.health.thirdparty.spotify.view.navigation.TopTabNavigation
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 
 @AndroidEntryPoint
@@ -45,12 +43,6 @@ class SpotifyLoginActivity : ComponentActivity() {
      */
     private val spotifyViewModelX: SpotifyViewModelX by viewModels()
 
-    /**
-     * This is the [FavouriteViewModelX] viewModel which contains all the business logic with the
-     * local storage and favourite screen
-     */
-    private val favouriteViewModelX: FavouriteViewModelX by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -65,7 +57,7 @@ class SpotifyLoginActivity : ComponentActivity() {
                     MusicStateControl(
                         modifier = Modifier
                             .fillMaxSize(),
-                        networkState = spotifyViewModelX.currentUserData,
+                        networkState = spotifyViewModelX.currentUserData.collectAsState().value,
                         onCurrentStateInitialized = {
 
                             // checking if spotify is installed or not
@@ -82,69 +74,46 @@ class SpotifyLoginActivity : ComponentActivity() {
                             }
                         }
                     ) {
-                        val navController = rememberNavController()
-                        DisplaySuccessUI(navController = navController)
+
+                        // Getting the Spotify App Remote
+                        getSpotifyRemote()
+
+                        val musicNavController = rememberNavController()
+                        TopTabNavigation(
+                            spotifyViewModelX = spotifyViewModelX,
+                            navController = musicNavController
+                        )
                     }
                 }
             }
         }
     }
 
-
     /**
-     * This function shows UI when we get an authorization request auth token from the spotify api
+     * This function is getting the spotify App remote and Sharing it to the ViewModel so that it can
+     * be used everywhere
      */
-    @Composable
-    private fun DisplaySuccessUI(
-        navController: NavHostController
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surface)
-        ) {
+    private fun getSpotifyRemote() {
 
-            // This is the Item which is selected in the Top Tab Bar Layout
-            val selectedItem = rememberSaveable { mutableIntStateOf(0) }
+        // Setting a Connection Params which can be used to connect to the spotify and get the Remote
+        val connectionParams = ConnectionParams.Builder(SpotifyConstants.SPOTIFY_CLIENT_ID)
+            .setRedirectUri(SpotifyConstants.SPOTIFY_REDIRECT_URI)
+            .showAuthView(true)
+            .build()
 
-            // This Function makes the Tab Layout UI
-            MusicTopTabBar(
-                tabList = listOf(
-                    "Asta Music",
-                    "Favourite",
-                    "Third Party"
-                ),
-                selectedItem = selectedItem.intValue,
-                selectedColor = MaterialTheme.colorScheme.primary,
-                unselectedColor = MaterialTheme.colorScheme.secondary
-            ) {
+        // Connecting to Spotify
+        SpotifyAppRemote.connect(this, connectionParams, object : Connector.ConnectionListener {
 
-                // Changing the Current Selected Item according to the User Interactions
-                selectedItem.intValue = it
+            // When Connection is established and we get the remote
+            override fun onConnected(appRemote: SpotifyAppRemote) {
+                spotifyViewModelX.setSpotifyAppRemote(appRemote)
             }
 
-            // Initializing the NavGraph
-            SpotifyNavGraph(
-                navController = navController,
-                spotifyViewModelX = spotifyViewModelX,
-                favouriteViewModelX = favouriteViewModelX
-            )
-
-            // Checking which UI to show according to the user Selection
-            when (selectedItem.intValue) {
-                0 -> {
-                    navController.navigate(SpotifyNavRoutes.AstaMusicScreen.routes)
-                }
-
-                1 -> {
-                    navController.navigate(SpotifyNavRoutes.FavouriteScreen.routes)
-                }
-
-                2 -> {
-                    navController.navigate(SpotifyNavRoutes.ThirdPartyScreen.routes)
-                }
+            // when connection is not established and we don't get the remote
+            override fun onFailure(throwable: Throwable) {
+                spotifyViewModelX.unableToGetSpotifyRemote(throwable)
             }
-        }
+        })
     }
 
 
@@ -239,5 +208,13 @@ class SpotifyLoginActivity : ComponentActivity() {
             val response = AuthorizationResponse.fromUri(uri)
             spotifyViewModelX.handleSpotifyAuthResponse(response)
         }
+    }
+
+    /**
+     * This function removes the Spotify Remote and frees the Space and all
+     */
+    override fun onStop() {
+        super.onStop()
+        spotifyViewModelX.disconnectSpotifyRemote()
     }
 }

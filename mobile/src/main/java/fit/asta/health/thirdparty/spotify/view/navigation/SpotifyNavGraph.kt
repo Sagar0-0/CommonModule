@@ -1,4 +1,4 @@
-package fit.asta.health.thirdparty.spotify
+package fit.asta.health.thirdparty.spotify.view.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -11,7 +11,6 @@ import fit.asta.health.thirdparty.spotify.view.screens.ProfileScreen
 import fit.asta.health.thirdparty.spotify.view.screens.SearchScreen
 import fit.asta.health.thirdparty.spotify.view.screens.ThirdPartyScreen
 import fit.asta.health.thirdparty.spotify.view.screens.TrackDetailsScreen
-import fit.asta.health.thirdparty.spotify.viewmodel.FavouriteViewModelX
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 
 /**
@@ -19,13 +18,11 @@ import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
  *
  * @param navController This is the navController for the Tracking Screens
  * @param spotifyViewModelX This is the View Model for all the Spotify Screen
- * @param favouriteViewModelX This is the viewModel containing the local repo functions
  */
 @Composable
 fun SpotifyNavGraph(
     navController: NavHostController,
-    spotifyViewModelX: SpotifyViewModelX,
-    favouriteViewModelX: FavouriteViewModelX
+    spotifyViewModelX: SpotifyViewModelX
 ) {
 
     NavHost(
@@ -42,7 +39,12 @@ fun SpotifyNavGraph(
             // Favourite Screen
             composable(
                 SpotifyNavRoutes.FavouriteScreen.routes,
-                content = { FavouriteScreen(favouriteViewModelX = favouriteViewModelX) }
+                content = {
+                    FavouriteScreen(
+                        spotifyViewModelX = spotifyViewModelX,
+                        navController = navController
+                    )
+                }
             )
 
             // Third Party Screen
@@ -61,8 +63,7 @@ fun SpotifyNavGraph(
                 SpotifyNavRoutes.TrackDetailScreen.routes,
                 content = {
                     TrackDetailsScreen(
-                        spotifyViewModelX = spotifyViewModelX,
-                        favouriteViewModelX = favouriteViewModelX
+                        spotifyViewModelX = spotifyViewModelX
                     )
                 }
             )
@@ -89,8 +90,7 @@ fun SpotifyNavGraph(
                 SpotifyNavRoutes.AlbumDetailScreen.routes,
                 content = {
                     AlbumDetailScreen(
-                        spotifyViewModelX = spotifyViewModelX,
-                        favouriteViewModelX = favouriteViewModelX
+                        spotifyViewModelX = spotifyViewModelX
                     )
                 }
             )
