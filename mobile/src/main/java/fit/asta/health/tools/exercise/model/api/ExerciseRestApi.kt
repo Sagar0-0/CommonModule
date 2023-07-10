@@ -17,8 +17,8 @@ class ExerciseRestApi(baseUrl: String, client: OkHttpClient) :ExerciseApi{
         return apiService.getExerciseTool(userId = uid,date, name)
     }
 
-    override suspend fun getStart(uid: String): NetGetStart {
-        return apiService.getStart(userId = uid)
+    override suspend fun getStart(uid: String,name: String): NetGetStart {
+        return apiService.getStart(userId = uid, name = name)
     }
 
     override suspend fun putExerciseData(netPutRes: NetPutRes, name: String): ServerRes {

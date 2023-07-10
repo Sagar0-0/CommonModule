@@ -28,10 +28,10 @@ class ExerciseRepoImp(val api:ExerciseApi):ExerciseRepo {
         }
     }
 
-    override suspend fun getStart(uid: String): Flow<NetworkResult<NetGetStart>> {
+    override suspend fun getStart(uid: String,name: String): Flow<NetworkResult<NetGetStart>> {
         return flow {
             emit(NetworkResult.Loading())
-            val result = api.getStart(uid)
+            val result = api.getStart(uid,name)
             if (result.status.msg == "Successful") emit(NetworkResult.Success(result))
             else emit(NetworkResult.Error(message = result.status.msg))
         }.catch {
@@ -46,7 +46,7 @@ class ExerciseRepoImp(val api:ExerciseApi):ExerciseRepo {
         return try {
             NetworkResult.Loading<ServerRes>()
             val result = api.putExerciseData(netPutRes, name)
-            Log.d("subhash", "putMeditationData: result${result}")
+            Log.d("subhash", "putExeData: result${result.status}")
             if (result.status.msg == "Successful") NetworkResult.Success(result)
             else NetworkResult.Error(message = result.status.msg)
         } catch (e: Exception) {

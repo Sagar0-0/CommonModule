@@ -18,10 +18,16 @@ import fit.asta.health.tools.exercise.view.home.HomeEvent
 import fit.asta.health.tools.exercise.view.level.ExerciseLevelScreen
 import fit.asta.health.tools.exercise.view.music.ExerciseMusic
 import fit.asta.health.tools.exercise.view.style.ExerciseStyleScreen
+import fit.asta.health.tools.exercise.view.video.VideoScreen
+import fit.asta.health.tools.exercise.view.video_player.VideoPlayerScreen
 import fit.asta.health.tools.exercise.viewmodel.ExerciseViewModel
 
 @Composable
-fun DanceNavigation(navController: NavHostController, activity: String, viewModel: ExerciseViewModel) {
+fun DanceNavigation(
+    navController: NavHostController,
+    activity: String,
+    viewModel: ExerciseViewModel
+) {
     NavHost(
         navController = navController,
         startDestination = ExerciseScreen.HomeScreen.route
@@ -60,21 +66,23 @@ fun DanceNavigation(navController: NavHostController, activity: String, viewMode
                 onQuickDance = { navController.navigate(route = ExerciseScreen.Goals.route) },
                 onDuration = { navController.navigate(route = ExerciseScreen.Duration.route) },
                 onEquipment = { navController.navigate(route = ExerciseScreen.Equipment.route) },
-                onMusic = {navController.navigate(route = ExerciseScreen.Music.route) },
+                onMusic = { navController.navigate(route = ExerciseScreen.Music.route) },
+                onSchedule = {},
+                onPlayer={navController.navigate(route = ExerciseScreen.VideoPlayer.route)},
                 event = viewModel::event
             )
         }
         composable(ExerciseScreen.BodyParts.route) {
             ExerciseBodyParts(
                 onClick = { viewModel.event(HomeEvent.SetBodyParts(it)) },
-                onBack = { navController.popBackStack()  },
+                onBack = { navController.popBackStack() },
                 itemList = viewModel.bodyParts
             )
         }
         composable(ExerciseScreen.BodyStretch.route) {
             ExerciseBodyStretch(
                 onClick = { viewModel.event(HomeEvent.SetBodyStretch(it)) },
-                onBack = { navController.popBackStack()  },
+                onBack = { navController.popBackStack() },
                 itemList = viewModel.bodyStretch
             )
         }
@@ -95,14 +103,15 @@ fun DanceNavigation(navController: NavHostController, activity: String, viewMode
         composable(ExerciseScreen.Goals.route) {
             ExerciseGoalsScreen(
                 onClick = { viewModel.event(HomeEvent.SetQuick(it)) },
-                onBack = { navController.popBackStack()  },
-                itemList = viewModel.getGoalsList(code=activity)
+                onBack = { navController.popBackStack() },
+                itemList = viewModel.getGoalsList(code = activity)
             )
         }
         composable(ExerciseScreen.Style.route) {
-            ExerciseStyleScreen(onClick = { viewModel.event(HomeEvent.SetStyle(it)) },
+            ExerciseStyleScreen(
+                onClick = { viewModel.event(HomeEvent.SetStyle(it)) },
                 onBack = { navController.popBackStack() },
-                itemList = viewModel.getStyleList(code=activity)
+                itemList = viewModel.getStyleList(code = activity)
             )
         }
         composable(ExerciseScreen.Duration.route) {
@@ -112,19 +121,33 @@ fun DanceNavigation(navController: NavHostController, activity: String, viewMode
                 itemList = viewModel.durationList
             )
         }
-        composable(ExerciseScreen.Music.route){
+        composable(ExerciseScreen.Music.route) {
             ExerciseMusic(
-                onClick = {  },
-                onBack = {navController.popBackStack()},
+                onClick = { },
+                onBack = { navController.popBackStack() },
                 itemList = viewModel.challengeList
             )
         }
-        composable(ExerciseScreen.Equipment.route){
+        composable(ExerciseScreen.Equipment.route) {
             ExerciseEquipment(
                 onClick = { viewModel.event(HomeEvent.SetEquipment(it)) },
                 onBack = { navController.popBackStack() },
                 itemList = viewModel.equipmentList
             )
+        }
+        composable(ExerciseScreen.VideoPlayer.route) {
+            val state by viewModel.videoList.collectAsStateWithLifecycle()
+            VideoPlayerScreen(state = state, onMusicEvents = viewModel::eventVideoPlayer,
+                navigateToPlayer = { navController.navigate(route = ExerciseScreen.Video.route) },
+                onBack = { navController.popBackStack() }
+            )
+        }
+        composable(ExerciseScreen.Video.route) {
+            val uiState by viewModel.uiState
+            VideoScreen(player = viewModel.player(), uiState = uiState,
+                progress = viewModel.exerciseUiState.value.consume,
+                event = viewModel::eventVideo,
+                onBack = { navController.popBackStack() })
         }
     }
 }
