@@ -1,9 +1,10 @@
 package fit.asta.health.feedback.model.api
 
+import fit.asta.health.common.utils.NetworkUtil
 import fit.asta.health.feedback.model.network.NetFeedbackRes
 import fit.asta.health.feedback.model.network.NetUserFeedback
-import fit.asta.health.network.data.Status
-import fit.asta.health.common.utils.NetworkUtil
+import fit.asta.health.feedback.model.network.PostFeedbackRes
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 
 
@@ -18,7 +19,10 @@ class FeedbackRestApi(baseUrl: String, client: OkHttpClient) : FeedbackApi {
         return apiService.getFeedbackQuestions(userId, featureId)
     }
 
-    override suspend fun postUserFeedback(feedback: NetUserFeedback): Status {
-        return apiService.postUserFeedback(feedback)
+    override suspend fun postUserFeedback(
+        feedback: NetUserFeedback,
+        files: List<MultipartBody.Part>
+    ): PostFeedbackRes {
+        return apiService.postUserFeedback(feedback, files)
     }
 }

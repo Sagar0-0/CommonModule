@@ -1,11 +1,9 @@
 package fit.asta.health
 
-//import fit.asta.health.profile.UserProfileActivity
-//import fit.asta.health.profile.viewmodel.ProfileAvailViewModel
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.content.IntentSender
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -15,23 +13,14 @@ import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.Lifecycle
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.compose.rememberNavController
-import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.LocationSettingsRequest
-import com.google.android.gms.location.LocationSettingsResponse
-import com.google.android.gms.location.SettingsClient
-import com.google.android.gms.tasks.Task
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
@@ -71,7 +60,6 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
     private val authViewModel: AuthViewModel by viewModels()
     private val mapsViewModel: MapsViewModel by viewModels()
     private var settingsLauncher: ActivityResultLauncher<Intent>? = null
-    private var locationRequestLauncher: ActivityResultLauncher<IntentSenderRequest>? = null
     private lateinit var networkConnectivity: NetworkConnectivity
     private var profileImgView: ImageView? = null
     private val profileImgUri = mutableStateOf<Uri?>(null)
@@ -81,54 +69,16 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
     @Inject
     lateinit var tokenProvider: TokenProvider
-    private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
+    lateinit var permissionResultLauncher: ActivityResultLauncher<Array<String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        permissionLauncher = registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) {
-            //viewModel.loadHomeData()
-        }
-
-        permissionLauncher.launch(
-            arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-            )
-        )
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mapsViewModel.getCurrentLatLng(this@MainActivity)
-            }
-        }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
-                mapsViewModel.currentLatLng.collect {
-                    mapsViewModel.getCurrentAddress(this@MainActivity)
-                }
-            }
-        }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
-                mapsViewModel.currentAddress.collect {
-                    if (it != null) {
-                        addressText.value = it.sub
-                    }
-                }
-            }
-        }
+        registerLocationPermissionLauncher()
 
         if (!authViewModel.isAuthenticated()) {
             loadAuthScreen()
-        } else {/*authViewModel.getUserId()?.let {
-                createProfile()
-                profileViewModel.isUserProfileAvailable(it)
-            }*/
+        } else {
             loadAppScreen()
         }
 
@@ -147,18 +97,49 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
                 }
             }
 
-        locationRequestLauncher =
-            registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { activityResult ->
-                if (activityResult.resultCode == RESULT_OK) mapsViewModel.getCurrentLatLng(this)
-                else {
-                    Toast.makeText(this, "User location access required!!", Toast.LENGTH_SHORT)
-                        .show()
-                    finish()
-                }
-            }
-
         FirebaseAuth.getInstance().addAuthStateListener(this)
         FirebaseAuth.getInstance().addIdTokenListener(this)
+    }
+
+    private fun observeCurrentLocation() {
+        mapsViewModel.updateCurrentLocationData(this@MainActivity)
+        lifecycleScope.launch {
+            mapsViewModel.currentAddress.collect {
+                if (it != null) {
+                    addressText.value = it.sub
+                }
+            }
+        }
+    }
+
+    private fun registerLocationPermissionLauncher() {
+        val permissionResultListener = object : PermissionResultListener {
+            override fun onGranted() {
+                MapsActivity.launch(this@MainActivity)
+            }
+
+            override fun onDenied() {
+                Toast.makeText(
+                    this@MainActivity,
+                    "Need location permission to access this feature.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+        permissionResultLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { perms ->
+            perms.keys.forEach {
+                if (it == Manifest.permission.ACCESS_FINE_LOCATION) {
+                    if (perms[it] == true) {
+                        permissionResultListener.onGranted()
+                    } else {
+                        permissionResultListener.onDenied()
+                    }
+                }
+            }
+        }
     }
 
     private fun loadAuthScreen() {
@@ -188,47 +169,10 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         }
     }
 
-
-    private fun createLocationRequest() {
-
-        val locationRequest = LocationRequest.create().apply {
-            interval = 10000
-            fastestInterval = 5000
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        }
-        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
-
-        val client: SettingsClient = LocationServices.getSettingsClient(this)
-        val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
-        task.addOnSuccessListener { locationSettingsResponse ->
-            // All location settings are satisfied. The client can initialize
-            // location requests here.
-            // ...
-            Log.d("Location", "createLocationRequest: Success")
-            mapsViewModel.getCurrentLatLng(this)
-        }
-
-        task.addOnFailureListener { exception ->
-            if (exception is ResolvableApiException) {
-                // Location settings are not satisfied, but this can be fixed
-                // by showing the user a dialog.
-                try {
-                    // Show the dialog by calling startResolutionForResult(),
-                    // and check the result in onActivityResult().
-                    val intentSenderRequest =
-                        IntentSenderRequest.Builder(exception.resolution).build()
-                    locationRequestLauncher!!.launch(intentSenderRequest)
-                } catch (sendEx: IntentSender.SendIntentException) {
-                    // Ignore the error.
-                }
-            }
-        }
-    }
-
     private fun onOptionsItemClicked(key: MainTopBarActions) {
         when (key) {
             MainTopBarActions.LOCATION -> {
-                startActivity(Intent(this, MapsActivity::class.java))
+                checkPermissionAndLaunchMapsActivity()
             }
 
             MainTopBarActions.NOTIFICATION -> {
@@ -237,7 +181,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
             }
 
             MainTopBarActions.SETTINGS -> {
-                startUserSettingsActivity()
+                SettingsActivity.launch(this)
             }
 
             MainTopBarActions.PROFILE -> {
@@ -250,6 +194,25 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         }
     }
 
+    private fun checkPermissionAndLaunchMapsActivity() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_DENIED
+        ) {
+            permissionResultLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            )
+        } else {
+            MapsActivity.launch(this@MainActivity)
+        }
+    }
+
+    interface PermissionResultListener {
+        fun onGranted()
+        fun onDenied()
+    }
+
     fun loadAppScreen() {
         notificationEnabled.value = PrefUtils.getMasterNotification(applicationContext)
         networkConnectivity = NetworkConnectivity(this)
@@ -257,7 +220,6 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
             isConnected.value = status
         }
         setProfileImage()
-        createLocationRequest()
         setContent {
             Log.d("URI", "loadAppScreen: ${profileImgUri.value}")
             AppTheme {
@@ -278,6 +240,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
     override fun onStart() {
         super.onStart()
 
+        observeCurrentLocation()
         checkUpdate()
     }
 
@@ -286,12 +249,6 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
         FirebaseAuth.getInstance().removeAuthStateListener(this)
         FirebaseAuth.getInstance().removeIdTokenListener(this)
-    }
-
-    private fun startUserSettingsActivity() {
-
-        val intent = Intent(applicationContext, SettingsActivity::class.java)
-        settingsLauncher?.launch(intent)
     }
 
     private fun createProfile() {
@@ -412,5 +369,3 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
     }
 
 }
-
-

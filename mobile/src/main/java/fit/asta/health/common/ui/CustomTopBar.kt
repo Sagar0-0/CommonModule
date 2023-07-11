@@ -1,4 +1,4 @@
-package fit.asta.health.common.location.maps.ui
+package fit.asta.health.common.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -18,7 +18,11 @@ import fit.asta.health.common.ui.theme.cardElevation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MapTopBar(text: String, onBackPressed: () -> Unit) {
+fun CustomTopBar(
+    text: String = "",
+    actionItems: @Composable RowScope.() -> Unit = {},
+    onBackPressed: () -> Unit
+) {
     TopAppBar(
         title = {
             Text(
@@ -26,25 +30,29 @@ fun MapTopBar(text: String, onBackPressed: () -> Unit) {
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.titleMedium
             )
-        }, navigationIcon = {
+        },
+        navigationIcon = {
             IconButton(onClick = onBackPressed) {
                 Icon(
-                    Icons.Outlined.NavigateBefore,
-                    "back",
+                    imageVector = Icons.Outlined.NavigateBefore,
+                    contentDescription = "back",
                     tint = MaterialTheme.colorScheme.primary,
                 )
             }
-        }, colors = TopAppBarDefaults.topAppBarColors(
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.onPrimary,
             titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-        ), modifier = Modifier.shadow(elevation = cardElevation.medium)
+        ),
+        modifier = Modifier.shadow(elevation = cardElevation.medium),
+        actions = actionItems
     )
 }
 
 @Composable
 @Preview(showBackground = true)
-fun MapTopBarPreview() {
-    MapTopBar(text = "Preview") {
+fun CustomTopBarPreview() {
+    CustomTopBar(text = "Preview") {
 
     }
 }

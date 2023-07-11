@@ -176,6 +176,16 @@ fun SignInScreen(navHostController: NavHostController, onSuccess: () -> Unit) {
             append(str)
             addStyle(
                 style = SpanStyle(
+                    color = MaterialTheme.colorScheme.onBackground
+                ), start = 0, end = startTIndex - 1
+            )
+            addStyle(
+                style = SpanStyle(
+                    color = MaterialTheme.colorScheme.onBackground
+                ), start = endTIndex + 1, end = startPIndex - 1
+            )
+            addStyle(
+                style = SpanStyle(
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 16.sp,
                     textDecoration = TextDecoration.Underline

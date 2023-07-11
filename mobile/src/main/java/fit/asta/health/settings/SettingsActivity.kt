@@ -1,6 +1,8 @@
 package fit.asta.health.settings
 
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
@@ -25,10 +27,11 @@ import fit.asta.health.common.utils.getCurrentBuildVersion
 import fit.asta.health.common.utils.getPublicStorageUrl
 import fit.asta.health.common.utils.rateUs
 import fit.asta.health.common.utils.sendBugReportMessage
-import fit.asta.health.common.utils.sendFeedbackMessage
 import fit.asta.health.common.utils.shareApp
 import fit.asta.health.common.utils.showUrlInBrowser
 import fit.asta.health.common.utils.signOut
+import fit.asta.health.feedback.FeedbackActivity
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 private const val TITLE_TAG = "settingsActivityTitle"
@@ -41,11 +44,16 @@ class SettingsActivity : AppCompatActivity(),
     companion object {
 
         const val NOTIFY_CHANGE = 578
+        fun launch(context: Context) {
+            Intent(context, SettingsActivity::class.java)
+                .apply {
+                    context.startActivity(this)
+                }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.settings_activity)
 
         setContent {
             AppTheme {
@@ -109,23 +117,33 @@ class SettingsActivity : AppCompatActivity(),
     }
 
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun onUiClickEvent(key: SettingsUiEvent, navHostController: NavHostController) {
         when (key) {
             SettingsUiEvent.BACK -> {
                 finish()
             }
+
             SettingsUiEvent.NOTIFICATION -> {
                 navHostController.navigate("notif")
             }
+
             SettingsUiEvent.SHARE -> {
                 shareApp()
             }
+
             SettingsUiEvent.RATE -> {
                 rateUs()
             }
+
             SettingsUiEvent.FEEDBACK -> {
-                sendFeedbackMessage()
+//                sendFeedbackMessage()
+                FeedbackActivity.launch(
+                    this,
+                    "64a6984361741477ea134fcd"
+                )
             }
+
             SettingsUiEvent.SIGNOUT -> {
                 signOut(
                     showSnackBar = {
@@ -133,6 +151,7 @@ class SettingsActivity : AppCompatActivity(),
                     }
                 )
             }
+
             SettingsUiEvent.DELETE -> {
                 deleteAccount(
                     showSnackBar = {
@@ -140,9 +159,11 @@ class SettingsActivity : AppCompatActivity(),
                     }
                 )
             }
+
             SettingsUiEvent.BUG -> {
                 sendBugReportMessage()
             }
+
             SettingsUiEvent.TERMS -> {
                 showUrlInBrowser(
                     getPublicStorageUrl(
@@ -150,6 +171,7 @@ class SettingsActivity : AppCompatActivity(),
                     )
                 )
             }
+
             SettingsUiEvent.PRIVACY -> {
                 showUrlInBrowser(
                     getPublicStorageUrl(
@@ -158,6 +180,7 @@ class SettingsActivity : AppCompatActivity(),
                     )
                 )
             }
+
             SettingsUiEvent.VERSION -> {
                 //TODO: OnVersionClick
             }
@@ -191,7 +214,7 @@ class SettingsActivity : AppCompatActivity(),
         return true
     }
 
-    fun notifyChange() {
+    private fun notifyChange() {
         setResult(Activity.RESULT_OK, null)
     }
 

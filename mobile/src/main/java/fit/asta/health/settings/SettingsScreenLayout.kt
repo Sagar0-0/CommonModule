@@ -1,6 +1,5 @@
 package fit.asta.health.settings
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +18,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -207,40 +207,36 @@ fun ListPreference(
     val theme = PrefUtils.getTheme(context)
     val idx = values.indexOf(theme)
     var showDialog by remember { mutableStateOf(false) }
-    var selectedIndex by remember { mutableStateOf(idx) }
+    var selectedIndex by remember { mutableIntStateOf(idx) }
 
-    Column(
+    TextButton(
+        onClick = { showDialog = true },
         modifier = Modifier
-            .clickable(onClick = { showDialog = true })
+            .fillMaxWidth()
             .padding(spacing.extraSmall)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                painter = icon,
-                contentDescription = title,
-                modifier = Modifier.padding(end = spacing.medium)
-            )
+        Icon(
+            painter = icon,
+            contentDescription = title,
+            modifier = Modifier.padding(end = spacing.medium)
+        )
 
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleMedium
-            )
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleMedium
+        )
 
-            Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.weight(1f))
 
-            Text(
-                text = entries[selectedIndex],
-                style = MaterialTheme.typography.titleSmall
-            )
+        Text(
+            text = entries[selectedIndex],
+            style = MaterialTheme.typography.titleSmall
+        )
 
-            Icon(
-                imageVector = Icons.Filled.ArrowDropDown,
-                contentDescription = null
-            )
-        }
+        Icon(
+            imageVector = Icons.Filled.ArrowDropDown,
+            contentDescription = null
+        )
     }
 
     if (showDialog) {

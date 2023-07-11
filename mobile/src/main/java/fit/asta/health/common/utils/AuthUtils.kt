@@ -17,11 +17,21 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import fit.asta.health.MainActivity
 import fit.asta.health.firebase.view.AuthActivity
+import fit.asta.health.onboarding.OnBoardingScreenActivity
 
 
 const val RC_SIGN_IN: Int = 6789 // Any number you want
 const val APP_USER: String = "APP_USER"
 
+fun Context.startOnBoardingActivity() =
+    Intent(this, OnBoardingScreenActivity::class.java).also {
+
+        it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(it)
+
+        val activity = this as Activity
+        activity.finishAffinity()
+    }
 
 fun Context.startMainActivity() =
     Intent(this, MainActivity::class.java).also {

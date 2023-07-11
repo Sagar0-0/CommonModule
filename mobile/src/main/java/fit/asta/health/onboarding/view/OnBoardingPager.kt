@@ -1,81 +1,142 @@
 package fit.asta.health.onboarding.view
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Surface
+import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
-import fit.asta.health.R
+import fit.asta.health.common.ui.components.GifImage
+import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.common.utils.getImageUrl
+import fit.asta.health.navigation.home.view.component.NoInternetLayout
+import fit.asta.health.onboarding.vm.OnboardingGetState
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun OnBoardingPager(
-    modifier: Modifier = Modifier,
+    state: OnboardingGetState,
+    onReload: () -> Unit,
+    onFinish: () -> Unit
 ) {
+    when (state) {
+        OnboardingGetState.Loading -> {
+            LinearProgressIndicator(
+                modifier = Modifier.fillMaxWidth(),
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
 
-    val items = ArrayList<OnBoardingData>()
+        OnboardingGetState.NoInternet -> {
+            NoInternetLayout {
+                onReload()
+            }
+        }
 
-    items.add(OnBoardingData(image = R.drawable.ic_illustration_shopping,
-        title = "First Page",
-        desc = "Hello Fist Page"))
-    items.add(OnBoardingData(image = R.drawable.ic_illustration_delivery,
-        title = "First Page",
-        desc = "Hello Fist Page"))
-    items.add(OnBoardingData(image = R.drawable.ic_illustration_research,
-        title = "First Page",
-        desc = "Hello Fist Page"))
+        OnboardingGetState.Empty -> {
+            Text(text = "No data found")
+        }
 
-    val pagerState = rememberPagerState(pageCount = items.size,
-        initialPage = 0,
-        initialOffscreenLimit = items.size - 1,
-        infiniteLoop = false)
+        is OnboardingGetState.Error -> {
+            NoInternetLayout {
+                onReload()
+            }
+        }
 
-    Box(modifier = modifier) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            HorizontalPager(state = pagerState) { page ->
-                Column(modifier = Modifier
-                    .padding(top = 16.dp)
-                    .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally) {
-                    Image(painter = painterResource(id = items[page].image),
-                        contentDescription = items[page].title,
-                        modifier = Modifier
-                            .height(250.dp)
-                            .fillMaxWidth())
-                    Text(text = items[page].title, modifier = Modifier.padding(top = 50.dp))
-                    Text(text = items[page].desc,
-                        modifier = Modifier.padding(top = 30.dp, start = 20.dp, end = 20.dp),
-                        fontSize = 16.sp,
-                        textAlign = TextAlign.Center)
+        is OnboardingGetState.Success -> {
+            val items = state.data
+            val coroutine = rememberCoroutineScope()
+
+            val pagerState = rememberPagerState(
+                pageCount = items.size,
+                initialPage = 0,
+                initialOffscreenLimit = items.size - 1,
+                infiniteLoop = false
+            )
+
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                HorizontalPager(
+                    state = pagerState,
+                    modifier = Modifier.weight(1f)
+                ) { page ->
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        if (items[page].type == 1) {
+                            GifImage(
+                                url = getImageUrl(url = items[page].imgUrl),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = spacing.medium),
+                                contentScale = ContentScale.FillWidth
+                            )
+                        } else {
+                            AsyncImage(
+                                model = getImageUrl(url = items[page].imgUrl),
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+
+                        Text(
+                            text = items[page].title,
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Text(
+                            modifier = Modifier.padding(horizontal = spacing.extraMedium),
+                            textAlign = TextAlign.Center,
+                            text = items[page].desc,
+                            style = MaterialTheme.typography.titleSmall,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    PagerIndicator(size = items.size, currentPage = pagerState.currentPage)
+                    BottomNavigationSection(
+                        lastPage = pagerState.currentPage == items.size - 1,
+                        onNextClick = {
+                            coroutine.launch {
+                                pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                            }
+                        },
+                        onSkipClick = {
+                            onFinish()
+                        }
+                    )
                 }
             }
-            PagerIndicator(size = items.size, currentPage = pagerState.currentPage)
         }
-        Box(modifier = Modifier.align(alignment = Alignment.BottomCenter)) {
-            BottomNavigationSection(currentPage = pagerState.currentPage)
-        }
+
     }
+
 }
 
 
 @Preview
 @Composable
 fun PreviewOnBoard() {
-    Surface(modifier = Modifier.fillMaxSize()) {
-        OnBoardingPager(modifier = Modifier
-            .fillMaxWidth()
-            .background(color = Color.White))
+    OnBoardingPager(
+        OnboardingGetState.Empty,
+        {
+
+        }
+    ) {
+
     }
 }
