@@ -4,19 +4,12 @@
     <color name="colorOnPrimary">#FFFFFF</color>
     <color name="colorSecondary">#FFFFFF</color>
     <color name="colorAccent">#007EEC</color>
-    <color name="colorError">#B00020</color>
     <color name="colorWindowBackground">#F4F6F8</color>
-    <color name="colorBackground">#F4F6F8</color>
-    <color name="colorOnBackground">#010101</color>
     <color name="colorSurface">#F7EBEF</color>
     <color name="colorTransparent">#DDFFFFFF</color>
 
     <color name="black">#0F0F0F</color>
-    <color name="black2">#1D1D1D</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="white2">#90CFCFCF</color>
-
-    <color name="sub_text_color">#777777</color>
 
     <!--colors for bottom-sheet-->
     <color name="bottom_sheet_primary_sub_text_color">#4F4F4F</color>
@@ -24,55 +17,4 @@
     <!--colors for bottom-sheet-->
 
     <color name="number_picker_un_selected_text">#ABABAB</color>
-    <color name="background_line">#66000000</color>
-
-    <!--<color name="colorPrimaryDark">#FFFFFF</color>
-    <color name="colorPrimaryVariant">#007EEC</color>
-    <color name="colorSecondaryVariant">#FFFFFF</color>-->
-
-    <!--<color name="colorLoginScreen">#00493D</color>
-    <color name="colorCollapsingBar">#FFFFFF</color>
-    <color name="colorExitSignOut">#FFFFFFFF</color>
-
-    <color name="colorSelectedTabText">#BBEEEEEE</color>
-    <color name="colorPerson">#FFFFFF</color>
-    <color name="colorImageEnd">#00B8EDE8</color>
-    <color name="colorImageCenter">#00E8A0B9</color>
-    <color name="colorImageStart">#DFFDFDF9</color>
-    <color name="courseContinue">#9E9D24</color>
-    <color name="circleProgressBarEndColor">#FA5858</color>
-    <color name="circleProgressBarStartColor">#0099CC</color>
-    <color name="progressbarStartColor">#4CAF50</color>
-    <color name="progressbarEndColour">#FFFFFF</color>
-    <color name="borderImage">#D1CACA</color>
-    <color name="textColor">#DDFFFFFF</color>
-    <color name="textGrey">#504B4B</color>
-    <color name="settingsBackground">#ffffff</color>
-
-    <color name="colorPlayBackButton">#FFFFFF</color>
-    <color name="colorPlayText">#FFFFFF</color>
-    <color name="colorPlayBackControl">#88000000</color>
-    <color name="colorPlayed">#C62828</color>
-
-    <color name="profile_viewpager">#EDEAEA</color>
-    <color name="circle_indicator">#7aacb3</color>
-
-    <color name="profileCreation">#7aacb3</color>
-    <color name="profileCreationTop">#8F888B</color>
-    <color name="profileCreationBackground">#F1EBEB</color>
-    <color name="backgroundProfile">#BFABCC</color>
-    <color name="imgSelected">#B0FFFFFF</color>
-    <color name="profileTxtColor">#00493D</color>
-
-    <color name="text">#000000</color>
-    <color name="text1">#99000000</color>
-
-    <color name="background_subscription">#66000000</color>
-
-    <color name="subscriptionText">#ffffff</color>
-    <color name="subsMonthlyCard">#656565</color>
-    <color name="subsAnnualCard">#CCFFFFFF</color>
-    <color name="subsAnnualStroke">#388E3C</color>
-    <color name="colorImageGray">#DDDDDDDD</color>
-    <color name="homeBannerBackground">#61000000</color>-->
 </resources>
