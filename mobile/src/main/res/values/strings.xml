@@ -339,7 +339,7 @@
     <item name="tagMeta" type="id" />
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-<!--music player string-->
+    <!--music player string-->
     <string name="home_logo">home logo</string>
     <string name="search_button">search button</string>
     <string name="profile_button">profile button</string>
@@ -362,6 +362,7 @@
     <string name="skip_next">Skip to next</string>
     <string name="music_notification_channel_name">Asta Music</string>
     <string name="player_timestamp_format" translatable="false">%1$s:%2$s</string>
+    <string name="title_activity_sleep_tool">SleepToolActivity</string>
 
 </resources>
 

@@ -19,6 +19,7 @@ import fit.asta.health.tools.meditation.MeditationActivity
 import fit.asta.health.tools.walking.view.WalkingActivity
 import fit.asta.health.tools.water.WaterToolActivity
 import fit.asta.health.testimonials.TestimonialsActivity
+import fit.asta.health.tools.sleep.SleepToolActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -91,6 +92,10 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
 
                         "meditation" -> {
                             MeditationActivity.launch(context = context)
+                        }
+
+                        "sleep" -> {
+                            SleepToolActivity.launch(context = context)
                         }
                     }
                 })
