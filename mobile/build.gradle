@@ -11,7 +11,7 @@ plugins {
 }
 
 def secretProps = new Properties()
-secretProps.load(new FileInputStream(rootProject.file("secrets.defaults.properties")))
+secretProps.load(new FileInputStream(rootProject.file('secrets.defaults.properties')))
 
 android {
 
@@ -39,7 +39,7 @@ android {
         signingConfig = signingConfigs.release
         archivesBaseName = "$applicationId-$versionName"
         manifestPlaceholders = [redirectSchemeName: "spotify-sdk", redirectHostName: "auth"]
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = 'androidx.test.runner.AndroidJUnitRunner'
 
         javaCompileOptions {
 
@@ -51,16 +51,16 @@ android {
         buildConfigField("String", "BASE_URL", "\"${base_url}\"")
     }
 
-    flavorDimensions "endpoints"
+    flavorDimensions 'endpoints'
     productFlavors {
         dev {
-            dimension "endpoints"
+            dimension 'endpoints'
             resourceConfigurations += ['en', 'xxhdpi']
             buildConfigField("String", "BASE_URL", "\"${dev_base_url}\"")
         }
 
         prod {
-            dimension "endpoints"
+            dimension 'endpoints'
             buildConfigField("String", "BASE_URL", "\"${prod_base_url}\"")
         }
     }
@@ -72,12 +72,12 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "18"
+        jvmTarget = '18'
     }
 
     buildTypes {
         debug {
-            applicationIdSuffix ".dev"
+            applicationIdSuffix '.dev'
             minifyEnabled = false
             //multiDexEnabled = true
             aaptOptions.cruncherEnabled = false
@@ -90,7 +90,7 @@ android {
             minifyEnabled = true
             shrinkResources = true
             resValue("string", "MAPS_API_KEY", secretProps["MAPS_API_KEY"])
-            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -108,58 +108,80 @@ android {
 
 dependencies {
 
+    implementation project(path: ":chartLibrary")
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    //implementation project(":player-lib")
-    implementation project(path: ':chartLibrary')
+    // Spotify App remote Dependency
+    implementation fileTree(include: ["*.jar", "*.aar"], dir: "libs")
 
     //De-sugaring
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.3"
 
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_ver"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ver"
+
     //multidex support
     //implementation "androidx.multidex:multidex:2.0.1"
 
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
-
-    implementation 'androidx.core:core-ktx:1.10.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
-    implementation "androidx.datastore:datastore-preferences:1.0.0"
-    implementation 'androidx.hilt:hilt-common:1.0.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_ver"
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
 
     //Androidx
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "androidx.core:core-ktx:1.10.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
     implementation "androidx.appcompat:appcompat:1.6.1"
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
     implementation "androidx.preference:preference-ktx:1.2.0"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
     implementation "androidx.navigation:navigation-fragment-ktx:2.6.0"
     implementation "androidx.navigation:navigation-ui-ktx:2.6.0"
-    implementation 'com.google.code.gson:gson:2.10.1'
-    implementation 'androidx.palette:palette-ktx:1.0.0'
+    implementation "androidx.palette:palette-ktx:1.0.0"
     implementation "androidx.window:window:1.1.0"
 
-    //Jet-pack compose
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling:$compose_version"
-    implementation "androidx.compose.ui:ui-util:$compose_version"
-    implementation "androidx.compose.animation:animation:$compose_version"
+    //Jetpack Compose
+    implementation "androidx.compose.ui:ui:$compose_ver"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_ver"
+    implementation "androidx.compose.ui:ui-tooling:$compose_ver"
+    implementation "androidx.compose.ui:ui-util:$compose_ver"
+    implementation "androidx.compose.animation:animation:$compose_ver"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1"
     implementation "androidx.lifecycle:lifecycle-runtime-compose:2.6.1"
     implementation "androidx.activity:activity-compose:1.7.2"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
-    implementation "androidx.compose.foundation:foundation:$compose_version"
+    implementation "androidx.compose.foundation:foundation:$compose_ver"
 
-    //Material theme components
+    //Jetpack Compose - Material theme components
     implementation "androidx.compose.material3:material3:1.1.1"
     implementation "androidx.compose.material3:material3-window-size-class:1.1.1"
-    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation "androidx.compose.material:material-icons-extended:$compose_ver"
     implementation "com.google.android.material:compose-theme-adapter:1.2.1"
+
+    //Jetpack Compose - Pager
+    def paging_ver = "3.1.1"
+    implementation "androidx.paging:paging-runtime-ktx:$paging_ver"
+    implementation "androidx.paging:paging-compose:3.2.0-rc01"
+
+    //Jetpack Compose - Paging
+    implementation "com.google.accompanist:accompanist-pager:0.13.0"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.13.0"
+    implementation "com.google.accompanist:accompanist-coil:0.13.0"
+
+    //Jetpack Compose - Navigation
+    def nav_ver = "2.6.0"
+    implementation "androidx.navigation:navigation-compose:$nav_ver"
+
+    //Accompanist-BottomSheet Nav
+    def accompanist_ver = "0.27.1"
+    implementation "com.google.accompanist:accompanist-navigation-material:$accompanist_ver"
+    implementation "com.google.accompanist:accompanist-insets:$accompanist_ver"
+    implementation "com.google.accompanist:accompanist-drawablepainter:$accompanist_ver"
+    implementation "com.google.accompanist:accompanist-navigation-animation:0.28.0"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.30.1"
+    implementation "com.google.accompanist:accompanist-flowlayout:0.30.1"
 
     //In-app updates
     implementation "com.google.android.play:app-update-ktx:2.1.0"
@@ -167,14 +189,11 @@ dependencies {
     //In-app reviews
     implementation "com.google.android.play:review-ktx:2.0.1"
 
-    //Location Service
-    implementation "com.google.android.gms:play-services-location:21.0.1"
-
     //Firebase authentication
-    implementation platform('com.google.firebase:firebase-bom:31.2.0')
+    implementation platform("com.google.firebase:firebase-bom:31.2.0")
     implementation "com.google.firebase:firebase-auth-ktx:22.0.0"
     implementation "com.google.android.gms:play-services-auth:20.6.0"
-    implementation 'com.google.android.gms:play-services-auth-api-phone:18.0.1'
+    implementation "com.google.android.gms:play-services-auth-api-phone:18.0.1"
     implementation "com.firebaseui:firebase-ui-auth:8.0.2"
 
     //Firebase for notifications
@@ -190,41 +209,50 @@ dependencies {
     //Firebase storage for media files
     implementation "com.google.firebase:firebase-storage-ktx:20.2.1"
 
-    //Firestore for nosql
+    //Firebase fire-store for nosql
     implementation "com.google.firebase:firebase-firestore-ktx:24.6.1"
 
-    /*implementation "android.arch.work:work-runtime:1.0.1"
-    implementation "com.google.guava:guava:27.0.1-android"
-    implementation "com.google.firebase:firebase-dynamic-links-ktx:19.1.0"*/
-
-    // Glide - Image library
+    //Image - Glide library
     implementation "com.github.bumptech.glide:glide:4.14.2"
     implementation "com.ramotion.fluidslider:fluid-slider:0.3.1"
-    /*implementation "com.theartofdev.edmodo:android-image-cropper:2.8.0"*/
 
-    // Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+    //Image - Coil library
+    def coil_ver = "2.2.2"
+    implementation "io.coil-kt:coil-compose:$coil_ver"
+    implementation "io.coil-kt:coil-gif:$coil_ver"
+
+    //Image - Circular view
+    implementation "com.mikhaellopez:circularimageview:4.3.1"
+
+    //Image Picker
+    implementation "com.github.Drjacky:ImagePicker:2.3.22"
+
+    //Image Cropper Dependencies
+    // Colorful Customizable Sliders
+    implementation "com.github.SmartToolFactory:Compose-Colorful-Sliders:1.2.0"
+    // Color picker
+    implementation "com.github.SmartToolFactory:Compose-Color-Picker-Bundle:1.0.0"
+    // Gestures
+    implementation "com.github.SmartToolFactory:Compose-Extended-Gestures:3.0.0"
+    // Animated List
+    implementation "com.github.SmartToolFactory:Compose-AnimatedList:0.5.1"
+    // Photo Picker
+    implementation("com.google.modernstorage:modernstorage-photopicker:1.0.0-alpha06")
 
     // Room Library
-    def room_version = "2.5.2"
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
-    androidTestImplementation "androidx.room:room-testing:$room_version"
+    def room_ver = "2.5.2"
+    implementation "androidx.room:room-runtime:$room_ver"
+    kapt "androidx.room:room-compiler:$room_ver"
+    implementation "androidx.room:room-ktx:$room_ver"
+    androidTestImplementation "androidx.room:room-testing:$room_ver"
 
     //Dagger Hilt
-    implementation "com.google.dagger:hilt-android:$dagger_version"
-    kapt "com.google.dagger:hilt-android-compiler:$dagger_version"
+    implementation "com.google.dagger:hilt-android:$dagger_ver"
+    kapt "com.google.dagger:hilt-android-compiler:$dagger_ver"
     kapt "androidx.hilt:hilt-compiler:1.0.0"
+    implementation "androidx.hilt:hilt-common:1.0.0"
     implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
-    implementation 'androidx.hilt:hilt-work:1.0.0'
-    /*annotationProcessor "com.google.dagger:hilt-compiler:$dagger_version"*/
-
-    // Toothpick
-    /*implementation "com.github.stephanenicolas.toothpick:toothpick-runtime:1.1.3"
-    implementation "com.github.stephanenicolas.toothpick:smoothie:1.1.3"
-    kapt "com.github.stephanenicolas.toothpick:toothpick-compiler:1.1.3"
-    testImplementation "com.github.stephanenicolas.toothpick:toothpick-testing:1.1.3"*/
+    implementation "androidx.hilt:hilt-work:1.0.0"
 
     // Retrofit and OkHttp
     def retrofit = "2.9.0"
@@ -239,6 +267,9 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3"
     implementation retrofit.values()
 
+    //Json parser
+    implementation "com.google.code.gson:gson:2.10.1"
+
     //Exo player
     def exo = "2.19.0"
     implementation "com.google.android.exoplayer:exoplayer:$exo"
@@ -248,145 +279,80 @@ dependencies {
     implementation "com.google.android.exoplayer:exoplayer-ui:$exo"
     api "com.google.android.exoplayer:extension-mediasession:$exo"
 
-    def exo_player_version = "1.1.0"
-    def media3_version = "1.1.0"
-    implementation "androidx.media3:media3-exoplayer:$exo_player_version"
-    implementation "androidx.media3:media3-exoplayer-dash:$exo_player_version"
-    implementation "androidx.media3:media3-ui:$exo_player_version"
-    implementation "androidx.media3:media3-common:$media3_version"
-    implementation "androidx.media3:media3-session:$media3_version"
+    def exo_player_ver = "1.1.0"
+    def media3_ver = "1.1.0"
+    implementation "androidx.media3:media3-exoplayer:$exo_player_ver"
+    implementation "androidx.media3:media3-exoplayer-dash:$exo_player_ver"
+    implementation "androidx.media3:media3-ui:$exo_player_ver"
+    implementation "androidx.media3:media3-common:$media3_ver"
+    implementation "androidx.media3:media3-session:$media3_ver"
+
+    //Maps
+    implementation "com.google.maps.android:maps-compose:2.11.1"
+    implementation "com.google.android.gms:play-services-maps:18.1.0"
+    implementation "com.google.android.gms:play-services-location:21.0.1"
+    implementation "com.google.android.libraries.places:places:3.2.0"
 
     //Billing
     def billing_ver = "6.0.1"
     implementation "com.android.billingclient:billing:$billing_ver"
     implementation "com.android.billingclient:billing-ktx:$billing_ver"
 
-    //Coil-for loading images
-    def coil_version = "2.2.2"
-    implementation "io.coil-kt:coil-compose:$coil_version"
-    implementation "io.coil-kt:coil-gif:$coil_version"
+    //Calendar
+    def cal_ver = "1.1.1"
+    implementation "com.maxkeppeler.sheets-compose-dialogs:core:$cal_ver"
+    implementation "com.maxkeppeler.sheets-compose-dialogs:calendar:$cal_ver"
 
-    // FlexBox
-    implementation "com.google.android.flexbox:flexbox:3.0.0"
-
-    // Spotify Auth
-    implementation "com.spotify.android:auth:2.0.2"
-
-    // recyclerview swipe decorator
-    implementation "com.github.xabaras:RecyclerViewSwipeDecorator:1.4"
-
-    // swipe action view for snooze and stop
-    def swipe_version = "1.4.0"
-    implementation "com.github.Tunous:SwipeActionView:$swipe_version"
-
-    // for picking tone
-    implementation "xyz.aprildown:UltimateRingtonePicker:3.1.0"
-
-    // image picker
-    implementation 'com.github.Drjacky:ImagePicker:2.3.22'
+    //Clock
+    implementation "com.maxkeppeler.sheets-compose-dialogs:clock:$cal_ver"
 
     //Emoji-Bar
     implementation "com.github.a914-gowtham:compose-ratingbar:1.2.4"
 
-    // Stepper
-    implementation 'com.github.maryamrzdh:compose-stepper:1.0.0-beta01'
+    //FlexBox
+    implementation "com.google.android.flexbox:flexbox:3.0.0"
 
-    // for circular image view
-    implementation "com.mikhaellopez:circularimageview:4.3.1"
+    //Number Picker
+    def num_picker_ver = "1.0.3"
+    implementation "com.chargemap.compose:numberpicker:$num_picker_ver"
 
-    // transformation view
-    implementation "com.github.skydoves:transformationlayout:1.1.1"
-
-    // number picker
+    //Number Picker
     implementation "io.github.ShawnLin013:number-picker:2.4.13"
 
-    //Navigation
-    def nav_version = "2.6.0"
-    implementation "androidx.navigation:navigation-compose:$nav_version"
+    //Recyclerview swipe decorator
+    implementation "com.github.xabaras:RecyclerViewSwipeDecorator:1.4"
 
-    //Flow Layouts
-    def flow_version = "0.30.1"
-    implementation "com.google.accompanist:accompanist-flowlayout:$flow_version"
+    //Spotify Auth
+    implementation "com.spotify.android:auth:2.0.2"
 
-    //Accompanist-BottomSheet Nav
-    def accomp_version = "0.27.1"
-    implementation "com.google.accompanist:accompanist-navigation-material:$accomp_version"
-    implementation "com.google.accompanist:accompanist-insets:$accomp_version"
-    implementation "com.google.accompanist:accompanist-drawablepainter:$accomp_version"
-    implementation "com.google.accompanist:accompanist-navigation-animation:0.28.0"
-    implementation "com.google.accompanist:accompanist-systemuicontroller:0.30.1"
+    //Stepper
+    implementation "com.github.maryamrzdh:compose-stepper:1.0.0-beta01"
 
-    //Paging Compose
-    implementation "com.google.accompanist:accompanist-pager:0.13.0"
-    implementation "com.google.accompanist:accompanist-pager-indicators:0.13.0"
-    implementation "com.google.accompanist:accompanist-coil:0.13.0"
+    //Swipe action view for snooze and stop
+    def swipe_ver = "1.4.0"
+    implementation "com.github.Tunous:SwipeActionView:$swipe_ver"
 
     //Swipe
     implementation "me.saket.swipe:swipe:1.0.0"
 
-    // Number Picker
-    def num_picker_version = "1.0.3"
-    implementation "com.chargemap.compose:numberpicker:$num_picker_version"
+    //Tone picking
+    implementation "xyz.aprildown:UltimateRingtonePicker:3.1.0"
 
-    //Jetpack Compose Pager
-    def paging_version = "3.1.1"
-    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
-    // optional - Jetpack Compose integration
-    implementation "androidx.paging:paging-compose:3.2.0-rc01"
+    //Transformation view
+    implementation "com.github.skydoves:transformationlayout:1.1.1"
 
-    // Integration with activities
-    implementation "androidx.activity:activity-compose:1.7.2"
-    // Animations
-    implementation "androidx.compose.animation:animation:1.6.0-alpha01"
-    // Tooling support (Previews, etc.)
-    implementation "androidx.compose.ui:ui-tooling:1.4.3"
-    // Integration with ViewModels
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1"
-
-    //Image-Cropper
-    implementation "io.github.mr0xf00:easycrop:0.1.1"
-
-    //work manager
+    //Work Manager
     implementation "androidx.work:work-runtime-ktx:2.8.1"
 
-    //Calendar
-    def cal_version = "1.1.1"
-    implementation "com.maxkeppeler.sheets-compose-dialogs:core:$cal_version"
-    implementation "com.maxkeppeler.sheets-compose-dialogs:calendar:$cal_version"
-
-    // CLOCK
-    implementation "com.maxkeppeler.sheets-compose-dialogs:clock:$cal_version"
-
-    //maps
-    implementation 'com.google.maps.android:maps-compose:2.11.1'
-    implementation 'com.google.android.gms:play-services-maps:18.1.0'
-    implementation 'com.google.android.gms:play-services-location:21.0.1'
-    implementation 'com.google.android.libraries.places:places:3.2.0'
-
-    //moshi
+    //Moshi
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
 
-
-    //Image Cropper Dependencies
-    // Colorful Customizable Sliders
-    implementation 'com.github.SmartToolFactory:Compose-Colorful-Sliders:1.2.0'
-    // Color picker
-    implementation 'com.github.SmartToolFactory:Compose-Color-Picker-Bundle:1.0.0'
-    // Gestures
-    implementation 'com.github.SmartToolFactory:Compose-Extended-Gestures:3.0.0'
-    // Animated List
-    implementation 'com.github.SmartToolFactory:Compose-AnimatedList:0.5.1'
-    // Photo Picker
-    implementation("com.google.modernstorage:modernstorage-photopicker:1.0.0-alpha06")
-
+    testImplementation "androidx.paging:paging-common-ktx:$paging_ver"
     testImplementation "junit:junit:4.13.2"
-    testImplementation "androidx.paging:paging-common-ktx:$paging_version"
-    androidTestImplementation "androidx.test.ext:junit:1.1.5"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ver"
+    androidTestImplementation "androidx.room:room-testing:$room_ver"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
-
-    // Spotify App remote Dependency
-    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    androidTestImplementation "androidx.test.ext:junit:1.1.5"
 }
 
 kapt {
