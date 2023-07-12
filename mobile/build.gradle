@@ -25,13 +25,13 @@ android {
     }
 
     namespace = 'fit.asta.health'
-    compileSdk = 33
+    compileSdk = 34
     //buildToolsVersion = '31.0.0'
 
     defaultConfig {
         applicationId = 'fit.asta.health'
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 11
         versionName '0.11'
 
@@ -173,7 +173,7 @@ dependencies {
     //Firebase authentication
     implementation platform('com.google.firebase:firebase-bom:31.2.0')
     implementation "com.google.firebase:firebase-auth-ktx:22.0.0"
-    implementation "com.google.android.gms:play-services-auth:20.5.0"
+    implementation "com.google.android.gms:play-services-auth:20.6.0"
     implementation 'com.google.android.gms:play-services-auth-api-phone:18.0.1'
     implementation "com.firebaseui:firebase-ui-auth:8.0.2"
 
@@ -206,7 +206,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
 
     // Room Library
-    def room_version = "2.5.1"
+    def room_version = "2.5.2"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
@@ -240,7 +240,7 @@ dependencies {
     implementation retrofit.values()
 
     //Exo player
-    def exo = "2.18.7"
+    def exo = "2.19.0"
     implementation "com.google.android.exoplayer:exoplayer:$exo"
     implementation "com.google.android.exoplayer:extension-cast:$exo"
     implementation "com.google.android.exoplayer:exoplayer-core:$exo"
@@ -248,8 +248,8 @@ dependencies {
     implementation "com.google.android.exoplayer:exoplayer-ui:$exo"
     api "com.google.android.exoplayer:extension-mediasession:$exo"
 
-    def exo_player_version = "1.0.2"
-    def  media3_version = "1.0.2"
+    def exo_player_version = "1.1.0"
+    def media3_version = "1.1.0"
     implementation "androidx.media3:media3-exoplayer:$exo_player_version"
     implementation "androidx.media3:media3-exoplayer-dash:$exo_player_version"
     implementation "androidx.media3:media3-ui:$exo_player_version"
@@ -257,8 +257,9 @@ dependencies {
     implementation "androidx.media3:media3-session:$media3_version"
 
     //Billing
-    implementation "com.android.billingclient:billing:6.0.0"
-    implementation "com.android.billingclient:billing-ktx:6.0.0"
+    def billing_ver = "6.0.1"
+    implementation "com.android.billingclient:billing:$billing_ver"
+    implementation "com.android.billingclient:billing-ktx:$billing_ver"
 
     //Coil-for loading images
     def coil_version = "2.2.2"
@@ -304,20 +305,20 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
     //Flow Layouts
-    def flow_version = "0.27.1"
+    def flow_version = "0.30.1"
     implementation "com.google.accompanist:accompanist-flowlayout:$flow_version"
 
     //Accompanist-BottomSheet Nav
     def accomp_version = "0.27.1"
     implementation "com.google.accompanist:accompanist-navigation-material:$accomp_version"
+    implementation "com.google.accompanist:accompanist-insets:$accomp_version"
+    implementation "com.google.accompanist:accompanist-drawablepainter:$accomp_version"
     implementation "com.google.accompanist:accompanist-navigation-animation:0.28.0"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.30.1"
 
     //Paging Compose
     implementation "com.google.accompanist:accompanist-pager:0.13.0"
     implementation "com.google.accompanist:accompanist-pager-indicators:0.13.0"
-    implementation "com.google.accompanist:accompanist-systemuicontroller:0.27.1"
-    implementation "com.google.accompanist:accompanist-insets:0.27.1"
-    implementation "com.google.accompanist:accompanist-drawablepainter:0.27.1"
     implementation "com.google.accompanist:accompanist-coil:0.13.0"
 
     //Swipe
@@ -331,12 +332,12 @@ dependencies {
     def paging_version = "3.1.1"
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
     // optional - Jetpack Compose integration
-    implementation "androidx.paging:paging-compose:3.2.0-beta01"
+    implementation "androidx.paging:paging-compose:3.2.0-rc01"
 
     // Integration with activities
     implementation "androidx.activity:activity-compose:1.7.2"
     // Animations
-    implementation "androidx.compose.animation:animation:1.5.0-beta02"
+    implementation "androidx.compose.animation:animation:1.6.0-alpha01"
     // Tooling support (Previews, etc.)
     implementation "androidx.compose.ui:ui-tooling:1.4.3"
     // Integration with ViewModels
@@ -360,7 +361,7 @@ dependencies {
     implementation 'com.google.maps.android:maps-compose:2.11.1'
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
-    implementation 'com.google.android.libraries.places:places:3.1.0'
+    implementation 'com.google.android.libraries.places:places:3.2.0'
 
     //moshi
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
