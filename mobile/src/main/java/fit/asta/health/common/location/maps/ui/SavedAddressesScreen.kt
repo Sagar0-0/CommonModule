@@ -14,17 +14,19 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -46,6 +48,7 @@ import fit.asta.health.common.location.maps.modal.AddressesResponse
 import fit.asta.health.common.location.maps.modal.AddressesResponse.*
 import fit.asta.health.common.location.maps.modal.MapScreens
 import fit.asta.health.common.location.maps.modal.SearchResponse
+import fit.asta.health.common.ui.CustomTopBar
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.iconSize
 import fit.asta.health.common.ui.theme.spacing
@@ -97,7 +100,7 @@ fun SavedAddressesScreen(
     val focusRequester = remember { FocusRequester() }
 
     Column(Modifier.fillMaxSize()) {
-        MapTopBar(text = "Saved Addresses") {
+        CustomTopBar(text = "Saved Addresses") {
             onBackPressed()
         }
 
@@ -291,6 +294,7 @@ fun SavedAddressesScreen(
                         (addressListState as ResultState.Success<AddressesResponse>).data.data
                     if (addresses.isEmpty()) {
                         Text(
+                            modifier = Modifier.padding(spacing.small),
                             text = "No Saved Address",
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.titleMedium
@@ -483,36 +487,38 @@ fun AddressItem(
                 modifier = Modifier.padding(bottom = 5.dp)
             )
             Row(Modifier.fillMaxWidth()) {
-                Text(
-                    style = MaterialTheme.typography.bodySmall,
-                    text = "Edit",
-                    modifier = Modifier
-                        .padding(spacing.extraSmall1)
-                        .clip(MaterialTheme.shapes.medium)
-                        .background(MaterialTheme.colorScheme.surfaceVariant)
-                        .clickable { onEditClick() }
-                        .padding(spacing.small)
-                )
-                Text(
-                    style = MaterialTheme.typography.bodySmall,
-                    text = "Delete",
-                    modifier = Modifier
-                        .padding(spacing.extraSmall1)
-                        .clip(MaterialTheme.shapes.medium)
-                        .background(MaterialTheme.colorScheme.surfaceVariant)
-                        .clickable { onDeleteClick() }
-                        .padding(spacing.small)
-                )
-                Text(
-                    style = MaterialTheme.typography.bodySmall,
-                    text = "Share",
-                    modifier = Modifier
-                        .padding(spacing.extraSmall1)
-                        .clip(MaterialTheme.shapes.medium)
-                        .background(MaterialTheme.colorScheme.surfaceVariant)
-                        .clickable { onShareClick() }
-                        .padding(spacing.small)
-                )
+                OutlinedIconButton(onClick = { onEditClick() }) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = ""
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(spacing.extraSmall))
+
+                var deleteButton by remember {
+                    mutableStateOf(true)
+                }
+                OutlinedIconButton(
+                    enabled = deleteButton,
+                    onClick = {
+                        deleteButton = false
+                        onDeleteClick()
+                    }) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = ""
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(spacing.extraSmall))
+
+                OutlinedIconButton(onClick = { onShareClick() }) {
+                    Icon(
+                        imageVector = Icons.Default.Share,
+                        contentDescription = ""
+                    )
+                }
 
             }
         }

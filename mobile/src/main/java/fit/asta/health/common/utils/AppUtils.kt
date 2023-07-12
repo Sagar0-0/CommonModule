@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.documentfile.provider.DocumentFile
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -273,6 +274,8 @@ fun Context.sendBugReportMessage() {
 
 @Composable
 fun getImageUrl(url: String) = stringResource(id = R.string.media_url) + url
+
+fun getFileName(context: Context, uri: Uri) = DocumentFile.fromSingleUri(context, uri)?.name ?: ""
 
 fun getFirebaseStorageBucketUrl(context: Context): String {
 

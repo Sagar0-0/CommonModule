@@ -1,126 +1,139 @@
 package fit.asta.health.feedback.view
 
+import android.app.Activity
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.NavigateBefore
-import androidx.compose.material3.*
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.LocalContext
+import fit.asta.health.common.ui.CustomTopBar
+import fit.asta.health.common.ui.components.UploadFiles
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.feedback.view.components.OnlyTextFieldCard
-import fit.asta.health.feedback.view.components.RatingCard
-import fit.asta.health.feedback.view.components.VerticalRadioBttnCard
+import fit.asta.health.common.utils.getFileName
+import fit.asta.health.feedback.model.network.An
+import fit.asta.health.feedback.model.network.Media
+import fit.asta.health.feedback.model.network.Qn
+import fit.asta.health.feedback.view.components.SubmitButton
 import fit.asta.health.feedback.view.components.WelcomeCard
-import fit.asta.health.testimonials.view.create.UploadFiles
-
-@Preview
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SessionFeedback() {
-
-    Scaffold(content = {
-
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .padding(it)
-                .verticalScroll(rememberScrollState())
-                .background(color = MaterialTheme.colorScheme.secondaryContainer)
-        ) {
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            WelcomeCard()
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            RatingCard(
-                cardTitle = "How was you online session experience?",
-                textFieldTitle = "Do you like to tell us to improve?"
-            )
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            RatingCard(
-                cardTitle = "How did you feel after the session? ",
-                textFieldTitle = "Do you like to tell us to improve?"
-            )
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            VerticalRadioBttnCard()
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            OnlyTextFieldCard()
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            UploadFiles(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = spacing.medium)
-            )
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            Text(
-                text = "By submitting review you give us consent to publish your review in our app. ",
-                fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = spacing.medium)
-            )
-
-            Spacer(modifier = Modifier.height(spacing.small))
-
-            SubmitButton(text = "Update")
-
-            Spacer(modifier = Modifier.height(spacing.small))
-        }
-    }, topBar = {
-        TopAppBar(title = {
-            Text(
-                text = "Feedback",
-                color = MaterialTheme.colorScheme.onBackground,
-                fontWeight = FontWeight.Medium,
-                fontSize = 20.sp
-            )
-        }, navigationIcon = {
-            Icon(Icons.Outlined.NavigateBefore, "back", tint = MaterialTheme.colorScheme.primary)
-        })
-    })
-}
-
+import fit.asta.health.feedback.view.components.feedbackTextFieldItem
+import fit.asta.health.feedback.viewmodel.FeedbackQuesState
 
 @Composable
-fun SubmitButton(
-    text: String,
-    onClick: (() -> Unit)? = null,
+fun SessionFeedback(
+    feedbackQuesState: FeedbackQuesState,
+    onSubmit: (ans: List<An>) -> Unit
 ) {
-    onClick?.let {
-        Button(
-            onClick = it,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = spacing.medium),
-            shape = RoundedCornerShape(spacing.extraSmall),
-            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
-        ) {
-            Text(
-                text = text,
-                style = MaterialTheme.typography.labelLarge,
-                color = Color.White,
-            )
+    val context = LocalContext.current
+    Scaffold(
+        topBar = {
+            CustomTopBar(text = "Feedback") {
+                (context as Activity).finish()
+            }
+        }
+    ) {
+        when (feedbackQuesState) {
+            FeedbackQuesState.Loading -> {
+                LinearProgressIndicator(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(it)
+                )
+            }
+
+            is FeedbackQuesState.Error -> {
+                feedbackQuesState.error.message?.let { it1 -> Text(text = it1) }
+                Log.e("QUES", "SessionFeedback: ${feedbackQuesState.error}")
+                Toast.makeText(
+                    context,
+                    "Unexpected error occurred.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                (context as Activity).finish()
+            }
+
+            is FeedbackQuesState.Success -> {
+                val qns = feedbackQuesState.feedback.data.qns
+                val ansList = remember {
+                    mutableStateOf(
+                        qns.map { An(null, false, null, null, 0, 0) } as MutableList<An>
+                    )
+                }
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(it)
+                        .verticalScroll(rememberScrollState())
+                        .background(color = MaterialTheme.colorScheme.secondaryContainer)
+                ) {
+
+                    Spacer(modifier = Modifier.height(spacing.medium))
+                    WelcomeCard()
+                    Spacer(modifier = Modifier.height(spacing.medium))
+
+                    qns.forEachIndexed { idx, qn ->
+                        ansList.value[idx] = feedbackQuesItem(qn).value
+                        Spacer(modifier = Modifier.height(spacing.medium))
+                    }
+
+                    SubmitButton(text = "Submit") {
+                        Log.e("ANS", "SessionFeedback: ${ansList.value.toList()}")
+                        onSubmit(ansList.value.toList())
+                    }
+
+                    Spacer(modifier = Modifier.height(spacing.small))
+                }
+            }
         }
     }
 }
+
+@Composable
+fun feedbackQuesItem(qn: Qn): MutableState<An> {
+    val context = LocalContext.current
+    val ans = remember { mutableStateOf(An(null, false, null, null, 0, 0)) }
+    if (qn.type == 1) {
+        val uriList = UploadFiles(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = spacing.medium)
+        )
+        val medias = uriList.map {
+            Media(
+                name = getFileName(context, it),
+                url = "",
+                localUri = it
+            )
+        }
+        ans.value = An(
+            dtlAns = null,
+            isDet = qn.isDet,
+            media = medias,
+            opts = qn.opts,
+            qid = qn.qno,
+            type = qn.type
+        )
+    } else {
+        ans.value = feedbackTextFieldItem(qn).value
+    }
+
+    Log.d("ANS", "Ques No.${qn.qno}:ans = ${ans.value}")
+    return ans
+}
+
+
+

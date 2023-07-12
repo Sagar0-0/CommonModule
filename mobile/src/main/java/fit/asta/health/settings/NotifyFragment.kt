@@ -21,7 +21,7 @@ class NotifyFragment : PreferenceFragmentCompat() {
         when (preference.key) {
             resources.getString(R.string.user_pref_master_notification_key) -> {
 
-                (activity as SettingsActivity).notifyChange()
+                //(activity as SettingsActivity).notifyChange()
             }
             resources.getString(R.string.user_pref_new_release_key) -> {
 

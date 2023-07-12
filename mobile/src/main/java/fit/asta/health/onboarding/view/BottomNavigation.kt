@@ -4,37 +4,75 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.graphics.Color
+import fit.asta.health.common.ui.theme.spacing
 
 @Composable
-fun BottomNavigationSection(currentPage: Int) {
-    Row(modifier = Modifier
-        .padding(bottom = 20.dp)
-        .fillMaxWidth(),
-        horizontalArrangement = if (currentPage != 2) Arrangement.SpaceBetween else Arrangement.Center) {
-
-        if (currentPage == 2) {
-            OutlinedButton(onClick = { /*TODO*/ }, shape = RoundedCornerShape(percent = 50)) {
-                Text(text = "Get Started",
-                    modifier = Modifier.padding(vertical = 8.dp, horizontal = 40.dp),
-                    color = MaterialTheme.colors.primary)
+fun BottomNavigationSection(lastPage: Boolean, onNextClick: () -> Unit, onSkipClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = spacing.medium),
+        verticalAlignment = Alignment.Bottom,
+        horizontalArrangement = if (lastPage) Arrangement.End else Arrangement.SpaceBetween
+    ) {
+        if (lastPage) {
+            OnBoardingButton(
+                text = "Finish",
+                modifier = Modifier
+                    .padding(end = spacing.medium),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                ),
+                textColor = MaterialTheme.colorScheme.onPrimary
+            ) {
+                onSkipClick()
             }
         } else {
-            SkipNextButton(text = "Skip", modifier = Modifier.padding(start = 20.dp))
-            SkipNextButton(text = "Next", modifier = Modifier.padding(start = 20.dp, end = 20.dp))
+            OnBoardingButton(
+                text = "Skip",
+                modifier = Modifier
+                    .padding(start = spacing.medium),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Transparent
+                ),
+                textColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+            ) {
+                onSkipClick()
+            }
+            OnBoardingButton(
+                text = "Next",
+                modifier = Modifier
+                    .padding(end = spacing.medium),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                ),
+                textColor = MaterialTheme.colorScheme.onPrimary
+            ) {
+                onNextClick()
+            }
         }
     }
 }
 
 @Composable
-fun SkipNextButton(text: String, modifier: Modifier) {
-    Text(text = text, modifier = modifier, fontSize = 18.sp, fontWeight = FontWeight.Medium)
+fun OnBoardingButton(
+    modifier: Modifier,
+    textColor: Color,
+    colors: ButtonColors,
+    text: String,
+    onClick: () -> Unit
+) {
+    Button(modifier = modifier, colors = colors, onClick = onClick, shape = shapes.extraLarge) {
+        Text(text = text, color = textColor)
+    }
 }

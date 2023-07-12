@@ -1,8 +1,10 @@
 package fit.asta.health.feedback.di
 
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.BuildConfig
 import fit.asta.health.feedback.model.FeedbackDataMapper
@@ -35,10 +37,12 @@ object FeedbackModule {
     fun provideFeedbackRepo(
         remoteApi: FeedbackApi,
         feedbackMapper: FeedbackDataMapper,
+        @ApplicationContext context: Context
     ): FeedbackRepo {
         return FeedbackRepoImpl(
             remoteApi = remoteApi,
-            mapper = feedbackMapper
+            mapper = feedbackMapper,
+            context = context
         )
     }
 }
