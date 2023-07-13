@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -48,9 +49,12 @@ fun CardItem(
             modifier = modifier.padding(16.dp),
             horizontalArrangement = Arrangement.spacedBy(spacing.small)
         ) {
-            Column( verticalArrangement = Arrangement.spacedBy(spacing.small)) {
+            Column(verticalArrangement = Arrangement.spacedBy(spacing.small)) {
                 Icon(
-                    painter = painterResource(id), contentDescription = null
+                    painter = painterResource(id),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(24.dp)
                 )
             }
             Column(
@@ -73,7 +77,7 @@ fun CardItem(
 
 @Composable
 fun ButtonWithColor(
-    modifier: Modifier=Modifier, color: Color, text: String, onClick: () -> Unit
+    modifier: Modifier = Modifier, color: Color, text: String, onClick: () -> Unit
 ) {
 
     Button(
