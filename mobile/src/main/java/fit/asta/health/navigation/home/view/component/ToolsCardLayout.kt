@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import fit.asta.health.R
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.getImageUrl
 
 
@@ -81,19 +82,17 @@ fun ToolsCardLayoutDemo(
     imgUrl: String,
     modifier: Modifier = Modifier,
     imageModifier: Modifier = Modifier,
-    onClick: (type: String) -> Unit
+    onClick: (type: String) -> Unit,
 ) {
 
-    Card(
-        modifier = modifier,
+    Card(modifier = modifier,
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = androidx.compose.material3.MaterialTheme.colorScheme.primaryContainer),
         onClick = {
             onClick(type)
-        }
-    ) {
+        }) {
 
-    Column(modifier = Modifier.background(Color.Transparent)) {
+        Column(modifier = Modifier.background(Color.Transparent)) {
 
             Box {
 
@@ -102,7 +101,11 @@ fun ToolsCardLayoutDemo(
                     contentDescription = null,
                     modifier = imageModifier
                         .aspectRatio(ratio = 1f)
-                        .clip(RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)),
+                        .clip(
+                            RoundedCornerShape(
+                                bottomStart = spacing.small, bottomEnd = spacing.small
+                            )
+                        ),
                     contentScale = ContentScale.Crop
                 )
 
@@ -110,7 +113,7 @@ fun ToolsCardLayoutDemo(
                     contentAlignment = Alignment.TopEnd,
                     modifier = Modifier
                         .size(32.dp)
-                        .padding(top = 8.dp, end = 8.dp)
+                        .padding(start = 4.dp, top = 4.dp)
                         .clip(RoundedCornerShape(8.dp))
                         .background(color = Color(0x38000000))
                 ) {

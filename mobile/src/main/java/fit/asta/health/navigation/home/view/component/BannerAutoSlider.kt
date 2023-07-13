@@ -34,29 +34,25 @@ fun BannerAutoSlider(bannerList: List<ToolsHomeRes.ToolsHome.Banner>) {
     }
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = Modifier.fillMaxWidth()
     ) {
         HorizontalPager(
             state = pagerState,
             verticalAlignment = Alignment.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) { page ->
-            Box(
-                modifier = Modifier
-                    .graphicsLayer {
-                        val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
-                        lerp(
-                            start = 0.85f,
-                            stop = 1f,
-                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                        ).also { scale ->
-                            scaleX = scale
-                            scaleY = scale
-                        }
+            Box(modifier = Modifier
+                .graphicsLayer {
+                    val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
+                    lerp(
+                        start = 0.85f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                    ).also { scale ->
+                        scaleX = scale
+                        scaleY = scale
                     }
-                    .fillMaxWidth()
-                    .height(236.dp)) {
+                }
+                .fillMaxWidth()
+                .height(236.dp)) {
                 val sliderDataPages = bannerList[page]
                 BannerLayout(sliderDataPages, pagerState)
             }
