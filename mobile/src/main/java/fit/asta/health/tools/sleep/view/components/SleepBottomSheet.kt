@@ -22,20 +22,24 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.ButtonWithColor
 import fit.asta.health.common.ui.components.CardItem
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.tools.sleep.view.navigation.SleepToolNavRoutes
 
 /**
  * This is the UI which will be displayed when the Bottom Sheet is expanded
  *
  * @param scaffoldState this defines the State of the Scaffold
+ * @param navController This is the navigation Controller which helps to switch to a different Screen
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SleepBottomSheet(
-    scaffoldState: SheetState
+    scaffoldState: SheetState,
+    navController: NavController
 ) {
 
     Column(
@@ -89,7 +93,7 @@ fun SleepBottomSheet(
                 CircularImageAndText(
                     text = "More"
                 ) {
-                    // TODO
+                    navController.navigate(SleepToolNavRoutes.SleepDisturbanceRoute.routes)
                 }
             }
         }
@@ -116,7 +120,7 @@ fun SleepBottomSheet(
                 type = "De-Stress",
                 id = R.drawable.goal,
                 onClick = {
-                    // TODO
+                    navController.navigate(SleepToolNavRoutes.SleepGoalsRoute.routes)
                 }
             )
         }
@@ -139,7 +143,7 @@ fun SleepBottomSheet(
                         type = "Sleep Factors",
                         id = R.drawable.sleep_factors
                     ) {
-                        // TODO
+                        navController.navigate(SleepToolNavRoutes.SleepFactorRoute.routes)
                     }
                 }
                 item {
@@ -148,7 +152,7 @@ fun SleepBottomSheet(
                         type = "Check Tips",
                         id = R.drawable.jet_plane
                     ) {
-                        // TODO
+                        navController.navigate(SleepToolNavRoutes.SleepJetLagTipsRoute.routes)
                     }
                 }
                 item {
