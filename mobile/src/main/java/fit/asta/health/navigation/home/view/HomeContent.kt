@@ -27,9 +27,11 @@ fun HomeContent(activity: Activity, viewModel: HomeViewModel = hiltViewModel()) 
                 Log.d("HomeScreen", "Home Screen Data -> ${state.toolsHome}")
             }
 
-            is HomeState.Error -> ErrorScreenLayout(onTryAgain = {
+            is HomeState.Error -> ErrorScreenLayout(
+                onTryAgain = {
 
-            })
+                },
+            )
         }
     }
 }
