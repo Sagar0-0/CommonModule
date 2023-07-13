@@ -236,6 +236,6 @@
     <string name="skip_next">Skip to next</string>
     <string name="music_notification_channel_name">Asta Music</string>
     <string name="player_timestamp_format" translatable="false">%1$s:%2$s</string>
-
+    <string name="title_activity_sleep_tool">SleepToolActivity</string>
 </resources>
 
