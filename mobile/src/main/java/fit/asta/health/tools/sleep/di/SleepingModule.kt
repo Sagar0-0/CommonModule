@@ -1,0 +1,34 @@
+package fit.asta.health.tools.sleep.di
+
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import fit.asta.health.BuildConfig
+import fit.asta.health.tools.sleep.model.SleepRepository
+import fit.asta.health.tools.sleep.model.SleepRepositoryImpl
+import fit.asta.health.tools.sleep.model.api.SleepingApi
+import fit.asta.health.tools.sleep.model.api.SleepingRestApi
+import okhttp3.OkHttpClient
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+object SleepingModule {
+
+    @Singleton
+    @Provides
+    fun provideSleepApi(client: OkHttpClient): SleepingApi {
+        return SleepingRestApi(
+            baseUrl = BuildConfig.BASE_URL,
+            client = client
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideSleepRepository(api: SleepingApi): SleepRepository {
+        return SleepRepositoryImpl(api)
+    }
+
+}
