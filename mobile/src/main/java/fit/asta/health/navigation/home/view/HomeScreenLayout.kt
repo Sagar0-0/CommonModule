@@ -14,11 +14,11 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
 import fit.asta.health.navigation.home.view.component.*
+import fit.asta.health.testimonials.TestimonialsActivity
 import fit.asta.health.tools.exercise.ExerciseActivity
 import fit.asta.health.tools.meditation.MeditationActivity
 import fit.asta.health.tools.walking.view.WalkingActivity
 import fit.asta.health.tools.water.WaterToolActivity
-import fit.asta.health.testimonials.TestimonialsActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -40,10 +40,6 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
             .padding(16.dp)
     ) {
 
-        item {
-            Spacer(modifier = Modifier.height(spacing.medium))
-        }
-
         item(span = { GridItemSpan(3) }) {
             BannerAutoSlider(bannerList = toolsHome.banners)
         }
@@ -52,10 +48,6 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
             MyToolsAndViewAll(myTools = "My Tools", allTools = "All Tools", onClick = {
                 //TODO - Integrate All tools
             })
-        }
-
-        item {
-            Spacer(modifier = Modifier.height(spacing.medium))
         }
 
         items(toolsHome.tools) { tool ->
@@ -94,10 +86,6 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
                         }
                     }
                 })
-        }
-
-        item {
-            Spacer(modifier = Modifier.height(spacing.medium))
         }
 
         item(span = { GridItemSpan(3) }) {
