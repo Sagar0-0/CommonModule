@@ -30,17 +30,17 @@ class HomeViewModel @Inject constructor(
         loadHomeData()
     }
 
-    private fun loadHomeData() {
-        viewModelScope.launch {
+     fun loadHomeData() {
+         viewModelScope.launch {
 
-            authRepo.getUser()?.let { it ->
-                toolsHomeRepo.getHomeData(
-                    userId = it.uid,
-                    latitude = "28.6353",
-                    longitude = "77.2250",
-                    location = "bangalore",
-                    startDate = getCurrentDate(),
-                    endDate = getNextDate(2),
+             authRepo.getUser()?.let { it ->
+                 toolsHomeRepo.getHomeData(
+                     userId = it.uid,
+                     latitude = "28.6353",
+                     longitude = "77.2250",
+                     location = "bangalore",
+                     startDate = getCurrentDate(),
+                     endDate = getNextDate(2),
                     time = getCurrentTime()
                 ).catch { exception ->
                     _mutableState.value = HomeState.Error(exception)

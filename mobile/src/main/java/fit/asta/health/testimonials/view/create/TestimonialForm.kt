@@ -30,8 +30,8 @@ import fit.asta.health.common.ui.theme.boxSize
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiString
+import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
-import fit.asta.health.navigation.home.view.component.NoInternetLayout
 import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.view.components.ValidatedTextField
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
@@ -212,7 +212,7 @@ fun TestimonialForm(
                     })
                 }
 
-                is TestimonialSubmitState.NoInternet -> NoInternetLayout(onTryAgain = {
+                is TestimonialSubmitState.NoInternet -> ErrorScreenLayout(onTryAgain = {
                     editViewModel.onEvent(
                         TestimonialEvent.OnSubmit
                     )

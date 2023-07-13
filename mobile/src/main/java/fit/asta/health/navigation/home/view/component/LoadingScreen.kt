@@ -1,8 +1,16 @@
 package fit.asta.health.navigation.home.view.component
 
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.keyframes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -26,7 +34,9 @@ fun LoadingAnimation(
     circleColor: Color = MaterialTheme.colors.primary,
     spaceBetween: Dp = 10.dp,
     travelDistance: Dp = 20.dp,
+    contentAlignment: Alignment = Alignment.Center,
 ) {
+
     val circles = listOf(remember { Animatable(initialValue = 0f) },
         remember { Animatable(initialValue = 0f) },
         remember { Animatable(initialValue = 0f) })
@@ -49,9 +59,9 @@ fun LoadingAnimation(
     val circleValues = circles.map { it.value }
     val distance = with(LocalDensity.current) { travelDistance.toPx() }
 
-    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
+    Box(contentAlignment = contentAlignment, modifier = modifier.fillMaxWidth()) {
         Row(
-            modifier = modifier, horizontalArrangement = Arrangement.spacedBy(spaceBetween)
+            horizontalArrangement = Arrangement.spacedBy(spaceBetween)
         ) {
             circleValues.forEach { value ->
                 Box(modifier = Modifier

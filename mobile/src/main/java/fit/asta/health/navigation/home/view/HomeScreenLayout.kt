@@ -32,7 +32,7 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
     val context = LocalContext.current
 
     LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
+        columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
@@ -40,11 +40,11 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
             .padding(16.dp)
     ) {
 
-        item(span = { GridItemSpan(3) }) {
+        item(span = { GridItemSpan(2) }) {
             BannerAutoSlider(bannerList = toolsHome.banners)
         }
 
-        item(span = { GridItemSpan(3) }) {
+        item(span = { GridItemSpan(2) }) {
             MyToolsAndViewAll(myTools = "My Tools", allTools = "All Tools", onClick = {
                 //TODO - Integrate All tools
             })
@@ -88,13 +88,13 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
                 })
         }
 
-        item(span = { GridItemSpan(3) }) {
+        item(span = { GridItemSpan(2) }) {
             MyToolsAndViewAll(myTools = "Testimonials", allTools = "View All", onClick = {
                 TestimonialsActivity.launch(context = context)
             })
         }
 
-        item(span = { GridItemSpan(3) }) {
+        item(span = { GridItemSpan(2) }) {
             Testimonials(testimonialsList = toolsHome.testimonials)
         }
 
@@ -102,7 +102,7 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
             Spacer(modifier = Modifier.height(spacing.medium))
         }
 
-        item(span = { GridItemSpan(3) }) {
+        item(span = { GridItemSpan(2) }) {
             RateUsCard(activity)
         }
 
@@ -110,7 +110,7 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
             Spacer(modifier = Modifier.height(spacing.medium))
         }
 
-        item(span = { GridItemSpan(3) }) {
+        item(span = { GridItemSpan(2) }) {
             ReferAndEarn()
         }
 

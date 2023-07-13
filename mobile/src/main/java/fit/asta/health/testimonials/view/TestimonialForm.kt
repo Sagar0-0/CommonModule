@@ -8,8 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.R
+import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
-import fit.asta.health.navigation.home.view.component.NoInternetLayout
 import fit.asta.health.testimonials.view.create.CreateTstScreen
 import fit.asta.health.testimonials.viewmodel.create.TestimonialGetState
 import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
@@ -29,9 +29,11 @@ fun LoadTestimonialForm(
                 LoadingAnimation()
             }
         }
-        TestimonialGetState.NoInternet -> NoInternetLayout(onTryAgain = {
+
+        TestimonialGetState.NoInternet -> ErrorScreenLayout(onTryAgain = {
             getViewModel.onLoad()
         })
+
         is TestimonialGetState.Error -> ServerErrorLayout(state.error)
         is TestimonialGetState.Success -> CreateTstScreen(
             stringResource(R.string.testimonial_title_edit), onNavigateTstCreate, onNavigateTstHome

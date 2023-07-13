@@ -53,6 +53,7 @@ fun ErrorScreenLayout(
     NoInternetScreen(
         openFullDialogCustom, onTryAgain, primaryIssue, desc, btnTxt, imgID
     )
+
 }
 
 @Composable
@@ -65,68 +66,66 @@ private fun NoInternetScreen(
     imgID: Int,
 ) {
 
-    Box {
-        Dialog(onDismissRequest = {
-            openFullDialogCustom.value = false
-        }) {
-            Surface {
+    Dialog(onDismissRequest = {
+        openFullDialogCustom.value = false
+    }) {
+        Surface {
 
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
 
-                    Image(
-                        painter = painterResource(id = imgID),
-                        contentDescription = primaryIssue,
-                        contentScale = ContentScale.Fit,
-                        modifier = Modifier
-                            .height(200.dp)
-                            .fillMaxWidth(),
+                Image(
+                    painter = painterResource(id = imgID),
+                    contentDescription = primaryIssue,
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .height(200.dp)
+                        .fillMaxWidth(),
 
-                        )
-
-                    Spacer(modifier = Modifier.height(20.dp))
-                    //.........................Text: title
-                    Text(
-                        text = primaryIssue,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(top = 20.dp)
-                            .fillMaxWidth(),
-                        letterSpacing = 2.sp,
-                        fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.primary,
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
 
-                    //.........................Text : description
-                    Text(
-                        text = desc,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(top = 10.dp, start = 25.dp, end = 25.dp)
-                            .fillMaxWidth(),
-                        letterSpacing = 1.sp,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                    //.........................Spacer
-                    Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(20.dp))
+                //.........................Text: title
+                Text(
+                    text = primaryIssue,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(top = 20.dp)
+                        .fillMaxWidth(),
+                    letterSpacing = 2.sp,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+                Spacer(modifier = Modifier.height(8.dp))
 
-                    val cornerRadius = 16.dp
-                    val gradientColor = listOf(Gradient1NoInternet, Gradient2NoInternet)
-                    GradientButton(
-                        gradientColors = gradientColor,
-                        cornerRadius = cornerRadius,
-                        nameButton = btnTxt,
-                        roundedCornerShape = RoundedCornerShape(
-                            topStart = 30.dp, bottomEnd = 30.dp
-                        ),
-                        onClick = onTryAgain
-                    )
-                }
+                //.........................Text : description
+                Text(
+                    text = desc,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(top = 10.dp, start = 25.dp, end = 25.dp)
+                        .fillMaxWidth(),
+                    letterSpacing = 1.sp,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+                //.........................Spacer
+                Spacer(modifier = Modifier.height(24.dp))
+
+                val cornerRadius = 16.dp
+                val gradientColor = listOf(Gradient1NoInternet, Gradient2NoInternet)
+                GradientButton(
+                    gradientColors = gradientColor,
+                    cornerRadius = cornerRadius,
+                    nameButton = btnTxt,
+                    roundedCornerShape = RoundedCornerShape(
+                        topStart = 30.dp, bottomEnd = 30.dp
+                    ),
+                    onClick = onTryAgain
+                )
             }
         }
     }
@@ -171,5 +170,7 @@ fun GradientButton(
                 text = nameButton, fontSize = 20.sp, color = Color.White
             )
         }
+
+
     }
 }

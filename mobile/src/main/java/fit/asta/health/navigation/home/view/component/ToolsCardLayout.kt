@@ -112,8 +112,8 @@ fun ToolsCardLayoutDemo(
                 Box(
                     contentAlignment = Alignment.TopEnd,
                     modifier = Modifier
-                        .size(32.dp)
-                        .padding(start = 4.dp, top = 4.dp)
+                        .size(48.dp)
+                        .padding(start = 6.dp, top = 6.dp)
                         .clip(RoundedCornerShape(8.dp))
                         .background(color = Color(0x38000000))
                 ) {
@@ -122,7 +122,7 @@ fun ToolsCardLayoutDemo(
                             painter = painterResource(id = R.drawable.schedule),
                             contentDescription = null,
                             modifier = Modifier
-                                .size(24.dp)
+                                .size(32.dp)
                                 .padding(6.dp)
                         )
                     }
