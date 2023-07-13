@@ -19,6 +19,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,25 +29,38 @@ import fit.asta.health.R
 import fit.asta.health.common.ui.theme.Gradient1NoInternet
 import fit.asta.health.common.ui.theme.Gradient2NoInternet
 
+@Preview
 @Composable
-fun NoInternetLayout(onTryAgain: () -> Unit) {
+fun ErrorScreenLayout(
+    onTryAgain: () -> Unit = {},
+    primaryIssue: String = "Whoops!!",
+    desc: String = "Second Internet connection was found. Check your connection or try again.",
+    btnTxt: String = "Try Again",
+    imgID: Int = R.drawable.nointrenet,
+) {
 
     val openFullDialogCustom = remember { mutableStateOf(true) }
 
     //...............................................................................
     //Full screen Custom Dialog Sample\
-    NoInternetScreen(openFullDialogCustom, onTryAgain)
+    NoInternetScreen(openFullDialogCustom, onTryAgain, primaryIssue, desc, btnTxt, imgID)
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun NoInternetScreen(openFullDialogCustom: MutableState<Boolean>, onTryAgain: () -> Unit) {
+private fun NoInternetScreen(
+    openFullDialogCustom: MutableState<Boolean>,
+    onTryAgain: () -> Unit,
+    primaryIssue: String,
+    desc: String,
+    btnTxt: String,
+    imgID: Int,
+) {
 
     Dialog(
         onDismissRequest = {
             openFullDialogCustom.value = false
-        },
-        properties = DialogProperties(
+        }, properties = DialogProperties(
             usePlatformDefaultWidth = false // experimental
         )
     ) {
@@ -60,8 +74,8 @@ private fun NoInternetScreen(openFullDialogCustom: MutableState<Boolean>, onTryA
 
 
                 Image(
-                    painter = painterResource(id = R.drawable.nointrenet),
-                    contentDescription = null,
+                    painter = painterResource(id = imgID),
+                    contentDescription = primaryIssue,
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
                         .height(200.dp)
@@ -72,7 +86,7 @@ private fun NoInternetScreen(openFullDialogCustom: MutableState<Boolean>, onTryA
                 Spacer(modifier = Modifier.height(20.dp))
                 //.........................Text: title
                 Text(
-                    text = "Whoops!!",
+                    text = primaryIssue,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(top = 20.dp)
@@ -86,7 +100,7 @@ private fun NoInternetScreen(openFullDialogCustom: MutableState<Boolean>, onTryA
 
                 //.........................Text : description
                 Text(
-                    text = "Second Internet connection was found. Check your connection or try again.",
+                    text = desc,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(top = 10.dp, start = 25.dp, end = 25.dp)
@@ -103,10 +117,9 @@ private fun NoInternetScreen(openFullDialogCustom: MutableState<Boolean>, onTryA
                 GradientButton(
                     gradientColors = gradientColor,
                     cornerRadius = cornerRadius,
-                    nameButton = "Try again",
+                    nameButton = btnTxt,
                     roundedCornerShape = RoundedCornerShape(
-                        topStart = 30.dp,
-                        bottomEnd = 30.dp
+                        topStart = 30.dp, bottomEnd = 30.dp
                     ),
                     onClick = onTryAgain
                 )
@@ -122,7 +135,7 @@ fun GradientButton(
     cornerRadius: Dp,
     nameButton: String,
     roundedCornerShape: RoundedCornerShape,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
 
     Button(
@@ -145,17 +158,11 @@ fun GradientButton(
                     shape = roundedCornerShape
                 )
                 .clip(roundedCornerShape)
-                /*.background(
-                    brush = Brush.linearGradient(colors = gradientColors),
-                    shape = RoundedCornerShape(cornerRadius)
-                )*/
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = nameButton,
-                fontSize = 20.sp,
-                color = Color.White
+                text = nameButton, fontSize = 20.sp, color = Color.White
             )
         }
     }

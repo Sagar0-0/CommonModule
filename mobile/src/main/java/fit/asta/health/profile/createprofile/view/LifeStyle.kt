@@ -25,8 +25,8 @@ import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import fit.asta.health.common.ui.components.PrimaryButton
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
-import fit.asta.health.navigation.home.view.component.NoInternetLayout
 import fit.asta.health.profile.createprofile.view.LifeStyleCreateBottomSheetType.*
 import fit.asta.health.profile.createprofile.view.components.CreateProfileTimePicker
 import fit.asta.health.profile.createprofile.view.components.ItemSelectionLayout
@@ -379,7 +379,7 @@ fun LifeStyleCreateBottomSheetLayout(
                 is HPropState.Error -> {}
                 is HPropState.Loading -> LoadingAnimation()
                 is HPropState.NoInternet -> {
-                    NoInternetLayout(onTryAgain = {})
+                    ErrorScreenLayout(onTryAgain = {})
                 }
 
                 is HPropState.Success -> {
@@ -398,7 +398,7 @@ fun LifeStyleCreateBottomSheetLayout(
                 is HPropState.Error -> {}
                 is HPropState.Loading -> LoadingAnimation()
                 is HPropState.NoInternet -> {
-                    NoInternetLayout(onTryAgain = {})
+                    ErrorScreenLayout(onTryAgain = {})
                 }
 
                 is HPropState.Success -> {
@@ -417,7 +417,7 @@ fun LifeStyleCreateBottomSheetLayout(
                 is HPropState.Error -> {}
                 is HPropState.Loading -> LoadingAnimation()
                 is HPropState.NoInternet -> {
-                    NoInternetLayout(onTryAgain = {})
+                    ErrorScreenLayout(onTryAgain = {})
                 }
 
                 is HPropState.Success -> {

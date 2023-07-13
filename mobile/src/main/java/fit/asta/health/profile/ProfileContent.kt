@@ -5,8 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
-import fit.asta.health.navigation.home.view.component.NoInternetLayout
 import fit.asta.health.profile.viewmodel.ProfileGetState
 import fit.asta.health.profile.viewmodel.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,7 +23,7 @@ fun ProfileContent(viewModel: ProfileViewModel = hiltViewModel()) {
         is ProfileGetState.Success -> ProfileReadyScreen(userProfile = profileState.userProfile)
         is ProfileGetState.Error -> {}
         ProfileGetState.Empty -> CreateUserProfileActivity.launch(context = context)
-        ProfileGetState.NoInternet -> NoInternetLayout(onTryAgain = { viewModel.loadUserProfile() })
+        ProfileGetState.NoInternet -> ErrorScreenLayout(onTryAgain = { viewModel.loadUserProfile() })
     }
 
 }

@@ -7,8 +7,8 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
+import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
-import fit.asta.health.navigation.home.view.component.NoInternetLayout
 import fit.asta.health.navigation.home.viewmodel.HomeState
 import fit.asta.health.navigation.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,7 +26,8 @@ fun HomeContent(activity: Activity, viewModel: HomeViewModel = hiltViewModel()) 
                 HomeScreenLayout(activity = activity, toolsHome = state.toolsHome)
                 Log.d("HomeScreen", "Home Screen Data -> ${state.toolsHome}")
             }
-            is HomeState.Error -> NoInternetLayout(onTryAgain = {
+
+            is HomeState.Error -> ErrorScreenLayout(onTryAgain = {
 
             })
         }

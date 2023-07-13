@@ -17,7 +17,7 @@ import com.google.accompanist.pager.HorizontalPager
 import fit.asta.health.common.ui.components.GifImage
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.getImageUrl
-import fit.asta.health.navigation.home.view.component.NoInternetLayout
+import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
 import fit.asta.health.onboarding.vm.OnboardingGetState
 import kotlinx.coroutines.launch
 
@@ -27,20 +27,17 @@ import kotlinx.coroutines.launch
 fun OnBoardingPager(
     state: OnboardingGetState,
     onReload: () -> Unit,
-    onFinish: () -> Unit
+    onFinish: () -> Unit,
 ) {
     when (state) {
         OnboardingGetState.Loading -> {
             LinearProgressIndicator(
-                modifier = Modifier.fillMaxWidth(),
-                color = MaterialTheme.colorScheme.primary
+                modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.primary
             )
         }
 
         OnboardingGetState.NoInternet -> {
-            NoInternetLayout {
-                onReload()
-            }
+            ErrorScreenLayout(onTryAgain = onReload)
         }
 
         OnboardingGetState.Empty -> {
@@ -48,9 +45,7 @@ fun OnBoardingPager(
         }
 
         is OnboardingGetState.Error -> {
-            NoInternetLayout {
-                onReload()
-            }
+            ErrorScreenLayout(onTryAgain = onReload)
         }
 
         is OnboardingGetState.Success -> {
@@ -68,8 +63,7 @@ fun OnBoardingPager(
                 modifier = Modifier.fillMaxSize()
             ) {
                 HorizontalPager(
-                    state = pagerState,
-                    modifier = Modifier.weight(1f)
+                    state = pagerState, modifier = Modifier.weight(1f)
                 ) { page ->
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -108,8 +102,7 @@ fun OnBoardingPager(
 
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     PagerIndicator(size = items.size, currentPage = pagerState.currentPage)
-                    BottomNavigationSection(
-                        lastPage = pagerState.currentPage == items.size - 1,
+                    BottomNavigationSection(lastPage = pagerState.currentPage == items.size - 1,
                         onNextClick = {
                             coroutine.launch {
                                 pagerState.animateScrollToPage(pagerState.currentPage + 1)
@@ -117,8 +110,7 @@ fun OnBoardingPager(
                         },
                         onSkipClick = {
                             onFinish()
-                        }
-                    )
+                        })
                 }
             }
         }
@@ -131,12 +123,9 @@ fun OnBoardingPager(
 @Preview
 @Composable
 fun PreviewOnBoard() {
-    OnBoardingPager(
-        OnboardingGetState.Empty,
-        {
+    OnBoardingPager(OnboardingGetState.Empty, {
 
-        }
-    ) {
+    }) {
 
     }
 }
