@@ -3,16 +3,26 @@ package fit.asta.health.common.location.maps
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.IntentSender
 import android.location.Geocoder
 import android.util.Log
+import androidx.activity.result.IntentSenderRequest
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.LocationSettingsResponse
+import com.google.android.gms.location.Priority
+import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.tasks.Task
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.common.location.LocationHelper
 import fit.asta.health.common.location.maps.modal.AddressesResponse
 import fit.asta.health.common.location.maps.modal.AddressesResponse.Address
 import fit.asta.health.common.location.maps.modal.SearchResponse
@@ -33,10 +43,14 @@ class MapsViewModel
 @Inject constructor(
     private val mapsRepo: MapsRepo,
     @Named("UId")
-    val uId: String
+    val uId: String,
+    private val locationHelper: LocationHelper
 ) : ViewModel() {
 
     private val TAG = "MAPS"
+
+    val isLocationEnabled = MutableStateFlow(false)
+    val isPermissionGranted = MutableStateFlow(true)
 
     private val _currentAddress = MutableStateFlow<Address?>(null)
     val currentAddress = _currentAddress.asStateFlow()
@@ -59,12 +73,65 @@ class MapsViewModel
     val markerAddressDetail = _markerAddressDetail.asStateFlow()
 
 
+    fun updateCurrentLocationData(context: Context) {
+        updateLocationServiceStatus()
+        viewModelScope.launch {
+            if (isLocationEnabled.value && isPermissionGranted.value) {
+                getCurrentLatLng(context)
+                _currentLatLng.collect {
+                    getCurrentAddress(context)
+                }
+            }
+        }
+    }
+
+    fun updateLocationServiceStatus() {
+        isLocationEnabled.value = locationHelper.isConnected()
+    }
+
+
+    fun enableLocationRequest(
+        context: Context,
+        onFailure: (intentSenderRequest: IntentSenderRequest) -> Unit
+    ) {
+
+        val locationRequest = LocationRequest.Builder(
+            Priority.PRIORITY_HIGH_ACCURACY,
+            10000
+        ).build()
+        val builder = LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest)
+
+        val client: SettingsClient = LocationServices.getSettingsClient(context)
+        val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
+        task.addOnSuccessListener { locationSettingsResponse ->
+            Log.d(
+                "Location",
+                "createLocationRequest: Success ${locationSettingsResponse.locationSettingsStates}"
+            )
+            getCurrentLatLng(context)
+        }
+        task.addOnFailureListener { exception ->
+            if (exception is ResolvableApiException) {
+                // Location settings are not satisfied, but this can be fixed
+                // by showing the user a dialog.
+                try {
+                    val intentSenderRequest =
+                        IntentSenderRequest.Builder(exception.resolution).build()
+                    onFailure(intentSenderRequest)
+                } catch (sendEx: IntentSender.SendIntentException) {
+                    // Ignore the error.
+                }
+            }
+        }
+    }
+
     fun setSelectedAdId(id: String) {
         selectedAddressId = id
     }
 
     //Call only after currentLatLng changes
-    fun getCurrentAddress(context: Context) {
+    private fun getCurrentAddress(context: Context) {
         Log.d(TAG, "getCurrentAddress: ${_currentLatLng.value.latitude}")
         if (_currentLatLng.value.latitude == 0.0 && _currentLatLng.value.longitude == 0.0) return
         try {
@@ -112,10 +179,16 @@ class MapsViewModel
         locationResult.addOnCompleteListener(context as Activity) { task ->
             if (task.isSuccessful) {
                 Log.d(TAG, "getCurrentLocation: Task success: ${task.result}")
-                val lastKnownLocation = task.result ?: return@addOnCompleteListener
-                _currentLatLng.value =
-                    LatLng(lastKnownLocation.latitude, lastKnownLocation.longitude)
-                Log.d(TAG, "After success $_currentLatLng")
+                try {
+                    val lastKnownLocation = task.result ?: return@addOnCompleteListener
+                    _currentLatLng.value =
+                        LatLng(lastKnownLocation.latitude, lastKnownLocation.longitude)
+                    Log.d(TAG, "After success $_currentLatLng")
+                } catch (e: Exception) {
+                    Log.e(TAG, "getCurrentLatLng: ${e.message}")
+                }
+            } else {
+                Log.e(TAG, "Exception: %s", task.exception)
             }
         }
     }
@@ -128,7 +201,7 @@ class MapsViewModel
             val addresses = geocoder.getFromLocation(
                 lat,
                 long,
-                1
+                1,
             )
             _markerAddressDetail.value =
                 ResultState.Success(if (!addresses.isNullOrEmpty()) addresses[0] else null)
@@ -178,7 +251,6 @@ class MapsViewModel
 
     fun putAddress(address: Address, onSuccess: () -> Unit) = viewModelScope.launch {
         val response = mapsRepo.putAddress(address)
-        Log.d(TAG, "PUT method called")
         response.collect {
             if (it is ResultState.Success) {
                 Log.d(TAG, "PUT: " + it.data.status.code.toString())

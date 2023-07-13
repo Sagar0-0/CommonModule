@@ -10,6 +10,21 @@ class PrefUtils {
 
     companion object {
 
+        fun getOnboardingShownStatus(context: Context): Boolean {
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+            return preferences.getBoolean(
+                context.getString(R.string.user_pref_onboarding_shown),
+                false
+            )
+        }
+
+        fun setOnboardingShownStatus(status: Boolean, context: Context) {
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+            preferences.edit()
+                .putBoolean(context.getString(R.string.user_pref_onboarding_shown), status)
+                .apply()
+        }
+
         fun getMasterNotification(context: Context): Boolean {
 
             val preferences = PreferenceManager.getDefaultSharedPreferences(context)

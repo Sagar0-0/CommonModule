@@ -1,18 +1,28 @@
 package fit.asta.health.common.location.maps
 
 import android.Manifest
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -24,40 +34,118 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.R
-import fit.asta.health.common.location.maps.modal.AddressesResponse.*
+import fit.asta.health.common.location.LocationProviderChangedReceiver
+import fit.asta.health.common.location.maps.modal.AddressesResponse.Address
 import fit.asta.health.common.location.maps.modal.MapScreens
 import fit.asta.health.common.location.maps.ui.MapScreen
 import fit.asta.health.common.location.maps.ui.SavedAddressesScreen
 import fit.asta.health.common.ui.AppTheme
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MapsActivity : AppCompatActivity() {
 
     companion object {
-        private const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1934
+        fun launch(context: Context) {
+            Intent(context, MapsActivity::class.java)
+                .apply {
+                    context.startActivity(this)
+                }
+        }
     }
 
-    private val locationPermissionGranted = mutableStateOf(false)
     private val mapsViewModel: MapsViewModel by viewModels()
+    private var br: LocationProviderChangedReceiver? = null
+    private var locationRequestLauncher: ActivityResultLauncher<IntentSenderRequest>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Places.initialize(applicationContext, getString(R.string.MAPS_API_KEY))
-        getLocationPermission()
-        mapsViewModel.getAllAddresses()
+        initializeScreen()
+        registerLocationRequestLauncher()
+
+        val br = LocationProviderChangedReceiver()
+        br.init(
+            object : LocationProviderChangedReceiver.LocationListener {
+                override fun onEnabled() {
+                    mapsViewModel.isLocationEnabled.value = true
+                }
+
+                override fun onDisabled() {
+                    mapsViewModel.isLocationEnabled.value = false
+                }
+            }
+        )
+        val filter = IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION)
+        registerReceiver(br, filter)
 
         setContent {
             AppTheme {
+                val isLocationEnabled by mapsViewModel.isLocationEnabled.collectAsStateWithLifecycle()
+                val isPermissionGranted by mapsViewModel.isPermissionGranted.collectAsStateWithLifecycle()
+                if (!isPermissionGranted) {
+                    Toast.makeText(this, "Location permission access denied!!", Toast.LENGTH_SHORT)
+                        .show()
+                    finish()
+                }
+                if (!isLocationEnabled) {
+                    mapsViewModel.enableLocationRequest(this@MapsActivity) {
+                        locationRequestLauncher?.launch(it)
+                    }
+                }
                 val navController = rememberNavController()
-                if (locationPermissionGranted.value) {
-                    MapNavHost(navController)
-                } else {
-                    Text(text = "Need Permission")
+                MapNavHost(navController)
+            }
+        }
+    }
+
+    private fun initializeScreen() {
+        Places.initialize(applicationContext, getString(R.string.MAPS_API_KEY))
+        mapsViewModel.getAllAddresses()
+        updateCurrentLocation()
+    }
+
+    private fun updateCurrentLocation() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                mapsViewModel.updateCurrentLocationData(this@MapsActivity)
+            }
+        }
+    }
+
+    private fun registerLocationRequestLauncher() {
+        locationRequestLauncher =
+            registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { activityResult ->
+                if (activityResult.resultCode == RESULT_OK)
+                    mapsViewModel.getCurrentLatLng(this)
+                else {
+                    if (!mapsViewModel.isLocationEnabled.value) {
+                        Toast.makeText(
+                            this,
+                            "Location access is mandatory to use this feature!!",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                        finish()
+                    }
                 }
             }
+    }
 
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        if (br != null) unregisterReceiver(br)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mapsViewModel.updateLocationServiceStatus()
+        mapsViewModel.isPermissionGranted.value =
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+
     }
 
     @Composable
@@ -100,34 +188,6 @@ class MapsActivity : AppCompatActivity() {
                     navController.navigateUp()
                 }
             }
-        }
-    }
-
-    private fun getLocationPermission() {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-            == PackageManager.PERMISSION_GRANTED
-        ) {
-            locationPermissionGranted.value = true
-        } else {
-            ActivityCompat.requestPermissions(
-                this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
-            )
-        }
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            locationPermissionGranted.value = true
         }
     }
 }

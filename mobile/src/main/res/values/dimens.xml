@@ -1,63 +1,22 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="button_padding">10dp</dimen>
-    <dimen name="btn_box_day_font_size">16sp</dimen>
     <dimen name="corner_radius">10dp</dimen>
-    <dimen name="tab_padding_start">8dp</dimen>
-    <dimen name="tab_padding_end">8dp</dimen>
 
     <!--Profile creation-->
     <dimen name="dimen_24">24dp</dimen>
     <dimen name="dimen16">16dp</dimen>
     <dimen name="dimen32">32dp</dimen>
-    <dimen name="dimen64">64dp</dimen>
     <dimen name="dimenText16">16sp</dimen>
     <dimen name="dimenText13">13sp</dimen>
-    <dimen name="dimen40">40dp</dimen>
     <dimen name="dimen56">56dp</dimen>
-    <dimen name="dimen80">80dp</dimen>
     <dimen name="dimen8">8dp</dimen>
     <dimen name="dimen48">48dp</dimen>
-    <dimen name="dimen_text_24">24sp</dimen>
-    <dimen name="dimen_text_20">20sp</dimen>
     <dimen name="dimen4">4dp</dimen>
-    <dimen name="dimen_text_15">15sp</dimen>
-    <dimen name="dimen_text_16">16sp</dimen>
-    <dimen name="dimen_110">110dp</dimen>
-    <dimen name="dimen_text_18">18sp</dimen>
-    <dimen name="dimen_127">127dp</dimen>
-    <dimen name="dimen_text_14">14sp</dimen>
-    <dimen name="dimen_10">10dp</dimen>
-    <dimen name="dimen_18">18dp</dimen>
-    <dimen name="dimen_33">33dp</dimen>
-    <dimen name="dimen_258">258dp</dimen>
-    <dimen name="dimen_34">34dp</dimen>
-    <dimen name="dimen_2">2dp</dimen>
-    <dimen name="dimen_72">72dp</dimen>
-    <dimen name="dimen_40">40dp</dimen>
-    <dimen name="dimen_180">180dp</dimen>
-    <dimen name="dimen_155">155dp</dimen>
-    <dimen name="dimen_181">181dp</dimen>
-    <dimen name="dimen_15">15dp</dimen>
-    <dimen name="dimen_5">5sp</dimen>
-    <dimen name="dimen_6">6dp</dimen>
-    <dimen name="dimen_98">98dp</dimen>
-    <dimen name="dimen_text_4">4sp</dimen>
-    <dimen name="dimen_text_12">12sp</dimen>
     <dimen name="dimen_0">0dp</dimen>
     <dimen name="dimen_120">120dp</dimen>
     <dimen name="dimen_12">12dp</dimen>
-    <dimen name="dimen_line_space_1">1sp</dimen>
-    <dimen name="dimen_20">20dp</dimen>
-    <dimen name="dimen_149">149dp</dimen>
-    <dimen name="dimen_146">146dp</dimen>
-    <dimen name="dimen_text_22">22sp</dimen>
-    <dimen name="dimen_60">60dp</dimen>
-    <dimen name="dimen24">24dp</dimen>
-    <dimen name="dimen8dp">8dp</dimen>
-    <dimen name="image_corner_radius">8dp</dimen>
     <dimen name="card_corner_radius">6dp</dimen>
-    <dimen name="dimen52">52dp</dimen>
 
     <!--<item name="dimenLineSpace2" type="dimen" format="float">2sp</item>-->
 </resources>

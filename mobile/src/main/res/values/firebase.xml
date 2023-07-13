@@ -2,17 +2,11 @@
 <resources>
 
     <color name="colorSignUpBackground">@color/colorWindowBackground</color>
-    <color name="colorSignUpBtnPhone">@color/colorPrimary</color>
-    <color name="colorSignUpBtnTextPhone">@color/colorOnPrimary</color>
-    <color name="colorSignUpBtnGoogle">#FFFFFF</color>
-    <color name="colorSignUpBtnTextGoogle">#757575</color>
     <color name="colorSignUpText">#BDBDBD</color>
     <color name="colorSignUpLinkText">#EEEEEE</color>
     <color name="colorSignUpTextPrimary">#FFFFFF</color>
     <color name="colorSignUpTextSecondary">#757575</color>
     <color name="colorSignUpControlNormal">#FFFFFF</color>
-    <color name="colorSignUpSpinnerTextCountry">#FFFFFF</color>
-    <color name="colorSignUpTextHint">#FFFFFF</color>
 
     <style name="LoginTheme" parent="FirebaseUI">
         <item name="windowActionBar">false</item>
@@ -30,37 +24,6 @@
         <item name="colorOnSecondary">@color/onSecondary</item>
         <item name="colorControlActivated">@color/signUpTextColor</item>
         <item name="colorControlHighlight">@color/signUpTextColor</item>-->
-    </style>
-
-    <style name="FirebaseUI.Button.AccountChooser.PhoneButton">
-        <item name="drawableStartCompat">@drawable/ic_signup_phone</item>
-        <item name="android:background">@drawable/ic_button_background_phone</item>
-        <item name="android:textColor">@color/colorSignUpBtnTextPhone</item>
-    </style>
-
-    <style name="FirebaseUI.Button.AccountChooser.GoogleButton">
-        <item name="drawableStartCompat">@drawable/fui_ic_googleg_color_24dp</item>
-        <item name="android:background">@drawable/ic_button_background_google</item>
-        <item name="android:textColor">@color/colorSignUpBtnTextGoogle</item>
-    </style>
-
-    <style name="FirebaseUI.CountrySpinner" parent="Widget.AppCompat.Spinner.Underlined">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-        <item name="android:textColor">@color/colorSignUpSpinnerTextCountry</item>
-    </style>
-
-    <style name="FirebaseUI.TextInputLayout.PhoneField">
-        <item name="android:textColorHint">@color/colorSignUpTextHint</item>
-        <item name="android:hint">@string/fui_phone_hint</item>
-    </style>
-
-    <style name="FirebaseUI.VerifyPhoneButton" parent="FirebaseUI.Button">
-        <item name="android:background">@drawable/ic_button_background_phone</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/colorSignUpBtnTextPhone</item>
     </style>
 
 </resources>

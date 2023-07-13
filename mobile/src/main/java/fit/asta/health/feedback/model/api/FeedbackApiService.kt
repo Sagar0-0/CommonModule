@@ -2,7 +2,8 @@ package fit.asta.health.feedback.model.api
 
 import fit.asta.health.feedback.model.network.NetFeedbackRes
 import fit.asta.health.feedback.model.network.NetUserFeedback
-import fit.asta.health.network.data.Status
+import fit.asta.health.feedback.model.network.PostFeedbackRes
+import okhttp3.MultipartBody
 import retrofit2.http.*
 
 //Feedback Endpoints
@@ -14,6 +15,10 @@ interface FeedbackApiService {
         @Query("fid") featureId: String
     ): NetFeedbackRes
 
+    @Multipart
     @POST("feedback/user/post")
-    suspend fun postUserFeedback(@Body feedback: NetUserFeedback): Status
+    suspend fun postUserFeedback(
+        @Part("json") feedback: NetUserFeedback,
+        @Part files: List<MultipartBody.Part>
+    ): PostFeedbackRes
 }

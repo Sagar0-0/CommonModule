@@ -6,6 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import fit.asta.health.common.location.LocationHelper
 import fit.asta.health.common.location.maps.api.RemoteApi
 import fit.asta.health.common.location.maps.api.SearchApi
 import fit.asta.health.common.location.maps.repo.MapsRepo
@@ -26,6 +27,10 @@ object MapsModule {
     @Named("UId")
     fun provideUId(authRepo: AuthRepo): String = authRepo.getUserId() ?: ""
 
+    @Provides
+    fun provideLocationHelper(@ApplicationContext context: Context): LocationHelper {
+        return LocationHelper(context)
+    }
 
     @Provides
     @Singleton

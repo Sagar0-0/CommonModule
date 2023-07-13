@@ -2,9 +2,7 @@ package fit.asta.health.auth
 
 import android.app.Activity
 import android.app.PendingIntent
-import android.content.BroadcastReceiver
 import android.content.ContentValues.TAG
-import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.text.TextUtils
@@ -17,6 +15,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,8 +27,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,8 +49,6 @@ import androidx.compose.ui.unit.dp
 import com.google.android.gms.auth.api.identity.GetPhoneNumberHintIntentRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.phone.SmsRetriever
-import com.google.android.gms.common.api.CommonStatusCodes
-import com.google.android.gms.common.api.Status
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -60,6 +59,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import fit.asta.health.common.ui.components.ValidatedNumberField
 import fit.asta.health.common.ui.theme.spacing
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 @Composable
@@ -103,6 +103,41 @@ fun PhoneLoginScreen(onSuccess: () -> Unit) {
     val mAuth: FirebaseAuth = Firebase.auth
     lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
 
+    val signInWithPhoneAuthCredential: (credential: PhoneAuthCredential) -> Unit = { credential ->
+        mAuth.signInWithCredential(credential)
+            .addOnCompleteListener(context as Activity) { task ->
+                if (task.isSuccessful) {
+                    onSuccess()
+                } else {
+                    loading = false
+                    if (task.exception is FirebaseAuthInvalidCredentialsException) {
+                        Toast.makeText(
+                            context,
+                            "Verification failed.." + (task.exception as FirebaseAuthInvalidCredentialsException).message,
+                            Toast.LENGTH_LONG
+                        ).show()
+                        if ((task.exception as FirebaseAuthInvalidCredentialsException).message?.contains(
+                                "expired"
+                            ) == true
+                        ) {
+                            codeSent = false
+                        }
+                    }
+                }
+            }
+    }
+
+    var shouldStartSMSRetrieval by rememberSaveable {
+        mutableStateOf(false)
+    }
+    LaunchedEffect(shouldStartSMSRetrieval) {
+        launch {
+            if (shouldStartSMSRetrieval) {
+                Log.d("OTP", "SMS Retrieval is Starting...")
+                startSMSRetrieverClient(context)
+            }
+        }
+    }
     val onOtpSubmit = {
         if (TextUtils.isEmpty(otp) || otp.length < 6) {
             Toast.makeText(
@@ -113,31 +148,12 @@ fun PhoneLoginScreen(onSuccess: () -> Unit) {
                 .show()
         } else {
             loading = true
+            shouldStartSMSRetrieval = false
             val credential: PhoneAuthCredential =
                 PhoneAuthProvider.getCredential(
                     verificationID, otp
                 )
-            mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(context as Activity) { task ->
-                    if (task.isSuccessful) {
-                        onSuccess()
-                    } else {
-                        loading = false
-                        if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                            Toast.makeText(
-                                context,
-                                "Verification failed.." + (task.exception as FirebaseAuthInvalidCredentialsException).message,
-                                Toast.LENGTH_LONG
-                            ).show()
-                            if ((task.exception as FirebaseAuthInvalidCredentialsException).message?.contains(
-                                    "expired"
-                                ) == true
-                            ) {
-                                codeSent = false
-                            }
-                        }
-                    }
-                }
+            signInWithPhoneAuthCredential(credential)
         }
     }
 
@@ -147,58 +163,42 @@ fun PhoneLoginScreen(onSuccess: () -> Unit) {
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
                 // Get SMS message content
                 val message = result.data!!.getStringExtra(SmsRetriever.EXTRA_SMS_MESSAGE)
-                val oneTimeCode = parseOneTimeCode(message)
-                otp = oneTimeCode
+                val smsCode = message?.let { "[0-9]{6}".toRegex().find(it) }
+                smsCode?.value?.let {
+                    otp = it
+                }
+                Log.d("OTP", "PhoneLoginScreen: $message")
                 onOtpSubmit()
             } else {
                 Toast.makeText(context, "Otp retrieval failed", Toast.LENGTH_SHORT).show()
             }
         }
     )
-
-    val smsVerificationReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            if (SmsRetriever.SMS_RETRIEVED_ACTION == intent.action) {
-                val extras = intent.extras
-                val smsRetrieverStatus = extras?.get(SmsRetriever.EXTRA_STATUS) as? Status
-                if (smsRetrieverStatus == null) {
-                    Log.e("SMS", "onReceive: smsRetrieverStatus null")
-                } else {
-                    when (smsRetrieverStatus.statusCode) {
-                        CommonStatusCodes.SUCCESS -> {
-                            // Get consent intent
-                            try {
-                                val consentIntent =
-                                    extras.getParcelable<Intent>(SmsRetriever.EXTRA_CONSENT_INTENT)
-                                smsReceiverLauncher.launch(consentIntent)
-                            } catch (e: java.lang.Exception) {
-                                Log.e("SMS", "onReceive: ${e.message}")
-                            }
-                        }
-
-                        CommonStatusCodes.TIMEOUT -> {
-                            Toast.makeText(context, "Timeout error", Toast.LENGTH_SHORT).show()
-                        }
-
-                        else -> {
-                            Toast.makeText(
-                                context,
-                                "Something went wrong, try again!",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            codeSent = false
-                        }
-                    }
-                }
-
+    val registerOTPReceiver = {
+        val myOTPReceiver = OTPReceiver()
+        Log.d("OTP", "PhoneLoginScreen: Registered Receiver")
+        myOTPReceiver.init(object : OTPReceiver.OTPReceiveListener {
+            override fun onOTPReceived(intent: Intent?) {
+                Log.d("OTP ", "OTP Received $intent")
+                smsReceiverLauncher.launch(intent)
+                context.unregisterReceiver(myOTPReceiver)
             }
-        }
+
+            override fun onOTPTimeOut() {
+                Log.e("OTP ", "Timeout")
+                Toast.makeText(context, "Otp retrieval failed", Toast.LENGTH_SHORT).show()
+                loading = false
+            }
+        })
+
+        val intentFilter = IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION)
+        context.registerReceiver(myOTPReceiver, intentFilter)
     }
 
     val onSendOtp = {
         if (TextUtils.isEmpty(phoneNumber) || phoneNumber.length < 10 || TextUtils.isEmpty(
                 postalCode
-            ) || postalCode.length < 3
+            ) || postalCode.length < 2
         ) {
             Toast.makeText(
                 context,
@@ -209,15 +209,16 @@ fun PhoneLoginScreen(onSuccess: () -> Unit) {
         } else {
             loading = true
             val number = "${postalCode}${phoneNumber}"
-            SmsRetriever.getClient(context).startSmsUserConsent(null)
-            val intentFilter = IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION)
-            context.registerReceiver(smsVerificationReceiver, intentFilter)
-            sendVerificationCode(number, mAuth, context as Activity, callbacks)
+            startSMSRetrieverClient(context)
+            registerOTPReceiver()
+            startPhoneVerification(number, mAuth, context as Activity, callbacks)
         }
     }
 
     val phoneNumberHintIntentResultLauncher =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartIntentSenderForResult()) { result ->
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.StartIntentSenderForResult()
+        ) { result ->
             try {
                 val phoneNumberHint = Identity.getSignInClient(context as Activity)
                     .getPhoneNumberFromIntent(result.data)
@@ -233,20 +234,24 @@ fun PhoneLoginScreen(onSuccess: () -> Unit) {
     val getPhoneNumberHint = {
         val request: GetPhoneNumberHintIntentRequest =
             GetPhoneNumberHintIntentRequest.builder().build()
-        Identity.getSignInClient(context as Activity)
-            .getPhoneNumberHintIntent(request)
-            .addOnSuccessListener { result: PendingIntent ->
-                try {
-                    phoneNumberHintIntentResultLauncher.launch(
-                        IntentSenderRequest.Builder(result).build()
-                    )
-                } catch (e: Exception) {
-                    Log.e("Phone", "Launching the PendingIntent failed")
+        try {
+            Identity.getSignInClient(context as Activity)
+                .getPhoneNumberHintIntent(request)
+                .addOnSuccessListener { result: PendingIntent ->
+                    try {
+                        phoneNumberHintIntentResultLauncher.launch(
+                            IntentSenderRequest.Builder(result).build()
+                        )
+                    } catch (e: Exception) {
+                        Log.e("Phone", "Launching the PendingIntent failed")
+                    }
                 }
-            }
-            .addOnFailureListener {
-                Log.e("Phone", "Phone Number Hint failed")
-            }
+                .addOnFailureListener {
+                    Log.e("Phone", "Phone Number Hint failed")
+                }
+        } catch (e: Exception) {
+            Log.e(TAG, "PhoneLoginScreen: Phone hint exception")
+        }
     }
 
 
@@ -375,6 +380,16 @@ fun PhoneLoginScreen(onSuccess: () -> Unit) {
                 ) {
                     Text(text = "Verify OTP", modifier = Modifier.padding(spacing.small))
                 }
+                Text(
+                    modifier = Modifier
+                        .align(Alignment.End)
+                        .padding(spacing.medium)
+                        .clickable {
+                            codeSent = false
+                        },
+                    text = "OTP not received?",
+                    color = MaterialTheme.colorScheme.onBackground
+                )
             }
         }
     }
@@ -384,8 +399,9 @@ fun PhoneLoginScreen(onSuccess: () -> Unit) {
     }
 
     callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-        override fun onVerificationCompleted(p0: PhoneAuthCredential) {
-            Toast.makeText(context, "Verification successful..", Toast.LENGTH_SHORT).show()
+        override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+            Log.d("OTP", "onVerificationCompleted:$credential")
+            signInWithPhoneAuthCredential(credential)
         }
 
         override fun onVerificationFailed(p0: FirebaseException) {
@@ -397,9 +413,9 @@ fun PhoneLoginScreen(onSuccess: () -> Unit) {
 
         override fun onCodeSent(
             verificationId: String,
-            p1: PhoneAuthProvider.ForceResendingToken
+            token: PhoneAuthProvider.ForceResendingToken
         ) {
-            super.onCodeSent(verificationId, p1)
+            super.onCodeSent(verificationId, token)
             verificationID = verificationId
             codeSent = true
             loading = false
@@ -408,11 +424,8 @@ fun PhoneLoginScreen(onSuccess: () -> Unit) {
 
 }
 
-fun parseOneTimeCode(message: String?): String {
-    return message?.substring(0, 6) ?: ""
-}
 
-private fun sendVerificationCode(
+private fun startPhoneVerification(
     number: String,
     auth: FirebaseAuth,
     activity: Activity,
@@ -420,7 +433,7 @@ private fun sendVerificationCode(
 ) {
     val options = PhoneAuthOptions.newBuilder(auth)
         .setPhoneNumber(number)
-        .setTimeout(120L, TimeUnit.SECONDS)
+        .setTimeout(0L, TimeUnit.SECONDS)
         .setActivity(activity)
         .setCallbacks(callbacks)
         .build()

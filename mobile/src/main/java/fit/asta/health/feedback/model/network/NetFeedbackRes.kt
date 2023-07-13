@@ -34,7 +34,7 @@ data class Qn(
     @SerializedName("isDet")
     val isDet: Boolean,
     @SerializedName("opts")
-    val opts: List<String>,
+    val opts: List<String>?,
     @SerializedName("qn")
     val qn: String,
     @SerializedName("qno")

@@ -1,5 +1,6 @@
 package fit.asta.health.feedback.model.network
 
+import android.net.Uri
 import com.google.gson.annotations.SerializedName
 
 
@@ -22,7 +23,7 @@ data class An(
     @SerializedName("isDet")
     val isDet: Boolean,
     @SerializedName("media")
-    val media: Media?,
+    val media: List<Media>?,
     @SerializedName("opts")
     val opts: List<String>?,
     @SerializedName("qid")
@@ -32,10 +33,9 @@ data class An(
 )
 
 data class Media(
-    @SerializedName("size")
-    val size: String,
-    @SerializedName("type")
-    val type: String,
+    @SerializedName("name")
+    val name: String,
     @SerializedName("url")
-    val url: String
+    val url: String,
+    val localUri: Uri
 )

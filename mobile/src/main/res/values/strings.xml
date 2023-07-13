@@ -24,6 +24,7 @@
     <string name="user_pref_reminder_alarm_summary">Get alarm to remind the activities</string>
     <string name="user_pref_reminder_alarm_title">Reminder alarm</string>
 
+    <string name="user_pref_onboarding_shown">user_pref_onboarding_shown</string>
     <string name="user_pref_activity_tips_key" translatable="false">user_pref_activity_tips</string>
     <string name="user_pref_activity_tips_summary">Get tips to help you meet physical activity recommendations</string>
     <string name="user_pref_activity_tips_title">Activity tips</string>
@@ -53,9 +54,6 @@
     <string name="user_pref_promotions_title">Discounts/Offers</string>
 
     <!-- User Preference - Payment Settings -->
-    <string name="user_pref_purchase_key" translatable="false">user_pref_purchase</string>
-    <string name="user_pref_donate_key" translatable="false">user_pref_donate</string>
-    <string name="user_pref_give_gift_key" translatable="false">user_pref_give_gift</string>
 
     <!-- User Preference - Unit Settings -->
     <string name="user_pref_unit_height_key" translatable="false">user_pref_unit_height</string>
@@ -64,7 +62,6 @@
     <string name="user_pref_unit_distance_key" translatable="false">user_pref_unit_distance</string>
 
     <!-- User Preference - Language Settings -->
-    <string name="user_pref_lang_key" translatable="false">user_pref_lang</string>
 
     <!-- User Preferences - Video Settings -->
     <string name="user_pref_video_cat_key" translatable="false">user_pref_video_cat</string>
@@ -103,8 +100,6 @@
     </string-array>
 
     <!--Background Music Service Notification-->
-    <string name="notification_channel_name">Music Channel</string>
-    <string name="notification_channel_description">Shows the currently playing music</string>
 
     <!-- User Preferences - Video Quality -->
     <string name="user_pref_video_quality_key" translatable="false">user_pref_video_quality</string>
@@ -128,11 +123,9 @@
     </string-array>
 
     <!-- User Preferences - Theme -->
-    <string name="user_pref_display_cat_key" translatable="false">user_pref_display_cat</string>
     <string name="user_pref_display_cat_title">DISPLAY</string>
     <string name="user_pref_theme_key" translatable="false">user_pref_theme</string>
     <string name="user_pref_theme_title">Theme</string>
-    <string name="user_pref_theme_dlg_title">Choose theme</string>
 
     <string-array name="user_pref_theme_entries">
         <item>Dark</item>
@@ -148,125 +141,48 @@
         <item translatable="false">battery</item>
     </string-array>
 
-    <string name="user_pref_share_app_key" translatable="false">user_pref_share_app</string>
     <string name="user_pref_share_app_title">Share</string>
 
-    <string name="user_pref_support_us_cat_key" translatable="false">user_pref_support_us_cat</string>
     <string name="user_pref_support_us_cat_title">SUPPORT US</string>
 
-    <string name="user_pref_rate_us_key" translatable="false">user_pref_rate_us</string>
     <string name="user_pref_rate_us_title">Rate Us</string>
 
-    <string name="user_pref_feedback_key" translatable="false">user_pref_feedback</string>
     <string name="user_pref_feedback_title">Feedback</string>
 
-    <string name="user_pref_about_cat_key" translatable="false">user_pref_about_cat</string>
     <string name="user_pref_about_cat_title">ABOUT</string>
 
-    <string name="user_pref_bug_report_key" translatable="false">user_pref_bug_report</string>
     <string name="user_pref_bug_report_title">Bug report</string>
 
-    <string name="user_pref_terms_of_use_key" translatable="false">user_pref_terms_of_use</string>
     <string name="user_pref_terms_of_use_title">Terms of Use</string>
 
-    <string name="user_pref_privacy_policy_key" translatable="false">user_pref_privacy_policy</string>
     <string name="user_pref_privacy_policy_title">Privacy Policy</string>
 
-    <string name="user_pref_version_key" translatable="false">user_pref_version</string>
     <string name="user_pref_version_title">Version</string>
 
-    <string name="user_pref_account_cat_key" translatable="false">user_pref_account_cat</string>
     <string name="user_pref_account_cat_title">ACCOUNT</string>
 
-    <string name="user_pref_sign_out_key" translatable="false">user_pref_sign_out</string>
     <string name="user_pref_sign_out_title">Sign Out</string>
 
-    <string name="user_pref_delete_account_key" translatable="false">user_pref_delete_account</string>
     <string name="user_pref_delete_account_title">Delete</string>
     <string name="user_pref_delete_account_summary">All your data will be lost and can\'t be restored</string>
 
     <!-- Sync Preferences -->
-    <string name="title_home">Home</string>
     <string name="title_notifications">Notifications</string>
-    <string name="title_profile">Profile</string>
     <string name="title_settings">Settings</string>
-    <string name="btn_start">START</string>
-    <string name="btn_schedule">SCHEDULE</string>
-    <string name="article_author_by">" by "</string>
     <string name="OFFLINE_STATUS">You are offline</string>
-    <string name="title_day">Day</string>
-    <string name="title_level">Level</string>
-    <string name="title_duration">Duration</string>
-    <string name="title_min">Min</string>
-    <string name="title_yrs_of_exp">years of experience</string>
-    <string name="tab_overview">OVERVIEW</string>
-    <string name="tab_sessions">SESSIONS</string>
-    <string name="title_key_points">Key Points</string>
-    <string name="title_calories">Calories</string>
-    <string name="title_intensity">Intensity</string>
-    <string name="title_precautions">Precautions</string>
-    <string name="title_audience">AUDIENCE</string>
-    <string name="title_age_group">Age Group</string>
-    <string name="title_prerequisites">Prerequisites</string>
-    <string name="title_do_not">"Don'ts"</string>
-    <string name="title_status">Status</string>
-    <string name="title_schedule">Schedule</string>
-    <string name="title_tags">Tags</string>
-    <string name="title_choose_the_days">Choose the below days</string>
     <string name="title_snooze">Snooze</string>
-    <string name="title">Title</string>
-    <string name="title_desc">Description</string>
-    <string name="title_every_day">Everyday</string>
-    <string name="title_set_a_reminder">Set a reminder</string>
     <string name="title_reminder">Reminder</string>
-    <string name="title_notifies_before">Notifies you 15 mins before session</string>
     <string name="one_time">One time</string>
     <string name="every_day">Everyday</string>
     <string name="title_cancel">Cancel</string>
-    <string name="title_share">Share with friends</string>
-    <string name="rateUs">Please take a moment to rate us</string>
-    <string name="rating">Rate Us</string>
     <!-- strings.xml -->
-    <string name="exit">Exit</string>
-    <string name="library">LIBRARY</string>
-    <string name="testimonials">TESTIMONIALS</string>
-    <string name="view_more">VIEW MORE</string>
 
     <!-- bottom-Navigation Bar-->
-    <string name="today">Today</string>
-    <string name="track">Track</string>
 
     <!--subscription-->
-    <string name="subscription">Subscription</string>
-    <string name="annual_plan">ANNUAL PLAN</string>
-    <string name="day_free_tr">7-day free trail</string>
-    <string name="then_99_99_">then $99.99 billed yearly</string>
-
-    <string name="monthly_plan">MONTHLY PLAN</string>
-    <string name="start_today">Start today</string>
-    <string name="then_14.99">for $14.99 per month</string>
-
-    <string name="privacy_pol"><u>Privacy Policy</u></string>
-    <string name="termes_of_s"><u>Terms of Service</u></string>
-    <string name="continue_subs">Continue</string>
-    <string name="save_subs">save 53%</string>
 
     <!--Exercise-->
-    <string name="title_by">By</string>
-    <string name="title_sec">Sec</string>
-    <string name="caplevel">Level</string>
-    <string name="capduration">Duration</string>
-    <string name="duration">60 Mins</string>
-    <string name="capintensit">Intensity</string>
-    <string name="capcalories">Calories</string>
-    <string name="start_exercises">Exercises:</string>
-    <string name="title_exercise">Adhomukha Swanasana</string>
-    <string name="subtitle_exercise">Down Dog</string>
-    <string name="duration_exercise">1:30</string>
 
-    <string name="priority">High Priority</string>
-    <string name="setting_priority">Setting High priority never fails to remind</string>
-    <string name="btn_done">DONE</string>
     <string name="media_url">https://img2.asta.fit</string>
     <string name="breathing_tool_title">Breathing Tool</string>
     <string name="tool_subtitle">Check your daily records to make it easy to analyze</string>
@@ -289,56 +205,16 @@
     <string name="testimonial_title_create">Create your Testimonial</string>
     <string name="testimonial_title_edit">Edit your Testimonial?</string>
 
-    <string name="current_user_top_track_s_image">Current User Top Track\'s Image</string>
-    <string name="current_user_s_top_artists">Current User\'s Top Artists</string>
-    <string name="add_alarm">Add Alarm</string>
-    <string name="alarm_settings">Alarm Settings</string>
-    <string name="label">Label</string>
-    <string name="reminder_mode">Reminder Mode</string>
     <string name="notification">Notification</string>
-    <string name="close_button">Close Button</string>
-    <string name="save_button">Save Button</string>
-    <string name="status">Status</string>
-    <string name="tag">Tag</string>
     <string name="description">Description</string>
-    <string name="this_will_make_sure_you_attempt_with_the_help_of_flashlight_sound_changes_vibration_etc">This will make sure you attempt with the help of flashlight, sound changes, vibration etc.</string>
-    <string name="variant_intervals">Variant Intervals</string>
-    <string name="snooze">Snooze</string>
-    <string name="advanced_reminder">Advanced Reminder</string>
-    <string name="tags">Tags</string>
-    <string name="add_tag">Add Tag</string>
-    <string name="add_alarm_label">Add Alarm Label</string>
-    <string name="enter_label">Enter Label</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="add_description">Add Description</string>
-    <string name="enter_description">Enter Description</string>
-    <string name="select_reminder_mode">Select Reminder Mode</string>
-    <string name="splash">Splash</string>
-    <string name="tags_settings">Tags Settings</string>
-    <string name="default_tone">Default Tone</string>
     <string name="repeat">Repeat</string>
-    <string name="add_custom_interval">Add Interval</string>
-    <string name="monday">Monday</string>
-    <string name="tuesday">Tuesday</string>
-    <string name="wednesday">Wednesday</string>
-    <string name="thursday">Thursday</string>
-    <string name="friday">Friday</string>
-    <string name="saturday">Saturday</string>
-    <string name="sunday">Sunday</string>
     <string name="number_picker_formatter">%02d</string>
     <string name="select_snooze_time">Select Snooze Duration</string>
-    <string name="intervals_amp_time_settings"><![CDATA[Intervals & Time Settings]]></string>
-    <string name="remind_at_the_end_of_duration">Remind at the end of duration</string>
-    <string name="repetitive_interval">Repetitive Interval</string>
-    <string name="interval_s_status">Interval\'s Status</string>
-    <string name="turn_on_intervals_to_use_intervals_s_settings">Turn on intervals to use intervals’s settings.</string>
 
-    <item name="repeatTimeTag" type="id" />
-    <item name="repeatTimeUnitTag" type="id" />
-    <item name="tagMeta" type="id" />
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!--music player string-->
     <string name="home_logo">home logo</string>
     <string name="search_button">search button</string>
@@ -348,8 +224,6 @@
     <string name="play">play</string>
     <string name="add">add</string>
     <string name="more">More</string>
-    <string name="followers">%1$s FOLLOWERS</string>
-    <string name="nbAlbum"> %1$s ALBUMS</string>
     <string name="back_button">back_button</string>
     <string name="previous">Previous</string>
     <string name="replay10">replay10</string>
@@ -362,7 +236,6 @@
     <string name="skip_next">Skip to next</string>
     <string name="music_notification_channel_name">Asta Music</string>
     <string name="player_timestamp_format" translatable="false">%1$s:%2$s</string>
-    <string name="title_activity_sleep_tool">SleepToolActivity</string>
 
 </resources>
 

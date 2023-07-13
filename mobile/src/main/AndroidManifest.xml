@@ -61,6 +61,8 @@
         <activity android:name=".settings.SettingsActivity" />
         <activity android:name=".settings.WebViewActivity" />
         <activity android:name=".firebase.view.AuthActivity" />
+        <activity android:name=".feedback.FeedbackActivity" />
+        <activity android:name=".onboarding.OnBoardingScreenActivity" />
         <activity
             android:name=".common.location.maps.MapsActivity"
             android:exported="false" />

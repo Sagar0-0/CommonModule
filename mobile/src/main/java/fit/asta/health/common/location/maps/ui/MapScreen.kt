@@ -1,8 +1,6 @@
 package fit.asta.health.common.location.maps.ui
 
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,14 +18,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
-import fit.asta.health.common.location.maps.MapsActivity
 import fit.asta.health.common.location.maps.MapsViewModel
 import fit.asta.health.common.location.maps.modal.AddressesResponse.Address
 import fit.asta.health.common.location.maps.modal.MapScreens
+import fit.asta.health.common.ui.CustomTopBar
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.spacing
@@ -50,50 +47,25 @@ fun MapScreen(
         position = CameraPosition.fromLatLngZoom(LatLng(addressItem.lat, addressItem.lon), 18f)
     }
 
-    val fusedLocationProviderClient = remember {
-        LocationServices.getFusedLocationProviderClient(context)
-    }
-    val locationResult = fusedLocationProviderClient.lastLocation
-    val getCurrentLocation = {
-        locationResult.addOnCompleteListener(context as MapsActivity) { task ->
-            if (task.isSuccessful) {
-                try {
-                    val lastKnownLocation = task.result
-                    val latLng = LatLng(lastKnownLocation.latitude, lastKnownLocation.longitude)
-                    cameraPositionState.position = CameraPosition.fromLatLngZoom(latLng, 18f)
-                } catch (e: Exception) {
-                    Toast.makeText(
-                        context,
-                        "Turn on your locations and try re-starting the app!",
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-                }
-            } else {
-                Log.d(TAG, "Current location is null. Using defaults.")
-                Log.e(TAG, "Exception: %s", task.exception)
-            }
-        }
-    }
-
     val scope = rememberCoroutineScope()
 
-    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = rememberStandardBottomSheetState(
-            initialValue = SheetValue.PartiallyExpanded,
-            skipHiddenState = false
-        )
+    val sheetState = rememberStandardBottomSheetState(
+        initialValue = SheetValue.PartiallyExpanded,
+        skipHiddenState = false
+    )
+    val scaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = sheetState
     )
 
     val expandSheet = {
         scope.launch {
-            bottomSheetScaffoldState.bottomSheetState.expand()
+            scaffoldState.bottomSheetState.expand()
         }
     }
 
     val collapseSheet = {
         scope.launch {
-            bottomSheetScaffoldState.bottomSheetState.partialExpand()
+            scaffoldState.bottomSheetState.partialExpand()
         }
     }
 
@@ -102,9 +74,9 @@ fun MapScreen(
         sheetPeekHeight = 150.dp,
         sheetShadowElevation = cardElevation.medium,
         sheetSwipeEnabled = false,
-        scaffoldState = bottomSheetScaffoldState,
+        scaffoldState = scaffoldState,
         topBar = {
-            MapTopBar("Choose Location") {
+            CustomTopBar("Choose Location") {
                 onBackPressed()
             }
         },
@@ -150,8 +122,11 @@ fun MapScreen(
                                     area = (it.adminArea ?: "") + ", " + (it.countryName ?: "")
                                 )
 
+                                var saveEnabled by remember { mutableStateOf(true) }
                                 OutlinedButton(
+                                    enabled = saveEnabled,
                                     onClick = {
+                                        saveEnabled = false
                                         val newAddress = Address(
                                             area = it.adminArea,
                                             selected = true,
@@ -168,7 +143,6 @@ fun MapScreen(
                                             sub = it.subLocality,
                                             uid = mapsViewModel.uId
                                         )
-                                        Log.d(TAG, "MapScreen: onClick Save $newAddress")
                                         mapsViewModel.putAddress(newAddress) {
                                             Toast.makeText(
                                                 context,
@@ -198,14 +172,13 @@ fun MapScreen(
                         } else {
                             MapBottomSheet(
                                 navHostController = navHostController,
-                                sheetScaffoldState = bottomSheetScaffoldState,
+                                sheetScaffoldState = scaffoldState,
                                 address = it,
                                 addressItem = addressItem,
                                 mapsViewModel = mapsViewModel,
                                 onButtonClick = { expandSheet() },
                                 onCollapse = { collapseSheet() }
                             )
-
                         }
                     }
                 }
@@ -285,7 +258,11 @@ fun MapScreen(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant,
                     contentColor = MaterialTheme.colorScheme.primary
                 ),
-                onClick = { getCurrentLocation() }
+                onClick = {
+                    mapsViewModel.getCurrentLatLng(context)
+                    cameraPositionState.position =
+                        CameraPosition.fromLatLngZoom(mapsViewModel.currentLatLng.value, 18f)
+                }
             ) {
                 Text(
                     text = "Use current Location",

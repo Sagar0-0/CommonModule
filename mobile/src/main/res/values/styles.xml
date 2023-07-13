@@ -14,29 +14,10 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
     <style name="ToolbarTheme" parent="Theme.MaterialComponents.Light">
         <item name="android:background">@color/colorTransparent</item>
         <!--<item name="logo">@drawable/ic_toolbar_logo</item>
         <item name="displayOptions">useLogo|showHome</item>-->
-    </style>
-
-    <style name="CollapsingTheme" parent="ThemeOverlay.AppCompat.Light">
-        <item name="android:tint">@color/colorSecondary</item>
-    </style>
-
-    <style name="CollapsedText" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="android:textColor">@color/colorOnPrimary</item>
-    </style>
-
-    <style name="ExpandedText" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="android:textColor">@color/colorOnPrimary</item>
-        <item name="android:textSize">@dimen/dimen_text_24</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="SplashTheme" parent="AppTheme">
@@ -45,18 +26,6 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>-->
-    </style>
-
-    <style name="PlayerTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">#000000</item>
-    </style>
-
-    <style name="BottomNavigationView" parent="@style/TextAppearance.AppCompat.Caption">
-        <item name="android:textSize">10sp</item>
-    </style>
-
-    <style name="BottomNavigationView.Active" parent="@style/TextAppearance.AppCompat.Caption">
-        <item name="android:textSize">11sp</item>
     </style>
 
     <style name="PopupTheme" parent="Theme.AppCompat.Light">
@@ -73,15 +42,7 @@
     </style>-->
 
     <!-- styles.xml -->
-    <style name="h6">
-        <item name="android:textSize">20sp</item>
-        <!--<item name="android:letterSpacing">0.01</item>-->
-        <item name="android:textColor">@color/colorOnBackground</item>
-    </style>
 
     <!-- styles.xml -->
 
-    <style name="robotoMedium">
-        <item name="fontFamily">@font/roboto_medium</item>
-    </style>
 </resources>
