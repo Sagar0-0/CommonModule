@@ -14,16 +14,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import fit.asta.health.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SleepTopBar() {
+fun SleepTopBar(
+    title: String,
+    navController: NavController
+) {
 
     TopAppBar(
         title = {
             Text(
-                text = "Sleep Tool",
+                text = title,
                 fontSize = 20.sp,
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center
@@ -33,7 +37,8 @@ fun SleepTopBar() {
         navigationIcon = {
             IconButton(
                 onClick = {
-                    /*TODO*/
+                    if (navController.previousBackStackEntry != null)
+                        navController.popBackStack()
                 }
             ) {
                 Icon(

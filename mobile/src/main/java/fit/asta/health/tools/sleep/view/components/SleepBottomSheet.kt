@@ -4,7 +4,9 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -128,42 +130,50 @@ fun SleepBottomSheet(
 
         AnimatedVisibility(visible = scaffoldState.currentValue == SheetValue.Expanded) {
 
-            LazyVerticalGrid(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(spacing.small),
                 verticalArrangement = Arrangement.spacedBy(spacing.medium),
-                columns = GridCells.Fixed(2)
-            ) {
+                horizontalAlignment = Alignment.CenterHorizontally
 
-                item {
-                    CardItem(
-                        name = "Factors",
-                        type = "Sleep Factors",
-                        id = R.drawable.sleep_factors
-                    ) {
-                        navController.navigate(SleepToolNavRoutes.SleepFactorRoute.routes)
+            ) {
+                LazyVerticalGrid(
+                    horizontalArrangement = Arrangement.spacedBy(spacing.small),
+                    verticalArrangement = Arrangement.spacedBy(spacing.medium),
+                    columns = GridCells.Fixed(2)
+                ) {
+
+                    item {
+                        CardItem(
+                            name = "Factors",
+                            type = "Sleep Factors",
+                            id = R.drawable.sleep_factors
+                        ) {
+                            navController.navigate(SleepToolNavRoutes.SleepFactorRoute.routes)
+                        }
+                    }
+                    item {
+                        CardItem(
+                            name = "Jet Lag",
+                            type = "Check Tips",
+                            id = R.drawable.jet_plane
+                        ) {
+                            navController.navigate(SleepToolNavRoutes.SleepJetLagTipsRoute.routes)
+                        }
+                    }
+                    item {
+                        CardItem(
+                            name = "Sleep Stories",
+                            type = "Moon Light",
+                            id = R.drawable.sleep_stories
+                        ) {
+                            // TODO
+                        }
                     }
                 }
-                item {
-                    CardItem(
-                        name = "Jet Lag",
-                        type = "Check Tips",
-                        id = R.drawable.jet_plane
-                    ) {
-                        navController.navigate(SleepToolNavRoutes.SleepJetLagTipsRoute.routes)
-                    }
-                }
-                item {
-                    CardItem(
-                        name = "Sleep Stories",
-                        type = "Moon Light",
-                        id = R.drawable.sleep_stories
-                    ) {
-                        // TODO
-                    }
-                }
+
+                WeatherCard()
             }
         }
 
@@ -185,6 +195,10 @@ fun SleepBottomSheet(
             ) {
                 // TODO
             }
+        }
+
+        AnimatedVisibility(visible = scaffoldState.currentValue != SheetValue.Expanded) {
+            Spacer(modifier = Modifier.height(200.dp))
         }
     }
 }

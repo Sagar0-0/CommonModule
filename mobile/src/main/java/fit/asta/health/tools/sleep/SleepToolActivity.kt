@@ -93,7 +93,20 @@ class SleepToolActivity : ComponentActivity() {
             sheetPeekHeight = if (shouldShowSheet) 200.dp else 0.dp,
             scaffoldState = scaffoldState,
             topBar = {
-                SleepTopBar()
+                val topBarTitle = when (currentBackStackEntryRoute) {
+                    SleepToolNavRoutes.SleepHomeRoute.routes -> "Sleep Tool"
+                    SleepToolNavRoutes.SleepFactorRoute.routes -> "Sleep Factors"
+                    SleepToolNavRoutes.SleepDisturbanceRoute.routes -> "Sleep Disturbances"
+                    SleepToolNavRoutes.SleepJetLagTipsRoute.routes -> "Jet Lab Tips"
+                    SleepToolNavRoutes.SleepGoalsRoute.routes -> "Goals"
+                    else -> {
+                        ""
+                    }
+                }
+                SleepTopBar(
+                    title = topBarTitle,
+                    navController
+                )
             }
         ) {
             SleepNavGraph(
