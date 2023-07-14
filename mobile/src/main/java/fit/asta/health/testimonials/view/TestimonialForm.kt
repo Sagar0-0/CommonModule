@@ -30,19 +30,23 @@ fun LoadTestimonialForm(
             }
         }
 
-        TestimonialGetState.NoInternet -> ErrorScreenLayout(onTryAgain = {
-            getViewModel.onLoad()
-        })
+        is TestimonialGetState.Error -> ErrorScreenLayout(onTryAgain = {
+            getViewModel.loadTestimonial()
+        }, isInternetError = false)
 
-        is TestimonialGetState.Error -> ServerErrorLayout(state.error)
         is TestimonialGetState.Success -> CreateTstScreen(
             stringResource(R.string.testimonial_title_edit), onNavigateTstCreate, onNavigateTstHome
         )
+
         TestimonialGetState.Empty -> CreateTstScreen(
             stringResource(R.string.testimonial_title_create),
             onNavigateTstCreate,
             onNavigateTstHome
         )
+
+        is TestimonialGetState.NetworkError -> ErrorScreenLayout(onTryAgain = {
+            getViewModel.loadTestimonial()
+        })
     }
 }
 

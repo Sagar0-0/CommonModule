@@ -1,5 +1,6 @@
 package fit.asta.health.imageCropperV2.demo
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -55,6 +56,7 @@ fun MainContent() {
 
     var imageBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
     var croppedImage by remember { mutableStateOf<ImageBitmap?>(null) }
+
 
     var crop by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
@@ -140,10 +142,14 @@ fun MainContent() {
 
             if (showDialog) {
                 croppedImage?.let {
-                    ShowCroppedImageDialog(imageBitmap = it) {
+                    ShowCroppedImageDialog(imageBitmap = it, onDismissRequest = {
                         showDialog = !showDialog
                         croppedImage = null
-                    }
+                    }, onApprovedRequest = {
+                        Log.d(
+                            "cropImage", "Cropped Image Add -> $croppedImage"
+                        )
+                    })
                 }
             }
 
@@ -158,7 +164,11 @@ fun MainContent() {
 }
 
 @Composable
-private fun ShowCroppedImageDialog(imageBitmap: ImageBitmap, onDismissRequest: () -> Unit) {
+private fun ShowCroppedImageDialog(
+    imageBitmap: ImageBitmap,
+    onDismissRequest: () -> Unit,
+    onApprovedRequest: () -> Unit = {},
+) {
     AlertDialog(onDismissRequest = onDismissRequest, text = {
         Image(
             modifier = Modifier
@@ -171,7 +181,7 @@ private fun ShowCroppedImageDialog(imageBitmap: ImageBitmap, onDismissRequest: (
         )
     }, confirmButton = {
         TextButton(onClick = {
-            onDismissRequest()
+            onApprovedRequest()
         }) {
             Text("Confirm")
         }

@@ -213,7 +213,7 @@ fun TestimonialForm(
                     })
                 }
 
-                is TestimonialSubmitState.NoInternet -> ErrorScreenLayout(onTryAgain = {
+                is TestimonialSubmitState.NetworkError -> ErrorScreenLayout(onTryAgain = {
                     editViewModel.onEvent(
                         TestimonialEvent.OnSubmit
                     )
