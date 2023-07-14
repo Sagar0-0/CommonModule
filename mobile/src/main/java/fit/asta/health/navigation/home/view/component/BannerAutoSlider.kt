@@ -51,7 +51,7 @@ fun BannerAutoSlider(bannerList: List<ToolsHomeRes.ToolsHome.Banner>) {
                     }
                 }
                 .fillMaxWidth()
-                .aspectRatio(ratio = 16f / 09f)) {
+                .aspectRatio(ratio = 04f / 03f)) {
                 val sliderDataPages = bannerList[page]
                 BannerLayout(sliderDataPages, pagerState)
             }

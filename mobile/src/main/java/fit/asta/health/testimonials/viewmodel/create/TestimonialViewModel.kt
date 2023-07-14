@@ -50,10 +50,9 @@ class TestimonialViewModel
     private val _mutableState = MutableStateFlow<TestimonialGetState>(TestimonialGetState.Loading)
     val state = _mutableState.asStateFlow()
 
-
     private val testimonialData = savedState.getStateFlow(TESTIMONIAL_DATA, Testimonial())
     val id = savedState.getStateFlow(ID, "")
-    val type = savedState.getStateFlow<TestimonialType>(TYPE, TestimonialType.TEXT)
+    val type = savedState.getStateFlow(TYPE, TestimonialType.TEXT)
     val title = savedState.getStateFlow(TITLE, InputWrapper())
     val testimonial = savedState.getStateFlow(TESTIMONIAL, InputWrapper())
     val org = savedState.getStateFlow(ORG, InputWrapper())
