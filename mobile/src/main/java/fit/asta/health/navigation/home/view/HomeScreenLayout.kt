@@ -31,8 +31,10 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
 
     val context = LocalContext.current
 
+    val columns = 3
+
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
+        columns = GridCells.Fixed(columns),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
@@ -40,18 +42,18 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
             .padding(16.dp)
     ) {
 
-        item(span = { GridItemSpan(2) }) {
+        item(span = { GridItemSpan(columns) }) {
             BannerAutoSlider(bannerList = toolsHome.banners)
         }
 
-        item(span = { GridItemSpan(2) }) {
+        item(span = { GridItemSpan(columns) }) {
             MyToolsAndViewAll(myTools = "My Tools", allTools = "All Tools", onClick = {
                 //TODO - Integrate All tools
             })
         }
 
         items(toolsHome.tools) { tool ->
-            ToolsCardLayoutDemo(
+            ToolsCardLayout(
                 cardTitle = tool.title,
                 type = tool.name,
                 imgUrl = tool.url,
@@ -88,13 +90,13 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
                 })
         }
 
-        item(span = { GridItemSpan(2) }) {
+        item(span = { GridItemSpan(columns) }) {
             MyToolsAndViewAll(myTools = "Testimonials", allTools = "View All", onClick = {
                 TestimonialsActivity.launch(context = context)
             })
         }
 
-        item(span = { GridItemSpan(2) }) {
+        item(span = { GridItemSpan(columns) }) {
             Testimonials(testimonialsList = toolsHome.testimonials)
         }
 
@@ -102,7 +104,7 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
             Spacer(modifier = Modifier.height(spacing.medium))
         }
 
-        item(span = { GridItemSpan(2) }) {
+        item(span = { GridItemSpan(columns) }) {
             RateUsCard(activity)
         }
 
@@ -110,7 +112,7 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
             Spacer(modifier = Modifier.height(spacing.medium))
         }
 
-        item(span = { GridItemSpan(2) }) {
+        item(span = { GridItemSpan(columns) }) {
             ReferAndEarn()
         }
 
