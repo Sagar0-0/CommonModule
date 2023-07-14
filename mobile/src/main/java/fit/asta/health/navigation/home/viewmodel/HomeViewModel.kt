@@ -15,44 +15,6 @@ import kotlinx.coroutines.launch
 import java.io.IOException
 import javax.inject.Inject
 
-
-//@ExperimentalCoroutinesApi
-//@HiltViewModel
-//class HomeViewModel @Inject constructor(
-//    private val toolsHomeRepo: ToolsHomeRepo,
-//    private val authRepo: AuthRepo,
-//) : ViewModel() {
-//
-//    private val _mutableState = MutableStateFlow<HomeState>(HomeState.Loading)
-//    val state = _mutableState.asStateFlow()
-//
-//    init {
-//        loadHomeData()
-//    }
-//
-//    fun loadHomeData() {
-//        viewModelScope.launch {
-//
-//            authRepo.getUser()?.let { it ->
-//                toolsHomeRepo.getHomeData(
-//                    userId = it.uid,
-//                    latitude = "28.6353",
-//                    longitude = "77.2250",
-//                    location = "bangalore",
-//                    startDate = getCurrentDate(),
-//                    endDate = getNextDate(2),
-//                    time = getCurrentTime()
-//                ).catch { exception ->
-//                    _mutableState.value = HomeState.Error(exception)
-//                }.collect {
-//                    _mutableState.value = HomeState.Success(it)
-//                }
-//            }
-//        }
-//    }
-//}
-
-
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class HomeViewModel @Inject constructor(

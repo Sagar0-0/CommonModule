@@ -26,6 +26,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import fit.asta.health.common.jetpack.HandleBackPress
 import fit.asta.health.common.ui.theme.boxSize
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
@@ -255,6 +256,11 @@ fun CreateTstScreen(title: String, onNavigateTstCreate: () -> Unit, onNavigateTs
         TestimonialForm(paddingValues = it, onNavigateTstHome = onNavigateTstHome)
     }, containerColor = MaterialTheme.colorScheme.background)
 
+
+    HandleBackPress {
+        showCustomDialogWithResult = !showCustomDialogWithResult
+    }
+
     if (showCustomDialogWithResult) {
         CustomDialogWithResultExample(
             onDismiss = {
@@ -272,5 +278,6 @@ fun CreateTstScreen(title: String, onNavigateTstCreate: () -> Unit, onNavigateTs
             btn2Title = "Cancel"
         )
     }
+
 
 }
