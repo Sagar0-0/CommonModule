@@ -1,4 +1,4 @@
-package fit.asta.health.onboarding.view
+package fit.asta.health.onboarding.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.LinearProgressIndicator
@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
+import fit.asta.health.R
 import fit.asta.health.common.ui.components.GifImage
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.getImageUrl
@@ -27,12 +28,13 @@ import kotlinx.coroutines.launch
 fun OnBoardingPager(
     state: OnboardingGetState,
     onReload: () -> Unit,
-    onFinish: () -> Unit,
+    onFinish: () -> Unit
 ) {
     when (state) {
         OnboardingGetState.Loading -> {
             LinearProgressIndicator(
-                modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.primary
+                modifier = Modifier.fillMaxWidth(),
+                color = MaterialTheme.colorScheme.primary
             )
         }
 
@@ -41,11 +43,19 @@ fun OnBoardingPager(
         }
 
         OnboardingGetState.Empty -> {
-            Text(text = "No data found")
+            ErrorScreenLayout(
+                onTryAgain = onReload,
+                desc = "Nothing found",
+                imgID = (R.drawable.error_404)
+            )
         }
 
         is OnboardingGetState.Error -> {
-            ErrorScreenLayout(onTryAgain = onReload)
+            ErrorScreenLayout(
+                onTryAgain = onReload,
+                desc = state.error.message ?: "ERROR 404",
+                imgID = (R.drawable.error_404)
+            )
         }
 
         is OnboardingGetState.Success -> {
@@ -60,10 +70,12 @@ fun OnBoardingPager(
             )
 
             Column(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 HorizontalPager(
-                    state = pagerState, modifier = Modifier.weight(1f)
+                    state = pagerState,
+                    modifier = Modifier.weight(1f)
                 ) { page ->
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -100,18 +112,19 @@ fun OnBoardingPager(
                     }
                 }
 
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    PagerIndicator(size = items.size, currentPage = pagerState.currentPage)
-                    BottomNavigationSection(lastPage = pagerState.currentPage == items.size - 1,
-                        onNextClick = {
-                            coroutine.launch {
-                                pagerState.animateScrollToPage(pagerState.currentPage + 1)
-                            }
-                        },
-                        onSkipClick = {
-                            onFinish()
-                        })
-                }
+                PagerIndicator(size = items.size, currentPage = pagerState.currentPage)
+
+                BottomNavigationSection(
+                    lastPage = pagerState.currentPage == items.size - 1,
+                    onNextClick = {
+                        coroutine.launch {
+                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                        }
+                    },
+                    onSkipClick = {
+                        onFinish()
+                    }
+                )
             }
         }
 
@@ -123,9 +136,12 @@ fun OnBoardingPager(
 @Preview
 @Composable
 fun PreviewOnBoard() {
-    OnBoardingPager(OnboardingGetState.Empty, {
+    OnBoardingPager(
+        OnboardingGetState.Loading,
+        {
 
-    }) {
+        }
+    ) {
 
     }
 }

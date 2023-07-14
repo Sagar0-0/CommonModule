@@ -1,17 +1,32 @@
 package fit.asta.health.settings
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.core.widget.ContentLoadingProgressBar
 import com.google.android.material.appbar.MaterialToolbar
 import fit.asta.health.R
 
-
-const val WEB_URL = "WebUrl789"
-
 class WebViewActivity : AppCompatActivity() {
+
+    companion object {
+
+        private var webUrl by mutableStateOf("")
+        fun launch(context: Context, url: String) {
+            webUrl = url
+            Intent(context, WebSettings::class.java)
+                .apply {
+                    context.startActivity(this)
+                }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,18 +36,16 @@ class WebViewActivity : AppCompatActivity() {
         setSupportActionBar(toolbarWebView)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         toolbarWebView?.setNavigationOnClickListener {
-
-            onBackPressed()
+            finish()
         }
-
-        val url = intent.getStringExtra(WEB_URL)
         val webView = findViewById<WebView>(R.id.webView)
         webView.webViewClient = SubWebClient()
-        webView.loadUrl(url!!)
+        webView.loadUrl(webUrl)
     }
 
     inner class SubWebClient : WebViewClient() {
 
+        @Deprecated("Deprecated in Java")
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
 
             findViewById<ContentLoadingProgressBar>(R.id.progressWebView).show()

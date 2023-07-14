@@ -35,7 +35,7 @@ import com.google.gson.GsonBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.R
 import fit.asta.health.common.location.LocationProviderChangedReceiver
-import fit.asta.health.common.location.maps.modal.AddressesResponse.Address
+import fit.asta.health.common.location.maps.modal.AddressesResponse.MyAddress
 import fit.asta.health.common.location.maps.modal.MapScreens
 import fit.asta.health.common.location.maps.ui.MapScreen
 import fit.asta.health.common.location.maps.ui.SavedAddressesScreen
@@ -69,6 +69,7 @@ class MapsActivity : AppCompatActivity() {
             object : LocationProviderChangedReceiver.LocationListener {
                 override fun onEnabled() {
                     mapsViewModel.isLocationEnabled.value = true
+                    updateCurrentLocation()
                 }
 
                 override fun onDisabled() {
@@ -183,8 +184,8 @@ class MapsActivity : AppCompatActivity() {
                 val confirmAdd = it.arguments?.getBoolean("confirm") ?: false
                 val gson: Gson = GsonBuilder().create()
                 val addJson = it.arguments?.getString("address")!!.replace("|", "/")
-                val addressItem = gson.fromJson(addJson, Address::class.java)
-                MapScreen(confirmAdd, addressItem, navController, mapsViewModel) {
+                val myAddressItem = gson.fromJson(addJson, MyAddress::class.java)
+                MapScreen(confirmAdd, myAddressItem, navController, mapsViewModel) {
                     navController.navigateUp()
                 }
             }

@@ -47,9 +47,7 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
         }
 
         item(span = { GridItemSpan(columns) }) {
-            MyToolsAndViewAll(myTools = "My Tools", allTools = "All Tools", onClick = {
-                //TODO - Integrate All tools
-            })
+            MyToolsAndViewAll(myTools = "My Tools", "") {}
         }
 
         items(toolsHome.tools) { tool ->

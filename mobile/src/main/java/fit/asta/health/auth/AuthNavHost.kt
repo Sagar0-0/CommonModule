@@ -7,12 +7,13 @@ import androidx.navigation.compose.composable
 
 @Composable
 fun AuthNavHost(navHostController: NavHostController, onSuccess: () -> Unit) {
-    NavHost(navController = navHostController, startDestination = "SignIn") {
-        composable("SignIn") {
+    NavHost(navController = navHostController, startDestination = AuthScreens.SignIn.route) {
+        composable(AuthScreens.SignIn.route) {
             SignInScreen(navHostController, onSuccess)
         }
-        composable("Phone") {
+        composable(AuthScreens.Phone.route) {
             PhoneLoginScreen(onSuccess)
         }
     }
 }
+

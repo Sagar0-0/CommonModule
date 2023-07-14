@@ -14,6 +14,7 @@ import com.google.maps.android.compose.*
 import fit.asta.health.common.location.maps.MapsViewModel
 import fit.asta.health.common.location.maps.modal.AddressesResponse
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.common.utils.getLocationName
 import java.util.*
 
 
@@ -23,7 +24,7 @@ fun MapBottomSheet(
     navHostController: NavHostController,
     sheetScaffoldState: BottomSheetScaffoldState,
     address: Address,
-    addressItem: AddressesResponse.Address,
+    myAddressItem: AddressesResponse.MyAddress,
     onButtonClick: () -> Unit,
     onCollapse: () -> Unit,
     mapsViewModel: MapsViewModel
@@ -37,10 +38,8 @@ fun MapBottomSheet(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             CurrentLocationUi(
-                name = (if (addressItem.area.isNotEmpty()) addressItem.area + ", " else "") + (address.locality
-                    ?: address.subAdminArea
-                    ?: address.adminArea ?: ""),
-                area = (address.adminArea ?: "") + ", " + (address.countryName ?: "")
+                name = address.getAddressLine(0),
+                area = getLocationName(address)
             )
 
             OutlinedButton(
@@ -67,7 +66,7 @@ fun MapBottomSheet(
             navHostController = navHostController,
             onCloseIconClick = onCollapse,
             address = address,
-            addressItem = addressItem,
+            myAddressItem = myAddressItem,
             mapsViewModel = mapsViewModel
         )
     }

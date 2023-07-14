@@ -69,12 +69,12 @@ class MapsRepoImpl @Inject constructor(
             }
         }
 
-    override suspend fun putAddress(address: AddressesResponse.Address): Flow<ResultState<PutAddressResponse>> =
+    override suspend fun putAddress(myAddress: AddressesResponse.MyAddress): Flow<ResultState<PutAddressResponse>> =
         callbackFlow {
             trySend(ResultState.Loading)
             trySend(
                 try {
-                    ResultState.Success(remoteApi.addNewAddress(address))
+                    ResultState.Success(remoteApi.addNewAddress(myAddress))
                 } catch (e: Exception) {
                     ResultState.Failure(e)
                 }

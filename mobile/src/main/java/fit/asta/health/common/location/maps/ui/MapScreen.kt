@@ -1,6 +1,7 @@
 package fit.asta.health.common.location.maps.ui
 
 import android.annotation.SuppressLint
+import android.location.Address
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,13 +23,14 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 import fit.asta.health.common.location.maps.MapsViewModel
-import fit.asta.health.common.location.maps.modal.AddressesResponse.Address
+import fit.asta.health.common.location.maps.modal.AddressesResponse.MyAddress
 import fit.asta.health.common.location.maps.modal.MapScreens
 import fit.asta.health.common.ui.CustomTopBar
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.ResultState
+import fit.asta.health.common.utils.getLocationName
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -37,14 +39,14 @@ import java.util.*
 @SuppressLint("MissingPermission")
 fun MapScreen(
     confirmAddress: Boolean,
-    addressItem: Address,
+    myAddressItem: MyAddress,
     navHostController: NavHostController,
     mapsViewModel: MapsViewModel,
     onBackPressed: () -> Unit
 ) {
     val context = LocalContext.current
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(LatLng(addressItem.lat, addressItem.lon), 18f)
+        position = CameraPosition.fromLatLngZoom(LatLng(myAddressItem.lat, myAddressItem.lon), 18f)
     }
 
     val scope = rememberCoroutineScope()
@@ -100,7 +102,7 @@ fun MapScreen(
                 }
 
                 is ResultState.Success -> {
-                    (address as ResultState.Success<android.location.Address?>).data?.let {
+                    (address as ResultState.Success<Address?>).data?.let {
                         if (confirmAddress) {
                             Column(
                                 modifier = Modifier
@@ -116,10 +118,8 @@ fun MapScreen(
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 CurrentLocationUi(
-                                    name = (if (addressItem.area.isNotEmpty()) addressItem.area + ", " else "") + (it.locality
-                                        ?: it.subAdminArea
-                                        ?: it.adminArea ?: ""),
-                                    area = (it.adminArea ?: "") + ", " + (it.countryName ?: "")
+                                    name = it.getAddressLine(0),
+                                    area = getLocationName(it)
                                 )
 
                                 var saveEnabled by remember { mutableStateOf(true) }
@@ -127,23 +127,24 @@ fun MapScreen(
                                     enabled = saveEnabled,
                                     onClick = {
                                         saveEnabled = false
-                                        val newAddress = Address(
-                                            area = it.adminArea,
+                                        val values = it.getAddressLine(0).split(", ")
+                                        val newMyAddress = MyAddress(
+                                            area = values[3],
                                             selected = true,
-                                            block = it.locality ?: "",
-                                            hn = it.subLocality,
+                                            block = values[1],
+                                            hn = values[0],
                                             id = "",
-                                            lat = addressItem.lat,
-                                            lon = addressItem.lon,
+                                            lat = myAddressItem.lat,
+                                            lon = myAddressItem.lon,
                                             loc = it.locality,
-                                            nearby = "",
+                                            nearby = values[2],
                                             name = "Home",
                                             pin = it.postalCode,
                                             ph = "Unknown",
                                             sub = it.subLocality,
                                             uid = mapsViewModel.uId
                                         )
-                                        mapsViewModel.putAddress(newAddress) {
+                                        mapsViewModel.putAddress(newMyAddress) {
                                             Toast.makeText(
                                                 context,
                                                 "Address Saved",
@@ -174,7 +175,7 @@ fun MapScreen(
                                 navHostController = navHostController,
                                 sheetScaffoldState = scaffoldState,
                                 address = it,
-                                addressItem = addressItem,
+                                myAddressItem = myAddressItem,
                                 mapsViewModel = mapsViewModel,
                                 onButtonClick = { expandSheet() },
                                 onCollapse = { collapseSheet() }
