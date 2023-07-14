@@ -118,6 +118,7 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
             Spacer(modifier = Modifier.height(spacing.medium))
         }
     }
+
 }
 
 @Composable

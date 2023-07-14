@@ -2,14 +2,13 @@ package fit.asta.health.navigation.home.view.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -52,7 +51,7 @@ fun BannerAutoSlider(bannerList: List<ToolsHomeRes.ToolsHome.Banner>) {
                     }
                 }
                 .fillMaxWidth()
-                .height(236.dp)) {
+                .aspectRatio(ratio = 16f / 09f)) {
                 val sliderDataPages = bannerList[page]
                 BannerLayout(sliderDataPages, pagerState)
             }

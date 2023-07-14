@@ -75,6 +75,8 @@ fun MainActivityLayout(
     val currentDestination = navBackStackEntry?.destination
     val scaffoldState = rememberScaffoldState()
 
+    val context = LocalContext.current
+
     Scaffold(scaffoldState = scaffoldState, modifier = Modifier.fillMaxSize(), topBar = {
         TopAppBar(
             modifier = Modifier.shadow(elevation = cardElevation.medium),
@@ -167,7 +169,6 @@ fun MainActivityLayout(
         ) {
 
             composable("tools") {
-                val context = LocalContext.current
                 Modifier.height(spacing.medium)
                 HomeContent(context as Activity)
             }
