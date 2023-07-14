@@ -15,7 +15,7 @@ interface SleepingService {
 
     @PUT("tools/sleep/put/")
     suspend fun putUserDataForFirstTimeUsers(
-        sleepPutRequestBody: SleepPutRequestBody
+        @Body sleepPutRequestBody: SleepPutRequestBody
     ): Response<SleepPutResponse>
 
     @GET("tools/sleep/get/")
