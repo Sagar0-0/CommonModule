@@ -51,7 +51,6 @@ class FeedbackActivity : AppCompatActivity() {
                             onSubmit = viewModel::postUserFeedback
                         )
                     }
-
                     FeedbackPostState.Loading -> {
                         LinearProgressIndicator(Modifier.fillMaxWidth())
                     }

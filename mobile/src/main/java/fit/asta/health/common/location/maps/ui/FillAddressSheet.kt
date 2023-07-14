@@ -43,32 +43,33 @@ import fit.asta.health.common.ui.components.ValidatedTextField
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiString
+import fit.asta.health.common.utils.getLocationName
 
 @Composable
 fun FillAddressSheet(
     navHostController: NavHostController,
     mapsViewModel: MapsViewModel,
     address: Address,
-    addressItem: AddressesResponse.Address,
+    myAddressItem: AddressesResponse.MyAddress,
     onCloseIconClick: () -> Unit
 ) {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
     val houseNo = rememberSaveable {
-        mutableStateOf(addressItem.hn)
+        mutableStateOf(myAddressItem.hn)
     }
     val block = rememberSaveable {
-        mutableStateOf(addressItem.block)
+        mutableStateOf(myAddressItem.block)
     }
     val nearby = rememberSaveable {
-        mutableStateOf(addressItem.nearby)
+        mutableStateOf(myAddressItem.nearby)
     }
     val phone = rememberSaveable {
-        mutableStateOf(if (addressItem.ph == "Unknown") "" else addressItem.ph)
+        mutableStateOf(if (myAddressItem.ph == "Unknown") "" else myAddressItem.ph)
     }
     val name = rememberSaveable {
-        mutableStateOf(addressItem.name.ifEmpty { "Home" })
+        mutableStateOf(myAddressItem.name.ifEmpty { "Home" })
     }
 
     Column(
@@ -85,10 +86,8 @@ fun FillAddressSheet(
     ) {
         Box(Modifier.fillMaxWidth()) {
             CurrentLocationUi(
-                name = (if (addressItem.area.isNotEmpty()) addressItem.area + ", " else "") + (address.locality
-                    ?: address.subAdminArea
-                    ?: address.adminArea ?: ""),
-                area = (address.adminArea ?: "") + ", " + (address.countryName ?: "")
+                name = address.getAddressLine(0),
+                area = getLocationName(address)
             )
             IconButton(
                 modifier = Modifier
@@ -220,12 +219,12 @@ fun FillAddressSheet(
 
         OutlinedButton(
             onClick = {
-                val newAddress = AddressesResponse.Address(
+                val newMyAddress = AddressesResponse.MyAddress(
                     area = address.adminArea,
-                    selected = if (addressItem.id.isEmpty()) true else addressItem.selected,
+                    selected = if (myAddressItem.id.isEmpty()) true else myAddressItem.selected,
                     block = block.value,
                     hn = houseNo.value,
-                    id = addressItem.id,
+                    id = myAddressItem.id,
                     lat = address.latitude,
                     lon = address.longitude,
                     loc = address.locality,
@@ -236,7 +235,7 @@ fun FillAddressSheet(
                     sub = address.subLocality,
                     uid = mapsViewModel.uId
                 )
-                mapsViewModel.putAddress(newAddress) {
+                mapsViewModel.putAddress(newMyAddress) {
                     Toast.makeText(context, "Address Saved", Toast.LENGTH_SHORT).show()
                     onCloseIconClick()
                     navHostController.navigateUp()

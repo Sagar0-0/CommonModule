@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Address
 import android.net.Uri
 import android.os.Build
 import android.text.Editable
@@ -31,7 +32,6 @@ import com.google.android.play.core.review.ReviewManagerFactory
 import com.google.firebase.storage.FirebaseStorage
 import fit.asta.health.BuildConfig
 import fit.asta.health.R
-import fit.asta.health.settings.WEB_URL
 import fit.asta.health.settings.WebViewActivity
 import java.io.IOException
 import java.io.InputStream
@@ -206,22 +206,33 @@ fun Context.setAppTheme() {
     )
 }
 
-fun setAppTheme(newValue: String = "system", context: Context? = null) {
+sealed class AppThemeType(val value: String) {
+    object Dark : AppThemeType("dark")
+    object System : AppThemeType("system")
+    object Light : AppThemeType("light")
+    object Battery : AppThemeType("battery")
+}
+
+fun setAppTheme(newValue: String = AppThemeType.System.value, context: Context? = null) {
     if (context != null) PrefUtils.setTheme(newValue, context)
 
     val mode = when (newValue) {
-        "dark" -> {
+        AppThemeType.Dark.value -> {
             AppCompatDelegate.MODE_NIGHT_YES
         }
-        "light" -> {
+
+        AppThemeType.Light.value -> {
             AppCompatDelegate.MODE_NIGHT_NO
         }
-        "system" -> {
+
+        AppThemeType.System.value -> {
             AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
         }
-        "battery" -> {
+
+        AppThemeType.Battery.value -> {
             AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
         }
+
         else -> {
             AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
         }
@@ -308,8 +319,13 @@ fun Context.showDialog(title: String, desc: String, okTitle: String, notifyOK: (
 fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
 
 fun Context.showUrlInBrowser(url: String) {
+    WebViewActivity.launch(this, url)
+}
 
-    val webIntent = Intent(this, WebViewActivity::class.java)
-    webIntent.putExtra(WEB_URL, url)
-    startActivity(webIntent)
+fun getLocationName(address: Address): String {
+    return if (address.subLocality.isNotEmpty()) {
+        "${address.subLocality}, ${address.locality}"
+    } else {
+        "${address.locality}, ${address.adminArea}"
+    }
 }

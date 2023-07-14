@@ -1,4 +1,4 @@
-package fit.asta.health.settings
+package fit.asta.health.settings.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,14 +9,15 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Scaffold
-import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.outlined.NavigateBefore
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -24,24 +25,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import fit.asta.health.R
-import fit.asta.health.common.ui.theme.cardElevation
+import fit.asta.health.common.ui.CustomTopBar
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.PrefUtils
 import fit.asta.health.common.utils.setAppTheme
+import fit.asta.health.settings.data.SettingsUiEvent
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreenLayout(
-    snackbarMsg: String?,
     builtVersion: String,
-    onClick: (key: SettingsUiEvent) -> Unit
+    onClickEvent: (key: SettingsUiEvent) -> Unit
 ) {
 
     val context = LocalContext.current
@@ -52,50 +51,31 @@ fun SettingsScreenLayout(
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
         ) {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(id = R.string.title_settings),
-                        color = MaterialTheme.colorScheme.onSurface,
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { onClick(SettingsUiEvent.BACK) }) {
-                        Icon(
-                            Icons.Outlined.NavigateBefore,
-                            "back",
-                            tint = MaterialTheme.colorScheme.primary,
-                        )
-                    }
-                }, colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.onPrimary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                ), modifier = Modifier.shadow(elevation = cardElevation.medium)
-            )
+            CustomTopBar(stringResource(id = R.string.title_settings)) {
+                onClickEvent(SettingsUiEvent.BACK)
+            }
 
+            //TODO: Pending implementation
             PreferenceCategory {
                 PreferenceItem(
                     title = stringResource(id = R.string.user_pref_notification_cat_title),
                     icon = painterResource(id = R.drawable.ic_notifications)
-                ) { onClick(SettingsUiEvent.NOTIFICATION) }
+                ) { onClickEvent(SettingsUiEvent.NOTIFICATION) }
             }
-
             PreferenceCategory(title = stringResource(id = R.string.user_pref_support_us_cat_title)) {
                 PreferenceItem(
                     title = stringResource(id = R.string.user_pref_share_app_title),
                     icon = painterResource(id = R.drawable.ic_share)
-                ) { onClick(SettingsUiEvent.SHARE) }
+                ) { onClickEvent(SettingsUiEvent.SHARE) }
                 PreferenceItem(
                     title = stringResource(id = R.string.user_pref_rate_us_title),
                     icon = painterResource(id = R.drawable.ic_rate_us)
-                ) { onClick(SettingsUiEvent.RATE) }
+                ) { onClickEvent(SettingsUiEvent.RATE) }
                 PreferenceItem(
                     title = stringResource(id = R.string.user_pref_feedback_title),
                     icon = painterResource(id = R.drawable.ic_feedback)
-                ) { onClick(SettingsUiEvent.FEEDBACK) }
+                ) { onClickEvent(SettingsUiEvent.FEEDBACK) }
             }
-
             PreferenceCategory(title = stringResource(id = R.string.user_pref_display_cat_title)) {
                 ListPreference(
                     title = stringResource(id = R.string.user_pref_theme_title),
@@ -106,46 +86,35 @@ fun SettingsScreenLayout(
                     setAppTheme(it, context)
                 }
             }
-
             PreferenceCategory(title = stringResource(id = R.string.user_pref_account_cat_title)) {
                 PreferenceItem(
                     title = stringResource(id = R.string.user_pref_sign_out_title),
                     icon = painterResource(id = R.drawable.ic_exit_sign_out)
-                ) { onClick(SettingsUiEvent.SIGNOUT) }
+                ) { onClickEvent(SettingsUiEvent.SIGNOUT) }
                 PreferenceItem(
                     title = stringResource(id = R.string.user_pref_delete_account_title),
                     secondary = stringResource(id = R.string.user_pref_delete_account_summary),
                     icon = painterResource(id = R.drawable.ic_delete_forever)
-                ) { onClick(SettingsUiEvent.DELETE) }
+                ) { onClickEvent(SettingsUiEvent.DELETE) }
             }
-
             PreferenceCategory(title = stringResource(id = R.string.user_pref_about_cat_title)) {
                 PreferenceItem(
                     title = stringResource(id = R.string.user_pref_bug_report_title),
                     icon = painterResource(id = R.drawable.ic_bug_report)
-                ) { onClick(SettingsUiEvent.BUG) }
+                ) { onClickEvent(SettingsUiEvent.BUG) }
                 PreferenceItem(
                     title = stringResource(id = R.string.user_pref_terms_of_use_title),
                     icon = painterResource(id = R.drawable.ic_terms_of_use)
-                ) { onClick(SettingsUiEvent.TERMS) }
+                ) { onClickEvent(SettingsUiEvent.TERMS) }
                 PreferenceItem(
                     title = stringResource(id = R.string.user_pref_privacy_policy_title),
                     icon = painterResource(id = R.drawable.ic_privacy_policy)
-                ) { onClick(SettingsUiEvent.PRIVACY) }
+                ) { onClickEvent(SettingsUiEvent.PRIVACY) }
                 PreferenceItem(
                     title = stringResource(id = R.string.user_pref_version_title),
                     secondary = builtVersion,
                     icon = painterResource(id = R.drawable.ic_build_ver)
-                ) { onClick(SettingsUiEvent.VERSION) }
-            }
-        }
-
-        if (snackbarMsg != null) {
-            LaunchedEffect(Unit) {
-                scaffoldState.snackbarHostState.showSnackbar(
-                    message = snackbarMsg,
-                    duration = SnackbarDuration.Short
-                )
+                ) { onClickEvent(SettingsUiEvent.VERSION) }
             }
         }
     }

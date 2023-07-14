@@ -1,4 +1,4 @@
-package fit.asta.health.settings
+package fit.asta.health.settings.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

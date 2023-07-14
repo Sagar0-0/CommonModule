@@ -70,7 +70,7 @@ fun SignInScreen(navHostController: NavHostController, onSuccess: () -> Unit) {
                 .fillMaxWidth()
                 .height(buttonSize.extraLarge),
             onClick = {
-                navHostController.navigate("Phone")
+                navHostController.navigate(AuthScreens.Phone.route)
             },
             content = {
                 Row(
@@ -85,7 +85,7 @@ fun SignInScreen(navHostController: NavHostController, onSuccess: () -> Unit) {
                         )
                         Text(
                             style = MaterialTheme.typography.labelMedium,
-                            text = "Sign in with Phone"
+                            text = stringResource(id = com.firebase.ui.auth.R.string.fui_sign_in_with_phone)
                         )
                         Icon(
                             tint = Color.Transparent,
@@ -153,7 +153,7 @@ fun SignInScreen(navHostController: NavHostController, onSuccess: () -> Unit) {
                         )
                         Text(
                             style = MaterialTheme.typography.labelMedium,
-                            text = "Sign in with Google"
+                            text = stringResource(id = com.firebase.ui.auth.R.string.fui_sign_in_with_google)
                         )
                         Icon(
                             tint = Color.Transparent,
@@ -167,8 +167,7 @@ fun SignInScreen(navHostController: NavHostController, onSuccess: () -> Unit) {
 
         val annotatedLinkString: AnnotatedString = buildAnnotatedString {
 
-            val str =
-                "By continuing, you are indicating that you accept our Terms of Service and Privacy Policy."
+            val str = stringResource(id = R.string.tnc_text)
             val startTIndex = str.indexOf("Terms")
             val endTIndex = startTIndex + 16
             val startPIndex = str.indexOf("Privacy")

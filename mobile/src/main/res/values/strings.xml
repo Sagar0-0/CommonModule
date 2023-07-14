@@ -236,6 +236,9 @@
     <string name="skip_next">Skip to next</string>
     <string name="music_notification_channel_name">Asta Music</string>
     <string name="player_timestamp_format" translatable="false">%1$s:%2$s</string>
+    <string name="user_pref_current_address" translatable="false">user_pref_current_address</string>
+    <string name="tnc_text">By continuing, you are indicating that you accept our Terms of Service and Privacy Policy.</string>
+    <string name="location_access_required">Need location permission to access this feature.</string>
 
 </resources>
 

@@ -5,11 +5,11 @@ import com.google.gson.annotations.SerializedName
 
 data class AddressesResponse(
     @SerializedName("data")
-    val data: List<Address>,
+    val data: List<MyAddress>,
     @SerializedName("status")
     val status: Status
 ) {
-    data class Address(
+    data class MyAddress(
         @SerializedName("cl")
         val selected: Boolean,
         @SerializedName("area")

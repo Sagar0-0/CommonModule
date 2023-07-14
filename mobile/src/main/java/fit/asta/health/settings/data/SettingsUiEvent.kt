@@ -1,4 +1,4 @@
-package fit.asta.health.settings
+package fit.asta.health.settings.data
 
 enum class SettingsUiEvent {
     BACK,

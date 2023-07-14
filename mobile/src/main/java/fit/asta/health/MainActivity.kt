@@ -42,7 +42,6 @@ import fit.asta.health.profile.viewmodel.ProfileAvailViewModel
 import fit.asta.health.settings.SettingsActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -65,7 +64,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
     private val profileImgUri = mutableStateOf<Uri?>(null)
     private val notificationEnabled = mutableStateOf(true)
     private val isConnected = mutableStateOf(true)
-    private val addressText = mutableStateOf("...")
+    private val addressText = mutableStateOf("Select Location")
 
     @Inject
     lateinit var tokenProvider: TokenProvider
@@ -101,17 +100,6 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
         FirebaseAuth.getInstance().addIdTokenListener(this)
     }
 
-    private fun observeCurrentLocation() {
-        mapsViewModel.updateCurrentLocationData(this@MainActivity)
-        lifecycleScope.launch {
-            mapsViewModel.currentAddress.collect {
-                if (it != null) {
-                    addressText.value = it.sub
-                }
-            }
-        }
-    }
-
     private fun registerLocationPermissionLauncher() {
         val permissionResultListener = object : PermissionResultListener {
             override fun onGranted() {
@@ -121,7 +109,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
             override fun onDenied() {
                 Toast.makeText(
                     this@MainActivity,
-                    "Need location permission to access this feature.",
+                    getString(R.string.location_access_required),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -147,17 +135,21 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
             AppTheme {
                 val context = LocalContext.current
                 val navController = rememberNavController()
-                AuthNavHost(navController) {
-                    if (authViewModel.isAuthenticated()) {
-                        authViewModel.getUserId()?.let {
-                            createProfile()
-                            profileAvailViewModel.isUserProfileAvailable(it)
+                AuthNavHost(
+                    navHostController = navController,
+                    onSuccess = {
+                        if (authViewModel.isAuthenticated()) {
+                            authViewModel.getUserId()?.let {
+                                createProfile()
+                                profileAvailViewModel.isUserProfileAvailable(it)
+                            }
+                            Toast.makeText(
+                                context, "Sign in Successful", Toast.LENGTH_SHORT
+                            ).show()
+                            //loadAppScreen()
                         }
-                        Toast.makeText(
-                            context, "Sign in Successful", Toast.LENGTH_SHORT
-                        ).show()
                     }
-                }
+                )
             }
         }
     }
@@ -239,8 +231,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener,
 
     override fun onStart() {
         super.onStart()
-
-        observeCurrentLocation()
+        addressText.value = PrefUtils.getCurrentAddress(this)
         checkUpdate()
     }
 

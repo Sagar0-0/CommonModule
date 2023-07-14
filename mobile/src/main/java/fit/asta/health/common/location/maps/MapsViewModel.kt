@@ -24,9 +24,10 @@ import com.google.android.gms.tasks.Task
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.location.LocationHelper
 import fit.asta.health.common.location.maps.modal.AddressesResponse
-import fit.asta.health.common.location.maps.modal.AddressesResponse.Address
+import fit.asta.health.common.location.maps.modal.AddressesResponse.MyAddress
 import fit.asta.health.common.location.maps.modal.SearchResponse
 import fit.asta.health.common.location.maps.repo.MapsRepo
+import fit.asta.health.common.utils.PrefUtils
 import fit.asta.health.common.utils.ResultState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -52,7 +53,7 @@ class MapsViewModel
     val isLocationEnabled = MutableStateFlow(false)
     val isPermissionGranted = MutableStateFlow(true)
 
-    private val _currentAddress = MutableStateFlow<Address?>(null)
+    private val _currentAddress = MutableStateFlow<android.location.Address?>(null)
     val currentAddress = _currentAddress.asStateFlow()
 
     private val _currentLatLng = MutableStateFlow(LatLng(0.0, 0.0))
@@ -74,12 +75,14 @@ class MapsViewModel
 
 
     fun updateCurrentLocationData(context: Context) {
+        Log.d(TAG, "updateCurrentLocationData: Called")
         updateLocationServiceStatus()
         viewModelScope.launch {
             if (isLocationEnabled.value && isPermissionGranted.value) {
                 getCurrentLatLng(context)
                 _currentLatLng.collect {
-                    getCurrentAddress(context)
+                    Log.d(TAG, "updateCurrentLocationData: LatLng updated")
+                    getCurrentAddress(it, context)
                 }
             }
         }
@@ -94,11 +97,11 @@ class MapsViewModel
         context: Context,
         onFailure: (intentSenderRequest: IntentSenderRequest) -> Unit
     ) {
-
         val locationRequest = LocationRequest.Builder(
             Priority.PRIORITY_HIGH_ACCURACY,
             10000
         ).build()
+
         val builder = LocationSettingsRequest.Builder()
             .addLocationRequest(locationRequest)
 
@@ -109,7 +112,7 @@ class MapsViewModel
                 "Location",
                 "createLocationRequest: Success ${locationSettingsResponse.locationSettingsStates}"
             )
-            getCurrentLatLng(context)
+            updateCurrentLocationData(context)
         }
         task.addOnFailureListener { exception ->
             if (exception is ResolvableApiException) {
@@ -131,9 +134,7 @@ class MapsViewModel
     }
 
     //Call only after currentLatLng changes
-    private fun getCurrentAddress(context: Context) {
-        Log.d(TAG, "getCurrentAddress: ${_currentLatLng.value.latitude}")
-        if (_currentLatLng.value.latitude == 0.0 && _currentLatLng.value.longitude == 0.0) return
+    private fun getCurrentAddress(latLng: LatLng, context: Context) {
         try {
             val geocoder = Geocoder(context, Locale.getDefault())
             val addresses = geocoder.getFromLocation(
@@ -142,25 +143,12 @@ class MapsViewModel
                 1
             )
             if (!addresses.isNullOrEmpty()) {
-                val address: android.location.Address = addresses[0]
-                val myAddress = Address(
-                    area = address.adminArea,
-                    selected = true,
-                    block = address.locality ?: "",
-                    hn = address.subAdminArea,
-                    id = "",
-                    lat = address.latitude,
-                    lon = address.longitude,
-                    loc = address.locality,
-                    nearby = "",
-                    name = "Home",
-                    pin = address.postalCode,
-                    ph = "Unknown",
-                    sub = address.subAdminArea,
-                    uid = uId
+                _currentAddress.value = addresses[0]
+                PrefUtils.setCurrentAddress(
+                    "${_currentAddress.value?.subLocality}, ${_currentAddress.value?.locality}",
+                    context
                 )
-                _currentAddress.value = myAddress
-                Log.d(TAG, "getCurrentAddress: Success")
+                Log.d(TAG, "getCurrentAddress: Success: ${_currentAddress.value}")
             } else {
                 Log.e(TAG, "getCurrentAddress: $addresses")
             }
@@ -220,8 +208,8 @@ class MapsViewModel
         }
     }
 
-    fun selectCurrentAddress(address: Address) = viewModelScope.launch {
-        mapsRepo.selectCurrent(address.id, selectedAddressId)
+    fun selectCurrentAddress(myAddress: MyAddress) = viewModelScope.launch {
+        mapsRepo.selectCurrent(myAddress.id, selectedAddressId)
     }
 
     fun getAllAddresses() = viewModelScope.launch {
@@ -249,8 +237,8 @@ class MapsViewModel
         }
     }
 
-    fun putAddress(address: Address, onSuccess: () -> Unit) = viewModelScope.launch {
-        val response = mapsRepo.putAddress(address)
+    fun putAddress(myAddress: MyAddress, onSuccess: () -> Unit) = viewModelScope.launch {
+        val response = mapsRepo.putAddress(myAddress)
         response.collect {
             if (it is ResultState.Success) {
                 Log.d(TAG, "PUT: " + it.data.status.code.toString())

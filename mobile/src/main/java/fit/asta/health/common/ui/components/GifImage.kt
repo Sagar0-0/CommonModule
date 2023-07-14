@@ -1,6 +1,7 @@
 package fit.asta.health.common.ui.components
 
 import android.os.Build.VERSION.SDK_INT
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
@@ -13,6 +14,7 @@ import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import coil.size.Size
+import fit.asta.health.R
 
 @Composable
 fun GifImage(
@@ -32,7 +34,9 @@ fun GifImage(
         .build()
     Image(
         painter = rememberAsyncImagePainter(
-            model = ImageRequest.Builder(context).data(data = url)
+            model = ImageRequest.Builder(context)
+                .placeholder(AppCompatResources.getDrawable(context, R.drawable.placeholder_tag))
+                .data(data = url)
                 .apply(block = {
                     size(Size.ORIGINAL)
                 }).build(), imageLoader = imageLoader
