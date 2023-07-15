@@ -1,7 +1,15 @@
 package fit.asta.health.tools.sunlight.view.components
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -16,20 +24,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import fit.asta.health.tools.view.components.ItemData
 import fit.asta.health.tools.view.components.ItemList
 
 @Composable
-fun SPFLevel() {
+fun SPFLevel(navController: NavController) {
 
     val itemDataListDemo = remember {
-        mutableStateListOf(ItemData(1, "SPF 15", bgColor = Color(0x66959393)),
+        mutableStateListOf(
+            ItemData(1, "SPF 15", bgColor = Color(0x66959393)),
             ItemData(2, "SPF 20", bgColor = Color(0x66959393)),
             ItemData(3, "SPF 30", bgColor = Color(0x66959393)),
             ItemData(4, "SPF 40", bgColor = Color(0x66959393)),
             ItemData(5, "SPF 50", bgColor = Color(0x66959393)),
             ItemData(6, "SPF 70 ", bgColor = Color(0x66959393)),
-            ItemData(7, "None", bgColor = Color(0x66959393)))
+            ItemData(7, "None", bgColor = Color(0x66959393))
+        )
     }
 
     ItemList(list = itemDataListDemo,
@@ -87,17 +98,19 @@ fun SPFLevelContent() {
 @Composable
 fun TimeSelection() {
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-        Box(Modifier
-            .fillMaxWidth()
-            .weight(1f)) {
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .weight(1f)) {
             TimeSelectionLayout(title = "Start Time")
         }
 
         Spacer(modifier = Modifier.width(8.dp))
 
-        Box(Modifier
-            .fillMaxWidth()
-            .weight(1f)) {
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .weight(1f)) {
             TimeSelectionLayout(title = "End Time")
         }
     }

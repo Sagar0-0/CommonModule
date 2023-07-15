@@ -38,12 +38,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.ButtonWithColor
+import fit.asta.health.common.ui.components.CardItem
 import fit.asta.health.common.ui.components.CircularSliderInt
 import fit.asta.health.common.ui.components.ProgressBarInt
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.ui.DividerLineCenter
-import fit.asta.health.common.ui.components.ButtonWithColor
-import fit.asta.health.common.ui.components.CardItem
+import fit.asta.health.tools.sunlight.view.components.DividerLineCenter
 import fit.asta.health.tools.walking.view.home.SunlightCard
 
 @OptIn(ExperimentalMaterialApi::class)

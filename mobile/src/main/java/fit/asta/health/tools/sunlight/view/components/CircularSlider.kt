@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import kotlin.math.*
 
 
@@ -41,7 +40,7 @@ fun CircularSlider(
     var radius by remember { mutableStateOf(0f) }
     var center by remember { mutableStateOf(Offset.Zero) }
     var appliedAngle by remember { mutableStateOf(0f) }
-    var progresscolor by remember{
+    var progresscolor by remember {
         mutableStateOf(progressColor)
     }
 
@@ -60,12 +59,13 @@ fun CircularSlider(
     }
     LaunchedEffect(key1 = appliedAngle) {
         onChange?.invoke(appliedAngle / 300f)
-        progresscolor=if(appliedAngle/300f<0.25f){
+        progresscolor = if (appliedAngle / 300f < 0.25f) {
             Color.Red
-        }else if(appliedAngle/300f<0.5f){Color(0xFFFFA000)
-        }
-        else if(appliedAngle/300f<0.75f){Color(0xFF0288D1)
-        }else{
+        } else if (appliedAngle / 300f < 0.5f) {
+            Color(0xFFFFA000)
+        } else if (appliedAngle / 300f < 0.75f) {
+            Color(0xFF0288D1)
+        } else {
             Color(0xFF689F38)
         }
     }
@@ -93,57 +93,78 @@ fun CircularSlider(
                         down = false
                     }
                 }
+
                 MotionEvent.ACTION_MOVE -> {
                     if (down) {
                         angle = angle(center, offset)
                     }
                 }
+
                 MotionEvent.ACTION_UP -> {
                     down = false
                 }
+
                 else -> return@pointerInteropFilter false
             }
             return@pointerInteropFilter true
         }) {
-        drawArc(color = backgroundColor,
+        drawArc(
+            color = backgroundColor,
             startAngle = -240f,
             sweepAngle = 300f,
             topLeft = center - Offset(radius, radius),
             size = Size(radius * 2, radius * 2),
             useCenter = false,
-            style = Stroke(width = stroke, cap = cap))
-        drawArc(color = progresscolor,
+            style = Stroke(width = stroke, cap = cap)
+        )
+        drawArc(
+            color = progresscolor,
             startAngle = 120f,
             sweepAngle = appliedAngle,
             topLeft = center - Offset(radius, radius),
             size = Size(radius * 2, radius * 2),
             useCenter = false,
-            style = Stroke(width = stroke, cap = cap))
-        drawCircle(color = thumbColor,
+            style = Stroke(width = stroke, cap = cap)
+        )
+        drawCircle(
+            color = thumbColor,
             radius = stroke,
-            center = center + Offset(radius * cos((120 + appliedAngle) * PI / 180f).toFloat(),
-                radius * sin((120 + appliedAngle) * PI / 180f).toFloat()))
+            center = center + Offset(
+                radius * cos((120 + appliedAngle) * PI / 180f).toFloat(),
+                radius * sin((120 + appliedAngle) * PI / 180f).toFloat()
+            )
+        )
         if (debug) {
-            drawRect(color = Color.Green,
+            drawRect(
+                color = Color.Green,
                 topLeft = Offset.Zero,
                 size = Size(width.toFloat(), height.toFloat()),
-                style = Stroke(4f))
-            drawRect(color = Color.Red,
+                style = Stroke(4f)
+            )
+            drawRect(
+                color = Color.Red,
                 topLeft = Offset(padding, padding),
                 size = Size(width.toFloat() - padding * 2, height.toFloat() - padding * 2),
-                style = Stroke(4f))
-            drawRect(color = Color.Blue,
+                style = Stroke(4f)
+            )
+            drawRect(
+                color = Color.Blue,
                 topLeft = Offset(padding, padding),
                 size = Size(width.toFloat() - padding * 2, height.toFloat() - padding * 2),
-                style = Stroke(4f))
-            drawCircle(color = Color.Red,
+                style = Stroke(4f)
+            )
+            drawCircle(
+                color = Color.Red,
                 center = center,
                 radius = radius + stroke / 2f,
-                style = Stroke(2f))
-            drawCircle(color = Color.Red,
+                style = Stroke(2f)
+            )
+            drawCircle(
+                color = Color.Red,
                 center = center,
                 radius = radius - stroke / 2f,
-                style = Stroke(2f))
+                style = Stroke(2f)
+            )
         }
     }
 }

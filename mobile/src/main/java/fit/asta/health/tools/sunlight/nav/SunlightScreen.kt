@@ -6,4 +6,5 @@ sealed class SunlightScreen(val route: String) {
     object SkinColorScreen : SunlightScreen(route = "skin_color_screen")
     object SPFSelectionScreen : SunlightScreen(route = "spf_selection_screen")
     object AgeSelectionScreen : SunlightScreen(route = "age_selection_screen")
+    object StartedStateComposable : SunlightScreen(route = "started_state")
 }

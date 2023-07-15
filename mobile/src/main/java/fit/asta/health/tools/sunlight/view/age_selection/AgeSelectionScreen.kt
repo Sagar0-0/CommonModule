@@ -1,0 +1,151 @@
+package fit.asta.health.tools.sunlight.view.age_selection
+
+import android.annotation.SuppressLint
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import fit.asta.health.R
+import fit.asta.health.tools.sunlight.viewmodel.SunlightViewModel
+import fit.asta.health.tools.view.components.ItemData
+import fit.asta.health.tools.view.components.ItemList
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalCoroutinesApi::class)
+
+@Composable
+fun AgeRange(navController: NavController, homeViewModel: SunlightViewModel) {
+
+    val itemListData = remember {
+        mutableStateListOf(
+            ItemData(1, "Pre Teen - 30 years", bgColor = Color(0x66959393)),
+            ItemData(id = 2, display = "30 - 60 years", bgColor = Color(0x66959393)),
+            ItemData(3, "Above 60 years", bgColor = Color(0x66959393))
+        )
+    }
+
+    ItemList(list = itemListData, rowTitle = "Please select your age range")
+    AgeSelectionScreen(
+        navController = navController,
+        list = itemListData
+    ) { homeViewModel.onAgeSelection(it) }
+
+}
+
+
+@Composable
+fun AgeSelectionScreen(
+    navController: NavController,
+    list: List<ItemData>,
+    onClick: (String) -> Unit
+) {
+    val itemSelection = remember {
+        mutableStateOf(-1)
+    }
+    Scaffold(
+        topBar = {
+            BottomNavigation(
+                content = {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_exercise_back),
+                                contentDescription = null,
+                                Modifier.size(24.dp)
+                            )
+                        }
+                        Text(
+                            text = "Age",
+                            fontSize = 20.sp,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            textAlign = TextAlign.Center
+                        )
+                        IconButton(onClick = { /*TODO*/ }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.leading_icon_sunlight_topbar),
+                                contentDescription = "leadingIcon",
+                                Modifier.size(26.dp)
+                            )
+                        }
+                    }
+                },
+                elevation = 10.dp,
+                backgroundColor = MaterialTheme.colorScheme.onPrimary
+            )
+        }
+    ) {
+        LazyColumn(
+            modifier = Modifier.padding(it)
+        ) {
+            item {
+                androidx.compose.material.Text(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    text = "Select your age range",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    style = androidx.compose.material.MaterialTheme.typography.body1
+                )
+            }
+            items(count = list.size) { indexNumber ->
+                androidx.compose.material.Surface(
+                    modifier = Modifier
+                        .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+                        .fillMaxWidth()
+                        .height(60.dp)
+                        .clickable {
+                            onClick(list[indexNumber].display)
+                            itemSelection.value =
+                                if (itemSelection.value != indexNumber) indexNumber
+                                else -1
+                        },
+                    color = if (itemSelection.value != indexNumber) {
+                        Color(0xFFE9D7F7)
+                    } else {
+                        Color(0xFF7415BD)
+                    },
+                    shape = RoundedCornerShape(corner = CornerSize(15.dp)),
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        androidx.compose.material.Text(
+                            modifier = Modifier
+                                .padding(start = 16.dp)
+                                .weight(0.5f),
+                            text = list[indexNumber].display,
+                            style = androidx.compose.material.MaterialTheme.typography.subtitle1,
+                            fontSize = 25.sp
+                        )
+
+                    }
+                }
+
+            }
+        }
+
+    }
+
+}

@@ -20,7 +20,5 @@ fun SkinColorLayout() {
             ItemData(6, "Dark", bgColor = Color(0xff544239)))
 
     }
-
     ItemList(list = itemDataListDemo, "Please select your skin color")
-
 }

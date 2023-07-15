@@ -33,11 +33,9 @@ object SunlightModule {
     @Provides
     fun provideSunlightToolRepo(
         remoteApi: SunlightApi,
-        sunlightToolMapper: SunlightToolDataMapper,
     ): SunlightToolRepo {
         return SunlightToolRepoImpl(
             remoteApi = remoteApi,
-            mapper = sunlightToolMapper
         )
     }
 }

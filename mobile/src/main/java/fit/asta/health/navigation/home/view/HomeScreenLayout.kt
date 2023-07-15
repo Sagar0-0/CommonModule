@@ -17,6 +17,7 @@ import fit.asta.health.navigation.home.view.component.*
 import fit.asta.health.testimonials.TestimonialsActivity
 import fit.asta.health.tools.exercise.ExerciseActivity
 import fit.asta.health.tools.meditation.MeditationActivity
+import fit.asta.health.tools.sunlight.SunlightActivity
 import fit.asta.health.tools.walking.view.WalkingActivity
 import fit.asta.health.tools.water.WaterToolActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -60,15 +61,12 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
                         "water" -> {
                             WaterToolActivity.launch(context = context)
                         }
-
                         "steps" -> {
                             WalkingActivity.launch(context = context)
                         }
-
                         "workout" -> {
                             ExerciseActivity.launch(context = context, activity = "workout")
                         }
-
                         "yoga" -> {
                             ExerciseActivity.launch(context = context, activity = "yoga")
                         }
@@ -83,6 +81,10 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
 
                         "meditation" -> {
                             MeditationActivity.launch(context = context)
+                        }
+
+                        "sunlight" -> {
+                            SunlightActivity.launch(context = context)
                         }
                     }
                 })

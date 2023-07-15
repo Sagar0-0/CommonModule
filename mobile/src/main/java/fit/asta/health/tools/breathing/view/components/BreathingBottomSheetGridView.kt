@@ -4,7 +4,12 @@ package fit.asta.health.tools.breathing.view.components
 class BreathingBottomSheetGridView {
 }*/
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,7 +27,7 @@ import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
 import fit.asta.health.R
 import fit.asta.health.tools.sunlight.view.components.BottomSheetButtonLayout
-import fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.ui.DividerLineCenter
+import fit.asta.health.tools.sunlight.view.components.DividerLineCenter
 import fit.asta.health.tools.view.PracticeGridView
 import fit.asta.health.tools.view.components.AddMoreWater
 import fit.asta.health.tools.view.components.PracticeExpandedCard

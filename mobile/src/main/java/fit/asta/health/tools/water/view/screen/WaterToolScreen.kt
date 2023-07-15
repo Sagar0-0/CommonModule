@@ -65,11 +65,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.ProgressBarFloat
-import fit.asta.health.common.ui.components.CircularSliderFloat
-import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.ui.DividerLineCenter
 import fit.asta.health.common.ui.components.ButtonWithColor
+import fit.asta.health.common.ui.components.CircularSliderFloat
+import fit.asta.health.common.ui.components.ProgressBarFloat
+import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.tools.sunlight.view.components.DividerLineCenter
 import fit.asta.health.tools.water.model.domain.BeverageDetails
 import fit.asta.health.tools.water.model.network.TodayActivityData
 
