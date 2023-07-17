@@ -29,9 +29,7 @@ data class Testimonial(
     @SerializedName("apv")
     val apv: Boolean = false,
     @SerializedName("type")
-    val testimonialType: Int = 0,
-    @Transient
-    val type: TestimonialType = TestimonialType.from(testimonialType),
+    val type: Int = 0,
     @SerializedName("rank")
     val rank: Int = -1,
     @SerializedName("ttl")

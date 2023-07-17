@@ -52,7 +52,7 @@ class TestimonialViewModel
 
     private val testimonialData = savedState.getStateFlow(TESTIMONIAL_DATA, Testimonial())
     val id = savedState.getStateFlow(ID, "")
-    val type = savedState.getStateFlow(TYPE, TestimonialType.from(0))
+    val type = savedState.getStateFlow(TYPE, 0)
     val title = savedState.getStateFlow(TITLE, InputWrapper())
     val testimonial = savedState.getStateFlow(TESTIMONIAL, InputWrapper())
     val org = savedState.getStateFlow(ORG, InputWrapper())
@@ -68,7 +68,7 @@ class TestimonialViewModel
     val areInputsValid =
         combine(type, title, testimonial, org, role) { type, title, testimonial, org, role ->
 
-            when (type) {
+            when (TestimonialType.from(type)) {
                 TestimonialType.TEXT -> testimonial.value.isNotBlank() && testimonial.error is UiString.Empty
                 TestimonialType.IMAGE -> true
                 TestimonialType.VIDEO -> true
@@ -79,7 +79,7 @@ class TestimonialViewModel
 
     val areMediaValid = combine(type, imgBefore, imgAfter, video) { type, before, after, video ->
 
-        when (type) {
+        when (TestimonialType.from(type)) {
             TestimonialType.TEXT -> true
             TestimonialType.IMAGE -> (before.localUrl != null || before.url.isNotBlank()) && (after.localUrl != null || after.url.isNotBlank())
             TestimonialType.VIDEO -> video.localUrl != null || video.url.isNotBlank()
@@ -124,7 +124,7 @@ class TestimonialViewModel
                             savedState[ORG] = InputWrapper(value = result.data.user.org)
                             savedState[ROLE] = InputWrapper(value = result.data.user.role)
 
-                            when (result.data.type) {
+                            when (TestimonialType.from(result.data.type)) {
                                 TestimonialType.TEXT -> {
 
                                 }
@@ -161,7 +161,7 @@ class TestimonialViewModel
             updateTestimonial(
                 Testimonial(
                     id = id.value,
-                    testimonialType = type.value.value,
+                    type = type.value,
                     title = title.value.value.trim(),
                     testimonial = testimonial.value.value.trim(),
                     userId = it.uid,
@@ -171,7 +171,7 @@ class TestimonialViewModel
                         org = org.value.value.trim(),
                         url = it.photoUrl.toString()
                     ),
-                    media = when (type.value) {
+                    media = when (TestimonialType.from(type.value)) {
                         TestimonialType.TEXT -> listOf()
                         TestimonialType.IMAGE -> listOf(imgBefore.value, imgAfter.value)
                         TestimonialType.VIDEO -> listOf(video.value)
