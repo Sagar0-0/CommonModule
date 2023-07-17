@@ -2,7 +2,6 @@ package fit.asta.health.testimonials.model.domain
 
 import android.net.Uri
 import android.os.Parcelable
-import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import fit.asta.health.common.utils.UiString
 import fit.asta.health.network.data.Status
@@ -65,8 +64,8 @@ data class Media(
     val title: String = "",
     @SerializedName("url")
     val url: String = "",
-    @Expose(serialize = false)
+    @Transient
     var localUrl: Uri? = null,
-    @Expose(serialize = false)
+    @Transient
     val error: UiString = UiString.Empty
 ) : Parcelable

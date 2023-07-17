@@ -34,9 +34,12 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 fun ImageLayout(
     modifier: Modifier = Modifier,
     viewModel: TestimonialViewModel = hiltViewModel(),
+    onNavigateImgCropper: () -> Unit = {},
+    beforeImage: String?,
 ) {
     val imgBefore by viewModel.imgBefore.collectAsStateWithLifecycle()
     val imgAfter by viewModel.imgAfter.collectAsStateWithLifecycle()
+
     val beforeLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
             viewModel.onEvent(TestimonialEvent.OnMediaSelect(MediaType.BeforeImage, uri))
@@ -62,7 +65,16 @@ fun ImageLayout(
                 Box(modifier = Modifier.fillMaxWidth(0.5f)) {
                     if (imgBefore.url.isEmpty() && imgBefore.localUrl == null) {
                         UploadTstMediaView(title = imgBefore.title,
-                            onClick = { beforeLauncher.launch("image/*") })
+                            onUploadClick = { beforeLauncher.launch("image/*") })
+
+//                        UploadTstMediaView(
+//                            title = imgBefore.title,
+//                            onUploadClick = { onNavigateImgCropper() })
+//
+//                        Log.d(
+//                            "demo",
+//                            "if Local -> ${imgBefore.localUrl} and if url = ${imgBefore.url}"
+//                        )
                     } else {
                         SelectedImageView(title = imgBefore.title,
                             url = getOneUrl(imgBefore.localUrl, imgBefore.url),
@@ -74,13 +86,29 @@ fun ImageLayout(
                                     )
                                 )
                             })
+
+//                        Log.d(
+//                            "demo",
+//                            "else Local -> ${imgBefore.localUrl} and else url = ${imgBefore.url}"
+//                        )
+//
+//                        SelectedImageView(title = imgBefore.title,
+//                            url = getOneUrl(imgBefore.localUrl, imgBefore.url),
+//                            onImageClick = { onNavigateImgCropper() },
+//                            onImageClear = {
+//                                viewModel.onEvent(
+//                                    TestimonialEvent.OnMediaClear(
+//                                        MediaType.BeforeImage
+//                                    )
+//                                )
+//                            })
                     }
                 }
 
                 Box(modifier = Modifier.fillMaxWidth(1f)) {
                     if (imgAfter.url.isEmpty() && imgAfter.localUrl == null) {
                         UploadTstMediaView(title = imgAfter.title,
-                            onClick = { afterLauncher.launch("image/*") })
+                            onUploadClick = { afterLauncher.launch("image/*") })
                     } else {
                         SelectedImageView(title = imgAfter.title,
                             url = getOneUrl(imgAfter.localUrl, imgAfter.url),

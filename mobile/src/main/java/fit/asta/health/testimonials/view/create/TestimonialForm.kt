@@ -47,6 +47,8 @@ fun TestimonialForm(
     editViewModel: TestimonialViewModel = hiltViewModel(),
     paddingValues: PaddingValues,
     onNavigateTstHome: () -> Unit,
+    onNavigateImgCropper: () -> Unit = {},
+    beforeImage: String?,
 ) {
 
     val type by editViewModel.type.collectAsStateWithLifecycle()
@@ -173,7 +175,7 @@ fun TestimonialForm(
 
         if (selectedOption == radioButtonList[1]) {
             Spacer(modifier = Modifier.height(spacing.medium))
-            ImageLayout()
+            ImageLayout(onNavigateImgCropper = onNavigateImgCropper, beforeImage = beforeImage)
         } else if (selectedOption == radioButtonList[2]) {
             Spacer(modifier = Modifier.height(spacing.medium))
             TestGetVideo()
@@ -229,7 +231,13 @@ fun TestimonialForm(
 
 @OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun CreateTstScreen(title: String, onNavigateTstCreate: () -> Unit, onNavigateTstHome: () -> Unit) {
+fun CreateTstScreen(
+    title: String,
+    onNavigateTstCreate: () -> Unit,
+    onNavigateTstHome: () -> Unit,
+    onNavigateImgCropper: () -> Unit = {},
+    beforeImage: String?,
+) {
 
     var showCustomDialogWithResult by remember { mutableStateOf(false) }
 
@@ -253,7 +261,11 @@ fun CreateTstScreen(title: String, onNavigateTstCreate: () -> Unit, onNavigateTs
             }
         }, modifier = Modifier.shadow(elevation = cardElevation.medium))
     }, content = {
-        TestimonialForm(paddingValues = it, onNavigateTstHome = onNavigateTstHome)
+        TestimonialForm(
+            paddingValues = it,
+            onNavigateTstHome = onNavigateTstHome,
+            onNavigateImgCropper = onNavigateImgCropper, beforeImage = beforeImage
+        )
     }, containerColor = MaterialTheme.colorScheme.background)
 
 

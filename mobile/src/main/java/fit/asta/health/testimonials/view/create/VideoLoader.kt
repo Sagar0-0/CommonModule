@@ -13,12 +13,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.exoplayer.ExoPlayer
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.testimonials.view.components.UploadTstMediaView
 import fit.asta.health.testimonials.view.list.VideoView
 import fit.asta.health.testimonials.viewmodel.create.MediaType
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
 import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
-import fit.asta.health.common.ui.theme.spacing
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -43,7 +43,7 @@ fun TestGetVideo(viewModel: TestimonialViewModel = hiltViewModel()) {
 fun GetVideo(
     modifier: Modifier = Modifier,
     viewModel: TestimonialViewModel,
-    onVideoClick: (() -> Unit)? = null,
+    onVideoClick: () -> Unit = {},
     onVideoClear: () -> Unit,
 ) {
     Column(modifier = modifier) {
@@ -70,7 +70,7 @@ fun GetVideo(
 @Composable
 fun VideoLayout(
     viewModel: TestimonialViewModel,
-    onVideoClick: (() -> Unit)? = null,
+    onVideoClick: () -> Unit = {},
     onVideoClear: () -> Unit,
 ) {
 
@@ -78,7 +78,7 @@ fun VideoLayout(
 
     Box {
         if (video.url.isEmpty() && video.localUrl == null) {
-            UploadTstMediaView(onClick = onVideoClick)
+            UploadTstMediaView(onUploadClick = onVideoClick)
         } else {
             VideoView(videoUri = getOneUrl(localUrl = video.localUrl, remoteUrl = video.url))
         }
