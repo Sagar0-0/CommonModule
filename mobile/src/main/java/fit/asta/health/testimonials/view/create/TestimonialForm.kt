@@ -68,7 +68,7 @@ fun TestimonialForm(
     var showCustomDialogWithResult by remember { mutableStateOf(false) }
 
     val selectedOption = radioButtonList.find {
-        it == TestimonialType.from(type)
+        it == type
     } ?: radioButtonList[0]
 
     val focusManager = LocalFocusManager.current
