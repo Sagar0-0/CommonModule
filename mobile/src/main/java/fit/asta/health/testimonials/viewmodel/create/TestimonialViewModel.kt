@@ -52,7 +52,7 @@ class TestimonialViewModel
 
     private val testimonialData = savedState.getStateFlow(TESTIMONIAL_DATA, Testimonial())
     val id = savedState.getStateFlow(ID, "")
-    val type = savedState.getStateFlow(TYPE, TestimonialType.TEXT)
+    val type = savedState.getStateFlow(TYPE, TestimonialType.from(0))
     val title = savedState.getStateFlow(TITLE, InputWrapper())
     val testimonial = savedState.getStateFlow(TESTIMONIAL, InputWrapper())
     val org = savedState.getStateFlow(ORG, InputWrapper())
@@ -161,7 +161,7 @@ class TestimonialViewModel
             updateTestimonial(
                 Testimonial(
                     id = id.value,
-                    type = type.value,
+                    testimonialType = type.value.value,
                     title = title.value.value.trim(),
                     testimonial = testimonial.value.value.trim(),
                     userId = it.uid,

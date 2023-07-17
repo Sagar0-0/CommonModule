@@ -136,7 +136,7 @@ fun TestimonialsRadioButton(
                                         colors = RadioButtonDefaults.colors(MaterialTheme.colorScheme.primary)
                                     )
                                     Text(
-                                        text = item.name,
+                                        text = item.title,
                                         lineHeight = 22.4.sp,
                                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                                         style = MaterialTheme.typography.bodyLarge
