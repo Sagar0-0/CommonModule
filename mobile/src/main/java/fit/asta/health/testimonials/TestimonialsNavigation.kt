@@ -1,12 +1,6 @@
 package fit.asta.health.testimonials
 
-import android.net.Uri
-import android.util.Log
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -25,7 +19,6 @@ fun TestimonialsNavigation(
     getViewModel: TestimonialViewModel = hiltViewModel(),
 ) {
 
-    var myString by remember { mutableStateOf<String?>("") }
 
     NavHost(navController, startDestination = TestimonialsRoute.Home.route) {
 
@@ -40,45 +33,54 @@ fun TestimonialsNavigation(
 
         composable(route = TestimonialsRoute.Create.route) {
 
-            LoadTestimonialForm(
-                onNavigateTstCreate = { navController.popBackStack() },
+            LoadTestimonialForm(onNavigateTstCreate = { navController.popBackStack() },
                 onNavigateTstHome = {
                     navController.navigate(route = TestimonialsRoute.Home.route)
                 },
                 onNavigateImgCropper = {
-                    navController.navigate(route = TestimonialsRoute.ImgCropper.route)
+                    navController.navigate(route = TestimonialsRoute.BeforeImgCropper.route)
                 },
-                beforeImage = myString
-            )
-
-            Log.d("tag", "$myString")
+                getViewModel = getViewModel,
+                onNavigateAfterImgCropper = { navController.navigate(route = TestimonialsRoute.AfterImgCropper.route) })
 
         }
 
 
-        composable(route = TestimonialsRoute.ImgCropper.route) {
+        composable(route = TestimonialsRoute.BeforeImgCropper.route) {
 
             ImageCropperScreen(onCloseImgCropper = { navController.popBackStack() },
 
                 onConfirmSelection = { imageBitmap ->
 
-                    myString = imageBitmap
-
                     getViewModel.onEvent(
                         TestimonialEvent.OnMediaSelect(
-                            mediaType = MediaType.BeforeImage,
-                            url = convertPathToUri(path = imageBitmap)
+                            mediaType = MediaType.BeforeImage, url = imageBitmap
                         )
                     )
 
                     navController.popBackStack()
-                    Log.d("demo", "CONVERT -> ${convertPathToUri(path = imageBitmap)}")
                 })
+
         }
+
+
+        composable(route = TestimonialsRoute.AfterImgCropper.route) {
+
+            ImageCropperScreen(onCloseImgCropper = { navController.popBackStack() },
+
+                onConfirmSelection = { imageBitmap ->
+
+                    getViewModel.onEvent(
+                        TestimonialEvent.OnMediaSelect(
+                            mediaType = MediaType.AfterImage, url = imageBitmap
+                        )
+                    )
+
+                    navController.popBackStack()
+                })
+
+        }
+
+
     }
 }
-
-fun convertPathToUri(path: String?): Uri? {
-    return Uri.Builder().path(path).build()
-}
-
