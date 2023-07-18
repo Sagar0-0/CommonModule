@@ -1,6 +1,6 @@
-package fit.asta.health.firebase.viewmodel
+package fit.asta.health.auth.viewmodel
 
-import fit.asta.health.firebase.model.domain.User
+import fit.asta.health.auth.model.domain.User
 
 
 sealed class AuthState {

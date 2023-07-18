@@ -10,6 +10,21 @@ class PrefUtils {
 
     companion object {
 
+        fun getLocationPermissionRejectedCount(context: Context): Int {
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+            return preferences.getInt(
+                context.getString(R.string.user_pref_location_permission_count),
+                0
+            )
+        }
+
+        fun setLocationPermissionRejectedCount(context: Context, newCount: Int) {
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+            preferences.edit()
+                .putInt(context.getString(R.string.user_pref_location_permission_count), newCount)
+                .apply()
+        }
+
         fun getOnboardingShownStatus(context: Context): Boolean {
             val preferences = PreferenceManager.getDefaultSharedPreferences(context)
             return preferences.getBoolean(

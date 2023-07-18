@@ -3,7 +3,7 @@ package fit.asta.health.profile.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.firebase.model.AuthRepo
+import fit.asta.health.auth.model.AuthRepo
 import fit.asta.health.network.NetworkHelper
 import fit.asta.health.profile.model.ProfileRepo
 import kotlinx.coroutines.ExperimentalCoroutinesApi

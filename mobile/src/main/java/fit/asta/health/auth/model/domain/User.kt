@@ -1,4 +1,4 @@
-package fit.asta.health.firebase.model.domain
+package fit.asta.health.auth.model.domain
 
 import android.net.Uri
 import android.os.Parcelable

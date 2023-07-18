@@ -72,7 +72,7 @@ import fit.asta.health.common.utils.ResultState
 
 @Composable
 fun SavedAddressesScreen(
-    startSearch: Boolean,
+    startSearch: Boolean = false,
     navHostController: NavHostController,
     mapsViewModel: MapsViewModel,
     onBackPressed: () -> Unit
@@ -91,16 +91,17 @@ fun SavedAddressesScreen(
     }
 
     val focusRequester = remember { FocusRequester() }
+    LaunchedEffect(Unit) {
+        if (startSearch) {
+            focusRequester.requestFocus()
+        } else {
+            focusRequester.freeFocus()
+        }
+    }
 
     Column(Modifier.fillMaxSize()) {
         CustomTopBar(text = "Saved Addresses") {
             onBackPressed()
-        }
-
-        if (startSearch) {
-            LaunchedEffect(Unit) {
-                focusRequester.requestFocus()
-            }
         }
 
         OutlinedTextField(
@@ -340,7 +341,7 @@ fun SavedAddressesScreen(
                                         mapsViewModel.deleteAddress(item.id) {
                                             Toast.makeText(
                                                 context,
-                                                "Address Deleted",
+                                                "Address Deleted Successfully",
                                                 Toast.LENGTH_SHORT
                                             ).show()
                                         }
@@ -405,7 +406,7 @@ fun SavedAddressesScreen(
                                             searchQuery = ""
                                             val myAddressItem = MyAddress(
                                                 selected = false,
-                                                area = it.name,
+                                                area = "",
                                                 block = "",
                                                 hn = "",
                                                 id = "",

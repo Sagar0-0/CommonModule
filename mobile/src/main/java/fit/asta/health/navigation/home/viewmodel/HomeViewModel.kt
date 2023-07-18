@@ -3,10 +3,10 @@ package fit.asta.health.navigation.home.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.auth.model.AuthRepo
 import fit.asta.health.common.utils.getCurrentDate
 import fit.asta.health.common.utils.getCurrentTime
 import fit.asta.health.common.utils.getNextDate
-import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.navigation.home.model.ToolsHomeRepo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow

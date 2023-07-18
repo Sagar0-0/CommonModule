@@ -1,35 +1,41 @@
 package fit.asta.health.feedback.model.network
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import fit.asta.health.network.data.Status
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class NetFeedbackRes(
     @SerializedName("status")
-    val status: Status,
+    val status: Status = Status(),
     @SerializedName("data")
-    val data: NetFeedback
-)
+    val data: NetFeedback = NetFeedback()
+) : Parcelable
 
+@Parcelize
 data class NetFeedback(
     @SerializedName("date")
-    val date: String,
+    val date: String = "",
     @SerializedName("fid")
-    val fid: String,
+    val fid: String = "",
     @SerializedName("id")
-    val id: String,
+    val id: String = "",
     @SerializedName("name")
-    val name: String,
+    val name: String = "",
     @SerializedName("qns")
-    val qns: List<Qn>
-)
+    val qns: List<Qn> = listOf()
+) : Parcelable
 
+
+@Parcelize
 data class Status(
     @SerializedName("code")
-    val code: Int,
+    val code: Int = 0,
     @SerializedName("msg")
-    val msg: String
-)
+    val msg: String = ""
+) : Parcelable
 
+@Parcelize
 data class Qn(
     @SerializedName("isDet")
     val isDet: Boolean,
@@ -43,4 +49,4 @@ data class Qn(
     val ttl: String,
     @SerializedName("type")
     val type: Int
-)
+) : Parcelable

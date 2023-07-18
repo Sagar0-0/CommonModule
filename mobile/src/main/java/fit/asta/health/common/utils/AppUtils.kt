@@ -6,11 +6,13 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Address
 import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import android.text.Editable
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -32,6 +34,7 @@ import com.google.android.play.core.review.ReviewManagerFactory
 import com.google.firebase.storage.FirebaseStorage
 import fit.asta.health.BuildConfig
 import fit.asta.health.R
+import fit.asta.health.common.ui.usingDarkMode
 import fit.asta.health.settings.WebViewActivity
 import java.io.IOException
 import java.io.InputStream
@@ -120,6 +123,13 @@ fun getBitmapFromURL(strURL: String?): Bitmap? {
     }
 }
 
+fun Activity.openAppSettings() {
+    Intent(
+        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+        Uri.fromParts("package", packageName, null)
+    ).also(::startActivity)
+}
+
 fun Activity.hideKeyboardFrom(view: View) {
 
     val imm = getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -197,15 +207,6 @@ fun showInAppReview(activity: Activity) {
         }
     }
 }
-
-fun Context.setAppTheme() {
-    setAppTheme(
-        PrefUtils.getTheme(
-            this
-        )
-    )
-}
-
 sealed class AppThemeType(val value: String) {
     object Dark : AppThemeType("dark")
     object System : AppThemeType("system")
@@ -213,8 +214,21 @@ sealed class AppThemeType(val value: String) {
     object Battery : AppThemeType("battery")
 }
 
-fun setAppTheme(newValue: String = AppThemeType.System.value, context: Context? = null) {
-    if (context != null) PrefUtils.setTheme(newValue, context)
+fun setAppTheme(newValue: String = AppThemeType.System.value, context: Context) {
+    PrefUtils.setTheme(newValue, context)
+    when (PrefUtils.getTheme(context)) {
+        AppThemeType.Dark.value -> {
+            usingDarkMode.value = true
+        }
+
+        AppThemeType.Light.value -> {
+            usingDarkMode.value = false
+        }
+
+        else -> {
+            usingDarkMode.value = isSystemDarkMode(context)
+        }
+    }
 
     val mode = when (newValue) {
         AppThemeType.Dark.value -> {
@@ -239,6 +253,11 @@ fun setAppTheme(newValue: String = AppThemeType.System.value, context: Context? 
     }
 
     AppCompatDelegate.setDefaultNightMode(mode)
+}
+
+fun isSystemDarkMode(context: Context): Boolean {
+    val nightModeFlags = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+    return nightModeFlags == Configuration.UI_MODE_NIGHT_YES
 }
 
 fun Context.getCurrentBuildVersion(): String {
@@ -286,13 +305,14 @@ fun Context.sendBugReportMessage() {
 @Composable
 fun getImageUrl(url: String) = stringResource(id = R.string.media_url) + url
 
-fun getFileName(context: Context, uri: Uri) = DocumentFile.fromSingleUri(context, uri)?.name ?: ""
-
 fun getFirebaseStorageBucketUrl(context: Context): String {
 
     return context.resources.getString(R.string.fire_storage_url) +
             FirebaseStorage.getInstance().reference.bucket + "/o/"
 }
+
+fun getFileName(context: Context, uri: Uri) = DocumentFile.fromSingleUri(context, uri)?.name ?: ""
+
 
 fun getPublicStorageUrl(context: Context, url: String): String {
 

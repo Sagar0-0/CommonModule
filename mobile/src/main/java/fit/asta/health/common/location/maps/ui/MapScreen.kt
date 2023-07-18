@@ -129,13 +129,13 @@ fun MapScreen(
                                         saveEnabled = false
                                         val values = it.getAddressLine(0).split(", ")
                                         val newMyAddress = MyAddress(
-                                            area = values[3],
+                                            area = it.adminArea,
                                             selected = true,
                                             block = values[1],
                                             hn = values[0],
                                             id = "",
-                                            lat = myAddressItem.lat,
-                                            lon = myAddressItem.lon,
+                                            lat = it.latitude,
+                                            lon = it.longitude,
                                             loc = it.locality,
                                             nearby = values[2],
                                             name = "Home",
@@ -147,7 +147,7 @@ fun MapScreen(
                                         mapsViewModel.putAddress(newMyAddress) {
                                             Toast.makeText(
                                                 context,
-                                                "Address Saved",
+                                                "Address Saved Successfully",
                                                 Toast.LENGTH_SHORT
                                             ).show()
                                             navHostController.navigateUp()
@@ -204,6 +204,10 @@ fun MapScreen(
         ) {
             GoogleMap(
                 cameraPositionState = cameraPositionState,
+                uiSettings = MapUiSettings(
+                    zoomControlsEnabled = false,
+                    mapToolbarEnabled = false,
+                ),
             ) {
                 Marker(
                     state = MarkerState(
