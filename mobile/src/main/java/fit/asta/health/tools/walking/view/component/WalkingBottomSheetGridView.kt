@@ -2,7 +2,6 @@ package fit.asta.health.tools.walking.view.component
 
 import androidx.compose.runtime.Composable
 import fit.asta.health.R
-import fit.asta.health.tools.sunlight.view.components.SunlightBottomSheetGridView
 import fit.asta.health.tools.view.PracticeGridView
 
 @Composable
@@ -26,7 +25,5 @@ fun WalkingBottomSheetGridView() {
             cardImg = R.drawable.ic_baseline_favorite_24),
     )
 
-
-    SunlightBottomSheetGridView(cardList = cardList)
-
+    //SunlightBottomSheetGridView(cardList = cardList)
 }

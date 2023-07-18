@@ -1,7 +1,7 @@
 package fit.asta.health.common.location.maps.repo
 
 import fit.asta.health.common.location.maps.modal.AddressesResponse
-import fit.asta.health.common.location.maps.modal.AddressesResponse.Address
+import fit.asta.health.common.location.maps.modal.AddressesResponse.MyAddress
 import fit.asta.health.common.location.maps.modal.DeleteAddressResponse
 import fit.asta.health.common.location.maps.modal.PutAddressResponse
 import fit.asta.health.common.location.maps.modal.SearchResponse
@@ -14,7 +14,7 @@ interface MapsRepo {
 
     suspend fun getAddresses(uid: String): Flow<ResultState<AddressesResponse>>
 
-    suspend fun putAddress(address: Address): Flow<ResultState<PutAddressResponse>>
+    suspend fun putAddress(myAddress: MyAddress): Flow<ResultState<PutAddressResponse>>
 
     suspend fun deleteAddress(uid: String, id: String): Flow<ResultState<DeleteAddressResponse>>
 

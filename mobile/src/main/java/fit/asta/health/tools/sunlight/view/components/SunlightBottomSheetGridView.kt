@@ -1,30 +1,46 @@
 package fit.asta.health.tools.sunlight.view.components
 
-import android.util.Log
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
-import fit.asta.health.R
-import fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.ui.DividerLineCenter
+import fit.asta.health.common.ui.components.ButtonWithColor
+import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.tools.sunlight.nav.SunlightScreen
+import fit.asta.health.tools.sunlight.view.home.SunlightHomeScreenEvents
+import fit.asta.health.tools.sunlight.viewmodel.SunlightViewModel
 import fit.asta.health.tools.view.PracticeGridView
 import fit.asta.health.tools.view.components.AddMoreWater
 import fit.asta.health.tools.view.components.PracticeExpandedCard
 
 @Composable
-fun SunlightBottomSheetGridView(cardList: List<PracticeGridView>) {
+
+fun SunlightBottomSheetGridView(
+    cardList: List<PracticeGridView>,
+    startState: MutableState<Boolean>,
+    navController: NavController,
+    homeViewModel: SunlightViewModel
+) {
 
 
     Box(contentAlignment = Alignment.BottomCenter) {
@@ -64,63 +80,57 @@ fun SunlightBottomSheetGridView(cardList: List<PracticeGridView>) {
                     mainAxisSize = SizeMode.Expand,
                     mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween
                 ) {
-                    cardList.forEachIndexed { index, _ ->
+                    cardList.forEach { value ->
                         PracticeExpandedCard(
-                            cardTitle = cardList[index].cardTitle,
-                            cardImg = cardList[index].cardImg,
-                            cardValue = cardList[index].cardValue,
+                            cardTitle = value.cardTitle,
+                            cardImg = value.cardImg,
+                            cardValue = value.cardValue,
                             modifier = Modifier.size(width = itemSize, height = 100.dp),
-                            onclick = cardList[index].onClick
+                            onclick = value.onClick
                         )
                     }
                 }
             }
-
             item {
                 Spacer(modifier = Modifier.height(16.dp))
             }
-
             item {
                 AddMoreWater()
             }
-
             item {
-                Spacer(modifier = Modifier.height(54.dp))
+                Spacer(modifier = Modifier.height(16.dp))
             }
-
+            item {
+                BottomSheetButtonLayout()
+            }
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+            item {
+                Row(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(spacing.medium)
+                ) {
+                    ButtonWithColor(
+                        modifier = Modifier.weight(0.5f),
+                        color = Color.Green,
+                        text = "SCHEDULE"
+                    ) {}
+                    ButtonWithColor(
+                        modifier = Modifier.weight(0.5f),
+                        color = if (!startState.value) Color.Blue else Color.Red,
+                        text = if (!startState.value) "START" else "END"
+                    ) {
+                        if (startState.value) {
+                            homeViewModel.onUiEvent(SunlightHomeScreenEvents.OnStopClick)
+                            navController.navigate(route = SunlightScreen.StartedStateComposable.route)
+                        } else {
+                            homeViewModel.onUiEvent(SunlightHomeScreenEvents.OnStartClick)
+                        }
+                    }
+                }
+            }
         }
-        BottomSheetButtonLayout()
     }
-
-}
-
-@Preview
-@Composable
-fun SunlightPracticeGridView() {
-
-    val cardList = listOf(
-        PracticeGridView(cardTitle = "Sunscreen",
-            cardValue = "40 SPF",
-            cardImg = R.drawable.ic_baseline_favorite_24,
-            onClick = { Log.d("onClick", "Sunscreen 1") }),
-        PracticeGridView(cardTitle = "Sunscreen",
-            cardValue = "40 SPF",
-            cardImg = R.drawable.ic_baseline_favorite_24,
-            onClick = { Log.d("onClick", "Sunscreen 2") }),
-        PracticeGridView(cardTitle = "Sunscreen",
-            cardValue = "40 SPF",
-            cardImg = R.drawable.ic_baseline_favorite_24,
-            onClick = { Log.d("onClick", "Sunscreen 3") }),
-        PracticeGridView(cardTitle = "Sunscreen",
-            cardValue = "40 SPF",
-            cardImg = R.drawable.ic_baseline_favorite_24,
-            onClick = { Log.d("onClick", "Sunscreen 4") }),
-        PracticeGridView(cardTitle = "Sunscreen",
-            cardValue = "40 SPF",
-            cardImg = R.drawable.ic_baseline_favorite_24,
-            onClick = { Log.d("onClick", "Sunscreen 5") }),
-    )
-
-    SunlightBottomSheetGridView(cardList = cardList)
-
 }

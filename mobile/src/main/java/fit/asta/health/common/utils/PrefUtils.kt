@@ -25,6 +25,21 @@ class PrefUtils {
                 .apply()
         }
 
+        fun getCurrentAddress(context: Context): String {
+            val preference = PreferenceManager.getDefaultSharedPreferences(context)
+            return preference.getString(
+                context.getString(R.string.user_pref_current_address),
+                null
+            ) ?: "Select location"
+        }
+
+        fun setCurrentAddress(address: String, context: Context) {
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+            preferences.edit()
+                .putString(context.getString(R.string.user_pref_current_address), address)
+                .apply()
+        }
+
         fun getMasterNotification(context: Context): Boolean {
 
             val preferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -138,19 +153,19 @@ class PrefUtils {
             val preferences = PreferenceManager.getDefaultSharedPreferences(context)
             return preferences.getString(
                 context.getString(R.string.user_pref_theme_key),
-                "system"
+                AppThemeType.System.value
             )!!
         }
 
         fun setTheme(type: String, context: Context) {
 
-            val themeType = type.ifEmpty { "system" }
+            val themeType = type.ifEmpty { AppThemeType.System.value }
             val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
             editor.putString(context.getString(R.string.user_pref_theme_key), themeType)
             editor.apply()
         }
 
-        fun getLaguage(context: Context): String {
+        fun getLanguage(context: Context): String {
 
             val preferences = PreferenceManager.getDefaultSharedPreferences(context)
             return preferences.getString(

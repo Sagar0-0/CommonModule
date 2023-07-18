@@ -5,12 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -27,23 +25,20 @@ import fit.asta.health.common.utils.getCurrentBuildVersion
 import fit.asta.health.common.utils.getPublicStorageUrl
 import fit.asta.health.common.utils.rateUs
 import fit.asta.health.common.utils.sendBugReportMessage
+import fit.asta.health.common.utils.sendFeedbackMessage
 import fit.asta.health.common.utils.shareApp
 import fit.asta.health.common.utils.showUrlInBrowser
 import fit.asta.health.common.utils.signOut
-import fit.asta.health.feedback.FeedbackActivity
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import fit.asta.health.settings.data.SettingsUiEvent
+import fit.asta.health.settings.ui.SettingsNotificationLayout
+import fit.asta.health.settings.ui.SettingsScreenLayout
 
-
-private const val TITLE_TAG = "settingsActivityTitle"
 
 class SettingsActivity : AppCompatActivity(),
     PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
-    private var snackbarMsg by mutableStateOf<String?>(null)
 
     companion object {
-
-        const val NOTIFY_CHANGE = 578
         fun launch(context: Context) {
             Intent(context, SettingsActivity::class.java)
                 .apply {
@@ -66,17 +61,16 @@ class SettingsActivity : AppCompatActivity(),
 
     @Composable
     fun SettingsNavHost(navHostController: NavHostController) {
-        NavHost(navController = navHostController, startDestination = "main") {
-            composable(route = "main") {
+        NavHost(navController = navHostController, startDestination = SettingScreens.Main.route) {
+            composable(route = SettingScreens.Main.route) {
                 SettingsScreenLayout(
-                    snackbarMsg = snackbarMsg,
                     builtVersion = getCurrentBuildVersion(),
-                    onClick = {
+                    onClickEvent = {
                         onUiClickEvent(it, navHostController)
                     }
                 )
             }
-            composable(route = "notif") {
+            composable(route = SettingScreens.Notifications.route) {
                 SettingsNotificationLayout(
                     onBackPress = { navHostController.navigateUp() },
                     onSwitchToggle = {
@@ -87,11 +81,18 @@ class SettingsActivity : AppCompatActivity(),
         }
     }
 
+    private sealed class SettingScreens(val route: String) {
+        object Main : SettingScreens("main")
+        object Notifications : SettingScreens("notif")
+
+    }
+
     private fun onSwitchToggle(key: String) {
         when (key) {
             resources.getString(R.string.user_pref_master_notification_key) -> {
                 notifyChange()
             }
+
             resources.getString(R.string.user_pref_new_release_key) -> {
 
                 if (PrefUtils.getNewReleaseNotification(this))
@@ -116,8 +117,6 @@ class SettingsActivity : AppCompatActivity(),
         }
     }
 
-
-    @OptIn(ExperimentalCoroutinesApi::class)
     private fun onUiClickEvent(key: SettingsUiEvent, navHostController: NavHostController) {
         when (key) {
             SettingsUiEvent.BACK -> {
@@ -125,7 +124,7 @@ class SettingsActivity : AppCompatActivity(),
             }
 
             SettingsUiEvent.NOTIFICATION -> {
-                navHostController.navigate("notif")
+                navHostController.navigate(SettingScreens.Notifications.route)
             }
 
             SettingsUiEvent.SHARE -> {
@@ -136,28 +135,21 @@ class SettingsActivity : AppCompatActivity(),
                 rateUs()
             }
 
+
             SettingsUiEvent.FEEDBACK -> {
-//                sendFeedbackMessage()
-                FeedbackActivity.launch(
-                    this,
-                    "64a6984361741477ea134fcd"
-                )
+                sendFeedbackMessage()
             }
 
             SettingsUiEvent.SIGNOUT -> {
-                signOut(
-                    showSnackBar = {
-                        showSnackBar(it)
-                    }
-                )
+                signOut {
+                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                }
             }
 
             SettingsUiEvent.DELETE -> {
-                deleteAccount(
-                    showSnackBar = {
-                        showSnackBar(it)
-                    }
-                )
+                deleteAccount {
+                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                }
             }
 
             SettingsUiEvent.BUG -> {
@@ -187,9 +179,6 @@ class SettingsActivity : AppCompatActivity(),
         }
     }
 
-    private fun showSnackBar(msg: String) {
-        snackbarMsg = msg
-    }
 
     override fun onPreferenceStartFragment(
         caller: PreferenceFragmentCompat,

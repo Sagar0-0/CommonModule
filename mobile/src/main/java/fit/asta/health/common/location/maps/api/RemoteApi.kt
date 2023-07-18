@@ -14,7 +14,7 @@ interface RemoteApi {
     ): AddressesResponse
 
     @PUT("put")
-    suspend fun addNewAddress(@Body address: Address): PutAddressResponse
+    suspend fun addNewAddress(@Body myAddress: MyAddress): PutAddressResponse
 
     @DELETE("delete")
     suspend fun deleteAddress(

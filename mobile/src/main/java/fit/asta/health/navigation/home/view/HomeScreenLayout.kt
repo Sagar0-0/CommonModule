@@ -14,8 +14,10 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
 import fit.asta.health.navigation.home.view.component.*
+import fit.asta.health.testimonials.TestimonialsActivity
 import fit.asta.health.tools.exercise.ExerciseActivity
 import fit.asta.health.tools.meditation.MeditationActivity
+import fit.asta.health.tools.sunlight.SunlightActivity
 import fit.asta.health.tools.walking.view.WalkingActivity
 import fit.asta.health.tools.water.WaterToolActivity
 import fit.asta.health.testimonials.TestimonialsActivity
@@ -32,8 +34,10 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
 
     val context = LocalContext.current
 
+    val columns = 3
+
     LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
+        columns = GridCells.Fixed(columns),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
@@ -41,26 +45,16 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
             .padding(16.dp)
     ) {
 
-        item {
-            Spacer(modifier = Modifier.height(spacing.medium))
-        }
-
-        item(span = { GridItemSpan(3) }) {
+        item(span = { GridItemSpan(columns) }) {
             BannerAutoSlider(bannerList = toolsHome.banners)
         }
 
-        item(span = { GridItemSpan(3) }) {
-            MyToolsAndViewAll(myTools = "My Tools", allTools = "All Tools", onClick = {
-                //TODO - Integrate All tools
-            })
-        }
-
-        item {
-            Spacer(modifier = Modifier.height(spacing.medium))
+        item(span = { GridItemSpan(columns) }) {
+            MyToolsAndViewAll(myTools = "My Tools", "") {}
         }
 
         items(toolsHome.tools) { tool ->
-            ToolsCardLayoutDemo(
+            ToolsCardLayout(
                 cardTitle = tool.title,
                 type = tool.name,
                 imgUrl = tool.url,
@@ -69,15 +63,12 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
                         "water" -> {
                             WaterToolActivity.launch(context = context)
                         }
-
                         "steps" -> {
                             WalkingActivity.launch(context = context)
                         }
-
                         "workout" -> {
                             ExerciseActivity.launch(context = context, activity = "workout")
                         }
-
                         "yoga" -> {
                             ExerciseActivity.launch(context = context, activity = "yoga")
                         }
@@ -97,6 +88,11 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
                         "sleep" -> {
                             SleepToolActivity.launch(context = context)
                         }
+
+                        "sunlight" -> {
+                            SunlightActivity.launch(context = context)
+                        }
+
                     }
                 })
         }
@@ -105,13 +101,13 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
             Spacer(modifier = Modifier.height(spacing.medium))
         }
 
-        item(span = { GridItemSpan(3) }) {
+        item(span = { GridItemSpan(columns) }) {
             MyToolsAndViewAll(myTools = "Testimonials", allTools = "View All", onClick = {
                 TestimonialsActivity.launch(context = context)
             })
         }
 
-        item(span = { GridItemSpan(3) }) {
+        item(span = { GridItemSpan(columns) }) {
             Testimonials(testimonialsList = toolsHome.testimonials)
         }
 
@@ -119,7 +115,7 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
             Spacer(modifier = Modifier.height(spacing.medium))
         }
 
-        item(span = { GridItemSpan(3) }) {
+        item(span = { GridItemSpan(columns) }) {
             RateUsCard(activity)
         }
 
@@ -127,7 +123,7 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
             Spacer(modifier = Modifier.height(spacing.medium))
         }
 
-        item(span = { GridItemSpan(3) }) {
+        item(span = { GridItemSpan(columns) }) {
             ReferAndEarn()
         }
 
@@ -135,6 +131,7 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
             Spacer(modifier = Modifier.height(spacing.medium))
         }
     }
+
 }
 
 @Composable

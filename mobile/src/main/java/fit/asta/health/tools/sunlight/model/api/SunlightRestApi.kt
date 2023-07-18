@@ -1,7 +1,7 @@
 package fit.asta.health.tools.sunlight.model.api
 
-import fit.asta.health.tools.sunlight.model.network.response.NetSunlightToolRes
 import fit.asta.health.common.utils.NetworkUtil
+import fit.asta.health.tools.sunlight.model.network.response.ResponseData
 import okhttp3.OkHttpClient
 
 
@@ -13,7 +13,19 @@ class SunlightRestApi(baseUrl: String, client: OkHttpClient) :
         .getRetrofit(baseUrl, client)
         .create(SunlightService::class.java)
 
-    override suspend fun getSunlightTool(userId: String): NetSunlightToolRes {
-        return apiService.getSunlightTool(userId)
+    override suspend fun getSunlightTool(
+        userId: String,
+        latitude: String,
+        longitude: String,
+        date: String,
+        location: String
+    ): ResponseData {
+        return apiService.getSunlightTool(
+            userId = userId,
+            latitude = latitude,
+            longitude = longitude,
+            date = date,
+            location = location
+        )
     }
 }

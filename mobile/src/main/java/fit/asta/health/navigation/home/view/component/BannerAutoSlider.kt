@@ -2,14 +2,13 @@ package fit.asta.health.navigation.home.view.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -34,29 +33,25 @@ fun BannerAutoSlider(bannerList: List<ToolsHomeRes.ToolsHome.Banner>) {
     }
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = Modifier.fillMaxWidth()
     ) {
         HorizontalPager(
             state = pagerState,
             verticalAlignment = Alignment.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) { page ->
-            Box(
-                modifier = Modifier
-                    .graphicsLayer {
-                        val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
-                        lerp(
-                            start = 0.85f,
-                            stop = 1f,
-                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                        ).also { scale ->
-                            scaleX = scale
-                            scaleY = scale
-                        }
+            Box(modifier = Modifier
+                .graphicsLayer {
+                    val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
+                    lerp(
+                        start = 0.85f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                    ).also { scale ->
+                        scaleX = scale
+                        scaleY = scale
                     }
-                    .fillMaxWidth()
-                    .height(236.dp)) {
+                }
+                .fillMaxWidth()
+                .aspectRatio(ratio = 04f / 03f)) {
                 val sliderDataPages = bannerList[page]
                 BannerLayout(sliderDataPages, pagerState)
             }

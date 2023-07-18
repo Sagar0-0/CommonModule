@@ -8,7 +8,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.R
 import fit.asta.health.common.utils.UiString
 import fit.asta.health.firebase.model.AuthRepo
-import fit.asta.health.network.NetworkHelper
 import fit.asta.health.network.data.ApiResponse
 import fit.asta.health.testimonials.model.TestimonialRepo
 import fit.asta.health.testimonials.model.domain.InputWrapper
@@ -20,10 +19,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.io.IOException
 import javax.inject.Inject
 
 
@@ -45,17 +44,15 @@ class TestimonialViewModel
 @Inject constructor(
     private val testimonialRepo: TestimonialRepo,
     private val authRepo: AuthRepo,
-    private val networkHelper: NetworkHelper,
     private val savedState: SavedStateHandle,
 ) : ViewModel() {
 
     private val _mutableState = MutableStateFlow<TestimonialGetState>(TestimonialGetState.Loading)
     val state = _mutableState.asStateFlow()
 
-
     private val testimonialData = savedState.getStateFlow(TESTIMONIAL_DATA, Testimonial())
     val id = savedState.getStateFlow(ID, "")
-    val type = savedState.getStateFlow<TestimonialType>(TYPE, TestimonialType.TEXT)
+    val type = savedState.getStateFlow(TYPE, TestimonialType.TEXT)
     val title = savedState.getStateFlow(TITLE, InputWrapper())
     val testimonial = savedState.getStateFlow(TESTIMONIAL, InputWrapper())
     val org = savedState.getStateFlow(ORG, InputWrapper())
@@ -97,60 +94,63 @@ class TestimonialViewModel
 
 
     init {
-        onLoad()
+        loadTestimonial()
     }
 
 
-    fun onLoad() {
-        if (networkHelper.isConnected()) {
-            authRepo.getUser()?.let {
-                loadTestimonial(userId = it.uid)
-            }
-        } else {
-            _mutableState.value = TestimonialGetState.NoInternet
-        }
-    }
-
-
-    private fun loadTestimonial(userId: String) {
+    fun loadTestimonial() {
         viewModelScope.launch {
 
-            when (val result = testimonialRepo.getTestimonial(userId)) {
+            try {
 
-                is ApiResponse.Error -> {
+                authRepo.getUser()?.let { uid ->
+                    when (val result = testimonialRepo.getTestimonial(uid.uid)) {
 
-                }
-
-                is ApiResponse.HttpError -> {
-                    _mutableState.value = TestimonialGetState.Empty
-                }
-
-                is ApiResponse.Success -> {
-
-                    savedState[TESTIMONIAL_DATA] = result.data
-                    savedState[ID] = result.data.id
-                    savedState[TYPE] = result.data.type
-                    savedState[TITLE] = InputWrapper(value = result.data.title)
-                    savedState[TESTIMONIAL] = InputWrapper(value = result.data.testimonial)
-                    savedState[ORG] = InputWrapper(value = result.data.user.org)
-                    savedState[ROLE] = InputWrapper(value = result.data.user.role)
-
-                    when (result.data.type) {
-                        TestimonialType.TEXT -> {
+                        is ApiResponse.Error -> {
 
                         }
-                        TestimonialType.IMAGE -> {
-                            savedState[IMAGE_BEFORE] = Media(url = result.data.media[0].url)
-                            savedState[IMAGE_AFTER] = Media(url = result.data.media[1].url)
+
+                        is ApiResponse.HttpError -> {
+                            _mutableState.value = TestimonialGetState.Empty
                         }
-                        TestimonialType.VIDEO -> {
-                            savedState[VIDEO] = Media(url = result.data.media[0].url)
+
+                        is ApiResponse.Success -> {
+
+                            savedState[TESTIMONIAL_DATA] = result.data
+                            savedState[ID] = result.data.id
+                            savedState[TYPE] = result.data.type
+                            savedState[TITLE] = InputWrapper(value = result.data.title)
+                            savedState[TESTIMONIAL] = InputWrapper(value = result.data.testimonial)
+                            savedState[ORG] = InputWrapper(value = result.data.user.org)
+                            savedState[ROLE] = InputWrapper(value = result.data.user.role)
+
+                            when (result.data.type) {
+                                TestimonialType.TEXT -> {
+
+                                }
+
+                                TestimonialType.IMAGE -> {
+                                    savedState[IMAGE_BEFORE] = Media(url = result.data.media[0].url)
+                                    savedState[IMAGE_AFTER] = Media(url = result.data.media[1].url)
+                                }
+
+                                TestimonialType.VIDEO -> {
+                                    savedState[VIDEO] = Media(url = result.data.media[0].url)
+                                }
+                            }
+                            _mutableState.value = TestimonialGetState.Success(result.data)
                         }
                     }
-
-                    _mutableState.value = TestimonialGetState.Success(result.data)
                 }
+
+
+            } catch (networkException: IOException) {
+                _mutableState.value = TestimonialGetState.NetworkError(networkException)
+            } catch (exception: Exception) {
+                _mutableState.value = TestimonialGetState.Error(exception)
             }
+
+
         }
     }
 
@@ -185,11 +185,15 @@ class TestimonialViewModel
 
     private fun updateTestimonial(netTestimonial: Testimonial) {
         viewModelScope.launch {
-            testimonialRepo.updateTestimonial(netTestimonial).catch { ex ->
-                _stateSubmit.value = TestimonialSubmitState.Error(ex)
-            }.collect {
-                clearErrors()
-                _stateSubmit.value = TestimonialSubmitState.Success(it)
+            try {
+                testimonialRepo.updateTestimonial(netTestimonial).collect {
+                    clearErrors()
+                    _stateSubmit.value = TestimonialSubmitState.Success(it)
+                }
+            } catch (networkException: IOException) {
+                _stateSubmit.value = TestimonialSubmitState.NetworkError(networkException)
+            } catch (exception: Exception) {
+                _stateSubmit.value = TestimonialSubmitState.Error(exception)
             }
         }
     }
@@ -199,24 +203,29 @@ class TestimonialViewModel
             is TestimonialEvent.OnTypeChange -> {
                 savedState[TYPE] = event.type
             }
+
             is TestimonialEvent.OnTitleChange -> {
                 savedState[TITLE] = title.value.copy(
                     value = event.title, error = onValidateText(event.title, 4, 64)
                 )
             }
+
             is TestimonialEvent.OnTestimonialChange -> {
                 savedState[TESTIMONIAL] = testimonial.value.copy(
                     value = event.testimonial, error = onValidateText(event.testimonial, 32, 256)
                 )
             }
+
             is TestimonialEvent.OnOrgChange -> {
                 savedState[ORG] =
                     title.value.copy(value = event.org, error = onValidateText(event.org, 4, 32))
             }
+
             is TestimonialEvent.OnRoleChange -> {
                 savedState[ROLE] =
                     title.value.copy(value = event.role, error = onValidateText(event.role, 2, 32))
             }
+
             is TestimonialEvent.OnMediaSelect -> {
 
                 if (event.url == null) {
@@ -230,12 +239,14 @@ class TestimonialViewModel
                             error = onValidateMedia(imgAfter.value.localUrl, imgAfter.value.url)
                         )
                     }
+
                     MediaType.BeforeImage -> {
                         savedState[IMAGE_BEFORE] = imgBefore.value.copy(
                             localUrl = event.url,
                             error = onValidateMedia(imgBefore.value.localUrl, imgBefore.value.url)
                         )
                     }
+
                     MediaType.Video -> {
                         savedState[VIDEO] = video.value.copy(
                             localUrl = event.url,
@@ -244,6 +255,7 @@ class TestimonialViewModel
                     }
                 }
             }
+
             is TestimonialEvent.OnMediaClear -> {
 
                 when (event.mediaType) {
@@ -254,6 +266,7 @@ class TestimonialViewModel
                             error = UiString.Resource(R.string.the_media_can_not_be_blank)
                         )
                     }
+
                     MediaType.BeforeImage -> {
                         savedState[IMAGE_BEFORE] = imgBefore.value.copy(
                             localUrl = null,
@@ -261,6 +274,7 @@ class TestimonialViewModel
                             error = UiString.Resource(R.string.the_media_can_not_be_blank)
                         )
                     }
+
                     MediaType.Video -> {
                         savedState[VIDEO] = video.value.copy(
                             localUrl = null,
@@ -270,6 +284,7 @@ class TestimonialViewModel
                     }
                 }
             }
+
             is TestimonialEvent.OnSubmit -> {
                 submit()
             }
@@ -293,6 +308,7 @@ class TestimonialViewModel
             value.length in 1 until min -> UiString.Resource(
                 R.string.data_length_less, min.toString()
             )
+
             else -> UiString.Empty
         }
     }

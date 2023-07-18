@@ -133,7 +133,7 @@ fun PhoneLoginScreen(onSuccess: () -> Unit) {
     LaunchedEffect(shouldStartSMSRetrieval) {
         launch {
             if (shouldStartSMSRetrieval) {
-                Log.d("OTP", "SMS Retrieval is Starting...")
+                Log.d(TAG, "SMS Retrieval is Starting...")
                 startSMSRetrieverClient(context)
             }
         }
@@ -174,20 +174,22 @@ fun PhoneLoginScreen(onSuccess: () -> Unit) {
             }
         }
     )
+
     val registerOTPReceiver = {
         val myOTPReceiver = OTPReceiver()
         Log.d("OTP", "PhoneLoginScreen: Registered Receiver")
         myOTPReceiver.init(object : OTPReceiver.OTPReceiveListener {
-            override fun onOTPReceived(intent: Intent?) {
-                Log.d("OTP ", "OTP Received $intent")
+            override fun onSuccess(intent: Intent?) {
+                Log.d(TAG, "OTP Received $intent")
                 smsReceiverLauncher.launch(intent)
                 context.unregisterReceiver(myOTPReceiver)
             }
 
-            override fun onOTPTimeOut() {
-                Log.e("OTP ", "Timeout")
+            override fun onFailure() {
+                Log.e(TAG, "Timeout")
                 Toast.makeText(context, "Otp retrieval failed", Toast.LENGTH_SHORT).show()
                 loading = false
+                codeSent = false
             }
         })
 

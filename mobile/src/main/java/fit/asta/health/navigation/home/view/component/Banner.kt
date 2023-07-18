@@ -3,12 +3,14 @@ package fit.asta.health.navigation.home.view.component
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
@@ -22,6 +24,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.PagerState
 import fit.asta.health.R
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
 
 
@@ -31,7 +34,8 @@ fun BannerLayout(
     bannerDataPages: ToolsHomeRes.ToolsHome.Banner,
     pagerState: PagerState,
 ) {
-    Box(modifier = Modifier.fillMaxSize()
+    Box(
+        modifier = Modifier.fillMaxSize()
 
     ) {
 
@@ -39,26 +43,36 @@ fun BannerLayout(
 
         for (i in remember { listOf(bannerDataPages) }) {
             val imgUrl = "$domainName${i.url}"
-            AsyncImage(model = imgUrl,
+            AsyncImage(
+                model = imgUrl,
                 contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.FillBounds)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(shape = RoundedCornerShape(spacing.small)),
+                contentScale = ContentScale.FillBounds
+            )
         }
 
-        Box(modifier = Modifier
-            .align(Alignment.Center)
-            .padding(horizontal = 54.dp, vertical = 82.dp)) {
+        Box(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(horizontal = 54.dp, vertical = 82.dp)
+        ) {
             val interLightFontFamily = FontFamily(Font(R.font.inter_light, FontWeight.Light))
-            Text(text = bannerDataPages.desc,
+            Text(
+                text = bannerDataPages.desc,
                 fontSize = 20.sp,
                 fontFamily = interLightFontFamily,
                 color = MaterialTheme.colorScheme.onPrimary,
-                textAlign = TextAlign.Center)
+                textAlign = TextAlign.Center
+            )
         }
         //Horizontal dot indicator
-        HorizontalPagerIndicator(pagerState = pagerState,
+        HorizontalPagerIndicator(
+            pagerState = pagerState,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 16.dp))
+                .padding(bottom = 16.dp)
+        )
     }
 }

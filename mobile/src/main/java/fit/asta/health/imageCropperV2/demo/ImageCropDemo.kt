@@ -1,5 +1,6 @@
 package fit.asta.health.imageCropperV2.demo
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -37,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -47,7 +49,12 @@ import fit.asta.health.imageCropperV2.cropper.ImageCropper
 @Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainContent() {
+fun ImageCropperScreen(
+    onCloseImgCropper: () -> Unit = {},
+    onConfirmSelection: (String?) -> Unit = {},
+) {
+
+    val context = LocalContext.current
 
     var angle by remember {
         mutableFloatStateOf(0f)
@@ -55,6 +62,7 @@ fun MainContent() {
 
     var imageBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
     var croppedImage by remember { mutableStateOf<ImageBitmap?>(null) }
+
 
     var crop by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
@@ -68,7 +76,7 @@ fun MainContent() {
                     "Crop Image", maxLines = 1, overflow = TextOverflow.Ellipsis
                 )
             }, navigationIcon = {
-                IconButton(onClick = { /* doSomething() */ }) {
+                IconButton(onClick = { onCloseImgCropper() }) {
                     Icon(
                         imageVector = Icons.Filled.Close, contentDescription = "Close Image Cropper"
                     )
@@ -140,10 +148,21 @@ fun MainContent() {
 
             if (showDialog) {
                 croppedImage?.let {
-                    ShowCroppedImageDialog(imageBitmap = it) {
+                    ShowCroppedImageDialog(imageBitmap = it, onDismissRequest = {
                         showDialog = !showDialog
                         croppedImage = null
-                    }
+                    }, onApprovedRequest = {
+                        Log.d(
+                            "cropImage", "Cropped Image Add -> $croppedImage and saveAddress -> ${
+                                saveImageBitmapToStorage(
+                                    context = context, imageBitmap = it
+                                )
+                            }"
+
+                        )
+
+                        onConfirmSelection(saveImageBitmapToStorage(context, it))
+                    })
                 }
             }
 
@@ -158,7 +177,11 @@ fun MainContent() {
 }
 
 @Composable
-private fun ShowCroppedImageDialog(imageBitmap: ImageBitmap, onDismissRequest: () -> Unit) {
+private fun ShowCroppedImageDialog(
+    imageBitmap: ImageBitmap,
+    onDismissRequest: () -> Unit,
+    onApprovedRequest: () -> Unit = {},
+) {
     AlertDialog(onDismissRequest = onDismissRequest, text = {
         Image(
             modifier = Modifier
@@ -171,7 +194,7 @@ private fun ShowCroppedImageDialog(imageBitmap: ImageBitmap, onDismissRequest: (
         )
     }, confirmButton = {
         TextButton(onClick = {
-            onDismissRequest()
+            onApprovedRequest()
         }) {
             Text("Confirm")
         }

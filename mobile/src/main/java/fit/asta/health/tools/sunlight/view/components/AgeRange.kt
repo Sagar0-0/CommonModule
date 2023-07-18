@@ -4,16 +4,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavController
+import fit.asta.health.tools.sunlight.viewmodel.SunlightViewModel
 import fit.asta.health.tools.view.components.ItemData
 import fit.asta.health.tools.view.components.ItemList
 
 @Composable
-fun AgeRange() {
+fun AgeRange(navController: NavController, homeViewModel: SunlightViewModel) {
 
     val itemListData = remember {
-        mutableStateListOf(ItemData(1, "Pre Teen - 30 years", bgColor = Color(0x66959393)),
+        mutableStateListOf(
+            ItemData(1, "Pre Teen - 30 years", bgColor = Color(0x66959393)),
             ItemData(id = 2, display = "30 - 60 years", bgColor = Color(0x66959393)),
-            ItemData(3, "Above 60 years", bgColor = Color(0x66959393)))
+            ItemData(3, "Above 60 years", bgColor = Color(0x66959393))
+        )
     }
 
     ItemList(list = itemListData, rowTitle = "Please select your age range")

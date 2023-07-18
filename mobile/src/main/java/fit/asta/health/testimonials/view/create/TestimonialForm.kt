@@ -26,12 +26,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import fit.asta.health.common.jetpack.HandleBackPress
 import fit.asta.health.common.ui.theme.boxSize
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiString
+import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
-import fit.asta.health.navigation.home.view.component.NoInternetLayout
 import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.view.components.ValidatedTextField
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
@@ -46,6 +47,8 @@ fun TestimonialForm(
     editViewModel: TestimonialViewModel = hiltViewModel(),
     paddingValues: PaddingValues,
     onNavigateTstHome: () -> Unit,
+    onNavigateImgCropper: () -> Unit = {},
+    beforeImage: String?,
 ) {
 
     val type by editViewModel.type.collectAsStateWithLifecycle()
@@ -172,7 +175,7 @@ fun TestimonialForm(
 
         if (selectedOption == radioButtonList[1]) {
             Spacer(modifier = Modifier.height(spacing.medium))
-            ImageLayout()
+            ImageLayout(onNavigateImgCropper = onNavigateImgCropper, beforeImage = beforeImage)
         } else if (selectedOption == radioButtonList[2]) {
             Spacer(modifier = Modifier.height(spacing.medium))
             TestGetVideo()
@@ -212,7 +215,7 @@ fun TestimonialForm(
                     })
                 }
 
-                is TestimonialSubmitState.NoInternet -> NoInternetLayout(onTryAgain = {
+                is TestimonialSubmitState.NetworkError -> ErrorScreenLayout(onTryAgain = {
                     editViewModel.onEvent(
                         TestimonialEvent.OnSubmit
                     )
@@ -228,7 +231,13 @@ fun TestimonialForm(
 
 @OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun CreateTstScreen(title: String, onNavigateTstCreate: () -> Unit, onNavigateTstHome: () -> Unit) {
+fun CreateTstScreen(
+    title: String,
+    onNavigateTstCreate: () -> Unit,
+    onNavigateTstHome: () -> Unit,
+    onNavigateImgCropper: () -> Unit = {},
+    beforeImage: String?,
+) {
 
     var showCustomDialogWithResult by remember { mutableStateOf(false) }
 
@@ -252,8 +261,17 @@ fun CreateTstScreen(title: String, onNavigateTstCreate: () -> Unit, onNavigateTs
             }
         }, modifier = Modifier.shadow(elevation = cardElevation.medium))
     }, content = {
-        TestimonialForm(paddingValues = it, onNavigateTstHome = onNavigateTstHome)
+        TestimonialForm(
+            paddingValues = it,
+            onNavigateTstHome = onNavigateTstHome,
+            onNavigateImgCropper = onNavigateImgCropper, beforeImage = beforeImage
+        )
     }, containerColor = MaterialTheme.colorScheme.background)
+
+
+    HandleBackPress {
+        showCustomDialogWithResult = !showCustomDialogWithResult
+    }
 
     if (showCustomDialogWithResult) {
         CustomDialogWithResultExample(
@@ -272,5 +290,6 @@ fun CreateTstScreen(title: String, onNavigateTstCreate: () -> Unit, onNavigateTs
             btn2Title = "Cancel"
         )
     }
+
 
 }

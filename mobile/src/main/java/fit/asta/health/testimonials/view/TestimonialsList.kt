@@ -2,7 +2,13 @@ package fit.asta.health.testimonials.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
@@ -26,8 +32,8 @@ import fit.asta.health.common.ui.theme.boxSize
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.imageHeight
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
-import fit.asta.health.navigation.home.view.component.NoInternetLayout
 import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.view.list.TestimonialImageCard
 import fit.asta.health.testimonials.view.list.TestimonialTextCard
@@ -83,7 +89,7 @@ fun TestimonialsList(
                 // refresh error
                 loadState.refresh is LoadState.Error -> {
                     item {
-                        NoInternetLayout(onTryAgain = {
+                        ErrorScreenLayout(onTryAgain = {
                             testimonials.refresh()
                         })
                     }

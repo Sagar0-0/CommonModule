@@ -18,15 +18,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -40,12 +40,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.R
 import fit.asta.health.common.ui.theme.RateUsGrad1
 import fit.asta.health.common.ui.theme.RateUsGrad2
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.navigation.home.viewmodel.RateUsEvent
 import fit.asta.health.navigation.home.viewmodel.RateUsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalCoroutinesApi::class)
+@OptIn(
+    ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class
+)
 @Composable
 fun RateUsCard(activity: Activity, viewModel: RateUsViewModel = hiltViewModel()) {
 
@@ -58,16 +61,14 @@ fun RateUsCard(activity: Activity, viewModel: RateUsViewModel = hiltViewModel())
     FontFamily(Font(R.font.inter_regular, FontWeight.Medium))
     val interMediumFontFamily = FontFamily(Font(R.font.inter_medium, FontWeight.Medium))
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(124.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .shadow(elevation = 4.dp),
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .height(124.dp),
+        shape = RoundedCornerShape(spacing.small),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         onClick = {
             viewModel.onEvent(RateUsEvent.InAppReviewRequested)
-        },
-    ) {
+        }) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
@@ -108,9 +109,7 @@ fun RateUsCard(activity: Activity, viewModel: RateUsViewModel = hiltViewModel())
                             .background(
                                 brush = Brush.linearGradient(
                                     colors = listOf(
-                                        (
-                                                RateUsGrad1
-                                                ), (RateUsGrad2)
+                                        (RateUsGrad1), (RateUsGrad2)
                                     )
                                 )
                             ),

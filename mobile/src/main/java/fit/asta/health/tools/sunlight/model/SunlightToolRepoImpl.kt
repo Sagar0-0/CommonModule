@@ -1,24 +1,31 @@
 package fit.asta.health.tools.sunlight.model
 
 import fit.asta.health.tools.sunlight.model.api.SunlightApi
-import fit.asta.health.tools.sunlight.model.domain.SunlightTool
+import fit.asta.health.tools.sunlight.model.network.response.ResponseData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 
 class SunlightToolRepoImpl(
     private val remoteApi: SunlightApi,
-    private val mapper: SunlightToolDataMapper,
 ) : SunlightToolRepo {
 
-    override suspend fun getSunlightTool(userId: String): Flow<SunlightTool> {
+    override suspend fun getSunlightTool(
+        userId: String,
+        latitude: String,
+        longitude: String,
+        date: String,
+        location: String
+    ): Flow<ResponseData.SunlightToolData> {
         return flow {
             emit(
-                mapper.mapToDomainModel(
-                    remoteApi.getSunlightTool(
-                        userId = userId
-                    )
-                )
+                remoteApi.getSunlightTool(
+                    userId = userId,
+                    latitude = latitude,
+                    longitude = longitude,
+                    date = date,
+                    location = location
+                ).data
             )
         }
     }

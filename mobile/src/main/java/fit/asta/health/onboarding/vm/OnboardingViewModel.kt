@@ -18,6 +18,7 @@ class OnboardingViewModel
     private val repo: OnboardingRepo,
     private val networkHelper: NetworkHelper
 ) : ViewModel() {
+
     private val _mutableState = MutableStateFlow<OnboardingGetState>(OnboardingGetState.Loading)
     val state = _mutableState.asStateFlow()
 

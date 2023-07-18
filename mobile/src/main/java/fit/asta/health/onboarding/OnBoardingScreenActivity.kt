@@ -9,7 +9,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.common.utils.PrefUtils
 import fit.asta.health.common.utils.startMainActivity
-import fit.asta.health.onboarding.view.OnBoardingPager
+import fit.asta.health.onboarding.ui.OnBoardingPager
 import fit.asta.health.onboarding.vm.OnboardingViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -26,11 +26,12 @@ class OnBoardingScreenActivity : AppCompatActivity() {
             AppTheme {
                 OnBoardingPager(
                     state = onboardingViewModel.state.collectAsStateWithLifecycle().value,
-                    onReload = onboardingViewModel::getData
-                ) {
-                    PrefUtils.setOnboardingShownStatus(true, this)
-                    startMainActivity()
-                }
+                    onReload = onboardingViewModel::getData,
+                    onFinish = {
+                        PrefUtils.setOnboardingShownStatus(true, this)
+                        startMainActivity()
+                    }
+                )
             }
         }
     }

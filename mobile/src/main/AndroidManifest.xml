@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-sdk />
-
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="false" />
@@ -29,6 +28,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="com.android.voicemail.permission.ADD_VOICEMAIL" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
@@ -107,8 +107,9 @@
         <activity android:name=".tools.meditation.MeditationActivity" />
         <activity android:name=".tools.water.WaterToolActivity" />
         <activity android:name=".tools.walking.view.WalkingActivity" />
-        <activity
-            android:name=".scheduler.compose.SchedulerActivity"
+        <activity android:name=".scheduler.compose.SchedulerActivity"
+        <activity android:name=".tools.sunlight.SunlightActivity" />
+        <activity android:name=".scheduler.compose.SchedulerActivity"
             android:showOnLockScreen="true" />
         <!--
  <activity

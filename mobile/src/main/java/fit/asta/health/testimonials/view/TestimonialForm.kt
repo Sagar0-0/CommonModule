@@ -8,8 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.R
+import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
-import fit.asta.health.navigation.home.view.component.NoInternetLayout
 import fit.asta.health.testimonials.view.create.CreateTstScreen
 import fit.asta.health.testimonials.viewmodel.create.TestimonialGetState
 import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
@@ -22,6 +22,8 @@ fun LoadTestimonialForm(
     onNavigateTstCreate: () -> Unit,
     getViewModel: TestimonialViewModel = hiltViewModel(),
     onNavigateTstHome: () -> Unit,
+    onNavigateImgCropper: () -> Unit = {},
+    beforeImage: String?,
 ) {
     when (val state = getViewModel.state.collectAsState().value) {
         TestimonialGetState.Loading -> {
@@ -29,18 +31,30 @@ fun LoadTestimonialForm(
                 LoadingAnimation()
             }
         }
-        TestimonialGetState.NoInternet -> NoInternetLayout(onTryAgain = {
-            getViewModel.onLoad()
-        })
-        is TestimonialGetState.Error -> ServerErrorLayout(state.error)
+
+        is TestimonialGetState.Error -> ErrorScreenLayout(onTryAgain = {
+            getViewModel.loadTestimonial()
+        }, isInternetError = false)
+
         is TestimonialGetState.Success -> CreateTstScreen(
-            stringResource(R.string.testimonial_title_edit), onNavigateTstCreate, onNavigateTstHome
+            stringResource(R.string.testimonial_title_edit),
+            onNavigateTstCreate,
+            onNavigateTstHome,
+            onNavigateImgCropper,
+            beforeImage = beforeImage
         )
+
         TestimonialGetState.Empty -> CreateTstScreen(
             stringResource(R.string.testimonial_title_create),
             onNavigateTstCreate,
-            onNavigateTstHome
+            onNavigateTstHome,
+            onNavigateImgCropper,
+            beforeImage = beforeImage
         )
+
+        is TestimonialGetState.NetworkError -> ErrorScreenLayout(onTryAgain = {
+            getViewModel.loadTestimonial()
+        })
     }
 }
 

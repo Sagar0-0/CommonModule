@@ -1,6 +1,15 @@
 package fit.asta.health.tools.sunlight.view.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -21,9 +30,10 @@ fun SunlightLayout(it: PaddingValues) {
 
         Spacer(modifier = Modifier.height(70.dp))
 
-        Row(Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)) {
 
             Text(text = "Upcoming Slots",
                 fontWeight = FontWeight.Bold,
@@ -38,26 +48,29 @@ fun SunlightLayout(it: PaddingValues) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.SpaceEvenly) {
-            Box(Modifier
-                .fillMaxWidth()
-                .weight(1f)) {
-                UpcomingSlotsCard()
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .weight(1f)) {
+                //UpcomingSlotsCard()
             }
 
             Spacer(modifier = Modifier.width(8.dp))
 
-            Box(Modifier
-                .fillMaxWidth()
-                .weight(1f)) {
-                UpcomingSlotsCard()
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .weight(1f)) {
+                //UpcomingSlotsCard()
             }
         }
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Row(Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)) {
             Text(text = "Total Duration",
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
@@ -79,9 +92,10 @@ fun SunlightLayout(it: PaddingValues) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Row(Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)) {
             Text(text = "Total Vitamin D ",
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,

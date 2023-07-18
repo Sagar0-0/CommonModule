@@ -1,4 +1,4 @@
-package fit.asta.health.tools.sunlight.view.components.bottomsheet.collapsed.ui
+package fit.asta.health.tools.sunlight.view.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -9,17 +9,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
+@Preview
 fun PracticeHeader() {
-    Row(Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 16.dp)) {
-        Box(Modifier
+    Row(
+        Modifier
             .fillMaxWidth()
-            .padding(8.dp)) {
+            .padding(horizontal = 16.dp)) {
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .padding(8.dp)) {
             Text(text = "PRACTICE",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
