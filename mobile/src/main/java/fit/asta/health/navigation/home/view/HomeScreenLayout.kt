@@ -20,7 +20,6 @@ import fit.asta.health.tools.meditation.MeditationActivity
 import fit.asta.health.tools.sunlight.SunlightActivity
 import fit.asta.health.tools.walking.view.WalkingActivity
 import fit.asta.health.tools.water.WaterToolActivity
-import fit.asta.health.testimonials.TestimonialsActivity
 import fit.asta.health.tools.sleep.SleepToolActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.time.LocalDate

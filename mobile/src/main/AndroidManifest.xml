@@ -107,7 +107,6 @@
         <activity android:name=".tools.meditation.MeditationActivity" />
         <activity android:name=".tools.water.WaterToolActivity" />
         <activity android:name=".tools.walking.view.WalkingActivity" />
-        <activity android:name=".scheduler.compose.SchedulerActivity"
         <activity android:name=".tools.sunlight.SunlightActivity" />
         <activity android:name=".scheduler.compose.SchedulerActivity"
             android:showOnLockScreen="true" />
