@@ -59,7 +59,7 @@ fun TestimonialsList(
             contentType = testimonials.itemContentType()) { inx ->
             val item = testimonials[inx]
             item?.let {
-                when (it.type) {
+                when (TestimonialType.from(it.type)) {
                     TestimonialType.TEXT -> TestimonialTextCard(it)
                     TestimonialType.IMAGE -> TestimonialImageCard(it)
                     TestimonialType.VIDEO -> TestimonialsVideoCard(it)

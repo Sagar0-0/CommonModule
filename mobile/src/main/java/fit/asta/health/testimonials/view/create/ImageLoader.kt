@@ -1,8 +1,6 @@
 package fit.asta.health.testimonials.view.create
 
 import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,7 +13,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.common.ui.theme.imageHeight
@@ -33,21 +30,15 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun ImageLayout(
     modifier: Modifier = Modifier,
-    viewModel: TestimonialViewModel = hiltViewModel(),
-    onNavigateImgCropper: () -> Unit = {},
-    beforeImage: String?,
+    getViewModel: TestimonialViewModel,
+    onNavigateBeforeImgCropper: () -> Unit = {},
+    onNavigateAfterImgCropper: () -> Unit = {},
 ) {
-    val imgBefore by viewModel.imgBefore.collectAsStateWithLifecycle()
-    val imgAfter by viewModel.imgAfter.collectAsStateWithLifecycle()
 
-    val beforeLauncher =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
-            viewModel.onEvent(TestimonialEvent.OnMediaSelect(MediaType.BeforeImage, uri))
-        }
-    val afterLauncher =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
-            viewModel.onEvent(TestimonialEvent.OnMediaSelect(MediaType.AfterImage, uri))
-        }
+
+    val imgBefore by getViewModel.imgBefore.collectAsStateWithLifecycle()
+    val imgAfter by getViewModel.imgAfter.collectAsStateWithLifecycle()
+
 
     Column(modifier = modifier) {
 
@@ -64,61 +55,42 @@ fun ImageLayout(
 
                 Box(modifier = Modifier.fillMaxWidth(0.5f)) {
                     if (imgBefore.url.isEmpty() && imgBefore.localUrl == null) {
-                        UploadTstMediaView(title = imgBefore.title,
-                            onUploadClick = { beforeLauncher.launch("image/*") })
 
-//                        UploadTstMediaView(
-//                            title = imgBefore.title,
-//                            onUploadClick = { onNavigateImgCropper() })
-//
-//                        Log.d(
-//                            "demo",
-//                            "if Local -> ${imgBefore.localUrl} and if url = ${imgBefore.url}"
-//                        )
+                        UploadTstMediaView(title = imgBefore.title,
+                            onUploadClick = { onNavigateBeforeImgCropper() })
+
                     } else {
+//
                         SelectedImageView(title = imgBefore.title,
                             url = getOneUrl(imgBefore.localUrl, imgBefore.url),
-                            onImageClick = { afterLauncher.launch("image/*") },
+                            onImageClick = { onNavigateBeforeImgCropper() },
                             onImageClear = {
-                                viewModel.onEvent(
+                                getViewModel.onEvent(
                                     TestimonialEvent.OnMediaClear(
                                         MediaType.BeforeImage
                                     )
                                 )
                             })
-
-//                        Log.d(
-//                            "demo",
-//                            "else Local -> ${imgBefore.localUrl} and else url = ${imgBefore.url}"
-//                        )
-//
-//                        SelectedImageView(title = imgBefore.title,
-//                            url = getOneUrl(imgBefore.localUrl, imgBefore.url),
-//                            onImageClick = { onNavigateImgCropper() },
-//                            onImageClear = {
-//                                viewModel.onEvent(
-//                                    TestimonialEvent.OnMediaClear(
-//                                        MediaType.BeforeImage
-//                                    )
-//                                )
-//                            })
                     }
                 }
 
                 Box(modifier = Modifier.fillMaxWidth(1f)) {
                     if (imgAfter.url.isEmpty() && imgAfter.localUrl == null) {
-                        UploadTstMediaView(title = imgAfter.title,
-                            onUploadClick = { afterLauncher.launch("image/*") })
+                        UploadTstMediaView(
+                            title = imgAfter.title,
+                            onUploadClick = { onNavigateAfterImgCropper() })
                     } else {
+
                         SelectedImageView(title = imgAfter.title,
                             url = getOneUrl(imgAfter.localUrl, imgAfter.url),
-                            onImageClick = { afterLauncher.launch("image/*") },
+                            onImageClick = { onNavigateAfterImgCropper() },
                             onImageClear = {
-                                viewModel.onEvent(
+                                getViewModel.onEvent(
                                     TestimonialEvent.OnMediaClear(
                                         MediaType.AfterImage
                                     )
                                 )
+
                             })
                     }
                 }

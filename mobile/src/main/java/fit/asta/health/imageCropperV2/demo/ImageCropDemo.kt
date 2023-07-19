@@ -1,5 +1,8 @@
 package fit.asta.health.imageCropperV2.demo
 
+import android.content.ContentResolver
+import android.graphics.Bitmap
+import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -40,21 +43,23 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smarttoolfactory.colorpicker.widget.drawChecker
 import fit.asta.health.imageCropperV2.ImageSelectionButton
 import fit.asta.health.imageCropperV2.cropper.ImageCropper
 
-@Preview
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ImageCropperScreen(
     onCloseImgCropper: () -> Unit = {},
-    onConfirmSelection: (String?) -> Unit = {},
+    onConfirmSelection: (Uri?) -> Unit = {},
 ) {
 
     val context = LocalContext.current
+
+    val contentResolver: ContentResolver = context.contentResolver
+    val imageFormat = Bitmap.CompressFormat.JPEG
 
     var angle by remember {
         mutableFloatStateOf(0f)
@@ -120,6 +125,7 @@ fun ImageCropperScreen(
                 Column(modifier = Modifier.fillMaxSize()) {
 
                     imageBitmap?.let { bitMap ->
+
                         ImageCropper(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -148,21 +154,28 @@ fun ImageCropperScreen(
 
             if (showDialog) {
                 croppedImage?.let {
+
+                    val contentUri: Uri? = saveImageBitmapToStorageDemo(
+                        imageBitmap = it,
+                        imageFormat = imageFormat,
+                        contentResolver = contentResolver,
+                        compressionQuality = 50
+                    )
+
                     ShowCroppedImageDialog(imageBitmap = it, onDismissRequest = {
                         showDialog = !showDialog
                         croppedImage = null
                     }, onApprovedRequest = {
-                        Log.d(
-                            "cropImage", "Cropped Image Add -> $croppedImage and saveAddress -> ${
-                                saveImageBitmapToStorage(
-                                    context = context, imageBitmap = it
-                                )
-                            }"
-
+                        onConfirmSelection(
+                            contentUri
                         )
+                        Log.d(
+                            "TAG", "Uri -> $contentUri"
+                        )
+                    }
 
-                        onConfirmSelection(saveImageBitmapToStorage(context, it))
-                    })
+                    )
+
                 }
             }
 
@@ -180,7 +193,7 @@ fun ImageCropperScreen(
 private fun ShowCroppedImageDialog(
     imageBitmap: ImageBitmap,
     onDismissRequest: () -> Unit,
-    onApprovedRequest: () -> Unit = {},
+    onApprovedRequest: () -> Unit,
 ) {
     AlertDialog(onDismissRequest = onDismissRequest, text = {
         Image(
@@ -193,9 +206,7 @@ private fun ShowCroppedImageDialog(
             contentDescription = "result"
         )
     }, confirmButton = {
-        TextButton(onClick = {
-            onApprovedRequest()
-        }) {
+        TextButton(onClick = onApprovedRequest) {
             Text("Confirm")
         }
     }, dismissButton = {

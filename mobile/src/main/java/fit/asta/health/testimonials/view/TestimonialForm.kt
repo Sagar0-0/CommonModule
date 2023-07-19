@@ -23,8 +23,8 @@ fun LoadTestimonialForm(
     getViewModel: TestimonialViewModel = hiltViewModel(),
     onNavigateTstHome: () -> Unit,
     onNavigateImgCropper: () -> Unit = {},
-    beforeImage: String?,
-) {
+    onNavigateAfterImgCropper: () -> Unit = {},
+    ) {
     when (val state = getViewModel.state.collectAsState().value) {
         TestimonialGetState.Loading -> {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -41,7 +41,8 @@ fun LoadTestimonialForm(
             onNavigateTstCreate,
             onNavigateTstHome,
             onNavigateImgCropper,
-            beforeImage = beforeImage
+            getViewModel = getViewModel,
+            onNavigateAfterImgCropper = onNavigateAfterImgCropper
         )
 
         TestimonialGetState.Empty -> CreateTstScreen(
@@ -49,7 +50,8 @@ fun LoadTestimonialForm(
             onNavigateTstCreate,
             onNavigateTstHome,
             onNavigateImgCropper,
-            beforeImage = beforeImage
+            getViewModel = getViewModel,
+            onNavigateAfterImgCropper = onNavigateAfterImgCropper
         )
 
         is TestimonialGetState.NetworkError -> ErrorScreenLayout(onTryAgain = {

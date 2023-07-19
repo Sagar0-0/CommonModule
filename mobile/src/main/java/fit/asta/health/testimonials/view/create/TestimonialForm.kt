@@ -24,7 +24,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.jetpack.HandleBackPress
 import fit.asta.health.common.ui.theme.boxSize
@@ -44,20 +43,20 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun TestimonialForm(
-    editViewModel: TestimonialViewModel = hiltViewModel(),
     paddingValues: PaddingValues,
     onNavigateTstHome: () -> Unit,
     onNavigateImgCropper: () -> Unit = {},
-    beforeImage: String?,
+    onNavigateAfterImgCropper: () -> Unit = {},
+    getViewModel: TestimonialViewModel,
 ) {
 
-    val type by editViewModel.type.collectAsStateWithLifecycle()
-    val title by editViewModel.title.collectAsStateWithLifecycle()
-    val testimonial by editViewModel.testimonial.collectAsStateWithLifecycle()
-    val organization by editViewModel.org.collectAsStateWithLifecycle()
-    val role by editViewModel.role.collectAsStateWithLifecycle()
-    val areInputsValid by editViewModel.areInputsValid.collectAsStateWithLifecycle()
-    val areMediaValid by editViewModel.areMediaValid.collectAsStateWithLifecycle()
+    val type by getViewModel.type.collectAsStateWithLifecycle()
+    val title by getViewModel.title.collectAsStateWithLifecycle()
+    val testimonial by getViewModel.testimonial.collectAsStateWithLifecycle()
+    val organization by getViewModel.org.collectAsStateWithLifecycle()
+    val role by getViewModel.role.collectAsStateWithLifecycle()
+    val areInputsValid by getViewModel.areInputsValid.collectAsStateWithLifecycle()
+    val areMediaValid by getViewModel.areMediaValid.collectAsStateWithLifecycle()
 
     val focusRequester = remember { FocusRequester() }
 
@@ -74,7 +73,7 @@ fun TestimonialForm(
     val focusManager = LocalFocusManager.current
     val scrollState = rememberScrollState()
 
-    val event = editViewModel.stateSubmit.collectAsState()
+    val event = getViewModel.stateSubmit.collectAsState()
     val events = event.value
 
 
@@ -91,15 +90,14 @@ fun TestimonialForm(
 
         Spacer(modifier = Modifier.height(spacing.medium))
 
-        TestimonialsRadioButton(
-            selectionTypeText = "Testimonial Type",
+        TestimonialsRadioButton(selectionTypeText = "Testimonial Type",
             radioButtonList = radioButtonList,
             selectedOption = selectedOption,
             content = {
                 ValidatedTextField(
                     value = testimonial.value,
                     onValueChange = {
-                        editViewModel.onEvent(
+                        getViewModel.onEvent(
                             TestimonialEvent.OnTestimonialChange(
                                 it
                             )
@@ -126,7 +124,7 @@ fun TestimonialForm(
             titleTestimonial = {
                 ValidatedTextField(
                     value = title.value,
-                    onValueChange = { editViewModel.onEvent(TestimonialEvent.OnTitleChange(it)) },
+                    onValueChange = { getViewModel.onEvent(TestimonialEvent.OnTitleChange(it)) },
                     label = "Title",
                     showError = title.error !is UiString.Empty,
                     errorMessage = title.error,
@@ -139,14 +137,14 @@ fun TestimonialForm(
                 )
             },
             onOptionSelected = {
-                editViewModel.onEvent(TestimonialEvent.OnTypeChange(it))
+                getViewModel.onEvent(TestimonialEvent.OnTypeChange(it))
             })
 
         Spacer(modifier = Modifier.height(spacing.medium))
 
         ValidatedTextField(
             value = organization.value,
-            onValueChange = { editViewModel.onEvent(TestimonialEvent.OnOrgChange(it)) },
+            onValueChange = { getViewModel.onEvent(TestimonialEvent.OnOrgChange(it)) },
             label = "Organisation",
             showError = organization.error !is UiString.Empty,
             errorMessage = organization.error,
@@ -162,7 +160,7 @@ fun TestimonialForm(
 
         ValidatedTextField(
             value = role.value,
-            onValueChange = { editViewModel.onEvent(TestimonialEvent.OnRoleChange(it)) },
+            onValueChange = { getViewModel.onEvent(TestimonialEvent.OnRoleChange(it)) },
             label = "Role",
             showError = role.error !is UiString.Empty,
             errorMessage = role.error,
@@ -175,7 +173,11 @@ fun TestimonialForm(
 
         if (selectedOption == radioButtonList[1]) {
             Spacer(modifier = Modifier.height(spacing.medium))
-            ImageLayout(onNavigateImgCropper = onNavigateImgCropper, beforeImage = beforeImage)
+            ImageLayout(
+                onNavigateBeforeImgCropper = onNavigateImgCropper,
+                getViewModel = getViewModel,
+                onNavigateAfterImgCropper = onNavigateAfterImgCropper
+            )
         } else if (selectedOption == radioButtonList[2]) {
             Spacer(modifier = Modifier.height(spacing.medium))
             TestGetVideo()
@@ -184,7 +186,7 @@ fun TestimonialForm(
         androidx.compose.material.Button(
             onClick = {
                 showCustomDialogWithResult = !showCustomDialogWithResult
-                editViewModel.onEvent(TestimonialEvent.OnSubmit)
+                getViewModel.onEvent(TestimonialEvent.OnSubmit)
             },
             modifier = Modifier
                 .fillMaxWidth(1f)
@@ -212,11 +214,13 @@ fun TestimonialForm(
                         showCustomDialogWithResult = !showCustomDialogWithResult
                     }, onNavigateTstHome = onNavigateTstHome, onPositiveClick = {
                         onNavigateTstHome()
+//                        deleteImageFile(context, uri = getViewModel.imgBefore.value.localUrl)
+//                        deleteImageFile(context, uri = getViewModel.imgAfter.value.localUrl)
                     })
                 }
 
                 is TestimonialSubmitState.NetworkError -> ErrorScreenLayout(onTryAgain = {
-                    editViewModel.onEvent(
+                    getViewModel.onEvent(
                         TestimonialEvent.OnSubmit
                     )
                 })
@@ -236,7 +240,8 @@ fun CreateTstScreen(
     onNavigateTstCreate: () -> Unit,
     onNavigateTstHome: () -> Unit,
     onNavigateImgCropper: () -> Unit = {},
-    beforeImage: String?,
+    onNavigateAfterImgCropper: () -> Unit = {},
+    getViewModel: TestimonialViewModel,
 ) {
 
     var showCustomDialogWithResult by remember { mutableStateOf(false) }
@@ -264,7 +269,9 @@ fun CreateTstScreen(
         TestimonialForm(
             paddingValues = it,
             onNavigateTstHome = onNavigateTstHome,
-            onNavigateImgCropper = onNavigateImgCropper, beforeImage = beforeImage
+            onNavigateImgCropper = onNavigateImgCropper,
+            getViewModel = getViewModel,
+            onNavigateAfterImgCropper = onNavigateAfterImgCropper
         )
     }, containerColor = MaterialTheme.colorScheme.background)
 

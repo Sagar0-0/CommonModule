@@ -29,7 +29,7 @@ data class Testimonial(
     @SerializedName("apv")
     val apv: Boolean = false,
     @SerializedName("type")
-    val type: TestimonialType = TestimonialType.TEXT,
+    val type: Int = 0,
     @SerializedName("rank")
     val rank: Int = -1,
     @SerializedName("ttl")
