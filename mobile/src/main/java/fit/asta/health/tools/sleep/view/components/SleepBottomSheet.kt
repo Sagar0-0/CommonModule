@@ -102,34 +102,6 @@ fun SleepBottomSheet(
             }
         }
 
-        // Contains the First two Rows
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(spacing.small)
-        ) {
-            CardItem(
-                modifier = Modifier.weight(0.5f),
-                name = "Music",
-                type = "calm",
-                id = R.drawable.baseline_music_note_24
-            ) {
-                // TODO
-            }
-            CardItem(
-                modifier = Modifier.weight(0.5f),
-                name = bottomSheetData[0].ttl,
-                type = bottomSheetData[0].values[0].value,
-                id = R.drawable.goal,
-                onClick = {
-                    navController.navigate(SleepToolNavRoutes.SleepGoalsRoute.routes)
-                }
-            )
-        }
-
-
         AnimatedVisibility(visible = scaffoldState.currentValue == SheetValue.Expanded) {
 
             Column(
@@ -148,33 +120,59 @@ fun SleepBottomSheet(
 
                     item {
                         CardItem(
-                            name = bottomSheetData[1].ttl,
-                            type = bottomSheetData[1].values[0].value,
-                            id = R.drawable.sleep_factors
-                        ) {
-                            navController.navigate(SleepToolNavRoutes.SleepFactorRoute.routes)
-                        }
-                    }
-                    item {
-                        CardItem(
-                            name = bottomSheetData[2].ttl,
-                            type = bottomSheetData[2].values[0].value,
-                            id = R.drawable.jet_plane
-                        ) {
-                            navController.navigate(SleepToolNavRoutes.SleepJetLagTipsRoute.routes)
-                        }
-                    }
-                    item {
-                        CardItem(
-                            name = bottomSheetData[3].ttl,
-                            type = bottomSheetData[3].values[0].value,
-                            id = R.drawable.sleep_stories
+                            modifier = Modifier.weight(0.5f),
+                            name = "Music",
+                            type = "calm",
+                            id = R.drawable.baseline_music_note_24
                         ) {
                             // TODO
                         }
                     }
-                }
 
+                    items(bottomSheetData.size) {
+
+                        // Current Item and Current Icon
+                        val currentItem = bottomSheetData[it]
+                        val currentIcon = when (currentItem.ttl) {
+                            "goal" -> R.drawable.goal
+                            "factors" -> R.drawable.sleep_factors
+                            "Jet Lag" -> R.drawable.jet_plane
+                            "target" -> R.drawable.targets
+                            else -> R.drawable.goal
+                        }
+
+                        CardItem(
+                            modifier = Modifier.weight(0.5f),
+                            name = currentItem.ttl,
+                            type = currentItem.values[0].value,
+                            id = currentIcon,
+                            onClick = {
+                                when (currentItem.ttl) {
+
+                                    "goal" -> {
+                                        navController.navigate(
+                                            SleepToolNavRoutes.SleepGoalsRoute.routes
+                                        )
+                                    }
+
+                                    "factors" -> {
+                                        navController.navigate(
+                                            SleepToolNavRoutes.SleepFactorRoute.routes
+                                        )
+                                    }
+
+                                    "Jet Lag" -> {
+                                        navController.navigate(
+                                            SleepToolNavRoutes.SleepJetLagTipsRoute.routes
+                                        )
+                                    }
+
+                                    else -> {}
+                                }
+                            }
+                        )
+                    }
+                }
                 WeatherCard()
             }
         }
