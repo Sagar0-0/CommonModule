@@ -25,9 +25,9 @@ fun NetGetStart.getMusicTool(): MusicTool {
         instructor = this.data.exerciseList.map {
             MusicData(
                 artist_name = it.mda.instructorDetail.name,
-                artist_url = "",
+                artist_url = "hoi",
                 duration = it.mda.instructorMda.duration,
-                imgUrl = "",
+                imgUrl = "hidf",
                 language = it.mda.instructorMda.language,
                 music_name = it.mda.instructorMda.name,
                 music_url = it.mda.instructorMda.url

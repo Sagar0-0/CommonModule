@@ -14,11 +14,12 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
 import fit.asta.health.navigation.home.view.component.*
-import fit.asta.health.testimonials.TestimonialsActivity
+import fit.asta.health.tools.breathing.BreathingActivity
 import fit.asta.health.tools.exercise.ExerciseActivity
 import fit.asta.health.tools.meditation.MeditationActivity
 import fit.asta.health.tools.sunlight.SunlightActivity
 import fit.asta.health.tools.walking.view.WalkingActivity
+import fit.asta.health.testimonials.TestimonialsActivity
 import fit.asta.health.tools.water.WaterToolActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.time.LocalDate
@@ -82,12 +83,18 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
                         "meditation" -> {
                             MeditationActivity.launch(context = context)
                         }
-
+                        "breathing"->{
+                            BreathingActivity.launch(context=context)
+                        }
                         "sunlight" -> {
                             SunlightActivity.launch(context = context)
                         }
                     }
                 })
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(spacing.medium))
         }
 
         item(span = { GridItemSpan(columns) }) {

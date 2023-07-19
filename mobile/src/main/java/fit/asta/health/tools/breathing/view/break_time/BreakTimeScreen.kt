@@ -39,7 +39,14 @@ fun BreakTimeScreen(
     onBack: () -> Unit
 ) {
     val itemList = listOf(
-        "1min"
+        "1 Minutes",
+        "2 Minutes",
+        "3 Minutes",
+        "4 Minutes",
+        "5 Minutes",
+        "6 Minutes",
+        "7 Minutes",
+        "8 Minutes",
     )
     val itemSelection = remember {
         mutableIntStateOf(-1)
@@ -99,7 +106,7 @@ fun BreakTimeScreen(
                         .fillMaxWidth()
                         .height(60.dp)
                         .clickable {
-                            onClick(itemList[indexNumber])
+                            onClick("${indexNumber + 1} Min")
                             itemSelection.value =
                                 if (itemSelection.value != indexNumber) indexNumber
                                 else -1
