@@ -214,6 +214,7 @@ class SleepToolViewModel @Inject constructor(
     private val _sleepDisturbancesData =
         MutableStateFlow<SleepNetworkCall<SleepDisturbanceResponse>>(SleepNetworkCall.Initialized())
     val sleepDisturbancesData = _sleepDisturbancesData.asStateFlow()
+
     /**
      * This function fetches the Sleep Disturbances data from the Server which is then shown to the
      * UI
@@ -230,6 +231,43 @@ class SleepToolViewModel @Inject constructor(
                 val response = remoteRepository.getPropertyData(
                     userId = userIdFromHomeScreen,
                     property = "sd"
+                )
+
+                // Handling the Response
+                if (response.isSuccessful)
+                    SleepNetworkCall.Success(data = response.body()!!)
+                else
+                    SleepNetworkCall.Failure(message = "Unsuccessful operation")
+            } catch (e: Exception) {
+                SleepNetworkCall.Failure(message = e.message.toString())
+            }
+        }
+    }
+
+
+    /**
+     * This variable contains the Sleep Factors UI data
+     */
+    private val _sleepFactorsData =
+        MutableStateFlow<SleepNetworkCall<SleepDisturbanceResponse>>(SleepNetworkCall.Initialized())
+    val sleepFactorsData = _sleepFactorsData.asStateFlow()
+
+    /**
+     * This function fetches the Sleep Factors data from the Server which is then shown to the
+     * UI
+     */
+    fun getSleepFactorsData() {
+
+        // Setting the Loading State
+        _sleepFactorsData.value = SleepNetworkCall.Loading()
+
+        viewModelScope.launch {
+            _sleepFactorsData.value = try {
+
+                // Fetching the Data from the server
+                val response = remoteRepository.getPropertyData(
+                    userId = userIdFromHomeScreen,
+                    property = "sf"
                 )
 
                 // Handling the Response
