@@ -1,9 +1,9 @@
 package fit.asta.health
 
-import android.content.Intent
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -17,15 +17,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.Observer
+import dagger.hilt.android.AndroidEntryPoint
+import fit.asta.health.auth.AuthActivity
+import fit.asta.health.auth.viewmodel.AuthViewModel
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.common.utils.NetworkConnectivity
+import fit.asta.health.common.utils.PrefUtils
+import fit.asta.health.onboarding.OnBoardingScreenActivity
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
-class SplashScreen : AppCompatActivity() {
+@OptIn(ExperimentalCoroutinesApi::class)
+@AndroidEntryPoint
+class SplashScreen : ComponentActivity() {
 
     private lateinit var networkConnectivity: NetworkConnectivity
     private val isConnected = mutableStateOf(true)
+    private val authViewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,16 +78,21 @@ class SplashScreen : AppCompatActivity() {
     }
 
     private fun startMain() {
-
-        val mainIntent = Intent(this, MainActivity::class.java)
-        startActivity(mainIntent)
-        finish()
+        if (!PrefUtils.getOnboardingShownStatus(this)) {
+            OnBoardingScreenActivity.launch(this)
+        } else {
+            if (!authViewModel.isAuthenticated()) {
+                AuthActivity.launch(this)
+            } else {
+                MainActivity.launch(this)
+            }
+        }
     }
 
     private fun registerConnectivityReceiver() {
         networkConnectivity = NetworkConnectivity(this)
-        networkConnectivity.observe(this, Observer { status ->
+        networkConnectivity.observe(this) { status ->
             isConnected.value = status
-        })
+        }
     }
 }

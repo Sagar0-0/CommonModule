@@ -1,41 +1,45 @@
 package fit.asta.health.feedback.model.network
 
 import android.net.Uri
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
-
+@Parcelize
 data class NetUserFeedback(
     @SerializedName("ans")
-    val ans: List<An>,
+    val ans: List<An> = listOf(),
     @SerializedName("fid")
-    val fid: String,
+    val fid: String = "",
     @SerializedName("id")
-    val id: String,
+    val id: String = "",
     @SerializedName("qnrId")
-    val qnrId: String,
+    val qnrId: String = "",
     @SerializedName("uid")
-    val uid: String
-)
+    val uid: String = ""
+) : Parcelable
 
+@Parcelize
 data class An(
     @SerializedName("dtlAns")
-    val dtlAns: String?,
+    val dtlAns: String? = null,
     @SerializedName("isDet")
-    val isDet: Boolean,
+    val isDet: Boolean = false,
     @SerializedName("media")
-    val media: List<Media>?,
+    val media: List<Media>? = null,
     @SerializedName("opts")
-    val opts: List<String>?,
+    val opts: List<String>? = null,
     @SerializedName("qid")
-    val qid: Int,
+    val qid: Int = 0,
     @SerializedName("type")
-    val type: Int
-)
+    val type: Int = 0
+) : Parcelable
 
+@Parcelize
 data class Media(
     @SerializedName("name")
-    val name: String,
+    val name: String = "",
     @SerializedName("url")
-    val url: String,
+    val url: String = "",
     val localUri: Uri
-)
+) : Parcelable

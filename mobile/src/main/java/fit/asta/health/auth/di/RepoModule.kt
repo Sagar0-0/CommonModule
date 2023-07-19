@@ -1,13 +1,13 @@
-package fit.asta.health.firebase.di
+package fit.asta.health.auth.di
 
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.firebase.model.AuthDataMapper
-import fit.asta.health.firebase.model.AuthRepo
-import fit.asta.health.firebase.model.FirebaseAuthRepoImpl
+import fit.asta.health.auth.model.AuthDataMapper
+import fit.asta.health.auth.model.AuthRepo
+import fit.asta.health.auth.model.FirebaseAuthRepoImpl
 import javax.inject.Singleton
 
 @Module

@@ -1,11 +1,15 @@
-package fit.asta.health.firebase.model
+package fit.asta.health.auth.model
 
 import android.app.Activity
 import android.util.Log
 import com.google.firebase.FirebaseException
-import com.google.firebase.auth.*
-import fit.asta.health.firebase.model.domain.User
-import fit.asta.health.firebase.model.domain.UserCred
+import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthOptions
+import com.google.firebase.auth.PhoneAuthProvider
+import fit.asta.health.auth.model.domain.User
+import fit.asta.health.auth.model.domain.UserCred
 import fit.asta.health.common.utils.ResultState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow

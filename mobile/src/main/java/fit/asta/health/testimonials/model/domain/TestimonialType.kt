@@ -1,8 +1,8 @@
 package fit.asta.health.testimonials.model.domain
 
-import com.google.gson.annotations.SerializedName
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
-/*
 @Parcelize
 sealed class TestimonialType(
     val value: Int,
@@ -24,8 +24,8 @@ sealed class TestimonialType(
         }
     }
 }
-*/
 
+/*
 enum class TestimonialType(val value: Int) {
     @SerializedName("0")
     TEXT(0),
@@ -55,3 +55,4 @@ enum class MediaType(val value: Int) {
         fun from(value: Int) = values().first { it.value == value }
     }
 }
+*/

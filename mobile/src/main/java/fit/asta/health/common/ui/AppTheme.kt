@@ -10,6 +10,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.LocalContext
 import fit.asta.health.common.ui.theme.*
+import fit.asta.health.common.utils.AppThemeType
 import fit.asta.health.common.utils.PrefUtils
 
 
@@ -72,33 +73,33 @@ private val DarkColors = darkColorScheme(
     inversePrimary = md_theme_dark_inversePrimary,
     surfaceTint = md_theme_dark_surfaceTint,
 )
-
-private val usingDarkMode = mutableStateOf<Boolean?>(null)
+val usingDarkMode = mutableStateOf(false)
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AppTheme(
-    useDarkTheme: Boolean = usingDarkMode.value ?: isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
     val context = LocalContext.current
     when (PrefUtils.getTheme(context)) {
-        "dark" -> {
+        AppThemeType.Dark.value -> {
             usingDarkMode.value = true
         }
-        "light" -> {
+
+        AppThemeType.Light.value -> {
             usingDarkMode.value = false
         }
+
         else -> {
-            usingDarkMode.value = null
+            usingDarkMode.value = isSystemInDarkTheme()
         }
     }
 
     val useDynamicColors = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
     val colors = when {
-        useDynamicColors && useDarkTheme -> dynamicDarkColorScheme(LocalContext.current)
-        useDynamicColors && !useDarkTheme -> dynamicLightColorScheme(LocalContext.current)
-        useDarkTheme -> DarkColors
+        useDynamicColors && usingDarkMode.value -> dynamicDarkColorScheme(LocalContext.current)
+        useDynamicColors && !usingDarkMode.value -> dynamicLightColorScheme(LocalContext.current)
+        usingDarkMode.value -> DarkColors
         else -> LightColors
     }
 

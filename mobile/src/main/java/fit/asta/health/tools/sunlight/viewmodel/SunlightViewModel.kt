@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.auth.model.AuthRepo
 import fit.asta.health.common.utils.getCurrentDate
-import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.tools.sunlight.model.SunlightToolRepo
 import fit.asta.health.tools.sunlight.model.network.response.ResponseData
 import fit.asta.health.tools.sunlight.view.home.SunlightHomeScreenEvents

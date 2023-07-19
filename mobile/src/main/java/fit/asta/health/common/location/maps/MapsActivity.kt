@@ -63,22 +63,7 @@ class MapsActivity : AppCompatActivity() {
 
         initializeScreen()
         registerLocationRequestLauncher()
-
-        val br = LocationProviderChangedReceiver()
-        br.init(
-            object : LocationProviderChangedReceiver.LocationListener {
-                override fun onEnabled() {
-                    mapsViewModel.isLocationEnabled.value = true
-                    updateCurrentLocation()
-                }
-
-                override fun onDisabled() {
-                    mapsViewModel.isLocationEnabled.value = false
-                }
-            }
-        )
-        val filter = IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION)
-        registerReceiver(br, filter)
+        registerBroadcastReceiver()
 
         setContent {
             AppTheme {
@@ -100,6 +85,24 @@ class MapsActivity : AppCompatActivity() {
         }
     }
 
+    private fun registerBroadcastReceiver() {
+        br = LocationProviderChangedReceiver()
+        br!!.init(
+            object : LocationProviderChangedReceiver.LocationListener {
+                override fun onEnabled() {
+                    mapsViewModel.isLocationEnabled.value = true
+                    updateCurrentLocation()
+                }
+
+                override fun onDisabled() {
+                    mapsViewModel.isLocationEnabled.value = false
+                }
+            }
+        )
+        val filter = IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION)
+        registerReceiver(br, filter)
+    }
+
     private fun initializeScreen() {
         Places.initialize(applicationContext, getString(R.string.MAPS_API_KEY))
         mapsViewModel.getAllAddresses()
@@ -118,7 +121,7 @@ class MapsActivity : AppCompatActivity() {
         locationRequestLauncher =
             registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { activityResult ->
                 if (activityResult.resultCode == RESULT_OK)
-                    mapsViewModel.getCurrentLatLng(this)
+                    mapsViewModel.updateCurrentLocationData(this)
                 else {
                     if (!mapsViewModel.isLocationEnabled.value) {
                         Toast.makeText(
@@ -140,12 +143,14 @@ class MapsActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        mapsViewModel.updateLocationServiceStatus()
         mapsViewModel.isPermissionGranted.value =
-            ContextCompat.checkSelfPermission(
+            (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
+            ) == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED)
 
     }
 

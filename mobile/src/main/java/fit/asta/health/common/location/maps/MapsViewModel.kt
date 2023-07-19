@@ -1,10 +1,13 @@
 package fit.asta.health.common.location.maps
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.IntentSender
+import android.location.Address
 import android.location.Geocoder
+import android.os.Build
+import android.os.Build.VERSION.SDK_INT
+import android.os.Looper
 import android.util.Log
 import androidx.activity.result.IntentSenderRequest
 import androidx.compose.runtime.getValue
@@ -13,7 +16,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.LocationSettingsResponse
@@ -29,6 +34,7 @@ import fit.asta.health.common.location.maps.modal.SearchResponse
 import fit.asta.health.common.location.maps.repo.MapsRepo
 import fit.asta.health.common.utils.PrefUtils
 import fit.asta.health.common.utils.ResultState
+import fit.asta.health.common.utils.getLocationName
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -53,7 +59,7 @@ class MapsViewModel
     val isLocationEnabled = MutableStateFlow(false)
     val isPermissionGranted = MutableStateFlow(true)
 
-    private val _currentAddress = MutableStateFlow<android.location.Address?>(null)
+    private val _currentAddress = MutableStateFlow<Address?>(null)
     val currentAddress = _currentAddress.asStateFlow()
 
     private val _currentLatLng = MutableStateFlow(LatLng(0.0, 0.0))
@@ -64,15 +70,20 @@ class MapsViewModel
 
     private var searchJob: Job? = null
 
+    private var addressDetailsJob: Job? = null
+
     private val _addressListState = MutableStateFlow<ResultState<AddressesResponse>?>(null)
     val addressListState = _addressListState.asStateFlow()
 
     private var selectedAddressId by mutableStateOf<String?>(null)
 
     private val _markerAddressDetail =
-        MutableStateFlow<ResultState<android.location.Address?>?>(null)
+        MutableStateFlow<ResultState<Address?>?>(null)
     val markerAddressDetail = _markerAddressDetail.asStateFlow()
 
+    init {
+        updateLocationServiceStatus()
+    }
 
     fun updateCurrentLocationData(context: Context) {
         Log.d(TAG, "updateCurrentLocationData: Called")
@@ -88,7 +99,7 @@ class MapsViewModel
         }
     }
 
-    fun updateLocationServiceStatus() {
+    private fun updateLocationServiceStatus() {
         isLocationEnabled.value = locationHelper.isConnected()
     }
 
@@ -137,65 +148,97 @@ class MapsViewModel
     private fun getCurrentAddress(latLng: LatLng, context: Context) {
         try {
             val geocoder = Geocoder(context, Locale.getDefault())
-            val addresses = geocoder.getFromLocation(
-                _currentLatLng.value.latitude,
-                _currentLatLng.value.longitude,
-                1
-            )
-            if (!addresses.isNullOrEmpty()) {
-                _currentAddress.value = addresses[0]
-                PrefUtils.setCurrentAddress(
-                    "${_currentAddress.value?.subLocality}, ${_currentAddress.value?.locality}",
-                    context
-                )
-                Log.d(TAG, "getCurrentAddress: Success: ${_currentAddress.value}")
+            if (SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                geocoder.getFromLocation(
+                    latLng.latitude,
+                    latLng.longitude,
+                    1
+                ) { p0 ->
+                    _currentAddress.value = p0[0]
+                    PrefUtils.setCurrentAddress(
+                        getLocationName(_currentAddress.value!!),
+                        context
+                    )
+                    Log.d(TAG, "getCurrentAddress: Success: ${_currentAddress.value}")
+                }
             } else {
-                Log.e(TAG, "getCurrentAddress: $addresses")
+                val addresses = geocoder.getFromLocation(
+                    latLng.latitude,
+                    latLng.longitude,
+                    1,
+                )
+                if (!addresses.isNullOrEmpty()) {
+                    _currentAddress.value = addresses[0]
+                    PrefUtils.setCurrentAddress(
+                        getLocationName(_currentAddress.value!!),
+                        context
+                    )
+                    Log.d(TAG, "getCurrentAddress: Success: ${_currentAddress.value}")
+                } else {
+                    Log.e(TAG, "getCurrentAddress NULL: $addresses")
+                }
             }
         } catch (e: Exception) {
-            Log.e(TAG, "getCurrentAddress: ${e.message}")
+            Log.e(TAG, "getCurrentAddress EXCEPTION: ${e.message}")
         }
     }
 
     //Call this and start observing currentLatLng
     @SuppressLint("MissingPermission")
     fun getCurrentLatLng(context: Context) {
+        Log.d(TAG, "getCurrentLatLng: Called")
         val fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(context)
-        val locationResult = fusedLocationProviderClient.lastLocation
-
-        locationResult.addOnCompleteListener(context as Activity) { task ->
-            if (task.isSuccessful) {
-                Log.d(TAG, "getCurrentLocation: Task success: ${task.result}")
-                try {
-                    val lastKnownLocation = task.result ?: return@addOnCompleteListener
+        fusedLocationProviderClient.requestLocationUpdates(
+            LocationRequest.Builder(
+                Priority.PRIORITY_HIGH_ACCURACY,
+                10000
+            ).build(),
+            object : LocationCallback() {
+                override fun onLocationResult(locationResult: LocationResult) {
+                    // Get the current location
+                    val location = locationResult.locations.firstOrNull()
+                    if (location == null) {
+                        Log.e(TAG, "onLocationResult: NULL LOCATION")
+                        return
+                    }
                     _currentLatLng.value =
-                        LatLng(lastKnownLocation.latitude, lastKnownLocation.longitude)
-                    Log.d(TAG, "After success $_currentLatLng")
-                } catch (e: Exception) {
-                    Log.e(TAG, "getCurrentLatLng: ${e.message}")
+                        LatLng(location.latitude, location.longitude)
                 }
-            } else {
-                Log.e(TAG, "Exception: %s", task.exception)
-            }
-        }
+            },
+            Looper.getMainLooper()
+        )
     }
 
-    suspend fun getMarkerAddressDetails(lat: Double, long: Double, context: Context) {
+    fun getMarkerAddressDetails(lat: Double, long: Double, context: Context) {
+        addressDetailsJob?.cancel()
         _markerAddressDetail.value = ResultState.Loading
-        delay(1000)
-        try {
-            val geocoder = Geocoder(context, Locale.getDefault())
-            val addresses = geocoder.getFromLocation(
-                lat,
-                long,
-                1,
-            )
-            _markerAddressDetail.value =
-                ResultState.Success(if (!addresses.isNullOrEmpty()) addresses[0] else null)
-        } catch (e: Exception) {
-            ResultState.Failure(e)
+        addressDetailsJob = viewModelScope.launch {
+            delay(350)
+            try {
+                val geocoder = Geocoder(context, Locale.getDefault())
+                if (SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    geocoder.getFromLocation(
+                        lat,
+                        long,
+                        1,
+                    ) { p0 ->
+                        _markerAddressDetail.value = ResultState.Success(p0[0])
+                    }
+                } else {
+                    val addresses = geocoder.getFromLocation(
+                        lat,
+                        long,
+                        1,
+                    )
+                    _markerAddressDetail.value =
+                        ResultState.Success(if (!addresses.isNullOrEmpty()) addresses[0] else null)
+                }
+            } catch (e: Exception) {
+                ResultState.Failure(e)
+            }
         }
+
     }
 
     fun search(query: String) {

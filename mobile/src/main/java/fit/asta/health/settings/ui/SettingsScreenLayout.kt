@@ -55,13 +55,13 @@ fun SettingsScreenLayout(
                 onClickEvent(SettingsUiEvent.BACK)
             }
 
-            //TODO: Pending implementation
-            PreferenceCategory {
-                PreferenceItem(
-                    title = stringResource(id = R.string.user_pref_notification_cat_title),
-                    icon = painterResource(id = R.drawable.ic_notifications)
-                ) { onClickEvent(SettingsUiEvent.NOTIFICATION) }
-            }
+//            PreferenceCategory {
+//                PreferenceItem(
+//                    title = stringResource(id = R.string.user_pref_notification_cat_title),
+//                    icon = painterResource(id = R.drawable.ic_notifications)
+//                ) { onClickEvent(SettingsUiEvent.NOTIFICATION) }
+//            }TODO: Pending implementation
+
             PreferenceCategory(title = stringResource(id = R.string.user_pref_support_us_cat_title)) {
                 PreferenceItem(
                     title = stringResource(id = R.string.user_pref_share_app_title),
@@ -76,6 +76,7 @@ fun SettingsScreenLayout(
                     icon = painterResource(id = R.drawable.ic_feedback)
                 ) { onClickEvent(SettingsUiEvent.FEEDBACK) }
             }
+
             PreferenceCategory(title = stringResource(id = R.string.user_pref_display_cat_title)) {
                 ListPreference(
                     title = stringResource(id = R.string.user_pref_theme_title),
@@ -86,6 +87,7 @@ fun SettingsScreenLayout(
                     setAppTheme(it, context)
                 }
             }
+
             PreferenceCategory(title = stringResource(id = R.string.user_pref_account_cat_title)) {
                 PreferenceItem(
                     title = stringResource(id = R.string.user_pref_sign_out_title),
@@ -97,6 +99,7 @@ fun SettingsScreenLayout(
                     icon = painterResource(id = R.drawable.ic_delete_forever)
                 ) { onClickEvent(SettingsUiEvent.DELETE) }
             }
+
             PreferenceCategory(title = stringResource(id = R.string.user_pref_about_cat_title)) {
                 PreferenceItem(
                     title = stringResource(id = R.string.user_pref_bug_report_title),

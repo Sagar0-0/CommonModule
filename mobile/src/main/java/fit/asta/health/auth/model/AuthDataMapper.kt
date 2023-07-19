@@ -1,7 +1,7 @@
-package fit.asta.health.firebase.model
+package fit.asta.health.auth.model
 
 import com.google.firebase.auth.FirebaseUser
-import fit.asta.health.firebase.model.domain.User
+import fit.asta.health.auth.model.domain.User
 
 
 class AuthDataMapper {

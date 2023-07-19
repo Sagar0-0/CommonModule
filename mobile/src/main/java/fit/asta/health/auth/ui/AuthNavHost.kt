@@ -1,4 +1,4 @@
-package fit.asta.health.auth
+package fit.asta.health.auth.ui
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController

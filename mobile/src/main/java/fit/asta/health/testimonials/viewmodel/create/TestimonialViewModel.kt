@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.R
+import fit.asta.health.auth.model.AuthRepo
 import fit.asta.health.common.utils.UiString
-import fit.asta.health.firebase.model.AuthRepo
 import fit.asta.health.network.data.ApiResponse
 import fit.asta.health.testimonials.model.TestimonialRepo
 import fit.asta.health.testimonials.model.domain.InputWrapper
@@ -52,7 +52,7 @@ class TestimonialViewModel
 
     private val testimonialData = savedState.getStateFlow(TESTIMONIAL_DATA, Testimonial())
     val id = savedState.getStateFlow(ID, "")
-    val type = savedState.getStateFlow(TYPE, TestimonialType.TEXT)
+    val type = savedState.getStateFlow(TYPE, TestimonialType.from(0))
     val title = savedState.getStateFlow(TITLE, InputWrapper())
     val testimonial = savedState.getStateFlow(TESTIMONIAL, InputWrapper())
     val org = savedState.getStateFlow(ORG, InputWrapper())
@@ -118,13 +118,13 @@ class TestimonialViewModel
 
                             savedState[TESTIMONIAL_DATA] = result.data
                             savedState[ID] = result.data.id
-                            savedState[TYPE] = result.data.type
+                            savedState[TYPE] = TestimonialType.from(result.data.type)
                             savedState[TITLE] = InputWrapper(value = result.data.title)
                             savedState[TESTIMONIAL] = InputWrapper(value = result.data.testimonial)
                             savedState[ORG] = InputWrapper(value = result.data.user.org)
                             savedState[ROLE] = InputWrapper(value = result.data.user.role)
 
-                            when (result.data.type) {
+                            when (TestimonialType.from(result.data.type)) {
                                 TestimonialType.TEXT -> {
 
                                 }
@@ -161,7 +161,7 @@ class TestimonialViewModel
             updateTestimonial(
                 Testimonial(
                     id = id.value,
-                    type = type.value,
+                    type = type.value.value,
                     title = title.value.value.trim(),
                     testimonial = testimonial.value.value.trim(),
                     userId = it.uid,

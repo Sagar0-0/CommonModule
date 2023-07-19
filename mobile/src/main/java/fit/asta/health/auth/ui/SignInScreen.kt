@@ -1,4 +1,4 @@
-package fit.asta.health.auth
+package fit.asta.health.auth.ui
 
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult

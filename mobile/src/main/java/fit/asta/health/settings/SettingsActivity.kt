@@ -6,21 +6,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
-import com.google.android.material.appbar.MaterialToolbar
 import com.google.firebase.messaging.FirebaseMessaging
+import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.R
+import fit.asta.health.auth.viewmodel.AuthViewModel
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.common.utils.PrefUtils
-import fit.asta.health.common.utils.deleteAccount
 import fit.asta.health.common.utils.getCurrentBuildVersion
 import fit.asta.health.common.utils.getPublicStorageUrl
 import fit.asta.health.common.utils.rateUs
@@ -28,15 +27,16 @@ import fit.asta.health.common.utils.sendBugReportMessage
 import fit.asta.health.common.utils.sendFeedbackMessage
 import fit.asta.health.common.utils.shareApp
 import fit.asta.health.common.utils.showUrlInBrowser
-import fit.asta.health.common.utils.signOut
 import fit.asta.health.settings.data.SettingsUiEvent
 import fit.asta.health.settings.ui.SettingsNotificationLayout
 import fit.asta.health.settings.ui.SettingsScreenLayout
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@OptIn(ExperimentalCoroutinesApi::class)
+@AndroidEntryPoint
+class SettingsActivity : ComponentActivity() {
 
-class SettingsActivity : AppCompatActivity(),
-    PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
-
+    private val authViewModel: AuthViewModel by viewModels()
 
     companion object {
         fun launch(context: Context) {
@@ -100,6 +100,7 @@ class SettingsActivity : AppCompatActivity(),
                 else
                     unSubscribeTopic(key)
             }
+
             resources.getString(R.string.user_pref_health_tips_key) -> {
 
                 if (PrefUtils.getHealthTipsNotification(this))
@@ -107,6 +108,7 @@ class SettingsActivity : AppCompatActivity(),
                 else
                     unSubscribeTopic(key)
             }
+
             resources.getString(R.string.user_pref_promotions_key) -> {
 
                 if (PrefUtils.getPromotionsNotification(this))
@@ -141,13 +143,13 @@ class SettingsActivity : AppCompatActivity(),
             }
 
             SettingsUiEvent.SIGNOUT -> {
-                signOut {
+                authViewModel.logout(this) {
                     Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
                 }
             }
 
             SettingsUiEvent.DELETE -> {
-                deleteAccount {
+                authViewModel.deleteAccount(this) {
                     Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -173,34 +175,8 @@ class SettingsActivity : AppCompatActivity(),
                 )
             }
 
-            SettingsUiEvent.VERSION -> {
-                //TODO: OnVersionClick
-            }
+            SettingsUiEvent.VERSION -> {}
         }
-    }
-
-
-    override fun onPreferenceStartFragment(
-        caller: PreferenceFragmentCompat,
-        pref: Preference
-    ): Boolean {
-
-        val args = pref.extras
-        val fragment = supportFragmentManager.fragmentFactory
-            .instantiate(classLoader, pref.fragment!!).apply {
-
-                arguments = args
-                setTargetFragment(caller, 0)
-            }
-
-        // Replace the existing Fragment with the new Fragment
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.settingsFragContainer, fragment)
-            .addToBackStack(null)
-            .commit()
-
-        findViewById<MaterialToolbar>(R.id.settingsToolbar).title = pref.title
-        return true
     }
 
     private fun notifyChange() {

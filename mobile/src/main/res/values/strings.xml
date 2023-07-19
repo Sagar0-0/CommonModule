@@ -24,6 +24,7 @@
     <string name="user_pref_reminder_alarm_summary">Get alarm to remind the activities</string>
     <string name="user_pref_reminder_alarm_title">Reminder alarm</string>
 
+    <string name="user_pref_location_permission_count">user_pref_location_permission_count</string>
     <string name="user_pref_onboarding_shown">user_pref_onboarding_shown</string>
     <string name="user_pref_activity_tips_key" translatable="false">user_pref_activity_tips</string>
     <string name="user_pref_activity_tips_summary">Get tips to help you meet physical activity recommendations</string>

@@ -59,7 +59,7 @@ class FeedbackViewModel
             qnrId = _qnrId,
             uid = uId
         )
-        Log.e("ANS", "Submitting answers as: $feedback")
+        Log.i("ANS", "Submitting answers as: $feedback")
         viewModelScope.launch {
             feedbackRepo.postUserFeedback(feedback)
                 .catch {
