@@ -1,10 +1,12 @@
 package fit.asta.health.tools.breathing.view.home
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,12 +22,16 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberBottomSheetState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,6 +41,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.BottomSheetDragHandle
 import fit.asta.health.common.ui.components.ButtonWithColor
 import fit.asta.health.common.ui.components.CircularSliderInt
 import fit.asta.health.common.ui.components.ProgressBarInt
@@ -328,5 +335,146 @@ fun BreathingBottomSheet(
                 }
             }
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun Test() {
+    val sheetState = rememberStandardBottomSheetState(
+        initialValue = SheetValue.PartiallyExpanded,
+        skipHiddenState = true
+    )
+    val scaffoldState = androidx.compose.material3.rememberBottomSheetScaffoldState(
+        bottomSheetState = sheetState
+    )
+    val coroutine = rememberCoroutineScope()
+    Log.d("subhash", "Test: ${scaffoldState.bottomSheetState.currentValue}")
+
+    androidx.compose.material3.BottomSheetScaffold(
+        sheetContent = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth().fillMaxHeight(0.8f)
+                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp),
+                verticalArrangement = Arrangement.spacedBy(spacing.small)
+            )  {
+                Text(text = "PRACTICE", style = MaterialTheme.typography.titleSmall)
+                LazyVerticalGrid(
+                    horizontalArrangement = Arrangement.spacedBy(spacing.small),
+                    verticalArrangement = Arrangement.spacedBy(spacing.medium),
+                    columns = GridCells.Fixed(2)
+                ) {
+                    item {
+                        CardItem(
+                            name = "Exercises",
+                            type =" exercise[0]",
+                            id = R.drawable.baseline_music_note_24
+                        ) { }
+                    }
+                    item {
+                        CardItem(
+                            name = "Pace",
+                            type = "pace",
+                            id = R.drawable.baseline_music_note_24,
+                            onClick = {  }
+                        )
+                    }
+                }
+                AnimatedVisibility(visible = scaffoldState.bottomSheetState.currentValue==SheetValue.Expanded) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(spacing.medium)
+                    ) {
+
+                        LazyVerticalGrid(
+                            horizontalArrangement = Arrangement.spacedBy(spacing.small),
+                            verticalArrangement = Arrangement.spacedBy(spacing.medium),
+                            columns = GridCells.Fixed(2)
+                        ) {
+
+                            item {
+                                CardItem(name = "Level",
+                                    type = "level",
+                                    id = R.drawable.round_filter_vintage_24,
+                                    onClick = {  })
+                            }
+                            item {
+                                CardItem(name = "Music",
+                                    type = "music",
+                                    id = R.drawable.baseline_language_24,
+                                    onClick = {  })
+                            }
+                            item {
+                                CardItem(name = "Language",
+                                    type = "language",
+                                    id = R.drawable.round_filter_vintage_24,
+                                    onClick = {  })
+                            }
+                            item {
+                                CardItem(name = "Break Time",
+                                    type = "break_time",
+                                    id = R.drawable.round_filter_vintage_24,
+                                    onClick = {  })
+                            }
+                            item {
+                                CardItem(name = "Goals",
+                                    type =" goals[0",
+                                    id = R.drawable.round_filter_vintage_24,
+                                    onClick = {  })
+                            }
+                            item {
+                                CardItem(name = "Instructor",
+                                    type = "instructor",
+                                    id = R.drawable.round_filter_vintage_24,
+                                    onClick = {  })
+                            }
+                        }
+                        SunlightCard(modifier = Modifier)
+                    }
+                }
+            }
+        },
+        modifier = Modifier
+            .fillMaxSize(),
+        sheetPeekHeight = 200.dp,
+        sheetDragHandle = {
+                          BottomSheetDragHandle()
+        },
+        sheetSwipeEnabled = true,
+        scaffoldState = scaffoldState,
+        topBar = {
+            androidx.compose.material3.TopAppBar(
+                title = {
+                    Text(
+                        text = "Breathing Tool",
+                        fontSize = 20.sp,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        textAlign = TextAlign.Center
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_exercise_back),
+                            contentDescription = null,
+                            Modifier.size(24.dp)
+                        )
+                    }
+                },
+            )
+        },
+        containerColor = MaterialTheme.colorScheme.onPrimary
+    ) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            Text(
+                text = "Breathing Tool",
+                fontSize = 20.sp,
+                color = MaterialTheme.colorScheme.onBackground,
+                textAlign = TextAlign.Center,
+            )
+
+        }
+
     }
 }

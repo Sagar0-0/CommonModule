@@ -18,6 +18,4 @@ interface BreathingRepo {
     suspend fun postBreathingData(netPost: NetPost): NetworkResult<ServerRes>
     suspend fun postRatioData(customRatioPost: CustomRatioPost): NetworkResult<ServerRes>
     suspend fun deleteRatioData(ratioId: String): NetworkResult<ServerRes>
-    suspend fun postAdminData(customRatioPost: CustomRatioPost): NetworkResult<ServerRes>
-    suspend fun deleteAdminData(exerciseId: String): NetworkResult<ServerRes>
 }

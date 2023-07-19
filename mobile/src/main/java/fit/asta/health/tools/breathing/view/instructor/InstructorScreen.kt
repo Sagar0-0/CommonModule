@@ -39,6 +39,7 @@ fun InstructorScreen(
     onBack: () -> Unit
 ) {
     val itemList = listOf(
+        "john",
         "Darlene Robertson",
         "Ronald Richards",
         "Guy Hawkins",

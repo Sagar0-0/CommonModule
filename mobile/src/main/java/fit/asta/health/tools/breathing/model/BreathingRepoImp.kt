@@ -98,28 +98,4 @@ class BreathingRepoImp(val api: BreathingApi):BreathingRepo {
             NetworkResult.Error(message = e.message)
         }
     }
-
-    override suspend fun postAdminData(customRatioPost: CustomRatioPost): NetworkResult<ServerRes> {
-        return try {
-            NetworkResult.Loading<ServerRes>()
-            val result = api.postAdminData(customRatioPost)
-            Log.d("subhash", "putExeData: result${result.status}")
-            if (result.status.msg == "Successful") NetworkResult.Success(result)
-            else NetworkResult.Error(message = result.status.msg)
-        } catch (e: Exception) {
-            NetworkResult.Error(message = e.message)
-        }
-    }
-
-    override suspend fun deleteAdminData(exerciseId: String): NetworkResult<ServerRes> {
-        return try {
-            NetworkResult.Loading<ServerRes>()
-            val result = api.deleteAdminData(exerciseId)
-            Log.d("subhash", "putExeData: result${result.status}")
-            if (result.status.msg == "Successful") NetworkResult.Success(result)
-            else NetworkResult.Error(message = result.status.msg)
-        } catch (e: Exception) {
-            NetworkResult.Error(message = e.message)
-        }
-    }
 }

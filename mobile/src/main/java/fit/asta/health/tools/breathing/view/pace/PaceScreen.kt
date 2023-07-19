@@ -39,11 +39,7 @@ fun PaceScreen(
     onBack: () -> Unit,
 ) {
     val itemList = listOf(
-        "The Breath of Joy",
-        "Source of your Prana",
-        "Vital life force",
-        "Release Stress",
-        "Quieting the Mind"
+       "slow","medium","fast"
     )
     val itemSelection = remember {
         mutableIntStateOf(-1)

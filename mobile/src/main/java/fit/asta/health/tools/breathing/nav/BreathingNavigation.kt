@@ -15,8 +15,6 @@ import fit.asta.health.tools.breathing.view.home.UiEvent
 import fit.asta.health.tools.breathing.view.instructor.InstructorScreen
 import fit.asta.health.tools.breathing.view.language.LanguageScreen
 import fit.asta.health.tools.breathing.view.music.MusicScreen
-import fit.asta.health.tools.breathing.view.music_meditation.MusicMeditationScreen
-import fit.asta.health.tools.breathing.view.music_player.MusicPlayerScreen
 import fit.asta.health.tools.breathing.view.pace.PaceScreen
 import fit.asta.health.tools.breathing.viewmodel.BreathingViewModel
 
@@ -83,11 +81,11 @@ fun BreathingNavigation(navController: NavHostController,viewModel:BreathingView
         composable(BreathingScreen.MusicScreen.route) {
             MusicScreen(onClick = {viewModel.event(UiEvent.SetMusic(it))}, onBack = { navController.popBackStack()})
         }
-        composable(BreathingScreen.MusicMeditationScreen.route) {
-            MusicMeditationScreen()
-        }
-        composable(BreathingScreen.MusicPlayerScreen.route) {
-            MusicPlayerScreen()
-        }
+//        composable(BreathingScreen.MusicMeditationScreen.route) {
+//            MusicMeditationScreen()
+//        }
+//        composable(BreathingScreen.MusicPlayerScreen.route) {
+//            MusicPlayerScreen()
+//        }
     }
 }
