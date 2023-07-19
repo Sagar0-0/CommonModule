@@ -10,7 +10,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -20,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.tools.sleep.utils.SleepNetworkCall
 import fit.asta.health.tools.sleep.view.components.SleepCardItems
 import fit.asta.health.tools.sleep.viewmodel.SleepToolViewModel
@@ -27,22 +27,23 @@ import fit.asta.health.tools.sleep.viewmodel.SleepToolViewModel
 @Composable
 fun SleepDisturbanceScreen(
     navController: NavController,
-    sleepToolViewModel: SleepToolViewModel
+    sleepDisturbanceState: SleepNetworkCall<SleepDisturbanceResponse>,
+    loadDataFunction: () -> Unit
 ) {
 
     val context = LocalContext.current
 
     // Fetching the Data from the Server
     LaunchedEffect(Unit) {
-        sleepToolViewModel.getDisturbancesData()
+        loadDataFunction()
     }
 
     // Handling the State of the Api Call
-    when (sleepToolViewModel.sleepDisturbancesData.collectAsState().value) {
+    when (sleepDisturbanceState) {
 
         // Initialized State
         is SleepNetworkCall.Initialized -> {
-            sleepToolViewModel.getDisturbancesData()
+            loadDataFunction()
         }
 
         // loading State
@@ -60,8 +61,7 @@ fun SleepDisturbanceScreen(
         is SleepNetworkCall.Success -> {
 
             // List of Items or we can say disturbances data
-            val itemList = sleepToolViewModel.sleepDisturbancesData.collectAsState().value
-                .data?.sleepData
+            val itemList = sleepDisturbanceState.data?.sleepData
 
             // Checking if the itemList is null or not
             if (itemList != null) {
@@ -102,7 +102,7 @@ fun SleepDisturbanceScreen(
         is SleepNetworkCall.Failure -> {
             Toast.makeText(
                 context,
-                sleepToolViewModel.userUIDefaults.collectAsState().value.message,
+                sleepDisturbanceState.message,
                 Toast.LENGTH_SHORT
             ).show()
         }

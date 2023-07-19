@@ -10,7 +10,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -20,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.tools.sleep.utils.SleepNetworkCall
 import fit.asta.health.tools.sleep.view.components.SleepCardItems
 import fit.asta.health.tools.sleep.viewmodel.SleepToolViewModel
@@ -27,21 +27,22 @@ import fit.asta.health.tools.sleep.viewmodel.SleepToolViewModel
 @Composable
 fun SleepFactorsScreen(
     navController: NavController,
-    sleepToolViewModel: SleepToolViewModel
+    sleepFactorState: SleepNetworkCall<SleepDisturbanceResponse>,
+    loadDataFunction: () -> Unit
 ) {
     val context = LocalContext.current
 
     // Fetching the Data from the Server
     LaunchedEffect(Unit) {
-        sleepToolViewModel.getSleepFactorsData()
+        loadDataFunction()
     }
 
     // Handling the State of the Api Call
-    when (sleepToolViewModel.sleepFactorsData.collectAsState().value) {
+    when (sleepFactorState) {
 
         // Initialized State
         is SleepNetworkCall.Initialized -> {
-            sleepToolViewModel.getDisturbancesData()
+            loadDataFunction()
         }
 
         // loading State
@@ -59,8 +60,7 @@ fun SleepFactorsScreen(
         is SleepNetworkCall.Success -> {
 
             // List of Items or we can say factors data
-            val itemList = sleepToolViewModel.sleepFactorsData.collectAsState().value
-                .data?.sleepData
+            val itemList = sleepFactorState.data?.sleepData
 
             // Checking if the itemList is null or not
             if (itemList != null) {
@@ -101,7 +101,7 @@ fun SleepFactorsScreen(
         is SleepNetworkCall.Failure -> {
             Toast.makeText(
                 context,
-                sleepToolViewModel.userUIDefaults.collectAsState().value.message,
+                sleepFactorState.message,
                 Toast.LENGTH_SHORT
             ).show()
         }

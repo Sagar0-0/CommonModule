@@ -1,6 +1,8 @@
 package fit.asta.health.tools.sleep.view.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -37,9 +39,14 @@ fun SleepNavGraph(
             composable(
                 SleepToolNavRoutes.SleepFactorRoute.routes,
                 content = {
+
+                    val sleepFactorState by sleepToolViewModel.sleepFactorsData
+                        .collectAsStateWithLifecycle()
+
                     SleepFactorsScreen(
                         navController = navController,
-                        sleepToolViewModel = sleepToolViewModel
+                        sleepFactorState = sleepFactorState,
+                        loadDataFunction = { sleepToolViewModel.getSleepFactorsData() }
                     )
                 }
             )
@@ -48,9 +55,14 @@ fun SleepNavGraph(
             composable(
                 SleepToolNavRoutes.SleepDisturbanceRoute.routes,
                 content = {
+
+                    val sleepDisturbances by sleepToolViewModel.sleepDisturbancesData
+                        .collectAsStateWithLifecycle()
+
                     SleepDisturbanceScreen(
                         navController = navController,
-                        sleepToolViewModel = sleepToolViewModel
+                        sleepDisturbanceState = sleepDisturbances,
+                        loadDataFunction = { sleepToolViewModel.getDisturbancesData() }
                     )
                 }
             )
