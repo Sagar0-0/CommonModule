@@ -29,6 +29,7 @@ import fit.asta.health.R
 import fit.asta.health.common.ui.components.ButtonWithColor
 import fit.asta.health.common.ui.components.CardItem
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.tools.sleep.model.network.common.Prc
 import fit.asta.health.tools.sleep.view.navigation.SleepToolNavRoutes
 
 /**
@@ -41,7 +42,8 @@ import fit.asta.health.tools.sleep.view.navigation.SleepToolNavRoutes
 @Composable
 fun SleepBottomSheet(
     scaffoldState: SheetState,
-    navController: NavController
+    navController: NavController,
+    bottomSheetData: List<Prc>
 ) {
 
     Column(
@@ -110,7 +112,7 @@ fun SleepBottomSheet(
         ) {
             CardItem(
                 modifier = Modifier.weight(0.5f),
-                name = "Music ",
+                name = "Music",
                 type = "calm",
                 id = R.drawable.baseline_music_note_24
             ) {
@@ -118,8 +120,8 @@ fun SleepBottomSheet(
             }
             CardItem(
                 modifier = Modifier.weight(0.5f),
-                name = "Goal",
-                type = "De-Stress",
+                name = bottomSheetData[0].ttl,
+                type = bottomSheetData[0].values[0].value,
                 id = R.drawable.goal,
                 onClick = {
                     navController.navigate(SleepToolNavRoutes.SleepGoalsRoute.routes)
@@ -146,8 +148,8 @@ fun SleepBottomSheet(
 
                     item {
                         CardItem(
-                            name = "Factors",
-                            type = "Sleep Factors",
+                            name = bottomSheetData[1].ttl,
+                            type = bottomSheetData[1].values[0].value,
                             id = R.drawable.sleep_factors
                         ) {
                             navController.navigate(SleepToolNavRoutes.SleepFactorRoute.routes)
@@ -155,8 +157,8 @@ fun SleepBottomSheet(
                     }
                     item {
                         CardItem(
-                            name = "Jet Lag",
-                            type = "Check Tips",
+                            name = bottomSheetData[2].ttl,
+                            type = bottomSheetData[2].values[0].value,
                             id = R.drawable.jet_plane
                         ) {
                             navController.navigate(SleepToolNavRoutes.SleepJetLagTipsRoute.routes)
@@ -164,8 +166,8 @@ fun SleepBottomSheet(
                     }
                     item {
                         CardItem(
-                            name = "Sleep Stories",
-                            type = "Moon Light",
+                            name = bottomSheetData[3].ttl,
+                            type = bottomSheetData[3].values[0].value,
                             id = R.drawable.sleep_stories
                         ) {
                             // TODO

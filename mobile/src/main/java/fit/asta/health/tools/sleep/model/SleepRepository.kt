@@ -8,7 +8,7 @@ import retrofit2.Response
 
 interface SleepRepository {
 
-    suspend fun putUserDataForFirstTimeUsers(
+    suspend fun putUserData(
         sleepPutRequestBody: SleepPutRequestBody
     ): Response<SleepPutResponse>
 

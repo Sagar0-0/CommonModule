@@ -26,7 +26,11 @@ fun HomeContent(
         }
 
         is HomeState.Success -> {
-            HomeScreenLayout(activity = activity, toolsHome = state.toolsHome)
+            HomeScreenLayout(
+                activity = activity,
+                toolsHome = state.toolsHome,
+                userId = viewModel.userId
+            )
         }
 
         is HomeState.Error -> {

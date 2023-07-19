@@ -14,10 +14,10 @@ class SleepingRestApi(baseUrl: String, client: OkHttpClient) : SleepingApi {
         .getRetrofit(baseUrl, client)
         .create(SleepingService::class.java)
 
-    override suspend fun putUserDataForFirstTimeUsers(
+    override suspend fun putUserData(
         sleepPutRequestBody: SleepPutRequestBody
     ): Response<SleepPutResponse> {
-        return apiService.putUserDataForFirstTimeUsers(sleepPutRequestBody)
+        return apiService.putUserData(sleepPutRequestBody)
     }
 
     override suspend fun getUserDefaultSettings(

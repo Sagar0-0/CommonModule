@@ -14,7 +14,7 @@ import retrofit2.http.Query
 interface SleepingService {
 
     @PUT("tools/sleep/put/")
-    suspend fun putUserDataForFirstTimeUsers(
+    suspend fun putUserData(
         @Body sleepPutRequestBody: SleepPutRequestBody
     ): Response<SleepPutResponse>
 

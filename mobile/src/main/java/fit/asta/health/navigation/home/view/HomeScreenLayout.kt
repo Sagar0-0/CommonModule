@@ -29,7 +29,7 @@ import java.util.*
 @ExperimentalCoroutinesApi
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
+fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome, userId: String) {
 
     val context = LocalContext.current
 
@@ -62,12 +62,15 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
                         "water" -> {
                             WaterToolActivity.launch(context = context)
                         }
+
                         "steps" -> {
                             WalkingActivity.launch(context = context)
                         }
+
                         "workout" -> {
                             ExerciseActivity.launch(context = context, activity = "workout")
                         }
+
                         "yoga" -> {
                             ExerciseActivity.launch(context = context, activity = "yoga")
                         }
@@ -85,7 +88,10 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome) {
                         }
 
                         "sleep" -> {
-                            SleepToolActivity.launch(context = context)
+                            SleepToolActivity.launch(
+                                context = context,
+                                userId = userId
+                            )
                         }
 
                         "sunlight" -> {

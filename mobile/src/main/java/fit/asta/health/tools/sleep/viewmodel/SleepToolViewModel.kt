@@ -3,26 +3,36 @@ package fit.asta.health.tools.sleep.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.tools.sleep.model.LocalRepo
 import fit.asta.health.tools.sleep.model.SleepRepository
-import fit.asta.health.tools.sleep.model.db.SleepingLocalData
 import fit.asta.health.tools.sleep.model.network.common.Prc
 import fit.asta.health.tools.sleep.model.network.common.Value
 import fit.asta.health.tools.sleep.model.network.get.SleepToolGetResponse
 import fit.asta.health.tools.sleep.model.network.put.SleepPutRequestBody
+import fit.asta.health.tools.sleep.model.network.put.SleepPutResponse
 import fit.asta.health.tools.sleep.utils.SleepNetworkCall
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
 class SleepToolViewModel @Inject constructor(
-    private val remoteRepository: SleepRepository,
-    private val localRepo: LocalRepo
+    private val remoteRepository: SleepRepository
 ) : ViewModel() {
 
-    var userId = ""
+    // This contains the user ID for the Api Calls
+    private var userIdFromHomeScreen = ""
+    private var userIdFromGetResponse = ""
+
+    /**
+     * This function sets the user ID inside the viewModel
+     */
+    fun setUserId(newUserId: String) {
+        userIdFromHomeScreen = newUserId
+    }
+
     private val prcList = listOf(
         Prc(
             id = "",
@@ -110,6 +120,10 @@ class SleepToolViewModel @Inject constructor(
         ),
     )
 
+    /**
+     * This variable keeps the user UI Default values which we get from the get Request to the
+     * server and we need to populate the UI according to this variable
+     */
     private val _userUIDefaults = MutableStateFlow<SleepNetworkCall<SleepToolGetResponse>>(
         SleepNetworkCall.Initialized()
     )
@@ -117,72 +131,78 @@ class SleepToolViewModel @Inject constructor(
 
 
     /**
-     * This function fetches the UI related default data of the user
-     *
-     *          Note :-
-     *              1. Checks if there is a userId in the local Database named "sleep-data"
-     *
-     *              2. If user present then it take that userId and fetches the default settings from the Server
-     *
-     *              3. If user not present then we make a put request which gives us a new userId for the user
-     *              which we take and then we add it in the local database and we user it to make a
-     *              fetch request to the Server
+     * This function fetches the data of the default UI element settings of the user
+     * from the Server
      */
-    fun fetchUserUIData() {
+    fun getUserData() {
+
+        // Starting the Loading State
+        _userUIDefaults.value = SleepNetworkCall.Loading()
+
+        viewModelScope.launch {
+            try {
+
+                // Local Date time
+                val currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
+                // Fetching the data from the server
+                val response = remoteRepository.getUserDefaultSettings(
+                    userId = userIdFromHomeScreen,
+                    date = currentDate
+                )
+
+                // handling the Response
+                if (response.isSuccessful) {
+                    _userUIDefaults.value = SleepNetworkCall.Success(data = response.body()!!)
+                    userIdFromGetResponse = _userUIDefaults.value.data?.sleepData?.toolData!!.uid
+                } else
+                    _userUIDefaults.value = SleepNetworkCall.Failure(message = "No Data Present")
+
+            } catch (e: Exception) {
+                _userUIDefaults.value = SleepNetworkCall.Failure(message = e.message.toString())
+            }
+        }
+    }
+
+    /**
+     * This function keeps the api call state when the user updates any UI element and puts the new
+     * refreshed data to the Server
+     */
+    private val _userValueUpdate = MutableStateFlow<SleepNetworkCall<SleepPutResponse>>(
+        SleepNetworkCall.Initialized()
+    )
+    val userValueUpdate = _userValueUpdate.asStateFlow()
+
+    /**
+     * This function puts the data of the UI to the Server and sets the default settings of the user
+     */
+    fun updateUserData() {
 
         _userUIDefaults.value = SleepNetworkCall.Loading()
+
         viewModelScope.launch {
+            _userValueUpdate.value = try {
+                val id =
+                    if (userIdFromGetResponse == "000000000000000000000000")
+                        "" else userIdFromGetResponse
 
-            // Fetching the Id if present at the Local Storage
-            val localResponse = localRepo.getUserId()
-
-            // If the Local Storage is empty and doesn't have userId we do this
-            if (localResponse.isEmpty()) {
-
-                // Fetching the Data from the Server
-                val remoteResponse = remoteRepository.putUserDataForFirstTimeUsers(
+                val response = remoteRepository.putUserData(
                     sleepPutRequestBody = SleepPutRequestBody(
-                        id = "",
-                        uid = "",
+                        id = id,
+                        uid = userIdFromGetResponse,
                         type = 1,
                         code = "sleep",
                         prc = prcList
                     )
                 )
 
-                // Setting the UserID and inserting it into the local storage
-                if (remoteResponse.isSuccessful) {
-                    userId = remoteResponse.body()!!.data.id
-                    val data = SleepingLocalData(userId = userId)
-                    localRepo.insertUserId(data)
-                }
-            } else
-                userId = localResponse.first().userId
-
-            // Fetching the Data from the server
-            getUserDefaultSettings()
-        }
-    }
-
-    /**
-     * This function fetches the data of the default UI element settings of the user
-     * from the Server
-     */
-    private suspend fun getUserDefaultSettings() {
-        _userUIDefaults.value = try {
-
-            val response = remoteRepository.getUserDefaultSettings(
-                userId,
-                date = "2023-07-14"
-            )
-
-            if (response.isSuccessful)
-                SleepNetworkCall.Success(data = response.body()!!)
-            else
-                SleepNetworkCall.Failure(message = "No Data Present")
-
-        } catch (e: Exception) {
-            SleepNetworkCall.Failure(message = e.message.toString())
+                if (response.isSuccessful)
+                    SleepNetworkCall.Success(data = response.body()!!)
+                else
+                    SleepNetworkCall.Failure(message = "Unsuccessful operation")
+            } catch (e: Exception) {
+                SleepNetworkCall.Failure(message = e.message.toString())
+            }
         }
     }
 }

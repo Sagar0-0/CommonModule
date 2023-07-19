@@ -25,6 +25,9 @@ class HomeViewModel @Inject constructor(
     private val _mutableState = MutableStateFlow<HomeState>(HomeState.Loading)
     val state = _mutableState.asStateFlow()
 
+    var userId = ""
+        private set
+
     init {
         loadHomeData()
     }
@@ -33,6 +36,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 authRepo.getUser()?.let { data ->
+                    userId = data.uid
                     toolsHomeRepo.getHomeData(
                         userId = data.uid,
                         latitude = "28.6353",

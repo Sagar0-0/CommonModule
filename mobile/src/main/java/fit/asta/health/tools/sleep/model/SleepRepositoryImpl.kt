@@ -9,10 +9,10 @@ import retrofit2.Response
 
 class SleepRepositoryImpl(private val api: SleepingApi) : SleepRepository {
 
-    override suspend fun putUserDataForFirstTimeUsers(
+    override suspend fun putUserData(
         sleepPutRequestBody: SleepPutRequestBody
     ): Response<SleepPutResponse> {
-        return api.putUserDataForFirstTimeUsers(sleepPutRequestBody = sleepPutRequestBody)
+        return api.putUserData(sleepPutRequestBody = sleepPutRequestBody)
     }
 
     override suspend fun getUserDefaultSettings(

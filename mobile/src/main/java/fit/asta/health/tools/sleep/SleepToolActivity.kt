@@ -29,6 +29,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.ui.AppTheme
+import fit.asta.health.tools.sleep.model.network.common.Prc
 import fit.asta.health.tools.sleep.utils.SleepNetworkCall
 import fit.asta.health.tools.sleep.view.components.SleepBottomSheet
 import fit.asta.health.tools.sleep.view.components.SleepTopBar
@@ -43,9 +44,10 @@ class SleepToolActivity : ComponentActivity() {
 
     companion object {
 
-        fun launch(context: Context) {
+        fun launch(context: Context, userId: String) {
             val intent = Intent(context, SleepToolActivity::class.java)
             intent.apply {
+                putExtra("userId", userId)
                 context.startActivity(this)
             }
         }
@@ -63,10 +65,11 @@ class SleepToolActivity : ComponentActivity() {
                 ) {
 
                     sleepToolViewModel = hiltViewModel()
+                    sleepToolViewModel.setUserId(intent.extras?.getString("userId") ?: "")
 
                     when (sleepToolViewModel.userUIDefaults.collectAsState().value) {
                         is SleepNetworkCall.Initialized<*> -> {
-                            sleepToolViewModel.fetchUserUIData()
+                            sleepToolViewModel.getUserData()
                         }
 
                         is SleepNetworkCall.Loading<*> -> {
@@ -82,11 +85,25 @@ class SleepToolActivity : ComponentActivity() {
                         is SleepNetworkCall.Success<*> -> {
 
                             val navController = rememberNavController()
-                            ScaffoldUI(navController = navController)
+                            val bottomSheetData = sleepToolViewModel
+                                .userUIDefaults.collectAsState().value.data?.sleepData?.toolData?.prc
+
+                            if (bottomSheetData != null) {
+                                ScaffoldUI(
+                                    navController = navController,
+                                    bottomSheetData = bottomSheetData
+                                )
+                            } else {
+                                Toast.makeText(
+                                    this@SleepToolActivity,
+                                    sleepToolViewModel.userUIDefaults.collectAsState().value.message,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
 
                         }
 
-                        is SleepNetworkCall.Failure<*> -> {
+                        else -> {
                             Toast.makeText(
                                 this@SleepToolActivity,
                                 sleepToolViewModel.userUIDefaults.collectAsState().value.message,
@@ -103,13 +120,13 @@ class SleepToolActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun ScaffoldUI(
-        navController: NavHostController
+        navController: NavHostController,
+        bottomSheetData: List<Prc>
     ) {
 
-        val sheetState =
-            rememberStandardBottomSheetState(
-                initialValue = SheetValue.PartiallyExpanded
-            )
+        val sheetState = rememberStandardBottomSheetState(
+            initialValue = SheetValue.PartiallyExpanded
+        )
         val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = sheetState)
         val backStackEntry = navController.currentBackStackEntryAsState()
         val currentBackStackEntryRoute = backStackEntry.value?.destination?.route
@@ -121,8 +138,9 @@ class SleepToolActivity : ComponentActivity() {
             sheetContent = {
                 if (shouldShowSheet) {
                     SleepBottomSheet(
-                        sheetState,
-                        navController
+                        scaffoldState = sheetState,
+                        navController = navController,
+                        bottomSheetData = bottomSheetData
                     )
                 }
             },
