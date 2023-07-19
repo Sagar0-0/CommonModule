@@ -74,7 +74,7 @@ fun SleepFactorsScreen(
 
                     item {
                         Text(
-                            text = "Tap to add/remove the reasons for sleep disturbances",
+                            text = "Tap to add/remove the reasons for sleep factors",
 
                             fontSize = 20.sp,
                             fontWeight = FontWeight.W600,
