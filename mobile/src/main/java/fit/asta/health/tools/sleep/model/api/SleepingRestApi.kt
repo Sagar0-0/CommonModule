@@ -1,6 +1,7 @@
 package fit.asta.health.tools.sleep.model.api
 
 import fit.asta.health.common.utils.NetworkUtil
+import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.tools.sleep.model.network.get.SleepToolGetResponse
 import fit.asta.health.tools.sleep.model.network.post.SleepPostRequestBody
 import fit.asta.health.tools.sleep.model.network.put.SleepPutRequestBody
@@ -32,6 +33,13 @@ class SleepingRestApi(baseUrl: String, client: OkHttpClient) : SleepingApi {
         sleepPostRequestBody: SleepPostRequestBody
     ): Response<SleepPutResponse> {
         return apiService.postUserReading(userId, sleepPostRequestBody)
+    }
+
+    override suspend fun getSleepPropertyData(
+        userId: String,
+        property: String
+    ): Response<SleepDisturbanceResponse> {
+        return apiService.getPropertyData(userId, property)
     }
 
 }

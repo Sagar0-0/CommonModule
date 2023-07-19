@@ -1,6 +1,7 @@
 package fit.asta.health.tools.sleep.model
 
 import fit.asta.health.tools.sleep.model.api.SleepingApi
+import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.tools.sleep.model.network.get.SleepToolGetResponse
 import fit.asta.health.tools.sleep.model.network.post.SleepPostRequestBody
 import fit.asta.health.tools.sleep.model.network.put.SleepPutRequestBody
@@ -19,10 +20,7 @@ class SleepRepositoryImpl(private val api: SleepingApi) : SleepRepository {
         userId: String,
         date: String
     ): Response<SleepToolGetResponse> {
-        return api.getUserDefaultSettings(
-            userId = userId,
-            date = date
-        )
+        return api.getUserDefaultSettings(userId = userId, date = date)
     }
 
     override suspend fun postUserReading(
@@ -33,5 +31,12 @@ class SleepRepositoryImpl(private val api: SleepingApi) : SleepRepository {
             userId = userId,
             sleepPostRequestBody = sleepPostRequestBody
         )
+    }
+
+    override suspend fun getPropertyData(
+        userId: String,
+        property: String
+    ): Response<SleepDisturbanceResponse> {
+        return api.getSleepPropertyData(userId, property)
     }
 }

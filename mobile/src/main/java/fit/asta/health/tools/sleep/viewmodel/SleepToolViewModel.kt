@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.tools.sleep.model.SleepRepository
 import fit.asta.health.tools.sleep.model.network.common.Prc
 import fit.asta.health.tools.sleep.model.network.common.Value
+import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.tools.sleep.model.network.get.SleepToolGetResponse
 import fit.asta.health.tools.sleep.model.network.put.SleepPutRequestBody
 import fit.asta.health.tools.sleep.model.network.put.SleepPutResponse
@@ -196,6 +197,42 @@ class SleepToolViewModel @Inject constructor(
                     )
                 )
 
+                if (response.isSuccessful)
+                    SleepNetworkCall.Success(data = response.body()!!)
+                else
+                    SleepNetworkCall.Failure(message = "Unsuccessful operation")
+            } catch (e: Exception) {
+                SleepNetworkCall.Failure(message = e.message.toString())
+            }
+        }
+    }
+
+
+    /**
+     * This variable contains the Sleep Disturbances UI data
+     */
+    private val _sleepDisturbancesData =
+        MutableStateFlow<SleepNetworkCall<SleepDisturbanceResponse>>(SleepNetworkCall.Initialized())
+    val sleepDisturbancesData = _sleepDisturbancesData.asStateFlow()
+    /**
+     * This function fetches the Sleep Disturbances data from the Server which is then shown to the
+     * UI
+     */
+    fun getDisturbancesData() {
+
+        // Setting the Loading State
+        _sleepDisturbancesData.value = SleepNetworkCall.Loading()
+
+        viewModelScope.launch {
+            _sleepDisturbancesData.value = try {
+
+                // Fetching the Data from the server
+                val response = remoteRepository.getPropertyData(
+                    userId = userIdFromHomeScreen,
+                    property = "sd"
+                )
+
+                // Handling the Response
                 if (response.isSuccessful)
                     SleepNetworkCall.Success(data = response.body()!!)
                 else
