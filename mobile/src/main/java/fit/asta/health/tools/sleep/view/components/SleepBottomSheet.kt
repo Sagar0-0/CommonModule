@@ -37,13 +37,17 @@ import fit.asta.health.tools.sleep.view.navigation.SleepToolNavRoutes
  *
  * @param scaffoldState this defines the State of the Scaffold
  * @param navController This is the navigation Controller which helps to switch to a different Screen
+ * @param bottomSheetData This variable contains the bottom sheet Data which needs to be shown in UI
+ * @param selectedDisturbances This variable contains the list of strings which are chosen as sleep
+ * disturbances by the User
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SleepBottomSheet(
     scaffoldState: SheetState,
     navController: NavController,
-    bottomSheetData: List<Prc>
+    bottomSheetData: List<Prc>,
+    selectedDisturbances: List<String>
 ) {
 
     Column(
@@ -73,26 +77,27 @@ fun SleepBottomSheet(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
 
-            item {
+            items(selectedDisturbances.size) {
+
+                // Current Items
+                val currentItem = selectedDisturbances[it]
+                val currentIcon = when (currentItem) {
+                    "Dream" -> R.drawable.dreamcatcher
+                    "Kids" -> R.drawable.kids
+                    "Love" -> R.drawable.favorite
+                    "Water" -> R.drawable.water_glass
+                    "Toilet" -> R.drawable.toilet
+                    else -> R.drawable.dreamcatcher
+                }
+
+                // Drawing the Circular Image with text
                 CircularImageAndText(
-                    image = R.drawable.dreamcatcher,
-                    text = "Dream"
+                    text = currentItem,
+                    image = currentIcon
                 )
             }
 
-            item {
-                CircularImageAndText(
-                    image = R.drawable.kids,
-                    text = "Kids"
-                )
-            }
-
-            item {
-                CircularImageAndText(
-                    image = R.drawable.favorite,
-                    text = "Love"
-                )
-            }
+            // More Options comes here
             item {
                 CircularImageAndText(
                     text = "More"

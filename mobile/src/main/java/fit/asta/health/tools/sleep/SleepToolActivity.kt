@@ -91,7 +91,9 @@ class SleepToolActivity : ComponentActivity() {
                             if (bottomSheetData != null) {
                                 ScaffoldUI(
                                     navController = navController,
-                                    bottomSheetData = bottomSheetData
+                                    bottomSheetData = bottomSheetData,
+                                    selectedDisturbances = sleepToolViewModel.selectedSleepDisturbances
+                                        .collectAsState().value
                                 )
                             } else {
                                 Toast.makeText(
@@ -121,7 +123,8 @@ class SleepToolActivity : ComponentActivity() {
     @Composable
     private fun ScaffoldUI(
         navController: NavHostController,
-        bottomSheetData: List<Prc>
+        bottomSheetData: List<Prc>,
+        selectedDisturbances: List<String>
     ) {
 
         val sheetState = rememberStandardBottomSheetState(
@@ -140,11 +143,12 @@ class SleepToolActivity : ComponentActivity() {
                     SleepBottomSheet(
                         scaffoldState = sheetState,
                         navController = navController,
-                        bottomSheetData = bottomSheetData
+                        bottomSheetData = bottomSheetData,
+                        selectedDisturbances = selectedDisturbances
                     )
                 }
             },
-            sheetPeekHeight = if (shouldShowSheet) 200.dp else 0.dp,
+            sheetPeekHeight = if (shouldShowSheet) 230.dp else 0.dp,
             scaffoldState = scaffoldState,
             topBar = {
                 val topBarTitle = when (currentBackStackEntryRoute) {

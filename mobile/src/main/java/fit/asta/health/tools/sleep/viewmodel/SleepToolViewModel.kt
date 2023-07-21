@@ -280,4 +280,12 @@ class SleepToolViewModel @Inject constructor(
             }
         }
     }
+
+    /**
+     * This variable contains the selected sleep disturbances of the User and stores them for later
+     * use
+     */
+    private val _selectedSleepDisturbances =
+        MutableStateFlow(mutableListOf("Dream", "Kids", "Love"))
+    val selectedSleepDisturbances = _selectedSleepDisturbances.asStateFlow()
 }
