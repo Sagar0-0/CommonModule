@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Data(
     @SerializedName("customRatioData")
-    val customRatioData: Any,
+    val customRatioData: List<CustomRatioData>,
     @SerializedName("exerciseData")
     val exerciseData: List<ExerciseData>
 )

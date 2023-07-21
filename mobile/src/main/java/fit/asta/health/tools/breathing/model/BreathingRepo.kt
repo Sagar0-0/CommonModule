@@ -3,6 +3,7 @@ package fit.asta.health.tools.breathing.model
 import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.network.data.ServerRes
 import fit.asta.health.tools.breathing.model.network.AllExerciseData
+import fit.asta.health.tools.breathing.model.network.CustomRatioData
 import fit.asta.health.tools.breathing.model.network.NetGetRes
 import fit.asta.health.tools.breathing.model.network.NetGetStart
 import fit.asta.health.tools.breathing.model.network.request.CustomRatioPost
@@ -16,6 +17,6 @@ interface BreathingRepo {
     suspend fun getStart(userId: String): Flow<NetworkResult<NetGetStart>>
     suspend fun putBreathingData(netPut: NetPut): NetworkResult<ServerRes>
     suspend fun postBreathingData(netPost: NetPost): NetworkResult<ServerRes>
-    suspend fun postRatioData(customRatioPost: CustomRatioPost): NetworkResult<ServerRes>
+    suspend fun postRatioData(customRatioData: CustomRatioData): NetworkResult<ServerRes>
     suspend fun deleteRatioData(ratioId: String): NetworkResult<ServerRes>
 }

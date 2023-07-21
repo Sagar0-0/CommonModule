@@ -1,12 +1,16 @@
 package fit.asta.health.tools.exercise.nav
 
 import android.util.Log
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
+import androidx.navigation.navArgument
+import fit.asta.health.main.Graph
 import fit.asta.health.tools.exercise.view.body_parts.ExerciseBodyParts
 import fit.asta.health.tools.exercise.view.body_stretch.ExerciseBodyStretch
 import fit.asta.health.tools.exercise.view.challenges.ExerciseChallengesScreen
@@ -22,19 +26,21 @@ import fit.asta.health.tools.exercise.view.video.VideoScreen
 import fit.asta.health.tools.exercise.view.video_player.VideoPlayerScreen
 import fit.asta.health.tools.exercise.viewmodel.ExerciseViewModel
 
-@Composable
-fun DanceNavigation(
-    navController: NavHostController,
-    activity: String,
-    viewModel: ExerciseViewModel
+fun NavGraphBuilder.exerciseNavigation(
+    navController: NavHostController,onBack: () -> Unit
 ) {
-    NavHost(
-        navController = navController,
-        startDestination = ExerciseScreen.HomeScreen.route
+    navigation(
+        route = Graph.ExerciseTool.route+"?activity={activity}",
+        startDestination = ExerciseScreen.HomeScreen.route,
+        arguments = listOf(navArgument("activity") {
+            defaultValue = "dance"
+            type = NavType.StringType
+        })
     ) {
-
         composable(ExerciseScreen.HomeScreen.route) {
-//            viewModel.setScreen(value = activity)
+            val activity = it.arguments?.getString("activity") ?: "dance"
+            val viewModel:ExerciseViewModel= hiltViewModel()
+            viewModel.setScreen(activity)
             val uiState = viewModel.exerciseUiState.value
             val style by viewModel.selectedStyle.collectAsStateWithLifecycle()
             val music by viewModel.selectedMusic.collectAsStateWithLifecycle()
@@ -69,10 +75,12 @@ fun DanceNavigation(
                 onMusic = { navController.navigate(route = ExerciseScreen.Music.route) },
                 onSchedule = {},
                 onPlayer={navController.navigate(route = ExerciseScreen.VideoPlayer.route)},
-                event = viewModel::event
+                event = viewModel::event,
+                onBack = onBack
             )
         }
         composable(ExerciseScreen.BodyParts.route) {
+            val viewModel:ExerciseViewModel= hiltViewModel()
             ExerciseBodyParts(
                 onClick = { viewModel.event(HomeEvent.SetBodyParts(it)) },
                 onBack = { navController.popBackStack() },
@@ -80,6 +88,7 @@ fun DanceNavigation(
             )
         }
         composable(ExerciseScreen.BodyStretch.route) {
+            val viewModel:ExerciseViewModel= hiltViewModel()
             ExerciseBodyStretch(
                 onClick = { viewModel.event(HomeEvent.SetBodyStretch(it)) },
                 onBack = { navController.popBackStack() },
@@ -87,6 +96,7 @@ fun DanceNavigation(
             )
         }
         composable(ExerciseScreen.Level.route) {
+            val viewModel:ExerciseViewModel= hiltViewModel()
             ExerciseLevelScreen(
                 onClick = { viewModel.event(HomeEvent.SetLevel(it)) },
                 onBack = { navController.popBackStack() },
@@ -94,6 +104,7 @@ fun DanceNavigation(
             )
         }
         composable(ExerciseScreen.Challenges.route) {
+            val viewModel:ExerciseViewModel= hiltViewModel()
             ExerciseChallengesScreen(
                 onClick = { viewModel.event(HomeEvent.SetChallenge(it)) },
                 onBack = { navController.popBackStack() },
@@ -101,6 +112,8 @@ fun DanceNavigation(
             )
         }
         composable(ExerciseScreen.Goals.route) {
+            val viewModel:ExerciseViewModel= hiltViewModel()
+            val activity = it.arguments?.getString("activity") ?: "dance"
             ExerciseGoalsScreen(
                 onClick = { viewModel.event(HomeEvent.SetQuick(it)) },
                 onBack = { navController.popBackStack() },
@@ -108,6 +121,8 @@ fun DanceNavigation(
             )
         }
         composable(ExerciseScreen.Style.route) {
+            val viewModel:ExerciseViewModel= hiltViewModel()
+            val activity = it.arguments?.getString("activity") ?: "dance"
             ExerciseStyleScreen(
                 onClick = { viewModel.event(HomeEvent.SetStyle(it)) },
                 onBack = { navController.popBackStack() },
@@ -115,6 +130,7 @@ fun DanceNavigation(
             )
         }
         composable(ExerciseScreen.Duration.route) {
+            val viewModel:ExerciseViewModel= hiltViewModel()
             ExerciseDurationScreen(
                 onClick = { viewModel.event(HomeEvent.SetDuration(it)) },
                 onBack = { navController.popBackStack() },
@@ -122,6 +138,7 @@ fun DanceNavigation(
             )
         }
         composable(ExerciseScreen.Music.route) {
+            val viewModel:ExerciseViewModel= hiltViewModel()
             ExerciseMusic(
                 onClick = { },
                 onBack = { navController.popBackStack() },
@@ -129,6 +146,7 @@ fun DanceNavigation(
             )
         }
         composable(ExerciseScreen.Equipment.route) {
+            val viewModel:ExerciseViewModel= hiltViewModel()
             ExerciseEquipment(
                 onClick = { viewModel.event(HomeEvent.SetEquipment(it)) },
                 onBack = { navController.popBackStack() },
@@ -136,6 +154,7 @@ fun DanceNavigation(
             )
         }
         composable(ExerciseScreen.VideoPlayer.route) {
+            val viewModel:ExerciseViewModel= hiltViewModel()
             val state by viewModel.videoList.collectAsStateWithLifecycle()
             VideoPlayerScreen(state = state, onMusicEvents = viewModel::eventVideoPlayer,
                 navigateToPlayer = { navController.navigate(route = ExerciseScreen.Video.route) },
@@ -143,6 +162,7 @@ fun DanceNavigation(
             )
         }
         composable(ExerciseScreen.Video.route) {
+            val viewModel:ExerciseViewModel= hiltViewModel()
             val uiState by viewModel.uiState
             VideoScreen(player = viewModel.player(), uiState = uiState,
                 progress = viewModel.exerciseUiState.value.consume,

@@ -2,7 +2,6 @@ package fit.asta.health.testimonials
 
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -14,7 +13,6 @@ import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
 import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun TestimonialsNavigation(
@@ -22,18 +20,18 @@ fun TestimonialsNavigation(
     getViewModel: TestimonialViewModel = hiltViewModel(),
 ) {
 
-//    val context = LocalContext.current
 
     NavHost(navController, startDestination = TestimonialsRoute.Home.route) {
 
         composable(route = TestimonialsRoute.Home.route) {
 
-            TestimonialsLayout(onNavigateUp = {
+            TestimonialsLayout(
+                player = getViewModel.player(),
+                onNavigateUp = {
                 navController.navigate(route = TestimonialsRoute.Create.route)
             }, onNavigateBack = {
                 navController.popBackStack()
             })
-
         }
 
         composable(route = TestimonialsRoute.Create.route) {

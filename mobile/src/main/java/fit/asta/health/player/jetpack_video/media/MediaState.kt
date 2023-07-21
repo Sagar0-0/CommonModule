@@ -163,6 +163,11 @@ class MediaState(
             ?.run { BitmapFactory.decodeByteArray(this, 0, size)?.asImageBitmap() }
             ?.run { BitmapPainter(this) }
     }
+    internal val artworkPainterImg: BitmapPainter? by derivedStateOf {
+        playerState?.mediaMetadata?.artworkData
+            ?.run { BitmapFactory.decodeByteArray(this, 0, size)?.asImageBitmap() }
+            ?.run { BitmapPainter(this) }
+    }
     internal var usingArtworkPainter by mutableStateOf<Painter?>(null)
 
     internal val playerError: PlaybackException? by derivedStateOf {

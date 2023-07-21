@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.media3.common.Player
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.testimonials.view.TestimonialsList
 import fit.asta.health.testimonials.viewmodel.list.TestimonialListViewModel
@@ -25,10 +26,11 @@ fun TestimonialsLayout(
     onNavigateUp: () -> Unit,
     onNavigateBack: () -> Unit,
     viewModel: TestimonialListViewModel = hiltViewModel(),
+    player: Player,
 ) {
 
     Scaffold(content = {
-        TestimonialsList(it, viewModel)
+        TestimonialsList(it, viewModel, player = player)
     }, floatingActionButton = {
         FloatingActionButton(
             onClick = onNavigateUp,

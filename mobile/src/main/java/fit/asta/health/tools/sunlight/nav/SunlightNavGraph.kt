@@ -1,9 +1,11 @@
 package fit.asta.health.tools.sunlight.nav
 
-import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
+import fit.asta.health.main.Graph
 import fit.asta.health.tools.sunlight.view.*
 import fit.asta.health.tools.sunlight.view.age_selection.AgeRange
 import fit.asta.health.tools.sunlight.view.home.StatedStateComposable
@@ -11,31 +13,33 @@ import fit.asta.health.tools.sunlight.view.home.SunlightHomeScreen
 import fit.asta.health.tools.sunlight.view.skin_exposure.SkinExposureLayout
 import fit.asta.health.tools.sunlight.view.skincolor_selection.SkinColorLayout
 import fit.asta.health.tools.sunlight.view.spf_selection.SPFLevel
-import fit.asta.health.tools.sunlight.viewmodel.SunlightViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@Composable
-fun SunlightNavigation(navController: NavHostController, homeViewModel: SunlightViewModel) {
-    NavHost(navController, startDestination = SunlightScreen.SunlightHomeScreen.route) {
-
+fun NavGraphBuilder.sunlightNavigation(
+    navController: NavHostController, onBack: () -> Unit
+) {
+    navigation(
+        route = Graph.SunlightTool.route,
+        startDestination = SunlightScreen.SunlightHomeScreen.route
+    ) {
         composable(route = SunlightScreen.SunlightHomeScreen.route) {
-            SunlightHomeScreen(navController = navController, homeViewModel)
+            SunlightHomeScreen(navController = navController, hiltViewModel())
         }
         composable(route = SunlightScreen.SkinExposureScreen.route) {
-            SkinExposureLayout(navController = navController, homeViewModel)
+            SkinExposureLayout(navController = navController, hiltViewModel())
         }
         composable(route = SunlightScreen.SkinColorScreen.route) {
-            SkinColorLayout(navController = navController, homeViewModel)
+            SkinColorLayout(navController = navController, hiltViewModel())
         }
         composable(route = SunlightScreen.SPFSelectionScreen.route) {
-            SPFLevel(navController = navController, homeViewModel)
+            SPFLevel(navController = navController, hiltViewModel())
         }
         composable(route = SunlightScreen.AgeSelectionScreen.route) {
-            AgeRange(navController = navController, homeViewModel)
+            AgeRange(navController = navController, hiltViewModel())
         }
         composable(route = SunlightScreen.StartedStateComposable.route) {
-            StatedStateComposable(navController = navController, homeViewModel)
+            StatedStateComposable(navController = navController, hiltViewModel())
         }
     }
 }

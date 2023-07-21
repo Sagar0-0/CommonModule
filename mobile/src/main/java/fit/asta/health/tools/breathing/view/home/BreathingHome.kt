@@ -73,7 +73,7 @@ fun BreathingHomeScreen(
     onInstructor: () -> Unit,
     onSchedule: () -> Unit,
     onPlayer: () -> Unit,
-    event: (UiEvent) -> Unit
+    event: (UiEvent) -> Unit,onBack:()->Unit
 ) {
     val sheetState = rememberBottomSheetState(
         initialValue = BottomSheetValue.Collapsed
@@ -120,7 +120,7 @@ fun BreathingHomeScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = {onBack()}) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_exercise_back),
                             contentDescription = null,

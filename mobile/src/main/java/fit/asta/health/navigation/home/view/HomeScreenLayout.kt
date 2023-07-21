@@ -13,14 +13,9 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
 import fit.asta.health.navigation.home.view.component.*
-import fit.asta.health.tools.breathing.BreathingActivity
-import fit.asta.health.tools.exercise.ExerciseActivity
-import fit.asta.health.tools.meditation.MeditationActivity
-import fit.asta.health.tools.sunlight.SunlightActivity
-import fit.asta.health.tools.walking.view.WalkingActivity
 import fit.asta.health.testimonials.TestimonialsActivity
-import fit.asta.health.tools.water.WaterToolActivity
 import fit.asta.health.tools.sleep.SleepToolActivity
+import fit.asta.health.tools.walking.view.WalkingActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -29,7 +24,18 @@ import java.util.*
 @ExperimentalCoroutinesApi
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun HomeScreenLayout(toolsHome: ToolsHomeRes.ToolsHome, userId: String) {
+fun HomeScreenLayout(
+    toolsHome: ToolsHomeRes.ToolsHome, userId: String,
+    onBreathing: () -> Unit,
+    onWater: () -> Unit,
+    onMeditation: () -> Unit,
+    onSunlight: () -> Unit,
+    onSleep: () -> Unit,
+    onDance: () -> Unit,
+    onYoga: () -> Unit,
+    onWorkout: () -> Unit,
+    onHiit: () -> Unit,
+) {
 
     val context = LocalContext.current
 
@@ -59,49 +65,22 @@ fun HomeScreenLayout(toolsHome: ToolsHomeRes.ToolsHome, userId: String) {
                 imgUrl = tool.url,
                 onClick = { type ->
                     when (type.lowercase(Locale.getDefault())) {
-                        "water" -> {
-                            WaterToolActivity.launch(context = context)
-                        }
-
-                        "steps" -> {
-                            WalkingActivity.launch(context = context)
-                        }
-
-                        "workout" -> {
-                            ExerciseActivity.launch(context = context, activity = "workout")
-                        }
-
-                        "yoga" -> {
-                            ExerciseActivity.launch(context = context, activity = "yoga")
-                        }
-
-                        "hiit" -> {
-                            ExerciseActivity.launch(context = context, activity = "HIIT")
-                        }
-
-                        "dance" -> {
-                            ExerciseActivity.launch(context = context, activity = "dance")
-                        }
-
-                        "meditation" -> {
-                            MeditationActivity.launch(context = context)
-                        }
-
+                        "water" -> { onWater() }
+                        "steps" -> { WalkingActivity.launch(context = context) }
+                        "workout" -> { onWorkout() }
+                        "yoga" -> { onYoga() }
+                        "hiit" -> { onHiit() }
+                        "dance" -> { onDance() }
+                        "meditation" -> { onMeditation() }
                         "sleep" -> {
+                            onSleep()
                             SleepToolActivity.launch(
                                 context = context,
                                 userId = userId
                             )
                         }
-
-                        "breathing"->{
-                            BreathingActivity.launch(context=context)
-                        }
-
-                        "sunlight" -> {
-                            SunlightActivity.launch(context = context)
-                        }
-
+                        "breathing" -> { onBreathing() }
+                        "sunlight" -> { onSunlight() }
                     }
                 })
         }
