@@ -27,12 +27,14 @@ import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.Task
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.R
 import fit.asta.health.common.location.LocationHelper
 import fit.asta.health.common.location.maps.modal.AddressesResponse
 import fit.asta.health.common.location.maps.modal.AddressesResponse.MyAddress
 import fit.asta.health.common.location.maps.modal.SearchResponse
 import fit.asta.health.common.location.maps.repo.MapsRepo
 import fit.asta.health.common.utils.PrefUtils
+import fit.asta.health.common.utils.ResourcesProvider
 import fit.asta.health.common.utils.ResultState
 import fit.asta.health.common.utils.getLocationName
 import kotlinx.coroutines.Job
@@ -40,6 +42,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.cancellable
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -52,7 +55,8 @@ class MapsViewModel
     @Named("UId")
     val uId: String,
     private val locationHelper: LocationHelper,
-    private val prefUtils: PrefUtils
+    private val prefUtils: PrefUtils,
+    private val resourcesProvider: ResourcesProvider
 ) : ViewModel() {
 
     private val TAG = "MAPS"
@@ -156,9 +160,12 @@ class MapsViewModel
                     1
                 ) { p0 ->
                     _currentAddress.value = p0[0]
-                    prefUtils.setCurrentAddress(
-                        getLocationName(_currentAddress.value!!)
-                    )
+                    viewModelScope.launch {
+                        prefUtils.setPreferences(
+                            resourcesProvider.getString(R.string.user_pref_current_address),
+                            getLocationName(_currentAddress.value!!)
+                        )
+                    }
                     Log.d(TAG, "getCurrentAddress: Success: ${_currentAddress.value}")
                 }
             } else {
@@ -169,9 +176,12 @@ class MapsViewModel
                 )
                 if (!addresses.isNullOrEmpty()) {
                     _currentAddress.value = addresses[0]
-                    prefUtils.setCurrentAddress(
-                        getLocationName(_currentAddress.value!!)
-                    )
+                    viewModelScope.launch {
+                        prefUtils.setPreferences(
+                            resourcesProvider.getString(R.string.user_pref_current_address),
+                            getLocationName(_currentAddress.value!!)
+                        )
+                    }
                     Log.d(TAG, "getCurrentAddress: Success: ${_currentAddress.value}")
                 } else {
                     Log.e(TAG, "getCurrentAddress NULL: $addresses")
@@ -268,28 +278,36 @@ class MapsViewModel
 
     fun deleteAddress(name: String, onSuccess: () -> Unit) = viewModelScope.launch {
         val response = mapsRepo.deleteAddress(uId, name)
-        response.collect {
-            if (it is ResultState.Success) {
-                onSuccess()
-                getAllAddresses()
-                Log.d(TAG, "deleteAddress " + it.data.status.code.toString())
-            } else if (it is ResultState.Failure) {
-                Log.d(TAG, "deleteAddress " + it.msg.message)
+        response
+            .catch {
+                Log.e(TAG, "deleteAddress " + it.message)
             }
-        }
+            .collect {
+                if (it is ResultState.Success) {
+                    onSuccess()
+                    getAllAddresses()
+                    Log.d(TAG, "deleteAddress " + it.data.status.code.toString())
+                } else if (it is ResultState.Failure) {
+                    Log.e(TAG, "deleteAddress " + it.msg.message)
+                }
+            }
     }
 
     fun putAddress(myAddress: MyAddress, onSuccess: () -> Unit) = viewModelScope.launch {
         val response = mapsRepo.putAddress(myAddress)
-        response.collect {
-            if (it is ResultState.Success) {
-                Log.d(TAG, "PUT: " + it.data.status.code.toString())
-                onSuccess()
-                getAllAddresses()
-            } else {
-                Log.d(TAG, "PUT: $it")
+        response
+            .catch {
+                Log.e(TAG, "putAddress: ${it.message}")
             }
-        }
+            .collect {
+                if (it is ResultState.Success) {
+                    Log.d(TAG, "PUT: " + it.data.status.code.toString())
+                    onSuccess()
+                    getAllAddresses()
+                } else {
+                    Log.e(TAG, "PUT: $it")
+                }
+            }
     }
 
 }

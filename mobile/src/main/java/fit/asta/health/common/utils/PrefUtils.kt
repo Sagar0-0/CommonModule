@@ -1,9 +1,13 @@
 package fit.asta.health.common.utils
 
 import android.content.Context
-import android.content.SharedPreferences
+import android.util.Log
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.*
 import androidx.preference.PreferenceManager
 import fit.asta.health.R
+import kotlinx.coroutines.flow.*
+import java.io.IOException
 import java.util.Calendar
 import java.util.Locale
 import javax.inject.Inject
@@ -12,61 +16,87 @@ import javax.inject.Singleton
 @Singleton
 class PrefUtils
 @Inject constructor(
-    private val sharedPreferences: SharedPreferences,
-    private val resourcesProvider: ResourcesProvider
+    private val dataStore: DataStore<Preferences>
 ) {
 
-    fun getPromotionsNotification(): Boolean {
-        return sharedPreferences.getBoolean(
-            resourcesProvider.getString(R.string.user_pref_promotions_key),
-            true
-        )
+    suspend fun <T> getPreferences(key: String, defaultValue: T): Flow<T> {
+        return dataStore.data
+            .catch { exception ->
+                // dataStore.data throws an IOException when an error is encountered when reading data
+                if (exception is IOException) {
+                    emit(emptyPreferences())
+                } else {
+                    throw exception
+                }
+            }.map {
+                val value = when (defaultValue) {
+                    is String -> {
+                        it[stringPreferencesKey(key)]
+                    }
+
+                    is Boolean -> {
+                        it[booleanPreferencesKey(key)]
+                    }
+
+                    is Int -> {
+                        it[intPreferencesKey(key)]
+                    }
+
+                    is Float -> {
+                        it[floatPreferencesKey(key)]
+                    }
+
+                    is Long -> {
+                        it[longPreferencesKey(key)]
+                    }
+
+                    is Double -> {
+                        it[doublePreferencesKey(key)]
+                    }
+
+                    else -> {
+                        it[stringPreferencesKey(key)]
+                    }
+                }
+                Log.d("TAG", "getPreferences: $value --- $defaultValue")
+                if (value == null) {
+                    defaultValue
+                } else {
+                    value as T
+                }
+            }
     }
 
-    fun getHealthTipsNotification(): Boolean {
-        return sharedPreferences.getBoolean(
-            resourcesProvider.getString(R.string.user_pref_health_tips_key),
-            true
-        )
-    }
+    suspend fun <T> setPreferences(key: String, value: T) {
+        dataStore.edit {
+            when (value) {
+                is String -> {
+                    it[stringPreferencesKey(key)] = value
+                }
 
-    fun getMasterNotification(): Boolean {
+                is Boolean -> {
+                    it[booleanPreferencesKey(key)] = value
+                }
 
-        return sharedPreferences.getBoolean(
-            resourcesProvider.getString(R.string.user_pref_master_notification_key),
-            true
-        )
-    }
+                is Int -> {
+                    it[intPreferencesKey(key)] = value
+                }
 
-    fun setMasterNotification(status: Boolean) {
+                is Float -> {
+                    it[floatPreferencesKey(key)] = value
+                }
 
-        sharedPreferences.edit()
-            .putBoolean(
-                resourcesProvider.getString(R.string.user_pref_master_notification_key),
-                status
-            )
-            .apply()
-    }
+                is Long -> {
+                    it[longPreferencesKey(key)] = value
+                }
 
-    fun getCurrentAddress(): String {
-        return sharedPreferences.getString(
-            resourcesProvider.getString(R.string.user_pref_current_address),
-            null
-        ) ?: "Select location"
-    }
+                is Double -> {
+                    it[doublePreferencesKey(key)] = value
+                }
 
-    fun setCurrentAddress(address: String) {
-        sharedPreferences.edit()
-            .putString(resourcesProvider.getString(R.string.user_pref_current_address), address)
-            .apply()
-    }
-
-    fun getNewReleaseNotification(): Boolean {
-
-        return sharedPreferences.getBoolean(
-            resourcesProvider.getString(R.string.user_pref_new_release_key),
-            true
-        )
+                else -> {}
+            }
+        }
     }
 
     companion object {

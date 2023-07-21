@@ -1,16 +1,22 @@
 package fit.asta.health.main
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.R
 import fit.asta.health.common.utils.PrefUtils
+import fit.asta.health.common.utils.ResourcesProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel
 @Inject constructor(
-    private val prefUtils: PrefUtils
+    private val prefUtils: PrefUtils,
+    private val resourcesProvider: ResourcesProvider
 ) : ViewModel() {
 
     private val _locationName = MutableStateFlow("")
@@ -21,17 +27,38 @@ class MainViewModel
 
 
     init {
-        _notificationsEnabled.value = prefUtils.getMasterNotification()
-        _locationName.value = prefUtils.getCurrentAddress()
+        viewModelScope.launch {
+            prefUtils.getPreferences(
+                resourcesProvider.getString(R.string.user_pref_notification_key),
+                true
+            ).collect {
+                _notificationsEnabled.value = it
+                Log.d("NOT", "init: $it")
+            }
+        }
+
+        viewModelScope.launch {
+            prefUtils.getPreferences(
+                resourcesProvider.getString(R.string.user_pref_current_address),
+                "Select location"
+            ).collect {
+                _locationName.value = it
+                Log.d("LOC", "init: $it")
+            }
+        }
     }
 
-    fun setNotificationStatus(newValue: Boolean) {
-        _notificationsEnabled.value = newValue
-        prefUtils.setMasterNotification(newValue)
+    fun setNotificationStatus(newValue: Boolean) = viewModelScope.launch {
+        prefUtils.setPreferences(
+            resourcesProvider.getString(R.string.user_pref_notification_key),
+            newValue
+        )
     }
 
-    fun setCurrentLocation(newValue: String) {
-        _locationName.value = newValue
-        prefUtils.setCurrentAddress(newValue)
+    fun setCurrentLocation(newValue: String) = viewModelScope.launch {
+        prefUtils.setPreferences(
+            resourcesProvider.getString(R.string.user_pref_current_address),
+            newValue
+        )
     }
 }

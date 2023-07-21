@@ -64,7 +64,6 @@ class MapsActivity : AppCompatActivity() {
         initializeScreen()
         registerLocationRequestLauncher()
         registerBroadcastReceiver()
-
         setContent {
             AppTheme {
                 val isLocationEnabled by mapsViewModel.isLocationEnabled.collectAsStateWithLifecycle()
@@ -179,18 +178,12 @@ class MapsActivity : AppCompatActivity() {
             }
 
             composable(
-                route = MapScreens.Map.route + "/{address}?confirm={confirm}",
-                arguments = listOf(navArgument("confirm") {
-                    defaultValue = false
-                    type = NavType.BoolType
-                })
-            )
-            {
-                val confirmAdd = it.arguments?.getBoolean("confirm") ?: false
+                route = MapScreens.Map.route + "/{address}"
+            ) {
                 val gson: Gson = GsonBuilder().create()
                 val addJson = it.arguments?.getString("address")!!.replace("|", "/")
                 val myAddressItem = gson.fromJson(addJson, MyAddress::class.java)
-                MapScreen(confirmAdd, myAddressItem, navController, mapsViewModel) {
+                MapScreen(myAddressItem, navController, mapsViewModel) {
                     navController.navigateUp()
                 }
             }

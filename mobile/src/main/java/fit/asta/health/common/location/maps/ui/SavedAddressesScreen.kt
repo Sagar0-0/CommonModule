@@ -170,26 +170,7 @@ fun SavedAddressesScreen(
                 .fillMaxWidth()
                 .padding(horizontal = spacing.small),
             onClick = {
-                mapsViewModel.updateCurrentLocationData(context)
-                searchQuery = ""
-                val myAddressItem = MyAddress(
-                    selected = false,
-                    area = "",
-                    block = "",
-                    hn = "",
-                    id = "",
-                    lat = currentLatLng.latitude,
-                    loc = "",
-                    lon = currentLatLng.longitude,
-                    name = "",
-                    nearby = "",
-                    ph = "",
-                    pin = "",
-                    sub = "",
-                    uid = ""
-                )
-                val addJson = gson.toJson(myAddressItem)
-                navHostController.navigate(route = "${MapScreens.Map.route}/$addJson?confirm=true")
+                onBackPressed()
             }
         ) {
             Icon(

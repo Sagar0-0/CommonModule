@@ -2,20 +2,15 @@ package fit.asta.health.common.location.maps.ui
 
 import android.annotation.SuppressLint
 import android.location.Address
-import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -27,10 +22,8 @@ import fit.asta.health.common.location.maps.modal.AddressesResponse.MyAddress
 import fit.asta.health.common.location.maps.modal.MapScreens
 import fit.asta.health.common.ui.CustomTopBar
 import fit.asta.health.common.ui.theme.cardElevation
-import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.ResultState
-import fit.asta.health.common.utils.getLocationName
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -38,7 +31,6 @@ import java.util.*
 @Composable
 @SuppressLint("MissingPermission")
 fun MapScreen(
-    confirmAddress: Boolean,
     myAddressItem: MyAddress,
     navHostController: NavHostController,
     mapsViewModel: MapsViewModel,
@@ -103,87 +95,17 @@ fun MapScreen(
 
                 is ResultState.Success -> {
                     (address as ResultState.Success<Address?>).data?.let {
-                        if (confirmAddress) {
-                            Column(
-                                modifier = Modifier
-                                    .clip(
-                                        RoundedCornerShape(
-                                            topStart = customSize.medium,
-                                            topEnd = customSize.medium
-                                        )
-                                    )
-                                    .background(MaterialTheme.colorScheme.background)
-                                    .padding(horizontal = spacing.medium),
-                                verticalArrangement = Arrangement.Top,
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                CurrentLocationUi(
-                                    name = it.getAddressLine(0),
-                                    area = getLocationName(it)
-                                )
-
-                                var saveEnabled by remember { mutableStateOf(true) }
-                                OutlinedButton(
-                                    enabled = saveEnabled,
-                                    onClick = {
-                                        saveEnabled = false
-                                        val values = it.getAddressLine(0).split(", ")
-                                        val newMyAddress = MyAddress(
-                                            area = it.adminArea,
-                                            selected = true,
-                                            block = values[1],
-                                            hn = values[0],
-                                            id = "",
-                                            lat = it.latitude,
-                                            lon = it.longitude,
-                                            loc = it.locality,
-                                            nearby = values[2],
-                                            name = "Home",
-                                            pin = it.postalCode,
-                                            ph = "Unknown",
-                                            sub = it.subLocality,
-                                            uid = mapsViewModel.uId
-                                        )
-                                        mapsViewModel.putAddress(newMyAddress) {
-                                            Toast.makeText(
-                                                context,
-                                                "Address Saved Successfully",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                            navHostController.navigateUp()
-                                        }
-                                    },
-                                    modifier = Modifier
-                                        .padding(bottom = spacing.medium)
-                                        .fillMaxWidth(),
-                                    shape = MaterialTheme.shapes.medium,
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = MaterialTheme.colorScheme.primary,
-                                        contentColor = MaterialTheme.colorScheme.onSurface
-                                    )
-                                ) {
-                                    Text(
-                                        maxLines = 1,
-                                        text = "Confirm Location",
-                                        overflow = TextOverflow.Ellipsis,
-                                        style = MaterialTheme.typography.titleLarge
-                                    )
-                                }
-                            }
-                        } else {
-                            MapBottomSheet(
-                                navHostController = navHostController,
-                                sheetScaffoldState = scaffoldState,
-                                address = it,
-                                myAddressItem = myAddressItem,
-                                mapsViewModel = mapsViewModel,
-                                onButtonClick = { expandSheet() },
-                                onCollapse = { collapseSheet() }
-                            )
-                        }
+                        MapBottomSheet(
+                            navHostController = navHostController,
+                            sheetScaffoldState = scaffoldState,
+                            address = it,
+                            myAddressItem = myAddressItem,
+                            mapsViewModel = mapsViewModel,
+                            onButtonClick = { expandSheet() },
+                            onCollapse = { collapseSheet() }
+                        )
                     }
                 }
-
                 else -> {
                     LaunchedEffect(cameraPositionState.position.target) {
                         mapsViewModel.getMarkerAddressDetails(

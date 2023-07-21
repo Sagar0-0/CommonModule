@@ -36,7 +36,6 @@ class SettingsViewModel
     }
 
     private fun getAllNotificationsStatus() {
-        isAllNotificationOn = prefUtils.getMasterNotification()
 //        isReminderAlarmOn = prefUtils TODO: NEED ALL...
     }
 
@@ -68,7 +67,7 @@ class SettingsViewModel
 
             resourcesProvider.getString(R.string.user_pref_new_release_key) -> {
                 isNewReleaseOn = !isNewReleaseOn
-                if (prefUtils.getNewReleaseNotification())
+                if (isNewReleaseOn)
                     subscribeTopic(key)
                 else
                     unSubscribeTopic(key)
@@ -76,7 +75,7 @@ class SettingsViewModel
 
             resourcesProvider.getString(R.string.user_pref_health_tips_key) -> {
                 isHealthTipsOn = !isHealthTipsOn
-                if (prefUtils.getHealthTipsNotification())
+                if (isHealthTipsOn)
                     subscribeTopic(key)
                 else
                     unSubscribeTopic(key)
@@ -84,7 +83,7 @@ class SettingsViewModel
 
             resourcesProvider.getString(R.string.user_pref_promotions_key) -> {
                 isPromotionsOn = !isPromotionsOn
-                if (prefUtils.getPromotionsNotification())
+                if (isPromotionsOn)
                     subscribeTopic(key)
                 else
                     unSubscribeTopic(key)
