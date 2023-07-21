@@ -1,6 +1,7 @@
 package fit.asta.health.tools.sleep.view.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -28,9 +29,14 @@ fun SleepNavGraph(
             composable(
                 SleepToolNavRoutes.SleepHomeRoute.routes,
                 content = {
+
+                    // Progress Data which is shown in the Home Screen
+                    val progressData = sleepToolViewModel.userUIDefaults.collectAsState().value
+                        .data?.sleepData?.progressData
+
                     SleepHomeScreen(
                         navController = navController,
-                        sleepToolViewModel = sleepToolViewModel
+                        progressData = progressData
                     )
                 }
             )
