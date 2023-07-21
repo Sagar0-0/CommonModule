@@ -45,8 +45,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 fun TestimonialForm(
     paddingValues: PaddingValues,
     onNavigateTstHome: () -> Unit,
-    onNavigateImgCropper: () -> Unit = {},
-    onNavigateAfterImgCropper: () -> Unit = {},
+    //onNavigateImgCropper: () -> Unit = {},
+    //onNavigateAfterImgCropper: () -> Unit = {},
     getViewModel: TestimonialViewModel,
 ) {
 
@@ -174,9 +174,9 @@ fun TestimonialForm(
         if (selectedOption == radioButtonList[1]) {
             Spacer(modifier = Modifier.height(spacing.medium))
             ImageLayout(
-                onNavigateBeforeImgCropper = onNavigateImgCropper,
+                //onNavigateBeforeImgCropper = onNavigateImgCropper,
                 getViewModel = getViewModel,
-                onNavigateAfterImgCropper = onNavigateAfterImgCropper
+                //onNavigateAfterImgCropper = onNavigateAfterImgCropper
             )
         } else if (selectedOption == radioButtonList[2]) {
             Spacer(modifier = Modifier.height(spacing.medium))
@@ -239,8 +239,8 @@ fun CreateTstScreen(
     title: String,
     onNavigateTstCreate: () -> Unit,
     onNavigateTstHome: () -> Unit,
-    onNavigateImgCropper: () -> Unit = {},
-    onNavigateAfterImgCropper: () -> Unit = {},
+    //onNavigateImgCropper: () -> Unit = {},
+    //onNavigateAfterImgCropper: () -> Unit = {},
     getViewModel: TestimonialViewModel,
 ) {
 
@@ -269,9 +269,9 @@ fun CreateTstScreen(
         TestimonialForm(
             paddingValues = it,
             onNavigateTstHome = onNavigateTstHome,
-            onNavigateImgCropper = onNavigateImgCropper,
+            //onNavigateImgCropper = onNavigateImgCropper,
             getViewModel = getViewModel,
-            onNavigateAfterImgCropper = onNavigateAfterImgCropper
+            //onNavigateAfterImgCropper = onNavigateAfterImgCropper
         )
     }, containerColor = MaterialTheme.colorScheme.background)
 
