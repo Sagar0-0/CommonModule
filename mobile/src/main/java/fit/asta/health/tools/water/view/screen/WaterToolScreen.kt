@@ -82,7 +82,8 @@ fun WaterToolScreen(
     selectedBeverage: String,
     containerIndex: Int,
     containerList: SnapshotStateList<Int>,
-    uiState: WaterUiState
+    uiState: WaterUiState,
+    onBack: () -> Unit
 ) {
     val sheetState = rememberBottomSheetState(
         initialValue = BottomSheetValue.Collapsed
@@ -124,7 +125,7 @@ fun WaterToolScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = onBack) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_exercise_back),
                             contentDescription = null,

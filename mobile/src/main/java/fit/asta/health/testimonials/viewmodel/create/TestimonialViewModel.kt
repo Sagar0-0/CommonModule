@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.media3.common.Player
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.R
 import fit.asta.health.auth.model.AuthRepo
@@ -45,6 +46,7 @@ class TestimonialViewModel
     private val testimonialRepo: TestimonialRepo,
     private val authRepo: AuthRepo,
     private val savedState: SavedStateHandle,
+    private val player: Player
 ) : ViewModel() {
 
     private val _mutableState = MutableStateFlow<TestimonialGetState>(TestimonialGetState.Loading)
@@ -321,5 +323,7 @@ class TestimonialViewModel
     private fun isTestimonialDirty(): Boolean {
         return testimonialData.value.title != title.value.value || testimonialData.value.testimonial != testimonial.value.value || testimonialData.value.user.org != org.value.value || testimonialData.value.user.role != role.value.value
     }
+
+    fun player()=player
 
 }

@@ -59,6 +59,7 @@ fun MeditationHomeScreen(
     onClickLanguage: () -> Unit,
     onClickLevel: () -> Unit,
     onClickInstructor: () -> Unit,
+    onBack:()->Unit,
 ) {
     val sheetState = rememberBottomSheetState(
         initialValue = BottomSheetValue.Collapsed
@@ -100,7 +101,7 @@ fun MeditationHomeScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = onBack) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_exercise_back),
                             contentDescription = null,

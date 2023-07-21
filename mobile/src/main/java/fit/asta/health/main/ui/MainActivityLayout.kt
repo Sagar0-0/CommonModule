@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -31,6 +32,7 @@ import fit.asta.health.main.Graph
 import fit.asta.health.navigation.home.view.HomeContent
 import fit.asta.health.navigation.today.view.TodayContent
 import fit.asta.health.navigation.track.view.TrackContent
+import fit.asta.health.tools.breathing.nav.breathingNavigation
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -39,7 +41,16 @@ fun MainActivityLayout(
     locationName: String,
     profileImageUri: Uri?,
     isNotificationEnabled: Boolean,
-    onClick: (key: MainTopBarActions) -> Unit
+    onClick: (key: MainTopBarActions) -> Unit,
+    onBreathing: () -> Unit,
+    onWater: () -> Unit,
+    onMeditation: () -> Unit,
+    onSunlight: () -> Unit,
+    onSleep: () -> Unit,
+    onDance: () -> Unit,
+    onYoga: () -> Unit,
+    onWorkout: () -> Unit,
+    onHiit: () -> Unit,
 ) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -149,7 +160,16 @@ fun MainActivityLayout(
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(BottomBarScreens.Home.route) {
-                HomeContent()
+                HomeContent(
+                    onBreathing = onBreathing, onWater = onWater,
+                    onMeditation = onMeditation,
+                    onDance = onDance,
+                    onHiit = onHiit,
+                    onSleep = onSleep,
+                    onSunlight = onSunlight,
+                    onWorkout = onWorkout,
+                    onYoga = onYoga
+                )
             }
 
             composable(BottomBarScreens.Today.route) {

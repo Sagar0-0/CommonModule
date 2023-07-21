@@ -3,6 +3,7 @@ package fit.asta.health.tools.breathing.model.api
 import fit.asta.health.common.utils.NetworkUtil
 import fit.asta.health.network.data.ServerRes
 import fit.asta.health.tools.breathing.model.network.AllExerciseData
+import fit.asta.health.tools.breathing.model.network.CustomRatioData
 import fit.asta.health.tools.breathing.model.network.NetGetRes
 import fit.asta.health.tools.breathing.model.network.NetGetStart
 import fit.asta.health.tools.breathing.model.network.request.CustomRatioPost
@@ -35,8 +36,8 @@ class BreathingRestApi(baseUrl: String, client: OkHttpClient) : BreathingApi {
         return apiService.postBreathingData(netPost)
     }
 
-    override suspend fun postRatioData(customRatioPost: CustomRatioPost): ServerRes {
-        return apiService.postRatioData(customRatioPost)
+    override suspend fun postRatioData(customRatioData: CustomRatioData): ServerRes {
+        return apiService.postRatioData(customRatioData)
     }
 
     override suspend fun deleteRatioData(ratioId: String): ServerRes {

@@ -432,7 +432,7 @@ class ExerciseViewModel @Inject constructor(
         viewModelScope.launch {
             val result = exerciseRepo.putExerciseData(
                 netPutRes = NetPutRes(
-                    id = "63be470005dbba7af597e196",
+                    id = "",
                     code = code,
                     prc = prcList,
                     type = 6,

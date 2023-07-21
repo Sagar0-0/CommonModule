@@ -5,6 +5,7 @@ import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.network.data.ServerRes
 import fit.asta.health.tools.breathing.model.api.BreathingApi
 import fit.asta.health.tools.breathing.model.network.AllExerciseData
+import fit.asta.health.tools.breathing.model.network.CustomRatioData
 import fit.asta.health.tools.breathing.model.network.NetGetRes
 import fit.asta.health.tools.breathing.model.network.NetGetStart
 import fit.asta.health.tools.breathing.model.network.request.CustomRatioPost
@@ -75,10 +76,10 @@ class BreathingRepoImp(val api: BreathingApi):BreathingRepo {
         }
     }
 
-    override suspend fun postRatioData(customRatioPost: CustomRatioPost): NetworkResult<ServerRes> {
+    override suspend fun postRatioData(customRatioData: CustomRatioData): NetworkResult<ServerRes> {
         return try {
             NetworkResult.Loading<ServerRes>()
-            val result = api.postRatioData(customRatioPost)
+            val result = api.postRatioData(customRatioData)
             Log.d("subhash", "putExeData: result${result.status}")
             if (result.status.msg == "Successful") NetworkResult.Success(result)
             else NetworkResult.Error(message = result.status.msg)

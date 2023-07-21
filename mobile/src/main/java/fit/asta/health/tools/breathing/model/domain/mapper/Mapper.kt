@@ -65,16 +65,16 @@ fun BreathingTool.toPutData(): NetPut {
         wea = this.weather,
         prc = listOf(
             Prc(
-                code = "",
+                code = "exercise",
                 id = "",
                 dsc = "exercise",
                 title = "exercise",
-                type = 0,
+                type = 1,
                 values = this.exercise.map { value-> Value(id = "", name = value, value = value) }
             ),
 
             Prc(
-                code = "",
+                code = "Language",
                 id = "",
                 dsc = "Language",
                 title = "Language",
@@ -83,65 +83,65 @@ fun BreathingTool.toPutData(): NetPut {
             ),
 
             Prc(
-                code = "",
+                code = "Break",
                 id = "",
                 dsc = "Break",
                 title = "Break",
-                type = 0,
+                type = 1,
                 values = listOf(Value(id = "", name = this.Break, value = this.Break))
             ),
 
             Prc(
-                code = "",
+                code = "Goal",
                 id = "",
                 dsc = "Goal",
                 title = "Goal",
-                type = 0,
+                type = 1,
                 values = this.Goal.map { value-> Value(id = "", name = value, value = value) }
             ),
 
             Prc(
-                code = "",
+                code = "target",
                 id = "",
                 dsc = "target",
                 title = "target",
-                type = 0,
+                type = 1,
                 values = listOf(Value(id = "", name = this.Target, value = this.Target))
             ),
 
             Prc(
-                code = "",
+                code = "Pace",
                 id = "",
                 dsc = "Pace",
                 title = "Pace",
-                type = 0,
+                type = 1,
                 values = listOf(Value(id = "", name = this.Pace, value = this.Pace))
             ),
 
             Prc(
-                code = "",
+                code = "Level",
                 id = "",
                 dsc = "Level",
                 title = "Level",
-                type = 0,
+                type = 1,
                 values = listOf(Value(id = "", name = this.Level, value = this.Level))
             ),
 
             Prc(
-                code = "",
+                code = "instructor",
                 id = "",
                 dsc = "instructor",
                 title = "instructor",
-                type = 0,
+                type = 1,
                 values = listOf(Value(id = "", name = this.instructor, value = this.instructor))
             ),
 
             Prc(
-                code = "",
+                code = "Music",
                 id = "",
                 dsc = "Music",
                 title = "Music",
-                type = 0,
+                type = 1,
                 values = listOf(Value(id = "", name = this.Music, value = this.Music))
             )
         )

@@ -16,6 +16,15 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun HomeContent(
     viewModel: HomeViewModel = hiltViewModel(),
+    onBreathing :()->Unit,
+    onWater: () -> Unit,
+    onMeditation: () -> Unit,
+    onSunlight: () -> Unit,
+    onSleep: () -> Unit,
+    onDance: () -> Unit,
+    onYoga: () -> Unit,
+    onWorkout: () -> Unit,
+    onHiit: () -> Unit,
 ) {
 
     when (val state = viewModel.state.collectAsState().value) {
@@ -26,7 +35,16 @@ fun HomeContent(
         is HomeState.Success -> {
             HomeScreenLayout(
                 toolsHome = state.toolsHome,
-                userId = viewModel.userId
+                userId = viewModel.userId,
+                onBreathing=onBreathing,
+                onWater=onWater,
+                onMeditation=onMeditation,
+                onDance=onDance,
+                onHiit = onHiit,
+                onSleep = onSleep,
+                onSunlight = onSunlight,
+                onWorkout = onWorkout,
+                onYoga = onYoga
             )
         }
 
