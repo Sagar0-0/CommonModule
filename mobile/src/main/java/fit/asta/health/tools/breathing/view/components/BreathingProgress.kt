@@ -1,5 +1,6 @@
 package fit.asta.health.tools.breathing.view.components
 
+import android.util.Log
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.VectorConverter
@@ -52,9 +53,9 @@ import kotlin.math.min
 fun BreathingProgress(
     modifier: Modifier = Modifier,
     start: Boolean,
-    color: Color = MaterialTheme.colorScheme.primary,
-    bgColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.25f),
-    stroke: Float = 20f,
+    color: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.35f),
+    bgColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
+    stroke: Float = 5f,
     cap: StrokeCap = StrokeCap.Round,
 ) {
     var size by remember { mutableStateOf(IntSize.Zero) }
@@ -173,8 +174,9 @@ fun BreathingProgress(
             verticalArrangement = Arrangement.spacedBy(spacing.small)
         ) {
             Text(text = "$startCount", modifier = Modifier.clickable {
-                changeRadius = if (changeRadius == 0f) radius
-                else smallRadius
+                changeRadius = if (changeRadius == 300f) smallRadius
+                else radius
+                Log.d("subhash", "BreathingProgress: $changeRadius")
             })
         }
     }

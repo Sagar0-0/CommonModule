@@ -2,6 +2,7 @@ package fit.asta.health.tools.breathing.model.api
 
 import fit.asta.health.network.data.ServerRes
 import fit.asta.health.tools.breathing.model.network.AllExerciseData
+import fit.asta.health.tools.breathing.model.network.CustomRatioData
 import fit.asta.health.tools.breathing.model.network.NetGetRes
 import fit.asta.health.tools.breathing.model.network.NetGetStart
 import fit.asta.health.tools.breathing.model.network.request.CustomRatioPost
@@ -59,7 +60,7 @@ interface BreathingService {
 
     @POST("tools/breathing/ratio/post/?")
     suspend fun postRatioData(
-        @Body customRatioPost: CustomRatioPost
+        @Body customRatioData: CustomRatioData
     ): ServerRes
 
     @DELETE("tools/breathing/ratio/delete/?")

@@ -1,13 +1,15 @@
 package fit.asta.health.tools.meditation.nav
 
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
+import fit.asta.health.main.Graph
 import fit.asta.health.tools.meditation.view.audio_meditation.AudioMeditationScreen
 import fit.asta.health.tools.meditation.view.home.MEvent
 import fit.asta.health.tools.meditation.view.home.MeditationHomeScreen
@@ -20,14 +22,15 @@ import fit.asta.health.tools.meditation.viewmodel.MeditationViewModel
 @OptIn(
     ExperimentalMaterialApi::class
 )
-@Composable
-fun MeditationNavigation(navController: NavHostController, viewModel: MeditationViewModel) {
-    NavHost(
-        navController = navController,
+fun NavGraphBuilder.meditationNavigation(
+    navController: NavHostController, onBack: () -> Unit
+) {
+    navigation(
+        route = Graph.MeditationTool.route,
         startDestination = MeditationScreen.MeditationHomeScreen.route
     ) {
-
         composable(MeditationScreen.MeditationHomeScreen.route) {
+            val viewModel:MeditationViewModel= hiltViewModel()
             val uiState = viewModel.uiState.value
             val level by viewModel.selectedLevel.collectAsStateWithLifecycle()
             val language by viewModel.selectedLanguage.collectAsStateWithLifecycle()
@@ -45,10 +48,12 @@ fun MeditationNavigation(navController: NavHostController, viewModel: Meditation
                 onClickMusic = { navController.navigate(route = MeditationScreen.Music.route) },
                 onClickLanguage = { navController.navigate(route = MeditationScreen.Language.route) },
                 onClickLevel = { navController.navigate(route = MeditationScreen.Level.route) },
-                onClickInstructor = { navController.navigate(route = MeditationScreen.Instructor.route) }
+                onClickInstructor = { navController.navigate(route = MeditationScreen.Instructor.route) },
+                onBack = onBack
             )
         }
         composable(MeditationScreen.Music.route) {
+            val viewModel:MeditationViewModel= hiltViewModel()
             val state by viewModel.state.collectAsStateWithLifecycle()
             val musicState by viewModel.musicState.collectAsStateWithLifecycle()
             val currentPosition by viewModel.currentPosition.collectAsStateWithLifecycle()
@@ -62,16 +67,19 @@ fun MeditationNavigation(navController: NavHostController, viewModel: Meditation
             )
         }
         composable(MeditationScreen.Level.route) {
+            val viewModel:MeditationViewModel= hiltViewModel()
             LevelScreen(
                 onClick = { viewModel.event(MEvent.SetLevel(it)) },
                 onBack = { navController.popBackStack() })
         }
         composable(MeditationScreen.Instructor.route) {
+            val viewModel:MeditationViewModel= hiltViewModel()
             InstructorScreen(
                 onClick = { viewModel.event(MEvent.SetInstructor(it)) },
                 onBack = { navController.popBackStack() })
         }
         composable(MeditationScreen.AudioMeditation.route) {
+            val viewModel:MeditationViewModel= hiltViewModel()
             val musicState by viewModel.musicState.collectAsStateWithLifecycle()
             val currentPosition by viewModel.currentPosition.collectAsStateWithLifecycle()
             AudioMeditationScreen(
@@ -82,6 +90,7 @@ fun MeditationNavigation(navController: NavHostController, viewModel: Meditation
             )
         }
         composable(MeditationScreen.Language.route) {
+            val viewModel:MeditationViewModel= hiltViewModel()
             LanguageScreen(
                 onClick = { viewModel.event(MEvent.SetLanguage(it)) },
                 onBack = { navController.popBackStack() })

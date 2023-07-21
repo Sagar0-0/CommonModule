@@ -29,7 +29,18 @@ import fit.asta.health.main.MainViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun NavGraphBuilder.MainActivityComp(navController: NavHostController) {
+fun NavGraphBuilder.MainActivityComp(
+    navController: NavHostController,
+    onBreathing: () -> Unit,
+    onWater: () -> Unit,
+    onMeditation: () -> Unit,
+    onSunlight: () -> Unit,
+    onSleep: () -> Unit,
+    onDance: () -> Unit,
+    onYoga: () -> Unit,
+    onWorkout: () -> Unit,
+    onHiit: () -> Unit,
+) {
     composable(Graph.Home.route) {
 
         val context = LocalContext.current
@@ -131,30 +142,40 @@ fun NavGraphBuilder.MainActivityComp(navController: NavHostController) {
         MainActivityLayout(
             locationName = locationName,
             profileImageUri = authViewModel.getUser()?.photoUrl,
-            isNotificationEnabled = notificationEnabled
-        ) { key ->
-            when (key) {
-                MainTopBarActions.LOCATION -> {
-                    checkPermissionAndLaunchMapsActivity()
-                }
+            isNotificationEnabled = notificationEnabled,
+            onBreathing = onBreathing,
+            onWater=onWater,
+            onMeditation=onMeditation,
+            onDance=onDance,
+            onHiit = onHiit,
+            onSleep = onSleep,
+            onSunlight = onSunlight,
+            onWorkout = onWorkout,
+            onYoga = onYoga,
+            onClick = { key ->
+                when (key) {
+                    MainTopBarActions.LOCATION -> {
+                        checkPermissionAndLaunchMapsActivity()
+                    }
 
-                MainTopBarActions.NOTIFICATION -> {
-                    mainViewModel.setNotificationStatus(!notificationEnabled)
-                }
+                    MainTopBarActions.NOTIFICATION -> {
+                        mainViewModel.setNotificationStatus(!notificationEnabled)
+                    }
 
-                MainTopBarActions.SETTINGS -> {
-                    navController.navigate(Graph.Settings.route)
-                }
+                    MainTopBarActions.SETTINGS -> {
+                        navController.navigate(Graph.Settings.route)
+                    }
 
-                MainTopBarActions.PROFILE -> {
+                    MainTopBarActions.PROFILE -> {
 //                    UserProfileActivity.launch(context)
-                }
+                    }
 
-                MainTopBarActions.SHARE -> {
-                    context.shareApp()
+                    MainTopBarActions.SHARE -> {
+                        context.shareApp()
+                    }
                 }
             }
-        }
+        )
     }
 
 }

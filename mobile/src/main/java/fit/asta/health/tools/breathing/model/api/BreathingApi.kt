@@ -2,6 +2,7 @@ package fit.asta.health.tools.breathing.model.api
 
 import fit.asta.health.network.data.ServerRes
 import fit.asta.health.tools.breathing.model.network.AllExerciseData
+import fit.asta.health.tools.breathing.model.network.CustomRatioData
 import fit.asta.health.tools.breathing.model.network.NetGetRes
 import fit.asta.health.tools.breathing.model.network.NetGetStart
 import fit.asta.health.tools.breathing.model.network.request.CustomRatioPost
@@ -14,7 +15,7 @@ interface BreathingApi {
     suspend fun getStart(userId: String): NetGetStart
     suspend fun putBreathingData(netPut: NetPut): ServerRes
     suspend fun postBreathingData(netPost: NetPost): ServerRes
-    suspend fun postRatioData(customRatioPost: CustomRatioPost): ServerRes
+    suspend fun postRatioData(customRatioData: CustomRatioData): ServerRes
     suspend fun deleteRatioData(ratioId: String): ServerRes
     suspend fun postAdminData(customRatioPost: CustomRatioPost): ServerRes
     suspend fun deleteAdminData(exerciseId: String): ServerRes

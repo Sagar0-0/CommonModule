@@ -24,11 +24,13 @@ fun TestimonialsNavigation(
 
         composable(route = TestimonialsRoute.Home.route) {
 
-            TestimonialsLayout(onNavigateUp = {
-                navController.navigate(route = TestimonialsRoute.Create.route)
-            }, onNavigateBack = {
-                navController.popBackStack()
-            })
+            TestimonialsLayout(
+                player = getViewModel.player(),
+                onNavigateUp = {
+                    navController.navigate(route = TestimonialsRoute.Create.route)
+                }, onNavigateBack = {
+                    navController.popBackStack()
+                })
         }
 
         composable(route = TestimonialsRoute.Create.route) {

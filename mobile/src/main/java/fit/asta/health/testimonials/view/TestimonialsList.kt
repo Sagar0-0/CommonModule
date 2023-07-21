@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.media3.common.Player
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
@@ -45,6 +46,7 @@ import fit.asta.health.testimonials.viewmodel.list.TestimonialListViewModel
 fun TestimonialsList(
     paddingValues: PaddingValues,
     viewModel: TestimonialListViewModel,
+    player: Player,
 ) {
     val testimonials = viewModel.testimonialPager.collectAsLazyPagingItems()
     testimonials.refresh()
@@ -62,7 +64,7 @@ fun TestimonialsList(
                 when (TestimonialType.from(it.type)) {
                     TestimonialType.TEXT -> TestimonialTextCard(it)
                     TestimonialType.IMAGE -> TestimonialImageCard(it)
-                    TestimonialType.VIDEO -> TestimonialsVideoCard(it)
+                    TestimonialType.VIDEO -> TestimonialsVideoCard(it, player = player)
                 }
             }
         }

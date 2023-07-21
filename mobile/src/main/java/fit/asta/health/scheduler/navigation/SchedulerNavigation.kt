@@ -23,7 +23,6 @@ fun SchedulerNavigation(navController: NavHostController, schedulerViewModel: Sc
         navController = navController,
         startDestination = AlarmSchedulerScreen.AlarmHome.route
     ) {
-
         composable(route = AlarmSchedulerScreen.AlarmHome.route) {
             val homeUiState = schedulerViewModel.homeUiState.value
             val list by schedulerViewModel.alarmList.collectAsStateWithLifecycle()

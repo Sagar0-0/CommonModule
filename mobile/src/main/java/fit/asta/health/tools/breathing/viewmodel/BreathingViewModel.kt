@@ -23,6 +23,7 @@ import fit.asta.health.tools.breathing.model.domain.mapper.getBreathingTool
 import fit.asta.health.tools.breathing.model.domain.mapper.getMusicTool
 import fit.asta.health.tools.breathing.model.domain.mapper.toPutData
 import fit.asta.health.tools.breathing.model.domain.model.BreathingTool
+import fit.asta.health.tools.breathing.model.network.CustomRatioData
 import fit.asta.health.tools.breathing.model.network.request.CustomRatioPost
 import fit.asta.health.tools.breathing.model.network.request.NetPost
 import fit.asta.health.tools.breathing.view.home.UiEvent
@@ -281,30 +282,23 @@ class BreathingViewModel @Inject constructor(
         }
     }
 
-    fun updateRatio() {
-        viewModelScope.launch {
-            val result = breathingRepo.postRatioData(
-                CustomRatioPost(
-                    id = "",
-                    inhale = 1,
-                    inhaleH = 1,
-                    out = 1,
-                    outH = 1,
-                    type = 1,
-                    uid = "6309a9379af54f142c65fbfe",
-                    name = "Nadi Shodhana"
-                )
-            )
-            when (result) {
-                is NetworkResult.Loading -> {}
-                is NetworkResult.Success -> {
-
-                }
-
-                is NetworkResult.Error -> {}
-            }
-        }
-    }
+//    fun updateRatio() {
+//        viewModelScope.launch {
+//            val result = breathingRepo.postRatioData(
+//             CustomRatioData(
+//
+//             )
+//            )
+//            when (result) {
+//                is NetworkResult.Loading -> {}
+//                is NetworkResult.Success -> {
+//
+//                }
+//
+//                is NetworkResult.Error -> {}
+//            }
+//        }
+//    }
 
     fun deleteRatio(ratioId: String) {
         viewModelScope.launch {
