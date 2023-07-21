@@ -1,6 +1,8 @@
 package fit.asta.health.testimonials.view.create
 
 import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -31,13 +33,22 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 fun ImageLayout(
     modifier: Modifier = Modifier,
     getViewModel: TestimonialViewModel,
-    onNavigateBeforeImgCropper: () -> Unit = {},
-    onNavigateAfterImgCropper: () -> Unit = {},
+    //onNavigateBeforeImgCropper: () -> Unit = {},
+    //onNavigateAfterImgCropper: () -> Unit = {},
 ) {
 
 
     val imgBefore by getViewModel.imgBefore.collectAsStateWithLifecycle()
     val imgAfter by getViewModel.imgAfter.collectAsStateWithLifecycle()
+
+    val beforeLauncher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
+            getViewModel.onEvent(TestimonialEvent.OnMediaSelect(MediaType.BeforeImage, uri))
+        }
+    val afterLauncher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
+            getViewModel.onEvent(TestimonialEvent.OnMediaSelect(MediaType.AfterImage, uri))
+        }
 
 
     Column(modifier = modifier) {
@@ -57,13 +68,16 @@ fun ImageLayout(
                     if (imgBefore.url.isEmpty() && imgBefore.localUrl == null) {
 
                         UploadTstMediaView(title = imgBefore.title,
-                            onUploadClick = { onNavigateBeforeImgCropper() })
+                            onUploadClick = { beforeLauncher.launch("image/*") })
+
+//                        UploadTstMediaView(title = imgBefore.title,
+//                            onUploadClick = { onNavigateBeforeImgCropper() })
 
                     } else {
-//
+
                         SelectedImageView(title = imgBefore.title,
                             url = getOneUrl(imgBefore.localUrl, imgBefore.url),
-                            onImageClick = { onNavigateBeforeImgCropper() },
+                            onImageClick = { beforeLauncher.launch("image/*") },
                             onImageClear = {
                                 getViewModel.onEvent(
                                     TestimonialEvent.OnMediaClear(
@@ -71,27 +85,54 @@ fun ImageLayout(
                                     )
                                 )
                             })
+
+//                        SelectedImageView(title = imgBefore.title,
+//                            url = getOneUrl(imgBefore.localUrl, imgBefore.url),
+//                            onImageClick = { onNavigateBeforeImgCropper() },
+//                            onImageClear = {
+//                                getViewModel.onEvent(
+//                                    TestimonialEvent.OnMediaClear(
+//                                        MediaType.BeforeImage
+//                                    )
+//                                )
+//                            })
                     }
                 }
 
                 Box(modifier = Modifier.fillMaxWidth(1f)) {
                     if (imgAfter.url.isEmpty() && imgAfter.localUrl == null) {
-                        UploadTstMediaView(
-                            title = imgAfter.title,
-                            onUploadClick = { onNavigateAfterImgCropper() })
+
+                        UploadTstMediaView(title = imgAfter.title,
+                            onUploadClick = { afterLauncher.launch("image/*") })
+
+//                        UploadTstMediaView(
+//                            title = imgAfter.title,
+//                            onUploadClick = { onNavigateAfterImgCropper() })
+
                     } else {
 
                         SelectedImageView(title = imgAfter.title,
                             url = getOneUrl(imgAfter.localUrl, imgAfter.url),
-                            onImageClick = { onNavigateAfterImgCropper() },
+                            onImageClick = { afterLauncher.launch("image/*") },
                             onImageClear = {
                                 getViewModel.onEvent(
                                     TestimonialEvent.OnMediaClear(
                                         MediaType.AfterImage
                                     )
                                 )
-
                             })
+
+//                        SelectedImageView(title = imgAfter.title,
+//                            url = getOneUrl(imgAfter.localUrl, imgAfter.url),
+//                            onImageClick = { onNavigateAfterImgCropper() },
+//                            onImageClear = {
+//                                getViewModel.onEvent(
+//                                    TestimonialEvent.OnMediaClear(
+//                                        MediaType.AfterImage
+//                                    )
+//                                )
+//                            })
+
                     }
                 }
             }

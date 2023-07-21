@@ -1,6 +1,7 @@
 package fit.asta.health.imageCropperV2.demo
 
 import android.content.ContentResolver
+import android.content.ContentUris
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
@@ -68,11 +69,9 @@ fun ImageCropperScreen(
     var imageBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
     var croppedImage by remember { mutableStateOf<ImageBitmap?>(null) }
 
-
     var crop by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
     var isCropping by remember { mutableStateOf(false) }
-
 
     Scaffold(
         topBar = {
@@ -169,9 +168,14 @@ fun ImageCropperScreen(
                         onConfirmSelection(
                             contentUri
                         )
-                        Log.d(
-                            "TAG", "Uri -> $contentUri"
-                        )
+
+                        Log.d("MediaUri", "Uri -> $contentUri,URI ID -> ${
+                            contentUri?.let { it1 ->
+                                ContentUris.parseId(
+                                    it1
+                                )
+                            }
+                        }")
                     }
 
                     )
@@ -179,13 +183,11 @@ fun ImageCropperScreen(
                 }
             }
 
-
         },
         modifier = Modifier.fillMaxSize(),
         contentColor = MaterialTheme.colorScheme.background,
         backgroundColor = MaterialTheme.colorScheme.background,
     )
-
 
 }
 
