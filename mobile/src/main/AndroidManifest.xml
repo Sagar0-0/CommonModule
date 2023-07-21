@@ -59,7 +59,6 @@
         <activity android:name=".tools.breathing.BreathingActivity" />
         <activity android:name=".profile.UserProfileActivity" />
         <activity android:name=".profile.CreateUserProfileActivity" />
-        <activity android:name=".settings.SettingsActivity" />
         <activity android:name=".settings.WebViewActivity" />
         <activity android:name=".auth.AuthActivity" />
         <activity android:name=".feedback.FeedbackActivity" />
@@ -156,7 +155,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".main.ui.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>

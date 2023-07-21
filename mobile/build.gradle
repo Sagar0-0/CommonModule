@@ -96,8 +96,6 @@ android {
 
     // Enables data binding.
     buildFeatures {
-        dataBinding = true
-        viewBinding = true
         compose = true
     }
 

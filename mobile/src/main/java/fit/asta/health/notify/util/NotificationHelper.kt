@@ -21,7 +21,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import fit.asta.health.MainActivity
+import fit.asta.health.main.ui.MainActivity
 import fit.asta.health.R
 import fit.asta.health.notify.receiver.SnoozeReceiver
 import fit.asta.health.common.utils.getUriFromResourceId
@@ -318,7 +318,7 @@ fun Context.sendNotification(
     val intSnoozePending = PendingIntent.getBroadcast(
         this,
         REQUEST_CODE, intSnooze,
-        FLAGS
+        PendingIntent.FLAG_UPDATE_CURRENT
     )
 
     val strSnooze = this.getString(R.string.title_snooze)

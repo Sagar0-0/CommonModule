@@ -60,7 +60,7 @@ fun feedbackTextFieldItem(qn: Qn): MutableState<An> {
                     Spacer(modifier = Modifier.height(spacing.medium))
                 }
 
-                3, 5 -> {
+                3,5 -> {
                     opts.value = qn.opts?.let { listOf(mcqCard(it).value) }
                     Spacer(modifier = Modifier.height(spacing.medium))
                 }

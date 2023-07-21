@@ -6,7 +6,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.auth.model.AuthRepo
 import fit.asta.health.common.location.LocationHelper
 import fit.asta.health.common.location.maps.api.RemoteApi
 import fit.asta.health.common.location.maps.api.SearchApi
@@ -14,6 +13,7 @@ import fit.asta.health.common.location.maps.repo.MapsRepo
 import fit.asta.health.common.location.maps.repo.MapsRepoImpl
 import fit.asta.health.common.location.maps.utils.REMOTE_API_BASE_URL
 import fit.asta.health.common.location.maps.utils.SEARCH_API_BASE_URL
+import fit.asta.health.auth.model.AuthRepo
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named

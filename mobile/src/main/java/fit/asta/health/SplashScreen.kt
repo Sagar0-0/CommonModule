@@ -23,6 +23,7 @@ import fit.asta.health.auth.viewmodel.AuthViewModel
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.common.utils.NetworkConnectivity
 import fit.asta.health.common.utils.PrefUtils
+import fit.asta.health.main.ui.MainActivity
 import fit.asta.health.onboarding.OnBoardingScreenActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 

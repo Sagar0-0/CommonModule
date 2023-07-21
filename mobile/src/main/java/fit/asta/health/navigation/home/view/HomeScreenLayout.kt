@@ -1,6 +1,5 @@
 package fit.asta.health.navigation.home.view
 
-import android.app.Activity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -30,7 +29,7 @@ import java.util.*
 @ExperimentalCoroutinesApi
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome, userId: String) {
+fun HomeScreenLayout(toolsHome: ToolsHomeRes.ToolsHome, userId: String) {
 
     val context = LocalContext.current
 
@@ -126,7 +125,7 @@ fun HomeScreenLayout(activity: Activity, toolsHome: ToolsHomeRes.ToolsHome, user
         }
 
         item(span = { GridItemSpan(columns) }) {
-            RateUsCard(activity)
+            RateUsCard()
         }
 
         item {

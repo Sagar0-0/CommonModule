@@ -1,6 +1,7 @@
 package fit.asta.health.feedback.view
 
 import android.app.Activity
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -16,7 +17,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -32,6 +35,7 @@ import fit.asta.health.feedback.view.components.SubmitButton
 import fit.asta.health.feedback.view.components.WelcomeCard
 import fit.asta.health.feedback.view.components.feedbackTextFieldItem
 import fit.asta.health.feedback.viewmodel.FeedbackQuesState
+import kotlin.math.log
 
 @Composable
 fun SessionFeedback(
@@ -70,7 +74,7 @@ fun SessionFeedback(
                 val qns = feedbackQuesState.feedback.data.qns
                 val ansList = remember {
                     mutableStateOf(
-                        qns.map { An(null, false, null, null, 0, 0) } as MutableList<An>
+                        qns.map { An(null,false,null,null,0,0) } as MutableList<An>
                     )
                 }
                 Column(

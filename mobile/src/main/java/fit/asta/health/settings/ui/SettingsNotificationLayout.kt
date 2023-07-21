@@ -19,22 +19,24 @@ import androidx.compose.ui.res.stringResource
 import fit.asta.health.R
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.settings.data.SettingsNotificationsStatus
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsNotificationLayout(
+    settingsNotificationsStatus: SettingsNotificationsStatus,
     onBackPress: () -> Unit,
     onSwitchToggle: (key: String) -> Unit = {}
 ) {
-    var isAllNotificationOn by remember { mutableStateOf(true) }
-    var isReminderAlarmOn by remember { mutableStateOf(true) }
-    var isActivityTipsOn by remember { mutableStateOf(true) }
-    var isGoalProgressTipsOn by remember { mutableStateOf(true) }
-    var isGoalAdjustmentOn by remember { mutableStateOf(true) }
-    var isGoalsCompletedOn by remember { mutableStateOf(true) }
-    var isNewReleaseOn by remember { mutableStateOf(true) }
-    var isHealthTipsOn by remember { mutableStateOf(true) }
-    var isPromotionsOn by remember { mutableStateOf(true) }
+    var isAllNotificationOn = settingsNotificationsStatus.isAllNotificationOn
+    var isReminderAlarmOn = settingsNotificationsStatus.isReminderAlarmOn
+    var isActivityTipsOn = settingsNotificationsStatus.isActivityTipsOn
+    var isGoalProgressTipsOn = settingsNotificationsStatus.isGoalProgressTipsOn
+    var isGoalAdjustmentOn = settingsNotificationsStatus.isGoalAdjustmentOn
+    var isGoalsCompletedOn = settingsNotificationsStatus.isGoalsCompletedOn
+    var isNewReleaseOn = settingsNotificationsStatus.isNewReleaseOn
+    var isHealthTipsOn = settingsNotificationsStatus.isHealthTipsOn
+    var isPromotionsOn = settingsNotificationsStatus.isPromotionsOn
 
     val context = LocalContext.current
     Column {

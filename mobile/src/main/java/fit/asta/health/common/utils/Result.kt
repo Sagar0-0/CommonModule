@@ -16,10 +16,6 @@
 
 package fit.asta.health.common.utils
 
-import android.util.Log
-import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
-import retrofit2.Response
-
 
 /**
  *  A class which encapsulates a successful outcome with a value of type [T] or a failure with [ChatError].
@@ -315,57 +311,3 @@ fun <T : Any> T.toResult(): Result<T> = Result.success(this)
  * @return A [Result] of type [T] that contains an they same error as payload.
  */
 fun <T : Any> ChatError.toResultError(): Result<T> = Result.error(this)
-private fun <T : Any> handleResponse(response: Response<T>): NetworkResult<T> {
-    Log.d(SpotifyConstants.TAG, "handleResponse: ${response.body()} ")
-    when {
-        response.message().toString().contains("timeout") -> {
-            return NetworkResult.Error(
-                data = response.body(),
-                message = "Timeout!!\n $response"
-            )
-        }
-
-        response.code() == 401 -> {
-            return NetworkResult.Error(
-                data = response.body(),
-                message = "Bad or expired token. This can happen if the user revoked a token or the access token has expired. You should re-authenticate the user.\n $response"
-            )
-        }
-
-        response.code() == 403 -> {
-            return NetworkResult.Error(
-                data = response.body(),
-                message = "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating the user won't help here.\n $response"
-            )
-        }
-
-        response.code() == 429 -> {
-            return NetworkResult.Error(
-                data = response.body(),
-                message = "The app has exceeded its rate limits. $response"
-            )
-        }
-
-        response.body() == null -> {
-            return NetworkResult.Error(
-                data = response.body(),
-                message = "Empty Body. $response"
-            )
-        }
-
-        response.isSuccessful -> {
-            val result = response.body()
-            return NetworkResult.Success(result!!)
-        }
-
-        response.code() == 200 -> {
-            val result = response.body()
-            return NetworkResult.Success(result!!)
-        }
-
-        else -> return NetworkResult.Error(
-            message = response.body().toString(),
-            data = response.body()
-        )
-    }
-}

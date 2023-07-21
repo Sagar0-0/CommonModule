@@ -1,12 +1,73 @@
 package fit.asta.health.common.utils
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import fit.asta.health.R
 import java.util.Calendar
 import java.util.Locale
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class PrefUtils {
+@Singleton
+class PrefUtils
+@Inject constructor(
+    private val sharedPreferences: SharedPreferences,
+    private val resourcesProvider: ResourcesProvider
+) {
+
+    fun getPromotionsNotification(): Boolean {
+        return sharedPreferences.getBoolean(
+            resourcesProvider.getString(R.string.user_pref_promotions_key),
+            true
+        )
+    }
+
+    fun getHealthTipsNotification(): Boolean {
+        return sharedPreferences.getBoolean(
+            resourcesProvider.getString(R.string.user_pref_health_tips_key),
+            true
+        )
+    }
+
+    fun getMasterNotification(): Boolean {
+
+        return sharedPreferences.getBoolean(
+            resourcesProvider.getString(R.string.user_pref_master_notification_key),
+            true
+        )
+    }
+
+    fun setMasterNotification(status: Boolean) {
+
+        sharedPreferences.edit()
+            .putBoolean(
+                resourcesProvider.getString(R.string.user_pref_master_notification_key),
+                status
+            )
+            .apply()
+    }
+
+    fun getCurrentAddress(): String {
+        return sharedPreferences.getString(
+            resourcesProvider.getString(R.string.user_pref_current_address),
+            null
+        ) ?: "Select location"
+    }
+
+    fun setCurrentAddress(address: String) {
+        sharedPreferences.edit()
+            .putString(resourcesProvider.getString(R.string.user_pref_current_address), address)
+            .apply()
+    }
+
+    fun getNewReleaseNotification(): Boolean {
+
+        return sharedPreferences.getBoolean(
+            resourcesProvider.getString(R.string.user_pref_new_release_key),
+            true
+        )
+    }
 
     companion object {
 
@@ -38,65 +99,6 @@ class PrefUtils {
             preferences.edit()
                 .putBoolean(context.getString(R.string.user_pref_onboarding_shown), status)
                 .apply()
-        }
-
-        fun getCurrentAddress(context: Context): String {
-            val preference = PreferenceManager.getDefaultSharedPreferences(context)
-            return preference.getString(
-                context.getString(R.string.user_pref_current_address),
-                null
-            ) ?: "Select location"
-        }
-
-        fun setCurrentAddress(address: String, context: Context) {
-            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-            preferences.edit()
-                .putString(context.getString(R.string.user_pref_current_address), address)
-                .apply()
-        }
-
-        fun getMasterNotification(context: Context): Boolean {
-
-            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-            return preferences.getBoolean(
-                context.getString(R.string.user_pref_master_notification_key),
-                true
-            )
-        }
-
-        fun setMasterNotification(status: Boolean, context: Context) {
-
-            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-            preferences.edit()
-                .putBoolean(context.getString(R.string.user_pref_master_notification_key), status)
-                .apply()
-        }
-
-        fun getNewReleaseNotification(context: Context): Boolean {
-
-            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-            return preferences.getBoolean(
-                context.getString(R.string.user_pref_new_release_key),
-                true
-            )
-        }
-
-        fun getHealthTipsNotification(context: Context): Boolean {
-
-            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-            return preferences.getBoolean(
-                context.getString(R.string.user_pref_health_tips_key),
-                true
-            )
-        }
-
-        fun getPromotionsNotification(context: Context): Boolean {
-
-            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-            return preferences.getBoolean(
-                context.getString(R.string.user_pref_promotions_key),
-                true
-            )
         }
 
         fun getUnitHeight(context: Context): String {

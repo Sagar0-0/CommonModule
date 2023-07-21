@@ -22,7 +22,7 @@ import fit.asta.health.common.ui.theme.spacing
 
 @Preview
 @Composable
-fun Rating(): MutableState<Int> {
+fun Rating() : MutableState<Int> {
     val rating = remember { mutableIntStateOf(0) }
     Card(
         Modifier.fillMaxWidth(),
@@ -42,8 +42,7 @@ fun Rating(): MutableState<Int> {
                 onValueChange = { rating.value = it.toInt() },
                 onRatingChanged = {},
                 config = RatingBarConfig().size(40.dp).activeColor(Color(0xffFFC700))
-                    .inactiveColor(MaterialTheme.colorScheme.onBackground.copy(0.25f))
-                    .padding(spacing.small)
+                    .inactiveColor(MaterialTheme.colorScheme.onBackground.copy(0.25f)).padding(spacing.small)
             )
 
         }

@@ -1,6 +1,5 @@
 package fit.asta.health.navigation.home.view
 
-import android.app.Activity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -16,7 +15,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalCoroutinesApi
 @Composable
 fun HomeContent(
-    activity: Activity,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
 
@@ -27,7 +25,6 @@ fun HomeContent(
 
         is HomeState.Success -> {
             HomeScreenLayout(
-                activity = activity,
                 toolsHome = state.toolsHome,
                 userId = viewModel.userId
             )

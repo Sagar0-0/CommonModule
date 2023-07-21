@@ -5,7 +5,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
-import androidx.core.app.NotificationManagerCompat
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.BackoffPolicy
 import androidx.work.Configuration
@@ -15,9 +14,6 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import dagger.hilt.android.HiltAndroidApp
-import fit.asta.health.common.db.AppDb
-import fit.asta.health.common.utils.getUriFromResourceId
-import fit.asta.health.notify.util.createNotificationChannel
 import fit.asta.health.scheduler.services.SchedulerWorker
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -26,10 +22,10 @@ import javax.inject.Inject
 class HealthCareApp : /*MultiDexApplication*/ Application() {
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
+
     companion object {
         const val CHANNEL_ID = "ALARM_SERVICE_CHANNEL"
         var mContext: Context? = null
-        lateinit var appDb: AppDb
         lateinit var instance: HealthCareApp
             private set
     }
@@ -38,7 +34,6 @@ class HealthCareApp : /*MultiDexApplication*/ Application() {
         super.onCreate()
         mContext = this
         instance = this
-        setupDb()
         createNotificationChannel()
         createNotificationChannelForActivity()
         WorkManager.initialize(
@@ -47,20 +42,6 @@ class HealthCareApp : /*MultiDexApplication*/ Application() {
             ).build()
         )
         setupWorker(this)
-    }
-
-    private fun setupDb() {
-        appDb = AppDb.createDatabase(this.applicationContext)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.createNotificationChannel(
-                getString(R.string.title_reminder),
-                null,
-                NotificationManagerCompat.IMPORTANCE_HIGH,
-                getUriFromResourceId(R.raw.alarm),
-                showBadge = true,
-                isVibrate = true
-            )
-        }
     }
 
     private fun createNotificationChannel() {
@@ -76,18 +57,21 @@ class HealthCareApp : /*MultiDexApplication*/ Application() {
             manager.createNotificationChannel(serviceChannel)
         }
     }
-     private fun createNotificationChannelForActivity(){
-         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-             val channel = NotificationChannel(
-                 "location",
-                 "Location",
-                 NotificationManager.IMPORTANCE_HIGH
-             )
-             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-             notificationManager.createNotificationChannel(channel)
-         }
-     }
+
+    private fun createNotificationChannelForActivity() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                "location",
+                "Location",
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            val notificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
 }
+
 fun setupWorker(context: Context) {
     val constraint = Constraints.Builder()
         .setRequiredNetworkType(NetworkType.CONNECTED)

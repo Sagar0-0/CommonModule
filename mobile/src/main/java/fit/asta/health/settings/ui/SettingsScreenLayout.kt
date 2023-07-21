@@ -60,7 +60,7 @@ fun SettingsScreenLayout(
 //                    title = stringResource(id = R.string.user_pref_notification_cat_title),
 //                    icon = painterResource(id = R.drawable.ic_notifications)
 //                ) { onClickEvent(SettingsUiEvent.NOTIFICATION) }
-//            }TODO: Pending implementation
+//            }
 
             PreferenceCategory(title = stringResource(id = R.string.user_pref_support_us_cat_title)) {
                 PreferenceItem(

@@ -9,11 +9,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.MainActivity
 import fit.asta.health.auth.AuthActivity
 import fit.asta.health.auth.viewmodel.AuthViewModel
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.common.utils.PrefUtils
+import fit.asta.health.main.ui.MainActivity
 import fit.asta.health.onboarding.ui.OnBoardingPager
 import fit.asta.health.onboarding.vm.OnboardingViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi

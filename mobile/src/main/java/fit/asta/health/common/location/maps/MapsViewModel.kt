@@ -51,7 +51,8 @@ class MapsViewModel
     private val mapsRepo: MapsRepo,
     @Named("UId")
     val uId: String,
-    private val locationHelper: LocationHelper
+    private val locationHelper: LocationHelper,
+    private val prefUtils: PrefUtils
 ) : ViewModel() {
 
     private val TAG = "MAPS"
@@ -155,9 +156,8 @@ class MapsViewModel
                     1
                 ) { p0 ->
                     _currentAddress.value = p0[0]
-                    PrefUtils.setCurrentAddress(
-                        getLocationName(_currentAddress.value!!),
-                        context
+                    prefUtils.setCurrentAddress(
+                        getLocationName(_currentAddress.value!!)
                     )
                     Log.d(TAG, "getCurrentAddress: Success: ${_currentAddress.value}")
                 }
@@ -169,9 +169,8 @@ class MapsViewModel
                 )
                 if (!addresses.isNullOrEmpty()) {
                     _currentAddress.value = addresses[0]
-                    PrefUtils.setCurrentAddress(
-                        getLocationName(_currentAddress.value!!),
-                        context
+                    prefUtils.setCurrentAddress(
+                        getLocationName(_currentAddress.value!!)
                     )
                     Log.d(TAG, "getCurrentAddress: Success: ${_currentAddress.value}")
                 } else {

@@ -3,12 +3,14 @@ package fit.asta.health.feedback
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,9 +59,9 @@ class FeedbackActivity : AppCompatActivity() {
 
                     is FeedbackPostState.Success -> {
                         EndScreenPopup(
-                            title = "Thank you!",
-                            desc = "Your feedback has been submitted"
-                        ) {
+                            title= "Thank you!",
+                            desc =  "Your feedback has been submitted"
+                        ){
                             finish()
                         }
                     }
@@ -67,7 +69,7 @@ class FeedbackActivity : AppCompatActivity() {
                     is FeedbackPostState.Error -> {
                         Toast.makeText(
                             this,
-                            "ERROR MSG: " + (postResultState.value as FeedbackPostState.Error).error.message,
+                            "ERROR MSG: "+(postResultState.value as FeedbackPostState.Error).error.message,
                             Toast.LENGTH_SHORT
                         ).show()
                     }

@@ -45,12 +45,12 @@ import fit.asta.health.common.ui.theme.Gradient2NoInternet
 @Composable
 fun ErrorScreenLayout(
     modifier: Modifier = Modifier,
-    onTryAgain: () -> Unit = {},
     primaryIssue: String = "Whoops!!",
     desc: String = "Second Internet connection was found. Check your connection or try again.",
     btnTxt: String = "Try Again",
     imgID: Int = R.drawable.server_error,
     isInternetError: Boolean = true,
+    onTryAgain: () -> Unit = {},
 ) {
 
     val openFullDialogCustom = remember { mutableStateOf(true) }

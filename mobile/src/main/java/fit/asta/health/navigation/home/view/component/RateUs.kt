@@ -30,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -50,11 +51,12 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
     ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class
 )
 @Composable
-fun RateUsCard(activity: Activity, viewModel: RateUsViewModel = hiltViewModel()) {
+fun RateUsCard(viewModel: RateUsViewModel = hiltViewModel()) {
 
+    val context = LocalContext.current
     LaunchedEffect(key1 = viewModel.state.reviewInfo) {
         viewModel.state.reviewInfo?.let {
-            viewModel.reviewManager.launchReviewFlow(activity, it)
+            viewModel.reviewManager.launchReviewFlow((context as Activity), it)
         }
     }
 

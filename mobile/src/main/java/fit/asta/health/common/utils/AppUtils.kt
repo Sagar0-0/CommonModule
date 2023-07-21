@@ -214,7 +214,7 @@ sealed class AppThemeType(val value: String) {
     object Battery : AppThemeType("battery")
 }
 
-fun setAppTheme(newValue: String = AppThemeType.System.value, context: Context) {
+fun setAppTheme(newValue: String, context: Context) {
     PrefUtils.setTheme(newValue, context)
     when (PrefUtils.getTheme(context)) {
         AppThemeType.Dark.value -> {
@@ -312,7 +312,6 @@ fun getFirebaseStorageBucketUrl(context: Context): String {
 }
 
 fun getFileName(context: Context, uri: Uri) = DocumentFile.fromSingleUri(context, uri)?.name ?: ""
-
 
 fun getPublicStorageUrl(context: Context, url: String): String {
 
