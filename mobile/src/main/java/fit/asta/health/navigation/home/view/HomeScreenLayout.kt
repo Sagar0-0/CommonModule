@@ -11,9 +11,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.main.Graph
 import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
 import fit.asta.health.navigation.home.view.component.*
-import fit.asta.health.testimonials.TestimonialsActivity
 import fit.asta.health.tools.sleep.SleepToolActivity
 import fit.asta.health.tools.walking.view.WalkingActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,15 +26,7 @@ import java.util.*
 @Composable
 fun HomeScreenLayout(
     toolsHome: ToolsHomeRes.ToolsHome, userId: String,
-    onBreathing: () -> Unit,
-    onWater: () -> Unit,
-    onMeditation: () -> Unit,
-    onSunlight: () -> Unit,
-    onSleep: () -> Unit,
-    onDance: () -> Unit,
-    onYoga: () -> Unit,
-    onWorkout: () -> Unit,
-    onHiit: () -> Unit,
+    onNav:(Graph)->Unit
 ) {
 
     val context = LocalContext.current
@@ -65,22 +57,22 @@ fun HomeScreenLayout(
                 imgUrl = tool.url,
                 onClick = { type ->
                     when (type.lowercase(Locale.getDefault())) {
-                        "water" -> { onWater() }
+                        "water" -> { onNav(Graph.WaterTool) }
                         "steps" -> { WalkingActivity.launch(context = context) }
-                        "workout" -> { onWorkout() }
-                        "yoga" -> { onYoga() }
-                        "hiit" -> { onHiit() }
-                        "dance" -> { onDance() }
-                        "meditation" -> { onMeditation() }
+                        "workout" -> { onNav(Graph.Workout) }
+                        "yoga" -> {onNav(Graph.Yoga) }
+                        "hiit" -> { onNav(Graph.Hiit) }
+                        "dance" -> { onNav(Graph.Dance) }
+                        "meditation" -> { onNav(Graph.MeditationTool) }
                         "sleep" -> {
-                            onSleep()
+                            onNav(Graph.SleepTool)
                             SleepToolActivity.launch(
                                 context = context,
                                 userId = userId
                             )
                         }
-                        "breathing" -> { onBreathing() }
-                        "sunlight" -> { onSunlight() }
+                        "breathing" -> { onNav(Graph.BreathingTool) }
+                        "sunlight" -> { onNav(Graph.SunlightTool) }
                     }
                 })
         }
@@ -91,7 +83,7 @@ fun HomeScreenLayout(
 
         item(span = { GridItemSpan(columns) }) {
             MyToolsAndViewAll(myTools = "Testimonials", allTools = "View All", onClick = {
-                TestimonialsActivity.launch(context = context)
+                onNav(Graph.Testimonials)
             })
         }
 

@@ -14,28 +14,26 @@ import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@Composable
-fun TestimonialsNavigation(
-    navController: NavHostController,
-    getViewModel: TestimonialViewModel = hiltViewModel(),
+fun NavGraphBuilder.testimonialsNavigation(
+    navController: NavHostController
 ) {
-
-
-    NavHost(navController, startDestination = TestimonialsRoute.Home.route) {
-
+    navigation(
+        route = Graph.Testimonials.route,
+        startDestination =  TestimonialsRoute.Home.route
+    ) {
         composable(route = TestimonialsRoute.Home.route) {
-
+            val getViewModel:TestimonialViewModel= hiltViewModel()
             TestimonialsLayout(
                 player = getViewModel.player(),
                 onNavigateUp = {
-                navController.navigate(route = TestimonialsRoute.Create.route)
-            }, onNavigateBack = {
-                navController.popBackStack()
-            })
+                    navController.navigate(route = TestimonialsRoute.Create.route)
+                }, onNavigateBack = {
+                    navController.popBackStack()
+                })
         }
 
         composable(route = TestimonialsRoute.Create.route) {
-
+            val getViewModel:TestimonialViewModel= hiltViewModel()
             LoadTestimonialForm(
                 onNavigateTstCreate = { navController.popBackStack() },
                 onNavigateTstHome = {
@@ -45,47 +43,42 @@ fun TestimonialsNavigation(
 //                    navController.navigate(route = TestimonialsRoute.BeforeImgCropper.route)
 //                },
                 getViewModel = getViewModel,
-//                onNavigateAfterImgCropper = { navController.navigate(route = TestimonialsRoute.AfterImgCropper.route) }
+                //onNavigateAfterImgCropper = { navController.navigate(route = TestimonialsRoute.AfterImgCropper.route) })
             )
-
         }
 
+        /*
+        composable(route = TestimonialsRoute.BeforeImgCropper.route) {
+            val getViewModel:TestimonialViewModel= hiltViewModel()
+            ImageCropperScreen(onCloseImgCropper = { navController.popBackStack() },
 
-//        composable(route = TestimonialsRoute.BeforeImgCropper.route) {
-//
-//            ImageCropperScreen(onCloseImgCropper = { navController.popBackStack() },
-//
-//                onConfirmSelection = { imageBitmap ->
-//
-//                    getViewModel.onEvent(
-//                        TestimonialEvent.OnMediaSelect(
-//                            mediaType = MediaType.BeforeImage, url = imageBitmap
-//                        )
-//                    )
-//
-//                    navController.popBackStack()
-//                })
-//
-//        }
-//
-//
-//        composable(route = TestimonialsRoute.AfterImgCropper.route) {
-//
-//            ImageCropperScreen(onCloseImgCropper = { navController.popBackStack() },
-//
-//                onConfirmSelection = { imageBitmap ->
-//
-//                    getViewModel.onEvent(
-//                        TestimonialEvent.OnMediaSelect(
-//                            mediaType = MediaType.AfterImage, url = imageBitmap
-//                        )
-//                    )
-//
-//                    navController.popBackStack()
-//                })
-//
-//        }
+                onConfirmSelection = { imageBitmap ->
 
+                    getViewModel.onEvent(
+                        TestimonialEvent.OnMediaSelect(
+                            mediaType = MediaType.BeforeImage, url = imageBitmap
+                        )
+                    )
 
+                    navController.popBackStack()
+                })
+        }
+
+        composable(route = TestimonialsRoute.AfterImgCropper.route) {
+            val getViewModel:TestimonialViewModel= hiltViewModel()
+            ImageCropperScreen(onCloseImgCropper = { navController.popBackStack() },
+
+                onConfirmSelection = { imageBitmap ->
+
+                    getViewModel.onEvent(
+                        TestimonialEvent.OnMediaSelect(
+                            mediaType = MediaType.AfterImage, url = imageBitmap
+                        )
+                    )
+
+                    navController.popBackStack()
+                })
+        }
+        */
     }
 }
