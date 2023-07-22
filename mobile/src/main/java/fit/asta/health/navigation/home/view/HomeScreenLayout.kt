@@ -1,10 +1,12 @@
 package fit.asta.health.navigation.home.view
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -37,7 +39,7 @@ fun HomeScreenLayout(
         columns = GridCells.Fixed(columns),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier
+        modifier = Modifier.background(MaterialTheme.colorScheme.background)
             .fillMaxSize()
             .padding(16.dp)
     ) {
