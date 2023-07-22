@@ -9,6 +9,13 @@ sealed class Graph(val route: String) {
     object MeditationTool : Graph("graph_meditation_tool")
     object WalkingTool : Graph("graph_walking_tool")
     object ExerciseTool : Graph("graph_exercise_tool")
+    object Yoga : Graph("yoga")
+    object Workout : Graph("workout")
+    object Hiit : Graph("Hiit")
+    object Dance : Graph("dance")
     object WaterTool : Graph("graph_water_tool")
     object SunlightTool : Graph("graph_sunlight_tool")
+    object Profile : Graph("graph_profile_tool")
+    object CreateProfile : Graph("graph_create_profile_tool")
+    object Testimonials : Graph("graph_testimonials_tool")
 }

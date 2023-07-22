@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import fit.asta.health.main.Graph
 import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.navigation.home.viewmodel.HomeState
@@ -16,15 +17,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun HomeContent(
     viewModel: HomeViewModel = hiltViewModel(),
-    onBreathing :()->Unit,
-    onWater: () -> Unit,
-    onMeditation: () -> Unit,
-    onSunlight: () -> Unit,
-    onSleep: () -> Unit,
-    onDance: () -> Unit,
-    onYoga: () -> Unit,
-    onWorkout: () -> Unit,
-    onHiit: () -> Unit,
+    onNav: (Graph) -> Unit,
 ) {
 
     when (val state = viewModel.state.collectAsState().value) {
@@ -36,15 +29,7 @@ fun HomeContent(
             HomeScreenLayout(
                 toolsHome = state.toolsHome,
                 userId = viewModel.userId,
-                onBreathing=onBreathing,
-                onWater=onWater,
-                onMeditation=onMeditation,
-                onDance=onDance,
-                onHiit = onHiit,
-                onSleep = onSleep,
-                onSunlight = onSunlight,
-                onWorkout = onWorkout,
-                onYoga = onYoga
+                onNav=onNav
             )
         }
 

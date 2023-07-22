@@ -42,15 +42,7 @@ fun MainActivityLayout(
     profileImageUri: Uri?,
     isNotificationEnabled: Boolean,
     onClick: (key: MainTopBarActions) -> Unit,
-    onBreathing: () -> Unit,
-    onWater: () -> Unit,
-    onMeditation: () -> Unit,
-    onSunlight: () -> Unit,
-    onSleep: () -> Unit,
-    onDance: () -> Unit,
-    onYoga: () -> Unit,
-    onWorkout: () -> Unit,
-    onHiit: () -> Unit,
+    onNav: (Graph) -> Unit,
 ) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -161,14 +153,7 @@ fun MainActivityLayout(
         ) {
             composable(BottomBarScreens.Home.route) {
                 HomeContent(
-                    onBreathing = onBreathing, onWater = onWater,
-                    onMeditation = onMeditation,
-                    onDance = onDance,
-                    onHiit = onHiit,
-                    onSleep = onSleep,
-                    onSunlight = onSunlight,
-                    onWorkout = onWorkout,
-                    onYoga = onYoga
+                    onNav = onNav
                 )
             }
 
