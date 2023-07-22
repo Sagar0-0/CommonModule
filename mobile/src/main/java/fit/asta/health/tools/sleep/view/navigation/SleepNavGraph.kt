@@ -88,10 +88,16 @@ fun SleepNavGraph(
             composable(
                 SleepToolNavRoutes.SleepGoalsRoute.routes,
                 content = {
+
+                    val goalsOptionList by sleepToolViewModel.goalsOptionList.collectAsStateWithLifecycle()
+
                     SleepGoalsScreen(
                         navController = navController,
-                        sleepToolViewModel = sleepToolViewModel
-                    )
+                        optionList = goalsOptionList,
+                        currentSelectedOption = sleepToolViewModel.currentSelectedGoal
+                    ) {
+
+                    }
                 }
             )
         }

@@ -288,4 +288,18 @@ class SleepToolViewModel @Inject constructor(
     private val _selectedSleepDisturbances =
         MutableStateFlow(mutableListOf("Dream", "Kids", "Love"))
     val selectedSleepDisturbances = _selectedSleepDisturbances.asStateFlow()
+
+    /**
+     * This variable contains the goals Options List which is provided by the Server
+     */
+    private val _goalsOptionList = MutableStateFlow(
+        mutableListOf("De-Stress", "Fall Asleep", "Take a Break", "Clear Your Mind")
+    )
+    val goalsOptionList = _goalsOptionList.asStateFlow()
+
+    /**
+     * This stores the user's currently Selected Goal
+     */
+    var currentSelectedGoal = "De - Stress"
+        private set
 }
