@@ -22,14 +22,16 @@ import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.tools.sleep.utils.SleepNetworkCall
 import fit.asta.health.tools.sleep.view.components.SleepCardItems
-import fit.asta.health.tools.sleep.viewmodel.SleepToolViewModel
 
 @Composable
 fun SleepFactorsScreen(
     navController: NavController,
     sleepFactorState: SleepNetworkCall<SleepDisturbanceResponse>,
-    loadDataFunction: () -> Unit
+    loadDataFunction: () -> Unit,
+    onFactorSelected: (String, String) -> Unit
 ) {
+
+    val toolType = "factors"
     val context = LocalContext.current
 
     // Fetching the Data from the Server
@@ -82,15 +84,28 @@ fun SleepFactorsScreen(
                         )
                     }
 
+                    item {
+                        SleepCardItems(textToShow = "Sleep Factors") {
+                            onFactorSelected(toolType, "Sleep Factors")
+                            navController.popBackStack()
+                        }
+                    }
+
                     itemList.propertyData?.let { list ->
                         items(list.size) {
-                            SleepCardItems(textToShow = list[it].name)
+                            SleepCardItems(textToShow = list[it].name) {
+                                onFactorSelected(toolType, list[it].name)
+                                navController.popBackStack()
+                            }
                         }
                     }
 
                     itemList.customPropertyData?.let { list ->
                         items(list.size) {
-                            SleepCardItems(textToShow = list[it].name)
+                            SleepCardItems(textToShow = list[it].name) {
+                                onFactorSelected(toolType, list[it].name)
+                                navController.popBackStack()
+                            }
                         }
                     }
                 }

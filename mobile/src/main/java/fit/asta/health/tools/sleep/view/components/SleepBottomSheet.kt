@@ -150,7 +150,11 @@ fun SleepBottomSheet(
                         }
 
                         val type = if (!currentItem.values.isNullOrEmpty())
-                            currentItem.values[0].value
+                            currentItem.values.map { valueList ->
+                                valueList.value
+                            }.toString().filterNot { ch ->
+                                ch == '[' || ch == ']'
+                            }
                         else
                             "None"
 
