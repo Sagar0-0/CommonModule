@@ -69,8 +69,8 @@ fun SleepNavGraph(
                         navController = navController,
                         sleepDisturbanceState = sleepDisturbances,
                         loadDataFunction = { sleepToolViewModel.getDisturbancesData() }
-                    ) {
-                        sleepToolViewModel.updateSleepDisturbances(it)
+                    ) { type, newValue ->
+                        sleepToolViewModel.updateToolData(toolType = type, newValue = newValue)
                     }
                 }
             )

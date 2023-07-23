@@ -85,15 +85,24 @@ class SleepToolActivity : ComponentActivity() {
                         is SleepNetworkCall.Success<*> -> {
 
                             val navController = rememberNavController()
+
+                            // Bottom Sheet Details
                             val bottomSheetData =
-                                sleepToolViewModel.userToolsData.collectAsState().value?.prc
+                                sleepToolViewModel.userUIDefaults.collectAsState()
+                                    .value.data?.sleepData?.toolData?.prc
+
+                            // Selected Disturbances which will be shown in the bottom sheet
+                            val selectedDisturbances =
+                                sleepToolViewModel.userUIDefaults.collectAsState()
+                                    .value.data?.sleepData?.toolData?.prc?.find {
+                                        it.ttl == "disturbance"
+                                    }
 
                             if (bottomSheetData != null) {
                                 ScaffoldUI(
                                     navController = navController,
                                     bottomSheetData = bottomSheetData,
-                                    selectedDisturbances = sleepToolViewModel.selectedSleepDisturbances
-                                        .collectAsState().value
+                                    selectedDisturbances = selectedDisturbances
                                 )
                             } else {
                                 Toast.makeText(
@@ -123,7 +132,7 @@ class SleepToolActivity : ComponentActivity() {
     private fun ScaffoldUI(
         navController: NavHostController,
         bottomSheetData: List<Prc>,
-        selectedDisturbances: List<String>
+        selectedDisturbances: Prc?
     ) {
 
         val sheetState = rememberStandardBottomSheetState(

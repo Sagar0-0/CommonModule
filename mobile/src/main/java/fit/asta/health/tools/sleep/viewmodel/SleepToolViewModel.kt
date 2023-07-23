@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.tools.sleep.model.SleepRepository
-import fit.asta.health.tools.sleep.model.network.common.ToolData
+import fit.asta.health.tools.sleep.model.network.common.Value
 import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.tools.sleep.model.network.get.SleepToolGetResponse
 import fit.asta.health.tools.sleep.model.network.jetlag.SleepJetLagTipResponse
@@ -43,13 +43,6 @@ class SleepToolViewModel @Inject constructor(
     val userUIDefaults = _userUIDefaults.asStateFlow()
 
     /**
-     * This variable contains the user's Tool data from the Server and keeps it cuz it can be changed
-     * with time
-     */
-    private val _userToolsData = MutableStateFlow<ToolData?>(null)
-    val userToolsData = _userToolsData.asStateFlow()
-
-    /**
      * This function fetches the data of the default UI element settings of the user
      * from the Server
      */
@@ -73,7 +66,6 @@ class SleepToolViewModel @Inject constructor(
                 // handling the Response
                 if (response.isSuccessful) {
                     _userUIDefaults.value = SleepNetworkCall.Success(data = response.body()!!)
-                    _userToolsData.value = _userUIDefaults.value.data?.sleepData?.toolData
                     userIdFromGetResponse = _userUIDefaults.value.data?.sleepData?.toolData!!.uid
                 } else
                     _userUIDefaults.value = SleepNetworkCall.Failure(message = "No Data Present")
@@ -96,24 +88,15 @@ class SleepToolViewModel @Inject constructor(
     /**
      * This function puts the data of the UI to the Server and sets the default settings of the user
      */
-    fun updateUserData() {
+    private fun updateUserData() {
 
         _userUIDefaults.value = SleepNetworkCall.Loading()
 
         viewModelScope.launch {
             _userValueUpdate.value = try {
-                val id =
-                    if (userIdFromGetResponse == "000000000000000000000000")
-                        "" else userIdFromGetResponse
 
                 val response = remoteRepository.putUserData(
-                    toolData = ToolData(
-                        id = id,
-                        uid = userIdFromGetResponse,
-                        type = 1,
-                        code = "sleep",
-                        prc = _userToolsData.value!!.prc
-                    )
+                    toolData = _userUIDefaults.value.data?.sleepData?.toolData!!
                 )
 
                 if (response.isSuccessful)
@@ -201,14 +184,6 @@ class SleepToolViewModel @Inject constructor(
     }
 
     /**
-     * This variable contains the selected sleep disturbances of the User and stores them for later
-     * use
-     */
-    private val _selectedSleepDisturbances =
-        MutableStateFlow(mutableListOf("Dream", "Kids", "Love"))
-    val selectedSleepDisturbances = _selectedSleepDisturbances.asStateFlow()
-
-    /**
      * This variable contains the goals Options List which is provided by the Server
      */
     private val _goalsOptionList = MutableStateFlow(
@@ -254,10 +229,20 @@ class SleepToolViewModel @Inject constructor(
     }
 
 
-    fun updateSleepDisturbances(selectedDisturbance: String) {
-        if (_selectedSleepDisturbances.value.contains(selectedDisturbance))
-            _selectedSleepDisturbances.value.remove(selectedDisturbance)
-        else
-            _selectedSleepDisturbances.value.add(selectedDisturbance)
+    fun updateToolData(toolType: String, newValue: String) {
+        val prc = _userUIDefaults.value.data?.sleepData?.toolData?.prc?.find { it.ttl == toolType }
+        val value = prc?.values?.find { it.value == newValue }
+        if (value == null) {
+            prc?.values?.add(
+                Value(
+                    id = "000000000000000000000000",
+                    name = newValue,
+                    value = newValue
+                )
+            )
+        } else
+            prc.values.remove(value)
+
+//        updateUserData()
     }
 }

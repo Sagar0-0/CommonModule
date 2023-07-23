@@ -14,5 +14,5 @@ data class Prc(
     @SerializedName("type")
     val type: Int,
     @SerializedName("values")
-    val values: List<Value>
+    val values: MutableList<Value>?
 )

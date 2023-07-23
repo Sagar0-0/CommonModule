@@ -28,8 +28,10 @@ fun SleepDisturbanceScreen(
     navController: NavController,
     sleepDisturbanceState: SleepNetworkCall<SleepDisturbanceResponse>,
     loadDataFunction: () -> Unit,
-    onDisturbanceSelected: (String) -> Unit
+    onDisturbanceSelected: (String, String) -> Unit
 ) {
+
+    val toolType = "disturbance"
 
     val context = LocalContext.current
 
@@ -86,7 +88,7 @@ fun SleepDisturbanceScreen(
                     itemList.propertyData?.let { list ->
                         items(list.size) {
                             SleepCardItems(textToShow = list[it].name) {
-                                onDisturbanceSelected(list[it].name)
+                                onDisturbanceSelected(toolType, list[it].name)
                                 navController.popBackStack()
                             }
                         }
@@ -95,7 +97,7 @@ fun SleepDisturbanceScreen(
                     itemList.customPropertyData?.let { list ->
                         items(list.size) {
                             SleepCardItems(textToShow = list[it].name) {
-                                onDisturbanceSelected(list[it].name)
+                                onDisturbanceSelected(toolType, list[it].name)
                                 navController.popBackStack()
                             }
                         }
