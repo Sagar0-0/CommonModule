@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
@@ -339,6 +340,7 @@ fun BreathingBottomSheet(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Preview
 @Composable
 fun Test() {
     val sheetState = rememberStandardBottomSheetState(
@@ -355,7 +357,7 @@ fun Test() {
         sheetContent = {
             Column(
                 modifier = Modifier
-                    .fillMaxWidth().fillMaxHeight(0.8f)
+                    .fillMaxWidth().fillMaxHeight()
                     .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp),
                 verticalArrangement = Arrangement.spacedBy(spacing.small)
             )  {

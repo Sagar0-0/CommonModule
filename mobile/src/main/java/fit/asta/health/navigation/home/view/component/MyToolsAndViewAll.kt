@@ -6,9 +6,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
@@ -18,7 +17,7 @@ import androidx.compose.ui.unit.dp
 fun MyToolsAndViewAll(
     myTools: String,
     allTools: String,
-    onClick: (value: Int) -> Unit,
+    onClick: () -> Unit,
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -28,14 +27,14 @@ fun MyToolsAndViewAll(
     ) {
         Text(
             text = myTools,
-            style = MaterialTheme.typography.h6,
-            color = androidx.compose.material3.MaterialTheme.colorScheme.onBackground
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onBackground
         )
         Box(modifier = Modifier.clickable(enabled = true, onClick = ({}))) {
-            ClickableText(
+           Text(
                 text = AnnotatedString(allTools),
-                style = MaterialTheme.typography.h6,
-                onClick = onClick
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.clickable { onClick() }
             )
         }
     }
