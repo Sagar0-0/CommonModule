@@ -1,11 +1,11 @@
 package fit.asta.health.tools.sleep.model.api
 
 import fit.asta.health.common.utils.NetworkUtil
+import fit.asta.health.tools.sleep.model.network.common.ToolData
 import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.tools.sleep.model.network.get.SleepToolGetResponse
 import fit.asta.health.tools.sleep.model.network.jetlag.SleepJetLagTipResponse
 import fit.asta.health.tools.sleep.model.network.post.SleepPostRequestBody
-import fit.asta.health.tools.sleep.model.network.put.SleepPutRequestBody
 import fit.asta.health.tools.sleep.model.network.put.SleepPutResponse
 import okhttp3.OkHttpClient
 import retrofit2.Response
@@ -17,9 +17,9 @@ class SleepingRestApi(baseUrl: String, client: OkHttpClient) : SleepingApi {
         .create(SleepingService::class.java)
 
     override suspend fun putUserData(
-        sleepPutRequestBody: SleepPutRequestBody
+        toolData: ToolData
     ): Response<SleepPutResponse> {
-        return apiService.putUserData(sleepPutRequestBody)
+        return apiService.putUserData(toolData)
     }
 
     override suspend fun getUserDefaultSettings(

@@ -1,10 +1,10 @@
 package fit.asta.health.tools.sleep.model.api
 
+import fit.asta.health.tools.sleep.model.network.common.ToolData
 import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.tools.sleep.model.network.get.SleepToolGetResponse
 import fit.asta.health.tools.sleep.model.network.jetlag.SleepJetLagTipResponse
 import fit.asta.health.tools.sleep.model.network.post.SleepPostRequestBody
-import fit.asta.health.tools.sleep.model.network.put.SleepPutRequestBody
 import fit.asta.health.tools.sleep.model.network.put.SleepPutResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -17,7 +17,7 @@ interface SleepingService {
 
     @PUT("tools/sleep/put/")
     suspend fun putUserData(
-        @Body sleepPutRequestBody: SleepPutRequestBody
+        @Body toolData: ToolData
     ): Response<SleepPutResponse>
 
     @GET("tools/sleep/get/")

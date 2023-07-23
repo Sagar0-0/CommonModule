@@ -85,8 +85,8 @@ class SleepToolActivity : ComponentActivity() {
                         is SleepNetworkCall.Success<*> -> {
 
                             val navController = rememberNavController()
-                            val bottomSheetData = sleepToolViewModel
-                                .userUIDefaults.collectAsState().value.data?.sleepData?.toolData?.prc
+                            val bottomSheetData =
+                                sleepToolViewModel.userToolsData.collectAsState().value?.prc
 
                             if (bottomSheetData != null) {
                                 ScaffoldUI(
@@ -102,7 +102,6 @@ class SleepToolActivity : ComponentActivity() {
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
-
                         }
 
                         else -> {

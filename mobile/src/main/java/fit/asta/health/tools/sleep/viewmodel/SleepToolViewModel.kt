@@ -4,12 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.tools.sleep.model.SleepRepository
-import fit.asta.health.tools.sleep.model.network.common.Prc
-import fit.asta.health.tools.sleep.model.network.common.Value
+import fit.asta.health.tools.sleep.model.network.common.ToolData
 import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.tools.sleep.model.network.get.SleepToolGetResponse
 import fit.asta.health.tools.sleep.model.network.jetlag.SleepJetLagTipResponse
-import fit.asta.health.tools.sleep.model.network.put.SleepPutRequestBody
 import fit.asta.health.tools.sleep.model.network.put.SleepPutResponse
 import fit.asta.health.tools.sleep.utils.SleepNetworkCall
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,93 +33,6 @@ class SleepToolViewModel @Inject constructor(
         userIdFromHomeScreen = newUserId
     }
 
-    private val prcList = listOf(
-        Prc(
-            id = "",
-            ttl = "goal",
-            dsc = "goal",
-            values = listOf(
-                Value(
-                    id = "",
-                    name = "De-Stress",
-                    value = "De-Stress"
-                )
-            ),
-            type = 1,
-            code = "goal"
-        ),
-        Prc(
-            id = "",
-            ttl = "factors",
-            dsc = "factors",
-            values = listOf(
-                Value(
-                    id = "",
-                    name = "Sleep Factors",
-                    value = "Sleep Factors"
-                )
-            ),
-            type = 1,
-            code = "factors"
-        ),
-        Prc(
-            id = "",
-            ttl = "Jet Lag",
-            dsc = "Jet Lag",
-            values = listOf(
-                Value(
-                    id = "",
-                    name = "Check Tips",
-                    value = "Check Tips"
-                )
-            ),
-            type = 1,
-            code = "Jet Lag"
-        ),
-        Prc(
-            id = "",
-            ttl = "target",
-            dsc = "target",
-            values = listOf(
-                Value(
-                    id = "",
-                    name = "15",
-                    value = "15"
-                )
-            ),
-            type = 1,
-            code = "target"
-        ),
-        Prc(
-            id = "",
-            ttl = "start time",
-            dsc = "start time",
-            values = listOf(
-                Value(
-                    id = "",
-                    name = "10:00PM",
-                    value = "10:00PM"
-                )
-            ),
-            type = 1,
-            code = "start time"
-        ),
-        Prc(
-            id = "",
-            ttl = "end time",
-            dsc = "end time",
-            values = listOf(
-                Value(
-                    id = "",
-                    name = "07:00AM",
-                    value = "07:00AM"
-                )
-            ),
-            type = 1,
-            code = "end time"
-        ),
-    )
-
     /**
      * This variable keeps the user UI Default values which we get from the get Request to the
      * server and we need to populate the UI according to this variable
@@ -131,6 +42,12 @@ class SleepToolViewModel @Inject constructor(
     )
     val userUIDefaults = _userUIDefaults.asStateFlow()
 
+    /**
+     * This variable contains the user's Tool data from the Server and keeps it cuz it can be changed
+     * with time
+     */
+    private val _userToolsData = MutableStateFlow<ToolData?>(null)
+    val userToolsData = _userToolsData.asStateFlow()
 
     /**
      * This function fetches the data of the default UI element settings of the user
@@ -156,6 +73,7 @@ class SleepToolViewModel @Inject constructor(
                 // handling the Response
                 if (response.isSuccessful) {
                     _userUIDefaults.value = SleepNetworkCall.Success(data = response.body()!!)
+                    _userToolsData.value = _userUIDefaults.value.data?.sleepData?.toolData
                     userIdFromGetResponse = _userUIDefaults.value.data?.sleepData?.toolData!!.uid
                 } else
                     _userUIDefaults.value = SleepNetworkCall.Failure(message = "No Data Present")
@@ -189,12 +107,12 @@ class SleepToolViewModel @Inject constructor(
                         "" else userIdFromGetResponse
 
                 val response = remoteRepository.putUserData(
-                    sleepPutRequestBody = SleepPutRequestBody(
+                    toolData = ToolData(
                         id = id,
                         uid = userIdFromGetResponse,
                         type = 1,
                         code = "sleep",
-                        prc = prcList
+                        prc = _userToolsData.value!!.prc
                     )
                 )
 
