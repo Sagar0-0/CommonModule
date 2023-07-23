@@ -3,6 +3,7 @@ package fit.asta.health.tools.sleep.model.api
 import fit.asta.health.common.utils.NetworkUtil
 import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.tools.sleep.model.network.get.SleepToolGetResponse
+import fit.asta.health.tools.sleep.model.network.jetlag.SleepJetLagTipResponse
 import fit.asta.health.tools.sleep.model.network.post.SleepPostRequestBody
 import fit.asta.health.tools.sleep.model.network.put.SleepPutRequestBody
 import fit.asta.health.tools.sleep.model.network.put.SleepPutResponse
@@ -42,4 +43,7 @@ class SleepingRestApi(baseUrl: String, client: OkHttpClient) : SleepingApi {
         return apiService.getPropertyData(userId, property)
     }
 
+    override suspend fun getJetLagTips(id: String): Response<SleepJetLagTipResponse> {
+        return apiService.getJetLagTips(id = id)
+    }
 }

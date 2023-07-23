@@ -2,6 +2,7 @@ package fit.asta.health.tools.sleep.model.api
 
 import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.tools.sleep.model.network.get.SleepToolGetResponse
+import fit.asta.health.tools.sleep.model.network.jetlag.SleepJetLagTipResponse
 import fit.asta.health.tools.sleep.model.network.post.SleepPostRequestBody
 import fit.asta.health.tools.sleep.model.network.put.SleepPutRequestBody
 import fit.asta.health.tools.sleep.model.network.put.SleepPutResponse
@@ -36,4 +37,9 @@ interface SleepingService {
         @Query("uid") userId: String,
         @Query("property") property: String
     ): Response<SleepDisturbanceResponse>
+
+    @GET("tools/help/get/")
+    suspend fun getJetLagTips(
+        @Query("id") id: String
+    ): Response<SleepJetLagTipResponse>
 }

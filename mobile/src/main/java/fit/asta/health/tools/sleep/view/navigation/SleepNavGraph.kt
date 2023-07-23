@@ -77,10 +77,15 @@ fun SleepNavGraph(
             composable(
                 SleepToolNavRoutes.SleepJetLagTipsRoute.routes,
                 content = {
+
+                    val jetLagDetails =
+                        sleepToolViewModel.jetLagDetails.collectAsStateWithLifecycle().value
+
                     SleepJetLagTipsScreen(
-                        navController = navController,
-                        sleepToolViewModel = sleepToolViewModel
-                    )
+                        jetLagDetails = jetLagDetails,
+                    ) {
+                        sleepToolViewModel.getJetLagTips()
+                    }
                 }
             )
 

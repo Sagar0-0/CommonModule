@@ -2,6 +2,7 @@ package fit.asta.health.tools.sleep.model
 
 import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.tools.sleep.model.network.get.SleepToolGetResponse
+import fit.asta.health.tools.sleep.model.network.jetlag.SleepJetLagTipResponse
 import fit.asta.health.tools.sleep.model.network.post.SleepPostRequestBody
 import fit.asta.health.tools.sleep.model.network.put.SleepPutRequestBody
 import fit.asta.health.tools.sleep.model.network.put.SleepPutResponse
@@ -27,4 +28,6 @@ interface SleepRepository {
         userId: String,
         property: String
     ): Response<SleepDisturbanceResponse>
+
+    suspend fun getJetLagTips(id: String): Response<SleepJetLagTipResponse>
 }

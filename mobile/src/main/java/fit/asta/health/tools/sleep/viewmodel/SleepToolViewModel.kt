@@ -8,6 +8,7 @@ import fit.asta.health.tools.sleep.model.network.common.Prc
 import fit.asta.health.tools.sleep.model.network.common.Value
 import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.tools.sleep.model.network.get.SleepToolGetResponse
+import fit.asta.health.tools.sleep.model.network.jetlag.SleepJetLagTipResponse
 import fit.asta.health.tools.sleep.model.network.put.SleepPutRequestBody
 import fit.asta.health.tools.sleep.model.network.put.SleepPutResponse
 import fit.asta.health.tools.sleep.utils.SleepNetworkCall
@@ -302,4 +303,35 @@ class SleepToolViewModel @Inject constructor(
      */
     var currentSelectedGoal = "De - Stress"
         private set
+
+
+    private val _jetLagDetails = MutableStateFlow<SleepNetworkCall<SleepJetLagTipResponse>>(
+        SleepNetworkCall.Initialized()
+    )
+    val jetLagDetails = _jetLagDetails.asStateFlow()
+
+    /**
+     * This function fetches the jet lag Tips from the server
+     */
+    fun getJetLagTips() {
+
+        // Setting the Loading State
+        _jetLagDetails.value = SleepNetworkCall.Loading()
+
+        viewModelScope.launch {
+            _jetLagDetails.value = try {
+
+                // Fetching the Data from the server
+                val response = remoteRepository.getJetLagTips(id = "64b12f149fd4fae964059446")
+
+                // Handling the Response
+                if (response.isSuccessful)
+                    SleepNetworkCall.Success(data = response.body()!!)
+                else
+                    SleepNetworkCall.Failure(message = "Unsuccessful operation")
+            } catch (e: Exception) {
+                SleepNetworkCall.Failure(message = e.message.toString())
+            }
+        }
+    }
 }
