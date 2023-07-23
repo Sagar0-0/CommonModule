@@ -98,14 +98,14 @@ fun SleepNavGraph(
                 SleepToolNavRoutes.SleepGoalsRoute.routes,
                 content = {
 
-                    val goalsOptionList by sleepToolViewModel.goalsOptionList.collectAsStateWithLifecycle()
+                    val goalsList by sleepToolViewModel.goalsList.collectAsStateWithLifecycle()
 
                     SleepGoalsScreen(
                         navController = navController,
-                        optionList = goalsOptionList,
-                        currentSelectedOption = sleepToolViewModel.currentSelectedGoal
-                    ) {
-
+                        goalsList = goalsList,
+                        loadData = { sleepToolViewModel.getGoalsList() }
+                    ) { type, newValue ->
+                        sleepToolViewModel.updateToolData(toolType = type, newValue = newValue)
                     }
                 }
             )

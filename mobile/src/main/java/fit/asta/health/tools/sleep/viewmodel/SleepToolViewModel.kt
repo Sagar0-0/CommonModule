@@ -7,6 +7,7 @@ import fit.asta.health.tools.sleep.model.SleepRepository
 import fit.asta.health.tools.sleep.model.network.common.Value
 import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.tools.sleep.model.network.get.SleepToolGetResponse
+import fit.asta.health.tools.sleep.model.network.goals.SleepGoalResponse
 import fit.asta.health.tools.sleep.model.network.jetlag.SleepJetLagTipResponse
 import fit.asta.health.tools.sleep.model.network.put.SleepPutResponse
 import fit.asta.health.tools.sleep.utils.SleepNetworkCall
@@ -186,17 +187,31 @@ class SleepToolViewModel @Inject constructor(
     /**
      * This variable contains the goals Options List which is provided by the Server
      */
-    private val _goalsOptionList = MutableStateFlow(
-        mutableListOf("De-Stress", "Fall Asleep", "Take a Break", "Clear Your Mind")
+    private val _goalsList = MutableStateFlow<SleepNetworkCall<SleepGoalResponse>>(
+        SleepNetworkCall.Initialized()
     )
-    val goalsOptionList = _goalsOptionList.asStateFlow()
+    val goalsList = _goalsList.asStateFlow()
 
     /**
-     * This stores the user's currently Selected Goal
+     * This function fetches the Goals List from the Server
      */
-    var currentSelectedGoal = "De - Stress"
-        private set
+    fun getGoalsList() {
+        _goalsList.value = SleepNetworkCall.Loading()
 
+        viewModelScope.launch {
+            _goalsList.value = try {
+                val response = remoteRepository.getGoalsList(property = "goal")
+
+                // Handling the Response
+                if (response.isSuccessful)
+                    SleepNetworkCall.Success(data = response.body()!!)
+                else
+                    SleepNetworkCall.Failure(message = "Unsuccessful operation")
+            } catch (e: Exception) {
+                SleepNetworkCall.Failure(message = e.message.toString())
+            }
+        }
+    }
 
     private val _jetLagDetails = MutableStateFlow<SleepNetworkCall<SleepJetLagTipResponse>>(
         SleepNetworkCall.Initialized()

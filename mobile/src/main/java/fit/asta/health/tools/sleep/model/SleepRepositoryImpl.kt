@@ -4,6 +4,7 @@ import fit.asta.health.tools.sleep.model.api.SleepingApi
 import fit.asta.health.tools.sleep.model.network.common.ToolData
 import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.tools.sleep.model.network.get.SleepToolGetResponse
+import fit.asta.health.tools.sleep.model.network.goals.SleepGoalResponse
 import fit.asta.health.tools.sleep.model.network.jetlag.SleepJetLagTipResponse
 import fit.asta.health.tools.sleep.model.network.post.SleepPostRequestBody
 import fit.asta.health.tools.sleep.model.network.put.SleepPutResponse
@@ -43,5 +44,9 @@ class SleepRepositoryImpl(private val api: SleepingApi) : SleepRepository {
 
     override suspend fun getJetLagTips(id: String): Response<SleepJetLagTipResponse> {
         return api.getJetLagTips(id)
+    }
+
+    override suspend fun getGoalsList(property: String): Response<SleepGoalResponse> {
+        return api.getGoalsList(property)
     }
 }
