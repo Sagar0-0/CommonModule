@@ -1,11 +1,12 @@
 package fit.asta.health.testimonials
 
-import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import fit.asta.health.imageCropperV2.demo.ImageCropperScreen
+import fit.asta.health.main.Graph
 import fit.asta.health.testimonials.view.LoadTestimonialForm
 import fit.asta.health.testimonials.viewmodel.create.MediaType
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
@@ -13,17 +14,15 @@ import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@Composable
-fun TestimonialsNavigation(
-    navController: NavHostController,
-    getViewModel: TestimonialViewModel = hiltViewModel(),
+fun NavGraphBuilder.testimonialsNavigation(
+    navController: NavHostController
 ) {
-
-
-    NavHost(navController, startDestination = TestimonialsRoute.Home.route) {
-
+    navigation(
+        route = Graph.Testimonials.route,
+        startDestination =  TestimonialsRoute.Home.route
+    ) {
         composable(route = TestimonialsRoute.Home.route) {
-
+            val getViewModel:TestimonialViewModel= hiltViewModel()
             TestimonialsLayout(
                 player = getViewModel.player(),
                 onNavigateUp = {
@@ -34,7 +33,7 @@ fun TestimonialsNavigation(
         }
 
         composable(route = TestimonialsRoute.Create.route) {
-
+            val getViewModel:TestimonialViewModel= hiltViewModel()
             LoadTestimonialForm(onNavigateTstCreate = { navController.popBackStack() },
                 onNavigateTstHome = {
                     navController.navigate(route = TestimonialsRoute.Home.route)
@@ -49,7 +48,7 @@ fun TestimonialsNavigation(
 
 
         composable(route = TestimonialsRoute.BeforeImgCropper.route) {
-
+            val getViewModel:TestimonialViewModel= hiltViewModel()
             ImageCropperScreen(onCloseImgCropper = { navController.popBackStack() },
 
                 onConfirmSelection = { imageBitmap ->
@@ -67,7 +66,7 @@ fun TestimonialsNavigation(
 
 
         composable(route = TestimonialsRoute.AfterImgCropper.route) {
-
+            val getViewModel:TestimonialViewModel= hiltViewModel()
             ImageCropperScreen(onCloseImgCropper = { navController.popBackStack() },
 
                 onConfirmSelection = { imageBitmap ->

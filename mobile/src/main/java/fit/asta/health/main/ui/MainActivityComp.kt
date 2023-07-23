@@ -31,15 +31,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @OptIn(ExperimentalCoroutinesApi::class)
 fun NavGraphBuilder.MainActivityComp(
     navController: NavHostController,
-    onBreathing: () -> Unit,
-    onWater: () -> Unit,
-    onMeditation: () -> Unit,
-    onSunlight: () -> Unit,
-    onSleep: () -> Unit,
-    onDance: () -> Unit,
-    onYoga: () -> Unit,
-    onWorkout: () -> Unit,
-    onHiit: () -> Unit,
+    onNav: (Graph) -> Unit,
 ) {
     composable(Graph.Home.route) {
 
@@ -143,15 +135,7 @@ fun NavGraphBuilder.MainActivityComp(
             locationName = locationName,
             profileImageUri = authViewModel.getUser()?.photoUrl,
             isNotificationEnabled = notificationEnabled,
-            onBreathing = onBreathing,
-            onWater=onWater,
-            onMeditation=onMeditation,
-            onDance=onDance,
-            onHiit = onHiit,
-            onSleep = onSleep,
-            onSunlight = onSunlight,
-            onWorkout = onWorkout,
-            onYoga = onYoga,
+           onNav = onNav,
             onClick = { key ->
                 when (key) {
                     MainTopBarActions.LOCATION -> {
@@ -163,11 +147,11 @@ fun NavGraphBuilder.MainActivityComp(
                     }
 
                     MainTopBarActions.SETTINGS -> {
-                        navController.navigate(Graph.Settings.route)
+                        onNav(Graph.Settings)
                     }
 
                     MainTopBarActions.PROFILE -> {
-//                    UserProfileActivity.launch(context)
+                       onNav(Graph.Profile)
                     }
 
                     MainTopBarActions.SHARE -> {

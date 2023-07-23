@@ -17,7 +17,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -32,7 +31,6 @@ import fit.asta.health.main.Graph
 import fit.asta.health.navigation.home.view.HomeContent
 import fit.asta.health.navigation.today.view.TodayContent
 import fit.asta.health.navigation.track.view.TrackContent
-import fit.asta.health.tools.breathing.nav.breathingNavigation
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -42,15 +40,7 @@ fun MainActivityLayout(
     profileImageUri: Uri?,
     isNotificationEnabled: Boolean,
     onClick: (key: MainTopBarActions) -> Unit,
-    onBreathing: () -> Unit,
-    onWater: () -> Unit,
-    onMeditation: () -> Unit,
-    onSunlight: () -> Unit,
-    onSleep: () -> Unit,
-    onDance: () -> Unit,
-    onYoga: () -> Unit,
-    onWorkout: () -> Unit,
-    onHiit: () -> Unit,
+    onNav: (Graph) -> Unit,
 ) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -63,13 +53,17 @@ fun MainActivityLayout(
         topBar = {
             TopAppBar(
                 modifier = Modifier.shadow(elevation = cardElevation.medium),
-                backgroundColor = MaterialTheme.colorScheme.onPrimary
+                backgroundColor = MaterialTheme.colorScheme.background
             ) {
                 Row(Modifier.clickable { onClick(MainTopBarActions.LOCATION) }) {
-                    Icon(Icons.Default.LocationOn, contentDescription = "Location")
+                    Icon(
+                        Icons.Default.LocationOn, contentDescription = "Location",
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
                     Text(
                         text = locationName, textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(spacing.minSmall)
+                        modifier = Modifier.padding(spacing.minSmall),
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
                 Row(
@@ -80,13 +74,15 @@ fun MainActivityLayout(
                     IconButton(onClick = { onClick(MainTopBarActions.NOTIFICATION) }) {
                         Icon(
                             painterResource(id = if (isNotificationEnabled) R.drawable.ic_notifications_on else R.drawable.ic_notifications_off),
-                            contentDescription = "Notifications"
+                            contentDescription = "Notifications",
+                            tint = MaterialTheme.colorScheme.onBackground
                         )
                     }
                     IconButton(onClick = { onClick(MainTopBarActions.SHARE) }) {
                         Icon(
                             painterResource(id = R.drawable.ic_share_app),
-                            contentDescription = "Share"
+                            contentDescription = "Share",
+                            tint = MaterialTheme.colorScheme.onBackground
                         )
                     }
                     if (profileImageUri != null) {
@@ -105,7 +101,8 @@ fun MainActivityLayout(
                     IconButton(onClick = { onClick(MainTopBarActions.SETTINGS) }) {
                         Icon(
                             painterResource(id = R.drawable.ic_settings),
-                            contentDescription = "Settings"
+                            contentDescription = "Settings",
+                            tint = MaterialTheme.colorScheme.onBackground
                         )
                     }
                 }
@@ -161,14 +158,7 @@ fun MainActivityLayout(
         ) {
             composable(BottomBarScreens.Home.route) {
                 HomeContent(
-                    onBreathing = onBreathing, onWater = onWater,
-                    onMeditation = onMeditation,
-                    onDance = onDance,
-                    onHiit = onHiit,
-                    onSleep = onSleep,
-                    onSunlight = onSunlight,
-                    onWorkout = onWorkout,
-                    onYoga = onYoga
+                    onNav = onNav
                 )
             }
 

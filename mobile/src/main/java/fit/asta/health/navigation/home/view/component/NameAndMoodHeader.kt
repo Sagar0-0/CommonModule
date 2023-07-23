@@ -1,5 +1,6 @@
 package fit.asta.health.navigation.home.view.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,25 +28,35 @@ fun NameAndMoodHomeScreenHeader() {
 
     val interFontFamily = FontFamily(Font(R.font.inter_regular, FontWeight.Normal))
 
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 16.dp)
-        .height(59.dp),
-        verticalArrangement = Arrangement.SpaceBetween) {
-        Row(horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically) {
+    Column(
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .height(59.dp),
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Box(modifier = Modifier.size(153.dp, 36.dp)) {
-                Text(text = "Hello Aastha", fontSize = 24.sp, fontFamily = poppinsFontFamily)
+                Text(
+                    text = "Hello Aastha", fontSize = 24.sp, fontFamily = poppinsFontFamily,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
             }
             Box {
                 Text(text = "\uD83D\uDC4B", fontSize = 24.sp, fontFamily = poppinsFontFamily)
             }
         }
         Box(modifier = Modifier.size(147.dp, 15.dp)) {
-            Text(text = "What’s your mood today ?",
+            Text(
+                text = "What’s your mood today ?",
                 fontSize = 12.sp,
                 fontFamily = interFontFamily,
-                color = MaterialTheme.colorScheme.onSurfaceVariant)
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 

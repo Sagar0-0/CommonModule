@@ -41,7 +41,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
 @Composable
-fun ProfileReadyScreen(userProfile: UserProfile) {
+fun ProfileReadyScreen(userProfile: UserProfile,onBack:()->Unit,onEdit:()->Unit) {
 
     var content by remember { mutableStateOf(1) }
 
@@ -54,12 +54,12 @@ fun ProfileReadyScreen(userProfile: UserProfile) {
                 Text(text = "Profile Screen")
             }, navigationIcon = {
 
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = onBack) {
                     Icon(Icons.Outlined.NavigateBefore, "back", modifier = Modifier.size(48.dp))
                 }
 
             }, actions = {
-                IconButton(onClick = { CreateUserProfileActivity.launch(context) }) {
+                IconButton(onClick = onEdit) {
                     Icon(
                         imageVector = Icons.Filled.Edit,
                         contentDescription = null,

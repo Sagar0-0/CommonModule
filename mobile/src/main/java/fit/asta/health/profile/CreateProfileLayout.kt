@@ -19,10 +19,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import fit.asta.health.main.ui.MainActivity
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.createprofile.view.DetailsCreateScreen
@@ -39,11 +37,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
+fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel(),onBack:()->Unit) {
 
     /* TODO Paddings, Font, Elevations (4dp and 6dp), BottomSheets, Colors */
 
-    val context = LocalContext.current
+//    val context = LocalContext.current
 
     //ValidInputs
     val isDetailValid by viewModel.areDetailsInputsValid.collectAsStateWithLifecycle()
@@ -254,9 +252,7 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel()) {
                 onDismiss = {
                     showCustomDialogWithResult = !showCustomDialogWithResult
                 },
-                onNegativeClick = {
-                    (context as MainActivity).loadAppScreen()
-                },
+                onNegativeClick = onBack,
                 onPositiveClick = {
                     showCustomDialogWithResult = !showCustomDialogWithResult
                 },

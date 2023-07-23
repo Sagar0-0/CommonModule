@@ -54,8 +54,6 @@
             android:exported="false"
             android:label="@string/title_activity_sleep_tool"
             android:theme="@style/AppTheme" />
-        <activity android:name=".profile.UserProfileActivity" />
-        <activity android:name=".profile.CreateUserProfileActivity" />
         <activity android:name=".settings.WebViewActivity" />
         <activity android:name=".auth.AuthActivity" />
         <activity android:name=".feedback.FeedbackActivity" />
@@ -68,9 +66,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/MAPS_API_KEY" />
 
-        <activity
-            android:name=".testimonials.TestimonialsActivity"
-            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".BillingActivity" />
         <activity
             android:name=".scheduler.compose.AlarmScreenActivity"
