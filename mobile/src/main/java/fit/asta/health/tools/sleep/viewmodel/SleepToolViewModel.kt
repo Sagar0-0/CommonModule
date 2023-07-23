@@ -334,4 +334,12 @@ class SleepToolViewModel @Inject constructor(
             }
         }
     }
+
+
+    fun updateSleepDisturbances(selectedDisturbance: String) {
+        if (_selectedSleepDisturbances.value.contains(selectedDisturbance))
+            _selectedSleepDisturbances.value.remove(selectedDisturbance)
+        else
+            _selectedSleepDisturbances.value.add(selectedDisturbance)
+    }
 }

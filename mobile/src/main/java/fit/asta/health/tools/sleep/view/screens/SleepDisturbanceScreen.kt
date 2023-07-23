@@ -22,13 +22,13 @@ import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.tools.sleep.utils.SleepNetworkCall
 import fit.asta.health.tools.sleep.view.components.SleepCardItems
-import fit.asta.health.tools.sleep.viewmodel.SleepToolViewModel
 
 @Composable
 fun SleepDisturbanceScreen(
     navController: NavController,
     sleepDisturbanceState: SleepNetworkCall<SleepDisturbanceResponse>,
-    loadDataFunction: () -> Unit
+    loadDataFunction: () -> Unit,
+    onDisturbanceSelected: (String) -> Unit
 ) {
 
     val context = LocalContext.current
@@ -85,13 +85,19 @@ fun SleepDisturbanceScreen(
 
                     itemList.propertyData?.let { list ->
                         items(list.size) {
-                            SleepCardItems(textToShow = list[it].name)
+                            SleepCardItems(textToShow = list[it].name) {
+                                onDisturbanceSelected(list[it].name)
+                                navController.popBackStack()
+                            }
                         }
                     }
 
                     itemList.customPropertyData?.let { list ->
                         items(list.size) {
-                            SleepCardItems(textToShow = list[it].name)
+                            SleepCardItems(textToShow = list[it].name) {
+                                onDisturbanceSelected(list[it].name)
+                                navController.popBackStack()
+                            }
                         }
                     }
                 }

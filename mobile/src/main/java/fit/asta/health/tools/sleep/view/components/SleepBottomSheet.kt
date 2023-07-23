@@ -62,7 +62,7 @@ fun SleepBottomSheet(
         Text(
             text = "Practise",
 
-            fontSize = 24.sp,
+            fontSize = 16.sp,
             fontStyle = FontStyle.Normal,
             fontWeight = FontWeight.Bold,
             fontFamily = FontFamily.SansSerif
@@ -74,7 +74,7 @@ fun SleepBottomSheet(
                 .fillMaxWidth()
                 .padding(top = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.spacedBy(spacing.medium)
         ) {
 
             items(selectedDisturbances.size) {

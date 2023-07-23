@@ -1,6 +1,7 @@
 package fit.asta.health.tools.sleep.view.components
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,12 +21,18 @@ import fit.asta.health.common.ui.theme.spacing
 @Composable
 fun SleepCardItems(
     @DrawableRes icon: Int? = R.drawable.sleep_factors,
-    textToShow: String
+    textToShow: String,
+    onClick: (() -> Unit)? = null
 ) {
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable {
+                if (onClick != null) {
+                    onClick()
+                }
+            }
     ) {
         Row(
             modifier = Modifier
