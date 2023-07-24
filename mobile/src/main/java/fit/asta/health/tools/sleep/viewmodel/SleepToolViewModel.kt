@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.tools.sleep.model.SleepRepository
+import fit.asta.health.tools.sleep.model.network.common.ToolData
 import fit.asta.health.tools.sleep.model.network.common.Value
 import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.tools.sleep.model.network.get.SleepToolGetResponse
@@ -25,7 +26,7 @@ class SleepToolViewModel @Inject constructor(
 
     // This contains the user ID for the Api Calls
     private var userIdFromHomeScreen = ""
-    private var userIdFromGetResponse = ""
+    private var toolDataID = ""
 
     /**
      * This function sets the user ID inside the viewModel
@@ -67,7 +68,12 @@ class SleepToolViewModel @Inject constructor(
                 // handling the Response
                 if (response.isSuccessful) {
                     _userUIDefaults.value = SleepNetworkCall.Success(data = response.body()!!)
-                    userIdFromGetResponse = _userUIDefaults.value.data?.sleepData?.toolData!!.uid
+
+                    toolDataID =
+                        if (_userUIDefaults.value.data?.sleepData?.toolData!!.uid != "000000000000000000000000")
+                            _userUIDefaults.value.data?.sleepData?.toolData!!.id
+                        else
+                            ""
                 } else
                     _userUIDefaults.value = SleepNetworkCall.Failure(message = "No Data Present")
 
@@ -91,18 +97,27 @@ class SleepToolViewModel @Inject constructor(
      */
     private fun updateUserData() {
 
-        _userUIDefaults.value = SleepNetworkCall.Loading()
+        _userValueUpdate.value = SleepNetworkCall.Loading()
 
         viewModelScope.launch {
             _userValueUpdate.value = try {
 
                 val response = remoteRepository.putUserData(
-                    toolData = _userUIDefaults.value.data?.sleepData?.toolData!!
+                    toolData = ToolData(
+                        code = "sleep",
+                        id = toolDataID,
+                        prc = _userUIDefaults.value.data?.sleepData?.toolData?.prc!!,
+                        type = 1,
+                        uid = userIdFromHomeScreen
+                    )
                 )
 
-                if (response.isSuccessful)
+                if (response.isSuccessful) {
+                    if (toolDataID == "")
+                        toolDataID = response.body()!!.data.id
+
                     SleepNetworkCall.Success(data = response.body()!!)
-                else
+                } else
                     SleepNetworkCall.Failure(message = "Unsuccessful operation")
             } catch (e: Exception) {
                 SleepNetworkCall.Failure(message = e.message.toString())
@@ -258,6 +273,6 @@ class SleepToolViewModel @Inject constructor(
         } else
             prc.values.remove(value)
 
-//        updateUserData()
+        updateUserData()
     }
 }

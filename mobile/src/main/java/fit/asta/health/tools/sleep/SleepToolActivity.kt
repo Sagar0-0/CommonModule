@@ -121,6 +121,35 @@ class SleepToolActivity : ComponentActivity() {
                             ).show()
                         }
                     }
+
+                    when (sleepToolViewModel.userValueUpdate.collectAsState().value) {
+                        is SleepNetworkCall.Initialized<*> -> {}
+                        is SleepNetworkCall.Loading<*> -> {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator()
+                            }
+                        }
+
+                        is SleepNetworkCall.Success<*> -> {
+                            Toast.makeText(
+                                this@SleepToolActivity,
+                                "Operation Successful",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        else -> {
+                            Toast.makeText(
+                                this@SleepToolActivity,
+                                sleepToolViewModel.userValueUpdate.collectAsState().value.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
                 }
             }
         }

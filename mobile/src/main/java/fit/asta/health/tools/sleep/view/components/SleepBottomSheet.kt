@@ -162,32 +162,37 @@ fun SleepBottomSheet(
                             modifier = Modifier.weight(0.5f),
                             name = currentItem.ttl,
                             type = type,
-                            id = currentIcon,
-                            onClick = {
-                                when (currentItem.ttl) {
+                            id = currentIcon
+                        ) {
+                            when (currentItem.ttl) {
 
-                                    "goal" -> {
-                                        navController.navigate(
-                                            SleepToolNavRoutes.SleepGoalsRoute.routes
-                                        )
-                                    }
-
-                                    "factors" -> {
-                                        navController.navigate(
-                                            SleepToolNavRoutes.SleepFactorRoute.routes
-                                        )
-                                    }
-
-                                    "Jet Lag" -> {
-                                        navController.navigate(
-                                            SleepToolNavRoutes.SleepJetLagTipsRoute.routes
-                                        )
-                                    }
-
-                                    else -> {}
+                                "goal" -> {
+                                    navController.navigate(
+                                        SleepToolNavRoutes.SleepGoalsRoute.routes
+                                    )
                                 }
+
+                                "factors" -> {
+                                    navController.navigate(
+                                        SleepToolNavRoutes.SleepFactorRoute.routes
+                                    )
+                                }
+
+                                "disturbance" -> {
+                                    navController.navigate(
+                                        SleepToolNavRoutes.SleepDisturbanceRoute.routes
+                                    )
+                                }
+
+                                "Jet Lag" -> {
+                                    navController.navigate(
+                                        SleepToolNavRoutes.SleepJetLagTipsRoute.routes
+                                    )
+                                }
+
+                                else -> {}
                             }
-                        )
+                        }
                     }
                 }
                 WeatherCard()
