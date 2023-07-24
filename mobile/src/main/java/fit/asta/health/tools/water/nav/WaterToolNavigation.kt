@@ -3,13 +3,13 @@ package fit.asta.health.tools.water.nav
 import android.util.Log
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import fit.asta.health.main.Graph
+import fit.asta.health.main.sharedViewModel
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.testimonials.view.ServerErrorLayout
 import fit.asta.health.tools.water.view.screen.WaterToolScreen
@@ -26,7 +26,7 @@ fun NavGraphBuilder.waterToolNavigation(
         startDestination = WaterScreen.WaterToolHomeScreen.route
     ) {
         composable(WaterScreen.WaterToolHomeScreen.route) {
-            val viewModel:WaterViewModel = hiltViewModel()
+            val viewModel:WaterViewModel = it.sharedViewModel(navController)
             val state = viewModel.state.collectAsState()
             val uiState = viewModel.uiState.value
             val waterTool by viewModel.modifiedWaterTool.collectAsStateWithLifecycle()

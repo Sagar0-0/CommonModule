@@ -2,7 +2,6 @@ package fit.asta.health.tools.exercise.nav
 
 import android.util.Log
 import androidx.compose.runtime.getValue
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -11,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import fit.asta.health.main.Graph
+import fit.asta.health.main.sharedViewModel
 import fit.asta.health.tools.exercise.view.body_parts.ExerciseBodyParts
 import fit.asta.health.tools.exercise.view.body_stretch.ExerciseBodyStretch
 import fit.asta.health.tools.exercise.view.challenges.ExerciseChallengesScreen
@@ -39,7 +39,7 @@ fun NavGraphBuilder.exerciseNavigation(
     ) {
         composable(ExerciseScreen.HomeScreen.route) {
             val activity = it.arguments?.getString("activity") ?: "dance"
-            val viewModel:ExerciseViewModel= hiltViewModel()
+            val viewModel:ExerciseViewModel= it.sharedViewModel(navController)
             viewModel.setScreen(activity)
             val uiState = viewModel.exerciseUiState.value
             val style by viewModel.selectedStyle.collectAsStateWithLifecycle()
@@ -80,7 +80,7 @@ fun NavGraphBuilder.exerciseNavigation(
             )
         }
         composable(ExerciseScreen.BodyParts.route) {
-            val viewModel:ExerciseViewModel= hiltViewModel()
+            val viewModel:ExerciseViewModel= it.sharedViewModel(navController)
             ExerciseBodyParts(
                 onClick = { viewModel.event(HomeEvent.SetBodyParts(it)) },
                 onBack = { navController.popBackStack() },
@@ -88,7 +88,7 @@ fun NavGraphBuilder.exerciseNavigation(
             )
         }
         composable(ExerciseScreen.BodyStretch.route) {
-            val viewModel:ExerciseViewModel= hiltViewModel()
+            val viewModel:ExerciseViewModel= it.sharedViewModel(navController)
             ExerciseBodyStretch(
                 onClick = { viewModel.event(HomeEvent.SetBodyStretch(it)) },
                 onBack = { navController.popBackStack() },
@@ -96,7 +96,7 @@ fun NavGraphBuilder.exerciseNavigation(
             )
         }
         composable(ExerciseScreen.Level.route) {
-            val viewModel:ExerciseViewModel= hiltViewModel()
+            val viewModel:ExerciseViewModel= it.sharedViewModel(navController)
             ExerciseLevelScreen(
                 onClick = { viewModel.event(HomeEvent.SetLevel(it)) },
                 onBack = { navController.popBackStack() },
@@ -104,7 +104,7 @@ fun NavGraphBuilder.exerciseNavigation(
             )
         }
         composable(ExerciseScreen.Challenges.route) {
-            val viewModel:ExerciseViewModel= hiltViewModel()
+            val viewModel:ExerciseViewModel= it.sharedViewModel(navController)
             ExerciseChallengesScreen(
                 onClick = { viewModel.event(HomeEvent.SetChallenge(it)) },
                 onBack = { navController.popBackStack() },
@@ -112,7 +112,7 @@ fun NavGraphBuilder.exerciseNavigation(
             )
         }
         composable(ExerciseScreen.Goals.route) {
-            val viewModel:ExerciseViewModel= hiltViewModel()
+            val viewModel:ExerciseViewModel= it.sharedViewModel(navController)
             val activity = it.arguments?.getString("activity") ?: "dance"
             ExerciseGoalsScreen(
                 onClick = { viewModel.event(HomeEvent.SetQuick(it)) },
@@ -121,7 +121,7 @@ fun NavGraphBuilder.exerciseNavigation(
             )
         }
         composable(ExerciseScreen.Style.route) {
-            val viewModel:ExerciseViewModel= hiltViewModel()
+            val viewModel:ExerciseViewModel= it.sharedViewModel(navController)
             val activity = it.arguments?.getString("activity") ?: "dance"
             ExerciseStyleScreen(
                 onClick = { viewModel.event(HomeEvent.SetStyle(it)) },
@@ -130,7 +130,7 @@ fun NavGraphBuilder.exerciseNavigation(
             )
         }
         composable(ExerciseScreen.Duration.route) {
-            val viewModel:ExerciseViewModel= hiltViewModel()
+            val viewModel:ExerciseViewModel= it.sharedViewModel(navController)
             ExerciseDurationScreen(
                 onClick = { viewModel.event(HomeEvent.SetDuration(it)) },
                 onBack = { navController.popBackStack() },
@@ -138,7 +138,7 @@ fun NavGraphBuilder.exerciseNavigation(
             )
         }
         composable(ExerciseScreen.Music.route) {
-            val viewModel:ExerciseViewModel= hiltViewModel()
+            val viewModel:ExerciseViewModel= it.sharedViewModel(navController)
             ExerciseMusic(
                 onClick = { },
                 onBack = { navController.popBackStack() },
@@ -146,7 +146,7 @@ fun NavGraphBuilder.exerciseNavigation(
             )
         }
         composable(ExerciseScreen.Equipment.route) {
-            val viewModel:ExerciseViewModel= hiltViewModel()
+            val viewModel:ExerciseViewModel= it.sharedViewModel(navController)
             ExerciseEquipment(
                 onClick = { viewModel.event(HomeEvent.SetEquipment(it)) },
                 onBack = { navController.popBackStack() },
@@ -154,7 +154,7 @@ fun NavGraphBuilder.exerciseNavigation(
             )
         }
         composable(ExerciseScreen.VideoPlayer.route) {
-            val viewModel:ExerciseViewModel= hiltViewModel()
+            val viewModel:ExerciseViewModel= it.sharedViewModel(navController)
             val state by viewModel.videoList.collectAsStateWithLifecycle()
             VideoPlayerScreen(state = state, onMusicEvents = viewModel::eventVideoPlayer,
                 navigateToPlayer = { navController.navigate(route = ExerciseScreen.Video.route) },
@@ -162,7 +162,7 @@ fun NavGraphBuilder.exerciseNavigation(
             )
         }
         composable(ExerciseScreen.Video.route) {
-            val viewModel:ExerciseViewModel= hiltViewModel()
+            val viewModel:ExerciseViewModel= it.sharedViewModel(navController)
             val uiState by viewModel.uiState
             VideoScreen(player = viewModel.player(), uiState = uiState,
                 progress = viewModel.exerciseUiState.value.consume,

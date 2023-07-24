@@ -1,11 +1,11 @@
 package fit.asta.health.tools.sunlight.nav
 
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import fit.asta.health.main.Graph
+import fit.asta.health.main.sharedViewModel
 import fit.asta.health.tools.sunlight.view.*
 import fit.asta.health.tools.sunlight.view.age_selection.AgeRange
 import fit.asta.health.tools.sunlight.view.home.StatedStateComposable
@@ -24,22 +24,22 @@ fun NavGraphBuilder.sunlightNavigation(
         startDestination = SunlightScreen.SunlightHomeScreen.route
     ) {
         composable(route = SunlightScreen.SunlightHomeScreen.route) {
-            SunlightHomeScreen(navController = navController, hiltViewModel())
+            SunlightHomeScreen(navController = navController, it.sharedViewModel(navController))
         }
         composable(route = SunlightScreen.SkinExposureScreen.route) {
-            SkinExposureLayout(navController = navController, hiltViewModel())
+            SkinExposureLayout(navController = navController, it.sharedViewModel(navController))
         }
         composable(route = SunlightScreen.SkinColorScreen.route) {
-            SkinColorLayout(navController = navController, hiltViewModel())
+            SkinColorLayout(navController = navController, it.sharedViewModel(navController))
         }
         composable(route = SunlightScreen.SPFSelectionScreen.route) {
-            SPFLevel(navController = navController, hiltViewModel())
+            SPFLevel(navController = navController, it.sharedViewModel(navController))
         }
         composable(route = SunlightScreen.AgeSelectionScreen.route) {
-            AgeRange(navController = navController, hiltViewModel())
+            AgeRange(navController = navController, it.sharedViewModel(navController))
         }
         composable(route = SunlightScreen.StartedStateComposable.route) {
-            StatedStateComposable(navController = navController, hiltViewModel())
+            StatedStateComposable(navController = navController, it.sharedViewModel(navController))
         }
     }
 }
