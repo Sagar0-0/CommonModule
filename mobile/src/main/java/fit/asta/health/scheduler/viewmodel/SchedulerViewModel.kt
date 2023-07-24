@@ -14,6 +14,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.NetworkResult
+import fit.asta.health.common.utils.PrefUtils
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ASUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AdvUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AlarmSettingEvent
@@ -58,6 +59,7 @@ class SchedulerViewModel
     private val alarmLocalRepo: AlarmLocalRepo,
     private val backendRepo: AlarmBackendRepo,
     private val savedStateHandle: SavedStateHandle,
+    private val prefUtils: PrefUtils
 ) : ViewModel() {
     private var alarmEntity: AlarmEntity? = null
 
@@ -87,8 +89,20 @@ class SchedulerViewModel
 
 //        refreshData()
         getAlarms()
+       getEditUiData()
     }
-
+    private fun getEditUiData(){
+       viewModelScope.launch {
+          prefUtils.getPreferences("alarm", defaultValue = 999).collect{
+              if (it!=999){
+                  alarmLocalRepo.getAlarm(it)?.let {alarm->
+                      alarmEntity= alarm
+                      updateUi(alarm)
+                  }
+              }
+          }
+       }
+    }
     fun hSEvent(uiEvent: HomeEvent) {
         when (uiEvent) {
             is HomeEvent.EditAlarm -> {
@@ -96,8 +110,8 @@ class SchedulerViewModel
                 updateUi(uiEvent.alarm)
             }
 
-            is HomeEvent.SetAlarmState -> {
-                updateAlarmState(uiEvent.alarm, uiEvent.state, uiEvent.context)
+            is HomeEvent.SetAlarm -> {
+//                updateAlarmState(uiEvent.alarm, uiEvent.state, uiEvent.context)
             }
 
             is HomeEvent.DeleteAlarm -> {
@@ -258,7 +272,7 @@ class SchedulerViewModel
 
             is AlarmSettingEvent.GotoTagScreen -> {
                 Log.d("manish", "GotoTagScreen: ")
-                refreshTagData()
+//                refreshTagData()
                 getTagData()
             }
 
@@ -283,6 +297,7 @@ class SchedulerViewModel
         viewModelScope.launch {
             alarmLocalRepo.getAllTags().collect {
                 _tagsUiState.value = _tagsUiState.value.copy(tagsList = it)
+                Log.d("manish", "getTagData: $it")
             }
         }
     }
@@ -325,7 +340,7 @@ class SchedulerViewModel
                     )
                     when (result) {
                         is NetworkResult.Success -> {
-                            refreshTagData()
+//                            refreshTagData()
                             getTagData()
                         }
 
@@ -653,7 +668,8 @@ class SchedulerViewModel
                     id = it.id
                 )
             },
-            isVariantInterval = timeSettingUiState.value.isVariantInterval
+            isVariantInterval = timeSettingUiState.value.isVariantInterval,
+            status = false
         )
     }
 
@@ -678,6 +694,7 @@ class SchedulerViewModel
     }
 
     private fun updateUi(it: AlarmEntity) {
+        this@SchedulerViewModel.alarmEntity = it
         interval.value = interval.value.copy(
             advancedReminder = AdvUiState(
                 status = it.interval.advancedReminder.status,
@@ -765,7 +782,7 @@ class SchedulerViewModel
                 val sformat = "HH:mm:a"
                 val aDateFormat = SimpleDateFormat(sformat, Locale.getDefault())
                 val timeParts = aDateFormat.format(slot).toString().split(":")
-                Log.d("TAGTAGTAGTAG", "getSlots: $timeParts")
+                Log.d("TAGTAGTAG", "getSlots: $timeParts")
                 slots.add(
                     StatUiState(
                         id = (1..999999999).random(),
@@ -787,6 +804,7 @@ class SchedulerViewModel
             Log.d("TAGTAGTAG", "getSlots: $slots")
         } catch (e: Exception) {
             e.printStackTrace()
+            Log.d("TAGTAGTAG", "getSlots:error ${e.printStackTrace()}")
             Toast.makeText(context, "${e.printStackTrace()}", Toast.LENGTH_LONG).show()
         }
         slots.removeAt(0)

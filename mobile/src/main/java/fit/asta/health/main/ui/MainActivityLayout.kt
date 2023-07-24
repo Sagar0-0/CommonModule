@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -28,8 +29,10 @@ import fit.asta.health.common.ui.theme.elevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.MainTopBarActions
 import fit.asta.health.main.Graph
+import fit.asta.health.main.sharedViewModel
 import fit.asta.health.navigation.home.view.HomeContent
 import fit.asta.health.navigation.today.view.TodayContent
+import fit.asta.health.navigation.today.viewmodel.TodayPlanViewModel
 import fit.asta.health.navigation.track.view.TrackContent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -161,9 +164,10 @@ fun MainActivityLayout(
                     onNav = onNav
                 )
             }
-
             composable(BottomBarScreens.Today.route) {
-                TodayContent()
+                val todayPlanViewModel: TodayPlanViewModel = it.sharedViewModel(navController = navController)
+                val list by todayPlanViewModel.alarmList.collectAsStateWithLifecycle()
+               TodayContent(list = list, hSEvent = todayPlanViewModel::hSEvent, onNav = onNav)
             }
 
             composable(BottomBarScreens.Track.route) {

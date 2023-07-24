@@ -15,7 +15,6 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import fit.asta.health.R
 import fit.asta.health.auth.viewmodel.AuthViewModel
@@ -29,8 +28,7 @@ import fit.asta.health.main.MainViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun NavGraphBuilder.MainActivityComp(
-    navController: NavHostController,
+fun NavGraphBuilder.mainActivityComp(
     onNav: (Graph) -> Unit,
 ) {
     composable(Graph.Home.route) {
@@ -135,7 +133,7 @@ fun NavGraphBuilder.MainActivityComp(
             locationName = locationName,
             profileImageUri = authViewModel.getUser()?.photoUrl,
             isNotificationEnabled = notificationEnabled,
-           onNav = onNav,
+            onNav = onNav,
             onClick = { key ->
                 when (key) {
                     MainTopBarActions.LOCATION -> {
@@ -151,7 +149,7 @@ fun NavGraphBuilder.MainActivityComp(
                     }
 
                     MainTopBarActions.PROFILE -> {
-                       onNav(Graph.Profile)
+                        onNav(Graph.Profile)
                     }
 
                     MainTopBarActions.SHARE -> {

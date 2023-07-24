@@ -78,77 +78,28 @@ class AlarmService : Service() {
             var alarmName = getString(R.string.app_name)
             if (alarmEntity != null) {
                 alarmName = alarmEntity?.info?.name!!
-                try {
-                    mediaPlayer.setDataSource(
-                        this.baseContext,
-                        Uri.parse(alarmEntity?.tone!!.uri)
-                    )
-                    mediaPlayer.prepareAsync()
-                } catch (exception: Exception) {
-                    exception.printStackTrace()
-                }
+                setMediaData()
             } else {
-                try {
-                    mediaPlayer.setDataSource(this.baseContext, ringtone)
-                    mediaPlayer.prepareAsync()
-                } catch (exception: Exception) {
-                    exception.printStackTrace()
-                }
+                setMediaDataDef()
             }
 
             // creating notification with different modes
-            when (alarmEntity?.mode) {
-                "Notification" -> {
-                    notification = NotificationCompat.Builder(this, CHANNEL_ID)
-                        .setContentTitle("Scheduler")
-                        .setContentText(alarmName)
-                        .setSmallIcon(R.drawable.ic_round_access_alarm_24)
-                        .setSound(null)
-                        .setCategory(NotificationCompat.CATEGORY_ALARM)
-                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                        .setPriority(NotificationCompat.PRIORITY_MAX)
-                        .setFullScreenIntent(pendingIntent, true) // set base on important in alarm entity
-                        .build()
-                }
-                "Splash" -> {
-                    notification = NotificationCompat.Builder(this, CHANNEL_ID)
-                        .setContentTitle("Scheduler")
-                        .setContentText(alarmName)
-                        .setSmallIcon(R.drawable.ic_round_access_alarm_24)
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT) // set base on important in alarm entity
-                        .setContentIntent(pendingIntent)
-                        .setAutoCancel(true)
-                        .build()
-
-                    try {
-                        pendingIntent.send()
-                    } catch (exception: Exception) {
-                        exception.printStackTrace()
-                    }
-
-                }
-            }
+            val bigTextStyle = NotificationCompat.BigTextStyle()
+                .bigText(alarmName)
+            notification =
+                createNotification(
+                    notification,
+                    pendingIntent,
+                    bigTextStyle,
+                    message = alarmEntity!!.info.tag
+                )
 
             mediaPlayer.setOnPreparedListener { mediaPlayer -> mediaPlayer.start() }
 
-            if (alarmEntity?.vibration!!.status) {
-                val pattern = longArrayOf(0, 100, 1000)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    vibrator.vibrate(
-                        VibrationEffect.createWaveform(
-                            pattern,
-                            0
-                        )
-                    )
-                } else {
-                    vibrator.vibrate(pattern, 0)
-                }
-            }
-
-            startForeground(
-                if (alarmEntity != null) alarmEntity!!.alarmId else Random.nextInt(
-                    999999999
-                ), notification
+            startForGroundService(
+                notification = notification,
+                status = alarmEntity?.vibration!!.status,
+                id = alarmEntity!!.alarmId
             )
         }
 
@@ -174,77 +125,28 @@ class AlarmService : Service() {
             if (alarmEntity != null) {
                 alarmName =
                     if (variantInterval != null) variantInterval?.name!! else getString(R.string.app_name)
-                try {
-                    mediaPlayer.setDataSource(
-                        this.baseContext,
-                        Uri.parse(alarmEntity?.tone!!.uri)
-                    )
-                    mediaPlayer.prepareAsync()
-                } catch (exception: Exception) {
-                    exception.printStackTrace()
-                }
+                setMediaData()
             } else {
-                try {
-                    mediaPlayer.setDataSource(this.baseContext, ringtone)
-                    mediaPlayer.prepareAsync()
-                } catch (exception: Exception) {
-                    exception.printStackTrace()
-                }
+                setMediaDataDef()
             }
 
             // creating notification with different modes
-            when (alarmEntity?.mode) {
-                "Notification" -> {
-                    notification = NotificationCompat.Builder(this, CHANNEL_ID)
-                        .setContentTitle("Scheduler")
-                        .setContentText(alarmName)
-                        .setSmallIcon(R.drawable.ic_round_access_alarm_24)
-                        .setSound(null)
-                        .setCategory(NotificationCompat.CATEGORY_ALARM)
-                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                        .setPriority(NotificationCompat.PRIORITY_MAX)
-                        .setFullScreenIntent(pendingIntent, true)
-                        .build()
-                }
-                "Splash" -> {
-                    notification = NotificationCompat.Builder(this, CHANNEL_ID)
-                        .setContentTitle("Scheduler")
-                        .setContentText(alarmName)
-                        .setSmallIcon(R.drawable.ic_round_access_alarm_24)
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                        .setContentIntent(pendingIntent)
-                        .setAutoCancel(true)
-                        .build()
-
-                    try {
-                        pendingIntent.send()
-                    } catch (exception: Exception) {
-                        exception.printStackTrace()
-                    }
-
-                }
-            }
+            val bigTextStyle = NotificationCompat.BigTextStyle()
+                .bigText(alarmName)
+            notification =
+                createNotification(
+                    notification,
+                    pendingIntent,
+                    bigTextStyle,
+                    message = alarmEntity!!.info.tag
+                )
 
             mediaPlayer.setOnPreparedListener { mediaPlayer -> mediaPlayer.start() }
 
-            if (alarmEntity?.vibration!!.status) {
-                val pattern = longArrayOf(0, 100, 1000)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    vibrator.vibrate(
-                        VibrationEffect.createWaveform(
-                            pattern,
-                            0
-                        )
-                    )
-                } else {
-                    vibrator.vibrate(pattern, 0)
-                }
-            }
-
-            startForeground(
-                if (variantInterval != null) variantInterval!!.id else Random.nextInt(
-                    999999999
-                ), notification
+            startForGroundService(
+                notification = notification,
+                status = alarmEntity?.vibration!!.status,
+                id =  variantInterval!!.id
             )
         }
 
@@ -262,7 +164,7 @@ class AlarmService : Service() {
                 this,
                 bundleForPreNotification.getInt("id", 1),
                 notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT  or PendingIntent.FLAG_IMMUTABLE
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
 
             var alarmName = getString(R.string.notification)
@@ -325,6 +227,93 @@ class AlarmService : Service() {
             return START_STICKY
         }
         return START_STICKY
+    }
+
+    private fun startForGroundService(notification: Notification?, status: Boolean, id: Int) {
+        if (status) {
+            val pattern = longArrayOf(0, 100, 1000)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(
+                    VibrationEffect.createWaveform(
+                        pattern,
+                        0
+                    )
+                )
+            } else {
+                vibrator.vibrate(pattern, 0)
+            }
+        }
+        startForeground(id, notification)
+    }
+
+    private fun createNotification(
+        notification: Notification?,
+        pendingIntent: PendingIntent,
+        bigTextStyle: NotificationCompat.BigTextStyle,
+        message: String
+    ): Notification? {
+        var notification1 = notification
+        when (alarmEntity?.mode) {
+            "Notification" -> {
+                notification1 = NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setContentTitle("Scheduler")
+                    .setContentText(message)
+                    .setSmallIcon(R.drawable.ic_round_access_alarm_24)
+                    .setSound(null)
+                    .setCategory(NotificationCompat.CATEGORY_ALARM)
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                    .setPriority(NotificationCompat.PRIORITY_MAX)
+                    .setFullScreenIntent(
+                        pendingIntent,
+                        true
+                    ) // set base on important in alarm entity
+                    .setStyle(bigTextStyle)
+                    .build()
+            }
+
+            "Splash" -> {
+                notification1 = NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setContentTitle("Scheduler")
+                    .setContentText(message)
+                    .setSmallIcon(R.drawable.ic_round_access_alarm_24)
+                    .setCategory(NotificationCompat.CATEGORY_ALARM)
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                    .setPriority(NotificationCompat.PRIORITY_MAX) // set base on important in alarm entity
+                    .setFullScreenIntent(pendingIntent, true)
+                    .setStyle(bigTextStyle)
+                    .setAutoCancel(true)
+                    .build()
+
+                try {
+                    pendingIntent.send()
+                } catch (exception: Exception) {
+                    exception.printStackTrace()
+                }
+
+            }
+        }
+        return notification1
+    }
+
+    private fun setMediaDataDef() {
+        try {
+            mediaPlayer.setDataSource(this.baseContext, ringtone)
+            mediaPlayer.prepareAsync()
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
+    }
+
+    private fun setMediaData() {
+        try {
+            mediaPlayer.setDataSource(
+                this.baseContext,
+                Uri.parse(alarmEntity?.tone!!.uri)
+            )
+            mediaPlayer.prepareAsync()
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
     }
 
     override fun onDestroy() {
