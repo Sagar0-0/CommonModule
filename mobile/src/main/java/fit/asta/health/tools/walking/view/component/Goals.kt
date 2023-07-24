@@ -2,7 +2,7 @@ package fit.asta.health.tools.walking.view.component
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.BottomNavigation
+
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
@@ -42,7 +42,7 @@ fun GoalLayout(it: PaddingValues) {
 fun Goal() {
 
     Scaffold(topBar = {
-        BottomNavigation(content = {
+        NavigationBar(content = {
             Row(verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()) {
@@ -62,7 +62,7 @@ fun Goal() {
                         tint = MaterialTheme.colorScheme.primary)
                 }
             }
-        }, elevation = 10.dp)
+        }, tonalElevation = 10.dp)
     }, content = {
         GoalLayout(it = it)
     })

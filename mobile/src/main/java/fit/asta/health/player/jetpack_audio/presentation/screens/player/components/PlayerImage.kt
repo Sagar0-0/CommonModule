@@ -5,8 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,7 +18,6 @@ import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.player.jetpack_audio.presentation.ui.theme.LocalSpacing
 
 
-@ExperimentalMaterialApi
 @Composable
 fun PlayerImage(
     trackImageUrl: Uri,

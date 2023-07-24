@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import fit.asta.health.tools.sunlight.view.components.bottomsheet.DividerLine
 
 @Composable
 fun DividerLineCenter() {

@@ -5,7 +5,7 @@ import androidx.collection.LruCache
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -21,8 +21,8 @@ import kotlinx.coroutines.withContext
 @Composable
 fun rememberDominantColorState(
     context: Context = LocalContext.current,
-    defaultColor: Color = MaterialTheme.colors.primary,
-    defaultOnColor: Color = MaterialTheme.colors.onPrimary,
+    defaultColor: Color = MaterialTheme.colorScheme.primary,
+    defaultOnColor: Color = MaterialTheme.colorScheme.onPrimary,
     cacheSize: Int = 12,
     isColorValid: (Color) -> Boolean = { true }
 ): DominantColorState = remember {
@@ -30,7 +30,7 @@ fun rememberDominantColorState(
 }
 
 /**
- * A composable which allows dynamic theming of the [androidx.compose.material.Colors.primary]
+ * A composable which allows dynamic theming of the [androidx.compose.material3.Colors.primary]
  * color from an image.
  */
 @Composable
@@ -38,7 +38,7 @@ fun DynamicThemePrimaryColorsFromImage(
     dominantColorState: DominantColorState = rememberDominantColorState(),
     content: @Composable () -> Unit
 ) {
-    val colors = MaterialTheme.colors.copy(
+    val colors = MaterialTheme.colorScheme.copy(
         primary = animateColorAsState(
             dominantColorState.color,
             spring(stiffness = Spring.StiffnessLow)
@@ -48,7 +48,7 @@ fun DynamicThemePrimaryColorsFromImage(
             spring(stiffness = Spring.StiffnessLow)
         ).value
     )
-    MaterialTheme(colors = colors, content = content)
+    MaterialTheme(colorScheme = colors, content = content)
 }
 
 /**

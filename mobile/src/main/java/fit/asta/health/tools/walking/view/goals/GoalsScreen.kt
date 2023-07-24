@@ -5,10 +5,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AdsClick
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,7 +21,6 @@ import androidx.navigation.NavController
 import fit.asta.health.R
 import fit.asta.health.tools.walking.model.ListItem
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
-import fit.asta.health.common.ui.theme.spacing
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -46,38 +44,38 @@ fun GoalsScreen(navController: NavController, homeViewModel: WalkingViewModel) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            BottomNavigation(
+            NavigationBar(
                 content = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        androidx.compose.material3.IconButton(onClick = { navController.popBackStack() }) {
-                            androidx.compose.material3.Icon(
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(
                                 painter = painterResource(id = R.drawable.ic_exercise_back),
                                 contentDescription = null,
                                 Modifier.size(24.dp)
                             )
                         }
-                        androidx.compose.material3.Text(
+                        Text(
                             text = "Goals",
                             fontSize = 20.sp,
-                            color = androidx.compose.material3.MaterialTheme.colorScheme.onBackground,
+                            color = MaterialTheme.colorScheme.onBackground,
                             textAlign = TextAlign.Center
                         )
-                        androidx.compose.material3.IconButton(onClick = { /*TODO*/ }) {
-                            androidx.compose.material3.Icon(
+                        IconButton(onClick = { /*TODO*/ }) {
+                            Icon(
                                 painter = painterResource(id = R.drawable.ic_physique),
                                 contentDescription = null,
                                 Modifier.size(24.dp),
-                                tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                                tint = MaterialTheme.colorScheme.primary
                             )
                         }
                     }
                 },
-                elevation = 10.dp,
-                backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimary
+                tonalElevation = 10.dp,
+                containerColor = MaterialTheme.colorScheme.onPrimary
             )
         }
     ) {
@@ -89,7 +87,7 @@ fun GoalsScreen(navController: NavController, homeViewModel: WalkingViewModel) {
                     text = "Select the Goals",
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
-                    style = MaterialTheme.typography.body1
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
             items(items.size) { i ->
@@ -122,7 +120,7 @@ fun GoalsScreen(navController: NavController, homeViewModel: WalkingViewModel) {
                                 .padding(start = 16.dp)
                                 .weight(0.5f),
                             text = items[i].title,
-                            style = MaterialTheme.typography.subtitle1,
+                            style = MaterialTheme.typography.titleMedium,
                             fontSize = 25.sp
                         )
                         if (items[i].isSelected) {

@@ -7,17 +7,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.NavigateBefore
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,7 +24,7 @@ import fit.asta.health.scheduler.compose.screen.tagscreen.TagCreateBottomSheetTy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview(device = "id:pixel_6_pro", showSystemUi = true, showBackground = true)
 fun TagsScreen(
@@ -44,50 +37,40 @@ fun TagsScreen(
         mutableStateOf(null)
     }
 
-    var modalBottomSheetValue by remember {
-        mutableStateOf(ModalBottomSheetValue.Hidden)
-    }
-
-    val modalBottomSheetState = rememberModalBottomSheetState(modalBottomSheetValue)
-
+    var skipPartiallyExpanded by remember { mutableStateOf(false) }
+    val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded)
     val scope = rememberCoroutineScope()
 
     val closeSheet = {
         scope.launch {
             modalBottomSheetState.hide()
-            if (modalBottomSheetValue == ModalBottomSheetValue.Expanded) {
-                modalBottomSheetValue = ModalBottomSheetValue.Hidden
-            }
         }
     }
 
     val openSheet = {
         scope.launch {
             modalBottomSheetState.show()
-            if (modalBottomSheetValue == ModalBottomSheetValue.Hidden) {
-                modalBottomSheetValue = ModalBottomSheetValue.Expanded
-            }
         }
     }
 
-    ModalBottomSheetLayout(modifier = Modifier
-        .fillMaxSize()
-        .wrapContentHeight(),
+    ModalBottomSheet(
+        modifier = Modifier.fillMaxSize().wrapContentHeight(),
+        onDismissRequest = { closeSheet() },
         sheetState = modalBottomSheetState,
-        sheetContent = {
-            Spacer(modifier = Modifier.height(1.dp))
-            currentBottomSheet?.let {
-                TagCreateBtmSheetLayout(
-                    sheetLayout = it,
-                    closeSheet = { closeSheet() },
-                    tagsEvent = tagsEvent
-                )
-            }
-        }) {
+        ) {
 
-        val scaffoldState: ScaffoldState = rememberScaffoldState()
+        Spacer(modifier = Modifier.height(1.dp))
+        currentBottomSheet?.let {
+            TagCreateBtmSheetLayout(
+                sheetLayout = it,
+                closeSheet = { closeSheet() },
+                tagsEvent = tagsEvent
+            )
+        }
+
+        val snackbarHostState = remember { SnackbarHostState() }
         val coroutineScope: CoroutineScope = rememberCoroutineScope()
-        Scaffold(scaffoldState = scaffoldState, content = {
+        Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) }, content = {
             LazyColumn(
                 Modifier
                     .fillMaxWidth()
@@ -99,7 +82,7 @@ fun TagsScreen(
                         val deletedTag = data
                         tagsEvent(TagsEvent.DeleteTag(deletedTag))
                         coroutineScope.launch {
-                            val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
+                            val snackbarResult = snackbarHostState.showSnackbar(
                                 message = "Deleted ${deletedTag.meta.name}",
                                 actionLabel = "Undo",
                                 duration = SnackbarDuration.Long

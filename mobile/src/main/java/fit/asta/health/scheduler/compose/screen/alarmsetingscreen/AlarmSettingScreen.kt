@@ -1,18 +1,11 @@
 package fit.asta.health.scheduler.compose.screen.alarmsetingscreen
 
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
 import androidx.compose.material3.*
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -33,8 +26,7 @@ import kotlinx.coroutines.launch
 import xyz.aprildown.ultimateringtonepicker.RingtonePickerDialog
 import xyz.aprildown.ultimateringtonepicker.UltimateRingtonePicker
 
-@OptIn(ExperimentalMaterialApi::class)
-@RequiresApi(Build.VERSION_CODES.N)
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun AlarmSettingScreen(
@@ -49,47 +41,37 @@ fun AlarmSettingScreen(
         mutableStateOf(null)
     }
 
-    var modalBottomSheetValue by remember {
-        mutableStateOf(ModalBottomSheetValue.Hidden)
-    }
-
-    val modalBottomSheetState = rememberModalBottomSheetState(modalBottomSheetValue)
-
+    var skipPartiallyExpanded by remember { mutableStateOf(false) }
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded)
     val scope = rememberCoroutineScope()
 
     val closeSheet = {
         scope.launch {
-            modalBottomSheetState.hide()
-            if (modalBottomSheetValue == ModalBottomSheetValue.Expanded) {
-                modalBottomSheetValue = ModalBottomSheetValue.Hidden
-            }
+            bottomSheetState.hide()
         }
     }
 
     val openSheet = {
         scope.launch {
-            modalBottomSheetState.show()
-            if (modalBottomSheetValue == ModalBottomSheetValue.Hidden) {
-                modalBottomSheetValue = ModalBottomSheetValue.Expanded
-            }
+            bottomSheetState.show()
         }
     }
 
-    ModalBottomSheetLayout(modifier = Modifier
-        .fillMaxSize()
-        .wrapContentHeight(),
-        sheetState = modalBottomSheetState,
-        sheetContent = {
-            Spacer(modifier = Modifier.height(1.dp))
-            currentBottomSheet?.let {
-                AlarmCreateBtmSheetLayout(
-                    sheetLayout = it, closeSheet = { closeSheet() }, aSEvent = aSEvent
-                )
-            }
-        }) {
+    ModalBottomSheet(
+        modifier = Modifier.fillMaxSize().wrapContentHeight(),
+        onDismissRequest = { closeSheet() },
+        sheetState = bottomSheetState,
+        ) {
+
+        Spacer(modifier = Modifier.height(1.dp))
+        currentBottomSheet?.let {
+            AlarmCreateBtmSheetLayout(
+                sheetLayout = it, closeSheet = { closeSheet() }, aSEvent = aSEvent
+            )
+        }
 
         Scaffold(topBar = {
-            BottomNavigation(content = {
+            NavigationBar(content = {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -121,7 +103,7 @@ fun AlarmSettingScreen(
                         )
                     }
                 }
-            }, elevation = 10.dp, backgroundColor = Color.White)
+            }, tonalElevation = 10.dp, containerColor = Color.White)
         }, content = { paddingValues ->
 
             Column(

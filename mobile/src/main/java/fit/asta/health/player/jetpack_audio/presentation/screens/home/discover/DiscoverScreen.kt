@@ -13,8 +13,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -56,7 +56,7 @@ fun DiscoverScreen(
                 CircularProgressIndicator(
                     modifier = Modifier
                         .size(spacing.spaceLarge),
-                    color = MaterialTheme.colors.primary
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
         }
@@ -95,7 +95,7 @@ fun DiscoverScreen(
                         )
                     },
                     modifier = Modifier.fillMaxWidth(),
-                    backgroundColor = MaterialTheme.colors.surface
+                    backgroundColor = MaterialTheme.colorScheme.surface
                 )
             }
         }

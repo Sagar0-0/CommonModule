@@ -11,12 +11,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomNavigation
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AdsClick
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -54,7 +55,7 @@ fun BreakTimeScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            BottomNavigation(
+            NavigationBar(
                 content = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -84,8 +85,8 @@ fun BreakTimeScreen(
                         }
                     }
                 },
-                elevation = 10.dp,
-                backgroundColor = MaterialTheme.colorScheme.onPrimary
+                tonalElevation = 10.dp,
+                containerColor = MaterialTheme.colorScheme.onPrimary
             )
         }
     ) {
@@ -96,7 +97,7 @@ fun BreakTimeScreen(
                     text = "Select break time for your breathing exercise",
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
-                    style = androidx.compose.material.MaterialTheme.typography.body1
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
             items(count = itemList.size) { indexNumber ->
@@ -128,7 +129,7 @@ fun BreakTimeScreen(
                                 .padding(start = 16.dp)
                                 .weight(0.5f),
                             text = itemList[indexNumber],
-                            style = androidx.compose.material.MaterialTheme.typography.subtitle1,
+                            style = MaterialTheme.typography.titleMedium,
                             fontSize = 25.sp
                         )
 

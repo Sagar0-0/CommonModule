@@ -13,7 +13,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.BottomNavigation
+
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -139,7 +139,7 @@ fun MyApp(context: @Composable () -> Unit) {
 fun WalkingToolHomeScreen() {
 
     Scaffold(topBar = {
-        BottomNavigation(content = {
+        NavigationBar(content = {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -167,7 +167,7 @@ fun WalkingToolHomeScreen() {
                     )
                 }
             }
-        }, elevation = 10.dp, backgroundColor = MaterialTheme.colorScheme.onPrimary)
+        }, tonalElevation = 10.dp, containerColor = MaterialTheme.colorScheme.onPrimary)
     }, content = {
         WalkingBottomSheet(paddingValues = it)
     })
@@ -177,7 +177,7 @@ fun WalkingToolHomeScreen() {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    androidx.compose.material.Surface(Modifier.fillMaxSize()) {
+    Surface(Modifier.fillMaxSize()) {
         WalkingToolHomeScreen()
     }
 

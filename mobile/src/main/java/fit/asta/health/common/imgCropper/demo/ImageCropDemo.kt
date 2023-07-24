@@ -14,23 +14,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Scaffold
-import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Crop
-import androidx.compose.material.icons.filled.LockReset
-import androidx.compose.material.icons.filled.Rotate90DegreesCw
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -43,11 +39,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.smarttoolfactory.colorpicker.widget.drawChecker
 import fit.asta.health.common.imgCropper.ImageSelectionButton
 import fit.asta.health.common.imgCropper.cropper.ImageCropper
+import fit.asta.health.common.ui.CustomTopBar
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -75,11 +71,7 @@ fun ImageCropperScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = {
-                androidx.compose.material.Text(
-                    "Crop Image", maxLines = 1, overflow = TextOverflow.Ellipsis
-                )
-            }, navigationIcon = {
+            CustomTopBar(text = "Crop Image", onBackPressed = {}, actionItems = {
                 IconButton(onClick = { onCloseImgCropper() }) {
                     Icon(
                         imageVector = Icons.Filled.Close, contentDescription = "Close Image Cropper"
@@ -186,7 +178,7 @@ fun ImageCropperScreen(
         },
         modifier = Modifier.fillMaxSize(),
         contentColor = MaterialTheme.colorScheme.background,
-        backgroundColor = MaterialTheme.colorScheme.background,
+        containerColor = MaterialTheme.colorScheme.background,
     )
 
 }

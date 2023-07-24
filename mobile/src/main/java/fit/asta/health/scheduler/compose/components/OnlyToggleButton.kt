@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -301,7 +299,7 @@ fun DaysCircleButton(
         onClick = { onDaySelect() },
         shape = CircleShape,
         modifier = Modifier.size(40.dp),
-        colors = ButtonDefaults.buttonColors(backgroundColor = colorState)
+        colors = ButtonDefaults.buttonColors(containerColor = colorState)
     ) {
         Text(text = day, fontSize = 16.sp, color = colorState2, textAlign = TextAlign.Center)
     }

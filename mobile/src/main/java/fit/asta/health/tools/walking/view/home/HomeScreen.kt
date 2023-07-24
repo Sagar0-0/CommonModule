@@ -12,7 +12,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -49,39 +49,39 @@ fun HomeScreen(
     navController: NavController, homeViewModel: WalkingViewModel
 ) {
 
-    androidx.compose.material3.Scaffold(topBar = {
-        BottomNavigation(
+    Scaffold(topBar = {
+        NavigationBar(
             content = {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    androidx.compose.material3.IconButton(onClick = { navController.popBackStack() }) {
-                        androidx.compose.material3.Icon(
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(
                             painter = painterResource(id = R.drawable.ic_exercise_back),
                             contentDescription = null,
                             Modifier.size(24.dp)
                         )
                     }
-                    androidx.compose.material3.Text(
+                    Text(
                         text = "Step Counter",
                         fontSize = 20.sp,
-                        color = androidx.compose.material3.MaterialTheme.colorScheme.onBackground,
+                        color = MaterialTheme.colorScheme.onBackground,
                         textAlign = TextAlign.Center
                     )
-                    androidx.compose.material3.IconButton(onClick = { /*TODO*/ }) {
-                        androidx.compose.material3.Icon(
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
                             painter = painterResource(id = R.drawable.ic_physique),
                             contentDescription = null,
                             Modifier.size(24.dp),
-                            tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
             },
-            elevation = 10.dp,
-            backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimary
+            tonalElevation = 10.dp,
+            containerColor = MaterialTheme.colorScheme.onPrimary
         )
     }, content = {
         StepsBottomSheet(
@@ -92,7 +92,7 @@ fun HomeScreen(
 }
 
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun StepsBottomSheet(
     navController: NavController = rememberNavController(),
@@ -102,13 +102,7 @@ fun StepsBottomSheet(
     val state = homeViewModel.homeUiState.value
     val apiState = homeViewModel.ApiState.value
     val startWorking = homeViewModel.startWorking
-    val sheetState = rememberBottomSheetState(
-        initialValue = BottomSheetValue.Collapsed
-    )
-    val scaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = sheetState
-    )
-    val scope = rememberCoroutineScope()
+    val scaffoldState = rememberBottomSheetScaffoldState()
 
     var visible by remember {
         mutableStateOf(false)
@@ -118,12 +112,12 @@ fun StepsBottomSheet(
         sheetContent = {
             WalkingBottomSheetView(homeViewModel, visible, navController, apiState, startWorking)
         },
-        sheetBackgroundColor = Color.Gray,
-        backgroundColor = Color.DarkGray,
+        sheetContentColor = Color.Gray,
+        containerColor = Color.DarkGray,
         sheetPeekHeight = 200.dp,
         scaffoldState = scaffoldState
     ) {
-        visible = !sheetState.isCollapsed
+        visible = !scaffoldState.bottomSheetState.hasPartiallyExpandedState
         HomeLayout(paddingValues = paddingValues, state = state, apiState = apiState,
             onTargetDistance = { homeViewModel.onUIEvent(StepCounterUIEvent.ChangeTargetDistance(it)) },
             onTargetDuration = { homeViewModel.onUIEvent(StepCounterUIEvent.ChangeTargetDuration(it)) },
@@ -328,7 +322,7 @@ fun MainCircularSlider(
         mutableStateOf("min")
     }
     Surface(
-        color = MaterialTheme.colors.background,
+        color = MaterialTheme.colorScheme.background,
         shape = RoundedCornerShape(corner = CornerSize(15.dp)),
     ) {
         Column(
@@ -403,7 +397,7 @@ fun StepsDetailsCard(modifier: Modifier, distance: Double, duration: Int, steps:
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
-        backgroundColor = MaterialTheme.colors.background,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
     ) {
         Row(
             modifier = Modifier
@@ -445,7 +439,7 @@ fun DetailsCard(
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
-        backgroundColor = MaterialTheme.colors.background,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
     ) {
         Row(
             modifier = Modifier
@@ -565,7 +559,7 @@ fun VitaminCard(modifier: Modifier, recommendedValue: Int, achievedValue: Int) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
-        backgroundColor = MaterialTheme.colors.background,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
     ) {
         Column(
             modifier = Modifier
@@ -581,7 +575,7 @@ fun VitaminCard(modifier: Modifier, recommendedValue: Int, achievedValue: Int) {
             }
             Text(
                 text = "You need to take $recommendedValue IU every day to overcome your Vitamin D deficiency",
-                style = MaterialTheme.typography.caption
+                style = MaterialTheme.typography.bodySmall
             )
         }
     }
@@ -607,7 +601,7 @@ fun SunlightCard(modifier: Modifier) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
-        backgroundColor = MaterialTheme.colors.background,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
     ) {
         Row(
             modifier = Modifier

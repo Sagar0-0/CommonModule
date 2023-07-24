@@ -1,8 +1,8 @@
-package fit.asta.health.tools.sunlight.view.components.bottomsheet
+package fit.asta.health.tools.sunlight.view.components
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
+import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip

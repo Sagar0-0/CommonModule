@@ -15,11 +15,9 @@
             android:id="@+id/toolbarWebView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:contentInsetStartWithNavigation="@dimen/dimen_0"
             app:layout_collapseMode="pin"
             app:layout_scrollFlags="scroll|enterAlways|snap|snapMargins"
-            app:navigationIcon="@drawable/ic_arrow_left"
-            app:theme="@style/ToolbarTheme" />
+            app:navigationIcon="@drawable/ic_arrow_left" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

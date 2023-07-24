@@ -6,7 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
 import androidx.compose.material3.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,8 +30,7 @@ import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.StatUiState
 import fit.asta.health.scheduler.compose.screen.timesettingscreen.TimeSettingCreateBottomSheetTypes.*
 import kotlinx.coroutines.launch
 
-@RequiresApi(Build.VERSION_CODES.N)
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TimeSettingScreen(
     list: SnapshotStateList<StatUiState>,
@@ -41,51 +39,41 @@ fun TimeSettingScreen(
     navBack: () -> Unit,
     isIntervalDataValid:(IvlUiState)->Boolean
 ) {
-    val context= LocalContext.current
     var currentBottomSheet: TimeSettingCreateBottomSheetTypes? by remember {
         mutableStateOf(null)
     }
 
-    var modalBottomSheetValue by remember {
-        mutableStateOf(ModalBottomSheetValue.Hidden)
-    }
-
-    val modalBottomSheetState = rememberModalBottomSheetState(modalBottomSheetValue)
+    var skipPartiallyExpanded by remember { mutableStateOf(false) }
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = skipPartiallyExpanded)
 
     val scope = rememberCoroutineScope()
 
     val closeSheet = {
         scope.launch {
-            modalBottomSheetState.hide()
-            if (modalBottomSheetValue == ModalBottomSheetValue.Expanded) {
-                modalBottomSheetValue = ModalBottomSheetValue.Hidden
-            }
+            bottomSheetState.hide()
         }
     }
 
     val openSheet = {
         scope.launch {
-            modalBottomSheetState.show()
-            if (modalBottomSheetValue == ModalBottomSheetValue.Hidden) {
-                modalBottomSheetValue = ModalBottomSheetValue.Expanded
-            }
+            bottomSheetState.show()
         }
     }
 
-    ModalBottomSheetLayout(modifier = Modifier
-        .fillMaxSize()
-        .wrapContentHeight(),
-        sheetState = modalBottomSheetState,
-        sheetContent = {
-            Spacer(modifier = Modifier.height(1.dp))
-            currentBottomSheet?.let {
-                TimeSettingCreateBtmSheetLayout(
-                    sheetLayout = it,
-                    closeSheet = { closeSheet() },
-                    tSEvent = tSEvent
-                )
-            }
-        }) {
+    ModalBottomSheet(
+        onDismissRequest = { closeSheet() },
+        modifier = Modifier.fillMaxSize().wrapContentHeight(),
+        sheetState = bottomSheetState
+    ) {
+
+        Spacer(modifier = Modifier.height(1.dp))
+        currentBottomSheet?.let {
+            TimeSettingCreateBtmSheetLayout(
+                sheetLayout = it,
+                closeSheet = { closeSheet() },
+                tSEvent = tSEvent
+            )
+        }
 
         Scaffold(content = { paddingValues ->
             SettingsLayout(
@@ -126,7 +114,7 @@ fun TimeSettingScreen(
                 onDelete = { tSEvent(TimeSettingEvent.DeleteVariantInterval(it)) }
             )
         }, topBar = {
-            BottomNavigation(content = {
+            NavigationBar(content = {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -160,7 +148,7 @@ fun TimeSettingScreen(
                         )
                     }
                 }
-            }, elevation = 10.dp, backgroundColor = Color.White)
+            }, tonalElevation = 10.dp, containerColor = Color.White)
         })
     }
 

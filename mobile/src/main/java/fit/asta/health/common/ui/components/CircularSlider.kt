@@ -10,8 +10,8 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -49,7 +49,7 @@ fun CircularSliderInt( // progress in 1 2 3 4 range
     modifier: Modifier = Modifier,
     indicatorValue: Float = 2f,
     maxIndicatorValue: Float = 6f,
-    bigTextColor: Color = MaterialTheme.colors.onSurface,
+    bigTextColor: Color = MaterialTheme.colorScheme.onSurface,
     bigTextSuffix: String = "Min",
     padding: Float = 50f,
     stroke: Float = 20f,
@@ -127,7 +127,7 @@ fun CircularSliderInt( // progress in 1 2 3 4 range
     )
     val animatedBigTextColor by animateColorAsState(
         targetValue = if (allowedIndicatorValue == 0f)
-            MaterialTheme.colors.onSurface.copy(alpha = 0.3f)
+            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
         else
             bigTextColor,
         animationSpec = tween(1000)
@@ -301,7 +301,7 @@ fun CircularSliderFloat( // progress in 1.3 2.6 6.2 range
     modifier: Modifier = Modifier,
     indicatorValue: Float = 2f,
     maxIndicatorValue: Float = 6f,
-    bigTextColor: Color = MaterialTheme.colors.onSurface,
+    bigTextColor: Color = MaterialTheme.colorScheme.onSurface,
     bigTextSuffix: String = "Litres",
     padding: Float = 50f,
     stroke: Float = 20f,
@@ -379,7 +379,7 @@ fun CircularSliderFloat( // progress in 1.3 2.6 6.2 range
     )
     val animatedBigTextColor by animateColorAsState(
         targetValue = if (allowedIndicatorValue == 0f)
-            MaterialTheme.colors.onSurface.copy(alpha = 0.3f)
+            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
         else
             bigTextColor,
         animationSpec = tween(1000)

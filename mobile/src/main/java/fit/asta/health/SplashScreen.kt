@@ -7,11 +7,13 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Scaffold
-import androidx.compose.material.SnackbarDuration
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
@@ -48,9 +50,9 @@ class SplashScreen : ComponentActivity() {
         registerConnectivityReceiver()
         setContent {
             AppTheme {
-                val scaffoldState = rememberScaffoldState()
+                val snackBarHostState = remember { SnackbarHostState() }
                 Scaffold(
-                    scaffoldState = scaffoldState,
+                    snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
                     modifier = Modifier.fillMaxSize()
                 ) {
                     Row(
@@ -65,7 +67,7 @@ class SplashScreen : ComponentActivity() {
                         if (!isConnected.value) {
                             val msg = stringResource(id = R.string.OFFLINE_STATUS)
                             LaunchedEffect(Unit) {
-                                scaffoldState.snackbarHostState.showSnackbar(
+                                snackBarHostState.showSnackbar(
                                     message = msg,
                                     duration = SnackbarDuration.Indefinite
                                 )

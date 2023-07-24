@@ -1,6 +1,6 @@
 package fit.asta.health.player.jetpack_audio.presentation.ui.theme
 
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 
@@ -11,7 +11,7 @@ fun LOULATheme(
 
     CompositionLocalProvider(LocalSpacing provides Dimensions()) {
         MaterialTheme(
-            colors = LolaMusicColors,
+            colorScheme = LolaMusicColors,
             typography = LolaMusicTypography,
             shapes = LolaMusicShapes,
             content = content

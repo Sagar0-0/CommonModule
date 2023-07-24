@@ -4,8 +4,8 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.LinearProgressIndicator
-import androidx.compose.material.ProgressIndicatorDefaults
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -44,8 +44,8 @@ fun ProgressBarInt(
         LinearProgressIndicator(
             modifier = Modifier.clip(RoundedCornerShape(6.dp)),
             progress = animatedProgress,
-            backgroundColor = Color.LightGray,
-            color = Color.Magenta
+            color = Color.Magenta,
+            trackColor = Color.LightGray,
         )
         Text(
             text = name, fontSize = 12.sp, fontWeight = FontWeight.Bold
@@ -80,8 +80,8 @@ fun ProgressBarFloat(
         LinearProgressIndicator(
             modifier = Modifier.clip(RoundedCornerShape(6.dp)),
             progress = animatedProgress,
-            backgroundColor = Color.LightGray,
-            color = Color.Magenta
+            color = Color.Magenta,
+            trackColor = Color.LightGray,
         )
         Text(
             text = name, fontSize = 12.sp, fontWeight = FontWeight.Bold

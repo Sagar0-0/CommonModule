@@ -8,12 +8,13 @@ import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,6 +31,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(getPlace: (Place) -> Unit) {
     val focusManager = LocalFocusManager.current
@@ -54,7 +56,6 @@ fun SearchBar(getPlace: (Place) -> Unit) {
             }
         }
     }
-
 
     OutlinedTextField(
         maxLines = 1,
@@ -84,12 +85,12 @@ fun SearchBar(getPlace: (Place) -> Unit) {
         leadingIcon = {
             Icon(imageVector = Icons.Default.Search, contentDescription = "")
         },
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = Color.DarkGray,
-            backgroundColor = Color.White,
+        colors = TextFieldDefaults.colors(
+            focusedTextColor = Color.DarkGray,
+            unfocusedTextColor = Color.DarkGray,
+            focusedContainerColor = Color.White,
+            unfocusedContainerColor = Color.White,
             cursorColor = Color.DarkGray,
-            focusedBorderColor = Color.Black,
-            leadingIconColor = Color.Red,
             focusedLabelColor = Color.DarkGray,
             unfocusedLabelColor = Color.DarkGray
         )

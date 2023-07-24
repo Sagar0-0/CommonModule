@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.windowInsetsTopHeight
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -38,7 +38,7 @@ fun HomeScreen(
                 WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)
             )
     ) {
-        val appBarColor = MaterialTheme.colors.surface.copy(alpha = 0.87f)
+        val appBarColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.87f)
         Spacer(
             Modifier
                 .background(appBarColor)

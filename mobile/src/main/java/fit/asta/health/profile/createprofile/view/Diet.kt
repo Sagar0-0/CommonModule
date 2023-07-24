@@ -5,20 +5,17 @@ package fit.asta.health.profile.createprofile.view
 import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.rememberModalBottomSheetState
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import fit.asta.health.main.ui.MainActivity
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.main.ui.MainActivity
 import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.profile.createprofile.view.DietCreateBottomSheetType.*
@@ -184,72 +181,72 @@ fun DietContent(
 }
 
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DietCreateScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     eventPrevious: (() -> Unit)? = null,
+    open: Boolean = true
 ) {
+    var openBottomSheet by rememberSaveable { mutableStateOf(open) }
+    var skipPartiallyExpanded by remember { mutableStateOf(false) }
+    var edgeToEdgeEnabled by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = skipPartiallyExpanded)
+
     var currentBottomSheet: DietCreateBottomSheetType? by remember {
         mutableStateOf(null)
     }
 
-    var modalBottomSheetValue by remember {
-        mutableStateOf(ModalBottomSheetValue.Hidden)
-    }
-
-    val modalBottomSheetState = rememberModalBottomSheetState(
-        initialValue = modalBottomSheetValue
-    )
-
-    val scope = rememberCoroutineScope()
-
-    val closeSheet = {
-        scope.launch { modalBottomSheetState.hide() }
-    }
-
     val openSheet = {
         scope.launch {
-            modalBottomSheetState.show()
-            if (modalBottomSheetValue == ModalBottomSheetValue.HalfExpanded) {
-                modalBottomSheetValue = ModalBottomSheetValue.Expanded
-            }
+            bottomSheetState.partialExpand()
         }
     }
 
+    val closeSheet = {
+        scope.launch { bottomSheetState.hide() }
+    }
 
-    ModalBottomSheetLayout(modifier = Modifier.fillMaxSize(),
-        sheetState = modalBottomSheetState,
-        sheetContent = {
+    if (openBottomSheet) {
+
+        val windowInsets = if (edgeToEdgeEnabled)
+            WindowInsets(0) else BottomSheetDefaults.windowInsets
+
+        ModalBottomSheet(
+            onDismissRequest = { openBottomSheet = false },
+            sheetState = bottomSheetState,
+            windowInsets = windowInsets,
+            modifier = Modifier.fillMaxSize(),
+            ) {
+
             Spacer(modifier = Modifier.height(1.dp))
             currentBottomSheet?.let {
                 DietCreateBottomSheetLayout(sheetLayout = it, closeSheet = { closeSheet() })
             }
-        }) {
 
-        DietContent(eventPrevious = eventPrevious, onNonVegDays = {
-            currentBottomSheet = NONVEGDAYS
-            openSheet()
-        }, onFoodAllergies = {
-            currentBottomSheet = FOODALLERGIES
-            openSheet()
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "food"))
-        }, onCuisines = {
-            currentBottomSheet = CUISINES
-            openSheet()
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "cu"))
-        }, onFoodRes = {
-            currentBottomSheet = FOODRES
-            openSheet()
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "food"))
-        }, onDietaryPref = {
-            currentBottomSheet = DIETARYPREF
-            openSheet()
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "dp"))
-        })
-
+            DietContent(eventPrevious = eventPrevious, onNonVegDays = {
+                currentBottomSheet = NONVEGDAYS
+                openSheet()
+            }, onFoodAllergies = {
+                currentBottomSheet = FOODALLERGIES
+                openSheet()
+                viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "food"))
+            }, onCuisines = {
+                currentBottomSheet = CUISINES
+                openSheet()
+                viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "cu"))
+            }, onFoodRes = {
+                currentBottomSheet = FOODRES
+                openSheet()
+                viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "food"))
+            }, onDietaryPref = {
+                currentBottomSheet = DIETARYPREF
+                openSheet()
+                viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "dp"))
+            })
+        }
     }
-
 }
 
 

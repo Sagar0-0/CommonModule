@@ -11,8 +11,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -40,7 +40,7 @@ fun CircularSlider(
     modifier: Modifier = Modifier,
     indicatorValue: Float = 2f,
     maxIndicatorValue: Float = 120f,
-    bigTextColor: Color = MaterialTheme.colors.onSurface,
+    bigTextColor: Color = MaterialTheme.colorScheme.onSurface,
     bigTextSuffix: String = "min",
     padding: Float = 50f,
     stroke: Float = 20f,
@@ -150,7 +150,7 @@ fun CircularSlider(
     )
     val animatedBigTextColor by animateColorAsState(
         targetValue = if (allowedIndicatorValue == 0f)
-            MaterialTheme.colors.onSurface.copy(alpha = 0.3f)
+            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
         else
             bigTextColor,
         animationSpec = tween(1000)

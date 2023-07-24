@@ -4,12 +4,25 @@ import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -33,7 +46,7 @@ import fit.asta.health.navigation.today.view.TodayContent
 import fit.asta.health.navigation.track.view.TrackContent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@OptIn(ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MainActivityLayout(
     locationName: String,
@@ -45,68 +58,77 @@ fun MainActivityLayout(
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    val scaffoldState = rememberScaffoldState()
 
     Scaffold(
-        scaffoldState = scaffoldState,
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
                 modifier = Modifier.shadow(elevation = cardElevation.medium),
-                backgroundColor = MaterialTheme.colorScheme.background
-            ) {
-                Row(Modifier.clickable { onClick(MainTopBarActions.LOCATION) }) {
-                    Icon(
-                        Icons.Default.LocationOn, contentDescription = "Location",
-                        tint = MaterialTheme.colorScheme.onBackground
-                    )
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                ),
+                title = {
                     Text(
-                        text = locationName, textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(spacing.minSmall),
-                        color = MaterialTheme.colorScheme.onBackground
+                        text = "",
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.titleMedium
                     )
-                }
-                Row(
-                    Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    IconButton(onClick = { onClick(MainTopBarActions.NOTIFICATION) }) {
+                },
+                actions = {
+                    Row(Modifier.clickable { onClick(MainTopBarActions.LOCATION) }) {
                         Icon(
-                            painterResource(id = if (isNotificationEnabled) R.drawable.ic_notifications_on else R.drawable.ic_notifications_off),
-                            contentDescription = "Notifications",
+                            Icons.Default.LocationOn, contentDescription = "Location",
                             tint = MaterialTheme.colorScheme.onBackground
                         )
-                    }
-                    IconButton(onClick = { onClick(MainTopBarActions.SHARE) }) {
-                        Icon(
-                            painterResource(id = R.drawable.ic_share_app),
-                            contentDescription = "Share",
-                            tint = MaterialTheme.colorScheme.onBackground
+                        Text(
+                            text = locationName, textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(spacing.minSmall),
+                            color = MaterialTheme.colorScheme.onBackground
                         )
                     }
-                    if (profileImageUri != null) {
-                        IconButton(onClick = { onClick(MainTopBarActions.PROFILE) }) {
-                            Log.d("URI", profileImageUri.toString())
-                            Image(
-                                modifier = Modifier.clip(CircleShape),
-                                painter = rememberAsyncImagePainter(
-                                    model = profileImageUri, placeholder = painterResource(
-                                        id = R.drawable.ic_person
-                                    )
-                                ), contentDescription = "Profile"
+                    Row(
+                        Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        IconButton(onClick = { onClick(MainTopBarActions.NOTIFICATION) }) {
+                            Icon(
+                                painterResource(id = if (isNotificationEnabled) R.drawable.ic_notifications_on else R.drawable.ic_notifications_off),
+                                contentDescription = "Notifications",
+                                tint = MaterialTheme.colorScheme.onBackground
+                            )
+                        }
+                        IconButton(onClick = { onClick(MainTopBarActions.SHARE) }) {
+                            Icon(
+                                painterResource(id = R.drawable.ic_share_app),
+                                contentDescription = "Share",
+                                tint = MaterialTheme.colorScheme.onBackground
+                            )
+                        }
+                        if (profileImageUri != null) {
+                            IconButton(onClick = { onClick(MainTopBarActions.PROFILE) }) {
+                                Log.d("URI", profileImageUri.toString())
+                                Image(
+                                    modifier = Modifier.clip(CircleShape),
+                                    painter = rememberAsyncImagePainter(
+                                        model = profileImageUri, placeholder = painterResource(
+                                            id = R.drawable.ic_person
+                                        )
+                                    ), contentDescription = "Profile"
+                                )
+                            }
+                        }
+                        IconButton(onClick = { onClick(MainTopBarActions.SETTINGS) }) {
+                            Icon(
+                                painterResource(id = R.drawable.ic_settings),
+                                contentDescription = "Settings",
+                                tint = MaterialTheme.colorScheme.onBackground
                             )
                         }
                     }
-                    IconButton(onClick = { onClick(MainTopBarActions.SETTINGS) }) {
-                        Icon(
-                            painterResource(id = R.drawable.ic_settings),
-                            contentDescription = "Settings",
-                            tint = MaterialTheme.colorScheme.onBackground
-                        )
-                    }
                 }
-            }
+            )
         },
         bottomBar = {
             BottomAppBar(
@@ -180,14 +202,19 @@ fun BottomAppBar(
     currentRoute: String,
     onNavigate: (route: String) -> Unit
 ) {
-    BottomNavigation(
+    val colors = NavigationBarItemDefaults.colors(
+        selectedTextColor = MaterialTheme.colorScheme.primary,
+        unselectedTextColor = MaterialTheme.colorScheme.onSurface
+    )
+
+    NavigationBar(
         modifier = Modifier
             .fillMaxWidth(),
-        backgroundColor = MaterialTheme.colorScheme.background,
-        elevation = elevation.high
+        containerColor = MaterialTheme.colorScheme.background,
+        tonalElevation = elevation.high
     ) {
         items.forEach { item ->
-            BottomNavigationItem(
+            NavigationBarItem(
                 icon = {
                     Icon(
                         painter = painterResource(id = item.icon),
@@ -197,8 +224,7 @@ fun BottomAppBar(
                 label = { Text(text = item.title) },
                 selected = currentRoute == item.route,
                 onClick = { onNavigate(item.route) },
-                selectedContentColor = MaterialTheme.colorScheme.primary,
-                unselectedContentColor = MaterialTheme.colorScheme.onSurface,
+                colors = colors
             )
         }
     }

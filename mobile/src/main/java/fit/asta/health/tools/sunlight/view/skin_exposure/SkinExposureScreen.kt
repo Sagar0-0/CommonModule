@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomNavigation
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
@@ -61,7 +61,7 @@ fun SkinExposureScreen(
 
     Scaffold(
         topBar = {
-            BottomNavigation(
+            NavigationBar(
                 content = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -90,8 +90,8 @@ fun SkinExposureScreen(
                         }
                     }
                 },
-                elevation = 10.dp,
-                backgroundColor = MaterialTheme.colorScheme.onPrimary
+                tonalElevation = 10.dp,
+                containerColor = MaterialTheme.colorScheme.onPrimary
             )
         }
     ) {
@@ -152,11 +152,11 @@ fun SkinExposureCardModified(
     modifier: Modifier,
     isSelected: Boolean
 ) {
-    androidx.compose.material.Card(
+    Card(
         modifier = modifier
             .padding(8.dp),
         shape = RoundedCornerShape(8.dp),
-        backgroundColor = Color(0x66959393)
+        colors = CardDefaults.cardColors(Color(0x66959393))
     ) {
         SkinExposureCardComponentModified(
             cardValue = cardValue,
@@ -166,7 +166,7 @@ fun SkinExposureCardModified(
     }
     if (isSelected) {
         Box(contentAlignment = Alignment.TopEnd) {
-            androidx.compose.material.Icon(
+            Icon(
                 imageVector = Icons.Default.Check,
                 contentDescription = "Selected",
                 tint = Color.Green,

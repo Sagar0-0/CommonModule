@@ -5,14 +5,18 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import fit.asta.health.R
-import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabPosition
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import fit.asta.health.R
 import fit.asta.health.player.jetpack_audio.presentation.screens.home.HomeCategory
 
 
@@ -45,7 +49,7 @@ fun HomeCategoryTab(
                             HomeCategory.Discover -> stringResource(id = R.string.discover)
                             HomeCategory.Library -> stringResource(id = R.string.your_library)
                         },
-                        style = MaterialTheme.typography.body2
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 }
             )
@@ -57,7 +61,7 @@ fun HomeCategoryTab(
 @Composable
 fun HomeCategoryTabIndicator(
     modifier: Modifier = Modifier,
-    color: Color = MaterialTheme.colors.onSurface
+    color: Color = MaterialTheme.colorScheme.onSurface
 ) {
     Spacer(
         modifier

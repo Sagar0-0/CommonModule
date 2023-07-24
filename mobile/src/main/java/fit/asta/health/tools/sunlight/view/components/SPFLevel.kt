@@ -11,10 +11,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
@@ -55,7 +56,8 @@ fun SPFLevelContent() {
     Column(Modifier.fillMaxWidth()) {
         Card(modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(8.dp),
-            backgroundColor = Color(0x66959593)) {
+            colors = CardDefaults.cardColors(Color(0x66959593))
+        ) {
             Column(modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)) {
@@ -83,7 +85,8 @@ fun SPFLevelContent() {
 
         Card(modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(8.dp),
-            backgroundColor = Color(0x66959593)) {
+            colors = CardDefaults.cardColors(Color(0x66959593))
+        ) {
             Text(text = "Wearing sunscreen is one of the best — and easiest — ways to protect your skin's appearance and health at any age.Sunscreen may help prevent the sun's rays from causing photographing and skin cancer.",
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Normal,
@@ -91,8 +94,6 @@ fun SPFLevelContent() {
                 modifier = Modifier.padding(16.dp))
         }
     }
-
-
 }
 
 @Composable
@@ -128,7 +129,7 @@ fun TimeSelectionLayout(title: String) {
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = { /*TODO*/ },
             shape = RoundedCornerShape(5.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.White),
             modifier = Modifier.fillMaxWidth(),
             border = BorderStroke(2.dp, color = Color(0x99E4E4E4))) {
             Text(text = "10:00 am",

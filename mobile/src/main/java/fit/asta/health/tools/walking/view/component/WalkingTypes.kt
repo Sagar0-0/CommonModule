@@ -1,7 +1,7 @@
 package fit.asta.health.tools.walking.view.component
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.BottomNavigation
+
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
@@ -41,7 +41,7 @@ fun WalkingTypeLayoutWalkingType(it: PaddingValues) {
 fun WalkingType() {
 
     Scaffold(topBar = {
-        BottomNavigation(content = {
+        NavigationBar(content = {
             Row(verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()) {
@@ -61,7 +61,7 @@ fun WalkingType() {
                         tint = MaterialTheme.colorScheme.primary)
                 }
             }
-        }, elevation = 10.dp)
+        }, tonalElevation = 10.dp)
     }, content = {
         WalkingTypeLayoutWalkingType(it = it)
     })

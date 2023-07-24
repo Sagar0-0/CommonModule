@@ -17,20 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.Divider
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.Surface
-import androidx.compose.material.rememberModalBottomSheetState
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -42,7 +29,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -62,7 +48,7 @@ import fit.asta.health.tools.breathing.view.components.CardBreathingRatio
 import fit.asta.health.tools.breathing.view.exercise.ExerciseBottomSheetTypes.*
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExerciseScreen(
     onClick: (List<String>) -> Unit, onBack: () -> Unit
@@ -87,49 +73,42 @@ fun ExerciseScreen(
         mutableStateOf(goals)
     }
 
-    val context = LocalContext.current
     var currentBottomSheet: ExerciseBottomSheetTypes? by remember {
         mutableStateOf(null)
     }
 
-    var modalBottomSheetValue by remember {
-        mutableStateOf(ModalBottomSheetValue.Hidden)
-    }
-
-    val modalBottomSheetState = rememberModalBottomSheetState(modalBottomSheetValue)
+    var skipPartiallyExpanded by remember { mutableStateOf(false) }
+    val bottomSheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = skipPartiallyExpanded
+    )
 
     val scope = rememberCoroutineScope()
 
     val closeSheet = {
         scope.launch {
-            modalBottomSheetState.hide()
-            if (modalBottomSheetValue == ModalBottomSheetValue.Expanded) {
-                modalBottomSheetValue = ModalBottomSheetValue.Hidden
-            }
+            bottomSheetState.hide()
         }
     }
 
     val openSheet = {
         scope.launch {
-            modalBottomSheetState.show()
-            if (modalBottomSheetValue == ModalBottomSheetValue.Hidden) {
-                modalBottomSheetValue = ModalBottomSheetValue.Expanded
-            }
+            bottomSheetState.show()
         }
     }
 
-    ModalBottomSheetLayout(modifier = Modifier
-        .fillMaxSize()
-        .wrapContentHeight(),
-        sheetState = modalBottomSheetState,
-        sheetContent = {
-            Spacer(modifier = Modifier.height(1.dp))
-            currentBottomSheet?.let {
-                ExerciseBottomSheetLayout(sheetLayout = it, closeSheet = { closeSheet() })
-            }
-        }) {
+    ModalBottomSheet(
+        modifier = Modifier.fillMaxSize().wrapContentHeight(),
+        onDismissRequest = { closeSheet() },
+        sheetState = bottomSheetState)
+    {
+
+        Spacer(modifier = Modifier.height(1.dp))
+        currentBottomSheet?.let {
+            ExerciseBottomSheetLayout(sheetLayout = it, closeSheet = { closeSheet() })
+        }
+
         Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
-            BottomNavigation(
+            NavigationBar(
                 content = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -158,7 +137,7 @@ fun ExerciseScreen(
                             )
                         }
                     }
-                }, elevation = 10.dp, backgroundColor = MaterialTheme.colorScheme.onPrimary
+                }, tonalElevation = 10.dp, containerColor = MaterialTheme.colorScheme.onPrimary
             )
         }) {
             LazyColumn(
@@ -173,7 +152,7 @@ fun ExerciseScreen(
                         text = "Select exercises for your breathing exercise",
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp,
-                        style = androidx.compose.material.MaterialTheme.typography.body1
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 }
                 items(count = items.size) { indexNumber ->

@@ -2,9 +2,9 @@ package fit.asta.health.navigation.home.view
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,12 +52,12 @@ fun Testimonials(
 
         Text(
             text = "Why our customers love ASTA?",
-            style = MaterialTheme.typography.h6,
-            color = androidx.compose.material3.MaterialTheme.colorScheme.onBackground
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         Divider(
-            color = androidx.compose.material3.MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.primary,
             thickness = 4.dp,
             modifier = Modifier
                 .width(71.dp)

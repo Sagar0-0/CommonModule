@@ -1,6 +1,5 @@
 package fit.asta.health.scheduler.compose.screen.homescreen
 
-import android.app.Activity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -10,18 +9,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.material.SnackbarDuration
-import androidx.compose.material.SnackbarResult
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.NavigateBefore
 import androidx.compose.material3.*
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SwitchDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -56,11 +47,10 @@ fun HomeScreen(
     navAlarmSettingHome: () -> Unit
 ) {
 
-    val scaffoldState: ScaffoldState = rememberScaffoldState()
+    val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
-    val activity = LocalContext.current as Activity
     val context = LocalContext.current
-    Scaffold(scaffoldState = scaffoldState, content = { paddingValues ->
+    Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) }, content = { paddingValues ->
         LazyColumn(
             Modifier
                 .fillMaxWidth()
@@ -71,7 +61,7 @@ fun HomeScreen(
                 SwipeAlarm(homeUiState = homeUiState, data = data, onSwipe = {
                     hSEvent(HomeEvent.DeleteAlarm(data, context))
                     coroutineScope.launch {
-                        val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
+                        val snackbarResult = snackbarHostState.showSnackbar(
                             message = "Deleted ${data.info.name}",
                             actionLabel = "Undo",
                             duration = SnackbarDuration.Long
@@ -113,7 +103,7 @@ fun HomeScreen(
                     fontSize = 20.sp
                 )
             }, navigationIcon = {
-                androidx.compose.material3.IconButton(onClick = { }) {
+                IconButton(onClick = { }) {
                     Icon(
                         Icons.Outlined.NavigateBefore,
                         "back",
@@ -231,7 +221,7 @@ private fun SwipeAbleAreaAlarm(
                     style = MaterialTheme.typography.bodySmall
                 )
             }
-            androidx.compose.material3.Switch(
+            Switch(
                 checked = isSelected,
                 enabled = buttonState,
                 onCheckedChange = {

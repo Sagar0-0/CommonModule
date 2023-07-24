@@ -1,21 +1,33 @@
-@file:Suppress("UNUSED_EXPRESSION")
-
 package fit.asta.health.navigation.home.view.component
 
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.BottomNavigation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material.icons.outlined.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -25,12 +37,11 @@ import androidx.compose.ui.unit.sp
 import fit.asta.health.R
 
 @Preview
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllSchedulesCards() {
 
     Scaffold(topBar = {
-        BottomNavigation(content = {
+        NavigationBar(content = {
             Row(verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()) {
                 IconButton(onClick = { /*TODO*/ }) {
@@ -43,8 +54,8 @@ fun AllSchedulesCards() {
                     color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center)
             }
-        }, elevation = 10.dp,
-            backgroundColor = MaterialTheme.colorScheme.onPrimary)
+        }, tonalElevation = 10.dp,
+            containerColor = MaterialTheme.colorScheme.onPrimary)
     }) {
         Items(paddingValues = it)
     }

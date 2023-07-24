@@ -7,12 +7,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -27,6 +28,7 @@ import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.feedback.model.network.An
 import fit.asta.health.feedback.model.network.Qn
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun feedbackTextFieldItem(qn: Qn): MutableState<An> {
     val ans = remember { mutableStateOf(An(null, false, null, null, 0, 0)) }
@@ -82,10 +84,8 @@ fun feedbackTextFieldItem(qn: Qn): MutableState<An> {
                         style = MaterialTheme.typography.bodyMedium
                     )
                 },
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    backgroundColor = MaterialTheme.colorScheme.surface,
-                    focusedBorderColor = MaterialTheme.colorScheme.primary,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.background
+                colors = TextFieldDefaults.colors(
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
                 ),
                 shape = MaterialTheme.shapes.medium
             )

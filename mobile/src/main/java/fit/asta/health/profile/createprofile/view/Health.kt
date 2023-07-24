@@ -12,8 +12,7 @@ package fit.asta.health.profile.createprofile.view
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -253,7 +252,7 @@ fun HealthContent(
 }
 
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun HealthCreateScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
@@ -266,39 +265,32 @@ fun HealthCreateScreen(
         mutableStateOf(null)
     }
 
-    var modalBottomSheetValue by remember {
-        mutableStateOf(ModalBottomSheetValue.Hidden)
-    }
-
-    val modalBottomSheetState = rememberModalBottomSheetState(modalBottomSheetValue)
-
+    var skipPartiallyExpanded by remember { mutableStateOf(false) }
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded)
     val scope = rememberCoroutineScope()
 
     val closeSheet = {
-        scope.launch { modalBottomSheetState.hide() }
+        scope.launch { bottomSheetState.hide() }
     }
 
     val openSheet = {
         scope.launch {
-            modalBottomSheetState.show()
-            if (modalBottomSheetValue == ModalBottomSheetValue.HalfExpanded) {
-                modalBottomSheetValue = ModalBottomSheetValue.Expanded
-            }
+            bottomSheetState.show()
         }
     }
 
-    ModalBottomSheetLayout(modifier = Modifier
-        .fillMaxSize()
-        .wrapContentHeight(),
-        sheetState = modalBottomSheetState,
-        sheetContent = {
-            Spacer(modifier = Modifier.height(1.dp))
-            currentBottomSheet?.let {
-                HealthCreateBtmSheetLayout(
-                    sheetLayout = it, sheetState = { closeSheet() }, viewModel = viewModel
-                )
-            }
-        }) {
+    ModalBottomSheet(
+        modifier = Modifier.fillMaxSize().wrapContentHeight(),
+        onDismissRequest = { closeSheet() },
+        sheetState = bottomSheetState
+    ) {
+
+        Spacer(modifier = Modifier.height(1.dp))
+        currentBottomSheet?.let {
+            HealthCreateBtmSheetLayout(
+                sheetLayout = it, sheetState = { closeSheet() }, viewModel = viewModel
+            )
+        }
 
         HealthContent(eventPrevious = eventPrevious,
             eventNext = eventNext,
@@ -338,9 +330,7 @@ fun HealthCreateScreen(
                 openSheet()
                 viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "add"))
             })
-
     }
-
 }
 
 enum class HealthCreateBottomSheetTypes {

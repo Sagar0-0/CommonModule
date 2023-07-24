@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomNavigation
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
@@ -57,7 +57,7 @@ fun SkinColorScreen(navController: NavController, list: List<ItemData>, onClick:
     }
     Scaffold(
         topBar = {
-            BottomNavigation(
+            NavigationBar(
                 content = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -86,8 +86,8 @@ fun SkinColorScreen(navController: NavController, list: List<ItemData>, onClick:
                         }
                     }
                 },
-                elevation = 10.dp,
-                backgroundColor = MaterialTheme.colorScheme.onPrimary
+                tonalElevation = 10.dp,
+                containerColor = MaterialTheme.colorScheme.onPrimary
             )
         }
     ) {
@@ -95,16 +95,16 @@ fun SkinColorScreen(navController: NavController, list: List<ItemData>, onClick:
             modifier = Modifier.padding(it)
         ) {
             item {
-                androidx.compose.material.Text(
+                Text(
                     modifier = Modifier.padding(horizontal = 16.dp),
                     text = "Select your age range",
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
-                    style = androidx.compose.material.MaterialTheme.typography.body1
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
             items(count = list.size) { indexNumber ->
-                androidx.compose.material.Surface(
+                Surface(
                     modifier = Modifier
                         .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
                         .fillMaxWidth()
@@ -123,17 +123,17 @@ fun SkinColorScreen(navController: NavController, list: List<ItemData>, onClick:
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        androidx.compose.material.Text(
+                        Text(
                             modifier = Modifier
                                 .padding(start = 16.dp)
                                 .weight(0.5f),
                             text = list[indexNumber].display,
-                            style = androidx.compose.material.MaterialTheme.typography.subtitle1,
+                            style = MaterialTheme.typography.titleMedium,
                             fontSize = 25.sp
                         )
                         if (itemSelection.value == indexNumber) {
                             Box(contentAlignment = Alignment.TopStart) {
-                                androidx.compose.material.Icon(
+                                Icon(
                                     imageVector = Icons.Default.Check,
                                     contentDescription = "Selected",
                                     tint = Color.Green,

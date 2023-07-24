@@ -14,18 +14,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomSheetScaffold
-import androidx.compose.material.BottomSheetScaffoldState
-import androidx.compose.material.BottomSheetValue
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Surface
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.rememberBottomSheetScaffoldState
-import androidx.compose.material.rememberBottomSheetState
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
@@ -34,10 +23,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import fit.asta.health.R
+import fit.asta.health.common.ui.CustomTopBar
 import fit.asta.health.common.ui.components.ButtonWithColor
 import fit.asta.health.common.ui.components.CardItem
 import fit.asta.health.common.ui.components.CircularSliderInt
@@ -46,7 +34,7 @@ import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.tools.sunlight.view.components.DividerLineCenter
 import fit.asta.health.tools.walking.view.home.SunlightCard
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MeditationHomeScreen(
     Event: (MEvent) -> Unit,
@@ -59,14 +47,10 @@ fun MeditationHomeScreen(
     onClickLanguage: () -> Unit,
     onClickLevel: () -> Unit,
     onClickInstructor: () -> Unit,
-    onBack:()->Unit,
+    onBack: () -> Unit,
 ) {
-    val sheetState = rememberBottomSheetState(
-        initialValue = BottomSheetValue.Collapsed
-    )
-    val scaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = sheetState
-    )
+
+    val scaffoldState = rememberBottomSheetScaffoldState()
     val scope = rememberCoroutineScope()
 
 
@@ -75,7 +59,7 @@ fun MeditationHomeScreen(
     }
     BottomSheetScaffold(
         modifier = Modifier.fillMaxSize(),
-        backgroundColor = MaterialTheme.colorScheme.tertiary,
+        containerColor = MaterialTheme.colorScheme.tertiary,
         sheetShape = RoundedCornerShape(16.dp),
         sheetContent = {
             MeditationBottomSheet(
@@ -83,7 +67,7 @@ fun MeditationHomeScreen(
                 language = language,
                 level = level,
                 instructor = instructor,
-                music=music,
+                music = music,
                 scaffoldState = scaffoldState,
                 Event = Event,
                 onClickMusic = onClickMusic,
@@ -95,35 +79,16 @@ fun MeditationHomeScreen(
         sheetPeekHeight = 200.dp,
         scaffoldState = scaffoldState,
         topBar = {
-            TopAppBar(elevation = 10.dp, backgroundColor = MaterialTheme.colorScheme.onPrimary) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_exercise_back),
-                            contentDescription = null,
-                            Modifier.size(24.dp)
-                        )
-                    }
-                    Text(
-                        text = "Meditation Tool",
-                        fontSize = 20.sp,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        textAlign = TextAlign.Center
+            CustomTopBar(text = "Meditation Tool", onBackPressed = onBack, actionItems = {
+                IconButton(onClick = { }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_physique),
+                        contentDescription = null,
+                        Modifier.size(24.dp),
+                        tint = MaterialTheme.colorScheme.primary
                     )
-                    IconButton(onClick = { }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_physique),
-                            contentDescription = null,
-                            Modifier.size(24.dp),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
                 }
-            }
+            })
         }
     ) {
         Column(
@@ -184,16 +149,18 @@ fun MeditationHomeScreen(
                     }
                 }
             }
-           AnimatedVisibility(modifier = Modifier.fillMaxWidth(),visible = uiState.start) {
-               ButtonWithColor(
-                   modifier = Modifier.fillMaxWidth(), color = Color.Green, text = "Go To Music Screen"
-               ) {onClickMusic() }
-           }
+            AnimatedVisibility(modifier = Modifier.fillMaxWidth(), visible = uiState.start) {
+                ButtonWithColor(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = Color.Green,
+                    text = "Go To Music Screen"
+                ) { onClickMusic() }
+            }
         }
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MeditationBottomSheet(
     uiState: HomeUiState,
@@ -240,7 +207,7 @@ fun MeditationBottomSheet(
             )
 
         }
-        AnimatedVisibility(visible = scaffoldState.bottomSheetState.isExpanded) {
+        AnimatedVisibility(visible = scaffoldState.bottomSheetState.hasExpandedState) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(spacing.medium)

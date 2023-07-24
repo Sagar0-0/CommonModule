@@ -8,12 +8,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -41,13 +38,11 @@ import fit.asta.health.scheduler.model.db.entity.TagEntity
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
-@Preview
 @Composable
 fun TagCard(text: String, image: String, onClick: () -> Unit = {}) {
 
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
-
     val color = if (isPressed) MaterialTheme.colorScheme.primary else Color.Transparent
 
     Button(
@@ -114,20 +109,26 @@ fun SwipeDemo(onSwipe: () -> Unit = {}, onClick: () -> Unit = {}, data: TagEntit
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CustomTagCard() {
 
-    val state = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Expanded)
+    var openBottomSheet by rememberSaveable { mutableStateOf(false) }
+    var skipPartiallyExpanded by remember { mutableStateOf(false) }
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = skipPartiallyExpanded)
+    var edgeToEdgeEnabled by remember { mutableStateOf(false) }
+    val windowInsets = if (edgeToEdgeEnabled)
+        WindowInsets(0) else BottomSheetDefaults.windowInsets
 
-    ModalBottomSheetLayout(
-        sheetContent = {},
+    ModalBottomSheet(
+        onDismissRequest = { openBottomSheet = false },
+        sheetState = bottomSheetState,
+        windowInsets = windowInsets,
         content = { },
-        sheetState = state,
-        sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-        sheetElevation = 10.dp,
-        sheetBackgroundColor = Color.White
+        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+        tonalElevation = 10.dp,
+        containerColor = Color.White
     )
 }
 
@@ -245,10 +246,10 @@ fun CustomTagTextField(
             onValueChange(it)
         },
         label = { Text(label) },
-        colors = TextFieldDefaults.outlinedTextFieldColors(
+        colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = MaterialTheme.colorScheme.primary,
             unfocusedBorderColor = Color.LightGray,
-            focusedLabelColor = MaterialTheme.colorScheme.primary
+            focusedLabelColor = MaterialTheme.colorScheme.primary,
         ),
         modifier = Modifier.focusRequester(focusRequester = focusRequester),
         shape = RoundedCornerShape(8.dp),

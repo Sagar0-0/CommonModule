@@ -81,7 +81,7 @@ fun Context.showImageByUrl(uriImg: Uri, imgView: ImageView?) {
             .load(uriImg)
             .thumbnail(Glide.with(applicationContext).load(R.drawable.shimmer))
             .centerCrop()
-            .transform(RoundedCorners(this.resources.getDimensionPixelSize(R.dimen.corner_radius)))
+            .transform(RoundedCorners(4))
             .error(R.drawable.ic_broken_image)
             .fallback(R.drawable.ic_camera)
             .diskCacheStrategy(DiskCacheStrategy.ALL)

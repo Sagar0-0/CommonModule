@@ -16,13 +16,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,13 +34,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.R
+import fit.asta.health.common.ui.CustomTopBar
 import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.player.jetpack_audio.domain.data.Song
 import fit.asta.health.player.jetpack_audio.domain.utils.AppIcons
@@ -69,37 +67,20 @@ fun MusicScreen(
         modifier = modifier
             .fillMaxSize(),
         topBar = {
-            TopAppBar(elevation = 10.dp, backgroundColor = MaterialTheme.colors.onPrimary) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    IconButton(onClick = {onBack() }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_exercise_back),
-                            contentDescription = null,
-                            Modifier.size(24.dp)
-                        )
-                    }
-                    Text(
-                        text = "Music ",
-                        fontSize = 20.sp,
-                        color = androidx.compose.material3.MaterialTheme.colorScheme.onBackground,
-                        textAlign = TextAlign.Center
-                    )
+            CustomTopBar(text = "Music ",
+                onBackPressed = onBack,
+                actionItems = {
                     IconButton(onClick = { }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_physique),
                             contentDescription = null,
                             Modifier.size(24.dp),
-                            tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
-                }
-            }
-        } ,
-        containerColor =MaterialTheme.colors.onSurface ,
+            })
+        },
+        containerColor =MaterialTheme.colorScheme.onSurface ,
     ) {
         Column(
             modifier = modifier.padding(it).fillMaxSize()
@@ -142,7 +123,7 @@ fun MusicScreen(
                             )
                         },
                         modifier = Modifier.fillMaxWidth(),
-                        backgroundColor = MaterialTheme.colors.surface
+                        backgroundColor = MaterialTheme.colorScheme.surface
                     )
                 }
             }
@@ -166,7 +147,7 @@ fun TrackItem(
     val isRunning = musicState.currentSong.id == song.id
 
     val textColor = if (isRunning) Color.Magenta
-    else MaterialTheme.colors.onSurface
+    else MaterialTheme.colorScheme.onSurface
 
 
     Column(
@@ -197,14 +178,14 @@ fun TrackItem(
                     text = song.title,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.body1,
+                    style = MaterialTheme.typography.bodyLarge,
                     color = textColor,
                 )
                 Text(
                     text = song.artist,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.subtitle1,
+                    style = MaterialTheme.typography.titleMedium,
                     color = textColor,
                 )
                 Row(
@@ -238,7 +219,7 @@ fun TrackItem(
                         color = textColor,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.caption,
+                        style = MaterialTheme.typography.bodySmall,
                     )
                 }
             }

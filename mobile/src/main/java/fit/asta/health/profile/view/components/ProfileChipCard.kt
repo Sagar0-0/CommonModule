@@ -5,8 +5,9 @@ package fit.asta.health.profile.view.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,7 +35,7 @@ fun ProfileChipCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(spacing.small),
-        elevation = cardElevation.smallExtraMedium
+        elevation = CardDefaults.cardElevation(cardElevation.smallExtraMedium)
     ) {
         Column(
             modifier = Modifier

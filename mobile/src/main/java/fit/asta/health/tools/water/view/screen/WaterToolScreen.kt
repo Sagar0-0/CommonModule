@@ -25,22 +25,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.BottomSheetScaffold
-import androidx.compose.material.BottomSheetScaffoldState
-import androidx.compose.material.BottomSheetValue
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ProgressIndicatorDefaults
-import androidx.compose.material.Surface
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.rememberBottomSheetScaffoldState
-import androidx.compose.material.rememberBottomSheetState
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -65,6 +50,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import fit.asta.health.R
+import fit.asta.health.common.ui.CustomTopBar
 import fit.asta.health.common.ui.components.ButtonWithColor
 import fit.asta.health.common.ui.components.CircularSliderFloat
 import fit.asta.health.common.ui.components.ProgressBarFloat
@@ -73,7 +59,7 @@ import fit.asta.health.tools.sunlight.view.components.DividerLineCenter
 import fit.asta.health.tools.water.model.domain.BeverageDetails
 import fit.asta.health.tools.water.model.network.TodayActivityData
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WaterToolScreen(
     Event: (WTEvent) -> Unit,
@@ -85,8 +71,9 @@ fun WaterToolScreen(
     uiState: WaterUiState,
     onBack: () -> Unit
 ) {
-    val sheetState = rememberBottomSheetState(
-        initialValue = BottomSheetValue.Collapsed
+    var skipPartiallyExpanded by remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = skipPartiallyExpanded
     )
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = sheetState
@@ -99,11 +86,11 @@ fun WaterToolScreen(
 
 
     LaunchedEffect(key1 = scaffoldState.bottomSheetState.currentValue) {
-        Event(WTEvent.SheetState(sheetState.isCollapsed))
+        Event(WTEvent.SheetState(sheetState.hasPartiallyExpandedState))
     }
     BottomSheetScaffold(
         modifier = Modifier.fillMaxSize(),
-        backgroundColor = MaterialTheme.colorScheme.tertiary,
+        containerColor = MaterialTheme.colorScheme.tertiary,
         sheetShape = RoundedCornerShape(16.dp),
         sheetContent = {
             WaterBottomSheet(
@@ -119,25 +106,10 @@ fun WaterToolScreen(
         sheetPeekHeight = 200.dp,
         scaffoldState = scaffoldState,
         topBar = {
-            TopAppBar(elevation = 10.dp, backgroundColor = MaterialTheme.colorScheme.onPrimary) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_exercise_back),
-                            contentDescription = null,
-                            Modifier.size(24.dp)
-                        )
-                    }
-                    Text(
-                        text = "Water Tool",
-                        fontSize = 20.sp,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        textAlign = TextAlign.Center
-                    )
+            CustomTopBar(
+                text = "Water Tool",
+                onBackPressed = onBack,
+                actionItems = {
                     IconButton(onClick = { }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_physique),
@@ -147,7 +119,7 @@ fun WaterToolScreen(
                         )
                     }
                 }
-            }
+            )
         }
     ) {
         val scrollState = rememberScrollState()
@@ -206,13 +178,13 @@ fun WaterToolScreen(
                         ProgressBarFloat(
                             modifier = Modifier.weight(0.3f),
                             targetDistance = uiState.water.target.toFloat(),
-                            progress = if(uiState.water.target==0.0) 0f else (uiState.water.consume / uiState.water.target).toFloat(),
+                            progress = if (uiState.water.target == 0.0) 0f else (uiState.water.consume / uiState.water.target).toFloat(),
                             name = "Goal"
                         )
                         ProgressBarFloat(
                             modifier = Modifier.weight(0.3f),
                             targetDistance = uiState.water.target.toFloat(),
-                            progress =if(uiState.water.target==0.0) 0f else (uiState.water.remaining / uiState.water.target).toFloat(),
+                            progress = if (uiState.water.target == 0.0) 0f else (uiState.water.remaining / uiState.water.target).toFloat(),
                             name = "Remaining"
                         )
                     }
@@ -229,23 +201,23 @@ fun WaterToolScreen(
                         )
                         RecommendItem(
                             title = beverageName("M"),
-                            value = (uiState.milk.recommend*1000).toFloat(),
-                            progress = (uiState.milk.consume*100.0/uiState.milk.recommend).toInt()
+                            value = (uiState.milk.recommend * 1000).toFloat(),
+                            progress = (uiState.milk.consume * 100.0 / uiState.milk.recommend).toInt()
                         )
                         RecommendItem(
                             title = beverageName("C"),
-                            value = (uiState.coconut.recommend*1000).toFloat(),
-                            progress = (uiState.coconut.consume*100.0/uiState.coconut.recommend).toInt()
+                            value = (uiState.coconut.recommend * 1000).toFloat(),
+                            progress = (uiState.coconut.consume * 100.0 / uiState.coconut.recommend).toInt()
                         )
                         RecommendItem(
                             title = beverageName("BM"),
-                            value = (uiState.butterMilk.recommend*1000).toFloat(),
-                            progress = (uiState.butterMilk.consume*100.0/uiState.butterMilk.recommend).toInt()
+                            value = (uiState.butterMilk.recommend * 1000).toFloat(),
+                            progress = (uiState.butterMilk.consume * 100.0 / uiState.butterMilk.recommend).toInt()
                         )
                         RecommendItem(
                             title = beverageName("FJ"),
-                            value = (uiState.fruitJuice.recommend*1000).toFloat(),
-                            progress = (uiState.fruitJuice.consume*100.0/uiState.fruitJuice.recommend).toInt()
+                            value = (uiState.fruitJuice.recommend * 1000).toFloat(),
+                            progress = (uiState.fruitJuice.consume * 100.0 / uiState.fruitJuice.recommend).toInt()
                         )
                     }
                 }
@@ -257,7 +229,7 @@ fun WaterToolScreen(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WaterBottomSheet(
     scaffoldState: BottomSheetScaffoldState,
@@ -279,7 +251,7 @@ fun WaterBottomSheet(
 
         DividerLineCenter()
 
-        AnimatedVisibility(visible = scaffoldState.bottomSheetState.isExpanded) {
+        AnimatedVisibility(visible = scaffoldState.bottomSheetState.hasExpandedState) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(spacing.medium)
@@ -321,7 +293,7 @@ fun WaterBottomSheet(
             }
         }
 
-        AnimatedVisibility(visible = scaffoldState.bottomSheetState.isCollapsed) {
+        AnimatedVisibility(visible = scaffoldState.bottomSheetState.hasPartiallyExpandedState) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(spacing.medium)
@@ -359,7 +331,6 @@ fun WaterBottomSheet(
         }
     }
 }
-
 
 
 @Composable
@@ -400,7 +371,7 @@ fun QuantityContainerComponent(
 }
 
 @Composable
-fun DailyActivity( todayActivityData: SnapshotStateList<TodayActivityData> ) {
+fun DailyActivity(todayActivityData: SnapshotStateList<TodayActivityData>) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -447,7 +418,7 @@ fun DailyActivity( todayActivityData: SnapshotStateList<TodayActivityData> ) {
                 items(todayActivityData) {
                     ActivityItem(
                         title = it.bev,
-                        consumeValue =(it.qty*1000).toFloat(),
+                        consumeValue = (it.qty * 1000).toFloat(),
                         icon_code = beverageNameToIcon(it.bev),
                         time = it.time
                     )
@@ -571,7 +542,7 @@ fun GridItem(
         modifier = modifier
             .clickable { onClick() },
         shape = RoundedCornerShape(8.dp),
-        backgroundColor = MaterialTheme.colorScheme.onTertiary,
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onTertiary),
     ) {
 
         Row(
@@ -614,7 +585,7 @@ fun CustomAlertDialog(onDismiss: () -> Unit, onUpdate: () -> Unit, dialogString:
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
-            elevation = 8.dp
+            elevation = CardDefaults.cardElevation(8.dp)
         ) {
             Column(
                 Modifier
@@ -730,6 +701,7 @@ fun beverageName(code: String): String {
         else -> "Water"
     }
 }
+
 fun beverageNameToIcon(name: String): Int {
     return when (name) {
         "Water" -> {

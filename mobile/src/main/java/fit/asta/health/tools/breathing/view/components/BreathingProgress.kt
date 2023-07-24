@@ -117,7 +117,7 @@ fun BreathingProgress(
     )
 //    val animatedBigTextColor by animateColorAsState(
 //        targetValue = if (allowedIndicatorValue == 0f)
-//            MaterialTheme.colors.onSurface.copy(alpha = 0.3f)
+//            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
 //        else
 //            bigTextColor,
 //        animationSpec = tween(1000)

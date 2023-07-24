@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Switch
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,7 +31,7 @@ fun WeatherCard() {
     Card(
         modifier = Modifier,
         shape = RoundedCornerShape(8.dp),
-        backgroundColor = androidx.compose.material.MaterialTheme.colors.background,
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background),
     ) {
         Row(
             modifier = Modifier

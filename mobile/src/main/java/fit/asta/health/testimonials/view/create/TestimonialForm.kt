@@ -6,9 +6,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.NavigateBefore
 import androidx.compose.material3.*
@@ -183,7 +180,7 @@ fun TestimonialForm(
             TestGetVideo()
         }
 
-        androidx.compose.material.Button(
+        Button(
             onClick = {
                 showCustomDialogWithResult = !showCustomDialogWithResult
                 getViewModel.onEvent(TestimonialEvent.OnSubmit)
@@ -192,7 +189,7 @@ fun TestimonialForm(
                 .fillMaxWidth(1f)
                 .padding(spacing.medium),
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Blue, contentColor = Color.White
+                containerColor = Color.Blue, contentColor = Color.White
             ),
             enabled = areInputsValid && areMediaValid
         ) {

@@ -157,7 +157,7 @@ dependencies {
     implementation "androidx.compose.material3:material3:1.1.1"
     implementation "androidx.compose.material3:material3-window-size-class:1.1.1"
     implementation "androidx.compose.material:material-icons-extended:$compose_ver"
-    implementation "com.google.android.material:compose-theme-adapter:1.2.1"
+    implementation "com.google.android.material:compose-theme-adapter-3:1.1.1"
 
     //Jetpack Compose - Pager
     def paging_ver = "3.1.1"

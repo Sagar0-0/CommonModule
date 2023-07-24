@@ -10,10 +10,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.BottomNavigation
+
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,7 +35,7 @@ import fit.asta.health.tools.view.components.CardSunBurn
 fun StatedStateComposable(navController: NavController, homeViewModel: SunlightViewModel) {
     Scaffold(
         topBar = {
-            BottomNavigation(
+            NavigationBar(
                 content = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -63,8 +64,8 @@ fun StatedStateComposable(navController: NavController, homeViewModel: SunlightV
                         }
                     }
                 },
-                elevation = 10.dp,
-                backgroundColor = MaterialTheme.colorScheme.onPrimary
+                tonalElevation = 10.dp,
+                containerColor = MaterialTheme.colorScheme.onPrimary
             )
         }
     ) {

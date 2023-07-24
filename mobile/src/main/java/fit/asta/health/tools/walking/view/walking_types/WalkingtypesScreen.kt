@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AdsClick
 import androidx.compose.material.icons.filled.ArrowBack
@@ -57,38 +57,38 @@ fun SelectItem(navController: NavController, list: List<String>, onClick: (Strin
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            BottomNavigation(
+            NavigationBar(
                 content = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        androidx.compose.material3.IconButton(onClick = { navController.popBackStack() }) {
-                            androidx.compose.material3.Icon(
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(
                                 painter = painterResource(id = R.drawable.ic_exercise_back),
                                 contentDescription = null,
                                 Modifier.size(24.dp)
                             )
                         }
-                        androidx.compose.material3.Text(
+                        Text(
                             text = "Walking Type",
                             fontSize = 20.sp,
-                            color = androidx.compose.material3.MaterialTheme.colorScheme.onBackground,
+                            color = MaterialTheme.colorScheme.onBackground,
                             textAlign = TextAlign.Center
                         )
-                        androidx.compose.material3.IconButton(onClick = { /*TODO*/ }) {
-                            androidx.compose.material3.Icon(
+                        IconButton(onClick = { /*TODO*/ }) {
+                            Icon(
                                 painter = painterResource(id = R.drawable.ic_physique),
                                 contentDescription = null,
                                 Modifier.size(24.dp),
-                                tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                                tint = MaterialTheme.colorScheme.primary
                             )
                         }
                     }
                 },
-                elevation = 10.dp,
-                backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimary
+                tonalElevation = 10.dp,
+                containerColor = MaterialTheme.colorScheme.onPrimary
             )
         }
     ) {
@@ -98,7 +98,7 @@ fun SelectItem(navController: NavController, list: List<String>, onClick: (Strin
                 text = "Select the Walking Type",
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp,
-                style = MaterialTheme.typography.body1
+                style = MaterialTheme.typography.bodyLarge
             ) }
             items(count = list.size) { indexNumber ->
                 Surface(
@@ -129,7 +129,7 @@ fun SelectItem(navController: NavController, list: List<String>, onClick: (Strin
                                 .padding(start = 16.dp)
                                 .weight(0.5f),
                             text = list[indexNumber],
-                            style = MaterialTheme.typography.subtitle1,
+                            style = MaterialTheme.typography.titleMedium,
                             fontSize = 25.sp
                         )
 

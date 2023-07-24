@@ -9,13 +9,13 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Scaffold
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -28,7 +28,6 @@ import fit.asta.health.player.jetpack_audio.presentation.ui.theme.LOULATheme
 import fit.asta.health.player.jetpack_audio.presentation.utils.DevicePosture
 
 @ExperimentalPagerApi
-@ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @AndroidEntryPoint
@@ -43,7 +42,10 @@ class AudioPlayerActivity : ComponentActivity() {
             }
         }
     }
-    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+
+    @SuppressLint(
+        "UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter"
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -57,30 +59,26 @@ class AudioPlayerActivity : ComponentActivity() {
         setContent {
             LOULATheme {
                 val navController = rememberAnimatedNavController()
-                val scaffoldState = rememberScaffoldState()
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    scaffoldState = scaffoldState
-                ) {
+                val snackbarHostState = remember { SnackbarHostState() }
+                Scaffold(modifier = Modifier.fillMaxSize(),
+                    snackbarHost = { SnackbarHost(snackbarHostState) }) { innerPadding ->
                     AnimatedNavHost(
                         navController = navController,
+                        modifier = Modifier.padding(innerPadding),
                         startDestination = Screens.Home.route
                     ) {
                         composable(route = Screens.Home.route) {
-                            HomeScreen(
-                                navigateToPlayer = {
-                                    navController.navigate(
-                                        Screens.Player.route
-                                    )
-                                }
-                            )
+                            HomeScreen(navigateToPlayer = {
+                                navController.navigate(
+                                    Screens.Player.route
+                                )
+                            })
                         }
 
                         composable(
                             route = Screens.Player.route
                         ) {
-                            PlayerScreen(
-                                onBackPressed = { navController.popBackStack() },
+                            PlayerScreen(onBackPressed = { navController.popBackStack() },
                                 addToPlayList = { /*TODO*/ },
                                 more = { /*TODO*/ })
                         }

@@ -3,12 +3,7 @@ package fit.asta.health.tools.sunlight.view.home
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
 import androidx.compose.material3.*
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,7 +32,7 @@ fun SunlightHomeScreen(navController: NavController, homeViewModel: SunlightView
 
     Scaffold(
         topBar = {
-            BottomNavigation(
+            NavigationBar(
                 content = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -67,14 +62,14 @@ fun SunlightHomeScreen(navController: NavController, homeViewModel: SunlightView
                             )
                         }
                     }
-                }, elevation = 10.dp, backgroundColor = MaterialTheme.colorScheme.surface
+                }, tonalElevation = 10.dp, containerColor = MaterialTheme.colorScheme.surface
             )
         }, content = {
             SunlightBottomSheet(paddingValues = it, navController = navController, homeViewModel)
         })
 }
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun SunlightBottomSheet(
     paddingValues: PaddingValues,
@@ -82,13 +77,8 @@ fun SunlightBottomSheet(
     homeViewModel: SunlightViewModel = hiltViewModel()
 ) {
     var visible by remember { mutableStateOf(false) }
-    val sheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
     val apiState = homeViewModel.apiState.value
-
-    val scaffoldState =
-        rememberBottomSheetScaffoldState(
-            bottomSheetState = sheetState
-        )
+    val scaffoldState = rememberBottomSheetScaffoldState()
 
     BottomSheetScaffold(
         sheetContent = {
@@ -102,7 +92,7 @@ fun SunlightBottomSheet(
         sheetPeekHeight = 40.dp,
         scaffoldState = scaffoldState
     ) {
-        visible = !sheetState.isCollapsed
+        visible = !scaffoldState.bottomSheetState.hasPartiallyExpandedState
         SunlightHomeScreenLayout(paddingValues, apiState!!)
     }
 }

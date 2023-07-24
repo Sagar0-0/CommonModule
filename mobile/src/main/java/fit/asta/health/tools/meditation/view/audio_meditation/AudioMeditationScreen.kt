@@ -11,10 +11,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsTopHeight
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Slider
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -36,7 +35,6 @@ import fit.asta.health.player.jetpack_audio.presentation.utils.rememberDominantC
 import fit.asta.health.player.jetpack_audio.presentation.utils.verticalGradientScrim
 
 
-@ExperimentalMaterialApi
 @Composable
 fun AudioMeditationScreen(
     onBackPressed: () -> Unit,
@@ -51,7 +49,7 @@ fun AudioMeditationScreen(
 
     val spacing = LocalSpacing.current
 
-    val surfaceColor = MaterialTheme.colors.surface
+    val surfaceColor = MaterialTheme.colorScheme.surface
     val dominantColorState = rememberDominantColorState { color ->
         color.contrastAgainst(surfaceColor) >= MinContrastOfPrimaryVsSurface
     }
@@ -65,7 +63,7 @@ fun AudioMeditationScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalGradientScrim(
-                    color = MaterialTheme.colors.primary.copy(alpha = 0.38f),
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.38f),
                     startYPercentage = 1f,
                     endYPercentage = 0f
                 )
@@ -85,7 +83,7 @@ fun AudioMeditationScreen(
             Spacer(modifier = Modifier.height(spacing.spaceMediumLarge))
             Text(
                 text = musicState.currentSong.title,
-                style = MaterialTheme.typography.h6,
+                style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
@@ -96,7 +94,7 @@ fun AudioMeditationScreen(
             Spacer(modifier = Modifier.height(spacing.spaceExtraSmall))
             Text(
                 text = musicState.currentSong.album,
-                style = MaterialTheme.typography.subtitle2,
+                style = MaterialTheme.typography.titleSmall,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()

@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.RunCircle
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fit.asta.health.R
-import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.ui.components.ButtonWithColor
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.tools.walking.view.home.StepCounterUIEvent
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -33,40 +33,40 @@ fun StepsCounterScreen(navController: NavController, homeViewModel: WalkingViewM
     val state = homeViewModel.uiStateStep.value
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        backgroundColor = MaterialTheme.colors.background,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
-            BottomNavigation(
+            NavigationBar(
                 content = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        androidx.compose.material3.IconButton(onClick = { navController.popBackStack() }) {
-                            androidx.compose.material3.Icon(
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(
                                 painter = painterResource(id = R.drawable.ic_exercise_back),
                                 contentDescription = null,
                                 Modifier.size(24.dp)
                             )
                         }
-                        androidx.compose.material3.Text(
+                        Text(
                             text = "Steps Counter",
                             fontSize = 20.sp,
-                            color = androidx.compose.material3.MaterialTheme.colorScheme.onBackground,
+                            color = MaterialTheme.colorScheme.onBackground,
                             textAlign = TextAlign.Center
                         )
-                        androidx.compose.material3.IconButton(onClick = { /*TODO*/ }) {
-                            androidx.compose.material3.Icon(
+                        IconButton(onClick = { /*TODO*/ }) {
+                            Icon(
                                 painter = painterResource(id = R.drawable.ic_physique),
                                 contentDescription = null,
                                 Modifier.size(24.dp),
-                                tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                                tint = MaterialTheme.colorScheme.primary
                             )
                         }
                     }
                 },
-                elevation = 10.dp,
-                backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimary
+                tonalElevation = 10.dp,
+                containerColor = MaterialTheme.colorScheme.onPrimary
             )
         }
     ) {
@@ -111,14 +111,14 @@ fun StepsItem(
             Text(
                 text = "Continue running?",
                 fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.h5
+                style = MaterialTheme.typography.headlineSmall
             )
         }
         Text(
             modifier = Modifier.padding(start = 16.dp, bottom = 16.dp),
             text = "Session Details",
             fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.h6
+            style = MaterialTheme.typography.titleLarge
         )
 
         LazyVerticalGrid(
@@ -192,7 +192,7 @@ fun SessionCard(
         modifier = modifier
             .clickable { onClick() },
         shape = RoundedCornerShape(8.dp),
-        backgroundColor = Color.LightGray,
+        colors = CardDefaults.cardColors(Color.LightGray),
     ) {
         Column(
             modifier = Modifier
@@ -203,12 +203,12 @@ fun SessionCard(
             Text(
                 text = type,
                 fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.subtitle1
+                style = MaterialTheme.typography.titleMedium
             )
             Text(
                 text = count,
                 fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.subtitle1
+                style = MaterialTheme.typography.titleMedium
             )
         }
     }

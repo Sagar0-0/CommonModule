@@ -1,7 +1,7 @@
 package fit.asta.health.tools.breathing.view.components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.BottomNavigation
+
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
@@ -41,7 +41,7 @@ fun BreathingMusic(it: PaddingValues) {
 fun Music() {
 
     Scaffold(topBar = {
-        BottomNavigation(content = {
+        NavigationBar(content = {
             Row(verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()) {
@@ -61,7 +61,7 @@ fun Music() {
                         tint = MaterialTheme.colorScheme.primary)
                 }
             }
-        }, elevation = 10.dp)
+        }, tonalElevation = 10.dp)
     }, content = {
         BreathingMusic(it = it)
     })

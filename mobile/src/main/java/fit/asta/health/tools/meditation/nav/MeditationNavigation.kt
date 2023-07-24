@@ -1,6 +1,5 @@
 package fit.asta.health.tools.meditation.nav
 
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -19,9 +18,6 @@ import fit.asta.health.tools.meditation.view.level.LevelScreen
 import fit.asta.health.tools.meditation.view.music.MusicScreen
 import fit.asta.health.tools.meditation.viewmodel.MeditationViewModel
 
-@OptIn(
-    ExperimentalMaterialApi::class
-)
 fun NavGraphBuilder.meditationNavigation(
     navController: NavHostController, onBack: () -> Unit
 ) {

@@ -11,12 +11,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -42,7 +43,7 @@ fun CardItem(
         modifier = modifier
             .clickable { onClick() },
         shape = RoundedCornerShape(8.dp),
-        backgroundColor = MaterialTheme.colors.surface,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
 
         Row(
@@ -62,11 +63,11 @@ fun CardItem(
             ) {
                 Text(
                     text = name,
-                    style = MaterialTheme.typography.h6
+                    style = MaterialTheme.typography.titleLarge
                 )
                 Text(
                     text = type,
-                    style = MaterialTheme.typography.subtitle1,
+                    style = MaterialTheme.typography.titleMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -84,7 +85,7 @@ fun ButtonWithColor(
         modifier = modifier,
         onClick = {
             onClick()
-        }, colors = ButtonDefaults.buttonColors(backgroundColor = color)
+        }, colors = ButtonDefaults.buttonColors(containerColor = color)
     )
 
     {
@@ -99,7 +100,7 @@ fun BottomSheetDragHandle(
     height: Dp = 24.dp,
     barWidth: Dp = 32.dp,
     barHeight: Dp = 4.dp,
-    color: Color = MaterialTheme.colors.onBackground.copy(alpha = 0.3f),
+    color: Color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f),
     onClick: () -> Unit = {}
 ) {
     Spacer(modifier = modifier

@@ -4,14 +4,7 @@ package fit.asta.health.profile.createprofile.view
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.Text
-import androidx.compose.material.rememberModalBottomSheetState
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -291,7 +284,7 @@ fun LifeStyleContent(
 }
 
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LifeStyleCreateScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
@@ -304,38 +297,32 @@ fun LifeStyleCreateScreen(
         mutableStateOf(null)
     }
 
-    var modalBottomSheetValue by remember {
-        mutableStateOf(ModalBottomSheetValue.Hidden)
-    }
-
-    val modalBottomSheetState = rememberModalBottomSheetState(
-        initialValue = modalBottomSheetValue
-    )
+    var skipPartiallyExpanded by remember { mutableStateOf(false) }
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = skipPartiallyExpanded)
 
     val scope = rememberCoroutineScope()
 
     val closeSheet = {
-        scope.launch { modalBottomSheetState.hide() }
+        scope.launch { bottomSheetState.hide() }
     }
 
     val openSheet = {
         scope.launch {
-            modalBottomSheetState.show()
-            if (modalBottomSheetValue == ModalBottomSheetValue.HalfExpanded) {
-                modalBottomSheetValue = ModalBottomSheetValue.Expanded
-            }
+            bottomSheetState.show()
         }
     }
 
-    ModalBottomSheetLayout(
+    ModalBottomSheet(
         modifier = Modifier.fillMaxSize(),
-        sheetState = modalBottomSheetState,
-        sheetContent = {
-            Spacer(modifier = Modifier.height(1.dp))
-            currentBottomSheet?.let {
-                LifeStyleCreateBottomSheetLayout(sheetLayout = it, closeSheet = { closeSheet() })
-            }
-        }) {
+        onDismissRequest = { closeSheet() },
+        sheetState = bottomSheetState,
+        ) {
+
+        Spacer(modifier = Modifier.height(1.dp))
+        currentBottomSheet?.let {
+            LifeStyleCreateBottomSheetLayout(sheetLayout = it, closeSheet = { closeSheet() })
+        }
+
         LifeStyleContent(
             eventPrevious = eventPrevious,
             eventNext = eventNext,
@@ -356,8 +343,6 @@ fun LifeStyleCreateScreen(
                 viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "goal"))
             })
     }
-
-
 }
 
 

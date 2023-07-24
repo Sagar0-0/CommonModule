@@ -1,7 +1,6 @@
 package fit.asta.health.tools.water.viewmodel
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.BottomNavigation
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
@@ -40,7 +39,7 @@ fun BreathingCourseLevels(it: PaddingValues) {
 fun CourseLevel() {
 
     Scaffold(topBar = {
-        BottomNavigation(content = {
+        NavigationBar(content = {
             Row(verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()) {
@@ -60,7 +59,7 @@ fun CourseLevel() {
                         tint = MaterialTheme.colorScheme.primary)
                 }
             }
-        }, elevation = 10.dp)
+        }, tonalElevation = 10.dp)
     }, content = {
         BreathingCourseLevels(it = it)
     })

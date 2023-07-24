@@ -1,8 +1,9 @@
 package fit.asta.health.testimonials.view.list
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,8 +23,8 @@ fun TestimonialTextCard(testimonial: Testimonial) {
             .fillMaxWidth()
             .padding(spacing.medium),
         shape = MaterialTheme.shapes.medium,
-        elevation = cardElevation.small,
-        backgroundColor = MaterialTheme.colorScheme.onPrimary
+        elevation = CardDefaults.cardElevation(cardElevation.small),
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onPrimary)
     ) {
 
         Column(Modifier.fillMaxWidth()) {

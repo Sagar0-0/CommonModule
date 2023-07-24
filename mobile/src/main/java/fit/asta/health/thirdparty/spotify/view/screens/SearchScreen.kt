@@ -13,8 +13,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateMapOf
@@ -29,13 +29,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import fit.asta.health.thirdparty.spotify.view.navigation.SpotifyNavRoutes
 import fit.asta.health.thirdparty.spotify.view.components.MusicArtistsUI
-import fit.asta.health.thirdparty.spotify.view.components.MusicSmallImageRow
-import fit.asta.health.thirdparty.spotify.view.components.MusicLargeImageColumn
-import fit.asta.health.thirdparty.spotify.view.components.SearchBar
 import fit.asta.health.thirdparty.spotify.view.components.MusicFilterOptions
+import fit.asta.health.thirdparty.spotify.view.components.MusicLargeImageColumn
+import fit.asta.health.thirdparty.spotify.view.components.MusicSmallImageRow
 import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
+import fit.asta.health.thirdparty.spotify.view.components.SearchBar
+import fit.asta.health.thirdparty.spotify.view.navigation.SpotifyNavRoutes
 import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 
 /**

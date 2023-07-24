@@ -4,8 +4,6 @@ package fit.asta.health.profile
 
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Emergency
@@ -21,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.createprofile.view.DetailsCreateScreen
 import fit.asta.health.profile.createprofile.view.DietCreateScreen
@@ -151,8 +148,7 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel(),onBack:()-
                         )
                     }
                 },
-                elevation = cardElevation.small,
-                backgroundColor = MaterialTheme.colorScheme.onPrimary
+                colors =  TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.onPrimary)
             )
 
             Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {

@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomNavigation
+
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
@@ -67,7 +67,7 @@ fun SPFSelectionScreen(
     }
     Scaffold(
         topBar = {
-            BottomNavigation(
+            NavigationBar(
                 content = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -96,8 +96,8 @@ fun SPFSelectionScreen(
                         }
                     }
                 },
-                elevation = 10.dp,
-                backgroundColor = MaterialTheme.colorScheme.onPrimary
+                tonalElevation = 10.dp,
+                containerColor = MaterialTheme.colorScheme.onPrimary
             )
         }
     ) {
@@ -105,16 +105,16 @@ fun SPFSelectionScreen(
             modifier = Modifier.padding(it)
         ) {
             item {
-                androidx.compose.material.Text(
+                Text(
                     modifier = Modifier.padding(horizontal = 16.dp),
                     text = "Select your age range",
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
-                    style = androidx.compose.material.MaterialTheme.typography.body1
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
             items(count = list.size) { indexNumber ->
-                androidx.compose.material.Surface(
+                Surface(
                     modifier = Modifier
                         .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
                         .fillMaxWidth()
@@ -137,12 +137,12 @@ fun SPFSelectionScreen(
                         horizontalArrangement = Arrangement.Start,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        androidx.compose.material.Text(
+                        Text(
                             modifier = Modifier
                                 .padding(start = 16.dp)
                                 .weight(0.5f),
                             text = list[indexNumber].display,
-                            style = androidx.compose.material.MaterialTheme.typography.subtitle1,
+                            style = MaterialTheme.typography.titleMedium,
                             fontSize = 25.sp
                         )
                     }

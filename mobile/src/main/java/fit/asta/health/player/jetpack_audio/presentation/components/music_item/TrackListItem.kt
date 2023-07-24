@@ -5,14 +5,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.LocalContentColor
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
@@ -60,9 +54,9 @@ fun TrackListItem(
     musicState.playbackState.name
 
     val textColor = if (isRunning)
-        MaterialTheme.colors.primary
+        MaterialTheme.colorScheme.primary
     else
-        MaterialTheme.colors.onSurface
+        MaterialTheme.colorScheme.onSurface
 
     ConstraintLayout(
         modifier = modifier
@@ -98,10 +92,10 @@ fun TrackListItem(
         )
 
         Text(
-            text = song.title ?: "Unknown",
+            text = song.title,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
-            style = MaterialTheme.typography.subtitle1,
+            style = MaterialTheme.typography.titleMedium,
             color = textColor,
             modifier = Modifier.constrainAs(trackTitle) {
                 linkTo(
@@ -119,10 +113,10 @@ fun TrackListItem(
 
         val titleImageBarrier = createBottomBarrier(trackTitle, image)
 
-        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+        CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onSurface) {
             Text(
                 text = song.title,
-                style = MaterialTheme.typography.subtitle2,
+                style = MaterialTheme.typography.titleSmall,
                 color = textColor,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -165,7 +159,7 @@ fun TrackListItem(
                     bottom.linkTo(parent.bottom, spacing.spaceSmall)
                 }
         )
-        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+        CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onSurface) {
             Text(
                 text = if (isRunning)
                     currentPosition.asFormattedString()
@@ -174,7 +168,7 @@ fun TrackListItem(
                 color = textColor,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.caption,
+                style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.constrainAs(trackDuration) {
                     centerVerticallyTo(playIcon)
                     linkTo(

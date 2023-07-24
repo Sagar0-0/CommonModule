@@ -14,9 +14,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -91,7 +92,7 @@ fun SkinExposureCardComponent(
         }
         if (demoSelected) {
             Box(contentAlignment = Alignment.TopEnd) {
-                androidx.compose.material.Icon(
+                androidx.compose.material3.Icon(
                     imageVector = Icons.Default.Check,
                     contentDescription = "Selected",
                     tint = Color.Green,
@@ -122,7 +123,9 @@ fun SkinExposureCard(
                 demoSelected = !demoSelected
             }
         }
-        .padding(8.dp), shape = RoundedCornerShape(8.dp), backgroundColor = Color(0x66959393)) {
+        .padding(8.dp), shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(Color(0x66959393))
+    ) {
         SkinExposureCardComponent(
             cardValue = cardValue,
             cardImg = cardImg,
@@ -168,7 +171,7 @@ fun SkinExposureList(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
         ) {
-            androidx.compose.material.Text(
+            Text(
                 text = rowTitle,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Normal,

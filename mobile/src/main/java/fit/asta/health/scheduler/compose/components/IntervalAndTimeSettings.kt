@@ -53,7 +53,7 @@ data class CustomInterval(
 //            onNavigateRepetitiveInterval = onNavigateRepetitiveInterval
 //        )
 //    }, topBar = {
-//        BottomNavigation(content = {
+//        NavigationBar(content = {
 //            Row(
 //                verticalAlignment = Alignment.CenterVertically,
 //                horizontalArrangement = Arrangement.SpaceBetween,
@@ -81,7 +81,7 @@ data class CustomInterval(
 //                    )
 //                }
 //            }
-//        }, elevation = 10.dp, backgroundColor = Color.White)
+//        }, tonalElevation = 10.dp, containerColor = Color.White)
 //    })
 //}
 

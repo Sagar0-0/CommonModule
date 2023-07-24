@@ -2,10 +2,22 @@ package fit.asta.health.profile.createprofile.view.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.material.*
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonElevation
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,7 +50,7 @@ fun ColumnToggleButtonGroup(
     shape: CornerBasedShape = MaterialTheme.shapes.small,
     borderSize: Dp = 1.dp,
     border: BorderStroke = BorderStroke(borderSize, borderColor),
-    elevation: ButtonElevation = ButtonDefaults.elevation(),
+    elevation: ButtonElevation = ButtonDefaults.buttonElevation(),
     enabled: Boolean = true,
     buttonHeight: Dp = 60.dp,
     iconPosition: IconPosition = IconPosition.Start,
@@ -55,7 +67,7 @@ fun ColumnToggleButtonGroup(
                 else -> shape.copy(all = squareCorner)
             }
             val isButtonSelected = selectionIndex == index
-            val backgroundColor = if (isButtonSelected) selectedColor else unselectedColor
+            val containerColor = if (isButtonSelected) selectedColor else unselectedColor
             val contentColor =
                 if (isButtonSelected) selectedContentColor else unselectedContentColor
             val iconTintColor = if (isButtonSelected) buttonIconTint else unselectedButtonIconTint
@@ -68,7 +80,7 @@ fun ColumnToggleButtonGroup(
                     .offset(y = offset),
                 buttonShape = buttonShape,
                 border = border,
-                backgroundColor = backgroundColor,
+                backgroundColor = containerColor,
                 elevation = elevation,
                 enabled = enabled,
                 buttonTexts = buttonTexts,
@@ -103,7 +115,7 @@ fun RowToggleButtonGroup(
     shape: CornerBasedShape = MaterialTheme.shapes.small,
     borderSize: Dp = 1.dp,
     border: BorderStroke = BorderStroke(borderSize, borderColor),
-    elevation: ButtonElevation = ButtonDefaults.elevation(),
+    elevation: ButtonElevation = ButtonDefaults.buttonElevation(),
     enabled: Boolean = true,
     buttonHeight: Dp = 60.dp,
     iconPosition: IconPosition = IconPosition.Start,
@@ -120,7 +132,7 @@ fun RowToggleButtonGroup(
                 else -> shape.copy(all = squareCorner)
             }
             val isButtonSelected = selectionIndex == index
-            val backgroundColor = if (isButtonSelected) selectedColor else unselectedColor
+            val containerColor = if (isButtonSelected) selectedColor else unselectedColor
             val contentColor =
                 if (isButtonSelected) selectedContentColor else unselectedContentColor
             val iconTintColor = if (isButtonSelected) buttonIconTint else unselectedButtonIconTint
@@ -133,7 +145,7 @@ fun RowToggleButtonGroup(
                     .offset(x = offset),
                 buttonShape = buttonShape,
                 border = border,
-                backgroundColor = backgroundColor,
+                backgroundColor = containerColor,
                 elevation = elevation,
                 enabled = enabled,
                 buttonTexts = buttonTexts,
@@ -173,7 +185,7 @@ private fun ToggleButton(
         shape = buttonShape,
         border = border,
         onClick = onClick,
-        colors = ButtonDefaults.outlinedButtonColors(backgroundColor = backgroundColor),
+        colors = ButtonDefaults.outlinedButtonColors(containerColor = backgroundColor),
         elevation = elevation,
         enabled = enabled,
     ) {
