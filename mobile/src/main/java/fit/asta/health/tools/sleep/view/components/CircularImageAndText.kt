@@ -65,7 +65,8 @@ fun CircularImageAndText(
                 text = text,
 
                 fontStyle = FontStyle.Normal,
-                fontSize = 12.sp
+                fontSize = 12.sp,
+                color = Color.White
             )
         }
     }

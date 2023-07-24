@@ -88,6 +88,7 @@ fun SleepGoalsScreen(
                         // Showing the Card UI
                         SleepCardItems(
                             modifier = modifier,
+                            icon = null,
                             textToShow = currentItem.name
                         ) {
                             onGoalSelected(toolType, listData[it].name)

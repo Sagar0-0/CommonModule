@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,7 +21,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -64,6 +64,8 @@ fun SleepHomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
+        val color = MaterialTheme.colorScheme.onBackground
+
         // This is the Clock
         Box(
             modifier = Modifier
@@ -74,7 +76,7 @@ fun SleepHomeScreen(
                     val radius = size.minDimension / 2
 
                     // Draw the clock face
-                    drawCircle(Color.White.copy(alpha = .3f), radius, center)
+                    drawCircle(color.copy(alpha = .3f), radius, center)
                 },
             contentAlignment = Alignment.Center
         ) {
