@@ -46,7 +46,8 @@ fun SleepBottomSheet(
     scaffoldState: SheetState,
     navController: NavController,
     bottomSheetData: List<Prc>,
-    selectedDisturbances: Prc?
+    selectedDisturbances: Prc?,
+    onStartStopClick: () -> Unit
 ) {
 
     Column(
@@ -215,7 +216,7 @@ fun SleepBottomSheet(
                 color = Color.Blue,
                 text = "START"
             ) {
-                // TODO
+                onStartStopClick()
             }
         }
 
