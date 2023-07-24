@@ -265,7 +265,7 @@ class SleepToolViewModel @Inject constructor(
         if (value == null) {
             prc?.values?.add(
                 Value(
-                    id = "000000000000000000000000",
+                    id = "",
                     name = newValue,
                     value = newValue
                 )

@@ -20,6 +20,7 @@ import fit.asta.health.common.ui.theme.spacing
 
 @Composable
 fun SleepCardItems(
+    modifier: Modifier = Modifier,
     @DrawableRes icon: Int? = R.drawable.sleep_factors,
     textToShow: String,
     onClick: (() -> Unit)? = null
@@ -35,7 +36,7 @@ fun SleepCardItems(
             }
     ) {
         Row(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(16.dp),
             horizontalArrangement = Arrangement.spacedBy(spacing.small),
