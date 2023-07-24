@@ -13,6 +13,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,10 +28,14 @@ import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
+import fit.asta.health.profile.MultiRadioBtnKeys
 import fit.asta.health.profile.createprofile.view.LifeStyleCreateBottomSheetType.*
 import fit.asta.health.profile.createprofile.view.components.CreateProfileTimePicker
 import fit.asta.health.profile.createprofile.view.components.ItemSelectionLayout
 import fit.asta.health.profile.model.domain.ComposeIndex
+import fit.asta.health.profile.model.domain.HealthProperties
+import fit.asta.health.profile.model.domain.ThreeRadioBtnSelections
+import fit.asta.health.profile.model.domain.TwoRadioBtnSelections
 import fit.asta.health.profile.model.domain.UserPropertyType
 import fit.asta.health.profile.view.*
 import fit.asta.health.profile.view.components.UserSleepCycles
@@ -55,13 +60,23 @@ fun LifeStyleContent(
 
     val checkedState = remember { mutableStateOf(true) }
 
-    val selectedPhyActiveOption by viewModel.selectedPhyAct.collectAsStateWithLifecycle()
-    val selectedWorkingEnvOption by viewModel.selectedWorkingEnv.collectAsStateWithLifecycle()
-    val selectedWorkingStyOption by viewModel.selectedWorkStyle.collectAsStateWithLifecycle()
-    val selectedWorkingHrsOption by viewModel.selectedWorkingHrs.collectAsStateWithLifecycle()
+    //Radio Buttons Selection
+    val radioButtonSelections by viewModel.radioButtonSelections.collectAsStateWithLifecycle()
 
-    val areLSValidInput by viewModel.areLSValid.collectAsStateWithLifecycle()
-    val lfList by viewModel.lfPropertiesData.collectAsState()
+    val selectedPhyActiveOptionDemo =
+        radioButtonSelections[MultiRadioBtnKeys.PHYACTIVE] as ThreeRadioBtnSelections?
+    val selectedWorkingEnvOptionDemo =
+        radioButtonSelections[MultiRadioBtnKeys.WORKINGENV] as TwoRadioBtnSelections?
+    val selectedWorkingStyOptionDemo =
+        radioButtonSelections[MultiRadioBtnKeys.WORKINGSTYLE] as TwoRadioBtnSelections?
+    val selectedWorkingHrsOptionDemo =
+        radioButtonSelections[MultiRadioBtnKeys.WORKINGHRS] as ThreeRadioBtnSelections?
+
+
+    //Data
+    val propertiesDataState by viewModel.propertiesData.collectAsStateWithLifecycle()
+    val composeThirdData: Map<Int, SnapshotStateList<HealthProperties>>? =
+        propertiesDataState[ComposeIndex.Second]
 
     //Time Picker Params
     val clockWakeUpState = rememberUseCaseState()
@@ -130,14 +145,16 @@ fun LifeStyleContent(
             )
 
             if (showWakeUpTimeContent.value) {
-                CreateProfileTimePicker(clockState = clockWakeUpState,
+                CreateProfileTimePicker(
+                    clockState = clockWakeUpState,
                     onPositiveClick = { hours, minutes ->
                         viewModel.onEvent(event = ProfileEvent.OnUserWakeUpTimeChange("$hours:$minutes"))
                     })
             }
 
             if (showBedTimeContent.value) {
-                CreateProfileTimePicker(clockState = clockBedState,
+                CreateProfileTimePicker(
+                    clockState = clockBedState,
                     onPositiveClick = { hours, minutes ->
                         viewModel.onEvent(event = ProfileEvent.OnUserBedTimeChange("$hours:$minutes"))
                     })
@@ -146,14 +163,16 @@ fun LifeStyleContent(
             }
 
             if (showJobStartContent.value) {
-                CreateProfileTimePicker(clockState = clockJStartState,
+                CreateProfileTimePicker(
+                    clockState = clockJStartState,
                     onPositiveClick = { hours, minutes ->
                         viewModel.onEvent(event = ProfileEvent.OnUserJStartTimeChange("$hours:$minutes"))
                     })
             }
 
             if (showJobEndContent.value) {
-                CreateProfileTimePicker(clockState = clockJEndState,
+                CreateProfileTimePicker(
+                    clockState = clockJEndState,
                     onPositiveClick = { hours, minutes ->
                         viewModel.onEvent(event = ProfileEvent.OnUserJEndTimeChange("$hours:$minutes"))
                     })
@@ -169,13 +188,15 @@ fun LifeStyleContent(
             ) {
                 ThreeTogglesGroups(
                     selectionTypeText = "Are you Physically Active",
-                    selectedOption = selectedPhyActiveOption,
+                    selectedOption = selectedPhyActiveOptionDemo,
                     onStateChange = { state ->
-                        viewModel.onEvent(
-                            ProfileEvent.SetSelectedPhyActOption(
-                                option = state, optionIndex = 0
-                            )
-                        )
+//                        viewModel.onEvent(
+//                            ProfileEvent.SetSelectedPhyActOption(
+//                                option = state, optionIndex = 0
+//                            )
+//                        )
+
+                        viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.PHYACTIVE, state)
                     },
                     firstOption = "Less",
                     secondOption = "Moderate",
@@ -193,9 +214,10 @@ fun LifeStyleContent(
             ) {
                 TwoTogglesGroup(
                     selectionTypeText = "Current Working Environment",
-                    selectedOption = selectedWorkingEnvOption,
+                    selectedOption = selectedWorkingEnvOptionDemo,
                     onStateChange = { state ->
-                        viewModel.onEvent(ProfileEvent.SetSelectedWorkingEnvOption(state, 0))
+//                        viewModel.onEvent(ProfileEvent.SetSelectedWorkingEnvOption(state, 0))
+                        viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.WORKINGENV, state)
                     },
                     firstOption = "Standing",
                     secondOption = "Sitting"
@@ -212,9 +234,9 @@ fun LifeStyleContent(
             ) {
                 TwoTogglesGroup(
                     selectionTypeText = "Current WorkStyle",
-                    selectedOption = selectedWorkingStyOption,
+                    selectedOption = selectedWorkingStyOptionDemo,
                     onStateChange = { state ->
-                        viewModel.onEvent(ProfileEvent.SetSelectedWorkingStyleOption(state, 1))
+                        viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.WORKINGSTYLE, state)
                     },
                     firstOption = "Indoor",
                     secondOption = "Outdoor"
@@ -231,13 +253,9 @@ fun LifeStyleContent(
             ) {
                 ThreeTogglesGroups(
                     selectionTypeText = "What are your working hours",
-                    selectedOption = selectedWorkingHrsOption,
+                    selectedOption = selectedWorkingHrsOptionDemo,
                     onStateChange = { state ->
-                        viewModel.onEvent(
-                            ProfileEvent.SetSelectedWorkingHrsOption(
-                                option = state, optionIndex = 1
-                            )
-                        )
+                        viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.WORKINGHRS, state)
                     },
                     firstOption = "Morning",
                     secondOption = "Afternoon",
@@ -249,7 +267,7 @@ fun LifeStyleContent(
 
             OnlyChipSelectionCard(
                 cardType = "Current Activities?",
-                cardList = lfList.getValue(0),
+                cardList = composeThirdData?.get(0),
                 checkedState = checkedState,
                 onItemsSelect = onCurrentActivity,
                 cardIndex = 0,
@@ -260,7 +278,7 @@ fun LifeStyleContent(
 
             OnlyChipSelectionCard(
                 cardType = "Preferred Activities?",
-                cardList = lfList.getValue(1),
+                cardList = composeThirdData?.get(1),
                 checkedState = checkedState,
                 onItemsSelect = onPreferredActivity,
                 cardIndex = 1,
@@ -271,7 +289,7 @@ fun LifeStyleContent(
 
             OnlyChipSelectionCard(
                 cardType = "LifeStyleTargets?",
-                cardList = lfList.getValue(2),
+                cardList = composeThirdData?.get(2),
                 checkedState = checkedState,
                 onItemsSelect = onLifeStyleTargets,
                 cardIndex = 2,
@@ -281,7 +299,7 @@ fun LifeStyleContent(
             Spacer(modifier = Modifier.height(spacing.medium))
 
             CreateProfileButtons(
-                eventPrevious, eventNext, text = "Next", enableButton = areLSValidInput
+                eventPrevious, eventNext, text = "Next", enableButton = true
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
@@ -327,8 +345,7 @@ fun LifeStyleCreateScreen(
         }
     }
 
-    ModalBottomSheetLayout(
-        modifier = Modifier.fillMaxSize(),
+    ModalBottomSheetLayout(modifier = Modifier.fillMaxSize(),
         sheetState = modalBottomSheetState,
         sheetContent = {
             Spacer(modifier = Modifier.height(1.dp))
@@ -336,8 +353,7 @@ fun LifeStyleCreateScreen(
                 LifeStyleCreateBottomSheetLayout(sheetLayout = it, closeSheet = { closeSheet() })
             }
         }) {
-        LifeStyleContent(
-            eventPrevious = eventPrevious,
+        LifeStyleContent(eventPrevious = eventPrevious,
             eventNext = eventNext,
             onSkipEvent = onSkipEvent,
             onCurrentActivity = {

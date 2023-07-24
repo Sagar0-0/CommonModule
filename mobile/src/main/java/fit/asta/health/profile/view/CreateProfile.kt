@@ -26,8 +26,8 @@ import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.createprofile.view.ValidateListError
 import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.HealthProperties
-import fit.asta.health.profile.model.domain.ThreeToggleSelections
-import fit.asta.health.profile.model.domain.TwoToggleSelections
+import fit.asta.health.profile.model.domain.ThreeRadioBtnSelections
+import fit.asta.health.profile.model.domain.TwoRadioBtnSelections
 import fit.asta.health.profile.view.components.ProfileAddIcon
 import fit.asta.health.profile.view.components.RemoveChipOnCard
 import fit.asta.health.profile.viewmodel.ProfileEvent
@@ -38,12 +38,13 @@ data class ButtonListTypes(
     val buttonType: String,
 )
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun TwoTogglesGroup(
     viewModel: ProfileViewModel = hiltViewModel(),
     selectionTypeText: String?,
-    selectedOption: TwoToggleSelections?,
-    onStateChange: (TwoToggleSelections) -> Unit,
+    selectedOption: TwoRadioBtnSelections?,
+    onStateChange: (TwoRadioBtnSelections) -> Unit,
     firstOption: String = "Yes",
     secondOption: String = "No",
 ) {
@@ -77,16 +78,17 @@ fun TwoTogglesGroup(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
 
-            items(listOf(TwoToggleSelections.First, TwoToggleSelections.Second)) { option ->
+            items(listOf(TwoRadioBtnSelections.First, TwoRadioBtnSelections.Second)) { option ->
                 Row(verticalAlignment = CenterVertically, modifier = Modifier.weight(1f)) {
 
                     RadioButton(selected = selectedOption == option, onClick = {
                         onStateChange(option)
                     })
+
                     Text(
                         text = when (option) {
-                            TwoToggleSelections.First -> firstOption
-                            TwoToggleSelections.Second -> secondOption
+                            TwoRadioBtnSelections.First -> firstOption
+                            TwoRadioBtnSelections.Second -> secondOption
                         }, style = MaterialTheme.typography.labelSmall, textAlign = TextAlign.Right
                     )
 
@@ -100,12 +102,13 @@ fun TwoTogglesGroup(
 
 }
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun ThreeTogglesGroups(
     viewModel: ProfileViewModel = hiltViewModel(),
     selectionTypeText: String?,
-    selectedOption: ThreeToggleSelections?,
-    onStateChange: (ThreeToggleSelections) -> Unit,
+    selectedOption: ThreeRadioBtnSelections?,
+    onStateChange: (ThreeRadioBtnSelections) -> Unit,
     firstOption: String = "Male",
     secondOption: String = "Female",
     thirdOption: String = "Others",
@@ -142,9 +145,9 @@ fun ThreeTogglesGroups(
 
             items(
                 listOf(
-                    ThreeToggleSelections.First,
-                    ThreeToggleSelections.Second,
-                    ThreeToggleSelections.Third
+                    ThreeRadioBtnSelections.First,
+                    ThreeRadioBtnSelections.Second,
+                    ThreeRadioBtnSelections.Third
                 )
             ) { option ->
                 Row(verticalAlignment = CenterVertically, modifier = Modifier.weight(1f)) {
@@ -154,9 +157,9 @@ fun ThreeTogglesGroups(
                     })
                     Text(
                         text = when (option) {
-                            ThreeToggleSelections.First -> firstOption
-                            ThreeToggleSelections.Second -> secondOption
-                            ThreeToggleSelections.Third -> thirdOption
+                            ThreeRadioBtnSelections.First -> firstOption
+                            ThreeRadioBtnSelections.Second -> secondOption
+                            ThreeRadioBtnSelections.Third -> thirdOption
                         }, style = MaterialTheme.typography.labelSmall, textAlign = TextAlign.Right
                     )
 
@@ -175,11 +178,11 @@ fun ThreeTogglesGroups(
 fun SelectionCardCreateProfile(
     viewModel: ProfileViewModel = hiltViewModel(),
     cardType: String,
-    cardList: SnapshotStateList<HealthProperties>,
+    cardList: SnapshotStateList<HealthProperties>?,
     checkedState: MutableState<Boolean>? = null,
     onItemsSelect: () -> Unit,
-    selectedOption: TwoToggleSelections?,
-    onStateChange: (TwoToggleSelections) -> Unit,
+    selectedOption: TwoRadioBtnSelections?,
+    onStateChange: (TwoRadioBtnSelections) -> Unit,
     enabled: Boolean?,
     cardIndex: Int? = null,
     composeIndex: ComposeIndex,
@@ -220,7 +223,7 @@ fun SelectionCardCreateProfile(
                         )
                     }
 
-                    if (selectedOption == TwoToggleSelections.First) {
+                    if (selectedOption == TwoRadioBtnSelections.First) {
                         ProfileAddIcon(onClick = onItemsSelect)
                     }
 
@@ -234,13 +237,13 @@ fun SelectionCardCreateProfile(
                 )
 
 
-                if (selectedOption == TwoToggleSelections.First) {
+                if (selectedOption == TwoRadioBtnSelections.First) {
 
                     com.google.accompanist.flowlayout.FlowRow(
                         mainAxisSpacing = spacing.minSmall,
                         modifier = Modifier.padding(start = spacing.medium),
                     ) {
-                        cardList.forEach {
+                        cardList?.forEach {
                             RemoveChipOnCard(
                                 textOnChip = it.name,
                                 isEnabled = true,
@@ -264,18 +267,21 @@ fun SelectionCardCreateProfile(
             }
         }
 
-        ValidateListError(selectedOption = selectedOption, cardList = cardList, listName = listName)
+        if (cardList != null) {
+            ValidateListError(selectedOption = selectedOption, cardList = cardList, listName = listName)
+        }
 
     }
 
 
 }
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun OnlyChipSelectionCard(
     viewModel: ProfileViewModel = hiltViewModel(),
     cardType: String,
-    cardList: SnapshotStateList<HealthProperties>,
+    cardList: SnapshotStateList<HealthProperties>?,
     checkedState: MutableState<Boolean>? = null,
     onItemsSelect: () -> Unit,
     cardIndex: Int? = null,
@@ -320,7 +326,7 @@ fun OnlyChipSelectionCard(
                 mainAxisSpacing = spacing.minSmall,
                 modifier = Modifier.padding(start = spacing.medium),
             ) {
-                cardList.forEach {
+                cardList?.forEach {
                     RemoveChipOnCard(textOnChip = it.name, checkedState = checkedState, onClick = {
                         cardIndex?.let { index ->
                             ProfileEvent.SetSelectedRemoveItemOption(

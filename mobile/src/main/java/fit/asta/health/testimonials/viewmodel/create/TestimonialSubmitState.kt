@@ -3,6 +3,7 @@ package fit.asta.health.testimonials.viewmodel.create
 import fit.asta.health.network.data.Status
 import java.io.IOException
 
+
 sealed class TestimonialSubmitState {
     object Loading : TestimonialSubmitState()
     class Error(val error: Throwable) : TestimonialSubmitState()

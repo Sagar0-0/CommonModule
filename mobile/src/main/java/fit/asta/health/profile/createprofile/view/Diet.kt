@@ -11,20 +11,23 @@ import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import fit.asta.health.main.ui.MainActivity
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.main.ui.MainActivity
 import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
+import fit.asta.health.profile.MultiRadioBtnKeys
 import fit.asta.health.profile.createprofile.view.DietCreateBottomSheetType.*
 import fit.asta.health.profile.createprofile.view.components.ItemSelectionLayout
 import fit.asta.health.profile.model.domain.ComposeIndex
-import fit.asta.health.profile.model.domain.TwoToggleSelections
+import fit.asta.health.profile.model.domain.HealthProperties
+import fit.asta.health.profile.model.domain.TwoRadioBtnSelections
 import fit.asta.health.profile.view.*
 import fit.asta.health.profile.viewmodel.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -47,27 +50,24 @@ fun DietContent(
 
     val checkedState = remember { mutableStateOf(true) }
 
-    val dietList by viewModel.dpData.collectAsState()
+    //Data
+    val propertiesDataState by viewModel.propertiesData.collectAsStateWithLifecycle()
+
+    // Get the data for ComposeIndex.Third (key = ComposeIndex.First)
+    val composeThirdData: Map<Int, SnapshotStateList<HealthProperties>>? =
+        propertiesDataState[ComposeIndex.Third]
+
 
     val event = viewModel.stateSubmit.collectAsState()
     val events = event.value
 
     var buttonClicked by remember { mutableStateOf(false) }
 
-    val selectedFoodRes by viewModel.selectedFoodResOption.collectAsStateWithLifecycle()
-    val doAllInputsValid by viewModel.doAllDataInputsValid.collectAsStateWithLifecycle()
+    //Radio Button Selection
+    val radioButtonSelections by viewModel.radioButtonSelections.collectAsStateWithLifecycle()
 
-    val isFoodResValid = when (selectedFoodRes) {
-        TwoToggleSelections.First -> dietList.getValue(4).isNotEmpty()
-        TwoToggleSelections.Second -> true
-        null -> false
-    }
-
-    if (isFoodResValid) {
-        viewModel.onEvent(ProfileEvent.IsDietValid(true))
-    } else {
-        viewModel.onEvent(ProfileEvent.IsDietValid(false))
-    }
+    val selectedFoodResDemo =
+        radioButtonSelections[MultiRadioBtnKeys.DIETREST] as TwoRadioBtnSelections?
 
 
     CompositionLocalProvider(
@@ -86,7 +86,7 @@ fun DietContent(
 
             OnlyChipSelectionCard(
                 cardType = "Dietary Preferences",
-                cardList = dietList.getValue(0),
+                cardList = composeThirdData?.get(0),
                 checkedState = checkedState,
                 onItemsSelect = onDietaryPref,
                 cardIndex = 0,
@@ -97,7 +97,7 @@ fun DietContent(
 
             OnlyChipSelectionCard(
                 cardType = "Non-Veg Consumption Days?",
-                cardList = dietList.getValue(1),
+                cardList = composeThirdData?.get(1),
                 checkedState = checkedState,
                 onItemsSelect = onNonVegDays,
                 cardIndex = 1,
@@ -108,7 +108,7 @@ fun DietContent(
 
             OnlyChipSelectionCard(
                 cardType = "Food Allergies?",
-                cardList = dietList.getValue(2),
+                cardList = composeThirdData?.get(2),
                 checkedState = checkedState,
                 onItemsSelect = onFoodAllergies,
                 cardIndex = 2,
@@ -119,7 +119,7 @@ fun DietContent(
 
             OnlyChipSelectionCard(
                 cardType = "Cuisines?",
-                cardList = dietList.getValue(3),
+                cardList = composeThirdData?.get(3),
                 checkedState = checkedState,
                 onItemsSelect = onCuisines,
                 cardIndex = 3,
@@ -130,18 +130,14 @@ fun DietContent(
 
             SelectionCardCreateProfile(
                 cardType = "Food Restrictions?",
-                cardList = dietList.getValue(4),
+                cardList = composeThirdData?.get(4),
                 checkedState = checkedState,
                 onItemsSelect = onFoodRes,
-                selectedOption = selectedFoodRes,
+                selectedOption = selectedFoodResDemo,
                 onStateChange = { state ->
-                    viewModel.onEvent(
-                        ProfileEvent.SetSelectedFoodResOption(
-                            state, 11
-                        )
-                    )
+                    viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.DIETREST, state)
                 },
-                enabled = selectedFoodRes == TwoToggleSelections.First,
+                enabled = selectedFoodResDemo == TwoRadioBtnSelections.First,
                 cardIndex = 4,
                 composeIndex = ComposeIndex.Third,
                 listName = "Diet"
@@ -153,7 +149,7 @@ fun DietContent(
                 eventPrevious, eventNext = {
                     buttonClicked = !buttonClicked
                     viewModel.onEvent(ProfileEvent.OnSubmit)
-                }, text = "Submit", enableButton = doAllInputsValid
+                }, text = "Submit", enableButton = true
             )
 
             if (buttonClicked) {
