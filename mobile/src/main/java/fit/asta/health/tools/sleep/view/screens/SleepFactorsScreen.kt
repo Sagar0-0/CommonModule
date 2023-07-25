@@ -90,7 +90,22 @@ fun SleepFactorsScreen(
                     }
 
                     item {
-                        SleepCardItems(textToShow = "Sleep Factors") {
+
+                        // Checking if we have this value already selected or not
+                        val sleepValue = selectedFactors?.values?.find { value ->
+                            value.name == "Sleep Factors"
+                        }
+
+                        // Setting the Modifier as Green if the User has already selected it
+                        val modifier = if (sleepValue != null)
+                            Modifier.background(Color.Green.copy(alpha = .25f))
+                        else
+                            Modifier
+
+                        SleepCardItems(
+                            modifier = modifier,
+                            textToShow = "Sleep Factors"
+                        ) {
                             onFactorSelected(toolType, "Sleep Factors")
                             navController.popBackStack()
                         }
