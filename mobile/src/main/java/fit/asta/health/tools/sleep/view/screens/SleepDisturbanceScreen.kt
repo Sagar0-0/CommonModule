@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import fit.asta.health.R
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.tools.sleep.model.network.common.Prc
 import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
@@ -103,9 +104,19 @@ fun SleepDisturbanceScreen(
                             else
                                 Modifier
 
+                            val icon = when (list[it].name) {
+                                "Dream" -> R.drawable.dreamcatcher
+                                "Kids" -> R.drawable.kids
+                                "Love" -> R.drawable.favorite
+                                "Water" -> R.drawable.water_glass
+                                "Toilet" -> R.drawable.toilet
+                                else -> R.drawable.sleep_factors
+                            }
+
                             // Showing the Card UI
                             SleepCardItems(
                                 modifier = modifier,
+                                icon = icon,
                                 textToShow = list[it].name
                             ) {
                                 onDisturbanceSelected(toolType, list[it].name)

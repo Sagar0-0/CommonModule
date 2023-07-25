@@ -3,6 +3,7 @@ package fit.asta.health.tools.sleep.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.tools.sleep.model.SleepLocalRepo
 import fit.asta.health.tools.sleep.model.SleepRepository
 import fit.asta.health.tools.sleep.model.network.common.ToolData
 import fit.asta.health.tools.sleep.model.network.common.Value
@@ -21,7 +22,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SleepToolViewModel @Inject constructor(
-    private val remoteRepository: SleepRepository
+    private val remoteRepository: SleepRepository,
+    private val localRepository: SleepLocalRepo
 ) : ViewModel() {
 
     // This contains the user ID for the Api Calls

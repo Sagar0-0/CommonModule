@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import fit.asta.health.R
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.tools.sleep.model.network.common.Prc
 import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
@@ -89,7 +90,22 @@ fun SleepFactorsScreen(
                     }
 
                     item {
-                        SleepCardItems(textToShow = "Sleep Factors") {
+
+                        // Checking if we have this value already selected or not
+                        val sleepValue = selectedFactors?.values?.find { value ->
+                            value.name == "Sleep Factors"
+                        }
+
+                        // Setting the Modifier as Green if the User has already selected it
+                        val modifier = if (sleepValue != null)
+                            Modifier.background(Color.Green.copy(alpha = .25f))
+                        else
+                            Modifier
+
+                        SleepCardItems(
+                            modifier = modifier,
+                            textToShow = "Sleep Factors"
+                        ) {
                             onFactorSelected(toolType, "Sleep Factors")
                             navController.popBackStack()
                         }
@@ -109,9 +125,21 @@ fun SleepFactorsScreen(
                             else
                                 Modifier
 
+                            val icon = when (list[it].name) {
+                                "Sleep Factors" -> R.drawable.sleep_factors
+                                "Alcohol" -> R.drawable.alcohol
+                                "Jet Lag" -> R.drawable.jet_plane
+                                "Caffine" -> R.drawable.coffee
+                                "Smoking" -> R.drawable.smoking
+                                "Pain" -> R.drawable.pain
+                                "Workout" -> R.drawable.workout
+                                else -> R.drawable.sleep_factors
+                            }
+
                             // Showing the Card UI
                             SleepCardItems(
                                 modifier = modifier,
+                                icon = icon,
                                 textToShow = list[it].name
                             ) {
                                 onFactorSelected(toolType, list[it].name)
