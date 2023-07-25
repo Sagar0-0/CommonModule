@@ -44,12 +44,18 @@ fun TagsScreen(
     val closeSheet = {
         scope.launch {
             modalBottomSheetState.hide()
+            /*if (modalBottomSheetValue == ModalBottomSheetValue.Expanded) {
+                modalBottomSheetValue = ModalBottomSheetValue.Hidden
+            }*/
         }
     }
 
     val openSheet = {
         scope.launch {
             modalBottomSheetState.show()
+            /*if (modalBottomSheetValue == ModalBottomSheetValue.Hidden) {
+                modalBottomSheetValue = ModalBottomSheetValue.Expanded
+            }*/
         }
     }
 

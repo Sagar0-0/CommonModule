@@ -74,7 +74,7 @@ fun HomeScreen(
                         }
                     }
                 }, onClick = {
-                    hSEvent(HomeEvent.SetAlarmState(data, it, context))
+//                    hSEvent(HomeEvent.SetAlarm(data, it, context))
                 }, onEdit = {
                     navAlarmSettingHome()
                     hSEvent(HomeEvent.EditAlarm(data))
@@ -111,7 +111,8 @@ fun HomeScreen(
                     )
                 }
             })
-        })
+        }
+    )
 }
 
 

@@ -1,16 +1,13 @@
 package fit.asta.health.tools.breathing.nav
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import fit.asta.health.main.Graph
-import fit.asta.health.settings.ui.SettingScreens
+import fit.asta.health.main.sharedViewModel
 import fit.asta.health.tools.breathing.view.break_time.BreakTimeScreen
 import fit.asta.health.tools.breathing.view.course_level.CourseLevelScreen
 import fit.asta.health.tools.breathing.view.exercise.ExerciseScreen
@@ -22,7 +19,6 @@ import fit.asta.health.tools.breathing.view.language.LanguageScreen
 import fit.asta.health.tools.breathing.view.music.MusicScreen
 import fit.asta.health.tools.breathing.view.pace.PaceScreen
 import fit.asta.health.tools.breathing.viewmodel.BreathingViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 fun NavGraphBuilder.breathingNavigation(
@@ -33,7 +29,7 @@ fun NavGraphBuilder.breathingNavigation(
         startDestination = BreathingScreen.HomeScreen.route
     ) {
         composable(BreathingScreen.HomeScreen.route) {
-            val viewModel: BreathingViewModel = hiltViewModel()
+            val viewModel: BreathingViewModel = it.sharedViewModel(navController)
             val uiState by viewModel.homeUiState
             val exercise by viewModel.selectedExercise.collectAsStateWithLifecycle()
             val goals by viewModel.selectedGoals.collectAsStateWithLifecycle()
@@ -67,49 +63,49 @@ fun NavGraphBuilder.breathingNavigation(
             )
         }
         composable(BreathingScreen.ExerciseScreen.route) {
-            val viewModel: BreathingViewModel = hiltViewModel()
+            val viewModel: BreathingViewModel = it.sharedViewModel(navController)
             ExerciseScreen(
                 onClick = { viewModel.event(UiEvent.SetExercise(it)) },
                 onBack = { navController.popBackStack() })
         }
         composable(BreathingScreen.PaceScreen.route) {
-            val viewModel: BreathingViewModel = hiltViewModel()
+            val viewModel: BreathingViewModel = it.sharedViewModel(navController)
             PaceScreen(
                 onClick = { viewModel.event(UiEvent.SetPace(it)) },
                 onBack = { navController.popBackStack() })
         }
         composable(BreathingScreen.BreakTimeScreen.route) {
-            val viewModel: BreathingViewModel = hiltViewModel()
+            val viewModel: BreathingViewModel = it.sharedViewModel(navController)
             BreakTimeScreen(
                 onClick = { viewModel.event(UiEvent.SetBreakTime(it)) },
                 onBack = { navController.popBackStack() })
         }
         composable(BreathingScreen.GoalScreen.route) {
-            val viewModel: BreathingViewModel = hiltViewModel()
+            val viewModel: BreathingViewModel = it.sharedViewModel(navController)
             GoalsScreen(
                 onClick = { viewModel.event(UiEvent.SetGoals(it)) },
                 onBack = { navController.popBackStack() })
         }
         composable(BreathingScreen.LanguageScreen.route) {
-            val viewModel: BreathingViewModel = hiltViewModel()
+            val viewModel: BreathingViewModel = it.sharedViewModel(navController)
             LanguageScreen(
                 onClick = { viewModel.event(UiEvent.SetLanguage(it)) },
                 onBack = { navController.popBackStack() })
         }
         composable(BreathingScreen.CourseLevelScreen.route) {
-            val viewModel: BreathingViewModel = hiltViewModel()
+            val viewModel: BreathingViewModel = it.sharedViewModel(navController)
             CourseLevelScreen(
                 onClick = { viewModel.event(UiEvent.SetLevel(it)) },
                 onBack = { navController.popBackStack() })
         }
         composable(BreathingScreen.InstructorScreen.route) {
-            val viewModel: BreathingViewModel = hiltViewModel()
+            val viewModel: BreathingViewModel = it.sharedViewModel(navController)
             InstructorScreen(
                 onClick = { viewModel.event(UiEvent.SetInstructor(it)) },
                 onBack = { navController.popBackStack() })
         }
         composable(BreathingScreen.MusicScreen.route) {
-            val viewModel: BreathingViewModel = hiltViewModel()
+            val viewModel: BreathingViewModel = it.sharedViewModel(navController)
             MusicScreen(
                 onClick = { viewModel.event(UiEvent.SetMusic(it)) },
                 onBack = { navController.popBackStack() })

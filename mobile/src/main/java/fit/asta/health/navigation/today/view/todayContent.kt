@@ -2,30 +2,44 @@ package fit.asta.health.navigation.today.view
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,38 +57,86 @@ import coil.request.ImageRequest
 import fit.asta.health.R
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.getImageUrl
+import fit.asta.health.main.Graph
 import fit.asta.health.navigation.home.view.component.NameAndMoodHomeScreenHeader
+import fit.asta.health.scheduler.compose.screen.homescreen.HomeEvent
+import fit.asta.health.scheduler.model.db.entity.AlarmEntity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TodayContent() {
-    val list = listOf("Fasting", "Sleep", "Morning Walk", "Meditation", "Medicines")
-    Column(
-        modifier = Modifier.background(MaterialTheme.colorScheme.background)
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(spacing.small)
-    ) {
-        NameAndMoodHomeScreenHeader()
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(spacing.medium),
-            contentPadding = PaddingValues(0.dp)
-        ) {
-            list.forEachIndexed { index, title ->
-                item {
-                    SwipeDemoToday(title=title, onSwipe = {
+fun TodayContent(
+    list: SnapshotStateList<AlarmEntity>,
+    hSEvent: (HomeEvent) -> Unit,
+    onNav: (Graph) -> Unit
+) {
 
-                    })
+
+    val coroutineScope: CoroutineScope = rememberCoroutineScope()
+    val snackBarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackBarHostState) },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    hSEvent(HomeEvent.SetAlarm)
+                    onNav(Graph.Scheduler)
+                },
+                containerColor = MaterialTheme.colorScheme.primary,
+                shape = CircleShape,
+                modifier = Modifier.size(50.dp),
+                contentColor = Color.White
+            ) {
+                Icon(Icons.Filled.Add, contentDescription = null)
+            }
+        },
+    ) { paddingValues ->
+        LazyColumn(
+            Modifier
+                .fillMaxWidth()
+                .padding(paddingValues)
+                .background(color = MaterialTheme.colorScheme.background),
+            verticalArrangement = Arrangement.spacedBy(spacing.medium),
+        ) {
+            item { NameAndMoodHomeScreenHeader() }
+            items(list) { data ->
+                SwipeDemoToday(data = data, onSwipe = {
+                    hSEvent(HomeEvent.DeleteAlarm(data, context))
+                    coroutineScope.launch {
+                        val snackbarResult = snackBarHostState.showSnackbar(
+                            message = "Deleted ${data.info.name}",
+                            actionLabel = "Undo",
+                            duration = SnackbarDuration.Long
+                        )
+                        when (snackbarResult) {
+                            SnackbarResult.ActionPerformed -> {
+                                hSEvent(HomeEvent.UndoAlarm(data, context))
+                            }
+
+                            else -> {}
+                        }
+                    }
+                }, onDone = {
+//                    hSEvent(HomeEvent.SetAlarmState(data, it, context))
+                }, onReschedule = {
+                    onNav(Graph.Scheduler)
+                    hSEvent(HomeEvent.EditAlarm(data))
                 }
+                )
             }
         }
     }
+
 
 }
 
 @Composable
 @Preview
+@OptIn(ExperimentalMaterial3Api::class)
 fun TodayItem(
     modifier: Modifier = Modifier,
     image: String = "",
@@ -85,17 +147,24 @@ fun TodayItem(
     onDone: () -> Unit = {},
     onReschedule: () -> Unit = {}
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    val color = if (!isPressed) MaterialTheme.colorScheme.primary else Color.Green
     Card(
-        modifier = modifier.padding(16.dp),
+        onClick = { /*TODO*/ },
+        modifier = modifier.padding(horizontal = 16.dp),
         shape = RoundedCornerShape(8.dp),
+        interactionSource = interactionSource,
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 0.dp,
+            defaultElevation = 3.dp,
             pressedElevation = 6.dp,
-            focusedElevation = 4.dp
+            focusedElevation = 4.dp,
+            draggedElevation = 8.dp
         ),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(
+            modifier = modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(spacing.small),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -155,11 +224,18 @@ fun TodayItem(
                         onClick = onDone,
                         border = BorderStroke(
                             width = 2.dp,
-                            color = MaterialTheme.colorScheme.primary
+                            color = color
                         ),
+                        interactionSource = interactionSource,
                         shape = RoundedCornerShape(10.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surface)
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surface),
+                        contentPadding = PaddingValues(8.dp)
                     ) {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
                         Text(
                             text = "Done",
                             style = MaterialTheme.typography.bodyMedium,
@@ -178,22 +254,20 @@ fun TodayItem(
                     text = time,
                     style = MaterialTheme.typography.titleMedium
                 )
-                Text(
-                    modifier = Modifier
-                        .weight(.5f)
-                        .clickable { onReschedule() },
-                    text = "Reschedule",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary,
-                    textAlign = TextAlign.End
-                )
+                TextButton(modifier = Modifier.weight(.5f), onClick = onReschedule) {
+                    Text(
+                        text = "Reschedule",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                        textAlign = TextAlign.End
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-@Preview
 fun SwipeDemoToday(
     onSwipe: () -> Unit = {},
     image: String = "/tags/Breathing+Tag.png",
@@ -201,6 +275,7 @@ fun SwipeDemoToday(
     description: String = "Fasting to cleanse your body",
     progress: String = "44%",
     time: String = "9:00am",
+    data: AlarmEntity,
     onDone: () -> Unit = {},
     onReschedule: () -> Unit = {}
 ) {
@@ -216,10 +291,10 @@ fun SwipeDemoToday(
         backgroundUntilSwipeThreshold = MaterialTheme.colorScheme.background
     ) {
         TodayCard(
-            image = image,
-            time = time,
-            title = title,
-            description = description,
+            image = data.info.url,
+            time = "${data.time.hours}:${data.time.minutes}",
+            title = data.info.tag,
+            description = data.info.description,
             progress = progress,
             onDone = onDone,
             onReschedule = onReschedule
@@ -242,117 +317,127 @@ fun TodayCard(
 
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
-
     val color = if (!isPressed) MaterialTheme.colorScheme.primary else Color.Green
-    Button(
-        onClick = { },
+    TodayItem(
+        image = image,
+        title = title,
+        time = time,
+        description = description,
+        progress = progress,
+        onReschedule = onReschedule,
+        onDone = onDone,
         modifier = modifier
-            .padding(bottom = 8.dp)
-            .fillMaxWidth(),
-        elevation = ButtonDefaults.buttonElevation(5.dp),
-        shape = RoundedCornerShape(8.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surface),
-        contentPadding = PaddingValues(16.dp),
-    ) {
-
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(spacing.small),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(space = spacing.small),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(getImageUrl(url = image))
-                        .crossfade(true)
-                        .build(),
-                    placeholder = painterResource(R.drawable.placeholder_tag),
-                    contentDescription = stringResource(R.string.description),
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(10.dp))
-                        .height(120.dp)
-                        .width(80.dp)
-                )
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(spacing.small),
-                    horizontalAlignment = Alignment.Start
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(space = spacing.small),
-                        modifier = modifier.fillMaxWidth()
-                    ) {
-                        Text(
-                            modifier = Modifier.weight(.5f),
-                            text = title,
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onBackground,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            modifier = Modifier
-                                .weight(.2f)
-                                .clip(RoundedCornerShape(15.dp))
-                                .background(
-                                    MaterialTheme.colorScheme.primary.copy(alpha = .3f)
-                                ),
-                            text = progress,
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.primary,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                    Text(
-                        text = description,
-                        style = MaterialTheme.typography.bodyMedium,
-                        maxLines = 1,
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-
-                    OutlinedButton(
-                        onClick = onDone,
-                        interactionSource = interactionSource,
-                        border = BorderStroke(
-                            width = 2.dp,
-                            color = color
-                        ),
-                        shape = RoundedCornerShape(10.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surface)
-                    ) {
-                        Text(
-                            text = "Done",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = color
-                        )
-                    }
-                }
-            }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(space = spacing.small),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    modifier = Modifier.weight(.5f),
-                    text = time,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                Text(
-                    modifier = Modifier
-                        .weight(.5f)
-                        .clickable { onReschedule() },
-                    text = "Reschedule",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary,
-                    textAlign = TextAlign.End
-                )
-            }
-        }
-    }
+    )
+//    Button(
+//        onClick = { },
+//        modifier = modifier
+//            .padding(bottom = 8.dp)
+//            .fillMaxWidth(),
+//        elevation = ButtonDefaults.buttonElevation(5.dp),
+//        shape = RoundedCornerShape(8.dp),
+//        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.background),
+//        contentPadding = PaddingValues(16.dp),
+//    ) {
+//
+//        Column(
+//            modifier = Modifier.fillMaxWidth(),
+//            verticalArrangement = Arrangement.spacedBy(spacing.small),
+//            horizontalAlignment = Alignment.CenterHorizontally
+//        ) {
+//            Row(
+//                verticalAlignment = Alignment.CenterVertically,
+//                horizontalArrangement = Arrangement.spacedBy(space = spacing.small),
+//                modifier = Modifier.fillMaxWidth()
+//            ) {
+//                Log.d("manish", "TodayItem: ${getImageUrl(url = image)}")
+//                AsyncImage(
+//                    model = ImageRequest.Builder(LocalContext.current)
+//                        .data(getImageUrl(url = image))
+//                        .crossfade(true)
+//                        .build(),
+//                    placeholder = painterResource(R.drawable.placeholder_tag),
+//                    contentDescription = stringResource(R.string.description),
+//                    contentScale = ContentScale.Crop,
+//                    modifier = Modifier
+//                        .clip(RoundedCornerShape(10.dp))
+//                        .height(120.dp)
+//                        .width(80.dp)
+//                )
+//                Column(
+//                    verticalArrangement = Arrangement.spacedBy(spacing.small),
+//                    horizontalAlignment = Alignment.Start
+//                ) {
+//                    Row(
+//                        verticalAlignment = Alignment.CenterVertically,
+//                        horizontalArrangement = Arrangement.spacedBy(space = spacing.small),
+//                        modifier = modifier.fillMaxWidth()
+//                    ) {
+//                        Text(
+//                            modifier = Modifier.weight(.5f),
+//                            text = title,
+//                            style = MaterialTheme.typography.titleMedium,
+//                            color = MaterialTheme.colorScheme.onBackground,
+//                            fontWeight = FontWeight.Bold
+//                        )
+//                        Text(
+//                            modifier = Modifier
+//                                .weight(.2f)
+//                                .clip(RoundedCornerShape(15.dp))
+//                                .background(
+//                                    MaterialTheme.colorScheme.primary.copy(alpha = .3f)
+//                                ),
+//                            text = progress,
+//                            style = MaterialTheme.typography.titleMedium,
+//                            color = MaterialTheme.colorScheme.primary,
+//                            textAlign = TextAlign.Center
+//                        )
+//                    }
+//                    Text(
+//                        text = description,
+//                        style = MaterialTheme.typography.bodyMedium,
+//                        maxLines = 1,
+//                        color = MaterialTheme.colorScheme.onBackground
+//                    )
+//
+//                    OutlinedButton(
+//                        onClick = onDone,
+//                        interactionSource = interactionSource,
+//                        border = BorderStroke(
+//                            width = 2.dp,
+//                            color = color
+//                        ),
+//                        shape = RoundedCornerShape(10.dp),
+//                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surface)
+//                    ) {
+//                        Text(
+//                            text = "Done",
+//                            style = MaterialTheme.typography.bodyMedium,
+//                            color = color
+//                        )
+//                    }
+//                }
+//            }
+//            Row(
+//                verticalAlignment = Alignment.CenterVertically,
+//                horizontalArrangement = Arrangement.spacedBy(space = spacing.small),
+//                modifier = Modifier.fillMaxWidth()
+//            ) {
+//                Text(
+//                    modifier = Modifier.weight(.5f),
+//                    text = time,
+//                    style = MaterialTheme.typography.titleMedium,
+//                    color = MaterialTheme.colorScheme.onBackground
+//                )
+//                Text(
+//                    modifier = Modifier
+//                        .weight(.5f)
+//                        .clickable { onReschedule() },
+//                    text = "Reschedule",
+//                    style = MaterialTheme.typography.bodyMedium,
+//                    color = MaterialTheme.colorScheme.primary,
+//                    textAlign = TextAlign.End
+//                )
+//            }
+//        }
+//    }
 }

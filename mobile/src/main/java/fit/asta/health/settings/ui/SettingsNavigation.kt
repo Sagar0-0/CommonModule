@@ -3,7 +3,6 @@ package fit.asta.health.settings.ui
 import android.widget.Toast
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -18,6 +17,7 @@ import fit.asta.health.common.utils.sendFeedbackMessage
 import fit.asta.health.common.utils.shareApp
 import fit.asta.health.common.utils.showUrlInBrowser
 import fit.asta.health.main.Graph
+import fit.asta.health.main.sharedViewModel
 import fit.asta.health.settings.data.SettingsNotificationsStatus
 import fit.asta.health.settings.data.SettingsUiEvent
 import fit.asta.health.settings.data.SettingsViewModel
@@ -33,7 +33,7 @@ fun NavGraphBuilder.SettingsNavigation(
     ) {
         composable(route = SettingScreens.Main.route) {
             val context = LocalContext.current
-            val authViewModel: AuthViewModel = hiltViewModel()
+            val authViewModel: AuthViewModel = it.sharedViewModel(navController)
 
             val onUiClickEvent: (key: SettingsUiEvent) -> Unit = { key ->
                 when (key) {
@@ -103,7 +103,7 @@ fun NavGraphBuilder.SettingsNavigation(
             )
         }
         composable(route = SettingScreens.Notifications.route) {
-            val settingsViewModel: SettingsViewModel = hiltViewModel()
+            val settingsViewModel: SettingsViewModel = it.sharedViewModel(navController)
             val status by remember {
                 mutableStateOf(
                     SettingsNotificationsStatus(

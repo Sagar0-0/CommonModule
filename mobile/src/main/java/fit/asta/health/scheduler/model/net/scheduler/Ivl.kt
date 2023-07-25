@@ -17,6 +17,8 @@ data class Ivl(
     var repeatableInterval: Rep,
     @SerializedName("snu")
     var snoozeTime: Int, // 10
+     @SerializedName("sts")
+    var status: Boolean,
     @SerializedName("stat")
     var staticIntervals: List<Stat>,
     @SerializedName("vars")
