@@ -13,6 +13,8 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.common.ui.theme.cardElevation
 
@@ -20,8 +22,11 @@ import fit.asta.health.common.ui.theme.cardElevation
 @Composable
 fun CustomTopBar(
     text: String = "",
+    containerColor: Color = MaterialTheme.colorScheme.onPrimary,
+    titleContentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    backIcon: ImageVector = Icons.Outlined.NavigateBefore,
     actionItems: @Composable RowScope.() -> Unit = {},
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit = {}
 ) {
     TopAppBar(
         title = {
@@ -34,15 +39,15 @@ fun CustomTopBar(
         navigationIcon = {
             IconButton(onClick = onBackPressed) {
                 Icon(
-                    imageVector = Icons.Outlined.NavigateBefore,
+                    imageVector = backIcon,
                     contentDescription = "back",
                     tint = MaterialTheme.colorScheme.primary,
                 )
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.onPrimary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+            containerColor = containerColor,
+            titleContentColor = titleContentColor
         ),
         modifier = Modifier.shadow(elevation = cardElevation.medium),
         actions = actionItems
@@ -52,7 +57,5 @@ fun CustomTopBar(
 @Composable
 @Preview(showBackground = true)
 fun CustomTopBarPreview() {
-    CustomTopBar(text = "Preview") {
-
-    }
+    CustomTopBar(text = "Preview")
 }

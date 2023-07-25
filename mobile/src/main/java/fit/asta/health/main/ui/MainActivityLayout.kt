@@ -165,9 +165,18 @@ fun MainActivityLayout(
                 )
             }
             composable(BottomBarScreens.Today.route) {
-                val todayPlanViewModel: TodayPlanViewModel = it.sharedViewModel(navController = navController)
-                val list by todayPlanViewModel.alarmList.collectAsStateWithLifecycle()
-               TodayContent(list = list, hSEvent = todayPlanViewModel::hSEvent, onNav = onNav)
+                val todayPlanViewModel: TodayPlanViewModel =
+                    it.sharedViewModel(navController = navController)
+                val listMorning by todayPlanViewModel.alarmListMorning.collectAsStateWithLifecycle()
+                val listAfternoon by todayPlanViewModel.alarmListAfternoon.collectAsStateWithLifecycle()
+                val listEvening by todayPlanViewModel.alarmListEvening.collectAsStateWithLifecycle()
+                TodayContent(
+                    listMorning = listMorning,
+                    listAfternoon = listAfternoon,
+                    listEvening = listEvening,
+                    hSEvent = todayPlanViewModel::hSEvent,
+                    onNav = onNav
+                )
             }
 
             composable(BottomBarScreens.Track.route) {

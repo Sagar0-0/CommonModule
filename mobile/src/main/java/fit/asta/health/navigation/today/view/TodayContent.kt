@@ -1,5 +1,6 @@
 package fit.asta.health.navigation.today.view
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -66,10 +67,11 @@ import kotlinx.coroutines.launch
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodayContent(
-    list: SnapshotStateList<AlarmEntity>,
+    listMorning: SnapshotStateList<AlarmEntity>,
+    listAfternoon: SnapshotStateList<AlarmEntity>,
+    listEvening: SnapshotStateList<AlarmEntity>,
     hSEvent: (HomeEvent) -> Unit,
     onNav: (Graph) -> Unit
 ) {
@@ -100,10 +102,76 @@ fun TodayContent(
                 .fillMaxWidth()
                 .padding(paddingValues)
                 .background(color = MaterialTheme.colorScheme.background),
+            contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(spacing.medium),
         ) {
             item { NameAndMoodHomeScreenHeader() }
-            items(list) { data ->
+            item {
+                AnimatedVisibility(visible = listMorning.isNotEmpty()) {
+                    Text(text = "Morning Events", style = MaterialTheme.typography.titleMedium)
+                }
+            }
+            items(listMorning) { data ->
+                SwipeDemoToday(data = data, onSwipe = {
+                    hSEvent(HomeEvent.DeleteAlarm(data, context))
+                    coroutineScope.launch {
+                        val snackbarResult = snackBarHostState.showSnackbar(
+                            message = "Deleted ${data.info.name}",
+                            actionLabel = "Undo",
+                            duration = SnackbarDuration.Long
+                        )
+                        when (snackbarResult) {
+                            SnackbarResult.ActionPerformed -> {
+                                hSEvent(HomeEvent.UndoAlarm(data, context))
+                            }
+
+                            else -> {}
+                        }
+                    }
+                }, onDone = {
+//                    hSEvent(HomeEvent.SetAlarmState(data, it, context))
+                }, onReschedule = {
+                    onNav(Graph.Scheduler)
+                    hSEvent(HomeEvent.EditAlarm(data))
+                }
+                )
+            }
+            item {
+                AnimatedVisibility(visible = listAfternoon.isNotEmpty()) {
+                    Text(text = "Afternoon Events", style = MaterialTheme.typography.titleMedium)
+                }
+            }
+            items(listAfternoon) { data ->
+                SwipeDemoToday(data = data, onSwipe = {
+                    hSEvent(HomeEvent.DeleteAlarm(data, context))
+                    coroutineScope.launch {
+                        val snackbarResult = snackBarHostState.showSnackbar(
+                            message = "Deleted ${data.info.name}",
+                            actionLabel = "Undo",
+                            duration = SnackbarDuration.Long
+                        )
+                        when (snackbarResult) {
+                            SnackbarResult.ActionPerformed -> {
+                                hSEvent(HomeEvent.UndoAlarm(data, context))
+                            }
+
+                            else -> {}
+                        }
+                    }
+                }, onDone = {
+//                    hSEvent(HomeEvent.SetAlarmState(data, it, context))
+                }, onReschedule = {
+                    onNav(Graph.Scheduler)
+                    hSEvent(HomeEvent.EditAlarm(data))
+                }
+                )
+            }
+            item {
+                AnimatedVisibility(visible = listEvening.isNotEmpty()) {
+                    Text(text = "Evening Events", style = MaterialTheme.typography.titleMedium)
+                }
+            }
+            items(listEvening) { data ->
                 SwipeDemoToday(data = data, onSwipe = {
                     hSEvent(HomeEvent.DeleteAlarm(data, context))
                     coroutineScope.launch {
@@ -152,7 +220,7 @@ fun TodayItem(
     val color = if (!isPressed) MaterialTheme.colorScheme.primary else Color.Green
     Card(
         onClick = { /*TODO*/ },
-        modifier = modifier.padding(horizontal = 16.dp),
+        modifier = modifier,
         shape = RoundedCornerShape(8.dp),
         interactionSource = interactionSource,
         elevation = CardDefaults.cardElevation(
@@ -314,10 +382,6 @@ fun TodayCard(
     onDone: () -> Unit,
     onReschedule: () -> Unit
 ) {
-
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val color = if (!isPressed) MaterialTheme.colorScheme.primary else Color.Green
     TodayItem(
         image = image,
         title = title,
@@ -328,116 +392,51 @@ fun TodayCard(
         onDone = onDone,
         modifier = modifier
     )
-//    Button(
-//        onClick = { },
-//        modifier = modifier
-//            .padding(bottom = 8.dp)
-//            .fillMaxWidth(),
-//        elevation = ButtonDefaults.buttonElevation(5.dp),
-//        shape = RoundedCornerShape(8.dp),
-//        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.background),
-//        contentPadding = PaddingValues(16.dp),
-//    ) {
-//
-//        Column(
-//            modifier = Modifier.fillMaxWidth(),
-//            verticalArrangement = Arrangement.spacedBy(spacing.small),
-//            horizontalAlignment = Alignment.CenterHorizontally
-//        ) {
-//            Row(
-//                verticalAlignment = Alignment.CenterVertically,
-//                horizontalArrangement = Arrangement.spacedBy(space = spacing.small),
-//                modifier = Modifier.fillMaxWidth()
-//            ) {
-//                Log.d("manish", "TodayItem: ${getImageUrl(url = image)}")
-//                AsyncImage(
-//                    model = ImageRequest.Builder(LocalContext.current)
-//                        .data(getImageUrl(url = image))
-//                        .crossfade(true)
-//                        .build(),
-//                    placeholder = painterResource(R.drawable.placeholder_tag),
-//                    contentDescription = stringResource(R.string.description),
-//                    contentScale = ContentScale.Crop,
-//                    modifier = Modifier
-//                        .clip(RoundedCornerShape(10.dp))
-//                        .height(120.dp)
-//                        .width(80.dp)
-//                )
-//                Column(
-//                    verticalArrangement = Arrangement.spacedBy(spacing.small),
-//                    horizontalAlignment = Alignment.Start
-//                ) {
-//                    Row(
-//                        verticalAlignment = Alignment.CenterVertically,
-//                        horizontalArrangement = Arrangement.spacedBy(space = spacing.small),
-//                        modifier = modifier.fillMaxWidth()
-//                    ) {
-//                        Text(
-//                            modifier = Modifier.weight(.5f),
-//                            text = title,
-//                            style = MaterialTheme.typography.titleMedium,
-//                            color = MaterialTheme.colorScheme.onBackground,
-//                            fontWeight = FontWeight.Bold
-//                        )
-//                        Text(
-//                            modifier = Modifier
-//                                .weight(.2f)
-//                                .clip(RoundedCornerShape(15.dp))
-//                                .background(
-//                                    MaterialTheme.colorScheme.primary.copy(alpha = .3f)
-//                                ),
-//                            text = progress,
-//                            style = MaterialTheme.typography.titleMedium,
-//                            color = MaterialTheme.colorScheme.primary,
-//                            textAlign = TextAlign.Center
-//                        )
-//                    }
-//                    Text(
-//                        text = description,
-//                        style = MaterialTheme.typography.bodyMedium,
-//                        maxLines = 1,
-//                        color = MaterialTheme.colorScheme.onBackground
-//                    )
-//
-//                    OutlinedButton(
-//                        onClick = onDone,
-//                        interactionSource = interactionSource,
-//                        border = BorderStroke(
-//                            width = 2.dp,
-//                            color = color
-//                        ),
-//                        shape = RoundedCornerShape(10.dp),
-//                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surface)
-//                    ) {
-//                        Text(
-//                            text = "Done",
-//                            style = MaterialTheme.typography.bodyMedium,
-//                            color = color
-//                        )
-//                    }
-//                }
-//            }
-//            Row(
-//                verticalAlignment = Alignment.CenterVertically,
-//                horizontalArrangement = Arrangement.spacedBy(space = spacing.small),
-//                modifier = Modifier.fillMaxWidth()
-//            ) {
-//                Text(
-//                    modifier = Modifier.weight(.5f),
-//                    text = time,
-//                    style = MaterialTheme.typography.titleMedium,
-//                    color = MaterialTheme.colorScheme.onBackground
-//                )
-//                Text(
-//                    modifier = Modifier
-//                        .weight(.5f)
-//                        .clickable { onReschedule() },
-//                    text = "Reschedule",
-//                    style = MaterialTheme.typography.bodyMedium,
-//                    color = MaterialTheme.colorScheme.primary,
-//                    textAlign = TextAlign.End
-//                )
-//            }
-//        }
-//    }
+}
+
+fun GoToTool(tag: String): Graph {
+    return when (tag) {
+        "Breathing" -> {
+            Graph.BreathingTool
+        }
+//        "Diet" -> {}
+//        "Face Wash" -> {}
+//        "Intermittent" -> {}
+//        "Medicine" -> {}
+        "Meditation" -> {
+            Graph.MeditationTool
+        }
+//        "Power Nap" -> {}
+        "Sleep" -> {
+            Graph.SleepTool
+        }
+//        "Sleep Therapy" -> {}
+        "Stretches" -> {
+            Graph.Yoga
+        }
+
+        "SunLight" -> {
+            Graph.SunlightTool
+        }
+
+        "Walking" -> {
+            Graph.WalkingTool
+        }
+
+        "Water" -> {
+            Graph.WaterTool
+        }
+
+        "Workout" -> {
+            Graph.Workout
+        }
+
+        "Yoga" -> {
+            Graph.Yoga
+        }
+
+        else -> {
+            Graph.Home
+        }
+    }
 }

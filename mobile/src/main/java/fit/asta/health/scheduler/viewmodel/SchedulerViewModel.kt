@@ -11,7 +11,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.common.utils.PrefUtils
@@ -32,16 +31,7 @@ import fit.asta.health.scheduler.model.AlarmLocalRepo
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.db.entity.AlarmSync
 import fit.asta.health.scheduler.model.db.entity.TagEntity
-import fit.asta.health.scheduler.model.net.scheduler.Adv
-import fit.asta.health.scheduler.model.net.scheduler.Info
-import fit.asta.health.scheduler.model.net.scheduler.Ivl
-import fit.asta.health.scheduler.model.net.scheduler.Meta
-import fit.asta.health.scheduler.model.net.scheduler.Rep
-import fit.asta.health.scheduler.model.net.scheduler.Stat
-import fit.asta.health.scheduler.model.net.scheduler.Time
-import fit.asta.health.scheduler.model.net.scheduler.Tone
-import fit.asta.health.scheduler.model.net.scheduler.Vib
-import fit.asta.health.scheduler.model.net.scheduler.Wk
+import fit.asta.health.scheduler.model.doman.getAlarm
 import fit.asta.health.scheduler.model.net.tag.ScheduleTagNetData
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -89,20 +79,22 @@ class SchedulerViewModel
 
 //        refreshData()
         getAlarms()
-       getEditUiData()
+        getEditUiData()
     }
-    private fun getEditUiData(){
-       viewModelScope.launch {
-          prefUtils.getPreferences("alarm", defaultValue = 999).collect{
-              if (it!=999){
-                  alarmLocalRepo.getAlarm(it)?.let {alarm->
-                      alarmEntity= alarm
-                      updateUi(alarm)
-                  }
-              }
-          }
-       }
+
+    private fun getEditUiData() {
+        viewModelScope.launch {
+            prefUtils.getPreferences("alarm", defaultValue = 999).collect {
+                if (it != 999) {
+                    alarmLocalRepo.getAlarm(it)?.let { alarm ->
+                        alarmEntity = alarm
+                        updateUi(alarm)
+                    }
+                }
+            }
+        }
     }
+
     fun hSEvent(uiEvent: HomeEvent) {
         when (uiEvent) {
             is HomeEvent.EditAlarm -> {
@@ -119,17 +111,19 @@ class SchedulerViewModel
             }
 
             is HomeEvent.UndoAlarm -> {
-                undoAlarm(uiEvent.alarm,uiEvent.context)
+                undoAlarm(uiEvent.alarm, uiEvent.context)
             }
 
             else -> {}
         }
     }
 
-    private fun undoAlarm(alarm: AlarmEntity,context: Context) {
+    private fun undoAlarm(alarm: AlarmEntity, context: Context) {
         viewModelScope.launch {
             alarmLocalRepo.insertAlarm(alarm)
-            if (alarm.status){alarm.scheduleAlarm(context)}
+            if (alarm.status) {
+                alarm.scheduleAlarm(context)
+            }
             if (alarm.idFromServer.isNotEmpty()) {
                 alarmLocalRepo.deleteSyncData(
                     AlarmSync(
@@ -383,6 +377,10 @@ class SchedulerViewModel
                 interval.value = interval.value.copy(isRemainderAtTheEnd = uiEvent.choice)
             }
 
+            is TimeSettingEvent.SetStatus -> {
+                interval.value = interval.value.copy(status = uiEvent.choice)
+            }
+
             is TimeSettingEvent.SetVariantStatus -> {
                 interval.value = interval.value.copy(isVariantInterval = uiEvent.choice)
             }
@@ -414,7 +412,6 @@ class SchedulerViewModel
             }
 
             is TimeSettingEvent.Save -> {
-                setIvl()
             }
 
             else -> {}
@@ -547,84 +544,25 @@ class SchedulerViewModel
             _alarmSettingUiState.value =
                 _alarmSettingUiState.value.copy(tone_uri = alarmTone.toString())
         }
-        val newAlarmItem: AlarmEntity?
-        newAlarmItem = AlarmEntity(
-            status = alarmSettingUiState.value.status,
-            week = Wk(
-                friday = alarmSettingUiState.value.friday,
-                monday = alarmSettingUiState.value.monday,
-                saturday = alarmSettingUiState.value.saturday,
-                sunday = alarmSettingUiState.value.sunday,
-                thursday = alarmSettingUiState.value.thursday,
-                tuesday = alarmSettingUiState.value.tuesday,
-                wednesday = alarmSettingUiState.value.wednesday,
-                recurring = alarmSettingUiState.value.recurring
-            ),
-            info = Info(
-                name = alarmSettingUiState.value.alarm_name,
-                description = alarmSettingUiState.value.alarm_description,
-                tag = alarmSettingUiState.value.tag_name,
-                tagId = alarmSettingUiState.value.tagId,
-                url = alarmSettingUiState.value.tag_url
-            ),
-            time = Time(
-                hours = alarmSettingUiState.value.time_hours,
-                minutes = alarmSettingUiState.value.time_minutes,
-                midDay = alarmSettingUiState.value.time_midDay,
-            ),
-            interval = setIvl(),
-            mode = alarmSettingUiState.value.mode,
-            important = alarmSettingUiState.value.important,
-            vibration = Vib(
-                percentage = alarmSettingUiState.value.vibration_percentage,
-                status = alarmSettingUiState.value.vibration_status
-            ),
-            tone = Tone(
-                name = alarmSettingUiState.value.tone_name,
-                type = alarmSettingUiState.value.tone_type,
-                uri = alarmSettingUiState.value.tone_uri
-            ),
-            userId = alarmItem?.userId ?: userId,
+        val entity =alarmSettingUiState.value.getAlarm( userId = alarmItem?.userId ?: userId,
             idFromServer = alarmItem?.idFromServer ?: "",
             alarmId = alarmItem?.alarmId ?: System.currentTimeMillis().mod(199999),
-            meta = Meta(
-                cDate = alarmSettingUiState.value.cDate,
-                cBy = alarmSettingUiState.value.cBy,
-                sync = alarmSettingUiState.value.sync,
-                uDate = alarmSettingUiState.value.uDate
-            )
+            interval =timeSettingUiState.value
         )
-
-        val map: LinkedHashMap<String, Any> = LinkedHashMap()
-        map["id"] = newAlarmItem.idFromServer
-        map["uid"] = newAlarmItem.userId
-        map["almId"] = newAlarmItem.alarmId
-        map["meta"] = newAlarmItem.meta
-        map["info"] = newAlarmItem.info
-        map["time"] = newAlarmItem.time
-        map["sts"] = newAlarmItem.status
-        map["imp"] = newAlarmItem.important
-        map["mode"] = newAlarmItem.mode
-        map["wk"] = newAlarmItem.week
-        map["ivl"] = newAlarmItem.interval
-        map["vib"] = newAlarmItem.vibration
-        map["tone"] = newAlarmItem.tone
-        val jsonObject: String? = Gson().toJson(map)
-        val simpleObject = Gson().fromJson(jsonObject, AlarmEntity::class.java)
         viewModelScope.launch {
             _alarmSettingUiState.value = _alarmSettingUiState.value.copy(saveProgress = "Success..")
-            if (simpleObject.status) {
-                simpleObject.scheduleAlarm(context)
+            if (entity.status) {
+                entity.scheduleAlarm(context)
             }
             if (alarmItem != null) {
                 alarmLocalRepo.insertSyncData(
                     AlarmSync(
-                        alarmId = simpleObject.alarmId,
-                        scheduleId = simpleObject.idFromServer
+                        alarmId = entity.alarmId,
+                        scheduleId = entity.idFromServer
                     )
                 )
             }
-            alarmLocalRepo.insertAlarm(simpleObject)
+            alarmLocalRepo.insertAlarm(entity)
             resetUi()
         }
     }
@@ -637,41 +575,6 @@ class SchedulerViewModel
     }
 
     //timeSettingActivity
-    private fun setIvl(): Ivl {
-        return Ivl(
-            advancedReminder = Adv(
-                status = timeSettingUiState.value.advancedReminder.status,
-                time = timeSettingUiState.value.advancedReminder.time
-            ),
-            duration = timeSettingUiState.value.duration,
-            isRemainderAtTheEnd = timeSettingUiState.value.isRemainderAtTheEnd,
-            repeatableInterval = Rep(
-                time = timeSettingUiState.value.repeatableInterval.time,
-                unit = timeSettingUiState.value.repeatableInterval.unit
-            ),
-            snoozeTime = timeSettingUiState.value.snoozeTime,
-            staticIntervals = timeSettingUiState.value.staticIntervals.map {
-                Stat(
-                    hours = it.hours,
-                    midDay = it.midDay,
-                    minutes = it.minutes,
-                    name = it.name,
-                    id = it.id
-                )
-            },
-            variantIntervals = timeSettingUiState.value.variantIntervals.map {
-                Stat(
-                    hours = it.hours,
-                    midDay = it.midDay,
-                    minutes = it.minutes,
-                    name = it.name,
-                    id = it.id
-                )
-            },
-            isVariantInterval = timeSettingUiState.value.isVariantInterval,
-            status = false
-        )
-    }
 
     private fun deleteAlarm(alarmItem: AlarmEntity, context: Context) {
         _alarmList.remove(alarmItem)

@@ -1,89 +1,50 @@
 package fit.asta.health.scheduler.compose.components
 
-import android.os.Build
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.shawnlin.numberpicker.NumberPicker
 import fit.asta.health.R
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.IvlUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.RepUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.StatUiState
 
-
-data class CustomInterval(
-    val time: String = "",
-    val tagName: String = "",
-)
-
-
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun IntervalTimeLayout(
-//    onNavigateBack: () -> Unit,
-//    onNavigateSnooze: () -> Unit,
-//    onNavigateRepetitiveInterval: (() -> Unit)?,
-//) {
-//    Scaffold(content = {
-//
-//        SettingsLayout(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .padding(it)
-//                .verticalScroll(rememberScrollState())
-//                .background(color = MaterialTheme.colorScheme.secondaryContainer),
-//            onNavigateAction = onNavigateSnooze,
-//            onNavigateRepetitiveInterval = onNavigateRepetitiveInterval
-//        )
-//    }, topBar = {
-//        BottomNavigation(content = {
-//            Row(
-//                verticalAlignment = Alignment.CenterVertically,
-//                horizontalArrangement = Arrangement.SpaceBetween,
-//                modifier = Modifier.fillMaxWidth()
-//            ) {
-//                IconButton(onClick = onNavigateBack) {
-//                    Icon(
-//                        painter = painterResource(id = R.drawable.ic_round_close_24),
-//                        contentDescription = null,
-//                        Modifier.size(24.dp)
-//                    )
-//                }
-//                Text(
-//                    text = "Intervals and Time Settings",
-//                    fontSize = 20.sp,
-//                    color = MaterialTheme.colorScheme.onTertiaryContainer,
-//                    textAlign = TextAlign.Center
-//                )
-//                IconButton(onClick = { /*TODO*/ }) {
-//                    Icon(
-//                        painter = painterResource(id = R.drawable.ic_baseline_check_24),
-//                        contentDescription = null,
-//                        Modifier.size(24.dp),
-//                        tint = MaterialTheme.colorScheme.primary
-//                    )
-//                }
-//            }
-//        }, elevation = 10.dp, backgroundColor = Color.White)
-//    })
-//}
 
 
 @Composable
@@ -98,11 +59,16 @@ fun SettingsLayout(
     timeSettingUiState: IvlUiState,
     variantIntervals: SnapshotStateList<StatUiState>,
     onVariantStateChange: (Boolean) -> Unit,
+    onStateChange: (Boolean) -> Unit,
     onDelete: (StatUiState) -> Unit,
     onAddVariantInterval: () -> Unit
 ) {
 
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier.padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(spacing.small),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         TextSelection(
             image = R.drawable.ic_ic24_alarm_snooze,
             title = "Snooze",
@@ -110,7 +76,6 @@ fun SettingsLayout(
             arrowImage = R.drawable.ic_ic24_right_arrow,
             onNavigateAction = onNavigateSnooze
         )
-        Spacer(modifier = Modifier.height(16.dp))
         OnlyToggleButton(
             icon = R.drawable.ic_ic24_notification,
             title = "Advanced\nReminder",
@@ -119,7 +84,6 @@ fun SettingsLayout(
             onCheckClicked = { onChoice(it) },
             onNavigateToClickText = onNavigateAdvanced
         )
-        Spacer(modifier = Modifier.height(16.dp))
         TextSelection(
             image = R.drawable.ic_round_access_alarm_24,
             title = "Duration",
@@ -127,7 +91,6 @@ fun SettingsLayout(
             arrowImage = R.drawable.ic_ic24_right_arrow,
             onNavigateAction = onNavigateDuration
         )
-        Spacer(modifier = Modifier.height(16.dp))
         OnlyToggleButton(
             icon = R.drawable.ic_ic24_notification,
             title = "Remind at the end\nof Duration",
@@ -136,19 +99,25 @@ fun SettingsLayout(
             onCheckClicked = { onRemainderAtEnd(it) },
             onNavigateToClickText = null
         )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        ShowMoreContent(
-            onNavigateRepetitiveInterval = onNavigateRepetitiveInterval,
-            variantIntervals = variantIntervals,
-            onDelete = onDelete,
-            repetitiveInterval = "${timeSettingUiState.repeatableInterval.time}  ${timeSettingUiState.repeatableInterval.unit}",
-            onAddVariantInterval = onAddVariantInterval,
-            onVariantStateChange = onVariantStateChange,
-            variantState = timeSettingUiState.isVariantInterval
+        OnlyToggleButton(
+            icon = R.drawable.ic_ic24_notification,
+            title = "Interval's Status",
+            switchTitle = "",
+            mCheckedState = timeSettingUiState.status,
+            onCheckClicked = { onStateChange(it) },
+            onNavigateToClickText = null
         )
-
-        Spacer(modifier = Modifier.height(16.dp))
+        AnimatedVisibility(visible = timeSettingUiState.status) {
+            ShowMoreContent(
+                onNavigateRepetitiveInterval = onNavigateRepetitiveInterval,
+                variantIntervals = variantIntervals,
+                onDelete = onDelete,
+                repetitiveInterval = "${timeSettingUiState.repeatableInterval.time}  ${timeSettingUiState.repeatableInterval.unit}",
+                onAddVariantInterval = onAddVariantInterval,
+                onVariantStateChange = onVariantStateChange,
+                variantState = timeSettingUiState.isVariantInterval
+            )
+        }
     }
 }
 
@@ -166,9 +135,7 @@ fun ShowMoreContent(
 
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+        modifier = Modifier.fillMaxWidth()
     ) {
         CustomIntervalToggleButton(
             icon = R.drawable.ic_ic24_time,
@@ -197,53 +164,45 @@ fun TextSelection(
     onNavigateAction: () -> Unit,
 ) {
 
-    Column(
+    Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box {
-                Row {
-                    Box(Modifier.size(24.dp), contentAlignment = Alignment.Center) {
-                        Icon(
-                            painter = painterResource(id = image),
-                            contentDescription = null,
-                            Modifier.size(20.dp),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = title,
-                        fontSize = 16.sp,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
+        Box {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(spacing.small),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(
+                        painter = painterResource(id = image),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
                     )
                 }
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
             }
+        }
 
-            Box {
-                Row {
-
-                    SelectableText(arrowTitle)
-
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    Box(Modifier.size(24.dp), contentAlignment = Alignment.Center) {
-                        IconButton(onClick = onNavigateAction) {
-                            Icon(
-                                painter = painterResource(id = arrowImage),
-                                contentDescription = null,
-                                Modifier.size(24.dp),
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
+        Box {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(spacing.small),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                SelectableText(arrowTitle)
+                Box(contentAlignment = Alignment.Center) {
+                    IconButton(onClick = onNavigateAction) {
+                        Icon(
+                            painter = painterResource(id = arrowImage),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
                     }
                 }
             }
@@ -252,17 +211,14 @@ fun TextSelection(
 }
 
 @Composable
-private fun SelectableText(arrowTitle: String) {
-    ClickableText(
-        onClick = {},
-        text = AnnotatedString(
+fun SelectableText(arrowTitle: String, onClick: () -> Unit = {}) {
+    TextButton(onClick = onClick) {
+        Text(
             text = arrowTitle,
-            spanStyle = SpanStyle(
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
-    )
+    }
 }
 
 
@@ -297,7 +253,6 @@ fun SnoozeBottomSheet(onNavigateBack: () -> Unit, onValueChange: (Int) -> Unit =
 
 }
 
-@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun AddVariantIntervalBottomSheet(
     text: String,
@@ -311,7 +266,7 @@ fun AddVariantIntervalBottomSheet(
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
+            .padding(16.dp)
     ) {
 
         Row(
@@ -321,9 +276,8 @@ fun AddVariantIntervalBottomSheet(
         ) {
             IconButton(onClick = onNavigateBack) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_round_close_24),
-                    contentDescription = null,
-                    Modifier.size(24.dp)
+                    imageVector = Icons.Default.Close,
+                    contentDescription = null
                 )
             }
             Text(
@@ -338,9 +292,8 @@ fun AddVariantIntervalBottomSheet(
                 }
             }) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_baseline_check_24),
+                    imageVector = Icons.Default.Check,
                     contentDescription = null,
-                    Modifier.size(24.dp),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
@@ -437,8 +390,6 @@ fun CustomIntervalToggleButton(
     onCheckChange: (Boolean) -> Unit
 ) {
 
-    val enabled by remember { mutableStateOf(true) }
-
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -446,46 +397,42 @@ fun CustomIntervalToggleButton(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box {
-                Row {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(spacing.small),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Box(Modifier.size(24.dp), contentAlignment = Alignment.Center) {
                         Icon(
                             painter = painterResource(id = icon),
                             contentDescription = null,
-                            Modifier.size(20.dp),
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
-                    Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = title,
-                        fontSize = 16.sp,
+                        style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSecondaryContainer
                     )
                 }
             }
             Box {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    ClickableText(text = AnnotatedString(
-                        text = switchTitle,
-                        spanStyle = SpanStyle(
-                            fontSize = 16.sp,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    ),
-                        onClick = {
-                            if (enabled) {
-                                onNavigateToClickText?.invoke()
-                            }
-                        })
-
-                    Spacer(modifier = Modifier.width(8.dp))
-
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(spacing.small),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    SelectableText(
+                        arrowTitle = switchTitle,
+                        onClick = { onNavigateToClickText?.invoke() })
                     Switch(
                         checked = mCheckedState,
                         onCheckedChange = onCheckChange,
                         colors = SwitchDefaults.colors(
-                            uncheckedThumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            checkedThumbColor = MaterialTheme.colorScheme.primary
+                            checkedThumbColor = MaterialTheme.colorScheme.primary,
+                            uncheckedThumbColor = MaterialTheme.colorScheme.primaryContainer,
+                            checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+                            uncheckedTrackColor = MaterialTheme.colorScheme.background,
+                            checkedBorderColor = MaterialTheme.colorScheme.primary,
+                            uncheckedBorderColor = MaterialTheme.colorScheme.primary,
                         )
                     )
                 }
@@ -499,10 +446,9 @@ fun CustomIntervalToggleButton(
                 variantIntervals = variantIntervals
             )
         } else {
-            Spacer(modifier = Modifier.height(32.dp))
-            CustomIntervalTextSelection(
+            TextSelection(
                 image = R.drawable.ic_ic24_alarm_snooze,
-                title = "Repetitive\nIntervals",
+                title = "Repetitive \n Intervals",
                 arrowTitle = repetitiveInterval,
                 arrowImage = R.drawable.ic_ic24_right_arrow,
                 onNavigateAction = onNavigateRepetitiveInterval
@@ -589,17 +535,11 @@ fun CustomFloatingButton(
     onAddVariantInterval: () -> Unit,
     variantIntervals: SnapshotStateList<StatUiState>
 ) {
-
-    val customIntervalList = listOf(
-        CustomInterval(time = "07:05 am", tagName = "Wake Up"),
-        CustomInterval(time = "07:05 am", tagName = "Wake Up"),
-        CustomInterval(time = "07:05 am", tagName = "Wake Up"),
-        CustomInterval(time = "07:05 am", tagName = "Wake Up"),
-        CustomInterval(time = "07:05 am", tagName = "Wake Up"),
-    )
-
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Spacer(modifier = Modifier.height(16.dp))
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(spacing.small)
+    ) {
         variantIntervals.forEach { state ->
             val ampm: String = if (state.midDay) "pm" else "am"
             val time: String = if (state.midDay) "${state.hours.toInt() - 12}" else state.hours
@@ -608,14 +548,16 @@ fun CustomFloatingButton(
                 tagName = state.name,
                 onClick = { onDelete(state) }
             )
-            Spacer(modifier = Modifier.height(32.dp))
         }
 
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+        Row(
+            Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             FloatingActionButton(
                 onClick = onAddVariantInterval,
                 shape = CircleShape,
-                modifier = Modifier.size(60.dp),
+                modifier = Modifier.size(50.dp),
                 containerColor = MaterialTheme.colorScheme.primary
             ) {
                 Icon(
@@ -634,49 +576,44 @@ fun CustomVariantInterval(
     tagName: String,
     onClick: () -> Unit = {}
 ) {
-    Row {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box {
-                    Row {
-                        Box(Modifier.size(24.dp), contentAlignment = Alignment.Center) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_ic24_rotate),
-                                contentDescription = null,
-                                Modifier.size(20.dp),
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = time,
-                            fontSize = 16.sp,
-                            color = MaterialTheme.colorScheme.onTertiaryContainer
-                        )
-                    }
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box {
+            Row {
+                Box(Modifier.size(24.dp), contentAlignment = Alignment.Center) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_ic24_rotate),
+                        contentDescription = null,
+                        Modifier.size(20.dp),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
                 }
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = time,
+                    fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer
+                )
+            }
+        }
 
-                Box {
-                    Row {
+        Box {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                SelectableText(arrowTitle = tagName)
 
-                        SelectableText(arrowTitle = tagName)
+                Spacer(modifier = Modifier.width(8.dp))
 
-                        Spacer(modifier = Modifier.width(8.dp))
-
-                        Box(Modifier.size(24.dp), contentAlignment = Alignment.Center) {
-                            IconButton(onClick = onClick) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_round_remove_circle_24),
-                                    contentDescription = null,
-                                    Modifier.size(24.dp),
-                                    tint = MaterialTheme.colorScheme.primary
-                                )
-                            }
-                        }
+                Box(Modifier.size(24.dp), contentAlignment = Alignment.Center) {
+                    IconButton(onClick = onClick) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_round_remove_circle_24),
+                            contentDescription = null,
+                            Modifier.size(24.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
                     }
                 }
             }

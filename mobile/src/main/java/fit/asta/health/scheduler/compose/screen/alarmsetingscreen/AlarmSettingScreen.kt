@@ -1,31 +1,26 @@
 package fit.asta.health.scheduler.compose.screen.alarmsetingscreen
 
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
+import fit.asta.health.common.ui.CustomTopBar
+import fit.asta.health.common.ui.components.CustomModelBottomSheet
 import fit.asta.health.scheduler.compose.components.*
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AlarmCreateBottomSheetTypes.*
 import fit.asta.health.scheduler.util.Constants
@@ -33,8 +28,7 @@ import kotlinx.coroutines.launch
 import xyz.aprildown.ultimateringtonepicker.RingtonePickerDialog
 import xyz.aprildown.ultimateringtonepicker.UltimateRingtonePicker
 
-@OptIn(ExperimentalMaterialApi::class)
-@RequiresApi(Build.VERSION_CODES.N)
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun AlarmSettingScreen(
@@ -45,89 +39,53 @@ fun AlarmSettingScreen(
     navBack: () -> Unit = {}
 ) {
     val context = LocalContext.current
+    val bottomSheetState = rememberModalBottomSheetState()
     var currentBottomSheet: AlarmCreateBottomSheetTypes? by remember {
         mutableStateOf(null)
     }
 
-    var modalBottomSheetValue by remember {
-        mutableStateOf(ModalBottomSheetValue.Hidden)
-    }
-
-    val modalBottomSheetState = rememberModalBottomSheetState(modalBottomSheetValue)
-
     val scope = rememberCoroutineScope()
 
     val closeSheet = {
-        scope.launch {
-            modalBottomSheetState.hide()
-            if (modalBottomSheetValue == ModalBottomSheetValue.Expanded) {
-                modalBottomSheetValue = ModalBottomSheetValue.Hidden
-            }
-        }
+        scope.launch { bottomSheetState.hide() }
     }
 
     val openSheet = {
-        scope.launch {
-            modalBottomSheetState.show()
-            if (modalBottomSheetValue == ModalBottomSheetValue.Hidden) {
-                modalBottomSheetValue = ModalBottomSheetValue.Expanded
-            }
-        }
+        scope.launch { bottomSheetState.show() }
     }
 
-    ModalBottomSheetLayout(modifier = Modifier
-        .fillMaxSize()
-        .wrapContentHeight(),
-        sheetState = modalBottomSheetState,
-        sheetContent = {
-            Spacer(modifier = Modifier.height(1.dp))
-            currentBottomSheet?.let {
-                AlarmCreateBtmSheetLayout(
-                    sheetLayout = it, closeSheet = { closeSheet() }, aSEvent = aSEvent
-                )
-            }
-        }) {
-
-        Scaffold(topBar = {
-            BottomNavigation(content = {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    IconButton(onClick = { navBack()
-                        aSEvent(AlarmSettingEvent.ResetUi)
-                    }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_round_close_24),
-                            contentDescription = null,
-                            Modifier.size(24.dp)
-                        )
+    Scaffold( modifier = Modifier.fillMaxSize(),
+        containerColor = MaterialTheme.colorScheme.surface ,
+        contentColor = MaterialTheme.colorScheme.onSurface,
+        topBar = {
+            CustomTopBar(text = alarmSettingUiState.saveProgress,
+                backIcon = Icons.Default.Close,
+                containerColor = MaterialTheme.colorScheme.surface,
+                titleContentColor = MaterialTheme.colorScheme.onSurface,
+                actionItems = {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        IconButton(enabled = alarmSettingUiState.saveButtonEnable,
+                            onClick = { aSEvent(AlarmSettingEvent.Save(context = context)) }) {
+                            Icon(
+                                imageVector = Icons.Default.Check,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
                     }
-                    Text(
-                        text = alarmSettingUiState.saveProgress,
-                        fontSize = 20.sp,
-                        color = MaterialTheme.colorScheme.onTertiaryContainer,
-                        textAlign = TextAlign.Center
-                    )
-                    IconButton(
-                        enabled = alarmSettingUiState.saveButtonEnable,
-                        onClick = { aSEvent(AlarmSettingEvent.Save(context = context)) }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_baseline_check_24),
-                            contentDescription = null,
-                            Modifier.size(24.dp),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                }
-            }, elevation = 10.dp, backgroundColor = Color.White)
-        }, content = { paddingValues ->
-
+                }, onBackPressed = {
+                    navBack()
+                    aSEvent(AlarmSettingEvent.ResetUi)
+                })
+        },
+        content = { paddingValues ->
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(paddingValues)
+                    .padding(paddingValues).padding(horizontal = 16.dp)
                     .verticalScroll(rememberScrollState())
             ) {
                 DigitalDemo(onTimeChange = {
@@ -138,8 +96,7 @@ fun AlarmSettingScreen(
                     )
                 })
                 RepeatAlarm(alarmSettingUiState = alarmSettingUiState,
-                    onDaySelect = { aSEvent(AlarmSettingEvent.SetWeek(it)) }
-                )
+                    onDaySelect = { aSEvent(AlarmSettingEvent.SetWeek(it)) })
                 OnlyToggleButton(icon = R.drawable.ic_ic24_alert,
                     title = "Status",
                     switchTitle = "",
@@ -225,8 +182,19 @@ fun AlarmSettingScreen(
                 Spacer(modifier = Modifier.height(16.dp))
             }
         })
-    }
-
+    CustomModelBottomSheet(
+        targetState = bottomSheetState.isVisible,
+        sheetState = bottomSheetState,
+        content = {
+            currentBottomSheet?.let {
+                AlarmCreateBtmSheetLayout(
+                    sheetLayout = it, closeSheet = { closeSheet() }, aSEvent = aSEvent
+                )
+            }
+        },
+        dragHandle = {},
+        onClose = { closeSheet() }
+    )
 }
 
 enum class AlarmCreateBottomSheetTypes {
@@ -247,8 +215,8 @@ fun AlarmCreateBtmSheetLayout(
                 CustomLabelBottomSheetLayout(text = "Labels",
                     label = "Enter your Label",
                     onNavigateBack = {
-                        closeSheet()
                         keyboardController?.hide()
+                        closeSheet()
                     },
                     onSave = {
                         closeSheet()
@@ -257,6 +225,7 @@ fun AlarmCreateBtmSheetLayout(
                     })
             }
         }
+
         DESCRIPTION -> {
             Column(modifier = Modifier.fillMaxWidth()) {
                 CustomLabelBottomSheetLayout(text = "Add Description",
@@ -272,10 +241,10 @@ fun AlarmCreateBtmSheetLayout(
                     })
             }
         }
+
         REMINDER -> {
             Column(modifier = Modifier.fillMaxWidth()) {
-                NotificationBottomSheetLayout(
-                    text = "Select Reminder Mode",
+                NotificationBottomSheetLayout(text = "Select Reminder Mode",
                     onNavigateBack = closeSheet,
                     onSave = {
                         closeSheet()
@@ -283,10 +252,10 @@ fun AlarmCreateBtmSheetLayout(
                     })
             }
         }
+
         VIBRATION -> {
             Column(modifier = Modifier.fillMaxWidth()) {
-                VibrationBottomSheetLayout(
-                    text = "Select Vibration Intensity",
+                VibrationBottomSheetLayout(text = "Select Vibration Intensity",
                     onNavigateBack = closeSheet,
                     onSave = {
                         closeSheet()
@@ -294,6 +263,7 @@ fun AlarmCreateBtmSheetLayout(
                     })
             }
         }
+
         SOUND -> {
             RingtonePickerDialog(dialogTitle = "Select Sound", onRingtonePicked = {
                 closeSheet()
@@ -306,9 +276,7 @@ fun AlarmCreateBtmSheetLayout(
 
 @Composable
 fun RingtonePickerDialog(
-    dialogTitle: String,
-    onRingtonePicked: (ToneUiState) -> Unit,
-    onClose: () -> Unit
+    dialogTitle: String, onRingtonePicked: (ToneUiState) -> Unit, onClose: () -> Unit
 ) {
     val fragmentManager = (LocalContext.current as AppCompatActivity).supportFragmentManager
     val callback = remember {
