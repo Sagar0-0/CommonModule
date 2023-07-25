@@ -1,4 +1,4 @@
-package fit.asta.health.feedback.view.components
+package fit.asta.health.feedback.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -86,6 +86,8 @@ fun feedbackTextFieldItem(qn: Qn): MutableState<An> {
                 },
                 colors = TextFieldDefaults.colors(
                     unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                    /*focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.background*/
                 ),
                 shape = MaterialTheme.shapes.medium
             )

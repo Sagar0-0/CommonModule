@@ -1,15 +1,16 @@
 package fit.asta.health.settings.data
 
-enum class SettingsUiEvent {
-    BACK,
-    NOTIFICATION,
-    SHARE,
-    RATE,
-    FEEDBACK,
-    SIGNOUT,
-    DELETE,
-    BUG,
-    TERMS,
-    PRIVACY,
-    VERSION
+sealed class SettingsUiEvent {
+    object BACK : SettingsUiEvent()
+    object NOTIFICATION : SettingsUiEvent()
+    object SHARE : SettingsUiEvent()
+    object RATE : SettingsUiEvent()
+    object FEEDBACK : SettingsUiEvent()
+    object SIGNOUT : SettingsUiEvent()
+    object DELETE : SettingsUiEvent()
+    object BUG : SettingsUiEvent()
+    object TERMS : SettingsUiEvent()
+    object PRIVACY : SettingsUiEvent()
+    object VERSION : SettingsUiEvent()
+    object REFERRAL : SettingsUiEvent()
 }

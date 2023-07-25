@@ -79,7 +79,7 @@ fun MainActivityLayout(
                     )
                 },
                 actions = {
-                    Row(Modifier.clickable { onClick(MainTopBarActions.LOCATION) }) {
+                    Row(Modifier.clickable { onClick(MainTopBarActions.Location) }) {
                         Icon(
                             Icons.Default.LocationOn, contentDescription = "Location",
                             tint = MaterialTheme.colorScheme.onBackground
@@ -95,14 +95,14 @@ fun MainActivityLayout(
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.End
                     ) {
-                        IconButton(onClick = { onClick(MainTopBarActions.NOTIFICATION) }) {
+                        IconButton(onClick = { onClick(MainTopBarActions.Notification) }) {
                             Icon(
                                 painterResource(id = if (isNotificationEnabled) R.drawable.ic_notifications_on else R.drawable.ic_notifications_off),
                                 contentDescription = "Notifications",
                                 tint = MaterialTheme.colorScheme.onBackground
                             )
                         }
-                        IconButton(onClick = { onClick(MainTopBarActions.SHARE) }) {
+                        IconButton(onClick = { onClick(MainTopBarActions.Share) }) {
                             Icon(
                                 painterResource(id = R.drawable.ic_share_app),
                                 contentDescription = "Share",
@@ -110,7 +110,7 @@ fun MainActivityLayout(
                             )
                         }
                         if (profileImageUri != null) {
-                            IconButton(onClick = { onClick(MainTopBarActions.PROFILE) }) {
+                            IconButton(onClick = { onClick(MainTopBarActions.Profile) }) {
                                 Log.d("URI", profileImageUri.toString())
                                 Image(
                                     modifier = Modifier.clip(CircleShape),
@@ -122,7 +122,7 @@ fun MainActivityLayout(
                                 )
                             }
                         }
-                        IconButton(onClick = { onClick(MainTopBarActions.SETTINGS) }) {
+                        IconButton(onClick = { onClick(MainTopBarActions.Settings) }) {
                             Icon(
                                 painterResource(id = R.drawable.ic_settings),
                                 contentDescription = "Settings",
@@ -136,22 +136,17 @@ fun MainActivityLayout(
         bottomBar = {
             BottomAppBar(
                 items = listOf(
-                    BottomNavItem(BottomBarScreens.Home.route, R.drawable.ic_home, "Home"),
-                    BottomNavItem(BottomBarScreens.Today.route, R.drawable.ic_today, "Today"),
-                    BottomNavItem(BottomBarScreens.Track.route, R.drawable.ic_track, "Track")
+                    BottomNavItem(BottomBarDestination.Home.route, R.drawable.ic_home, "Home"),
+                    BottomNavItem(BottomBarDestination.Today.route, R.drawable.ic_today, "Today"),
+                    BottomNavItem(BottomBarDestination.Track.route, R.drawable.ic_track, "Track")
                 ),
                 currentRoute = navController.currentDestination?.route
-                    ?: BottomBarScreens.Home.route,
+                    ?: BottomBarDestination.Home.route,
                 onNavigate = { route ->
                     if (route != currentDestination?.route) {
                         Log.d("Navigation", "Try to navigate")
 
                         navController.navigate(route) {
-                            // Pop up to the start destination of the graph to
-                            // avoid building up a large stack of destinations
-                            // on the back stack as users select items
-                            // Avoid multiple copies of the same destination when
-
                             if (currentDestination != null) {
                                 Log.d("Navigation", "Pop up current destination")
                                 popUpTo(currentDestination.id) {
@@ -178,21 +173,21 @@ fun MainActivityLayout(
         NavHost(
             route = Graph.Home.route,
             navController = navController,
-            startDestination = BottomBarScreens.Home.route,
+            startDestination = BottomBarDestination.Home.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(BottomBarScreens.Home.route) {
-                HomeContent(
-                    onNav = onNav
-                )
-            }
-            composable(BottomBarScreens.Today.route) {
-                val todayPlanViewModel: TodayPlanViewModel = it.sharedViewModel(navController = navController)
-                val list by todayPlanViewModel.alarmList.collectAsStateWithLifecycle()
-               TodayContent(list = list, hSEvent = todayPlanViewModel::hSEvent, onNav = onNav)
+            composable(BottomBarDestination.Home.route) {
+                HomeContent(onNav = onNav)
             }
 
-            composable(BottomBarScreens.Track.route) {
+            composable(BottomBarDestination.Today.route) {
+                val todayPlanViewModel: TodayPlanViewModel =
+                    it.sharedViewModel(navController = navController)
+                val list by todayPlanViewModel.alarmList.collectAsStateWithLifecycle()
+                TodayContent(list = list, hSEvent = todayPlanViewModel::hSEvent, onNav = onNav)
+            }
+
+            composable(BottomBarDestination.Track.route) {
                 TrackContent()
             }
         }

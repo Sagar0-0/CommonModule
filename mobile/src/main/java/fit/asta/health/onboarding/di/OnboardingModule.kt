@@ -1,10 +1,8 @@
 package fit.asta.health.onboarding.di
 
-import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.BuildConfig
 import fit.asta.health.onboarding.api.OnboardingApi
@@ -34,12 +32,10 @@ object OnboardingModule {
     @Singleton
     @Provides
     fun provideOnboardingRepo(
-        @ApplicationContext context: Context,
         remoteApi: OnboardingApi,
         OnboardingMapper: OnboardingDataMapper,
     ): OnboardingRepo {
         return OnboardingRepoImpl(
-            context = context,
             remoteApi = remoteApi,
             mapper = OnboardingMapper
         )

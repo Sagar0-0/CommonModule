@@ -1,7 +1,6 @@
 package fit.asta.health.onboarding.ui
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -10,47 +9,42 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.GifImage
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
-import fit.asta.health.onboarding.vm.OnboardingGetState
+import fit.asta.health.navigation.home.view.component.LoadingAnimation
+import fit.asta.health.onboarding.modal.OnboardingData
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun OnBoardingPager(
-    state: OnboardingGetState,
+    state: ResponseState<List<OnboardingData>>,
     onReload: () -> Unit,
     onFinish: () -> Unit
 ) {
     when (state) {
-        OnboardingGetState.Loading -> {
-            LinearProgressIndicator(
-                modifier = Modifier.fillMaxWidth(),
-                color = MaterialTheme.colorScheme.primary
-            )
+        ResponseState.Loading -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                LoadingAnimation()
+            }
         }
 
-        OnboardingGetState.NoInternet -> {
+        ResponseState.NoInternet -> {
             ErrorScreenLayout(onTryAgain = onReload)
         }
 
-        OnboardingGetState.Empty -> {
-            ErrorScreenLayout(
-                onTryAgain = onReload,
-                desc = "Nothing found",
-                imgID = (R.drawable.error_404)
-            )
-        }
-
-        is OnboardingGetState.Error -> {
+        is ResponseState.Error -> {
             ErrorScreenLayout(
                 onTryAgain = onReload,
                 desc = state.error.message ?: "ERROR 404",
@@ -58,7 +52,7 @@ fun OnBoardingPager(
             )
         }
 
-        is OnboardingGetState.Success -> {
+        is ResponseState.Success -> {
             val items = state.data
             val coroutine = rememberCoroutineScope()
 
@@ -128,20 +122,7 @@ fun OnBoardingPager(
             }
         }
 
+        else -> {}
     }
 
-}
-
-
-@Preview
-@Composable
-fun PreviewOnBoard() {
-    OnBoardingPager(
-        OnboardingGetState.Loading,
-        {
-
-        }
-    ) {
-
-    }
 }

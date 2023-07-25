@@ -19,7 +19,7 @@ import fit.asta.health.auth.AuthActivity
 import fit.asta.health.auth.model.AuthRepo
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.auth.model.domain.UserCred
-import fit.asta.health.common.utils.ResultState
+import fit.asta.health.common.utils.ResponseState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,18 +36,18 @@ class AuthViewModel
     var state = mutableStateOf(AuthState.Loading)
         private set
 
-    private val _loginState = MutableStateFlow<ResultState<User>?>(null)
-    val loginState: StateFlow<ResultState<User>?> = _loginState
+    private val _loginState = MutableStateFlow<ResponseState<User>?>(null)
+    val loginState: StateFlow<ResponseState<User>?> = _loginState
 
-    private val _signupState = MutableStateFlow<ResultState<User>?>(null)
-    val signupState: StateFlow<ResultState<User>?> = _signupState
+    private val _signupState = MutableStateFlow<ResponseState<User>?>(null)
+    val signupState: StateFlow<ResponseState<User>?> = _signupState
 
     val currentUser: User?
         get() = authRepo.getUser()
 
     init {
         if (authRepo.getUser() != null) {
-            _loginState.value = ResultState.Success(authRepo.getUser()!!)
+            _loginState.value = ResponseState.Success(authRepo.getUser()!!)
         }
     }
 
@@ -61,14 +61,14 @@ class AuthViewModel
     }
 
     fun signupUser(name: String, email: String, password: String) = viewModelScope.launch {
-        _signupState.value = ResultState.Loading
+        _signupState.value = ResponseState.Loading
         authRepo.createUser(UserCred(email, password)).collect {
             _signupState.value = it
         }
     }
 
     fun loginUser(email: String, password: String) = viewModelScope.launch {
-        _loginState.value = ResultState.Loading
+        _loginState.value = ResponseState.Loading
         val result = authRepo.loginUser(UserCred(email, password)).collect {
             _loginState.value = it
         }

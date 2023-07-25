@@ -1,11 +1,11 @@
 package fit.asta.health.common.location.maps.ui
 
 import android.content.Intent
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -30,7 +30,6 @@ import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedIconButton
@@ -68,7 +67,9 @@ import fit.asta.health.common.ui.CustomTopBar
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.iconSize
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.common.utils.ResultState
+import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
+import fit.asta.health.navigation.home.view.component.LoadingAnimation
 
 @Composable
 fun SavedAddressesScreen(
@@ -277,9 +278,9 @@ fun SavedAddressesScreen(
                 style = MaterialTheme.typography.titleLarge
             )
             when (addressListState) {
-                is ResultState.Success -> {
+                is ResponseState.Success -> {
                     val addresses =
-                        (addressListState as ResultState.Success<AddressesResponse>).data.data
+                        (addressListState as ResponseState.Success<AddressesResponse>).data.data
                     if (addresses.isEmpty()) {
                         Text(
                             modifier = Modifier.padding(spacing.small),
@@ -346,38 +347,44 @@ fun SavedAddressesScreen(
                     }
                 }
 
-                is ResultState.Loading -> {
-                    LinearProgressIndicator(
-                        Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.CenterHorizontally),
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                is ResponseState.Loading -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        LoadingAnimation()
+                    }
                 }
 
-                is ResultState.Failure -> {
-                    Text(text = "Some error occurred", style = MaterialTheme.typography.titleMedium)
+                is ResponseState.Error -> {
+                    ErrorScreenLayout(desc = "Some internal error occurred! We are fixing it soon!")
+                }
+
+                is ResponseState.NoInternet -> {
+                    ErrorScreenLayout()
                 }
 
                 else -> {}
             }
         } else {
+            Text(
+                modifier = Modifier.padding(spacing.small),
+                text = "SEARCH RESULTS",
+                style = MaterialTheme.typography.titleLarge
+            )
             when (searchResponseState) {
-                is ResultState.Success -> {
+                is ResponseState.Success -> {
                     val results =
-                        (searchResponseState as ResultState.Success<SearchResponse>).data.results
+                        (searchResponseState as ResponseState.Success<SearchResponse>).data.results
                     if (results.isEmpty()) {
                         Text(
+                            modifier = Modifier.padding(spacing.small),
                             text = "No result for \"$searchQuery\"",
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.titleMedium
                         )
                     } else {
-                        Text(
-                            modifier = Modifier.padding(spacing.small),
-                            text = "Search Results",
-                            style = MaterialTheme.typography.titleLarge
-                        )
                         LazyColumn {
                             items(results) {
                                 Text(
@@ -416,27 +423,26 @@ fun SavedAddressesScreen(
                     }
                 }
 
-                is ResultState.Loading -> {
-                    LinearProgressIndicator(
-                        Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.CenterHorizontally),
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                is ResponseState.Loading -> {
+                    Box(
+                        modifier = Modifier.padding(top = spacing.large),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        LoadingAnimation()
+                    }
                 }
 
-                is ResultState.Failure -> {
-                    Text(text = "Some error occurred", style = MaterialTheme.typography.titleMedium)
-                    Log.d(
-                        "SearchError",
-                        (searchResponseState as ResultState.Failure).msg.message ?: ""
-                    )
+                is ResponseState.NoInternet -> {
+                    ErrorScreenLayout()
+                }
+
+                is ResponseState.Error -> {
+                    ErrorScreenLayout(desc = "Some internal error occurred! We are fixing it soon!")
                 }
 
                 else -> {}
             }
         }
-
     }
 }
 

@@ -5,18 +5,18 @@ import fit.asta.health.common.location.maps.modal.AddressesResponse.MyAddress
 import fit.asta.health.common.location.maps.modal.DeleteAddressResponse
 import fit.asta.health.common.location.maps.modal.PutAddressResponse
 import fit.asta.health.common.location.maps.modal.SearchResponse
-import fit.asta.health.common.utils.ResultState
+import fit.asta.health.common.utils.ResponseState
 import kotlinx.coroutines.flow.Flow
 
 interface MapsRepo {
 
-    suspend fun search(text: String): Flow<ResultState<SearchResponse>>
+    suspend fun search(text: String): Flow<ResponseState<SearchResponse>>
 
-    suspend fun getAddresses(uid: String): Flow<ResultState<AddressesResponse>>
+    suspend fun getAddresses(uid: String): Flow<ResponseState<AddressesResponse>>
 
-    suspend fun putAddress(myAddress: MyAddress): Flow<ResultState<PutAddressResponse>>
+    suspend fun putAddress(myAddress: MyAddress): Flow<ResponseState<PutAddressResponse>>
 
-    suspend fun deleteAddress(uid: String, id: String): Flow<ResultState<DeleteAddressResponse>>
+    suspend fun deleteAddress(uid: String, id: String): Flow<ResponseState<DeleteAddressResponse>>
 
     suspend fun selectCurrent(cid: String, pid: String?)
 }

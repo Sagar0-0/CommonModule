@@ -35,7 +35,7 @@ import fit.asta.health.common.location.maps.modal.SearchResponse
 import fit.asta.health.common.location.maps.repo.MapsRepo
 import fit.asta.health.common.utils.PrefUtils
 import fit.asta.health.common.utils.ResourcesProvider
-import fit.asta.health.common.utils.ResultState
+import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getLocationName
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -70,20 +70,20 @@ class MapsViewModel
     private val _currentLatLng = MutableStateFlow(LatLng(0.0, 0.0))
     val currentLatLng = _currentLatLng.asStateFlow()
 
-    private val _searchResponseState = MutableStateFlow<ResultState<SearchResponse>?>(null)
+    private val _searchResponseState = MutableStateFlow<ResponseState<SearchResponse>?>(null)
     val searchResponseState = _searchResponseState.asStateFlow()
 
     private var searchJob: Job? = null
 
     private var addressDetailsJob: Job? = null
 
-    private val _addressListState = MutableStateFlow<ResultState<AddressesResponse>?>(null)
+    private val _addressListState = MutableStateFlow<ResponseState<AddressesResponse>?>(null)
     val addressListState = _addressListState.asStateFlow()
 
     private var selectedAddressId by mutableStateOf<String?>(null)
 
     private val _markerAddressDetail =
-        MutableStateFlow<ResultState<Address?>?>(null)
+        MutableStateFlow<ResponseState<Address?>?>(null)
     val markerAddressDetail = _markerAddressDetail.asStateFlow()
 
     init {
@@ -221,7 +221,7 @@ class MapsViewModel
 
     fun getMarkerAddressDetails(lat: Double, long: Double, context: Context) {
         addressDetailsJob?.cancel()
-        _markerAddressDetail.value = ResultState.Loading
+        _markerAddressDetail.value = ResponseState.Loading
         addressDetailsJob = viewModelScope.launch {
             delay(350)
             try {
@@ -232,7 +232,7 @@ class MapsViewModel
                         long,
                         1,
                     ) { p0 ->
-                        _markerAddressDetail.value = ResultState.Success(p0[0])
+                        _markerAddressDetail.value = ResponseState.Success(p0[0])
                     }
                 } else {
                     val addresses = geocoder.getFromLocation(
@@ -241,10 +241,10 @@ class MapsViewModel
                         1,
                     )
                     _markerAddressDetail.value =
-                        ResultState.Success(if (!addresses.isNullOrEmpty()) addresses[0] else null)
+                        ResponseState.Success(if (!addresses.isNullOrEmpty()) addresses[0] else null)
                 }
             } catch (e: Exception) {
-                ResultState.Failure(e)
+                ResponseState.Error(e)
             }
         }
 
@@ -253,7 +253,7 @@ class MapsViewModel
     fun search(query: String) {
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
-            _searchResponseState.value = ResultState.Loading
+            _searchResponseState.value = ResponseState.Loading
             mapsRepo.search(query).cancellable().collect {
                 _searchResponseState.value = it
             }
@@ -265,13 +265,13 @@ class MapsViewModel
     }
 
     fun getAllAddresses() = viewModelScope.launch {
-        _addressListState.value = ResultState.Loading
+        _addressListState.value = ResponseState.Loading
         mapsRepo.getAddresses(uId).collect {
             _addressListState.value = it
-            if (it is ResultState.Success) {
+            if (it is ResponseState.Success) {
                 Log.d(TAG, "getAllAddresses: Success " + it.data.status.msg)
-            } else if (it is ResultState.Failure) {
-                Log.e(TAG, "getAllAddresses: Failure " + it.msg.message)
+            } else if (it is ResponseState.Error) {
+                Log.e(TAG, "getAllAddresses: Failure " + it.error.message)
             }
         }
     }
@@ -283,12 +283,12 @@ class MapsViewModel
                 Log.e(TAG, "deleteAddress " + it.message)
             }
             .collect {
-                if (it is ResultState.Success) {
+                if (it is ResponseState.Success) {
                     onSuccess()
                     getAllAddresses()
                     Log.d(TAG, "deleteAddress " + it.data.status.code.toString())
-                } else if (it is ResultState.Failure) {
-                    Log.e(TAG, "deleteAddress " + it.msg.message)
+                } else if (it is ResponseState.Error) {
+                    Log.e(TAG, "deleteAddress " + it.error.message)
                 }
             }
     }
@@ -300,7 +300,7 @@ class MapsViewModel
                 Log.e(TAG, "putAddress: ${it.message}")
             }
             .collect {
-                if (it is ResultState.Success) {
+                if (it is ResponseState.Success) {
                     Log.d(TAG, "PUT: " + it.data.status.code.toString())
                     onSuccess()
                     getAllAddresses()

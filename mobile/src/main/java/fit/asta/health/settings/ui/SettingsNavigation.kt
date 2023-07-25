@@ -3,6 +3,7 @@ package fit.asta.health.settings.ui
 import android.widget.Toast
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -17,15 +18,14 @@ import fit.asta.health.common.utils.sendFeedbackMessage
 import fit.asta.health.common.utils.shareApp
 import fit.asta.health.common.utils.showUrlInBrowser
 import fit.asta.health.main.Graph
-import fit.asta.health.main.sharedViewModel
 import fit.asta.health.settings.data.SettingsNotificationsStatus
 import fit.asta.health.settings.data.SettingsUiEvent
 import fit.asta.health.settings.data.SettingsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun NavGraphBuilder.SettingsNavigation(
-    navController: NavHostController
+fun NavGraphBuilder.settingsNavigation(
+    mainNavController: NavHostController
 ) {
     navigation(
         route = Graph.Settings.route,
@@ -33,16 +33,20 @@ fun NavGraphBuilder.SettingsNavigation(
     ) {
         composable(route = SettingScreens.Main.route) {
             val context = LocalContext.current
-            val authViewModel: AuthViewModel = it.sharedViewModel(navController)
+            val authViewModel: AuthViewModel = hiltViewModel()
 
             val onUiClickEvent: (key: SettingsUiEvent) -> Unit = { key ->
                 when (key) {
+                    SettingsUiEvent.REFERRAL -> {
+                        mainNavController.navigate(Graph.Referral.route)
+                    }
+
                     SettingsUiEvent.BACK -> {
-                        navController.navigateUp()
+                        mainNavController.navigateUp()
                     }
 
                     SettingsUiEvent.NOTIFICATION -> {
-                        navController.navigate(SettingScreens.Notifications.route)
+                        mainNavController.navigate(SettingScreens.Notifications.route)
                     }
 
                     SettingsUiEvent.SHARE -> {
@@ -97,13 +101,11 @@ fun NavGraphBuilder.SettingsNavigation(
 
             SettingsScreenLayout(
                 builtVersion = context.getCurrentBuildVersion(),
-                onClickEvent = {
-                    onUiClickEvent(it)
-                }
+                onClickEvent = onUiClickEvent
             )
         }
         composable(route = SettingScreens.Notifications.route) {
-            val settingsViewModel: SettingsViewModel = it.sharedViewModel(navController)
+            val settingsViewModel: SettingsViewModel = hiltViewModel()
             val status by remember {
                 mutableStateOf(
                     SettingsNotificationsStatus(
@@ -121,7 +123,7 @@ fun NavGraphBuilder.SettingsNavigation(
             }
             SettingsNotificationLayout(
                 settingsNotificationsStatus = status,
-                onBackPress = { navController.navigateUp() },
+                onBackPress = mainNavController::navigateUp,
                 onSwitchToggle = settingsViewModel::onSwitchToggle
             )
         }
@@ -130,6 +132,6 @@ fun NavGraphBuilder.SettingsNavigation(
 }
 
 sealed class SettingScreens(val route: String) {
-    object Main : SettingScreens("main")
-    object Notifications : SettingScreens("notif")
+    object Main : SettingScreens("ss_main")
+    object Notifications : SettingScreens("ss_notif")
 }

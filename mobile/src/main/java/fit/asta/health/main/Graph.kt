@@ -19,4 +19,7 @@ sealed class Graph(val route: String) {
     object Profile : Graph("graph_profile_tool")
     object CreateProfile : Graph("graph_create_profile_tool")
     object Testimonials : Graph("graph_testimonials_tool")
+    object Referral : Graph("graph_referral")
+    object Wallet : Graph("graph_wallet")
+    object Feedback : Graph("graph_feedback")//Always pass fid
 }

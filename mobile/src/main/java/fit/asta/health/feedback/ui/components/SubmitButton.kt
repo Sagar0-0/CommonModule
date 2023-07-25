@@ -1,4 +1,4 @@
-package fit.asta.health.feedback.view.components
+package fit.asta.health.feedback.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

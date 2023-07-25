@@ -3,8 +3,8 @@ package fit.asta.health.onboarding.vm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.network.NetworkHelper
-import fit.asta.health.network.data.ApiResponse
 import fit.asta.health.onboarding.modal.OnboardingData
 import fit.asta.health.onboarding.repo.OnboardingRepo
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +19,8 @@ class OnboardingViewModel
     private val networkHelper: NetworkHelper
 ) : ViewModel() {
 
-    private val _mutableState = MutableStateFlow<OnboardingGetState>(OnboardingGetState.Loading)
+    private val _mutableState =
+        MutableStateFlow<ResponseState<List<OnboardingData>>>(ResponseState.Loading)
     val state = _mutableState.asStateFlow()
 
     init {
@@ -27,35 +28,11 @@ class OnboardingViewModel
     }
 
     fun getData() {
+        _mutableState.value = ResponseState.Loading
         if (!networkHelper.isConnected()) {
-            _mutableState.value = OnboardingGetState.NoInternet
+            _mutableState.value = ResponseState.NoInternet
         } else {
-            viewModelScope.launch {
-                when (val result = repo.getData()) {
-                    is ApiResponse.Error -> {
-                        _mutableState.value =
-                            OnboardingGetState.Error(result.exception.fillInStackTrace())
-                    }
-
-                    is ApiResponse.HttpError -> {
-                        _mutableState.value = OnboardingGetState.Empty
-                    }
-
-                    is ApiResponse.Success -> {
-                        _mutableState.value = OnboardingGetState.Success(
-                            result.data
-                        )
-                    }
-                }
-            }
+            viewModelScope.launch { _mutableState.value = repo.getData() }
         }
     }
-}
-
-sealed class OnboardingGetState {
-    object Loading : OnboardingGetState()
-    object Empty : OnboardingGetState()
-    object NoInternet : OnboardingGetState()
-    class Error(val error: Throwable) : OnboardingGetState()
-    class Success(val data: List<OnboardingData>) : OnboardingGetState()
 }

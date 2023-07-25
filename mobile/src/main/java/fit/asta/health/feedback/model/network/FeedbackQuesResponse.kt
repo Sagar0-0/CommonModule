@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class NetFeedbackRes(
+data class FeedbackQuesResponse(
     @SerializedName("status")
     val status: Status = Status(),
     @SerializedName("data")

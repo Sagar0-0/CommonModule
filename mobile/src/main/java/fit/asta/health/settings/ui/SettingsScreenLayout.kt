@@ -11,6 +11,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.BugReport
+import androidx.compose.material.icons.filled.DeleteForever
+import androidx.compose.material.icons.filled.Feedback
+import androidx.compose.material.icons.filled.FileCopy
+import androidx.compose.material.icons.filled.LocalOffer
+import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.filled.NightShelter
+import androidx.compose.material.icons.filled.SettingsPhone
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,7 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
@@ -50,32 +60,29 @@ fun SettingsScreenLayout(
                 onClickEvent(SettingsUiEvent.BACK)
             }
 
-//            PreferenceCategory {
-//                PreferenceItem(
-//                    title = stringResource(id = R.string.user_pref_notification_cat_title),
-//                    icon = painterResource(id = R.drawable.ic_notifications)
-//                ) { onClickEvent(SettingsUiEvent.NOTIFICATION) }
-//            }
-
-            PreferenceCategory(title = stringResource(id = R.string.user_pref_support_us_cat_title)) {
+            PreferenceCategory(titleId = R.string.user_pref_support_us_cat_title) {
                 PreferenceItem(
-                    title = stringResource(id = R.string.user_pref_share_app_title),
-                    icon = painterResource(id = R.drawable.ic_share)
+                    titleId = R.string.user_pref_share_app_title,
+                    imageVector = Icons.Default.Share
                 ) { onClickEvent(SettingsUiEvent.SHARE) }
                 PreferenceItem(
-                    title = stringResource(id = R.string.user_pref_rate_us_title),
-                    icon = painterResource(id = R.drawable.ic_rate_us)
+                    title = "Refer and earn",
+                    imageVector = Icons.Default.LocalOffer
+                ) { onClickEvent(SettingsUiEvent.REFERRAL) }
+                PreferenceItem(
+                    titleId = R.string.user_pref_rate_us_title,
+                    imageVector = Icons.Default.StarRate
                 ) { onClickEvent(SettingsUiEvent.RATE) }
                 PreferenceItem(
-                    title = stringResource(id = R.string.user_pref_feedback_title),
-                    icon = painterResource(id = R.drawable.ic_feedback)
+                    titleId = R.string.user_pref_feedback_title,
+                    imageVector = Icons.Default.Feedback
                 ) { onClickEvent(SettingsUiEvent.FEEDBACK) }
             }
 
-            PreferenceCategory(title = stringResource(id = R.string.user_pref_display_cat_title)) {
+            PreferenceCategory(titleId = R.string.user_pref_display_cat_title) {
                 ListPreference(
-                    title = stringResource(id = R.string.user_pref_theme_title),
-                    icon = painterResource(id = R.drawable.ic_theme_settings),
+                    titleId = R.string.user_pref_theme_title,
+                    iconId = R.drawable.ic_theme_settings,
                     entries = stringArrayResource(id = R.array.user_pref_theme_entries),
                     values = stringArrayResource(id = R.array.user_pref_theme_values)
                 ) {
@@ -83,35 +90,35 @@ fun SettingsScreenLayout(
                 }
             }
 
-            PreferenceCategory(title = stringResource(id = R.string.user_pref_account_cat_title)) {
+            PreferenceCategory(titleId = R.string.user_pref_account_cat_title) {
                 PreferenceItem(
-                    title = stringResource(id = R.string.user_pref_sign_out_title),
-                    icon = painterResource(id = R.drawable.ic_exit_sign_out)
+                    titleId = R.string.user_pref_sign_out_title,
+                    imageVector = Icons.Default.Logout
                 ) { onClickEvent(SettingsUiEvent.SIGNOUT) }
                 PreferenceItem(
-                    title = stringResource(id = R.string.user_pref_delete_account_title),
+                    titleId = R.string.user_pref_delete_account_title,
                     secondary = stringResource(id = R.string.user_pref_delete_account_summary),
-                    icon = painterResource(id = R.drawable.ic_delete_forever)
+                    imageVector = Icons.Default.DeleteForever
                 ) { onClickEvent(SettingsUiEvent.DELETE) }
             }
 
-            PreferenceCategory(title = stringResource(id = R.string.user_pref_about_cat_title)) {
+            PreferenceCategory(titleId = R.string.user_pref_about_cat_title) {
                 PreferenceItem(
-                    title = stringResource(id = R.string.user_pref_bug_report_title),
-                    icon = painterResource(id = R.drawable.ic_bug_report)
+                    titleId = R.string.user_pref_bug_report_title,
+                    imageVector = Icons.Default.BugReport
                 ) { onClickEvent(SettingsUiEvent.BUG) }
                 PreferenceItem(
-                    title = stringResource(id = R.string.user_pref_terms_of_use_title),
-                    icon = painterResource(id = R.drawable.ic_terms_of_use)
+                    titleId = R.string.user_pref_terms_of_use_title,
+                    imageVector = Icons.Default.FileCopy
                 ) { onClickEvent(SettingsUiEvent.TERMS) }
                 PreferenceItem(
-                    title = stringResource(id = R.string.user_pref_privacy_policy_title),
-                    icon = painterResource(id = R.drawable.ic_privacy_policy)
+                    titleId = R.string.user_pref_privacy_policy_title,
+                    imageVector = Icons.Default.NightShelter
                 ) { onClickEvent(SettingsUiEvent.PRIVACY) }
                 PreferenceItem(
-                    title = stringResource(id = R.string.user_pref_version_title),
+                    titleId = R.string.user_pref_version_title,
                     secondary = builtVersion,
-                    icon = painterResource(id = R.drawable.ic_build_ver)
+                    imageVector = Icons.Default.SettingsPhone
                 ) { onClickEvent(SettingsUiEvent.VERSION) }
             }
         }
@@ -120,12 +127,12 @@ fun SettingsScreenLayout(
 
 @Composable
 fun PreferenceCategory(
-    title: String? = null,
+    titleId: Int? = null,
     content: @Composable () -> Unit
 ) {
     Column {
-        if (title != null) Text(
-            text = title,
+        if (titleId != null) Text(
+            text = stringResource(id = titleId),
             style = MaterialTheme.typography.titleSmall,
             modifier = Modifier.padding(start = spacing.medium, top = spacing.small)
         )
@@ -142,9 +149,10 @@ fun PreferenceCategory(
 
 @Composable
 fun PreferenceItem(
-    title: String,
+    titleId: Int = 0,
+    title: String? = null,
     secondary: String? = null,
-    icon: Painter,
+    imageVector: ImageVector,
     onClick: () -> Unit
 ) {
     TextButton(
@@ -153,9 +161,13 @@ fun PreferenceItem(
             .fillMaxWidth()
             .padding(spacing.extraSmall)
     ) {
-        Icon(icon, contentDescription = null, modifier = Modifier.padding(end = spacing.medium))
+        Icon(
+            imageVector = imageVector,
+            contentDescription = null,
+            modifier = Modifier.padding(end = spacing.medium)
+        )
         Column {
-            Text(text = title)
+            Text(text = title ?: stringResource(id = titleId))
             if (secondary != null) Text(text = secondary)
         }
         Spacer(modifier = Modifier.weight(1f))
@@ -165,12 +177,13 @@ fun PreferenceItem(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListPreference(
-    title: String,
-    icon: Painter,
+    titleId: Int,
+    iconId: Int,
     entries: Array<String>,
     values: Array<String>,
     onValueChange: (String) -> Unit
 ) {
+    val title = stringResource(id = titleId)
     val context = LocalContext.current
     val theme = PrefUtils.getTheme(context)
     val idx = values.indexOf(theme)
@@ -184,7 +197,7 @@ fun ListPreference(
             .padding(spacing.extraSmall)
     ) {
         Icon(
-            painter = icon,
+            painter = painterResource(id = iconId),
             contentDescription = title,
             modifier = Modifier.padding(end = spacing.medium)
         )
@@ -212,7 +225,9 @@ fun ListPreference(
             onDismissRequest = { showDialog = false }
         ) {
             Surface(
-                modifier = Modifier.wrapContentWidth().wrapContentHeight(),
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .wrapContentHeight(),
                 shape = MaterialTheme.shapes.large,
                 tonalElevation = AlertDialogDefaults.TonalElevation
             ) {

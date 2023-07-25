@@ -2,6 +2,8 @@ package fit.asta.health.common.utils
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
@@ -24,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.documentfile.provider.DocumentFile
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -300,6 +303,34 @@ fun Context.sendFeedbackMessage() {
 fun Context.sendBugReportMessage() {
 
     sendEmail("intuminds@gmail.com", "Bug report from ASTA android app")
+}
+
+fun Context.copyTextToClipboard(text: String) {
+    val clipboard = getSystemService(this, ClipboardManager::class.java)
+    val clip = ClipData.newPlainText("code", text)
+    clipboard?.setPrimaryClip(clip)
+}
+
+fun Context.shareReferralCode(code: String) {
+    try {
+        val sharingIntent = Intent()
+        sharingIntent.action = Intent.ACTION_SEND
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, resources.getString(R.string.app_name))
+        sharingIntent.putExtra(
+            Intent.EXTRA_TEXT,
+            code
+        )
+        sharingIntent.type = "text/html"
+        startActivity(
+            Intent.createChooser(
+                sharingIntent,
+                resources.getString(R.string.share_app_choose_text)
+            )
+        )
+
+    } catch (e: Exception) {
+        showToastMessage(e.message)
+    }
 }
 
 @Composable

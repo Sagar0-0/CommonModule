@@ -13,19 +13,13 @@ import fit.asta.health.common.location.maps.repo.MapsRepo
 import fit.asta.health.common.location.maps.repo.MapsRepoImpl
 import fit.asta.health.common.location.maps.utils.REMOTE_API_BASE_URL
 import fit.asta.health.common.location.maps.utils.SEARCH_API_BASE_URL
-import fit.asta.health.auth.model.AuthRepo
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object MapsModule {
-
-    @Provides
-    @Named("UId")
-    fun provideUId(authRepo: AuthRepo): String = authRepo.getUserId() ?: ""
 
     @Provides
     fun provideLocationHelper(@ApplicationContext context: Context): LocationHelper {

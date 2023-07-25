@@ -1,65 +1,68 @@
-package fit.asta.health.feedback.view
+package fit.asta.health.feedback.ui
 
-import android.app.Activity
-import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import fit.asta.health.common.ui.CustomTopBar
 import fit.asta.health.common.ui.components.UploadFiles
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getFileName
 import fit.asta.health.feedback.model.network.An
+import fit.asta.health.feedback.model.network.FeedbackQuesResponse
 import fit.asta.health.feedback.model.network.Media
 import fit.asta.health.feedback.model.network.Qn
-import fit.asta.health.feedback.view.components.SubmitButton
-import fit.asta.health.feedback.view.components.WelcomeCard
-import fit.asta.health.feedback.view.components.feedbackTextFieldItem
-import fit.asta.health.feedback.viewmodel.FeedbackQuesState
-import kotlin.math.log
+import fit.asta.health.feedback.ui.components.SubmitButton
+import fit.asta.health.feedback.ui.components.WelcomeCard
+import fit.asta.health.feedback.ui.components.feedbackTextFieldItem
+import fit.asta.health.navigation.home.view.component.LoadingAnimation
 
 @Composable
 fun SessionFeedback(
-    feedbackQuesState: FeedbackQuesState,
+    feedbackQuesState: ResponseState<FeedbackQuesResponse>,
+    onBack: () -> Unit,
     onSubmit: (ans: List<An>) -> Unit
 ) {
     val context = LocalContext.current
     Scaffold(
         topBar = {
             CustomTopBar(text = "Feedback") {
-                (context as Activity).finish()
+                onBack()
             }
         }
     ) {
         when (feedbackQuesState) {
-            FeedbackQuesState.Loading -> {
-                LinearProgressIndicator(
+            ResponseState.Loading -> {
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(it)
-                )
+                        .fillMaxSize()
+                        .padding(it),
+                    contentAlignment = Alignment.Center
+                ) {
+                    LoadingAnimation()
+                }
             }
 
-            is FeedbackQuesState.Error -> {
+            is ResponseState.Error -> {
                 feedbackQuesState.error.message?.let { it1 -> Text(text = it1) }
                 Log.e("QUES", "SessionFeedback: ${feedbackQuesState.error}")
                 Toast.makeText(
@@ -67,14 +70,14 @@ fun SessionFeedback(
                     "Unexpected error occurred.",
                     Toast.LENGTH_SHORT
                 ).show()
-                (context as Activity).finish()
+                onBack()
             }
 
-            is FeedbackQuesState.Success -> {
-                val qns = feedbackQuesState.feedback.data.qns
+            is ResponseState.Success -> {
+                val qns = feedbackQuesState.data.data.qns
                 val ansList = remember {
                     mutableStateOf(
-                        qns.map { An(null,false,null,null,0,0) } as MutableList<An>
+                        qns.map { An(null, false, null, null, 0, 0) } as MutableList<An>
                     )
                 }
                 Column(
@@ -102,6 +105,8 @@ fun SessionFeedback(
                     Spacer(modifier = Modifier.height(spacing.small))
                 }
             }
+
+            else -> {}
         }
     }
 }

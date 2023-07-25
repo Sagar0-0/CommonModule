@@ -136,23 +136,23 @@ fun NavGraphBuilder.mainActivityComp(
             onNav = onNav,
             onClick = { key ->
                 when (key) {
-                    MainTopBarActions.LOCATION -> {
+                    MainTopBarActions.Location -> {
                         checkPermissionAndLaunchMapsActivity()
                     }
 
-                    MainTopBarActions.NOTIFICATION -> {
+                    MainTopBarActions.Notification -> {
                         mainViewModel.setNotificationStatus(!notificationEnabled)
                     }
 
-                    MainTopBarActions.SETTINGS -> {
+                    MainTopBarActions.Settings -> {
                         onNav(Graph.Settings)
                     }
 
-                    MainTopBarActions.PROFILE -> {
+                    MainTopBarActions.Profile -> {
                         onNav(Graph.Profile)
                     }
 
-                    MainTopBarActions.SHARE -> {
+                    MainTopBarActions.Share -> {
                         context.shareApp()
                     }
                 }

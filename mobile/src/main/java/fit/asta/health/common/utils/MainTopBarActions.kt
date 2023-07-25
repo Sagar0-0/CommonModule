@@ -1,9 +1,9 @@
 package fit.asta.health.common.utils
 
-enum class MainTopBarActions {
-    LOCATION,
-    NOTIFICATION,
-    SETTINGS,
-    PROFILE,
-    SHARE
+sealed class MainTopBarActions(val route: String) {
+    object Location : MainTopBarActions("Location")
+    object Notification : MainTopBarActions("Notification")
+    object Settings : MainTopBarActions("Settings")
+    object Profile : MainTopBarActions("Profile")
+    object Share : MainTopBarActions("Share")
 }

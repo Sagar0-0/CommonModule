@@ -3,10 +3,14 @@ package fit.asta.health.auth.model
 import android.app.Activity
 import android.util.Log
 import com.google.firebase.FirebaseException
-import com.google.firebase.auth.*
+import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthOptions
+import com.google.firebase.auth.PhoneAuthProvider
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.auth.model.domain.UserCred
-import fit.asta.health.common.utils.ResultState
+import fit.asta.health.common.utils.ResponseState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -35,13 +39,16 @@ class FirebaseAuthRepoImpl @Inject constructor(
         }
     }
 
-    override fun firebaseSignInWithGoogle(googleAuthCredential: AuthCredential): Flow<ResultState<User>> {
+    override fun firebaseSignInWithGoogle(googleAuthCredential: AuthCredential): Flow<ResponseState<User>> {
         TODO("Not yet implemented")
     }
 
-    override fun createUserWithPhone(phone: String, activity: Activity): Flow<ResultState<String>> =
+    override fun createUserWithPhone(
+        phone: String,
+        activity: Activity
+    ): Flow<ResponseState<String>> =
         callbackFlow {
-            trySend(ResultState.Loading)
+            trySend(ResponseState.Loading)
 
             val onVerificationCallback =
                 object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -50,7 +57,7 @@ class FirebaseAuthRepoImpl @Inject constructor(
                     }
 
                     override fun onVerificationFailed(p0: FirebaseException) {
-                        trySend(ResultState.Failure(p0))
+                        trySend(ResponseState.Error(p0))
                     }
 
                     override fun onCodeSent(
@@ -58,7 +65,7 @@ class FirebaseAuthRepoImpl @Inject constructor(
                         p1: PhoneAuthProvider.ForceResendingToken
                     ) {
                         super.onCodeSent(verificationCode, p1)
-                        trySend(ResultState.Success("OTP Sent Successfully"))
+                        trySend(ResponseState.Success("OTP Sent Successfully"))
                         omVerificationCode = verificationCode
                     }
                 }
@@ -75,34 +82,34 @@ class FirebaseAuthRepoImpl @Inject constructor(
             }
         }
 
-    override fun signWithCredential(otp: String): Flow<ResultState<String>> = callbackFlow {
-        trySend(ResultState.Loading)
+    override fun signWithCredential(otp: String): Flow<ResponseState<String>> = callbackFlow {
+        trySend(ResponseState.Loading)
         val credential = PhoneAuthProvider.getCredential(omVerificationCode, otp)
         firebaseAuth.signInWithCredential(credential)
             .addOnCompleteListener {
                 if (it.isSuccessful)
-                    trySend(ResultState.Success("otp verified"))
+                    trySend(ResponseState.Success("otp verified"))
             }.addOnFailureListener {
-                trySend(ResultState.Failure(it))
+                trySend(ResponseState.Error(it))
             }
         awaitClose {
             close()
         }
     }
 
-    override fun createUser(auth: UserCred): Flow<ResultState<User>> = callbackFlow {
-        trySend(ResultState.Loading)
+    override fun createUser(auth: UserCred): Flow<ResponseState<User>> = callbackFlow {
+        trySend(ResponseState.Loading)
 
         firebaseAuth.createUserWithEmailAndPassword(
             auth.email,
             auth.password
         ).addOnCompleteListener {
             if (it.isSuccessful) {
-                trySend(ResultState.Success(dataMapper.mapToUser(it.result.user!!)))
+                trySend(ResponseState.Success(dataMapper.mapToUser(it.result.user!!)))
                 Log.d("main", "current user id: ${firebaseAuth.currentUser?.uid}")
             }
         }.addOnFailureListener {
-            trySend(ResultState.Failure(it))
+            trySend(ResponseState.Error(it))
         }
 
         awaitClose {
@@ -110,17 +117,17 @@ class FirebaseAuthRepoImpl @Inject constructor(
         }
     }
 
-    override fun loginUser(auth: UserCred): Flow<ResultState<User>> = callbackFlow {
-        trySend(ResultState.Loading)
+    override fun loginUser(auth: UserCred): Flow<ResponseState<User>> = callbackFlow {
+        trySend(ResponseState.Loading)
 
         firebaseAuth.signInWithEmailAndPassword(
             auth.email,
             auth.password
         ).addOnSuccessListener {
-            trySend(ResultState.Success(dataMapper.mapToUser(it.user!!)))
+            trySend(ResponseState.Success(dataMapper.mapToUser(it.user!!)))
             Log.d("main", "current user id: ${firebaseAuth.currentUser?.uid}")
         }.addOnFailureListener {
-            trySend(ResultState.Failure(it))
+            trySend(ResponseState.Error(it))
         }
 
         awaitClose {

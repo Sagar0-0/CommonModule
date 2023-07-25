@@ -15,8 +15,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -26,9 +26,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -59,6 +59,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import fit.asta.health.common.ui.components.ValidatedNumberField
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
@@ -382,22 +383,30 @@ fun PhoneLoginScreen(onSuccess: () -> Unit) {
                 ) {
                     Text(text = "Verify OTP", modifier = Modifier.padding(spacing.small))
                 }
-                Text(
+                TextButton(
+                    enabled = !loading,
+                    onClick = { codeSent = false },
                     modifier = Modifier
                         .align(Alignment.End)
                         .padding(spacing.medium)
-                        .clickable {
-                            codeSent = false
-                        },
-                    text = "OTP not received?",
-                    color = MaterialTheme.colorScheme.onBackground
-                )
+                ) {
+                    Text(
+                        text = "OTP not received?",
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                }
             }
         }
     }
 
     if (loading) {
-        LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            LoadingAnimation()
+        }
     }
 
     callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {

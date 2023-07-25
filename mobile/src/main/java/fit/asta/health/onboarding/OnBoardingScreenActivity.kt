@@ -41,8 +41,9 @@ class OnBoardingScreenActivity : AppCompatActivity() {
 
         setContent {
             AppTheme {
+                val state = onboardingViewModel.state.collectAsStateWithLifecycle().value
                 OnBoardingPager(
-                    state = onboardingViewModel.state.collectAsStateWithLifecycle().value,
+                    state = state,
                     onReload = onboardingViewModel::getData,
                     onFinish = {
                         PrefUtils.setOnboardingShownStatus(true, this)

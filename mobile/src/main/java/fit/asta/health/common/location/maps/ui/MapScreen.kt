@@ -23,7 +23,8 @@ import fit.asta.health.common.location.maps.modal.MapScreens
 import fit.asta.health.common.ui.CustomTopBar
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.common.utils.ResultState
+import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -63,9 +64,10 @@ fun MapScreen(
         }
     }
 
+    val bottomSheetSize = 140.dp
     BottomSheetScaffold(
         sheetDragHandle = null,
-        sheetPeekHeight = 150.dp,
+        sheetPeekHeight = bottomSheetSize,
         sheetShadowElevation = cardElevation.medium,
         sheetSwipeEnabled = false,
         scaffoldState = scaffoldState,
@@ -84,17 +86,17 @@ fun MapScreen(
             }
             val address by mapsViewModel.markerAddressDetail.collectAsStateWithLifecycle()
             when (address) {
-                is ResultState.Loading -> {
-                    LinearProgressIndicator(
-                        Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.CenterHorizontally),
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                is ResponseState.Loading -> {
+                    Box(
+                        modifier = Modifier.height(bottomSheetSize),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        LoadingAnimation()
+                    }
                 }
 
-                is ResultState.Success -> {
-                    (address as ResultState.Success<Address?>).data?.let {
+                is ResponseState.Success -> {
+                    (address as ResponseState.Success<Address?>).data?.let {
                         MapBottomSheet(
                             navHostController = navHostController,
                             sheetScaffoldState = scaffoldState,
@@ -106,6 +108,7 @@ fun MapScreen(
                         )
                     }
                 }
+
                 else -> {
                     LaunchedEffect(cameraPositionState.position.target) {
                         mapsViewModel.getMarkerAddressDetails(
@@ -122,7 +125,7 @@ fun MapScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = padding.calculateBottomPadding())
+                .padding(top = padding.calculateTopPadding())
         ) {
             GoogleMap(
                 cameraPositionState = cameraPositionState,
@@ -179,7 +182,7 @@ fun MapScreen(
 
             OutlinedButton(
                 modifier = Modifier
-                    .padding(spacing.medium)
+                    .padding(bottom = bottomSheetSize + spacing.medium)
                     .align(Alignment.BottomCenter),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant,
