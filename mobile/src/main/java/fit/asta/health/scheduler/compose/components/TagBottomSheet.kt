@@ -8,9 +8,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -27,7 +29,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -43,6 +44,7 @@ fun TagCard(text: String, image: String, onClick: () -> Unit = {}) {
 
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
+
     val color = if (isPressed) MaterialTheme.colorScheme.primary else Color.Transparent
 
     Button(
@@ -109,30 +111,6 @@ fun SwipeDemo(onSwipe: () -> Unit = {}, onClick: () -> Unit = {}, data: TagEntit
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview
-@Composable
-fun CustomTagCard() {
-
-    var openBottomSheet by rememberSaveable { mutableStateOf(false) }
-    var skipPartiallyExpanded by remember { mutableStateOf(false) }
-    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = skipPartiallyExpanded)
-    var edgeToEdgeEnabled by remember { mutableStateOf(false) }
-    val windowInsets = if (edgeToEdgeEnabled)
-        WindowInsets(0) else BottomSheetDefaults.windowInsets
-
-    ModalBottomSheet(
-        onDismissRequest = { openBottomSheet = false },
-        sheetState = bottomSheetState,
-        windowInsets = windowInsets,
-        content = { },
-        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-        tonalElevation = 10.dp,
-        containerColor = Color.White
-    )
-}
-
-
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CustomTagBottomSheetLayout(
@@ -146,7 +124,7 @@ fun CustomTagBottomSheetLayout(
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(bottom = 16.dp, start = 16.dp, end = 16.dp),
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -160,7 +138,7 @@ fun CustomTagBottomSheetLayout(
                 keyboardController?.hide()
             }) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_round_close_24),
+                    imageVector = Icons.Default.Close,
                     contentDescription = null,
                     Modifier.size(24.dp)
                 )
@@ -176,9 +154,8 @@ fun CustomTagBottomSheetLayout(
                 keyboardController?.hide()
             }) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_baseline_check_24),
+                    imageVector = Icons.Default.Check,
                     contentDescription = null,
-                    Modifier.size(24.dp),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
@@ -246,10 +223,10 @@ fun CustomTagTextField(
             onValueChange(it)
         },
         label = { Text(label) },
-        colors = OutlinedTextFieldDefaults.colors(
+        colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = MaterialTheme.colorScheme.primary,
             unfocusedBorderColor = Color.LightGray,
-            focusedLabelColor = MaterialTheme.colorScheme.primary,
+            focusedLabelColor = MaterialTheme.colorScheme.primary
         ),
         modifier = Modifier.focusRequester(focusRequester = focusRequester),
         shape = RoundedCornerShape(8.dp),
@@ -264,55 +241,3 @@ fun CustomTagTextField(
     )
 
 }
-
-
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun TagSelectionLayout(
-//    onNavigateBack: () -> Unit,
-//    onNavigateCustomTag: (() -> Unit)?,
-//) {
-//    Scaffold(content = {
-//        Column(
-//            Modifier
-//                .fillMaxWidth()
-//                .padding(it)
-//                .verticalScroll(rememberScrollState())
-//                .background(color = MaterialTheme.colorScheme.secondaryContainer)
-//        ) {
-//            for (i in 1..10) {
-//                SwipeDemo()
-//            }
-//        }
-//    }, floatingActionButton = {
-//        onNavigateCustomTag?.let {
-//            FloatingActionButton(
-//                onClick = it,
-//                containerColor = MaterialTheme.colorScheme.primary,
-//                shape = CircleShape,
-//                modifier = Modifier.size(80.dp),
-//                contentColor = Color.White
-//            ) {
-//                Icon(Icons.Filled.Add, contentDescription = null)
-//            }
-//        }
-//    }, topBar = {
-//        TopAppBar(title = {
-//            Text(
-//                text = "Tags",
-//                color = MaterialTheme.colorScheme.onBackground,
-//                fontWeight = FontWeight.Medium,
-//                fontSize = 20.sp
-//            )
-//        }, navigationIcon = {
-//            IconButton(onClick = onNavigateBack) {
-//                Icon(
-//                    Icons.Outlined.NavigateBefore,
-//                    "back",
-//                    tint = MaterialTheme.colorScheme.primary
-//                )
-//            }
-//        })
-//    })
-//}
-

@@ -4,25 +4,11 @@ import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -48,6 +34,7 @@ import fit.asta.health.navigation.today.view.TodayContent
 import fit.asta.health.navigation.today.viewmodel.TodayPlanViewModel
 import fit.asta.health.navigation.track.view.TrackContent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+
 
 @OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -183,8 +170,16 @@ fun MainActivityLayout(
             composable(BottomBarDestination.Today.route) {
                 val todayPlanViewModel: TodayPlanViewModel =
                     it.sharedViewModel(navController = navController)
-                val list by todayPlanViewModel.alarmList.collectAsStateWithLifecycle()
-                TodayContent(list = list, hSEvent = todayPlanViewModel::hSEvent, onNav = onNav)
+                val listMorning by todayPlanViewModel.alarmListMorning.collectAsStateWithLifecycle()
+                val listAfternoon by todayPlanViewModel.alarmListAfternoon.collectAsStateWithLifecycle()
+                val listEvening by todayPlanViewModel.alarmListEvening.collectAsStateWithLifecycle()
+                TodayContent(
+                    listMorning = listMorning,
+                    listAfternoon = listAfternoon,
+                    listEvening = listEvening,
+                    hSEvent = todayPlanViewModel::hSEvent,
+                    onNav = onNav
+                )
             }
 
             composable(BottomBarDestination.Track.route) {
