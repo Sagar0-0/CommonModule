@@ -34,10 +34,11 @@ import fit.asta.health.common.ui.components.PrimaryButton
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiString
+import fit.asta.health.profile.MultiRadioBtnKeys
 import fit.asta.health.profile.createprofile.view.components.BodyTypeLayout
 import fit.asta.health.profile.createprofile.view.components.RowToggleButtonGroup
-import fit.asta.health.profile.model.domain.ThreeToggleSelections
-import fit.asta.health.profile.model.domain.TwoToggleSelections
+import fit.asta.health.profile.model.domain.ThreeRadioBtnSelections
+import fit.asta.health.profile.model.domain.TwoRadioBtnSelections
 import fit.asta.health.profile.view.ThreeTogglesGroups
 import fit.asta.health.profile.view.TwoTogglesGroup
 import fit.asta.health.profile.viewmodel.ProfileEvent
@@ -61,34 +62,25 @@ fun PhysiqueCreateScreen(
     val calendarState = rememberUseCaseState()
 
     //Basic Input
+
     val userWeight by viewModel.weight.collectAsStateWithLifecycle()
     val userDOB by viewModel.dob.collectAsStateWithLifecycle()
     val userAge by viewModel.age.collectAsStateWithLifecycle()
     val userHeight by viewModel.height.collectAsStateWithLifecycle()
     val pregnancyWeek by viewModel.pregnancyWeek.collectAsStateWithLifecycle()
 
-    //Selection
-    val selectedIsPregnantOption by viewModel.selectedIsPregnant.collectAsStateWithLifecycle()
-    val selectedOnPeriodOption by viewModel.selectedOnPeriod.collectAsStateWithLifecycle()
-    val selectedGenderOption by viewModel.selectedGender.collectAsStateWithLifecycle()
+    //Radio Buttons
+    val radioButtonSelections by viewModel.radioButtonSelections.collectAsStateWithLifecycle()
 
+    val selectedGenderOptionDemo =
+        radioButtonSelections[MultiRadioBtnKeys.GENDER] as ThreeRadioBtnSelections?
+    val selectedIsPregOptionDemo =
+        radioButtonSelections[MultiRadioBtnKeys.ISPREG] as TwoRadioBtnSelections?
+    val selectedIsOnPeriodOptionDemo =
+        radioButtonSelections[MultiRadioBtnKeys.ISONPERIOD] as TwoRadioBtnSelections?
 
-    //Inputs Validity
-    val areBasicInputsValid by viewModel.areBasicPhysiqueInputsValid.collectAsStateWithLifecycle()
-    val areFemaleInputsNull by viewModel.areFemaleInputNull.collectAsStateWithLifecycle()
-    val arePregInputsValid by viewModel.arePregnancyInputValid.collectAsStateWithLifecycle()
-    val phyValid by viewModel.phyInputsValid.collectAsStateWithLifecycle()
 
     val focusManager = LocalFocusManager.current
-
-    if (selectedGenderOption == ThreeToggleSelections.Second) {
-        viewModel.onEvent(ProfileEvent.IsPhyValid(areFemaleInputsNull))
-        if (selectedIsPregnantOption == TwoToggleSelections.First) {
-            viewModel.onEvent(ProfileEvent.IsPhyValid(arePregInputsValid))
-        }
-    } else {
-        viewModel.onEvent(ProfileEvent.IsPhyValid(areBasicInputsValid))
-    }
 
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
@@ -293,39 +285,54 @@ fun PhysiqueCreateScreen(
                         Modifier.fillMaxWidth()
                     ) {
                         ThreeTogglesGroups(selectionTypeText = "Gender",
-                            selectedOption = selectedGenderOption,
+                            selectedOption = selectedGenderOptionDemo,
                             onStateChange = { state ->
-                                viewModel.onEvent(
-                                    ProfileEvent.SetSelectedGenderOption(
-                                        option = state, optionIndex = 2
-                                    )
+
+//                                viewModel.onEvent(
+//                                    ProfileEvent.SetSelectedGenderOption(
+//                                        option = state, optionIndex = 2
+//                                    )
+//                                )
+
+                                viewModel.updateRadioButtonSelection(
+                                    MultiRadioBtnKeys.GENDER, state
                                 )
+
                             })
 
-                        if (selectedGenderOption == ThreeToggleSelections.Second) {
+                        if (selectedGenderOptionDemo == ThreeRadioBtnSelections.Second) {
 
 
                             TwoTogglesGroup(selectionTypeText = "Are you having periods?",
-                                selectedOption = selectedOnPeriodOption,
+                                selectedOption = selectedIsOnPeriodOptionDemo,
                                 onStateChange = { state ->
-                                    viewModel.onEvent(
-                                        ProfileEvent.SetSelectedIsOnPeriodOption(
-                                            state, 4
-                                        )
+//                                    viewModel.onEvent(
+//                                        ProfileEvent.SetSelectedIsOnPeriodOption(
+//                                            state, 4
+//                                        )
+//                                    )
+
+                                    viewModel.updateRadioButtonSelection(
+                                        MultiRadioBtnKeys.ISONPERIOD, state
                                     )
                                 })
 
                             TwoTogglesGroup(selectionTypeText = "Are you Pregnant",
-                                selectedOption = selectedIsPregnantOption,
+                                selectedOption = selectedIsPregOptionDemo,
                                 onStateChange = { state ->
-                                    viewModel.onEvent(
-                                        ProfileEvent.SetSelectedIsPregnantOption(
-                                            state, 3
-                                        )
+//                                    viewModel.onEvent(
+//                                        ProfileEvent.SetSelectedIsPregnantOption(
+//                                            state, 3
+//                                        )
+//                                    )
+
+                                    viewModel.updateRadioButtonSelection(
+                                        radioButtonName = MultiRadioBtnKeys.ISPREG,
+                                        selection = state
                                     )
                                 })
 
-                            if (selectedIsPregnantOption == TwoToggleSelections.First) {
+                            if (selectedIsPregOptionDemo == TwoRadioBtnSelections.First) {
 
                                 Row(
                                     modifier = Modifier
@@ -393,7 +400,7 @@ fun PhysiqueCreateScreen(
             Spacer(modifier = Modifier.height(spacing.medium))
 
             CreateProfileButtons(
-                eventPrevious, eventNext, text = "Next", enableButton = phyValid
+                eventPrevious, eventNext, text = "Next", enableButton = true
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))

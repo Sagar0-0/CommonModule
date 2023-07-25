@@ -25,7 +25,7 @@ import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.createprofile.view.components.RowToggleButtonGroup
 import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.HealthProperties
-import fit.asta.health.profile.model.domain.TwoToggleSelections
+import fit.asta.health.profile.model.domain.TwoRadioBtnSelections
 import fit.asta.health.profile.view.ButtonListTypes
 import fit.asta.health.profile.view.TwoTogglesGroup
 import fit.asta.health.profile.view.components.ProfileAddIcon
@@ -40,15 +40,15 @@ fun InjuriesLayout(
     viewModel: ProfileViewModel = hiltViewModel(),
     cardType: String,
     cardType2: String,
-    cardList: SnapshotStateList<HealthProperties>,
-    cardList2: SnapshotStateList<HealthProperties>,
+    cardList: SnapshotStateList<HealthProperties>?,
+    cardList2: SnapshotStateList<HealthProperties>?,
     radioButtonList: List<ButtonListTypes>,
     checkedState: MutableState<Boolean>? = null,
     checkedState2: MutableState<Boolean>? = null,
     onItemsSelect: () -> Unit,
     onItemsSelect2: () -> Unit,
-    selectedOption: TwoToggleSelections?,
-    onStateChange: (TwoToggleSelections) -> Unit,
+    selectedOption: TwoRadioBtnSelections?,
+    onStateChange: (TwoRadioBtnSelections) -> Unit,
     cardIndex1: Int,
     cardIndex2: Int,
     time: String,
@@ -90,7 +90,7 @@ fun InjuriesLayout(
                         )
                     }
 
-                    if (selectedOption == TwoToggleSelections.First) {
+                    if (selectedOption == TwoRadioBtnSelections.First) {
                         ProfileAddIcon(onClick = onItemsSelect)
                     }
 
@@ -102,13 +102,13 @@ fun InjuriesLayout(
                     onStateChange = onStateChange
                 )
 
-                if (selectedOption == TwoToggleSelections.First) {
+                if (selectedOption == TwoRadioBtnSelections.First) {
 
                     FlowRow(
                         mainAxisSpacing = spacing.minSmall,
                         modifier = Modifier.padding(start = spacing.medium),
                     ) {
-                        cardList.forEach {
+                        cardList?.forEach {
                             RemoveChipOnCard(
                                 textOnChip = it.name,
                                 checkedState = checkedState,
@@ -198,7 +198,7 @@ fun InjuriesLayout(
                         mainAxisSpacing = spacing.minSmall,
                         modifier = Modifier.padding(start = spacing.medium),
                     ) {
-                        cardList2.forEach {
+                        cardList2?.forEach {
                             RemoveChipOnCard(
                                 textOnChip = it.name,
                                 checkedState = checkedState2,
@@ -221,13 +221,17 @@ fun InjuriesLayout(
             }
         }
 
-        ValidateListError(selectedOption = selectedOption, cardList = cardList, listName = listName)
+        if (cardList != null) {
+            ValidateListError(selectedOption = selectedOption, cardList = cardList, listName = listName)
+        }
 
         Spacer(modifier = Modifier.height(spacing.minSmall))
 
-        ValidateListError(
-            selectedOption = selectedOption, cardList = cardList2, listName = listName2
-        )
+        if (cardList2 != null) {
+            ValidateListError(
+                selectedOption = selectedOption, cardList = cardList2, listName = listName2
+            )
+        }
 
     }
 
@@ -237,12 +241,12 @@ fun InjuriesLayout(
 @Composable
 fun ValidateListError(
     viewModel: ProfileViewModel = hiltViewModel(),
-    selectedOption: TwoToggleSelections?,
+    selectedOption: TwoRadioBtnSelections?,
     cardList: SnapshotStateList<HealthProperties>,
     listName: String,
 ) {
     Row(Modifier.fillMaxWidth()) {
-        if (selectedOption is TwoToggleSelections.First && cardList.isEmpty()) {
+        if (selectedOption is TwoRadioBtnSelections.First && cardList.isEmpty()) {
             Text(
                 text = viewModel.validateDataList(
                     list = cardList, listName = listName

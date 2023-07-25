@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.createprofile.view.DetailsCreateScreen
 import fit.asta.health.profile.createprofile.view.DietCreateScreen
@@ -26,53 +25,32 @@ import fit.asta.health.profile.createprofile.view.HealthCreateScreen
 import fit.asta.health.profile.createprofile.view.LifeStyleCreateScreen
 import fit.asta.health.profile.createprofile.view.PhysiqueCreateScreen
 import fit.asta.health.profile.createprofile.view.components.Stepper
-import fit.asta.health.profile.model.domain.ThreeToggleSelections
-import fit.asta.health.profile.model.domain.TwoToggleSelections
 import fit.asta.health.profile.viewmodel.ProfileViewModel
 import fit.asta.health.testimonials.view.create.CustomDialogWithResultExample
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
 @Composable
-fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel(),onBack:()->Unit) {
+fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel(), onBack: () -> Unit) {
 
     /* TODO Paddings, Font, Elevations (4dp and 6dp), BottomSheets, Colors */
 
 //    val context = LocalContext.current
 
     //ValidInputs
-    val isDetailValid by viewModel.areDetailsInputsValid.collectAsStateWithLifecycle()
-    val isPhyValid by viewModel.areBasicPhysiqueInputsValid.collectAsStateWithLifecycle()
-    val isHealthValid by viewModel.areSelectedHealthOptionsNull.collectAsStateWithLifecycle()
-    val isLSValid by viewModel.areLSValid.collectAsStateWithLifecycle()
-    val isDietValid by viewModel.dietInputsValid.collectAsStateWithLifecycle()
 
     // pregnancy
-    val selectedIsPregnantOption by viewModel.selectedIsPregnant.collectAsStateWithLifecycle()
-    val selectedGenderOption by viewModel.selectedGender.collectAsStateWithLifecycle()
+
 
     //Inputs Validity
-    val areFemaleInputsNull by viewModel.areFemaleInputNull.collectAsStateWithLifecycle()
-    val arePregInputsValid by viewModel.arePregnancyInputValid.collectAsStateWithLifecycle()
 
-
-    val isDemoPhyValid =
-        if (selectedGenderOption == ThreeToggleSelections.Second && areFemaleInputsNull) {
-            if (selectedIsPregnantOption == TwoToggleSelections.First) {
-                arePregInputsValid
-            } else {
-                true
-            }
-        } else {
-            isPhyValid
-        }
 
     //Custom Dialog
     var showCustomDialogWithResult by remember { mutableStateOf(false) }
 
     val numberOfSteps = 5
 
-    var currentStep by rememberSaveable { mutableStateOf(1) }
+    var currentStep by rememberSaveable { mutableIntStateOf(1) }
 
     val stepDescriptionList = arrayListOf("Details", "Physique", "Heath", "LifeStyle", "Diet")
 
@@ -91,37 +69,7 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel(),onBack:()-
     }
 
     val primaryColor = MaterialTheme.colorScheme.primary
-    val errorColor = MaterialTheme.colorScheme.error
-
-    val detailsColor = if (isDetailValid) {
-        primaryColor
-    } else {
-        errorColor
-    }
-
-    val phyColor = if (isDemoPhyValid) {
-        primaryColor
-    } else {
-        errorColor
-    }
-
-    val healthColor = if (isHealthValid) {
-        primaryColor
-    } else {
-        errorColor
-    }
-
-    val lifeStyleColor = if (isLSValid) {
-        primaryColor
-    } else {
-        errorColor
-    }
-
-    val dietColor = if (isDietValid) {
-        primaryColor
-    } else {
-        errorColor
-    }
+    MaterialTheme.colorScheme.error
 
 
     Scaffold(topBar = {
@@ -167,16 +115,16 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel(),onBack:()-
                         logic = {
                             currentStep = step
                         },
-                        detailsColor = detailsColor,
-                        phyColor = phyColor,
-                        healthColor = healthColor,
-                        lifeStyleColor = lifeStyleColor,
-                        dietColor = dietColor,
-                        isDetailValid,
-                        isPhyValid = isPhyValid,
-                        isHealthValid,
-                        isLSValid,
-                        isDietValid,
+                        detailsColor = primaryColor,
+                        phyColor = primaryColor,
+                        healthColor = primaryColor,
+                        lifeStyleColor = primaryColor,
+                        dietColor = primaryColor,
+                        true,
+                        isPhyValid = true,
+                        isHealthValid = true,
+                        isLSValid = true,
+                        isDietValid = true,
                     )
                 }
             }

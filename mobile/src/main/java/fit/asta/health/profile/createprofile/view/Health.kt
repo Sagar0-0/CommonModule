@@ -14,6 +14,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -22,10 +23,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
+import fit.asta.health.profile.MultiRadioBtnKeys
 import fit.asta.health.profile.createprofile.view.HealthCreateBottomSheetTypes.*
 import fit.asta.health.profile.createprofile.view.components.ItemSelectionLayout
 import fit.asta.health.profile.model.domain.ComposeIndex
-import fit.asta.health.profile.model.domain.TwoToggleSelections
+import fit.asta.health.profile.model.domain.HealthProperties
+import fit.asta.health.profile.model.domain.TwoRadioBtnSelections
 import fit.asta.health.profile.view.ButtonListTypes
 import fit.asta.health.profile.view.SelectionCardCreateProfile
 import fit.asta.health.profile.viewmodel.HPropState
@@ -59,63 +62,29 @@ fun HealthContent(
     val injurySince by viewModel.injuriesSince.collectAsStateWithLifecycle()
 
     //Selection Inputs
-    val selectedHealthHis by viewModel.selectedHealthHisOption.collectAsStateWithLifecycle()
-    val selectedAil by viewModel.selectedAilOption.collectAsStateWithLifecycle()
-    val selectedMed by viewModel.selectedMedOption.collectAsStateWithLifecycle()
-    val selectedHealthTar by viewModel.selectedHealthTarOption.collectAsStateWithLifecycle()
-    val selectedInjury by viewModel.selectedInjOption.collectAsStateWithLifecycle()
-    val selectedAddiction by viewModel.selectedAddictionOption.collectAsStateWithLifecycle()
+
+    val radioButtonSelections by viewModel.radioButtonSelections.collectAsStateWithLifecycle()
+
+    val selectedHealthHisDemo =
+        radioButtonSelections[MultiRadioBtnKeys.HEALTHHIS] as TwoRadioBtnSelections?
+    val selectedInjDemo =
+        radioButtonSelections[MultiRadioBtnKeys.INJURIES] as TwoRadioBtnSelections?
+    val selectedAilDemo =
+        radioButtonSelections[MultiRadioBtnKeys.AILMENTS] as TwoRadioBtnSelections?
+    val selectedMedDemo =
+        radioButtonSelections[MultiRadioBtnKeys.MEDICATIONS] as TwoRadioBtnSelections?
+    val selectedHealthTarDemo =
+        radioButtonSelections[MultiRadioBtnKeys.HEALTHTAR] as TwoRadioBtnSelections?
+    val selectedAddDemo =
+        radioButtonSelections[MultiRadioBtnKeys.ADDICTION] as TwoRadioBtnSelections?
 
     //Data
-    val healthHisList by viewModel.healthPropertiesData.collectAsStateWithLifecycle()
+    val propertiesDataState by viewModel.propertiesData.collectAsStateWithLifecycle()
 
-    //Inputs Validity
-    val areSelectedHealthOptionsValid by viewModel.areSelectedHealthOptionsNull.collectAsStateWithLifecycle()
-    val enableHealthButton by viewModel.healthInputsValid.collectAsStateWithLifecycle()
+    // Get the data for ComposeIndex.Third (key = ComposeIndex.First)
+    val composeFirstData: Map<Int, SnapshotStateList<HealthProperties>>? =
+        propertiesDataState[ComposeIndex.First]
 
-    val isHealthHisValid = when (selectedHealthHis) {
-        TwoToggleSelections.First -> healthHisList.getValue(0).isNotEmpty()
-        TwoToggleSelections.Second -> true
-        null -> false
-    }
-
-    val isInjuryValid = when (selectedInjury) {
-        TwoToggleSelections.First -> healthHisList.getValue(1)
-            .isNotEmpty() && healthHisList.getValue(2).isNotEmpty()
-
-        TwoToggleSelections.Second -> true
-        null -> false
-    }
-
-    val isAilmentsValid = when (selectedAil) {
-        TwoToggleSelections.First -> healthHisList.getValue(3).isNotEmpty()
-        TwoToggleSelections.Second -> true
-        null -> false
-    }
-
-    val isMedValid = when (selectedMed) {
-        TwoToggleSelections.First -> healthHisList.getValue(4).isNotEmpty()
-        TwoToggleSelections.Second -> true
-        null -> false
-    }
-
-    val isHealthTarValid = when (selectedHealthTar) {
-        TwoToggleSelections.First -> healthHisList.getValue(5).isNotEmpty()
-        TwoToggleSelections.Second -> true
-        null -> false
-    }
-
-    val isAddictionValid = when (selectedAddiction) {
-        TwoToggleSelections.First -> healthHisList.getValue(6).isNotEmpty()
-        TwoToggleSelections.Second -> true
-        null -> false
-    }
-
-    if (areSelectedHealthOptionsValid && isHealthHisValid && isInjuryValid && isAilmentsValid && isMedValid && isHealthTarValid && isAddictionValid) {
-        viewModel.onEvent(ProfileEvent.IsHealthValid(true))
-    } else {
-        viewModel.onEvent(ProfileEvent.IsHealthValid(false))
-    }
 
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
@@ -131,56 +100,60 @@ fun HealthContent(
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
+
             SelectionCardCreateProfile(
                 cardType = "Any Significant Health History?",
-                cardList = healthHisList.getValue(0),
+                cardList = composeFirstData?.get(0),
                 checkedState = checkedState,
                 onItemsSelect = onHealthHistory,
-                selectedOption = selectedHealthHis,
+                selectedOption = selectedHealthHisDemo,
                 onStateChange = { state ->
-                    viewModel.onEvent(ProfileEvent.SetSelectHealthHisOption(state, 2))
+                    viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.HEALTHHIS, state)
                 },
-                enabled = selectedHealthHis == TwoToggleSelections.First,
+                enabled = selectedHealthHisDemo == TwoRadioBtnSelections.First,
                 cardIndex = 0,
                 composeIndex = ComposeIndex.First,
                 listName = "Health History"
             )
+
+
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
             InjuriesLayout(
                 cardType = "Any Injuries",
                 cardType2 = "Body Part?",
-                cardList = healthHisList.getValue(1),
-                cardList2 = healthHisList.getValue(2),
+                cardList = composeFirstData?.get(1),
+                cardList2 = composeFirstData?.get(2),
                 radioButtonList = radioButtonList,
                 checkedState = checkedState,
                 checkedState2 = checkedState,
                 onItemsSelect = onInjuries,
                 onItemsSelect2 = onBodyInjurySelect,
-                selectedOption = selectedInjury,
+                selectedOption = selectedInjDemo,
                 cardIndex1 = 1,
                 cardIndex2 = 2,
                 onStateChange = { state ->
-                    viewModel.onEvent(ProfileEvent.SetSelectedInjOption(state, 5))
+                    viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.INJURIES, state)
                 },
                 time = injurySince.value,
                 listName = "Injuries",
                 listName2 = "Body Part"
             )
 
+
             Spacer(modifier = Modifier.height(spacing.medium))
 
             SelectionCardCreateProfile(
                 cardType = "Any Ailments?",
-                cardList = healthHisList.getValue(3),
+                cardList = composeFirstData?.get(3),
                 checkedState = checkedState,
                 onItemsSelect = onAilments,
-                selectedOption = selectedAil,
+                selectedOption = selectedAilDemo,
                 onStateChange = { state ->
-                    viewModel.onEvent(ProfileEvent.SetSelectedAilOption(state, 7))
+                    viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.AILMENTS, state)
                 },
-                enabled = selectedAil == TwoToggleSelections.First,
+                enabled = selectedAilDemo == TwoRadioBtnSelections.First,
                 cardIndex = 3,
                 composeIndex = ComposeIndex.First,
                 listName = "Ailments"
@@ -191,14 +164,14 @@ fun HealthContent(
 
             SelectionCardCreateProfile(
                 cardType = "Any Medications?",
-                cardList = healthHisList.getValue(4),
+                cardList = composeFirstData?.get(4),
                 checkedState = checkedState,
                 onItemsSelect = onMedications,
-                selectedOption = selectedMed,
+                selectedOption = selectedMedDemo,
                 onStateChange = { state ->
-                    viewModel.onEvent(ProfileEvent.SetSelectedMedOption(state, 8))
+                    viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.MEDICATIONS, state)
                 },
-                enabled = selectedMed == TwoToggleSelections.First,
+                enabled = selectedMedDemo == TwoRadioBtnSelections.First,
                 cardIndex = 4,
                 composeIndex = ComposeIndex.First,
                 listName = "Medication"
@@ -208,14 +181,14 @@ fun HealthContent(
 
             SelectionCardCreateProfile(
                 cardType = "Any Health Targets?",
-                cardList = healthHisList.getValue(5),
+                cardList = composeFirstData?.get(5),
                 checkedState = checkedState,
                 onItemsSelect = onHealthTargets,
-                selectedOption = selectedHealthTar,
+                selectedOption = selectedHealthTarDemo,
                 onStateChange = { state ->
-                    viewModel.onEvent(ProfileEvent.SetSelectedHealthTarOption(state, 9))
+                    viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.HEALTHTAR, state)
                 },
-                enabled = selectedHealthTar == TwoToggleSelections.First,
+                enabled = selectedHealthTarDemo == TwoRadioBtnSelections.First,
                 cardIndex = 5,
                 composeIndex = ComposeIndex.First,
                 listName = "Health Targets"
@@ -226,14 +199,14 @@ fun HealthContent(
 
             SelectionCardCreateProfile(
                 cardType = "Any Addiction?",
-                cardList = healthHisList.getValue(6),
+                cardList = composeFirstData?.get(6),
                 checkedState = checkedState,
                 onItemsSelect = onAddictionSelect,
-                selectedOption = selectedAddiction,
+                selectedOption = selectedAddDemo,
                 onStateChange = { state ->
-                    viewModel.onEvent(ProfileEvent.SetSelectedAddictionOption(state, 11))
+                    viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.ADDICTION, state)
                 },
-                enabled = selectedAddiction == TwoToggleSelections.First,
+                enabled = selectedAddDemo == TwoRadioBtnSelections.First,
                 cardIndex = 6,
                 composeIndex = ComposeIndex.First,
                 listName = "Addictions"
@@ -242,7 +215,7 @@ fun HealthContent(
             Spacer(modifier = Modifier.height(spacing.medium))
 
             CreateProfileButtons(
-                eventPrevious, eventNext, text = "Next", enableButton = enableHealthButton
+                eventPrevious, eventNext, text = "Next", enableButton = true
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
