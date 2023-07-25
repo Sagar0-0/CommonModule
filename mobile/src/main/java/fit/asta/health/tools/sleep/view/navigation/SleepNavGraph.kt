@@ -41,17 +41,54 @@ fun SleepNavGraph(
                 }
             )
 
+            // Sleep goals Screen
+            composable(
+                SleepToolNavRoutes.SleepGoalsRoute.routes,
+                content = {
+
+                    // Default Goals List fetched from the Server
+                    val goalsList by sleepToolViewModel.goalsList.collectAsStateWithLifecycle()
+
+                    // Selected Goals which are already selected by the User
+                    val selectedGoals =
+                        sleepToolViewModel.userUIDefaults.collectAsStateWithLifecycle().value
+                            .data?.sleepData?.toolData?.prc?.find {
+                                it.ttl == "goal"
+                            }
+
+                    // Goals Screen
+                    SleepGoalsScreen(
+                        navController = navController,
+                        goalsList = goalsList,
+                        selectedGoals = selectedGoals,
+                        loadData = { sleepToolViewModel.getGoalsList() }
+                    ) { type, newValue ->
+                        sleepToolViewModel.updateToolData(toolType = type, newValue = newValue)
+                    }
+                }
+            )
+
             // Sleep Factor Screen
             composable(
                 SleepToolNavRoutes.SleepFactorRoute.routes,
                 content = {
 
+                    // Default Sleep Factor List fetched from the Server
                     val sleepFactorState by sleepToolViewModel.sleepFactorsData
                         .collectAsStateWithLifecycle()
 
+                    // Selected Sleep Factor which are already selected by the User
+                    val selectedSleepFactor =
+                        sleepToolViewModel.userUIDefaults.collectAsStateWithLifecycle().value
+                            .data?.sleepData?.toolData?.prc?.find {
+                                it.ttl == "factors"
+                            }
+
+                    // Sleep Factors Screen
                     SleepFactorsScreen(
                         navController = navController,
                         sleepFactorState = sleepFactorState,
+                        selectedFactors = selectedSleepFactor,
                         loadDataFunction = { sleepToolViewModel.getSleepFactorsData() }
                     ) { type, newValue ->
                         sleepToolViewModel.updateToolData(toolType = type, newValue = newValue)
@@ -64,12 +101,22 @@ fun SleepNavGraph(
                 SleepToolNavRoutes.SleepDisturbanceRoute.routes,
                 content = {
 
+                    // Default Sleep Disturbances List fetched from the Server
                     val sleepDisturbances by sleepToolViewModel.sleepDisturbancesData
                         .collectAsStateWithLifecycle()
 
+                    // Selected Sleep Disturbances which are already selected by the User
+                    val selectedDisturbances =
+                        sleepToolViewModel.userUIDefaults.collectAsStateWithLifecycle().value
+                            .data?.sleepData?.toolData?.prc?.find {
+                                it.ttl == "disturbance"
+                            }
+
+                    // Sleep Disturbances Screen
                     SleepDisturbanceScreen(
                         navController = navController,
                         sleepDisturbanceState = sleepDisturbances,
+                        selectedDisturbance = selectedDisturbances,
                         loadDataFunction = { sleepToolViewModel.getDisturbancesData() }
                     ) { type, newValue ->
                         sleepToolViewModel.updateToolData(toolType = type, newValue = newValue)
@@ -82,6 +129,7 @@ fun SleepNavGraph(
                 SleepToolNavRoutes.SleepJetLagTipsRoute.routes,
                 content = {
 
+                    // Default Jet Lag Details List fetched from the Server
                     val jetLagDetails =
                         sleepToolViewModel.jetLagDetails.collectAsStateWithLifecycle().value
 
@@ -89,23 +137,6 @@ fun SleepNavGraph(
                         jetLagDetails = jetLagDetails,
                     ) {
                         sleepToolViewModel.getJetLagTips()
-                    }
-                }
-            )
-
-            // Sleep goals Screen
-            composable(
-                SleepToolNavRoutes.SleepGoalsRoute.routes,
-                content = {
-
-                    val goalsList by sleepToolViewModel.goalsList.collectAsStateWithLifecycle()
-
-                    SleepGoalsScreen(
-                        navController = navController,
-                        goalsList = goalsList,
-                        loadData = { sleepToolViewModel.getGoalsList() }
-                    ) { type, newValue ->
-                        sleepToolViewModel.updateToolData(toolType = type, newValue = newValue)
                     }
                 }
             )
