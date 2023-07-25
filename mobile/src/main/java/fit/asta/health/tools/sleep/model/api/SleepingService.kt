@@ -1,9 +1,11 @@
 package fit.asta.health.tools.sleep.model.api
 
+import fit.asta.health.tools.sleep.model.network.common.ToolData
 import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.tools.sleep.model.network.get.SleepToolGetResponse
+import fit.asta.health.tools.sleep.model.network.goals.SleepGoalResponse
+import fit.asta.health.tools.sleep.model.network.jetlag.SleepJetLagTipResponse
 import fit.asta.health.tools.sleep.model.network.post.SleepPostRequestBody
-import fit.asta.health.tools.sleep.model.network.put.SleepPutRequestBody
 import fit.asta.health.tools.sleep.model.network.put.SleepPutResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -16,7 +18,7 @@ interface SleepingService {
 
     @PUT("tools/sleep/put/")
     suspend fun putUserData(
-        @Body sleepPutRequestBody: SleepPutRequestBody
+        @Body toolData: ToolData
     ): Response<SleepPutResponse>
 
     @GET("tools/sleep/get/")
@@ -36,4 +38,14 @@ interface SleepingService {
         @Query("uid") userId: String,
         @Query("property") property: String
     ): Response<SleepDisturbanceResponse>
+
+    @GET("tools/help/get/")
+    suspend fun getJetLagTips(
+        @Query("id") id: String
+    ): Response<SleepJetLagTipResponse>
+
+    @GET("health/property/get/all/")
+    suspend fun getGoalsList(
+        @Query("property") property: String
+    ): Response<SleepGoalResponse>
 }

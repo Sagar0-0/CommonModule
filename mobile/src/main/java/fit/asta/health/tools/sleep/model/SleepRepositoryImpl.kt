@@ -1,19 +1,21 @@
 package fit.asta.health.tools.sleep.model
 
 import fit.asta.health.tools.sleep.model.api.SleepingApi
+import fit.asta.health.tools.sleep.model.network.common.ToolData
 import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.tools.sleep.model.network.get.SleepToolGetResponse
+import fit.asta.health.tools.sleep.model.network.goals.SleepGoalResponse
+import fit.asta.health.tools.sleep.model.network.jetlag.SleepJetLagTipResponse
 import fit.asta.health.tools.sleep.model.network.post.SleepPostRequestBody
-import fit.asta.health.tools.sleep.model.network.put.SleepPutRequestBody
 import fit.asta.health.tools.sleep.model.network.put.SleepPutResponse
 import retrofit2.Response
 
 class SleepRepositoryImpl(private val api: SleepingApi) : SleepRepository {
 
     override suspend fun putUserData(
-        sleepPutRequestBody: SleepPutRequestBody
+        toolData: ToolData
     ): Response<SleepPutResponse> {
-        return api.putUserData(sleepPutRequestBody = sleepPutRequestBody)
+        return api.putUserData(toolData = toolData)
     }
 
     override suspend fun getUserDefaultSettings(
@@ -38,5 +40,13 @@ class SleepRepositoryImpl(private val api: SleepingApi) : SleepRepository {
         property: String
     ): Response<SleepDisturbanceResponse> {
         return api.getSleepPropertyData(userId, property)
+    }
+
+    override suspend fun getJetLagTips(id: String): Response<SleepJetLagTipResponse> {
+        return api.getJetLagTips(id)
+    }
+
+    override suspend fun getGoalsList(property: String): Response<SleepGoalResponse> {
+        return api.getGoalsList(property)
     }
 }

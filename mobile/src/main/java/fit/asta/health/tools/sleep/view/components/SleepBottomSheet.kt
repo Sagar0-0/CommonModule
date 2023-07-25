@@ -38,8 +38,7 @@ import fit.asta.health.tools.sleep.view.navigation.SleepToolNavRoutes
  * @param scaffoldState this defines the State of the Scaffold
  * @param navController This is the navigation Controller which helps to switch to a different Screen
  * @param bottomSheetData This variable contains the bottom sheet Data which needs to be shown in UI
- * @param selectedDisturbances This variable contains the list of strings which are chosen as sleep
- * disturbances by the User
+ * @param selectedDisturbances This variable contains the selected Disturbances
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,7 +46,7 @@ fun SleepBottomSheet(
     scaffoldState: SheetState,
     navController: NavController,
     bottomSheetData: List<Prc>,
-    selectedDisturbances: List<String>
+    selectedDisturbances: Prc?
 ) {
 
     Column(
@@ -62,7 +61,7 @@ fun SleepBottomSheet(
         Text(
             text = "Practise",
 
-            fontSize = 24.sp,
+            fontSize = 16.sp,
             fontStyle = FontStyle.Normal,
             fontWeight = FontWeight.Bold,
             fontFamily = FontFamily.SansSerif
@@ -74,27 +73,31 @@ fun SleepBottomSheet(
                 .fillMaxWidth()
                 .padding(top = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.spacedBy(spacing.medium)
         ) {
 
-            items(selectedDisturbances.size) {
+            // Checking if the selected Disturbance is empty or not
+            selectedDisturbances?.values?.let { disturbanceList ->
+                items(disturbanceList.size) {
 
-                // Current Items
-                val currentItem = selectedDisturbances[it]
-                val currentIcon = when (currentItem) {
-                    "Dream" -> R.drawable.dreamcatcher
-                    "Kids" -> R.drawable.kids
-                    "Love" -> R.drawable.favorite
-                    "Water" -> R.drawable.water_glass
-                    "Toilet" -> R.drawable.toilet
-                    else -> R.drawable.dreamcatcher
+                    // Current Items
+                    val currentItem = selectedDisturbances.values[it].name
+
+                    val currentIcon = when (currentItem) {
+                        "Dream" -> R.drawable.dreamcatcher
+                        "Kids" -> R.drawable.kids
+                        "Love" -> R.drawable.favorite
+                        "Water" -> R.drawable.water_glass
+                        "Toilet" -> R.drawable.toilet
+                        else -> R.drawable.dreamcatcher
+                    }
+
+                    // Drawing the Circular Image with text
+                    CircularImageAndText(
+                        text = currentItem,
+                        image = currentIcon
+                    )
                 }
-
-                // Drawing the Circular Image with text
-                CircularImageAndText(
-                    text = currentItem,
-                    image = currentIcon
-                )
             }
 
             // More Options comes here
@@ -146,10 +149,19 @@ fun SleepBottomSheet(
                             else -> R.drawable.goal
                         }
 
+                        val type = if (!currentItem.values.isNullOrEmpty())
+                            currentItem.values.map { valueList ->
+                                valueList.value
+                            }.toString().filterNot { ch ->
+                                ch == '[' || ch == ']'
+                            }
+                        else
+                            "None"
+
                         CardItem(
                             modifier = Modifier.weight(0.5f),
                             name = currentItem.ttl,
-                            type = currentItem.values[0].value,
+                            type = type,
                             id = currentIcon,
                             onClick = {
                                 when (currentItem.ttl) {

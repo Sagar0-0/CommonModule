@@ -1,9 +1,8 @@
-package fit.asta.health.tools.sleep.model.network.put
+package fit.asta.health.tools.sleep.model.network.common
 
 import com.google.gson.annotations.SerializedName
-import fit.asta.health.tools.sleep.model.network.common.Prc
 
-data class SleepPutRequestBody(
+data class ToolData(
     @SerializedName("code")
     val code: String,
     @SerializedName("id")

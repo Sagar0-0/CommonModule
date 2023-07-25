@@ -53,7 +53,9 @@ fun SleepNavGraph(
                         navController = navController,
                         sleepFactorState = sleepFactorState,
                         loadDataFunction = { sleepToolViewModel.getSleepFactorsData() }
-                    )
+                    ) { type, newValue ->
+                        sleepToolViewModel.updateToolData(toolType = type, newValue = newValue)
+                    }
                 }
             )
 
@@ -69,7 +71,9 @@ fun SleepNavGraph(
                         navController = navController,
                         sleepDisturbanceState = sleepDisturbances,
                         loadDataFunction = { sleepToolViewModel.getDisturbancesData() }
-                    )
+                    ) { type, newValue ->
+                        sleepToolViewModel.updateToolData(toolType = type, newValue = newValue)
+                    }
                 }
             )
 
@@ -77,10 +81,15 @@ fun SleepNavGraph(
             composable(
                 SleepToolNavRoutes.SleepJetLagTipsRoute.routes,
                 content = {
+
+                    val jetLagDetails =
+                        sleepToolViewModel.jetLagDetails.collectAsStateWithLifecycle().value
+
                     SleepJetLagTipsScreen(
-                        navController = navController,
-                        sleepToolViewModel = sleepToolViewModel
-                    )
+                        jetLagDetails = jetLagDetails,
+                    ) {
+                        sleepToolViewModel.getJetLagTips()
+                    }
                 }
             )
 
@@ -88,10 +97,16 @@ fun SleepNavGraph(
             composable(
                 SleepToolNavRoutes.SleepGoalsRoute.routes,
                 content = {
+
+                    val goalsList by sleepToolViewModel.goalsList.collectAsStateWithLifecycle()
+
                     SleepGoalsScreen(
                         navController = navController,
-                        sleepToolViewModel = sleepToolViewModel
-                    )
+                        goalsList = goalsList,
+                        loadData = { sleepToolViewModel.getGoalsList() }
+                    ) { type, newValue ->
+                        sleepToolViewModel.updateToolData(toolType = type, newValue = newValue)
+                    }
                 }
             )
         }
