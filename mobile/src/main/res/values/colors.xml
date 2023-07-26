@@ -8,13 +8,12 @@
     <color name="colorSurface">#F7EBEF</color>
     <color name="colorTransparent">#DDFFFFFF</color>
 
+    <!--colors for number picker-->
     <color name="black">#0F0F0F</color>
     <color name="white">#FFFFFFFF</color>
-
-    <!--colors for bottom-sheet-->
     <color name="bottom_sheet_primary_sub_text_color">#4F4F4F</color>
     <color name="bottom_sheet_primary_edit_text_background_color">#F0F0F0</color>
-    <!--colors for bottom-sheet-->
-
     <color name="number_picker_un_selected_text">#ABABAB</color>
+    <!--colors for number picker-->
+
 </resources>
