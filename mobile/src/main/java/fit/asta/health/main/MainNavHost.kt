@@ -14,7 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import fit.asta.health.feedback.ui.feedbackComp
-import fit.asta.health.main.ui.mainActivityComp
+import fit.asta.health.main.view.mainActivityComp
 import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
 import fit.asta.health.profile.CreateProfileLayout
 import fit.asta.health.profile.ProfileContent

@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.main.ui.MainActivity
+import fit.asta.health.MainActivity
 import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.profile.MultiRadioBtnKeys
@@ -183,6 +183,7 @@ fun DietCreateScreen(
     eventPrevious: (() -> Unit)? = null,
     open: Boolean = true
 ) {
+
     var openBottomSheet by rememberSaveable { mutableStateOf(open) }
     var skipPartiallyExpanded by remember { mutableStateOf(false) }
     var edgeToEdgeEnabled by remember { mutableStateOf(false) }

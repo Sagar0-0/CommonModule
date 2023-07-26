@@ -42,9 +42,11 @@ fun PaceScreen(
     val itemList = listOf(
        "slow","medium","fast"
     )
+
     val itemSelection = remember {
         mutableIntStateOf(-1)
     }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {

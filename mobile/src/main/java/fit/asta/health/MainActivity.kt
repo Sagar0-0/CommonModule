@@ -1,4 +1,4 @@
-package fit.asta.health.main.ui
+package fit.asta.health
 
 import android.app.Activity
 import android.content.Context

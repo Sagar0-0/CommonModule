@@ -22,7 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
-import fit.asta.health.common.ui.CustomTopBar
+import fit.asta.health.common.ui.components.AppTopBar
 import fit.asta.health.common.ui.components.ButtonWithColor
 import fit.asta.health.common.ui.components.CircularSliderInt
 import fit.asta.health.common.ui.components.ProgressBarInt
@@ -97,7 +97,7 @@ fun ExerciseHomeScreen(
         sheetPeekHeight = 200.dp,
         scaffoldState = scaffoldState,
         topBar = {
-            CustomTopBar(text = "$screen Exercise Tool", onBackPressed = onBack,
+            AppTopBar(text = "$screen Exercise Tool", onBackPressed = onBack,
                 actionItems = {
                     IconButton(onClick = { }) {
                         Icon(

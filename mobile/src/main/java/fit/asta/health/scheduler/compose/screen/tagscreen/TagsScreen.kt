@@ -31,7 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fit.asta.health.common.ui.CustomTopBar
+import fit.asta.health.common.ui.components.AppTopBar
 import fit.asta.health.common.ui.components.CustomModelBottomSheet
 import fit.asta.health.scheduler.compose.components.CustomTagBottomSheetLayout
 import fit.asta.health.scheduler.compose.components.SwipeDemo
@@ -110,7 +110,7 @@ fun TagsScreen(
                 Icon(Icons.Filled.Add, contentDescription = null)
             }
         },
-        topBar = { CustomTopBar(text = "Tags", onBackPressed = onNavBack) })
+        topBar = { AppTopBar(text = "Tags", onBackPressed = onNavBack) })
 
     CustomModelBottomSheet(
         targetState = bottomSheetState.isVisible,

@@ -25,7 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
-import fit.asta.health.common.ui.CustomTopBar
+import fit.asta.health.common.ui.components.AppTopBar
 import fit.asta.health.common.ui.components.ButtonWithColor
 import fit.asta.health.common.ui.components.CardItem
 import fit.asta.health.common.ui.components.CircularSliderInt
@@ -79,7 +79,7 @@ fun MeditationHomeScreen(
         sheetPeekHeight = 200.dp,
         scaffoldState = scaffoldState,
         topBar = {
-            CustomTopBar(text = "Meditation Tool", onBackPressed = onBack, actionItems = {
+            AppTopBar(text = "Meditation Tool", onBackPressed = onBack, actionItems = {
                 IconButton(onClick = { }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_physique),

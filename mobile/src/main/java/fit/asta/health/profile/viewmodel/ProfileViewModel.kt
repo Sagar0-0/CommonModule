@@ -296,7 +296,7 @@ class ProfileViewModel
     private fun handlePhysiqueData(physique: Physique, dob: InputWrapper) {
         // Handle physique data
         savedState[AGE] = InputWrapper(value = physique.age.toString())
-        savedState[DOB] = dob //InputWrapper(value = physique.data.contact.dob)
+        savedState[DOB] = dob
         savedState[WEIGHT] = InputWrapper(value = physique.weight.toString())
         savedState[HEIGHT] = InputWrapper(value = physique.height.toString())
 
@@ -784,10 +784,11 @@ class ProfileViewModel
         )
     }
 
+    //Profile Validations
 
-    // Details Input Validity
     val areDetailsInputsValid = combine(name, email) { name, email ->
         name.value.isNotEmpty() && name.error is UiString.Empty && email.value.isNotEmpty() && email.error is UiString.Empty
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
+
 
 }

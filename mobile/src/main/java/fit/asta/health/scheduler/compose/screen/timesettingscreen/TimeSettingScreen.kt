@@ -14,7 +14,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import fit.asta.health.common.ui.CustomTopBar
+import fit.asta.health.common.ui.components.AppTopBar
 import fit.asta.health.common.ui.components.CustomModelBottomSheet
 import fit.asta.health.scheduler.compose.components.*
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.IvlUiState
@@ -87,7 +87,7 @@ fun TimeSettingScreen(
             )
         },
         topBar = {
-            CustomTopBar(text = "Intervals and Time Settings",
+            AppTopBar(text = "Intervals and Time Settings",
                 backIcon = Icons.Default.Close,
                 containerColor = MaterialTheme.colorScheme.surface,
                 titleContentColor = MaterialTheme.colorScheme.onSurface,

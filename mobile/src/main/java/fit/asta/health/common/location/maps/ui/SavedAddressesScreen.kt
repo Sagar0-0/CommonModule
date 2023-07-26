@@ -63,7 +63,7 @@ import fit.asta.health.common.location.maps.modal.AddressesResponse
 import fit.asta.health.common.location.maps.modal.AddressesResponse.MyAddress
 import fit.asta.health.common.location.maps.modal.MapScreens
 import fit.asta.health.common.location.maps.modal.SearchResponse
-import fit.asta.health.common.ui.CustomTopBar
+import fit.asta.health.common.ui.components.AppTopBar
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.iconSize
 import fit.asta.health.common.ui.theme.spacing
@@ -101,7 +101,7 @@ fun SavedAddressesScreen(
     }
 
     Column(Modifier.fillMaxSize()) {
-        CustomTopBar(text = "Saved Addresses") {
+        AppTopBar(text = "Saved Addresses") {
             onBackPressed()
         }
 

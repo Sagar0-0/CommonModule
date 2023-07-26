@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import fit.asta.health.R
-import fit.asta.health.common.ui.CustomTopBar
+import fit.asta.health.common.ui.components.AppTopBar
 import fit.asta.health.player.jetpack_audio.presentation.ui.theme.LocalSpacing
 
 
@@ -22,7 +22,7 @@ fun HomeHeader(
     onProfileClicked: () -> Unit
 ) {
     val spacing = LocalSpacing.current
-    CustomTopBar(
+    AppTopBar(
         text = stringResource(id = R.string.app_name),
         onBackPressed = {},
         actionItems = {

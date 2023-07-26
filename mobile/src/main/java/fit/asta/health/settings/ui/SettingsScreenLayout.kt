@@ -36,7 +36,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import fit.asta.health.R
-import fit.asta.health.common.ui.CustomTopBar
+import fit.asta.health.common.ui.components.AppTopBar
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.PrefUtils
 import fit.asta.health.common.utils.setAppTheme
@@ -56,7 +56,7 @@ fun SettingsScreenLayout(
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
         ) {
-            CustomTopBar(stringResource(id = R.string.title_settings)) {
+            AppTopBar(text = stringResource(id = R.string.title_settings)) {
                 onClickEvent(SettingsUiEvent.BACK)
             }
 

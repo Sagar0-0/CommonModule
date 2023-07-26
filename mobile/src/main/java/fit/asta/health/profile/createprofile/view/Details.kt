@@ -63,7 +63,6 @@ fun DetailsCreateScreen(
     val name by viewModel.name.collectAsStateWithLifecycle()
     val email by viewModel.email.collectAsStateWithLifecycle()
     val userImg by viewModel.userImg.collectAsStateWithLifecycle()
-    val areInputsValid by viewModel.areDetailsInputsValid.collectAsStateWithLifecycle()
 
     val imgLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
@@ -156,7 +155,7 @@ fun DetailsCreateScreen(
                 text = "Next",
                 modifier = Modifier.fillMaxWidth(),
                 event = eventNext,
-                enableButton = areInputsValid
+                enableButton = true
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
