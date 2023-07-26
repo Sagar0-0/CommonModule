@@ -11,6 +11,7 @@ sealed class TimeSettingEvent{
     data class SetAdvancedStatus(val choice:Boolean):TimeSettingEvent()
     data class RemindAtEndOfDuration(val choice:Boolean):TimeSettingEvent()
     data class SetVariantStatus(val choice:Boolean):TimeSettingEvent()
+    data class SetStatus(val choice:Boolean):TimeSettingEvent()
     data class AddVariantInterval(val variantInterval:StatUiState,val context: Context):TimeSettingEvent()
     data class DeleteVariantInterval(val variantInterval:StatUiState):TimeSettingEvent()
     data class SetRepetitiveIntervals(val interval:RepUiState,val context: Context):TimeSettingEvent()

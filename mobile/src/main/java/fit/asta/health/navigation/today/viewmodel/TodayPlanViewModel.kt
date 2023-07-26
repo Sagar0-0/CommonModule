@@ -11,16 +11,22 @@ import fit.asta.health.scheduler.compose.screen.homescreen.HomeEvent
 import fit.asta.health.scheduler.model.AlarmLocalRepo
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.db.entity.AlarmSync
-import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-class TodayPlanViewModel@Inject constructor(
+class TodayPlanViewModel @Inject constructor(
     private val alarmLocalRepo: AlarmLocalRepo,
     private val prefUtils: PrefUtils
-): ViewModel() {
+) : ViewModel() {
+    private val _alarmListMorning = mutableStateListOf<AlarmEntity>()
+    val alarmListMorning = MutableStateFlow(_alarmListMorning)
+    private val _alarmListAfternoon = mutableStateListOf<AlarmEntity>()
+    val alarmListAfternoon = MutableStateFlow(_alarmListAfternoon)
+    private val _alarmListEvening = mutableStateListOf<AlarmEntity>()
+    val alarmListEvening = MutableStateFlow(_alarmListEvening)
     private val _alarmList = mutableStateListOf<AlarmEntity>()
     val alarmList = MutableStateFlow(_alarmList)
 
@@ -28,14 +34,20 @@ class TodayPlanViewModel@Inject constructor(
     init {
         getAlarms()
     }
+
     fun hSEvent(uiEvent: HomeEvent) {
         when (uiEvent) {
             is HomeEvent.EditAlarm -> {
-                viewModelScope.launch { prefUtils.setPreferences(key = "alarm", value = uiEvent.alarm.alarmId)  }
+                viewModelScope.launch {
+                    prefUtils.setPreferences(
+                        key = "alarm",
+                        value = uiEvent.alarm.alarmId
+                    )
+                }
             }
 
             is HomeEvent.SetAlarm -> {
-                viewModelScope.launch { prefUtils.setPreferences(key = "alarm", value = 999)  }
+                viewModelScope.launch { prefUtils.setPreferences(key = "alarm", value = 999) }
             }
 
             is HomeEvent.DeleteAlarm -> {
@@ -82,14 +94,52 @@ class TodayPlanViewModel@Inject constructor(
             }
         }
     }
+
     private fun getAlarms() {
         viewModelScope.launch {
             alarmLocalRepo.getAllAlarm().collect { list ->
-                Log.d(SpotifyConstants.TAG, " list result: $list")
-                _alarmList.clear()
-                _alarmList.addAll(list)
+                _alarmListMorning.clear()
+                _alarmListAfternoon.clear()
+                _alarmListEvening.clear()
+                val day =LocalDate.now().dayOfWeek.value
+                Log.d("list", "getAlarms: $list,day $day")
+                list.forEach{
+                   val today= if (it.week.recurring){
+                       when(day){
+                            1->{it.week.monday}
+                            2->{it.week.tuesday}
+                            3->{it.week.wednesday}
+                            4->{it.week.thursday}
+                            5->{it.week.friday}
+                            6->{it.week.saturday}
+                            7->{it.week.sunday}
+                            else ->false
+                        }
+                    } else true
+                    Log.d("list", "getAlarm: $it,today $today")
+                    if (today){
+                        when(it.time.hours.toInt()) {
+                            in  0..3->{
+                                Log.d("list", "getAlarm: evening${it.time}")
+                                _alarmListEvening.add(it)
+                            }
+                            in  4..12->{ Log.d("list", "getAlarm:morning${it.time}")
+                                _alarmListMorning.add(it)
+                            }
+                            in  13..16->{ Log.d("list", "getAlarm: afternoon${it.time}")
+                                _alarmListAfternoon.add(it)
+                            }
+                            in  17..23->{ Log.d("list", "getAlarm: evening${it.time}")
+                                _alarmListEvening.add(it)
+                            }
+                        }
+                    }
+                }
             }
         }
+        //morning 3 12
+        // afternoon 12 4
+        // even 4  3
 
     }
 }
