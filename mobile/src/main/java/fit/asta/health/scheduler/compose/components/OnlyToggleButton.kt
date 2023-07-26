@@ -2,27 +2,46 @@ package fit.asta.health.scheduler.compose.components
 
 import android.app.TimePickerDialog
 import android.icu.util.Calendar
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.EditCalendar
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.R
 import fit.asta.health.common.ui.theme.TSelected
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ASUiState
@@ -30,15 +49,14 @@ import fit.asta.health.scheduler.model.net.scheduler.Time
 
 @Composable
 fun OnlyToggleButton(
-    icon: Int,
+    imageIcon: ImageVector,
     title: String,
     switchTitle: String,
     onNavigateToClickText: (() -> Unit)?,
     onCheckClicked: (Boolean) -> Unit = {},
-    mCheckedState: Boolean = false
+    mCheckedState: Boolean = false,
+    btnEnabled: Boolean=false
 ) {
-
-    val enabled by remember { mutableStateOf(true) }
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -46,13 +64,13 @@ fun OnlyToggleButton(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box {
-            Row (
+            Row(
                 horizontalArrangement = Arrangement.spacedBy(spacing.small),
                 verticalAlignment = Alignment.CenterVertically
-            ){
-                Box( contentAlignment = Alignment.Center) {
+            ) {
+                Box(contentAlignment = Alignment.Center) {
                     Icon(
-                        painter = painterResource(id = icon),
+                        imageVector = imageIcon,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary
                     )
@@ -60,7 +78,7 @@ fun OnlyToggleButton(
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onTertiaryContainer
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
         }
@@ -69,7 +87,10 @@ fun OnlyToggleButton(
                 horizontalArrangement = Arrangement.spacedBy(spacing.small),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                SelectableText(arrowTitle = switchTitle, onClick = {onNavigateToClickText?.invoke() })
+                SelectableText(
+                    btnEnabled=btnEnabled,
+                    arrowTitle = switchTitle,
+                    onClick = { onNavigateToClickText?.invoke() })
                 Switch(
                     checked = mCheckedState,
                     onCheckedChange = {
@@ -78,84 +99,18 @@ fun OnlyToggleButton(
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = MaterialTheme.colorScheme.primary,
                         uncheckedThumbColor = MaterialTheme.colorScheme.primaryContainer,
-                        checkedTrackColor=MaterialTheme.colorScheme.primaryContainer,
-                        uncheckedTrackColor=MaterialTheme.colorScheme.background,
-                        checkedBorderColor=MaterialTheme.colorScheme.primary,
-                        uncheckedBorderColor=MaterialTheme.colorScheme.primary, )
+                        checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+                        uncheckedTrackColor = MaterialTheme.colorScheme.background,
+                        checkedBorderColor = MaterialTheme.colorScheme.primary,
+                        uncheckedBorderColor = MaterialTheme.colorScheme.primary,
+                    )
                 )
             }
         }
     }
 }
 
-@Composable
-fun AlarmIconButton(
-    image: Int,
-    title: String,
-    arrowTitle: String,
-    arrowImage: Int,
-    onNavigateToScreen: () -> Unit,
-) {
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box {
-                Row {
-                    Box(Modifier.size(24.dp), contentAlignment = Alignment.Center) {
-                        Icon(
-                            painter = painterResource(id = image),
-                            contentDescription = null,
-                            Modifier.size(20.dp),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = title,
-                        fontSize = 16.sp,
-                        color = MaterialTheme.colorScheme.onTertiaryContainer
-                    )
-                }
-            }
-
-            Box {
-                Row {
-                    Text(
-                        text = arrowTitle,
-                        fontSize = 16.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    Box(Modifier.size(24.dp), contentAlignment = Alignment.Center) {
-                        IconButton(onClick = onNavigateToScreen) {
-                            Icon(
-                                painter = painterResource(id = arrowImage),
-                                contentDescription = null,
-                                Modifier.size(20.dp),
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun DigitalDemo(onTimeChange: (Time) -> Unit) {
 
@@ -217,41 +172,45 @@ fun RepeatAlarm(
     onDaySelect: (Int) -> Unit, alarmSettingUiState: ASUiState,
 ) {
     var text by remember {
-        mutableStateOf("One Time") }
-    text=if (alarmSettingUiState.recurring){ "base on Day"}
-    else {"One Time"}
+        mutableStateOf("One Time")
+    }
+    text = if (alarmSettingUiState.recurring) {
+        "base on Day"
+    } else {
+        "One Time"
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-            ,
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box {
-                Row {
-                    Box(Modifier.size(24.dp), contentAlignment = Alignment.Center) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(spacing.small)
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_ic24_calendar_edit),
+                            imageVector = Icons.Default.EditCalendar,
                             contentDescription = null,
-                            Modifier.size(20.dp),
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
-                    Spacer(modifier = Modifier.width(8.dp))
                     Column {
                         Text(
                             text = "Repeat",
-                            fontSize = 16.sp,
-                            color = MaterialTheme.colorScheme.onTertiaryContainer
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                         Spacer(modifier = Modifier.height(1.dp))
                         Text(
                             text = text,
-                            fontSize = 16.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }

@@ -6,8 +6,19 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddAlarm
+import androidx.compose.material.icons.filled.AlarmOff
+import androidx.compose.material.icons.filled.AlarmOn
+import androidx.compose.material.icons.filled.Audiotrack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Label
+import androidx.compose.material.icons.filled.NotificationImportant
+import androidx.compose.material.icons.filled.NotificationsActive
+import androidx.compose.material.icons.filled.Tag
+import androidx.compose.material.icons.filled.Vibration
+import androidx.compose.material.icons.filled.Wysiwyg
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,7 +29,6 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.R
 import fit.asta.health.common.ui.CustomTopBar
 import fit.asta.health.common.ui.components.CustomModelBottomSheet
 import fit.asta.health.scheduler.compose.components.*
@@ -54,8 +64,8 @@ fun AlarmSettingScreen(
         scope.launch { bottomSheetState.show() }
     }
 
-    Scaffold( modifier = Modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface ,
+    Scaffold(modifier = Modifier.fillMaxSize(),
+        containerColor = MaterialTheme.colorScheme.surface,
         contentColor = MaterialTheme.colorScheme.onSurface,
         topBar = {
             CustomTopBar(text = alarmSettingUiState.saveProgress,
@@ -76,7 +86,8 @@ fun AlarmSettingScreen(
                             )
                         }
                     }
-                }, onBackPressed = {
+                },
+                onBackPressed = {
                     navBack()
                     aSEvent(AlarmSettingEvent.ResetUi)
                 })
@@ -85,86 +96,90 @@ fun AlarmSettingScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(paddingValues).padding(horizontal = 16.dp)
+                    .padding(paddingValues)
+                    .padding(horizontal = 16.dp)
                     .verticalScroll(rememberScrollState())
             ) {
-                DigitalDemo(onTimeChange = {
-                    aSEvent(
-                        AlarmSettingEvent.SetAlarmTime(
-                            it
-                        )
-                    )
-                })
+                DigitalDemo(onTimeChange = { aSEvent(AlarmSettingEvent.SetAlarmTime(it)) })
                 RepeatAlarm(alarmSettingUiState = alarmSettingUiState,
                     onDaySelect = { aSEvent(AlarmSettingEvent.SetWeek(it)) })
-                OnlyToggleButton(icon = R.drawable.ic_ic24_alert,
+                OnlyToggleButton(
+                    imageIcon = if (alarmSettingUiState.status) Icons.Default.AlarmOn else Icons.Default.AlarmOff,
                     title = "Status",
                     switchTitle = "",
                     onNavigateToClickText = null,
                     mCheckedState = alarmSettingUiState.status,
                     onCheckClicked = { aSEvent(AlarmSettingEvent.SetStatus(it)) })
-                AlarmIconButton(image = R.drawable.ic_ic24_alarm_snooze,
+                TextSelection(
+                    imageIcon = Icons.Default.Tag,
                     title = "Tag",
                     arrowTitle = alarmSettingUiState.tag_name,
-                    arrowImage = R.drawable.ic_ic24_right_arrow,
-                    onNavigateToScreen = {
+                    btnEnabled = true,
+                    onNavigateAction = {
                         aSEvent(AlarmSettingEvent.GotoTagScreen)
                         navTagSelection()
                     })
-                AlarmIconButton(image = R.drawable.ic_ic24_label,
+                TextSelection(
+                    imageIcon = Icons.Default.Label,
                     title = "Label",
                     arrowTitle = alarmSettingUiState.alarm_name,
-                    arrowImage = R.drawable.ic_ic24_right_arrow,
-                    onNavigateToScreen = {
+                    btnEnabled = true,
+                    onNavigateAction = {
                         currentBottomSheet = LABEL
                         openSheet()
                     })
-                AlarmIconButton(image = R.drawable.ic_ic24_description,
+                TextSelection(
+                    imageIcon = Icons.Default.Description,
                     title = "Description",
                     arrowTitle = alarmSettingUiState.alarm_description,
-                    arrowImage = R.drawable.ic_ic24_right_arrow,
-                    onNavigateToScreen = {
+                    btnEnabled = true,
+                    onNavigateAction = {
                         currentBottomSheet = DESCRIPTION
                         openSheet()
                     })
-                AlarmIconButton(image = R.drawable.ic_ic24_time,
+                TextSelection(
+                    imageIcon = Icons.Default.AddAlarm,
                     title = "Intervals Settings",
                     arrowTitle = alarmSettingUiState.interval,
-                    arrowImage = R.drawable.ic_ic24_right_arrow,
-                    onNavigateToScreen = {
+                    btnEnabled = true,
+                    onNavigateAction = {
                         aSEvent(AlarmSettingEvent.GotoTimeSettingScreen)
                         navTimeSetting()
                     })
-                AlarmIconButton(image = R.drawable.ic_ic24_notification,
+                TextSelection(
+                    imageIcon = if (alarmSettingUiState.mode == "Notification") Icons.Default.NotificationsActive else Icons.Default.Wysiwyg,
                     title = "Reminder Mode",
                     arrowTitle = alarmSettingUiState.mode,
-                    arrowImage = R.drawable.ic_ic24_right_arrow,
-                    onNavigateToScreen = {
+                    btnEnabled = true,
+                    onNavigateAction = {
                         currentBottomSheet = REMINDER
                         openSheet()
                     })
-                OnlyToggleButton(icon = R.drawable.ic_ic24_vibrate,
+                OnlyToggleButton(imageIcon = Icons.Default.Vibration,
                     title = "Vibration ",
                     mCheckedState = alarmSettingUiState.vibration_status,
                     onCheckClicked = {
                         aSEvent(AlarmSettingEvent.SetVibration(it))
                     },
                     switchTitle = alarmSettingUiState.vibration,
+                    btnEnabled = true,
                     onNavigateToClickText = {
                         currentBottomSheet = VIBRATION
                         openSheet()
                     })
-                OnlyToggleButton(icon = R.drawable.ic_ic24_voice,
+                OnlyToggleButton(
+                    imageIcon = Icons.Default.Audiotrack,
                     title = "Sound",
                     mCheckedState = false,
                     onCheckClicked = {},
+                    btnEnabled = true,
                     switchTitle = alarmSettingUiState.tone_name,
                     onNavigateToClickText = {
                         currentBottomSheet = SOUND
                         openSheet()
                     })
                 OnlyToggleButton(
-                    icon = R.drawable.ic_ic24_warning,
+                    imageIcon = Icons.Default.NotificationImportant,
                     title = "Important",
                     mCheckedState = alarmSettingUiState.important,
                     onCheckClicked = {
@@ -182,8 +197,7 @@ fun AlarmSettingScreen(
                 Spacer(modifier = Modifier.height(16.dp))
             }
         })
-    CustomModelBottomSheet(
-        targetState = bottomSheetState.isVisible,
+    CustomModelBottomSheet(targetState = bottomSheetState.isVisible,
         sheetState = bottomSheetState,
         content = {
             currentBottomSheet?.let {
@@ -193,8 +207,7 @@ fun AlarmSettingScreen(
             }
         },
         dragHandle = {},
-        onClose = { closeSheet() }
-    )
+        onClose = { closeSheet() })
 }
 
 enum class AlarmCreateBottomSheetTypes {
