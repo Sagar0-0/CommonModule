@@ -5,19 +5,23 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.tools.sleep.model.SleepLocalRepo
 import fit.asta.health.tools.sleep.model.SleepRepository
+import fit.asta.health.tools.sleep.model.db.SleepData
 import fit.asta.health.tools.sleep.model.network.common.ToolData
 import fit.asta.health.tools.sleep.model.network.common.Value
 import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.tools.sleep.model.network.get.SleepToolGetResponse
 import fit.asta.health.tools.sleep.model.network.goals.SleepGoalResponse
 import fit.asta.health.tools.sleep.model.network.jetlag.SleepJetLagTipResponse
-import fit.asta.health.tools.sleep.model.network.put.SleepPutResponse
+import fit.asta.health.tools.sleep.model.network.post.SleepPostRequestBody
+import fit.asta.health.tools.sleep.model.network.post.Slp
 import fit.asta.health.tools.sleep.utils.SleepNetworkCall
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
 @HiltViewModel
@@ -47,6 +51,15 @@ class SleepToolViewModel @Inject constructor(
     val userUIDefaults = _userUIDefaults.asStateFlow()
 
     /**
+     * This variable contains the Timer Status, Whether the timer is already started or there is
+     * some value previously in the local database or not
+     */
+    private val _timerStatus = MutableStateFlow<SleepNetworkCall<List<SleepData>>>(
+        SleepNetworkCall.Initialized()
+    )
+    val timerStatus = _timerStatus.asStateFlow()
+
+    /**
      * This function fetches the data of the default UI element settings of the user
      * from the Server
      */
@@ -66,6 +79,10 @@ class SleepToolViewModel @Inject constructor(
                     userId = userIdFromHomeScreen,
                     date = currentDate
                 )
+
+                // Fetching the Local Data of whether the Timer is already started or not
+                val localData = localRepository.getData()
+                _timerStatus.value = SleepNetworkCall.Success(data = localData)
 
                 // handling the Response
                 if (response.isSuccessful) {
@@ -89,7 +106,7 @@ class SleepToolViewModel @Inject constructor(
      * This function keeps the api call state when the user updates any UI element and puts the new
      * refreshed data to the Server
      */
-    private val _userValueUpdate = MutableStateFlow<SleepNetworkCall<SleepPutResponse>>(
+    private val _userValueUpdate = MutableStateFlow<SleepNetworkCall<Unit>>(
         SleepNetworkCall.Initialized()
     )
     val userValueUpdate = _userValueUpdate.asStateFlow()
@@ -118,7 +135,7 @@ class SleepToolViewModel @Inject constructor(
                     if (toolDataID == "")
                         toolDataID = response.body()!!.data.id
 
-                    SleepNetworkCall.Success(data = response.body()!!)
+                    SleepNetworkCall.Success(data = Unit)
                 } else
                     SleepNetworkCall.Failure(message = "Unsuccessful operation")
             } catch (e: Exception) {
@@ -276,5 +293,72 @@ class SleepToolViewModel @Inject constructor(
             prc.values.remove(value)
 
         updateUserData()
+    }
+
+    fun setTimerStatus() {
+
+        // Setting the Loading State
+        _userValueUpdate.value = SleepNetworkCall.Loading()
+
+        viewModelScope.launch {
+            try {
+
+                // Checking if the Timer Status Data is null or not
+                if (_timerStatus.value.data.isNullOrEmpty()) {
+
+                    // Inserting the sleep Data in the Local Storage
+                    localRepository.insert(
+                        data = SleepData(
+                            key = 0,
+                            startTime = LocalDateTime.now()
+                        )
+                    )
+
+                    // Fetching the Local Data
+                    val data = localRepository.getData()
+                    _timerStatus.value = SleepNetworkCall.Success(data = data)
+                    _userValueUpdate.value = SleepNetworkCall.Success(data = Unit)
+                } else {
+
+                    // Current Time and Start Time
+                    val currentTime = LocalDateTime.now()
+                    val startTime = _timerStatus.value.data!!.first().startTime
+
+                    // Calculating the Hours for which the user was sleeping
+                    val hours = startTime.until(currentTime, ChronoUnit.MINUTES) / 60f
+
+                    // Posting the Reading to the Server
+                    val response = remoteRepository.postUserReading(
+                        userId = userIdFromHomeScreen,
+                        sleepPostRequestBody = SleepPostRequestBody(
+                            id = "",
+                            uid = userIdFromHomeScreen,
+                            dur = hours.toDouble(),
+                            reg = 1.0,
+                            slp = Slp(
+                                deep = 1,
+                                nor = 1,
+                                dly = 1,
+                                dis = 1
+                            )
+                        )
+                    )
+
+                    // Handling the Request
+                    if (response.isSuccessful) {
+                        _userValueUpdate.value = SleepNetworkCall.Success(data = Unit)
+                        localRepository.deleteData()
+                    } else
+                        _userValueUpdate.value =
+                            SleepNetworkCall.Failure(message = "Unsuccessful operation")
+
+                    // Fetching the Local Data
+                    val data = localRepository.getData()
+                    _timerStatus.value = SleepNetworkCall.Success(data = data)
+                }
+            } catch (e: Exception) {
+                _userValueUpdate.value = SleepNetworkCall.Failure(message = e.message.toString())
+            }
+        }
     }
 }

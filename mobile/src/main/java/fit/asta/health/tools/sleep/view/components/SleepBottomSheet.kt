@@ -24,7 +24,9 @@ import fit.asta.health.R
 import fit.asta.health.common.ui.components.ButtonWithColor
 import fit.asta.health.common.ui.components.CardItem
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.tools.sleep.model.db.SleepData
 import fit.asta.health.tools.sleep.model.network.common.Prc
+import fit.asta.health.tools.sleep.utils.SleepNetworkCall
 import fit.asta.health.tools.sleep.view.navigation.SleepToolNavRoutes
 
 /**
@@ -42,6 +44,7 @@ fun SleepBottomSheet(
     navController: NavController,
     bottomSheetData: List<Prc>,
     selectedDisturbances: Prc?,
+    timerStatus: SleepNetworkCall<List<SleepData>>,
     onStartStopClick: () -> Unit
 ) {
 
@@ -66,7 +69,9 @@ fun SleepBottomSheet(
             )
         }
 
-        SleepBottomSheetButtonRow { onStartStopClick() }
+        SleepBottomSheetButtonRow(timerStatus = timerStatus.data) {
+            onStartStopClick()
+        }
 
         AnimatedVisibility(visible = scaffoldState.currentValue != SheetValue.Expanded) {
             Spacer(modifier = Modifier.height(200.dp))
@@ -222,8 +227,10 @@ private fun SleepDisturbanceRowUI(
 
 @Composable
 private fun SleepBottomSheetButtonRow(
+    timerStatus: List<SleepData>?,
     onStartStopClick: () -> Unit
 ) {
+
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -237,8 +244,8 @@ private fun SleepBottomSheetButtonRow(
 
         ButtonWithColor(
             modifier = Modifier.weight(0.5f),
-            color = Color.Blue,
-            text = "START"
+            color = if (timerStatus.isNullOrEmpty()) Color.Green else Color.Red,
+            text = if (timerStatus.isNullOrEmpty()) "Start" else "Stop"
         ) {
             onStartStopClick()
         }

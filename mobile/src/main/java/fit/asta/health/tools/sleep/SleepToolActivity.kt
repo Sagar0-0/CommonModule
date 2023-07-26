@@ -181,10 +181,9 @@ class SleepToolActivity : ComponentActivity() {
                         scaffoldState = sheetState,
                         navController = navController,
                         bottomSheetData = bottomSheetData,
-                        selectedDisturbances = selectedDisturbances
-                    ) {
-                        // TODO :- To be implemented Later
-                    }
+                        selectedDisturbances = selectedDisturbances,
+                        timerStatus = sleepToolViewModel.timerStatus.collectAsState().value
+                    ) { sleepToolViewModel.setTimerStatus() }
                 }
             },
             sheetPeekHeight = if (shouldShowSheet) 230.dp else 0.dp,
