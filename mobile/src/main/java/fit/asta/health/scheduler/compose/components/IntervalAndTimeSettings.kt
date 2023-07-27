@@ -18,6 +18,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.MoreTime
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.Snooze
+import androidx.compose.material.icons.filled.Timelapse
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,7 +30,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,7 +48,6 @@ import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.IvlUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.RepUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.StatUiState
-
 
 
 @Composable
@@ -70,29 +73,30 @@ fun SettingsLayout(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TextSelection(
-            image = R.drawable.ic_ic24_alarm_snooze,
+            imageIcon =Icons.Default.Snooze,
             title = "Snooze",
             arrowTitle = "${timeSettingUiState.snoozeTime} Minutes",
-            arrowImage = R.drawable.ic_ic24_right_arrow,
+            btnEnabled = true,
             onNavigateAction = onNavigateSnooze
         )
         OnlyToggleButton(
-            icon = R.drawable.ic_ic24_notification,
+            imageIcon = Icons.Default.Notifications,
             title = "Advanced\nReminder",
+            btnEnabled =true ,
             switchTitle = "${timeSettingUiState.advancedReminder.time} Minutes",
             mCheckedState = timeSettingUiState.advancedReminder.status,
             onCheckClicked = { onChoice(it) },
             onNavigateToClickText = onNavigateAdvanced
         )
         TextSelection(
-            image = R.drawable.ic_round_access_alarm_24,
+            imageIcon =Icons.Default.MoreTime,
             title = "Duration",
             arrowTitle = "${timeSettingUiState.duration} Minutes",
-            arrowImage = R.drawable.ic_ic24_right_arrow,
+            btnEnabled = true,
             onNavigateAction = onNavigateDuration
         )
         OnlyToggleButton(
-            icon = R.drawable.ic_ic24_notification,
+            imageIcon = Icons.Default.Timelapse,
             title = "Remind at the end\nof Duration",
             switchTitle = "",
             mCheckedState = timeSettingUiState.isRemainderAtTheEnd,
@@ -100,7 +104,7 @@ fun SettingsLayout(
             onNavigateToClickText = null
         )
         OnlyToggleButton(
-            icon = R.drawable.ic_ic24_notification,
+            imageIcon = Icons.Default.Schedule,
             title = "Interval's Status",
             switchTitle = "",
             mCheckedState = timeSettingUiState.status,
@@ -154,72 +158,6 @@ fun ShowMoreContent(
     }
 }
 
-
-@Composable
-fun TextSelection(
-    image: Int,
-    title: String,
-    arrowTitle: String,
-    arrowImage: Int,
-    onNavigateAction: () -> Unit,
-) {
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(spacing.small),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(contentAlignment = Alignment.Center) {
-                    Icon(
-                        painter = painterResource(id = image),
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                )
-            }
-        }
-
-        Box {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(spacing.small),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                SelectableText(arrowTitle)
-                Box(contentAlignment = Alignment.Center) {
-                    IconButton(onClick = onNavigateAction) {
-                        Icon(
-                            painter = painterResource(id = arrowImage),
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun SelectableText(arrowTitle: String, onClick: () -> Unit = {}) {
-    TextButton(onClick = onClick) {
-        Text(
-            text = arrowTitle,
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-    }
-}
 
 
 @Composable
@@ -447,10 +385,10 @@ fun CustomIntervalToggleButton(
             )
         } else {
             TextSelection(
-                image = R.drawable.ic_ic24_alarm_snooze,
+                imageIcon = Icons.Default.Snooze,
                 title = "Repetitive \n Intervals",
                 arrowTitle = repetitiveInterval,
-                arrowImage = R.drawable.ic_ic24_right_arrow,
+                btnEnabled = true,
                 onNavigateAction = onNavigateRepetitiveInterval
             )
         }
