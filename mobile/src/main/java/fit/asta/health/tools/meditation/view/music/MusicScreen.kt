@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.R
-import fit.asta.health.common.ui.CustomTopBar
+import fit.asta.health.common.ui.components.AppTopBar
 import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.player.jetpack_audio.domain.data.Song
 import fit.asta.health.player.jetpack_audio.domain.utils.AppIcons
@@ -67,7 +67,7 @@ fun MusicScreen(
         modifier = modifier
             .fillMaxSize(),
         topBar = {
-            CustomTopBar(text = "Music ",
+            AppTopBar(text = "Music ",
                 onBackPressed = onBack,
                 actionItems = {
                     IconButton(onClick = { }) {

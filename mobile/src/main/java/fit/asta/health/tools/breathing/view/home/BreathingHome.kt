@@ -28,7 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
-import fit.asta.health.common.ui.CustomTopBar
+import fit.asta.health.common.ui.components.AppTopBar
 import fit.asta.health.common.ui.components.BottomSheetDragHandle
 import fit.asta.health.common.ui.components.ButtonWithColor
 import fit.asta.health.common.ui.components.CircularSliderInt
@@ -97,7 +97,7 @@ fun BreathingHomeScreen(
         sheetPeekHeight = 200.dp,
         scaffoldState = scaffoldState,
         topBar = {
-            CustomTopBar(
+            AppTopBar(
                 text = "Breathing Tool",
                 onBackPressed = onBack,
                 actionItems = {

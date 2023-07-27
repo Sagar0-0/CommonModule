@@ -22,7 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import fit.asta.health.common.ui.CustomTopBar
+import fit.asta.health.common.ui.components.AppTopBar
 import fit.asta.health.common.ui.components.UploadFiles
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.ResponseState
@@ -45,7 +45,7 @@ fun SessionFeedback(
     val context = LocalContext.current
     Scaffold(
         topBar = {
-            CustomTopBar(text = "Feedback") {
+            AppTopBar(text = "Feedback") {
                 onBack()
             }
         }

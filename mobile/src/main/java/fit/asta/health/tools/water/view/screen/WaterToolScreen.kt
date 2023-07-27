@@ -50,7 +50,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import fit.asta.health.R
-import fit.asta.health.common.ui.CustomTopBar
+import fit.asta.health.common.ui.components.AppTopBar
 import fit.asta.health.common.ui.components.ButtonWithColor
 import fit.asta.health.common.ui.components.CircularSliderFloat
 import fit.asta.health.common.ui.components.ProgressBarFloat
@@ -106,7 +106,7 @@ fun WaterToolScreen(
         sheetPeekHeight = 200.dp,
         scaffoldState = scaffoldState,
         topBar = {
-            CustomTopBar(
+            AppTopBar(
                 text = "Water Tool",
                 onBackPressed = onBack,
                 actionItems = {

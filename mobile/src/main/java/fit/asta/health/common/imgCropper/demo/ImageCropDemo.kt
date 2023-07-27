@@ -24,7 +24,6 @@ import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -43,7 +42,8 @@ import androidx.compose.ui.unit.dp
 import com.smarttoolfactory.colorpicker.widget.drawChecker
 import fit.asta.health.common.imgCropper.ImageSelectionButton
 import fit.asta.health.common.imgCropper.cropper.ImageCropper
-import fit.asta.health.common.ui.CustomTopBar
+import fit.asta.health.common.ui.components.AppTopBar
+import fit.asta.health.common.ui.components.AppScaffold
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -69,9 +69,9 @@ fun ImageCropperScreen(
     var showDialog by remember { mutableStateOf(false) }
     var isCropping by remember { mutableStateOf(false) }
 
-    Scaffold(
+    AppScaffold(
         topBar = {
-            CustomTopBar(text = "Crop Image", onBackPressed = {}, actionItems = {
+            AppTopBar(text = "Crop Image", onBackPressed = {}, actionItems = {
                 IconButton(onClick = { onCloseImgCropper() }) {
                     Icon(
                         imageVector = Icons.Filled.Close, contentDescription = "Close Image Cropper"
@@ -105,7 +105,6 @@ fun ImageCropperScreen(
             })
         },
         content = { innerPadding ->
-
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -174,11 +173,7 @@ fun ImageCropperScreen(
 
                 }
             }
-
         },
-        modifier = Modifier.fillMaxSize(),
-        contentColor = MaterialTheme.colorScheme.background,
-        containerColor = MaterialTheme.colorScheme.background,
     )
 
 }

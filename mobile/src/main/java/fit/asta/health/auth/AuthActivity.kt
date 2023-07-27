@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.auth.ui.AuthNavHost
 import fit.asta.health.auth.viewmodel.AuthViewModel
 import fit.asta.health.common.ui.AppTheme
-import fit.asta.health.main.ui.MainActivity
+import fit.asta.health.MainActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
