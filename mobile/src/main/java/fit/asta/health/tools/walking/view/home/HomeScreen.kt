@@ -100,23 +100,31 @@ fun StepsBottomSheet(
     val state = homeViewModel.homeUiState.value
     val apiState = homeViewModel.ApiState.value
     val startWorking = homeViewModel.startWorking
-    val scaffoldState = rememberBottomSheetScaffoldState()
 
-    var visible by remember {
-        mutableStateOf(false)
-    }
-    BottomSheetScaffold(
-        sheetShape = RoundedCornerShape(16.dp),
+    val sheetState = rememberStandardBottomSheetState(
+        initialValue = SheetValue.PartiallyExpanded,
+        skipHiddenState = true
+    )
+    val scaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = sheetState
+    )
+
+    AppBottomSheetScaffold(
+        modifier = Modifier.fillMaxSize(),
+        scaffoldState = scaffoldState,
+        sheetPeekHeight = 240.dp,
         sheetContent = {
-            WalkingBottomSheetView(homeViewModel, visible, navController, apiState, startWorking)
-        },
-        sheetContentColor = Color.Gray,
-        containerColor = Color.DarkGray,
-        sheetPeekHeight = 200.dp,
-        scaffoldState = scaffoldState
+            WalkingBottomSheetView(
+                homeViewModel,
+                scaffoldState,
+                navController,
+                apiState,
+                startWorking
+            )
+        }
     ) {
-        visible = !scaffoldState.bottomSheetState.hasPartiallyExpandedState
-        HomeLayout(paddingValues = paddingValues, state = state, apiState = apiState,
+        HomeLayout(
+            paddingValues = paddingValues, state = state, apiState = apiState,
             onTargetDistance = { homeViewModel.onUIEvent(StepCounterUIEvent.ChangeTargetDistance(it)) },
             onTargetDuration = { homeViewModel.onUIEvent(StepCounterUIEvent.ChangeTargetDuration(it)) },
             onChangeAngleDistance = {
@@ -199,11 +207,11 @@ fun HomeLayout(
 }
 
 
-@OptIn(ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun WalkingBottomSheetView(
     homeViewModel: WalkingViewModel,
-    visible: Boolean,
+    scaffoldState: BottomSheetScaffoldState,
     navController: NavController,
     apiState: WalkingTool,
     startWorking: MutableState<Boolean>
@@ -213,53 +221,63 @@ fun WalkingBottomSheetView(
     val activity = LocalContext.current as Activity
     val context =LocalContext.current
     Column(
-        modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(spacing.medium)
+        modifier = Modifier
+            .fillMaxHeight(.5f)
+            .fillMaxWidth()
+            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(spacing.small)
     ) {
-        BottomSheetDragHandle()
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(spacing.small)
+        LazyVerticalGrid(
+            horizontalArrangement = Arrangement.spacedBy(spacing.small),
+            verticalArrangement = Arrangement.spacedBy(spacing.medium),
+            columns = GridCells.Fixed(2)
         ) {
-            CardItem(
-                modifier = Modifier.weight(0.5f),
-                name = "Music ",
-                type = apiState.titleMusic,
-                id = R.drawable.baseline_music_note_24
-            ) {}
-
-            CardItem(
-                modifier = Modifier.weight(0.5f),
-                name = "Types",
-                type = selectedWalkTypes.let {
-                    it.ifBlank { apiState.valuesType }
-                },
-                id = R.drawable.baseline_merge_type_24,
-                onClick = { navController.navigate(route = StepsCounterScreen.TypesScreen.route) }
-            )
-
-        }
-
-        AnimatedVisibility(visible = visible) {
-            LazyVerticalGrid(
-                horizontalArrangement = Arrangement.spacedBy(spacing.small),
-                verticalArrangement = Arrangement.spacedBy(spacing.medium),
-                columns = GridCells.Fixed(2)
-            ) {
-
-                item {
-                    CardItem(name = "Goals",
-                        type = if (selectedGoal.isNotEmpty()) {
-                            selectedGoal[0]
-                        } else {
-                            apiState.valuesGoal[0]
-                        },
-                        id = R.drawable.round_filter_vintage_24,
-                        onClick = { navController.navigate(route = StepsCounterScreen.GoalScreen.route) })
-                }
+            item {
+                CardItem(
+                    modifier = Modifier,
+                    name = "Music ",
+                    type = apiState.titleMusic,
+                    id = R.drawable.baseline_music_note_24
+                ) {}
+            }
+            item {
+                CardItem(
+                    modifier = Modifier,
+                    name = "Types",
+                    type = selectedWalkTypes.let {
+                        it.ifBlank { apiState.valuesType }
+                    },
+                    id = R.drawable.baseline_merge_type_24,
+                    onClick = { navController.navigate(route = StepsCounterScreen.TypesScreen.route) }
+                )
             }
         }
-        AnimatedVisibility(visible = visible) {
-            SunlightCard(modifier = Modifier)
+
+        AnimatedVisibility(visible = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(spacing.medium)
+            ) {
+                LazyVerticalGrid(
+                    horizontalArrangement = Arrangement.spacedBy(spacing.small),
+                    verticalArrangement = Arrangement.spacedBy(spacing.medium),
+                    columns = GridCells.Fixed(2)
+                ) {
+
+                    item {
+                        CardItem(name = "Goals",
+                            type = if (selectedGoal.isNotEmpty()) {
+                                selectedGoal[0]
+                            } else {
+                                apiState.valuesGoal[0]
+                            },
+                            id = R.drawable.round_filter_vintage_24,
+                            onClick = { navController.navigate(route = StepsCounterScreen.GoalScreen.route) })
+                    }
+                }
+
+                SunlightCard(modifier = Modifier)
+            }
         }
 
         Row(

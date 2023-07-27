@@ -16,7 +16,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
@@ -54,14 +53,14 @@ fun AppScaffold(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBottomSheetScaffold(
-    sheetContent: @Composable ColumnScope.() -> Unit,
     modifier: Modifier = Modifier,
-    scaffoldState: BottomSheetScaffoldState = rememberBottomSheetScaffoldState(),
+    scaffoldState: BottomSheetScaffoldState,
     sheetPeekHeight: Dp = BottomSheetDefaults.SheetPeekHeight,
     sheetShape: Shape = BottomSheetDefaults.ExpandedShape,
     sheetShadowElevation: Dp = BottomSheetDefaults.Elevation,
-    sheetDragHandle: @Composable (() -> Unit)? = { BottomSheetDefaults.DragHandle() },
     sheetSwipeEnabled: Boolean = true,
+    sheetContent: @Composable ColumnScope.() -> Unit,
+    sheetDragHandle: @Composable (() -> Unit)? = { BottomSheetDefaults.DragHandle() },
     topBar: @Composable (() -> Unit)? = null,
     content: @Composable (PaddingValues) -> Unit,
 ) {
@@ -76,8 +75,6 @@ fun AppBottomSheetScaffold(
         sheetDragHandle = sheetDragHandle,
         sheetSwipeEnabled = sheetSwipeEnabled,
         topBar = topBar,
-        content = content,
-
+        content = content
         )
-
 }

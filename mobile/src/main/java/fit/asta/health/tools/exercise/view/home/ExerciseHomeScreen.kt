@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.tools.exercise.view.components.CardItem
 import fit.asta.health.tools.sunlight.view.components.DividerLineCenter
 import fit.asta.health.tools.walking.view.home.SunlightCard
 

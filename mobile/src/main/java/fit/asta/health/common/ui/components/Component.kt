@@ -9,12 +9,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -43,7 +41,6 @@ fun CardItem(
         modifier = modifier
             .clickable { onClick() },
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
 
         Row(
@@ -52,10 +49,7 @@ fun CardItem(
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(spacing.small)) {
                 Icon(
-                    painter = painterResource(id),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(24.dp)
+                    painter = painterResource(id), contentDescription = null
                 )
             }
             Column(
@@ -63,7 +57,9 @@ fun CardItem(
             ) {
                 Text(
                     text = name,
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
                 Text(
                     text = type,

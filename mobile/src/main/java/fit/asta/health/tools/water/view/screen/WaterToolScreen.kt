@@ -31,7 +31,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
@@ -52,7 +51,6 @@ import androidx.compose.ui.window.DialogProperties
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.tools.sunlight.view.components.DividerLineCenter
 import fit.asta.health.tools.water.model.domain.BeverageDetails
 import fit.asta.health.tools.water.model.network.TodayActivityData
 
@@ -68,40 +66,23 @@ fun WaterToolScreen(
     uiState: WaterUiState,
     onBack: () -> Unit
 ) {
-    var skipPartiallyExpanded by remember { mutableStateOf(false) }
-    val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = skipPartiallyExpanded
+
+    val sheetState = rememberStandardBottomSheetState(
+        initialValue = SheetValue.PartiallyExpanded,
+        skipHiddenState = true
     )
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = sheetState
     )
-    val scope = rememberCoroutineScope()
-
-    var visible by remember {
-        mutableStateOf(false)
-    }
-
 
     LaunchedEffect(key1 = scaffoldState.bottomSheetState.currentValue) {
         Event(WTEvent.SheetState(sheetState.hasPartiallyExpandedState))
     }
-    BottomSheetScaffold(
+
+    AppBottomSheetScaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.tertiary,
-        sheetShape = RoundedCornerShape(16.dp),
-        sheetContent = {
-            WaterBottomSheet(
-                scaffoldState = scaffoldState,
-                Event = Event,
-                uiState = uiState,
-                beverageList = beverageList,
-                selectedBeverage = selectedBeverage,
-                containerList = containerList,
-                containerIndex = containerIndex
-            )
-        },
-        sheetPeekHeight = 200.dp,
         scaffoldState = scaffoldState,
+        sheetPeekHeight = 240.dp,
         topBar = {
             AppTopBar(
                 title = "Water Tool",
@@ -117,7 +98,18 @@ fun WaterToolScreen(
                     }
                 }
             )
-        }
+        },
+        sheetContent = {
+            WaterBottomSheet(
+                scaffoldState = scaffoldState,
+                Event = Event,
+                uiState = uiState,
+                beverageList = beverageList,
+                selectedBeverage = selectedBeverage,
+                containerList = containerList,
+                containerIndex = containerIndex
+            )
+        },
     ) {
         val scrollState = rememberScrollState()
         var isScrollEnabled by remember { mutableStateOf(true) }
@@ -242,13 +234,11 @@ fun WaterBottomSheet(
         modifier = Modifier
             .heightIn(min = 200.dp, max = 320.dp)
             .fillMaxSize()
-            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 16.dp),
+            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp),
         verticalArrangement = Arrangement.spacedBy(spacing.small)
     ) {
 
-        DividerLineCenter()
-
-        AnimatedVisibility(visible = scaffoldState.bottomSheetState.hasExpandedState) {
+        AnimatedVisibility(visible = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(spacing.medium)
@@ -290,7 +280,7 @@ fun WaterBottomSheet(
             }
         }
 
-        AnimatedVisibility(visible = scaffoldState.bottomSheetState.hasPartiallyExpandedState) {
+        AnimatedVisibility(visible = scaffoldState.bottomSheetState.currentValue != SheetValue.Expanded) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(spacing.medium)

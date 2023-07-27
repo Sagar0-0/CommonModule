@@ -2,7 +2,6 @@ package fit.asta.health.tools.breathing.view.home
 
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,8 +29,6 @@ import androidx.compose.ui.unit.sp
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.tools.exercise.view.components.CardItem
-import fit.asta.health.tools.sunlight.view.components.DividerLineCenter
 import fit.asta.health.tools.walking.view.home.SunlightCard
 
 
@@ -59,12 +56,35 @@ fun BreathingHomeScreen(
     onPlayer: () -> Unit,
     event: (UiEvent) -> Unit,onBack:()->Unit
 ) {
-    val scaffoldState = rememberBottomSheetScaffoldState()
 
-    BottomSheetScaffold(
+    val sheetState = rememberStandardBottomSheetState(
+        initialValue = SheetValue.PartiallyExpanded,
+        skipHiddenState = true
+    )
+    val scaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = sheetState
+    )
+
+    AppBottomSheetScaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.tertiary,
-        sheetShape = RoundedCornerShape(16.dp),
+        scaffoldState = scaffoldState,
+        sheetPeekHeight = 240.dp,
+        topBar = {
+            AppTopBar(
+                title = "Breathing Tool",
+                onBack = onBack,
+                actions = {
+                    IconButton(onClick = { }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_physique),
+                            contentDescription = null,
+                            Modifier.size(24.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+            )
+        },
         sheetContent = {
             BreathingBottomSheet(
                 scaffoldState = scaffoldState,
@@ -90,24 +110,6 @@ fun BreathingHomeScreen(
                 event = event
             )
         },
-        sheetPeekHeight = 200.dp,
-        scaffoldState = scaffoldState,
-        topBar = {
-            AppTopBar(
-                title = "Breathing Tool",
-                onBack = onBack,
-                actions = {
-                    IconButton(onClick = { }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_physique),
-                            contentDescription = null,
-                            Modifier.size(24.dp),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                }
-            )
-        }
     ) {
 
         Column(
@@ -200,13 +202,11 @@ fun BreathingBottomSheet(
     val context = LocalContext.current
     Column(
         modifier = Modifier
-            .background(Color.Yellow)
-            .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 16.dp),
+            .fillMaxSize()
+            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp),
         verticalArrangement = Arrangement.spacedBy(spacing.small)
     ) {
 
-        DividerLineCenter()
         Text(text = "PRACTICE", style = MaterialTheme.typography.titleSmall)
         LazyVerticalGrid(
             horizontalArrangement = Arrangement.spacedBy(spacing.small),
@@ -229,7 +229,7 @@ fun BreathingBottomSheet(
                 )
             }
         }
-        AnimatedVisibility(visible = scaffoldState.bottomSheetState.hasExpandedState) {
+        AnimatedVisibility(visible = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(spacing.medium)
@@ -316,14 +316,21 @@ fun Test() {
     val coroutine = rememberCoroutineScope()
     Log.d("subhash", "Test: ${scaffoldState.bottomSheetState.currentValue}")
 
-    BottomSheetScaffold(
+    AppBottomSheetScaffold(
+        modifier = Modifier.fillMaxSize(),
+        scaffoldState = scaffoldState,
+        sheetPeekHeight = 200.dp,
+        topBar = {
+            AppTopBar(title = "Breathing Tool")
+        },
         sheetContent = {
             Column(
                 modifier = Modifier
-                    .fillMaxWidth().fillMaxHeight()
+                    .fillMaxWidth()
+                    .fillMaxHeight()
                     .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp),
                 verticalArrangement = Arrangement.spacedBy(spacing.small)
-            )  {
+            ) {
                 Text(text = "PRACTICE", style = MaterialTheme.typography.titleSmall)
                 LazyVerticalGrid(
                     horizontalArrangement = Arrangement.spacedBy(spacing.small),
@@ -399,19 +406,7 @@ fun Test() {
                     }
                 }
             }
-        },
-        modifier = Modifier
-            .fillMaxSize(),
-        sheetPeekHeight = 200.dp,
-        sheetDragHandle = {
-                          BottomSheetDragHandle()
-        },
-        sheetSwipeEnabled = true,
-        scaffoldState = scaffoldState,
-        topBar = {
-            AppTopBar(title = "Breathing Tool")
-        },
-        containerColor = MaterialTheme.colorScheme.onPrimary
+        }
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Text(
@@ -420,8 +415,6 @@ fun Test() {
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center,
             )
-
         }
-
     }
 }

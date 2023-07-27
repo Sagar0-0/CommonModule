@@ -1,7 +1,6 @@
 package fit.asta.health.tools.meditation.view.home
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,8 +15,6 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.tools.sunlight.view.components.DividerLineCenter
 import fit.asta.health.tools.walking.view.home.SunlightCard
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,34 +42,18 @@ fun MeditationHomeScreen(
     onBack: () -> Unit,
 ) {
 
-    val scaffoldState = rememberBottomSheetScaffoldState()
-    val scope = rememberCoroutineScope()
+    val sheetState = rememberStandardBottomSheetState(
+        initialValue = SheetValue.PartiallyExpanded,
+        skipHiddenState = true
+    )
+    val scaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = sheetState
+    )
 
-
-    LaunchedEffect(key1 = scaffoldState.bottomSheetState.currentValue) {
-
-    }
-    BottomSheetScaffold(
+    AppBottomSheetScaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.tertiary,
-        sheetShape = RoundedCornerShape(16.dp),
-        sheetContent = {
-            MeditationBottomSheet(
-                uiState = uiState,
-                language = language,
-                level = level,
-                instructor = instructor,
-                music = music,
-                scaffoldState = scaffoldState,
-                Event = Event,
-                onClickMusic = onClickMusic,
-                onClickLanguage = onClickLanguage,
-                onClickLevel = onClickLevel,
-                onClickInstructor = onClickInstructor
-            )
-        },
-        sheetPeekHeight = 200.dp,
         scaffoldState = scaffoldState,
+        sheetPeekHeight = 240.dp,
         topBar = {
             AppTopBar(
                 title = "Meditation Tool",
@@ -88,6 +68,21 @@ fun MeditationHomeScreen(
                     )
                 }
             }
+        },
+        sheetContent = {
+            MeditationBottomSheet(
+                uiState = uiState,
+                language = language,
+                level = level,
+                instructor = instructor,
+                music = music,
+                scaffoldState = scaffoldState,
+                Event = Event,
+                onClickMusic = onClickMusic,
+                onClickLanguage = onClickLanguage,
+                onClickLevel = onClickLevel,
+                onClickInstructor = onClickInstructor
+            )
         }
     ) {
         Column(
@@ -177,36 +172,39 @@ fun MeditationBottomSheet(
     val context = LocalContext.current
     Column(
         modifier = Modifier
-            .background(Color.Yellow)
             .heightIn(min = 250.dp, max = 525.dp)
             .fillMaxSize()
-            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 16.dp),
+            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp),
         verticalArrangement = Arrangement.spacedBy(spacing.medium)
     ) {
 
-        DividerLineCenter()
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(spacing.small)
+        LazyVerticalGrid(
+            horizontalArrangement = Arrangement.spacedBy(spacing.small),
+            verticalArrangement = Arrangement.spacedBy(spacing.medium),
+            columns = GridCells.Fixed(2)
         ) {
-            CardItem(
-                modifier = Modifier.weight(0.5f),
-                name = "Music ",
-                type = music,
-                id = R.drawable.baseline_music_note_24
-            ) {
+            item {
+                CardItem(
+                    modifier = Modifier,
+                    name = "Music ",
+                    type = music,
+                    id = R.drawable.baseline_music_note_24
+                ) {
 
+                }
             }
-
-            CardItem(
-                modifier = Modifier.weight(0.5f),
-                name = "Instructor",
-                type = instructor,
-                id = R.drawable.baseline_merge_type_24,
-                onClick = { onClickInstructor() }
-            )
-
+            item {
+                CardItem(
+                    modifier = Modifier,
+                    name = "Instructor",
+                    type = instructor,
+                    id = R.drawable.baseline_merge_type_24,
+                    onClick = { onClickInstructor() }
+                )
+            }
         }
-        AnimatedVisibility(visible = scaffoldState.bottomSheetState.hasExpandedState) {
+
+        AnimatedVisibility(visible = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(spacing.medium)
@@ -240,15 +238,6 @@ fun MeditationBottomSheet(
                 SunlightCard(modifier = Modifier)
             }
         }
-
-//        AnimatedVisibility(visible = scaffoldState.bottomSheetState.isCollapsed) {
-//            Column(
-//                modifier = Modifier.fillMaxWidth(),
-//                verticalArrangement = Arrangement.spacedBy(spacing.medium)
-//            ) {
-//
-//            }
-//        }
 
         Row(horizontalArrangement = Arrangement.spacedBy(spacing.medium)) {
             ButtonWithColor(
