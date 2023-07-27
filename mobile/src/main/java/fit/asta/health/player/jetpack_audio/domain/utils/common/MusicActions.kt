@@ -2,6 +2,7 @@ package fit.asta.health.player.jetpack_audio.domain.utils.common
 
 import android.content.Context
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.CommandButton
 import androidx.media3.session.MediaNotification
 import androidx.media3.session.MediaSession
@@ -9,6 +10,7 @@ import com.google.common.collect.ImmutableList
 import fit.asta.health.R
 import fit.asta.health.player.jetpack_audio.domain.utils.AppIcons
 
+@UnstableApi
 internal object MusicActions {
     internal fun getRepeatShuffleAction(
         mediaSession: MediaSession,

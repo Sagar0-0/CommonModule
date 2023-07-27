@@ -28,13 +28,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.*
+import fit.asta.health.common.ui.components.AppTopBar
+import fit.asta.health.common.ui.components.AppScaffold
 import fit.asta.health.common.ui.theme.elevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.MainTopBarActions
@@ -47,6 +50,7 @@ import fit.asta.health.navigation.today.viewmodel.TodayPlanViewModel
 import fit.asta.health.navigation.track.view.TrackContent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+
 @Composable
 fun MainActivityLayout(
     locationName: String,
@@ -58,24 +62,32 @@ fun MainActivityLayout(
 
     val navController = rememberNavController()
 
-    AppScaffold(
-        topBar = {
-            AppTopBar(actions = {
-                NewMainTopBarActions(
-                    onClick = onClick,
-                    isNotificationEnabled = isNotificationEnabled,
-                    profileImageUri = profileImageUri,
-                    locationName = locationName
-                )
-            }, backIcon = null)
-        },
-        bottomBar = { MainBottomAppBar(navController = navController) }
-    ) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+
+    val currentDestination = navBackStackEntry?.destination
+
+    AppScaffold(bottomBar = {
+        MainBottomAppBar(
+            navController = navController, currentDestination = currentDestination
+        )
+    }, content = {
         MainNavHost(
             navController = navController, onNav = onNav, innerPadding = it
         )
-    }
+    }, topBar = {
+        AppTopBar(actions = {
+            NewMainTopBarActions(
+                onClick = onClick,
+                isNotificationEnabled = isNotificationEnabled,
+                profileImageUri = profileImageUri,
+                locationName = locationName
+            )
+        }, backIcon = null)
+    })
+
+
 }
+
 
 @Composable
 fun BottomAppBarLayout(
@@ -96,7 +108,9 @@ fun BottomAppBarLayout(
         items.forEach { item ->
             NavigationBarItem(
                 icon = {
-                    Icon(painter = painterResource(id = item.icon), contentDescription = item.title)
+                    Icon(
+                        painter = painterResource(id = item.icon), contentDescription = item.title
+                    )
                 },
                 label = { Text(text = item.title) },
                 selected = currentRoute == item.route,
@@ -106,12 +120,6 @@ fun BottomAppBarLayout(
         }
     }
 }
-
-data class BottomNavItem(
-    val route: String,
-    val icon: Int,
-    val title: String,
-)
 
 
 @Composable
@@ -173,7 +181,8 @@ fun NewMainTopBarActions(
 
 
 @Composable
-fun MainBottomAppBar(navController: NavHostController) {
+fun MainBottomAppBar(navController: NavHostController, currentDestination: NavDestination?) {
+
     val currentRoute = navController.currentDestination?.route ?: BottomBarDestination.Home.route
 
     BottomAppBarLayout(items = listOf(
@@ -182,15 +191,28 @@ fun MainBottomAppBar(navController: NavHostController) {
         BottomNavItem(BottomBarDestination.Track.route, R.drawable.ic_track, "Track")
     ),
         currentRoute = currentRoute,
-        onNavigate = { route -> onNavigate(navController, route, currentRoute) })
+        onNavigate = { route -> onNavigate(navController, route, currentDestination) })
+
 }
 
-fun onNavigate(navController: NavController, route: String, currentRoute: String) {
-    if (route != currentRoute) {
+
+fun onNavigate(
+    navController: NavController,
+    route: String,
+    currentDestination: NavDestination?,
+) {
+    if (route != currentDestination?.route) {
         navController.navigate(route) {
-            popUpTo(navController.graph.startDestinationId) {
-                saveState = true
-                inclusive = true
+            if (currentDestination != null) {
+                popUpTo(currentDestination.id) {
+                    saveState = true
+                    inclusive = true
+                }
+            } else {
+                popUpTo(navController.graph.startDestinationId) {
+                    saveState = true
+                    inclusive = true
+                }
             }
             // reselecting the same item
             launchSingleTop = true
@@ -199,6 +221,7 @@ fun onNavigate(navController: NavController, route: String, currentRoute: String
         }
     }
 }
+
 
 @Composable
 fun MainNavHost(
@@ -237,3 +260,10 @@ fun MainNavHost(
         }
     }
 }
+
+
+data class BottomNavItem(
+    val route: String,
+    val icon: Int,
+    val title: String,
+)
