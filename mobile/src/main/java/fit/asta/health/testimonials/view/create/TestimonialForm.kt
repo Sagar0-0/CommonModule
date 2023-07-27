@@ -6,25 +6,20 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.NavigateBefore
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.jetpack.HandleBackPress
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.theme.boxSize
-import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiString
 import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
@@ -243,25 +238,12 @@ fun CreateTstScreen(
 
     var showCustomDialogWithResult by remember { mutableStateOf(false) }
 
-    Scaffold(topBar = {
-        TopAppBar(title = {
-            Text(
-                text = title,
-                color = MaterialTheme.colorScheme.onSurface,
-                fontWeight = FontWeight.Medium,
-                fontSize = 20.sp
-            )
-        }, navigationIcon = {
-            IconButton(onClick = {
+    AppScaffold(topBar = {
+        AppTopBar(
+            title = title,
+            onBack = {
                 showCustomDialogWithResult = !showCustomDialogWithResult
-            }) {
-                Icon(
-                    Icons.Filled.NavigateBefore,
-                    contentDescription = "back",
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
-        }, modifier = Modifier.shadow(elevation = cardElevation.medium))
+            })
     }, content = {
         TestimonialForm(
             paddingValues = it,
@@ -270,7 +252,7 @@ fun CreateTstScreen(
             getViewModel = getViewModel,
             //onNavigateAfterImgCropper = onNavigateAfterImgCropper
         )
-    }, containerColor = MaterialTheme.colorScheme.background)
+    })
 
 
     HandleBackPress {

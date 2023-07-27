@@ -17,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.tools.sunlight.model.network.response.ResponseData
 import fit.asta.health.tools.sunlight.nav.SunlightScreen
 import fit.asta.health.tools.sunlight.view.components.*
@@ -30,7 +31,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun SunlightHomeScreen(navController: NavController, homeViewModel: SunlightViewModel) {
 
-    Scaffold(
+    AppScaffold(
         topBar = {
             NavigationBar(
                 content = {

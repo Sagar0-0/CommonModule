@@ -11,7 +11,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.outlined.NavigateBefore
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -47,10 +47,10 @@ fun HomeScreen(
     navAlarmSettingHome: () -> Unit
 ) {
 
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackBarHostState = remember { SnackbarHostState() }
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
-    Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) }, content = { paddingValues ->
+    AppScaffold(snackBarHostState = snackBarHostState, content = { paddingValues ->
         LazyColumn(
             Modifier
                 .fillMaxWidth()
@@ -61,7 +61,7 @@ fun HomeScreen(
                 SwipeAlarm(homeUiState = homeUiState, data = data, onSwipe = {
                     hSEvent(HomeEvent.DeleteAlarm(data, context))
                     coroutineScope.launch {
-                        val snackbarResult = snackbarHostState.showSnackbar(
+                        val snackbarResult = snackBarHostState.showSnackbar(
                             message = "Deleted ${data.info.name}",
                             actionLabel = "Undo",
                             duration = SnackbarDuration.Long
@@ -95,22 +95,7 @@ fun HomeScreen(
             }
         },
         topBar = {
-            TopAppBar(title = {
-                Text(
-                    text = "Alarms",
-                    color = MaterialTheme.colorScheme.onBackground,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 20.sp
-                )
-            }, navigationIcon = {
-                IconButton(onClick = { }) {
-                    Icon(
-                        Icons.Outlined.NavigateBefore,
-                        "back",
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
-            })
+            AppTopBar(title = "Alarms")
         }
     )
 }

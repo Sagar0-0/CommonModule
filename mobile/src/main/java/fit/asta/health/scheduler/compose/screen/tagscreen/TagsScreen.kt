@@ -16,9 +16,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
@@ -31,8 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fit.asta.health.common.ui.components.AppTopBar
-import fit.asta.health.common.ui.components.CustomModelBottomSheet
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.scheduler.compose.components.CustomTagBottomSheetLayout
 import fit.asta.health.scheduler.compose.components.SwipeDemo
 import fit.asta.health.scheduler.compose.screen.tagscreen.TagCreateBottomSheetTypes.CUSTOMTAGCREATION
@@ -62,9 +59,9 @@ fun TagsScreen(
     val openSheet = {
         scope.launch { bottomSheetState.show() }
     }
-    val hostState = remember { SnackbarHostState() }
+    val snackBarHostState = remember { SnackbarHostState() }
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
-    Scaffold(snackbarHost = { SnackbarHost(hostState) },
+    AppScaffold(snackBarHostState = snackBarHostState,
         content = {
             LazyColumn(
                 Modifier
@@ -76,7 +73,7 @@ fun TagsScreen(
                     SwipeDemo(data = data, onSwipe = {
                         tagsEvent(TagsEvent.DeleteTag(data))
                         coroutineScope.launch {
-                            val snackBarResult = hostState.showSnackbar(
+                            val snackBarResult = snackBarHostState.showSnackbar(
                                 message = "Deleted ${data.meta.name}",
                                 actionLabel = "Undo",
                                 duration = SnackbarDuration.Long
@@ -110,7 +107,7 @@ fun TagsScreen(
                 Icon(Icons.Filled.Add, contentDescription = null)
             }
         },
-        topBar = { AppTopBar(text = "Tags", onBackPressed = onNavBack) })
+        topBar = { AppTopBar(title = "Tags", onBack = onNavBack) })
 
     CustomModelBottomSheet(
         targetState = bottomSheetState.isVisible,

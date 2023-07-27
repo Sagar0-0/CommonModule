@@ -34,8 +34,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.AppTopBar
-import fit.asta.health.common.ui.components.AppScaffold
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.theme.elevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.MainTopBarActions
@@ -59,22 +58,23 @@ fun MainActivityLayout(
 
     val navController = rememberNavController()
 
-    AppScaffold(bottomBar = { MainBottomAppBar(navController = navController) }, content = {
+    AppScaffold(
+        topBar = {
+            AppTopBar(actions = {
+                NewMainTopBarActions(
+                    onClick = onClick,
+                    isNotificationEnabled = isNotificationEnabled,
+                    profileImageUri = profileImageUri,
+                    locationName = locationName
+                )
+            }, backIcon = null)
+        },
+        bottomBar = { MainBottomAppBar(navController = navController) }
+    ) {
         MainNavHost(
             navController = navController, onNav = onNav, innerPadding = it
         )
-    }, topBar = {
-        AppTopBar(actionItems = {
-            NewMainTopBarActions(
-                onClick = onClick,
-                isNotificationEnabled = isNotificationEnabled,
-                profileImageUri = profileImageUri,
-                locationName = locationName
-            )
-        }, backIcon = null)
-    })
-
-
+    }
 }
 
 @Composable
@@ -94,11 +94,10 @@ fun BottomAppBarLayout(
         tonalElevation = elevation.high
     ) {
         items.forEach { item ->
-            NavigationBarItem(icon = {
-                Icon(
-                    painter = painterResource(id = item.icon), contentDescription = item.title
-                )
-            },
+            NavigationBarItem(
+                icon = {
+                    Icon(painter = painterResource(id = item.icon), contentDescription = item.title)
+                },
                 label = { Text(text = item.title) },
                 selected = currentRoute == item.route,
                 onClick = { onNavigate(item.route) },

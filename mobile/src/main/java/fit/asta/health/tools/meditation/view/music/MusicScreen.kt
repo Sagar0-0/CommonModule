@@ -22,7 +22,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -39,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.AppScaffold
 import fit.asta.health.common.ui.components.AppTopBar
 import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.player.jetpack_audio.domain.data.Song
@@ -63,13 +63,13 @@ fun MusicScreen(
 
     val lazyListState = rememberLazyListState()
 
-    Scaffold(
+    AppScaffold(
         modifier = modifier
             .fillMaxSize(),
         topBar = {
-            AppTopBar(text = "Music ",
-                onBackPressed = onBack,
-                actionItems = {
+            AppTopBar(title = "Music ",
+                onBack = onBack,
+                actions = {
                     IconButton(onClick = { }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_physique),
@@ -78,9 +78,8 @@ fun MusicScreen(
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
-            })
-        },
-        containerColor =MaterialTheme.colorScheme.onSurface ,
+                })
+        }
     ) {
         Column(
             modifier = modifier.padding(it).fillMaxSize()
@@ -230,7 +229,8 @@ fun TrackItem(
                     .build(),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.size(75.dp)
+                modifier = Modifier
+                    .size(75.dp)
                     .weight(.5f)
                     .clip(RoundedCornerShape(16.dp))
             )

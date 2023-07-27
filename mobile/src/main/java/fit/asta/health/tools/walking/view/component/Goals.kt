@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.tools.view.components.ItemData
 import fit.asta.health.tools.view.components.ItemList
 
@@ -41,7 +42,7 @@ fun GoalLayout(it: PaddingValues) {
 @Composable
 fun Goal() {
 
-    Scaffold(topBar = {
+    AppScaffold(topBar = {
         NavigationBar(content = {
             Row(verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,

@@ -1,7 +1,6 @@
 package fit.asta.health.tools.breathing.view.components
 
 import androidx.compose.foundation.layout.*
-
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
@@ -15,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.tools.view.components.ItemData
 import fit.asta.health.tools.view.components.ItemList
 
@@ -40,7 +40,7 @@ fun BreathingLanguage(it: PaddingValues) {
 @Composable
 fun Language() {
 
-    Scaffold(topBar = {
+    AppScaffold(topBar = {
         NavigationBar(content = {
             Row(verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,

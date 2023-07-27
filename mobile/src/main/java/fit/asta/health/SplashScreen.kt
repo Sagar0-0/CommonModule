@@ -24,7 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.auth.AuthActivity
 import fit.asta.health.auth.viewmodel.AuthViewModel
 import fit.asta.health.common.ui.AppTheme
-import fit.asta.health.common.ui.components.AppScaffold
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.utils.NetworkConnectivity
 import fit.asta.health.common.utils.PrefUtils
 import fit.asta.health.onboarding.OnBoardingScreenActivity
@@ -51,10 +51,9 @@ class SplashScreen : ComponentActivity() {
         registerConnectivityReceiver()
         setContent {
             AppTheme {
-
                 val snackBarHostState = remember { SnackbarHostState() }
-
-                AppScaffold(snackbarHostState = snackBarHostState,
+                AppScaffold(
+                    snackBarHostState = snackBarHostState,
                     content = { innerPadding ->
                         OfflineSnackBar(
                             innerPaddingValues = innerPadding,
@@ -63,7 +62,6 @@ class SplashScreen : ComponentActivity() {
                         )
                     })
             }
-
         }
     }
 

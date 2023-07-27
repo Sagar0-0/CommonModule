@@ -18,7 +18,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,12 +34,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.AppScaffold
 
 @Preview
 @Composable
 fun AllSchedulesCards() {
 
-    Scaffold(topBar = {
+    AppScaffold(topBar = {
         NavigationBar(content = {
             Row(verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()) {
@@ -59,7 +59,6 @@ fun AllSchedulesCards() {
     }) {
         Items(paddingValues = it)
     }
-
 }
 
 @Composable

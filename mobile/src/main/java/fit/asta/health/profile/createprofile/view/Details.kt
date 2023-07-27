@@ -38,7 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.PrimaryButton
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.imageSize
 import fit.asta.health.common.ui.theme.spacing

@@ -16,15 +16,12 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Fullscreen
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -40,6 +37,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.Player
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.player.jetpack_video.media.Media
 import fit.asta.health.player.jetpack_video.media.MediaState
 import fit.asta.health.player.jetpack_video.media.ResizeMode
@@ -102,15 +100,11 @@ fun VideoScreen(
         }
     }
 
-    Scaffold(
+    AppScaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Fullscreen Toggle") },
-                navigationIcon = {
-                    IconButton(onClick = {onBack()}) {
-                        Icon(Icons.Filled.ArrowBack, null)
-                    }
-                }
+            AppTopBar(
+                title = "Fullscreen Toggle",
+                onBack = onBack
             )
         },
         modifier = Modifier

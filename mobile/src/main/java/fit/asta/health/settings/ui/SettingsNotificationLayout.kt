@@ -5,19 +5,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.NavigateBefore
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import fit.asta.health.R
-import fit.asta.health.common.ui.theme.cardElevation
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.settings.data.SettingsNotificationsStatus
 
@@ -40,26 +37,9 @@ fun SettingsNotificationLayout(
 
     val context = LocalContext.current
     Column {
-        TopAppBar(
-            title = {
-                Text(
-                    text = stringResource(id = R.string.title_notifications),
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.titleMedium
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = { onBackPress() }) {
-                    Icon(
-                        Icons.Outlined.NavigateBefore,
-                        "back",
-                        tint = MaterialTheme.colorScheme.primary,
-                    )
-                }
-            }, colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.onPrimary,
-                titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-            ), modifier = Modifier.shadow(elevation = cardElevation.medium)
+        AppTopBar(
+            title = stringResource(id = R.string.title_notifications),
+            onBack = onBackPress
         )
 
         LazyColumn(modifier = Modifier.padding(spacing.medium)) {

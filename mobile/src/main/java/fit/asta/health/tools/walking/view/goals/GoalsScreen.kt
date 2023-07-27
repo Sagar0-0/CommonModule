@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.tools.walking.model.ListItem
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -41,7 +42,7 @@ fun GoalsScreen(navController: NavController, homeViewModel: WalkingViewModel) {
         })
     }
     homeViewModel.onGoalSelected(items.filter { it.isSelected }.map { it.title })
-    Scaffold(
+    AppScaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             NavigationBar(

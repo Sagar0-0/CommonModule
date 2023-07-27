@@ -22,31 +22,36 @@ import fit.asta.health.common.ui.theme.cardElevation
 @Composable
 fun AppTopBar(
     modifier: Modifier = Modifier,
-    text: String = "",
+    title: String = "",
     containerColor: Color = MaterialTheme.colorScheme.onPrimary,
     titleContentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     backIcon: ImageVector? = Icons.Outlined.NavigateBefore,
-    actionItems: @Composable RowScope.() -> Unit = {},
-    onBackPressed: () -> Unit = {},
+    onBack: () -> Unit = {},
+    actions: @Composable RowScope.() -> Unit = {},
 ) {
-    TopAppBar(title = {
-        Text(
-            text = text,
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.titleMedium
-        )
-    }, navigationIcon = {
-        backIcon?.let {
-            IconButton(onClick = onBackPressed) {
-                Icon(
-                    imageVector = it,
-                    contentDescription = "back",
-                    tint = MaterialTheme.colorScheme.primary,
-                )
+    TopAppBar(
+        title = {
+            Text(
+                text = title,
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.titleMedium
+            )
+        },
+        navigationIcon = {
+            backIcon?.let {
+                IconButton(onClick = onBack) {
+                    Icon(
+                        imageVector = it,
+                        contentDescription = "back",
+                        tint = MaterialTheme.colorScheme.primary,
+                    )
+                }
             }
-        }
-    }, colors = TopAppBarDefaults.topAppBarColors(
-        containerColor = containerColor, titleContentColor = titleContentColor
-    ), modifier = modifier.shadow(elevation = cardElevation.medium), actions = actionItems
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = containerColor, titleContentColor = titleContentColor
+        ),
+        modifier = modifier.shadow(elevation = cardElevation.medium),
+        actions = actions
     )
 }

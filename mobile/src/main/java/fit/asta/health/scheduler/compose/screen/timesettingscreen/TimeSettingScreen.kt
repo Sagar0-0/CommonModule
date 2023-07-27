@@ -14,8 +14,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import fit.asta.health.common.ui.components.AppTopBar
-import fit.asta.health.common.ui.components.CustomModelBottomSheet
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.scheduler.compose.components.*
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.IvlUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.StatUiState
@@ -44,9 +43,7 @@ fun TimeSettingScreen(
     val openSheet = {
         scope.launch { bottomSheetState.show() }
     }
-    Scaffold(modifier = Modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
-        contentColor = MaterialTheme.colorScheme.onSurface,
+    AppScaffold(modifier = Modifier.fillMaxSize(),
         content = { paddingValues ->
             SettingsLayout(
                 timeSettingUiState = timeSettingUiState,
@@ -87,11 +84,11 @@ fun TimeSettingScreen(
             )
         },
         topBar = {
-            AppTopBar(text = "Intervals and Time Settings",
+            AppTopBar(
+                title = "Intervals and Time Settings",
                 backIcon = Icons.Default.Close,
-                containerColor = MaterialTheme.colorScheme.surface,
-                titleContentColor = MaterialTheme.colorScheme.onSurface,
-                actionItems = {
+                onBack = { navBack() },
+                actions = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -110,7 +107,7 @@ fun TimeSettingScreen(
                             )
                         }
                     }
-                }, onBackPressed = { navBack() })
+                })
         })
     CustomModelBottomSheet(
         targetState = bottomSheetState.isVisible,

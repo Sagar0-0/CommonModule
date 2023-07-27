@@ -17,7 +17,12 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.*
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -34,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.AppScaffold
 import fit.asta.health.common.ui.components.AppTopBar
 import fit.asta.health.player.jetpack_audio.domain.utils.AppIcons
 import fit.asta.health.player.jetpack_audio.presentation.ui.theme.LocalSpacing
@@ -52,11 +58,11 @@ fun VideoPlayerScreen(
 
     val lazyListState = rememberLazyListState()
 
-    Scaffold(
+    AppScaffold(
         modifier = modifier
             .fillMaxSize(),
         topBar = {
-            AppTopBar(text = "Exercise Video ", onBackPressed = onBack, actionItems = {
+            AppTopBar(title = "Exercise Video ", onBack = onBack, actions = {
                 IconButton(onClick = { }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_physique),
@@ -66,8 +72,7 @@ fun VideoPlayerScreen(
                     )
                 }
             })
-        },
-        containerColor = MaterialTheme.colorScheme.onSurface,
+        }
     ) {
         Column(
             modifier = modifier

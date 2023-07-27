@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import fit.asta.health.common.ui.components.AppScaffold
 import fit.asta.health.common.ui.theme.spacing
 
 @Composable
@@ -30,9 +29,10 @@ fun AlarmScreen( uiState:AlarmUiState,event:(AlarmEvent)->Unit) {
 
     val snackBarHostState = remember { SnackbarHostState() }
     val context: Context = LocalContext.current
-    Scaffold(modifier = Modifier.fillMaxSize(), containerColor = Color.LightGray,
-        snackbarHost = { SnackbarHost(snackBarHostState) }, content = {
-
+    AppScaffold(
+        modifier = Modifier.fillMaxSize(),
+        snackBarHostState = snackBarHostState
+    ) {
         Column(
             modifier = Modifier
                 .padding(it)
@@ -54,5 +54,4 @@ fun AlarmScreen( uiState:AlarmUiState,event:(AlarmEvent)->Unit) {
             }
         }
     }
-    )
 }

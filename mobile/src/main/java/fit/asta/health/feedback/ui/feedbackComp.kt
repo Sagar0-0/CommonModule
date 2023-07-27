@@ -11,7 +11,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import fit.asta.health.common.ui.components.EndScreenPopup
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.feedback.viewmodel.FeedbackViewModel
 import fit.asta.health.main.Graph

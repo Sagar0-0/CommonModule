@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.tools.sunlight.viewmodel.SunlightViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -59,7 +60,7 @@ fun SkinExposureScreen(
         mutableStateOf(-1)
     }
 
-    Scaffold(
+    AppScaffold(
         topBar = {
             NavigationBar(
                 content = {

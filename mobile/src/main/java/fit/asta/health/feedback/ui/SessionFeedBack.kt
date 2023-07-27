@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -22,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import fit.asta.health.common.ui.components.AppScaffold
 import fit.asta.health.common.ui.components.AppTopBar
 import fit.asta.health.common.ui.components.UploadFiles
 import fit.asta.health.common.ui.theme.spacing
@@ -43,11 +43,9 @@ fun SessionFeedback(
     onSubmit: (ans: List<An>) -> Unit
 ) {
     val context = LocalContext.current
-    Scaffold(
+    AppScaffold(
         topBar = {
-            AppTopBar(text = "Feedback") {
-                onBack()
-            }
+            AppTopBar(title = "Feedback", onBack = onBack)
         }
     ) {
         when (feedbackQuesState) {

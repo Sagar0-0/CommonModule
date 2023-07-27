@@ -23,9 +23,9 @@ fun HomeHeader(
 ) {
     val spacing = LocalSpacing.current
     AppTopBar(
-        text = stringResource(id = R.string.app_name),
-        onBackPressed = {},
-        actionItems = {
+        title = stringResource(id = R.string.app_name),
+        onBack = {},
+        actions = {
                 IconButton(
                     onClick = { onSearchClick() },
                 ) {

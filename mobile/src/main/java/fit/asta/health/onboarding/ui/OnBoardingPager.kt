@@ -13,7 +13,7 @@ import coil.compose.AsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.GifImage
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getImageUrl

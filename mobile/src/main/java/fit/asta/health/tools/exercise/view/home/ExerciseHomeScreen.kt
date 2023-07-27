@@ -22,10 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.AppTopBar
-import fit.asta.health.common.ui.components.ButtonWithColor
-import fit.asta.health.common.ui.components.CircularSliderInt
-import fit.asta.health.common.ui.components.ProgressBarInt
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.tools.exercise.view.components.CardItem
 import fit.asta.health.tools.sunlight.view.components.DividerLineCenter
@@ -97,8 +94,10 @@ fun ExerciseHomeScreen(
         sheetPeekHeight = 200.dp,
         scaffoldState = scaffoldState,
         topBar = {
-            AppTopBar(text = "$screen Exercise Tool", onBackPressed = onBack,
-                actionItems = {
+            AppTopBar(
+                title = "$screen Exercise Tool",
+                onBack = onBack,
+                actions = {
                     IconButton(onClick = { }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_physique),

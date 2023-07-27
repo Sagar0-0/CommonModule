@@ -5,10 +5,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AdsClick
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -54,7 +54,7 @@ fun SelectItem(navController: NavController, list: List<String>, onClick: (Strin
     val itemSelection = remember {
         mutableStateOf(-1)
     }
-    Scaffold(
+    AppScaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             NavigationBar(

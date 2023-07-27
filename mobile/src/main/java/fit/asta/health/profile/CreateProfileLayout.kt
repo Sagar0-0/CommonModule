@@ -1,8 +1,6 @@
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
 package fit.asta.health.profile
-
-
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -18,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.createprofile.view.DetailsCreateScreen
 import fit.asta.health.profile.createprofile.view.DietCreateScreen
@@ -72,31 +71,13 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel(), onBack: (
     MaterialTheme.colorScheme.error
 
 
-    Scaffold(topBar = {
+    AppScaffold(topBar = {
 
         Column {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Create Profile",
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-                },
-                navigationIcon = {
-                    IconButton(
-                        onClick = {
-                            showCustomDialogWithResult = !showCustomDialogWithResult
-                        },
-                    ) {
-                        Icon(
-                            Icons.Filled.Close,
-                            contentDescription = "close",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                },
-                colors =  TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.onPrimary)
+            AppTopBar(
+                title = "Create Profile",
+                onBack = { showCustomDialogWithResult = !showCustomDialogWithResult },
+                backIcon = Icons.Filled.Close
             )
 
             Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
@@ -208,7 +189,7 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel(), onBack: (
         }
 
 
-    }, containerColor = MaterialTheme.colorScheme.background)
+    })
 
 }
 

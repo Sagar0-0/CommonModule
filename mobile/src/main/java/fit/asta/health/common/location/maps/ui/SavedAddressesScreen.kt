@@ -101,9 +101,7 @@ fun SavedAddressesScreen(
     }
 
     Column(Modifier.fillMaxSize()) {
-        AppTopBar(text = "Saved Addresses") {
-            onBackPressed()
-        }
+        AppTopBar(title = "Saved Addresses", onBack = onBackPressed)
 
         OutlinedTextField(
             maxLines = 1,

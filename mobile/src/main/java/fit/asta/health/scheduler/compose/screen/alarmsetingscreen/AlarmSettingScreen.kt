@@ -29,8 +29,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.common.ui.components.AppTopBar
-import fit.asta.health.common.ui.components.CustomModelBottomSheet
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.scheduler.compose.components.*
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AlarmCreateBottomSheetTypes.*
 import fit.asta.health.scheduler.util.Constants
@@ -64,15 +63,17 @@ fun AlarmSettingScreen(
         scope.launch { bottomSheetState.show() }
     }
 
-    Scaffold(modifier = Modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
-        contentColor = MaterialTheme.colorScheme.onSurface,
+    AppScaffold(
+        modifier = Modifier.fillMaxSize(),
         topBar = {
-            AppTopBar(text = alarmSettingUiState.saveProgress,
+            AppTopBar(
+                title = alarmSettingUiState.saveProgress,
                 backIcon = Icons.Default.Close,
-                containerColor = MaterialTheme.colorScheme.surface,
-                titleContentColor = MaterialTheme.colorScheme.onSurface,
-                actionItems = {
+                onBack = {
+                    navBack()
+                    aSEvent(AlarmSettingEvent.ResetUi)
+                },
+                actions = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -86,11 +87,8 @@ fun AlarmSettingScreen(
                             )
                         }
                     }
-                },
-                onBackPressed = {
-                    navBack()
-                    aSEvent(AlarmSettingEvent.ResetUi)
-                })
+                }
+            )
         },
         content = { paddingValues ->
             Column(

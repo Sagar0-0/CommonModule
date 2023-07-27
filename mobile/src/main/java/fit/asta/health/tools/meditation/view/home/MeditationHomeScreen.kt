@@ -25,11 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.AppTopBar
-import fit.asta.health.common.ui.components.ButtonWithColor
-import fit.asta.health.common.ui.components.CardItem
-import fit.asta.health.common.ui.components.CircularSliderInt
-import fit.asta.health.common.ui.components.ProgressBarInt
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.tools.sunlight.view.components.DividerLineCenter
 import fit.asta.health.tools.walking.view.home.SunlightCard
@@ -79,7 +75,10 @@ fun MeditationHomeScreen(
         sheetPeekHeight = 200.dp,
         scaffoldState = scaffoldState,
         topBar = {
-            AppTopBar(text = "Meditation Tool", onBackPressed = onBack, actionItems = {
+            AppTopBar(
+                title = "Meditation Tool",
+                onBack = onBack
+            ) {
                 IconButton(onClick = { }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_physique),
@@ -88,7 +87,7 @@ fun MeditationHomeScreen(
                         tint = MaterialTheme.colorScheme.primary
                     )
                 }
-            })
+            }
         }
     ) {
         Column(

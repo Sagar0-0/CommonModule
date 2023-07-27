@@ -28,11 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.AppTopBar
-import fit.asta.health.common.ui.components.BottomSheetDragHandle
-import fit.asta.health.common.ui.components.ButtonWithColor
-import fit.asta.health.common.ui.components.CircularSliderInt
-import fit.asta.health.common.ui.components.ProgressBarInt
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.tools.exercise.view.components.CardItem
 import fit.asta.health.tools.sunlight.view.components.DividerLineCenter
@@ -98,9 +94,9 @@ fun BreathingHomeScreen(
         scaffoldState = scaffoldState,
         topBar = {
             AppTopBar(
-                text = "Breathing Tool",
-                onBackPressed = onBack,
-                actionItems = {
+                title = "Breathing Tool",
+                onBack = onBack,
+                actions = {
                     IconButton(onClick = { }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_physique),
@@ -413,25 +409,7 @@ fun Test() {
         sheetSwipeEnabled = true,
         scaffoldState = scaffoldState,
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Breathing Tool",
-                        fontSize = 20.sp,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        textAlign = TextAlign.Center
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_exercise_back),
-                            contentDescription = null,
-                            Modifier.size(24.dp)
-                        )
-                    }
-                },
-            )
+            AppTopBar(title = "Breathing Tool")
         },
         containerColor = MaterialTheme.colorScheme.onPrimary
     ) {

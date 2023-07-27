@@ -11,14 +11,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AdsClick
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,6 +33,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.AppScaffold
 import fit.asta.health.tools.walking.model.ListItem
 
 @Composable
@@ -48,7 +47,7 @@ fun GoalsScreen(
             ListItem(title = it, isSelected = false)
         })
     }
-    Scaffold(
+    AppScaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             NavigationBar(

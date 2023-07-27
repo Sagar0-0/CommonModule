@@ -1,21 +1,13 @@
 package fit.asta.health.tools.sleep.view.components
 
-import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Help
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import fit.asta.health.R
+import fit.asta.health.common.ui.components.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -24,29 +16,11 @@ fun SleepTopBar(
     navController: NavController
 ) {
 
-    TopAppBar(
-        title = {
-            Text(
-                text = title,
-                fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.onBackground,
-                textAlign = TextAlign.Center
-            )
-        },
-        modifier = Modifier,
-        navigationIcon = {
-            IconButton(
-                onClick = {
-                    if (navController.previousBackStackEntry != null)
-                        navController.popBackStack()
-                }
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_exercise_back),
-                    contentDescription = null,
-                    Modifier.size(24.dp)
-                )
-            }
+    AppTopBar(
+        title = title,
+        onBack = {
+            if (navController.previousBackStackEntry != null)
+                navController.popBackStack()
         },
         actions = {
             IconButton(
@@ -55,16 +29,10 @@ fun SleepTopBar(
                 }
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_physique),
+                    imageVector = Icons.Default.Help,
                     contentDescription = null,
-                    Modifier.size(24.dp)
                 )
             }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.onPrimary,
-            titleContentColor = MaterialTheme.colorScheme.onSurface,
-            actionIconContentColor = MaterialTheme.colorScheme.primary
-        )
+        }
     )
 }

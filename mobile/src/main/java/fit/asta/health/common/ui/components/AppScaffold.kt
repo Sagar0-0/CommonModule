@@ -13,11 +13,11 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 fun AppScaffold(
     modifier: Modifier = Modifier,
-    content: @Composable (PaddingValues) -> Unit = {},
-    bottomBar: @Composable (() -> Unit)? = null,
-    snackbarHostState: SnackbarHostState? = null,
-    floatingActionButton: @Composable (() -> Unit)? = null,
+    snackBarHostState: SnackbarHostState? = null,
     topBar: @Composable (() -> Unit)? = null,
+    bottomBar: @Composable (() -> Unit)? = null,
+    floatingActionButton: @Composable (() -> Unit)? = null,
+    content: @Composable (PaddingValues) -> Unit = {},
 ) {
 
     Scaffold(modifier = modifier.fillMaxSize(), topBar = {
@@ -29,7 +29,7 @@ fun AppScaffold(
     }, content = { innerPadding ->
         content(innerPadding)
     }, snackbarHost = {
-        snackbarHostState?.let { snackBarHostState ->
+        snackBarHostState?.let { snackBarHostState ->
             SnackbarHost(hostState = snackBarHostState)
         }
     }, floatingActionButton = {
@@ -37,5 +37,4 @@ fun AppScaffold(
             floatingActionButton()
         }
     })
-
 }

@@ -29,9 +29,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
@@ -56,6 +54,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.main.Graph
@@ -80,8 +79,8 @@ fun TodayContent(
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
-    Scaffold(
-        snackbarHost = { SnackbarHost(snackBarHostState) },
+    AppScaffold(
+        snackBarHostState = snackBarHostState,
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {

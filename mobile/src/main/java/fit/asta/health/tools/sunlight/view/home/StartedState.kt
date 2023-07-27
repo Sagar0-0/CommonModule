@@ -10,12 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,13 +25,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.AppScaffold
 import fit.asta.health.tools.sunlight.view.components.RoundedColorButton
 import fit.asta.health.tools.sunlight.viewmodel.SunlightViewModel
 import fit.asta.health.tools.view.components.CardSunBurn
 
 @Composable
 fun StatedStateComposable(navController: NavController, homeViewModel: SunlightViewModel) {
-    Scaffold(
+
+    AppScaffold(
         topBar = {
             NavigationBar(
                 content = {

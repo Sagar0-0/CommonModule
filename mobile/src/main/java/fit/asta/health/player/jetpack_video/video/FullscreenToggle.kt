@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Fullscreen
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -27,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.media3.common.Player
 import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.player.jetpack_video.data.model.VideoItem
 import fit.asta.health.player.jetpack_video.media.Media
 import fit.asta.health.player.jetpack_video.media.MediaState
@@ -42,8 +42,6 @@ import fit.asta.health.player.jetpack_video.video.component.VideoCard
 import fit.asta.health.player.jetpack_video.video.utils.ControllerTypes
 import fit.asta.health.player.jetpack_video.video.utils.ResizeModes
 import fit.asta.health.player.jetpack_video.video.utils.findActivity
-
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -102,20 +100,16 @@ fun FullscreenToggle(
         }
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Fullscreen Toggle") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Filled.ArrowBack, null)
-                    }
-                }
-            )
-        },
+    AppScaffold(
         modifier = Modifier
             .fillMaxSize()
             .systemBarsPadding(),
+        topBar = {
+            AppTopBar(
+                title = "Fullscreen Toggle",
+                onBack = { navController.popBackStack() }
+            )
+        }
     ) { padding ->
         if (!isLandscape) {
             mediaContent(

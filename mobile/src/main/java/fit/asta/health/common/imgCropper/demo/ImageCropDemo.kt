@@ -42,8 +42,7 @@ import androidx.compose.ui.unit.dp
 import com.smarttoolfactory.colorpicker.widget.drawChecker
 import fit.asta.health.common.imgCropper.ImageSelectionButton
 import fit.asta.health.common.imgCropper.cropper.ImageCropper
-import fit.asta.health.common.ui.components.AppTopBar
-import fit.asta.health.common.ui.components.AppScaffold
+import fit.asta.health.common.ui.components.*
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -71,13 +70,7 @@ fun ImageCropperScreen(
 
     AppScaffold(
         topBar = {
-            AppTopBar(text = "Crop Image", onBackPressed = {}, actionItems = {
-                IconButton(onClick = { onCloseImgCropper() }) {
-                    Icon(
-                        imageVector = Icons.Filled.Close, contentDescription = "Close Image Cropper"
-                    )
-                }
-            })
+            AppTopBar(title = "Crop Image", onBack = onCloseImgCropper)
         },
         bottomBar = {
             BottomAppBar(actions = {

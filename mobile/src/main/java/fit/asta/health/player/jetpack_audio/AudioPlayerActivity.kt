@@ -10,8 +10,6 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -21,6 +19,7 @@ import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.hilt.android.AndroidEntryPoint
+import fit.asta.health.common.ui.components.AppScaffold
 import fit.asta.health.player.jetpack_audio.presentation.screens.Screens
 import fit.asta.health.player.jetpack_audio.presentation.screens.home.HomeScreen
 import fit.asta.health.player.jetpack_audio.presentation.screens.player.PlayerScreen
@@ -59,9 +58,11 @@ class AudioPlayerActivity : ComponentActivity() {
         setContent {
             LOULATheme {
                 val navController = rememberAnimatedNavController()
-                val snackbarHostState = remember { SnackbarHostState() }
-                Scaffold(modifier = Modifier.fillMaxSize(),
-                    snackbarHost = { SnackbarHost(snackbarHostState) }) { innerPadding ->
+                val snackBarHostState = remember { SnackbarHostState() }
+                AppScaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    snackBarHostState = snackBarHostState
+                ) { innerPadding ->
                     AnimatedNavHost(
                         navController = navController,
                         modifier = Modifier.padding(innerPadding),

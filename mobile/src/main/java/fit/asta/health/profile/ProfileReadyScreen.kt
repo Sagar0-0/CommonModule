@@ -11,17 +11,13 @@ import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Egg
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.NavigateBefore
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,15 +28,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fit.asta.health.common.ui.components.AppScaffold
+import fit.asta.health.common.ui.components.AppTopBar
 import fit.asta.health.profile.model.domain.UserProfile
 import fit.asta.health.profile.view.ContactLayout
 import fit.asta.health.profile.view.DietLayout
 import fit.asta.health.profile.view.HealthLayout
 import fit.asta.health.profile.view.LifeStyleLayout
 import fit.asta.health.profile.view.PhysiqueLayout
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun ProfileReadyScreen(userProfile: UserProfile, onBack: () -> Unit, onEdit: () -> Unit) {
 
@@ -48,27 +44,22 @@ fun ProfileReadyScreen(userProfile: UserProfile, onBack: () -> Unit, onEdit: () 
 
     val context = LocalContext.current
 
-    Scaffold(topBar = {
+    AppScaffold(topBar = {
         Column {
 
-            TopAppBar(title = {
-                Text(text = "Profile Screen")
-            }, navigationIcon = {
-
-                IconButton(onClick = onBack) {
-                    Icon(Icons.Outlined.NavigateBefore, "back", modifier = Modifier.size(48.dp))
-                }
-
-            }, actions = {
-                IconButton(onClick = onEdit) {
-                    Icon(
-                        imageVector = Icons.Filled.Edit,
-                        contentDescription = null,
-                        modifier = Modifier.size(24.dp),
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
-            })
+            AppTopBar(
+                title = "Profile Screen",
+                onBack = onBack,
+                actions = {
+                    IconButton(onClick = onEdit) {
+                        Icon(
+                            imageVector = Icons.Filled.Edit,
+                            contentDescription = null,
+                            modifier = Modifier.size(24.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                })
 
             val colors =
                 NavigationBarItemDefaults.colors(selectedIconColor = MaterialTheme.colorScheme.primary)

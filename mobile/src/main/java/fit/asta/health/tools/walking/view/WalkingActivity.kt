@@ -32,6 +32,7 @@ import androidx.work.*
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.R
 import fit.asta.health.common.ui.AppTheme
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.tools.walking.nav.StepsCounterNavigation
 import fit.asta.health.tools.walking.view.component.WalkingBottomSheet
 import fit.asta.health.tools.walking.view.home.HomeUIState
@@ -138,7 +139,7 @@ fun MyApp(context: @Composable () -> Unit) {
 @Composable
 fun WalkingToolHomeScreen() {
 
-    Scaffold(topBar = {
+    AppScaffold(topBar = {
         NavigationBar(content = {
             Row(
                 verticalAlignment = Alignment.CenterVertically,

@@ -4,18 +4,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.outlined.NavigateBefore
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.media3.common.Player
-import fit.asta.health.common.ui.theme.cardElevation
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.testimonials.view.TestimonialsList
 import fit.asta.health.testimonials.viewmodel.list.TestimonialListViewModel
 
@@ -29,7 +25,7 @@ fun TestimonialsLayout(
     player: Player,
 ) {
 
-    Scaffold(content = {
+    AppScaffold(content = {
         TestimonialsList(it, viewModel, player = player)
     }, floatingActionButton = {
         FloatingActionButton(
@@ -48,27 +44,9 @@ fun TestimonialsLayout(
             }
         }
     }, topBar = {
-        TopAppBar(title = {
-            Text(
-                text = "Testimonials",
-                color = MaterialTheme.colorScheme.onSurface,
-                fontWeight = FontWeight.Medium,
-                fontSize = 20.sp
-            )
-        }, navigationIcon = {
-            IconButton(onClick = onNavigateBack) {
-                Icon(
-                    Icons.Outlined.NavigateBefore,
-                    "back",
-                    tint = MaterialTheme.colorScheme.primary,
-                )
-            }
-        }, colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.onPrimary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-        ), modifier = Modifier.shadow(elevation = cardElevation.medium)
+        AppTopBar(
+            title = "Testimonials",
+            onBack = onNavigateBack
         )
-    }, containerColor = MaterialTheme.colorScheme.background)
-
-
+    })
 }

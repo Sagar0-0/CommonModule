@@ -36,7 +36,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.AppTopBar
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.PrefUtils
 import fit.asta.health.common.utils.setAppTheme
@@ -49,16 +49,17 @@ fun SettingsScreenLayout(
 ) {
 
     val context = LocalContext.current
-    val snackbarHostState = remember { SnackbarHostState() }
-    Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) }) { padding ->
+    val snackBarHostState = remember { SnackbarHostState() }
+    AppScaffold(snackBarHostState = snackBarHostState) { padding ->
         Column(
             modifier = Modifier
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
         ) {
-            AppTopBar(text = stringResource(id = R.string.title_settings)) {
-                onClickEvent(SettingsUiEvent.BACK)
-            }
+            AppTopBar(
+                title = stringResource(id = R.string.title_settings),
+                onBack = { onClickEvent(SettingsUiEvent.BACK) }
+            )
 
             PreferenceCategory(titleId = R.string.user_pref_support_us_cat_title) {
                 PreferenceItem(

@@ -1,7 +1,17 @@
 package fit.asta.health.testimonials.view.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -18,7 +28,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.PrimaryButton
-import fit.asta.health.common.ui.theme.*
+import fit.asta.health.common.ui.theme.boxSize
+import fit.asta.health.common.ui.theme.cardHeight
+import fit.asta.health.common.ui.theme.iconSize
+import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.common.ui.theme.ts
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
 
 @Composable

@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.ButtonWithColor
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.tools.walking.view.home.StepCounterUIEvent
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
@@ -31,9 +31,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun StepsCounterScreen(navController: NavController, homeViewModel: WalkingViewModel) {
     val state = homeViewModel.uiStateStep.value
-    Scaffold(
+    AppScaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             NavigationBar(
                 content = {

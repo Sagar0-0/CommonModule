@@ -20,7 +20,7 @@ import com.google.maps.android.compose.*
 import fit.asta.health.common.location.maps.MapsViewModel
 import fit.asta.health.common.location.maps.modal.AddressesResponse.MyAddress
 import fit.asta.health.common.location.maps.modal.MapScreens
-import fit.asta.health.common.ui.components.AppTopBar
+import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.ResponseState
@@ -72,9 +72,7 @@ fun MapScreen(
         sheetSwipeEnabled = false,
         scaffoldState = scaffoldState,
         topBar = {
-            AppTopBar(text = "Choose Location") {
-                onBackPressed()
-            }
+            AppTopBar(title = "Choose Location", onBack = onBackPressed)
         },
         sheetContent = {
             LaunchedEffect(cameraPositionState.position.target) {
