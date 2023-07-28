@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Help
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
@@ -60,18 +58,11 @@ fun AgeSelectionScreen(
     }
     AppScaffold(
         topBar = {
-            AppTopBar(
+            AppTopBarWithHelp(
                 title = "Age",
-                onBack = { navController.popBackStack() }
-            ) {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        imageVector = Icons.Default.Help,
-                        contentDescription = "leadingIcon",
-                        Modifier.size(26.dp)
-                    )
-                }
-            }
+                onBack = { navController.popBackStack() },
+                onHelp = { /*TODO*/ }
+            )
         }
     ) {
         LazyColumn(

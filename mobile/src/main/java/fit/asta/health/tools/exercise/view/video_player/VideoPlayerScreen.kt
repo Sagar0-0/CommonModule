@@ -19,7 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -40,7 +39,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.AppScaffold
-import fit.asta.health.common.ui.components.AppTopBar
+import fit.asta.health.common.ui.components.AppTopBarWithHelp
 import fit.asta.health.player.jetpack_audio.domain.utils.AppIcons
 import fit.asta.health.player.jetpack_audio.presentation.ui.theme.LocalSpacing
 import fit.asta.health.tools.exercise.model.domain.model.VideoItem
@@ -62,16 +61,7 @@ fun VideoPlayerScreen(
         modifier = modifier
             .fillMaxSize(),
         topBar = {
-            AppTopBar(title = "Exercise Video ", onBack = onBack, actions = {
-                IconButton(onClick = { }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_physique),
-                        contentDescription = null,
-                        Modifier.size(24.dp),
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
-            })
+            AppTopBarWithHelp(title = "Exercise Video ", onBack = onBack, onHelp = {/*TODO*/ })
         }
     ) {
         Column(

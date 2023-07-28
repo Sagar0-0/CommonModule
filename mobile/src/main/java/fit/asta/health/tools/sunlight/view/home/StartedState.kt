@@ -4,28 +4,19 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.AppScaffold
+import fit.asta.health.common.ui.components.AppTopBarWithHelp
 import fit.asta.health.tools.sunlight.view.components.RoundedColorButton
 import fit.asta.health.tools.sunlight.viewmodel.SunlightViewModel
 import fit.asta.health.tools.view.components.CardSunBurn
@@ -35,37 +26,10 @@ fun StatedStateComposable(navController: NavController, homeViewModel: SunlightV
 
     AppScaffold(
         topBar = {
-            NavigationBar(
-                content = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        IconButton(onClick = { navController.popBackStack() }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_exercise_back),
-                                contentDescription = null,
-                                Modifier.size(24.dp)
-                            )
-                        }
-                        Text(
-                            text = "Duration",
-                            fontSize = 20.sp,
-                            color = MaterialTheme.colorScheme.onBackground,
-                            textAlign = TextAlign.Center
-                        )
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.leading_icon_sunlight_topbar),
-                                contentDescription = "leadingIcon",
-                                Modifier.size(26.dp)
-                            )
-                        }
-                    }
-                },
-                tonalElevation = 10.dp,
-                containerColor = MaterialTheme.colorScheme.onPrimary
+            AppTopBarWithHelp(
+                title = "Duration",
+                onBack = { navController.popBackStack() },
+                onHelp = { /*TODO*/ }
             )
         }
     ) {

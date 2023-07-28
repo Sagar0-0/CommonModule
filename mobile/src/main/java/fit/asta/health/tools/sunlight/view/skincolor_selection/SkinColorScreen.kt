@@ -6,24 +6,20 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import fit.asta.health.R
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.tools.sunlight.viewmodel.SunlightViewModel
 import fit.asta.health.tools.view.components.ItemData
@@ -53,42 +49,14 @@ fun SkinColorLayout(navController: NavController, homeViewModel: SunlightViewMod
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun SkinColorScreen(navController: NavController, list: List<ItemData>, onClick: (String) -> Unit) {
-    val itemSelection = remember {
-        mutableStateOf(-1)
-    }
+
+    val itemSelection = remember { mutableIntStateOf(-1) }
     AppScaffold(
         topBar = {
-            NavigationBar(
-                content = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        IconButton(onClick = { navController.popBackStack() }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_exercise_back),
-                                contentDescription = null,
-                                Modifier.size(24.dp)
-                            )
-                        }
-                        Text(
-                            text = "Skin Color",
-                            fontSize = 20.sp,
-                            color = MaterialTheme.colorScheme.onBackground,
-                            textAlign = TextAlign.Center
-                        )
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.leading_icon_sunlight_topbar),
-                                contentDescription = "leadingIcon",
-                                Modifier.size(26.dp)
-                            )
-                        }
-                    }
-                },
-                tonalElevation = 10.dp,
-                containerColor = MaterialTheme.colorScheme.onPrimary
+            AppTopBarWithHelp(
+                title = "Skin Color",
+                onBack = { navController.popBackStack() },
+                onHelp = { /*TODO*/ }
             )
         }
     ) {
@@ -148,7 +116,5 @@ fun SkinColorScreen(navController: NavController, list: List<ItemData>, onClick:
                 }
             }
         }
-
     }
-
 }

@@ -13,16 +13,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
-
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -30,7 +24,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import androidx.work.*
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.R
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.tools.walking.nav.StepsCounterNavigation
@@ -140,39 +133,14 @@ fun MyApp(context: @Composable () -> Unit) {
 fun WalkingToolHomeScreen() {
 
     AppScaffold(topBar = {
-        NavigationBar(content = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_exercise_back),
-                        contentDescription = null,
-                        Modifier.size(24.dp)
-                    )
-                }
-                Text(
-                    text = "Step Counter",
-                    fontSize = 20.sp,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    textAlign = TextAlign.Center
-                )
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_physique),
-                        contentDescription = null,
-                        Modifier.size(24.dp),
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
-            }
-        }, tonalElevation = 10.dp, containerColor = MaterialTheme.colorScheme.onPrimary)
+        AppTopBarWithHelp(
+            title = "Step Counter",
+            onBack = { /*TODO*/ },
+            onHelp = { /*TODO*/ }
+        )
     }, content = {
         WalkingBottomSheet(paddingValues = it)
     })
-
 }
 
 @Preview(showBackground = true)

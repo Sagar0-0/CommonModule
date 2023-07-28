@@ -7,16 +7,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AdsClick
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,13 +24,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.R
 import fit.asta.health.common.ui.components.AppScaffold
+import fit.asta.health.common.ui.components.AppTopBarWithHelp
 import fit.asta.health.tools.walking.model.ListItem
 
 @Composable
@@ -50,38 +45,10 @@ fun GoalsScreen(
     AppScaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            NavigationBar(
-                content = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        IconButton(onClick = onBack) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_exercise_back),
-                                contentDescription = null,
-                                Modifier.size(24.dp)
-                            )
-                        }
-                        Text(
-                            text = "Goals",
-                            fontSize = 20.sp,
-                            color = MaterialTheme.colorScheme.onBackground,
-                            textAlign = TextAlign.Center
-                        )
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_physique),
-                                contentDescription = null,
-                                Modifier.size(24.dp),
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                    }
-                },
-                tonalElevation = 10.dp,
-                containerColor = MaterialTheme.colorScheme.onPrimary
+            AppTopBarWithHelp(
+                title = "Goals",
+                onBack = onBack,
+                onHelp = { /*TODO*/ }
             )
         }
     ) {
@@ -107,7 +74,10 @@ fun GoalsScreen(
                                     item.copy(isSelected = !item.isSelected)
                                 } else item
                             }
-                            onClick(items.filter { it.isSelected }.map { it.title })
+                            onClick(
+                                items
+                                    .filter { it.isSelected }
+                                    .map { it.title })
                         },
                     color =if (!items[indexNumber].isSelected) {
                         Color(0xFFE9D7F7)

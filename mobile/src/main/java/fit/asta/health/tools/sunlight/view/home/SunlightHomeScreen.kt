@@ -5,12 +5,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -33,37 +30,10 @@ fun SunlightHomeScreen(navController: NavController, homeViewModel: SunlightView
 
     AppScaffold(
         topBar = {
-            NavigationBar(
-                content = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        IconButton(onClick = { navController.popBackStack() }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_exercise_back),
-                                contentDescription = null,
-                                Modifier.size(24.dp)
-                            )
-                        }
-                        Text(
-                            text = "Sunlight",
-                            fontSize = 20.sp,
-                            color = MaterialTheme.colorScheme.onBackground,
-                            textAlign = TextAlign.Center
-                        )
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_physique),
-                                contentDescription = null,
-                                Modifier.size(24.dp),
-//                                 tint = Color(0xff0088FF)
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                    }
-                }, tonalElevation = 10.dp, containerColor = MaterialTheme.colorScheme.surface
+            AppTopBarWithHelp(
+                title = "Sunlight",
+                onBack = { navController.popBackStack() },
+                onHelp = { /*TODO*/ }
             )
         }, content = {
             SunlightBottomSheet(paddingValues = it, navController = navController, homeViewModel)

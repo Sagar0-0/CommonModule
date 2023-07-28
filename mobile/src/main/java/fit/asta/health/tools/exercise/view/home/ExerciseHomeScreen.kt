@@ -1,7 +1,6 @@
 package fit.asta.health.tools.exercise.view.home
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,12 +18,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.tools.sunlight.view.components.DividerLineCenter
 import fit.asta.health.tools.walking.view.home.SunlightCard
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -56,12 +53,20 @@ fun ExerciseHomeScreen(
     onBack: () -> Unit,
 ) {
 
-    val scaffoldState = rememberBottomSheetScaffoldState()
+    val sheetState = rememberStandardBottomSheetState(initialValue = SheetValue.PartiallyExpanded)
+    val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = sheetState)
 
-    BottomSheetScaffold(
+    AppBottomSheetScaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.tertiary,
-        sheetShape = RoundedCornerShape(16.dp),
+        scaffoldState = scaffoldState,
+        sheetPeekHeight = 240.dp,
+        topBar = {
+            AppTopBarWithHelp(
+                title = "$screen Exercise Tool",
+                onBack = onBack,
+                onHelp = { /*TODO*/ }
+            )
+        },
         sheetContent = {
             DanceBottomSheet(
                 scaffoldState = scaffoldState,
@@ -90,23 +95,6 @@ fun ExerciseHomeScreen(
                 event = event
             )
         },
-        sheetPeekHeight = 200.dp,
-        scaffoldState = scaffoldState,
-        topBar = {
-            AppTopBar(
-                title = "$screen Exercise Tool",
-                onBack = onBack,
-                actions = {
-                    IconButton(onClick = { }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_physique),
-                            contentDescription = null,
-                            Modifier.size(24.dp),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                })
-        }
     ) {
 
         Column(
@@ -202,13 +190,11 @@ fun DanceBottomSheet(
     val context = LocalContext.current
     Column(
         modifier = Modifier
-            .background(Color.Yellow)
-            .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 16.dp),
+            .fillMaxSize()
+            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp),
         verticalArrangement = Arrangement.spacedBy(spacing.small)
     ) {
 
-        DividerLineCenter()
         Text(text = "PRACTICE", style = MaterialTheme.typography.titleSmall)
         LazyVerticalGrid(
             horizontalArrangement = Arrangement.spacedBy(spacing.small),
@@ -217,6 +203,7 @@ fun DanceBottomSheet(
         ) {
             item {
                 CardItem(
+                    modifier = Modifier,
                     name = "Style",
                     type = style,
                     id = R.drawable.baseline_music_note_24
@@ -224,6 +211,7 @@ fun DanceBottomSheet(
             }
             item {
                 CardItem(
+                    modifier = Modifier,
                     name = "Music",
                     type = music,
                     id = R.drawable.baseline_music_note_24,
@@ -231,7 +219,8 @@ fun DanceBottomSheet(
                 )
             }
         }
-        AnimatedVisibility(visible = scaffoldState.bottomSheetState.hasExpandedState) {
+
+        AnimatedVisibility(visible = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(spacing.medium)

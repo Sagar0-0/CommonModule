@@ -5,7 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import fit.asta.health.tools.walking.view.goals.GoalsScreen
-import fit.asta.health.tools.walking.view.home.HomeScreen
+import fit.asta.health.tools.walking.view.home.StepsHomeScreen
 import fit.asta.health.tools.walking.view.steps_counter.StepsCounterScreen
 import fit.asta.health.tools.walking.view.walking_types.WalkingtypesScreen
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
@@ -18,16 +18,16 @@ fun  StepsCounterNavigation(navController: NavHostController,homeViewModel: Walk
     NavHost(navController, startDestination = StepsCounterScreen.StepsCounterHomeScreen.route) {
 
         composable(StepsCounterScreen.StepsCounterHomeScreen.route) {
-            HomeScreen(navController = navController, homeViewModel)
+            StepsHomeScreen(navController = navController, homeViewModel)
         }
         composable(StepsCounterScreen.TypesScreen.route) {
-            WalkingtypesScreen(navController = navController,homeViewModel)
+            WalkingtypesScreen(navController = navController, homeViewModel)
         }
         composable(StepsCounterScreen.GoalScreen.route) {
-            GoalsScreen(navController = navController,homeViewModel)
+            GoalsScreen(navController = navController, homeViewModel)
         }
-        composable(StepsCounterScreen.DistanceScreen.route){
-            StepsCounterScreen(navController=navController,homeViewModel)
+        composable(StepsCounterScreen.DistanceScreen.route) {
+            StepsCounterScreen(navController = navController, homeViewModel)
         }
     }
 }

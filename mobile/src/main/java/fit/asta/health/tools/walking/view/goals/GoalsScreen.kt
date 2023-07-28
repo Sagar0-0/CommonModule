@@ -12,13 +12,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import fit.asta.health.R
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.tools.walking.model.ListItem
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
@@ -45,38 +42,10 @@ fun GoalsScreen(navController: NavController, homeViewModel: WalkingViewModel) {
     AppScaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            NavigationBar(
-                content = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        IconButton(onClick = { navController.popBackStack() }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_exercise_back),
-                                contentDescription = null,
-                                Modifier.size(24.dp)
-                            )
-                        }
-                        Text(
-                            text = "Goals",
-                            fontSize = 20.sp,
-                            color = MaterialTheme.colorScheme.onBackground,
-                            textAlign = TextAlign.Center
-                        )
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_physique),
-                                contentDescription = null,
-                                Modifier.size(24.dp),
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                    }
-                },
-                tonalElevation = 10.dp,
-                containerColor = MaterialTheme.colorScheme.onPrimary
+            AppTopBarWithHelp(
+                title = "Goals",
+                onBack = { navController.popBackStack() },
+                onHelp = { /*TODO*/ }
             )
         }
     ) {

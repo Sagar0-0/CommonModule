@@ -84,19 +84,10 @@ fun WaterToolScreen(
         scaffoldState = scaffoldState,
         sheetPeekHeight = 240.dp,
         topBar = {
-            AppTopBar(
+            AppTopBarWithHelp(
                 title = "Water Tool",
                 onBack = onBack,
-                actions = {
-                    IconButton(onClick = { }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_physique),
-                            contentDescription = null,
-                            Modifier.size(24.dp),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                }
+                onHelp = { /*TODO*/ }
             )
         },
         sheetContent = {

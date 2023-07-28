@@ -29,10 +29,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.ui.AppTheme
+import fit.asta.health.common.ui.components.AppTopBarWithHelp
 import fit.asta.health.tools.sleep.model.network.common.Prc
 import fit.asta.health.tools.sleep.utils.SleepNetworkCall
 import fit.asta.health.tools.sleep.view.components.SleepBottomSheet
-import fit.asta.health.tools.sleep.view.components.SleepTopBar
 import fit.asta.health.tools.sleep.view.navigation.SleepNavGraph
 import fit.asta.health.tools.sleep.view.navigation.SleepToolNavRoutes
 import fit.asta.health.tools.sleep.viewmodel.SleepToolViewModel
@@ -189,6 +189,7 @@ class SleepToolActivity : ComponentActivity() {
             sheetPeekHeight = if (shouldShowSheet) 230.dp else 0.dp,
             scaffoldState = scaffoldState,
             topBar = {
+
                 val topBarTitle = when (currentBackStackEntryRoute) {
                     SleepToolNavRoutes.SleepHomeRoute.routes -> "Sleep Tool"
                     SleepToolNavRoutes.SleepFactorRoute.routes -> "Sleep Factors"
@@ -199,9 +200,14 @@ class SleepToolActivity : ComponentActivity() {
                         ""
                     }
                 }
-                SleepTopBar(
+
+                AppTopBarWithHelp(
                     title = topBarTitle,
-                    navController
+                    onBack = {
+                        if (navController.previousBackStackEntry != null)
+                            navController.popBackStack()
+                    },
+                    onHelp = { /*TODO*/ }
                 )
             }
         ) {

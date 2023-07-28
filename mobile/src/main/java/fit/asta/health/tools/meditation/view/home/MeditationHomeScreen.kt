@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.*
@@ -55,19 +54,11 @@ fun MeditationHomeScreen(
         scaffoldState = scaffoldState,
         sheetPeekHeight = 240.dp,
         topBar = {
-            AppTopBar(
+            AppTopBarWithHelp(
                 title = "Meditation Tool",
-                onBack = onBack
-            ) {
-                IconButton(onClick = { }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_physique),
-                        contentDescription = null,
-                        Modifier.size(24.dp),
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
-            }
+                onBack = onBack,
+                onHelp = { /*TODO*/ },
+            )
         },
         sheetContent = {
             MeditationBottomSheet(
@@ -178,6 +169,7 @@ fun MeditationBottomSheet(
         verticalArrangement = Arrangement.spacedBy(spacing.medium)
     ) {
 
+        Text(text = "PRACTICE", style = MaterialTheme.typography.titleSmall)
         LazyVerticalGrid(
             horizontalArrangement = Arrangement.spacedBy(spacing.small),
             verticalArrangement = Arrangement.spacedBy(spacing.medium),
@@ -189,9 +181,7 @@ fun MeditationBottomSheet(
                     name = "Music ",
                     type = music,
                     id = R.drawable.baseline_music_note_24
-                ) {
-
-                }
+                ) { }
             }
             item {
                 CardItem(

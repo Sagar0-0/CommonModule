@@ -66,7 +66,7 @@ class SplashScreen : ComponentActivity() {
     }
 
     private fun startMain() {
-        if (!PrefUtils.getOnboardingShownStatus(this)) {
+        if (PrefUtils.getOnboardingShownStatus(this)) {
             OnBoardingScreenActivity.launch(this)
         } else {
             if (!authViewModel.isAuthenticated()) {

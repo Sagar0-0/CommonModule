@@ -24,13 +24,10 @@ import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.theme.spacing
@@ -41,66 +38,16 @@ import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
-@OptIn(ExperimentalCoroutinesApi::class)
-@Composable
-fun HomeScreen(
-    navController: NavController, homeViewModel: WalkingViewModel
-) {
-
-    AppScaffold(topBar = {
-        NavigationBar(
-            content = {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_exercise_back),
-                            contentDescription = null,
-                            Modifier.size(24.dp)
-                        )
-                    }
-                    Text(
-                        text = "Step Counter",
-                        fontSize = 20.sp,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        textAlign = TextAlign.Center
-                    )
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_physique),
-                            contentDescription = null,
-                            Modifier.size(24.dp),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                }
-            },
-            tonalElevation = 10.dp,
-            containerColor = MaterialTheme.colorScheme.onPrimary
-        )
-    }, content = {
-        StepsBottomSheet(
-            navController = navController, homeViewModel = homeViewModel, paddingValues = it
-        )
-    })
-
-}
-
-
 @OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun StepsBottomSheet(
-    navController: NavController = rememberNavController(),
-    homeViewModel: WalkingViewModel = hiltViewModel(),
-    paddingValues: PaddingValues
+fun StepsHomeScreen(
+    navController: NavController,
+    homeViewModel: WalkingViewModel
 ) {
+
     val state = homeViewModel.homeUiState.value
     val apiState = homeViewModel.ApiState.value
     val startWorking = homeViewModel.startWorking
-
     val sheetState = rememberStandardBottomSheetState(
         initialValue = SheetValue.PartiallyExpanded,
         skipHiddenState = true
@@ -113,6 +60,13 @@ fun StepsBottomSheet(
         modifier = Modifier.fillMaxSize(),
         scaffoldState = scaffoldState,
         sheetPeekHeight = 240.dp,
+        topBar = {
+            AppTopBarWithHelp(
+                title = "Steps Tool",
+                onBack = { navController.popBackStack() },
+                onHelp = { /*TODO*/ }
+            )
+        },
         sheetContent = {
             WalkingBottomSheetView(
                 homeViewModel,
@@ -124,7 +78,7 @@ fun StepsBottomSheet(
         }
     ) {
         HomeLayout(
-            paddingValues = paddingValues, state = state, apiState = apiState,
+            state = state, apiState = apiState,
             onTargetDistance = { homeViewModel.onUIEvent(StepCounterUIEvent.ChangeTargetDistance(it)) },
             onTargetDuration = { homeViewModel.onUIEvent(StepCounterUIEvent.ChangeTargetDuration(it)) },
             onChangeAngleDistance = {
@@ -145,11 +99,9 @@ fun StepsBottomSheet(
     }
 }
 
-
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun HomeLayout(
-    paddingValues: PaddingValues,
     state: HomeUIState,
     apiState: WalkingTool,
     onTargetDistance: (Float) -> Unit,
@@ -161,13 +113,11 @@ fun HomeLayout(
     var isScrollEnabled by remember(state.start) { mutableStateOf(state.start) }
     Column(
         modifier = Modifier
-            .padding(
-                horizontal = 16.dp, vertical = paddingValues.calculateTopPadding()
-            )
-            .fillMaxWidth()
-            .fillMaxHeight()
+            .padding(16.dp)
+            .fillMaxSize()
             .verticalScroll(scrollState, enabled = isScrollEnabled),
         verticalArrangement = Arrangement.spacedBy(spacing.medium),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -178,7 +128,7 @@ fun HomeLayout(
             onTargetDuration = onTargetDuration,
             onChangeAngleDuration = onChangeAngleDuration,
             onChangeAngleDistance = onChangeAngleDistance,
-            onScroll = { isScrollEnabled = it}
+            onScroll = { isScrollEnabled = it }
         )
         StepsDetailsCard(
             modifier = Modifier
@@ -219,7 +169,7 @@ fun WalkingBottomSheetView(
     val selectedGoal by homeViewModel.selectedGoal.collectAsState(emptyList())
     val selectedWalkTypes by homeViewModel.selectedWalkTypes.collectAsState("")
     val activity = LocalContext.current as Activity
-    val context =LocalContext.current
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxHeight(.5f)
