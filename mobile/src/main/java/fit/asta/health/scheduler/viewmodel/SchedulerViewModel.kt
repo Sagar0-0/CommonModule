@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +19,6 @@ import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AlarmSettingEv
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.IvlUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.RepUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.StatUiState
-import fit.asta.health.scheduler.compose.screen.homescreen.HomeEvent
 import fit.asta.health.scheduler.compose.screen.homescreen.HomeUiState
 import fit.asta.health.scheduler.compose.screen.tagscreen.TagState
 import fit.asta.health.scheduler.compose.screen.tagscreen.TagsEvent
@@ -48,7 +46,6 @@ class SchedulerViewModel
 @Inject constructor(
     private val alarmLocalRepo: AlarmLocalRepo,
     private val backendRepo: AlarmBackendRepo,
-    private val savedStateHandle: SavedStateHandle,
     private val prefUtils: PrefUtils
 ) : ViewModel() {
     private var alarmEntity: AlarmEntity? = null
@@ -76,8 +73,6 @@ class SchedulerViewModel
     private val userId = "6309a9379af54f142c65fbff"
 
     init {
-
-//        refreshData()
         getAlarms()
         getEditUiData()
     }
@@ -95,28 +90,6 @@ class SchedulerViewModel
         }
     }
 
-    fun hSEvent(uiEvent: HomeEvent) {
-        when (uiEvent) {
-            is HomeEvent.EditAlarm -> {
-                alarmEntity = uiEvent.alarm
-                updateUi(uiEvent.alarm)
-            }
-
-            is HomeEvent.SetAlarm -> {
-//                updateAlarmState(uiEvent.alarm, uiEvent.state, uiEvent.context)
-            }
-
-            is HomeEvent.DeleteAlarm -> {
-                deleteAlarm(uiEvent.alarm, uiEvent.context)
-            }
-
-            is HomeEvent.UndoAlarm -> {
-                undoAlarm(uiEvent.alarm, uiEvent.context)
-            }
-
-            else -> {}
-        }
-    }
 
     private fun undoAlarm(alarm: AlarmEntity, context: Context) {
         viewModelScope.launch {

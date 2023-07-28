@@ -7,7 +7,6 @@ import android.os.Build
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import fit.asta.health.scheduler.model.net.scheduler.Wk
 import xyz.aprildown.ultimateringtonepicker.UltimateRingtonePicker
 
 class Constants {
@@ -80,34 +79,7 @@ class Constants {
             )
         )
 
-        fun getRecurringDaysText(alarmWeek: Wk): String {
-            if (!alarmWeek.recurring) {
-                return "Once"
-            }
-            var days = ""
-            if (alarmWeek.monday) {
-                days += "Mon "
-            }
-            if (alarmWeek.tuesday) {
-                days += "Tue "
-            }
-            if (alarmWeek.wednesday) {
-                days += "Wed "
-            }
-            if (alarmWeek.thursday) {
-                days += "Thu "
-            }
-            if (alarmWeek.friday) {
-                days += "Fri "
-            }
-            if (alarmWeek.saturday) {
-                days += "Sat "
-            }
-            if (alarmWeek.sunday) {
-                days += "Sun "
-            }
-            return days
-        }
+
 
         const val ASTA_BASE_URL = "https://asta.fit/"
     }

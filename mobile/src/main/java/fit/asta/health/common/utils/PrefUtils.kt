@@ -3,10 +3,20 @@ package fit.asta.health.common.utils
 import android.content.Context
 import android.util.Log
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.*
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.doublePreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.floatPreferencesKey
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.preference.PreferenceManager
 import fit.asta.health.R
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
 import java.io.IOException
 import java.util.Calendar
 import java.util.Locale
@@ -114,6 +124,15 @@ class PrefUtils
             preferences.edit()
                 .putInt(context.getString(R.string.user_pref_location_permission_count), newCount)
                 .apply()
+        }
+        fun getNotificationPermissionRejectedCount(context: Context): Int {
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+            return preferences.getInt("notification", 0)
+        }
+
+        fun setNotificationPermissionRejectedCount(context: Context, newCount: Int) {
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+            preferences.edit().putInt("notification", newCount).apply()
         }
 
         fun getOnboardingShownStatus(context: Context): Boolean {

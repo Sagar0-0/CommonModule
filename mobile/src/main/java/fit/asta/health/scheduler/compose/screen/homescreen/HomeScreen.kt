@@ -69,7 +69,7 @@ fun HomeScreen(
         ) {
             items(list) { data ->
                 SwipeAlarm(homeUiState = homeUiState, data = data, onSwipe = {
-                    hSEvent(HomeEvent.DeleteAlarm(data, context))
+//                    hSEvent(HomeEvent.DeleteAlarm(data, context))
                     coroutineScope.launch {
                         val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
                             message = "Deleted ${data.info.name}",
@@ -78,7 +78,7 @@ fun HomeScreen(
                         )
                         when (snackbarResult) {
                             SnackbarResult.ActionPerformed -> {
-                                hSEvent(HomeEvent.UndoAlarm(data, context))
+//                                hSEvent(HomeEvent.UndoAlarm(data, context))
                             }
                             else -> {}
                         }

@@ -125,13 +125,7 @@ fun MainActivityLayout(
                         Log.d("Navigation", "Try to navigate")
 
                         navController.navigate(route) {
-                            // Pop up to the start destination of the graph to
-                            // avoid building up a large stack of destinations
-                            // on the back stack as users select items
-                            // Avoid multiple copies of the same destination when
-
                             if (currentDestination != null) {
-                                Log.d("Navigation", "Pop up current destination")
                                 popUpTo(currentDestination.id) {
                                     saveState = true
                                     inclusive = true
@@ -142,10 +136,7 @@ fun MainActivityLayout(
                                     inclusive = true
                                 }
                             }
-
-                            // reselecting the same item
                             launchSingleTop = true
-                            // Restore state when reselecting a previously selected item
                             restoreState = true
                         }
                     }

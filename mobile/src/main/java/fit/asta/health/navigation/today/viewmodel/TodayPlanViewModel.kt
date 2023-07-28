@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.PrefUtils
+import fit.asta.health.scheduler.compose.screen.homescreen.Event
 import fit.asta.health.scheduler.compose.screen.homescreen.HomeEvent
 import fit.asta.health.scheduler.model.AlarmLocalRepo
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
@@ -27,8 +28,6 @@ class TodayPlanViewModel @Inject constructor(
     val alarmListAfternoon = MutableStateFlow(_alarmListAfternoon)
     private val _alarmListEvening = mutableStateListOf<AlarmEntity>()
     val alarmListEvening = MutableStateFlow(_alarmListEvening)
-    private val _alarmList = mutableStateListOf<AlarmEntity>()
-    val alarmList = MutableStateFlow(_alarmList)
 
 
     init {
@@ -51,18 +50,18 @@ class TodayPlanViewModel @Inject constructor(
             }
 
             is HomeEvent.DeleteAlarm -> {
-                deleteAlarm(uiEvent.alarm, uiEvent.context)
+                deleteAlarm(uiEvent.alarm, uiEvent.context,uiEvent.event)
             }
 
             is HomeEvent.UndoAlarm -> {
-                undoAlarm(uiEvent.alarm, uiEvent.context)
+                undoAlarm(uiEvent.alarm, uiEvent.context,uiEvent.event)
             }
 
             else -> {}
         }
     }
 
-    private fun undoAlarm(alarm: AlarmEntity, context: Context) {
+    private fun undoAlarm(alarm: AlarmEntity, context: Context,event: Event) {
         viewModelScope.launch {
             alarmLocalRepo.insertAlarm(alarm)
             if (alarm.status) {
@@ -76,12 +75,20 @@ class TodayPlanViewModel @Inject constructor(
                     )
                 )
             }
-            _alarmList.add(alarm)
+            when(event){
+                Event.Morning->{_alarmListMorning.add(alarm)}
+                Event.Afternoon->{_alarmListAfternoon.add(alarm)}
+                Event.Evening->{_alarmListEvening.add(alarm)}
+            }
         }
     }
 
-    private fun deleteAlarm(alarmItem: AlarmEntity, context: Context) {
-        _alarmList.remove(alarmItem)
+    private fun deleteAlarm(alarmItem: AlarmEntity, context: Context,event: Event) {
+        when(event){
+            Event.Morning->{_alarmListMorning.remove(alarmItem)}
+            Event.Afternoon->{_alarmListAfternoon.remove(alarmItem)}
+            Event.Evening->{_alarmListEvening.remove(alarmItem)}
+        }
         viewModelScope.launch {
             if (alarmItem.status) alarmItem.cancelScheduleAlarm(
                 context, alarmItem.alarmId, true
@@ -104,33 +111,33 @@ class TodayPlanViewModel @Inject constructor(
                 val day =LocalDate.now().dayOfWeek.value
                 Log.d("list", "getAlarms: $list,day $day")
                 list.forEach{
-                   val today= if (it.week.recurring){
-                       when(day){
-                            1->{it.week.monday}
-                            2->{it.week.tuesday}
-                            3->{it.week.wednesday}
-                            4->{it.week.thursday}
-                            5->{it.week.friday}
-                            6->{it.week.saturday}
-                            7->{it.week.sunday}
-                            else ->false
-                        }
-                    } else true
-                    Log.d("list", "getAlarm: $it,today $today")
-                    if (today){
-                        when(it.time.hours.toInt()) {
-                            in  0..3->{
-                                Log.d("list", "getAlarm: evening${it.time}")
-                                _alarmListEvening.add(it)
+                    if (it.status) {
+                        val today= if (it.week.recurring){
+                            when(day){
+                                1->{it.week.monday}
+                                2->{it.week.tuesday}
+                                3->{it.week.wednesday}
+                                4->{it.week.thursday}
+                                5->{it.week.friday}
+                                6->{it.week.saturday}
+                                7->{it.week.sunday}
+                                else ->false
                             }
-                            in  4..12->{ Log.d("list", "getAlarm:morning${it.time}")
-                                _alarmListMorning.add(it)
-                            }
-                            in  13..16->{ Log.d("list", "getAlarm: afternoon${it.time}")
-                                _alarmListAfternoon.add(it)
-                            }
-                            in  17..23->{ Log.d("list", "getAlarm: evening${it.time}")
-                                _alarmListEvening.add(it)
+                        } else true
+                        if (today){
+                            when(it.time.hours.toInt()) {
+                                in  0..3->{
+                                    _alarmListEvening.add(it)
+                                }
+                                in  4..12->{
+                                    _alarmListMorning.add(it)
+                                }
+                                in  13..16->{
+                                    _alarmListAfternoon.add(it)
+                                }
+                                in  17..23->{
+                                    _alarmListEvening.add(it)
+                                }
                             }
                         }
                     }

@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -14,6 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import fit.asta.health.R
@@ -29,7 +31,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
 fun NavGraphBuilder.mainActivityComp(
-    onNav: (Graph) -> Unit,
+    navController: NavController,
 ) {
     composable(Graph.Home.route) {
 
@@ -129,11 +131,122 @@ fun NavGraphBuilder.mainActivityComp(
         val notificationEnabled by mainViewModel.notificationsEnabled.collectAsStateWithLifecycle()
         val locationName by mainViewModel.locationName.collectAsStateWithLifecycle()
 
+        val notificationPermissionResultLauncher: ActivityResultLauncher<String> =
+            rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.RequestPermission()
+            ) { perms ->
+                if (perms) {
+                    Toast.makeText(
+                        context,
+                        "Notification is recommended for better functionality.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    PrefUtils.setNotificationPermissionRejectedCount(context, 1)
+                    navController.navigate(Graph.Scheduler.route)
+                } else {
+                    Toast.makeText(
+                        context,
+                        "Notification is recommended for better functionality.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    PrefUtils.setNotificationPermissionRejectedCount(
+                        context,
+                        PrefUtils.getNotificationPermissionRejectedCount(context) + 1
+                    )
+                }
+            }
+
+        val checkPermissionAndLaunchScheduler = {
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
+                == PackageManager.PERMISSION_GRANTED
+            ) {
+                PrefUtils.setNotificationPermissionRejectedCount(context, 1)
+                navController.navigate(Graph.Scheduler.route)
+            } else {
+                if (PrefUtils.getNotificationPermissionRejectedCount(context) >= 2) {
+                    Toast.makeText(
+                        context,
+                        "Please allow Notification permission access.",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                    with(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)) {
+                        data = Uri.fromParts("package", context.packageName, null)
+                        addCategory(Intent.CATEGORY_DEFAULT)
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                        addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+                        context.startActivity(this)
+                    }
+                } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        notificationPermissionResultLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    } else{
+                        navController.navigate(Graph.Scheduler.route)
+                    }
+                }
+            }
+        }
+
         MainActivityLayout(
             locationName = locationName,
             profileImageUri = authViewModel.getUser()?.photoUrl,
             isNotificationEnabled = notificationEnabled,
-            onNav = onNav,
+            onNav = {
+                when (it) {
+                    Graph.Settings -> {
+                        navController.navigate(Graph.Settings.route)
+                    }
+
+                    Graph.BreathingTool -> {
+                        navController.navigate(Graph.BreathingTool.route)
+                    }
+
+                    Graph.WaterTool -> {
+                        navController.navigate(Graph.WaterTool.route)
+                    }
+
+                    Graph.MeditationTool -> {
+                        navController.navigate(Graph.MeditationTool.route)
+                    }
+
+                    Graph.SunlightTool -> {
+                        navController.navigate(Graph.SunlightTool.route)
+                    }
+
+                    Graph.Profile -> {
+                        navController.navigate(Graph.Profile.route)
+                    }
+
+                    Graph.Testimonials -> {
+                        navController.navigate(Graph.Testimonials.route)
+                    }
+
+                    Graph.SleepTool -> {}
+                    Graph.WalkingTool -> {}
+                    Graph.Dance -> {
+                        navController.navigate(Graph.ExerciseTool.route + "?activity=dance")
+                    }
+
+                    Graph.Hiit -> {
+                        navController.navigate(Graph.ExerciseTool.route + "?activity=HIIT")
+                    }
+
+                    Graph.Workout -> {
+                        navController.navigate(Graph.ExerciseTool.route + "?activity=workout")
+                    }
+
+                    Graph.Yoga -> {
+                        navController.navigate(Graph.ExerciseTool.route + "?activity=yoga")
+                    }
+
+                    Graph.Scheduler -> {
+                        checkPermissionAndLaunchScheduler()
+                    }
+
+                    else -> {}
+                }
+            },
             onClick = { key ->
                 when (key) {
                     MainTopBarActions.LOCATION -> {
@@ -145,11 +258,11 @@ fun NavGraphBuilder.mainActivityComp(
                     }
 
                     MainTopBarActions.SETTINGS -> {
-                        onNav(Graph.Settings)
+                        navController.navigate(Graph.Settings.route)
                     }
 
                     MainTopBarActions.PROFILE -> {
-                        onNav(Graph.Profile)
+                        navController.navigate(Graph.Profile.route)
                     }
 
                     MainTopBarActions.SHARE -> {

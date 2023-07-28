@@ -171,14 +171,8 @@ fun DigitalDemo(onTimeChange: (Time) -> Unit) {
 fun RepeatAlarm(
     onDaySelect: (Int) -> Unit, alarmSettingUiState: ASUiState,
 ) {
-    var text by remember {
-        mutableStateOf("One Time")
-    }
-    text = if (alarmSettingUiState.recurring) {
-        "base on Day"
-    } else {
-        "One Time"
-    }
+    var text by remember { mutableStateOf("One Time") }
+    text = getRecurringDaysText(alarmSettingUiState)
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -261,4 +255,33 @@ fun AllDays(
         DaysCircleButton(day = "F", isSelected = alarmSettingUiState.friday) { onDaySelect(5) }
         DaysCircleButton(day = "S", isSelected = alarmSettingUiState.saturday) { onDaySelect(6) }
     }
+}
+
+fun getRecurringDaysText(alarmWeek: ASUiState): String {
+    if (!alarmWeek.recurring) {
+        return "Once"
+    }
+    var days = ""
+    if (alarmWeek.monday) {
+        days += "Mon "
+    }
+    if (alarmWeek.tuesday) {
+        days += "Tue "
+    }
+    if (alarmWeek.wednesday) {
+        days += "Wed "
+    }
+    if (alarmWeek.thursday) {
+        days += "Thu "
+    }
+    if (alarmWeek.friday) {
+        days += "Fri "
+    }
+    if (alarmWeek.saturday) {
+        days += "Sat "
+    }
+    if (alarmWeek.sunday) {
+        days += "Sun "
+    }
+    return days
 }
