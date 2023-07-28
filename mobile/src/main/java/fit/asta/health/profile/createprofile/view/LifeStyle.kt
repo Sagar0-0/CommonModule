@@ -1,9 +1,11 @@
-@file:OptIn(ExperimentalCoroutinesApi::class)
+@file:OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterialApi::class)
 
 package fit.asta.health.profile.createprofile.view
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -100,11 +102,10 @@ fun LifeStyleContent(
             Spacer(modifier = Modifier.height(spacing.medium))
 
             //Sleep Schedule
-            LifeStyleTimePicker(
-                firstEvent = {
-                    showWakeUpTimeContent.value = true
-                    clockWakeUpState.show()
-                },
+            LifeStyleTimePicker(firstEvent = {
+                showWakeUpTimeContent.value = true
+                clockWakeUpState.show()
+            },
                 secondEvent = {
                     showBedTimeContent.value = true
                     clockBedState.show()
@@ -120,11 +121,10 @@ fun LifeStyleContent(
             Spacer(modifier = Modifier.height(spacing.medium))
 
             //Job Schedule
-            LifeStyleTimePicker(
-                firstEvent = {
-                    showJobStartContent.value = true
-                    clockJStartState.show()
-                },
+            LifeStyleTimePicker(firstEvent = {
+                showJobStartContent.value = true
+                clockJStartState.show()
+            },
                 secondEvent = {
                     showJobEndContent.value = true
                     clockJEndState.show()
@@ -138,16 +138,14 @@ fun LifeStyleContent(
             )
 
             if (showWakeUpTimeContent.value) {
-                CreateProfileTimePicker(
-                    clockState = clockWakeUpState,
+                CreateProfileTimePicker(clockState = clockWakeUpState,
                     onPositiveClick = { hours, minutes ->
                         viewModel.onEvent(event = ProfileEvent.OnUserWakeUpTimeChange("$hours:$minutes"))
                     })
             }
 
             if (showBedTimeContent.value) {
-                CreateProfileTimePicker(
-                    clockState = clockBedState,
+                CreateProfileTimePicker(clockState = clockBedState,
                     onPositiveClick = { hours, minutes ->
                         viewModel.onEvent(event = ProfileEvent.OnUserBedTimeChange("$hours:$minutes"))
                     })
@@ -156,16 +154,14 @@ fun LifeStyleContent(
             }
 
             if (showJobStartContent.value) {
-                CreateProfileTimePicker(
-                    clockState = clockJStartState,
+                CreateProfileTimePicker(clockState = clockJStartState,
                     onPositiveClick = { hours, minutes ->
                         viewModel.onEvent(event = ProfileEvent.OnUserJStartTimeChange("$hours:$minutes"))
                     })
             }
 
             if (showJobEndContent.value) {
-                CreateProfileTimePicker(
-                    clockState = clockJEndState,
+                CreateProfileTimePicker(clockState = clockJEndState,
                     onPositiveClick = { hours, minutes ->
                         viewModel.onEvent(event = ProfileEvent.OnUserJEndTimeChange("$hours:$minutes"))
                     })
@@ -183,12 +179,6 @@ fun LifeStyleContent(
                     selectionTypeText = "Are you Physically Active",
                     selectedOption = selectedPhyActiveOptionDemo,
                     onStateChange = { state ->
-//                        viewModel.onEvent(
-//                            ProfileEvent.SetSelectedPhyActOption(
-//                                option = state, optionIndex = 0
-//                            )
-//                        )
-
                         viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.PHYACTIVE, state)
                     },
                     firstOption = "Less",
@@ -209,7 +199,6 @@ fun LifeStyleContent(
                     selectionTypeText = "Current Working Environment",
                     selectedOption = selectedWorkingEnvOptionDemo,
                     onStateChange = { state ->
-//                        viewModel.onEvent(ProfileEvent.SetSelectedWorkingEnvOption(state, 0))
                         viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.WORKINGENV, state)
                     },
                     firstOption = "Standing",
@@ -301,8 +290,6 @@ fun LifeStyleContent(
 
 }
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LifeStyleCreateScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
@@ -315,37 +302,37 @@ fun LifeStyleCreateScreen(
         mutableStateOf(null)
     }
 
-    var skipPartiallyExpanded by remember { mutableStateOf(false) }
-    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = skipPartiallyExpanded)
+    var modalBottomSheetValue by remember {
+        mutableStateOf(ModalBottomSheetValue.Hidden)
+    }
+
+    val modalBottomSheetState =
+        androidx.compose.material.rememberModalBottomSheetState(modalBottomSheetValue)
 
     val scope = rememberCoroutineScope()
 
     val closeSheet = {
-        scope.launch { bottomSheetState.hide() }
+        scope.launch { modalBottomSheetState.hide() }
     }
 
     val openSheet = {
         scope.launch {
-            bottomSheetState.show()
-            /*if (modalBottomSheetValue == ModalBottomSheetValue.HalfExpanded) {
+            modalBottomSheetState.show()
+            if (modalBottomSheetValue == ModalBottomSheetValue.HalfExpanded) {
                 modalBottomSheetValue = ModalBottomSheetValue.Expanded
-            }*/
+            }
         }
     }
 
-    ModalBottomSheet(
-        modifier = Modifier.fillMaxSize(),
-        onDismissRequest = { closeSheet() },
-        sheetState = bottomSheetState,
-    ) {
-
+    AppModalBottomSheetLayout(sheetContent = {
         Spacer(modifier = Modifier.height(1.dp))
         currentBottomSheet?.let {
-            LifeStyleCreateBottomSheetLayout(sheetLayout = it, closeSheet = { closeSheet() })
+            LifeStyleCreateBottomSheetLayout(
+                sheetLayout = it, closeSheet = { closeSheet() }, viewModel = viewModel
+            )
         }
-
-        LifeStyleContent(
-            eventPrevious = eventPrevious,
+    }, sheetState = modalBottomSheetState, content = {
+        LifeStyleContent(eventPrevious = eventPrevious,
             eventNext = eventNext,
             onSkipEvent = onSkipEvent,
             onCurrentActivity = {
@@ -363,7 +350,7 @@ fun LifeStyleCreateScreen(
                 openSheet()
                 viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "goal"))
             })
-    }
+    })
 }
 
 

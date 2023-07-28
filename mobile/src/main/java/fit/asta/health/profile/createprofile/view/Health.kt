@@ -5,13 +5,19 @@
     ExperimentalCoroutinesApi::class,
     ExperimentalCoroutinesApi::class,
     ExperimentalCoroutinesApi::class,
-    ExperimentalCoroutinesApi::class
+    ExperimentalCoroutinesApi::class,
+    ExperimentalMaterialApi::class
 )
+
 
 package fit.asta.health.profile.createprofile.view
 
+
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -20,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import fit.asta.health.common.ui.components.AppModalBottomSheetLayout
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
@@ -225,7 +232,7 @@ fun HealthContent(
 }
 
 
-@OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun HealthCreateScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
@@ -238,33 +245,36 @@ fun HealthCreateScreen(
         mutableStateOf(null)
     }
 
-    var skipPartiallyExpanded by remember { mutableStateOf(false) }
-    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded)
+    var modalBottomSheetValue by remember {
+        mutableStateOf(ModalBottomSheetValue.Hidden)
+    }
+
+    val modalBottomSheetState = rememberModalBottomSheetState(modalBottomSheetValue)
+
     val scope = rememberCoroutineScope()
 
     val closeSheet = {
-        scope.launch { bottomSheetState.hide() }
+        scope.launch { modalBottomSheetState.hide() }
     }
 
     val openSheet = {
         scope.launch {
-            bottomSheetState.show()
+            modalBottomSheetState.show()
+            if (modalBottomSheetValue == ModalBottomSheetValue.HalfExpanded) {
+                modalBottomSheetValue = ModalBottomSheetValue.Expanded
+            }
         }
     }
 
-    ModalBottomSheet(
-        modifier = Modifier.fillMaxSize().wrapContentHeight(),
-        onDismissRequest = { closeSheet() },
-        sheetState = bottomSheetState
-    ) {
 
+    AppModalBottomSheetLayout(sheetContent = {
         Spacer(modifier = Modifier.height(1.dp))
         currentBottomSheet?.let {
             HealthCreateBtmSheetLayout(
                 sheetLayout = it, sheetState = { closeSheet() }, viewModel = viewModel
             )
         }
-
+    }, sheetState = modalBottomSheetState, content = {
         HealthContent(eventPrevious = eventPrevious,
             eventNext = eventNext,
             onSkipEvent = onSkipEvent,
@@ -303,7 +313,8 @@ fun HealthCreateScreen(
                 openSheet()
                 viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "add"))
             })
-    }
+    })
+
 }
 
 enum class HealthCreateBottomSheetTypes {

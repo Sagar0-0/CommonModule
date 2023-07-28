@@ -75,23 +75,20 @@ fun MainActivityLayout(
             navController = navController, onNav = onNav, innerPadding = it
         )
     }, topBar = {
-        AppTopBar(
-            backIcon = null,
-            actions = {
-                NewMainTopBarActions(
-                    onClick = onClick,
-                    isNotificationEnabled = isNotificationEnabled,
-                    profileImageUri = profileImageUri,
-                    locationName = locationName
-                )
-            }
-        )
+        AppTopBar(backIcon = null, actions = {
+            NewMainTopBarActions(
+                onClick = onClick,
+                isNotificationEnabled = isNotificationEnabled,
+                profileImageUri = profileImageUri,
+                locationName = locationName
+            )
+        })
     })
 }
 
 
 @Composable
-fun BottomAppBarLayout(
+private fun BottomAppBarLayout(
     items: List<BottomNavItem>,
     currentRoute: String,
     onNavigate: (route: String) -> Unit,
@@ -107,12 +104,11 @@ fun BottomAppBarLayout(
         tonalElevation = elevation.high
     ) {
         items.forEach { item ->
-            NavigationBarItem(
-                icon = {
-                    Icon(
-                        painter = painterResource(id = item.icon), contentDescription = item.title
-                    )
-                },
+            NavigationBarItem(icon = {
+                Icon(
+                    painter = painterResource(id = item.icon), contentDescription = item.title
+                )
+            },
                 label = { Text(text = item.title) },
                 selected = currentRoute == item.route,
                 onClick = { onNavigate(item.route) },
@@ -124,7 +120,7 @@ fun BottomAppBarLayout(
 
 
 @Composable
-fun NewMainTopBarActions(
+private fun NewMainTopBarActions(
     onClick: (key: MainTopBarActions) -> Unit,
     isNotificationEnabled: Boolean,
     profileImageUri: Uri?,
@@ -182,7 +178,10 @@ fun NewMainTopBarActions(
 
 
 @Composable
-fun MainBottomAppBar(navController: NavHostController, currentDestination: NavDestination?) {
+private fun MainBottomAppBar(
+    navController: NavHostController,
+    currentDestination: NavDestination?,
+) {
 
     val currentRoute = navController.currentDestination?.route ?: BottomBarDestination.Home.route
 
@@ -197,7 +196,7 @@ fun MainBottomAppBar(navController: NavHostController, currentDestination: NavDe
 }
 
 
-fun onNavigate(
+private fun onNavigate(
     navController: NavController,
     route: String,
     currentDestination: NavDestination?,
@@ -224,8 +223,9 @@ fun onNavigate(
 }
 
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun MainNavHost(
+private fun MainNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     onNav: (Graph) -> Unit,

@@ -31,5 +31,6 @@ fun CustomModelBottomSheet(
 
             }
         },
+        label = "",
     )
 }

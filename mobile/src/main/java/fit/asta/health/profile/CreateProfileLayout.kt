@@ -1,6 +1,7 @@
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
 package fit.asta.health.profile
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -31,17 +32,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel(), onBack: () -> Unit) {
-
-    /* TODO Paddings, Font, Elevations (4dp and 6dp), BottomSheets, Colors */
-
-//    val context = LocalContext.current
-
-    //ValidInputs
-
-    // pregnancy
-
-
-    //Inputs Validity
 
 
     //Custom Dialog

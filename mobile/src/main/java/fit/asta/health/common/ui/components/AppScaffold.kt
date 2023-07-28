@@ -9,6 +9,7 @@ package fit.asta.health.common.ui.components
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.BottomSheetScaffoldState
@@ -20,6 +21,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+
 
 @Composable
 fun AppScaffold(
@@ -56,7 +59,7 @@ fun AppBottomSheetScaffold(
     modifier: Modifier = Modifier,
     scaffoldState: BottomSheetScaffoldState,
     sheetPeekHeight: Dp = BottomSheetDefaults.SheetPeekHeight,
-    sheetShape: Shape = BottomSheetDefaults.ExpandedShape,
+    sheetShape: Shape = RoundedCornerShape(16.dp),
     sheetShadowElevation: Dp = BottomSheetDefaults.Elevation,
     sheetSwipeEnabled: Boolean = true,
     sheetContent: @Composable ColumnScope.() -> Unit,
