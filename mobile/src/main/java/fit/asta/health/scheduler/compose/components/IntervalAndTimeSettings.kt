@@ -18,7 +18,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.MoreTime
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Snooze
@@ -88,20 +87,14 @@ fun SettingsLayout(
             onCheckClicked = { onChoice(it) },
             onNavigateToClickText = onNavigateAdvanced
         )
-        TextSelection(
-            imageIcon =Icons.Default.MoreTime,
-            title = "Duration",
-            arrowTitle = "${timeSettingUiState.duration} Minutes",
-            btnEnabled = true,
-            onNavigateAction = onNavigateDuration
-        )
         OnlyToggleButton(
             imageIcon = Icons.Default.Timelapse,
-            title = "Remind at the end\nof Duration",
-            switchTitle = "",
+            title = "Post\nReminder",
+            btnEnabled =true ,
+            switchTitle = "${timeSettingUiState.duration} Minutes",
             mCheckedState = timeSettingUiState.isRemainderAtTheEnd,
             onCheckClicked = { onRemainderAtEnd(it) },
-            onNavigateToClickText = null
+            onNavigateToClickText = onNavigateDuration
         )
         OnlyToggleButton(
             imageIcon = Icons.Default.Schedule,

@@ -21,6 +21,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.twotone.Delete
+import androidx.compose.material.icons.twotone.SkipNext
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -43,6 +45,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -59,6 +62,7 @@ import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.main.Graph
 import fit.asta.health.navigation.home.view.component.NameAndMoodHomeScreenHeader
+import fit.asta.health.scheduler.compose.screen.homescreen.Event
 import fit.asta.health.scheduler.compose.screen.homescreen.HomeEvent
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import kotlinx.coroutines.CoroutineScope
@@ -111,24 +115,24 @@ fun TodayContent(
                 }
             }
             items(listMorning) { data ->
-                SwipeDemoToday(data = data, onSwipe = {
-                    hSEvent(HomeEvent.DeleteAlarm(data, context))
+                SwipeDemoToday(data = data, onSwipeRight = {
+                    hSEvent(HomeEvent.DeleteAlarm(data, context,Event.Morning))
                     coroutineScope.launch {
-                        val snackbarResult = snackBarHostState.showSnackbar(
+                        val snackBarResult = snackBarHostState.showSnackbar(
                             message = "Deleted ${data.info.name}",
                             actionLabel = "Undo",
                             duration = SnackbarDuration.Long
                         )
-                        when (snackbarResult) {
+                        when (snackBarResult) {
                             SnackbarResult.ActionPerformed -> {
-                                hSEvent(HomeEvent.UndoAlarm(data, context))
+                                hSEvent(HomeEvent.UndoAlarm(data, context,Event.Morning))
                             }
 
                             else -> {}
                         }
                     }
                 }, onDone = {
-//                    hSEvent(HomeEvent.SetAlarmState(data, it, context))
+                   onNav(goToTool(data.info.tag))
                 }, onReschedule = {
                     onNav(Graph.Scheduler)
                     hSEvent(HomeEvent.EditAlarm(data))
@@ -141,24 +145,24 @@ fun TodayContent(
                 }
             }
             items(listAfternoon) { data ->
-                SwipeDemoToday(data = data, onSwipe = {
-                    hSEvent(HomeEvent.DeleteAlarm(data, context))
+                SwipeDemoToday(data = data, onSwipeRight = {
+                    hSEvent(HomeEvent.DeleteAlarm(data, context,Event.Afternoon))
                     coroutineScope.launch {
-                        val snackbarResult = snackBarHostState.showSnackbar(
+                        val snackBarResult = snackBarHostState.showSnackbar(
                             message = "Deleted ${data.info.name}",
                             actionLabel = "Undo",
                             duration = SnackbarDuration.Long
                         )
-                        when (snackbarResult) {
+                        when (snackBarResult) {
                             SnackbarResult.ActionPerformed -> {
-                                hSEvent(HomeEvent.UndoAlarm(data, context))
+                                hSEvent(HomeEvent.UndoAlarm(data, context,Event.Afternoon))
                             }
 
                             else -> {}
                         }
                     }
                 }, onDone = {
-//                    hSEvent(HomeEvent.SetAlarmState(data, it, context))
+                    onNav(goToTool(data.info.tag))
                 }, onReschedule = {
                     onNav(Graph.Scheduler)
                     hSEvent(HomeEvent.EditAlarm(data))
@@ -171,24 +175,24 @@ fun TodayContent(
                 }
             }
             items(listEvening) { data ->
-                SwipeDemoToday(data = data, onSwipe = {
-                    hSEvent(HomeEvent.DeleteAlarm(data, context))
+                SwipeDemoToday(data = data, onSwipeRight = {
+                    hSEvent(HomeEvent.DeleteAlarm(data, context,Event.Evening))
                     coroutineScope.launch {
-                        val snackbarResult = snackBarHostState.showSnackbar(
+                        val snackBarResult = snackBarHostState.showSnackbar(
                             message = "Deleted ${data.info.name}",
                             actionLabel = "Undo",
                             duration = SnackbarDuration.Long
                         )
-                        when (snackbarResult) {
+                        when (snackBarResult) {
                             SnackbarResult.ActionPerformed -> {
-                                hSEvent(HomeEvent.UndoAlarm(data, context))
+                                hSEvent(HomeEvent.UndoAlarm(data, context,Event.Evening))
                             }
 
                             else -> {}
                         }
                     }
                 }, onDone = {
-//                    hSEvent(HomeEvent.SetAlarmState(data, it, context))
+                    onNav(goToTool(data.info.tag))
                 }, onReschedule = {
                     onNav(Graph.Scheduler)
                     hSEvent(HomeEvent.EditAlarm(data))
@@ -336,25 +340,31 @@ fun TodayItem(
 
 @Composable
 fun SwipeDemoToday(
-    onSwipe: () -> Unit = {},
-    image: String = "/tags/Breathing+Tag.png",
-    title: String = "Fasting",
-    description: String = "Fasting to cleanse your body",
+    onSwipeRight: () -> Unit = {},
+    onSwipeLeft: () -> Unit = {},
     progress: String = "44%",
-    time: String = "9:00am",
     data: AlarmEntity,
     onDone: () -> Unit = {},
     onReschedule: () -> Unit = {}
 ) {
 
     val archive = SwipeAction(
-        icon = painterResource(id = R.drawable.ic_baseline_delete_24),
+        icon = rememberVectorPainter(Icons.TwoTone.Delete),
         background = Color.Red,
-        onSwipe = { onSwipe() }
+        isUndo = true,
+        onSwipe = onSwipeRight
+    )
+    val skip = SwipeAction(
+        icon =rememberVectorPainter(Icons.TwoTone.SkipNext),
+        background = Color.Yellow,
+        isUndo = false,
+        onSwipe = onSwipeLeft,
     )
 
     SwipeableActionsBox(
         startActions = listOf(archive),
+        endActions = listOf(skip),
+        swipeThreshold = 20.dp,
         backgroundUntilSwipeThreshold = MaterialTheme.colorScheme.background
     ) {
         TodayCard(
@@ -393,7 +403,7 @@ fun TodayCard(
     )
 }
 
-fun GoToTool(tag: String): Graph {
+fun goToTool(tag: String): Graph {
     return when (tag) {
         "Breathing" -> {
             Graph.BreathingTool

@@ -5,17 +5,15 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.scheduler.compose.screen.alarmscreen.AlarmEvent
 import fit.asta.health.scheduler.compose.screen.alarmscreen.AlarmUiState
-import fit.asta.health.scheduler.model.AlarmBackendRepo
 import fit.asta.health.scheduler.model.AlarmLocalRepo
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.net.scheduler.Stat
 import fit.asta.health.scheduler.services.AlarmService
-import java.util.*
+import java.util.Locale
 import javax.inject.Inject
 
 
@@ -23,8 +21,6 @@ import javax.inject.Inject
 class AlarmScreenViewModel
 @Inject constructor(
     private val alarmLocalRepo: AlarmLocalRepo,
-    private val backendRepo: AlarmBackendRepo,
-    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     var alarmEntity: AlarmEntity? = null
@@ -37,6 +33,7 @@ class AlarmScreenViewModel
         alarm?.let {
             alarmEntity = it
             _alarmUiState.value = _alarmUiState.value.copy(
+                image = it.info.url,
                 alarmName = it.info.name,
                 alarmTime = if (it.time.midDay) {
                     String.format(
@@ -63,7 +60,7 @@ class AlarmScreenViewModel
         when (uiEvent) {
             is AlarmEvent.onSwipedLeft -> {
 
-                Log.d("TAGTAGTAG", "onSwipedLeft::  " )
+                Log.d("TAGTAGTAG", "onSwipedLeft::  ")
                 alarmEntity?.let {
                     it.info.name = "Snooze ${it.info.name}"
                     it.snooze(uiEvent.context)
@@ -73,6 +70,7 @@ class AlarmScreenViewModel
                 uiEvent.context.stopService(intentService)
                 (uiEvent.context as AppCompatActivity).finishAndRemoveTask()
             }
+
             is AlarmEvent.onSwipedRight -> {
                 Log.d("TAGTAG", "event: alarm $alarmEntity")
                 alarmEntity?.let { alarm ->
@@ -105,6 +103,7 @@ class AlarmScreenViewModel
                 uiEvent.context.stopService(intentService)
                 (uiEvent.context as AppCompatActivity).finishAndRemoveTask()
             }
+
             else -> {}
         }
     }

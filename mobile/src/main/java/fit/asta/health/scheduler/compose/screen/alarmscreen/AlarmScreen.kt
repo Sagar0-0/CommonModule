@@ -19,13 +19,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import fit.asta.health.common.ui.components.AppScaffold
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import fit.asta.health.R
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.common.utils.getImageUrl
+import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun AlarmScreen( uiState:AlarmUiState,event:(AlarmEvent)->Unit) {
+fun AlarmScreen(uiState: AlarmUiState, event: (AlarmEvent) -> Unit) {
 
     val snackBarHostState = remember { SnackbarHostState() }
     val context: Context = LocalContext.current
@@ -33,23 +40,33 @@ fun AlarmScreen( uiState:AlarmUiState,event:(AlarmEvent)->Unit) {
         modifier = Modifier.fillMaxSize(),
         snackBarHostState = snackBarHostState
     ) {
-        Column(
-            modifier = Modifier
-                .padding(it)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(modifier = Modifier.height(20.dp))
-            Text(text = uiState.alarmTime, style = MaterialTheme.typography.displayMedium)
-            Spacer(modifier = Modifier.height(20.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(space = spacing.medium)) {
-                Button(onClick = { event(AlarmEvent.onSwipedLeft(context)) }) {
-                    Text(text = "Snooze",Modifier.background(Color.Green))
-                }
-                Spacer(modifier = Modifier.width(20.dp))
-                Button(onClick = {event(AlarmEvent.onSwipedRight(context)) }) {
-                    Text(text = "stop",Modifier.background(Color.Green))
+        Box(modifier = Modifier.fillMaxSize()) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(getImageUrl(url = uiState.image))
+                    .crossfade(true)
+                    .build(),
+                alpha = 0.5f,
+                placeholder = painterResource(R.drawable.placeholder_tag),
+                contentDescription = stringResource(R.string.description),
+                contentScale = ContentScale.Fit,
+                modifier = Modifier.fillMaxSize()
+            )
+            Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+                Column(
+                    modifier = Modifier.padding(it).fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(spacing.extraLarge),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(text = uiState.alarmTime, style = MaterialTheme.typography.h2)
+                    Row(horizontalArrangement = Arrangement.spacedBy(space = spacing.large)) {
+                        Button(onClick = { event(AlarmEvent.onSwipedLeft(context)) }) {
+                            Text(text = "Snooze", Modifier.background(Color.Green))
+                        }
+                        Button(onClick = { event(AlarmEvent.onSwipedRight(context)) }) {
+                            Text(text = "stop", Modifier.background(Color.Green))
+                        }
+                    }
                 }
             }
         }

@@ -210,21 +210,19 @@ data class AlarmEntity(
                 }
             }
         }
-
-
-        if (this.interval.isVariantInterval) {
-            scheduleAlarmInterval(
-                context,
-                this.interval.variantIntervals
-            )
-        } else {
-            scheduleAlarmInterval(
-                context,
-                this.interval.staticIntervals
-            )
+        if (this.interval.status){
+            if (this.interval.isVariantInterval) {
+                scheduleAlarmInterval(
+                    context,
+                    this.interval.variantIntervals
+                )
+            } else {
+                scheduleAlarmInterval(
+                    context,
+                    this.interval.staticIntervals
+                )
+            }
         }
-
-
         if (this.interval.advancedReminder.status) {
             schedulerAlarmPreNotification(context, false, null, this.alarmId)
         }
@@ -252,27 +250,8 @@ data class AlarmEntity(
             hour = this.time.hours.toInt()
             min = this.time.minutes.toInt() + this.interval.duration
         }
-        when (hour) {
-            in 0..22 -> {
-                if (min >= 60) {// NEXT HOUR 23:59
-                    calendar[Calendar.HOUR_OF_DAY] = hour + 1
-                    calendar[Calendar.MINUTE] = min - 60
-                } else { //22:59
-                    calendar[Calendar.HOUR_OF_DAY] = hour
-                    calendar[Calendar.MINUTE] = min
-                }
-            }
-            23 -> {
-                if (min >= 60) { //next day 00:min-60
-                    calendar[Calendar.HOUR_OF_DAY] = 0
-                    calendar[Calendar.MINUTE] = min - 60
-                    calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1)
-                } else { // 23:59
-                    calendar[Calendar.HOUR_OF_DAY] = hour
-                    calendar[Calendar.MINUTE] = min
-                }
-            }
-        }
+        calendar[Calendar.HOUR_OF_DAY] = hour
+        calendar[Calendar.MINUTE] = min
         calendar[Calendar.SECOND] = 0
         calendar[Calendar.MILLISECOND] = 0
 
@@ -904,17 +883,15 @@ data class AlarmEntity(
         }
 
         this.status = false
+        if (this.interval.advancedReminder.status){
         cancelPreNotification(context, alarmId)
+        }
         if (this.interval.isRemainderAtTheEnd) {
             cancelPostNotification(context, alarmId) // post notification one time
         }
-        if (cancelAllIntervals) {
+        if (cancelAllIntervals&&this.interval.status) {
             if (this.interval.isVariantInterval) {
                 if (this.interval.variantIntervals.isNotEmpty()) {
-                    if (this.interval.isRemainderAtTheEnd) {
-                        val interval = this.interval.variantIntervals[0]
-                        cancelPostNotification(context, interval.id)// post notification one time scheduled for single alarm
-                    }
                     this.interval.variantIntervals.forEach {
                         cancelPreNotification(context, it.id)
                         cancelAlarmInterval(context, it)
@@ -922,10 +899,6 @@ data class AlarmEntity(
                 }
             } else {
                 if (this.interval.staticIntervals.isNotEmpty()) {
-                    if (this.interval.isRemainderAtTheEnd) {
-                        val interval = this.interval.staticIntervals[0]
-                        cancelPostNotification(context, interval.id)// post notification one time  scheduled for single interval
-                    }
                     this.interval.staticIntervals.forEach {
                         cancelPreNotification(context, it.id)
                         cancelAlarmInterval(context, it)
@@ -952,7 +925,8 @@ data class AlarmEntity(
         calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + day)
         val runEverySevenDays = (7 * 24 * 60 * 60 * 1000).toLong()
 
-        Log.d("TAGTAG", "setAlarmOther: ${calendar.time}")
+//        Log.d("TAGTAG", "setAlarmOther: ${calendar.time}")
+        Log.d("alarm", "setAlarmOther:id $id")
         alarmManager.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
@@ -977,7 +951,7 @@ data class AlarmEntity(
             calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 7)
         }
         val runEverySevenDays = (7 * 24 * 60 * 60 * 1000).toLong()
-        Log.d("TAGTAG", "setTodayAlarm: ${calendar.time}")
+        Log.d("alarm", "setTodayAlarm:id $id")
         alarmManager.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
