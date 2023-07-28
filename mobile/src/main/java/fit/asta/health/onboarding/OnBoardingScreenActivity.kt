@@ -4,16 +4,16 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import fit.asta.health.MainActivity
 import fit.asta.health.auth.AuthActivity
 import fit.asta.health.auth.viewmodel.AuthViewModel
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.common.utils.PrefUtils
-import fit.asta.health.MainActivity
 import fit.asta.health.onboarding.ui.OnBoardingPager
 import fit.asta.health.onboarding.vm.OnboardingViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,7 +21,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class OnBoardingScreenActivity : AppCompatActivity() {
+class OnBoardingScreenActivity : ComponentActivity() {
 
     private val onboardingViewModel: OnboardingViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
