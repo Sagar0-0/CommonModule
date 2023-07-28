@@ -1,4 +1,4 @@
-package fit.asta.health.main.ui
+package fit.asta.health.main.view
 
 sealed class BottomBarDestination(val route: String) {
     object Home : BottomBarDestination("bbd_home")

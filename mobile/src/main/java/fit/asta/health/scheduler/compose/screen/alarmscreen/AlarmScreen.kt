@@ -3,13 +3,12 @@ package fit.asta.health.scheduler.compose.screen.alarmscreen
 import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
@@ -27,9 +26,9 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.AppScaffold
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.getImageUrl
-import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun AlarmScreen(uiState: AlarmUiState, event: (AlarmEvent) -> Unit) {
@@ -52,13 +51,17 @@ fun AlarmScreen(uiState: AlarmUiState, event: (AlarmEvent) -> Unit) {
                 contentScale = ContentScale.Fit,
                 modifier = Modifier.fillMaxSize()
             )
-            Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)) {
                 Column(
-                    modifier = Modifier.padding(it).fillMaxWidth(),
+                    modifier = Modifier
+                        .padding(it)
+                        .fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(spacing.extraLarge),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = uiState.alarmTime, style = MaterialTheme.typography.h2)
+                    Text(text = uiState.alarmTime, style = MaterialTheme.typography.displayMedium)
                     Row(horizontalArrangement = Arrangement.spacedBy(space = spacing.large)) {
                         Button(onClick = { event(AlarmEvent.onSwipedLeft(context)) }) {
                             Text(text = "Snooze", Modifier.background(Color.Green))

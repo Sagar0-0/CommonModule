@@ -43,7 +43,6 @@ import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.MainTopBarActions
 import fit.asta.health.main.Graph
 import fit.asta.health.main.sharedViewModel
-import fit.asta.health.main.ui.BottomBarDestination
 import fit.asta.health.navigation.home.view.HomeContent
 import fit.asta.health.navigation.today.view.TodayContent
 import fit.asta.health.navigation.today.viewmodel.TodayPlanViewModel
