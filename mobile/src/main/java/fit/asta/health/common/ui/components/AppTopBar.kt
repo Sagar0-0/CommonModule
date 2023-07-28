@@ -4,7 +4,6 @@ package fit.asta.health.common.ui.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.outlined.NavigateBefore
@@ -72,8 +71,7 @@ fun AppTopBarWithHelp(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
 
             IconButton(onClick = onHelp) {
