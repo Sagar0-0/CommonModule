@@ -17,14 +17,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
@@ -153,7 +153,7 @@ fun UploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
                     Image(
                         painter = painterResource(id = R.drawable.upload),
                         contentDescription = null,
-                        modifier = Modifier.size(imageSize.extraMedium)
+                        modifier = Modifier.size(imageSize.standard)
                     )
                 }
             }

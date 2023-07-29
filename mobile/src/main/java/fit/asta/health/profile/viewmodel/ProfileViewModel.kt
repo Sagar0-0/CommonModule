@@ -486,18 +486,18 @@ class ProfileViewModel
         )
     }
 
+    private fun safeToInt(value: String): Int {
+        return value.toIntOrNull() ?: 0
+    }
+
 
     private fun createPhysique(): Physique {
         // Extract the physique creation logic here
         return Physique(
             weight = weight.value.value.toFloat(),
-            age = age.value.value.toInt(),
+            age = safeToInt(age.value.value),
             height = height.value.value.toFloat(),
-            pregnancyWeek = if (pregnancyWeek.value.value.isEmpty()) {
-                0
-            } else {
-                pregnancyWeek.value.value.toInt()
-            },
+            pregnancyWeek = safeToInt(pregnancyWeek.value.value),
             bodyType = bodyType.value.value,
             gender = uploadThreeRadioBtnSelection(
                 value = getSelectedValueForRadioButton(
@@ -523,8 +523,7 @@ class ProfileViewModel
 
     private fun createHealth(): Health {
         // Extract the health creation logic here
-        return Health(
-            healthHistory = getValueAtIndex(ComposeIndex.First, 0)?.let { ArrayList(it) },
+        return Health(healthHistory = getValueAtIndex(ComposeIndex.First, 0)?.let { ArrayList(it) },
             injuries = getValueAtIndex(ComposeIndex.First, 1)?.let { ArrayList(it) },
             bodyPart = getValueAtIndex(ComposeIndex.First, 2)?.let { ArrayList(it) },
             ailments = getValueAtIndex(ComposeIndex.First, 3)?.let { ArrayList(it) },
@@ -737,7 +736,7 @@ class ProfileViewModel
 
     private fun handleUserAgeChange(eventAge: String) {
         savedState[AGE] = age.value.copy(
-            value = age.toString(), error = onValidateAge(eventAge, min = 10)
+            value = eventAge, error = onValidateAge(eventAge, min = 10)
         )
     }
 
