@@ -175,7 +175,7 @@ fun PrivacyStatement() {
             Image(
                 painter = painterResource(id = R.drawable.privacy),
                 contentDescription = null,
-                modifier = Modifier.size(imageSize.extraMedium)
+                modifier = Modifier.size(imageSize.standard)
             )
         }
         Spacer(modifier = Modifier.width(spacing.medium))
@@ -208,7 +208,7 @@ fun UserConsent() {
             Checkbox(
                 checked = checkedState.value,
                 onCheckedChange = { checkedState.value = it },
-                modifier = Modifier.size(imageSize.extraMedium)
+                modifier = Modifier.size(imageSize.standard)
             )
         }
         Spacer(modifier = Modifier.width(spacing.medium))

@@ -334,7 +334,7 @@ fun ProfileDetails(
                 painter = painterResource(id = imageID),
                 contentDescription = null,
                 alignment = Alignment.Center,
-                modifier = Modifier.size(imageSize.extraMedium)
+                modifier = Modifier.size(imageSize.standard)
             )
             Spacer(modifier = Modifier.height(spacing.small))
             Text(

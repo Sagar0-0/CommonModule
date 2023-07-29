@@ -202,7 +202,7 @@ fun UploadFiles(modifier: Modifier = Modifier) {
                     Image(
                         painter = painterResource(id = R.drawable.upload),
                         contentDescription = null,
-                        modifier = Modifier.size(imageSize.extraMedium)
+                        modifier = Modifier.size(imageSize.standard)
                     )
                 }
             }
