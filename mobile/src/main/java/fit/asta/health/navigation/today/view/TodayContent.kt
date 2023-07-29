@@ -1,5 +1,6 @@
 package fit.asta.health.navigation.today.view
 
+import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -116,21 +117,9 @@ fun TodayContent(
             }
             items(listMorning) { data ->
                 SwipeDemoToday(data = data, onSwipeRight = {
-                    hSEvent(HomeEvent.DeleteAlarm(data, context,Event.Morning))
-                    coroutineScope.launch {
-                        val snackBarResult = snackBarHostState.showSnackbar(
-                            message = "Deleted ${data.info.name}",
-                            actionLabel = "Undo",
-                            duration = SnackbarDuration.Long
-                        )
-                        when (snackBarResult) {
-                            SnackbarResult.ActionPerformed -> {
-                                hSEvent(HomeEvent.UndoAlarm(data, context,Event.Morning))
-                            }
-
-                            else -> {}
-                        }
-                    }
+                    swipeRight(Event.Morning, data, context, coroutineScope, snackBarHostState,hSEvent)
+                },onSwipeLeft = {
+                    swipeLeft(Event.Morning, data, context, coroutineScope, snackBarHostState,hSEvent)
                 }, onDone = {
                    onNav(goToTool(data.info.tag))
                 }, onReschedule = {
@@ -146,21 +135,9 @@ fun TodayContent(
             }
             items(listAfternoon) { data ->
                 SwipeDemoToday(data = data, onSwipeRight = {
-                    hSEvent(HomeEvent.DeleteAlarm(data, context,Event.Afternoon))
-                    coroutineScope.launch {
-                        val snackBarResult = snackBarHostState.showSnackbar(
-                            message = "Deleted ${data.info.name}",
-                            actionLabel = "Undo",
-                            duration = SnackbarDuration.Long
-                        )
-                        when (snackBarResult) {
-                            SnackbarResult.ActionPerformed -> {
-                                hSEvent(HomeEvent.UndoAlarm(data, context,Event.Afternoon))
-                            }
-
-                            else -> {}
-                        }
-                    }
+                    swipeRight(Event.Afternoon, data, context, coroutineScope, snackBarHostState,hSEvent)
+                },onSwipeLeft = {
+                    swipeLeft(Event.Afternoon, data, context, coroutineScope, snackBarHostState,hSEvent)
                 }, onDone = {
                     onNav(goToTool(data.info.tag))
                 }, onReschedule = {
@@ -176,22 +153,10 @@ fun TodayContent(
             }
             items(listEvening) { data ->
                 SwipeDemoToday(data = data, onSwipeRight = {
-                    hSEvent(HomeEvent.DeleteAlarm(data, context,Event.Evening))
-                    coroutineScope.launch {
-                        val snackBarResult = snackBarHostState.showSnackbar(
-                            message = "Deleted ${data.info.name}",
-                            actionLabel = "Undo",
-                            duration = SnackbarDuration.Long
-                        )
-                        when (snackBarResult) {
-                            SnackbarResult.ActionPerformed -> {
-                                hSEvent(HomeEvent.UndoAlarm(data, context,Event.Evening))
-                            }
-
-                            else -> {}
-                        }
-                    }
-                }, onDone = {
+                    swipeRight(Event.Evening, data, context, coroutineScope, snackBarHostState,hSEvent)
+                },onSwipeLeft = {
+                    swipeLeft(Event.Evening, data, context, coroutineScope, snackBarHostState,hSEvent)
+                },onDone = {
                     onNav(goToTool(data.info.tag))
                 }, onReschedule = {
                     onNav(Graph.Scheduler)
@@ -203,6 +168,56 @@ fun TodayContent(
     }
 
 
+}
+
+
+private fun swipeRight(
+    event: Event,
+    data: AlarmEntity,
+    context: Context,
+    coroutineScope: CoroutineScope,
+    snackBarHostState: SnackbarHostState,
+    hSEvent: (HomeEvent) -> Unit,
+) {
+    hSEvent(HomeEvent.DeleteAlarm(data, context, event))
+    coroutineScope.launch {
+        val snackBarResult = snackBarHostState.showSnackbar(
+            message = "Deleted ${data.info.name}",
+            actionLabel = "Undo",
+            duration = SnackbarDuration.Long
+        )
+        when (snackBarResult) {
+            SnackbarResult.ActionPerformed -> {
+                hSEvent(HomeEvent.UndoAlarm(data, context, event))
+            }
+            else -> {}
+        }
+    }
+}
+
+
+private fun swipeLeft(
+    event: Event,
+    data: AlarmEntity,
+    context: Context,
+    coroutineScope: CoroutineScope,
+    snackBarHostState: SnackbarHostState,
+    hSEvent: (HomeEvent) -> Unit
+) {
+    hSEvent(HomeEvent.SkipAlarm(data, context, event))
+    coroutineScope.launch {
+        val snackBarResult = snackBarHostState.showSnackbar(
+            message = "Skip ${data.info.name}",
+            actionLabel = "Undo",
+            duration = SnackbarDuration.Long
+        )
+        when (snackBarResult) {
+            SnackbarResult.ActionPerformed -> {
+                hSEvent(HomeEvent.UndoSkipAlarm(data, context,event))
+            }
+            else -> {}
+        }
+    }
 }
 
 @Composable
@@ -351,13 +366,11 @@ fun SwipeDemoToday(
     val archive = SwipeAction(
         icon = rememberVectorPainter(Icons.TwoTone.Delete),
         background = Color.Red,
-        isUndo = true,
         onSwipe = onSwipeRight
     )
     val skip = SwipeAction(
         icon =rememberVectorPainter(Icons.TwoTone.SkipNext),
         background = Color.Yellow,
-        isUndo = false,
         onSwipe = onSwipeLeft,
     )
 

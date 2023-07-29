@@ -1,7 +1,6 @@
 package fit.asta.health.scheduler.compose.screen.alarmscreen
 
 import android.content.Context
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -64,10 +62,10 @@ fun AlarmScreen(uiState: AlarmUiState, event: (AlarmEvent) -> Unit) {
                     Text(text = uiState.alarmTime, style = MaterialTheme.typography.displayMedium)
                     Row(horizontalArrangement = Arrangement.spacedBy(space = spacing.large)) {
                         Button(onClick = { event(AlarmEvent.onSwipedLeft(context)) }) {
-                            Text(text = "Snooze", Modifier.background(Color.Green))
+                            Text(text = "Snooze", style = MaterialTheme.typography.titleMedium)
                         }
                         Button(onClick = { event(AlarmEvent.onSwipedRight(context)) }) {
-                            Text(text = "stop", Modifier.background(Color.Green))
+                            Text(text = "stop", style = MaterialTheme.typography.titleMedium)
                         }
                     }
                 }

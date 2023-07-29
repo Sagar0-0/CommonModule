@@ -43,6 +43,11 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
                 val toastText = String.format("Alarm Received")
                 Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
                 if (alarmEntity != null) {
+//                    val notificationIntent = Intent(context, AlarmScreenActivity::class.java)
+//                    notificationIntent.putExtra(BUNDLE_ALARM_OBJECT, bundleForAlarm)
+//                    notificationIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//                    context?.startActivity(notificationIntent)
+
                     if (!alarmEntity?.week!!.recurring) {
                         startAlarmService(
                             context!!, /*alarmEntity!!, null,*/
@@ -62,7 +67,6 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
                             )
                         }
                     }
-
                 }
             }
             val bundleForVariantInterval = intent.getBundleExtra(BUNDLE_VARIANT_INTERVAL_OBJECT)

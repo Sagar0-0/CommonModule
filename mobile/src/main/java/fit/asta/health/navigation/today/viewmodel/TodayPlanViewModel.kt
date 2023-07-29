@@ -50,18 +50,24 @@ class TodayPlanViewModel @Inject constructor(
             }
 
             is HomeEvent.DeleteAlarm -> {
-                deleteAlarm(uiEvent.alarm, uiEvent.context,uiEvent.event)
+                deleteAlarm(uiEvent.alarm, uiEvent.context, uiEvent.event)
             }
 
             is HomeEvent.UndoAlarm -> {
-                undoAlarm(uiEvent.alarm, uiEvent.context,uiEvent.event)
+                undoAlarm(uiEvent.alarm, uiEvent.context, uiEvent.event)
             }
 
-            else -> {}
+            is HomeEvent.SkipAlarm -> {
+                skipAlarm(uiEvent.alarm, uiEvent.context, uiEvent.event)
+            }
+
+            is HomeEvent.UndoSkipAlarm -> {
+                undoSkipAlarm(uiEvent.alarm, uiEvent.context, uiEvent.event)
+            }
         }
     }
 
-    private fun undoAlarm(alarm: AlarmEntity, context: Context,event: Event) {
+    private fun undoAlarm(alarm: AlarmEntity, context: Context, event: Event) {
         viewModelScope.launch {
             alarmLocalRepo.insertAlarm(alarm)
             if (alarm.status) {
@@ -75,19 +81,35 @@ class TodayPlanViewModel @Inject constructor(
                     )
                 )
             }
-            when(event){
-                Event.Morning->{_alarmListMorning.add(alarm)}
-                Event.Afternoon->{_alarmListAfternoon.add(alarm)}
-                Event.Evening->{_alarmListEvening.add(alarm)}
+            when (event) {
+                Event.Morning -> {
+                    _alarmListMorning.add(alarm)
+                }
+
+                Event.Afternoon -> {
+                    _alarmListAfternoon.add(alarm)
+                }
+
+                Event.Evening -> {
+                    _alarmListEvening.add(alarm)
+                }
             }
         }
     }
 
-    private fun deleteAlarm(alarmItem: AlarmEntity, context: Context,event: Event) {
-        when(event){
-            Event.Morning->{_alarmListMorning.remove(alarmItem)}
-            Event.Afternoon->{_alarmListAfternoon.remove(alarmItem)}
-            Event.Evening->{_alarmListEvening.remove(alarmItem)}
+    private fun deleteAlarm(alarmItem: AlarmEntity, context: Context, event: Event) {
+        when (event) {
+            Event.Morning -> {
+                _alarmListMorning.remove(alarmItem)
+            }
+
+            Event.Afternoon -> {
+                _alarmListAfternoon.remove(alarmItem)
+            }
+
+            Event.Evening -> {
+                _alarmListEvening.remove(alarmItem)
+            }
         }
         viewModelScope.launch {
             if (alarmItem.status) alarmItem.cancelScheduleAlarm(
@@ -102,16 +124,61 @@ class TodayPlanViewModel @Inject constructor(
         }
     }
 
+    private fun skipAlarm(alarmItem: AlarmEntity, context: Context, event: Event) {
+        when (event) {
+            Event.Morning -> {
+                _alarmListMorning.remove(alarmItem)
+            }
+
+            Event.Afternoon -> {
+                _alarmListAfternoon.remove(alarmItem)
+            }
+
+            Event.Evening -> {
+                _alarmListEvening.remove(alarmItem)
+            }
+        }
+        viewModelScope.launch {
+            if (alarmItem.status) alarmItem.cancelScheduleAlarm(
+                context, alarmItem.alarmId, true
+            )
+            val alarm = alarmItem.copy(status = false, skipDate = LocalDate.now().dayOfMonth)
+            alarmLocalRepo.updateAlarm(alarm)
+        }
+    }
+
+    private fun undoSkipAlarm(alarm: AlarmEntity, context: Context, event: Event) {
+        viewModelScope.launch {
+            alarm.scheduleAlarm(context)
+            val alarmItem = alarm.copy(status = true, skipDate = -1)
+            alarmLocalRepo.updateAlarm(alarmItem)
+            Log.d("alarm", "undoSkipAlarm: alarmOld:$alarm ,alarmItem:$alarmItem")
+            when (event) {
+                Event.Morning -> {
+                    _alarmListMorning.add(alarmItem)
+                }
+
+                Event.Afternoon -> {
+                    _alarmListAfternoon.add(alarmItem)
+                }
+
+                Event.Evening -> {
+                    _alarmListEvening.add(alarmItem)
+                }
+            }
+        }
+    }
+
     private fun getAlarms() {
         viewModelScope.launch {
             alarmLocalRepo.getAllAlarm().collect { list ->
                 _alarmListMorning.clear()
                 _alarmListAfternoon.clear()
                 _alarmListEvening.clear()
-                val day =LocalDate.now().dayOfWeek.value
-                Log.d("list", "getAlarms: $list,day $day")
-                list.forEach{
-                    if (it.status) {
+                val day = LocalDate.now().dayOfWeek.value
+                Log.d("alarm", "getAlarms: $list,day $day")
+                list.forEach {
+                    if (it.status&&it.skipDate!=LocalDate.now().dayOfMonth) {
                         val today= if (it.week.recurring){
                             when(day){
                                 1->{it.week.monday}
@@ -144,9 +211,5 @@ class TodayPlanViewModel @Inject constructor(
                 }
             }
         }
-        //morning 3 12
-        // afternoon 12 4
-        // even 4  3
-
     }
 }

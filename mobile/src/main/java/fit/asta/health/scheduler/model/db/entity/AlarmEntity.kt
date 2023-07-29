@@ -61,7 +61,9 @@ data class AlarmEntity(
     var week: Wk,
     @PrimaryKey(autoGenerate = true)
     @SerializedName("almId")
-    var alarmId: Int = 0
+    var alarmId: Int = 0,
+    @ColumnInfo(name = "skipDate")
+    var skipDate:Int=-1
 ) : Serializable, Parcelable {
 
 
@@ -951,7 +953,7 @@ data class AlarmEntity(
             calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 7)
         }
         val runEverySevenDays = (7 * 24 * 60 * 60 * 1000).toLong()
-        Log.d("alarm", "setTodayAlarm:id $id")
+        Log.d("alarm", "setTodayAlarm:id $id,time ${calendar.time}")
         alarmManager.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,

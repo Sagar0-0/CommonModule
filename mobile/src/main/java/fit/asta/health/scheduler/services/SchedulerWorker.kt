@@ -7,8 +7,11 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.scheduler.model.AlarmBackendRepo
 import fit.asta.health.scheduler.model.AlarmLocalRepo
+import fit.asta.health.scheduler.model.db.entity.TagEntity
+import fit.asta.health.scheduler.model.net.tag.Data
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,58 +25,82 @@ class SchedulerWorker @AssistedInject constructor(
     private val backendRepo: AlarmBackendRepo
 ) : Worker(context, params) {
     override fun doWork(): Result {
-        var count=0
         CoroutineScope(Dispatchers.IO).launch {
-            Log.d("TAGTAG", "doWork:start alarm ")
-            alarmLocalRepo.getAllAlarmList().let{
+            Log.d("TAGTAG", "doWork:start ")
+            syncAlarmLocal()
+            syncServerWithLocal()
+            syncTagsData()
+        }
+        return Result.success()
+    }
 
-                Log.d("TAGTAG", "doWork:noidfromserver alarm  ")
-                it.filter { alarms -> alarms.idFromServer.isEmpty() }.forEach {alarmEntity ->
+    private suspend fun syncAlarmLocal() {
+        alarmLocalRepo.getAllAlarmList().let {
+            Log.d("TAGTAG", "doWork:noidfromserver alarm  ")
+            it.filter { alarms -> alarms.idFromServer.isEmpty() }.forEach { alarmEntity ->
+                val result = withContext(Dispatchers.Default) {
+                    backendRepo.updateScheduleDataOnBackend(schedule = alarmEntity)
+                }
+                if (result.data?.data?.flag == true) {
+                    val alarm = alarmEntity.copy(idFromServer = result.data.data.id)
+                    alarmLocalRepo.insertAlarm(alarm)
+                    Log.d("TAGTAG", "doWork:noidfromserver alarm $alarm")
+                }
+            }
+        }
+    }
+
+    private suspend fun syncServerWithLocal() {
+        alarmLocalRepo.getAllSyncData().let {
+            Log.d("TAGTAG", "doWork: alarm ")
+            it.forEach { alarmSync ->
+                var alarm = alarmLocalRepo.getAlarm(alarmId = alarmSync.alarmId)
+                alarm?.let { alarmEntity ->
                     val result = withContext(Dispatchers.Default) {
                         backendRepo.updateScheduleDataOnBackend(schedule = alarmEntity)
                     }
                     if (result.data?.data?.flag == true) {
-                       val alarm = alarmEntity.copy(idFromServer = result.data.data.id)
-                        alarmLocalRepo.insertAlarm(alarm)
-                        Log.d("TAGTAG", "doWork:noidfromserver alarm $alarm")
-                        count++
+                        alarm = alarmEntity.copy(idFromServer = result.data.data.id)
+                        alarmLocalRepo.insertAlarm(alarm!!)
+                        alarmLocalRepo.deleteSyncData(alarmSync)
+                        Log.d("TAGTAG", "doWork: alarm $alarm")
                     }
                 }
+                if (alarm == null) {
+                    Log.d("TAGTAG", "doWork: alarm delete")
+                    backendRepo.deleteScheduleDataFromBackend(alarmSync.scheduleId)
+                    alarmLocalRepo.deleteSyncData(alarmSync)
+                }
             }
+        }
+    }
 
-            alarmLocalRepo.getAllSyncData().let {
-                Log.d("TAGTAG", "doWork: alarm ")
-                it.forEach { alarmSync ->
-                    var alarm = alarmLocalRepo.getAlarm(alarmId = alarmSync.alarmId)
-                    alarm?.let { alarmEntity ->
-                        val result = withContext(Dispatchers.Default) {
-                            backendRepo.updateScheduleDataOnBackend(schedule = alarmEntity)
+    private suspend fun syncTagsData() {
+        alarmLocalRepo.getAllTags().collect {
+            if (it.isEmpty()) {
+                backendRepo.getTagListFromBackend("6309a9379af54f142c65fbff").collect { tags ->
+                    when (tags) {
+                        is NetworkResult.Success -> {
+                            tags.data.let { schedulerGetTagsList ->
+                                schedulerGetTagsList?.list?.forEach { tag ->
+                                    insertTag(tag)
+                                }
+                            }
                         }
-                        if (result.data?.data?.flag == true) {
-                            alarm = alarmEntity.copy(idFromServer = result.data.data.id)
-                            alarmLocalRepo.insertAlarm(alarm!!)
-                            alarmLocalRepo.deleteSyncData(alarmSync)
-                            Log.d("TAGTAG", "doWork: alarm $alarm")
-                            count++
-                        }
-                    }
-                    if (alarm==null){
-                        count++
-                        Log.d("TAGTAG", "doWork: alarm delete")
-                        backendRepo.deleteScheduleDataFromBackend(alarmSync.scheduleId)
-                        alarmLocalRepo.deleteSyncData(alarmSync)
+                        else -> {}
                     }
                 }
             }
         }
-//        val createNotification = CreateNotification(
-//            applicationContext,
-//            " Scheduler ",
-//            "alarm data is uploaded to server $count"
-//        )
-//        createNotification.showNotification()
-        count=0
-        return Result.success()
+    }
+
+    private suspend fun insertTag(tag: Data) {
+        alarmLocalRepo.insertTag(
+            TagEntity(
+                meta = tag,
+                selected = false
+            )
+        )
     }
 }
 

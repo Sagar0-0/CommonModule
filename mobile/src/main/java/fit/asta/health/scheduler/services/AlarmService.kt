@@ -3,6 +3,7 @@ package fit.asta.health.scheduler.services
 import android.app.Notification
 import android.app.PendingIntent
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
 import android.media.RingtoneManager
@@ -11,6 +12,7 @@ import android.os.*
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import fit.asta.health.HealthCareApp.Companion.CHANNEL_ID
+import fit.asta.health.MainActivity
 import fit.asta.health.R
 import fit.asta.health.scheduler.compose.AlarmScreenActivity
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
@@ -26,6 +28,7 @@ import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_PRE_NOTIFICATIO
 import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_VARIANT_INTERVAL_OBJECT
 import fit.asta.health.scheduler.util.SerializableAndParcelable.parcelable
 import fit.asta.health.scheduler.util.SerializableAndParcelable.serializable
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.random.Random
 
 
@@ -38,6 +41,8 @@ class AlarmService : Service() {
     lateinit var ringtone: Uri
     lateinit var mediaPlayer: MediaPlayer
     lateinit var vibrator: Vibrator
+    private lateinit var partialWakeLock: PowerManager.WakeLock
+    private val TAG = this.javaClass.simpleName
 
     override fun onCreate() {
         super.onCreate()
@@ -57,6 +62,7 @@ class AlarmService : Service() {
         )
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         var notification: Notification? = null
 //         getting bundle from intent
@@ -82,7 +88,7 @@ class AlarmService : Service() {
             } else {
                 setMediaDataDef()
             }
-
+//            createWakeLock().acquire(100)
             // creating notification with different modes
             val bigTextStyle = NotificationCompat.BigTextStyle()
                 .bigText(alarmName)
@@ -95,7 +101,6 @@ class AlarmService : Service() {
                 )
 
             mediaPlayer.setOnPreparedListener { mediaPlayer -> mediaPlayer.start() }
-
             startForGroundService(
                 notification = notification,
                 status = alarmEntity?.vibration!!.status,
@@ -142,7 +147,6 @@ class AlarmService : Service() {
                 )
 
             mediaPlayer.setOnPreparedListener { mediaPlayer -> mediaPlayer.start() }
-
             startForGroundService(
                 notification = notification,
                 status = alarmEntity?.vibration!!.status,
@@ -158,7 +162,7 @@ class AlarmService : Service() {
                 bundleForPreNotification.serializable(ARG_PRE_NOTIFICATION_OBJET)
             Log.d("TAGTAGTAG", "onStartCommand:preNotification $preNotificationAlarmEntity")
             // creating notification-pending intent to redirect on notification click
-            val notificationIntent = Intent(this, AlarmScreenActivity::class.java)
+            val notificationIntent = Intent(this, MainActivity::class.java)
             notificationIntent.putExtra(BUNDLE_PRE_NOTIFICATION_OBJECT, bundleForPreNotification)
             val pendingIntent = PendingIntent.getActivity(
                 this,
@@ -195,7 +199,7 @@ class AlarmService : Service() {
             // creating notification-pending intent to redirect on notification click
             Log.d("TAGTAGTAG", "onStartCommand:postNotification $postNotificationAlarmEntity")
 
-            val notificationIntent = Intent(this, AlarmScreenActivity::class.java)
+            val notificationIntent = Intent(this, MainActivity::class.java)
             notificationIntent.putExtra(BUNDLE_POST_NOTIFICATION_OBJECT, bundleForPostNotification)
             val pendingIntent = PendingIntent.getActivity(
                 this,
@@ -228,7 +232,12 @@ class AlarmService : Service() {
         }
         return START_STICKY
     }
+    private fun createWakeLock(): PowerManager.WakeLock {
+        val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+        partialWakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP, TAG)
+        return partialWakeLock
 
+    }
     private fun startForGroundService(notification: Notification?, status: Boolean, id: Int) {
         if (status) {
             val pattern = longArrayOf(0, 100, 1000)
@@ -281,6 +290,7 @@ class AlarmService : Service() {
                     .setPriority(NotificationCompat.PRIORITY_MAX) // set base on important in alarm entity
                     .setFullScreenIntent(pendingIntent, true)
                     .setStyle(bigTextStyle)
+                    .setWhen(System.currentTimeMillis())
                     .setAutoCancel(true)
                     .build()
 
@@ -322,6 +332,7 @@ class AlarmService : Service() {
             mediaPlayer.stop()
         }
         vibrator.cancel()
+        partialWakeLock.release()
     }
 
     override fun onBind(intent: Intent?): IBinder? {

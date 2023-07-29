@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.scheduler.compose.screen.alarmscreen.AlarmEvent
 import fit.asta.health.scheduler.compose.screen.alarmscreen.AlarmUiState
@@ -13,6 +14,7 @@ import fit.asta.health.scheduler.model.AlarmLocalRepo
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.net.scheduler.Stat
 import fit.asta.health.scheduler.services.AlarmService
+import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
 
@@ -74,8 +76,8 @@ class AlarmScreenViewModel
             is AlarmEvent.onSwipedRight -> {
                 Log.d("TAGTAG", "event: alarm $alarmEntity")
                 alarmEntity?.let { alarm ->
-                    variantInterval?.let { variant ->
-                        if (alarm.interval.isRemainderAtTheEnd) {
+                    if (alarm.interval.isRemainderAtTheEnd) {
+                        variantInterval?.let { variant ->
                             Log.d("TAGTAG", "event: variant Post natification")
                             alarm.schedulerAlarmPostNotification(
                                 uiEvent.context,
@@ -84,9 +86,7 @@ class AlarmScreenViewModel
                                 variant.id
                             )
                         }
-                    }
-                    if (variantInterval == null) {
-                        if (alarm.interval.isRemainderAtTheEnd) {
+                        if (variantInterval == null) {
                             Log.d("TAGTAG", "event: alarm Post natification")
                             alarm.schedulerAlarmPostNotification(
                                 uiEvent.context,
@@ -96,6 +96,7 @@ class AlarmScreenViewModel
                             )
                         }
                     }
+                    if (!alarm.week.recurring) updateState(alarm)
                     Log.d("TAGTAGTAG", "onSwipedRight: ")
                 }
                 val intentService =
@@ -103,8 +104,12 @@ class AlarmScreenViewModel
                 uiEvent.context.stopService(intentService)
                 (uiEvent.context as AppCompatActivity).finishAndRemoveTask()
             }
+        }
+    }
 
-            else -> {}
+    fun updateState(alarm: AlarmEntity) {
+        viewModelScope.launch {
+            alarmLocalRepo.updateAlarm(alarm.copy(status = false))
         }
     }
 

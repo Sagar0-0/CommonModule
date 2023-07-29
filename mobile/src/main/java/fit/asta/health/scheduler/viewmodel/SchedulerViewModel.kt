@@ -19,7 +19,6 @@ import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AlarmSettingEv
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.IvlUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.RepUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.StatUiState
-import fit.asta.health.scheduler.compose.screen.homescreen.HomeUiState
 import fit.asta.health.scheduler.compose.screen.tagscreen.TagState
 import fit.asta.health.scheduler.compose.screen.tagscreen.TagsEvent
 import fit.asta.health.scheduler.compose.screen.tagscreen.TagsUiState
@@ -28,10 +27,8 @@ import fit.asta.health.scheduler.model.AlarmBackendRepo
 import fit.asta.health.scheduler.model.AlarmLocalRepo
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.db.entity.AlarmSync
-import fit.asta.health.scheduler.model.db.entity.TagEntity
 import fit.asta.health.scheduler.model.doman.getAlarm
 import fit.asta.health.scheduler.model.net.tag.ScheduleTagNetData
-import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import java.text.DateFormat
@@ -54,11 +51,6 @@ class SchedulerViewModel
     val staticIntervalsList = MutableStateFlow(_staticIntervalsList)
     private val _variantIntervalsList = mutableStateListOf<StatUiState>()
     val variantIntervalsList = MutableStateFlow(_variantIntervalsList)
-    private val _alarmList = mutableStateListOf<AlarmEntity>()
-    val alarmList = MutableStateFlow(_alarmList)
-
-    private val _homeUiState = mutableStateOf(HomeUiState())
-    val homeUiState: State<HomeUiState> = _homeUiState
 
     private val _alarmSettingUiState = mutableStateOf(ASUiState())
     val alarmSettingUiState: State<ASUiState> = _alarmSettingUiState
@@ -72,10 +64,7 @@ class SchedulerViewModel
 
     private val userId = "6309a9379af54f142c65fbff"
 
-    init {
-        getAlarms()
-        getEditUiData()
-    }
+    init {  getEditUiData() }
 
     private fun getEditUiData() {
         viewModelScope.launch {
@@ -87,42 +76,6 @@ class SchedulerViewModel
                     }
                 }
             }
-        }
-    }
-
-
-    private fun undoAlarm(alarm: AlarmEntity, context: Context) {
-        viewModelScope.launch {
-            alarmLocalRepo.insertAlarm(alarm)
-            if (alarm.status) {
-                alarm.scheduleAlarm(context)
-            }
-            if (alarm.idFromServer.isNotEmpty()) {
-                alarmLocalRepo.deleteSyncData(
-                    AlarmSync(
-                        alarmId = alarm.alarmId,
-                        scheduleId = alarm.idFromServer
-                    )
-                )
-            }
-            _alarmList.add(alarm)
-        }
-    }
-
-    private fun updateAlarmState(alarm: AlarmEntity, state: Boolean, context: Context) {
-        val newAlarm = alarm.copy(status = state)
-        _homeUiState.value = _homeUiState.value.copy(buttonState = false)
-        if (state) {
-            newAlarm.scheduleAlarm(context)
-        } else {
-            alarm.cancelScheduleAlarm(context, alarm.alarmId, true)
-        }
-        viewModelScope.launch {
-            alarmLocalRepo.insertAlarm(newAlarm)
-            if (newAlarm.idFromServer.isEmpty()) {
-                alarmLocalRepo.insertSyncData(AlarmSync(alarmId = newAlarm.alarmId))
-            }
-            _homeUiState.value = _homeUiState.value.copy(buttonState = true)
         }
     }
 
@@ -238,8 +191,6 @@ class SchedulerViewModel
             }
 
             is AlarmSettingEvent.GotoTagScreen -> {
-                Log.d("manish", "GotoTagScreen: ")
-//                refreshTagData()
                 getTagData()
             }
 
@@ -255,8 +206,6 @@ class SchedulerViewModel
             is AlarmSettingEvent.ResetUi -> {
                 resetUi()
             }
-
-            else -> {}
         }
     }
 
@@ -307,17 +256,13 @@ class SchedulerViewModel
                     )
                     when (result) {
                         is NetworkResult.Success -> {
-//                            refreshTagData()
                             getTagData()
                         }
-
                         is NetworkResult.Error -> {}
                         is NetworkResult.Loading -> {}
                     }
                 }
             }
-
-            else -> {}
         }
     }
 
@@ -386,8 +331,6 @@ class SchedulerViewModel
 
             is TimeSettingEvent.Save -> {
             }
-
-            else -> {}
         }
     }
 
@@ -403,97 +346,6 @@ class SchedulerViewModel
 
     fun isIntervalDataValid(interval: IvlUiState): Boolean {
         return interval.duration > 0 && interval.snoozeTime > 0 && interval.variantIntervals.isNotEmpty()
-    }
-
-
-    private fun refreshData() {
-        viewModelScope.launch {
-            backendRepo.getScheduleListDataFromBackend(userId).collect { result ->
-                when (result) {
-                    is NetworkResult.Success -> {
-                        Log.d(SpotifyConstants.TAG, "onCreate list result: ${result.data}")
-                        alarmLocalRepo.getAllAlarm().collect { list ->
-                            val map = hashMapOf<String, Boolean>()
-                            result.data?.list?.forEach { alarmEntity ->
-                                map[alarmEntity.idFromServer] = false
-                            }
-                            list.forEach { alarmData ->
-                                map[alarmData.idFromServer] = true
-                            }
-                            Log.d(SpotifyConstants.TAG, "  result: $list")
-                            result.data?.list?.forEach { alarmEntity ->
-                                if (map[alarmEntity.idFromServer] == false) {
-                                    alarmLocalRepo.insertAlarm(alarmEntity = alarmEntity)
-                                }
-                            }
-                        }
-
-                    }
-
-                    is NetworkResult.Error -> {
-                        Log.d(SpotifyConstants.TAG, "onCreate list result: ${result.data}")
-                    }
-
-                    is NetworkResult.Loading -> {
-                        Log.d(SpotifyConstants.TAG, "onCreate list result: ${result.data}")
-                    }
-                }
-
-            }
-        }
-    }
-
-    private fun getAlarms() {
-        viewModelScope.launch {
-            alarmLocalRepo.getAllAlarm().collect { list ->
-                Log.d(SpotifyConstants.TAG, " list result: $list")
-                _alarmList.clear()
-                _alarmList.addAll(list)
-            }
-        }
-
-    }
-
-    private fun refreshTagData() {
-        viewModelScope.launch {
-            backendRepo.getTagListFromBackend(userId).collect { result ->
-                when (result) {
-                    is NetworkResult.Success -> {
-                        Log.d("manish", "Success: ")
-                        Log.d("manish", "onCreate: ${result.data} ${result.message}")
-                        alarmLocalRepo.getAllTags().collect { list ->
-                            Log.d("manish", "local: ")
-                            val map = hashMapOf<String, Boolean>()
-                            list.forEach {
-                                map[it.meta.id] = true
-                                Log.d("manish", "map: $map")
-                            }
-                            result.data?.list?.forEach {
-                                if (map[it.id] != true) {
-                                    Log.d("manish", "refreshTagData: ")
-                                    alarmLocalRepo.insertTag(TagEntity(false, it))
-                                }
-                            }
-                            result.data?.customTagList?.forEach {
-                                if (map[it.id] != true) {
-                                    Log.d("manish", "refreshTagData: ")
-                                    alarmLocalRepo.insertTag(TagEntity(false, it))
-                                }
-                            }
-                        }
-                    }
-
-                    is NetworkResult.Error -> {
-                        Log.d("manish", "onCreate: ${result.data} ${result.message}")
-                    }
-
-                    is NetworkResult.Loading -> {
-                        Log.d("manish", "onCreate: ${result.data} ${result.message}")
-                    }
-                }
-
-            }
-        }
     }
 
 
@@ -527,7 +379,7 @@ class SchedulerViewModel
             if (entity.status) {
                 entity.scheduleAlarm(context)
             }
-            if (alarmItem != null) {
+            if (alarmItem != null&&alarmItem.idFromServer.isNotEmpty()) {
                 alarmLocalRepo.insertSyncData(
                     AlarmSync(
                         alarmId = entity.alarmId,
@@ -549,20 +401,6 @@ class SchedulerViewModel
 
     //timeSettingActivity
 
-    private fun deleteAlarm(alarmItem: AlarmEntity, context: Context) {
-        _alarmList.remove(alarmItem)
-        viewModelScope.launch {
-            if (alarmItem.status) alarmItem.cancelScheduleAlarm(
-                context, alarmItem.alarmId, true
-            )
-            alarmLocalRepo.deleteAlarm(alarmItem)
-            if (alarmItem.idFromServer.isNotEmpty()) {
-                alarmLocalRepo.insertSyncData(
-                    AlarmSync(alarmId = alarmItem.alarmId, scheduleId = alarmItem.idFromServer)
-                )
-            }
-        }
-    }
 
     fun setAlarmEntityIntent(alarmEntity: AlarmEntity?) {
         this@SchedulerViewModel.alarmEntity = alarmEntity
@@ -730,8 +568,5 @@ class SchedulerViewModel
 
     companion object {
         const val TAG = "debug_spotify"
-        const val ALARMSETTINGKEY: String = "alarmSettingUiState"
-        const val TAGSKEY: String = "tagsUiState"
-        const val TIMESETTINGKEY: String = "timeSettingUiState"
     }
 }
