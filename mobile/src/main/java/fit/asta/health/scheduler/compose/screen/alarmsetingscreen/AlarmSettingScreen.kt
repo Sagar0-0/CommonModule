@@ -1,5 +1,7 @@
 package fit.asta.health.scheduler.compose.screen.alarmsetingscreen
 
+import android.app.Activity
+import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -29,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.scheduler.SpotifyActivity
 import fit.asta.health.scheduler.compose.components.*
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AlarmCreateBottomSheetTypes.*
 import kotlinx.coroutines.launch
@@ -41,7 +44,6 @@ fun AlarmSettingScreen(
     aSEvent: (AlarmSettingEvent) -> Unit = {},
     navTagSelection: () -> Unit = {},
     navTimeSetting: () -> Unit = {},
-    navSpotify: () -> Unit = {},
     navBack: () -> Unit = {}
 ) {
     val context = LocalContext.current
@@ -174,7 +176,7 @@ fun AlarmSettingScreen(
 //                        openSheet()
 //                    })
 
-                SoundOptionsUI(navSpotify)
+                SoundOptionsUI()
 
                 OnlyToggleButton(
                     imageIcon = Icons.Default.NotificationImportant,
@@ -316,7 +318,9 @@ fun AlarmCreateBtmSheetLayout(
 //}
 
 @Composable
-private fun SoundOptionsUI(navSpotify: () -> Unit) {
+private fun SoundOptionsUI() {
+    val activity = LocalContext.current as Activity
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -342,7 +346,12 @@ private fun SoundOptionsUI(navSpotify: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             TextButton(
-                onClick = navSpotify
+                onClick = {
+
+                    // Opening the Spotify Activity
+                    val intent = Intent(activity, SpotifyActivity::class.java)
+                    activity.startActivity(intent)
+                }
             ) {
                 Text(
                     text = "Spotify",

@@ -10,7 +10,6 @@ import androidx.navigation.compose.navigation
 import fit.asta.health.main.Graph
 import fit.asta.health.main.sharedViewModel
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AlarmSettingScreen
-import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.SpotifyScreen
 import fit.asta.health.scheduler.compose.screen.tagscreen.TagsScreen
 import fit.asta.health.scheduler.compose.screen.timesettingscreen.TimeSettingScreen
 import fit.asta.health.scheduler.viewmodel.SchedulerViewModel
@@ -44,7 +43,6 @@ fun NavGraphBuilder.schedulerNavigation(
                 navTagSelection = { navController.navigate(route = AlarmSchedulerScreen.TagSelection.route) },
                 navTimeSetting = { navController.navigate(route = AlarmSchedulerScreen.IntervalSettingsSelection.route) },
                 navBack = onBack,
-                navSpotify = { navController.navigate(route = AlarmSchedulerScreen.Spotify.route) }
             )
         }
 
@@ -72,13 +70,6 @@ fun NavGraphBuilder.schedulerNavigation(
                 isIntervalDataValid = schedulerViewModel::isIntervalDataValid,
                 tSEvent = schedulerViewModel::tSEvent,
                 navBack = { navController.popBackStack() }
-            )
-        }
-
-        composable(route = AlarmSchedulerScreen.Spotify.route) {
-            val schedulerViewModel: SchedulerViewModel = it.sharedViewModel(navController)
-            SpotifyScreen(
-                aSEvent = schedulerViewModel::aSEvent
             )
         }
     }
