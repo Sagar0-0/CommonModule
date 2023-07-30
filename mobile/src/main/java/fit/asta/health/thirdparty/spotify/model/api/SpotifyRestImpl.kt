@@ -1,5 +1,6 @@
 package fit.asta.health.thirdparty.spotify.model.api
 
+import fit.asta.health.common.utils.NetworkUtil
 import fit.asta.health.thirdparty.spotify.model.net.common.Album
 import fit.asta.health.thirdparty.spotify.model.net.library.albums.SpotifyLibraryAlbumModel
 import fit.asta.health.thirdparty.spotify.model.net.library.episodes.SpotifyLibraryEpisodesModel
@@ -14,14 +15,16 @@ import fit.asta.health.thirdparty.spotify.model.net.common.Track
 import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
 import fit.asta.health.thirdparty.spotify.model.net.recently.SpotifyUserRecentlyPlayedModel
 import fit.asta.health.thirdparty.spotify.model.net.recommendations.SpotifyRecommendationModel
+import okhttp3.OkHttpClient
 import retrofit2.Response
 import javax.inject.Inject
-import javax.inject.Named
 
-class SpotifyRestImpl @Inject constructor(
-    @Named("SPOTIFY")
-    private val spotifyApiService: SpotifyApiService
-) : SpotifyApi {
+class SpotifyRestImpl @Inject constructor(baseUrl: String, client: OkHttpClient) : SpotifyApi {
+
+    private val spotifyApiService: SpotifyApiService = NetworkUtil
+        .getRetrofit(baseUrl, client)
+        .create(SpotifyApiService::class.java)
+
     override suspend fun getCurrentUserDetails(accessToken: String): Response<SpotifyMeModel> {
         val headerMap: HashMap<String, String> = HashMap()
         headerMap["Authorization"] = "Bearer $accessToken"

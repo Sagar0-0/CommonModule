@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
 import fit.asta.health.thirdparty.spotify.model.MusicRepository
+import fit.asta.health.thirdparty.spotify.model.SpotifyRepo
 import fit.asta.health.thirdparty.spotify.model.net.common.Album
 import fit.asta.health.thirdparty.spotify.model.net.library.albums.SpotifyLibraryAlbumModel
 import fit.asta.health.thirdparty.spotify.model.net.library.episodes.SpotifyLibraryEpisodesModel
@@ -31,7 +31,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SpotifyViewModelX @Inject constructor(
-    private val remoteRepository: SpotifyRepoImpl,
+    private val remoteRepository: SpotifyRepo,
     private val localRepository: MusicRepository,
     application: Application
 ) : AndroidViewModel(application) {

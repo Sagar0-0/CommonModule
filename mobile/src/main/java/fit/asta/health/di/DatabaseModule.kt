@@ -8,7 +8,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.scheduler.model.db.AlarmDatabase
-import fit.asta.health.thirdparty.spotify.model.db.MusicDatabase
 import javax.inject.Singleton
 
 
@@ -30,17 +29,17 @@ class DatabaseModule {
     @Provides
     fun provideAlarmDao(database: AlarmDatabase) = database.alarmDao()
 
-    @Singleton
-    @Provides
-    fun provideMusicDatabase(
-        @ApplicationContext context: Context,
-    ) = Room.databaseBuilder(
-        context,
-        MusicDatabase::class.java,
-        "music-database"
-    ).build()
-
-    @Singleton
-    @Provides
-    fun provideMusicDao(database: MusicDatabase) = database.musicDao()
+//    @Singleton
+//    @Provides
+//    fun provideMusicDatabase(
+//        @ApplicationContext context: Context,
+//    ) = Room.databaseBuilder(
+//        context,
+//        MusicDatabase::class.java,
+//        "music-database"
+//    ).build()
+//
+//    @Singleton
+//    @Provides
+//    fun provideMusicDao(database: MusicDatabase) = database.musicDao()
 }

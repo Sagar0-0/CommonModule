@@ -23,12 +23,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.Response
 import javax.inject.Inject
-import javax.inject.Named
 
-class SpotifyRepoImpl @Inject constructor(
-    @Named("SPOTIFY")
-    private val spotifyApi: SpotifyApi
-) : SpotifyRepo {
+class SpotifyRepoImpl @Inject constructor(private val spotifyApi: SpotifyApi) : SpotifyRepo {
 
     override suspend fun getCurrentUserDetails(accessToken: String):
             Flow<SpotifyNetworkCall<SpotifyMeModel>> {
