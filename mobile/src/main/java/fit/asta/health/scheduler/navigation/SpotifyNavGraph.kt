@@ -38,7 +38,11 @@ fun SpotifyNavGraph(
             composable(
                 SpotifyNavRoutes.SearchScreen.routes,
                 content = {
-                    SpotifySearchScreen()
+                    SpotifySearchScreen(
+                        searchResult = spotifyViewModel.spotifySearch.collectAsState().value,
+                        playSong = spotifyViewModel::playSpotifySong,
+                        setSearchQuery = spotifyViewModel::setSearchQueriesAndVariables
+                    )
                 }
             )
         }

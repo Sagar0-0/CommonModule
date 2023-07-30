@@ -115,7 +115,6 @@ class SpotifyViewModel @Inject constructor(
      */
     fun disconnectSpotifyRemote() {
         spotifyAppRemote?.let {
-            it.playerApi.pause()
             SpotifyAppRemote.disconnect(it)
         }
     }
