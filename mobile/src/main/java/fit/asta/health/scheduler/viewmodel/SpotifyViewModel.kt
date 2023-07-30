@@ -7,7 +7,6 @@ import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
-import fit.asta.health.thirdparty.spotify.model.MusicRepository
 import fit.asta.health.thirdparty.spotify.model.net.common.Album
 import fit.asta.health.thirdparty.spotify.model.net.library.albums.SpotifyLibraryAlbumModel
 import fit.asta.health.thirdparty.spotify.model.net.library.episodes.SpotifyLibraryEpisodesModel
@@ -32,7 +31,6 @@ import javax.inject.Inject
 @HiltViewModel
 class SpotifyViewModel @Inject constructor(
     private val remoteRepository: SpotifyRepoImpl,
-    private val localRepository: MusicRepository,
     application: Application
 ) : AndroidViewModel(application) {
 
@@ -119,86 +117,6 @@ class SpotifyViewModel @Inject constructor(
         spotifyAppRemote?.let {
             it.playerApi.pause()
             SpotifyAppRemote.disconnect(it)
-        }
-    }
-
-
-    /**
-     * This variable contains details of all the Tracks calls and states
-     */
-    private val _allTracks = MutableStateFlow<SpotifyNetworkCall<List<Track>>>(
-        SpotifyNetworkCall.Initialized()
-    )
-    val allTracks = _allTracks.asStateFlow()
-
-    /**
-     * This function fetches all the track from the local repository
-     */
-    fun getAllTracks() {
-        viewModelScope.launch {
-            localRepository.getAllTracks().collect {
-                _allTracks.value = it
-            }
-        }
-    }
-
-
-    /**
-     * This variable contains details of all the albums calls and states
-     */
-    private val _allAlbums = MutableStateFlow<SpotifyNetworkCall<List<Album>>>(
-        SpotifyNetworkCall.Initialized()
-    )
-    val allAlbums = _allAlbums.asStateFlow()
-
-    /**
-     * This function fetches all the albums from the local repository
-     */
-    fun getAllAlbums() {
-        viewModelScope.launch {
-            localRepository.getAllAlbums().collect {
-                _allAlbums.value = it
-            }
-        }
-    }
-
-
-    /**
-     * This function is used to insert a Track into the Database
-     */
-    fun insertTrack(track: Track) {
-        viewModelScope.launch {
-            localRepository.insertTrack(track)
-        }
-    }
-
-
-    /**
-     * This function deletes Tracks from the Local Database
-     */
-    fun deleteTrack(track: Track) {
-        viewModelScope.launch {
-            localRepository.deleteTrack(track)
-        }
-    }
-
-
-    /**
-     * This function is used to insert a Album into the Database
-     */
-    fun insertAlbum(album: Album) {
-        viewModelScope.launch {
-            localRepository.insertAlbum(album)
-        }
-    }
-
-
-    /**
-     * This function deletes a certain album from the Database
-     */
-    fun deleteAlbum(album: Album) {
-        viewModelScope.launch {
-            localRepository.deleteAlbum(album)
         }
     }
 

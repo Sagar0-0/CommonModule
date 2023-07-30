@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
 import com.spotify.android.appremote.api.ConnectionParams
 import com.spotify.android.appremote.api.Connector
 import com.spotify.android.appremote.api.SpotifyAppRemote
@@ -32,7 +33,7 @@ import com.spotify.sdk.android.auth.AuthorizationRequest
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.ui.AppTheme
-import fit.asta.health.scheduler.compose.screen.spotify.SpotifyScreen
+import fit.asta.health.scheduler.navigation.SpotifyNavGraph
 import fit.asta.health.scheduler.viewmodel.SpotifyViewModel
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
@@ -99,8 +100,11 @@ class SpotifyActivity : ComponentActivity() {
                             // Getting the Spotify App Remote
                             getSpotifyRemote()
 
-                            SpotifyScreen()
-
+                            // Nav Graph
+                            SpotifyNavGraph(
+                                navController = rememberNavController(),
+                                spotifyViewModel = spotifyViewModel
+                            )
                         }
 
                         // Data Fetched UnSuccessfully
@@ -204,7 +208,6 @@ class SpotifyActivity : ComponentActivity() {
     /**
      * This function checks if the spotify is already installed in the current device
      */
-    @Suppress("DEPRECATION")
     private fun isSpotifyInstalled(): Boolean {
         val packageName = "com.spotify.music"
         return try {
