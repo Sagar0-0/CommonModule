@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,8 +29,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.scheduler.compose.components.SearchBarUI
 import fit.asta.health.scheduler.compose.components.SpotifyMusicItem
+import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ToneUiState
 import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 
@@ -39,7 +40,8 @@ import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 fun SpotifySearchScreen(
     searchResult: SpotifyNetworkCall<SpotifySearchModel>,
     playSong: (String) -> Unit,
-    setSearchQuery: (String, String) -> Unit
+    setSearchQuery: (String, String) -> Unit,
+    onApplyClick: (ToneUiState) -> Unit
 ) {
 
     // Context and Activity of the Function
@@ -72,7 +74,7 @@ fun SpotifySearchScreen(
             )
         }
 
-
+        // Handling the States of the Search Result
         when (searchResult) {
 
             // Initialized State
@@ -80,13 +82,10 @@ fun SpotifySearchScreen(
 
             // Loading State
             is SpotifyNetworkCall.Loading -> {
-                Box(
+                LoadingAnimation(
                     modifier = Modifier
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
+                        .fillMaxSize()
+                )
             }
 
             // Success State
@@ -137,7 +136,13 @@ fun SpotifySearchScreen(
                                     secondaryText = textToShow,
                                     onCardClick = { playSong(currentItem.uri) }
                                 ) {
-
+                                    onApplyClick(
+                                        ToneUiState(
+                                            name = currentItem.name,
+                                            type = 1,
+                                            uri = currentItem.uri
+                                        )
+                                    )
                                 }
                             }
                         }

@@ -1,11 +1,13 @@
 package fit.asta.health.scheduler.viewmodel
 
 import android.app.Application
+import android.util.Log.d
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ToneUiState
 import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
 import fit.asta.health.thirdparty.spotify.model.net.common.Album
 import fit.asta.health.thirdparty.spotify.model.net.library.albums.SpotifyLibraryAlbumModel
@@ -148,6 +150,16 @@ class SpotifyViewModel @Inject constructor(
             }
         }
     }
+
+    /**
+     * This function sets the [ToneUiState] data for the alarm which would be stored in the
+     * Database later
+     */
+    fun onApplyClick(toneUiState: ToneUiState) {
+        d("Spotify View Model", toneUiState.toString())
+        // TODO : The Tone Can now be inserted in the Database
+    }
+
 
     // Keeps the recommended Tracks
     private val _recommendationTracks =
