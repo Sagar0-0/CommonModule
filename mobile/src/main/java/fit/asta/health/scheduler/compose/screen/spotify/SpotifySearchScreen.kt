@@ -1,6 +1,5 @@
 package fit.asta.health.scheduler.compose.screen.spotify
 
-import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -40,8 +39,9 @@ import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 fun SpotifySearchScreen(
     searchResult: SpotifyNetworkCall<SpotifySearchModel>,
     playSong: (String) -> Unit,
-    setSearchQuery: (String, String) -> Unit,
-    onApplyClick: (ToneUiState) -> Unit
+    setSearchQuery: (String) -> Unit,
+    onApplyClick: (ToneUiState) -> Unit,
+    onSearch: () -> Unit
 ) {
 
     // Context and Activity of the Function
@@ -67,11 +67,21 @@ fun SpotifySearchScreen(
                 userSearchInput.value = it
             }
         ) {
-            sendRequest(
-                context = context,
-                userSearchInput = userSearchInput.value,
-                setSearchQuery = setSearchQuery
-            )
+
+            // Checking if both the user Input and the filtered type is not empty
+            if (userSearchInput.value.isNotEmpty()) {
+
+                // Setting the Query parameters in the ViewModel
+                setSearchQuery(userSearchInput.value)
+            } else {
+
+                // No Search Query
+                Toast.makeText(
+                    context,
+                    "Search Bar Empty!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
 
         // Handling the States of the Search Result
@@ -159,15 +169,7 @@ fun SpotifySearchScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Button(
-                        onClick = {
-
-                            // Searching Again
-                            sendRequest(
-                                context = context,
-                                userSearchInput = userSearchInput.value,
-                                setSearchQuery = setSearchQuery
-                            )
-                        },
+                        onClick = onSearch,
                         modifier = Modifier
                             .padding(vertical = 16.dp, horizontal = 32.dp),
                         shape = RoundedCornerShape(8.dp)
@@ -184,33 +186,5 @@ fun SpotifySearchScreen(
                 }
             }
         }
-    }
-}
-
-/**
- * This Function asks the ViewModel to fetch the result of the Search
- */
-private fun sendRequest(
-    context: Context,
-    userSearchInput: String,
-    setSearchQuery: (String, String) -> Unit
-) {
-
-    // Making a string with the filters chosen by the User
-    val type = "track"
-
-    // Checking if both the user Input and the filtered type is not empty
-    if (userSearchInput.isNotEmpty()) {
-
-        // Setting the Query parameters in the ViewModel
-        setSearchQuery(userSearchInput, type)
-    } else {
-
-        // No Search Query
-        Toast.makeText(
-            context,
-            "Search Bar Empty!",
-            Toast.LENGTH_SHORT
-        ).show()
     }
 }

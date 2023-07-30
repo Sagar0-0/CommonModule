@@ -54,7 +54,8 @@ fun SpotifyNavGraph(
                         searchResult = searchResult,
                         playSong = spotifyViewModel::playSpotifySong,
                         setSearchQuery = spotifyViewModel::setSearchQueriesAndVariables,
-                        onApplyClick = spotifyViewModel::onApplyClick
+                        onApplyClick = spotifyViewModel::onApplyClick,
+                        onSearch = spotifyViewModel::getSpotifySearchResult
                     )
                 }
             )
