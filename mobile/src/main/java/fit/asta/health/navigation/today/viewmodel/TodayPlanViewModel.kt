@@ -193,10 +193,10 @@ class TodayPlanViewModel @Inject constructor(
                         } else true
                         if (today){
                             when(it.time.hours.toInt()) {
-                                in  0..3->{
+                                in  0..2->{
                                     _alarmListEvening.add(it)
                                 }
-                                in  4..12->{
+                                in  3..12->{
                                     _alarmListMorning.add(it)
                                 }
                                 in  13..16->{

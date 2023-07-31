@@ -3,7 +3,6 @@ package fit.asta.health.scheduler
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -39,15 +38,10 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
             val bundleForAlarm = intent.getBundleExtra(BUNDLE_ALARM_OBJECT)
             if (bundleForAlarm != null) {
                 alarmEntity = bundleForAlarm.serializable(ARG_ALARM_OBJET)
-                Log.d("TAGTAGTAG", "onReceive:alarm $alarmEntity")
+                Log.d("alarmtest", "broadcastReceiver onReceive:alarm $alarmEntity")
                 val toastText = String.format("Alarm Received")
                 Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
                 if (alarmEntity != null) {
-//                    val notificationIntent = Intent(context, AlarmScreenActivity::class.java)
-//                    notificationIntent.putExtra(BUNDLE_ALARM_OBJECT, bundleForAlarm)
-//                    notificationIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//                    context?.startActivity(notificationIntent)
-
                     if (!alarmEntity?.week!!.recurring) {
                         startAlarmService(
                             context!!, /*alarmEntity!!, null,*/
@@ -149,7 +143,7 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
         isPre: Boolean,
         isVariantInterval: Boolean
     ) {
-        val intentService = Intent(context, AlarmService::class.java)
+        val intentService = Intent(context.applicationContext, AlarmService::class.java)
         if (isNotification) {
             if (isPre) {
                 intentService.putExtra(BUNDLE_PRE_NOTIFICATION_OBJECT, bundle)
@@ -164,16 +158,13 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
                 intentService.putExtra(BUNDLE_ALARM_OBJECT, bundle)
             }
         }
-        ContextCompat.startForegroundService(context, intentService)
+        Log.d("alarmtest", "broadcastReceiver start:${context.applicationContext}")
+        ContextCompat.startForegroundService(context.applicationContext, intentService)
     }
 
     private fun startRescheduleAlarmsService(context: Context) {
         val intentService = Intent(context, RescheduleAlarmService::class.java)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(intentService)
-        } else {
-            context.startService(intentService)
-        }
+        ContextCompat.startForegroundService(context.applicationContext, intentService)
     }
 
     private fun isAlarmToday(alarm1: AlarmEntity): Boolean {
