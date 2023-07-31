@@ -1,7 +1,7 @@
 package fit.asta.health.scheduler.compose.screen.alarmsetingscreen
 
-import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
+import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -30,12 +30,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.common.ui.components.*
+import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.scheduler.SpotifyActivity
 import fit.asta.health.scheduler.compose.components.*
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AlarmCreateBottomSheetTypes.*
-import fit.asta.health.scheduler.util.Constants
 import kotlinx.coroutines.launch
-import xyz.aprildown.ultimateringtonepicker.RingtonePickerDialog
-import xyz.aprildown.ultimateringtonepicker.UltimateRingtonePicker
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
@@ -165,17 +164,20 @@ fun AlarmSettingScreen(
                         currentBottomSheet = VIBRATION
                         openSheet()
                     })
-                OnlyToggleButton(
-                    imageIcon = Icons.Default.Audiotrack,
-                    title = "Sound",
-                    mCheckedState = false,
-                    onCheckClicked = {},
-                    btnEnabled = true,
-                    switchTitle = alarmSettingUiState.tone_name,
-                    onNavigateToClickText = {
-                        currentBottomSheet = SOUND
-                        openSheet()
-                    })
+//                OnlyToggleButton(
+//                    imageIcon = Icons.Default.Audiotrack,
+//                    title = "Sound",
+//                    mCheckedState = false,
+//                    onCheckClicked = {},
+//                    btnEnabled = true,
+//                    switchTitle = alarmSettingUiState.tone_name,
+//                    onNavigateToClickText = {
+//                        currentBottomSheet = SOUND
+//                        openSheet()
+//                    })
+
+                SoundOptionsUI()
+
                 OnlyToggleButton(
                     imageIcon = Icons.Default.NotificationImportant,
                     title = "Important",
@@ -209,7 +211,8 @@ fun AlarmSettingScreen(
 }
 
 enum class AlarmCreateBottomSheetTypes {
-    LABEL, DESCRIPTION, REMINDER, VIBRATION, SOUND
+    LABEL, DESCRIPTION, REMINDER, VIBRATION
+    //, SOUND
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -274,42 +277,96 @@ fun AlarmCreateBtmSheetLayout(
                     })
             }
         }
-
-        SOUND -> {
-            RingtonePickerDialog(dialogTitle = "Select Sound", onRingtonePicked = {
-                closeSheet()
-                aSEvent(AlarmSettingEvent.SetSound(it))
-            }, onClose = closeSheet)
-        }
+//
+//        SOUND -> {
+//            RingtonePickerDialog(dialogTitle = "Select Sound", onRingtonePicked = {
+//                closeSheet()
+//                aSEvent(AlarmSettingEvent.SetSound(it))
+//            }, onClose = closeSheet)
+//        }
     }
 
 }
 
+//@Composable
+//fun RingtonePickerDialog(
+//    dialogTitle: String, onRingtonePicked: (ToneUiState) -> Unit, onClose: () -> Unit
+//) {
+//    val fragmentManager = (LocalContext.current as AppCompatActivity).supportFragmentManager
+//    val callback = remember {
+//        object : UltimateRingtonePicker.RingtonePickerListener {
+//            override fun onRingtonePicked(ringtones: List<UltimateRingtonePicker.RingtoneEntry>) {
+//                Log.d("TAGTAGTAG", "callback: ")
+//                if (ringtones.isNotEmpty()) {
+//                    onRingtonePicked(
+//                        ToneUiState(
+//                            name = ringtones[0].name, uri = ringtones[0].uri.toString()
+//                        )
+//                    )
+//                }
+//                onClose()
+//            }
+//        }
+//    }
+//    val dialog = RingtonePickerDialog.createEphemeralInstance(
+//        settings = Constants.settings, dialogTitle, callback
+//    )
+//    dialog.show(fragmentManager, null)
+//    Log.d("TAGTAGTAG", "show: ")
+//
+//
+//}
+
 @Composable
-fun RingtonePickerDialog(
-    dialogTitle: String, onRingtonePicked: (ToneUiState) -> Unit, onClose: () -> Unit
-) {
-    val fragmentManager = (LocalContext.current as AppCompatActivity).supportFragmentManager
-    val callback = remember {
-        object : UltimateRingtonePicker.RingtonePickerListener {
-            override fun onRingtonePicked(ringtones: List<UltimateRingtonePicker.RingtoneEntry>) {
-                Log.d("TAGTAGTAG", "callback: ")
-                if (ringtones.isNotEmpty()) {
-                    onRingtonePicked(
-                        ToneUiState(
-                            name = ringtones[0].name, uri = ringtones[0].uri.toString()
-                        )
-                    )
+private fun SoundOptionsUI() {
+    val activity = LocalContext.current as Activity
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Row(horizontalArrangement = Arrangement.spacedBy(spacing.small)) {
+            Box(contentAlignment = Alignment.Center) {
+                Icon(
+                    imageVector = Icons.Default.Audiotrack,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+            Text(
+                text = "Sound",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSecondaryContainer
+            )
+        }
+
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            TextButton(
+                onClick = {
+
+                    // Opening the Spotify Activity
+                    val intent = Intent(activity, SpotifyActivity::class.java)
+                    activity.startActivity(intent)
                 }
-                onClose()
+            ) {
+                Text(
+                    text = "Spotify",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+            }
+
+            TextButton(onClick = { /*TODO*/ }) {
+                Text(
+                    text = "Local Music",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
             }
         }
     }
-    val dialog = RingtonePickerDialog.createEphemeralInstance(
-        settings = Constants.settings, dialogTitle, callback
-    )
-    dialog.show(fragmentManager, null)
-    Log.d("TAGTAGTAG", "show: ")
-
-
 }
