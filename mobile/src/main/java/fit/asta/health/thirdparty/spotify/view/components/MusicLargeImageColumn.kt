@@ -57,7 +57,7 @@ fun MusicLargeImageColumn(
             .clickable {
                 onClick()
             },
-        verticalArrangement = Arrangement.spacedBy(spacing.small)
+        verticalArrangement = Arrangement.spacedBy(spacing.extraSmall)
     ) {
 
         // Showing the Loader or the Image accordingly
@@ -79,6 +79,8 @@ fun MusicLargeImageColumn(
                     .size(widthOfImage)
             )
         }
+
+//        Spacer(Modifier.height(8.dp))
 
         // track Name
         Text(
