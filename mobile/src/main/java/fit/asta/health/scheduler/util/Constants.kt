@@ -33,6 +33,9 @@ class Constants {
         const val BUNDLE_POST_NOTIFICATION_OBJECT = "bundle_post_notification_object"
         const val ARG_POST_NOTIFICATION_OBJET = "arg_post_notification_object"
 
+        const val SPOTIFY_SONG_KEY_URI = "bundle_spotify_song"
+        const val SPOTIFY_SONG_KEY_TYPE = "bundle_spotify_song_type"
+
         const val USER_ID = "6309a9379af54f142c65fbff"
 
         fun changeStatusBarColor(color: Int, window: Window, context: Context) {
@@ -78,7 +81,6 @@ class Constants {
                 )
             )
         )
-
 
 
         const val ASTA_BASE_URL = "https://asta.fit/"

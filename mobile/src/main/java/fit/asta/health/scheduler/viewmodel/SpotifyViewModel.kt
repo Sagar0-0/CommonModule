@@ -1,13 +1,14 @@
 package fit.asta.health.scheduler.viewmodel
 
 import android.app.Application
-import android.util.Log.d
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.common.utils.PrefUtils
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ToneUiState
+import fit.asta.health.scheduler.util.Constants
 import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
 import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
 import fit.asta.health.thirdparty.spotify.model.net.search.TrackList
@@ -23,7 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SpotifyViewModel @Inject constructor(
     private val remoteRepository: SpotifyRepoImpl,
-    application: Application
+    application: Application,
+    private val prefUtils: PrefUtils
 ) : AndroidViewModel(application) {
 
 
@@ -135,8 +137,10 @@ class SpotifyViewModel @Inject constructor(
      * Database later
      */
     fun onApplyClick(toneUiState: ToneUiState) {
-        d("Spotify View Model", toneUiState.toString())
-        // TODO : The Tone Can now be inserted in the Database
+        viewModelScope.launch {
+            prefUtils.setPreferences(Constants.SPOTIFY_SONG_KEY_URI, toneUiState.uri)
+            prefUtils.setPreferences(Constants.SPOTIFY_SONG_KEY_TYPE, toneUiState.type)
+        }
     }
 
     // Keeps the User Top Tracks
