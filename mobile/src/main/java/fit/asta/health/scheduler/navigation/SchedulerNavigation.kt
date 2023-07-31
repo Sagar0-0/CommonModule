@@ -34,7 +34,7 @@ fun NavGraphBuilder.schedulerNavigation(
 //                })
 //        }
         composable(route = AlarmSchedulerScreen.AlarmSettingHome.route) {
-            val schedulerViewModel:SchedulerViewModel= it.sharedViewModel(navController)
+            val schedulerViewModel: SchedulerViewModel = it.sharedViewModel(navController)
             val alarmSettingUiState = schedulerViewModel.alarmSettingUiState.value
             Log.d("manish", "schedulerNavigation: setting viewmodel${schedulerViewModel}")
             AlarmSettingScreen(
@@ -42,14 +42,17 @@ fun NavGraphBuilder.schedulerNavigation(
                 aSEvent = schedulerViewModel::aSEvent,
                 navTagSelection = { navController.navigate(route = AlarmSchedulerScreen.TagSelection.route) },
                 navTimeSetting = { navController.navigate(route = AlarmSchedulerScreen.IntervalSettingsSelection.route) },
-                navBack =onBack
+                navBack = onBack,
             )
         }
 
         composable(route = AlarmSchedulerScreen.TagSelection.route) {
-            val schedulerViewModel:SchedulerViewModel= it.sharedViewModel(navController)
+            val schedulerViewModel: SchedulerViewModel = it.sharedViewModel(navController)
             val tagsUiState = schedulerViewModel.tagsUiState.value
-            Log.d("manish", "schedulerNavigation: ${tagsUiState.tagsList} viewmodel${schedulerViewModel}")
+            Log.d(
+                "manish",
+                "schedulerNavigation: ${tagsUiState.tagsList} viewmodel${schedulerViewModel}"
+            )
             TagsScreen(
                 onNavBack = { navController.popBackStack() },
                 tagsEvent = schedulerViewModel::tagsEvent,
@@ -57,7 +60,7 @@ fun NavGraphBuilder.schedulerNavigation(
             )
         }
         composable(route = AlarmSchedulerScreen.IntervalSettingsSelection.route) {
-            val schedulerViewModel:SchedulerViewModel= it.sharedViewModel(navController)
+            val schedulerViewModel: SchedulerViewModel = it.sharedViewModel(navController)
             val timeSettingUiState = schedulerViewModel.timeSettingUiState.value
             val list by schedulerViewModel.variantIntervalsList.collectAsStateWithLifecycle()
             Log.d("manish", "schedulerNavigation:viewmodel${schedulerViewModel}")
@@ -69,6 +72,5 @@ fun NavGraphBuilder.schedulerNavigation(
                 navBack = { navController.popBackStack() }
             )
         }
-
     }
 }
