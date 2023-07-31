@@ -80,8 +80,6 @@ fun MusicLargeImageColumn(
             )
         }
 
-//        Spacer(Modifier.height(8.dp))
-
         // track Name
         Text(
             text = headerText,
