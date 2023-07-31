@@ -11,15 +11,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -64,12 +61,7 @@ fun SearchScreen(
 
     // This is the filter List provided to the User to choose from
     val filterList = remember {
-        mutableStateMapOf(
-            "Album" to true,
-            "Artist" to true,
-            "Playlist" to true,
-            "Track" to true
-        )
+        mutableStateMapOf("Album" to true, "Artist" to true, "Playlist" to true, "Track" to true)
     }
 
     // Root Composable function
@@ -77,7 +69,6 @@ fun SearchScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
-            .verticalScroll(rememberScrollState())
     ) {
 
         // This function Draws the Search Bar to the Screen
@@ -149,156 +140,170 @@ fun SearchScreen(
             onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadSpotifySearchResult) }
         ) { networkResponse ->
 
-            // Handling the Tracks UI here
-            networkResponse.data?.tracks?.trackList.let { trackList ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface)
+            ) {
 
-                // Tracks
-                Text(
-                    text = "Tracks",
+                // Handling the Tracks UI here
+                networkResponse.data?.tracks?.trackList.let { trackList ->
 
-                    modifier = Modifier
-                        .padding(12.dp),
+                    // Tracks
+                    item {
+                        Text(
+                            text = "Tracks",
 
-                    // Text and Font Properties
-                    fontFamily = FontFamily.SansSerif,
-                    fontWeight = FontWeight.W800,
-                    fontSize = 22.sp,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
+                            modifier = Modifier
+                                .padding(12.dp),
 
-                // Showing the Tracks List UI inside a Lazy Row
-                LazyRow(
-                    modifier = Modifier
-                        .height(210.dp)
-                        .width(LocalConfiguration.current.screenWidthDp.dp)
-                ) {
-                    if (trackList != null) {
-                        items(trackList.size) {
-                            val currentItem = trackList[it]
+                            // Text and Font Properties
+                            fontFamily = FontFamily.SansSerif,
+                            fontWeight = FontWeight.W800,
+                            fontSize = 22.sp,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
 
-                            // This function draws the Track UI
-                            MusicLargeImageColumn(
-                                imageUri = currentItem.album.images.firstOrNull()?.url,
-                                headerText = currentItem.name,
-                                secondaryTexts = currentItem.artists
-                            ) {
+                    // Showing the Tracks List UI inside a Lazy Row
+                    item {
+                        LazyRow(
+                            modifier = Modifier
+                                .height(210.dp)
+                                .width(LocalConfiguration.current.screenWidthDp.dp)
+                        ) {
+                            if (trackList != null) {
+                                items(trackList.size) {
+                                    val currentItem = trackList[it]
 
-                                // Navigating to the Track Details Screen
-                                setEvent(SpotifyUiEvent.HelperEvent.SetTrackId(currentItem.id))
-                                navigator(SpotifyNavRoutes.TrackDetailScreen.routes)
+                                    // This function draws the Track UI
+                                    MusicLargeImageColumn(
+                                        imageUri = currentItem.album.images.firstOrNull()?.url,
+                                        headerText = currentItem.name,
+                                        secondaryTexts = currentItem.artists
+                                    ) {
+
+                                        // Navigating to the Track Details Screen
+                                        setEvent(SpotifyUiEvent.HelperEvent.SetTrackId(currentItem.id))
+                                        navigator(SpotifyNavRoutes.TrackDetailScreen.routes)
+                                    }
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            // Handling the Artists UI here
-            networkResponse.data?.artists?.artistList.let { artistsList ->
+                // Handling the Artists UI here
+                networkResponse.data?.artists?.artistList.let { artistsList ->
 
-                // Artists
-                Text(
-                    text = "Artists",
+                    // Artists
+                    item {
+                        Text(
+                            text = "Artists",
 
-                    modifier = Modifier
-                        .padding(12.dp),
+                            modifier = Modifier
+                                .padding(12.dp),
 
-                    // Text and Font Properties
-                    fontFamily = FontFamily.SansSerif,
-                    fontWeight = FontWeight.W800,
-                    fontSize = 22.sp,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
+                            // Text and Font Properties
+                            fontFamily = FontFamily.SansSerif,
+                            fontWeight = FontWeight.W800,
+                            fontSize = 22.sp,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
 
-                LazyRow(
-                    modifier = Modifier
-                        .height(210.dp)
-                        .width(LocalConfiguration.current.screenWidthDp.dp)
-                ) {
+                    item {
+                        LazyRow(
+                            modifier = Modifier
+                                .height(210.dp)
+                                .width(LocalConfiguration.current.screenWidthDp.dp)
+                        ) {
 
-                    if (artistsList != null) {
-                        items(artistsList.size) {
+                            if (artistsList != null) {
+                                items(artistsList.size) {
 
-                            // current Item
-                            val currentItem = artistsList[it]
+                                    // current Item
+                                    val currentItem = artistsList[it]
 
-                            // Shows the Artists UI
-                            MusicArtistsUI(
-                                imageUri = currentItem.images.firstOrNull()?.url,
-                                artistName = currentItem.name
-                            ) {
-                                setEvent(SpotifyUiEvent.HelperEvent.PlaySong(currentItem.uri))
+                                    // Shows the Artists UI
+                                    MusicArtistsUI(
+                                        imageUri = currentItem.images.firstOrNull()?.url,
+                                        artistName = currentItem.name
+                                    ) {
+                                        setEvent(SpotifyUiEvent.HelperEvent.PlaySong(currentItem.uri))
+                                    }
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            // Handling the Album UI here
-            networkResponse.data?.albums?.albumItems.let { albumList ->
+                // Handling the Album UI here
+                networkResponse.data?.albums?.albumItems.let { albumList ->
 
-                // Albums Text
-                Text(
-                    text = "Albums",
+                    // Albums Text
+                    item {
+                        Text(
+                            text = "Albums",
 
-                    modifier = Modifier
-                        .padding(top = 24.dp, bottom = 8.dp, start = 8.dp, end = 8.dp),
+                            modifier = Modifier
+                                .padding(top = 24.dp, bottom = 8.dp, start = 8.dp, end = 8.dp),
 
-                    // Text and Font Properties
-                    fontFamily = FontFamily.SansSerif,
-                    fontWeight = FontWeight.W800,
-                    fontSize = 22.sp,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
+                            // Text and Font Properties
+                            fontFamily = FontFamily.SansSerif,
+                            fontWeight = FontWeight.W800,
+                            fontSize = 22.sp,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
 
-                LazyRow(
-                    modifier = Modifier
-                        .height(210.dp)
-                        .width(LocalConfiguration.current.screenWidthDp.dp)
-                ) {
-                    if (albumList != null) {
-                        items(albumList.size) {
+                    item {
+                        LazyRow(
+                            modifier = Modifier
+                                .height(210.dp)
+                                .width(LocalConfiguration.current.screenWidthDp.dp)
+                        ) {
+                            if (albumList != null) {
+                                items(albumList.size) {
 
-                            // Current Item
-                            val currentItem = albumList[it]
-                            MusicLargeImageColumn(
-                                imageUri = currentItem.images.firstOrNull()?.url,
-                                headerText = currentItem.name,
-                                secondaryTexts = currentItem.artists
-                            ) {
+                                    // Current Item
+                                    val currentItem = albumList[it]
+                                    MusicLargeImageColumn(
+                                        imageUri = currentItem.images.firstOrNull()?.url,
+                                        headerText = currentItem.name,
+                                        secondaryTexts = currentItem.artists
+                                    ) {
 
-                                // Navigating the Album Details Screen to get the Album Details
-                                setEvent(SpotifyUiEvent.HelperEvent.SetAlbumId(currentItem.id))
-                                navigator(SpotifyNavRoutes.AlbumDetailScreen.routes)
+                                        // Navigating the Album Details Screen to get the Album Details
+                                        setEvent(SpotifyUiEvent.HelperEvent.SetAlbumId(currentItem.id))
+                                        navigator(SpotifyNavRoutes.AlbumDetailScreen.routes)
+                                    }
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            // Handling the Playlist UI here
-            networkResponse.data?.playlists?.items.let { playlists ->
+                // Handling the Playlist UI here
+                networkResponse.data?.playlists?.items.let { playlists ->
 
-                // Playlist Text
-                Text(
-                    text = "Playlists",
+                    // Playlist Text
+                    item {
+                        Text(
+                            text = "Playlists",
 
-                    modifier = Modifier
-                        .padding(top = 24.dp, bottom = 8.dp, start = 8.dp, end = 8.dp),
+                            modifier = Modifier
+                                .padding(top = 24.dp, bottom = 8.dp, start = 8.dp, end = 8.dp),
 
-                    // Text and Font Properties
-                    fontFamily = FontFamily.SansSerif,
-                    fontWeight = FontWeight.W800,
-                    fontSize = 22.sp,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
+                            // Text and Font Properties
+                            fontFamily = FontFamily.SansSerif,
+                            fontWeight = FontWeight.W800,
+                            fontSize = 22.sp,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
 
-                LazyColumn(
-                    modifier = Modifier
-                        .height(LocalConfiguration.current.screenHeightDp.dp)
-                        .padding(start = 12.dp)
-                        .width(LocalConfiguration.current.screenWidthDp.dp),
-                    horizontalAlignment = Alignment.Start
-                ) {
+
                     if (playlists != null) {
                         items(playlists.size) {
 
