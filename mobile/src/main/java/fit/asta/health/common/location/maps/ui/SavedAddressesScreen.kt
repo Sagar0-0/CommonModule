@@ -63,13 +63,13 @@ import fit.asta.health.common.location.maps.modal.AddressesResponse
 import fit.asta.health.common.location.maps.modal.AddressesResponse.MyAddress
 import fit.asta.health.common.location.maps.modal.MapScreens
 import fit.asta.health.common.location.maps.modal.SearchResponse
-import fit.asta.health.common.ui.components.AppTopBar
+import fit.asta.health.common.ui.components.generic.AppTopBar
+import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.iconSize
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
-import fit.asta.health.navigation.home.view.component.LoadingAnimation
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
 
 @Composable
 fun SavedAddressesScreen(
@@ -356,11 +356,11 @@ fun SavedAddressesScreen(
                 }
 
                 is ResponseState.Error -> {
-                    ErrorScreenLayout(desc = "Some internal error occurred! We are fixing it soon!")
+                    AppErrorScreen(desc = "Some internal error occurred! We are fixing it soon!")
                 }
 
                 is ResponseState.NoInternet -> {
-                    ErrorScreenLayout()
+                    AppErrorScreen()
                 }
 
                 else -> {}
@@ -431,11 +431,11 @@ fun SavedAddressesScreen(
                 }
 
                 is ResponseState.NoInternet -> {
-                    ErrorScreenLayout()
+                    AppErrorScreen()
                 }
 
                 is ResponseState.Error -> {
-                    ErrorScreenLayout(desc = "Some internal error occurred! We are fixing it soon!")
+                    AppErrorScreen(desc = "Some internal error occurred! We are fixing it soon!")
                 }
 
                 else -> {}

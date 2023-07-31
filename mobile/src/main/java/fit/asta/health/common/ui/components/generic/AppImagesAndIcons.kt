@@ -1,5 +1,6 @@
-package fit.asta.health.common.ui.components
+package fit.asta.health.common.ui.components.generic
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,6 +19,11 @@ import fit.asta.health.common.ui.theme.aspectRatio
 import fit.asta.health.common.ui.theme.imageSize
 import fit.asta.health.common.ui.theme.spacing
 
+object AppConstImg {
+    val placeHolderImg = R.drawable.error_404
+    val errorImg = R.drawable.error_404
+}
+
 @Composable
 fun AppToolCardImage(
     model: Any?, contentDescription: String?,
@@ -34,8 +40,8 @@ fun AppToolCardImage(
                 )
             ),
         contentScale = ContentScale.Crop,
-        placeholder = painterResource(id = R.drawable.error_404),
-        error = painterResource(id = R.drawable.error_404),
+        placeholder = painterResource(id = AppConstImg.placeHolderImg),
+        error = painterResource(id = AppConstImg.errorImg),
     )
 
 }
@@ -54,6 +60,44 @@ fun AppDefaultIcon(
         contentDescription = contentDescription,
         tint = tint,
         modifier = modifier.size(imageSize.standard)
+    )
+
+}
+
+
+@Composable
+fun AppDefServerImg(
+    model: Any?,
+    contentDescription: String?,
+    modifier: Modifier = Modifier,
+    contentScale: ContentScale = ContentScale.Fit,
+) {
+
+    AsyncImage(
+        model = model,
+        contentDescription = contentDescription,
+        modifier = modifier,
+        contentScale = contentScale,
+        placeholder = painterResource(id = AppConstImg.placeHolderImg),
+        error = painterResource(id = AppConstImg.errorImg),
+    )
+
+}
+
+
+@Composable
+fun AppDrawImg(
+    imgId: Int,
+    contentDescription: String?,
+    modifier: Modifier = Modifier,
+    contentScale: ContentScale = ContentScale.FillBounds,
+) {
+
+    Image(
+        painter = painterResource(id = imgId),
+        contentDescription = contentDescription,
+        modifier = modifier,
+        contentScale = contentScale,
     )
 
 }

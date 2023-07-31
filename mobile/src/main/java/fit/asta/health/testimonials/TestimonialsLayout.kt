@@ -12,6 +12,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.media3.common.Player
 import fit.asta.health.common.ui.components.*
+import fit.asta.health.common.ui.components.generic.AppScaffold
+import fit.asta.health.common.ui.components.generic.AppTopBar
 import fit.asta.health.testimonials.view.TestimonialsList
 import fit.asta.health.testimonials.viewmodel.list.TestimonialListViewModel
 

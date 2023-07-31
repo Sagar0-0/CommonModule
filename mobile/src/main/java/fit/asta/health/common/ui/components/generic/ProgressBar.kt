@@ -1,4 +1,4 @@
-package fit.asta.health.common.ui.components
+package fit.asta.health.common.ui.components.generic
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -38,7 +38,7 @@ fun ProgressBarInt(
         )
         val animatedProgress = animateFloatAsState(
             targetValue = progress,
-            animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
+            animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec, label = ""
         ).value
 
         LinearProgressIndicator(
@@ -74,7 +74,7 @@ fun ProgressBarFloat(
         )
         val animatedProgress = animateFloatAsState(
             targetValue = progress,
-            animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
+            animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec, label = ""
         ).value
 
         LinearProgressIndicator(

@@ -1,4 +1,4 @@
-package fit.asta.health.common.ui.components
+package fit.asta.health.common.ui.components.generic
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.WindowInsets

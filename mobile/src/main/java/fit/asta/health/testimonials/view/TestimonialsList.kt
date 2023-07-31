@@ -30,12 +30,12 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.theme.boxSize
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.imageHeight
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
-import fit.asta.health.navigation.home.view.component.LoadingAnimation
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.view.list.TestimonialImageCard
 import fit.asta.health.testimonials.view.list.TestimonialTextCard
@@ -92,7 +92,7 @@ fun TestimonialsList(
                 // refresh error
                 loadState.refresh is LoadState.Error -> {
                     item {
-                        ErrorScreenLayout(onTryAgain = {
+                        AppErrorScreen(onTryAgain = {
                             testimonials.refresh()
                         })
                     }

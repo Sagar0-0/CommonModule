@@ -1,4 +1,4 @@
-package fit.asta.health.common.ui.components
+package fit.asta.health.common.ui.components.generic
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -10,7 +10,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import fit.asta.health.common.ui.theme.spacing
 
 @Composable
 fun AppVerticalGrid(
@@ -26,7 +26,7 @@ fun AppVerticalGrid(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background)
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(spacing.medium),
         verticalArrangement = verticalArrangement,
         horizontalArrangement = horizontalArrangement
     )

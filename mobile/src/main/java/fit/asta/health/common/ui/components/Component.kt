@@ -100,7 +100,7 @@ fun BottomSheetDragHandle(
     onClick: () -> Unit = {}
 ) {
     Spacer(modifier = modifier
-        .clickable { onClick }
+        .clickable { onClick() }
         .drawBehind {
             val barWidthPx = barWidth.toPx()
             val barHeightPx = barHeight.toPx()

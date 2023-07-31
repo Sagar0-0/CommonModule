@@ -1,4 +1,4 @@
-package fit.asta.health.common.ui.components
+package fit.asta.health.common.ui.components.functional
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape

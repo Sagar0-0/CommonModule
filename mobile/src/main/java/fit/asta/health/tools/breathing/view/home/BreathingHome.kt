@@ -27,6 +27,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.*
+import fit.asta.health.common.ui.components.functional.CircularSliderInt
+import fit.asta.health.common.ui.components.generic.AppBottomSheetScaffold
+import fit.asta.health.common.ui.components.generic.AppTopBar
+import fit.asta.health.common.ui.components.generic.AppTopBarWithHelp
+import fit.asta.health.common.ui.components.generic.ProgressBarInt
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.tools.walking.view.home.SunlightCard
 

@@ -59,7 +59,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import fit.asta.health.common.ui.components.ValidatedNumberField
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.navigation.home.view.component.LoadingAnimation
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 

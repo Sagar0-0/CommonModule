@@ -28,7 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.navigation.home.view.component.LoadingAnimation
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.scheduler.compose.components.SearchBarUI
 import fit.asta.health.scheduler.compose.components.SpotifyMusicItem
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ToneUiState

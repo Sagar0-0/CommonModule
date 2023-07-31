@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.home.view.component
+package fit.asta.health.navigation.today.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

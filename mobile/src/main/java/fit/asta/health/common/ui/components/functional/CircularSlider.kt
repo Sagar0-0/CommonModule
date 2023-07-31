@@ -1,4 +1,4 @@
-package fit.asta.health.common.ui.components
+package fit.asta.health.common.ui.components.functional
 
 
 import android.view.MotionEvent
@@ -15,6 +15,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -45,7 +47,8 @@ import kotlin.math.sqrt
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun CircularSliderInt( // progress in 1 2 3 4 range
+fun CircularSliderInt(
+    // progress in 1 2 3 4 range
     modifier: Modifier = Modifier,
     indicatorValue: Float = 2f,
     maxIndicatorValue: Float = 6f,
@@ -60,21 +63,21 @@ fun CircularSliderInt( // progress in 1 2 3 4 range
     isStarted: Boolean,
     appliedAngleDistanceValue: Float = 0f,
     onChangeDistance: ((Float) -> Unit)? = null,
-    onChangeAngleDistance: ((Float) -> Unit)? = null
+    onChangeAngleDistance: ((Float) -> Unit)? = null,
 ) {
     var size by remember { mutableStateOf(IntSize.Zero) }
-    var width by remember { mutableStateOf(0) }
-    var height by remember { mutableStateOf(0) }
-    var angleDistance by rememberSaveable { mutableStateOf(-35f) }
-    var lastDistance by rememberSaveable { mutableStateOf(0f) }
+    var width by remember { mutableIntStateOf(0) }
+    var height by remember { mutableIntStateOf(0) }
+    var angleDistance by rememberSaveable { mutableFloatStateOf(-35f) }
+    var lastDistance by rememberSaveable { mutableFloatStateOf(0f) }
     var down by remember { mutableStateOf(false) }
-    var radius by remember { mutableStateOf(0f) }
+    var radius by remember { mutableFloatStateOf(0f) }
     var center by remember { mutableStateOf(Offset.Zero) }
     var appliedAngleDistance by remember(appliedAngleDistanceValue) {
-        mutableStateOf(appliedAngleDistanceValue)
+        mutableFloatStateOf(appliedAngleDistanceValue)
     }
 
-    if (!isStarted){
+    if (!isStarted) {
         LaunchedEffect(key1 = angleDistance) {
             var a = angleDistance
             a += 35
@@ -92,15 +95,14 @@ fun CircularSliderInt( // progress in 1 2 3 4 range
             onChangeAngleDistance?.invoke(appliedAngleDistance)
             onChangeDistance?.invoke(
                 range(
-                    value = appliedAngleDistance / 250f * 100,
-                    maxIndicatorValue =maxIndicatorValue
+                    value = appliedAngleDistance / 250f * 100, maxIndicatorValue = maxIndicatorValue
                 )
             )
         }
     }
 
     var allowedIndicatorValue by remember {
-        mutableStateOf(maxIndicatorValue)
+        mutableFloatStateOf(maxIndicatorValue)
     }
     allowedIndicatorValue = if (indicatorValue <= maxIndicatorValue) {
         indicatorValue
@@ -108,75 +110,68 @@ fun CircularSliderInt( // progress in 1 2 3 4 range
         maxIndicatorValue
     }
 
-    var animatedIndicatorValue by remember { mutableStateOf(0f) }
+    var animatedIndicatorValue by remember { mutableFloatStateOf(0f) }
     LaunchedEffect(key1 = allowedIndicatorValue) {
         animatedIndicatorValue = allowedIndicatorValue
     }
 
-    val percentage =
-        (allowedIndicatorValue / maxIndicatorValue)
+    val percentage = (allowedIndicatorValue / maxIndicatorValue)
 
     val sweepAngle by animateFloatAsState(
-        targetValue = (250 * percentage),
-        animationSpec = tween(1000)
+        targetValue = (250 * percentage), animationSpec = tween(1000), label = ""
     )
 
     val receivedValue by animateFloatAsState(
-        targetValue = allowedIndicatorValue,
-        animationSpec = tween(1000)
+        targetValue = allowedIndicatorValue, animationSpec = tween(1000), label = ""
     )
     val animatedBigTextColor by animateColorAsState(
-        targetValue = if (allowedIndicatorValue == 0f)
-            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
-        else
-            bigTextColor,
-        animationSpec = tween(1000)
+        targetValue = if (allowedIndicatorValue == 0f) MaterialTheme.colorScheme.onSurface.copy(
+            alpha = 0.3f
+        )
+        else bigTextColor, animationSpec = tween(1000), label = ""
     )
 
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier
-            .onSizeChanged {
-                size = it
+    Box(contentAlignment = Alignment.Center, modifier = modifier.onSizeChanged {
+        size = it
+    }) {
+        Canvas(modifier = modifier
+            .onGloballyPositioned {
+                width = it.size.width
+                height = it.size.height
+                center = Offset(width / 2f, height / 2f)
+                radius = min(width.toFloat(), height.toFloat()) / 2f - padding - stroke / 2f
             }
-    ) {
-        Canvas(
-            modifier = modifier
-                .onGloballyPositioned {
-                    width = it.size.width
-                    height = it.size.height
-                    center = Offset(width / 2f, height / 2f)
-                    radius = min(width.toFloat(), height.toFloat()) / 2f - padding - stroke / 2f
-                }
-                .pointerInteropFilter {
-                    val x = it.x
-                    val y = it.y
-                    val offset = Offset(x, y)
-                    when (it.action) {
-                        MotionEvent.ACTION_DOWN -> {
-                            val d = distance(offset, center)
-                            val a = angle(center, offset)
-                            if (!isStarted && d >= radius - touchStroke / 2f && d <= radius + touchStroke / 2f && a !in -135f..-40f) {
-                                down = true
-                                angleDistance = a
-                            } else {
-                                down = false
-                            }
-                        }
-                        MotionEvent.ACTION_MOVE -> {
-                            val a = angle(center, offset)
-                            if (down && a !in -135f..-40f) {
-                                angleDistance = a
-                            }
-                        }
-                        MotionEvent.ACTION_UP -> {
+            .pointerInteropFilter {
+                val x = it.x
+                val y = it.y
+                val offset = Offset(x, y)
+                when (it.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        val d = distance(offset, center)
+                        val a = angle(center, offset)
+                        if (!isStarted && d >= radius - touchStroke / 2f && d <= radius + touchStroke / 2f && a !in -135f..-40f) {
+                            down = true
+                            angleDistance = a
+                        } else {
                             down = false
                         }
-                        else -> return@pointerInteropFilter false
                     }
-                    return@pointerInteropFilter true
+
+                    MotionEvent.ACTION_MOVE -> {
+                        val a = angle(center, offset)
+                        if (down && a !in -135f..-40f) {
+                            angleDistance = a
+                        }
+                    }
+
+                    MotionEvent.ACTION_UP -> {
+                        down = false
+                    }
+
+                    else -> return@pointerInteropFilter false
                 }
-        ) {
+                return@pointerInteropFilter true
+            }) {
 
             drawArc(
                 color = backgroundColor,
@@ -186,8 +181,7 @@ fun CircularSliderInt( // progress in 1 2 3 4 range
                 size = Size(radius * 2, radius * 2),
                 useCenter = false,
                 style = Stroke(
-                    width = stroke,
-                    cap = cap
+                    width = stroke, cap = cap
                 )
             )
             if (isStarted) {
@@ -210,14 +204,11 @@ fun CircularSliderInt( // progress in 1 2 3 4 range
                     size = Size(radius * 2, radius * 2),
                     useCenter = false,
                     style = Stroke(
-                        width = stroke,
-                        cap = cap
+                        width = stroke, cap = cap
                     )
                 )
                 drawCircle(
-                    color = thumbColor,
-                    radius = stroke,
-                    center = center + Offset(
+                    color = thumbColor, radius = stroke, center = center + Offset(
                         radius * cos((145 + appliedAngleDistance) * PI / 180f).toFloat(),
                         radius * sin((145 + appliedAngleDistance) * PI / 180f).toFloat()
                     )
@@ -242,14 +233,11 @@ fun CircularSliderInt( // progress in 1 2 3 4 range
                     size = Size(radius * 2, radius * 2),
                     useCenter = false,
                     style = Stroke(
-                        width = stroke,
-                        cap = cap
+                        width = stroke, cap = cap
                     )
                 )
                 drawCircle(
-                    color = thumbColor,
-                    radius = stroke,
-                    center = center + Offset(
+                    color = thumbColor, radius = stroke, center = center + Offset(
                         radius * cos((145 + appliedAngleDistance) * PI / 180f).toFloat(),
                         radius * sin((145 + appliedAngleDistance) * PI / 180f).toFloat()
                     )
@@ -261,13 +249,11 @@ fun CircularSliderInt( // progress in 1 2 3 4 range
             verticalArrangement = Arrangement.spacedBy(spacing.small)
         ) {
             Text(
-                text = "Total", fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
-                color = bigTextColor
+                text = "Total", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = bigTextColor
             )
             AnimatedVisibility(visible = isStarted) {
                 Text(
-                    text =  "%.0f $bigTextSuffix".format(
+                    text = "%.0f $bigTextSuffix".format(
                         receivedValue
                     ),
                     color = animatedBigTextColor,
@@ -297,7 +283,8 @@ fun CircularSliderInt( // progress in 1 2 3 4 range
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun CircularSliderFloat( // progress in 1.3 2.6 6.2 range
+fun CircularSliderFloat(
+    // progress in 1.3 2.6 6.2 range
     modifier: Modifier = Modifier,
     indicatorValue: Float = 2f,
     maxIndicatorValue: Float = 6f,
@@ -312,21 +299,21 @@ fun CircularSliderFloat( // progress in 1.3 2.6 6.2 range
     isStarted: Boolean,
     appliedAngleDistanceValue: Float = 0f,
     onChangeDistance: ((Float) -> Unit)? = null,
-    onChangeAngleDistance: ((Float) -> Unit)? = null
+    onChangeAngleDistance: ((Float) -> Unit)? = null,
 ) {
     var size by remember { mutableStateOf(IntSize.Zero) }
-    var width by remember { mutableStateOf(0) }
-    var height by remember { mutableStateOf(0) }
-    var angleDistance by rememberSaveable { mutableStateOf(-35f) }
-    var lastDistance by rememberSaveable { mutableStateOf(0f) }
+    var width by remember { mutableIntStateOf(0) }
+    var height by remember { mutableIntStateOf(0) }
+    var angleDistance by rememberSaveable { mutableFloatStateOf(-35f) }
+    var lastDistance by rememberSaveable { mutableFloatStateOf(0f) }
     var down by remember { mutableStateOf(false) }
-    var radius by remember { mutableStateOf(0f) }
+    var radius by remember { mutableFloatStateOf(0f) }
     var center by remember { mutableStateOf(Offset.Zero) }
     var appliedAngleDistance by remember(appliedAngleDistanceValue) {
-        mutableStateOf(appliedAngleDistanceValue)
+        mutableFloatStateOf(appliedAngleDistanceValue)
     }
 
-    if (!isStarted){
+    if (!isStarted) {
         LaunchedEffect(key1 = angleDistance) {
             var a = angleDistance
             a += 35
@@ -344,15 +331,14 @@ fun CircularSliderFloat( // progress in 1.3 2.6 6.2 range
             onChangeAngleDistance?.invoke(appliedAngleDistance)
             onChangeDistance?.invoke(
                 range(
-                    value = appliedAngleDistance / 250f * 100,
-                    maxIndicatorValue =maxIndicatorValue
+                    value = appliedAngleDistance / 250f * 100, maxIndicatorValue = maxIndicatorValue
                 )
             )
         }
     }
 
     var allowedIndicatorValue by remember {
-        mutableStateOf(maxIndicatorValue)
+        mutableFloatStateOf(maxIndicatorValue)
     }
     allowedIndicatorValue = if (indicatorValue <= maxIndicatorValue) {
         indicatorValue
@@ -360,75 +346,69 @@ fun CircularSliderFloat( // progress in 1.3 2.6 6.2 range
         maxIndicatorValue
     }
 
-    var animatedIndicatorValue by remember { mutableStateOf(0f) }
+    var animatedIndicatorValue by remember { mutableFloatStateOf(0f) }
     LaunchedEffect(key1 = allowedIndicatorValue) {
         animatedIndicatorValue = allowedIndicatorValue
     }
 
-    val percentage =
-        (allowedIndicatorValue / maxIndicatorValue)
+    val percentage = (allowedIndicatorValue / maxIndicatorValue)
 
     val sweepAngle by animateFloatAsState(
         targetValue = (250 * percentage),
-        animationSpec = tween(1000)
+        animationSpec = tween(1000), label = "",
     )
 
     val receivedValue by animateFloatAsState(
-        targetValue = allowedIndicatorValue,
-        animationSpec = tween(1000)
+        targetValue = allowedIndicatorValue, animationSpec = tween(1000), label = ""
     )
     val animatedBigTextColor by animateColorAsState(
-        targetValue = if (allowedIndicatorValue == 0f)
-            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
-        else
-            bigTextColor,
-        animationSpec = tween(1000)
+        targetValue = if (allowedIndicatorValue == 0f) MaterialTheme.colorScheme.onSurface.copy(
+            alpha = 0.3f
+        )
+        else bigTextColor, animationSpec = tween(1000), label = ""
     )
 
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier
-            .onSizeChanged {
-                size = it
+    Box(contentAlignment = Alignment.Center, modifier = modifier.onSizeChanged {
+        size = it
+    }) {
+        Canvas(modifier = modifier
+            .onGloballyPositioned {
+                width = it.size.width
+                height = it.size.height
+                center = Offset(width / 2f, height / 2f)
+                radius = min(width.toFloat(), height.toFloat()) / 2f - padding - stroke / 2f
             }
-    ) {
-        Canvas(
-            modifier = modifier
-                .onGloballyPositioned {
-                    width = it.size.width
-                    height = it.size.height
-                    center = Offset(width / 2f, height / 2f)
-                    radius = min(width.toFloat(), height.toFloat()) / 2f - padding - stroke / 2f
-                }
-                .pointerInteropFilter {
-                    val x = it.x
-                    val y = it.y
-                    val offset = Offset(x, y)
-                    when (it.action) {
-                        MotionEvent.ACTION_DOWN -> {
-                            val d = distance(offset, center)
-                            val a = angle(center, offset)
-                            if (!isStarted && d >= radius - touchStroke / 2f && d <= radius + touchStroke / 2f && a !in -135f..-40f) {
-                                down = true
-                                angleDistance = a
-                            } else {
-                                down = false
-                            }
-                        }
-                        MotionEvent.ACTION_MOVE -> {
-                            val a = angle(center, offset)
-                            if (down && a !in -135f..-40f) {
-                                angleDistance = a
-                            }
-                        }
-                        MotionEvent.ACTION_UP -> {
+            .pointerInteropFilter {
+                val x = it.x
+                val y = it.y
+                val offset = Offset(x, y)
+                when (it.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        val d = distance(offset, center)
+                        val a = angle(center, offset)
+                        if (!isStarted && d >= radius - touchStroke / 2f && d <= radius + touchStroke / 2f && a !in -135f..-40f) {
+                            down = true
+                            angleDistance = a
+                        } else {
                             down = false
                         }
-                        else -> return@pointerInteropFilter false
                     }
-                    return@pointerInteropFilter true
+
+                    MotionEvent.ACTION_MOVE -> {
+                        val a = angle(center, offset)
+                        if (down && a !in -135f..-40f) {
+                            angleDistance = a
+                        }
+                    }
+
+                    MotionEvent.ACTION_UP -> {
+                        down = false
+                    }
+
+                    else -> return@pointerInteropFilter false
                 }
-        ) {
+                return@pointerInteropFilter true
+            }) {
 
             drawArc(
                 color = backgroundColor,
@@ -438,8 +418,7 @@ fun CircularSliderFloat( // progress in 1.3 2.6 6.2 range
                 size = Size(radius * 2, radius * 2),
                 useCenter = false,
                 style = Stroke(
-                    width = stroke,
-                    cap = cap
+                    width = stroke, cap = cap
                 )
             )
             if (isStarted) {
@@ -462,14 +441,11 @@ fun CircularSliderFloat( // progress in 1.3 2.6 6.2 range
                     size = Size(radius * 2, radius * 2),
                     useCenter = false,
                     style = Stroke(
-                        width = stroke,
-                        cap = cap
+                        width = stroke, cap = cap
                     )
                 )
                 drawCircle(
-                    color = thumbColor,
-                    radius = stroke,
-                    center = center + Offset(
+                    color = thumbColor, radius = stroke, center = center + Offset(
                         radius * cos((145 + appliedAngleDistance) * PI / 180f).toFloat(),
                         radius * sin((145 + appliedAngleDistance) * PI / 180f).toFloat()
                     )
@@ -494,14 +470,11 @@ fun CircularSliderFloat( // progress in 1.3 2.6 6.2 range
                     size = Size(radius * 2, radius * 2),
                     useCenter = false,
                     style = Stroke(
-                        width = stroke,
-                        cap = cap
+                        width = stroke, cap = cap
                     )
                 )
                 drawCircle(
-                    color = thumbColor,
-                    radius = stroke,
-                    center = center + Offset(
+                    color = thumbColor, radius = stroke, center = center + Offset(
                         radius * cos((145 + appliedAngleDistance) * PI / 180f).toFloat(),
                         radius * sin((145 + appliedAngleDistance) * PI / 180f).toFloat()
                     )
@@ -513,13 +486,11 @@ fun CircularSliderFloat( // progress in 1.3 2.6 6.2 range
             verticalArrangement = Arrangement.spacedBy(spacing.small)
         ) {
             Text(
-                text = "Total", fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
-                color = bigTextColor
+                text = "Total", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = bigTextColor
             )
             AnimatedVisibility(visible = isStarted) {
                 Text(
-                    text =  "%.1f $bigTextSuffix".format(
+                    text = "%.1f $bigTextSuffix".format(
                         receivedValue
                     ),
                     color = animatedBigTextColor,
@@ -561,11 +532,9 @@ fun Float.square(): Float {
 }
 
 fun range(value: Float, maxIndicatorValue: Float): Float {
-    val old_value = value
-    val old_min = 0f
-    val old_max = 100f
-    val new_min = 0f
-    val new_max = maxIndicatorValue
-    return (((old_value - old_min) * (new_max - new_min)) / (old_max - old_min)) + new_min
+    val oldMin = 0f
+    val oldMax = 100f
+    val newMin = 0f
+    return (((value - oldMin) * (maxIndicatorValue - newMin)) / (oldMax - oldMin)) + newMin
 }
 

@@ -1,10 +1,11 @@
-package fit.asta.health.common.ui.components
+package fit.asta.health.common.ui.components.generic
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 
 object AppTexts {
 
@@ -84,12 +85,14 @@ object AppTexts {
         cardTitle: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
+        textAlign: TextAlign? = null,
     ) {
         Text(
             text = cardTitle,
             style = MaterialTheme.typography.headlineSmall,
             modifier = modifier,
-            color = color
+            color = color,
+            textAlign = textAlign
         )
     }
 
