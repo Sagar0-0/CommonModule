@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
@@ -46,9 +47,7 @@ fun MusicSmallImageRow(
             .fillMaxWidth()
 
             // Redirecting the User to Spotify App playlist
-            .clickable {
-                onClick()
-            },
+            .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically
     ) {
 
@@ -56,22 +55,19 @@ fun MusicSmallImageRow(
         Box(contentAlignment = Alignment.Center) {
 
             // Circular Progress Bar
-            if (painter.state.painter == null)
-                CircularProgressIndicator()
+            if (painter.state.painter == null) CircularProgressIndicator()
 
             // Playlist Image
             Image(
                 painter = painter,
                 contentDescription = "Playlist Image",
-                modifier = Modifier
-                    .size(64.dp)
+                modifier = Modifier.size(64.dp)
             )
         }
 
         // showing the playlist type and the owner name to the user
         Column(
-            modifier = Modifier
-                .padding(horizontal = 12.dp),
+            modifier = Modifier.padding(horizontal = 12.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start
         ) {
@@ -84,7 +80,8 @@ fun MusicSmallImageRow(
                 textAlign = TextAlign.Start,
                 color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Bold,
-                fontSize = 14.sp
+                fontSize = 14.sp,
+                overflow = TextOverflow.Ellipsis
             )
 
             // Secondary Text
@@ -94,7 +91,8 @@ fun MusicSmallImageRow(
 
                     textAlign = TextAlign.Start,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = .6f),
-                    fontSize = 12.sp
+                    fontSize = 12.sp,
+                    overflow = TextOverflow.Ellipsis
                 )
         }
     }

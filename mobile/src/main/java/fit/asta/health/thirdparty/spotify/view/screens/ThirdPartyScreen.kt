@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -31,6 +30,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.thirdparty.spotify.view.navigation.SpotifyNavRoutes
 import fit.asta.health.thirdparty.spotify.model.net.common.Track
 import fit.asta.health.thirdparty.spotify.model.net.recently.SpotifyUserRecentlyPlayedModel
@@ -98,7 +98,7 @@ fun ThirdPartyScreen(
             )
 
             // Search and Profile Icon
-            Row {
+            Row(horizontalArrangement = Arrangement.spacedBy(spacing.small)) {
 
                 // Search Icon
                 Icon(
@@ -115,9 +115,6 @@ fun ThirdPartyScreen(
                             navigator(SpotifyNavRoutes.SearchScreen.routes)
                         }
                 )
-
-                // Spacing
-                Spacer(modifier = Modifier.width(8.dp))
 
                 // Profile Icon
                 Icon(

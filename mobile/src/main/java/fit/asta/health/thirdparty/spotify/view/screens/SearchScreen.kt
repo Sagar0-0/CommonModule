@@ -77,12 +77,8 @@ fun SearchScreen(
                 .fillMaxWidth()
                 .padding(12.dp),
             userInput = userSearchInput.value,
-            onUserInputChange = {
-                userSearchInput.value = it
-            },
-            onFilterButtonClick = {
-                isSortActive.value = !isSortActive.value
-            }
+            onUserInputChange = { userSearchInput.value = it },
+            onFilterButtonClick = { isSortActive.value = !isSortActive.value }
         ) {
 
             // Making a string with the filters chosen by the User

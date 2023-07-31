@@ -2,10 +2,9 @@ package fit.asta.health.thirdparty.spotify.view.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -16,9 +15,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.thirdparty.spotify.model.net.common.Artist
 
@@ -55,7 +56,8 @@ fun MusicLargeImageColumn(
             // Redirecting the User to Spotify App
             .clickable {
                 onClick()
-            }
+            },
+        verticalArrangement = Arrangement.spacedBy(spacing.small)
     ) {
 
         // Showing the Loader or the Image accordingly
@@ -78,8 +80,6 @@ fun MusicLargeImageColumn(
             )
         }
 
-        Spacer(Modifier.height(8.dp))
-
         // track Name
         Text(
             text = headerText,
@@ -91,7 +91,8 @@ fun MusicLargeImageColumn(
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurface,
             fontWeight = FontWeight.Bold,
-            fontSize = 14.sp
+            fontSize = 14.sp,
+            overflow = TextOverflow.Ellipsis
         )
 
         // Formulating the names of the Artist
@@ -101,15 +102,9 @@ fun MusicLargeImageColumn(
             .filter { it != '[' }
             .filter { it != ']' }
 
-
-        val textToShow = if (artistsNames.length > 20)
-            "${artistsNames.substring(0, 18)}..."
-        else
-            artistsNames
-
         // Artist Names
         Text(
-            text = textToShow,
+            text = artistsNames,
 
             modifier = Modifier
                 .width(widthOfImage),
@@ -117,7 +112,8 @@ fun MusicLargeImageColumn(
             maxLines = 1,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = .6f),
-            fontSize = 14.sp
+            fontSize = 14.sp,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }

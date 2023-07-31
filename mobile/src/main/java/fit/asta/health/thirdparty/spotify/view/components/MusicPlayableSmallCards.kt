@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
@@ -43,9 +44,7 @@ fun MusicPlayableSmallCards(
             .width(LocalConfiguration.current.screenWidthDp.dp / 2 - 20.dp)
 
             // Redirecting the User to Spotify App
-            .clickable {
-                onClick()
-            }
+            .clickable { onClick() }
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
 
@@ -58,14 +57,9 @@ fun MusicPlayableSmallCards(
             // Circular Progress Bar
             if (painter.state.painter == null) LoadingAnimation()
 
-            val textToShow = if (name.length > 40)
-                "${name.substring(0, 38)}..."
-            else
-                name
-
             // track Name
             Text(
-                text = textToShow,
+                text = name,
 
                 modifier = Modifier
                     .width(LocalConfiguration.current.screenWidthDp.dp)
@@ -75,7 +69,8 @@ fun MusicPlayableSmallCards(
                 textAlign = TextAlign.Start,
                 color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Bold,
-                fontSize = 12.sp
+                fontSize = 12.sp,
+                overflow = TextOverflow.Ellipsis
             )
         }
     }

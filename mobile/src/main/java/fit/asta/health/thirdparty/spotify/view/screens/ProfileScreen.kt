@@ -98,8 +98,8 @@ fun TracksUI(
                             .toString()
                             .filterNot { char ->
                                 char == '[' || char == ']'
-                            }
-                            .trim()
+                            }.trim()
+
                         MusicSmallImageRow(
                             imageUri = currentItem.track.album.images.firstOrNull()?.url,
                             name = currentItem.track.name,
