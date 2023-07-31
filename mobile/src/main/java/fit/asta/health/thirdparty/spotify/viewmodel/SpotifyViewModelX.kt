@@ -23,6 +23,7 @@ import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
 import fit.asta.health.thirdparty.spotify.model.net.recently.SpotifyUserRecentlyPlayedModel
 import fit.asta.health.thirdparty.spotify.model.net.recommendations.SpotifyRecommendationModel
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
+import fit.asta.health.thirdparty.spotify.view.events.SpotifyUiEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -506,6 +507,39 @@ class SpotifyViewModelX @Inject constructor(
         viewModelScope.launch {
             remoteRepository.getCurrentUserEpisodes(accessToken).collectLatest {
                 _currentUserEpisode.value = it
+            }
+        }
+    }
+
+    fun uiEventListener(event: SpotifyUiEvent) {
+        when (event) {
+            is SpotifyUiEvent.OpenSpotify -> {}
+            is SpotifyUiEvent.SetAlbumDetails -> {
+                setAlbumId(event.albumId)
+            }
+
+            is SpotifyUiEvent.SetTrackDetails -> {
+                setTrackId(event.trackId)
+            }
+
+            is SpotifyUiEvent.PlaySong -> {
+                playSpotifySong(event.songUri)
+            }
+
+            is SpotifyUiEvent.LoadRecentlyPlayed -> {
+                getCurrentUserRecentlyPlayedTracks()
+            }
+
+            is SpotifyUiEvent.LoadRecommendation -> {
+                getRecommendationTracks()
+            }
+
+            is SpotifyUiEvent.LoadUserTopTracks -> {
+                getUserTopTracks()
+            }
+
+            is SpotifyUiEvent.LoadUserTopArtists -> {
+                getUserTopArtists()
             }
         }
     }

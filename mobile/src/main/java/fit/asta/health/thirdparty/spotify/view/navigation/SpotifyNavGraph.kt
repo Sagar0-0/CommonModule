@@ -1,6 +1,7 @@
 package fit.asta.health.thirdparty.spotify.view.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -51,9 +52,30 @@ fun SpotifyNavGraph(
             composable(
                 SpotifyNavRoutes.ThirdPartyScreen.routes,
                 content = {
+
+                    val displayName = spotifyViewModelX.currentUserData
+                        .collectAsStateWithLifecycle().value.data?.displayName
+
+                    val recentlyPlayedData = spotifyViewModelX.userRecentlyPlayedTracks
+                        .collectAsStateWithLifecycle().value
+
+                    val recommendedTracks = spotifyViewModelX.recommendationTracks
+                        .collectAsStateWithLifecycle().value
+
+                    val topTracks = spotifyViewModelX.userTopTracks
+                        .collectAsStateWithLifecycle().value
+
+                    val topArtists = spotifyViewModelX.userTopArtists
+                        .collectAsStateWithLifecycle().value
+
                     ThirdPartyScreen(
-                        spotifyViewModelX = spotifyViewModelX,
-                        navController = navController
+                        displayName = displayName,
+                        recentlyPlayed = recentlyPlayedData,
+                        recommendedData = recommendedTracks,
+                        topTracksData = topTracks,
+                        topArtistsData = topArtists,
+                        setEvent = spotifyViewModelX::uiEventListener,
+                        navigator = { navController.navigate(it) },
                     )
                 }
             )
