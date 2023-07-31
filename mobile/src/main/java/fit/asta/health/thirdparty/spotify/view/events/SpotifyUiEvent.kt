@@ -22,6 +22,18 @@ sealed class SpotifyUiEvent {
         object LoadUserTopArtists : NetworkIO()
 
         object LoadAlbumDetails : NetworkIO()
+
+        object LoadCurrentUserTracks : NetworkIO()
+
+        object LoadCurrentUserPlaylist : NetworkIO()
+
+        object LoadCurrentUserArtists : NetworkIO()
+
+        object LoadCurrentUserAlbum : NetworkIO()
+
+        object LoadCurrentUserShows : NetworkIO()
+
+        object LoadCurrentUserEpisode : NetworkIO()
     }
 
     sealed class LocalIO : SpotifyUiEvent() {

@@ -561,6 +561,30 @@ class SpotifyViewModelX @Inject constructor(
             is SpotifyUiEvent.LocalIO.LoadAllTracks -> {
                 getAllTracks()
             }
+
+            is SpotifyUiEvent.NetworkIO.LoadCurrentUserTracks -> {
+                getCurrentUserTracks()
+            }
+
+            is SpotifyUiEvent.NetworkIO.LoadCurrentUserPlaylist -> {
+                getCurrentUserPlaylist()
+            }
+
+            is SpotifyUiEvent.NetworkIO.LoadCurrentUserArtists -> {
+                getCurrentUserFollowingArtists()
+            }
+
+            is SpotifyUiEvent.NetworkIO.LoadCurrentUserAlbum -> {
+                getCurrentUserAlbum()
+            }
+
+            is SpotifyUiEvent.NetworkIO.LoadCurrentUserShows -> {
+                getCurrentUserShows()
+            }
+
+            is SpotifyUiEvent.NetworkIO.LoadCurrentUserEpisode -> {
+                getCurrentUserEpisode()
+            }
         }
     }
 }

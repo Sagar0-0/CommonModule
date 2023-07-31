@@ -2,50 +2,45 @@ package fit.asta.health.thirdparty.spotify.view.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import fit.asta.health.thirdparty.spotify.model.net.library.albums.SpotifyLibraryAlbumModel
+import fit.asta.health.thirdparty.spotify.model.net.library.episodes.SpotifyLibraryEpisodesModel
+import fit.asta.health.thirdparty.spotify.model.net.library.following.SpotifyUserFollowingArtist
+import fit.asta.health.thirdparty.spotify.model.net.library.playlist.SpotifyUserPlaylistsModel
+import fit.asta.health.thirdparty.spotify.model.net.library.shows.SpotifyLibraryShowsModel
+import fit.asta.health.thirdparty.spotify.model.net.library.tracks.SpotifyLibraryTracksModel
+import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
+import fit.asta.health.thirdparty.spotify.view.components.MusicProfileOptionList
 import fit.asta.health.thirdparty.spotify.view.components.MusicSmallImageRow
 import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
-import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
+import fit.asta.health.thirdparty.spotify.view.events.SpotifyUiEvent
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ProfileScreen(
-    spotifyViewModelX: SpotifyViewModelX
+    currentUserTracks: SpotifyNetworkCall<SpotifyLibraryTracksModel>,
+    currentUserPlaylist: SpotifyNetworkCall<SpotifyUserPlaylistsModel>,
+    currentUserArtists: SpotifyNetworkCall<SpotifyUserFollowingArtist>,
+    currentUserAlbums: SpotifyNetworkCall<SpotifyLibraryAlbumModel>,
+    currentUserShows: SpotifyNetworkCall<SpotifyLibraryShowsModel>,
+    currentUserEpisodes: SpotifyNetworkCall<SpotifyLibraryEpisodesModel>,
+    setEvent: (SpotifyUiEvent) -> Unit
 ) {
 
     // This keeps the selected Item by the user
     val selectedItem = remember { mutableIntStateOf(0) }
-
-    // Option List for the screen
-    val categoryList = listOf(
-        "Track",
-        "Playlist",
-        "Artist",
-        "Album",
-        "Show",
-        "Episode"
-    )
 
     // Root Composable function
     Column(
@@ -54,64 +49,34 @@ fun ProfileScreen(
             .background(MaterialTheme.colorScheme.surface)
     ) {
 
-        FlowRow(
-            modifier = Modifier
-                .padding(12.dp)
-                .wrapContentWidth()
-        ) {
-
-
-            categoryList.forEachIndexed { index, option ->
-
-                OutlinedButton(
-                    onClick = {
-                        selectedItem.intValue = index
-                    },
-                    modifier = Modifier
-                        .padding(4.dp),
-
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = if (index == selectedItem.intValue)
-                            MaterialTheme.colorScheme.primary
-                        else
-                            MaterialTheme.colorScheme.secondary
-                    )
-                ) {
-
-                    // Category Name
-                    Text(
-                        text = option,
-                        fontSize = 12.sp
-                    )
-                }
-            }
-        }
+        MusicProfileOptionList(selectedItem = selectedItem.intValue) { selectedItem.intValue = it }
 
         when (selectedItem.intValue) {
-            0 -> TracksUI(spotifyViewModelX)
-            1 -> PlaylistUI(spotifyViewModelX)
-            2 -> ArtistsUI(spotifyViewModelX)
-            3 -> AlbumsUI(spotifyViewModelX)
-            4 -> ShowUI(spotifyViewModelX)
-            5 -> EpisodeUI(spotifyViewModelX)
+            0 -> TracksUI(setEvent = setEvent, currentUserTracks = currentUserTracks)
+            1 -> PlaylistUI(currentUserPlaylist = currentUserPlaylist, setEvent = setEvent)
+            2 -> ArtistsUI(currentUserArtists = currentUserArtists, setEvent = setEvent)
+            3 -> AlbumsUI(currentUserAlbums = currentUserAlbums, setEvent = setEvent)
+            4 -> ShowUI(currentUserShows = currentUserShows, setEvent = setEvent)
+            5 -> EpisodeUI(currentUserEpisodes = currentUserEpisodes, setEvent = setEvent)
         }
     }
 }
 
 @Composable
-fun TracksUI(spotifyViewModelX: SpotifyViewModelX) {
+fun TracksUI(
+    currentUserTracks: SpotifyNetworkCall<SpotifyLibraryTracksModel>,
+    setEvent: (SpotifyUiEvent) -> Unit
+) {
 
     LaunchedEffect(Unit) {
-        spotifyViewModelX.getCurrentUserTracks()
+        setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserTracks)
     }
 
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
-        networkState = spotifyViewModelX.currentUserTracks.collectAsState().value,
-        onCurrentStateInitialized = {
-            spotifyViewModelX.getCurrentUserTracks()
-        }
+        networkState = currentUserTracks,
+        onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserTracks) }
     ) { networkResponse ->
         networkResponse.data?.trackList.let { trackList ->
 
@@ -140,7 +105,7 @@ fun TracksUI(spotifyViewModelX: SpotifyViewModelX) {
                             name = currentItem.track.name,
                             secondaryText = textToShow
                         ) {
-                            spotifyViewModelX.playSpotifySong(currentItem.track.uri)
+                            setEvent(SpotifyUiEvent.HelperEvent.PlaySong(currentItem.track.uri))
                         }
                     }
                 }
@@ -150,19 +115,20 @@ fun TracksUI(spotifyViewModelX: SpotifyViewModelX) {
 }
 
 @Composable
-fun PlaylistUI(spotifyViewModelX: SpotifyViewModelX) {
+fun PlaylistUI(
+    currentUserPlaylist: SpotifyNetworkCall<SpotifyUserPlaylistsModel>,
+    setEvent: (SpotifyUiEvent) -> Unit
+) {
 
     LaunchedEffect(Unit) {
-        spotifyViewModelX.getCurrentUserPlaylist()
+        setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserPlaylist)
     }
 
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
-        networkState = spotifyViewModelX.currentUserPlaylist.collectAsState().value,
-        onCurrentStateInitialized = {
-            spotifyViewModelX.getCurrentUserPlaylist()
-        }
+        networkState = currentUserPlaylist,
+        onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserPlaylist) }
     ) { networkResponse ->
         networkResponse.data?.playlistList.let { playList ->
 
@@ -185,7 +151,7 @@ fun PlaylistUI(spotifyViewModelX: SpotifyViewModelX) {
                             name = currentItem.name,
                             secondaryText = textToShow
                         ) {
-                            spotifyViewModelX.playSpotifySong(currentItem.uri)
+                            setEvent(SpotifyUiEvent.HelperEvent.PlaySong(currentItem.uri))
                         }
                     }
                 }
@@ -195,18 +161,19 @@ fun PlaylistUI(spotifyViewModelX: SpotifyViewModelX) {
 }
 
 @Composable
-fun ArtistsUI(spotifyViewModelX: SpotifyViewModelX) {
+fun ArtistsUI(
+    currentUserArtists: SpotifyNetworkCall<SpotifyUserFollowingArtist>,
+    setEvent: (SpotifyUiEvent) -> Unit
+) {
 
     LaunchedEffect(Unit) {
-        spotifyViewModelX.getCurrentUserFollowingArtists()
+        setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserArtists)
     }
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
-        networkState = spotifyViewModelX.currentUserFollowingArtist.collectAsState().value,
-        onCurrentStateInitialized = {
-            spotifyViewModelX.getCurrentUserFollowingArtists()
-        }
+        networkState = currentUserArtists,
+        onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserArtists) }
     ) { networkResponse ->
         networkResponse.data?.artistList?.artistList.let { artistsList ->
 
@@ -228,7 +195,7 @@ fun ArtistsUI(spotifyViewModelX: SpotifyViewModelX) {
                             name = currentItem.name,
                             secondaryText = ""
                         ) {
-                            spotifyViewModelX.playSpotifySong(currentItem.uri)
+                            setEvent(SpotifyUiEvent.HelperEvent.PlaySong(currentItem.uri))
                         }
                     }
                 }
@@ -238,19 +205,20 @@ fun ArtistsUI(spotifyViewModelX: SpotifyViewModelX) {
 }
 
 @Composable
-fun AlbumsUI(spotifyViewModelX: SpotifyViewModelX) {
+fun AlbumsUI(
+    currentUserAlbums: SpotifyNetworkCall<SpotifyLibraryAlbumModel>,
+    setEvent: (SpotifyUiEvent) -> Unit
+) {
 
     LaunchedEffect(Unit) {
-        spotifyViewModelX.getCurrentUserAlbum()
+        setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserAlbum)
     }
 
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
-        networkState = spotifyViewModelX.currentUserAlbum.collectAsState().value,
-        onCurrentStateInitialized = {
-            spotifyViewModelX.getCurrentUserAlbum()
-        }
+        networkState = currentUserAlbums,
+        onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserAlbum) }
     ) { networkResponse ->
         networkResponse.data?.albumList.let { albumList ->
 
@@ -272,7 +240,7 @@ fun AlbumsUI(spotifyViewModelX: SpotifyViewModelX) {
                             name = currentItem.album.name,
                             secondaryText = currentItem.album.type
                         ) {
-                            spotifyViewModelX.playSpotifySong(currentItem.album.uri)
+                            setEvent(SpotifyUiEvent.HelperEvent.PlaySong(currentItem.album.uri))
                         }
                     }
                 }
@@ -282,19 +250,20 @@ fun AlbumsUI(spotifyViewModelX: SpotifyViewModelX) {
 }
 
 @Composable
-fun ShowUI(spotifyViewModelX: SpotifyViewModelX) {
+fun ShowUI(
+    currentUserShows: SpotifyNetworkCall<SpotifyLibraryShowsModel>,
+    setEvent: (SpotifyUiEvent) -> Unit
+) {
 
     LaunchedEffect(Unit) {
-        spotifyViewModelX.getCurrentUserShows()
+        setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserShows)
     }
 
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
-        networkState = spotifyViewModelX.currentUserShow.collectAsState().value,
-        onCurrentStateInitialized = {
-            spotifyViewModelX.getCurrentUserShows()
-        }
+        networkState = currentUserShows,
+        onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserShows) }
     ) { networkResponse ->
         networkResponse.data?.showList.let { showList ->
 
@@ -317,7 +286,7 @@ fun ShowUI(spotifyViewModelX: SpotifyViewModelX) {
                             name = currentItem.show.name,
                             secondaryText = textToShow
                         ) {
-                            spotifyViewModelX.playSpotifySong(currentItem.show.uri)
+                            setEvent(SpotifyUiEvent.HelperEvent.PlaySong(currentItem.show.uri))
                         }
                     }
                 }
@@ -327,19 +296,20 @@ fun ShowUI(spotifyViewModelX: SpotifyViewModelX) {
 }
 
 @Composable
-fun EpisodeUI(spotifyViewModelX: SpotifyViewModelX) {
+fun EpisodeUI(
+    currentUserEpisodes: SpotifyNetworkCall<SpotifyLibraryEpisodesModel>,
+    setEvent: (SpotifyUiEvent) -> Unit
+) {
 
     LaunchedEffect(Unit) {
-        spotifyViewModelX.getCurrentUserEpisode()
+        setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserEpisode)
     }
 
     MusicStateControl(
         modifier = Modifier
             .fillMaxSize(),
-        networkState = spotifyViewModelX.currentUserEpisode.collectAsState().value,
-        onCurrentStateInitialized = {
-            spotifyViewModelX.getCurrentUserEpisode()
-        }
+        networkState = currentUserEpisodes,
+        onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserEpisode) }
     ) { networkResponse ->
         networkResponse.data?.episodeList.let { episodeList ->
 
@@ -361,7 +331,7 @@ fun EpisodeUI(spotifyViewModelX: SpotifyViewModelX) {
                             name = currentItem.episode.name,
                             secondaryText = currentItem.episode.type
                         ) {
-                            spotifyViewModelX.playSpotifySong(currentItem.episode.uri)
+                            setEvent(SpotifyUiEvent.HelperEvent.PlaySong(currentItem.episode.uri))
                         }
                     }
                 }

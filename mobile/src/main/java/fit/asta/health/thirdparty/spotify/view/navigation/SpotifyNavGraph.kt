@@ -110,7 +110,36 @@ fun SpotifyNavGraph(
             // Profile Screen
             composable(
                 SpotifyNavRoutes.ProfileScreen.routes,
-                content = { ProfileScreen(spotifyViewModelX = spotifyViewModelX) }
+                content = {
+
+                    val currentUserTracks = spotifyViewModelX.currentUserTracks
+                        .collectAsStateWithLifecycle().value
+
+                    val currentUserPlaylist = spotifyViewModelX.currentUserPlaylist
+                        .collectAsStateWithLifecycle().value
+
+                    val currentUserArtists = spotifyViewModelX.currentUserFollowingArtist
+                        .collectAsStateWithLifecycle().value
+
+                    val currentUserAlbums = spotifyViewModelX.currentUserAlbum
+                        .collectAsStateWithLifecycle().value
+
+                    val currentUserShows = spotifyViewModelX.currentUserShow
+                        .collectAsStateWithLifecycle().value
+
+                    val currentUserEpisodes = spotifyViewModelX.currentUserEpisode
+                        .collectAsStateWithLifecycle().value
+
+                    ProfileScreen(
+                        currentUserTracks = currentUserTracks,
+                        currentUserPlaylist = currentUserPlaylist,
+                        currentUserArtists = currentUserArtists,
+                        currentUserAlbums = currentUserAlbums,
+                        currentUserShows = currentUserShows,
+                        currentUserEpisodes = currentUserEpisodes,
+                        setEvent = spotifyViewModelX::uiEventListener
+                    )
+                }
             )
 
             // Album Details Screen Showing the Details of a Track
