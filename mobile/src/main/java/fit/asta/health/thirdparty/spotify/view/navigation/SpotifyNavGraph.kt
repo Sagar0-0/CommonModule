@@ -90,8 +90,17 @@ fun SpotifyNavGraph(
             composable(
                 SpotifyNavRoutes.TrackDetailScreen.routes,
                 content = {
+
+                    val trackNetworkState = spotifyViewModelX.trackDetailsResponse
+                        .collectAsStateWithLifecycle().value
+
+                    val trackLocalState = spotifyViewModelX.allTracks
+                        .collectAsStateWithLifecycle().value
+
                     TrackDetailsScreen(
-                        spotifyViewModelX = spotifyViewModelX
+                        trackNetworkState = trackNetworkState,
+                        trackLocalState = trackLocalState,
+                        setEvent = spotifyViewModelX::uiEventListener
                     )
                 }
             )

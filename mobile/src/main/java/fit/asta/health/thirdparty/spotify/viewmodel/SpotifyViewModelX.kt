@@ -593,6 +593,18 @@ class SpotifyViewModelX @Inject constructor(
             is SpotifyUiEvent.HelperEvent.SetSearchQueriesAndVariables -> {
                 setSearchQueriesAndVariables(query = event.query, type = event.type)
             }
+
+            is SpotifyUiEvent.NetworkIO.LoadTrackDetails -> {
+                getTrackDetails()
+            }
+
+            is SpotifyUiEvent.LocalIO.InsertTrack -> {
+                insertTrack(event.track)
+            }
+
+            is SpotifyUiEvent.LocalIO.DeleteTrack -> {
+                deleteTrack(event.track)
+            }
         }
     }
 }

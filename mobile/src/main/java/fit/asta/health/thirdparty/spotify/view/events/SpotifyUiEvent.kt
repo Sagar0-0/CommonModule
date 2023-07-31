@@ -1,6 +1,7 @@
 package fit.asta.health.thirdparty.spotify.view.events
 
 import fit.asta.health.thirdparty.spotify.model.net.common.Album
+import fit.asta.health.thirdparty.spotify.model.net.common.Track
 
 sealed class SpotifyUiEvent {
 
@@ -40,6 +41,8 @@ sealed class SpotifyUiEvent {
         object LoadCurrentUserEpisode : NetworkIO()
 
         object LoadSpotifySearchResult : NetworkIO()
+
+        object LoadTrackDetails : NetworkIO()
     }
 
     sealed class LocalIO : SpotifyUiEvent() {
@@ -51,5 +54,9 @@ sealed class SpotifyUiEvent {
         class DeleteAlbumData(val album: Album) : LocalIO()
 
         object LoadAllTracks : LocalIO()
+
+        class InsertTrack(val track: Track) : LocalIO()
+
+        class DeleteTrack(val track: Track) : LocalIO()
     }
 }
