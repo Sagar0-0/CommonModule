@@ -12,28 +12,37 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import fit.asta.health.thirdparty.spotify.model.net.common.Album
+import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import fit.asta.health.thirdparty.spotify.view.components.MusicLargeImageColumn
 import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
-import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
+import fit.asta.health.thirdparty.spotify.view.events.SpotifyUiEvent
 
 /**
  * This screen shows the details of the Albums choose by the user and gives the options to either
  * add this to his favourites or open the Album in spotify
  *
- * @param spotifyViewModelX This is the spotify ViewModel which contacts with the spotify apis
+ * @param albumNetworkResponse This contains the state of the Network Data of the Album
+ * @param albumLocalResponse This contains the state of the Local Data of the Album
+ * @param setEvent This function is used to send the ui events from the UI to the View Model layer
  */
 @Composable
 fun AlbumDetailScreen(
-    spotifyViewModelX: SpotifyViewModelX
+    albumNetworkResponse: SpotifyNetworkCall<Album>,
+    albumLocalResponse: SpotifyNetworkCall<List<Album>>,
+    setEvent: (SpotifyUiEvent) -> Unit
 ) {
 
+    // context is stored to Show the Toast
+    val context = LocalContext.current
+
     LaunchedEffect(Unit) {
-        spotifyViewModelX.getAlbumDetails()
+        setEvent(SpotifyUiEvent.LoadAlbumDetails)
+        setEvent(SpotifyUiEvent.LoadLocalAlbumDetails)
     }
 
     // Root Composable function
@@ -45,96 +54,77 @@ fun AlbumDetailScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        // This Function Draws the Album Details to the Screen according to the network and local responses
-        AlbumDetailHelper(
-            spotifyViewModelX = spotifyViewModelX
-        )
-
-    }
-}
-
-@Composable
-private fun AlbumDetailHelper(
-    spotifyViewModelX: SpotifyViewModelX
-) {
-
-    // context is stored to Show the Toast
-    val context = LocalContext.current
-
-    // This function checks for the Network Response from the API
-    MusicStateControl(
-        networkState = spotifyViewModelX.albumDetailsResponse.collectAsState().value,
-        onCurrentStateInitialized = {
-            spotifyViewModelX.getAlbumDetails()
-        }
-    ) { networkResponse ->
-
-        // This function checks for the Local Response from Local Database
+        // This function checks for the Network Response from the API
         MusicStateControl(
-            networkState = spotifyViewModelX.allAlbums.collectAsState().value,
-            onCurrentStateInitialized = {
-                spotifyViewModelX.getAllAlbums()
-            }
-        ) { localResponse ->
+            networkState = albumNetworkResponse,
+            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.LoadAlbumDetails) }
+        ) { networkResponse ->
 
-            // Parsing the Network Album Data
-            networkResponse.data.let { networkAlbumData ->
+            // This function checks for the Local Response from Local Database
+            MusicStateControl(
+                networkState = albumLocalResponse,
+                onCurrentStateInitialized = { setEvent(SpotifyUiEvent.LoadLocalAlbumDetails) }
+            ) { localResponse ->
 
-                // This variable stores if the Local Database contains this Album or not
-                val isPresent = localResponse.data.let { albumList ->
-                    if (networkAlbumData != null && albumList != null)
-                        albumList.contains(networkAlbumData)
-                    else
-                        false
-                }
+                // Parsing the Network Album Data
+                networkResponse.data.let { networkAlbumData ->
 
-                // Showing the Album Data at the Screen
-                if (networkAlbumData != null) {
-                    MusicLargeImageColumn(
-                        imageUri = networkAlbumData.images.firstOrNull()?.url,
-                        headerText = networkAlbumData.name,
-                        secondaryTexts = networkAlbumData.artists
-                    ) {}
-
-                    // Add to Favourites Button
-                    Button(
-                        onClick = {
-
-                            // Checking if the Album is already present or not
-                            if (!isPresent) {
-                                spotifyViewModelX.insertAlbum(networkAlbumData)
-                                Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show()
-                            } else {
-                                spotifyViewModelX.deleteAlbum(networkAlbumData)
-                                Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show()
-                            }
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 32.dp, bottom = 12.dp, start = 12.dp, end = 12.dp)
-                    ) {
-                        Text(
-                            text = if (!isPresent)
-                                "Add To Favourites" else "Delete From Favourites",
-                            modifier = Modifier
-                                .padding(4.dp)
-                        )
+                    // This variable stores if the Local Database contains this Album or not
+                    val isPresent = localResponse.data.let { albumList ->
+                        if (networkAlbumData != null && albumList != null)
+                            albumList.contains(networkAlbumData)
+                        else
+                            false
                     }
 
-                    // Play on Spotify Button
-                    Button(
-                        onClick = {
-                            spotifyViewModelX.playSpotifySong(networkAlbumData.uri)
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 12.dp, start = 12.dp, end = 12.dp)
-                    ) {
-                        Text(
-                            text = "Play using Spotify",
+                    // Showing the Album Data at the Screen
+                    if (networkAlbumData != null) {
+                        MusicLargeImageColumn(
+                            imageUri = networkAlbumData.images.firstOrNull()?.url,
+                            headerText = networkAlbumData.name,
+                            secondaryTexts = networkAlbumData.artists
+                        ) {}
+
+                        // Add to Favourites Button
+                        Button(
+                            onClick = {
+
+                                // Checking if the Album is already present or not
+                                if (!isPresent) {
+                                    setEvent(SpotifyUiEvent.InsertAlbumData(networkAlbumData))
+                                    Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    setEvent(SpotifyUiEvent.DeleteAlbumData(networkAlbumData))
+                                    Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show()
+                                }
+                            },
                             modifier = Modifier
-                                .padding(4.dp)
-                        )
+                                .fillMaxWidth()
+                                .padding(top = 32.dp, bottom = 12.dp, start = 12.dp, end = 12.dp)
+                        ) {
+                            Text(
+                                text = if (!isPresent)
+                                    "Add To Favourites" else "Delete From Favourites",
+                                modifier = Modifier
+                                    .padding(4.dp)
+                            )
+                        }
+
+                        // Play on Spotify Button
+                        Button(
+                            onClick = {
+                                setEvent(SpotifyUiEvent.PlaySong(networkAlbumData.uri))
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 12.dp, start = 12.dp, end = 12.dp)
+                        ) {
+                            Text(
+                                text = "Play using Spotify",
+                                modifier = Modifier
+                                    .padding(4.dp)
+                            )
+                        }
                     }
                 }
             }

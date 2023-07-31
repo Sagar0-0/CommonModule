@@ -541,6 +541,22 @@ class SpotifyViewModelX @Inject constructor(
             is SpotifyUiEvent.LoadUserTopArtists -> {
                 getUserTopArtists()
             }
+
+            is SpotifyUiEvent.LoadAlbumDetails -> {
+                getAlbumDetails()
+            }
+
+            is SpotifyUiEvent.LoadLocalAlbumDetails -> {
+                getAllAlbums()
+            }
+
+            is SpotifyUiEvent.InsertAlbumData -> {
+                insertAlbum(event.album)
+            }
+
+            is SpotifyUiEvent.DeleteAlbumData -> {
+                deleteAlbum(event.album)
+            }
         }
     }
 }

@@ -1,5 +1,7 @@
 package fit.asta.health.thirdparty.spotify.view.events
 
+import fit.asta.health.thirdparty.spotify.model.net.common.Album
+
 sealed class SpotifyUiEvent {
 
     class PlaySong(val songUri: String) : SpotifyUiEvent()
@@ -18,4 +20,11 @@ sealed class SpotifyUiEvent {
 
     object LoadUserTopArtists : SpotifyUiEvent()
 
+    object LoadAlbumDetails : SpotifyUiEvent()
+
+    object LoadLocalAlbumDetails : SpotifyUiEvent()
+
+    class InsertAlbumData(val album: Album) : SpotifyUiEvent()
+
+    class DeleteAlbumData(val album: Album) : SpotifyUiEvent()
 }

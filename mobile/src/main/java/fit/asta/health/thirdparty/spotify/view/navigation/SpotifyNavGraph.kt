@@ -111,8 +111,17 @@ fun SpotifyNavGraph(
             composable(
                 SpotifyNavRoutes.AlbumDetailScreen.routes,
                 content = {
+
+                    val albumNetworkResponse = spotifyViewModelX.albumDetailsResponse
+                        .collectAsStateWithLifecycle().value
+
+                    val albumLocalResponse = spotifyViewModelX.allAlbums
+                        .collectAsStateWithLifecycle().value
+
                     AlbumDetailScreen(
-                        spotifyViewModelX = spotifyViewModelX
+                        albumNetworkResponse = albumNetworkResponse,
+                        albumLocalResponse = albumLocalResponse,
+                        setEvent = spotifyViewModelX::uiEventListener
                     )
                 }
             )
