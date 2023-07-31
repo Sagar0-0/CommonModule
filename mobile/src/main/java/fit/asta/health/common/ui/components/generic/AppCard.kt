@@ -13,6 +13,14 @@ import androidx.compose.ui.Modifier
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
 
+
+/** [AppClickableCard] is default clickable card for the app. Cards contain contain content and
+ * actions that relate information about a subject. This Card handles click events, calling its [onClick] lambda.
+ * @param onClick called when this card is clicked
+ * @param modifier the [Modifier] to be applied to this card
+ */
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppClickableCard(
@@ -30,6 +38,12 @@ fun AppClickableCard(
     )
 }
 
+
+/** [AppDefCard] is default card for the app.Cards contain contain content and actions that relate
+ * information about a subject. Filled cards provide subtle separation from the background. This has
+ * less emphasis than elevated or outlined cards.This Card does not handle input events.
+ * @param modifier the [Modifier] to be applied to this card
+ */
 
 @Composable
 fun AppDefCard(content: @Composable ColumnScope.() -> Unit, modifier: Modifier = Modifier) {

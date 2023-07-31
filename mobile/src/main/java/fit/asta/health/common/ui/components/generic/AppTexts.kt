@@ -7,30 +7,60 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 
+/**[AppTexts] is a utility class in a Compose-based Android application that provides a set of
+ * Composable functions for displaying text with different predefined styles. These Composable
+ * functions can be used to display text in different sizes and styles consistently across the
+ * application.
+ * */
+
 object AppTexts {
+
+    /** List of all available methods inside [AppTexts]:
+     *[DisplayLarge]
+     *[DisplayMedium]
+     *[DisplaySmall]
+     *[HeadlineLarge]
+     *[HeadlineMedium]
+     *[HeadlineSmall]
+     *[TitleLarge]
+     *[TitleMedium]
+     *[TitleSmall]
+     *[BodyLarge]
+     *[BodyMedium]
+     *[BodySmall]
+     *[LabelLarge]
+     *[LabelMedium]
+     *[LabelSmall]
+     * @param text the text to be displayed
+     * @param modifier the [Modifier] to be applied to this layout node
+     * @param color [Color] to apply to the text.
+     * @param textAlign the alignment of the text within the lines of the paragraph.
+     */
 
     @Composable
     fun DisplayLarge(
-        cardTitle: String,
+        text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
+        textAlign: TextAlign?,
     ) {
         Text(
-            text = cardTitle,
+            text = text,
             style = MaterialTheme.typography.displayLarge,
             modifier = modifier,
-            color = color
+            color = color,
+            textAlign = textAlign
         )
     }
 
     @Composable
     fun DisplayMedium(
-        cardTitle: String,
+        text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
     ) {
         Text(
-            text = cardTitle,
+            text = text,
             style = MaterialTheme.typography.displayMedium,
             modifier = modifier,
             color = color
@@ -39,12 +69,12 @@ object AppTexts {
 
     @Composable
     fun DisplaySmall(
-        cardTitle: String,
+        text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
     ) {
         Text(
-            text = cardTitle,
+            text = text,
             style = MaterialTheme.typography.displaySmall,
             modifier = modifier,
             color = color
@@ -53,12 +83,12 @@ object AppTexts {
 
     @Composable
     fun HeadlineLarge(
-        cardTitle: String,
+        text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
     ) {
         Text(
-            text = cardTitle,
+            text = text,
             style = MaterialTheme.typography.headlineLarge,
             modifier = modifier,
             color = color
@@ -67,12 +97,12 @@ object AppTexts {
 
     @Composable
     fun HeadlineMedium(
-        cardTitle: String,
+        text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
     ) {
         Text(
-            text = cardTitle,
+            text = text,
             style = MaterialTheme.typography.headlineMedium,
             modifier = modifier,
             color = color
@@ -82,13 +112,13 @@ object AppTexts {
 
     @Composable
     fun HeadlineSmall(
-        cardTitle: String,
+        text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
         Text(
-            text = cardTitle,
+            text = text,
             style = MaterialTheme.typography.headlineSmall,
             modifier = modifier,
             color = color,
@@ -98,12 +128,12 @@ object AppTexts {
 
     @Composable
     fun TitleLarge(
-        cardTitle: String,
+        text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
     ) {
         Text(
-            text = cardTitle,
+            text = text,
             style = MaterialTheme.typography.titleLarge,
             modifier = modifier,
             color = color
@@ -112,11 +142,11 @@ object AppTexts {
 
     @Composable
     fun TitleMedium(
-        cardTitle: String,
+        text: String,
         modifier: Modifier = Modifier, color: Color = MaterialTheme.colorScheme.onSurface,
     ) {
         Text(
-            text = cardTitle,
+            text = text,
             style = MaterialTheme.typography.titleMedium,
             modifier = modifier,
             color = color
@@ -126,12 +156,12 @@ object AppTexts {
 
     @Composable
     fun TitleSmall(
-        cardTitle: String,
+        text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
     ) {
         Text(
-            text = cardTitle,
+            text = text,
             style = MaterialTheme.typography.titleSmall,
             modifier = modifier,
             color = color
@@ -140,12 +170,12 @@ object AppTexts {
 
     @Composable
     fun BodyLarge(
-        cardTitle: String,
+        text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
     ) {
         Text(
-            text = cardTitle,
+            text = text,
             style = MaterialTheme.typography.bodyLarge,
             modifier = modifier,
             color = color
@@ -154,12 +184,12 @@ object AppTexts {
 
     @Composable
     fun BodyMedium(
-        cardTitle: String,
+        text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
     ) {
         Text(
-            text = cardTitle,
+            text = text,
             style = MaterialTheme.typography.bodyMedium,
             modifier = modifier,
             color = color
@@ -168,12 +198,12 @@ object AppTexts {
 
     @Composable
     fun BodySmall(
-        cardTitle: String,
+        text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
     ) {
         Text(
-            text = cardTitle,
+            text = text,
             style = MaterialTheme.typography.bodySmall,
             modifier = modifier,
             color = color
@@ -182,12 +212,12 @@ object AppTexts {
 
     @Composable
     fun LabelLarge(
-        cardTitle: String,
+        text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
     ) {
         Text(
-            text = cardTitle,
+            text = text,
             style = MaterialTheme.typography.labelLarge,
             modifier = modifier,
             color = color
@@ -196,12 +226,12 @@ object AppTexts {
 
     @Composable
     fun LabelMedium(
-        cardTitle: String,
+        text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
     ) {
         Text(
-            text = cardTitle,
+            text = text,
             style = MaterialTheme.typography.labelMedium,
             modifier = modifier,
             color = color
@@ -210,17 +240,16 @@ object AppTexts {
 
     @Composable
     fun LabelSmall(
-        cardTitle: String,
+        text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
     ) {
         Text(
-            text = cardTitle,
+            text = text,
             style = MaterialTheme.typography.labelSmall,
             modifier = modifier,
             color = color
         )
     }
-
 
 }

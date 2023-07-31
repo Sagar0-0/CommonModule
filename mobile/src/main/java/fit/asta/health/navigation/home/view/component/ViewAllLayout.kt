@@ -23,9 +23,9 @@ fun ViewAllLayout(
             .fillMaxWidth()
             .padding(vertical = spacing.small)
     ) {
-        AppTexts.TitleMedium(cardTitle = myTools)
+        AppTexts.TitleMedium(text = myTools)
         Box {
-            AppTexts.TitleLarge(cardTitle = allTools, modifier = Modifier.clickable { onClick() })
+            AppTexts.TitleLarge(text = allTools, modifier = Modifier.clickable { onClick() })
         }
     }
 }

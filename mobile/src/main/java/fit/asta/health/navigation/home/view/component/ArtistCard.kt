@@ -37,8 +37,8 @@ fun ArtistCard(testimonialsDataPages: Testimonial) {
         Column(
             horizontalAlignment = Alignment.Start, verticalArrangement = Arrangement.SpaceBetween
         ) {
-            AppTexts.TitleMedium(cardTitle = testimonialsDataPages.user.name)
-            AppTexts.BodyMedium(cardTitle = "${testimonialsDataPages.user.role},${testimonialsDataPages.user.org}")
+            AppTexts.TitleMedium(text = testimonialsDataPages.user.name)
+            AppTexts.BodyMedium(text = "${testimonialsDataPages.user.role},${testimonialsDataPages.user.org}")
         }
     }
 

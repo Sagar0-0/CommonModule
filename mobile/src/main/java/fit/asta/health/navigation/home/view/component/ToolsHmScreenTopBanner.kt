@@ -45,7 +45,7 @@ fun ToolsHmScreenTopBanner(
                 .align(Alignment.Center)
                 .padding(horizontal = 54.dp, vertical = 82.dp)
         ) {
-            AppTexts.BodyMedium(cardTitle = bannerDataPages.desc)
+            AppTexts.BodyMedium(text = bannerDataPages.desc)
         }
     }
 }

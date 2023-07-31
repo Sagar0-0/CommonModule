@@ -24,6 +24,20 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
+/**The [AppBanner] composable function is a custom component in Jetpack Compose, a declarative UI
+ *  framework for Android. This component provides a horizontally scrollable banner or carousel
+ *  with animation and dot indicators. It takes a list of items (bannerList) and displays them
+ *  one by one, allowing users to swipe horizontally to view different items.
+ *
+ *  @param bannerList: A list of items (List<T>) that you want to display in the banner. Replace
+ *  <T> with the type of items you are using in the list.
+ *  @param content: A lambda function (@Composable BoxScope.(page: Int) -> Unit) that defines the
+ *  content to be displayed for each page in the banner. It takes the current page index as
+ *  an argument, allowing you to customize the content for each item in the list.
+ *  @param modifier: (Optional) A Compose Modifier that allows you to customize the appearance and
+ *  behavior of the AppBanner component.
+ * */
+
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun <T> AppBanner(

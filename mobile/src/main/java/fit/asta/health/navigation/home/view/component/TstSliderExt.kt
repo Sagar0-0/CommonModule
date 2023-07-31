@@ -19,7 +19,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AppTexts.TitleLarge(cardTitle = "Why our customers love ASTA?")
+        AppTexts.TitleLarge(text = "Why our customers love ASTA?")
         AppDivider(lineWidth = AppDividerLineWidth.TstDividerWidth)
     }
 }

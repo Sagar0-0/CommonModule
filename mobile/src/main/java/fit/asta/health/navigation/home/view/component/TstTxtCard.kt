@@ -20,13 +20,13 @@ fun TstTxtCard(testimonialsDataPage: Testimonial) {
     AppDefCard(content = {
         Column(modifier = Modifier.padding(all = spacing.medium)) {
             AppTexts.BodyLarge(
-                cardTitle = "❝", color = MaterialTheme.colorScheme.primary
+                text = "❝", color = MaterialTheme.colorScheme.primary
             )
             AppTexts.HeadlineSmall(
-                cardTitle = testimonialsDataPage.testimonial, textAlign = TextAlign.Center
+                text = testimonialsDataPage.testimonial, textAlign = TextAlign.Center
             )
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                AppTexts.BodyLarge(cardTitle = "❞", color = MaterialTheme.colorScheme.primary)
+                AppTexts.BodyLarge(text = "❞", color = MaterialTheme.colorScheme.primary)
             }
             ArtistCard(testimonialsDataPage)
         }

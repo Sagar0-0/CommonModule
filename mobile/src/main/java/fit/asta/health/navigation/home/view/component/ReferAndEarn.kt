@@ -50,9 +50,9 @@ fun ReferAndEarn() {
 
             Box {
                 Column(verticalArrangement = Arrangement.SpaceBetween) {
-                    AppTexts.TitleMedium(cardTitle = "Refer and Earn")
+                    AppTexts.TitleMedium(text = "Refer and Earn")
                     Spacer(modifier = Modifier.height(spacing.small))
-                    AppTexts.BodySmall(cardTitle = "Send referral link to your friend to earn ₹100")
+                    AppTexts.BodySmall(text = "Send referral link to your friend to earn ₹100")
                     Spacer(modifier = Modifier.height(spacing.medium))
                     AppDefBtn(onClick = {},
                         Modifier.height(buttonSize.large),
@@ -61,7 +61,7 @@ fun ReferAndEarn() {
                         ),
                         content = {
                             AppTexts.LabelLarge(
-                                cardTitle = "Refer Us", color = MaterialTheme.colorScheme.onPrimary
+                                text = "Refer Us", color = MaterialTheme.colorScheme.onPrimary
                             )
                         })
                 }

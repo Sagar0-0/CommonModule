@@ -61,20 +61,21 @@ fun RateUsCard(viewModel: RateUsViewModel = hiltViewModel()) {
             Spacer(modifier = Modifier.width(spacing.medium))
             Box {
                 Column(verticalArrangement = Arrangement.SpaceBetween) {
-                    AppTexts.TitleMedium(cardTitle = "Rate Us")
-                    AppTexts.BodySmall(cardTitle = "We value your feedback pls let us know how we are doing by rating us.")
+                    AppTexts.TitleMedium(text = "Rate Us")
+                    AppTexts.BodySmall(text = "We value your feedback pls let us know how we are doing by rating us.")
                     Spacer(modifier = Modifier.height(spacing.small))
 
-                    AppDefBtn(onClick = {
-                        viewModel.onEvent(RateUsEvent.InAppReviewRequested)
-                    }, Modifier.height(buttonSize.large), contentPadding = PaddingValues(
-                        vertical = spacing.minSmall, horizontal = spacing.small
-                    ), content = {
-                        AppTexts.LabelLarge(
-                            cardTitle = "Rate Us",
-                            color = MaterialTheme.colorScheme.onPrimary
-                        )
-                    })
+                    AppDefBtn(
+                        onClick = {
+                            viewModel.onEvent(RateUsEvent.InAppReviewRequested)
+                        }, Modifier.height(buttonSize.large), contentPadding = PaddingValues(
+                            vertical = spacing.minSmall, horizontal = spacing.small
+                        ), content = {
+                            AppTexts.LabelLarge(
+                                text = "Rate Us",
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
+                        })
 
                 }
             }

@@ -12,6 +12,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import fit.asta.health.common.ui.theme.spacing
 
+
+/**The [AppVerticalGrid] composable is a custom composable function in Jetpack Compose that provides
+ *  a vertical grid layout for displaying items in a grid format. It uses LazyVerticalGrid from the
+ *  Jetpack Compose library internally to create the grid layout.
+ * @param count The number of columns in the grid layout.
+ * @param verticalArrangement The vertical arrangement of the layout's children
+ * @param horizontalArrangement The horizontal arrangement of the layout's children
+ * @param modifier the modifier to apply to this layout
+ * */
+
 @Composable
 fun AppVerticalGrid(
     count: Int,

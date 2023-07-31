@@ -14,8 +14,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,11 +31,11 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.theme.boxSize
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.imageHeight
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.view.list.TestimonialImageCard
 import fit.asta.health.testimonials.view.list.TestimonialTextCard
@@ -52,14 +52,13 @@ fun TestimonialsList(
     val testimonials = viewModel.testimonialPager.collectAsLazyPagingItems()
     testimonials.refresh()
 
-    LazyColumn(
-        Modifier.padding(paddingValues)
-        //.background(color = MaterialTheme.colorScheme.secondaryContainer)
-    ) {
+    LazyColumn(Modifier.padding(paddingValues)) {
 
-        items(count = testimonials.itemCount,
+        items(
+            count = testimonials.itemCount,
             key = testimonials.itemKey(),
-            contentType = testimonials.itemContentType()) { inx ->
+            contentType = testimonials.itemContentType()
+        ) { inx ->
             val item = testimonials[inx]
             item?.let {
                 when (TestimonialType.from(it.type)) {
@@ -108,6 +107,7 @@ fun TestimonialsList(
     }
 }
 
+
 @Composable
 fun LoadingItem() {
     Box(
@@ -115,7 +115,8 @@ fun LoadingItem() {
             .fillMaxWidth()
             .wrapContentHeight(), contentAlignment = Alignment.Center
     ) {
-        CircularProgressIndicator(
+
+    CircularProgressIndicator(
             modifier = Modifier
                 .size(boxSize.largeSmall)
                 .padding(spacing.medium), strokeWidth = 5.dp
@@ -123,6 +124,7 @@ fun LoadingItem() {
 
     }
 }
+
 
 @Composable
 fun ErrorItem(message: String) {
