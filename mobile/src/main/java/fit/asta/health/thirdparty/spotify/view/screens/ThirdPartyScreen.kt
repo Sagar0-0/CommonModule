@@ -224,7 +224,7 @@ fun ThirdPartyScreen(
                             ) {
 
                                 // Navigating to the Track Details Screen
-                                setEvent(SpotifyUiEvent.HelperEvent.SetTrackDetails(currentItem.id))
+                                setEvent(SpotifyUiEvent.HelperEvent.SetTrackId(currentItem.id))
                                 navigator(SpotifyNavRoutes.TrackDetailScreen.routes)
                             }
                         }
@@ -275,7 +275,7 @@ fun ThirdPartyScreen(
                             ) {
 
                                 // Navigating to the Track Details Screen
-                                setEvent(SpotifyUiEvent.HelperEvent.SetTrackDetails(currentItem.id))
+                                setEvent(SpotifyUiEvent.HelperEvent.SetTrackId(currentItem.id))
                                 navigator(SpotifyNavRoutes.TrackDetailScreen.routes)
                             }
                         }

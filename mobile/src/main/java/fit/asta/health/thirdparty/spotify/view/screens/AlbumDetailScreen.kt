@@ -42,7 +42,7 @@ fun AlbumDetailScreen(
 
     LaunchedEffect(Unit) {
         setEvent(SpotifyUiEvent.NetworkIO.LoadAlbumDetails)
-        setEvent(SpotifyUiEvent.LocalIO.LoadLocalAlbumDetails)
+        setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums)
     }
 
     // Root Composable function
@@ -63,7 +63,7 @@ fun AlbumDetailScreen(
             // This function checks for the Local Response from Local Database
             MusicStateControl(
                 networkState = albumLocalResponse,
-                onCurrentStateInitialized = { setEvent(SpotifyUiEvent.LocalIO.LoadLocalAlbumDetails) }
+                onCurrentStateInitialized = { setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums) }
             ) { localResponse ->
 
                 // Parsing the Network Album Data

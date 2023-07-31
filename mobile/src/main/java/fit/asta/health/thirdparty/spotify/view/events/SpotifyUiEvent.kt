@@ -7,9 +7,9 @@ sealed class SpotifyUiEvent {
     sealed class HelperEvent : SpotifyUiEvent() {
         class PlaySong(val songUri: String) : HelperEvent()
 
-        class SetTrackDetails(val trackId: String) : HelperEvent()
+        class SetTrackId(val trackId: String) : HelperEvent()
 
-        class SetAlbumDetails(val albumId: String) : HelperEvent()
+        class SetAlbumId(val albumId: String) : HelperEvent()
     }
 
     sealed class NetworkIO : SpotifyUiEvent() {
@@ -25,10 +25,12 @@ sealed class SpotifyUiEvent {
     }
 
     sealed class LocalIO : SpotifyUiEvent() {
-        object LoadLocalAlbumDetails : LocalIO()
+        object LoadAllAlbums : LocalIO()
 
         class InsertAlbumData(val album: Album) : LocalIO()
 
         class DeleteAlbumData(val album: Album) : LocalIO()
+
+        object LoadAllTracks : LocalIO()
     }
 }

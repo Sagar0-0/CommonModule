@@ -514,11 +514,11 @@ class SpotifyViewModelX @Inject constructor(
     fun uiEventListener(event: SpotifyUiEvent) {
         when (event) {
 
-            is SpotifyUiEvent.HelperEvent.SetAlbumDetails -> {
+            is SpotifyUiEvent.HelperEvent.SetAlbumId -> {
                 setAlbumId(event.albumId)
             }
 
-            is SpotifyUiEvent.HelperEvent.SetTrackDetails -> {
+            is SpotifyUiEvent.HelperEvent.SetTrackId -> {
                 setTrackId(event.trackId)
             }
 
@@ -542,7 +542,7 @@ class SpotifyViewModelX @Inject constructor(
                 getAlbumDetails()
             }
 
-            is SpotifyUiEvent.LocalIO.LoadLocalAlbumDetails -> {
+            is SpotifyUiEvent.LocalIO.LoadAllAlbums -> {
                 getAllAlbums()
             }
 
@@ -556,6 +556,10 @@ class SpotifyViewModelX @Inject constructor(
 
             is SpotifyUiEvent.NetworkIO.LoadRecentlyPlayed -> {
                 getCurrentUserRecentlyPlayedTracks()
+            }
+
+            is SpotifyUiEvent.LocalIO.LoadAllTracks -> {
+                getAllTracks()
             }
         }
     }

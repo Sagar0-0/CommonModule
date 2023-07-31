@@ -34,16 +34,22 @@ fun SpotifyNavGraph(
             // Asta Music Screen
             composable(
                 SpotifyNavRoutes.AstaMusicScreen.routes,
-                content = { AstaMusicScreen(spotifyViewModelX = spotifyViewModelX) }
+                content = { AstaMusicScreen() }
             )
 
             // Favourite Screen
             composable(
                 SpotifyNavRoutes.FavouriteScreen.routes,
                 content = {
+
+                    val tracksData = spotifyViewModelX.allTracks.collectAsStateWithLifecycle().value
+                    val albumData = spotifyViewModelX.allAlbums.collectAsStateWithLifecycle().value
+
                     FavouriteScreen(
-                        spotifyViewModelX = spotifyViewModelX,
-                        navController = navController
+                        tracksData = tracksData,
+                        albumData = albumData,
+                        setEvent = spotifyViewModelX::uiEventListener,
+                        navigator = { navController.navigate(it) }
                     )
                 }
             )
