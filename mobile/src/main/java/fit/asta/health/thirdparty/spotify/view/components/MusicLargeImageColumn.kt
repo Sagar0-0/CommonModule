@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,6 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.thirdparty.spotify.model.net.common.Artist
 
 
@@ -67,7 +67,7 @@ fun MusicLargeImageColumn(
 
             // Circular Progress Bar
             if (painter.state.painter == null)
-                CircularProgressIndicator()
+                LoadingAnimation()
 
             // Track Image
             Image(
