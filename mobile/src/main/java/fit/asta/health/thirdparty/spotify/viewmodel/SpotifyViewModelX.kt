@@ -585,6 +585,14 @@ class SpotifyViewModelX @Inject constructor(
             is SpotifyUiEvent.NetworkIO.LoadCurrentUserEpisode -> {
                 getCurrentUserEpisode()
             }
+
+            is SpotifyUiEvent.NetworkIO.LoadSpotifySearchResult -> {
+                getSpotifySearchResult()
+            }
+
+            is SpotifyUiEvent.HelperEvent.SetSearchQueriesAndVariables -> {
+                setSearchQueriesAndVariables(query = event.query, type = event.type)
+            }
         }
     }
 }

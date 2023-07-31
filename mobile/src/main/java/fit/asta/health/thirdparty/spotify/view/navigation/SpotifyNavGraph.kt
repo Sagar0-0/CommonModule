@@ -100,9 +100,14 @@ fun SpotifyNavGraph(
             composable(
                 SpotifyNavRoutes.SearchScreen.routes,
                 content = {
+
+                    val spotifySearchState = spotifyViewModelX.spotifySearch
+                        .collectAsStateWithLifecycle().value
+
                     SearchScreen(
-                        navController = navController,
-                        spotifyViewModelX = spotifyViewModelX
+                        spotifySearchState = spotifySearchState,
+                        setEvent = spotifyViewModelX::uiEventListener,
+                        navigator = { navController.navigate(it) }
                     )
                 }
             )

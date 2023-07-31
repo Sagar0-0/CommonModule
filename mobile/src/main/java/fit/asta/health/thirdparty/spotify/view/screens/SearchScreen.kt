@@ -16,7 +16,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,27 +27,30 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
+import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import fit.asta.health.thirdparty.spotify.view.components.MusicArtistsUI
 import fit.asta.health.thirdparty.spotify.view.components.MusicFilterOptions
 import fit.asta.health.thirdparty.spotify.view.components.MusicLargeImageColumn
 import fit.asta.health.thirdparty.spotify.view.components.MusicSmallImageRow
 import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
 import fit.asta.health.thirdparty.spotify.view.components.SearchBar
+import fit.asta.health.thirdparty.spotify.view.events.SpotifyUiEvent
 import fit.asta.health.thirdparty.spotify.view.navigation.SpotifyNavRoutes
-import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 
 /**
  * This is the Spotify Searching Screen which searches according to the User Queries and gives the
  * user some results
  *
- * @param navController This is used to navigate to different screens
- * @param spotifyViewModelX This is the viewModel for the Spotify Integration
+ * @param spotifySearchState This variable contains the spotify search state
+ * @param setEvent This variable is used to send events from the UI to the View Model layer
+ * @param navigator This variable helps in navigation to different screens
  */
 @Composable
 fun SearchScreen(
-    navController: NavController,
-    spotifyViewModelX: SpotifyViewModelX
+    spotifySearchState: SpotifyNetworkCall<SpotifySearchModel>,
+    setEvent: (SpotifyUiEvent) -> Unit,
+    navigator: (String) -> Unit
 ) {
 
     // Context and Activity of the Function
@@ -104,10 +106,13 @@ fun SearchScreen(
             if (userSearchInput.value.isNotEmpty() && type.isNotEmpty()) {
 
                 // Setting the Query parameters in the ViewModel
-                spotifyViewModelX.setSearchQueriesAndVariables(
-                    query = userSearchInput.value,
-                    type = type
+                setEvent(
+                    SpotifyUiEvent.HelperEvent.SetSearchQueriesAndVariables(
+                        query = userSearchInput.value,
+                        type = type
+                    )
                 )
+
             } else if (userSearchInput.value.isEmpty()) {
 
                 // No Search Query
@@ -140,10 +145,8 @@ fun SearchScreen(
         MusicStateControl(
             modifier = Modifier
                 .fillMaxSize(),
-            networkState = spotifyViewModelX.spotifySearch.collectAsState().value,
-            onCurrentStateInitialized = {
-                spotifyViewModelX.getSpotifySearchResult()
-            }
+            networkState = spotifySearchState,
+            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadSpotifySearchResult) }
         ) { networkResponse ->
 
             // Handling the Tracks UI here
@@ -181,8 +184,8 @@ fun SearchScreen(
                             ) {
 
                                 // Navigating to the Track Details Screen
-                                spotifyViewModelX.setTrackId(currentItem.id)
-                                navController.navigate(SpotifyNavRoutes.TrackDetailScreen.routes)
+                                setEvent(SpotifyUiEvent.HelperEvent.SetTrackId(currentItem.id))
+                                navigator(SpotifyNavRoutes.TrackDetailScreen.routes)
                             }
                         }
                     }
@@ -223,8 +226,7 @@ fun SearchScreen(
                                 imageUri = currentItem.images.firstOrNull()?.url,
                                 artistName = currentItem.name
                             ) {
-
-                                spotifyViewModelX.playSpotifySong(currentItem.uri)
+                                setEvent(SpotifyUiEvent.HelperEvent.PlaySong(currentItem.uri))
                             }
                         }
                     }
@@ -265,8 +267,8 @@ fun SearchScreen(
                             ) {
 
                                 // Navigating the Album Details Screen to get the Album Details
-                                spotifyViewModelX.setAlbumId(currentItem.id)
-                                navController.navigate(SpotifyNavRoutes.AlbumDetailScreen.routes)
+                                setEvent(SpotifyUiEvent.HelperEvent.SetAlbumId(currentItem.id))
+                                navigator(SpotifyNavRoutes.AlbumDetailScreen.routes)
                             }
                         }
                     }
@@ -310,7 +312,7 @@ fun SearchScreen(
                                 name = currentItem.name,
                                 secondaryText = textToShow
                             ) {
-                                spotifyViewModelX.playSpotifySong(currentItem.uri)
+                                setEvent(SpotifyUiEvent.HelperEvent.PlaySong(currentItem.uri))
                             }
                         }
                     }

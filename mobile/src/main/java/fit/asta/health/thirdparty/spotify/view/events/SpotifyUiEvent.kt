@@ -5,14 +5,18 @@ import fit.asta.health.thirdparty.spotify.model.net.common.Album
 sealed class SpotifyUiEvent {
 
     sealed class HelperEvent : SpotifyUiEvent() {
+
         class PlaySong(val songUri: String) : HelperEvent()
 
         class SetTrackId(val trackId: String) : HelperEvent()
 
         class SetAlbumId(val albumId: String) : HelperEvent()
+
+        class SetSearchQueriesAndVariables(val query: String, val type: String) : HelperEvent()
     }
 
     sealed class NetworkIO : SpotifyUiEvent() {
+
         object LoadRecentlyPlayed : NetworkIO()
 
         object LoadRecommendation : NetworkIO()
@@ -34,9 +38,12 @@ sealed class SpotifyUiEvent {
         object LoadCurrentUserShows : NetworkIO()
 
         object LoadCurrentUserEpisode : NetworkIO()
+
+        object LoadSpotifySearchResult : NetworkIO()
     }
 
     sealed class LocalIO : SpotifyUiEvent() {
+
         object LoadAllAlbums : LocalIO()
 
         class InsertAlbumData(val album: Album) : LocalIO()
