@@ -41,8 +41,8 @@ fun AlbumDetailScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        setEvent(SpotifyUiEvent.LoadAlbumDetails)
-        setEvent(SpotifyUiEvent.LoadLocalAlbumDetails)
+        setEvent(SpotifyUiEvent.NetworkIO.LoadAlbumDetails)
+        setEvent(SpotifyUiEvent.LocalIO.LoadLocalAlbumDetails)
     }
 
     // Root Composable function
@@ -57,13 +57,13 @@ fun AlbumDetailScreen(
         // This function checks for the Network Response from the API
         MusicStateControl(
             networkState = albumNetworkResponse,
-            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.LoadAlbumDetails) }
+            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadAlbumDetails) }
         ) { networkResponse ->
 
             // This function checks for the Local Response from Local Database
             MusicStateControl(
                 networkState = albumLocalResponse,
-                onCurrentStateInitialized = { setEvent(SpotifyUiEvent.LoadLocalAlbumDetails) }
+                onCurrentStateInitialized = { setEvent(SpotifyUiEvent.LocalIO.LoadLocalAlbumDetails) }
             ) { localResponse ->
 
                 // Parsing the Network Album Data
@@ -91,10 +91,10 @@ fun AlbumDetailScreen(
 
                                 // Checking if the Album is already present or not
                                 if (!isPresent) {
-                                    setEvent(SpotifyUiEvent.InsertAlbumData(networkAlbumData))
+                                    setEvent(SpotifyUiEvent.LocalIO.InsertAlbumData(networkAlbumData))
                                     Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show()
                                 } else {
-                                    setEvent(SpotifyUiEvent.DeleteAlbumData(networkAlbumData))
+                                    setEvent(SpotifyUiEvent.LocalIO.DeleteAlbumData(networkAlbumData))
                                     Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show()
                                 }
                             },
@@ -113,7 +113,7 @@ fun AlbumDetailScreen(
                         // Play on Spotify Button
                         Button(
                             onClick = {
-                                setEvent(SpotifyUiEvent.PlaySong(networkAlbumData.uri))
+                                setEvent(SpotifyUiEvent.HelperEvent.PlaySong(networkAlbumData.uri))
                             },
                             modifier = Modifier
                                 .fillMaxWidth()

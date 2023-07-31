@@ -143,7 +143,7 @@ fun ThirdPartyScreen(
                 .height(190.dp)
                 .fillMaxWidth(),
             networkState = recentlyPlayed,
-            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.LoadRecentlyPlayed) }
+            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadRecentlyPlayed) }
         ) { networkState ->
             networkState.data?.trackList.let { networkTrackList ->
 
@@ -175,7 +175,7 @@ fun ThirdPartyScreen(
                             imageUri = currentItem.album.images.firstOrNull()?.url,
                             name = currentItem.name
                         ) {
-                            setEvent(SpotifyUiEvent.PlaySong(currentItem.uri))
+                            setEvent(SpotifyUiEvent.HelperEvent.PlaySong(currentItem.uri))
                         }
                     }
                 }
@@ -202,7 +202,7 @@ fun ThirdPartyScreen(
                 .fillMaxWidth()
                 .height(210.dp),
             networkState = recommendedData,
-            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.LoadRecommendation) }
+            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadRecommendation) }
         ) { networkResponse ->
             networkResponse.data?.trackList.let { trackList ->
 
@@ -224,7 +224,7 @@ fun ThirdPartyScreen(
                             ) {
 
                                 // Navigating to the Track Details Screen
-                                setEvent(SpotifyUiEvent.SetTrackDetails(currentItem.id))
+                                setEvent(SpotifyUiEvent.HelperEvent.SetTrackDetails(currentItem.id))
                                 navigator(SpotifyNavRoutes.TrackDetailScreen.routes)
                             }
                         }
@@ -253,7 +253,7 @@ fun ThirdPartyScreen(
                 .fillMaxWidth()
                 .height(210.dp),
             networkState = topTracksData,
-            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.LoadUserTopTracks) }
+            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadUserTopTracks) }
         ) { networkResponse ->
             networkResponse.data?.trackList.let { itemTopTrack ->
 
@@ -275,7 +275,7 @@ fun ThirdPartyScreen(
                             ) {
 
                                 // Navigating to the Track Details Screen
-                                setEvent(SpotifyUiEvent.SetTrackDetails(currentItem.id))
+                                setEvent(SpotifyUiEvent.HelperEvent.SetTrackDetails(currentItem.id))
                                 navigator(SpotifyNavRoutes.TrackDetailScreen.routes)
                             }
                         }
@@ -304,7 +304,7 @@ fun ThirdPartyScreen(
                 .fillMaxWidth()
                 .height(210.dp),
             networkState = topArtistsData,
-            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.LoadUserTopArtists) }
+            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadUserTopArtists) }
         ) { networkResponse ->
 
             LazyRow(
@@ -324,7 +324,7 @@ fun ThirdPartyScreen(
                             imageUri = currentItem.images.firstOrNull()?.url,
                             artistName = currentItem.name
                         ) {
-                            setEvent(SpotifyUiEvent.PlaySong(currentItem.uri))
+                            setEvent(SpotifyUiEvent.HelperEvent.PlaySong(currentItem.uri))
                         }
                     }
                 }

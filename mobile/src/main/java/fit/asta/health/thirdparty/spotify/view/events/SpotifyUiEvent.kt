@@ -4,27 +4,31 @@ import fit.asta.health.thirdparty.spotify.model.net.common.Album
 
 sealed class SpotifyUiEvent {
 
-    class PlaySong(val songUri: String) : SpotifyUiEvent()
+    sealed class HelperEvent : SpotifyUiEvent() {
+        class PlaySong(val songUri: String) : HelperEvent()
 
-    class SetTrackDetails(val trackId: String) : SpotifyUiEvent()
+        class SetTrackDetails(val trackId: String) : HelperEvent()
 
-    class SetAlbumDetails(val albumId: String) : SpotifyUiEvent()
+        class SetAlbumDetails(val albumId: String) : HelperEvent()
+    }
 
-    class OpenSpotify(val uri: String) : SpotifyUiEvent()
+    sealed class NetworkIO : SpotifyUiEvent() {
+        object LoadRecentlyPlayed : NetworkIO()
 
-    object LoadRecentlyPlayed : SpotifyUiEvent()
+        object LoadRecommendation : NetworkIO()
 
-    object LoadRecommendation : SpotifyUiEvent()
+        object LoadUserTopTracks : NetworkIO()
 
-    object LoadUserTopTracks : SpotifyUiEvent()
+        object LoadUserTopArtists : NetworkIO()
 
-    object LoadUserTopArtists : SpotifyUiEvent()
+        object LoadAlbumDetails : NetworkIO()
+    }
 
-    object LoadAlbumDetails : SpotifyUiEvent()
+    sealed class LocalIO : SpotifyUiEvent() {
+        object LoadLocalAlbumDetails : LocalIO()
 
-    object LoadLocalAlbumDetails : SpotifyUiEvent()
+        class InsertAlbumData(val album: Album) : LocalIO()
 
-    class InsertAlbumData(val album: Album) : SpotifyUiEvent()
-
-    class DeleteAlbumData(val album: Album) : SpotifyUiEvent()
+        class DeleteAlbumData(val album: Album) : LocalIO()
+    }
 }

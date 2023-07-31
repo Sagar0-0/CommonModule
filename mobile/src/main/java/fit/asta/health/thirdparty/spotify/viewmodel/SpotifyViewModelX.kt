@@ -513,49 +513,49 @@ class SpotifyViewModelX @Inject constructor(
 
     fun uiEventListener(event: SpotifyUiEvent) {
         when (event) {
-            is SpotifyUiEvent.OpenSpotify -> {}
-            is SpotifyUiEvent.SetAlbumDetails -> {
+
+            is SpotifyUiEvent.HelperEvent.SetAlbumDetails -> {
                 setAlbumId(event.albumId)
             }
 
-            is SpotifyUiEvent.SetTrackDetails -> {
+            is SpotifyUiEvent.HelperEvent.SetTrackDetails -> {
                 setTrackId(event.trackId)
             }
 
-            is SpotifyUiEvent.PlaySong -> {
+            is SpotifyUiEvent.HelperEvent.PlaySong -> {
                 playSpotifySong(event.songUri)
             }
 
-            is SpotifyUiEvent.LoadRecentlyPlayed -> {
-                getCurrentUserRecentlyPlayedTracks()
-            }
-
-            is SpotifyUiEvent.LoadRecommendation -> {
+            is SpotifyUiEvent.NetworkIO.LoadRecommendation -> {
                 getRecommendationTracks()
             }
 
-            is SpotifyUiEvent.LoadUserTopTracks -> {
+            is SpotifyUiEvent.NetworkIO.LoadUserTopTracks -> {
                 getUserTopTracks()
             }
 
-            is SpotifyUiEvent.LoadUserTopArtists -> {
+            is SpotifyUiEvent.NetworkIO.LoadUserTopArtists -> {
                 getUserTopArtists()
             }
 
-            is SpotifyUiEvent.LoadAlbumDetails -> {
+            is SpotifyUiEvent.NetworkIO.LoadAlbumDetails -> {
                 getAlbumDetails()
             }
 
-            is SpotifyUiEvent.LoadLocalAlbumDetails -> {
+            is SpotifyUiEvent.LocalIO.LoadLocalAlbumDetails -> {
                 getAllAlbums()
             }
 
-            is SpotifyUiEvent.InsertAlbumData -> {
+            is SpotifyUiEvent.LocalIO.InsertAlbumData -> {
                 insertAlbum(event.album)
             }
 
-            is SpotifyUiEvent.DeleteAlbumData -> {
+            is SpotifyUiEvent.LocalIO.DeleteAlbumData -> {
                 deleteAlbum(event.album)
+            }
+
+            is SpotifyUiEvent.NetworkIO.LoadRecentlyPlayed -> {
+                getCurrentUserRecentlyPlayedTracks()
             }
         }
     }
