@@ -143,7 +143,6 @@ class SpotifyLoginActivity : ComponentActivity() {
     /**
      * This function checks if the spotify is already installed in the current device
      */
-    @Suppress("DEPRECATION")
     private fun isSpotifyInstalled(): Boolean {
         val packageName = "com.spotify.music"
         return try {
@@ -181,13 +180,6 @@ class SpotifyLoginActivity : ComponentActivity() {
             isResume = false
         }
     }
-
-//    private fun saveToken(token: String) {
-//        val sharedPreference = getSharedPreferences(SHARED_PREF_SPOTIFY, Context.MODE_PRIVATE)
-//        val editor = sharedPreference.edit()
-//        editor.putString(SHARED_PREF_SPOTIFY_TOKEN, token)
-//        editor.commit()
-//    }
 
     @Suppress("DEPRECATION")
     @Deprecated("Deprecated in Java")
