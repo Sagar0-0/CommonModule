@@ -18,9 +18,9 @@ sealed class SpotifyUiEvent {
 
     sealed class NetworkIO : SpotifyUiEvent() {
 
-        object LoadRecentlyPlayed : NetworkIO()
+        object LoadCurrentUserRecentlyPlayedTracks : NetworkIO()
 
-        object LoadRecommendation : NetworkIO()
+        object LoadRecommendationTracks : NetworkIO()
 
         object LoadUserTopTracks : NetworkIO()
 
@@ -47,16 +47,16 @@ sealed class SpotifyUiEvent {
 
     sealed class LocalIO : SpotifyUiEvent() {
 
-        object LoadAllAlbums : LocalIO()
-
-        class InsertAlbumData(val album: Album) : LocalIO()
-
-        class DeleteAlbumData(val album: Album) : LocalIO()
-
         object LoadAllTracks : LocalIO()
+
+        object LoadAllAlbums : LocalIO()
 
         class InsertTrack(val track: Track) : LocalIO()
 
         class DeleteTrack(val track: Track) : LocalIO()
+
+        class InsertAlbum(val album: Album) : LocalIO()
+
+        class DeleteAlbum(val album: Album) : LocalIO()
     }
 }

@@ -91,10 +91,10 @@ fun AlbumDetailScreen(
 
                                 // Checking if the Album is already present or not
                                 if (!isPresent) {
-                                    setEvent(SpotifyUiEvent.LocalIO.InsertAlbumData(networkAlbumData))
+                                    setEvent(SpotifyUiEvent.LocalIO.InsertAlbum(networkAlbumData))
                                     Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show()
                                 } else {
-                                    setEvent(SpotifyUiEvent.LocalIO.DeleteAlbumData(networkAlbumData))
+                                    setEvent(SpotifyUiEvent.LocalIO.DeleteAlbum(networkAlbumData))
                                     Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show()
                                 }
                             },

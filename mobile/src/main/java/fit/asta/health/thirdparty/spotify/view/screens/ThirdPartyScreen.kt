@@ -143,7 +143,7 @@ fun ThirdPartyScreen(
                 .height(190.dp)
                 .fillMaxWidth(),
             networkState = recentlyPlayed,
-            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadRecentlyPlayed) }
+            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserRecentlyPlayedTracks) }
         ) { networkState ->
             networkState.data?.trackList.let { networkTrackList ->
 
@@ -202,7 +202,7 @@ fun ThirdPartyScreen(
                 .fillMaxWidth()
                 .height(210.dp),
             networkState = recommendedData,
-            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadRecommendation) }
+            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadRecommendationTracks) }
         ) { networkResponse ->
             networkResponse.data?.trackList.let { trackList ->
 
