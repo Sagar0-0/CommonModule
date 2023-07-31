@@ -8,13 +8,13 @@ import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.PrefUtils
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ToneUiState
+import fit.asta.health.scheduler.model.SpotifyRepo
 import fit.asta.health.scheduler.util.Constants
-import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
-import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
-import fit.asta.health.thirdparty.spotify.model.net.search.TrackList
-import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
-import fit.asta.health.thirdparty.spotify.model.net.recently.SpotifyUserRecentlyPlayedModel
-import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
+import fit.asta.health.scheduler.model.net.spotify.search.SpotifySearchModel
+import fit.asta.health.scheduler.model.net.spotify.search.TrackList
+import fit.asta.health.scheduler.model.net.spotify.me.SpotifyMeModel
+import fit.asta.health.scheduler.model.net.spotify.recently.SpotifyUserRecentlyPlayedModel
+import fit.asta.health.scheduler.util.SpotifyNetworkCall
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SpotifyViewModel @Inject constructor(
-    private val remoteRepository: SpotifyRepoImpl,
+    private val remoteRepository: SpotifyRepo,
     application: Application,
     private val prefUtils: PrefUtils
 ) : AndroidViewModel(application) {

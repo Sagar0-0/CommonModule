@@ -32,8 +32,8 @@ import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.scheduler.compose.components.SearchBarUI
 import fit.asta.health.scheduler.compose.components.SpotifyMusicItem
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ToneUiState
-import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
-import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
+import fit.asta.health.scheduler.model.net.spotify.search.SpotifySearchModel
+import fit.asta.health.scheduler.util.SpotifyNetworkCall
 
 @Composable
 fun SpotifySearchScreen(
