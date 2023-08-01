@@ -19,11 +19,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.jetpack.HandleBackPress
 import fit.asta.health.common.ui.components.*
+import fit.asta.health.common.ui.components.generic.AppScaffold
+import fit.asta.health.common.ui.components.generic.AppTopBar
+import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.theme.boxSize
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiString
-import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
-import fit.asta.health.navigation.home.view.component.LoadingAnimation
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.view.components.ValidatedTextField
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
@@ -211,7 +213,7 @@ fun TestimonialForm(
                     })
                 }
 
-                is TestimonialSubmitState.NetworkError -> ErrorScreenLayout(onTryAgain = {
+                is TestimonialSubmitState.NetworkError -> AppErrorScreen(onTryAgain = {
                     getViewModel.onEvent(
                         TestimonialEvent.OnSubmit
                     )

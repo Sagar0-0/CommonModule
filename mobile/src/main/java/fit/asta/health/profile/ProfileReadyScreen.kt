@@ -28,8 +28,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.common.ui.components.AppScaffold
-import fit.asta.health.common.ui.components.AppTopBar
+import fit.asta.health.common.ui.components.generic.AppScaffold
+import fit.asta.health.common.ui.components.generic.AppTopBar
 import fit.asta.health.profile.model.domain.UserProfile
 import fit.asta.health.profile.view.ContactLayout
 import fit.asta.health.profile.view.DietLayout

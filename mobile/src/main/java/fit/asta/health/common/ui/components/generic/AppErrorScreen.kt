@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.home.view.component
+package fit.asta.health.common.ui.components.generic
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -43,7 +43,7 @@ import fit.asta.health.common.ui.theme.Gradient2NoInternet
 
 @Preview
 @Composable
-fun ErrorScreenLayout(
+fun AppErrorScreen(
     modifier: Modifier = Modifier,
     primaryIssue: String = "Whoops!!",
     desc: String = "Second Internet connection was found. Check your connection or try again.",

@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.home.view.component
+package fit.asta.health.common.ui.components.unUsed
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -29,8 +29,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.common.ui.components.AppScaffold
-import fit.asta.health.common.ui.components.AppTopBar
+import fit.asta.health.common.ui.components.generic.AppScaffold
+import fit.asta.health.common.ui.components.generic.AppTopBar
+
 
 @Preview
 @Composable

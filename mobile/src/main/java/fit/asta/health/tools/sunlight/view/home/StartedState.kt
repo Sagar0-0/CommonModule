@@ -15,8 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.AppScaffold
-import fit.asta.health.common.ui.components.AppTopBarWithHelp
+import fit.asta.health.common.ui.components.generic.AppScaffold
+import fit.asta.health.common.ui.components.generic.AppTopBarWithHelp
 import fit.asta.health.tools.sunlight.view.components.RoundedColorButton
 import fit.asta.health.tools.sunlight.viewmodel.SunlightViewModel
 import fit.asta.health.tools.view.components.CardSunBurn

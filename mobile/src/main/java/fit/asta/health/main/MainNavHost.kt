@@ -13,9 +13,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.feedback.ui.feedbackComp
 import fit.asta.health.main.view.mainActivityComp
-import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
 import fit.asta.health.profile.CreateProfileLayout
 import fit.asta.health.profile.ProfileContent
 import fit.asta.health.scheduler.navigation.schedulerNavigation
@@ -34,20 +34,17 @@ fun MainNavHost(isConnected: Boolean) {
     val navController = rememberNavController()
     if (!isConnected) {
         Box(modifier = Modifier.fillMaxSize()) {
-            ErrorScreenLayout {}
+            AppErrorScreen {}
         }
     }
 
     NavHost(
-        navController = navController,
-        route = Graph.ROOT.route,
-        startDestination = Graph.Home.route
+        navController = navController, route = Graph.ROOT.route, startDestination = Graph.Home.route
     ) {
 
-        mainActivityComp(navController=navController)
+        mainActivityComp(navController = navController)
         composable(route = Graph.Profile.route) {
-            ProfileContent(
-                onBack = { navController.popBackStack() },
+            ProfileContent(onBack = { navController.popBackStack() },
                 onEdit = { navController.navigate(Graph.CreateProfile.route) })
         }
         composable(route = Graph.CreateProfile.route) {
@@ -56,8 +53,7 @@ fun MainNavHost(isConnected: Boolean) {
 
         //homeComp(navController)
         settingsNavigation(navController)
-        feedbackComp(navController)
-        /*referralComp(navController)
+        feedbackComp(navController)/*referralComp(navController)
         walletComp(navController)*/
 
         breathingNavigation(navController, onBack = { navController.navigateUp() })

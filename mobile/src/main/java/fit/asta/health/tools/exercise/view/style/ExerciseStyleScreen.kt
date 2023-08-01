@@ -25,8 +25,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.common.ui.components.AppScaffold
-import fit.asta.health.common.ui.components.AppTopBarWithHelp
+import fit.asta.health.common.ui.components.generic.AppScaffold
+import fit.asta.health.common.ui.components.generic.AppTopBarWithHelp
 
 @Composable
 fun ExerciseStyleScreen(

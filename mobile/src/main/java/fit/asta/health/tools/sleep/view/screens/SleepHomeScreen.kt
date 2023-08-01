@@ -27,7 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import fit.asta.health.common.ui.components.ProgressBarInt
+import fit.asta.health.common.ui.components.generic.ProgressBarInt
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.tools.sleep.model.network.get.ProgressData
 import kotlinx.coroutines.delay

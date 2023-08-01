@@ -59,10 +59,10 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.*
+import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.main.Graph
-import fit.asta.health.navigation.home.view.component.NameAndMoodHomeScreenHeader
 import fit.asta.health.scheduler.compose.screen.homescreen.Event
 import fit.asta.health.scheduler.compose.screen.homescreen.HomeEvent
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity

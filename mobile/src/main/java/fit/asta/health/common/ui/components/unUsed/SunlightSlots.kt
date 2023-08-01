@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.home.view.component
+package fit.asta.health.common.ui.components.unUsed
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

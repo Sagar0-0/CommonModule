@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.home.view.component
+package fit.asta.health.common.ui.components.unUsed
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image

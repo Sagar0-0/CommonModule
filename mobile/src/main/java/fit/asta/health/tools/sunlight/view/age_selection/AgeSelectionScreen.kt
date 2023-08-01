@@ -19,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fit.asta.health.common.ui.components.*
+import fit.asta.health.common.ui.components.generic.AppScaffold
+import fit.asta.health.common.ui.components.generic.AppTopBarWithHelp
 import fit.asta.health.tools.sunlight.viewmodel.SunlightViewModel
 import fit.asta.health.tools.view.components.ItemData
 import fit.asta.health.tools.view.components.ItemList

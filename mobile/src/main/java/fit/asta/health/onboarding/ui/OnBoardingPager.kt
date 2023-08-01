@@ -14,11 +14,11 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.*
+import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getImageUrl
-import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
-import fit.asta.health.navigation.home.view.component.LoadingAnimation
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.onboarding.modal.OnboardingData
 import kotlinx.coroutines.launch
 
@@ -41,11 +41,11 @@ fun OnBoardingPager(
         }
 
         ResponseState.NoInternet -> {
-            ErrorScreenLayout(onTryAgain = onReload)
+            AppErrorScreen(onTryAgain = onReload)
         }
 
         is ResponseState.Error -> {
-            ErrorScreenLayout(
+            AppErrorScreen(
                 onTryAgain = onReload,
                 desc = state.error.message ?: "ERROR 404",
                 imgID = (R.drawable.error_404)

@@ -32,6 +32,8 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.*
+import fit.asta.health.common.ui.components.generic.AppScaffold
+import fit.asta.health.common.ui.components.generic.AppTopBar
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

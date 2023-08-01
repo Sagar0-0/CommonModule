@@ -26,10 +26,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import fit.asta.health.common.ui.components.AppModalBottomSheetLayout
+import fit.asta.health.common.ui.components.generic.AppModalBottomSheetLayout
+import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
-import fit.asta.health.navigation.home.view.component.LoadingAnimation
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.profile.MultiRadioBtnKeys
 import fit.asta.health.profile.createprofile.view.HealthCreateBottomSheetTypes.*
 import fit.asta.health.profile.createprofile.view.components.ItemSelectionLayout
@@ -335,7 +335,7 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.Error -> {}
                 is HPropState.Loading -> LoadingAnimation()
                 is HPropState.NoInternet -> {
-                    ErrorScreenLayout(onTryAgain = {})
+                    AppErrorScreen(onTryAgain = {})
                 }
 
                 is HPropState.Success -> {
@@ -354,7 +354,7 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.Error -> {}
                 is HPropState.Loading -> LoadingAnimation()
                 is HPropState.NoInternet -> {
-                    ErrorScreenLayout(onTryAgain = {})
+                    AppErrorScreen(onTryAgain = {})
                 }
 
                 is HPropState.Success -> {
@@ -373,7 +373,7 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.Error -> {}
                 is HPropState.Loading -> LoadingAnimation()
                 is HPropState.NoInternet -> {
-                    ErrorScreenLayout(onTryAgain = {})
+                    AppErrorScreen(onTryAgain = {})
                 }
 
                 is HPropState.Success -> {
@@ -392,7 +392,7 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.Error -> {}
                 is HPropState.Loading -> LoadingAnimation()
                 is HPropState.NoInternet -> {
-                    ErrorScreenLayout(onTryAgain = {})
+                    AppErrorScreen(onTryAgain = {})
                 }
 
                 is HPropState.Success -> {
@@ -411,7 +411,7 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.Error -> {}
                 is HPropState.Loading -> LoadingAnimation()
                 is HPropState.NoInternet -> {
-                    ErrorScreenLayout(onTryAgain = {})
+                    AppErrorScreen(onTryAgain = {})
                 }
 
                 is HPropState.Success -> {
@@ -430,7 +430,7 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.Error -> {}
                 is HPropState.Loading -> LoadingAnimation()
                 is HPropState.NoInternet -> {
-                    ErrorScreenLayout(onTryAgain = {})
+                    AppErrorScreen(onTryAgain = {})
                 }
 
                 is HPropState.Success -> {
@@ -449,7 +449,7 @@ fun HealthCreateBtmSheetLayout(
                 is HPropState.Error -> {}
                 is HPropState.Loading -> LoadingAnimation()
                 is HPropState.NoInternet -> {
-                    ErrorScreenLayout(onTryAgain = {})
+                    AppErrorScreen(onTryAgain = {})
                 }
 
                 is HPropState.Success -> {
