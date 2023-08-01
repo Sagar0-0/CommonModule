@@ -19,13 +19,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.jetpack.HandleBackPress
 import fit.asta.health.common.ui.components.*
+import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.common.ui.components.generic.AppTopBar
-import fit.asta.health.common.ui.components.generic.AppErrorScreen
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.theme.boxSize
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiString
-import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.testimonials.model.domain.TestimonialType
 import fit.asta.health.testimonials.view.components.ValidatedTextField
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
@@ -227,35 +227,27 @@ fun TestimonialForm(
 }
 
 
-@OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun CreateTstScreen(
     title: String,
     onNavigateTstCreate: () -> Unit,
     onNavigateTstHome: () -> Unit,
-    //onNavigateImgCropper: () -> Unit = {},
-    //onNavigateAfterImgCropper: () -> Unit = {},
     getViewModel: TestimonialViewModel,
 ) {
-
     var showCustomDialogWithResult by remember { mutableStateOf(false) }
 
     AppScaffold(topBar = {
-        AppTopBar(
-            title = title,
-            onBack = {
-                showCustomDialogWithResult = !showCustomDialogWithResult
-            })
-    }, content = {
+        AppTopBar(title = title, onBack = {
+            showCustomDialogWithResult = !showCustomDialogWithResult
+        })
+    }) {
         TestimonialForm(
             paddingValues = it,
             onNavigateTstHome = onNavigateTstHome,
-            //onNavigateImgCropper = onNavigateImgCropper,
             getViewModel = getViewModel,
-            //onNavigateAfterImgCropper = onNavigateAfterImgCropper
         )
-    })
-
+    }
 
     HandleBackPress {
         showCustomDialogWithResult = !showCustomDialogWithResult
@@ -266,9 +258,7 @@ fun CreateTstScreen(
             onDismiss = {
                 showCustomDialogWithResult = !showCustomDialogWithResult
             },
-            onNegativeClick = {
-                onNavigateTstCreate()
-            },
+            onNegativeClick = onNavigateTstCreate,
             onPositiveClick = {
                 showCustomDialogWithResult = !showCustomDialogWithResult
             },
@@ -278,6 +268,4 @@ fun CreateTstScreen(
             btn2Title = "Cancel"
         )
     }
-
-
 }

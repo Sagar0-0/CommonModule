@@ -3,7 +3,6 @@
 package fit.asta.health.common.ui.components.generic
 
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
@@ -13,21 +12,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import fit.asta.health.common.ui.theme.cardElevation
-import fit.asta.health.common.ui.theme.spacing
 
 
-/** [AppClickableCard] is default clickable card for the app. Cards contain contain content and
- * actions that relate information about a subject. This Card handles click events, calling its [onClick] lambda.
+/** [AppClickableCard] is default clickable card for the app.This Card handles click events,
+ * calling its [onClick] lambda.
  * @param onClick called when this card is clicked
  * @param modifier the [Modifier] to be applied to this card
+ * @param shape defines the shape of this card's container
+ * @param content components inside the card
  */
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppClickableCard(
-    onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    shape: Shape = MaterialTheme.shapes.medium,
+    onClick: () -> Unit,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Card(
@@ -36,16 +37,16 @@ fun AppClickableCard(
         modifier = modifier,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
         elevation = CardDefaults.cardElevation(),
-        shape = RoundedCornerShape(spacing.small),
+        shape = shape,
     )
 }
 
 
-/** [AppDefCard] is default card for the app.Cards contain contain content and actions that relate
- * information about a subject. Filled cards provide subtle separation from the background. This has
- * less emphasis than elevated or outlined cards.This Card does not handle input events.
+/** [AppDefCard] is default card for the app.Cards contain content and actions that relate
+ * information about a subject.It do not handle any click events.
  * @param modifier the [Modifier] to be applied to this card
  * @param shape defines the shape of this card's container
+ * @param content components inside the card
  */
 
 @Composable

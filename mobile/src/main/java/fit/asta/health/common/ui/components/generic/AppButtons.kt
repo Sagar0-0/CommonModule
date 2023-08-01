@@ -3,7 +3,6 @@ package fit.asta.health.common.ui.components.generic
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FloatingActionButton
@@ -11,7 +10,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import fit.asta.health.common.ui.theme.spacing
 
 /** [AppDefBtn] is default button for the app. Buttons help people initiate actions,
  * from sending an email, to sharing a document, to liking a post.
@@ -37,11 +35,11 @@ fun AppDefBtn(
     Button(
         onClick = onClick,
         modifier = modifier,
-        shape = RoundedCornerShape(spacing.small),
+        shape = MaterialTheme.shapes.medium,
         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
         contentPadding = contentPadding,
         enabled = enabled,
-        content = content
+        content = content,
     )
 
 }
@@ -64,6 +62,6 @@ fun AppDefFAB(
         containerColor = MaterialTheme.colorScheme.primary,
         shape = CircleShape,
         modifier = modifier,
-        contentColor = MaterialTheme.colorScheme.onPrimary
+        contentColor = MaterialTheme.colorScheme.onPrimary,
     )
 }

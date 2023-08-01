@@ -1,7 +1,6 @@
 package fit.asta.health.common.ui.components.generic
 
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
@@ -31,9 +30,7 @@ fun AppDivider(lineWidth: Dp) {
         color = MaterialTheme.colorScheme.primary,
         thickness = spacing.extraSmall,
         modifier = Modifier
-            .clip(
-                RoundedCornerShape(spacing.minSmall)
-            )
+            .clip(MaterialTheme.shapes.extraSmall)
             .width(width = lineWidth)
     )
 }

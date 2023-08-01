@@ -9,12 +9,12 @@ package fit.asta.health.common.ui.components.generic
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
@@ -24,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 
 
 /**The [AppScaffold] is a composable function in Jetpack Compose, used to create a scaffold layout
@@ -95,7 +94,7 @@ fun AppBottomSheetScaffold(
     modifier: Modifier = Modifier,
     scaffoldState: BottomSheetScaffoldState,
     sheetPeekHeight: Dp = BottomSheetDefaults.SheetPeekHeight,
-    sheetShape: Shape = RoundedCornerShape(16.dp),
+    sheetShape: Shape = MaterialTheme.shapes.large,
     sheetShadowElevation: Dp = BottomSheetDefaults.Elevation,
     sheetSwipeEnabled: Boolean = true,
     sheetContent: @Composable ColumnScope.() -> Unit,
@@ -103,7 +102,6 @@ fun AppBottomSheetScaffold(
     topBar: @Composable (() -> Unit)? = null,
     content: @Composable (PaddingValues) -> Unit,
 ) {
-
     BottomSheetScaffold(
         sheetContent = sheetContent,
         modifier = modifier,
