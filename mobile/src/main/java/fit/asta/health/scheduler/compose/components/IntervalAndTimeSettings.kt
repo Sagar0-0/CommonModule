@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Snooze
 import androidx.compose.material.icons.filled.Timelapse
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,9 +30,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,10 +46,15 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.shawnlin.numberpicker.NumberPicker
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.CustomModelBottomSheet
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AMPMHoursMin
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.IvlUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.RepUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.StatUiState
+import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.TimePickerBottomSheet
+import fit.asta.health.tools.breathing.model.domain.mapper.convert12hrTo24hr
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -184,6 +192,7 @@ fun SnoozeBottomSheet(onNavigateBack: () -> Unit, onValueChange: (Int) -> Unit =
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddVariantIntervalBottomSheet(
     text: String,
@@ -193,7 +202,16 @@ fun AddVariantIntervalBottomSheet(
     val interval = remember {
         mutableStateOf(StatUiState(id = (186566..999999999).random(), name = "Wake Up"))
     }
+    val bottomSheetState = rememberModalBottomSheetState()
 
+    val scope = rememberCoroutineScope()
+
+    val closeSheet = {
+        scope.launch { bottomSheetState.hide() }
+    }
+    val openSheet = {
+        scope.launch { bottomSheetState.show() }
+    }
     Column(
         Modifier
             .fillMaxWidth()
@@ -230,19 +248,29 @@ fun AddVariantIntervalBottomSheet(
             }
         }
         Spacer(modifier = Modifier.height(2.dp))
-        DigitalDemo(onTimeChange = {
-            interval.value =
-                interval.value.copy(
-                    hours = it.hours,
-                    midDay = it.midDay, minutes = it.minutes
-                )
-        })
+        DigitalDemo(time = AMPMHoursMin(), open = { openSheet() })
         Spacer(modifier = Modifier.height(20.dp))
         CustomTagTextField(
             label = "Interval label",
             onValueChange = { interval.value = interval.value.copy(name = it) })
         Spacer(modifier = Modifier.height(16.dp))
     }
+    CustomModelBottomSheet(targetState = bottomSheetState.isVisible,
+        sheetState = bottomSheetState,
+        content = {
+            TimePickerBottomSheet(onSave = {
+                closeSheet()
+                val time = it.convert12hrTo24hr()
+                interval.value =
+                    interval.value.copy(
+                        hours = time.hour.toString(),
+                        midDay = it.dayTime != AMPMHoursMin.DayTime.AM,
+                        minutes = time.min.toString()
+                    )
+            }, onCancel = { closeSheet() })
+        },
+        dragHandle = {},
+        onClose = { closeSheet() })
 }
 
 

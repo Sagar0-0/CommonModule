@@ -70,7 +70,7 @@ class AlarmService : Service() {
         if (bundle != null) {
             // getting alarm item data from bundle
             alarmEntity = bundle.serializable(ARG_ALARM_OBJET)
-            Log.d("TAGTAGTAG", "onStartCommand: alarm $alarmEntity")
+            Log.d("alarmtest", "onStartCommand: alarm $alarmEntity")
             // creating notification-pending intent to redirect on notification click
             val notificationIntent = Intent(this, AlarmScreenActivity::class.java)
             notificationIntent.putExtra(BUNDLE_ALARM_OBJECT, bundle)
@@ -88,7 +88,7 @@ class AlarmService : Service() {
             } else {
                 setMediaDataDef()
             }
-//            createWakeLock().acquire(100)
+            createWakeLock().acquire(9000)
             // creating notification with different modes
             val bigTextStyle = NotificationCompat.BigTextStyle()
                 .bigText(alarmName)
@@ -187,7 +187,7 @@ class AlarmService : Service() {
                 .setContentIntent(pendingIntent)
                 .build()
             startForeground(bundleForPreNotification.getInt("id", 1), notification)
-            stopForeground(false)
+            stopForeground(STOP_FOREGROUND_REMOVE)
             return START_STICKY
         }
 
@@ -227,7 +227,7 @@ class AlarmService : Service() {
                 bundleForPostNotification.getInt("id", 1),
                 notification
             )
-            stopForeground(false)
+            stopForeground(STOP_FOREGROUND_REMOVE)
             return START_STICKY
         }
         return START_STICKY
@@ -252,6 +252,7 @@ class AlarmService : Service() {
                 vibrator.vibrate(pattern, 0)
             }
         }
+        Log.d("alarmtest", "startForGroundService")
         startForeground(id, notification)
     }
 
@@ -271,6 +272,8 @@ class AlarmService : Service() {
                     .setSound(null)
                     .setCategory(NotificationCompat.CATEGORY_ALARM)
                     .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                    .setOngoing(true)
+                    .setWhen(0)
                     .setPriority(NotificationCompat.PRIORITY_MAX)
                     .setFullScreenIntent(
                         pendingIntent,
@@ -290,7 +293,7 @@ class AlarmService : Service() {
                     .setPriority(NotificationCompat.PRIORITY_MAX) // set base on important in alarm entity
                     .setFullScreenIntent(pendingIntent, true)
                     .setStyle(bigTextStyle)
-                    .setWhen(System.currentTimeMillis())
+                    .setWhen(0)
                     .setAutoCancel(true)
                     .build()
 

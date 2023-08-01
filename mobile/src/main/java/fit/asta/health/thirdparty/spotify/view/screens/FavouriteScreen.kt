@@ -12,34 +12,39 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import fit.asta.health.thirdparty.spotify.model.net.common.Album
+import fit.asta.health.thirdparty.spotify.model.net.common.Track
+import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import fit.asta.health.thirdparty.spotify.view.components.MusicLargeImageColumn
 import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
+import fit.asta.health.thirdparty.spotify.view.events.SpotifyUiEvent
 import fit.asta.health.thirdparty.spotify.view.navigation.SpotifyNavRoutes
-import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
 
 /**
  * This function contains the UI of the Favourite Screen
  *
- * @param spotifyViewModelX This variable contains the viewModel which contains the business logic
- * @param navController This helps to navigate through Different Screens
+ * @param tracksData This contains the state of all the TrackData in the local database
+ * @param albumData This contains the state of all the albumData in the local Database
+ * @param setEvent This function is used to send events from the UI to View Model layer
+ * @param navigator THis function is used to handle all the navigation
  */
 @Composable
 fun FavouriteScreen(
-    spotifyViewModelX: SpotifyViewModelX,
-    navController: NavController
+    tracksData: SpotifyNetworkCall<List<Track>>,
+    albumData: SpotifyNetworkCall<List<Album>>,
+    setEvent: (SpotifyUiEvent) -> Unit,
+    navigator: (String) -> Unit
 ) {
 
     LaunchedEffect(Unit) {
-        spotifyViewModelX.getAllTracks()
-        spotifyViewModelX.getAllAlbums()
+        setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
+        setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums)
     }
 
     // Root Composable function
@@ -68,8 +73,8 @@ fun FavouriteScreen(
             modifier = Modifier
                 .height(210.dp)
                 .fillMaxWidth(),
-            networkState = spotifyViewModelX.allTracks.collectAsState().value,
-            onCurrentStateInitialized = { spotifyViewModelX.getAllTracks() },
+            networkState = tracksData,
+            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks) },
             onCurrentStateSuccess = { networkState ->
                 networkState.data?.let { trackList ->
                     LazyRow(
@@ -89,8 +94,8 @@ fun FavouriteScreen(
                             ) {
 
                                 // Navigating to the Track Details Screen
-                                spotifyViewModelX.setTrackId(currentItem.id)
-                                navController.navigate(SpotifyNavRoutes.TrackDetailScreen.routes)
+                                setEvent(SpotifyUiEvent.HelperEvent.SetTrackId(currentItem.id))
+                                navigator(SpotifyNavRoutes.TrackDetailScreen.routes)
                             }
                         }
                     }
@@ -117,8 +122,8 @@ fun FavouriteScreen(
             modifier = Modifier
                 .height(210.dp)
                 .fillMaxWidth(),
-            networkState = spotifyViewModelX.allAlbums.collectAsState().value,
-            onCurrentStateInitialized = { spotifyViewModelX.getAllAlbums() },
+            networkState = albumData,
+            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums) },
             onCurrentStateSuccess = { networkState ->
                 networkState.data?.let { albumList ->
                     LazyRow(
@@ -137,8 +142,8 @@ fun FavouriteScreen(
                             ) {
 
                                 // Navigating the Album Details Screen to get the Album Details
-                                spotifyViewModelX.setAlbumId(currentItem.id)
-                                navController.navigate(SpotifyNavRoutes.AlbumDetailScreen.routes)
+                                setEvent(SpotifyUiEvent.HelperEvent.SetAlbumId(currentItem.id))
+                                navigator(SpotifyNavRoutes.AlbumDetailScreen.routes)
                             }
                         }
                     }

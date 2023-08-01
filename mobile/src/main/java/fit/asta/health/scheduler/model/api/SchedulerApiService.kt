@@ -1,5 +1,6 @@
 package fit.asta.health.scheduler.model.api
 
+import fit.asta.health.navigation.today.model.TodaySchedules
 import fit.asta.health.network.data.Status
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.net.scheduler.AstaSchedulerDeleteResponse
@@ -14,6 +15,15 @@ import retrofit2.http.*
 
 //Scheduler Endpoints
 interface SchedulerApiService {
+
+    @GET("schedule/home/get/?")// http://asta.fit/schedule/home/get/?uid=6309a9379af54f142c65fbfe&lat=28.6353&lon=77.2250&date=2023-07-03&loc=bangalore
+    suspend fun getTodayDataFromBackend(
+        @Query("uid") userID: String,
+        @Query("date") date: String,
+        @Query("loc") location: String,
+        @Query("lat") latitude: Float,
+        @Query("lon") longitude: Float
+    ): Response<TodaySchedules>
 
     @PUT("schedule/put/")
     suspend fun updateScheduleDataOnBackend(

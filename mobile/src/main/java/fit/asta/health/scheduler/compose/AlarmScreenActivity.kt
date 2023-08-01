@@ -52,7 +52,7 @@ class AlarmScreenActivity : AppCompatActivity() {
         if (bundle != null) {
             alarmEntity = bundle.serializable(Constants.ARG_ALARM_OBJET)
         }
-        Log.d("TAGTAG", " alarm screen activity onCreate: ")
+        Log.d("alarmtest", " alarm screen activity onCreate: ")
         alarmScreenViewModel.setAlarmAndVariant(alarmEntity,variantInterval)
     }
 

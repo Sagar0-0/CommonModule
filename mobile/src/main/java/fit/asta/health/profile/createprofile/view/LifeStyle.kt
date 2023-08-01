@@ -19,10 +19,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import fit.asta.health.common.ui.components.*
+import fit.asta.health.common.ui.components.generic.AppModalBottomSheetLayout
+import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
-import fit.asta.health.navigation.home.view.component.LoadingAnimation
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.profile.MultiRadioBtnKeys
 import fit.asta.health.profile.createprofile.view.LifeStyleCreateBottomSheetType.*
 import fit.asta.health.profile.createprofile.view.components.CreateProfileTimePicker
@@ -372,7 +373,7 @@ fun LifeStyleCreateBottomSheetLayout(
                 is HPropState.Error -> {}
                 is HPropState.Loading -> LoadingAnimation()
                 is HPropState.NoInternet -> {
-                    ErrorScreenLayout(onTryAgain = {})
+                    AppErrorScreen(onTryAgain = {})
                 }
 
                 is HPropState.Success -> {
@@ -391,7 +392,7 @@ fun LifeStyleCreateBottomSheetLayout(
                 is HPropState.Error -> {}
                 is HPropState.Loading -> LoadingAnimation()
                 is HPropState.NoInternet -> {
-                    ErrorScreenLayout(onTryAgain = {})
+                    AppErrorScreen(onTryAgain = {})
                 }
 
                 is HPropState.Success -> {
@@ -410,7 +411,7 @@ fun LifeStyleCreateBottomSheetLayout(
                 is HPropState.Error -> {}
                 is HPropState.Loading -> LoadingAnimation()
                 is HPropState.NoInternet -> {
-                    ErrorScreenLayout(onTryAgain = {})
+                    AppErrorScreen(onTryAgain = {})
                 }
 
                 is HPropState.Success -> {

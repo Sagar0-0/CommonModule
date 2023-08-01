@@ -1,52 +1,27 @@
 package fit.asta.health.testimonials.view.list
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
-import fit.asta.health.testimonials.model.domain.Testimonial
-import fit.asta.health.testimonials.view.components.UserTst
-import fit.asta.health.common.ui.theme.cardElevation
+import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.spacing
-
+import fit.asta.health.navigation.home.view.component.TstTxtLayout
+import fit.asta.health.testimonials.model.domain.Testimonial
 
 @Composable
-fun TestimonialTextCard(testimonial: Testimonial) {
-
-    Card(
-        modifier = Modifier
+fun TstViewTxtLayout(tstTxtMedia: Testimonial) {
+    Column(
+        Modifier
             .fillMaxWidth()
-            .padding(spacing.medium),
-        shape = MaterialTheme.shapes.medium,
-        elevation = CardDefaults.cardElevation(cardElevation.small),
-        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onPrimary)
+            .padding(spacing.medium)
     ) {
-
-        Column(Modifier.fillMaxWidth()) {
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(spacing.medium)
-            ) {
-                Text(
-                    text = testimonial.title,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    lineHeight = 22.4.sp,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                )
-            }
-
-            UserTst(spacing, testimonial)
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-        }
+        AppTexts.TitleMedium(
+            text = tstTxtMedia.title, color = MaterialTheme.colorScheme.onPrimaryContainer
+        )
+        TstTxtLayout(testimonialsData = tstTxtMedia)
     }
 }
 

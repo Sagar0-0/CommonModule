@@ -8,8 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.R
-import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
-import fit.asta.health.navigation.home.view.component.LoadingAnimation
+import fit.asta.health.common.ui.components.generic.AppErrorScreen
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.testimonials.view.create.CreateTstScreen
 import fit.asta.health.testimonials.viewmodel.create.TestimonialGetState
 import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
@@ -25,6 +25,7 @@ fun LoadTestimonialForm(
     //onNavigateImgCropper: () -> Unit = {},
     //onNavigateAfterImgCropper: () -> Unit = {},
 ) {
+
     when (val state = getViewModel.state.collectAsState().value) {
         TestimonialGetState.Loading -> {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -32,7 +33,7 @@ fun LoadTestimonialForm(
             }
         }
 
-        is TestimonialGetState.Error -> ErrorScreenLayout(onTryAgain = {
+        is TestimonialGetState.Error -> AppErrorScreen(onTryAgain = {
             getViewModel.loadTestimonial()
         }, isInternetError = false)
 
@@ -54,9 +55,10 @@ fun LoadTestimonialForm(
             //onNavigateAfterImgCropper = onNavigateAfterImgCropper
         )
 
-        is TestimonialGetState.NetworkError -> ErrorScreenLayout(onTryAgain = {
+        is TestimonialGetState.NetworkError -> AppErrorScreen(onTryAgain = {
             getViewModel.loadTestimonial()
         })
+
     }
 }
 

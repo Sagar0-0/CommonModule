@@ -14,7 +14,7 @@ fun CustomModelBottomSheet(
     targetState: Boolean,
     sheetState: SheetState,
     content: @Composable ColumnScope.() -> Unit,
-    dragHandle: @Composable() (() -> Unit)?,
+    dragHandle: @Composable (() -> Unit)?,
     onClose: () -> Unit,
 ) {
     AnimatedContent(

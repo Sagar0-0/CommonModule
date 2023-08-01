@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.navigation.home.view.component.WeatherCardImage
+import fit.asta.health.common.ui.components.functional.WeatherCardImage
 import fit.asta.health.tools.view.components.CardSunBurn
 
 
@@ -30,9 +30,10 @@ fun WalkingTypeLayout(paddingValues: PaddingValues) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Row(Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)) {
             Text(text = "Total Duration",
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
@@ -54,9 +55,10 @@ fun WalkingTypeLayout(paddingValues: PaddingValues) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Row(Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)) {
             Text(text = "Health Details",
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
@@ -70,9 +72,10 @@ fun WalkingTypeLayout(paddingValues: PaddingValues) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Row(Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)) {
             Text(text = "Weather Details",
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,

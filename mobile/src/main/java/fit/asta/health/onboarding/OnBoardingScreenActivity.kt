@@ -38,22 +38,22 @@ class OnBoardingScreenActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         setContent {
             AppTheme {
                 val state = onboardingViewModel.state.collectAsStateWithLifecycle().value
-                OnBoardingPager(state = state, onReload = onboardingViewModel::getData, onFinish = {
-                    PrefUtils.setOnboardingShownStatus(true, this)
-                    if (authViewModel.isAuthenticated()) {
-                        AuthActivity.launch(this)
-                    } else {
-                        MainActivity.launch(this)
+                OnBoardingPager(
+                    state = state,
+                    onReload = onboardingViewModel::getData,
+                    onFinish = {
+                        PrefUtils.setOnboardingShownStatus(true, this)
+                        if (!authViewModel.isAuthenticated()) {
+                            AuthActivity.launch(this)
+                        } else {
+                            MainActivity.launch(this)
+                        }
                     }
-                })
+                )
             }
         }
-
     }
-
-
 }

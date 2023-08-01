@@ -4,8 +4,8 @@ buildscript {
         kotlin_ver = '1.8.22'
         compose_compiler = '1.4.8'
         compose_ver = '1.5.0-beta03'
-        dagger_ver = '2.44.2'
-        gradle_ver = '8.0.2'
+        dagger_ver = '2.47'
+        gradle_ver = '8.1.0'
         gms_ver = '4.3.14'
     }
 
@@ -14,7 +14,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_ver"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$dagger_ver"
         classpath "com.google.gms:google-services:$gms_ver"
-        classpath "com.google.firebase:firebase-crashlytics-gradle:2.9.6"
+        classpath "com.google.firebase:firebase-crashlytics-gradle:2.9.7"
         classpath "com.google.firebase:perf-plugin:1.4.2"
     }
 }

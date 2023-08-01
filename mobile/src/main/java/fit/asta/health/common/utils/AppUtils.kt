@@ -47,12 +47,10 @@ import java.net.URL
 
 fun Context.getUriFromResourceId(resId: Int): Uri {
 
-    return Uri.Builder()
-        .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+    return Uri.Builder().scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
         .authority(resources.getResourcePackageName(resId))
         .appendPath(resources.getResourceTypeName(resId))
-        .appendPath(resources.getResourceEntryName(resId))
-        .build()
+        .appendPath(resources.getResourceEntryName(resId)).build()
 }
 
 fun Context.showToastMessage(msg: String?) {
@@ -72,39 +70,26 @@ fun View.showSnackbar(message: String, duration: Int = Snackbar.LENGTH_LONG) {
 
 fun Context.showDrawableImage(resourceId: Int, imgView: ImageView) {
 
-    Glide.with(applicationContext)
-        .load(resourceId)
-        .into(imgView)
+    Glide.with(applicationContext).load(resourceId).into(imgView)
 }
 
 fun Context.showImageByUrl(uriImg: Uri, imgView: ImageView?) {
 
-    if (imgView != null)
-        Glide.with(applicationContext)
-            .load(uriImg)
-            .thumbnail(Glide.with(applicationContext).load(R.drawable.shimmer))
-            .centerCrop()
-            .transform(RoundedCorners(4))
-            .error(R.drawable.ic_broken_image)
-            .fallback(R.drawable.ic_camera)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            //.apply(RequestOptions.noTransformation())
-            .into(imgView)
+    if (imgView != null) Glide.with(applicationContext).load(uriImg)
+        .thumbnail(Glide.with(applicationContext).load(R.drawable.shimmer)).centerCrop()
+        .transform(RoundedCorners(4)).error(R.drawable.ic_broken_image)
+        .fallback(R.drawable.ic_camera).diskCacheStrategy(DiskCacheStrategy.ALL)
+        //.apply(RequestOptions.noTransformation())
+        .into(imgView)
 }
 
 fun Context.showCircleImageByUrl(uriImg: Uri, imgView: ImageView?) {
 
-    if (imgView != null)
-        Glide.with(applicationContext)
-            .load(uriImg)
-            .thumbnail(Glide.with(applicationContext).load(R.drawable.shimmer))
-            .centerCrop()
-            .placeholder(R.drawable.shimmer)
-            .error(R.drawable.ic_broken_image)
-            .fallback(R.drawable.shimmer)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .apply(RequestOptions.circleCropTransform())
-            .into(imgView)
+    if (imgView != null) Glide.with(applicationContext).load(uriImg)
+        .thumbnail(Glide.with(applicationContext).load(R.drawable.shimmer)).centerCrop()
+        .placeholder(R.drawable.shimmer).error(R.drawable.ic_broken_image)
+        .fallback(R.drawable.shimmer).diskCacheStrategy(DiskCacheStrategy.ALL)
+        .apply(RequestOptions.circleCropTransform()).into(imgView)
 }
 
 fun getBitmapFromURL(strURL: String?): Bitmap? {
@@ -128,8 +113,7 @@ fun getBitmapFromURL(strURL: String?): Bitmap? {
 
 fun Activity.openAppSettings() {
     Intent(
-        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-        Uri.fromParts("package", packageName, null)
+        Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", packageName, null)
     ).also(::startActivity)
 }
 
@@ -139,17 +123,14 @@ fun Activity.hideKeyboardFrom(view: View) {
     imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
-fun Context.mapStringKey(str: String) =
-    if (str.isEmpty()) ""
-    else {
-        this.resources.getString(
-            this.resources.getIdentifier(
-                str,
-                "string",
-                this.applicationContext.packageName
-            )
+fun Context.mapStringKey(str: String) = if (str.isEmpty()) ""
+else {
+    this.resources.getString(
+        this.resources.getIdentifier(
+            str, "string", this.applicationContext.packageName
         )
-    }
+    )
+}
 
 fun Context.shareApp() {
 
@@ -165,8 +146,7 @@ fun Context.shareApp() {
         sharingIntent.type = "text/html"
         startActivity(
             Intent.createChooser(
-                sharingIntent,
-                resources.getString(R.string.share_app_choose_text)
+                sharingIntent, resources.getString(R.string.share_app_choose_text)
             )
         )
 
@@ -210,6 +190,7 @@ fun showInAppReview(activity: Activity) {
         }
     }
 }
+
 sealed class AppThemeType(val value: String) {
     object Dark : AppThemeType("dark")
     object System : AppThemeType("system")
@@ -273,13 +254,8 @@ fun Context.sendEmail(to: String, subject: String) {
     var body: String? = null
     try {
 
-        body = "\n\n------------------------------------------" +
-                "\nPlease don't remove the below information:" +
-                "\nDevice OS: Android \n Device OS version: " + Build.VERSION.RELEASE +
-                "\n App Version: " + this.getCurrentBuildVersion() +
-                "\n Device Brand: " + Build.BRAND +
-                "\n Device Model: " + Build.MODEL +
-                "\n Device Manufacturer: " + Build.MANUFACTURER
+        body =
+            "\n\n------------------------------------------" + "\nPlease don't remove the below information:" + "\nDevice OS: Android \n Device OS version: " + Build.VERSION.RELEASE + "\n App Version: " + this.getCurrentBuildVersion() + "\n Device Brand: " + Build.BRAND + "\n Device Model: " + Build.MODEL + "\n Device Manufacturer: " + Build.MANUFACTURER
 
     } catch (e: PackageManager.NameNotFoundException) {
 
@@ -317,14 +293,12 @@ fun Context.shareReferralCode(code: String) {
         sharingIntent.action = Intent.ACTION_SEND
         sharingIntent.putExtra(Intent.EXTRA_SUBJECT, resources.getString(R.string.app_name))
         sharingIntent.putExtra(
-            Intent.EXTRA_TEXT,
-            code
+            Intent.EXTRA_TEXT, code
         )
         sharingIntent.type = "text/html"
         startActivity(
             Intent.createChooser(
-                sharingIntent,
-                resources.getString(R.string.share_app_choose_text)
+                sharingIntent, resources.getString(R.string.share_app_choose_text)
             )
         )
 
@@ -334,12 +308,11 @@ fun Context.shareReferralCode(code: String) {
 }
 
 @Composable
-fun getImageUrl(url: String) = stringResource(id = R.string.media_url) + url
+fun getImgUrl(url: String) = stringResource(id = R.string.media_url) + url
 
 fun getFirebaseStorageBucketUrl(context: Context): String {
 
-    return context.resources.getString(R.string.fire_storage_url) +
-            FirebaseStorage.getInstance().reference.bucket + "/o/"
+    return context.resources.getString(R.string.fire_storage_url) + FirebaseStorage.getInstance().reference.bucket + "/o/"
 }
 
 fun getFileName(context: Context, uri: Uri) = DocumentFile.fromSingleUri(context, uri)?.name ?: ""
@@ -351,19 +324,13 @@ fun getPublicStorageUrl(context: Context, url: String): String {
 
 fun Context.showDialog(title: String, desc: String, okTitle: String, notifyOK: () -> Unit) {
 
-    AlertDialog.Builder(this)
-        .setTitle(title)
-        .setMessage(desc)
-        .setPositiveButton(okTitle) { _, _ ->
+    AlertDialog.Builder(this).setTitle(title).setMessage(desc).setPositiveButton(okTitle) { _, _ ->
 
-            notifyOK()
-        }
-        .setNegativeButton(R.string.title_cancel) { dialog, _ ->
+        notifyOK()
+    }.setNegativeButton(R.string.title_cancel) { dialog, _ ->
 
-            dialog.cancel()
-        }
-        .create()
-        .show()
+        dialog.cancel()
+    }.create().show()
 }
 
 fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)

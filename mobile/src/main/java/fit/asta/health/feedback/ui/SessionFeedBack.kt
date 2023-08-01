@@ -21,8 +21,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import fit.asta.health.common.ui.components.AppScaffold
-import fit.asta.health.common.ui.components.AppTopBar
+import fit.asta.health.common.ui.components.generic.AppScaffold
+import fit.asta.health.common.ui.components.generic.AppTopBar
 import fit.asta.health.common.ui.components.UploadFiles
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.ResponseState
@@ -34,7 +34,7 @@ import fit.asta.health.feedback.model.network.Qn
 import fit.asta.health.feedback.ui.components.SubmitButton
 import fit.asta.health.feedback.ui.components.WelcomeCard
 import fit.asta.health.feedback.ui.components.feedbackTextFieldItem
-import fit.asta.health.navigation.home.view.component.LoadingAnimation
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
 
 @Composable
 fun SessionFeedback(

@@ -928,7 +928,7 @@ data class AlarmEntity(
         val runEverySevenDays = (7 * 24 * 60 * 60 * 1000).toLong()
 
 //        Log.d("TAGTAG", "setAlarmOther: ${calendar.time}")
-        Log.d("alarm", "setAlarmOther:id $id")
+        Log.d("alarm", "setAlarmOther:id $id,time ${calendar.time}")
         alarmManager.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,

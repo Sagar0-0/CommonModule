@@ -26,7 +26,7 @@ android {
 
     namespace = 'fit.asta.health'
     compileSdk = 34
-    //buildToolsVersion = '31.0.0'
+    buildToolsVersion '34.0.0'
 
     defaultConfig {
         applicationId = 'fit.asta.health'
@@ -122,7 +122,7 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_ver"
     // Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
 
     //Androidx
     implementation "androidx.core:core-ktx:1.10.1"
@@ -160,14 +160,14 @@ dependencies {
     implementation "com.google.android.material:compose-theme-adapter-3:1.1.1"
 
     //Jetpack Compose - Pager
-    def paging_ver = "3.1.1"
+    def paging_ver = "3.2.0"
     implementation "androidx.paging:paging-runtime-ktx:$paging_ver"
-    implementation "androidx.paging:paging-compose:3.2.0-rc01"
+    implementation "androidx.paging:paging-compose:$paging_ver"
 
     //Jetpack Compose - Paging
     implementation "com.google.accompanist:accompanist-pager:0.13.0"
     implementation "com.google.accompanist:accompanist-pager-indicators:0.13.0"
-    implementation "com.google.accompanist:accompanist-coil:0.13.0"
+    implementation 'com.google.accompanist:accompanist-coil:0.15.0'
 
     //Jetpack Compose - Navigation
     def nav_ver = "2.6.0"
@@ -189,34 +189,34 @@ dependencies {
     implementation "com.google.android.play:review-ktx:2.0.1"
 
     //Firebase authentication
-    implementation platform("com.google.firebase:firebase-bom:31.2.0")
-    implementation "com.google.firebase:firebase-auth-ktx:22.0.0"
+    implementation platform('com.google.firebase:firebase-bom:32.2.0')
+    implementation "com.google.firebase:firebase-auth-ktx:22.1.0"
     implementation "com.google.android.gms:play-services-auth:20.6.0"
     implementation "com.google.android.gms:play-services-auth-api-phone:18.0.1"
     implementation "com.firebaseui:firebase-ui-auth:8.0.2"
 
     //Firebase for notifications
-    implementation "com.google.firebase:firebase-messaging-ktx:23.1.2"
+    implementation "com.google.firebase:firebase-messaging-ktx:23.2.0"
 
     //Firebase analytics
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3'
     implementation "com.google.firebase:firebase-analytics-ktx:21.3.0"
-    implementation "com.google.firebase:firebase-crashlytics-ktx:18.3.7"
-    implementation "com.google.firebase:firebase-perf-ktx:20.3.3"
-    implementation "com.google.firebase:firebase-config-ktx:21.4.0"
+    implementation "com.google.firebase:firebase-crashlytics-ktx:18.4.0"
+    implementation "com.google.firebase:firebase-perf-ktx:20.4.0"
+    implementation "com.google.firebase:firebase-config-ktx:21.4.1"
 
     //Firebase storage for media files
     implementation "com.google.firebase:firebase-storage-ktx:20.2.1"
 
     //Firebase fire-store for nosql
-    implementation "com.google.firebase:firebase-firestore-ktx:24.6.1"
+    implementation "com.google.firebase:firebase-firestore-ktx:24.7.0"
 
     //Image - Glide library
-    implementation "com.github.bumptech.glide:glide:4.14.2"
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
     implementation "com.ramotion.fluidslider:fluid-slider:0.3.1"
 
     //Image - Coil library
-    def coil_ver = "2.2.2"
+    def coil_ver = '2.4.0'
     implementation "io.coil-kt:coil-compose:$coil_ver"
     implementation "io.coil-kt:coil-gif:$coil_ver"
 
@@ -287,7 +287,7 @@ dependencies {
     implementation "androidx.media3:media3-session:$media3_ver"
 
     //Maps
-    implementation "com.google.maps.android:maps-compose:2.11.1"
+    implementation 'com.google.maps.android:maps-compose:2.12.0'
     implementation "com.google.android.gms:play-services-maps:18.1.0"
     implementation "com.google.android.gms:play-services-location:21.0.1"
     implementation "com.google.android.libraries.places:places:3.2.0"
@@ -298,7 +298,7 @@ dependencies {
     implementation "com.android.billingclient:billing-ktx:$billing_ver"
 
     //Calendar
-    def cal_ver = "1.1.1"
+    def cal_ver = '1.2.0'
     implementation "com.maxkeppeler.sheets-compose-dialogs:core:$cal_ver"
     implementation "com.maxkeppeler.sheets-compose-dialogs:calendar:$cal_ver"
 
@@ -322,7 +322,7 @@ dependencies {
     implementation "com.github.xabaras:RecyclerViewSwipeDecorator:1.4"
 
     //Spotify Auth
-    implementation "com.spotify.android:auth:2.0.2"
+    implementation 'com.spotify.android:auth:2.1.0'
 
     //Stepper
     implementation "com.github.maryamrzdh:compose-stepper:1.0.0-beta01"
@@ -332,19 +332,19 @@ dependencies {
     implementation "com.github.Tunous:SwipeActionView:$swipe_ver"
 
     //Swipe
-    implementation "me.saket.swipe:swipe:1.0.0"
+    implementation 'me.saket.swipe:swipe:1.2.0'
 
     //Tone picking
     implementation "xyz.aprildown:UltimateRingtonePicker:3.1.0"
 
     //Transformation view
-    implementation "com.github.skydoves:transformationlayout:1.1.1"
+    implementation 'com.github.skydoves:transformationlayout:1.1.2'
 
     //Work Manager
     implementation "androidx.work:work-runtime-ktx:2.8.1"
 
     //Moshi
-    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
+    implementation('com.squareup.moshi:moshi-kotlin:1.15.0')
 
     testImplementation "androidx.paging:paging-common-ktx:$paging_ver"
     testImplementation "junit:junit:4.13.2"

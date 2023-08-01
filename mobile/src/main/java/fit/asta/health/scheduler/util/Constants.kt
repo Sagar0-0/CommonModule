@@ -7,7 +7,10 @@ import android.os.Build
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.Time24hr
 import xyz.aprildown.ultimateringtonepicker.UltimateRingtonePicker
+import java.time.LocalTime
+import java.time.temporal.ChronoUnit
 
 class Constants {
     companion object {
@@ -92,7 +95,18 @@ class Constants {
             )
         )
 
+        fun getTimeDifference(targetTime24hr: Time24hr): Long {
+            val currentTime = LocalTime.now()
+            val targetTime = LocalTime.of(targetTime24hr.hour, targetTime24hr.min)
 
-        const val ASTA_BASE_URL = "https://asta.fit/"
+            // If the target time is before the current time, add 24 hours to the target time
+            // to get the correct time difference for today
+            if (targetTime.isBefore(currentTime)) {
+                targetTime.plusHours(24)
+            }
+
+            return currentTime.until(targetTime, ChronoUnit.MINUTES)
+        }
+
     }
 }

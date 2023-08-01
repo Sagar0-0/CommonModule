@@ -5,13 +5,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 
 /**
@@ -37,9 +37,7 @@ fun <T : SpotifyNetworkCall<*>> MusicStateControl(
         is SpotifyNetworkCall.Initialized<*> -> onCurrentStateInitialized()
 
         // The data is being fetched
-        is SpotifyNetworkCall.Loading<*> -> LoadingScreen(
-            modifier = modifier
-        )
+        is SpotifyNetworkCall.Loading<*> -> LoadingAnimation(modifier = modifier)
 
         // Data fetched successfully
         is SpotifyNetworkCall.Success<*> -> onCurrentStateSuccess(networkState)
@@ -48,23 +46,10 @@ fun <T : SpotifyNetworkCall<*>> MusicStateControl(
         is SpotifyNetworkCall.Failure<*> -> {
             FailureScreen(
                 modifier = modifier,
-                textToShow = networkState.message.toString()
-            ) {
-                onCurrentStateInitialized()
-            }
+                textToShow = networkState.message.toString(),
+                onClick = onCurrentStateInitialized
+            )
         }
-    }
-}
-
-@Composable
-fun LoadingScreen(
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
     }
 }
 

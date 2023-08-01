@@ -36,8 +36,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.AppScaffold
-import fit.asta.health.common.ui.components.AppTopBar
+import fit.asta.health.common.ui.components.generic.AppScaffold
+import fit.asta.health.common.ui.components.generic.AppTopBar
 import fit.asta.health.common.ui.theme.elevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.MainTopBarActions
@@ -246,7 +246,9 @@ private fun MainNavHost(
             val listMorning by todayPlanViewModel.alarmListMorning.collectAsStateWithLifecycle()
             val listAfternoon by todayPlanViewModel.alarmListAfternoon.collectAsStateWithLifecycle()
             val listEvening by todayPlanViewModel.alarmListEvening.collectAsStateWithLifecycle()
+            val uiState by todayPlanViewModel.todayUi.collectAsStateWithLifecycle()
             TodayContent(
+                uiState = uiState,
                 listMorning = listMorning,
                 listAfternoon = listAfternoon,
                 listEvening = listEvening,

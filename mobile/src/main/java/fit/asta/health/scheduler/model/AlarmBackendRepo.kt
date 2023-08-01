@@ -1,6 +1,7 @@
 package fit.asta.health.scheduler.model
 
 import fit.asta.health.common.utils.NetworkResult
+import fit.asta.health.navigation.today.domain.model.TodayData
 import fit.asta.health.network.data.Status
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.doman.model.SchedulerGetData
@@ -14,6 +15,14 @@ import kotlinx.coroutines.flow.Flow
 interface AlarmBackendRepo {
 
     //Scheduler
+    suspend fun getTodayDataFromBackend(
+        userID: String,
+        date: String,
+        location: String,
+        latitude: Float,
+        longitude: Float
+    ): Flow<NetworkResult<TodayData>>
+
     suspend fun updateScheduleDataOnBackend(schedule: AlarmEntity): NetworkResult<AstaSchedulerPutResponse>
     suspend fun getScheduleDataFromBackend(scheduleId: String): Flow<NetworkResult<SchedulerGetData>>
     suspend fun getScheduleListDataFromBackend(userId: String):  Flow<NetworkResult<SchedulerGetListData>>

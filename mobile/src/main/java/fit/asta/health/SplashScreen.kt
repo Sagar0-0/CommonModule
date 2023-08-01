@@ -25,6 +25,7 @@ import fit.asta.health.auth.AuthActivity
 import fit.asta.health.auth.viewmodel.AuthViewModel
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.common.ui.components.*
+import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.common.utils.NetworkConnectivity
 import fit.asta.health.common.utils.PrefUtils
 import fit.asta.health.onboarding.OnBoardingScreenActivity

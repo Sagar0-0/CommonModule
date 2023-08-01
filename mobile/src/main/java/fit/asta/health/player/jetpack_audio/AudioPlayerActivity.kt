@@ -19,7 +19,7 @@ import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.common.ui.components.AppScaffold
+import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.player.jetpack_audio.presentation.screens.Screens
 import fit.asta.health.player.jetpack_audio.presentation.screens.home.HomeScreen
 import fit.asta.health.player.jetpack_audio.presentation.screens.player.PlayerScreen

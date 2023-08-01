@@ -33,7 +33,7 @@ import fit.asta.health.common.ui.theme.cardHeight
 import fit.asta.health.common.ui.theme.iconSize
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.ui.theme.ts
-import fit.asta.health.navigation.home.view.component.LoadingAnimation
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
 
 @Composable
 fun SuccessfulCard(

@@ -5,9 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import fit.asta.health.common.ui.components.generic.AppErrorScreen
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.main.Graph
-import fit.asta.health.navigation.home.view.component.ErrorScreenLayout
-import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.navigation.home.viewmodel.HomeState
 import fit.asta.health.navigation.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -34,7 +34,7 @@ fun HomeContent(
         }
 
         is HomeState.Error -> {
-            ErrorScreenLayout(
+            AppErrorScreen(
                 onTryAgain = {
                     viewModel.loadHomeData()
                 }, isInternetError = false
@@ -42,7 +42,7 @@ fun HomeContent(
         }
 
         is HomeState.NetworkError -> {
-            ErrorScreenLayout(onTryAgain = {
+            AppErrorScreen(onTryAgain = {
                 viewModel.loadHomeData()
             })
         }

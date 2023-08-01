@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,7 +23,6 @@ import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -32,30 +30,44 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.thirdparty.spotify.view.navigation.SpotifyNavRoutes
 import fit.asta.health.thirdparty.spotify.model.net.common.Track
+import fit.asta.health.thirdparty.spotify.model.net.recently.SpotifyUserRecentlyPlayedModel
+import fit.asta.health.thirdparty.spotify.model.net.recommendations.SpotifyRecommendationModel
+import fit.asta.health.thirdparty.spotify.model.net.search.ArtistList
+import fit.asta.health.thirdparty.spotify.model.net.search.TrackList
+import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import fit.asta.health.thirdparty.spotify.view.components.MusicArtistsUI
 import fit.asta.health.thirdparty.spotify.view.components.MusicPlayableSmallCards
 import fit.asta.health.thirdparty.spotify.view.components.MusicLargeImageColumn
 import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
-import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
+import fit.asta.health.thirdparty.spotify.view.events.SpotifyUiEvent
 
 
 /**
  * This function shows the spotify features and spotify integration in our app
  *
- * @param modifier THis is the modifier passed from the parent function
- * @param navController This is used to navigate from one screen to a different screen
- * @param spotifyViewModelX This variable contains the viewModel which contains the business logic
+ * @param modifier This is the modifier passed from the parent function
+ * @param displayName This contains the name of the account Holder
+ * @param recentlyPlayed This contains the list of Recently Played Tracks
+ * @param recommendedData This contains the list of all the recommended Tracks
+ * @param topTracksData This contains the top Tracks of the User
+ * @param topArtistsData This contains the top Artists of the user
+ * @param setEvent This function handles all the events from the UI to the View Model
+ * @param navigator This function navigates from one Screen to the other one
  */
 @Composable
 fun ThirdPartyScreen(
     modifier: Modifier = Modifier,
-    navController: NavController,
-    spotifyViewModelX: SpotifyViewModelX
+    displayName: String?,
+    recentlyPlayed: SpotifyNetworkCall<SpotifyUserRecentlyPlayedModel>,
+    recommendedData: SpotifyNetworkCall<SpotifyRecommendationModel>,
+    topTracksData: SpotifyNetworkCall<TrackList>,
+    topArtistsData: SpotifyNetworkCall<ArtistList>,
+    setEvent: (SpotifyUiEvent) -> Unit,
+    navigator: (String) -> Unit
 ) {
-
 
     // Root Composable function
     Column(
@@ -75,20 +87,18 @@ fun ThirdPartyScreen(
         ) {
 
             // Welcoming Text with User Name
-            spotifyViewModelX.currentUserData.collectAsState().value.data?.displayName?.let {
-                Text(
-                    text = "Hey $it !!",
+            Text(
+                text = "Hey ${displayName ?: "User"} !!",
 
-                    // Text and Font Properties
-                    fontFamily = FontFamily.SansSerif,
-                    fontWeight = FontWeight.W800,
-                    fontSize = 22.sp,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-            }
+                // Text and Font Properties
+                fontFamily = FontFamily.SansSerif,
+                fontWeight = FontWeight.W800,
+                fontSize = 22.sp,
+                color = MaterialTheme.colorScheme.onSurface
+            )
 
             // Search and Profile Icon
-            Row {
+            Row(horizontalArrangement = Arrangement.spacedBy(spacing.small)) {
 
                 // Search Icon
                 Icon(
@@ -102,17 +112,14 @@ fun ThirdPartyScreen(
                         .clickable {
 
                             // Redirecting to Spotify Search Screen
-                            navController.navigate(SpotifyNavRoutes.SearchScreen.routes)
+                            navigator(SpotifyNavRoutes.SearchScreen.routes)
                         }
                 )
-
-                // Spacing
-                Spacer(modifier = Modifier.width(8.dp))
 
                 // Profile Icon
                 Icon(
                     imageVector = Icons.Outlined.Person,
-                    contentDescription = "Search",
+                    contentDescription = "Library",
                     tint = MaterialTheme.colorScheme.onSurface,
 
                     // Modifications
@@ -121,7 +128,7 @@ fun ThirdPartyScreen(
                         .clickable {
 
                             // Redirecting to Spotify Profile Screen
-                            navController.navigate(SpotifyNavRoutes.ProfileScreen.routes)
+                            navigator(SpotifyNavRoutes.ProfileScreen.routes)
                         }
                 )
             }
@@ -132,10 +139,8 @@ fun ThirdPartyScreen(
             modifier = Modifier
                 .height(190.dp)
                 .fillMaxWidth(),
-            networkState = spotifyViewModelX.userRecentlyPlayedTracks.collectAsState().value,
-            onCurrentStateInitialized = {
-                spotifyViewModelX.getCurrentUserRecentlyPlayedTracks()
-            }
+            networkState = recentlyPlayed,
+            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserRecentlyPlayedTracks) }
         ) { networkState ->
             networkState.data?.trackList.let { networkTrackList ->
 
@@ -167,7 +172,7 @@ fun ThirdPartyScreen(
                             imageUri = currentItem.album.images.firstOrNull()?.url,
                             name = currentItem.name
                         ) {
-                            spotifyViewModelX.playSpotifySong(currentItem.uri)
+                            setEvent(SpotifyUiEvent.HelperEvent.PlaySong(currentItem.uri))
                         }
                     }
                 }
@@ -193,10 +198,8 @@ fun ThirdPartyScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(210.dp),
-            networkState = spotifyViewModelX.recommendationTracks.collectAsState().value,
-            onCurrentStateInitialized = {
-                spotifyViewModelX.getRecommendationTracks()
-            }
+            networkState = recommendedData,
+            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadRecommendationTracks) }
         ) { networkResponse ->
             networkResponse.data?.trackList.let { trackList ->
 
@@ -218,8 +221,8 @@ fun ThirdPartyScreen(
                             ) {
 
                                 // Navigating to the Track Details Screen
-                                spotifyViewModelX.setTrackId(currentItem.id)
-                                navController.navigate(SpotifyNavRoutes.TrackDetailScreen.routes)
+                                setEvent(SpotifyUiEvent.HelperEvent.SetTrackId(currentItem.id))
+                                navigator(SpotifyNavRoutes.TrackDetailScreen.routes)
                             }
                         }
                     }
@@ -246,10 +249,8 @@ fun ThirdPartyScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(210.dp),
-            networkState = spotifyViewModelX.userTopTracks.collectAsState().value,
-            onCurrentStateInitialized = {
-                spotifyViewModelX.getUserTopTracks()
-            }
+            networkState = topTracksData,
+            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadUserTopTracks) }
         ) { networkResponse ->
             networkResponse.data?.trackList.let { itemTopTrack ->
 
@@ -271,8 +272,8 @@ fun ThirdPartyScreen(
                             ) {
 
                                 // Navigating to the Track Details Screen
-                                spotifyViewModelX.setTrackId(currentItem.id)
-                                navController.navigate(SpotifyNavRoutes.TrackDetailScreen.routes)
+                                setEvent(SpotifyUiEvent.HelperEvent.SetTrackId(currentItem.id))
+                                navigator(SpotifyNavRoutes.TrackDetailScreen.routes)
                             }
                         }
                     }
@@ -299,10 +300,8 @@ fun ThirdPartyScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(210.dp),
-            networkState = spotifyViewModelX.userTopArtists.collectAsState().value,
-            onCurrentStateInitialized = {
-                spotifyViewModelX.getUserTopArtists()
-            }
+            networkState = topArtistsData,
+            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadUserTopArtists) }
         ) { networkResponse ->
 
             LazyRow(
@@ -322,8 +321,7 @@ fun ThirdPartyScreen(
                             imageUri = currentItem.images.firstOrNull()?.url,
                             artistName = currentItem.name
                         ) {
-
-                            spotifyViewModelX.playSpotifySong(currentItem.uri)
+                            setEvent(SpotifyUiEvent.HelperEvent.PlaySong(currentItem.uri))
                         }
                     }
                 }

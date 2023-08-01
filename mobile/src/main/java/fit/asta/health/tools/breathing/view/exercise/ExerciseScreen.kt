@@ -7,13 +7,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -30,11 +28,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chargemap.compose.numberpicker.NumberPicker
 import fit.asta.health.common.ui.components.*
+import fit.asta.health.common.ui.components.generic.AppScaffold
+import fit.asta.health.common.ui.components.generic.AppTopBarWithHelp
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.scheduler.compose.components.SnoozeBottomSheet
 import fit.asta.health.tools.breathing.model.domain.model.Exercise
@@ -73,7 +72,7 @@ fun ExerciseScreen(
         mutableStateOf(null)
     }
 
-    var skipPartiallyExpanded by remember { mutableStateOf(false) }
+    val skipPartiallyExpanded by remember { mutableStateOf(false) }
     val bottomSheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = skipPartiallyExpanded
     )
@@ -81,86 +80,77 @@ fun ExerciseScreen(
     val scope = rememberCoroutineScope()
 
     val closeSheet = {
-        scope.launch {
-            bottomSheetState.hide()
-        }
+        scope.launch { bottomSheetState.hide() }
     }
 
     val openSheet = {
-        scope.launch {
-            bottomSheetState.show()
-        }
+        scope.launch { bottomSheetState.show() }
     }
 
-    ModalBottomSheet(
-        modifier = Modifier
-            .fillMaxSize()
-            .wrapContentHeight(),
-        onDismissRequest = { closeSheet() },
-        sheetState = bottomSheetState
-    )
+    AppScaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = {
+            AppTopBarWithHelp(
+                title = "Exercise",
+                onBack = onBack,
+                onHelp = { /*TODO*/ }
+            )
+        })
     {
-
-        Spacer(modifier = Modifier.height(1.dp))
-        currentBottomSheet?.let {
-            ExerciseBottomSheetLayout(sheetLayout = it, closeSheet = { closeSheet() })
-        }
-
-        AppScaffold(
-            modifier = Modifier.fillMaxSize(),
-            topBar = {
-                AppTopBarWithHelp(
-                    title = "Exercise",
-                    onBack = onBack,
-                    onHelp = { /*TODO*/ }
+        LazyColumn(
+            modifier = Modifier
+                .padding(it)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(spacing.small)
+        ) {
+            item {
+                Text(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    text = "Select exercises for your breathing exercise",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    style = MaterialTheme.typography.bodyLarge
                 )
-            }) {
-            LazyColumn(
-                modifier = Modifier
-                    .padding(it)
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(spacing.small)
-            ) {
-                item {
-                    Text(
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                        text = "Select exercises for your breathing exercise",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
-                items(count = items.size) { indexNumber ->
-                    CardBreathingRatio(modifier = Modifier.clickable {
-                        items = items.mapIndexed { j, item ->
-                            if (indexNumber == j) {
-                                item.copy(isSelected = !item.isSelected)
-                            } else item
-                        }
-                        onClick(items.filter { it.isSelected }.map { it.name })
+            }
+            items(count = items.size) { indexNumber ->
+                CardBreathingRatio(modifier = Modifier.clickable {
+                    items = items.mapIndexed { j, item ->
+                        if (indexNumber == j) {
+                            item.copy(isSelected = !item.isSelected)
+                        } else item
+                    }
+                    onClick(items.filter { it.isSelected }.map { it.name })
+                },
+                    color = if (!items[indexNumber].isSelected) {
+                        Color(0xFFE9D7F7)
+                    } else {
+                        Color(0xFF7415BD)
                     },
-                        color = if (!items[indexNumber].isSelected) {
-                            Color(0xFFE9D7F7)
-                        } else {
-                            Color(0xFF7415BD)
-                        },
-                        name = items[indexNumber].name,
-                        duration = items[indexNumber].duration,
-                        ratio = items[indexNumber].ratio.toStr(),
-                        onReset = {},
-                        onRatio = {
-                            currentBottomSheet = RATIO
-                            openSheet()
-                        },
-                        onInfo = {},
-                        onDuration = {
-                            currentBottomSheet = DURATION
-                            openSheet()
-                        })
-                }
+                    name = items[indexNumber].name,
+                    duration = items[indexNumber].duration,
+                    ratio = items[indexNumber].ratio.toStr(),
+                    onReset = {},
+                    onRatio = {
+                        currentBottomSheet = RATIO
+                        openSheet()
+                    },
+                    onInfo = {},
+                    onDuration = {
+                        currentBottomSheet = DURATION
+                        openSheet()
+                    })
             }
         }
     }
+    CustomModelBottomSheet(targetState = bottomSheetState.isVisible,
+        sheetState = bottomSheetState,
+        content = {
+            currentBottomSheet?.let {
+                ExerciseBottomSheetLayout(sheetLayout = it, closeSheet = { closeSheet() })
+            }
+        },
+        dragHandle = {},
+        onClose = { closeSheet() })
 }
 
 
@@ -178,7 +168,7 @@ fun ExerciseBottomSheetLayout(
     val keyboardController = LocalSoftwareKeyboardController.current
     when (sheetLayout) {
         RATIO -> {
-            NumberPickerRatio(onCancel = {closeSheet()}, onSave = {closeSheet()})
+            NumberPickerRatio(onCancel = { closeSheet() }, onSave = { closeSheet() })
         }
 
         DURATION -> {
@@ -191,9 +181,8 @@ fun ExerciseBottomSheetLayout(
 }
 
 @OptIn(ExperimentalLayoutApi::class)
-@Preview
 @Composable
-fun NumberPickerRatio(onSave: (Ratio) -> Unit={}, onCancel: () -> Unit={}) {
+fun NumberPickerRatio(onSave: (Ratio) -> Unit = {}, onCancel: () -> Unit = {}) {
 
     var inhaleValue by remember { mutableIntStateOf(1) }
     var inhaleHoldValue by remember { mutableIntStateOf(1) }
