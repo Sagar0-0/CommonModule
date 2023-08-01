@@ -19,9 +19,8 @@ object OnboardingModule {
 
     @Singleton
     @Provides
-    fun provideOnboardingApi(client: OkHttpClient): OnboardingApi {
-        return OnboardingRestApi(baseUrl = BuildConfig.BASE_URL, client = client)
-    }
+    fun provideOnboardingApi(client: OkHttpClient): OnboardingApi =
+        OnboardingRestApi(baseUrl = BuildConfig.BASE_URL, client = client)
 
     @Singleton
     @Provides
@@ -33,11 +32,11 @@ object OnboardingModule {
     @Provides
     fun provideOnboardingRepo(
         remoteApi: OnboardingApi,
-        OnboardingMapper: OnboardingDataMapper,
+        onboardingMapper: OnboardingDataMapper,
     ): OnboardingRepo {
         return OnboardingRepoImpl(
             remoteApi = remoteApi,
-            mapper = OnboardingMapper
+            mapper = onboardingMapper
         )
     }
 }

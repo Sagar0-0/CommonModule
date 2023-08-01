@@ -19,7 +19,7 @@ import fit.asta.health.main.view.mainActivityComp
 import fit.asta.health.profile.CreateProfileLayout
 import fit.asta.health.profile.ProfileContent
 import fit.asta.health.scheduler.navigation.schedulerNavigation
-import fit.asta.health.settings.ui.settingsNavigation
+import fit.asta.health.settings.view.settingsNavigation
 import fit.asta.health.testimonials.testimonialsNavigation
 import fit.asta.health.tools.breathing.nav.breathingNavigation
 import fit.asta.health.tools.exercise.nav.exerciseNavigation

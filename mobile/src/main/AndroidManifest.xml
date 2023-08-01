@@ -63,7 +63,7 @@
         <activity android:name=".auth.AuthActivity" />
         <activity android:name=".onboarding.OnBoardingScreenActivity" />
         <activity
-            android:name=".common.location.maps.MapsActivity"
+            android:name=".common.maps.MapsActivity"
             android:exported="false" />
 
         <meta-data
