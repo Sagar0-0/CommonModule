@@ -2,6 +2,8 @@ package fit.asta.health.scheduler.model
 
 import android.util.Log
 import fit.asta.health.common.utils.NetworkResult
+import fit.asta.health.navigation.today.domain.mapper.getTadayData
+import fit.asta.health.navigation.today.domain.model.TodayData
 import fit.asta.health.network.data.Status
 import fit.asta.health.scheduler.model.api.SchedulerApi
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
@@ -25,6 +27,28 @@ import retrofit2.Response
 class AlarmBackendRepoImp(
     private val remoteApi: SchedulerApi
 ) : AlarmBackendRepo {
+
+    override suspend fun getTodayDataFromBackend(
+        userID: String,
+        date: String, location: String,
+        latitude: Float,
+        longitude: Float
+    ): Flow<NetworkResult<TodayData>> {
+        return flow {
+            emit(NetworkResult.Loading())
+            val result =
+                remoteApi.getTodayDataFromBackend(userID, date, location, latitude, longitude)
+            if (result.isSuccessful) {
+                Log.d("today", "getTodayDataFromBackend: ${result.body()}")
+                emit(NetworkResult.Success(result.body()!!.getTadayData()))
+            } else {
+                NetworkResult.Error<TodayData>(message = result.message())
+            }
+        }.catch {
+            emit(NetworkResult.Error(message = it.message))
+        }.flowOn(Dispatchers.IO)
+    }
+
     override suspend fun updateScheduleDataOnBackend(schedule: AlarmEntity): NetworkResult<AstaSchedulerPutResponse> {
         return try {
             NetworkResult.Loading<AstaSchedulerPutResponse>()

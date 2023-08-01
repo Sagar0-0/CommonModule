@@ -6,13 +6,18 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.common.utils.PrefUtils
+import fit.asta.health.navigation.today.domain.model.TodayData
 import fit.asta.health.scheduler.compose.screen.homescreen.Event
 import fit.asta.health.scheduler.compose.screen.homescreen.HomeEvent
+import fit.asta.health.scheduler.model.AlarmBackendRepo
 import fit.asta.health.scheduler.model.AlarmLocalRepo
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.db.entity.AlarmSync
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
@@ -20,6 +25,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TodayPlanViewModel @Inject constructor(
     private val alarmLocalRepo: AlarmLocalRepo,
+    private val alarmBackendRepo: AlarmBackendRepo,
     private val prefUtils: PrefUtils
 ) : ViewModel() {
     private val _alarmListMorning = mutableStateListOf<AlarmEntity>()
@@ -29,8 +35,12 @@ class TodayPlanViewModel @Inject constructor(
     private val _alarmListEvening = mutableStateListOf<AlarmEntity>()
     val alarmListEvening = MutableStateFlow(_alarmListEvening)
 
+    private val _todayUi = MutableStateFlow(TodayData())
+    val todayUi = _todayUi.asStateFlow()
+
 
     init {
+        getWeatherSunSlots()
         getAlarms()
     }
 
@@ -178,35 +188,93 @@ class TodayPlanViewModel @Inject constructor(
                 val day = LocalDate.now().dayOfWeek.value
                 Log.d("alarm", "getAlarms: $list,day $day")
                 list.forEach {
-                    if (it.status&&it.skipDate!=LocalDate.now().dayOfMonth) {
-                        val today= if (it.week.recurring){
-                            when(day){
-                                1->{it.week.monday}
-                                2->{it.week.tuesday}
-                                3->{it.week.wednesday}
-                                4->{it.week.thursday}
-                                5->{it.week.friday}
-                                6->{it.week.saturday}
-                                7->{it.week.sunday}
-                                else ->false
+                    if (it.status && it.skipDate != LocalDate.now().dayOfMonth) {
+                        val today = if (it.week.recurring) {
+                            when (day) {
+                                1 -> {
+                                    it.week.monday
+                                }
+
+                                2 -> {
+                                    it.week.tuesday
+                                }
+
+                                3 -> {
+                                    it.week.wednesday
+                                }
+
+                                4 -> {
+                                    it.week.thursday
+                                }
+
+                                5 -> {
+                                    it.week.friday
+                                }
+
+                                6 -> {
+                                    it.week.saturday
+                                }
+
+                                7 -> {
+                                    it.week.sunday
+                                }
+
+                                else -> false
                             }
                         } else true
-                        if (today){
-                            when(it.time.hours.toInt()) {
-                                in  0..2->{
+                        if (today) {
+                            when (it.time.hours.toInt()) {
+                                in 0..2 -> {
                                     _alarmListEvening.add(it)
                                 }
-                                in  3..12->{
+
+                                in 3..12 -> {
                                     _alarmListMorning.add(it)
                                 }
                                 in  13..16->{
                                     _alarmListAfternoon.add(it)
                                 }
-                                in  17..23->{
+
+                                in 17..23 -> {
                                     _alarmListEvening.add(it)
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getWeatherSunSlots() {
+        viewModelScope.launch {
+            alarmBackendRepo.getTodayDataFromBackend(
+                userID = "6309a9379af54f142c65fbfe",
+                date = "2023-07-03",
+                location = "bangalore",
+                latitude = 28.6353f,
+                longitude = 7.2250f
+            ).collect { result ->
+                when (result) {
+                    is NetworkResult.Success -> {
+                        result.data?.let { todayData ->
+                            Log.d("today", "getWeatherSunSlots: $todayData")
+                            _todayUi.update {
+                                it.copy(
+                                    date = todayData.date,
+                                    weatherCode = todayData.weatherCode,
+                                    location = todayData.location,
+                                    weatherCodeList = todayData.weatherCodeList,
+                                    temperatureList = todayData.temperatureList,
+                                    temperature = todayData.temperature
+                                )
+                            }
+                        }
+                    }
+
+                    is NetworkResult.Loading -> {}
+                    is NetworkResult.Error -> {
+                        Log.d("today", "getWeatherSunSlots: ${result.message}")
                     }
                 }
             }

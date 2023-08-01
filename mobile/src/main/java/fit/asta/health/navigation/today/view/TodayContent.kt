@@ -59,10 +59,13 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.*
+import fit.asta.health.common.ui.components.functional.SunlightSlotsCardLayout
+import fit.asta.health.common.ui.components.functional.WeatherCardImage
 import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.main.Graph
+import fit.asta.health.navigation.today.domain.model.TodayData
 import fit.asta.health.scheduler.compose.screen.homescreen.Event
 import fit.asta.health.scheduler.compose.screen.homescreen.HomeEvent
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
@@ -73,6 +76,7 @@ import me.saket.swipe.SwipeableActionsBox
 
 @Composable
 fun TodayContent(
+    uiState: TodayData,
     listMorning: SnapshotStateList<AlarmEntity>,
     listAfternoon: SnapshotStateList<AlarmEntity>,
     listEvening: SnapshotStateList<AlarmEntity>,
@@ -111,15 +115,42 @@ fun TodayContent(
         ) {
             item { NameAndMoodHomeScreenHeader() }
             item {
+                WeatherCardImage(
+                    temperature = uiState.temperature,
+                    location = uiState.location,
+                    date = uiState.date
+                )
+            }
+            item {
+                SunlightSlotsCardLayout(
+                    time = "4.58 pm",
+                    temperature = uiState.temperatureList[0].toString()
+                )
+            }
+            item {
                 AnimatedVisibility(visible = listMorning.isNotEmpty()) {
                     Text(text = "Morning Events", style = MaterialTheme.typography.titleMedium)
                 }
             }
             items(listMorning) { data ->
                 SwipeDemoToday(data = data, onSwipeRight = {
-                    swipeRight(Event.Morning, data, context, coroutineScope, snackBarHostState,hSEvent)
-                },onSwipeLeft = {
-                    swipeLeft(Event.Morning, data, context, coroutineScope, snackBarHostState,hSEvent)
+                    swipeRight(
+                        Event.Morning,
+                        data,
+                        context,
+                        coroutineScope,
+                        snackBarHostState,
+                        hSEvent
+                    )
+                }, onSwipeLeft = {
+                    swipeLeft(
+                        Event.Morning,
+                        data,
+                        context,
+                        coroutineScope,
+                        snackBarHostState,
+                        hSEvent
+                    )
                 }, onDone = {
                    onNav(goToTool(data.info.tag))
                 }, onReschedule = {

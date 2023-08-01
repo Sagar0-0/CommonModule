@@ -1,4 +1,4 @@
-package fit.asta.health.common.ui.components.unUsed
+package fit.asta.health.common.ui.components.functional
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -35,47 +35,61 @@ import androidx.compose.ui.unit.sp
 import com.google.android.material.R
 
 @Composable
-fun SunlightSlotsCardLayout(modifier: Modifier = Modifier) {
+fun SunlightSlotsCardLayout(modifier: Modifier = Modifier, time: String, temperature: String) {
 
-    val superscript = SpanStyle(baselineShift = BaselineShift.Superscript,
+    val superscript = SpanStyle(
+        baselineShift = BaselineShift.Superscript,
         fontSize = 10.sp,
         color = MaterialTheme.colorScheme.onBackground,
-        fontWeight = FontWeight.Bold)
+        fontWeight = FontWeight.Bold
+    )
 
-    Card(modifier = modifier,
+    Card(
+        modifier = modifier,
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0x1A959393))) {
-        Column(modifier = Modifier
-            .background(Color.Transparent)
-            .padding(8.dp)) {
+        colors = CardDefaults.cardColors(containerColor = Color(0x1A959393))
+    ) {
+        Column(
+            modifier = Modifier
+                .background(Color.Transparent)
+                .padding(8.dp)
+        ) {
 
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                Box(contentAlignment = Alignment.TopEnd,
+                Box(
+                    contentAlignment = Alignment.TopEnd,
                     modifier = Modifier
                         .size(32.dp)
                         .clip(RoundedCornerShape(8.dp))
-                        .background(color = Color.White)) {
+                        .background(color = Color.White)
+                ) {
                     androidx.compose.material3.IconButton(onClick = { /*TODO*/ }) {
-                        Icon(painter = painterResource(id = R.drawable.ic_clock_black_24dp),
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_clock_black_24dp),
                             contentDescription = null,
                             modifier = Modifier.size(16.dp),
-                            tint = Color(0xff0277BD))
+                            tint = Color(0xff0277BD)
+                        )
                     }
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Row(Modifier.fillMaxWidth(),
+            Row(
+                Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically) {
-                Icon(imageVector = Icons.Filled.Done,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Done,
                     contentDescription = null,
                     tint = Color.Black,
-                    modifier = Modifier.size(24.dp))
+                    modifier = Modifier.size(24.dp)
+                )
 
                 Text(fontSize = 12.sp, text = buildAnnotatedString {
-                    append("24")
+                    append(temperature)
                     withStyle(superscript) {
                         append("o")
                     }
@@ -85,34 +99,46 @@ fun SunlightSlotsCardLayout(modifier: Modifier = Modifier) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Row(Modifier.fillMaxWidth(),
+            Row(
+                Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically) {
-                Icon(imageVector = Icons.Filled.DoNotDisturb,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.DoNotDisturb,
                     contentDescription = null,
                     tint = Color.Black,
-                    modifier = Modifier.size(24.dp))
+                    modifier = Modifier.size(24.dp)
+                )
 
-                Text(text = "1 UVI",
+                Text(
+                    text = "1 UVI",
                     fontSize = 12.sp,
                     color = Color.Black,
-                    fontWeight = FontWeight.Bold)
+                    fontWeight = FontWeight.Bold
+                )
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Row(Modifier.fillMaxWidth(),
+            Row(
+                Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically) {
-                Icon(painter = painterResource(id = R.drawable.ic_clock_black_24dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_clock_black_24dp),
                     contentDescription = null,
                     tint = Color.Black,
-                    modifier = Modifier.size(24.dp))
+                    modifier = Modifier.size(24.dp)
+                )
 
-                Text(text = " 11:30am",
+                Text(
+                    text = time,
                     fontSize = 12.sp,
                     color = Color.Black,
-                    fontWeight = FontWeight.Bold)
+                    fontWeight = FontWeight.Bold
+                )
             }
 
         }

@@ -246,7 +246,9 @@ private fun MainNavHost(
             val listMorning by todayPlanViewModel.alarmListMorning.collectAsStateWithLifecycle()
             val listAfternoon by todayPlanViewModel.alarmListAfternoon.collectAsStateWithLifecycle()
             val listEvening by todayPlanViewModel.alarmListEvening.collectAsStateWithLifecycle()
+            val uiState by todayPlanViewModel.todayUi.collectAsStateWithLifecycle()
             TodayContent(
+                uiState = uiState,
                 listMorning = listMorning,
                 listAfternoon = listAfternoon,
                 listEvening = listEvening,
