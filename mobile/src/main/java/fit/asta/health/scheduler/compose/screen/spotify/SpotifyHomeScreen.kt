@@ -24,9 +24,9 @@ import fit.asta.health.navigation.home.view.component.LoadingAnimation
 import fit.asta.health.scheduler.compose.components.SpotifyHomeHeader
 import fit.asta.health.scheduler.compose.components.SpotifyMusicItem
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ToneUiState
-import fit.asta.health.thirdparty.spotify.model.net.recently.SpotifyUserRecentlyPlayedModel
-import fit.asta.health.thirdparty.spotify.model.net.search.TrackList
-import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
+import fit.asta.health.scheduler.model.net.spotify.recently.SpotifyUserRecentlyPlayedModel
+import fit.asta.health.scheduler.model.net.spotify.search.TrackList
+import fit.asta.health.scheduler.util.SpotifyNetworkCall
 
 @Composable
 fun SpotifyHomeScreen(

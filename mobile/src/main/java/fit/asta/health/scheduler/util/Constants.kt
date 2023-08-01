@@ -33,6 +33,18 @@ class Constants {
         const val BUNDLE_POST_NOTIFICATION_OBJECT = "bundle_post_notification_object"
         const val ARG_POST_NOTIFICATION_OBJET = "arg_post_notification_object"
 
+        const val SPOTIFY_SONG_KEY_URI = "bundle_spotify_song"
+        const val SPOTIFY_SONG_KEY_TYPE = "bundle_spotify_song_type"
+
+        const val SPOTIFY_AUTH_REQUEST_CODE = 1337
+        const val SPOTIFY_REDIRECT_URI = "fit.asta.health://callback"
+        const val SPOTIFY_CLIENT_ID = "8f5ba8ca7b2a479aa6f766c931a6e8c4"
+        const val SPOTIFY_SCOPES =
+            "user-follow-read,user-read-recently-played,user-read-playback-position,user-top-read,playlist-read-private,app-remote-control,streaming,user-read-email,user-read-private,user-library-read"
+
+        // Spotify Web API
+        const val SPOTIFY_BASE_URL = "https://api.spotify.com/v1/"
+
         const val USER_ID = "6309a9379af54f142c65fbff"
 
         fun changeStatusBarColor(color: Int, window: Window, context: Context) {
@@ -49,7 +61,8 @@ class Constants {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
                 (context as AppCompatActivity).setShowWhenLocked(true)
                 context.setTurnScreenOn(true)
-                val keyguardManager = context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+                val keyguardManager =
+                    context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
                 keyguardManager.requestDismissKeyguard(context, null)
             } else {
                 window.addFlags(
@@ -78,7 +91,6 @@ class Constants {
                 )
             )
         )
-
 
 
         const val ASTA_BASE_URL = "https://asta.fit/"
