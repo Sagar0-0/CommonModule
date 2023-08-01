@@ -5,6 +5,7 @@ package fit.asta.health.common.ui.components.generic
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -46,12 +47,16 @@ fun AppClickableCard(
  */
 
 @Composable
-fun AppDefCard(content: @Composable ColumnScope.() -> Unit, modifier: Modifier = Modifier) {
+fun AppDefCard(
+    content: @Composable ColumnScope.() -> Unit,
+    modifier: Modifier = Modifier,
+    colors: CardColors = CardDefaults.cardColors(),
+) {
     Card(
         modifier = modifier,
         content = content,
         shape = RoundedCornerShape(spacing.small),
-        colors = CardDefaults.cardColors(),
+        colors = colors,
         elevation = CardDefaults.cardElevation(defaultElevation = cardElevation.smallMedium),
     )
 }

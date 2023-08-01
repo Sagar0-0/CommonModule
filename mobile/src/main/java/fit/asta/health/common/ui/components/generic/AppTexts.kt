@@ -42,7 +42,7 @@ object AppTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
-        textAlign: TextAlign?,
+        textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,
@@ -58,6 +58,7 @@ object AppTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
+        textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,
@@ -72,6 +73,7 @@ object AppTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
+        textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,
@@ -86,6 +88,7 @@ object AppTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
+        textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,
@@ -100,6 +103,7 @@ object AppTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
+        textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,
@@ -131,6 +135,7 @@ object AppTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
+        textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,
@@ -143,7 +148,9 @@ object AppTexts {
     @Composable
     fun TitleMedium(
         text: String,
-        modifier: Modifier = Modifier, color: Color = MaterialTheme.colorScheme.onSurface,
+        modifier: Modifier = Modifier,
+        color: Color = MaterialTheme.colorScheme.onSurface,
+        textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,
@@ -159,6 +166,7 @@ object AppTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
+        textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,
@@ -173,6 +181,7 @@ object AppTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
+        textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,
@@ -187,12 +196,14 @@ object AppTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
+        textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,
             style = MaterialTheme.typography.bodyMedium,
             modifier = modifier,
-            color = color
+            color = color,
+            textAlign = textAlign
         )
     }
 
@@ -201,6 +212,7 @@ object AppTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
+        textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,
@@ -215,6 +227,7 @@ object AppTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
+        textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,
@@ -229,6 +242,7 @@ object AppTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
+        textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,
@@ -243,6 +257,7 @@ object AppTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
+        textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,

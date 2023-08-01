@@ -19,8 +19,8 @@ import fit.asta.health.navigation.home.view.component.RateUsCard
 import fit.asta.health.navigation.home.view.component.ReferAndEarn
 import fit.asta.health.navigation.home.view.component.ToolsCardLayout
 import fit.asta.health.navigation.home.view.component.ToolsHmScreenTopBanner
+import fit.asta.health.navigation.home.view.component.TstBannerCard
 import fit.asta.health.navigation.home.view.component.TstSliderExt
-import fit.asta.health.navigation.home.view.component.TstTxtCard
 import fit.asta.health.navigation.home.view.component.ViewAllLayout
 import fit.asta.health.tools.sleep.SleepToolActivity
 import fit.asta.health.tools.walking.view.WalkingActivity
@@ -127,7 +127,7 @@ fun HomeScreenLayout(
 
             item(span = { GridItemSpan(columns) }) {
                 AppBanner(bannerList = toolsHome.testimonials, content = { page ->
-                    TstTxtCard(testimonialsDataPage = toolsHome.testimonials[page])
+                    TstBannerCard(testimonialsData = toolsHome.testimonials[page])
                 })
             }
 

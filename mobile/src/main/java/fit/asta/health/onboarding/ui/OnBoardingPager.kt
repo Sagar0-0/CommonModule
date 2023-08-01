@@ -15,10 +15,10 @@ import com.google.accompanist.pager.HorizontalPager
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.common.utils.getImageUrl
-import fit.asta.health.common.ui.components.generic.LoadingAnimation
+import fit.asta.health.common.utils.getMediaUrl
 import fit.asta.health.onboarding.modal.OnboardingData
 import kotlinx.coroutines.launch
 
@@ -76,7 +76,7 @@ fun OnBoardingPager(
                     ) {
                         if (items[page].type == 1) {
                             GifImage(
-                                url = getImageUrl(url = items[page].imgUrl),
+                                url = getMediaUrl(url = items[page].imgUrl),
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(bottom = spacing.medium),
@@ -84,7 +84,7 @@ fun OnBoardingPager(
                             )
                         } else {
                             AsyncImage(
-                                model = getImageUrl(url = items[page].imgUrl),
+                                model = getMediaUrl(url = items[page].imgUrl),
                                 contentDescription = null,
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier.fillMaxWidth()

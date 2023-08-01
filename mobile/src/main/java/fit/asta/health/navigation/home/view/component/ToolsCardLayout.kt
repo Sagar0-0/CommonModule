@@ -22,7 +22,7 @@ import fit.asta.health.common.ui.components.generic.AppDefaultIcon
 import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.aspectRatio
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.common.utils.getImageUrl
+import fit.asta.health.common.utils.getMediaUrl
 
 @Composable
 fun ToolsCardLayout(
@@ -36,7 +36,7 @@ fun ToolsCardLayout(
             Box {
 
                 AppDefServerImg(
-                    model = getImageUrl(url = imgUrl), contentDescription = cardTitle,
+                    model = getMediaUrl(url = imgUrl), contentDescription = cardTitle,
                     modifier = Modifier
                         .aspectRatio(aspectRatio.original)
                         .clip(

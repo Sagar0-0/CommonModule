@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.AppDefServerImg
@@ -38,7 +39,10 @@ fun ArtistCard(testimonialsDataPages: Testimonial) {
             horizontalAlignment = Alignment.Start, verticalArrangement = Arrangement.SpaceBetween
         ) {
             AppTexts.TitleMedium(text = testimonialsDataPages.user.name)
-            AppTexts.BodyMedium(text = "${testimonialsDataPages.user.role},${testimonialsDataPages.user.org}")
+            AppTexts.BodyMedium(
+                text = "${testimonialsDataPages.user.role},${testimonialsDataPages.user.org}",
+                textAlign = TextAlign.Center
+            )
         }
     }
 

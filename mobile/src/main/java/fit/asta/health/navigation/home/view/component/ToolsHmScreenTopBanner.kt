@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.AppDefServerImg
@@ -45,7 +46,7 @@ fun ToolsHmScreenTopBanner(
                 .align(Alignment.Center)
                 .padding(horizontal = 54.dp, vertical = 82.dp)
         ) {
-            AppTexts.BodyMedium(text = bannerDataPages.desc)
+            AppTexts.BodyMedium(text = bannerDataPages.desc, textAlign = TextAlign.Center)
         }
     }
 }

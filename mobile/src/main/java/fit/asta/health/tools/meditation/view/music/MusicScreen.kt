@@ -39,7 +39,7 @@ import coil.request.ImageRequest
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.common.ui.components.generic.AppTopBarWithHelp
-import fit.asta.health.common.utils.getImageUrl
+import fit.asta.health.common.utils.getMediaUrl
 import fit.asta.health.player.jetpack_audio.domain.data.Song
 import fit.asta.health.player.jetpack_audio.domain.utils.AppIcons
 import fit.asta.health.player.jetpack_audio.domain.utils.asFormattedString
@@ -217,7 +217,7 @@ fun TrackItem(
             }
             AsyncImage(
                 model = ImageRequest.Builder(context = context)
-                    .data(getImageUrl(url = song.artworkUri.toString()))
+                    .data(getMediaUrl(url = song.artworkUri.toString()))
                     .crossfade(true)
                     .build(),
                 contentDescription = null,

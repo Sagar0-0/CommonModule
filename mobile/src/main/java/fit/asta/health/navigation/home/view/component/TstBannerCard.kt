@@ -9,26 +9,32 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import fit.asta.health.common.ui.components.generic.AppDefCard
 import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.testimonials.model.domain.Testimonial
 
 @Composable
-fun TstTxtCard(testimonialsDataPage: Testimonial) {
+fun TstBannerCard(testimonialsData: Testimonial) {
     AppDefCard(content = {
-        Column(modifier = Modifier.padding(all = spacing.medium)) {
-            AppTexts.BodyLarge(
-                text = "❝", color = MaterialTheme.colorScheme.primary
-            )
-            AppTexts.HeadlineSmall(
-                text = testimonialsDataPage.testimonial, textAlign = TextAlign.Center
-            )
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                AppTexts.BodyLarge(text = "❞", color = MaterialTheme.colorScheme.primary)
-            }
-            ArtistCard(testimonialsDataPage)
-        }
+        TstTxtLayout(testimonialsData, modifier = Modifier.padding(all = spacing.medium))
     }, modifier = Modifier.fillMaxSize())
+}
+
+@Composable
+fun TstTxtLayout(
+    testimonialsData: Testimonial, modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier) {
+        AppTexts.HeadlineLarge(
+            text = "❝", color = MaterialTheme.colorScheme.primary
+        )
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+            AppTexts.BodyMedium(text = testimonialsData.testimonial)
+        }
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+            AppTexts.HeadlineLarge(text = "❞", color = MaterialTheme.colorScheme.primary)
+        }
+        ArtistCard(testimonialsData)
+    }
 }

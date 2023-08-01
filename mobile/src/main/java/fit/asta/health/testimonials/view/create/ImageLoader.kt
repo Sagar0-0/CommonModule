@@ -19,7 +19,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.common.ui.theme.imageHeight
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.common.utils.getImageUrl
+import fit.asta.health.common.utils.getMediaUrl
 import fit.asta.health.testimonials.view.components.ClearTstMedia
 import fit.asta.health.testimonials.view.components.UploadTstMediaView
 import fit.asta.health.testimonials.viewmodel.create.MediaType
@@ -142,7 +142,7 @@ fun ImageLayout(
 
 @Composable
 fun getOneUrl(localUrl: Uri?, remoteUrl: String): String {
-    return localUrl?.toString() ?: getImageUrl(remoteUrl)
+    return localUrl?.toString() ?: getMediaUrl(remoteUrl)
 }
 
 @Composable
