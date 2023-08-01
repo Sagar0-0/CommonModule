@@ -63,7 +63,7 @@ import fit.asta.health.common.ui.components.functional.SunlightSlotsCardLayout
 import fit.asta.health.common.ui.components.functional.WeatherCardImage
 import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.common.utils.getMediaUrl
+import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.main.Graph
 import fit.asta.health.navigation.today.domain.model.TodayData
 import fit.asta.health.scheduler.compose.screen.homescreen.Event
@@ -292,7 +292,7 @@ fun TodayItem(
             ) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(getMediaUrl(url = image))
+                        .data(getImgUrl(url = image))
                         .crossfade(true)
                         .build(),
                     placeholder = painterResource(R.drawable.placeholder_tag),

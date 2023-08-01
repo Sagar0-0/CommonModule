@@ -25,7 +25,7 @@ import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
 import fit.asta.health.common.ui.theme.aspectRatio
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.common.utils.getMediaUrl
+import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.navigation.home.view.component.ArtistCard
 import fit.asta.health.player.jetpack_video.media.Media
 import fit.asta.health.player.jetpack_video.media.MediaState
@@ -65,7 +65,7 @@ fun PlayVideoLayout(tstVideoMedia: List<Media>, player: Player) {
             tstVideoMedia.forEach {
                 Surface(modifier = Modifier.fillMaxWidth()) {
                     VideoView(
-                        videoUri = getMediaUrl(url = it.url), state = state, player = player
+                        videoUri = getImgUrl(url = it.url), state = state, player = player
                     )
                 }
             }

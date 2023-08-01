@@ -20,7 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import fit.asta.health.common.utils.getMediaUrl
+import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.player.jetpack_audio.domain.utils.asFormattedString
 import fit.asta.health.player.jetpack_audio.domain.utils.convertToProgress
 import fit.asta.health.player.jetpack_audio.exo_player.common.MusicState
@@ -53,7 +53,7 @@ fun AudioMeditationScreen(
     val dominantColorState = rememberDominantColorState { color ->
         color.contrastAgainst(surfaceColor) >= MinContrastOfPrimaryVsSurface
     }
-    val img = getMediaUrl(url = musicState.currentSong.artworkUri.toString())
+    val img = getImgUrl(url = musicState.currentSong.artworkUri.toString())
     DynamicThemePrimaryColorsFromImage(dominantColorState) {
 
         LaunchedEffect(musicState.currentSong.artworkUri) {

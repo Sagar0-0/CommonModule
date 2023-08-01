@@ -41,7 +41,7 @@ import fit.asta.health.common.ui.theme.ProfileBorder2
 import fit.asta.health.common.ui.theme.ProfileBorder3
 import fit.asta.health.common.ui.theme.imageSize
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.common.utils.getMediaUrl
+import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.profile.model.domain.Address
 import fit.asta.health.profile.model.domain.Contact
 import fit.asta.health.profile.model.domain.ProfileMedia
@@ -237,7 +237,7 @@ fun UserProfileImg(userProfilePic: ProfileMedia) {
             model = if (userProfilePic.url.isEmpty()) {
                 "https://img2.asta.fit/profile/Men_Default.png"
             } else {
-                getMediaUrl(url = userProfilePic.url)
+                getImgUrl(url = userProfilePic.url)
             }, contentDescription = "User Profile Pic", modifier = Modifier
                 .clip(
                     CircleShape

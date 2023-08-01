@@ -18,7 +18,7 @@ import fit.asta.health.common.ui.components.generic.AppDefServerImg
 import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.aspectRatio
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.common.utils.getMediaUrl
+import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.navigation.home.view.component.TstTxtLayout
 import fit.asta.health.testimonials.model.domain.Media
 import fit.asta.health.testimonials.model.domain.Testimonial
@@ -51,7 +51,7 @@ fun BeforeAndCardLayout(tstImageMedia: List<Media>) {
                         .weight(1f)
                 ) {
                     AppDefServerImg(
-                        model = getMediaUrl(url = it.url),
+                        model = getImgUrl(url = it.url),
                         contentDescription = "Before and After Images",
                         modifier = Modifier.aspectRatio(aspectRatio.original)
                     )

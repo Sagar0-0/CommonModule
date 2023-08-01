@@ -308,7 +308,7 @@ fun Context.shareReferralCode(code: String) {
 }
 
 @Composable
-fun getMediaUrl(url: String) = stringResource(id = R.string.media_url) + url
+fun getImgUrl(url: String) = stringResource(id = R.string.media_url) + url
 
 fun getFirebaseStorageBucketUrl(context: Context): String {
 

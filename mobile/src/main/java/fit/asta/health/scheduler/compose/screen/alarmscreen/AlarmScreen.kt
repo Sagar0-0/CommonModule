@@ -26,7 +26,7 @@ import coil.request.ImageRequest
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.common.utils.getMediaUrl
+import fit.asta.health.common.utils.getImgUrl
 
 @Composable
 fun AlarmScreen(uiState: AlarmUiState, event: (AlarmEvent) -> Unit) {
@@ -40,7 +40,7 @@ fun AlarmScreen(uiState: AlarmUiState, event: (AlarmEvent) -> Unit) {
         Box(modifier = Modifier.fillMaxSize()) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(getMediaUrl(url = uiState.image))
+                    .data(getImgUrl(url = uiState.image))
                     .crossfade(true)
                     .build(),
                 alpha = 0.5f,

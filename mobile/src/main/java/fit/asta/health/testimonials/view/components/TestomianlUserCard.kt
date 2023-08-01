@@ -19,7 +19,7 @@ import androidx.compose.ui.layout.ContentScale
 import coil.compose.AsyncImage
 import fit.asta.health.common.ui.theme.imageHeight
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.common.utils.getMediaUrl
+import fit.asta.health.common.utils.getImgUrl
 
 @Composable
 fun UserCard(user: String, userOrg: String, userRole: String, url: String) {
@@ -32,7 +32,7 @@ fun UserCard(user: String, userOrg: String, userRole: String, url: String) {
         ) {
             Box {
                 AsyncImage(
-                    model = getMediaUrl(url),
+                    model = getImgUrl(url),
                     contentDescription = null,
                     modifier = Modifier
                         .clip(shape = CircleShape)

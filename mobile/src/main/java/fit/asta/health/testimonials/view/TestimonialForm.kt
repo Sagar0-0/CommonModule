@@ -25,6 +25,7 @@ fun LoadTestimonialForm(
     //onNavigateImgCropper: () -> Unit = {},
     //onNavigateAfterImgCropper: () -> Unit = {},
 ) {
+
     when (val state = getViewModel.state.collectAsState().value) {
         TestimonialGetState.Loading -> {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -57,6 +58,7 @@ fun LoadTestimonialForm(
         is TestimonialGetState.NetworkError -> AppErrorScreen(onTryAgain = {
             getViewModel.loadTestimonial()
         })
+
     }
 }
 

@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.R
-import fit.asta.health.common.utils.getMediaUrl
+import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.scheduler.model.db.entity.TagEntity
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
@@ -69,7 +69,7 @@ private fun SwipeAbleArea(text: String, image: String) {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(getMediaUrl(url = image))
+                    .data(getImgUrl(url = image))
                     .crossfade(true)
                     .build(),
                 placeholder = painterResource(R.drawable.placeholder_tag),
