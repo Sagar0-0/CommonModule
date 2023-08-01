@@ -23,6 +23,7 @@ import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
 import fit.asta.health.thirdparty.spotify.model.net.recently.SpotifyUserRecentlyPlayedModel
 import fit.asta.health.thirdparty.spotify.model.net.recommendations.SpotifyRecommendationModel
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
+import fit.asta.health.thirdparty.spotify.view.events.SpotifyUiEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -99,7 +100,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This function plays the Songs using the Spotify app Remote
      */
-    fun playSpotifySong(url: String) {
+    private fun playSpotifySong(url: String) {
         spotifyAppRemote?.playerApi?.play(url)
     }
 
@@ -133,7 +134,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This function fetches all the track from the local repository
      */
-    fun getAllTracks() {
+    private fun getAllTracks() {
         viewModelScope.launch {
             localRepository.getAllTracks().collect {
                 _allTracks.value = it
@@ -153,7 +154,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This function fetches all the albums from the local repository
      */
-    fun getAllAlbums() {
+    private fun getAllAlbums() {
         viewModelScope.launch {
             localRepository.getAllAlbums().collect {
                 _allAlbums.value = it
@@ -165,7 +166,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This function is used to insert a Track into the Database
      */
-    fun insertTrack(track: Track) {
+    private fun insertTrack(track: Track) {
         viewModelScope.launch {
             localRepository.insertTrack(track)
         }
@@ -175,7 +176,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This function deletes Tracks from the Local Database
      */
-    fun deleteTrack(track: Track) {
+    private fun deleteTrack(track: Track) {
         viewModelScope.launch {
             localRepository.deleteTrack(track)
         }
@@ -185,7 +186,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This function is used to insert a Album into the Database
      */
-    fun insertAlbum(album: Album) {
+    private fun insertAlbum(album: Album) {
         viewModelScope.launch {
             localRepository.insertAlbum(album)
         }
@@ -195,7 +196,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This function deletes a certain album from the Database
      */
-    fun deleteAlbum(album: Album) {
+    private fun deleteAlbum(album: Album) {
         viewModelScope.launch {
             localRepository.deleteAlbum(album)
         }
@@ -212,7 +213,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This function fetches the user Recently Played Tracks from the spotify api
      */
-    fun getCurrentUserRecentlyPlayedTracks() {
+    private fun getCurrentUserRecentlyPlayedTracks() {
         viewModelScope.launch {
             remoteRepository.getCurrentUserRecentlyPlayedTracks(accessToken).collectLatest {
 
@@ -245,7 +246,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This function gets the Recommendation Tracks for the users
      */
-    fun getRecommendationTracks(
+    private fun getRecommendationTracks(
         seedGenres: String = "classical,country",
         limit: String = "15"
     ) {
@@ -270,14 +271,14 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * Setting the TrackId for the next screen
      */
-    fun setTrackId(trackId: String) {
+    private fun setTrackId(trackId: String) {
         trackDetailId = trackId
     }
 
     /**
      * This function fetches The Track Details
      */
-    fun getTrackDetails() {
+    private fun getTrackDetails() {
         viewModelScope.launch {
             remoteRepository.getTrackDetails(accessToken, trackDetailId).collectLatest {
                 _trackDetailsResponse.value = it
@@ -294,7 +295,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This function fetches the user top tracks from the spotify Api
      */
-    fun getUserTopTracks() {
+    private fun getUserTopTracks() {
         viewModelScope.launch {
             remoteRepository.getCurrentUserTopTracks(accessToken).collectLatest {
                 _userTopTracks.value = it
@@ -311,7 +312,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This function fetches the top Artists from the Spotify Api
      */
-    fun getUserTopArtists() {
+    private fun getUserTopArtists() {
         viewModelScope.launch {
             remoteRepository.getCurrentUserTopArtists(accessToken).collectLatest {
                 _userTopArtists.value = it
@@ -336,7 +337,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This function sets the variables and the Searching Params of the search option
      */
-    fun setSearchQueriesAndVariables(
+    private fun setSearchQueriesAndVariables(
         query: String,
         type: String,
         includeExternal: String = "audio",
@@ -352,7 +353,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This function fetches the spotify search result for the User
      */
-    fun getSpotifySearchResult() {
+    private fun getSpotifySearchResult() {
 
         // Returning to prevent showing error during the first composition during Initialized State
         if (query.isEmpty() || type.isEmpty() || _spotifySearch.value is SpotifyNetworkCall.Loading)
@@ -380,11 +381,11 @@ class SpotifyViewModelX @Inject constructor(
     // keeps the Id of the Album Whose details needs to be shown
     private var albumDetailId: String = ""
 
-    fun setAlbumId(newAlbumId: String) {
+    private fun setAlbumId(newAlbumId: String) {
         albumDetailId = newAlbumId
     }
 
-    fun getAlbumDetails() {
+    private fun getAlbumDetails() {
         viewModelScope.launch {
             remoteRepository.getAlbumDetails(accessToken, albumDetailId).collectLatest {
                 _albumDetailsResponse.value = it
@@ -404,7 +405,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This function fetches all the current User Tracks from the spotify api
      */
-    fun getCurrentUserTracks() {
+    private fun getCurrentUserTracks() {
         viewModelScope.launch {
             remoteRepository.getCurrentUserTracks(accessToken).collectLatest {
                 _currentUserTracks.value = it
@@ -424,7 +425,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This function fetches all the current User Playlist from the spotify Api
      */
-    fun getCurrentUserPlaylist() {
+    private fun getCurrentUserPlaylist() {
         viewModelScope.launch {
             remoteRepository.getCurrentUserPlaylists(accessToken).collectLatest {
                 _currentUserPlaylist.value = it
@@ -444,7 +445,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This function fetches all the current User Following Artists from the spotify Api
      */
-    fun getCurrentUserFollowingArtists() {
+    private fun getCurrentUserArtists() {
         viewModelScope.launch {
             remoteRepository.getCurrentUserFollowedArtists(accessToken).collectLatest {
                 _currentUserFollowingArtist.value = it
@@ -463,7 +464,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This function fetches all the current User Albums from the spotify Api
      */
-    fun getCurrentUserAlbum() {
+    private fun getCurrentUserAlbum() {
         viewModelScope.launch {
             remoteRepository.getCurrentUserAlbums(accessToken).collectLatest {
                 _currentUserAlbum.value = it
@@ -482,7 +483,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This function fetches all the shows data from the spotify Api
      */
-    fun getCurrentUserShows() {
+    private fun getCurrentUserShows() {
         viewModelScope.launch {
             remoteRepository.getCurrentUserShows(accessToken).collectLatest {
                 _currentUserShow.value = it
@@ -502,10 +503,107 @@ class SpotifyViewModelX @Inject constructor(
     /**
      *  This function fetches the current User all the Episodes from the spotify APi
      */
-    fun getCurrentUserEpisode() {
+    private fun getCurrentUserEpisode() {
         viewModelScope.launch {
             remoteRepository.getCurrentUserEpisodes(accessToken).collectLatest {
                 _currentUserEpisode.value = it
+            }
+        }
+    }
+
+    fun uiEventListener(event: SpotifyUiEvent) {
+        when (event) {
+
+            is SpotifyUiEvent.HelperEvent.PlaySong -> {
+                playSpotifySong(event.songUri)
+            }
+
+            is SpotifyUiEvent.HelperEvent.SetTrackId -> {
+                setTrackId(event.trackId)
+            }
+
+            is SpotifyUiEvent.HelperEvent.SetAlbumId -> {
+                setAlbumId(event.albumId)
+            }
+
+            is SpotifyUiEvent.HelperEvent.SetSearchQueriesAndVariables -> {
+                setSearchQueriesAndVariables(query = event.query, type = event.type)
+            }
+
+            is SpotifyUiEvent.NetworkIO.LoadCurrentUserRecentlyPlayedTracks -> {
+                getCurrentUserRecentlyPlayedTracks()
+            }
+
+            is SpotifyUiEvent.NetworkIO.LoadRecommendationTracks -> {
+                getRecommendationTracks()
+            }
+
+            is SpotifyUiEvent.NetworkIO.LoadUserTopTracks -> {
+                getUserTopTracks()
+            }
+
+            is SpotifyUiEvent.NetworkIO.LoadUserTopArtists -> {
+                getUserTopArtists()
+            }
+
+            is SpotifyUiEvent.NetworkIO.LoadAlbumDetails -> {
+                getAlbumDetails()
+            }
+
+            is SpotifyUiEvent.NetworkIO.LoadCurrentUserTracks -> {
+                getCurrentUserTracks()
+            }
+
+            is SpotifyUiEvent.NetworkIO.LoadCurrentUserPlaylist -> {
+                getCurrentUserPlaylist()
+            }
+
+            is SpotifyUiEvent.NetworkIO.LoadCurrentUserArtists -> {
+                getCurrentUserArtists()
+            }
+
+            is SpotifyUiEvent.NetworkIO.LoadCurrentUserAlbum -> {
+                getCurrentUserAlbum()
+            }
+
+            is SpotifyUiEvent.NetworkIO.LoadCurrentUserShows -> {
+                getCurrentUserShows()
+            }
+
+            is SpotifyUiEvent.NetworkIO.LoadCurrentUserEpisode -> {
+                getCurrentUserEpisode()
+            }
+
+            is SpotifyUiEvent.NetworkIO.LoadSpotifySearchResult -> {
+                getSpotifySearchResult()
+            }
+
+            is SpotifyUiEvent.NetworkIO.LoadTrackDetails -> {
+                getTrackDetails()
+            }
+
+            is SpotifyUiEvent.LocalIO.LoadAllTracks -> {
+                getAllTracks()
+            }
+
+            is SpotifyUiEvent.LocalIO.LoadAllAlbums -> {
+                getAllAlbums()
+            }
+
+            is SpotifyUiEvent.LocalIO.InsertTrack -> {
+                insertTrack(event.track)
+            }
+
+            is SpotifyUiEvent.LocalIO.DeleteTrack -> {
+                deleteTrack(event.track)
+            }
+
+            is SpotifyUiEvent.LocalIO.InsertAlbum -> {
+                insertAlbum(event.album)
+            }
+
+            is SpotifyUiEvent.LocalIO.DeleteAlbum -> {
+                deleteAlbum(event.album)
             }
         }
     }

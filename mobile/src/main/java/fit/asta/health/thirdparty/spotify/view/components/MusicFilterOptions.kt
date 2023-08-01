@@ -37,10 +37,7 @@ fun MusicFilterOptions(
     ) {
 
         // This Row continues to put the UI elements to next line if the screen width is reached
-        FlowRow(
-            modifier = Modifier
-                .wrapContentWidth()
-        ) {
+        FlowRow(modifier = Modifier.wrapContentWidth()) {
 
             filterList.forEach { currentOption ->
 

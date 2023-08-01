@@ -2,12 +2,10 @@ package fit.asta.health.thirdparty.spotify.view.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,9 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import fit.asta.health.navigation.home.view.component.LoadingAnimation
 
 /**
  * This function draws the Small Track UI like which we have in User Most Recently Played Tracks UI
@@ -44,9 +44,7 @@ fun MusicPlayableSmallCards(
             .width(LocalConfiguration.current.screenWidthDp.dp / 2 - 20.dp)
 
             // Redirecting the User to Spotify App
-            .clickable {
-                onClick()
-            }
+            .clickable { onClick() }
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
 
@@ -57,21 +55,11 @@ fun MusicPlayableSmallCards(
             )
 
             // Circular Progress Bar
-            if (painter.state.painter == null) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    content = { CircularProgressIndicator() }
-                )
-            }
-
-            val textToShow = if (name.length > 40)
-                "${name.substring(0, 38)}..."
-            else
-                name
+            if (painter.state.painter == null) LoadingAnimation()
 
             // track Name
             Text(
-                text = textToShow,
+                text = name,
 
                 modifier = Modifier
                     .width(LocalConfiguration.current.screenWidthDp.dp)
@@ -81,7 +69,8 @@ fun MusicPlayableSmallCards(
                 textAlign = TextAlign.Start,
                 color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Bold,
-                fontSize = 12.sp
+                fontSize = 12.sp,
+                overflow = TextOverflow.Ellipsis
             )
         }
     }
