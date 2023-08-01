@@ -3,9 +3,9 @@ package fit.asta.health.scheduler.compose.screen.alarmsetingscreen
 
 data class ASUiState(
     //time
-    var time_hours: String = "",
+    var time_hours: String = "0",
     var time_midDay: Boolean = false,
-    var time_minutes: String = "",
+    var time_minutes: String = "0",
 
     //week
     var friday: Boolean = false,
@@ -89,13 +89,23 @@ data class ToneUiState(
 )
 
 
-
 data class StatUiState(
-    val hours: String="",
-    val midDay: Boolean=false,
-    val minutes: String="",
-    val name: String="",
-    val id: Int =0
+    val hours: String = "",
+    val midDay: Boolean = false,
+    val minutes: String = "",
+    val name: String = "",
+    val id: Int = 0
 )
 
+data class AMPMHoursMin(
+    val hours: Int = 1,
+    val minutes: Int = 1,
+    val dayTime: DayTime = DayTime.PM
+) {
+    enum class DayTime {
+        AM,
+        PM
+    }
+}
 
+data class Time24hr(val hour: Int, val min: Int)
