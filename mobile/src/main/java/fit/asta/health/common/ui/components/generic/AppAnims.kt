@@ -1,12 +1,10 @@
 package fit.asta.health.common.ui.components.generic
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.LocalContentColor
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
@@ -14,15 +12,12 @@ import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPagerIndicator
-import androidx.compose.ui.util.lerp
 import com.google.accompanist.pager.PagerState
 import fit.asta.health.common.ui.theme.spacing
-import kotlin.math.absoluteValue
 
 /** [AppDivider] is a compose method, which creates a horizontal divider line.
  * [AppDividerLineWidth] define an object containing custom divider widths.
@@ -91,21 +86,5 @@ fun AppHorizontalPagerIndicator(
         indicatorShape = CircleShape
     )
 }
-
-@OptIn(ExperimentalFoundationApi::class)
-fun Modifier.carouselTransition(page: Int, pagerState: PagerState) =
-    graphicsLayer {
-        val pageOffset =
-            ((pagerState.currentPage - page) + pagerState.currentPageOffsetFraction).absoluteValue
-
-        val transformation =
-            lerp(
-                start = 0.7f,
-                stop = 1f,
-                fraction = 1f - pageOffset.coerceIn(0f, 1f)
-            )
-        alpha = transformation
-        scaleY = transformation
-    }
 
 
