@@ -16,13 +16,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Snooze
 import androidx.compose.material.icons.filled.Timelapse
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,31 +27,25 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.shawnlin.numberpicker.NumberPicker
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.CustomModelBottomSheet
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AMPMHoursMin
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.IvlUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.RepUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.StatUiState
-import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.TimePickerBottomSheet
 import fit.asta.health.tools.breathing.model.domain.mapper.convert12hrTo24hr
-import kotlinx.coroutines.launch
 
 
 @Composable
@@ -75,7 +66,7 @@ fun SettingsLayout(
 ) {
 
     Column(
-        modifier = modifier.padding(16.dp),
+        modifier = modifier.padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(spacing.small),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -192,85 +183,29 @@ fun SnoozeBottomSheet(onNavigateBack: () -> Unit, onValueChange: (Int) -> Unit =
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun AddVariantIntervalBottomSheet(
-    text: String,
     onNavigateBack: () -> Unit,
     onSave: (StatUiState) -> Unit = {}
 ) {
     val interval = remember {
         mutableStateOf(StatUiState(id = (186566..999999999).random(), name = "Wake Up"))
     }
-    val bottomSheetState = rememberModalBottomSheetState()
-
-    val scope = rememberCoroutineScope()
-
-    val closeSheet = {
-        scope.launch { bottomSheetState.hide() }
-    }
-    val openSheet = {
-        scope.launch { bottomSheetState.show() }
-    }
-    Column(
-        Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            IconButton(onClick = onNavigateBack) {
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = null
+    TimePickerBottomSheet(
+        time = AMPMHoursMin(), onSave = {
+            val time = it.convert12hrTo24hr()
+            interval.value =
+                interval.value.copy(
+                    hours = time.hour.toString(),
+                    midDay = it.dayTime != AMPMHoursMin.DayTime.AM,
+                    minutes = time.min.toString()
                 )
+            if (interval.value.hours.isNotEmpty() || interval.value.hours.isNotBlank()) {
+                onSave(interval.value)
             }
-            Text(
-                text = text,
-                fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                textAlign = TextAlign.Center
-            )
-            IconButton(onClick = {
-                if (interval.value.hours.isNotEmpty() || interval.value.hours.isNotBlank()) {
-                    onSave(interval.value)
-                }
-            }) {
-                Icon(
-                    imageVector = Icons.Default.Check,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
-        }
-        Spacer(modifier = Modifier.height(2.dp))
-        DigitalDemo(time = AMPMHoursMin(), open = { openSheet() })
-        Spacer(modifier = Modifier.height(20.dp))
-        CustomTagTextField(
-            label = "Interval label",
-            onValueChange = { interval.value = interval.value.copy(name = it) })
-        Spacer(modifier = Modifier.height(16.dp))
-    }
-    CustomModelBottomSheet(targetState = bottomSheetState.isVisible,
-        sheetState = bottomSheetState,
-        content = {
-            TimePickerBottomSheet(onSave = {
-                closeSheet()
-                val time = it.convert12hrTo24hr()
-                interval.value =
-                    interval.value.copy(
-                        hours = time.hour.toString(),
-                        midDay = it.dayTime != AMPMHoursMin.DayTime.AM,
-                        minutes = time.min.toString()
-                    )
-            }, onCancel = { closeSheet() })
-        },
-        dragHandle = {},
-        onClose = { closeSheet() })
+        }, onCancel = onNavigateBack
+    )
 }
 
 
@@ -416,76 +351,6 @@ fun CustomIntervalToggleButton(
     }
 }
 
-
-@Composable
-fun CustomIntervalTextSelection(
-    image: Int,
-    title: String,
-    arrowTitle: String,
-    arrowImage: Int,
-    onNavigateAction: () -> Unit,
-) {
-
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box {
-                Row {
-                    Box(Modifier.size(24.dp), contentAlignment = Alignment.Center) {
-                        Icon(
-                            painter = painterResource(id = image),
-                            contentDescription = null,
-                            Modifier.size(20.dp),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = title,
-                        fontSize = 16.sp,
-                        color = MaterialTheme.colorScheme.onTertiaryContainer
-                    )
-                }
-            }
-
-            Box {
-                Row {
-
-                    SelectableText(arrowTitle)
-
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    Box(Modifier.size(24.dp), contentAlignment = Alignment.Center) {
-                        IconButton(onClick = onNavigateAction) {
-                            Icon(
-                                painter = painterResource(id = arrowImage),
-                                contentDescription = null,
-                                Modifier.size(24.dp),
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-@Composable
-fun CustomIntervalText(modifier: Modifier = Modifier) {
-    Row(modifier = modifier, horizontalArrangement = Arrangement.Center) {
-        Text(
-            text = "Turn On Interval's Status to use Interval Settings",
-            fontSize = 14.sp,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center
-        )
-    }
-}
 
 
 @Composable

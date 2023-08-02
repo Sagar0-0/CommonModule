@@ -33,6 +33,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
+import java.time.LocalTime
 import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
@@ -74,6 +75,12 @@ class SchedulerViewModel
                         alarmEntity = alarm
                         updateUi(alarm)
                     }
+                } else {
+                    _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+                        time_hours = LocalTime.now().hour.toString(),
+                        time_midDay = LocalTime.now().hour > 12,
+                        time_minutes = LocalTime.now().minute.toString()
+                    )
                 }
             }
         }
@@ -343,10 +350,6 @@ class SchedulerViewModel
         return true
     }
 
-
-    fun isIntervalDataValid(interval: IvlUiState): Boolean {
-        return interval.duration > 0 && interval.snoozeTime > 0 && interval.variantIntervals.isNotEmpty()
-    }
 
 
     private fun setDataAndSaveAlarm(

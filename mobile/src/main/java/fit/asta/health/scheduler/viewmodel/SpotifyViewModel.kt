@@ -28,6 +28,7 @@ class SpotifyViewModel @Inject constructor(
     private val prefUtils: PrefUtils
 ) : AndroidViewModel(application) {
 
+    private var isMusicPlaying = false
 
     // Keeps the AccessToken of the Authorization
     private var accessToken: String = ""
@@ -92,7 +93,9 @@ class SpotifyViewModel @Inject constructor(
      * This function plays the Songs using the Spotify app Remote
      */
     fun playSpotifySong(url: String) {
+        spotifyAppRemote?.playerApi?.resume()
         spotifyAppRemote?.playerApi?.play(url)
+        isMusicPlaying = true
     }
 
 
@@ -109,6 +112,8 @@ class SpotifyViewModel @Inject constructor(
      */
     fun disconnectSpotifyRemote() {
         spotifyAppRemote?.let {
+            if (isMusicPlaying)
+                it.playerApi.pause()
             SpotifyAppRemote.disconnect(it)
         }
     }

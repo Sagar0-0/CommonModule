@@ -1,5 +1,8 @@
 package fit.asta.health.scheduler.compose.components
 
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.animateIntAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -105,6 +108,16 @@ fun OnlyToggleButton(
 
 @Composable
 fun DigitalDemo(time: AMPMHoursMin, open: () -> Unit = {}) {
+    val hours by animateIntAsState(
+        targetValue = if (time.hours > 12) {
+            time.hours - 12
+        } else time.hours, label = "",
+        animationSpec = tween(700, easing = FastOutLinearInEasing)
+    )
+    val minutes by animateIntAsState(
+        targetValue = time.minutes, label = "",
+        animationSpec = tween(700, easing = FastOutLinearInEasing)
+    )
     AppDefCard(modifier = Modifier.clickable { open() }, content = {
         Row(
             modifier = Modifier
@@ -112,7 +125,7 @@ fun DigitalDemo(time: AMPMHoursMin, open: () -> Unit = {}) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "${if (time.hours < 10) "0" else ""}${time.hours}:${if (time.minutes < 10) "0" else ""}${time.minutes}",
+                text = "${if (time.hours < 10) "0" else ""}${hours}:${if (time.minutes < 10) "0" else ""}${minutes}",
                 style = MaterialTheme.typography.titleMedium
             )
             Spacer(modifier = Modifier.width(8.dp))

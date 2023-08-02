@@ -4,14 +4,32 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -31,7 +49,6 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.common.ui.components.generic.AppTopBar
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
@@ -40,7 +57,6 @@ import kotlinx.coroutines.launch
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     homeUiState: HomeUiState,
@@ -51,7 +67,6 @@ fun HomeScreen(
 
     val snackBarHostState = remember { SnackbarHostState() }
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
-    val context = LocalContext.current
     AppScaffold(snackBarHostState = snackBarHostState, content = { paddingValues ->
         LazyColumn(
             Modifier
@@ -61,7 +76,6 @@ fun HomeScreen(
         ) {
             items(list) { data ->
                 SwipeAlarm(homeUiState = homeUiState, data = data, onSwipe = {
-//                    hSEvent(HomeEvent.DeleteAlarm(data, context))
                     coroutineScope.launch {
                         val snackbarResult = snackBarHostState.showSnackbar(
                             message = "Deleted ${data.info.name}",
@@ -70,13 +84,12 @@ fun HomeScreen(
                         )
                         when (snackbarResult) {
                             SnackbarResult.ActionPerformed -> {
-//                                hSEvent(HomeEvent.UndoAlarm(data, context))
                             }
+
                             else -> {}
                         }
                     }
                 }, onClick = {
-//                    hSEvent(HomeEvent.SetAlarm(data, it, context))
                 }, onEdit = {
                     navAlarmSettingHome()
                     hSEvent(HomeEvent.EditAlarm(data))
@@ -158,11 +171,11 @@ fun AlarmCard(
         border = BorderStroke(width = 3.dp, color = color)
     ) {
         SwipeAbleAreaAlarm(
-            isSelected =data.status,
-            description =data.info.description,
-            name =data.info.name,
-            tag =data.info.tag,
-            url =data.info.url,
+            isSelected = data.status,
+            description = data.info.description,
+            name = data.info.name,
+            tag = data.info.tag,
+            url = data.info.url,
             buttonState = homeUiState.buttonState,
             onCheckClicked = onClick
         )
@@ -176,7 +189,7 @@ private fun SwipeAbleAreaAlarm(
     name: String,
     tag: String,
     url: String,
-    buttonState:Boolean,
+    buttonState: Boolean,
     onCheckClicked: (Boolean) -> Unit
 ) {
     Box {

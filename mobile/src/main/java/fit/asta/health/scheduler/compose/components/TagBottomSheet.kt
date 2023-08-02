@@ -199,7 +199,7 @@ fun CustomTagImage(image: String, onImageSelect: () -> Unit) {
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CustomTagTextField(
     label: String, onValueChange: (String) -> Unit = {},
