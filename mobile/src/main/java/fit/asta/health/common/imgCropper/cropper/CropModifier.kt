@@ -164,12 +164,12 @@ fun Modifier.crop(
 internal val CropState.DefaultOnDoubleTap: (ZoomLevel) -> Float
     get() = { zoomLevel: ZoomLevel ->
         when (zoomLevel) {
-            fit.asta.health.common.imgCropper.cropper.util.ZoomLevel.Min -> 1f
-            fit.asta.health.common.imgCropper.cropper.util.ZoomLevel.Mid -> 3f.coerceIn(
+            ZoomLevel.Min -> 1f
+            ZoomLevel.Mid -> 3f.coerceIn(
                 zoomMin,
                 zoomMax
             )
 
-            fit.asta.health.common.imgCropper.cropper.util.ZoomLevel.Max -> 5f.coerceAtLeast(zoomMax)
+            ZoomLevel.Max -> 5f.coerceAtLeast(zoomMax)
         }
     }
