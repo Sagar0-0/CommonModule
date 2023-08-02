@@ -13,6 +13,7 @@ import fit.asta.health.common.utils.ResponseState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import retrofit2.HttpException
 import javax.inject.Inject
 
 class MapsRepoImpl @Inject constructor(
@@ -48,17 +49,15 @@ class MapsRepoImpl @Inject constructor(
             ResponseState.Success(
                 mapsApi.getAddresses(uid)
             )
-        } catch (e: Exception) {
-            if (e.message.equals("HTTP 404 ")) {
-                ResponseState.Success(
-                    AddressesResponse(
-                        listOf(),
-                        AddressesResponse.Status(200, "No Data found")
-                    )
+        } catch (e: HttpException) {
+            ResponseState.Success(
+                AddressesResponse(
+                    listOf(),
+                    AddressesResponse.Status(200, "No Data found")
                 )
-            } else {
-                ResponseState.Error(e)
-            }
+            )
+        } catch (e: Exception) {
+            ResponseState.Error(e)
         }
     }
 

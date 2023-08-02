@@ -7,13 +7,15 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
+interface NetworkHelper {
+    fun isConnected(): Boolean
+}
 
 @Singleton
-class NetworkHelper @Inject constructor(
+class NetworkHelperImpl @Inject constructor(
     @ApplicationContext private val context: Context
-) {
-
-    fun isConnected(): Boolean {
+) : NetworkHelper {
+    override fun isConnected(): Boolean {
 
         val connectivityMgr =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

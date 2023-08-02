@@ -9,6 +9,7 @@ import dagger.hilt.components.SingletonComponent
 import fit.asta.health.BuildConfig
 import fit.asta.health.network.AstaNetwork
 import fit.asta.health.network.NetworkHelper
+import fit.asta.health.network.NetworkHelperImpl
 import fit.asta.health.network.TokenProvider
 import fit.asta.health.network.api.Api
 import fit.asta.health.network.api.RestApi
@@ -65,7 +66,7 @@ object NetworkModule {
 
     @Provides
     fun provideNetworkHelper(@ApplicationContext context: Context): NetworkHelper {
-        return NetworkHelper(context)
+        return NetworkHelperImpl(context)
     }
 
     @Singleton

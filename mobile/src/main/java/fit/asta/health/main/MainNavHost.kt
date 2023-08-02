@@ -16,6 +16,9 @@ import androidx.navigation.compose.rememberNavController
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.feedback.ui.feedbackComp
 import fit.asta.health.main.view.mainActivityComp
+import fit.asta.health.payments.referral.view.referralComp
+import fit.asta.health.payments.sub.view.subscriptionComp
+import fit.asta.health.payments.wallet.view.walletComp
 import fit.asta.health.profile.CreateProfileLayout
 import fit.asta.health.profile.ProfileContent
 import fit.asta.health.scheduler.navigation.schedulerNavigation
@@ -51,10 +54,9 @@ fun MainNavHost(isConnected: Boolean) {
             CreateProfileLayout(onBack = { navController.popBackStack() })
         }
 
-        //homeComp(navController)
+//        homeComp(navController)
         settingsNavigation(navController)
-        feedbackComp(navController)/*referralComp(navController)
-        walletComp(navController)*/
+        feedbackComp(navController)
 
         breathingNavigation(navController, onBack = { navController.navigateUp() })
         waterToolNavigation(navController, onBack = { navController.navigateUp() })
@@ -64,6 +66,10 @@ fun MainNavHost(isConnected: Boolean) {
         exerciseNavigation(navController, onBack = { navController.navigateUp() })
         testimonialsNavigation(navController)
         schedulerNavigation(navController, onBack = { navController.navigateUp() })
+
+        subscriptionComp(navController)
+        referralComp(navController)
+        walletComp(navController)
     }
 }
 
