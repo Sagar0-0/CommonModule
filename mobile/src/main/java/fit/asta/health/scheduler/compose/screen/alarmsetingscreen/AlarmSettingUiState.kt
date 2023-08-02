@@ -43,8 +43,6 @@ data class ASUiState(
     var vibration_percentage: String = "",
     var vibration_status: Boolean = false,
 
-    //intervals
-    var interval: String="Power Nap",
 
     //meta
     var cBy: Int = 1,
