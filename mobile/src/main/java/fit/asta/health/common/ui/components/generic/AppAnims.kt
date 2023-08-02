@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import fit.asta.health.common.ui.theme.spacing
 
 /** [AppDivider] is a compose method, which creates a horizontal divider line.
-
  * [AppDividerLineWidth] define an object containing custom divider widths.
  */
 

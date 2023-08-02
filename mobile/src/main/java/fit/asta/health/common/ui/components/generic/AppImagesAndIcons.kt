@@ -54,8 +54,7 @@ fun AppDefaultIcon(
  * asynchronously.
  * @param model Either an [ImageRequest] or the [ImageRequest.data] value.
  * @param contentDescription Text used by accessibility services to describe what this image
- *  represents. This should always be provided unless this image is used for decorative purposes,
- *  and does not represent a meaningful action that a user can take.
+ *  represents.
  * @param modifier Modifier used to adjust the layout algorithm or draw decoration content.
  * @param contentScale Optional scale parameter used to determine the aspect ratio scaling to be
  *  used.
@@ -68,7 +67,6 @@ fun AppDefServerImg(
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Fit,
 ) {
-
     AsyncImage(
         model = model,
         contentDescription = contentDescription,
@@ -77,7 +75,6 @@ fun AppDefServerImg(
         placeholder = painterResource(id = AppConstImg.placeHolderImg),
         error = painterResource(id = AppConstImg.errorImg),
     )
-
 }
 
 
@@ -85,9 +82,7 @@ fun AppDefServerImg(
  * @param imgId The resource ID of the image to be displayed. It should point to a valid image
  * resource in the application's resources.
  * @param contentDescription text used by accessibility services to describe what this image
- * represents. This should always be provided unless this image is used for decorative purposes,
- * and does not represent a meaningful action that a user can take. This text should be
- * localized, such as by using [androidx.compose.ui.res.stringResource] or similar
+ * represents.
  * @param modifier Modifier used to adjust the layout algorithm or draw decoration content (ex.
  * background)
  * bounds defined by the width and height.
@@ -101,12 +96,10 @@ fun AppDrawImg(
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.FillBounds,
 ) {
-
     Image(
         painter = painterResource(id = imgId),
         contentDescription = contentDescription,
         modifier = modifier,
         contentScale = contentScale,
     )
-
 }

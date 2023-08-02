@@ -4,10 +4,14 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonColors
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
@@ -27,6 +31,7 @@ fun AppDefBtn(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    color: ButtonColors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
     content: @Composable RowScope.() -> Unit,
 ) {
@@ -36,7 +41,7 @@ fun AppDefBtn(
         onClick = onClick,
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
-        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+        colors = color,
         contentPadding = contentPadding,
         enabled = enabled,
         content = content,
@@ -64,4 +69,24 @@ fun AppDefFAB(
         modifier = modifier,
         contentColor = MaterialTheme.colorScheme.onPrimary,
     )
+}
+
+
+/** [AppDefRadioButton] buttons allow users to select one option from a set.
+
+ * @param selected whether this radio button is selected or not
+ * @param onClick called when this radio button is clicked.
+ * @param modifier the [Modifier] to be applied to this radio button
+ * @param colors [RadioButtonColors] that will be used to resolve the color used for this radio
+ * button in different states. See [RadioButtonDefaults.colors].
+ */
+
+@Composable
+fun AppDefRadioButton(
+    selected: Boolean,
+    onClick: (() -> Unit)?,
+    modifier: Modifier = Modifier,
+    colors: RadioButtonColors = RadioButtonDefaults.colors(),
+) {
+    RadioButton(selected = selected, onClick = onClick, modifier = modifier, colors = colors)
 }

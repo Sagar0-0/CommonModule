@@ -41,18 +41,14 @@ fun LoadTestimonialForm(
             stringResource(R.string.testimonial_title_edit),
             onNavigateTstCreate,
             onNavigateTstHome,
-            //onNavigateImgCropper,
             getViewModel = getViewModel,
-            //onNavigateAfterImgCropper = onNavigateAfterImgCropper
         )
 
         TestimonialGetState.Empty -> CreateTstScreen(
             stringResource(R.string.testimonial_title_create),
             onNavigateTstCreate,
             onNavigateTstHome,
-            //onNavigateImgCropper,
             getViewModel = getViewModel,
-            //onNavigateAfterImgCropper = onNavigateAfterImgCropper
         )
 
         is TestimonialGetState.NetworkError -> AppErrorScreen(onTryAgain = {

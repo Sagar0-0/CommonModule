@@ -3,7 +3,6 @@ package fit.asta.health.testimonials.view.create
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -13,6 +12,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.exoplayer.ExoPlayer
+import fit.asta.health.common.jetpack.dashedBorder
+import fit.asta.health.common.jetpack.getOneUrl
+import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.player.jetpack_video.media.rememberMediaState
 import fit.asta.health.testimonials.view.components.UploadTstMediaView
@@ -26,7 +28,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @OptIn(ExperimentalCoroutinesApi::class)
 @Preview
 @Composable
-fun TestGetVideo(viewModel: TestimonialViewModel = hiltViewModel()) {
+fun TstGetVideo(viewModel: TestimonialViewModel = hiltViewModel()) {
 
     val videoLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
@@ -48,21 +50,18 @@ fun GetVideo(
     onVideoClear: () -> Unit,
 ) {
     Column(modifier = modifier) {
-        Text(
-            text = "Upload Video", color = Color.Black, style = MaterialTheme.typography.titleMedium
-        )
-
+        AppTexts.TitleMedium(text = "Upload Video", color = MaterialTheme.colorScheme.onSurface)
         Spacer(modifier = Modifier.height(spacing.medium))
-
         Box(
             modifier = Modifier
-                .dashedBorder(width = 1.dp, radius = 8.dp, color = Color(0xff8694A9))
+                .dashedBorder(
+                    width = 1.dp, radius = spacing.small, color = Color(0xff8694A9)
+                )
                 .fillMaxWidth()
         ) {
             VideoLayout(
                 viewModel = viewModel, onVideoClear = onVideoClear, onVideoClick = onVideoClick
             )
-
         }
     }
 }
@@ -74,10 +73,8 @@ fun VideoLayout(
     onVideoClick: () -> Unit = {},
     onVideoClear: () -> Unit,
 ) {
-
     val video by viewModel.video.collectAsStateWithLifecycle()
     val state = rememberMediaState(player = viewModel.player())
-
     Box {
         if (video.url.isEmpty() && video.localUrl == null) {
             UploadTstMediaView(onUploadClick = onVideoClick)

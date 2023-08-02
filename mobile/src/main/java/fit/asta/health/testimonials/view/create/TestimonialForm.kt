@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -12,22 +11,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.jetpack.HandleBackPress
 import fit.asta.health.common.ui.components.*
+import fit.asta.health.common.ui.components.functional.AppValidateOutlineTxtField
+import fit.asta.health.common.ui.components.functional.DialogData
+import fit.asta.health.common.ui.components.functional.OnSuccessfulSubmit
+import fit.asta.health.common.ui.components.functional.ShowCustomConfirmationDialog
+import fit.asta.health.common.ui.components.functional.ValidateTxtLength
+import fit.asta.health.common.ui.components.generic.AppDefBtn
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.AppScaffold
+import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.components.generic.AppTopBar
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.theme.boxSize
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiString
 import fit.asta.health.testimonials.model.domain.TestimonialType
-import fit.asta.health.testimonials.view.components.ValidatedTextField
 import fit.asta.health.testimonials.viewmodel.create.TestimonialEvent
 import fit.asta.health.testimonials.viewmodel.create.TestimonialSubmitState
 import fit.asta.health.testimonials.viewmodel.create.TestimonialViewModel
@@ -39,8 +42,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 fun TestimonialForm(
     paddingValues: PaddingValues,
     onNavigateTstHome: () -> Unit,
-    //onNavigateImgCropper: () -> Unit = {},
-    //onNavigateAfterImgCropper: () -> Unit = {},
     getViewModel: TestimonialViewModel,
 ) {
 
@@ -70,8 +71,7 @@ fun TestimonialForm(
     val event = getViewModel.stateSubmit.collectAsState()
     val events = event.value
 
-
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
@@ -79,151 +79,141 @@ fun TestimonialForm(
                 start = spacing.medium,
                 end = spacing.medium
             )
-            .verticalScroll(scrollState), verticalArrangement = Arrangement.Center
     ) {
+        Column {
+            Spacer(modifier = Modifier.height(spacing.medium))
 
-        Spacer(modifier = Modifier.height(spacing.medium))
+            TestimonialsRadioButton(selectionTypeText = "Testimonial Type",
+                radioButtonList = radioButtonList,
+                selectedOption = selectedOption,
+                onOptionSelected = {
+                    getViewModel.onEvent(TestimonialEvent.OnTypeChange(it))
+                })
 
-        TestimonialsRadioButton(selectionTypeText = "Testimonial Type",
-            radioButtonList = radioButtonList,
-            selectedOption = selectedOption,
-            content = {
-                ValidatedTextField(
-                    value = testimonial.value,
-                    onValueChange = {
-                        getViewModel.onEvent(
-                            TestimonialEvent.OnTestimonialChange(
-                                it
-                            )
-                        )
-                    },
-                    label = "Testimonial",
-                    showError = testimonial.error !is UiString.Empty,
-                    errorMessage = testimonial.error,
-                    keyboardOptions = if (testimonial.value.length < 512) {
-                        KeyboardOptions(
-                            keyboardType = KeyboardType.Text, imeAction = ImeAction.Default
-                        )
-                    } else {
-                        KeyboardOptions(
-                            keyboardType = KeyboardType.Text, imeAction = ImeAction.Next
-                        )
-                    },
-                    keyboardActions = KeyboardActions(onNext = {
-                        focusManager.clearFocus()
-                    }),
-                    modifier = Modifier.height(boxSize.extraMedium)
-                )
-            },
-            titleTestimonial = {
-                ValidatedTextField(
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(scrollState),
+                verticalArrangement = Arrangement.Center
+            ) {
+                AppValidateOutlineTxtField(
                     value = title.value,
-                    onValueChange = { getViewModel.onEvent(TestimonialEvent.OnTitleChange(it)) },
                     label = "Title",
-                    showError = title.error !is UiString.Empty,
+                    isError = title.error !is UiString.Empty,
+                    keyboardActions = KeyboardActions(onNext = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    }),
+                    onValueChange = { getViewModel.onEvent(TestimonialEvent.OnTitleChange(it)) },
                     errorMessage = title.error,
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text, imeAction = ImeAction.Next
-                    ),
+                )
+
+                Spacer(modifier = Modifier.height(spacing.medium))
+
+                if (selectedOption == radioButtonList[0] || selectedOption == radioButtonList[1]) {
+                    AppValidateOutlineTxtField(
+                        value = testimonial.value,
+                        label = "Testimonial",
+                        keyboardActions = KeyboardActions(onNext = {
+                            focusManager.clearFocus()
+                        }),
+                        onValueChange = {
+                            getViewModel.onEvent(
+                                TestimonialEvent.OnTestimonialChange(
+                                    it
+                                )
+                            )
+                        },
+                        errorMessage = testimonial.error,
+                        isError = testimonial.error !is UiString.Empty,
+                        modifier = Modifier.height(boxSize.extraMedium),
+                        imeAction = if (testimonial.value.length > ValidateTxtLength.defLength) {
+                            ImeAction.Next
+                        } else {
+                            ImeAction.Default
+                        },
+                        showLenErrorMsg = true
+                    )
+                    Spacer(modifier = Modifier.height(spacing.medium))
+                }
+
+                AppValidateOutlineTxtField(
+                    value = organization.value,
+                    onValueChange = { getViewModel.onEvent(TestimonialEvent.OnOrgChange(it)) },
+                    label = "Organisation",
+                    isError = organization.error !is UiString.Empty,
+                    errorMessage = organization.error,
                     keyboardActions = KeyboardActions(onNext = {
                         focusManager.moveFocus(FocusDirection.Down)
                     })
                 )
-            },
-            onOptionSelected = {
-                getViewModel.onEvent(TestimonialEvent.OnTypeChange(it))
-            })
 
-        Spacer(modifier = Modifier.height(spacing.medium))
+                Spacer(modifier = Modifier.height(spacing.medium))
 
-        ValidatedTextField(
-            value = organization.value,
-            onValueChange = { getViewModel.onEvent(TestimonialEvent.OnOrgChange(it)) },
-            label = "Organisation",
-            showError = organization.error !is UiString.Empty,
-            errorMessage = organization.error,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text, imeAction = ImeAction.Next
-            ),
-            keyboardActions = KeyboardActions(onNext = {
-                focusManager.moveFocus(FocusDirection.Down)
-            })
-        )
+                AppValidateOutlineTxtField(
+                    value = role.value,
+                    onValueChange = { getViewModel.onEvent(TestimonialEvent.OnRoleChange(it)) },
+                    label = "Role",
+                    isError = role.error !is UiString.Empty,
+                    errorMessage = role.error,
+                    imeAction = ImeAction.Done,
+                    modifier = Modifier.focusRequester(focusRequester = focusRequester),
+                    keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
+                )
 
-        Spacer(modifier = Modifier.height(spacing.medium))
-
-        ValidatedTextField(
-            value = role.value,
-            onValueChange = { getViewModel.onEvent(TestimonialEvent.OnRoleChange(it)) },
-            label = "Role",
-            showError = role.error !is UiString.Empty,
-            errorMessage = role.error,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text, imeAction = ImeAction.Done
-            ),
-            modifier = Modifier.focusRequester(focusRequester = focusRequester),
-            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
-        )
-
-        if (selectedOption == radioButtonList[1]) {
-            Spacer(modifier = Modifier.height(spacing.medium))
-            ImageLayout(
-                //onNavigateBeforeImgCropper = onNavigateImgCropper,
-                getViewModel = getViewModel,
-                //onNavigateAfterImgCropper = onNavigateAfterImgCropper
-            )
-        } else if (selectedOption == radioButtonList[2]) {
-            Spacer(modifier = Modifier.height(spacing.medium))
-            TestGetVideo()
-        }
-
-        Button(
-            onClick = {
-                showCustomDialogWithResult = !showCustomDialogWithResult
-                getViewModel.onEvent(TestimonialEvent.OnSubmit)
-            },
-            modifier = Modifier
-                .fillMaxWidth(1f)
-                .padding(spacing.medium),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Blue, contentColor = Color.White
-            ),
-            enabled = areInputsValid && areMediaValid
-        ) {
-            Text(text = "Submit", style = MaterialTheme.typography.labelLarge)
-        }
-
-        if (showCustomDialogWithResult) {
-
-            when (events) {
-
-                is TestimonialSubmitState.Error -> {
-                    Log.d("validate", "Error -> ${events.error}")
-                }
-
-                is TestimonialSubmitState.Loading -> LoadingAnimation()
-
-                is TestimonialSubmitState.Success -> {
-                    OnSuccessfulSubmit(onDismiss = {
-                        showCustomDialogWithResult = !showCustomDialogWithResult
-                    }, onNavigateTstHome = onNavigateTstHome, onPositiveClick = {
-                        onNavigateTstHome()
-//                        deleteImageFile(context, uri = getViewModel.imgBefore.value.localUrl)
-//                        deleteImageFile(context, uri = getViewModel.imgAfter.value.localUrl)
-                    })
-                }
-
-                is TestimonialSubmitState.NetworkError -> AppErrorScreen(onTryAgain = {
-                    getViewModel.onEvent(
-                        TestimonialEvent.OnSubmit
+                if (selectedOption == radioButtonList[1]) {
+                    Spacer(modifier = Modifier.height(spacing.medium))
+                    ImageLayout(
+                        getViewModel = getViewModel,
                     )
-                })
+                } else if (selectedOption == radioButtonList[2]) {
+                    Spacer(modifier = Modifier.height(spacing.medium))
+                    TstGetVideo()
+                }
+
+                AppDefBtn(
+                    onClick = {
+                        showCustomDialogWithResult = !showCustomDialogWithResult
+                        getViewModel.onEvent(TestimonialEvent.OnSubmit)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(spacing.medium),
+                    color = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    ),
+                    enabled = areInputsValid && areMediaValid
+                ) {
+                    AppTexts.LabelLarge(text = "Submit")
+                }
+
+                if (showCustomDialogWithResult) {
+                    when (events) {
+                        is TestimonialSubmitState.Error -> {
+                            Log.d("validate", "Error -> ${events.error}")
+                        }
+
+                        is TestimonialSubmitState.Loading -> LoadingAnimation()
+                        is TestimonialSubmitState.Success -> {
+                            OnSuccessfulSubmit(onDismiss = {
+                                showCustomDialogWithResult = !showCustomDialogWithResult
+                            }, onNavigateTstHome = onNavigateTstHome, onPositiveClick = {
+                                onNavigateTstHome()
+                            })
+                        }
+
+                        is TestimonialSubmitState.NetworkError -> AppErrorScreen(onTryAgain = {
+                            getViewModel.onEvent(
+                                TestimonialEvent.OnSubmit
+                            )
+                        })
+                    }
+                }
             }
         }
-
     }
-
-
 }
 
 
@@ -248,24 +238,20 @@ fun CreateTstScreen(
             getViewModel = getViewModel,
         )
     }
-
     HandleBackPress {
         showCustomDialogWithResult = !showCustomDialogWithResult
     }
-
     if (showCustomDialogWithResult) {
-        CustomDialogWithResultExample(
-            onDismiss = {
-                showCustomDialogWithResult = !showCustomDialogWithResult
-            },
-            onNegativeClick = onNavigateTstCreate,
-            onPositiveClick = {
-                showCustomDialogWithResult = !showCustomDialogWithResult
-            },
-            btnTitle = "Discard Testimonial",
-            btnWarn = "Allow Permission to send you notifications when new art styles added.",
-            btn1Title = "Discard Testimonials",
-            btn2Title = "Cancel"
+        ShowCustomConfirmationDialog(onDismiss = {
+            showCustomDialogWithResult = !showCustomDialogWithResult
+        }, onNegativeClick = onNavigateTstCreate, onPositiveClick = {
+            showCustomDialogWithResult = !showCustomDialogWithResult
+        }, dialogData = DialogData(
+            dialogTitle = "Discard Testimonial",
+            dialogDesc = "Allow Permission to send you notifications when new art styles added.",
+            negTitle = "Discard Testimonials",
+            posTitle = "Cancel"
+        )
         )
     }
 }

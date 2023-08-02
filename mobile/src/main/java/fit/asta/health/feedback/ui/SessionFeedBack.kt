@@ -23,7 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.common.ui.components.generic.AppTopBar
-import fit.asta.health.common.ui.components.UploadFiles
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
+import fit.asta.health.common.ui.components.uploadFiles
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getFileName
@@ -34,7 +35,6 @@ import fit.asta.health.feedback.model.network.Qn
 import fit.asta.health.feedback.ui.components.SubmitButton
 import fit.asta.health.feedback.ui.components.WelcomeCard
 import fit.asta.health.feedback.ui.components.feedbackTextFieldItem
-import fit.asta.health.common.ui.components.generic.LoadingAnimation
 
 @Composable
 fun SessionFeedback(
@@ -114,7 +114,7 @@ fun feedbackQuesItem(qn: Qn): MutableState<An> {
     val context = LocalContext.current
     val ans = remember { mutableStateOf(An(null, false, null, null, 0, 0)) }
     if (qn.type == 1) {
-        val uriList = UploadFiles(
+        val uriList = uploadFiles(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = spacing.medium)

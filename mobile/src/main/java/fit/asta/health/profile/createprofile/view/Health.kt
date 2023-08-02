@@ -26,10 +26,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import fit.asta.health.common.ui.components.generic.AppModalBottomSheetLayout
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
-import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.common.ui.components.generic.AppModalBottomSheetLayout
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.MultiRadioBtnKeys
 import fit.asta.health.profile.createprofile.view.HealthCreateBottomSheetTypes.*
 import fit.asta.health.profile.createprofile.view.components.ItemSelectionLayout
@@ -117,7 +117,6 @@ fun HealthContent(
                 onStateChange = { state ->
                     viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.HEALTHHIS, state)
                 },
-                enabled = selectedHealthHisDemo == TwoRadioBtnSelections.First,
                 cardIndex = 0,
                 composeIndex = ComposeIndex.First,
                 listName = "Health History"
@@ -160,7 +159,6 @@ fun HealthContent(
                 onStateChange = { state ->
                     viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.AILMENTS, state)
                 },
-                enabled = selectedAilDemo == TwoRadioBtnSelections.First,
                 cardIndex = 3,
                 composeIndex = ComposeIndex.First,
                 listName = "Ailments"
@@ -178,7 +176,6 @@ fun HealthContent(
                 onStateChange = { state ->
                     viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.MEDICATIONS, state)
                 },
-                enabled = selectedMedDemo == TwoRadioBtnSelections.First,
                 cardIndex = 4,
                 composeIndex = ComposeIndex.First,
                 listName = "Medication"
@@ -195,7 +192,6 @@ fun HealthContent(
                 onStateChange = { state ->
                     viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.HEALTHTAR, state)
                 },
-                enabled = selectedHealthTarDemo == TwoRadioBtnSelections.First,
                 cardIndex = 5,
                 composeIndex = ComposeIndex.First,
                 listName = "Health Targets"
@@ -213,7 +209,6 @@ fun HealthContent(
                 onStateChange = { state ->
                     viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.ADDICTION, state)
                 },
-                enabled = selectedAddDemo == TwoRadioBtnSelections.First,
                 cardIndex = 6,
                 composeIndex = ComposeIndex.First,
                 listName = "Addictions"
