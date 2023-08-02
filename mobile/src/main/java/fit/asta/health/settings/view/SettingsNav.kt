@@ -104,6 +104,7 @@ fun NavGraphBuilder.settingsNavigation(
                     }
 
                     SettingsUiEvent.VERSION -> {}
+                    else -> {}
                 }
             }
 

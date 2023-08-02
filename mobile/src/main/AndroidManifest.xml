@@ -58,6 +58,7 @@
             android:name=".tools.sleep.SleepToolActivity"
             android:exported="false"
             android:label="@string/title_activity_sleep_tool" />
+        <activity android:name=".payments.razorpay.PaymentActivity" />
         <activity android:name=".settings.WebViewActivity" />
         <activity android:name=".auth.AuthActivity" />
         <activity android:name=".onboarding.OnBoardingScreenActivity" />
