@@ -9,6 +9,16 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.unit.Dp
 
+/** [Modifier.dashedBorder]  is a custom modifier for Jetpack Compose.This modifier allows you to
+ * draw a dashed border around a Compose element. The dashed border is drawn using a Paint object
+ * with a specified width, radius, and color. The dashes are created using a dashPathEffect on the
+ * Paint, which defines the length of the dashes and the spacing between them.
+ *
+ * @param width: The width of the dashed border. This is specified in density-independent pixels (Dp).
+ * @param radius: The radius of the corners of the rounded rectangle forming the border. This is specified in density-independent pixels (Dp).
+ * @param color: The color of the dashed border.
+ * */
+
 fun Modifier.dashedBorder(width: Dp, radius: Dp, color: Color) = drawBehind {
     drawIntoCanvas {
         val paint = Paint().apply {
