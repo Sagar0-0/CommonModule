@@ -38,10 +38,8 @@ data class ButtonListTypes(
     val buttonType: String,
 )
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun TwoTogglesGroup(
-    viewModel: ProfileViewModel = hiltViewModel(),
     selectionTypeText: String?,
     selectedOption: TwoRadioBtnSelections?,
     onStateChange: (TwoRadioBtnSelections) -> Unit,
@@ -94,18 +92,12 @@ fun TwoTogglesGroup(
 
                 }
             }
-
         }
-
-
     }
-
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun ThreeTogglesGroups(
-    viewModel: ProfileViewModel = hiltViewModel(),
     selectionTypeText: String?,
     selectedOption: ThreeRadioBtnSelections?,
     onStateChange: (ThreeRadioBtnSelections) -> Unit,
@@ -183,7 +175,6 @@ fun SelectionCardCreateProfile(
     onItemsSelect: () -> Unit,
     selectedOption: TwoRadioBtnSelections?,
     onStateChange: (TwoRadioBtnSelections) -> Unit,
-    enabled: Boolean?,
     cardIndex: Int? = null,
     composeIndex: ComposeIndex,
     listName: String = "",

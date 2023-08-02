@@ -1,20 +1,20 @@
 package fit.asta.health.testimonials.view.components
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import fit.asta.health.common.ui.components.generic.AppDefOutlineTextField
 import fit.asta.health.common.utils.UiString
 
 
@@ -30,44 +30,16 @@ fun ValidatedTextField(
     errorMessage: UiString,
     singleLine: Boolean = false,
 ) {
-
-
-    /*Todo Text fields theming*/
-
     Column(Modifier.fillMaxWidth()) {
-
-        OutlinedTextField(
+        AppDefOutlineTextField(
+            modifier = modifier,
             value = value,
             onValueChange = onValueChange,
-            label = { Text(text = label, textAlign = TextAlign.Center) },
+            label = label,
             isError = showError,
-            trailingIcon = {
-                if (showError) Icon(
-                    imageVector = Icons.Filled.Error, contentDescription = "Show Error Icon"
-                )
-            },
-            keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions,
             singleLine = singleLine,
-            modifier = modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.medium
         )
-
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-
-            if (showError) {
-                Text(
-                    text = errorMessage.asString(),
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.titleSmall
-                )
-            }
-
-            if (label == "Testimonials") {
-                Text(text = "${value.length}/256")
-            }
-        }
-
     }
 }
 
@@ -84,7 +56,6 @@ fun ValidateNumberField(
     showError: Boolean = false,
     errorMessage: UiString = UiString.Empty,
 ) {
-
     Column(Modifier.fillMaxWidth()) {
         OutlinedTextField(
             value = value,
@@ -108,7 +79,6 @@ fun ValidateNumberField(
             modifier = modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.medium,
         )
-
         Row(Modifier.fillMaxWidth()) {
             if (showError) {
                 Text(
@@ -119,6 +89,4 @@ fun ValidateNumberField(
             }
         }
     }
-
-
 }

@@ -13,27 +13,25 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CloudDone
+import androidx.compose.material.icons.filled.Reviews
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.sp
-import fit.asta.health.R
-import fit.asta.health.common.ui.components.PrimaryButton
+import fit.asta.health.common.ui.components.generic.AppDefCard
+import fit.asta.health.common.ui.components.generic.AppDefaultIcon
+import fit.asta.health.common.ui.components.generic.AppTexts
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.theme.boxSize
 import fit.asta.health.common.ui.theme.cardHeight
 import fit.asta.health.common.ui.theme.iconSize
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.common.ui.theme.ts
-import fit.asta.health.common.ui.components.generic.LoadingAnimation
+
 
 @Composable
 fun SuccessfulCard(
@@ -44,18 +42,16 @@ fun SuccessfulCard(
 
     Box(contentAlignment = Alignment.TopCenter) {
 
-        Card(
+        AppDefCard(
             modifier = modifier
                 .padding(top = spacing.extraLarge)
                 .heightIn(min = cardHeight.large)
-                .fillMaxWidth(), shape = MaterialTheme.shapes.medium
         ) {
             Column(
                 Modifier
                     .fillMaxWidth()
                     .padding(top = spacing.extraLarge3)
             ) {
-
                 Row(
                     Modifier
                         .fillMaxWidth()
@@ -63,15 +59,12 @@ fun SuccessfulCard(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = "Thank You!",
+                    AppTexts.HeadlineMedium(
+                        text = "Thank You",
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        style = ts.successfulCardText
                     )
                 }
-
                 Spacer(modifier = Modifier.height(spacing.small))
-
                 Row(
                     Modifier
                         .fillMaxWidth()
@@ -79,54 +72,39 @@ fun SuccessfulCard(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
+                    AppTexts.BodyMedium(
                         text = if (underReview) {
                             "Your feedback is under review. Please wait few seconds."
                         } else {
                             "Your feedback has been submitted"
-                        },
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Normal,
-                        color = MaterialTheme.colorScheme.secondary,
-                        textAlign = TextAlign.Center
+                        }, color = MaterialTheme.colorScheme.secondary, textAlign = TextAlign.Center
                     )
                 }
-
                 Spacer(modifier = Modifier.height(spacing.large))
-
                 if (underReview) {
                     LoadingAnimation()
-                } else {
-                    PrimaryButton(text = "Done", event = onClick)
                 }
-
                 Spacer(modifier = Modifier.height(spacing.medium))
-
             }
-
         }
-
-
 
         Box(
             modifier = Modifier
                 .clip(shape = CircleShape)
-//                .size(100.dp)
                 .defaultMinSize(minWidth = boxSize.medium, minHeight = boxSize.medium)
                 .background(color = Color.Green), contentAlignment = Alignment.Center
         ) {
-            Icon(
-                painter = if (underReview) {
-                    painterResource(id = R.drawable.review)
+            AppDefaultIcon(
+                imageVector = if (underReview) {
+                    Icons.Filled.Reviews
                 } else {
-                    painterResource(id = R.drawable.ic_tick)
+                    Icons.Filled.CloudDone
                 },
-                contentDescription = null,
+                contentDescription = "Successful Tst Upload",
                 tint = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.size(iconSize.medium)
             )
         }
-
     }
 
 

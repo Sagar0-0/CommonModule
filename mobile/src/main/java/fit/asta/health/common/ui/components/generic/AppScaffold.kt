@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 
-
 /**The [AppScaffold] is a composable function in Jetpack Compose, used to create a scaffold layout
  *  for the app. It provides a basic structure for apps that typically include a top app bar,
  *  a bottom app bar, and a floating action button. It also allows displaying a Snackbar at the
@@ -50,7 +49,6 @@ fun AppScaffold(
     floatingActionButton: @Composable (() -> Unit)? = null,
     content: @Composable (PaddingValues) -> Unit = {},
 ) {
-
     Scaffold(modifier = modifier.fillMaxSize(), topBar = {
         topBar?.let { topBar -> topBar() }
     }, bottomBar = {

@@ -38,17 +38,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
+import fit.asta.health.common.jetpack.dashedBorder
 import fit.asta.health.common.ui.theme.Shapes
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.iconButtonSize
 import fit.asta.health.common.ui.theme.imageSize
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.getFileName
-import fit.asta.health.testimonials.view.create.dashedBorder
 
 
 @Composable
-fun UploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
+fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
     val uriList = remember {
         mutableStateListOf<Uri>()
     }

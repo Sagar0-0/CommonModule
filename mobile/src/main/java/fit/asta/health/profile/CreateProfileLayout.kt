@@ -18,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.common.ui.components.*
+import fit.asta.health.common.ui.components.functional.DialogData
+import fit.asta.health.common.ui.components.functional.ShowCustomConfirmationDialog
 import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.common.ui.components.generic.AppTopBar
 import fit.asta.health.common.ui.theme.spacing
@@ -28,7 +30,6 @@ import fit.asta.health.profile.createprofile.view.LifeStyleCreateScreen
 import fit.asta.health.profile.createprofile.view.PhysiqueCreateScreen
 import fit.asta.health.profile.createprofile.view.components.Stepper
 import fit.asta.health.profile.viewmodel.ProfileViewModel
-import fit.asta.health.testimonials.view.create.CustomDialogWithResultExample
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
@@ -165,7 +166,7 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel(), onBack: (
         }
 
         if (showCustomDialogWithResult) {
-            CustomDialogWithResultExample(
+            ShowCustomConfirmationDialog(
                 onDismiss = {
                     showCustomDialogWithResult = !showCustomDialogWithResult
                 },
@@ -173,10 +174,12 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel(), onBack: (
                 onPositiveClick = {
                     showCustomDialogWithResult = !showCustomDialogWithResult
                 },
-                btnTitle = "Discard Profile Creation",
-                btnWarn = "You will miss important FUTURE UPDATES like CUSTOM PLANS based on your PROFILE." + "CLICK Cancel to complete your PROFILE",
-                btn1Title = "Discard Profile Creation and Move to Home Screen",
-                btn2Title = "Cancel And Continue to Create Profile"
+                dialogData = DialogData(
+                    dialogTitle = "Discard Profile Creation",
+                    dialogDesc = "You will miss important FUTURE UPDATES like CUSTOM PLANS based on your PROFILE." + "CLICK Cancel to complete your PROFILE",
+                    negTitle = "Discard Profile Creation and Move to Home Screen",
+                    posTitle = "Cancel And Continue to Create Profile"
+                ),
             )
         }
 
