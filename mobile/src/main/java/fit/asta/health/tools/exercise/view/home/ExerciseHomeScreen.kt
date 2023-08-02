@@ -207,7 +207,6 @@ fun DanceBottomSheet(
         ) {
             item {
                 CardItem(
-                    modifier = Modifier,
                     name = "Style",
                     type = style,
                     id = R.drawable.baseline_music_note_24
@@ -215,7 +214,6 @@ fun DanceBottomSheet(
             }
             item {
                 CardItem(
-                    modifier = Modifier,
                     name = "Music",
                     type = music,
                     id = R.drawable.baseline_music_note_24,

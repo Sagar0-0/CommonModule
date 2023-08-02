@@ -186,7 +186,6 @@ fun WalkingBottomSheetView(
         ) {
             item {
                 CardItem(
-                    modifier = Modifier,
                     name = "Music ",
                     type = apiState.titleMusic,
                     id = R.drawable.baseline_music_note_24
@@ -194,7 +193,6 @@ fun WalkingBottomSheetView(
             }
             item {
                 CardItem(
-                    modifier = Modifier,
                     name = "Types",
                     type = selectedWalkTypes.let {
                         it.ifBlank { apiState.valuesType }
