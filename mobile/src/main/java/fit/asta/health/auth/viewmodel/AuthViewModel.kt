@@ -15,7 +15,6 @@ import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.AuthActivity
 import fit.asta.health.auth.model.AuthRepo
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.auth.model.domain.UserCred
@@ -74,34 +73,29 @@ class AuthViewModel
         }
     }
 
-    fun logout(context: Context, showSnackBar: (message: String) -> Unit) {
+    fun logout(context: Context, onSuccess: () -> Unit, onFailure: (message: String) -> Unit) {
         AuthUI.getInstance().signOut(context)
             .addOnCompleteListener { signOutTask ->
-
                 if (signOutTask.isSuccessful) {
-                    AuthActivity.launch(context)
+                    onSuccess()
+                    _loginState.value = null
+                    _signupState.value = null
                 } else {
-                    showSnackBar(signOutTask.exception?.message!!)
+                    onFailure(signOutTask.exception?.message!!)
                 }
             }
-        _loginState.value = null
-        _signupState.value = null
     }
 
-    fun deleteAccount(context: Context, showSnackBar: (message: String) -> Unit) {
-
+    fun deleteAccount(onSuccess: () -> Unit, onFailure: (message: String) -> Unit) {
         val currentUser = Firebase.auth.currentUser ?: return
         val credential: AuthCredential = when (currentUser.providerData[1].providerId) {
             "google.com" -> {
-
                 val fireBaseContext = FirebaseAuth.getInstance().app.applicationContext
                 val googleAccount = GoogleSignIn.getLastSignedInAccount(fireBaseContext)
                 GoogleAuthProvider.getCredential(googleAccount?.idToken, null)
-
             }
 
             "phone" -> {
-
                 // How to get the below params(verificationId, code), when we use firebase auth ui?
                 PhoneAuthProvider.getCredential(currentUser.phoneNumber!!, "")
             }
@@ -109,33 +103,31 @@ class AuthViewModel
             else -> return
         }
 
-        deleteAccount(credential, currentUser, context, showSnackBar)
+        deleteAccount(credential, currentUser, onSuccess, onFailure)
     }
 
     private fun deleteAccount(
         credential: AuthCredential,
         user: FirebaseUser,
-        context: Context,
-        showSnackBar: (message: String) -> Unit
+        onSuccess: () -> Unit,
+        onFailure: (message: String) -> Unit
     ) =
         reAuthenticateUser(credential)
             .addOnCompleteListener { reAuthTask ->
-
                 if (reAuthTask.isSuccessful) {
-
                     user.delete()
                         .addOnCompleteListener { deleteTask ->
-
                             if (deleteTask.isSuccessful) {
-                                AuthActivity.launch(context)
+                                onSuccess()
+                                _loginState.value = null
+                                _signupState.value = null
                             } else {
-                                showSnackBar(deleteTask.exception?.message!!)
+                                onFailure(deleteTask.exception?.message!!)
                                 Log.d("DeleteAccount", deleteTask.exception?.message!!)
                             }
                         }
                 } else { //Handle the exception
-
-                    showSnackBar(reAuthTask.exception?.message!!)
+                    onFailure(reAuthTask.exception?.message!!)
                     Log.d("ReAuth", reAuthTask.exception?.message!!)
                 }
             }

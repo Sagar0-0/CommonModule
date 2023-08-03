@@ -1,8 +1,6 @@
 package fit.asta.health
 
-import android.app.Activity
 import android.app.AlarmManager
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -35,13 +33,6 @@ class MainActivity : ComponentActivity(),
     companion object {
         private const val REQUEST_FLEXIBLE_UPDATE: Int = 1369
         private const val REQUEST_IMMEDIATE_UPDATE: Int = 1789
-        fun launch(context: Context) {
-            Intent(context, MainActivity::class.java)
-                .apply {
-                    context.startActivity(this)
-                }
-            (context as Activity).finishAffinity()
-        }
     }
 
     private lateinit var networkConnectivity: NetworkConnectivity
@@ -61,16 +52,20 @@ class MainActivity : ComponentActivity(),
                 }
             }
         }
-        loadAppScreen()
+        registerConnectivityReceiver()
+        startMainNavHost()
         FirebaseAuth.getInstance().addIdTokenListener(this)
     }
 
-    fun loadAppScreen() {
+    private fun registerConnectivityReceiver() {
         networkConnectivity = NetworkConnectivity(this)
         networkConnectivity.observe(this) { status ->
             isConnected.value = status
         }
+    }
 
+
+    fun startMainNavHost() {
         setContent {
             AppTheme {
                 MainNavHost(isConnected.value)

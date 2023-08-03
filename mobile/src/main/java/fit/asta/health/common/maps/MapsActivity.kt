@@ -24,11 +24,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.google.android.libraries.places.api.Places
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -159,18 +157,12 @@ class MapsActivity : AppCompatActivity() {
         NavHost(
             modifier = Modifier.fillMaxSize(),
             navController = navController,
-            startDestination = MapScreens.SavedAdd.route + "?search={search}"
+            startDestination = MapScreens.SavedAdd.route
         ) {
             composable(
-                route = MapScreens.SavedAdd.route + "?search={search}",
-                arguments = listOf(navArgument("search") {
-                    defaultValue = false
-                    type = NavType.BoolType
-                })
+                route = MapScreens.SavedAdd.route
             ) {
-                val startSearch = it.arguments?.getBoolean("search") ?: false
                 SavedAddressesScreen(
-                    startSearch = startSearch,
                     navHostController = navController,
                     mapsViewModel = mapsViewModel,
                     onBackPressed = ::finish
@@ -186,12 +178,7 @@ class MapsActivity : AppCompatActivity() {
                 MapScreen(
                     myAddressItem = myAddressItem,
                     mapsViewModel = mapsViewModel,
-                    onBackPressed = navController::navigateUp,
-                    onSearchClick = {
-                        navController.navigate(MapScreens.SavedAdd.route + "?search=true") {
-                            popUpTo(0)
-                        }
-                    }
+                    onBackPressed = navController::navigateUp
                 )
             }
         }

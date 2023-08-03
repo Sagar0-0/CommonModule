@@ -31,8 +31,7 @@ import java.util.*
 fun MapScreen(
     myAddressItem: MyAddress,
     mapsViewModel: MapsViewModel,
-    onBackPressed: () -> Unit,
-    onSearchClick: () -> Unit
+    onBackPressed: () -> Unit
 ) {
     val context = LocalContext.current
     val cameraPositionState = rememberCameraPositionState {
@@ -150,7 +149,7 @@ fun MapScreen(
                     .fillMaxWidth()
                     .padding(spacing.small)
                     .clickable {
-                        onSearchClick()
+//                        onSearchClick() TODO: SEARCH BOTTOM SHEET
                     },
                 value = "",
                 onValueChange = {},

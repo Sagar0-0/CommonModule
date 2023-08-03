@@ -37,7 +37,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,8 +44,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -73,7 +70,6 @@ import fit.asta.health.common.utils.ResponseState
 
 @Composable
 fun SavedAddressesScreen(
-    startSearch: Boolean = false,
     navHostController: NavHostController,
     mapsViewModel: MapsViewModel,
     onBackPressed: () -> Unit
@@ -91,15 +87,6 @@ fun SavedAddressesScreen(
         mutableStateOf("")
     }
 
-    val focusRequester = remember { FocusRequester() }
-    LaunchedEffect(Unit) {
-        if (startSearch) {
-            focusRequester.requestFocus()
-        } else {
-            focusRequester.freeFocus()
-        }
-    }
-
     Column(Modifier.fillMaxSize()) {
         AppTopBar(title = "Saved Addresses", onBack = onBackPressed)
 
@@ -109,7 +96,6 @@ fun SavedAddressesScreen(
             readOnly = false,
             shape = MaterialTheme.shapes.large,
             modifier = Modifier
-                .focusRequester(focusRequester)
                 .fillMaxWidth()
                 .padding(top = spacing.small, start = spacing.small, end = spacing.small),
             value = searchQuery,

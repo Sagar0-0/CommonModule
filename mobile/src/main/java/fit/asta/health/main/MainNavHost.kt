@@ -13,16 +13,19 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import fit.asta.health.auth.ui.authScreens
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
-import fit.asta.health.feedback.ui.feedbackComp
-import fit.asta.health.main.view.mainActivityComp
-import fit.asta.health.payments.referral.view.referralComp
-import fit.asta.health.payments.sub.view.subscriptionComp
-import fit.asta.health.payments.wallet.view.walletComp
+import fit.asta.health.feedback.ui.feedbackScreen
+import fit.asta.health.main.view.homeScreen
+import fit.asta.health.onboarding.ui.onboardingScreen
+import fit.asta.health.payments.referral.view.referralScreens
+import fit.asta.health.payments.sub.view.subscriptionScreens
+import fit.asta.health.payments.wallet.view.walletScreen
 import fit.asta.health.profile.CreateProfileLayout
 import fit.asta.health.profile.ProfileContent
 import fit.asta.health.scheduler.navigation.schedulerNavigation
-import fit.asta.health.settings.view.settingsNavigation
+import fit.asta.health.settings.view.settingScreens
+import fit.asta.health.splash.splashScreen
 import fit.asta.health.testimonials.testimonialsNavigation
 import fit.asta.health.tools.breathing.nav.breathingNavigation
 import fit.asta.health.tools.exercise.nav.exerciseNavigation
@@ -42,10 +45,15 @@ fun MainNavHost(isConnected: Boolean) {
     }
 
     NavHost(
-        navController = navController, route = Graph.ROOT.route, startDestination = Graph.Home.route
+        navController = navController,
+        route = Graph.ROOT.route,
+        startDestination = Graph.Splash.route
     ) {
+        splashScreen(navController, isConnected)
+        onboardingScreen(navController)
+        authScreens(navController)
+        homeScreen(navController)
 
-        mainActivityComp(navController = navController)
         composable(route = Graph.Profile.route) {
             ProfileContent(onBack = { navController.popBackStack() },
                 onEdit = { navController.navigate(Graph.CreateProfile.route) })
@@ -53,10 +61,6 @@ fun MainNavHost(isConnected: Boolean) {
         composable(route = Graph.CreateProfile.route) {
             CreateProfileLayout(onBack = { navController.popBackStack() })
         }
-
-//        homeComp(navController)
-        settingsNavigation(navController)
-        feedbackComp(navController)
 
         breathingNavigation(navController, onBack = { navController.navigateUp() })
         waterToolNavigation(navController, onBack = { navController.navigateUp() })
@@ -67,9 +71,12 @@ fun MainNavHost(isConnected: Boolean) {
         testimonialsNavigation(navController)
         schedulerNavigation(navController, onBack = { navController.navigateUp() })
 
-        subscriptionComp(navController)
-        referralComp(navController)
-        walletComp(navController)
+        settingScreens(navController)
+        feedbackScreen(navController)
+
+        subscriptionScreens(navController)
+        referralScreens(navController)
+        walletScreen(navController)
     }
 }
 

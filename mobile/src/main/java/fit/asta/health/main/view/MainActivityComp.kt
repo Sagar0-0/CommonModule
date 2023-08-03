@@ -30,11 +30,10 @@ import fit.asta.health.main.MainViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun NavGraphBuilder.mainActivityComp(
+fun NavGraphBuilder.homeScreen(
     navController: NavController,
 ) {
     composable(Graph.Home.route) {
-
         val context = LocalContext.current
         val permissionResultListener = object : PermissionResultListener {
             override fun onGranted(perm: String) {
