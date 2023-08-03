@@ -78,9 +78,10 @@ fun AppTopBarWithHelp(
     title: String,
     onBack: () -> Unit,
     onHelp: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     AppTopBar(
-        title = title, onBack = onBack
+        title = title, onBack = onBack, modifier = modifier
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

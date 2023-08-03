@@ -39,8 +39,8 @@ import kotlin.math.absoluteValue
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun <T> AppBanner(
-    modifier: Modifier = Modifier,
     bannerList: List<T>,
+    modifier: Modifier = Modifier,
     content: @Composable BoxScope.(page: Int) -> Unit,
 ) {
 

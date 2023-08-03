@@ -40,8 +40,9 @@ import androidx.compose.ui.text.style.TextAlign
 
 @Composable
 fun AppTextField(
-    modifier: Modifier = Modifier,
     value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
     label: String = "",
     isError: Boolean = false,
     singleLine: Boolean = true,
@@ -50,7 +51,6 @@ fun AppTextField(
     capitalization: KeyboardCapitalization = KeyboardCapitalization.Sentences,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Next,
-    onValueChange: (String) -> Unit,
 ) {
     OutlinedTextField(
         value = value,

@@ -16,7 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.generic.AppButton
+import fit.asta.health.common.ui.components.generic.AppButtons
 import fit.asta.health.common.ui.components.generic.AppDrawImg
 import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.aspectRatio
@@ -54,7 +54,7 @@ fun ReferAndEarn() {
                     Spacer(modifier = Modifier.height(spacing.small))
                     AppTexts.BodySmall(text = "Send referral link to your friend to earn ₹100")
                     Spacer(modifier = Modifier.height(spacing.medium))
-                    AppButton(onClick = {},
+                    AppButtons.AppStandardButton(onClick = {},
                         modifier = Modifier.height(buttonSize.large),
                         contentPadding = PaddingValues(
                             vertical = spacing.minSmall, horizontal = spacing.small

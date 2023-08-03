@@ -60,8 +60,8 @@ fun AppDefaultIcon(
 
 @Composable
 fun AppDefServerImg(
-    modifier: Modifier = Modifier,
     model: Any?,
+    modifier: Modifier = Modifier,
     contentDescription: String?,
     contentScale: ContentScale = ContentScale.Fit,
 ) {
@@ -86,9 +86,9 @@ fun AppDefServerImg(
 
 @Composable
 fun AppDrawImg(
-    modifier: Modifier = Modifier,
     imgId: Int,
     contentDescription: String?,
+    modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.FillBounds,
 ) {
     Image(

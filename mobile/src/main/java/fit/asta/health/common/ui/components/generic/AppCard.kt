@@ -29,11 +29,11 @@ import fit.asta.health.common.ui.theme.cardElevation
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppCard(
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     shape: Shape = MaterialTheme.shapes.medium,
     colors: CardColors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
     elevation: CardElevation = CardDefaults.cardElevation(defaultElevation = cardElevation.smallMedium),
-    onClick: () -> Unit,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Card(
