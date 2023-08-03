@@ -3,17 +3,12 @@ package fit.asta.health.scheduler.compose.screen.timesettingscreen
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.common.ui.components.generic.AppTopBar
@@ -29,8 +24,7 @@ fun TimeSettingScreen(
     list: SnapshotStateList<StatUiState>,
     timeSettingUiState: IvlUiState,
     tSEvent: (TimeSettingEvent) -> Unit,
-    navBack: () -> Unit,
-    isIntervalDataValid: (IvlUiState) -> Boolean
+    navBack: () -> Unit
 ) {
     var currentBottomSheet: TimeSettingCreateBottomSheetTypes? by remember {
         mutableStateOf(null)
@@ -82,34 +76,14 @@ fun TimeSettingScreen(
                     openSheet()
                 },
                 onDelete = { tSEvent(TimeSettingEvent.DeleteVariantInterval(it)) },
-                onStateChange = { tSEvent(TimeSettingEvent.SetStatus(it))}
+                onStateChange = { tSEvent(TimeSettingEvent.SetStatus(it)) }
             )
         },
         topBar = {
             AppTopBar(
                 title = "Intervals and Time Settings",
-                backIcon = Icons.Default.Close,
                 onBack = { navBack() },
-                actions = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                    ) {
-                        IconButton(
-                            onClick = {
-                                tSEvent(TimeSettingEvent.Save)
-                                if (isIntervalDataValid(timeSettingUiState)) {
-                                    navBack()
-                                }
-                            }) {
-                            Icon(
-                                imageVector = Icons.Default.Check,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                    }
-                })
+            )
         })
     CustomModelBottomSheet(
         targetState = bottomSheetState.isVisible,
@@ -169,16 +143,10 @@ fun TimeSettingCreateBtmSheetLayout(
 
         VariantInterval -> {
             Column(modifier = Modifier.fillMaxWidth()) {
-                val keyboardController = LocalSoftwareKeyboardController.current
                 AddVariantIntervalBottomSheet(
-                    text = "Variant Interval",
-                    onNavigateBack = {
-                        closeSheet()
-                        keyboardController?.hide()
-                    },
+                    onNavigateBack = { closeSheet() },
                     onSave = {
                         closeSheet()
-                        keyboardController?.hide()
                         tSEvent(TimeSettingEvent.AddVariantInterval(it, context))
                     }
                 )

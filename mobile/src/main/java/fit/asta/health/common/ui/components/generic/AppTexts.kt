@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 
 /**[AppTexts] is a utility class in a Compose-based Android application that provides a set of
  * Composable functions for displaying text with different predefined styles. These Composable
@@ -229,12 +230,17 @@ object AppTexts {
         modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
+        overflow: TextOverflow = TextOverflow.Clip,
+        maxLines: Int = Int.MAX_VALUE,
     ) {
         Text(
             text = text,
             style = MaterialTheme.typography.labelLarge,
             modifier = modifier,
-            color = color
+            color = color,
+            textAlign = textAlign,
+            overflow = overflow,
+            maxLines = maxLines
         )
     }
 

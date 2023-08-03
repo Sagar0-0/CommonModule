@@ -1,8 +1,10 @@
 package fit.asta.health.common.ui.components.generic
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
@@ -10,15 +12,14 @@ import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.lerp
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPagerIndicator
+import com.google.accompanist.pager.PagerState
 import fit.asta.health.common.ui.theme.spacing
-import kotlin.math.absoluteValue
 
 /** [AppDivider] is a compose method, which creates a horizontal divider line.
-
  * [AppDividerLineWidth] define an object containing custom divider widths.
  */
 
@@ -40,6 +41,11 @@ fun AppDivider(lineWidth: Dp) {
     )
 }
 
+/**[AppProgressArc] is a custom composable function in Jetpack Compose, which provides a circular
+ * progress indicator for the app.
+ * @param modifier (optional) - A set of modifiers to customize the layout and behavior of the AppProgressArc.
+ * @param strokeWidth (optional) - The width of the circular progress indicator stroke.
+ * */
 
 @Composable
 fun AppProgressArc(
@@ -55,20 +61,30 @@ fun AppProgressArc(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
-fun Modifier.carouselTransition(page: Int, pagerState: PagerState) =
-    graphicsLayer {
-        val pageOffset =
-            ((pagerState.currentPage - page) + pagerState.currentPageOffsetFraction).absoluteValue
+/**[AppHorizontalPagerIndicator] function is a Composable function that displays a horizontal pager
+ * indicator.
+ * @param pagerState A required parameter that represents the state of the pager. It holds
+ * information about the current page, the number of items, and allows controlling the pager's behavior.
+ * @param modifier An optional parameter that allows you to apply styling modifications to
+ * the HorizontalPagerIndicator.
+ * */
 
-        val transformation =
-            lerp(
-                start = 0.7f,
-                stop = 1f,
-                fraction = 1f - pageOffset.coerceIn(0f, 1f)
-            )
-        alpha = transformation
-        scaleY = transformation
-    }
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun AppHorizontalPagerIndicator(
+    pagerState: PagerState,
+    modifier: Modifier = Modifier,
+) {
+    HorizontalPagerIndicator(
+        pagerState = pagerState,
+        modifier = modifier,
+        activeColor = LocalContentColor.current.copy(alpha = LocalContentAlpha.current),
+        inactiveColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
+        indicatorWidth = spacing.small,
+        indicatorHeight = spacing.small,
+        spacing = spacing.small,
+        indicatorShape = CircleShape
+    )
+}
 
 

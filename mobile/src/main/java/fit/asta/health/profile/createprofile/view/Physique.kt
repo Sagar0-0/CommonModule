@@ -70,7 +70,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(
+    ExperimentalFoundationApi::class,
+    ExperimentalMaterial3Api::class,
+    ExperimentalCoroutinesApi::class
+)
 @Composable
 fun PhysiqueCreateScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
@@ -306,6 +310,7 @@ fun PhysiqueCreateScreen(
                     Column(
                         Modifier.fillMaxWidth()
                     ) {
+
                         ThreeTogglesGroups(selectionTypeText = "Gender",
                             selectedOption = selectedGenderOptionDemo,
                             onStateChange = { state ->
@@ -316,9 +321,8 @@ fun PhysiqueCreateScreen(
                             })
 
                         if (selectedGenderOptionDemo == ThreeRadioBtnSelections.Second) {
-
-
-                            TwoTogglesGroup(selectionTypeText = "Are you having periods?",
+                            TwoTogglesGroup(
+                                selectionTypeText = "Are you having periods?",
                                 selectedOption = selectedIsOnPeriodOptionDemo,
                                 onStateChange = { state ->
                                     viewModel.updateRadioButtonSelection(
@@ -326,7 +330,8 @@ fun PhysiqueCreateScreen(
                                     )
                                 })
 
-                            TwoTogglesGroup(selectionTypeText = "Are you Pregnant",
+                            TwoTogglesGroup(
+                                selectionTypeText = "Are you Pregnant",
                                 selectedOption = selectedIsPregOptionDemo,
                                 onStateChange = { state ->
                                     viewModel.updateRadioButtonSelection(

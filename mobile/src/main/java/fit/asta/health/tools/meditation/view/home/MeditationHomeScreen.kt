@@ -181,7 +181,6 @@ fun MeditationBottomSheet(
         ) {
             item {
                 CardItem(
-                    modifier = Modifier,
                     name = "Music ",
                     type = music,
                     id = R.drawable.baseline_music_note_24
@@ -189,7 +188,6 @@ fun MeditationBottomSheet(
             }
             item {
                 CardItem(
-                    modifier = Modifier,
                     name = "Instructor",
                     type = instructor,
                     id = R.drawable.baseline_merge_type_24,

@@ -2,14 +2,14 @@ package fit.asta.health.testimonials.view.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import fit.asta.health.R
+import fit.asta.health.common.ui.components.generic.AppDefaultIcon
 
 @Composable
 fun ClearTstMedia(onTstMediaClear: () -> Unit) {
@@ -17,10 +17,10 @@ fun ClearTstMedia(onTstMediaClear: () -> Unit) {
         IconButton(onClick = {
             onTstMediaClear()
         }) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_delete_forever),
-                contentDescription = null,
-                tint = Color(0xffFF4081)
+            AppDefaultIcon(
+                imageVector = Icons.Filled.Delete,
+                contentDescription = "Delete the Image",
+                tint = MaterialTheme.colorScheme.error
             )
         }
     }

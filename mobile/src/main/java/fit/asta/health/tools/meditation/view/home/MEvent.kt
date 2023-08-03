@@ -2,7 +2,7 @@ package fit.asta.health.tools.meditation.view.home
 
 import android.content.Context
 
-sealed class MEvent() {
+sealed class MEvent {
     data class SetLevel(val level: String) : MEvent()
     data class SetLanguage(val language: String) : MEvent()
     data class SetInstructor(val instructor: String) : MEvent()

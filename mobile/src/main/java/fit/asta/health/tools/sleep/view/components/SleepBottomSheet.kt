@@ -101,7 +101,6 @@ private fun SleepBottomSheetOptionUI(
 
             item {
                 CardItem(
-                    modifier = Modifier.weight(0.5f),
                     name = "Music",
                     type = "calm",
                     id = R.drawable.baseline_music_note_24
@@ -132,7 +131,6 @@ private fun SleepBottomSheetOptionUI(
                     "None"
 
                 CardItem(
-                    modifier = Modifier.weight(0.5f),
                     name = currentItem.ttl,
                     type = type,
                     id = currentIcon

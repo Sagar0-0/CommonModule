@@ -16,14 +16,19 @@ import androidx.media3.session.CommandButton
 import androidx.media3.session.MediaNotification
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaStyleNotificationHelper.MediaStyle
+import com.google.common.collect.ImmutableList
+import dagger.hilt.android.qualifiers.ApplicationContext
 import fit.asta.health.R
 import fit.asta.health.player.jetpack_audio.di.Dispatcher
 import fit.asta.health.player.jetpack_audio.di.LoulaDispatchers.IO
 import fit.asta.health.player.jetpack_audio.di.LoulaDispatchers.MAIN
 import fit.asta.health.player.jetpack_audio.domain.utils.AppIcons
-import com.google.common.collect.ImmutableList
-import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @UnstableApi class MusicNotificationProvider @Inject constructor(
@@ -38,8 +43,7 @@ import javax.inject.Inject
         TODO("mainDispatcher"),
         TODO("context"),
         TODO("ioDispatcher")
-    ) {
-    }
+    )
 
     override fun createNotification(
         session: MediaSession,

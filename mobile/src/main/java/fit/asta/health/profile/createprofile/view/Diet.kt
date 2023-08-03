@@ -135,7 +135,6 @@ fun DietContent(
                 onStateChange = { state ->
                     viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.DIETREST, state)
                 },
-                enabled = selectedFoodResDemo == TwoRadioBtnSelections.First,
                 cardIndex = 4,
                 composeIndex = ComposeIndex.Third,
                 listName = "Diet"

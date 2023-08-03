@@ -67,7 +67,6 @@ fun NavGraphBuilder.schedulerNavigation(
             TimeSettingScreen(
                 list = list,
                 timeSettingUiState = timeSettingUiState,
-                isIntervalDataValid = schedulerViewModel::isIntervalDataValid,
                 tSEvent = schedulerViewModel::tSEvent,
                 navBack = { navController.popBackStack() }
             )

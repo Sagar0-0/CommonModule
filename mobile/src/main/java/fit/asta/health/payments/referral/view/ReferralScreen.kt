@@ -43,6 +43,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.R
+import fit.asta.health.common.jetpack.dashedBorder
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.AppTopBar
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
@@ -55,7 +56,6 @@ import fit.asta.health.common.utils.shareReferralCode
 import fit.asta.health.payments.referral.model.ApplyCodeResponse
 import fit.asta.health.payments.referral.model.ReferralDataResponse
 import fit.asta.health.payments.referral.model.UserDetails
-import fit.asta.health.testimonials.view.create.dashedBorder
 
 @Composable
 fun ReferralScreen(

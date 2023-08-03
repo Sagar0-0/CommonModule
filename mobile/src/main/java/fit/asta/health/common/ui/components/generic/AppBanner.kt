@@ -16,7 +16,6 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.util.lerp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
 import fit.asta.health.common.ui.theme.spacing
@@ -85,7 +84,7 @@ fun <T> AppBanner(
                 content(page)
             }
             //Horizontal dot indicator
-            HorizontalPagerIndicator(
+            AppHorizontalPagerIndicator(
                 pagerState = pagerState,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)

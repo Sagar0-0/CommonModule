@@ -38,6 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.R
+import fit.asta.health.common.jetpack.getOneUrl
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.imageSize
@@ -46,7 +47,6 @@ import fit.asta.health.common.utils.UiString
 import fit.asta.health.profile.viewmodel.ProfileEvent
 import fit.asta.health.profile.viewmodel.ProfileViewModel
 import fit.asta.health.testimonials.view.components.ValidatedTextField
-import fit.asta.health.testimonials.view.create.getOneUrl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalCoroutinesApi::class)
