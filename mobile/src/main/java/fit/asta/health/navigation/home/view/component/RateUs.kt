@@ -20,8 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.generic.AppDefBtn
-import fit.asta.health.common.ui.components.generic.AppDefCard
+import fit.asta.health.common.ui.components.generic.AppButton
+import fit.asta.health.common.ui.components.generic.AppCard
 import fit.asta.health.common.ui.components.generic.AppDrawImg
 import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.aspectRatio
@@ -43,20 +43,21 @@ fun RateUsCard(viewModel: RateUsViewModel = hiltViewModel()) {
         }
     }
 
-    AppDefCard(modifier = Modifier
-        .fillMaxWidth()
-        .aspectRatio(aspectRatio.large), content = {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(spacing.small)
-        ) {
+    AppCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(aspectRatio.common), content = {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(spacing.small)
+            ) {
 
-            AppDrawImg(
-                imgId = R.drawable.rate_us_image,
-                contentDescription = "Rate Us Card Img",
-                modifier = Modifier.aspectRatio(aspectRatio.small),
-            )
+                AppDrawImg(
+                    imgId = R.drawable.rate_us_image,
+                    contentDescription = "Rate Us Card Img",
+                    modifier = Modifier.aspectRatio(aspectRatio.fullScreen),
+                )
 
             Spacer(modifier = Modifier.width(spacing.medium))
             Box {
@@ -65,12 +66,15 @@ fun RateUsCard(viewModel: RateUsViewModel = hiltViewModel()) {
                     AppTexts.BodySmall(text = "We value your feedback pls let us know how we are doing by rating us.")
                     Spacer(modifier = Modifier.height(spacing.small))
 
-                    AppDefBtn(
+                    AppButton(
                         onClick = {
                             viewModel.onEvent(RateUsEvent.InAppReviewRequested)
-                        }, Modifier.height(buttonSize.large), contentPadding = PaddingValues(
+                        },
+                        modifier = Modifier.height(buttonSize.large),
+                        contentPadding = PaddingValues(
                             vertical = spacing.minSmall, horizontal = spacing.small
-                        ), content = {
+                        ),
+                        content = {
                             AppTexts.LabelLarge(
                                 text = "Rate Us",
                                 color = MaterialTheme.colorScheme.onPrimary

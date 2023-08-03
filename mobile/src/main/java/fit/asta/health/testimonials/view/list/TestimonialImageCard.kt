@@ -47,13 +47,13 @@ fun BeforeAndCardLayout(tstImageMedia: List<Media>) {
                         .border(
                             width = 1.dp, color = MaterialTheme.colorScheme.surface
                         )
-                        .aspectRatio(aspectRatio.original)
+                        .aspectRatio(aspectRatio.square)
                         .weight(1f)
                 ) {
                     AppDefServerImg(
                         model = getImgUrl(url = it.url),
                         contentDescription = "Before and After Images",
-                        modifier = Modifier.aspectRatio(aspectRatio.original)
+                        modifier = Modifier.aspectRatio(aspectRatio.square)
                     )
                 }
             }

@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.media3.common.Player
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import fit.asta.health.common.ui.components.generic.AppDefCard
+import fit.asta.health.common.ui.components.generic.AppCard
 import fit.asta.health.common.ui.components.generic.AppErrorMsgCard
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.AppProgressArc
@@ -43,7 +43,7 @@ fun TestimonialsList(
             val testimonial = testimonials[index]
             testimonial?.let { item ->
 
-                AppDefCard(modifier = Modifier
+                AppCard(modifier = Modifier
                     .fillMaxWidth()
                     .padding(spacing.medium),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimary),

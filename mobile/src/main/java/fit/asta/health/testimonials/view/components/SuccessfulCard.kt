@@ -23,7 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import fit.asta.health.common.ui.components.generic.AppDefCard
+import fit.asta.health.common.ui.components.generic.AppCard
 import fit.asta.health.common.ui.components.generic.AppDefaultIcon
 import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
@@ -42,7 +42,7 @@ fun SuccessfulCard(
 
     Box(contentAlignment = Alignment.TopCenter) {
 
-        AppDefCard(
+        AppCard(
             modifier = modifier
                 .padding(top = spacing.extraLarge)
                 .heightIn(min = cardHeight.large)

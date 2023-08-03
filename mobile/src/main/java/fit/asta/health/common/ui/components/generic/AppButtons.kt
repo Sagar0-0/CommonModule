@@ -14,79 +14,93 @@ import androidx.compose.material3.RadioButtonColors
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 
-/** [AppDefBtn] is default button for the app. Buttons help people initiate actions,
- * from sending an email, to sharing a document, to liking a post.
- * @param onClick called when this button is clicked
+//TODO Toggle Btn, Icon Btn, Btn, FAB, Radio, Text Btn, Outline Btn(with Icon), --> Container Format
+
+/** [AppButton] is default button for the app.
  * @param modifier the [Modifier] to be applied to this button
+ * @param shape defines the shape of this button's container
  * @param enabled controls the enabled state of this button. When `false`, this component will not
  * respond to user input, and it will appear visually disabled and disabled to accessibility
  * services.
+ * @param colors [ButtonColors] that will be used to resolve the colors for this button in different
+ * states. See [ButtonDefaults.buttonColors].
  * @param contentPadding the spacing values to apply internally between the container and the
  * content
+ * @param onClick called when this button is clicked
  */
 
 @Composable
-fun AppDefBtn(
-    onClick: () -> Unit,
+fun AppButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    color: ButtonColors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+    colors: ButtonColors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    shape: Shape = MaterialTheme.shapes.medium,
+    onClick: () -> Unit,
     content: @Composable RowScope.() -> Unit,
 ) {
-
-
     Button(
-        onClick = onClick,
         modifier = modifier,
-        shape = MaterialTheme.shapes.medium,
-        colors = color,
-        contentPadding = contentPadding,
         enabled = enabled,
+        colors = colors,
+        contentPadding = contentPadding,
+        shape = shape,
+        onClick = onClick,
         content = content,
     )
-
 }
 
-/**[AppDefFAB] function is a custom composable function used to create a floating action button (FAB).
- * @param onClick called when this FAB is clicked
+/**[AppFAB] function is a custom composable function used to create a floating action button (FAB).
  * @param modifier the [Modifier] to be applied to this button
+ * @param shape defines the shape of this FAB's container
+ * @param containerColor the color used for the background of this FAB.
+ * @param contentColor the preferred color for content inside this FAB.
+ * @param onClick called when this FAB is clicked
  * @param content the content of this FAB, typically an [Icon]
  * */
 
 @Composable
-fun AppDefFAB(
-    onClick: () -> Unit,
+fun AppFAB(
     modifier: Modifier = Modifier,
+    shape: Shape = CircleShape,
+    containerColor: Color = MaterialTheme.colorScheme.primary,
+    contentColor: Color = MaterialTheme.colorScheme.onPrimary,
+    onClick: () -> Unit,
     content: @Composable () -> Unit,
 ) {
     FloatingActionButton(
+        modifier = modifier,
+        shape = shape,
+        containerColor = containerColor,
+        contentColor = contentColor,
         onClick = onClick,
         content = content,
-        containerColor = MaterialTheme.colorScheme.primary,
-        shape = CircleShape,
-        modifier = modifier,
-        contentColor = MaterialTheme.colorScheme.onPrimary,
     )
 }
 
 
-/** [AppDefRadioButton] buttons allow users to select one option from a set.
-
- * @param selected whether this radio button is selected or not
- * @param onClick called when this radio button is clicked.
- * @param modifier the [Modifier] to be applied to this radio button
+/** [AppRadioButton] buttons allow users to select one option from a set.
+ * @param modifier the [Modifier] to be applied to this radio button.
  * @param colors [RadioButtonColors] that will be used to resolve the color used for this radio
- * button in different states. See [RadioButtonDefaults.colors].
+ * button.
+ * @param selected whether this radio button is selected or not.
+ * @param onClick called when this radio button is clicked.
  */
 
 @Composable
-fun AppDefRadioButton(
-    selected: Boolean,
-    onClick: (() -> Unit)?,
+fun AppRadioButton(
     modifier: Modifier = Modifier,
     colors: RadioButtonColors = RadioButtonDefaults.colors(),
+    selected: Boolean,
+    onClick: (() -> Unit)?,
 ) {
-    RadioButton(selected = selected, onClick = onClick, modifier = modifier, colors = colors)
+    RadioButton(
+        modifier = modifier,
+        selected = selected,
+        colors = colors,
+        onClick = onClick,
+    )
 }

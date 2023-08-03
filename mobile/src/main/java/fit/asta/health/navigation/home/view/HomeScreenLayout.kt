@@ -47,7 +47,7 @@ fun HomeScreenLayout(
                     ToolsHmScreenTopBanner(
                         bannerDataPages = toolsHome.banners[page]
                     )
-                }, modifier = Modifier.aspectRatio(ratio = aspectRatio.small))
+                }, modifier = Modifier.aspectRatio(ratio = aspectRatio.fullScreen))
             }
 
             item(span = { GridItemSpan(columns) }) {

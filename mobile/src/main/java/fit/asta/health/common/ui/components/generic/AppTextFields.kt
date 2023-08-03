@@ -16,7 +16,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 
-/**[AppDefOutlineTextField] is a composable function that creates a custom outlined text field for the app.
+/**[AppTextField] is a composable function that creates a custom outlined text field for the app.
  * @param value the input text to be shown in the text field
  * @param onValueChange the callback that is triggered when the input service updates the text. An
  * updated text comes as a parameter of the callback
@@ -39,18 +39,18 @@ import androidx.compose.ui.text.style.TextAlign
  * */
 
 @Composable
-fun AppDefOutlineTextField(
+fun AppTextField(
     modifier: Modifier = Modifier,
     value: String,
-    label: String,
-    isError: Boolean,
-    singleLine: Boolean,
-    keyboardActions: KeyboardActions,
+    label: String = "",
+    isError: Boolean = false,
+    singleLine: Boolean = true,
+    enabled: Boolean = true,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     capitalization: KeyboardCapitalization = KeyboardCapitalization.Sentences,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Next,
     onValueChange: (String) -> Unit,
-    enabled: Boolean = true,
 ) {
     OutlinedTextField(
         value = value,

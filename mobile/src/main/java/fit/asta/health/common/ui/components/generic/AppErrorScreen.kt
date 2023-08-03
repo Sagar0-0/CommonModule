@@ -248,7 +248,7 @@ fun GradientButton(
 
 @Composable
 fun AppErrorMsgCard(message: String, imageVector: ImageVector) {
-    AppDefCard(
+    AppCard(
         modifier = Modifier
             .padding(spacing.medium)
             .fillMaxWidth()

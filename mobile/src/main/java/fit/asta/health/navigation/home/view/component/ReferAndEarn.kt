@@ -16,7 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.generic.AppDefBtn
+import fit.asta.health.common.ui.components.generic.AppButton
 import fit.asta.health.common.ui.components.generic.AppDrawImg
 import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.aspectRatio
@@ -26,7 +26,7 @@ import fit.asta.health.common.ui.theme.spacing
 @Composable
 fun ReferAndEarn() {
 
-    Box(modifier = Modifier.aspectRatio(aspectRatio.large), content = {
+    Box(modifier = Modifier.aspectRatio(aspectRatio.common), content = {
 
         AppDrawImg(
             imgId = R.drawable.background_image,
@@ -43,7 +43,7 @@ fun ReferAndEarn() {
             AppDrawImg(
                 imgId = R.drawable.refer_image,
                 contentDescription = "Refer/Earn Img",
-                modifier = Modifier.aspectRatio(aspectRatio.small),
+                modifier = Modifier.aspectRatio(aspectRatio.fullScreen),
             )
 
             Spacer(modifier = Modifier.width(spacing.medium))
@@ -54,8 +54,8 @@ fun ReferAndEarn() {
                     Spacer(modifier = Modifier.height(spacing.small))
                     AppTexts.BodySmall(text = "Send referral link to your friend to earn ₹100")
                     Spacer(modifier = Modifier.height(spacing.medium))
-                    AppDefBtn(onClick = {},
-                        Modifier.height(buttonSize.large),
+                    AppButton(onClick = {},
+                        modifier = Modifier.height(buttonSize.large),
                         contentPadding = PaddingValues(
                             vertical = spacing.minSmall, horizontal = spacing.small
                         ),

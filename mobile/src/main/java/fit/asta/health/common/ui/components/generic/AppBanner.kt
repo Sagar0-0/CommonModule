@@ -27,22 +27,21 @@ import kotlin.math.absoluteValue
  *  framework for Android. This component provides a horizontally scrollable banner or carousel
  *  with animation and dot indicators. It takes a list of items (bannerList) and displays them
  *  one by one, allowing users to swipe horizontally to view different items.
- *
+ *  @param modifier: (Optional) A Compose Modifier that allows you to customize the appearance and
+ *  behavior of the AppBanner component.
  *  @param bannerList: A list of items (List<T>) that you want to display in the banner. Replace
  *  <T> with the type of items you are using in the list.
  *  @param content: A lambda function (@Composable BoxScope.(page: Int) -> Unit) that defines the
  *  content to be displayed for each page in the banner. It takes the current page index as
  *  an argument, allowing you to customize the content for each item in the list.
- *  @param modifier: (Optional) A Compose Modifier that allows you to customize the appearance and
- *  behavior of the AppBanner component.
  * */
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun <T> AppBanner(
+    modifier: Modifier = Modifier,
     bannerList: List<T>,
     content: @Composable BoxScope.(page: Int) -> Unit,
-    modifier: Modifier = Modifier,
 ) {
 
     val pagerState = rememberPagerState(pageCount = bannerList.size)

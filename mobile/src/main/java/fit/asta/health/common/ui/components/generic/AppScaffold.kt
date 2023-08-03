@@ -26,9 +26,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 
 /**The [AppScaffold] is a composable function in Jetpack Compose, used to create a scaffold layout
- *  for the app. It provides a basic structure for apps that typically include a top app bar,
- *  a bottom app bar, and a floating action button. It also allows displaying a Snackbar at the
- *  bottom of the screen.
+ *  for the app.
  * @param modifier the [Modifier] to be applied to this scaffold
  * @param topBar top app bar of the screen
  * @param bottomBar bottom bar of the screen, typically a [NavigationBar]
@@ -38,7 +36,6 @@ import androidx.compose.ui.unit.Dp
  * @param content content of the screen. The lambda receives a [PaddingValues] that should be
  * applied to the content root.
  * */
-
 
 @Composable
 fun AppScaffold(
@@ -70,10 +67,9 @@ fun AppScaffold(
 
 
 /** The [AppBottomSheetScaffold] is a custom composable function that provides a bottom sheet
- *  implementation for app. It is built on top of the standard BottomSheetScaffold
- *  composable but adds some default styling and configuration options for convenience.
- * @param sheetContent the content of the bottom sheet
+ *  implementation for app.
  * @param modifier the [Modifier] to be applied to this scaffold
+ * @param sheetContent the content of the bottom sheet
  * @param scaffoldState the state of the bottom sheet scaffold
  * @param sheetPeekHeight the height of the bottom sheet when it is collapsed
  * @param sheetShape the shape of the bottom sheet
@@ -85,6 +81,7 @@ fun AppScaffold(
  * @param content content of the screen. The lambda receives a [PaddingValues] that should be
  * applied to the content root.
  * */
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

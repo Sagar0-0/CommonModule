@@ -22,8 +22,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 /**The [AppTopBar] is a custom composable function used to create a top app bar for Android apps
  * with Jetpack Compose UI toolkit.
- * @param title the title to be displayed in the top app bar
  * @param modifier the [Modifier] to be applied to this top app bar
+ * @param title the title to be displayed in the top app bar
  * @param actions the actions displayed at the end of the top app bar. This should typically be
  *[IconButton]s. The default layout here is a [Row], so icons inside will be placed horizontally.
  * @param [containerColor] The background color of the app bar.

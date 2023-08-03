@@ -15,7 +15,6 @@ import androidx.compose.ui.text.style.TextOverflow
  * */
 
 object AppTexts {
-
     /** List of all available methods inside [AppTexts]:
      *[DisplayLarge]
      *[DisplayMedium]
@@ -40,8 +39,8 @@ object AppTexts {
 
     @Composable
     fun DisplayLarge(
-        text: String,
         modifier: Modifier = Modifier,
+        text: String,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -56,8 +55,8 @@ object AppTexts {
 
     @Composable
     fun DisplayMedium(
-        text: String,
         modifier: Modifier = Modifier,
+        text: String,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -65,14 +64,15 @@ object AppTexts {
             text = text,
             style = MaterialTheme.typography.displayMedium,
             modifier = modifier,
-            color = color
+            color = color,
+            textAlign = textAlign
         )
     }
 
     @Composable
     fun DisplaySmall(
-        text: String,
         modifier: Modifier = Modifier,
+        text: String,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -80,14 +80,15 @@ object AppTexts {
             text = text,
             style = MaterialTheme.typography.displaySmall,
             modifier = modifier,
-            color = color
+            color = color,
+            textAlign = textAlign
         )
     }
 
     @Composable
     fun HeadlineLarge(
-        text: String,
         modifier: Modifier = Modifier,
+        text: String,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -96,14 +97,14 @@ object AppTexts {
             style = MaterialTheme.typography.headlineLarge,
             modifier = modifier,
             color = color,
-            textAlign = textAlign
+            textAlign = textAlign,
         )
     }
 
     @Composable
     fun HeadlineMedium(
-        text: String,
         modifier: Modifier = Modifier,
+        text: String,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -111,15 +112,16 @@ object AppTexts {
             text = text,
             style = MaterialTheme.typography.headlineMedium,
             modifier = modifier,
-            color = color
+            color = color,
+            textAlign = textAlign,
         )
     }
 
 
     @Composable
     fun HeadlineSmall(
-        text: String,
         modifier: Modifier = Modifier,
+        text: String,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -128,14 +130,14 @@ object AppTexts {
             style = MaterialTheme.typography.headlineSmall,
             modifier = modifier,
             color = color,
-            textAlign = textAlign
+            textAlign = textAlign,
         )
     }
 
     @Composable
     fun TitleLarge(
-        text: String,
         modifier: Modifier = Modifier,
+        text: String,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -143,14 +145,15 @@ object AppTexts {
             text = text,
             style = MaterialTheme.typography.titleLarge,
             modifier = modifier,
-            color = color
+            color = color,
+            textAlign = textAlign,
         )
     }
 
     @Composable
     fun TitleMedium(
-        text: String,
         modifier: Modifier = Modifier,
+        text: String,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -158,15 +161,16 @@ object AppTexts {
             text = text,
             style = MaterialTheme.typography.titleMedium,
             modifier = modifier,
-            color = color
+            color = color,
+            textAlign = textAlign,
         )
     }
 
 
     @Composable
     fun TitleSmall(
-        text: String,
         modifier: Modifier = Modifier,
+        text: String,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -174,14 +178,15 @@ object AppTexts {
             text = text,
             style = MaterialTheme.typography.titleSmall,
             modifier = modifier,
-            color = color
+            color = color,
+            textAlign = textAlign,
         )
     }
 
     @Composable
     fun BodyLarge(
-        text: String,
         modifier: Modifier = Modifier,
+        text: String,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -189,14 +194,15 @@ object AppTexts {
             text = text,
             style = MaterialTheme.typography.bodyLarge,
             modifier = modifier,
-            color = color
+            color = color,
+            textAlign = textAlign,
         )
     }
 
     @Composable
     fun BodyMedium(
-        text: String,
         modifier: Modifier = Modifier,
+        text: String,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -211,8 +217,8 @@ object AppTexts {
 
     @Composable
     fun BodySmall(
-        text: String,
         modifier: Modifier = Modifier,
+        text: String,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -220,14 +226,15 @@ object AppTexts {
             text = text,
             style = MaterialTheme.typography.bodySmall,
             modifier = modifier,
-            color = color
+            color = color,
+            textAlign = textAlign,
         )
     }
 
     @Composable
     fun LabelLarge(
-        text: String,
         modifier: Modifier = Modifier,
+        text: String,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
         overflow: TextOverflow = TextOverflow.Clip,
@@ -246,8 +253,8 @@ object AppTexts {
 
     @Composable
     fun LabelMedium(
-        text: String,
         modifier: Modifier = Modifier,
+        text: String,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -255,14 +262,15 @@ object AppTexts {
             text = text,
             style = MaterialTheme.typography.labelMedium,
             modifier = modifier,
-            color = color
+            color = color,
+            textAlign = textAlign
         )
     }
 
     @Composable
     fun LabelSmall(
-        text: String,
         modifier: Modifier = Modifier,
+        text: String,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -270,8 +278,8 @@ object AppTexts {
             text = text,
             style = MaterialTheme.typography.labelSmall,
             modifier = modifier,
-            color = color
+            color = color,
+            textAlign = textAlign
         )
     }
-
 }

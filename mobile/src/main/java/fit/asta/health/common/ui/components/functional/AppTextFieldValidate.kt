@@ -9,18 +9,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import fit.asta.health.common.ui.components.generic.AppDefOutlineTextField
+import fit.asta.health.common.ui.components.generic.AppTextField
 import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.utils.UiString
 
-/**[ValidateTxtLength] is an object that defines the default text length used in the [AppValidateOutlineTxtField] composable.
+/**[ValidateTxtLength] is an object that defines the default text length used in the [AppTextFieldValidate] composable.
  * */
 
 object ValidateTxtLength {
     const val defLength = 256
 }
 
-/**[AppValidateOutlineTxtField] is a custom composable function in Jetpack Compose, designed to
+/**[AppTextFieldValidate] is a custom composable function in Jetpack Compose, designed to
  * create a text field with additional validation features. It includes an optional error message
  * and a character count indicator to ensure that the user's input adheres to a specified text length.
  * @param value the input text to be shown in the text field
@@ -39,13 +39,13 @@ object ValidateTxtLength {
  * the keyboard will show the requested action.
  * @param isError indicates if the text field's current value is in error. If set to true, the
  * label, bottom indicator and trailing icon by default will be displayed in error color
- * @param stringLength The maximum allowed length for the text in the text field. The character count
+ * @param maxStringLength The maximum allowed length for the text in the text field. The character count
  * will be displayed in the UI.
- * @param showLenErrorMsg  If set true it will display an error message based on text length [stringLength] .
+ * @param showLenErrorMsg  If set true it will display an error message based on text length [maxStringLength] .
  * */
 
 @Composable
-fun AppValidateOutlineTxtField(
+fun AppTextFieldValidate(
     modifier: Modifier = Modifier,
     value: String,
     label: String,
@@ -54,14 +54,14 @@ fun AppValidateOutlineTxtField(
     isError: Boolean = false,
     singleLine: Boolean = false,
     showLenErrorMsg: Boolean? = null,
-    stringLength: Int = ValidateTxtLength.defLength,
+    maxStringLength: Int = ValidateTxtLength.defLength,
     capitalization: KeyboardCapitalization = KeyboardCapitalization.Sentences,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Next,
     onValueChange: (String) -> Unit,
 ) {
     Column(Modifier.fillMaxWidth()) {
-        AppDefOutlineTextField(
+        AppTextField(
             modifier = modifier,
             value = value,
             label = label,
@@ -79,7 +79,7 @@ fun AppValidateOutlineTxtField(
                 showError = isError,
                 value = value,
                 showLenErrorMsg = showLenErrorMsg,
-                stringLength = stringLength
+                stringLength = maxStringLength
             )
         }
     }

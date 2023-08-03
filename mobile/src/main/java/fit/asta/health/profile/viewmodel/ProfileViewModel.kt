@@ -74,19 +74,15 @@ class ProfileViewModel
     private val _stateSubmit = MutableStateFlow<ProfileSubmitState>(ProfileSubmitState.Loading)
     val stateSubmit = _stateSubmit.asStateFlow()
 
-
     private val mutableHPropState = MutableStateFlow<HPropState>(HPropState.Loading)
     val stateHp = mutableHPropState.asStateFlow()
-
 
     private val _mutableState = MutableStateFlow<ProfileGetState>(ProfileGetState.Loading)
     val state = _mutableState.asStateFlow()
 
-
     //Details
     val name = savedState.getStateFlow(NAME, InputWrapper())
     val email = savedState.getStateFlow(EMAIL, InputWrapper())
-
 
     val userImg = savedState.getStateFlow(
         USER_IMG, ProfileMedia(name = "user_img", title = "User Profile Image")

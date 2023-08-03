@@ -36,7 +36,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.common.ui.components.generic.AppDefCard
+import fit.asta.health.common.ui.components.generic.AppCard
 import fit.asta.health.common.ui.theme.TSelected
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AMPMHoursMin
@@ -118,7 +118,7 @@ fun DigitalDemo(time: AMPMHoursMin, open: () -> Unit = {}) {
         targetValue = time.minutes, label = "",
         animationSpec = tween(700, easing = FastOutLinearInEasing)
     )
-    AppDefCard(modifier = Modifier.clickable { open() }, content = {
+    AppCard(modifier = Modifier.clickable { open() }, content = {
         Row(
             modifier = Modifier
                 .padding(16.dp),

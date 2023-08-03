@@ -25,8 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import fit.asta.health.common.ui.components.generic.AppDefBtn
-import fit.asta.health.common.ui.components.generic.AppDefCard
+import fit.asta.health.common.ui.components.generic.AppButton
+import fit.asta.health.common.ui.components.generic.AppCard
 import fit.asta.health.common.ui.components.generic.AppDefaultIcon
 import fit.asta.health.common.ui.components.generic.AppDialog
 import fit.asta.health.common.ui.components.generic.AppTexts
@@ -88,7 +88,7 @@ fun DialogContent(
     onPositiveClick: () -> Unit,
     dialogData: DialogData,
 ) {
-    AppDefCard(content = {
+    AppCard(content = {
         Column(
             modifier = modifier
                 .background(Color.White)
@@ -167,12 +167,12 @@ private fun NegativeButton(
     onNegativeClick: () -> Unit,
     dialogData: DialogData,
 ) {
-    AppDefBtn(
+    AppButton(
         onClick = onNegativeClick,
         modifier = Modifier
             .height(buttonSize.extraLarge)
             .fillMaxWidth(),
-        color = ButtonDefaults.buttonColors(
+        colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.error,
         )
     ) {
@@ -188,7 +188,7 @@ private fun PositiveButton(
     onPositiveClick: () -> Unit,
     dialogData: DialogData,
 ) {
-    AppDefBtn(
+    AppButton(
         onClick = onPositiveClick, modifier = Modifier
             .height(buttonSize.extraLarge)
             .fillMaxWidth()
