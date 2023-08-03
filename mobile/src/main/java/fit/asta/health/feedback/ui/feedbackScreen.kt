@@ -12,14 +12,14 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import fit.asta.health.common.ui.components.*
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.feedback.viewmodel.FeedbackViewModel
 import fit.asta.health.main.Graph
-import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun NavGraphBuilder.feedbackComp(navController: NavController) {
+fun NavGraphBuilder.feedbackScreen(navController: NavController) {
     composable(Graph.Feedback.route + "/{fid}") {
         val fid = it.arguments?.getString("fid")!!
 

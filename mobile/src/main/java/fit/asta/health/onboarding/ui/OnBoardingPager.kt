@@ -43,7 +43,6 @@ fun OnBoardingPager(
         ResponseState.NoInternet -> {
             AppErrorScreen(onTryAgain = onReload)
         }
-
         is ResponseState.Error -> {
             AppErrorScreen(
                 onTryAgain = onReload,

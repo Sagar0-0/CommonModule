@@ -362,6 +362,10 @@ dependencies {
     androidTestImplementation "androidx.room:room-testing:$room_ver"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
     androidTestImplementation "androidx.test.ext:junit:1.1.5"
+
+    //for animations
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
+    implementation "com.airbnb.android:lottie-compose:6.1.0"
 }
 
 kapt {

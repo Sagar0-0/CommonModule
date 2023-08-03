@@ -162,7 +162,7 @@ fun DietContent(
                     is ProfileSubmitState.Loading -> LoadingAnimation()
                     is ProfileSubmitState.NoInternet -> AppErrorScreen(onTryAgain = {})
                     is ProfileSubmitState.Success -> {
-                        (context as MainActivity).loadAppScreen()
+                        (context as MainActivity).startMainNavHost()
                         Log.d("validate", "Success -> ${events.userProfile}")
                     }
                 }

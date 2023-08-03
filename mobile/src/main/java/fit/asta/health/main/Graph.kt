@@ -2,6 +2,7 @@ package fit.asta.health.main
 
 sealed class Graph(val route: String) {
     object ROOT : Graph("graph_root")
+    object Onboarding : Graph("graph_onboarding")
     object Home : Graph("graph_home")
     object Scheduler : Graph("graph_today_scheduler")
     object Settings : Graph("graph_settings")
@@ -23,4 +24,6 @@ sealed class Graph(val route: String) {
     object Wallet : Graph("graph_wallet")
     object Feedback : Graph("graph_feedback")//Always pass fid
     object Subscription : Graph("graph_subscription")
+    object Splash : Graph("graph_splash")
+    object Authentication : Graph("graph_auth")
 }

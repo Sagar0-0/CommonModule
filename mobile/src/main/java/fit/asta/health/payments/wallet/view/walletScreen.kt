@@ -8,11 +8,11 @@ import androidx.navigation.compose.composable
 import fit.asta.health.main.Graph
 import fit.asta.health.payments.wallet.vm.WalletViewModel
 
-fun NavGraphBuilder.walletComp(navController: NavHostController) {
+fun NavGraphBuilder.walletScreen(navController: NavHostController) {
     composable(Graph.Wallet.route) {
         val walletViewModel: WalletViewModel = hiltViewModel()
         val state = walletViewModel.state.collectAsStateWithLifecycle()
-        WalletScreen(
+        WalletScreenUi(
             walletDataState = state.value,
             onBackPress = navController::navigateUp,
             onTryAgain = walletViewModel::getData

@@ -12,6 +12,7 @@ import fit.asta.health.R
 import fit.asta.health.auth.viewmodel.AuthViewModel
 import fit.asta.health.common.utils.getCurrentBuildVersion
 import fit.asta.health.common.utils.getPublicStorageUrl
+import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.common.utils.rateUs
 import fit.asta.health.common.utils.sendBugReportMessage
 import fit.asta.health.common.utils.sendFeedbackMessage
@@ -24,8 +25,8 @@ import fit.asta.health.settings.data.SettingsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun NavGraphBuilder.settingsNavigation(
-    mainNavController: NavHostController
+fun NavGraphBuilder.settingScreens(
+    navController: NavHostController
 ) {
     navigation(
         route = Graph.Settings.route,
@@ -38,23 +39,23 @@ fun NavGraphBuilder.settingsNavigation(
             val onUiClickEvent: (key: SettingsUiEvent) -> Unit = { key ->
                 when (key) {
                     SettingsUiEvent.SUBSCRIBE -> {
-                        mainNavController.navigate(Graph.Subscription.route)
+                        navController.navigate(Graph.Subscription.route)
                     }
 
                     SettingsUiEvent.REFERRAL -> {
-                        mainNavController.navigate(Graph.Referral.route)
+                        navController.navigate(Graph.Referral.route)
                     }
 
                     SettingsUiEvent.WALLET -> {
-                        mainNavController.navigate(Graph.Wallet.route)
+                        navController.navigate(Graph.Wallet.route)
                     }
 
                     SettingsUiEvent.BACK -> {
-                        mainNavController.navigateUp()
+                        navController.navigateUp()
                     }
 
                     SettingsUiEvent.NOTIFICATION -> {
-                        mainNavController.navigate(SettingScreens.Notifications.route)
+                        navController.navigate(SettingScreens.Notifications.route)
                     }
 
                     SettingsUiEvent.SHARE -> {
@@ -71,15 +72,26 @@ fun NavGraphBuilder.settingsNavigation(
                     }
 
                     SettingsUiEvent.SIGNOUT -> {
-                        authViewModel.logout(context) {
-                            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-                        }
+                        authViewModel.logout(
+                            context = context,
+                            onSuccess = {
+                                navController.navigate(Graph.Authentication.route) {
+                                    popUpToTop(navController)
+                                }
+                            },
+                            onFailure = { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() }
+                        )
                     }
 
                     SettingsUiEvent.DELETE -> {
-                        authViewModel.deleteAccount(context) {
-                            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-                        }
+                        authViewModel.deleteAccount(
+                            onSuccess = {
+                                navController.navigate(Graph.Authentication.route) {
+                                    popUpToTop(navController)
+                                }
+                            },
+                            onFailure = { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() }
+                        )
                     }
 
                     SettingsUiEvent.BUG -> {
@@ -103,8 +115,13 @@ fun NavGraphBuilder.settingsNavigation(
                         )
                     }
 
-                    SettingsUiEvent.VERSION -> {}
-                    else -> {}
+                    SettingsUiEvent.VERSION -> {
+                        Toast.makeText(
+                            context,
+                            context.getCurrentBuildVersion(),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
 
@@ -132,7 +149,7 @@ fun NavGraphBuilder.settingsNavigation(
             }
             SettingsNotificationLayout(
                 settingsNotificationsStatus = status,
-                onBackPress = mainNavController::navigateUp,
+                onBackPress = navController::navigateUp,
                 onSwitchToggle = settingsViewModel::onSwitchToggle
             )
         }

@@ -70,7 +70,7 @@ fun SignInScreen(navHostController: NavHostController, onSuccess: () -> Unit) {
                 .fillMaxWidth()
                 .height(buttonSize.extraLarge),
             onClick = {
-                navHostController.navigate(AuthScreens.Phone.route)
+                navHostController.navigate(AuthScreen.Phone.route)
             },
             content = {
                 Row(

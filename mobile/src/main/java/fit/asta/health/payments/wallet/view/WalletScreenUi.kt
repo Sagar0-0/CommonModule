@@ -43,7 +43,7 @@ import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.payments.wallet.model.WalletResponse
 
 @Composable
-fun WalletScreen(
+fun WalletScreenUi(
     walletDataState: ResponseState<WalletResponse>,
     onBackPress: () -> Unit,
     onTryAgain: () -> Unit
