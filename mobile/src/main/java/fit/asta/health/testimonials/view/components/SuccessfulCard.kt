@@ -41,52 +41,52 @@ fun SuccessfulCard(
 ) {
 
     Box(contentAlignment = Alignment.TopCenter) {
-
-        AppCard(
-            modifier = modifier
-                .padding(top = spacing.extraLarge)
-                .heightIn(min = cardHeight.large)
-        ) {
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = spacing.extraLarge3)
-            ) {
-                Row(
+        AppCard(modifier = modifier
+            .padding(top = spacing.extraLarge)
+            .heightIn(min = cardHeight.large),
+            content = {
+                Column(
                     Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = spacing.medium),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
+                        .padding(top = spacing.extraLarge3)
                 ) {
-                    AppTexts.HeadlineMedium(
-                        text = "Thank You",
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = spacing.medium),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        AppTexts.HeadlineMedium(
+                            text = "Thank You",
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(spacing.small))
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = spacing.medium),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        AppTexts.BodyMedium(
+                            text = if (underReview) {
+                                "Your feedback is under review. Please wait few seconds."
+                            } else {
+                                "Your feedback has been submitted"
+                            },
+                            color = MaterialTheme.colorScheme.secondary,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(spacing.large))
+                    if (underReview) {
+                        LoadingAnimation()
+                    }
+                    Spacer(modifier = Modifier.height(spacing.medium))
                 }
-                Spacer(modifier = Modifier.height(spacing.small))
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = spacing.medium),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    AppTexts.BodyMedium(
-                        text = if (underReview) {
-                            "Your feedback is under review. Please wait few seconds."
-                        } else {
-                            "Your feedback has been submitted"
-                        }, color = MaterialTheme.colorScheme.secondary, textAlign = TextAlign.Center
-                    )
-                }
-                Spacer(modifier = Modifier.height(spacing.large))
-                if (underReview) {
-                    LoadingAnimation()
-                }
-                Spacer(modifier = Modifier.height(spacing.medium))
-            }
-        }
+            })
 
         Box(
             modifier = Modifier

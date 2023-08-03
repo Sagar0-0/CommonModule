@@ -21,7 +21,7 @@ import fit.asta.health.common.ui.components.functional.DialogData
 import fit.asta.health.common.ui.components.functional.OnSuccessfulSubmit
 import fit.asta.health.common.ui.components.functional.ShowCustomConfirmationDialog
 import fit.asta.health.common.ui.components.functional.ValidateTxtLength
-import fit.asta.health.common.ui.components.generic.AppButton
+import fit.asta.health.common.ui.components.generic.AppButtons
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.common.ui.components.generic.AppTexts
@@ -172,7 +172,7 @@ fun TestimonialForm(
                     TstGetVideo()
                 }
 
-                AppButton(
+                AppButtons.AppStandardButton(
                     onClick = {
                         showCustomDialogWithResult = !showCustomDialogWithResult
                         getViewModel.onEvent(TestimonialEvent.OnSubmit)

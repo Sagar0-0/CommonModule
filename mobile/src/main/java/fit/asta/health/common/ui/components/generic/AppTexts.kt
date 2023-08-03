@@ -39,8 +39,8 @@ object AppTexts {
 
     @Composable
     fun DisplayLarge(
-        modifier: Modifier = Modifier,
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -55,8 +55,8 @@ object AppTexts {
 
     @Composable
     fun DisplayMedium(
-        modifier: Modifier = Modifier,
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -71,8 +71,8 @@ object AppTexts {
 
     @Composable
     fun DisplaySmall(
-        modifier: Modifier = Modifier,
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -87,8 +87,8 @@ object AppTexts {
 
     @Composable
     fun HeadlineLarge(
-        modifier: Modifier = Modifier,
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -103,8 +103,8 @@ object AppTexts {
 
     @Composable
     fun HeadlineMedium(
-        modifier: Modifier = Modifier,
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -120,8 +120,8 @@ object AppTexts {
 
     @Composable
     fun HeadlineSmall(
-        modifier: Modifier = Modifier,
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -136,8 +136,8 @@ object AppTexts {
 
     @Composable
     fun TitleLarge(
-        modifier: Modifier = Modifier,
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -152,8 +152,8 @@ object AppTexts {
 
     @Composable
     fun TitleMedium(
-        modifier: Modifier = Modifier,
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -169,8 +169,8 @@ object AppTexts {
 
     @Composable
     fun TitleSmall(
-        modifier: Modifier = Modifier,
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -185,8 +185,8 @@ object AppTexts {
 
     @Composable
     fun BodyLarge(
-        modifier: Modifier = Modifier,
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -201,8 +201,8 @@ object AppTexts {
 
     @Composable
     fun BodyMedium(
-        modifier: Modifier = Modifier,
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -217,8 +217,8 @@ object AppTexts {
 
     @Composable
     fun BodySmall(
-        modifier: Modifier = Modifier,
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -233,8 +233,8 @@ object AppTexts {
 
     @Composable
     fun LabelLarge(
-        modifier: Modifier = Modifier,
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
         overflow: TextOverflow = TextOverflow.Clip,
@@ -253,8 +253,8 @@ object AppTexts {
 
     @Composable
     fun LabelMedium(
-        modifier: Modifier = Modifier,
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
@@ -269,8 +269,8 @@ object AppTexts {
 
     @Composable
     fun LabelSmall(
-        modifier: Modifier = Modifier,
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {

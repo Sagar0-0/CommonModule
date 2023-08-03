@@ -14,8 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.google.accompanist.flowlayout.FlowRow
+import fit.asta.health.common.ui.components.generic.AppButtons
 import fit.asta.health.common.ui.components.generic.AppCard
-import fit.asta.health.common.ui.components.generic.AppRadioButton
 import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.testimonials.model.domain.TestimonialType
@@ -27,7 +27,7 @@ fun TestimonialsRadioButton(
     selectedOption: TestimonialType?,
     onOptionSelected: (TestimonialType) -> Unit,
 ) {
-    AppCard(modifier = Modifier.fillMaxWidth()) {
+    AppCard(modifier = Modifier.fillMaxWidth(), content = {
         Column(
             Modifier
                 .fillMaxWidth()
@@ -49,7 +49,7 @@ fun TestimonialsRadioButton(
                             )
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                AppRadioButton(
+                                AppButtons.AppRadioButton(
                                     selected = (item == selectedOption),
                                     onClick = {
                                         onOptionSelected(item)
@@ -63,5 +63,5 @@ fun TestimonialsRadioButton(
                 }
             }
         }
-    }
+    })
 }

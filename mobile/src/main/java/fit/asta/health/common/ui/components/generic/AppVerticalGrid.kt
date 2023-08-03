@@ -24,7 +24,8 @@ import fit.asta.health.common.ui.theme.spacing
 @Composable
 fun AppVerticalGrid(
     count: Int,
-    modifier: Modifier = Modifier, content: LazyGridScope.() -> Unit,
+    modifier: Modifier = Modifier,
+    content: LazyGridScope.() -> Unit,
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
 ) {

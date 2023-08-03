@@ -32,7 +32,10 @@ object AppDividerLineWidth {
  * @param lineWidth (required): The width of the divider line. */
 
 @Composable
-fun AppDivider(modifier: Modifier = Modifier, lineWidth: Dp) {
+fun AppDivider(
+    lineWidth: Dp,
+    modifier: Modifier = Modifier,
+) {
     Divider(
         color = MaterialTheme.colorScheme.primary,
         thickness = spacing.extraSmall,
@@ -73,8 +76,8 @@ fun AppProgressArc(
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun AppHorizontalPagerIndicator(
-    modifier: Modifier = Modifier,
     pagerState: PagerState,
+    modifier: Modifier = Modifier,
 ) {
     HorizontalPagerIndicator(
         pagerState = pagerState,

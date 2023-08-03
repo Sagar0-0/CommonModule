@@ -86,13 +86,13 @@ fun AppScaffold(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBottomSheetScaffold(
+    sheetContent: @Composable ColumnScope.() -> Unit,
     modifier: Modifier = Modifier,
     scaffoldState: BottomSheetScaffoldState,
     sheetPeekHeight: Dp = BottomSheetDefaults.SheetPeekHeight,
     sheetShape: Shape = MaterialTheme.shapes.large,
     sheetShadowElevation: Dp = BottomSheetDefaults.Elevation,
     sheetSwipeEnabled: Boolean = true,
-    sheetContent: @Composable ColumnScope.() -> Unit,
     sheetDragHandle: @Composable (() -> Unit)? = { BottomSheetDefaults.DragHandle() },
     topBar: @Composable (() -> Unit)? = null,
     content: @Composable (PaddingValues) -> Unit,

@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.generic.AppButton
+import fit.asta.health.common.ui.components.generic.AppButtons
 import fit.asta.health.common.ui.components.generic.AppCard
 import fit.asta.health.common.ui.components.generic.AppDrawImg
 import fit.asta.health.common.ui.components.generic.AppTexts
@@ -59,28 +59,25 @@ fun RateUsCard(viewModel: RateUsViewModel = hiltViewModel()) {
                     modifier = Modifier.aspectRatio(aspectRatio.fullScreen),
                 )
 
-            Spacer(modifier = Modifier.width(spacing.medium))
-            Box {
-                Column(verticalArrangement = Arrangement.SpaceBetween) {
-                    AppTexts.TitleMedium(text = "Rate Us")
-                    AppTexts.BodySmall(text = "We value your feedback pls let us know how we are doing by rating us.")
-                    Spacer(modifier = Modifier.height(spacing.small))
+                Spacer(modifier = Modifier.width(spacing.medium))
+                Box {
+                    Column(verticalArrangement = Arrangement.SpaceBetween) {
+                        AppTexts.TitleMedium(text = "Rate Us")
+                        AppTexts.BodySmall(text = "We value your feedback pls let us know how we are doing by rating us.")
+                        Spacer(modifier = Modifier.height(spacing.small))
 
-                    AppButton(
-                        onClick = {
+                        AppButtons.AppStandardButton(onClick = {
                             viewModel.onEvent(RateUsEvent.InAppReviewRequested)
                         },
-                        modifier = Modifier.height(buttonSize.large),
-                        contentPadding = PaddingValues(
-                            vertical = spacing.minSmall, horizontal = spacing.small
-                        ),
-                        content = {
-                            AppTexts.LabelLarge(
-                                text = "Rate Us",
-                                color = MaterialTheme.colorScheme.onPrimary
-                            )
-                        })
-
+                            modifier = Modifier.height(buttonSize.large),
+                            contentPadding = PaddingValues(
+                                vertical = spacing.minSmall, horizontal = spacing.small
+                            ),
+                            content = {
+                                AppTexts.LabelLarge(
+                                    text = "Rate Us", color = MaterialTheme.colorScheme.onPrimary
+                                )
+                            })
                 }
             }
         }
