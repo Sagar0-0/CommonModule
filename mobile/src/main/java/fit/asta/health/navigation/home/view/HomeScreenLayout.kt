@@ -51,7 +51,7 @@ fun HomeScreenLayout(
             }
 
             item(span = { GridItemSpan(columns) }) {
-                ViewAllLayout(myTools = "My Tools", "All Tools") {}
+                ViewAllLayout(title = "My Tools")
             }
 
             items(toolsHome.tools) { tool ->
@@ -107,12 +107,8 @@ fun HomeScreenLayout(
                     })
             }
 
-            item {
-                Spacer(modifier = Modifier.height(spacing.medium))
-            }
-
             item(span = { GridItemSpan(columns) }) {
-                ViewAllLayout(myTools = "Testimonials", allTools = "View All", onClick = {
+                ViewAllLayout(title = "Testimonials", clickString = "View All", onClick = {
                     onNav(Graph.Testimonials)
                 })
             }
