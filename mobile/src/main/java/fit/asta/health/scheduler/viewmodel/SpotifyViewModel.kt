@@ -90,16 +90,6 @@ class SpotifyViewModel @Inject constructor(
 
 
     /**
-     * This function plays the Songs using the Spotify app Remote
-     */
-    fun playSpotifySong(url: String) {
-        spotifyAppRemote?.playerApi?.resume()
-        spotifyAppRemote?.playerApi?.play(url)
-        isMusicPlaying = true
-    }
-
-
-    /**
      * This function is used to set the state as failed when the Spotify App Remote is not connected
      */
     fun unableToGetSpotifyRemote(e: Throwable) {
@@ -108,14 +98,33 @@ class SpotifyViewModel @Inject constructor(
 
 
     /**
+     * This function plays the Songs using the Spotify app Remote
+     */
+    fun playSpotifySong(url: String) {
+        spotifyAppRemote?.playerApi?.play(url)
+        spotifyAppRemote?.playerApi?.resume()
+        isMusicPlaying = true
+    }
+
+
+    /**
      * This function disconnects the Spotify App Remote
      */
     fun disconnectSpotifyRemote() {
         spotifyAppRemote?.let {
-            if (isMusicPlaying)
-                it.playerApi.pause()
+            if (isMusicPlaying) {
+                onSpotifyRemoteStop()
+                isMusicPlaying = false
+            }
             SpotifyAppRemote.disconnect(it)
         }
+    }
+
+    /**
+     * This function is used to pause the spotify remote player
+     */
+    fun onSpotifyRemoteStop() {
+        spotifyAppRemote?.playerApi?.pause()
     }
 
 

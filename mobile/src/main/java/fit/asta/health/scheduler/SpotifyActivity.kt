@@ -270,10 +270,18 @@ class SpotifyActivity : ComponentActivity() {
     }
 
     /**
-     * This function removes the Spotify Remote and frees the Space and all
+     * This function pauses the Spotify Remote
      */
     override fun onStop() {
         super.onStop()
+        spotifyViewModel.onSpotifyRemoteStop()
+    }
+
+    /**
+     * This function removes the Spotify Remote and frees the Space and all
+     */
+    override fun onDestroy() {
+        super.onDestroy()
         spotifyViewModel.disconnectSpotifyRemote()
     }
 }
