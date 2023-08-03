@@ -49,7 +49,7 @@ fun MainNavHost(isConnected: Boolean) {
         route = Graph.ROOT.route,
         startDestination = Graph.Splash.route
     ) {
-        splashScreen(navController, isConnected)
+        splashScreen(navController)
         onboardingScreen(navController)
         authScreens(navController)
         homeScreen(navController)
