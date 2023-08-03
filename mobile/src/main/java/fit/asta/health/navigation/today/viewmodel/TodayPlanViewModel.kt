@@ -1,6 +1,5 @@
 package fit.asta.health.navigation.today.viewmodel
 
-import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
@@ -13,6 +12,7 @@ import fit.asta.health.scheduler.compose.screen.homescreen.Event
 import fit.asta.health.scheduler.compose.screen.homescreen.HomeEvent
 import fit.asta.health.scheduler.model.AlarmBackendRepo
 import fit.asta.health.scheduler.model.AlarmLocalRepo
+import fit.asta.health.scheduler.model.AlarmUtils
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.db.entity.AlarmSync
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +26,8 @@ import javax.inject.Inject
 class TodayPlanViewModel @Inject constructor(
     private val alarmLocalRepo: AlarmLocalRepo,
     private val alarmBackendRepo: AlarmBackendRepo,
-    private val prefUtils: PrefUtils
+    private val prefUtils: PrefUtils,
+    private val alarmUtils: AlarmUtils
 ) : ViewModel() {
     private val _alarmListMorning = mutableStateListOf<AlarmEntity>()
     val alarmListMorning = MutableStateFlow(_alarmListMorning)
@@ -60,28 +61,28 @@ class TodayPlanViewModel @Inject constructor(
             }
 
             is HomeEvent.DeleteAlarm -> {
-                deleteAlarm(uiEvent.alarm, uiEvent.context, uiEvent.event)
+                deleteAlarm(uiEvent.alarm, uiEvent.event)
             }
 
             is HomeEvent.UndoAlarm -> {
-                undoAlarm(uiEvent.alarm, uiEvent.context, uiEvent.event)
+                undoAlarm(uiEvent.alarm, uiEvent.event)
             }
 
             is HomeEvent.SkipAlarm -> {
-                skipAlarm(uiEvent.alarm, uiEvent.context, uiEvent.event)
+                skipAlarm(uiEvent.alarm, uiEvent.event)
             }
 
             is HomeEvent.UndoSkipAlarm -> {
-                undoSkipAlarm(uiEvent.alarm, uiEvent.context, uiEvent.event)
+                undoSkipAlarm(uiEvent.alarm, uiEvent.event)
             }
         }
     }
 
-    private fun undoAlarm(alarm: AlarmEntity, context: Context, event: Event) {
+    private fun undoAlarm(alarm: AlarmEntity, event: Event) {
         viewModelScope.launch {
             alarmLocalRepo.insertAlarm(alarm)
             if (alarm.status) {
-                alarm.scheduleAlarm(context)
+                alarmUtils.scheduleAlarm(alarm)
             }
             if (alarm.idFromServer.isNotEmpty()) {
                 alarmLocalRepo.deleteSyncData(
@@ -107,7 +108,7 @@ class TodayPlanViewModel @Inject constructor(
         }
     }
 
-    private fun deleteAlarm(alarmItem: AlarmEntity, context: Context, event: Event) {
+    private fun deleteAlarm(alarmItem: AlarmEntity, event: Event) {
         when (event) {
             Event.Morning -> {
                 _alarmListMorning.remove(alarmItem)
@@ -122,9 +123,7 @@ class TodayPlanViewModel @Inject constructor(
             }
         }
         viewModelScope.launch {
-            if (alarmItem.status) alarmItem.cancelScheduleAlarm(
-                context, alarmItem.alarmId, true
-            )
+            if (alarmItem.status) alarmUtils.cancelScheduleAlarm(alarmItem, true)
             alarmLocalRepo.deleteAlarm(alarmItem)
             if (alarmItem.idFromServer.isNotEmpty()) {
                 alarmLocalRepo.insertSyncData(
@@ -134,7 +133,7 @@ class TodayPlanViewModel @Inject constructor(
         }
     }
 
-    private fun skipAlarm(alarmItem: AlarmEntity, context: Context, event: Event) {
+    private fun skipAlarm(alarmItem: AlarmEntity, event: Event) {
         when (event) {
             Event.Morning -> {
                 _alarmListMorning.remove(alarmItem)
@@ -149,17 +148,15 @@ class TodayPlanViewModel @Inject constructor(
             }
         }
         viewModelScope.launch {
-            if (alarmItem.status) alarmItem.cancelScheduleAlarm(
-                context, alarmItem.alarmId, true
-            )
+            if (alarmItem.status) alarmUtils.cancelScheduleAlarm(alarmItem, true)
             val alarm = alarmItem.copy(status = false, skipDate = LocalDate.now().dayOfMonth)
             alarmLocalRepo.updateAlarm(alarm)
         }
     }
 
-    private fun undoSkipAlarm(alarm: AlarmEntity, context: Context, event: Event) {
+    private fun undoSkipAlarm(alarm: AlarmEntity, event: Event) {
         viewModelScope.launch {
-            alarm.scheduleAlarm(context)
+            alarmUtils.scheduleAlarm(alarm)
             val alarmItem = alarm.copy(status = true, skipDate = -1)
             alarmLocalRepo.updateAlarm(alarmItem)
             Log.d("alarm", "undoSkipAlarm: alarmOld:$alarm ,alarmItem:$alarmItem")

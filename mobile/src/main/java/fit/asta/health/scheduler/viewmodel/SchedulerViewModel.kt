@@ -25,6 +25,7 @@ import fit.asta.health.scheduler.compose.screen.tagscreen.TagsUiState
 import fit.asta.health.scheduler.compose.screen.timesettingscreen.TimeSettingEvent
 import fit.asta.health.scheduler.model.AlarmBackendRepo
 import fit.asta.health.scheduler.model.AlarmLocalRepo
+import fit.asta.health.scheduler.model.AlarmUtils
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.db.entity.AlarmSync
 import fit.asta.health.scheduler.model.doman.getAlarm
@@ -44,7 +45,8 @@ class SchedulerViewModel
 @Inject constructor(
     private val alarmLocalRepo: AlarmLocalRepo,
     private val backendRepo: AlarmBackendRepo,
-    private val prefUtils: PrefUtils
+    private val prefUtils: PrefUtils,
+    private val alarmUtils: AlarmUtils
 ) : ViewModel() {
     private var alarmEntity: AlarmEntity? = null
 
@@ -363,7 +365,7 @@ class SchedulerViewModel
             _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
                 saveProgress = "cancel old alarm"
             )
-            it.cancelScheduleAlarm(context, it.alarmId, true)
+            alarmUtils.cancelScheduleAlarm(it, true)
         }
         val alarmTone: Uri = RingtoneManager.getActualDefaultRingtoneUri(
             context, RingtoneManager.TYPE_ALARM
@@ -380,7 +382,7 @@ class SchedulerViewModel
         viewModelScope.launch {
             _alarmSettingUiState.value = _alarmSettingUiState.value.copy(saveProgress = "Success..")
             if (entity.status) {
-                entity.scheduleAlarm(context)
+                alarmUtils.scheduleAlarm(entity)
             }
             if (alarmItem != null&&alarmItem.idFromServer.isNotEmpty()) {
                 alarmLocalRepo.insertSyncData(
@@ -413,6 +415,7 @@ class SchedulerViewModel
     private fun updateUi(it: AlarmEntity) {
         this@SchedulerViewModel.alarmEntity = it
         interval.value = interval.value.copy(
+            status = it.interval.status,
             advancedReminder = AdvUiState(
                 status = it.interval.advancedReminder.status,
                 time = it.interval.advancedReminder.time
