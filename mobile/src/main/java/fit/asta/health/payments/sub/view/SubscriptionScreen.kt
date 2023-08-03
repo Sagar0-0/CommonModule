@@ -14,7 +14,7 @@ import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.AppTopBar
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.payments.razorpay.model.OrderRequest
+import fit.asta.health.payments.pay.model.OrderRequest
 import fit.asta.health.payments.sub.model.SubscriptionResponse
 
 @Composable

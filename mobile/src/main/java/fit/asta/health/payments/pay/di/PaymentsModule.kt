@@ -1,14 +1,14 @@
-package fit.asta.health.payments.razorpay.di
+package fit.asta.health.payments.pay.di
 
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.BuildConfig
-import fit.asta.health.payments.razorpay.api.PaymentsApi
-import fit.asta.health.payments.razorpay.api.PaymentsRestApi
-import fit.asta.health.payments.razorpay.repo.PaymentsRepo
-import fit.asta.health.payments.razorpay.repo.PaymentsRepoImpl
+import fit.asta.health.payments.pay.api.PaymentsApi
+import fit.asta.health.payments.pay.api.PaymentsRestApi
+import fit.asta.health.payments.pay.repo.PaymentsRepo
+import fit.asta.health.payments.pay.repo.PaymentsRepoImpl
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 

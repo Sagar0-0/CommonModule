@@ -1,9 +1,9 @@
-package fit.asta.health.payments.razorpay.api
+package fit.asta.health.payments.pay.api
 
 import fit.asta.health.common.utils.NetworkUtil
-import fit.asta.health.payments.razorpay.model.OrderRequest
-import fit.asta.health.payments.razorpay.model.OrderResponse
-import fit.asta.health.payments.razorpay.model.PaymentResponse
+import fit.asta.health.payments.pay.model.OrderRequest
+import fit.asta.health.payments.pay.model.OrderResponse
+import fit.asta.health.payments.pay.model.PaymentResponse
 import okhttp3.OkHttpClient
 
 class PaymentsRestApi(baseUrl: String, client: OkHttpClient) : PaymentsApi {

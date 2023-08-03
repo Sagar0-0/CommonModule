@@ -1,13 +1,13 @@
-package fit.asta.health.payments.razorpay.vm
+package fit.asta.health.payments.pay.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.payments.razorpay.model.OrderRequest
-import fit.asta.health.payments.razorpay.model.OrderResponse
-import fit.asta.health.payments.razorpay.model.PaymentResponse
-import fit.asta.health.payments.razorpay.repo.PaymentsRepo
+import fit.asta.health.payments.pay.model.OrderRequest
+import fit.asta.health.payments.pay.model.OrderResponse
+import fit.asta.health.payments.pay.model.PaymentResponse
+import fit.asta.health.payments.pay.repo.PaymentsRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

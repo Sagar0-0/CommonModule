@@ -94,7 +94,8 @@ object AppTexts {
             text = text,
             style = MaterialTheme.typography.headlineLarge,
             modifier = modifier,
-            color = color
+            color = color,
+            textAlign = textAlign
         )
     }
 

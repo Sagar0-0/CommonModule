@@ -1,4 +1,4 @@
-package fit.asta.health.payments.razorpay.model
+package fit.asta.health.payments.pay.model
 
 
 import com.google.gson.annotations.SerializedName

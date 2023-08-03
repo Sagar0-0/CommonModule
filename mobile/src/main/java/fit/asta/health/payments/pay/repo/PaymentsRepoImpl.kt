@@ -1,10 +1,10 @@
-package fit.asta.health.payments.razorpay.repo
+package fit.asta.health.payments.pay.repo
 
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.payments.razorpay.api.PaymentsApi
-import fit.asta.health.payments.razorpay.model.OrderRequest
-import fit.asta.health.payments.razorpay.model.OrderResponse
-import fit.asta.health.payments.razorpay.model.PaymentResponse
+import fit.asta.health.payments.pay.api.PaymentsApi
+import fit.asta.health.payments.pay.model.OrderRequest
+import fit.asta.health.payments.pay.model.OrderResponse
+import fit.asta.health.payments.pay.model.PaymentResponse
 import javax.inject.Inject
 
 class PaymentsRepoImpl

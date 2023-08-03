@@ -1,4 +1,4 @@
-package fit.asta.health.payments.razorpay
+package fit.asta.health.payments.pay
 
 import android.content.Context
 import android.content.Intent
@@ -30,10 +30,10 @@ import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.payments.razorpay.model.OrderRequest
-import fit.asta.health.payments.razorpay.model.OrderResponse
-import fit.asta.health.payments.razorpay.model.PaymentResponse
-import fit.asta.health.payments.razorpay.vm.PaymentsViewModel
+import fit.asta.health.payments.pay.model.OrderRequest
+import fit.asta.health.payments.pay.model.OrderResponse
+import fit.asta.health.payments.pay.model.PaymentResponse
+import fit.asta.health.payments.pay.vm.PaymentsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)

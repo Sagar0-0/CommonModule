@@ -7,7 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import fit.asta.health.main.Graph
-import fit.asta.health.payments.razorpay.PaymentActivity
+import fit.asta.health.payments.pay.PaymentActivity
 import fit.asta.health.payments.sub.vm.SubscriptionViewModel
 
 fun NavGraphBuilder.subscriptionComp(navController: NavHostController) {

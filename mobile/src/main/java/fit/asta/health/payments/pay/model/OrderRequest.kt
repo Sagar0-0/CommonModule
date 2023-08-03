@@ -1,4 +1,4 @@
-package fit.asta.health.payments.razorpay.model
+package fit.asta.health.payments.pay.model
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

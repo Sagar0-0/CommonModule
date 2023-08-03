@@ -1,6 +1,7 @@
 package fit.asta.health.payments.sub.view
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateDp
@@ -38,11 +39,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.components.generic.carouselTransition
 import fit.asta.health.common.ui.theme.iconButtonSize
 import fit.asta.health.common.ui.theme.iconSize
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.payments.razorpay.model.OrderRequest
+import fit.asta.health.payments.pay.model.OrderRequest
 import fit.asta.health.payments.sub.model.SubscriptionResponse
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -65,7 +67,6 @@ internal fun SubPlansPager(
             spacing.extraLarge
         }
     }
-
     HorizontalPager(
         modifier = Modifier.animateContentSize(),
         state = pagerState,
@@ -93,6 +94,7 @@ internal fun SubPlansPager(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SubPlanItem(
     item: SubscriptionResponse.Data.SubscriptionPlans.Category,
@@ -145,6 +147,11 @@ private fun SubPlanItem(
         contentAlignment = Alignment.TopCenter
     ) {
         Card(
+            onClick = {
+                if (!fullScreen) {
+                    onFullScreenChange(true)
+                }
+            },
             modifier = Modifier
                 .padding(top = cardTopPadding)
                 .height(cardSize)
@@ -162,9 +169,26 @@ private fun SubPlanItem(
                 Icon(imageVector = Icons.Default.Close, contentDescription = "")
             }
 
-            Text(item.ttl)
+            Crossfade(targetState = fullScreen, label = "") {
+                if (it) {
+                    Column {
+                        AppTexts.HeadlineLarge(
+                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                            text = item.ttl
+                        )
+
+                    }
+                } else {
+                    AppTexts.HeadlineSmall(
+                        modifier = Modifier.align(Alignment.CenterHorizontally),
+                        text = item.ttl
+                    )
+                }
+            }
+
 
             AnimatedVisibility(visible = fullScreen) {
+                //Features
                 Row(
                     Modifier
                         .fillMaxWidth()
@@ -216,7 +240,6 @@ private fun SubPlanItem(
                     textAlign = TextAlign.Center
                 )
             }
-
 
         }
 
