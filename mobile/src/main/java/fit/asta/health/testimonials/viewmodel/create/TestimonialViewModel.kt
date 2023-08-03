@@ -66,27 +66,22 @@ class TestimonialViewModel
     val video =
         savedState.getStateFlow(VIDEO, Media(name = "journey", title = "Health Transformation"))
 
-
     val areInputsValid =
         combine(type, title, testimonial, org, role) { type, title, testimonial, org, role ->
-
             when (type) {
                 TestimonialType.TEXT -> testimonial.value.isNotBlank() && testimonial.error is UiString.Empty
                 TestimonialType.IMAGE -> true
                 TestimonialType.VIDEO -> true
             } && title.value.isNotEmpty() && title.error is UiString.Empty && org.value.isNotEmpty() && org.error is UiString.Empty && role.value.isNotEmpty() && role.error is UiString.Empty && isTestimonialDirty()
-
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
 
     val areMediaValid = combine(type, imgBefore, imgAfter, video) { type, before, after, video ->
-
         when (type) {
             TestimonialType.TEXT -> true
             TestimonialType.IMAGE -> (before.localUrl != null || before.url.isNotBlank()) && (after.localUrl != null || after.url.isNotBlank())
             TestimonialType.VIDEO -> video.localUrl != null || video.url.isNotBlank()
         }
-
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
 
@@ -102,22 +97,15 @@ class TestimonialViewModel
 
     fun loadTestimonial() {
         viewModelScope.launch {
-
             try {
-
                 authRepo.getUser()?.let { uid ->
                     when (val result = testimonialRepo.getTestimonial(uid.uid)) {
-
                         is ApiResponse.Error -> {
-
                         }
-
                         is ApiResponse.HttpError -> {
                             _mutableState.value = TestimonialGetState.Empty
                         }
-
                         is ApiResponse.Success -> {
-
                             savedState[TESTIMONIAL_DATA] = result.data
                             savedState[ID] = result.data.id
                             savedState[TYPE] = TestimonialType.from(result.data.type)
@@ -128,14 +116,11 @@ class TestimonialViewModel
 
                             when (TestimonialType.from(result.data.type)) {
                                 TestimonialType.TEXT -> {
-
                                 }
-
                                 TestimonialType.IMAGE -> {
                                     savedState[IMAGE_BEFORE] = Media(url = result.data.media[0].url)
                                     savedState[IMAGE_AFTER] = Media(url = result.data.media[1].url)
                                 }
-
                                 TestimonialType.VIDEO -> {
                                     savedState[VIDEO] = Media(url = result.data.media[0].url)
                                 }
@@ -144,8 +129,6 @@ class TestimonialViewModel
                         }
                     }
                 }
-
-
             } catch (networkException: IOException) {
                 _mutableState.value = TestimonialGetState.NetworkError(networkException)
             } catch (exception: Exception) {
@@ -158,7 +141,6 @@ class TestimonialViewModel
 
 
     private fun submit() {
-
         authRepo.getUser()?.let {
             updateTestimonial(
                 Testimonial(
@@ -181,7 +163,6 @@ class TestimonialViewModel
                 )
             )
         }
-
     }
 
 
@@ -205,35 +186,28 @@ class TestimonialViewModel
             is TestimonialEvent.OnTypeChange -> {
                 savedState[TYPE] = event.type
             }
-
             is TestimonialEvent.OnTitleChange -> {
                 savedState[TITLE] = title.value.copy(
                     value = event.title, error = onValidateText(event.title, 4, 64)
                 )
             }
-
             is TestimonialEvent.OnTestimonialChange -> {
                 savedState[TESTIMONIAL] = testimonial.value.copy(
                     value = event.testimonial, error = onValidateText(event.testimonial, 32, 256)
                 )
             }
-
             is TestimonialEvent.OnOrgChange -> {
                 savedState[ORG] =
                     title.value.copy(value = event.org, error = onValidateText(event.org, 4, 32))
             }
-
             is TestimonialEvent.OnRoleChange -> {
                 savedState[ROLE] =
                     title.value.copy(value = event.role, error = onValidateText(event.role, 2, 32))
             }
-
             is TestimonialEvent.OnMediaSelect -> {
-
                 if (event.url == null) {
                     return
                 }
-
                 when (event.mediaType) {
                     MediaType.AfterImage -> {
                         savedState[IMAGE_AFTER] = imgAfter.value.copy(
@@ -241,14 +215,12 @@ class TestimonialViewModel
                             error = onValidateMedia(imgAfter.value.localUrl, imgAfter.value.url)
                         )
                     }
-
                     MediaType.BeforeImage -> {
                         savedState[IMAGE_BEFORE] = imgBefore.value.copy(
                             localUrl = event.url,
                             error = onValidateMedia(imgBefore.value.localUrl, imgBefore.value.url)
                         )
                     }
-
                     MediaType.Video -> {
                         savedState[VIDEO] = video.value.copy(
                             localUrl = event.url,
@@ -257,9 +229,7 @@ class TestimonialViewModel
                     }
                 }
             }
-
             is TestimonialEvent.OnMediaClear -> {
-
                 when (event.mediaType) {
                     MediaType.AfterImage -> {
                         savedState[IMAGE_AFTER] = imgAfter.value.copy(
@@ -268,7 +238,6 @@ class TestimonialViewModel
                             error = UiString.Resource(R.string.the_media_can_not_be_blank)
                         )
                     }
-
                     MediaType.BeforeImage -> {
                         savedState[IMAGE_BEFORE] = imgBefore.value.copy(
                             localUrl = null,
@@ -276,7 +245,6 @@ class TestimonialViewModel
                             error = UiString.Resource(R.string.the_media_can_not_be_blank)
                         )
                     }
-
                     MediaType.Video -> {
                         savedState[VIDEO] = video.value.copy(
                             localUrl = null,
@@ -286,7 +254,6 @@ class TestimonialViewModel
                     }
                 }
             }
-
             is TestimonialEvent.OnSubmit -> {
                 submit()
             }

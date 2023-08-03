@@ -110,7 +110,7 @@ fun VideoView(
         Media(state,
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(aspectRatio.medium)
+                .aspectRatio(aspectRatio.wideScreen)
                 .background(Color.Black),
             surfaceType = uiState.surfaceType,
             resizeMode = uiState.resizeMode,

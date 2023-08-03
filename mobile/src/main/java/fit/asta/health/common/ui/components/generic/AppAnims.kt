@@ -28,14 +28,15 @@ object AppDividerLineWidth {
     val TstDividerWidth = 71.dp
 }
 
-/** @param lineWidth (required): The width of the divider line. */
+/** @param modifier (optional) - A set of modifiers to customize the layout and behavior of the [AppDivider].
+ * @param lineWidth (required): The width of the divider line. */
 
 @Composable
-fun AppDivider(lineWidth: Dp) {
+fun AppDivider(modifier: Modifier = Modifier, lineWidth: Dp) {
     Divider(
         color = MaterialTheme.colorScheme.primary,
         thickness = spacing.extraSmall,
-        modifier = Modifier
+        modifier = modifier
             .clip(MaterialTheme.shapes.extraSmall)
             .width(width = lineWidth)
     )
@@ -63,17 +64,17 @@ fun AppProgressArc(
 
 /**[AppHorizontalPagerIndicator] function is a Composable function that displays a horizontal pager
  * indicator.
- * @param pagerState A required parameter that represents the state of the pager. It holds
- * information about the current page, the number of items, and allows controlling the pager's behavior.
  * @param modifier An optional parameter that allows you to apply styling modifications to
  * the HorizontalPagerIndicator.
+ * @param pagerState A required parameter that represents the state of the pager. It holds
+ * information about the current page, the number of items, and allows controlling the pager's behavior.
  * */
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun AppHorizontalPagerIndicator(
-    pagerState: PagerState,
     modifier: Modifier = Modifier,
+    pagerState: PagerState,
 ) {
     HorizontalPagerIndicator(
         pagerState = pagerState,

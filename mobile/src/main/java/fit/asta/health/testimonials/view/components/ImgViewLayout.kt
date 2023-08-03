@@ -31,7 +31,7 @@ fun UploadTstMediaView(
     Box(
         Modifier
             .padding(spacing.minSmall)
-            .aspectRatio(aspectRatio.original)
+            .aspectRatio(aspectRatio.square)
             .clickable { onUploadClick() }
             .clip(MaterialTheme.shapes.medium)
             .background(color = MaterialTheme.colorScheme.tertiaryContainer),
@@ -69,13 +69,13 @@ fun SelectedImageView(
     Box(
         Modifier
             .padding(spacing.minSmall)
-            .aspectRatio(aspectRatio.original)
+            .aspectRatio(aspectRatio.square)
             .clickable { onImageClick() }, contentAlignment = Alignment.BottomCenter
     ) {
         AppDefServerImg(
             model = url,
             contentDescription = "Selected Tst Image",
-            modifier = Modifier.aspectRatio(aspectRatio.original),
+            modifier = Modifier.aspectRatio(aspectRatio.square),
             contentScale = ContentScale.Crop
         )
         AppTexts.TitleMedium(text = title, color = MaterialTheme.colorScheme.onSurface)

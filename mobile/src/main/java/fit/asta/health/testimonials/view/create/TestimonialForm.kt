@@ -16,12 +16,12 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.jetpack.HandleBackPress
 import fit.asta.health.common.ui.components.*
-import fit.asta.health.common.ui.components.functional.AppValidateOutlineTxtField
+import fit.asta.health.common.ui.components.functional.AppTextFieldValidate
 import fit.asta.health.common.ui.components.functional.DialogData
 import fit.asta.health.common.ui.components.functional.OnSuccessfulSubmit
 import fit.asta.health.common.ui.components.functional.ShowCustomConfirmationDialog
 import fit.asta.health.common.ui.components.functional.ValidateTxtLength
-import fit.asta.health.common.ui.components.generic.AppDefBtn
+import fit.asta.health.common.ui.components.generic.AppButton
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.common.ui.components.generic.AppTexts
@@ -98,7 +98,7 @@ fun TestimonialForm(
                     .verticalScroll(scrollState),
                 verticalArrangement = Arrangement.Center
             ) {
-                AppValidateOutlineTxtField(
+                AppTextFieldValidate(
                     value = title.value,
                     label = "Title",
                     isError = title.error !is UiString.Empty,
@@ -112,7 +112,7 @@ fun TestimonialForm(
                 Spacer(modifier = Modifier.height(spacing.medium))
 
                 if (selectedOption == radioButtonList[0] || selectedOption == radioButtonList[1]) {
-                    AppValidateOutlineTxtField(
+                    AppTextFieldValidate(
                         value = testimonial.value,
                         label = "Testimonial",
                         keyboardActions = KeyboardActions(onNext = {
@@ -138,7 +138,7 @@ fun TestimonialForm(
                     Spacer(modifier = Modifier.height(spacing.medium))
                 }
 
-                AppValidateOutlineTxtField(
+                AppTextFieldValidate(
                     value = organization.value,
                     onValueChange = { getViewModel.onEvent(TestimonialEvent.OnOrgChange(it)) },
                     label = "Organisation",
@@ -151,7 +151,7 @@ fun TestimonialForm(
 
                 Spacer(modifier = Modifier.height(spacing.medium))
 
-                AppValidateOutlineTxtField(
+                AppTextFieldValidate(
                     value = role.value,
                     onValueChange = { getViewModel.onEvent(TestimonialEvent.OnRoleChange(it)) },
                     label = "Role",
@@ -172,7 +172,7 @@ fun TestimonialForm(
                     TstGetVideo()
                 }
 
-                AppDefBtn(
+                AppButton(
                     onClick = {
                         showCustomDialogWithResult = !showCustomDialogWithResult
                         getViewModel.onEvent(TestimonialEvent.OnSubmit)
@@ -180,7 +180,7 @@ fun TestimonialForm(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(spacing.medium),
-                    color = ButtonDefaults.buttonColors(
+                    colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
                         contentColor = MaterialTheme.colorScheme.onPrimary
                     ),

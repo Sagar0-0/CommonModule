@@ -14,7 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import fit.asta.health.common.ui.components.generic.AppDefOutlineTextField
+import fit.asta.health.common.ui.components.generic.AppTextField
 import fit.asta.health.common.utils.UiString
 
 
@@ -31,7 +31,7 @@ fun ValidatedTextField(
     singleLine: Boolean = false,
 ) {
     Column(Modifier.fillMaxWidth()) {
-        AppDefOutlineTextField(
+        AppTextField(
             modifier = modifier,
             value = value,
             onValueChange = onValueChange,

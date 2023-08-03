@@ -16,7 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import fit.asta.health.common.ui.components.generic.AppClickableCard
+import fit.asta.health.common.ui.components.generic.AppCard
 import fit.asta.health.common.ui.components.generic.AppDefServerImg
 import fit.asta.health.common.ui.components.generic.AppDefaultIcon
 import fit.asta.health.common.ui.components.generic.AppTexts
@@ -31,14 +31,14 @@ fun ToolsCardLayout(
     imgUrl: String,
     onClick: (type: String) -> Unit,
 ) {
-    AppClickableCard(onClick = { onClick(type) }) {
+    AppCard(onClick = { onClick(type) }) {
         Column(modifier = Modifier.background(Color.Transparent)) {
             Box {
 
                 AppDefServerImg(
                     model = getImgUrl(url = imgUrl), contentDescription = cardTitle,
                     modifier = Modifier
-                        .aspectRatio(aspectRatio.original)
+                        .aspectRatio(aspectRatio.square)
                         .clip(
                             RoundedCornerShape(
                                 bottomStart = spacing.small, bottomEnd = spacing.small
