@@ -12,19 +12,14 @@ import android.os.*
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import fit.asta.health.HealthCareApp.Companion.CHANNEL_ID
-import fit.asta.health.MainActivity
 import fit.asta.health.R
 import fit.asta.health.scheduler.compose.AlarmScreenActivity
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.net.scheduler.Stat
 import fit.asta.health.scheduler.util.Constants.Companion.ARG_ALARM_OBJET
-import fit.asta.health.scheduler.util.Constants.Companion.ARG_POST_NOTIFICATION_OBJET
-import fit.asta.health.scheduler.util.Constants.Companion.ARG_PRE_NOTIFICATION_OBJET
 import fit.asta.health.scheduler.util.Constants.Companion.ARG_VARIANT_INTERVAL_ALARM_OBJECT
 import fit.asta.health.scheduler.util.Constants.Companion.ARG_VARIANT_INTERVAL_OBJECT
 import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_ALARM_OBJECT
-import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_POST_NOTIFICATION_OBJECT
-import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_PRE_NOTIFICATION_OBJECT
 import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_VARIANT_INTERVAL_OBJECT
 import fit.asta.health.scheduler.util.SerializableAndParcelable.parcelable
 import fit.asta.health.scheduler.util.SerializableAndParcelable.serializable
@@ -152,83 +147,6 @@ class AlarmService : Service() {
                 status = alarmEntity?.vibration!!.status,
                 id =  variantInterval!!.id
             )
-        }
-
-
-        val bundleForPreNotification = intent?.getBundleExtra(BUNDLE_PRE_NOTIFICATION_OBJECT)
-        if (bundleForPreNotification != null) {
-            // getting alarm item data from bundle
-            preNotificationAlarmEntity =
-                bundleForPreNotification.serializable(ARG_PRE_NOTIFICATION_OBJET)
-            Log.d("TAGTAGTAG", "onStartCommand:preNotification $preNotificationAlarmEntity")
-            // creating notification-pending intent to redirect on notification click
-            val notificationIntent = Intent(this, MainActivity::class.java)
-            notificationIntent.putExtra(BUNDLE_PRE_NOTIFICATION_OBJECT, bundleForPreNotification)
-            val pendingIntent = PendingIntent.getActivity(
-                this,
-                bundleForPreNotification.getInt("id", 1),
-                notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-            )
-
-            var alarmName = getString(R.string.notification)
-            if (alarmEntity != null) {
-                alarmName = alarmEntity?.info?.name!!
-            }
-            notification = NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Scheduler")
-                .setContentText(
-                    alarmName + bundleForPreNotification.getInt("id", 1),
-                )
-                .setSmallIcon(R.drawable.ic_round_access_alarm_24)
-                .setCategory(NotificationCompat.CATEGORY_ALARM)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setContentIntent(pendingIntent)
-                .build()
-            startForeground(bundleForPreNotification.getInt("id", 1), notification)
-            stopForeground(STOP_FOREGROUND_REMOVE)
-            return START_STICKY
-        }
-
-        val bundleForPostNotification = intent?.getBundleExtra(BUNDLE_POST_NOTIFICATION_OBJECT)
-        if (bundleForPostNotification != null) {
-            // getting alarm item data from bundle
-            postNotificationAlarmEntity =
-                bundleForPostNotification.serializable(ARG_POST_NOTIFICATION_OBJET)
-            // creating notification-pending intent to redirect on notification click
-            Log.d("TAGTAGTAG", "onStartCommand:postNotification $postNotificationAlarmEntity")
-
-            val notificationIntent = Intent(this, MainActivity::class.java)
-            notificationIntent.putExtra(BUNDLE_POST_NOTIFICATION_OBJECT, bundleForPostNotification)
-            val pendingIntent = PendingIntent.getActivity(
-                this,
-                bundleForPostNotification.getInt("id", 1),
-                notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-            )
-
-            var alarmName = getString(R.string.notification)
-            if (alarmEntity != null) {
-                alarmName = alarmEntity?.info?.name!!
-            }
-            notification = NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Post Notification")
-                .setContentText(
-                    alarmName + bundleForPostNotification.getInt("id", 1),
-                )
-                .setSmallIcon(R.drawable.ic_round_access_alarm_24)
-                .setCategory(NotificationCompat.CATEGORY_ALARM)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setContentIntent(pendingIntent)
-                .build()
-            startForeground(
-                bundleForPostNotification.getInt("id", 1),
-                notification
-            )
-            stopForeground(STOP_FOREGROUND_REMOVE)
-            return START_STICKY
         }
         return START_STICKY
     }

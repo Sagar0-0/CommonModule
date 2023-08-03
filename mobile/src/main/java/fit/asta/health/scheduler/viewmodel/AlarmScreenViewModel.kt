@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.scheduler.compose.screen.alarmscreen.AlarmEvent
 import fit.asta.health.scheduler.compose.screen.alarmscreen.AlarmUiState
 import fit.asta.health.scheduler.model.AlarmLocalRepo
+import fit.asta.health.scheduler.model.AlarmUtils
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.net.scheduler.Stat
 import fit.asta.health.scheduler.services.AlarmService
@@ -23,6 +24,7 @@ import javax.inject.Inject
 class AlarmScreenViewModel
 @Inject constructor(
     private val alarmLocalRepo: AlarmLocalRepo,
+    private val alarmUtils: AlarmUtils
 ) : ViewModel() {
 
     var alarmEntity: AlarmEntity? = null
@@ -65,7 +67,7 @@ class AlarmScreenViewModel
                 Log.d("TAGTAGTAG", "onSwipedLeft::  ")
                 alarmEntity?.let {
                     it.info.name = "Snooze ${it.info.name}"
-                    it.snooze(uiEvent.context)
+                    alarmUtils.snooze(it)
                 }
                 val intentService =
                     Intent(uiEvent.context, AlarmService::class.java)
@@ -79,8 +81,8 @@ class AlarmScreenViewModel
                     if (alarm.interval.isRemainderAtTheEnd) {
                         variantInterval?.let { variant ->
                             Log.d("TAGTAG", "event: variant Post natification")
-                            alarm.schedulerAlarmPostNotification(
-                                uiEvent.context,
+                            alarmUtils.schedulerAlarmPostNotification(
+                                alarm,
                                 true,
                                 variant,
                                 variant.id
@@ -88,9 +90,9 @@ class AlarmScreenViewModel
                         }
                         if (variantInterval == null) {
                             Log.d("TAGTAG", "event: alarm Post natification")
-                            alarm.schedulerAlarmPostNotification(
-                                uiEvent.context,
-                                false,
+                            alarmUtils.schedulerAlarmPostNotification(
+                                alarm,
+                                true,
                                 null,
                                 alarm.alarmId
                             )
