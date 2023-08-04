@@ -19,9 +19,6 @@ class MainViewModel
     private val resourcesProvider: ResourcesProvider
 ) : ViewModel() {
 
-    private val _locationName = MutableStateFlow("")
-    val locationName = _locationName.asStateFlow()
-
     private val _notificationsEnabled = MutableStateFlow(false)
     val notificationsEnabled = _notificationsEnabled.asStateFlow()
 
@@ -34,16 +31,6 @@ class MainViewModel
             ).collect {
                 _notificationsEnabled.value = it
                 Log.d("NOT", "init: $it")
-            }
-        }
-
-        viewModelScope.launch {
-            prefUtils.getPreferences(
-                resourcesProvider.getString(R.string.user_pref_current_address),
-                "Select location"
-            ).collect {
-                _locationName.value = it
-                Log.d("LOC", "init: $it")
             }
         }
     }

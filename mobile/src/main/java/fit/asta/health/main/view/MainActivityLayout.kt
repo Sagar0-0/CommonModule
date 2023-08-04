@@ -42,6 +42,7 @@ import fit.asta.health.common.ui.components.generic.AppTopBar
 import fit.asta.health.common.ui.theme.elevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.MainTopBarActions
+import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.main.Graph
 import fit.asta.health.main.sharedViewModel
 import fit.asta.health.navigation.home.view.HomeContent
@@ -54,7 +55,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainActivityLayout(
-    locationName: String,
+    currentAddressState: ResponseState<String>,
     profileImageUri: Uri?,
     isNotificationEnabled: Boolean,
     onClick: (key: MainTopBarActions) -> Unit,
@@ -67,25 +68,29 @@ fun MainActivityLayout(
 
     val currentDestination = navBackStackEntry?.destination
 
-    AppScaffold(bottomBar = {
-        MainBottomAppBar(
-            navController = navController, currentDestination = currentDestination
-        )
-    }, content = {
-        MainNavHost(
-            navController = navController, onNav = onNav, innerPadding = it
-        )
-    }, topBar = {
-        AppTopBar(
-            backIcon = null, actions = {
-                NewMainTopBarActions(
-                    onClick = onClick,
-                    isNotificationEnabled = isNotificationEnabled,
-                    profileImageUri = profileImageUri,
-                    locationName = locationName
-                )
-            })
-    })
+    AppScaffold(
+        bottomBar = {
+            MainBottomAppBar(
+                navController = navController, currentDestination = currentDestination
+            )
+        }, content = {
+            MainNavHost(
+                navController = navController, onNav = onNav, innerPadding = it
+            )
+        }, topBar = {
+            AppTopBar(
+                backIcon = null,
+                actions = {
+                    NewMainTopBarActions(
+                        onClick = onClick,
+                        isNotificationEnabled = isNotificationEnabled,
+                        profileImageUri = profileImageUri,
+                        currentAddressState = currentAddressState
+                    )
+                }
+            )
+        }
+    )
 }
 
 
@@ -106,11 +111,12 @@ private fun BottomAppBarLayout(
         tonalElevation = elevation.high
     ) {
         items.forEach { item ->
-            NavigationBarItem(icon = {
-                Icon(
-                    painter = painterResource(id = item.icon), contentDescription = item.title
-                )
-            },
+            NavigationBarItem(
+                icon = {
+                    Icon(
+                        painter = painterResource(id = item.icon), contentDescription = item.title
+                    )
+                },
                 label = { Text(text = item.title) },
                 selected = currentRoute == item.route,
                 onClick = { onNavigate(item.route) },
@@ -126,20 +132,46 @@ private fun NewMainTopBarActions(
     onClick: (key: MainTopBarActions) -> Unit,
     isNotificationEnabled: Boolean,
     profileImageUri: Uri?,
-    locationName: String,
+    currentAddressState: ResponseState<String>,
 ) {
     Row(Modifier.clickable { onClick(MainTopBarActions.Location) }) {
         Icon(
-            Icons.Default.LocationOn,
+            modifier = Modifier.padding(start = spacing.small),
+            imageVector = Icons.Default.LocationOn,
             contentDescription = "Location",
             tint = MaterialTheme.colorScheme.onBackground
         )
-        Text(
-            text = locationName,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(spacing.minSmall),
-            color = MaterialTheme.colorScheme.onBackground
-        )
+
+        when (currentAddressState) {
+            is ResponseState.Loading -> {
+                Text(
+                    text = "Fetching...",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(spacing.minSmall),
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            }
+
+            is ResponseState.Success -> {
+                Text(
+                    text = currentAddressState.data,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(spacing.minSmall),
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            }
+
+            is ResponseState.Error -> {
+                Text(
+                    text = "Error fetching location",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(spacing.minSmall),
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            }
+
+            else -> {}
+        }
     }
     Row(
         Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End

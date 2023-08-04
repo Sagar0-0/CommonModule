@@ -78,9 +78,9 @@ fun MapScreen(
                     context
                 )
             }
-            val address by mapsViewModel.markerAddressDetail.collectAsStateWithLifecycle()
-            when (address) {
-                is ResponseState.Loading -> {
+            val markerAddress by mapsViewModel.markerAddressDetail.collectAsStateWithLifecycle()
+            when (markerAddress) {
+                ResponseState.Loading -> {
                     Box(
                         modifier = Modifier.height(bottomSheetSize),
                         contentAlignment = Alignment.Center
@@ -92,7 +92,7 @@ fun MapScreen(
                 is ResponseState.Success -> {
                     MapBottomSheet(
                         sheetScaffoldState = scaffoldState,
-                        address = (address as ResponseState.Success<Address>).data,
+                        address = (markerAddress as ResponseState.Success<Address>).data,
                         myAddressItem = myAddressItem,
                         onEnterAddressClick = expandSheet,
                         onCollapse = collapseSheet,
@@ -186,7 +186,7 @@ fun MapScreen(
                     contentColor = MaterialTheme.colorScheme.primary
                 ),
                 onClick = {
-                    mapsViewModel.getCurrentLatLng(context)
+                    mapsViewModel.updateCurrentLocationData(context)
                     cameraPositionState.position =
                         CameraPosition.fromLatLngZoom(mapsViewModel.currentLatLng.value, 18f)
                 }

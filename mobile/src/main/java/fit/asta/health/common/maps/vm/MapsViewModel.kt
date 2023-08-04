@@ -63,8 +63,13 @@ class MapsViewModel
     val isLocationEnabled = MutableStateFlow(false)
     val isPermissionGranted = MutableStateFlow(true)
 
-    private val _currentAddress = MutableStateFlow<Address?>(null)
-    val currentAddress = _currentAddress.asStateFlow()
+    private val _currentAddressState =
+        MutableStateFlow<ResponseState<Address>>(ResponseState.Loading)
+    val currentAddressState = _currentAddressState.asStateFlow()
+
+    private val _currentAddressStringState =
+        MutableStateFlow<ResponseState<String>>(ResponseState.Loading)
+    val currentAddressStringState = _currentAddressStringState.asStateFlow()
 
     private val _currentLatLng = MutableStateFlow(LatLng(0.0, 0.0))
     val currentLatLng = _currentLatLng.asStateFlow()
@@ -76,7 +81,7 @@ class MapsViewModel
     private var searchJob: Job? = null
 
     private val _addressListState =
-        MutableStateFlow<ResponseState<AddressesResponse>>(ResponseState.Idle)
+        MutableStateFlow<ResponseState<AddressesResponse>>(ResponseState.Loading)
     val addressListState = _addressListState.asStateFlow()
 
     private var selectedAddressId by mutableStateOf<String?>(null)
@@ -87,19 +92,25 @@ class MapsViewModel
 
     init {
         updateLocationServiceStatus()
+        viewModelScope.launch {
+            prefUtils.getPreferences(
+                resourcesProvider.getString(R.string.user_pref_current_address),
+                "Select location"
+            ).collect {
+                _currentAddressStringState.value = ResponseState.Success(it)
+                Log.d("LOC", "init: $it")
+            }
+        }
     }
 
     fun updateCurrentLocationData(context: Context) {
+        _currentAddressState.value = ResponseState.Loading
+        _currentAddressStringState.value = ResponseState.Loading
+
         Log.d(TAG, "updateCurrentLocationData: Called")
         updateLocationServiceStatus()
-        viewModelScope.launch {
-            if (isLocationEnabled.value && isPermissionGranted.value) {
-                getCurrentLatLng(context)
-                _currentLatLng.collect {
-                    Log.d(TAG, "updateCurrentLocationData: LatLng updated")
-                    getCurrentAddress(it, context)
-                }
-            }
+        if (isLocationEnabled.value && isPermissionGranted.value) {
+            getCurrentLatLng(context)
         }
     }
 
@@ -158,14 +169,15 @@ class MapsViewModel
                     latLng.longitude,
                     1
                 ) { p0 ->
-                    _currentAddress.value = p0[0]
+                    _currentAddressState.value = ResponseState.Success(p0[0])
+                    _currentAddressStringState.value = ResponseState.Success(getLocationName(p0[0]))
                     viewModelScope.launch {
                         prefUtils.setPreferences(
                             resourcesProvider.getString(R.string.user_pref_current_address),
-                            getLocationName(_currentAddress.value!!)
+                            _currentAddressStringState.value
                         )
                     }
-                    Log.d(TAG, "getCurrentAddress: Success: ${_currentAddress.value}")
+                    Log.d(TAG, "getCurrentAddress: Success: ${_currentAddressState.value}")
                 }
             } else {
                 val addresses = geocoder.getFromLocation(
@@ -174,20 +186,24 @@ class MapsViewModel
                     1,
                 )
                 if (!addresses.isNullOrEmpty()) {
-                    _currentAddress.value = addresses[0]
+                    _currentAddressState.value = ResponseState.Success(addresses[0])
+                    _currentAddressStringState.value =
+                        ResponseState.Success(getLocationName(addresses[0]))
                     viewModelScope.launch {
                         prefUtils.setPreferences(
                             resourcesProvider.getString(R.string.user_pref_current_address),
-                            getLocationName(_currentAddress.value!!)
+                            _currentAddressStringState.value
                         )
                     }
-                    Log.d(TAG, "getCurrentAddress: Success: ${_currentAddress.value}")
+                    Log.d(TAG, "getCurrentAddress: Success: ${_currentAddressState.value}")
                 } else {
                     Log.e(TAG, "getCurrentAddress NULL: $addresses")
+                    _currentAddressState.value = ResponseState.Error(Exception("Null addresses"))
                 }
             }
         } catch (e: Exception) {
             Log.e(TAG, "getCurrentAddress EXCEPTION: ${e.message}")
+            _currentAddressState.value = ResponseState.Error(e)
         }
     }
 
@@ -212,6 +228,7 @@ class MapsViewModel
                     }
                     _currentLatLng.value =
                         LatLng(location.latitude, location.longitude)
+                    getCurrentAddress(_currentLatLng.value, context)
                 }
             },
             Looper.getMainLooper()
