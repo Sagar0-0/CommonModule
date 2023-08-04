@@ -62,29 +62,37 @@ fun NavGraphBuilder.homeScreen(
 
         val permissionResultLauncher =
             rememberLauncherForActivityResult(
-                contract = ActivityResultContracts.RequestPermission()
-            ) { perm ->
-                if (perm) {
-                    PrefUtils.setLocationPermissionRejectedCount(context, 1)
-                    mapsViewModel.enableLocationRequest(context) {
-                        locationRequestLauncher.launch(it)
+                contract = ActivityResultContracts.RequestMultiplePermissions()
+            ) { perms ->
+                perms.keys.forEach loop@{ perm ->
+                    if ((perms[perm] == true) && (perm == Manifest.permission.ACCESS_FINE_LOCATION || perm == Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                        PrefUtils.setLocationPermissionRejectedCount(context, 1)
+                        mapsViewModel.enableLocationRequest(context) {
+                            locationRequestLauncher.launch(it)
+                        }
+                        return@loop
+                    } else {
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.location_access_required),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        PrefUtils.setLocationPermissionRejectedCount(
+                            context,
+                            PrefUtils.getLocationPermissionRejectedCount(context) + 1
+                        )
                     }
-                } else {
-                    Toast.makeText(
-                        context,
-                        context.getString(R.string.location_access_required),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    PrefUtils.setLocationPermissionRejectedCount(
-                        context,
-                        PrefUtils.getLocationPermissionRejectedCount(context) + 1
-                    )
                 }
             }
 
 
         fun enableLocationAndUpdateAddress() {
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
                 == PackageManager.PERMISSION_GRANTED
             ) {
                 mapsViewModel.enableLocationRequest(context) {
@@ -108,7 +116,10 @@ fun NavGraphBuilder.homeScreen(
                     }
                 } else {
                     permissionResultLauncher.launch(
-                        Manifest.permission.ACCESS_FINE_LOCATION
+                        arrayOf(
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        )
                     )
                 }
             }
@@ -233,8 +244,8 @@ fun NavGraphBuilder.homeScreen(
             onClick = { key ->
                 when (key) {
                     MainTopBarActions.Location -> {
-//                        enableLocationAndUpdateAddress()
-                        navController.navigate(Graph.Address.route)
+                        enableLocationAndUpdateAddress()
+//                        navController.navigate(Graph.Address.route)
                     }
 
                     MainTopBarActions.Notification -> {

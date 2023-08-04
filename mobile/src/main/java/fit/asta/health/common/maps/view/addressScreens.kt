@@ -1,9 +1,12 @@
 package fit.asta.health.common.maps.view
 
 import android.Manifest
+import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.net.Uri
+import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -24,10 +27,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import fit.asta.health.R
 import fit.asta.health.common.maps.modal.AddressScreen
 import fit.asta.health.common.maps.modal.AddressesResponse
 import fit.asta.health.common.maps.utils.LocationProviderChangedReceiver
 import fit.asta.health.common.maps.vm.MapsViewModel
+import fit.asta.health.common.utils.PrefUtils
 import fit.asta.health.common.utils.rememberLifecycleEvent
 import fit.asta.health.main.Graph
 
@@ -114,7 +119,7 @@ private fun setup(mapsViewModel: MapsViewModel, navController: NavHostController
                 try {
                     context.unregisterReceiver(br)
                 } catch (e: Exception) {
-
+                    Log.e("TAG", "setup: $e")
                 }
             }
 
@@ -123,8 +128,31 @@ private fun setup(mapsViewModel: MapsViewModel, navController: NavHostController
             }
         }
     }
-
 //            Places.initialize(context.applicationContext, context.getString(R.string.MAPS_API_KEY)) TODO: ONLY FOR SEARCHING
+
+
+    val permissionResultLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestMultiplePermissions()
+        ) { perms ->
+            perms.keys.forEach loop@{ perm ->
+                if ((perms[perm] == true) && (perm == Manifest.permission.ACCESS_FINE_LOCATION || perm == Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                    PrefUtils.setLocationPermissionRejectedCount(context, 1)
+                    return@loop
+                } else {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.location_access_required),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    PrefUtils.setLocationPermissionRejectedCount(
+                        context,
+                        PrefUtils.getLocationPermissionRejectedCount(context) + 1
+                    )
+                    navController.navigateUp()
+                }
+            }
+        }
 
     val locationRequestLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { activityResult ->
@@ -148,9 +176,30 @@ private fun setup(mapsViewModel: MapsViewModel, navController: NavHostController
 
     LaunchedEffect(isPermissionGranted) {
         if (!isPermissionGranted) {
-            Toast.makeText(context, "Location permission access denied!!", Toast.LENGTH_SHORT)
-                .show()
-            navController.navigateUp()
+            if (PrefUtils.getLocationPermissionRejectedCount(context) >= 2) {
+                Toast.makeText(
+                    context,
+                    "Please allow Location permission access.",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+                with(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)) {
+                    data = Uri.fromParts("package", context.packageName, null)
+                    addCategory(Intent.CATEGORY_DEFAULT)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                    addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+                    context.startActivity(this)
+                }
+                navController.navigateUp()
+            } else {
+                permissionResultLauncher.launch(
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    )
+                )
+            }
         }
     }
     LaunchedEffect(isLocationEnabled) {
