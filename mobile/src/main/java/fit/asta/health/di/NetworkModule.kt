@@ -7,12 +7,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.BuildConfig
+import fit.asta.health.common.utils.NetworkUtil
 import fit.asta.health.network.AstaNetwork
 import fit.asta.health.network.NetworkHelper
 import fit.asta.health.network.NetworkHelperImpl
 import fit.asta.health.network.TokenProvider
 import fit.asta.health.network.api.Api
-import fit.asta.health.network.api.RestApi
+import fit.asta.health.network.api.ApiService
 import fit.asta.health.network.interceptor.OnlineInterceptor
 import fit.asta.health.network.repo.FileUploadRepo
 import okhttp3.Cache
@@ -26,6 +27,11 @@ import javax.inject.Singleton
 object NetworkModule {
 
     @Provides
+    fun provideNetworkHelper(@ApplicationContext context: Context): NetworkHelper {
+        return NetworkHelperImpl(context)
+    }
+
+    @Provides
     @Singleton
     fun provideHttpCache(@ApplicationContext app: Context) =
         Cache(app.cacheDir, AstaNetwork.CACHE_SIZE)
@@ -33,12 +39,6 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideTokenProvider() = TokenProvider()
-
-    @Singleton
-    @Provides
-    fun provideRemoteRestApi(client: OkHttpClient): Api {
-        return RestApi(baseUrl = BuildConfig.BASE_URL, client = client)
-    }
 
     @Singleton
     @Provides
@@ -64,9 +64,12 @@ object NetworkModule {
         return builder.build()
     }
 
+    @Singleton
     @Provides
-    fun provideNetworkHelper(@ApplicationContext context: Context): NetworkHelper {
-        return NetworkHelperImpl(context)
+    fun provideApiService(client: OkHttpClient): ApiService {
+        return NetworkUtil
+            .getRetrofit(BuildConfig.BASE_URL, client)
+            .create(ApiService::class.java)
     }
 
     @Singleton
