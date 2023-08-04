@@ -72,19 +72,18 @@ fun MainActivityLayout(
             navController = navController, currentDestination = currentDestination
         )
     }, content = {
-        MainNavHost(
+        MainActivityContent(
             navController = navController, onNav = onNav, innerPadding = it
         )
     }, topBar = {
-        AppTopBar(
-            backIcon = null, actions = {
-                NewMainTopBarActions(
-                    onClick = onClick,
-                    isNotificationEnabled = isNotificationEnabled,
-                    profileImageUri = profileImageUri,
-                    locationName = locationName
-                )
-            })
+        AppTopBar(backIcon = null, actions = {
+            NewMainTopBarActions(
+                onClick = onClick,
+                isNotificationEnabled = isNotificationEnabled,
+                profileImageUri = profileImageUri,
+                locationName = locationName
+            )
+        })
     })
 }
 
@@ -106,11 +105,12 @@ private fun BottomAppBarLayout(
         tonalElevation = elevation.high
     ) {
         items.forEach { item ->
-            NavigationBarItem(icon = {
-                Icon(
-                    painter = painterResource(id = item.icon), contentDescription = item.title
-                )
-            },
+            NavigationBarItem(
+                icon = {
+                    Icon(
+                        painter = painterResource(id = item.icon), contentDescription = item.title
+                    )
+                },
                 label = { Text(text = item.title) },
                 selected = currentRoute == item.route,
                 onClick = { onNavigate(item.route) },
@@ -227,7 +227,7 @@ private fun onNavigate(
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-private fun MainNavHost(
+private fun MainActivityContent(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     onNav: (Graph) -> Unit,

@@ -15,7 +15,7 @@ import fit.asta.health.common.ui.theme.aspectRatio
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.main.Graph
 import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
-import fit.asta.health.navigation.home.view.component.RateUsCard
+import fit.asta.health.navigation.home.view.component.RateUsDemoCard
 import fit.asta.health.navigation.home.view.component.ReferAndEarn
 import fit.asta.health.navigation.home.view.component.ToolsCardLayout
 import fit.asta.health.navigation.home.view.component.ToolsHmScreenTopBanner
@@ -127,16 +127,8 @@ fun HomeScreenLayout(
                 })
             }
 
-            item {
-                Spacer(modifier = Modifier.height(spacing.medium))
-            }
-
             item(span = { GridItemSpan(columns) }) {
-                RateUsCard()
-            }
-
-            item {
-                Spacer(modifier = Modifier.height(spacing.medium))
+                RateUsDemoCard()
             }
 
             item(span = { GridItemSpan(columns) }) {

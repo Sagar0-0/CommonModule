@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import fit.asta.health.common.ui.components.generic.AppButtons
 import fit.asta.health.common.ui.components.generic.AppCard
@@ -61,7 +62,10 @@ fun ToolsCardLayout(
 }
 
 @Composable
-fun ScheduleButtonIcon(onButtonClick: () -> Unit) {
+fun ScheduleButtonIcon(
+    onButtonClick: () -> Unit,
+    imageVector: ImageVector = Icons.Filled.Schedule,
+) {
     Row(
         Modifier
             .fillMaxWidth()
@@ -78,7 +82,7 @@ fun ScheduleButtonIcon(onButtonClick: () -> Unit) {
                 onClick = onButtonClick,
             ) {
                 AppDefaultIcon(
-                    imageVector = Icons.Filled.Schedule,
+                    imageVector = imageVector,
                     contentDescription = "Schedule Icon",
                     tint = Color.DarkGray
                 )
