@@ -14,12 +14,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
+import androidx.navigation.compose.rememberNavController
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import fit.asta.health.common.maps.modal.AddressScreen
@@ -28,41 +30,41 @@ import fit.asta.health.common.maps.utils.LocationProviderChangedReceiver
 import fit.asta.health.common.maps.vm.MapsViewModel
 import fit.asta.health.common.utils.rememberLifecycleEvent
 import fit.asta.health.main.Graph
-import fit.asta.health.main.sharedViewModel
 
 fun NavGraphBuilder.addressScreens(navController: NavHostController) {
-    navigation(
-        route = Graph.Address.route,
-        startDestination = AddressScreen.SavedAdd.route
-    ) {
-        composable(
-            route = AddressScreen.SavedAdd.route
+    composable(route = Graph.Address.route) {
+        val nestedNavController = rememberNavController()
+        val mapsViewModel: MapsViewModel = hiltViewModel()
+        setup(mapsViewModel, navController)
+
+        NavHost(
+            navController = nestedNavController,
+            route = Graph.Address.route,
+            startDestination = AddressScreen.SavedAdd.route
         ) {
-            val mapsViewModel: MapsViewModel = it.sharedViewModel(navController)
+            composable(
+                route = AddressScreen.SavedAdd.route
+            ) {
+                LaunchedEffect(key1 = Unit, block = { mapsViewModel.getAllAddresses() })
+                SavedAddressesScreen(
+                    navHostController = nestedNavController,
+                    mapsViewModel = mapsViewModel,
+                    onBackPressed = navController::navigateUp
+                )
+            }
 
-            setup(mapsViewModel, navController)
-
-            LaunchedEffect(key1 = Unit, block = { mapsViewModel.getAllAddresses() })
-            SavedAddressesScreen(
-                navHostController = navController,
-                mapsViewModel = mapsViewModel,
-                onBackPressed = navController::navigateUp
-            )
-        }
-
-        composable(
-            route = AddressScreen.Map.route + "/{address}"
-        ) {
-            val mapsViewModel: MapsViewModel = it.sharedViewModel(navController)
-
-            val gson: Gson = GsonBuilder().create()
-            val addJson = it.arguments?.getString("address")!!.replace("|", "/")
-            val myAddressItem = gson.fromJson(addJson, AddressesResponse.MyAddress::class.java)
-            MapScreen(
-                myAddressItem = myAddressItem,
-                mapsViewModel = mapsViewModel,
-                onBackPressed = navController::navigateUp
-            )
+            composable(
+                route = AddressScreen.Map.route + "/{address}"
+            ) {
+                val gson: Gson = GsonBuilder().create()
+                val addJson = it.arguments?.getString("address")!!.replace("|", "/")
+                val myAddressItem = gson.fromJson(addJson, AddressesResponse.MyAddress::class.java)
+                MapScreen(
+                    myAddressItem = myAddressItem,
+                    mapsViewModel = mapsViewModel,
+                    onBackPressed = nestedNavController::navigateUp
+                )
+            }
         }
     }
 }
@@ -70,9 +72,7 @@ fun NavGraphBuilder.addressScreens(navController: NavHostController) {
 @Composable
 private fun setup(mapsViewModel: MapsViewModel, navController: NavHostController) {
     val context = LocalContext.current
-
     val br = LocationProviderChangedReceiver()
-
     LaunchedEffect(Unit) {
         br.init(
             object : LocationProviderChangedReceiver.LocationListener {
