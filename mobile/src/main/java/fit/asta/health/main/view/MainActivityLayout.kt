@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -50,6 +51,7 @@ import fit.asta.health.navigation.track.view.TrackContent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainActivityLayout(
     locationName: String,
@@ -74,14 +76,15 @@ fun MainActivityLayout(
             navController = navController, onNav = onNav, innerPadding = it
         )
     }, topBar = {
-        AppTopBar(backIcon = null, actions = {
-            NewMainTopBarActions(
-                onClick = onClick,
-                isNotificationEnabled = isNotificationEnabled,
-                profileImageUri = profileImageUri,
-                locationName = locationName
-            )
-        })
+        AppTopBar(
+            backIcon = null, actions = {
+                NewMainTopBarActions(
+                    onClick = onClick,
+                    isNotificationEnabled = isNotificationEnabled,
+                    profileImageUri = profileImageUri,
+                    locationName = locationName
+                )
+            })
     })
 }
 

@@ -46,6 +46,7 @@ import fit.asta.health.common.utils.PrefUtils
 import fit.asta.health.common.utils.setAppTheme
 import fit.asta.health.settings.data.SettingsUiEvent
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreenLayout(
     builtVersion: String,

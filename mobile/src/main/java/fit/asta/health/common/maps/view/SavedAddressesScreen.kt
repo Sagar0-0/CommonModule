@@ -29,6 +29,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -68,11 +69,12 @@ import fit.asta.health.common.ui.theme.iconSize
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.ResponseState
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SavedAddressesScreen(
     navHostController: NavHostController,
     mapsViewModel: MapsViewModel,
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
 ) {
     val gson: Gson = GsonBuilder().create()
 
@@ -89,7 +91,6 @@ fun SavedAddressesScreen(
 
     Column(Modifier.fillMaxSize()) {
         AppTopBar(title = "Saved Addresses", onBack = onBackPressed)
-
         OutlinedTextField(
             maxLines = 1,
             singleLine = true,
@@ -442,7 +443,7 @@ fun AddressItem(
     onClick: () -> Unit,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
-    onShareClick: () -> Unit
+    onShareClick: () -> Unit,
 ) {
     Row(
         modifier

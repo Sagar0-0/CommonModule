@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.MoneyOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -42,6 +43,7 @@ import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.payments.wallet.model.WalletResponse
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WalletScreenUi(
     walletDataState: ResponseState<WalletResponse>,

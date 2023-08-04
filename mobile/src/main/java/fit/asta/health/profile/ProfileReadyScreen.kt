@@ -11,6 +11,7 @@ import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Egg
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -20,7 +21,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -37,10 +38,11 @@ import fit.asta.health.profile.view.HealthLayout
 import fit.asta.health.profile.view.LifeStyleLayout
 import fit.asta.health.profile.view.PhysiqueLayout
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileReadyScreen(userProfile: UserProfile, onBack: () -> Unit, onEdit: () -> Unit) {
 
-    var content by remember { mutableStateOf(1) }
+    var content by remember { mutableIntStateOf(1) }
 
     val context = LocalContext.current
 
