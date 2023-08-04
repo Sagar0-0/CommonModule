@@ -188,57 +188,13 @@ fun NavGraphBuilder.homeScreen(
             isNotificationEnabled = notificationEnabled,
             onNav = {
                 when (it) {
-                    Graph.Settings -> {
-                        navController.navigate(Graph.Settings.route)
-                    }
-
-                    Graph.BreathingTool -> {
-                        navController.navigate(Graph.BreathingTool.route)
-                    }
-
-                    Graph.WaterTool -> {
-                        navController.navigate(Graph.WaterTool.route)
-                    }
-
-                    Graph.MeditationTool -> {
-                        navController.navigate(Graph.MeditationTool.route)
-                    }
-
-                    Graph.SunlightTool -> {
-                        navController.navigate(Graph.SunlightTool.route)
-                    }
-
-                    Graph.Profile -> {
-                        navController.navigate(Graph.Profile.route)
-                    }
-
-                    Graph.Testimonials -> {
-                        navController.navigate(Graph.Testimonials.route)
-                    }
-
-                    Graph.SleepTool -> {}
-                    Graph.WalkingTool -> {}
-                    Graph.Dance -> {
-                        navController.navigate(Graph.ExerciseTool.route + "?activity=dance")
-                    }
-
-                    Graph.Hiit -> {
-                        navController.navigate(Graph.ExerciseTool.route + "?activity=HIIT")
-                    }
-
-                    Graph.Workout -> {
-                        navController.navigate(Graph.ExerciseTool.route + "?activity=workout")
-                    }
-
-                    Graph.Yoga -> {
-                        navController.navigate(Graph.ExerciseTool.route + "?activity=yoga")
-                    }
-
-                    Graph.Scheduler -> {
+                    Graph.Scheduler.route -> {
                         checkPermissionAndLaunchScheduler()
                     }
 
-                    else -> {}
+                    else -> {
+                        navController.navigate(it)
+                    }
                 }
             },
             onClick = { key ->

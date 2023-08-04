@@ -81,7 +81,7 @@ fun TodayContent(
     listAfternoon: SnapshotStateList<AlarmEntity>,
     listEvening: SnapshotStateList<AlarmEntity>,
     hSEvent: (HomeEvent) -> Unit,
-    onNav: (Graph) -> Unit
+    onNav: (String) -> Unit
 ) {
 
 
@@ -94,7 +94,7 @@ fun TodayContent(
             FloatingActionButton(
                 onClick = {
                     hSEvent(HomeEvent.SetAlarm)
-                    onNav(Graph.Scheduler)
+                    onNav(Graph.Scheduler.route)
                 },
                 containerColor = MaterialTheme.colorScheme.primary,
                 shape = CircleShape,
@@ -154,7 +154,7 @@ fun TodayContent(
                 }, onDone = {
                    onNav(goToTool(data.info.tag))
                 }, onReschedule = {
-                    onNav(Graph.Scheduler)
+                    onNav(Graph.Scheduler.route)
                     hSEvent(HomeEvent.EditAlarm(data))
                 }
                 )
@@ -172,7 +172,7 @@ fun TodayContent(
                 }, onDone = {
                     onNav(goToTool(data.info.tag))
                 }, onReschedule = {
-                    onNav(Graph.Scheduler)
+                    onNav(Graph.Scheduler.route)
                     hSEvent(HomeEvent.EditAlarm(data))
                 }
                 )
@@ -190,7 +190,7 @@ fun TodayContent(
                 },onDone = {
                     onNav(goToTool(data.info.tag))
                 }, onReschedule = {
-                    onNav(Graph.Scheduler)
+                    onNav(Graph.Scheduler.route)
                     hSEvent(HomeEvent.EditAlarm(data))
                 }
                 )
@@ -447,49 +447,49 @@ fun TodayCard(
     )
 }
 
-fun goToTool(tag: String): Graph {
+fun goToTool(tag: String): String {
     return when (tag) {
         "Breathing" -> {
-            Graph.BreathingTool
+            Graph.BreathingTool.route
         }
 //        "Diet" -> {}
 //        "Face Wash" -> {}
 //        "Intermittent" -> {}
 //        "Medicine" -> {}
         "Meditation" -> {
-            Graph.MeditationTool
+            Graph.MeditationTool.route
         }
-//        "Power Nap" -> {}
+//        "Power Nap" -> {}Graph.ExerciseTool.route + "?activity=dance"
         "Sleep" -> {
-            Graph.SleepTool
+            Graph.SleepTool.route
         }
 //        "Sleep Therapy" -> {}
         "Stretches" -> {
-            Graph.Yoga
+            Graph.Yoga.route
         }
 
         "SunLight" -> {
-            Graph.SunlightTool
+            Graph.SunlightTool.route
         }
 
         "Walking" -> {
-            Graph.WalkingTool
+            Graph.WalkingTool.route
         }
 
         "Water" -> {
-            Graph.WaterTool
+            Graph.WaterTool.route
         }
 
         "Workout" -> {
-            Graph.Workout
+            Graph.Workout.route
         }
 
         "Yoga" -> {
-            Graph.Yoga
+            Graph.Yoga.route
         }
 
         else -> {
-            Graph.Home
+            Graph.Home.route
         }
     }
 }

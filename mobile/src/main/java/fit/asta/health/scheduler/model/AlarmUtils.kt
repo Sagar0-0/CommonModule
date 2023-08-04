@@ -12,6 +12,15 @@ interface AlarmUtils {
         id: Int
     )
 
+    fun scheduleNextAlarm(alarmEntity: AlarmEntity)
+    fun scheduleNextIntervalAlarm(alarmEntity: AlarmEntity, variantInterval: Stat)
+    fun schedulerAlarmNextPreNotification(
+        alarmEntity: AlarmEntity,
+        isInterval: Boolean,
+        interval: Stat?,
+        iD: Int
+    )
+
     fun cancelScheduleAlarm(alarmEntity: AlarmEntity, cancelAllIntervals: Boolean)
     fun snooze(alarmEntity: AlarmEntity)
 }

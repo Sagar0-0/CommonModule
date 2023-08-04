@@ -31,7 +31,7 @@ import java.util.Locale
 @Composable
 fun HomeScreenLayout(
     toolsHome: ToolsHomeRes.ToolsHome, userId: String,
-    onNav: (Graph) -> Unit,
+    onNav: (String) -> Unit,
 ) {
 
     val context = LocalContext.current
@@ -62,7 +62,7 @@ fun HomeScreenLayout(
                     onClick = { type ->
                         when (type.lowercase(Locale.getDefault())) {
                             "water" -> {
-                                onNav(Graph.WaterTool)
+                                onNav(Graph.WaterTool.route)
                             }
 
                             "steps" -> {
@@ -70,38 +70,38 @@ fun HomeScreenLayout(
                             }
 
                             "workout" -> {
-                                onNav(Graph.Workout)
+                                onNav(Graph.ExerciseTool.route + "?activity=workout")
                             }
 
                             "yoga" -> {
-                                onNav(Graph.Yoga)
+                                onNav(Graph.ExerciseTool.route + "?activity=yoga")
                             }
 
                             "hiit" -> {
-                                onNav(Graph.Hiit)
+                                onNav(Graph.ExerciseTool.route + "?activity=HIIT")
                             }
 
                             "dance" -> {
-                                onNav(Graph.Dance)
+                                onNav(Graph.ExerciseTool.route + "?activity=dance")
                             }
 
                             "meditation" -> {
-                                onNav(Graph.MeditationTool)
+                                onNav(Graph.MeditationTool.route)
                             }
 
                             "sleep" -> {
-                                onNav(Graph.SleepTool)
+                                onNav(Graph.SleepTool.route)
                                 SleepToolActivity.launch(
                                     context = context, userId = userId
                                 )
                             }
 
                             "breathing" -> {
-                                onNav(Graph.BreathingTool)
+                                onNav(Graph.BreathingTool.route)
                             }
 
                             "sunlight" -> {
-                                onNav(Graph.SunlightTool)
+                                onNav(Graph.SunlightTool.route)
                             }
                         }
                     })
@@ -109,7 +109,7 @@ fun HomeScreenLayout(
 
             item(span = { GridItemSpan(columns) }) {
                 ViewAllLayout(title = "Testimonials", clickString = "View All", onClick = {
-                    onNav(Graph.Testimonials)
+                    onNav(Graph.Testimonials.route)
                 })
             }
 

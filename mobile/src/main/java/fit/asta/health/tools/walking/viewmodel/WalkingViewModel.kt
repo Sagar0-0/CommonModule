@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.NetworkResult
-import fit.asta.health.scheduler.compose.SchedulerActivity
 import fit.asta.health.tools.walking.db.StepsData
 import fit.asta.health.tools.walking.model.LocalRepo
 import fit.asta.health.tools.walking.model.WalkingToolRepo
@@ -112,7 +111,6 @@ class WalkingViewModel
                             }
                         }
                         is NetworkResult.Error -> {}
-                        else -> {}
                     }
                 }
         }
@@ -165,8 +163,6 @@ class WalkingViewModel
             is StepCounterUIEvent.ChangeAngleDistance -> {
                 setAngleDistance(uiEvent.input)
             }
-
-            else -> {}
         }
     }
 
@@ -247,7 +243,6 @@ class WalkingViewModel
     }
 
     fun startSchedulerActivity(context: Context)  {
-        SchedulerActivity.launch(context =context)
     }
 
     fun startService(context: Context) {

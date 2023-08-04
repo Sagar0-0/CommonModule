@@ -37,7 +37,7 @@ class AlarmUtilsImp(
         setAllAlarm(
             alarmEntity = alarmEntity,
             intent = intent,
-            today = alarmEntity.alarmId,
+            todayId = alarmEntity.alarmId,
             sunId = (alarmEntity.alarmId + Constants.sun),
             monId = (alarmEntity.alarmId + Constants.mon),
             tueId = (alarmEntity.alarmId + Constants.tue),
@@ -105,12 +105,162 @@ class AlarmUtilsImp(
         setTodayAlarm(postNotificationIntent, (id + 4), importance)
     }
 
+    override fun scheduleNextAlarm(alarmEntity: AlarmEntity) {
+        val importance = alarmEntity.important
+        val intent = Intent(context, AlarmBroadcastReceiver::class.java)
+        val bundle = Bundle()
+        bundle.putSerializable(Constants.ARG_ALARM_OBJET, alarmEntity)
+        intent.putExtra(Constants.BUNDLE_ALARM_OBJECT, bundle)
+
+        calendar.timeInMillis = System.currentTimeMillis()
+        calendar[Calendar.HOUR_OF_DAY] = alarmEntity.time.hours.toInt()
+        calendar[Calendar.MINUTE] = alarmEntity.time.minutes.toInt()
+        calendar[Calendar.SECOND] = 0
+        calendar[Calendar.MILLISECOND] = 0
+        when (today) { //set alarm for next weekday ex sun -> sun
+            Calendar.SUNDAY -> if (alarmEntity.week.sunday) setTodayAlarm(
+                intent,
+                (alarmEntity.alarmId + Constants.sun),
+                importance,
+                7
+            )
+
+            Calendar.MONDAY -> if (alarmEntity.week.monday) setTodayAlarm(
+                intent,
+                (alarmEntity.alarmId + Constants.mon),
+                importance,
+                7
+            )
+
+            Calendar.TUESDAY -> if (alarmEntity.week.tuesday) setTodayAlarm(
+                intent,
+                (alarmEntity.alarmId + Constants.tue),
+                importance,
+                7
+            )
+
+            Calendar.WEDNESDAY -> if (alarmEntity.week.wednesday) setTodayAlarm(
+                intent,
+                (alarmEntity.alarmId + Constants.wed),
+                importance,
+                7
+            )
+
+            Calendar.THURSDAY -> if (alarmEntity.week.thursday) setTodayAlarm(
+                intent,
+                (alarmEntity.alarmId + Constants.thu),
+                importance,
+                7
+            )
+
+            Calendar.FRIDAY -> if (alarmEntity.week.friday) setTodayAlarm(
+                intent,
+                (alarmEntity.alarmId + Constants.fri),
+                importance,
+                7
+            )
+
+            Calendar.SATURDAY -> if (alarmEntity.week.saturday) setTodayAlarm(
+                intent,
+                (alarmEntity.alarmId + Constants.sat),
+                importance,
+                7
+            )
+        }
+    }
+
+    override fun scheduleNextIntervalAlarm(alarmEntity: AlarmEntity, variantInterval: Stat) {
+        val importance = alarmEntity.important
+        val intent = Intent(context, AlarmBroadcastReceiver::class.java)
+        val bundle = Bundle()
+        bundle.putSerializable(
+            Constants.ARG_VARIANT_INTERVAL_ALARM_OBJECT, alarmEntity.copy(
+                time = Time(
+                    hours = variantInterval.hours,
+                    minutes = variantInterval.minutes,
+                    midDay = variantInterval.midDay
+                )
+            )
+        )
+        bundle.putParcelable(Constants.ARG_VARIANT_INTERVAL_OBJECT, variantInterval)
+        intent.putExtra(Constants.BUNDLE_VARIANT_INTERVAL_OBJECT, bundle)
+
+        calendar[Calendar.HOUR_OF_DAY] = variantInterval.hours.toInt()
+        calendar[Calendar.MINUTE] = variantInterval.minutes.toInt()
+        calendar[Calendar.SECOND] = 0
+        calendar[Calendar.MILLISECOND] = 0
+        when (today) { //set alarm for next weekday ex sun -> sun
+            Calendar.SUNDAY -> if (alarmEntity.week.sunday) setTodayAlarm(
+                intent,
+                (variantInterval.id + Constants.sun),
+                importance,
+                7
+            )
+
+            Calendar.MONDAY -> if (alarmEntity.week.monday) setTodayAlarm(
+                intent,
+                (variantInterval.id + Constants.mon),
+                importance,
+                7
+            )
+
+            Calendar.TUESDAY -> if (alarmEntity.week.tuesday) setTodayAlarm(
+                intent,
+                (variantInterval.id + Constants.tue),
+                importance,
+                7
+            )
+
+            Calendar.WEDNESDAY -> if (alarmEntity.week.wednesday) setTodayAlarm(
+                intent,
+                (variantInterval.id + Constants.wed),
+                importance,
+                7
+            )
+
+            Calendar.THURSDAY -> if (alarmEntity.week.thursday) setTodayAlarm(
+                intent,
+                (variantInterval.id + Constants.thu),
+                importance,
+                7
+            )
+
+            Calendar.FRIDAY -> if (alarmEntity.week.friday) setTodayAlarm(
+                intent,
+                (variantInterval.id + Constants.fri),
+                importance,
+                7
+            )
+
+            Calendar.SATURDAY -> if (alarmEntity.week.saturday) setTodayAlarm(
+                intent,
+                (variantInterval.id + Constants.sat),
+                importance,
+                7
+            )
+        }
+    }
+
+    override fun schedulerAlarmNextPreNotification(
+        alarmEntity: AlarmEntity,
+        isInterval: Boolean,
+        interval: Stat?,
+        iD: Int
+    ) {
+        schedulerAlarmPreNotification(alarmEntity, isInterval, interval, iD, isNext = true)
+    }
+
     private fun schedulerAlarmPreNotification(
-        alarmEntity: AlarmEntity, isInterval: Boolean, interval: Stat?, iD: Int
+        alarmEntity: AlarmEntity,
+        isInterval: Boolean,
+        interval: Stat?,
+        iD: Int,
+        isNext: Boolean = false
     ) {
         val intent = Intent(context, AlarmBroadcastReceiver::class.java)
         val bundle = Bundle()
         calendar.timeInMillis = System.currentTimeMillis()
+        val importance = alarmEntity.important
         val hour: Int
         val min: Int
         if (isInterval) {
@@ -142,19 +292,71 @@ class AlarmUtilsImp(
         bundle.putInt("id", (iD + 1))
         intent.putExtra(Constants.BUNDLE_PRE_NOTIFICATION_OBJECT, bundle)
         intent.putExtra("id", (iD + 1))
+        if (isNext) {
+            when (today) { //set alarm for next weekday ex sun -> sun
+                Calendar.SUNDAY -> if (alarmEntity.week.sunday) setTodayAlarm(
+                    intent,
+                    (iD + Constants.sun + 1),
+                    importance,
+                    7
+                )
 
-        setAllAlarm(
-            alarmEntity = alarmEntity,
-            intent = intent,
-            today = iD + 1,
-            sunId = (iD + Constants.sun + 1),
-            monId = (iD + Constants.mon + 1),
-            tueId = (iD + Constants.tue + 1),
-            wedId = (iD + Constants.wed + 1),
-            thuId = (iD + Constants.thu + 1),
-            friId = (iD + Constants.fri + 1),
-            satId = (iD + Constants.sat + 1)
-        )
+                Calendar.MONDAY -> if (alarmEntity.week.monday) setTodayAlarm(
+                    intent,
+                    (iD + Constants.mon + 1),
+                    importance,
+                    7
+                )
+
+                Calendar.TUESDAY -> if (alarmEntity.week.tuesday) setTodayAlarm(
+                    intent,
+                    (iD + Constants.tue + 1),
+                    importance,
+                    7
+                )
+
+                Calendar.WEDNESDAY -> if (alarmEntity.week.wednesday) setTodayAlarm(
+                    intent,
+                    (iD + Constants.wed + 1),
+                    importance,
+                    7
+                )
+
+                Calendar.THURSDAY -> if (alarmEntity.week.thursday) setTodayAlarm(
+                    intent,
+                    (iD + Constants.thu + 1),
+                    importance,
+                    7
+                )
+
+                Calendar.FRIDAY -> if (alarmEntity.week.friday) setTodayAlarm(
+                    intent,
+                    (iD + Constants.fri + 1),
+                    importance,
+                    7
+                )
+
+                Calendar.SATURDAY -> if (alarmEntity.week.saturday) setTodayAlarm(
+                    intent,
+                    (iD + Constants.sat + 1),
+                    importance,
+                    7
+                )
+            }
+        } else {
+            setAllAlarm(
+                alarmEntity = alarmEntity,
+                intent = intent,
+                todayId = iD + 1,
+                sunId = (iD + Constants.sun + 1),
+                monId = (iD + Constants.mon + 1),
+                tueId = (iD + Constants.tue + 1),
+                wedId = (iD + Constants.wed + 1),
+                thuId = (iD + Constants.thu + 1),
+                friId = (iD + Constants.fri + 1),
+                satId = (iD + Constants.sat + 1)
+            )
+        }
     }
 
     private fun scheduleAlarmInterval(
@@ -185,7 +387,7 @@ class AlarmUtilsImp(
             setAllAlarm(
                 alarmEntity = alarmEntity,
                 intent = intent,
-                today = variantInterval.id,
+                todayId = variantInterval.id,
                 sunId = (variantInterval.id + Constants.sun),
                 monId = (variantInterval.id + Constants.mon),
                 tueId = (variantInterval.id + Constants.tue),
@@ -205,7 +407,7 @@ class AlarmUtilsImp(
         removeAllAlarm(
             alarmEntity = alarmEntity,
             intent = intent,
-            today = alarmEntity.alarmId,
+            todayId = alarmEntity.alarmId,
             sunId = (alarmEntity.alarmId + Constants.sun),
             monId = (alarmEntity.alarmId + Constants.mon),
             tueId = (alarmEntity.alarmId + Constants.tue),
@@ -219,7 +421,7 @@ class AlarmUtilsImp(
             removeAllAlarm(
                 alarmEntity = alarmEntity,
                 intent = intent,
-                today = alarmEntity.alarmId + 1,
+                todayId = alarmEntity.alarmId + 1,
                 sunId = (alarmEntity.alarmId + Constants.sun + 1),
                 monId = (alarmEntity.alarmId + Constants.mon + 1),
                 tueId = (alarmEntity.alarmId + Constants.tue + 1),
@@ -238,7 +440,7 @@ class AlarmUtilsImp(
                     removeAllAlarm(
                         alarmEntity = alarmEntity,
                         intent = intent,
-                        today = variantInterval.id,
+                        todayId = variantInterval.id,
                         sunId = (variantInterval.id + Constants.sun),
                         monId = (variantInterval.id + Constants.mon),
                         tueId = (variantInterval.id + Constants.tue),
@@ -250,7 +452,7 @@ class AlarmUtilsImp(
                     removeAllAlarm(
                         alarmEntity = alarmEntity,
                         intent = intent,
-                        today = variantInterval.id + 1,
+                        todayId = variantInterval.id + 1,
                         sunId = (variantInterval.id + Constants.sun + 1),
                         monId = (variantInterval.id + Constants.mon + 1),
                         tueId = (variantInterval.id + Constants.tue + 1),
@@ -265,7 +467,7 @@ class AlarmUtilsImp(
                     removeAllAlarm(
                         alarmEntity = alarmEntity,
                         intent = intent,
-                        today = variantInterval.id,
+                        todayId = variantInterval.id,
                         sunId = (variantInterval.id + Constants.sun),
                         monId = (variantInterval.id + Constants.mon),
                         tueId = (variantInterval.id + Constants.tue),
@@ -277,7 +479,7 @@ class AlarmUtilsImp(
                     removeAllAlarm(
                         alarmEntity = alarmEntity,
                         intent = intent,
-                        today = variantInterval.id + 1,
+                        todayId = variantInterval.id + 1,
                         sunId = (variantInterval.id + Constants.sun + 1),
                         monId = (variantInterval.id + Constants.mon + 1),
                         tueId = (variantInterval.id + Constants.tue + 1),
@@ -301,7 +503,7 @@ class AlarmUtilsImp(
         calendar.timeInMillis = System.currentTimeMillis()
         calendar[Calendar.SECOND] = 0
         calendar[Calendar.MILLISECOND] = 0
-        val id = alarmEntity.alarmId + 999
+        val id = 999
         val snoozeTime = alarmEntity.interval.snoozeTime
         val min = alarmEntity.time.minutes.toInt() + if (snoozeTime < 5) 5 else snoozeTime
 
@@ -321,18 +523,19 @@ class AlarmUtilsImp(
     private fun setAllAlarm(
         alarmEntity: AlarmEntity,
         intent: Intent,
-        today: Int,
+        todayId: Int,
         sunId: Int,
         monId: Int,
         tueId: Int,
         wedId: Int,
         thuId: Int,
         friId: Int,
+
         satId: Int
     ) {
         val importance = alarmEntity.important
         if (!alarmEntity.week.recurring) {
-            setTodayAlarm(intent, today, importance)
+            setTodayAlarm(intent, todayId, importance)
         } else {
             if (alarmEntity.week.sunday) {
                 when (today) {
@@ -472,7 +675,7 @@ class AlarmUtilsImp(
     private fun removeAllAlarm(
         alarmEntity: AlarmEntity,
         intent: Intent,
-        today: Int,
+        todayId: Int,
         sunId: Int,
         monId: Int,
         tueId: Int,
@@ -482,7 +685,7 @@ class AlarmUtilsImp(
         satId: Int
     ) {
         if (!alarmEntity.week.recurring) {
-            removeAlarms(today, intent)
+            removeAlarms(todayId, intent)
         } else {
             if (alarmEntity.week.sunday) removeAlarms(sunId, intent)
             if (alarmEntity.week.monday) removeAlarms(monId, intent)
