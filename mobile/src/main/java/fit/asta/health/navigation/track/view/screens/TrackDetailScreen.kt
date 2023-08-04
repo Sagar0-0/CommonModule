@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -67,7 +67,7 @@ fun TrackDetailScreen(
     ) {
 
         // This is the Item which is selected in the Top Tab Bar Layout
-        val selectedItem = remember { mutableStateOf(0) }
+        val selectedItem = remember { mutableIntStateOf(0) }
 
         // This Function makes the Tab Layout UI
         TrackTopTabBar(
@@ -77,34 +77,30 @@ fun TrackDetailScreen(
                 "MONTH",
                 "ALL"
             ),
-            selectedItem = selectedItem.value,
+            selectedItem = selectedItem.intValue,
             selectedColor = Color.Blue,
             unselectedColor = Color.Gray
         ) {
 
             // Changing the Current Selected Item according to the User Interactions
-            selectedItem.value = it
+            selectedItem.intValue = it
         }
 
         // Checking which tab option is selected by the User and showing the UI Accordingly
-        when (selectedItem.value) {
+        when (selectedItem.intValue) {
             0 -> {
-                trackViewModel.getDailyData()
                 TrackStatisticsUI(trackViewModel = trackViewModel)
             }
 
             1 -> {
-                trackViewModel.getWeeklyData()
                 TrackStatisticsUI(trackViewModel = trackViewModel)
             }
 
             2 -> {
-                trackViewModel.getMonthlyData()
                 TrackStatisticsUI(trackViewModel = trackViewModel)
             }
 
             3 -> {
-                trackViewModel.getYearlyData()
                 TrackStatisticsUI(trackViewModel = trackViewModel)
             }
         }
