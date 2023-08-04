@@ -33,14 +33,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -58,8 +54,8 @@ import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import fit.asta.health.common.ui.components.ValidatedNumberField
-import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
+import fit.asta.health.common.ui.theme.spacing
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
@@ -98,8 +94,6 @@ fun PhoneLoginScreen(onSuccess: () -> Unit) {
     }
 
     val context = LocalContext.current
-
-    val focusRequester = remember { FocusRequester() }
 
     val mAuth: FirebaseAuth = Firebase.auth
     lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
@@ -225,9 +219,8 @@ fun PhoneLoginScreen(onSuccess: () -> Unit) {
             try {
                 val phoneNumberHint = Identity.getSignInClient(context as Activity)
                     .getPhoneNumberFromIntent(result.data)
-                postalCode = phoneNumberHint.substring(0, 3)
-                phoneNumber = phoneNumberHint.substring(3)
-                focusRequester.freeFocus()
+                postalCode = phoneNumberHint.dropLast(10)
+                phoneNumber = phoneNumberHint.takeLast(10)
                 onSendOtp()
             } catch (e: Exception) {
                 Log.e(TAG, "Phone Number Hint failed")
@@ -256,6 +249,9 @@ fun PhoneLoginScreen(onSuccess: () -> Unit) {
             Log.e(TAG, "PhoneLoginScreen: Phone hint exception")
         }
     }
+    LaunchedEffect(key1 = Unit) {
+        getPhoneNumberHint()
+    }
 
 
     Column(
@@ -273,26 +269,16 @@ fun PhoneLoginScreen(onSuccess: () -> Unit) {
                 enabled = !codeSent && !loading,
                 value = postalCode,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                onValueChange = { if (it.length <= 3) postalCode = it },
-                placeholder = "+91",
+                onValueChange = { if (it.length in 1..4) postalCode = it },
                 modifier = Modifier
-                    .focusRequester(focusRequester)
-                    .onFocusChanged {
-                        if (it.isFocused) {
-                            getPhoneNumberHint()
-                        }
-                    }
                     .padding(
                         top = spacing.medium,
                         bottom = spacing.medium,
                         start = spacing.medium,
                         end = spacing.small
                     )
-                    .weight(0.25f),
-                singleLine = true,
-                supportingText = "${postalCode.length} / 3",
-                supportingTextModifier = Modifier.fillMaxWidth(),
-                supportingTextAlign = TextAlign.End
+                    .weight(0.3f),
+                singleLine = true
             )
 
             ValidatedNumberField(
@@ -302,14 +288,8 @@ fun PhoneLoginScreen(onSuccess: () -> Unit) {
                 onValueChange = { if (it.length <= 10) phoneNumber = it },
                 placeholder = "Enter your phone number",
                 modifier = Modifier
-                    .focusRequester(focusRequester)
-                    .onFocusChanged {
-                        if (it.isFocused) {
-                            getPhoneNumberHint()
-                        }
-                    }
                     .padding(top = spacing.medium, bottom = spacing.medium, end = spacing.medium)
-                    .weight(0.75f),
+                    .weight(0.7f),
                 singleLine = true,
                 supportingText = "${phoneNumber.length} / 10",
                 supportingTextModifier = Modifier.fillMaxWidth(),
