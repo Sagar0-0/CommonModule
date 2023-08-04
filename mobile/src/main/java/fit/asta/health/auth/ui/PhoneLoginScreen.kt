@@ -185,6 +185,7 @@ fun PhoneLoginScreen(onSuccess: () -> Unit) {
                 Toast.makeText(context, "Otp retrieval failed", Toast.LENGTH_SHORT).show()
                 loading = false
                 codeSent = false
+                context.unregisterReceiver(myOTPReceiver)
             }
         })
 
