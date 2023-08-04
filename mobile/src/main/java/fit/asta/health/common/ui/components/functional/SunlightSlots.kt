@@ -2,7 +2,6 @@ package fit.asta.health.common.ui.components.functional
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,7 +21,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -33,6 +31,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.android.material.R
+import fit.asta.health.navigation.home.view.component.ScheduleButtonIcon
 
 @Composable
 fun SunlightSlotsCardLayout(modifier: Modifier = Modifier, time: String, temperature: String) {
@@ -55,24 +54,7 @@ fun SunlightSlotsCardLayout(modifier: Modifier = Modifier, time: String, tempera
                 .padding(8.dp)
         ) {
 
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                Box(
-                    contentAlignment = Alignment.TopEnd,
-                    modifier = Modifier
-                        .size(32.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(color = Color.White)
-                ) {
-                    androidx.compose.material3.IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_clock_black_24dp),
-                            contentDescription = null,
-                            modifier = Modifier.size(16.dp),
-                            tint = Color(0xff0277BD)
-                        )
-                    }
-                }
-            }
+            ScheduleButtonIcon(onButtonClick = { /*TODO Schedule Button Click*/ })
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -134,10 +116,7 @@ fun SunlightSlotsCardLayout(modifier: Modifier = Modifier, time: String, tempera
                 )
 
                 Text(
-                    text = time,
-                    fontSize = 12.sp,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold
+                    text = time, fontSize = 12.sp, color = Color.Black, fontWeight = FontWeight.Bold
                 )
             }
 
