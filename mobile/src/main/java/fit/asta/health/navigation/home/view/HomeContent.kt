@@ -7,7 +7,6 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
-import fit.asta.health.main.Graph
 import fit.asta.health.navigation.home.viewmodel.HomeState
 import fit.asta.health.navigation.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -17,7 +16,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun HomeContent(
     viewModel: HomeViewModel = hiltViewModel(),
-    onNav: (Graph) -> Unit,
+    onNav: (String) -> Unit,
 ) {
 
     when (val state = viewModel.state.collectAsState().value) {

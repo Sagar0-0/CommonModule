@@ -24,7 +24,6 @@ import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_ALARM_OBJECT
 import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_VARIANT_INTERVAL_OBJECT
 import fit.asta.health.scheduler.util.SerializableAndParcelable.parcelable
 import fit.asta.health.scheduler.util.SerializableAndParcelable.serializable
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 class AlarmService : Service() {
@@ -55,7 +54,7 @@ class AlarmService : Service() {
         )
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         //         getting bundle from intent
         val bundle = intent?.getBundleExtra(BUNDLE_ALARM_OBJECT)

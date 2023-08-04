@@ -56,7 +56,7 @@ fun MainActivityLayout(
     profileImageUri: Uri?,
     isNotificationEnabled: Boolean,
     onClick: (key: MainTopBarActions) -> Unit,
-    onNav: (Graph) -> Unit,
+    onNav: (String) -> Unit,
 ) {
 
     val navController = rememberNavController()
@@ -227,7 +227,7 @@ private fun onNavigate(
 private fun MainNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    onNav: (Graph) -> Unit,
+    onNav: (String) -> Unit,
     innerPadding: PaddingValues,
 ) {
     NavHost(
