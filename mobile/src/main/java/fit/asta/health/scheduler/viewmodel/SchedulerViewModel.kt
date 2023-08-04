@@ -19,6 +19,7 @@ import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AlarmSettingEv
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.IvlUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.RepUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.StatUiState
+import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ToneUiState
 import fit.asta.health.scheduler.compose.screen.tagscreen.TagState
 import fit.asta.health.scheduler.compose.screen.tagscreen.TagsEvent
 import fit.asta.health.scheduler.compose.screen.tagscreen.TagsUiState
@@ -30,6 +31,7 @@ import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.db.entity.AlarmSync
 import fit.asta.health.scheduler.model.doman.getAlarm
 import fit.asta.health.scheduler.model.net.tag.ScheduleTagNetData
+import fit.asta.health.scheduler.util.Constants
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import java.text.DateFormat
@@ -83,6 +85,11 @@ class SchedulerViewModel
                         time_midDay = LocalTime.now().hour > 12,
                         time_minutes = LocalTime.now().minute.toString()
                     )
+                }
+            }
+            prefUtils.getPreferences(Constants.SPOTIFY_SONG_KEY_URI, ToneUiState()).collect {
+                if (it.uri.isNotEmpty() && alarmEntity == null) {
+                    _alarmSettingUiState.value = _alarmSettingUiState.value.copy(tone_uri = it.uri)
                 }
             }
         }
@@ -204,7 +211,9 @@ class SchedulerViewModel
             }
 
             is AlarmSettingEvent.GotoTimeSettingScreen -> {
+                _variantIntervalsList.clear()
                 _variantIntervalsList.addAll(interval.value.variantIntervals)
+                _staticIntervalsList.clear()
                 _staticIntervalsList.addAll(interval.value.staticIntervals)
             }
 
@@ -406,14 +415,7 @@ class SchedulerViewModel
 
     //timeSettingActivity
 
-
-    fun setAlarmEntityIntent(alarmEntity: AlarmEntity?) {
-        this@SchedulerViewModel.alarmEntity = alarmEntity
-        alarmEntity?.let { updateUi(it) }
-    }
-
     private fun updateUi(it: AlarmEntity) {
-        this@SchedulerViewModel.alarmEntity = it
         interval.value = interval.value.copy(
             status = it.interval.status,
             advancedReminder = AdvUiState(

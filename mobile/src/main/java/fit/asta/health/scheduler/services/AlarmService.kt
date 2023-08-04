@@ -13,6 +13,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import fit.asta.health.HealthCareApp.Companion.CHANNEL_ID
 import fit.asta.health.R
+import fit.asta.health.scheduler.AlarmBroadcastReceiver
 import fit.asta.health.scheduler.compose.AlarmScreenActivity
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.net.scheduler.Stat
@@ -24,18 +25,15 @@ import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_VARIANT_INTERVA
 import fit.asta.health.scheduler.util.SerializableAndParcelable.parcelable
 import fit.asta.health.scheduler.util.SerializableAndParcelable.serializable
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlin.random.Random
 
 
 class AlarmService : Service() {
 
     var alarmEntity: AlarmEntity? = null
-    var variantInterval: Stat? = null
-    var preNotificationAlarmEntity: AlarmEntity? = null
-    var postNotificationAlarmEntity: AlarmEntity? = null
-    lateinit var ringtone: Uri
-    lateinit var mediaPlayer: MediaPlayer
-    lateinit var vibrator: Vibrator
+    private var variantInterval: Stat? = null
+    private lateinit var ringtone: Uri
+    private lateinit var mediaPlayer: MediaPlayer
+    private lateinit var vibrator: Vibrator
     private lateinit var partialWakeLock: PowerManager.WakeLock
     private val TAG = this.javaClass.simpleName
 
@@ -59,103 +57,159 @@ class AlarmService : Service() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        var notification: Notification? = null
-//         getting bundle from intent
+        //         getting bundle from intent
         val bundle = intent?.getBundleExtra(BUNDLE_ALARM_OBJECT)
         if (bundle != null) {
-            // getting alarm item data from bundle
             alarmEntity = bundle.serializable(ARG_ALARM_OBJET)
             Log.d("alarmtest", "onStartCommand: alarm $alarmEntity")
-            // creating notification-pending intent to redirect on notification click
-            val notificationIntent = Intent(this, AlarmScreenActivity::class.java)
-            notificationIntent.putExtra(BUNDLE_ALARM_OBJECT, bundle)
-            val pendingIntent = PendingIntent.getActivity(
-                this,
-                if (alarmEntity != null) alarmEntity!!.alarmId else Random.nextInt(999999999),
-                notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-            )
+            when (alarmEntity?.mode) {
+                "Notification" -> {
+                    notificationAlarm(alarmEntity!!, bundle, BUNDLE_ALARM_OBJECT)
+                }
 
-            var alarmName = getString(R.string.app_name)
-            if (alarmEntity != null) {
-                alarmName = alarmEntity?.info?.name!!
-                setMediaData()
-            } else {
-                setMediaDataDef()
+                "Splash" -> {
+                    splashAlarm(alarmEntity!!, bundle, BUNDLE_ALARM_OBJECT)
+                }
             }
-            createWakeLock().acquire(9000)
-            // creating notification with different modes
-            val bigTextStyle = NotificationCompat.BigTextStyle()
-                .bigText(alarmName)
-            notification =
-                createNotification(
-                    notification,
-                    pendingIntent,
-                    bigTextStyle,
-                    message = alarmEntity!!.info.tag
-                )
-
-            mediaPlayer.setOnPreparedListener { mediaPlayer -> mediaPlayer.start() }
-            startForGroundService(
-                notification = notification,
-                status = alarmEntity?.vibration!!.status,
-                id = alarmEntity!!.alarmId
-            )
         }
 
         val bundleForVariantInterval = intent?.getBundleExtra(BUNDLE_VARIANT_INTERVAL_OBJECT)
         if (bundleForVariantInterval != null) {
-            // getting alarm item data from bundle
-            alarmEntity =
-                bundleForVariantInterval.serializable(ARG_VARIANT_INTERVAL_ALARM_OBJECT)
-            variantInterval =
-                bundleForVariantInterval.parcelable(ARG_VARIANT_INTERVAL_OBJECT)
+            alarmEntity = bundleForVariantInterval.serializable(ARG_VARIANT_INTERVAL_ALARM_OBJECT)
+            variantInterval = bundleForVariantInterval.parcelable(ARG_VARIANT_INTERVAL_OBJECT)
             Log.d("TAGTAGTAG", "onStartCommand:variant $alarmEntity \n $variantInterval")
-            // creating notification-pending intent to redirect on notification click
-            val notificationIntent = Intent(this, AlarmScreenActivity::class.java)
-            notificationIntent.putExtra(BUNDLE_VARIANT_INTERVAL_OBJECT, bundleForVariantInterval)
-            val pendingIntent = PendingIntent.getActivity(
-                this,
-                if (variantInterval != null) variantInterval!!.id else Random.nextInt(999999999),
-                notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-            )
 
-            var alarmName = getString(R.string.app_name)
-            if (alarmEntity != null) {
-                alarmName =
-                    if (variantInterval != null) variantInterval?.name!! else getString(R.string.app_name)
-                setMediaData()
-            } else {
-                setMediaDataDef()
+            when (alarmEntity?.mode) {
+                "Notification" -> {
+                    notificationAlarm(
+                        alarmEntity!!,
+                        bundleForVariantInterval,
+                        BUNDLE_VARIANT_INTERVAL_OBJECT,
+                        variantInterval
+                    )
+                }
+
+                "Splash" -> {
+                    splashAlarm(
+                        alarmEntity!!,
+                        bundleForVariantInterval,
+                        BUNDLE_VARIANT_INTERVAL_OBJECT,
+                        variantInterval
+                    )
+                }
             }
-
-            // creating notification with different modes
-            val bigTextStyle = NotificationCompat.BigTextStyle()
-                .bigText(alarmName)
-            notification =
-                createNotification(
-                    notification,
-                    pendingIntent,
-                    bigTextStyle,
-                    message = alarmEntity!!.info.tag
-                )
-
-            mediaPlayer.setOnPreparedListener { mediaPlayer -> mediaPlayer.start() }
-            startForGroundService(
-                notification = notification,
-                status = alarmEntity?.vibration!!.status,
-                id =  variantInterval!!.id
-            )
         }
         return START_STICKY
     }
+
+    private fun notificationAlarm(
+        alarmEntity: AlarmEntity,
+        bundle: Bundle,
+        putString: String,
+        variantInterval: Stat? = null
+    ) {
+        val stopIntent = Intent(this, AlarmBroadcastReceiver::class.java).apply {
+            action = "stop"
+            putExtra(putString, bundle)
+        }
+        val pendingIntentStop = PendingIntent.getBroadcast(
+            this,
+            variantInterval?.id ?: alarmEntity.alarmId,
+            stopIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        val snoozeIntent = Intent(this, AlarmBroadcastReceiver::class.java).apply {
+            action = "snooze"
+            putExtra(putString, bundle)
+        }
+        val pendingIntentSnooze = PendingIntent.getBroadcast(
+            this,
+            variantInterval?.id ?: alarmEntity.alarmId,
+            snoozeIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val alarmName: String = variantInterval?.name ?: alarmEntity.info.name
+        setMediaData()
+        createWakeLock().acquire(9000)
+
+        val bigTextStyle = NotificationCompat.BigTextStyle()
+            .bigText(alarmEntity.info.description)
+
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setContentTitle(alarmName)
+            .setContentText(alarmEntity.info.tag)
+            .setSmallIcon(R.drawable.ic_round_access_alarm_24)
+            .setSound(null)
+            .setCategory(NotificationCompat.CATEGORY_ALARM)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setOngoing(true)
+            .setWhen(0)
+            .setPriority(NotificationCompat.PRIORITY_MAX)
+            .setStyle(bigTextStyle)
+            .addAction(0, "Snooze", pendingIntentSnooze)
+            .addAction(0, "Stop", pendingIntentStop)
+
+        mediaPlayer.setOnPreparedListener { mediaPlayer -> mediaPlayer.start() }
+        startForGroundService(
+            notification = builder.build(),
+            status = alarmEntity.vibration.status,
+            id = alarmEntity.alarmId
+        )
+
+    }
+
+    private fun splashAlarm(
+        alarmEntity: AlarmEntity,
+        bundle: Bundle,
+        putString: String,
+        variantInterval: Stat? = null
+    ) {
+        val splashIntent = Intent(this, AlarmScreenActivity::class.java).apply {
+            putExtra(putString, bundle)
+        }
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            variantInterval?.id ?: alarmEntity.alarmId,
+            splashIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        val alarmName: String = variantInterval?.name ?: alarmEntity.info.name
+        setMediaData()
+        createWakeLock().acquire(9000)
+        val bigTextStyle = NotificationCompat.BigTextStyle()
+            .bigText(alarmEntity.info.description)
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setContentTitle(alarmName)
+            .setContentText(alarmEntity.info.tag)
+            .setSmallIcon(R.drawable.ic_round_access_alarm_24)
+            .setCategory(NotificationCompat.CATEGORY_ALARM)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setPriority(NotificationCompat.PRIORITY_MAX) // set base on important in alarm entity
+            .setFullScreenIntent(pendingIntent, true)
+            .setStyle(bigTextStyle)
+            .setWhen(0)
+            .setAutoCancel(true)
+
+        mediaPlayer.setOnPreparedListener { mediaPlayer -> mediaPlayer.start() }
+        startForGroundService(
+            notification = builder.build(),
+            status = alarmEntity.vibration.status,
+            id = alarmEntity.alarmId
+        )
+
+    }
+
     private fun createWakeLock(): PowerManager.WakeLock {
         val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
-        partialWakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP, TAG)
+        partialWakeLock = powerManager.newWakeLock(
+            PowerManager.PARTIAL_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP,
+            TAG
+        )
         return partialWakeLock
 
     }
+
     private fun startForGroundService(notification: Notification?, status: Boolean, id: Int) {
         if (status) {
             val pattern = longArrayOf(0, 100, 1000)
@@ -174,58 +228,6 @@ class AlarmService : Service() {
         startForeground(id, notification)
     }
 
-    private fun createNotification(
-        notification: Notification?,
-        pendingIntent: PendingIntent,
-        bigTextStyle: NotificationCompat.BigTextStyle,
-        message: String
-    ): Notification? {
-        var notification1 = notification
-        when (alarmEntity?.mode) {
-            "Notification" -> {
-                notification1 = NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setContentTitle("Scheduler")
-                    .setContentText(message)
-                    .setSmallIcon(R.drawable.ic_round_access_alarm_24)
-                    .setSound(null)
-                    .setCategory(NotificationCompat.CATEGORY_ALARM)
-                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                    .setOngoing(true)
-                    .setWhen(0)
-                    .setPriority(NotificationCompat.PRIORITY_MAX)
-                    .setFullScreenIntent(
-                        pendingIntent,
-                        true
-                    ) // set base on important in alarm entity
-                    .setStyle(bigTextStyle)
-                    .build()
-            }
-
-            "Splash" -> {
-                notification1 = NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setContentTitle("Scheduler")
-                    .setContentText(message)
-                    .setSmallIcon(R.drawable.ic_round_access_alarm_24)
-                    .setCategory(NotificationCompat.CATEGORY_ALARM)
-                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                    .setPriority(NotificationCompat.PRIORITY_MAX) // set base on important in alarm entity
-                    .setFullScreenIntent(pendingIntent, true)
-                    .setStyle(bigTextStyle)
-                    .setWhen(0)
-                    .setAutoCancel(true)
-                    .build()
-
-                try {
-                    pendingIntent.send()
-                } catch (exception: Exception) {
-                    exception.printStackTrace()
-                }
-
-            }
-        }
-        return notification1
-    }
-
     private fun setMediaDataDef() {
         try {
             mediaPlayer.setDataSource(this.baseContext, ringtone)
@@ -239,11 +241,12 @@ class AlarmService : Service() {
         try {
             mediaPlayer.setDataSource(
                 this.baseContext,
-                Uri.parse(alarmEntity?.tone!!.uri)
+                (alarmEntity?.tone?.uri ?: ringtone) as Uri
             )
             mediaPlayer.prepareAsync()
         } catch (exception: Exception) {
             exception.printStackTrace()
+            setMediaDataDef()
         }
     }
 

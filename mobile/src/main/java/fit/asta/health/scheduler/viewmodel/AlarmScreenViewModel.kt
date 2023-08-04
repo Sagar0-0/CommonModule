@@ -28,7 +28,7 @@ class AlarmScreenViewModel
 ) : ViewModel() {
 
     var alarmEntity: AlarmEntity? = null
-    var variantInterval: Stat? = null
+    private var variantInterval: Stat? = null
 
     private val _alarmUiState = mutableStateOf(AlarmUiState())
     val alarmUiState: State<AlarmUiState> = _alarmUiState
@@ -66,6 +66,7 @@ class AlarmScreenViewModel
 
                 Log.d("TAGTAGTAG", "onSwipedLeft::  ")
                 alarmEntity?.let {
+                    setNextAlarm(it, variantInterval)
                     it.info.name = "Snooze ${it.info.name}"
                     alarmUtils.snooze(it)
                 }
@@ -79,24 +80,7 @@ class AlarmScreenViewModel
                 Log.d("TAGTAG", "event: alarm $alarmEntity")
                 alarmEntity?.let { alarm ->
                     if (alarm.interval.isRemainderAtTheEnd) {
-                        variantInterval?.let { variant ->
-                            Log.d("TAGTAG", "event: variant Post natification")
-                            alarmUtils.schedulerAlarmPostNotification(
-                                alarm,
-                                true,
-                                variant,
-                                variant.id
-                            )
-                        }
-                        if (variantInterval == null) {
-                            Log.d("TAGTAG", "event: alarm Post natification")
-                            alarmUtils.schedulerAlarmPostNotification(
-                                alarm,
-                                true,
-                                null,
-                                alarm.alarmId
-                            )
-                        }
+                        setPostNotification(alarm, variantInterval)
                     }
                     if (!alarm.week.recurring) updateState(alarm)
                     Log.d("TAGTAGTAG", "onSwipedRight: ")
@@ -115,4 +99,37 @@ class AlarmScreenViewModel
         }
     }
 
+    private fun setNextAlarm(alarm: AlarmEntity, variantInt: Stat?) {
+        if (alarm.alarmId == 999) {
+            return
+        } // alarm is snooze in past so no need to reschedule
+        if (variantInt == null) {
+            alarmUtils.scheduleNextAlarm(alarm)
+            alarmUtils.schedulerAlarmNextPreNotification(alarm, false, null, alarm.alarmId)
+        } else {
+            alarmUtils.scheduleNextIntervalAlarm(alarm, variantInt)
+            alarmUtils.schedulerAlarmNextPreNotification(alarm, true, variantInt, variantInt.id)
+        }
+    }
+
+    private fun setPostNotification(alarm: AlarmEntity, variantInt: Stat?) {
+        if (alarm.alarmId == 999) {
+            return
+        }
+        if (variantInt == null) {
+            alarmUtils.schedulerAlarmPostNotification(
+                alarm,
+                isInterval = true,
+                interval = null,
+                alarm.alarmId
+            )
+        } else {
+            alarmUtils.schedulerAlarmPostNotification(
+                alarm,
+                isInterval = true,
+                variantInt,
+                variantInt.id
+            )
+        }
+    }
 }

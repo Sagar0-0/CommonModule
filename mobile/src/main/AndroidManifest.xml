@@ -107,9 +107,6 @@
 
         <activity android:name=".tools.walking.view.WalkingActivity" />
         <activity
-            android:name=".scheduler.compose.SchedulerActivity"
-            android:showOnLockScreen="true" />
-        <activity
             android:name=".thirdparty.spotify.SpotifyLoginActivity"
             android:exported="true"
             android:launchMode="singleInstance">

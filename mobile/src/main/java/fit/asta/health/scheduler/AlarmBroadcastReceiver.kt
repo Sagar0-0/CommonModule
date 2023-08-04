@@ -26,7 +26,6 @@ import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_PRE_NOTIFICATIO
 import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_VARIANT_INTERVAL_OBJECT
 import fit.asta.health.scheduler.util.SerializableAndParcelable.serializable
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import java.util.Calendar
 
 class AlarmBroadcastReceiver : BroadcastReceiver() {
 
@@ -48,28 +47,12 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
             if (bundleForAlarm != null) {
                 alarmEntity = bundleForAlarm.serializable(ARG_ALARM_OBJET)
                 Log.d("alarmtest", "broadcastReceiver onReceive:alarm $alarmEntity")
-                val toastText = String.format("Alarm Received")
-                Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
                 if (alarmEntity != null) {
-                    if (!alarmEntity?.week!!.recurring) {
-                        startAlarmService(
-                            context, /*alarmEntity!!, null,*/
-                            bundleForAlarm,
-                            isNotification = false,
-                            isPre = false,
-                            isVariantInterval = false
-                        )
-                    } else {
-                        if (isAlarmToday(alarmEntity!!)) {
-                            startAlarmService(
-                                context, /*alarmEntity!!, null,*/
-                                bundleForAlarm,
-                                isNotification = false,
-                                isPre = false,
-                                isVariantInterval = false
-                            )
-                        }
-                    }
+                    startAlarmService(
+                        context,
+                        bundleForAlarm,
+                        isVariantInterval = false
+                    )
                 }
             }
             val bundleForVariantInterval = intent.getBundleExtra(BUNDLE_VARIANT_INTERVAL_OBJECT)
@@ -77,31 +60,12 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
                 alarmEntity =
                     bundleForVariantInterval.serializable(ARG_VARIANT_INTERVAL_ALARM_OBJECT)
                 Log.d("TAGTAGTAG", "onReceive:variant $alarmEntity")
-                val toastText = String.format("Variant Received")
-                Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
                 if (alarmEntity != null) {
-                    if (!alarmEntity?.week!!.recurring) {
-                        startAlarmService(
-                            context,
-                            bundleForVariantInterval,
-                            isNotification = false,
-                            isPre = false,
-                            isVariantInterval = true
-                        )
-                    } else {
-                        if (isAlarmToday(alarmEntity!!)) {
-                            startAlarmService(
-                                context,
-                                /*  alarmEntity!!,
-                                  bundleForVariantInterval.getParcelable(ARG_VARIANT_INTERVAL_OBJECT) as AlarmTimeItem?,*/
-                                bundleForVariantInterval,
-                                isNotification = false,
-                                isPre = false,
-                                isVariantInterval = true
-                            )
-                        }
-                    }
-
+                    startAlarmService(
+                        context,
+                        bundleForVariantInterval,
+                        isVariantInterval = true
+                    )
                 }
             }
             val bundleForPreNotification = intent.getBundleExtra(BUNDLE_PRE_NOTIFICATION_OBJECT)
@@ -116,12 +80,10 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
                         notificationIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                     )
-
                     var alarmName = context.getString(R.string.notification)
                     if (alarmEntity != null) {
                         alarmName = alarmEntity?.info?.name!!
                     }
-
                     val notification = NotificationCompat.Builder(context, HealthCareApp.CHANNEL_ID)
                         .setContentTitle("Post Notification")
                         .setContentText(alarmName + id)
@@ -132,7 +94,6 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
                         .setContentIntent(pendingIntent)
 
                     notificationManager.notify(123, notification.build())
-
                 }
             }
             val bundleForPostNotification = intent.getBundleExtra(BUNDLE_POST_NOTIFICATION_OBJECT)
@@ -163,33 +124,19 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
                     .setContentIntent(pendingIntent)
                 notificationManager.notify(124, notification.build())
             }
-
-            val toastText = String.format("Alarm Received but not available")
-            Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun startAlarmService(
         context: Context,
         bundle: Bundle,
-        isNotification: Boolean,
-        isPre: Boolean,
         isVariantInterval: Boolean
     ) {
         val intentService = Intent(context.applicationContext, AlarmService::class.java)
-        if (isNotification) {
-            if (isPre) {
-                intentService.putExtra(BUNDLE_PRE_NOTIFICATION_OBJECT, bundle)
-            } else {
-                intentService.putExtra(BUNDLE_POST_NOTIFICATION_OBJECT, bundle)
-                Log.d("TAGTAGTAG", "startAlarmService: inside else")
-            }
+        if (isVariantInterval) {
+            intentService.putExtra(BUNDLE_VARIANT_INTERVAL_OBJECT, bundle)
         } else {
-            if (isVariantInterval) {
-                intentService.putExtra(BUNDLE_VARIANT_INTERVAL_OBJECT, bundle)
-            } else {
-                intentService.putExtra(BUNDLE_ALARM_OBJECT, bundle)
-            }
+            intentService.putExtra(BUNDLE_ALARM_OBJECT, bundle)
         }
         Log.d("alarmtest", "broadcastReceiver start:${context.applicationContext}")
         ContextCompat.startForegroundService(context.applicationContext, intentService)
@@ -198,41 +145,5 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
     private fun startRescheduleAlarmsService(context: Context) {
         val intentService = Intent(context, RescheduleAlarmService::class.java)
         ContextCompat.startForegroundService(context.applicationContext, intentService)
-    }
-
-    private fun isAlarmToday(alarm1: AlarmEntity): Boolean {
-        val calendar: Calendar = Calendar.getInstance()
-        calendar.timeInMillis = System.currentTimeMillis()
-        val today: Int = calendar.get(Calendar.DAY_OF_WEEK)
-        when (today) {
-            Calendar.MONDAY -> {
-                return alarm1.week.monday
-            }
-
-            Calendar.TUESDAY -> {
-                return alarm1.week.tuesday
-            }
-
-            Calendar.WEDNESDAY -> {
-                return alarm1.week.wednesday
-            }
-
-            Calendar.THURSDAY -> {
-                return alarm1.week.thursday
-            }
-
-            Calendar.FRIDAY -> {
-                return alarm1.week.friday
-            }
-
-            Calendar.SATURDAY -> {
-                return alarm1.week.saturday
-            }
-
-            Calendar.SUNDAY -> {
-                return alarm1.week.sunday
-            }
-        }
-        return false
     }
 }
