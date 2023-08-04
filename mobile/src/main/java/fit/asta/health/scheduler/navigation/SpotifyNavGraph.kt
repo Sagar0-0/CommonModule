@@ -24,17 +24,27 @@ fun SpotifyNavGraph(
                 SpotifyNavRoutes.HomeScreen.routes,
                 content = {
 
-                    val recentlyData =
-                        spotifyViewModel.userRecentlyPlayedTracks.collectAsStateWithLifecycle().value
+                    val recentlyData = spotifyViewModel.userRecentlyPlayedTracks
+                        .collectAsStateWithLifecycle().value
 
-                    val topMixData =
-                        spotifyViewModel.userTopTracks.collectAsStateWithLifecycle().value
+                    val topMixData = spotifyViewModel.userTopTracks
+                        .collectAsStateWithLifecycle().value
+
+                    val favouriteTracks = spotifyViewModel.allTracks
+                        .collectAsStateWithLifecycle().value
+
+                    val favouriteAlbums = spotifyViewModel.allAlbums
+                        .collectAsStateWithLifecycle().value
 
                     SpotifyHomeScreen(
-                        loadRecentlyPlayed = spotifyViewModel::getCurrentUserRecentlyPlayedTracks,
-                        loadTopMix = spotifyViewModel::getUserTopTracks,
                         recentlyData = recentlyData,
                         topMixData = topMixData,
+                        favouriteTracks = favouriteTracks,
+                        favouriteAlbums = favouriteAlbums,
+                        loadRecentlyPlayed = spotifyViewModel::getCurrentUserRecentlyPlayedTracks,
+                        loadTopMix = spotifyViewModel::getUserTopTracks,
+                        loadFavouriteTracks = spotifyViewModel::getAllTracks,
+                        loadFavouriteAlbums = spotifyViewModel::getAllAlbums,
                         playSong = spotifyViewModel::playSpotifySong,
                         navSearch = { navController.navigate(SpotifyNavRoutes.SearchScreen.routes) },
                         onApplyClick = spotifyViewModel::onApplyClick

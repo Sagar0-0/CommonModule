@@ -15,6 +15,9 @@ import fit.asta.health.scheduler.model.net.spotify.search.TrackList
 import fit.asta.health.scheduler.model.net.spotify.me.SpotifyMeModel
 import fit.asta.health.scheduler.model.net.spotify.recently.SpotifyUserRecentlyPlayedModel
 import fit.asta.health.scheduler.util.SpotifyNetworkCall
+import fit.asta.health.thirdparty.spotify.model.MusicRepository
+import fit.asta.health.thirdparty.spotify.model.net.common.Album
+import fit.asta.health.thirdparty.spotify.model.net.common.Track
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -25,7 +28,8 @@ import javax.inject.Inject
 class SpotifyViewModel @Inject constructor(
     private val remoteRepository: SpotifyRepo,
     application: Application,
-    private val prefUtils: PrefUtils
+    private val prefUtils: PrefUtils,
+    private val localRepository: MusicRepository,
 ) : AndroidViewModel(application) {
 
     private var isMusicPlaying = false
@@ -90,16 +94,6 @@ class SpotifyViewModel @Inject constructor(
 
 
     /**
-     * This function plays the Songs using the Spotify app Remote
-     */
-    fun playSpotifySong(url: String) {
-        spotifyAppRemote?.playerApi?.resume()
-        spotifyAppRemote?.playerApi?.play(url)
-        isMusicPlaying = true
-    }
-
-
-    /**
      * This function is used to set the state as failed when the Spotify App Remote is not connected
      */
     fun unableToGetSpotifyRemote(e: Throwable) {
@@ -108,14 +102,33 @@ class SpotifyViewModel @Inject constructor(
 
 
     /**
+     * This function plays the Songs using the Spotify app Remote
+     */
+    fun playSpotifySong(url: String) {
+        spotifyAppRemote?.playerApi?.play(url)
+        spotifyAppRemote?.playerApi?.resume()
+        isMusicPlaying = true
+    }
+
+
+    /**
      * This function disconnects the Spotify App Remote
      */
     fun disconnectSpotifyRemote() {
         spotifyAppRemote?.let {
-            if (isMusicPlaying)
-                it.playerApi.pause()
+            if (isMusicPlaying) {
+                onSpotifyRemoteStop()
+                isMusicPlaying = false
+            }
             SpotifyAppRemote.disconnect(it)
         }
+    }
+
+    /**
+     * This function is used to pause the spotify remote player
+     */
+    fun onSpotifyRemoteStop() {
+        spotifyAppRemote?.playerApi?.pause()
     }
 
 
@@ -205,6 +218,48 @@ class SpotifyViewModel @Inject constructor(
                 market = _currentUserData.value.data!!.country
             ).collectLatest {
                 _spotifySearch.value = it
+            }
+        }
+    }
+
+
+    /**
+     * This variable contains details of all the Tracks calls and states
+     */
+    private val _allTracks =
+        MutableStateFlow<fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall<List<Track>>>(
+            fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall.Initialized()
+        )
+    val allTracks = _allTracks.asStateFlow()
+
+    /**
+     * This function fetches all the track from the local repository
+     */
+    fun getAllTracks() {
+        viewModelScope.launch {
+            localRepository.getAllTracks().collect {
+                _allTracks.value = it
+            }
+        }
+    }
+
+
+    /**
+     * This variable contains details of all the albums calls and states
+     */
+    private val _allAlbums =
+        MutableStateFlow<fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall<List<Album>>>(
+            fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall.Initialized()
+        )
+    val allAlbums = _allAlbums.asStateFlow()
+
+    /**
+     * This function fetches all the albums from the local repository
+     */
+    fun getAllAlbums() {
+        viewModelScope.launch {
+            localRepository.getAllAlbums().collect {
+                _allAlbums.value = it
             }
         }
     }
