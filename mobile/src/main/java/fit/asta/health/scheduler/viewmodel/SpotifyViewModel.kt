@@ -1,6 +1,7 @@
 package fit.asta.health.scheduler.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.spotify.android.appremote.api.SpotifyAppRemote
@@ -9,11 +10,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.PrefUtils
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ToneUiState
 import fit.asta.health.scheduler.model.SpotifyRepo
-import fit.asta.health.scheduler.util.Constants
-import fit.asta.health.scheduler.model.net.spotify.search.SpotifySearchModel
-import fit.asta.health.scheduler.model.net.spotify.search.TrackList
 import fit.asta.health.scheduler.model.net.spotify.me.SpotifyMeModel
 import fit.asta.health.scheduler.model.net.spotify.recently.SpotifyUserRecentlyPlayedModel
+import fit.asta.health.scheduler.model.net.spotify.search.SpotifySearchModel
+import fit.asta.health.scheduler.model.net.spotify.search.TrackList
+import fit.asta.health.scheduler.util.Constants
 import fit.asta.health.scheduler.util.SpotifyNetworkCall
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -142,6 +143,7 @@ class SpotifyViewModel @Inject constructor(
      * Database later
      */
     fun onApplyClick(toneUiState: ToneUiState) {
+        Log.d("tone", "onApplyClick: $toneUiState")
         viewModelScope.launch {
             prefUtils.setPreferences(Constants.SPOTIFY_SONG_KEY_URI, toneUiState.uri)
             prefUtils.setPreferences(Constants.SPOTIFY_SONG_KEY_TYPE, toneUiState.type)

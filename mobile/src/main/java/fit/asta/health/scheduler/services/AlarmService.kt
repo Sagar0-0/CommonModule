@@ -11,6 +11,9 @@ import android.net.Uri
 import android.os.*
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.HealthCareApp.Companion.CHANNEL_ID
 import fit.asta.health.R
 import fit.asta.health.scheduler.AlarmBroadcastReceiver
@@ -26,8 +29,9 @@ import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_VARIANT_INTERVA
 import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_VARIANT_INTERVAL_OBJECT_NOTIFICATION
 import fit.asta.health.scheduler.util.SerializableAndParcelable.parcelable
 import fit.asta.health.scheduler.util.SerializableAndParcelable.serializable
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class AlarmService : Service() {
 
     var alarmEntity: AlarmEntity? = null
@@ -36,6 +40,9 @@ class AlarmService : Service() {
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var vibrator: Vibrator
     private lateinit var partialWakeLock: PowerManager.WakeLock
+
+    @Inject
+    lateinit var player: Player
 
     override fun onCreate() {
         super.onCreate()
@@ -46,6 +53,10 @@ class AlarmService : Service() {
         }
         mediaPlayer = MediaPlayer()
         mediaPlayer.isLooping = true
+        player.apply {
+            playWhenReady = true
+            prepare()
+        }
         vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val vibratorManager =
                 getSystemService(VIBRATOR_MANAGER_SERVICE) as VibratorManager
@@ -135,7 +146,11 @@ class AlarmService : Service() {
         )
 
         val alarmName: String = variantInterval?.name ?: alarmEntity.info.name
-        setMediaData()
+//        setMediaData()
+        player.apply {
+            setMediaItem(MediaItem.fromUri(alarmEntity.tone.uri))
+            player
+        }
         val bigTextStyle = NotificationCompat.BigTextStyle()
             .bigText(alarmEntity.info.description)
 
@@ -239,6 +254,7 @@ class AlarmService : Service() {
             mediaPlayer.prepareAsync()
         } catch (exception: Exception) {
             exception.printStackTrace()
+            Log.d("tone", "setMediaData: ${exception.message}")
             setMediaDataDef()
         }
     }
@@ -250,6 +266,7 @@ class AlarmService : Service() {
         }
         vibrator.cancel()
         partialWakeLock.release()
+        player.release()
     }
 
     override fun onBind(intent: Intent?): IBinder? {

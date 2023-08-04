@@ -19,8 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.scheduler.compose.components.SpotifyHomeHeader
 import fit.asta.health.scheduler.compose.components.SpotifyMusicItem
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ToneUiState
@@ -104,7 +104,7 @@ fun SpotifyHomeScreen(
                                 ToneUiState(
                                     name = currentItem.track.name,
                                     type = 1,
-                                    uri = currentItem.track.uri
+                                    uri = currentItem.track.previewUrl ?: "hi"
                                 )
                             )
                         }
@@ -169,7 +169,7 @@ fun SpotifyHomeScreen(
                                 ToneUiState(
                                     name = currentItem.name,
                                     type = 1,
-                                    uri = currentItem.uri
+                                    uri = currentItem.previewUrl ?: "hi"
                                 )
                             )
                         }

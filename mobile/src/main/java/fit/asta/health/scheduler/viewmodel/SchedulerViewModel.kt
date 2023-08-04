@@ -19,7 +19,6 @@ import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AlarmSettingEv
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.IvlUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.RepUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.StatUiState
-import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ToneUiState
 import fit.asta.health.scheduler.compose.screen.tagscreen.TagState
 import fit.asta.health.scheduler.compose.screen.tagscreen.TagsEvent
 import fit.asta.health.scheduler.compose.screen.tagscreen.TagsUiState
@@ -33,6 +32,7 @@ import fit.asta.health.scheduler.model.doman.getAlarm
 import fit.asta.health.scheduler.model.net.tag.ScheduleTagNetData
 import fit.asta.health.scheduler.util.Constants
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -86,12 +86,17 @@ class SchedulerViewModel
                         time_minutes = LocalTime.now().minute.toString()
                     )
                 }
+                Log.d("tone", "getEditUiData alarm: ${_alarmSettingUiState.value}")
             }
-            prefUtils.getPreferences(Constants.SPOTIFY_SONG_KEY_URI, ToneUiState()).collect {
-                if (it.uri.isNotEmpty() && alarmEntity == null) {
-                    _alarmSettingUiState.value = _alarmSettingUiState.value.copy(tone_uri = it.uri)
+        }
+        viewModelScope.launch {
+            prefUtils.getPreferences(Constants.SPOTIFY_SONG_KEY_URI, "hi").collectLatest {
+                if (it != "hi" && alarmEntity == null) {
+                    _alarmSettingUiState.value = _alarmSettingUiState.value.copy(tone_uri = it)
                 }
+                Log.d("tone", "getEditUiData: $it")
             }
+            Log.d("tone", "getEditUiData: outside")
         }
     }
 
