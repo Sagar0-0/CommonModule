@@ -1,6 +1,7 @@
 package fit.asta.health.common.maps.view
 
 import android.content.Intent
+import android.location.Address
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,6 +30,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -55,9 +57,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import fit.asta.health.common.maps.modal.AddressScreen
 import fit.asta.health.common.maps.modal.AddressesResponse
 import fit.asta.health.common.maps.modal.AddressesResponse.MyAddress
-import fit.asta.health.common.maps.modal.MapScreens
 import fit.asta.health.common.maps.modal.SearchResponse
 import fit.asta.health.common.maps.vm.MapsViewModel
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
@@ -68,11 +70,12 @@ import fit.asta.health.common.ui.theme.iconSize
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.ResponseState
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SavedAddressesScreen(
     navHostController: NavHostController,
     mapsViewModel: MapsViewModel,
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
 ) {
     val gson: Gson = GsonBuilder().create()
 
@@ -81,7 +84,7 @@ fun SavedAddressesScreen(
     val addressListState by mapsViewModel.addressListState.collectAsStateWithLifecycle()
     val searchResponseState by mapsViewModel.searchResponseState.collectAsStateWithLifecycle()
     val currentLatLng by mapsViewModel.currentLatLng.collectAsStateWithLifecycle()
-    val currentAddress by mapsViewModel.currentAddress.collectAsStateWithLifecycle()
+    val currentAddressState by mapsViewModel.currentAddressState.collectAsStateWithLifecycle()
 
     var searchQuery by rememberSaveable {
         mutableStateOf("")
@@ -89,7 +92,6 @@ fun SavedAddressesScreen(
 
     Column(Modifier.fillMaxSize()) {
         AppTopBar(title = "Saved Addresses", onBack = onBackPressed)
-
         OutlinedTextField(
             maxLines = 1,
             singleLine = true,
@@ -173,17 +175,41 @@ fun SavedAddressesScreen(
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Start
                 )
-                Text(
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    text = if (currentAddress == null) "Fetching location..." else "${
-                        currentAddress?.getAddressLine(
-                            0
+                when (currentAddressState) {
+                    is ResponseState.Loading -> {
+                        Text(
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            text = "Fetching location...",
+                            style = MaterialTheme.typography.bodyMedium,
+                            textAlign = TextAlign.Start
                         )
-                    }",
-                    style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Start
-                )
+                    }
+
+                    is ResponseState.Success -> {
+                        Text(
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            text = (currentAddressState as ResponseState.Success<Address>).data.getAddressLine(
+                                0
+                            ),
+                            style = MaterialTheme.typography.bodyMedium,
+                            textAlign = TextAlign.Start
+                        )
+                    }
+
+                    is ResponseState.Error -> {
+                        Text(
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            text = "Error fetching location",
+                            style = MaterialTheme.typography.bodyMedium,
+                            textAlign = TextAlign.Start
+                        )
+                    }
+
+                    else -> {}
+                }
             }
 
             Icon(
@@ -221,7 +247,7 @@ fun SavedAddressesScreen(
                     uid = ""
                 )
                 val addJson = gson.toJson(myAddressItem)
-                navHostController.navigate(route = "${MapScreens.Map.route}/$addJson")
+                navHostController.navigate(route = "${AddressScreen.Map.route}/$addJson")
             }
         ) {
             Icon(
@@ -293,7 +319,7 @@ fun SavedAddressesScreen(
                                     onEditClick = {
                                         searchQuery = ""
                                         val addJson = gson.toJson(item).replace("/", "|")
-                                        navHostController.navigate(route = "${MapScreens.Map.route}/$addJson")
+                                        navHostController.navigate(route = "${AddressScreen.Map.route}/$addJson")
                                     },
                                     onDeleteClick = {
                                         if (item.selected) {
@@ -397,7 +423,7 @@ fun SavedAddressesScreen(
                                             val addJson = gson
                                                 .toJson(myAddressItem)
                                                 .replace("/", "|")
-                                            navHostController.navigate(route = "${MapScreens.Map.route}/$addJson")
+                                            navHostController.navigate(route = "${AddressScreen.Map.route}/$addJson")
                                         }
                                         .padding(spacing.medium),
                                     text = it.name,
@@ -442,7 +468,7 @@ fun AddressItem(
     onClick: () -> Unit,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
-    onShareClick: () -> Unit
+    onShareClick: () -> Unit,
 ) {
     Row(
         modifier

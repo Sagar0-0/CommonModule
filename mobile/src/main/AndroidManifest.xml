@@ -60,9 +60,6 @@
             android:label="@string/title_activity_sleep_tool" />
         <activity android:name=".payments.pay.PaymentActivity" />
         <activity android:name=".settings.WebViewActivity" />
-        <activity
-            android:name=".common.maps.MapsActivity"
-            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -106,9 +103,6 @@
 
         <activity android:name=".tools.walking.view.WalkingActivity" />
         <activity
-            android:name=".scheduler.compose.SchedulerActivity"
-            android:showOnLockScreen="true" />
-        <activity
             android:name=".thirdparty.spotify.SpotifyLoginActivity"
             android:exported="true"
             android:launchMode="singleInstance">
@@ -148,6 +142,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
+            android:theme="@style/Theme.App.Starting"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

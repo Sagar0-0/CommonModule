@@ -339,7 +339,8 @@ fun Context.showUrlInBrowser(url: String) {
     WebViewActivity.launch(this, url)
 }
 
-fun getLocationName(address: Address): String {
+fun getLocationName(address: Address?): String {
+    if (address == null) return ""
     return if (address.subLocality.isNotEmpty()) {
         "${address.subLocality}, ${address.locality}"
     } else {

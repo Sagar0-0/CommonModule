@@ -3,6 +3,7 @@ package fit.asta.health.common.utils
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import fit.asta.health.BuildConfig
 import fit.asta.health.network.Certificate
 import okhttp3.Cache
 import okhttp3.CertificatePinner
@@ -56,6 +57,12 @@ object NetworkUtil {
         certificatePinner?.let {
             builder.certificatePinner(buildCertificatePinner())
         }
+
+        if (BuildConfig.DEBUG) {
+            //For self signed SSL Certificate - Only for dev and test environments
+            builder.hostnameVerifier { _, _ -> true }
+        }
+
         return builder.build()
     }
 

@@ -25,11 +25,14 @@ import fit.asta.health.scheduler.compose.screen.tagscreen.TagsUiState
 import fit.asta.health.scheduler.compose.screen.timesettingscreen.TimeSettingEvent
 import fit.asta.health.scheduler.model.AlarmBackendRepo
 import fit.asta.health.scheduler.model.AlarmLocalRepo
+import fit.asta.health.scheduler.model.AlarmUtils
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.db.entity.AlarmSync
 import fit.asta.health.scheduler.model.doman.getAlarm
 import fit.asta.health.scheduler.model.net.tag.ScheduleTagNetData
+import fit.asta.health.scheduler.util.Constants
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -44,7 +47,8 @@ class SchedulerViewModel
 @Inject constructor(
     private val alarmLocalRepo: AlarmLocalRepo,
     private val backendRepo: AlarmBackendRepo,
-    private val prefUtils: PrefUtils
+    private val prefUtils: PrefUtils,
+    private val alarmUtils: AlarmUtils
 ) : ViewModel() {
     private var alarmEntity: AlarmEntity? = null
 
@@ -82,7 +86,17 @@ class SchedulerViewModel
                         time_minutes = LocalTime.now().minute.toString()
                     )
                 }
+                Log.d("tone", "getEditUiData alarm: ${_alarmSettingUiState.value}")
             }
+        }
+        viewModelScope.launch {
+            prefUtils.getPreferences(Constants.SPOTIFY_SONG_KEY_URI, "hi").collectLatest {
+                if (it != "hi" && alarmEntity == null) {
+                    _alarmSettingUiState.value = _alarmSettingUiState.value.copy(tone_uri = it)
+                }
+                Log.d("tone", "getEditUiData: $it")
+            }
+            Log.d("tone", "getEditUiData: outside")
         }
     }
 
@@ -202,7 +216,9 @@ class SchedulerViewModel
             }
 
             is AlarmSettingEvent.GotoTimeSettingScreen -> {
+                _variantIntervalsList.clear()
                 _variantIntervalsList.addAll(interval.value.variantIntervals)
+                _staticIntervalsList.clear()
                 _staticIntervalsList.addAll(interval.value.staticIntervals)
             }
 
@@ -363,7 +379,7 @@ class SchedulerViewModel
             _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
                 saveProgress = "cancel old alarm"
             )
-            it.cancelScheduleAlarm(context, it.alarmId, true)
+            alarmUtils.cancelScheduleAlarm(it, true)
         }
         val alarmTone: Uri = RingtoneManager.getActualDefaultRingtoneUri(
             context, RingtoneManager.TYPE_ALARM
@@ -380,7 +396,7 @@ class SchedulerViewModel
         viewModelScope.launch {
             _alarmSettingUiState.value = _alarmSettingUiState.value.copy(saveProgress = "Success..")
             if (entity.status) {
-                entity.scheduleAlarm(context)
+                alarmUtils.scheduleAlarm(entity)
             }
             if (alarmItem != null&&alarmItem.idFromServer.isNotEmpty()) {
                 alarmLocalRepo.insertSyncData(
@@ -404,15 +420,9 @@ class SchedulerViewModel
 
     //timeSettingActivity
 
-
-    fun setAlarmEntityIntent(alarmEntity: AlarmEntity?) {
-        this@SchedulerViewModel.alarmEntity = alarmEntity
-        alarmEntity?.let { updateUi(it) }
-    }
-
     private fun updateUi(it: AlarmEntity) {
-        this@SchedulerViewModel.alarmEntity = it
         interval.value = interval.value.copy(
+            status = it.interval.status,
             advancedReminder = AdvUiState(
                 status = it.interval.advancedReminder.status,
                 time = it.interval.advancedReminder.time

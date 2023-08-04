@@ -6,12 +6,16 @@ import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.asLiveData
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.di.DatabaseModule
+import fit.asta.health.scheduler.model.AlarmUtils
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class RescheduleAlarmService : LifecycleService() {
 
     //    @Inject
 //    lateinit var alarmRepository: AlarmRepository
+    @Inject
+    lateinit var alarmUtils: AlarmUtils
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
@@ -24,7 +28,7 @@ class RescheduleAlarmService : LifecycleService() {
         ) { alarmItems ->
             for (alarm in alarmItems) {
                 if (alarm.status) {
-                    alarm.scheduleAlarm(applicationContext)
+                    alarmUtils.scheduleAlarm(alarm)
                 }
             }
         }

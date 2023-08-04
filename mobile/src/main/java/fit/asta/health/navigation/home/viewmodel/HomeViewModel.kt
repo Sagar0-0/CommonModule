@@ -1,5 +1,6 @@
 package fit.asta.health.navigation.home.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -50,8 +51,10 @@ class HomeViewModel @Inject constructor(
                     }
                 }
             } catch (networkException: IOException) {
+                Log.d("HTTP-ERROR", "Exception: $networkException")
                 _mutableState.value = HomeState.NetworkError(networkException)
             } catch (exception: Exception) {
+                Log.d("HTTP-ERROR", "Exception: $exception")
                 _mutableState.value = HomeState.Error(exception)
             }
         }

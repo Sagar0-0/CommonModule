@@ -15,7 +15,7 @@ import fit.asta.health.common.ui.theme.aspectRatio
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.main.Graph
 import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
-import fit.asta.health.navigation.home.view.component.RateUsCard
+import fit.asta.health.navigation.home.view.component.RateUsDemoCard
 import fit.asta.health.navigation.home.view.component.ReferAndEarn
 import fit.asta.health.navigation.home.view.component.ToolsCardLayout
 import fit.asta.health.navigation.home.view.component.ToolsHmScreenTopBanner
@@ -31,7 +31,7 @@ import java.util.Locale
 @Composable
 fun HomeScreenLayout(
     toolsHome: ToolsHomeRes.ToolsHome, userId: String,
-    onNav: (Graph) -> Unit,
+    onNav: (String) -> Unit,
 ) {
 
     val context = LocalContext.current
@@ -51,7 +51,7 @@ fun HomeScreenLayout(
             }
 
             item(span = { GridItemSpan(columns) }) {
-                ViewAllLayout(myTools = "My Tools", "All Tools") {}
+                ViewAllLayout(title = "My Tools")
             }
 
             items(toolsHome.tools) { tool ->
@@ -62,7 +62,7 @@ fun HomeScreenLayout(
                     onClick = { type ->
                         when (type.lowercase(Locale.getDefault())) {
                             "water" -> {
-                                onNav(Graph.WaterTool)
+                                onNav(Graph.WaterTool.route)
                             }
 
                             "steps" -> {
@@ -70,50 +70,46 @@ fun HomeScreenLayout(
                             }
 
                             "workout" -> {
-                                onNav(Graph.Workout)
+                                onNav(Graph.ExerciseTool.route + "?activity=workout")
                             }
 
                             "yoga" -> {
-                                onNav(Graph.Yoga)
+                                onNav(Graph.ExerciseTool.route + "?activity=yoga")
                             }
 
                             "hiit" -> {
-                                onNav(Graph.Hiit)
+                                onNav(Graph.ExerciseTool.route + "?activity=HIIT")
                             }
 
                             "dance" -> {
-                                onNav(Graph.Dance)
+                                onNav(Graph.ExerciseTool.route + "?activity=dance")
                             }
 
                             "meditation" -> {
-                                onNav(Graph.MeditationTool)
+                                onNav(Graph.MeditationTool.route)
                             }
 
                             "sleep" -> {
-                                onNav(Graph.SleepTool)
+                                onNav(Graph.SleepTool.route)
                                 SleepToolActivity.launch(
                                     context = context, userId = userId
                                 )
                             }
 
                             "breathing" -> {
-                                onNav(Graph.BreathingTool)
+                                onNav(Graph.BreathingTool.route)
                             }
 
                             "sunlight" -> {
-                                onNav(Graph.SunlightTool)
+                                onNav(Graph.SunlightTool.route)
                             }
                         }
                     })
             }
 
-            item {
-                Spacer(modifier = Modifier.height(spacing.medium))
-            }
-
             item(span = { GridItemSpan(columns) }) {
-                ViewAllLayout(myTools = "Testimonials", allTools = "View All", onClick = {
-                    onNav(Graph.Testimonials)
+                ViewAllLayout(title = "Testimonials", clickString = "View All", onClick = {
+                    onNav(Graph.Testimonials.route)
                 })
             }
 
@@ -131,16 +127,8 @@ fun HomeScreenLayout(
                 })
             }
 
-            item {
-                Spacer(modifier = Modifier.height(spacing.medium))
-            }
-
             item(span = { GridItemSpan(columns) }) {
-                RateUsCard()
-            }
-
-            item {
-                Spacer(modifier = Modifier.height(spacing.medium))
+                RateUsDemoCard()
             }
 
             item(span = { GridItemSpan(columns) }) {

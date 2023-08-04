@@ -58,7 +58,7 @@ fun feedbackTextFieldItem(qn: Qn): MutableState<An> {
             Spacer(modifier = Modifier.height(spacing.medium))
             when (qn.type) {
                 2 -> {
-                    opts.value = listOf(Rating().value.toString())
+                    opts.value = listOf(rating().value.toString())
                     Spacer(modifier = Modifier.height(spacing.medium))
                 }
 

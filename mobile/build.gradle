@@ -308,8 +308,9 @@ dependencies {
     //Clock
     implementation "com.maxkeppeler.sheets-compose-dialogs:clock:$cal_ver"
 
-    //Emoji-Bar
+    //Rating-Bar
     implementation "com.github.a914-gowtham:compose-ratingbar:1.2.4"
+    implementation 'com.github.SmartToolFactory:Compose-RatingBar:2.1.1'
 
     //FlexBox
     implementation "com.google.android.flexbox:flexbox:3.0.0"
@@ -366,6 +367,9 @@ dependencies {
     //for animations
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
     implementation "com.airbnb.android:lottie-compose:6.1.0"
+
+    //splash
+    implementation 'androidx.core:core-splashscreen:1.0.0-beta02'
 }
 
 kapt {
