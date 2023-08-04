@@ -23,9 +23,12 @@ class Constants {
         const val sat = 777
 
         const val BUNDLE_ALARM_OBJECT = "bundle_alarm_object"
+        const val BUNDLE_ALARM_OBJECT_NOTIFICATION = "bundle_alarm_object_notification"
         const val ARG_ALARM_OBJET = "arg_alarm_object"
 
         const val BUNDLE_VARIANT_INTERVAL_OBJECT = "bundle_variant_interval_object"
+        const val BUNDLE_VARIANT_INTERVAL_OBJECT_NOTIFICATION =
+            "bundle_variant_interval_object_notification"
         const val ARG_VARIANT_INTERVAL_ALARM_OBJECT = "arg_variant_interval_alarm_object"
         const val ARG_VARIANT_INTERVAL_OBJECT = "arg_variant_interval_object"
 

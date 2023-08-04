@@ -21,7 +21,9 @@ import fit.asta.health.scheduler.util.Constants.Companion.ARG_ALARM_OBJET
 import fit.asta.health.scheduler.util.Constants.Companion.ARG_VARIANT_INTERVAL_ALARM_OBJECT
 import fit.asta.health.scheduler.util.Constants.Companion.ARG_VARIANT_INTERVAL_OBJECT
 import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_ALARM_OBJECT
+import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_ALARM_OBJECT_NOTIFICATION
 import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_VARIANT_INTERVAL_OBJECT
+import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_VARIANT_INTERVAL_OBJECT_NOTIFICATION
 import fit.asta.health.scheduler.util.SerializableAndParcelable.parcelable
 import fit.asta.health.scheduler.util.SerializableAndParcelable.serializable
 
@@ -34,10 +36,14 @@ class AlarmService : Service() {
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var vibrator: Vibrator
     private lateinit var partialWakeLock: PowerManager.WakeLock
-    private val TAG = this.javaClass.simpleName
 
     override fun onCreate() {
         super.onCreate()
+        partialWakeLock = (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
+            newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "AlarmService::WakeLock").apply {
+                acquire(3 * 60 * 1000L /*3 minutes*/)
+            }
+        }
         mediaPlayer = MediaPlayer()
         mediaPlayer.isLooping = true
         vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -63,7 +69,7 @@ class AlarmService : Service() {
             Log.d("alarmtest", "onStartCommand: alarm $alarmEntity")
             when (alarmEntity?.mode) {
                 "Notification" -> {
-                    notificationAlarm(alarmEntity!!, bundle, BUNDLE_ALARM_OBJECT)
+                    notificationAlarm(alarmEntity!!, bundle, BUNDLE_ALARM_OBJECT_NOTIFICATION)
                 }
 
                 "Splash" -> {
@@ -83,7 +89,7 @@ class AlarmService : Service() {
                     notificationAlarm(
                         alarmEntity!!,
                         bundleForVariantInterval,
-                        BUNDLE_VARIANT_INTERVAL_OBJECT,
+                        BUNDLE_VARIANT_INTERVAL_OBJECT_NOTIFICATION,
                         variantInterval
                     )
                 }
@@ -130,8 +136,6 @@ class AlarmService : Service() {
 
         val alarmName: String = variantInterval?.name ?: alarmEntity.info.name
         setMediaData()
-        createWakeLock().acquire(9000)
-
         val bigTextStyle = NotificationCompat.BigTextStyle()
             .bigText(alarmEntity.info.description)
 
@@ -175,7 +179,6 @@ class AlarmService : Service() {
         )
         val alarmName: String = variantInterval?.name ?: alarmEntity.info.name
         setMediaData()
-        createWakeLock().acquire(9000)
         val bigTextStyle = NotificationCompat.BigTextStyle()
             .bigText(alarmEntity.info.description)
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
@@ -199,15 +202,6 @@ class AlarmService : Service() {
 
     }
 
-    private fun createWakeLock(): PowerManager.WakeLock {
-        val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
-        partialWakeLock = powerManager.newWakeLock(
-            PowerManager.PARTIAL_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP,
-            TAG
-        )
-        return partialWakeLock
-
-    }
 
     private fun startForGroundService(notification: Notification?, status: Boolean, id: Int) {
         if (status) {
