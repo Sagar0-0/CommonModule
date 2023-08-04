@@ -1,6 +1,7 @@
 package fit.asta.health.common.maps.view
 
 import android.content.Intent
+import android.location.Address
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -67,6 +68,7 @@ import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.iconSize
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.getLocationName
 
 @Composable
 fun SavedAddressesScreen(
@@ -81,7 +83,7 @@ fun SavedAddressesScreen(
     val addressListState by mapsViewModel.addressListState.collectAsStateWithLifecycle()
     val searchResponseState by mapsViewModel.searchResponseState.collectAsStateWithLifecycle()
     val currentLatLng by mapsViewModel.currentLatLng.collectAsStateWithLifecycle()
-    val currentAddress by mapsViewModel.currentAddress.collectAsStateWithLifecycle()
+    val currentAddressState by mapsViewModel.currentAddressState.collectAsStateWithLifecycle()
 
     var searchQuery by rememberSaveable {
         mutableStateOf("")
@@ -173,17 +175,39 @@ fun SavedAddressesScreen(
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Start
                 )
-                Text(
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    text = if (currentAddress == null) "Fetching location..." else "${
-                        currentAddress?.getAddressLine(
-                            0
+                when (currentAddressState) {
+                    is ResponseState.Loading -> {
+                        Text(
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            text = "Fetching location...",
+                            style = MaterialTheme.typography.bodyMedium,
+                            textAlign = TextAlign.Start
                         )
-                    }",
-                    style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Start
-                )
+                    }
+
+                    is ResponseState.Success -> {
+                        Text(
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            text = getLocationName((currentAddressState as ResponseState.Success<Address>).data),
+                            style = MaterialTheme.typography.bodyMedium,
+                            textAlign = TextAlign.Start
+                        )
+                    }
+
+                    is ResponseState.Error -> {
+                        Text(
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            text = "Error fetching location",
+                            style = MaterialTheme.typography.bodyMedium,
+                            textAlign = TextAlign.Start
+                        )
+                    }
+
+                    else -> {}
+                }
             }
 
             Icon(

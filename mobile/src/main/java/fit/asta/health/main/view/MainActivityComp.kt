@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
@@ -20,9 +21,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import fit.asta.health.R
 import fit.asta.health.auth.viewmodel.AuthViewModel
-import fit.asta.health.common.maps.MapsActivity
+import fit.asta.health.common.maps.vm.MapsViewModel
 import fit.asta.health.common.utils.MainTopBarActions
-import fit.asta.health.common.utils.PermissionResultListener
 import fit.asta.health.common.utils.PrefUtils
 import fit.asta.health.common.utils.shareApp
 import fit.asta.health.main.Graph
@@ -35,68 +35,61 @@ fun NavGraphBuilder.homeScreen(
 ) {
     composable(Graph.Home.route) {
         val context = LocalContext.current
-        val permissionResultListener = object : PermissionResultListener {
-            override fun onGranted(perm: String) {
-                if (perm == Manifest.permission.ACCESS_COARSE_LOCATION) {
-                    Toast.makeText(
-                        context,
-                        "Fine Location is recommended for better functionality.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+
+        val authViewModel: AuthViewModel = hiltViewModel()
+        val mainViewModel: MainViewModel = hiltViewModel()
+        val mapsViewModel: MapsViewModel = hiltViewModel()
+
+        val isLocationEnabled by mapsViewModel.isLocationEnabled.collectAsStateWithLifecycle()
+        val notificationEnabled by mainViewModel.notificationsEnabled.collectAsStateWithLifecycle()
+        val currentAddressState by mapsViewModel.currentAddressStringState.collectAsStateWithLifecycle()
+
+        val locationRequestLauncher =
+            rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { activityResult ->
+                if (activityResult.resultCode == AppCompatActivity.RESULT_OK)
+                    mapsViewModel.updateCurrentLocationData(context)
+                else {
+                    if (!isLocationEnabled) {
+                        Toast.makeText(
+                            context,
+                            "Location services are required to update the location.",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
                 }
-                PrefUtils.setLocationPermissionRejectedCount(context, 1)
-                MapsActivity.launch(context)
             }
 
-            override fun onDenied(perm: String) {
-                if (perm == Manifest.permission.ACCESS_COARSE_LOCATION) {
-                    Toast.makeText(
-                        context,
-                        "Precise Location is recommended for better functionality.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+        val permissionResultLauncher =
+            rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.RequestPermission()
+            ) { perm ->
+                if (perm) {
+                    PrefUtils.setLocationPermissionRejectedCount(context, 1)
+                    mapsViewModel.enableLocationRequest(context) {
+                        locationRequestLauncher.launch(it)
+                    }
                 } else {
                     Toast.makeText(
                         context,
                         context.getString(R.string.location_access_required),
                         Toast.LENGTH_SHORT
                     ).show()
-                }
-                PrefUtils.setLocationPermissionRejectedCount(
-                    context,
-                    PrefUtils.getLocationPermissionRejectedCount(context) + 1
-                )
-            }
-        }
-        val permissionResultLauncher: ActivityResultLauncher<Array<String>> =
-            rememberLauncherForActivityResult(
-                contract = ActivityResultContracts.RequestMultiplePermissions()
-            ) { perms ->
-                kotlin.run lit@{
-                    perms.keys.forEach {
-                        if (it == Manifest.permission.ACCESS_FINE_LOCATION || it == Manifest.permission.ACCESS_COARSE_LOCATION) {
-                            if (perms[it] == true) {
-                                permissionResultListener.onGranted(it)
-                            } else {
-                                permissionResultListener.onDenied(it)
-                            }
-                            return@lit
-                        }
-                    }
+                    PrefUtils.setLocationPermissionRejectedCount(
+                        context,
+                        PrefUtils.getLocationPermissionRejectedCount(context) + 1
+                    )
                 }
             }
 
-        val checkPermissionAndLaunchMapsActivity = {
+
+        fun enableLocationAndUpdateAddress() {
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(
-                    context,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                )
                 == PackageManager.PERMISSION_GRANTED
             ) {
-                PrefUtils.setLocationPermissionRejectedCount(context, 1)
-                MapsActivity.launch(context)
+                mapsViewModel.enableLocationRequest(context) {
+                    locationRequestLauncher.launch(it)
+                }
             } else {
                 if (PrefUtils.getLocationPermissionRejectedCount(context) >= 2) {
                     Toast.makeText(
@@ -115,20 +108,11 @@ fun NavGraphBuilder.homeScreen(
                     }
                 } else {
                     permissionResultLauncher.launch(
-                        arrayOf(
-                            Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_COARSE_LOCATION
-                        )
+                        Manifest.permission.ACCESS_FINE_LOCATION
                     )
                 }
             }
         }
-
-        val authViewModel: AuthViewModel = hiltViewModel()
-        val mainViewModel: MainViewModel = hiltViewModel()
-
-        val notificationEnabled by mainViewModel.notificationsEnabled.collectAsStateWithLifecycle()
-        val locationName by mainViewModel.locationName.collectAsStateWithLifecycle()
 
         val notificationPermissionResultLauncher: ActivityResultLauncher<String> =
             rememberLauncherForActivityResult(
@@ -180,7 +164,7 @@ fun NavGraphBuilder.homeScreen(
                 } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         notificationPermissionResultLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                    } else{
+                    } else {
                         navController.navigate(Graph.Scheduler.route)
                     }
                 }
@@ -188,7 +172,7 @@ fun NavGraphBuilder.homeScreen(
         }
 
         MainActivityLayout(
-            locationName = locationName,
+            currentAddressState = currentAddressState,
             profileImageUri = authViewModel.getUser()?.photoUrl,
             isNotificationEnabled = notificationEnabled,
             onNav = {
@@ -249,7 +233,7 @@ fun NavGraphBuilder.homeScreen(
             onClick = { key ->
                 when (key) {
                     MainTopBarActions.Location -> {
-                        checkPermissionAndLaunchMapsActivity()
+                        enableLocationAndUpdateAddress()
                     }
 
                     MainTopBarActions.Notification -> {
