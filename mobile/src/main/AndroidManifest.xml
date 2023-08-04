@@ -60,7 +60,6 @@
             android:label="@string/title_activity_sleep_tool" />
         <activity android:name=".payments.pay.PaymentActivity" />
         <activity android:name=".settings.WebViewActivity" />
-        <activity android:name=".common.maps.MapsActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

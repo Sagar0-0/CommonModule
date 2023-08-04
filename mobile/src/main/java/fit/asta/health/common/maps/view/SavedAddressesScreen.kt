@@ -56,9 +56,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import fit.asta.health.common.maps.modal.AddressScreen
 import fit.asta.health.common.maps.modal.AddressesResponse
 import fit.asta.health.common.maps.modal.AddressesResponse.MyAddress
-import fit.asta.health.common.maps.modal.MapScreens
 import fit.asta.health.common.maps.modal.SearchResponse
 import fit.asta.health.common.maps.vm.MapsViewModel
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
@@ -68,7 +68,6 @@ import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.iconSize
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.common.utils.getLocationName
 
 @Composable
 fun SavedAddressesScreen(
@@ -190,7 +189,9 @@ fun SavedAddressesScreen(
                         Text(
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            text = getLocationName((currentAddressState as ResponseState.Success<Address>).data),
+                            text = (currentAddressState as ResponseState.Success<Address>).data.getAddressLine(
+                                0
+                            ),
                             style = MaterialTheme.typography.bodyMedium,
                             textAlign = TextAlign.Start
                         )
@@ -245,7 +246,7 @@ fun SavedAddressesScreen(
                     uid = ""
                 )
                 val addJson = gson.toJson(myAddressItem)
-                navHostController.navigate(route = "${MapScreens.Map.route}/$addJson")
+                navHostController.navigate(route = "${AddressScreen.Map.route}/$addJson")
             }
         ) {
             Icon(
@@ -317,7 +318,7 @@ fun SavedAddressesScreen(
                                     onEditClick = {
                                         searchQuery = ""
                                         val addJson = gson.toJson(item).replace("/", "|")
-                                        navHostController.navigate(route = "${MapScreens.Map.route}/$addJson")
+                                        navHostController.navigate(route = "${AddressScreen.Map.route}/$addJson")
                                     },
                                     onDeleteClick = {
                                         if (item.selected) {
@@ -421,7 +422,7 @@ fun SavedAddressesScreen(
                                             val addJson = gson
                                                 .toJson(myAddressItem)
                                                 .replace("/", "|")
-                                            navHostController.navigate(route = "${MapScreens.Map.route}/$addJson")
+                                            navHostController.navigate(route = "${AddressScreen.Map.route}/$addJson")
                                         }
                                         .padding(spacing.medium),
                                     text = it.name,
