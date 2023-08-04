@@ -3,6 +3,7 @@ package fit.asta.health.player.jetpack_audio.presentation.screens.home.component
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -14,6 +15,7 @@ import fit.asta.health.common.ui.components.generic.AppTopBar
 import fit.asta.health.player.jetpack_audio.presentation.ui.theme.LocalSpacing
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeHeader(
     modifier: Modifier = Modifier,
@@ -26,22 +28,22 @@ fun HomeHeader(
         title = stringResource(id = R.string.app_name),
         onBack = {},
         actions = {
-                IconButton(
-                    onClick = { onSearchClick() },
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = stringResource(id = R.string.search_button)
-                    )
-                }
-                IconButton(
-                    onClick = { onProfileClicked() },
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.AccountCircle,
-                        contentDescription = stringResource(id = R.string.profile_button)
-                    )
-                }
+            IconButton(
+                onClick = { onSearchClick() },
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = stringResource(id = R.string.search_button)
+                )
             }
+            IconButton(
+                onClick = { onProfileClicked() },
+            ) {
+                Icon(
+                    imageVector = Icons.Default.AccountCircle,
+                    contentDescription = stringResource(id = R.string.profile_button)
+                )
+            }
+        }
     )
 }
