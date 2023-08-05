@@ -1,6 +1,5 @@
 package fit.asta.health.navigation.today.view
 
-import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -38,9 +37,13 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -70,6 +73,7 @@ import fit.asta.health.scheduler.compose.screen.homescreen.Event
 import fit.asta.health.scheduler.compose.screen.homescreen.HomeEvent
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
@@ -88,7 +92,23 @@ fun TodayContent(
 
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
-    val context = LocalContext.current
+    var showSnackBar by rememberSaveable { mutableStateOf(false) }
+    var deletedItem by remember { mutableStateOf<AlarmEntity?>(null) }
+    var skipItem by remember { mutableStateOf<AlarmEntity?>(null) }
+
+    if (showSnackBar) {
+        LaunchedEffect(Unit) {
+            delay(9000L) // 9-second countdown timer
+            if (showSnackBar) {
+                // SnackBar is still visible after 5 seconds
+                deletedItem?.let { hSEvent(HomeEvent.DeleteAlarm(it)) }
+                skipItem?.let { hSEvent(HomeEvent.SkipAlarm(it)) }
+            }
+            skipItem = null
+            deletedItem = null
+            showSnackBar = false
+        }
+    }
     AppScaffold(
         snackBarHostState = snackBarHostState,
         floatingActionButton = {
@@ -135,25 +155,29 @@ fun TodayContent(
             }
             items(listMorning) { data ->
                 SwipeDemoToday(data = data, onSwipeRight = {
+                    showSnackBar = true
+                    deletedItem = data
                     swipeRight(
                         Event.Morning,
                         data,
-                        context,
                         coroutineScope,
                         snackBarHostState,
-                        hSEvent
+                        hSEvent,
+                        onUndo = { showSnackBar = false }
                     )
                 }, onSwipeLeft = {
+                    showSnackBar = true
+                    skipItem = data
                     swipeLeft(
                         Event.Morning,
                         data,
-                        context,
                         coroutineScope,
                         snackBarHostState,
-                        hSEvent
+                        hSEvent,
+                        onUndo = { showSnackBar = false }
                     )
                 }, onDone = {
-                   onNav(goToTool(data.info.tag))
+                    onNav(goToTool(data.info.tag))
                 }, onReschedule = {
                     onNav(Graph.Scheduler.route)
                     hSEvent(HomeEvent.EditAlarm(data))
@@ -167,9 +191,27 @@ fun TodayContent(
             }
             items(listAfternoon) { data ->
                 SwipeDemoToday(data = data, onSwipeRight = {
-                    swipeRight(Event.Afternoon, data, context, coroutineScope, snackBarHostState,hSEvent)
-                },onSwipeLeft = {
-                    swipeLeft(Event.Afternoon, data, context, coroutineScope, snackBarHostState,hSEvent)
+                    showSnackBar = true
+                    deletedItem = data
+                    swipeRight(
+                        Event.Afternoon,
+                        data,
+                        coroutineScope,
+                        snackBarHostState,
+                        hSEvent,
+                        onUndo = { showSnackBar = false }
+                    )
+                }, onSwipeLeft = {
+                    showSnackBar = true
+                    skipItem = data
+                    swipeLeft(
+                        Event.Afternoon,
+                        data,
+                        coroutineScope,
+                        snackBarHostState,
+                        hSEvent,
+                        onUndo = { showSnackBar = false }
+                    )
                 }, onDone = {
                     onNav(goToTool(data.info.tag))
                 }, onReschedule = {
@@ -185,15 +227,24 @@ fun TodayContent(
             }
             items(listEvening) { data ->
                 SwipeDemoToday(data = data, onSwipeRight = {
-                    swipeRight(Event.Evening, data, context, coroutineScope, snackBarHostState,hSEvent)
+                    showSnackBar = true
+                    deletedItem = data
+                    swipeRight(Event.Evening,
+                        data,
+                        coroutineScope,
+                        snackBarHostState,
+                        hSEvent,
+                        onUndo = { showSnackBar = false })
                 }, onSwipeLeft = {
+                    showSnackBar = true
+                    skipItem = data
                     swipeLeft(
                         Event.Evening,
                         data,
-                        context,
                         coroutineScope,
                         snackBarHostState,
-                        hSEvent
+                        hSEvent,
+                        onUndo = { showSnackBar = false }
                     )
                 }, onDone = {
                     onNav(goToTool(data.info.tag))
@@ -210,22 +261,26 @@ fun TodayContent(
             }
             items(listNextDay) { data ->
                 SwipeDemoToday(data = data, onSwipeRight = {
+                    showSnackBar = true
+                    deletedItem = data
                     swipeRight(
                         Event.NextDay,
                         data,
-                        context,
                         coroutineScope,
                         snackBarHostState,
-                        hSEvent
+                        hSEvent,
+                        onUndo = { showSnackBar = false }
                     )
                 }, onSwipeLeft = {
+                    showSnackBar = true
+                    skipItem = data
                     swipeLeft(
                         Event.NextDay,
                         data,
-                        context,
                         coroutineScope,
                         snackBarHostState,
-                        hSEvent
+                        hSEvent,
+                        onUndo = { showSnackBar = false }
                     )
                 }, onDone = {
                     onNav(goToTool(data.info.tag))
@@ -245,12 +300,12 @@ fun TodayContent(
 private fun swipeRight(
     event: Event,
     data: AlarmEntity,
-    context: Context,
     coroutineScope: CoroutineScope,
     snackBarHostState: SnackbarHostState,
     hSEvent: (HomeEvent) -> Unit,
+    onUndo: () -> Unit,
 ) {
-    hSEvent(HomeEvent.DeleteAlarm(data, context, event))
+    hSEvent(HomeEvent.RemoveAlarm(data, event))
     coroutineScope.launch {
         val snackBarResult = snackBarHostState.showSnackbar(
             message = "Deleted ${data.info.name}",
@@ -259,8 +314,10 @@ private fun swipeRight(
         )
         when (snackBarResult) {
             SnackbarResult.ActionPerformed -> {
-                hSEvent(HomeEvent.UndoAlarm(data, context, event))
+                onUndo()
+                hSEvent(HomeEvent.UndoAlarm(data, event))
             }
+
             else -> {}
         }
     }
@@ -270,12 +327,12 @@ private fun swipeRight(
 private fun swipeLeft(
     event: Event,
     data: AlarmEntity,
-    context: Context,
     coroutineScope: CoroutineScope,
     snackBarHostState: SnackbarHostState,
-    hSEvent: (HomeEvent) -> Unit
+    hSEvent: (HomeEvent) -> Unit,
+    onUndo: () -> Unit
 ) {
-    hSEvent(HomeEvent.SkipAlarm(data, context, event))
+    hSEvent(HomeEvent.RemoveAlarm(data, event))
     coroutineScope.launch {
         val snackBarResult = snackBarHostState.showSnackbar(
             message = "Skip ${data.info.name}",
@@ -284,8 +341,10 @@ private fun swipeLeft(
         )
         when (snackBarResult) {
             SnackbarResult.ActionPerformed -> {
-                hSEvent(HomeEvent.UndoSkipAlarm(data, context,event))
+                onUndo()
+                hSEvent(HomeEvent.UndoAlarm(data, event))
             }
+
             else -> {}
         }
     }
@@ -440,7 +499,7 @@ fun SwipeDemoToday(
         onSwipe = onSwipeRight
     )
     val skip = SwipeAction(
-        icon =rememberVectorPainter(Icons.TwoTone.SkipNext),
+        icon = rememberVectorPainter(Icons.TwoTone.SkipNext),
         background = Color.Yellow,
         onSwipe = onSwipeLeft,
     )
