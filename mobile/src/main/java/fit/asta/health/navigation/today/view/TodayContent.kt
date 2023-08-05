@@ -80,6 +80,7 @@ fun TodayContent(
     listMorning: SnapshotStateList<AlarmEntity>,
     listAfternoon: SnapshotStateList<AlarmEntity>,
     listEvening: SnapshotStateList<AlarmEntity>,
+    listNextDay: SnapshotStateList<AlarmEntity>,
     hSEvent: (HomeEvent) -> Unit,
     onNav: (String) -> Unit
 ) {
@@ -185,9 +186,48 @@ fun TodayContent(
             items(listEvening) { data ->
                 SwipeDemoToday(data = data, onSwipeRight = {
                     swipeRight(Event.Evening, data, context, coroutineScope, snackBarHostState,hSEvent)
-                },onSwipeLeft = {
-                    swipeLeft(Event.Evening, data, context, coroutineScope, snackBarHostState,hSEvent)
-                },onDone = {
+                }, onSwipeLeft = {
+                    swipeLeft(
+                        Event.Evening,
+                        data,
+                        context,
+                        coroutineScope,
+                        snackBarHostState,
+                        hSEvent
+                    )
+                }, onDone = {
+                    onNav(goToTool(data.info.tag))
+                }, onReschedule = {
+                    onNav(Graph.Scheduler.route)
+                    hSEvent(HomeEvent.EditAlarm(data))
+                }
+                )
+            }
+            item {
+                AnimatedVisibility(visible = listNextDay.isNotEmpty()) {
+                    Text(text = "Tomorrow Events", style = MaterialTheme.typography.titleMedium)
+                }
+            }
+            items(listNextDay) { data ->
+                SwipeDemoToday(data = data, onSwipeRight = {
+                    swipeRight(
+                        Event.NextDay,
+                        data,
+                        context,
+                        coroutineScope,
+                        snackBarHostState,
+                        hSEvent
+                    )
+                }, onSwipeLeft = {
+                    swipeLeft(
+                        Event.NextDay,
+                        data,
+                        context,
+                        coroutineScope,
+                        snackBarHostState,
+                        hSEvent
+                    )
+                }, onDone = {
                     onNav(goToTool(data.info.tag))
                 }, onReschedule = {
                     onNav(Graph.Scheduler.route)
