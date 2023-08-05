@@ -200,8 +200,8 @@ fun NavGraphBuilder.homeScreen(
             onClick = { key ->
                 when (key) {
                     MainTopBarActions.Location -> {
-                        enableLocationAndUpdateAddress()
-//                        navController.navigate(Graph.Address.route)
+//                        enableLocationAndUpdateAddress()
+                        navController.navigate(Graph.Address.route)
                     }
 
                     MainTopBarActions.Notification -> {

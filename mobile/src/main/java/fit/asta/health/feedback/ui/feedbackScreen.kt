@@ -3,6 +3,7 @@ package fit.asta.health.feedback.ui
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,7 +26,8 @@ fun NavGraphBuilder.feedbackScreen(navController: NavController) {
 
         val context = LocalContext.current
         val feedbackViewModel: FeedbackViewModel = hiltViewModel()
-        feedbackViewModel.loadFeedbackQuestions(fid)
+
+        LaunchedEffect(Unit) { feedbackViewModel.loadFeedbackQuestions(fid) }
 
         val quesState = feedbackViewModel.feedbackQuestions.collectAsStateWithLifecycle()
         val postResultState = feedbackViewModel.feedbackPostState.collectAsStateWithLifecycle()

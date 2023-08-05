@@ -1,8 +1,9 @@
 package fit.asta.health.common.maps.vm
 
-import android.annotation.SuppressLint
+import android.Manifest
 import android.content.Context
 import android.content.IntentSender
+import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.os.Build
@@ -13,6 +14,7 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.common.api.ResolvableApiException
@@ -92,6 +94,7 @@ class MapsViewModel
 
     init {
         updateLocationServiceStatus()
+
         viewModelScope.launch {
             prefUtils.getPreferences(
                 resourcesProvider.getString(R.string.user_pref_current_address),
@@ -208,11 +211,27 @@ class MapsViewModel
     }
 
     //Call this and start observing currentLatLng
-    @SuppressLint("MissingPermission")
     fun getCurrentLatLng(context: Context) {
         Log.d(TAG, "getCurrentLatLng: Called")
         val fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(context)
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
         fusedLocationProviderClient.requestLocationUpdates(
             LocationRequest.Builder(
                 Priority.PRIORITY_HIGH_ACCURACY,
