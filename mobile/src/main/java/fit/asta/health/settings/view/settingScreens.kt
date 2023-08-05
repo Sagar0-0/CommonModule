@@ -15,7 +15,6 @@ import fit.asta.health.common.utils.getPublicStorageUrl
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.common.utils.rateUs
 import fit.asta.health.common.utils.sendBugReportMessage
-import fit.asta.health.common.utils.sendFeedbackMessage
 import fit.asta.health.common.utils.shareApp
 import fit.asta.health.common.utils.showUrlInBrowser
 import fit.asta.health.main.Graph
@@ -68,7 +67,7 @@ fun NavGraphBuilder.settingScreens(
 
 
                     SettingsUiEvent.FEEDBACK -> {
-                        context.sendFeedbackMessage()
+                        navController.navigate(Graph.Feedback.route + "/application")
                     }
 
                     SettingsUiEvent.SIGNOUT -> {
