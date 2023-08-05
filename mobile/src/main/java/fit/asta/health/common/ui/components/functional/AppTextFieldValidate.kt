@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
@@ -46,9 +48,9 @@ object ValidateTxtLength {
 
 @Composable
 fun AppTextFieldValidate(
-    modifier: Modifier = Modifier,
     value: String,
-    label: String,
+    modifier: Modifier = Modifier,
+    label: String = "",
     errorMessage: UiString,
     keyboardActions: KeyboardActions,
     isError: Boolean = false,
@@ -59,6 +61,7 @@ fun AppTextFieldValidate(
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Next,
     onValueChange: (String) -> Unit,
+    colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
 ) {
     Column(Modifier.fillMaxWidth()) {
         AppTextField(
@@ -72,6 +75,7 @@ fun AppTextFieldValidate(
             capitalization = capitalization,
             keyboardType = keyboardType,
             imeAction = imeAction,
+            colors = colors
         )
         TxtFieldErrorMsg(showError = isError, errorMessage = errorMessage.asString())
         if (showLenErrorMsg != null) {

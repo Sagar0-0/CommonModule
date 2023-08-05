@@ -8,9 +8,6 @@
 package fit.asta.health.profile.view
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -18,10 +15,10 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
+import fit.asta.health.common.ui.components.generic.AppButtons
+import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.cardElevation
-import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.createprofile.view.ValidateListError
 import fit.asta.health.profile.model.domain.ComposeIndex
@@ -46,50 +43,35 @@ fun TwoTogglesGroup(
     firstOption: String = "Yes",
     secondOption: String = "No",
 ) {
-
     Column(Modifier.fillMaxWidth()) {
-
         if (!selectionTypeText.isNullOrEmpty()) {
-
             Spacer(modifier = Modifier.height(spacing.small))
-
             Row(
                 Modifier
                     .fillMaxWidth()
                     .padding(horizontal = spacing.medium)
             ) {
-                Text(
+                AppTexts.TitleSmall(
                     text = selectionTypeText,
-                    color = Color(0x99000000),
-                    style = MaterialTheme.typography.titleSmall
+                    color = MaterialTheme.colorScheme.onTertiaryContainer
                 )
             }
         }
-
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = spacing.small)
-                .height(customSize.extraLarge),
-            userScrollEnabled = false,
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-
-            items(listOf(TwoRadioBtnSelections.First, TwoRadioBtnSelections.Second)) { option ->
-                Row(verticalAlignment = CenterVertically, modifier = Modifier.weight(1f)) {
-
-                    RadioButton(selected = selectedOption == option, onClick = {
-                        onStateChange(option)
-                    })
-
-                    Text(
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            listOf(
+                TwoRadioBtnSelections.First, TwoRadioBtnSelections.Second
+            ).forEach { option ->
+                Row(
+                    verticalAlignment = CenterVertically, modifier = Modifier.weight(1f)
+                ) {
+                    AppButtons.AppRadioButton(selected = selectedOption == option,
+                        onClick = { onStateChange(option) })
+                    AppTexts.LabelSmall(
                         text = when (option) {
                             TwoRadioBtnSelections.First -> firstOption
                             TwoRadioBtnSelections.Second -> secondOption
-                        }, style = MaterialTheme.typography.labelSmall, textAlign = TextAlign.Right
+                        }, color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
-
                 }
             }
         }
@@ -105,62 +87,40 @@ fun ThreeTogglesGroups(
     secondOption: String = "Female",
     thirdOption: String = "Others",
 ) {
-
     Column(Modifier.fillMaxWidth()) {
-
         if (!selectionTypeText.isNullOrEmpty()) {
-
             Spacer(modifier = Modifier.height(spacing.small))
-
             Row(
                 Modifier
                     .fillMaxWidth()
                     .padding(horizontal = spacing.medium)
             ) {
-                Text(
-                    text = selectionTypeText,
-                    color = Color(0x99000000),
-                    style = MaterialTheme.typography.titleSmall
+                AppTexts.TitleLarge(
+                    text = selectionTypeText, color = MaterialTheme.colorScheme.onTertiaryContainer
                 )
             }
         }
-
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(3),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = spacing.small)
-                .height(customSize.extraLarge),
-            userScrollEnabled = false,
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-
-            items(
-                listOf(
-                    ThreeRadioBtnSelections.First,
-                    ThreeRadioBtnSelections.Second,
-                    ThreeRadioBtnSelections.Third
-                )
-            ) { option ->
-                Row(verticalAlignment = CenterVertically, modifier = Modifier.weight(1f)) {
-
-                    RadioButton(selected = selectedOption == option, onClick = {
-                        onStateChange(option)
-                    })
-                    Text(
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            listOf(
+                ThreeRadioBtnSelections.First,
+                ThreeRadioBtnSelections.Second,
+                ThreeRadioBtnSelections.Third
+            ).forEach { option ->
+                Row(
+                    verticalAlignment = CenterVertically, modifier = Modifier.weight(1f)
+                ) {
+                    AppButtons.AppRadioButton(selected = selectedOption == option,
+                        onClick = { onStateChange(option) })
+                    AppTexts.LabelSmall(
                         text = when (option) {
                             ThreeRadioBtnSelections.First -> firstOption
                             ThreeRadioBtnSelections.Second -> secondOption
                             ThreeRadioBtnSelections.Third -> thirdOption
-                        }, style = MaterialTheme.typography.labelSmall, textAlign = TextAlign.Right
+                        }, color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
-
                 }
             }
-
         }
-
-
     }
 }
 
@@ -259,7 +219,9 @@ fun SelectionCardCreateProfile(
         }
 
         if (cardList != null) {
-            ValidateListError(selectedOption = selectedOption, cardList = cardList, listName = listName)
+            ValidateListError(
+                selectedOption = selectedOption, cardList = cardList, listName = listName
+            )
         }
 
     }
@@ -299,8 +261,7 @@ fun OnlyChipSelectionCard(
                 verticalAlignment = CenterVertically
             ) {
                 Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = CenterVertically
+                    horizontalArrangement = Arrangement.Center, verticalAlignment = CenterVertically
                 ) {
                     Text(
                         text = cardType,

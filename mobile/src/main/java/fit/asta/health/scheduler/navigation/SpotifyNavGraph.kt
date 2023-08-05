@@ -41,13 +41,8 @@ fun SpotifyNavGraph(
                         topMixData = topMixData,
                         favouriteTracks = favouriteTracks,
                         favouriteAlbums = favouriteAlbums,
-                        loadRecentlyPlayed = spotifyViewModel::getCurrentUserRecentlyPlayedTracks,
-                        loadTopMix = spotifyViewModel::getUserTopTracks,
-                        loadFavouriteTracks = spotifyViewModel::getAllTracks,
-                        loadFavouriteAlbums = spotifyViewModel::getAllAlbums,
-                        playSong = spotifyViewModel::playSpotifySong,
-                        navSearch = { navController.navigate(SpotifyNavRoutes.SearchScreen.routes) },
-                        onApplyClick = spotifyViewModel::onApplyClick
+                        setEvent = spotifyViewModel::eventHelper,
+                        navSearch = { navController.navigate(SpotifyNavRoutes.SearchScreen.routes) }
                     )
                 }
             )
@@ -57,15 +52,12 @@ fun SpotifyNavGraph(
                 SpotifyNavRoutes.SearchScreen.routes,
                 content = {
 
-                    val searchResult =
-                        spotifyViewModel.spotifySearch.collectAsStateWithLifecycle().value
+                    val searchResult = spotifyViewModel.spotifySearch
+                        .collectAsStateWithLifecycle().value
 
                     SpotifySearchScreen(
                         searchResult = searchResult,
-                        playSong = spotifyViewModel::playSpotifySong,
-                        setSearchQuery = spotifyViewModel::setSearchQueriesAndVariables,
-                        onApplyClick = spotifyViewModel::onApplyClick,
-                        onSearch = spotifyViewModel::getSpotifySearchResult
+                        setEvent = spotifyViewModel::eventHelper
                     )
                 }
             )
