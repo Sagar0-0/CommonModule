@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.AppButtons
 import fit.asta.health.common.ui.components.generic.AppDrawImg
@@ -29,7 +30,7 @@ fun ReferAndEarn() {
     Box(modifier = Modifier.aspectRatio(aspectRatio.common), content = {
 
         AppDrawImg(
-            imgId = R.drawable.background_image,
+            painterResource(id = R.drawable.background_image),
             contentDescription = "Refer/Earn Img",
             modifier = Modifier.fillMaxSize()
         )
@@ -41,7 +42,7 @@ fun ReferAndEarn() {
         ) {
 
             AppDrawImg(
-                imgId = R.drawable.refer_image,
+                painterResource(id = R.drawable.refer_image),
                 contentDescription = "Refer/Earn Img",
                 modifier = Modifier.aspectRatio(aspectRatio.fullScreen),
             )

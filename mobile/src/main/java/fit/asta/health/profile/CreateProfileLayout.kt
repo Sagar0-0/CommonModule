@@ -24,7 +24,7 @@ import fit.asta.health.common.ui.components.functional.ShowCustomConfirmationDia
 import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.common.ui.components.generic.AppTopBar
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.profile.createprofile.view.DetailsCreateScreen
+import fit.asta.health.profile.createprofile.view.DetailsCreateScreenDemo
 import fit.asta.health.profile.createprofile.view.DietCreateScreen
 import fit.asta.health.profile.createprofile.view.HealthCreateScreen
 import fit.asta.health.profile.createprofile.view.LifeStyleCreateScreen
@@ -83,9 +83,7 @@ fun CreateProfileLayoutDemo(
         ) {
             when (currentStep) {
                 1 -> {
-                    DetailsCreateScreen(eventNext = {
-                        currentStep += 1
-                    }, onSkipEvent = {
+                    DetailsCreateScreenDemo(eventNext = {
                         currentStep += 1
                     })
                 }
@@ -97,9 +95,6 @@ fun CreateProfileLayoutDemo(
                         },
                         eventPrevious = {
                             currentStep -= 1
-                        },
-                        onSkipEvent = {
-                            currentStep += 1
                         },
                     )
                 }

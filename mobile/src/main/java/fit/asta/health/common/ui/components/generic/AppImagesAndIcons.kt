@@ -7,6 +7,7 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -77,7 +78,7 @@ fun AppDefServerImg(
 
 /**[AppDrawImg] is a Composable function in a Jetpack Compose application that displays an image.
  * @param modifier Modifier used to adjust the layout algorithm or draw decoration content
- * @param imgId The resource ID of the image to be displayed. It should point to a valid image
+ * @param painter to draw
  * resource in the application's resources.
  * @param contentDescription text used by accessibility services to describe what this image
  * represents.
@@ -86,13 +87,13 @@ fun AppDefServerImg(
 
 @Composable
 fun AppDrawImg(
-    imgId: Int,
+    painter: Painter,
     contentDescription: String?,
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.FillBounds,
 ) {
     Image(
-        painter = painterResource(id = imgId),
+        painter = painter,
         contentDescription = contentDescription,
         modifier = modifier,
         contentScale = contentScale,
