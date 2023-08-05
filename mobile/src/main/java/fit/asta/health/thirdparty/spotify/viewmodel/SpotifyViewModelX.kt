@@ -38,6 +38,8 @@ class SpotifyViewModelX @Inject constructor(
 ) : AndroidViewModel(application) {
 
 
+    private var isMusicPlaying = false
+
     // Keeps the AccessToken of the Authorization
     private var accessToken: String = ""
 
@@ -98,14 +100,6 @@ class SpotifyViewModelX @Inject constructor(
 
 
     /**
-     * This function plays the Songs using the Spotify app Remote
-     */
-    private fun playSpotifySong(url: String) {
-        spotifyAppRemote?.playerApi?.play(url)
-    }
-
-
-    /**
      * This function is used to set the state as failed when the Spotify App Remote is not connected
      */
     fun unableToGetSpotifyRemote(e: Throwable) {
@@ -114,14 +108,35 @@ class SpotifyViewModelX @Inject constructor(
 
 
     /**
+     * This function plays the Songs using the Spotify app Remote
+     */
+    private fun playSpotifySong(url: String) {
+        spotifyAppRemote?.playerApi?.play(url)
+        spotifyAppRemote?.playerApi?.resume()
+        isMusicPlaying = true
+    }
+
+
+    /**
      * This function disconnects the Spotify App Remote
      */
     fun disconnectSpotifyRemote() {
         spotifyAppRemote?.let {
+            if (isMusicPlaying) {
+                onSpotifyRemoteStop()
+                isMusicPlaying = false
+            }
             SpotifyAppRemote.disconnect(it)
         }
     }
 
+
+    /**
+     * This function is used to pause the spotify remote player
+     */
+    fun onSpotifyRemoteStop() {
+        spotifyAppRemote?.playerApi?.pause()
+    }
 
     /**
      * This variable contains details of all the Tracks calls and states
