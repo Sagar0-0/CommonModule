@@ -9,6 +9,7 @@ import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.PrefUtils
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ToneUiState
+import fit.asta.health.scheduler.compose.screen.spotify.SpotifyUiEvent
 import fit.asta.health.scheduler.util.Constants
 import fit.asta.health.thirdparty.spotify.model.MusicRepository
 import fit.asta.health.thirdparty.spotify.model.SpotifyRepo
@@ -105,7 +106,7 @@ class SpotifyViewModel @Inject constructor(
     /**
      * This function plays the Songs using the Spotify app Remote
      */
-    fun playSpotifySong(url: String) {
+    private fun playSpotifySong(url: String) {
         spotifyAppRemote?.playerApi?.play(url)
         spotifyAppRemote?.playerApi?.resume()
         isMusicPlaying = true
@@ -143,7 +144,7 @@ class SpotifyViewModel @Inject constructor(
     /**
      * This function fetches the user Recently Played Tracks from the spotify api
      */
-    fun getCurrentUserRecentlyPlayedTracks() {
+    private fun getCurrentUserRecentlyPlayedTracks() {
         viewModelScope.launch {
             remoteRepository.getCurrentUserRecentlyPlayedTracks(accessToken).collectLatest {
                 _userRecentlyPlayedTracks.value = it
@@ -155,7 +156,7 @@ class SpotifyViewModel @Inject constructor(
      * This function sets the [ToneUiState] data for the alarm which would be stored in the
      * Database later
      */
-    fun onApplyClick(toneUiState: ToneUiState) {
+    private fun onApplyClick(toneUiState: ToneUiState) {
         Log.d("tone", "onApplyClick: $toneUiState")
         viewModelScope.launch {
             prefUtils.setPreferences(Constants.SPOTIFY_SONG_KEY_URI, toneUiState.uri)
@@ -172,7 +173,7 @@ class SpotifyViewModel @Inject constructor(
     /**
      * This function fetches the user top tracks from the spotify Api
      */
-    fun getUserTopTracks() {
+    private fun getUserTopTracks() {
         viewModelScope.launch {
             remoteRepository.getCurrentUserTopTracks(accessToken).collectLatest {
                 _userTopTracks.value = it
@@ -194,7 +195,7 @@ class SpotifyViewModel @Inject constructor(
     /**
      * This function sets the variables and the Searching Params of the search option
      */
-    fun setSearchQueriesAndVariables(query: String) {
+    private fun setSearchQueriesAndVariables(query: String) {
         this.query = query
         getSpotifySearchResult()
     }
@@ -202,7 +203,7 @@ class SpotifyViewModel @Inject constructor(
     /**
      * This function fetches the spotify search result for the User
      */
-    fun getSpotifySearchResult() {
+    private fun getSpotifySearchResult() {
 
         // Returning to prevent showing error during the first composition during Initialized State
         if (query.isEmpty() || _spotifySearch.value is SpotifyNetworkCall.Loading)
@@ -236,7 +237,7 @@ class SpotifyViewModel @Inject constructor(
     /**
      * This function fetches all the track from the local repository
      */
-    fun getAllTracks() {
+    private fun getAllTracks() {
         viewModelScope.launch {
             localRepository.getAllTracks().collect {
                 _allTracks.value = it
@@ -256,10 +257,47 @@ class SpotifyViewModel @Inject constructor(
     /**
      * This function fetches all the albums from the local repository
      */
-    fun getAllAlbums() {
+    private fun getAllAlbums() {
         viewModelScope.launch {
             localRepository.getAllAlbums().collect {
                 _allAlbums.value = it
+            }
+        }
+    }
+
+    fun eventHelper(event: SpotifyUiEvent) {
+        when (event) {
+
+            is SpotifyUiEvent.NetworkIO.LoadCurrentUserRecentlyPlayedTracks -> {
+                getCurrentUserRecentlyPlayedTracks()
+            }
+
+            is SpotifyUiEvent.NetworkIO.LoadUserTopTracks -> {
+                getUserTopTracks()
+            }
+
+            is SpotifyUiEvent.NetworkIO.SetSearchQueriesAndVariables -> {
+                setSearchQueriesAndVariables(query = event.query)
+            }
+
+            is SpotifyUiEvent.NetworkIO.LoadSpotifySearchResult -> {
+                getSpotifySearchResult()
+            }
+
+            is SpotifyUiEvent.HelperEvent.PlaySpotifySong -> {
+                playSpotifySong(url = event.url)
+            }
+
+            is SpotifyUiEvent.HelperEvent.OnApplyClick -> {
+                onApplyClick(toneUiState = event.toneUiState)
+            }
+
+            is SpotifyUiEvent.LocalIO.LoadAllTracks -> {
+                getAllTracks()
+            }
+
+            is SpotifyUiEvent.LocalIO.LoadAllAlbums -> {
+                getAllAlbums()
             }
         }
     }

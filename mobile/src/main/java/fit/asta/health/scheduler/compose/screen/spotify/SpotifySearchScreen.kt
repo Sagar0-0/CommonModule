@@ -38,10 +38,7 @@ import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 @Composable
 fun SpotifySearchScreen(
     searchResult: SpotifyNetworkCall<SpotifySearchModel>,
-    playSong: (String) -> Unit,
-    setSearchQuery: (String) -> Unit,
-    onApplyClick: (ToneUiState) -> Unit,
-    onSearch: () -> Unit
+    setEvent: (SpotifyUiEvent) -> Unit
 ) {
 
     // Context and Activity of the Function
@@ -72,7 +69,7 @@ fun SpotifySearchScreen(
             if (userSearchInput.value.isNotEmpty()) {
 
                 // Setting the Query parameters in the ViewModel
-                setSearchQuery(userSearchInput.value)
+                setEvent(SpotifyUiEvent.NetworkIO.SetSearchQueriesAndVariables(userSearchInput.value))
             } else {
 
                 // No Search Query
@@ -144,13 +141,21 @@ fun SpotifySearchScreen(
                                     imageUri = currentItem.album.images.firstOrNull()?.url,
                                     name = currentItem.name,
                                     secondaryText = textToShow,
-                                    onCardClick = { playSong(currentItem.uri) }
+                                    onCardClick = {
+                                        setEvent(
+                                            SpotifyUiEvent.HelperEvent.PlaySpotifySong(
+                                                currentItem.uri
+                                            )
+                                        )
+                                    }
                                 ) {
-                                    onApplyClick(
-                                        ToneUiState(
-                                            name = currentItem.name,
-                                            type = 1,
-                                            uri = currentItem.uri
+                                    setEvent(
+                                        SpotifyUiEvent.HelperEvent.OnApplyClick(
+                                            ToneUiState(
+                                                name = currentItem.name,
+                                                type = 1,
+                                                uri = currentItem.uri
+                                            )
                                         )
                                     )
                                 }
@@ -169,7 +174,7 @@ fun SpotifySearchScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Button(
-                        onClick = onSearch,
+                        onClick = { setEvent(SpotifyUiEvent.NetworkIO.LoadSpotifySearchResult) },
                         modifier = Modifier
                             .padding(vertical = 16.dp, horizontal = 32.dp),
                         shape = RoundedCornerShape(8.dp)

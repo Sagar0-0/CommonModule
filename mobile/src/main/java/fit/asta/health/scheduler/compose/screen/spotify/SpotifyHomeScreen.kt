@@ -36,21 +36,16 @@ fun SpotifyHomeScreen(
     topMixData: SpotifyNetworkCall<TrackList>,
     favouriteTracks: SpotifyNetworkCall<List<Track>>,
     favouriteAlbums: SpotifyNetworkCall<List<Album>>,
-    loadRecentlyPlayed: () -> Unit,
-    loadTopMix: () -> Unit,
-    loadFavouriteTracks: () -> Unit,
-    loadFavouriteAlbums: () -> Unit,
+    setEvent: (SpotifyUiEvent) -> Unit,
     navSearch: () -> Unit,
-    playSong: (String) -> Unit,
-    onApplyClick: (ToneUiState) -> Unit
 ) {
 
     // Fetching both the Top Mix and the Users Recently Played Songs
     LaunchedEffect(Unit) {
-        loadTopMix()
-        loadRecentlyPlayed()
-        loadFavouriteTracks()
-        loadFavouriteAlbums()
+        setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserRecentlyPlayedTracks)
+        setEvent(SpotifyUiEvent.NetworkIO.LoadUserTopTracks)
+        setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
+        setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums)
     }
 
     LazyColumn(
@@ -106,13 +101,22 @@ fun SpotifyHomeScreen(
                             imageUri = currentItem.track.album.images.firstOrNull()?.url,
                             name = currentItem.track.name,
                             secondaryText = textToShow,
-                            onCardClick = { playSong(currentItem.track.uri) }
+                            onCardClick = {
+                                setEvent(
+                                    SpotifyUiEvent.HelperEvent.PlaySpotifySong(
+                                        currentItem.track.uri
+                                    )
+                                )
+                            }
                         ) {
-                            onApplyClick(
-                                ToneUiState(
-                                    name = currentItem.track.name,
-                                    type = 1,
-                                    uri = currentItem.track.previewUrl ?: "hi"
+
+                            setEvent(
+                                SpotifyUiEvent.HelperEvent.OnApplyClick(
+                                    ToneUiState(
+                                        name = currentItem.track.name,
+                                        type = 1,
+                                        uri = currentItem.track.previewUrl ?: "hi"
+                                    )
                                 )
                             )
                         }
@@ -124,7 +128,9 @@ fun SpotifyHomeScreen(
             is SpotifyNetworkCall.Failure -> {
                 item {
                     FailureScreen(
-                        onClick = loadRecentlyPlayed,
+                        onClick = {
+                            setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserRecentlyPlayedTracks)
+                        },
                         textToShow = recentlyData.message.toString()
                     )
                 }
@@ -171,13 +177,21 @@ fun SpotifyHomeScreen(
                             imageUri = currentItem.album.images.firstOrNull()?.url,
                             name = currentItem.name,
                             secondaryText = textToShow,
-                            onCardClick = { playSong(currentItem.uri) }
+                            onCardClick = {
+                                setEvent(
+                                    SpotifyUiEvent.HelperEvent.PlaySpotifySong(
+                                        currentItem.uri
+                                    )
+                                )
+                            }
                         ) {
-                            onApplyClick(
-                                ToneUiState(
-                                    name = currentItem.name,
-                                    type = 1,
-                                    uri = currentItem.previewUrl ?: "hi"
+                            setEvent(
+                                SpotifyUiEvent.HelperEvent.OnApplyClick(
+                                    ToneUiState(
+                                        name = currentItem.name,
+                                        type = 1,
+                                        uri = currentItem.previewUrl ?: "hi"
+                                    )
                                 )
                             )
                         }
@@ -189,7 +203,7 @@ fun SpotifyHomeScreen(
             is SpotifyNetworkCall.Failure -> {
                 item {
                     FailureScreen(
-                        onClick = loadTopMix,
+                        onClick = { setEvent(SpotifyUiEvent.NetworkIO.LoadUserTopTracks) },
                         textToShow = topMixData.message.toString()
                     )
                 }
@@ -209,7 +223,7 @@ fun SpotifyHomeScreen(
         when (favouriteTracks) {
 
             // Initialized state
-            is SpotifyNetworkCall.Initialized -> loadFavouriteTracks()
+            is SpotifyNetworkCall.Initialized -> {}
 
             // Loading State
             is SpotifyNetworkCall.Loading -> {
@@ -237,13 +251,21 @@ fun SpotifyHomeScreen(
                                 imageUri = currentItem.album.images.firstOrNull()?.url,
                                 name = currentItem.name,
                                 secondaryText = textToShow,
-                                onCardClick = { playSong(currentItem.uri) }
+                                onCardClick = {
+                                    setEvent(
+                                        SpotifyUiEvent.HelperEvent.PlaySpotifySong(
+                                            currentItem.uri
+                                        )
+                                    )
+                                }
                             ) {
-                                onApplyClick(
-                                    ToneUiState(
-                                        name = currentItem.name,
-                                        type = 1,
-                                        uri = currentItem.uri
+                                setEvent(
+                                    SpotifyUiEvent.HelperEvent.OnApplyClick(
+                                        ToneUiState(
+                                            name = currentItem.name,
+                                            type = 1,
+                                            uri = currentItem.uri
+                                        )
                                     )
                                 )
                             }
@@ -256,7 +278,7 @@ fun SpotifyHomeScreen(
             is SpotifyNetworkCall.Failure -> {
                 item {
                     FailureScreen(
-                        onClick = loadTopMix,
+                        onClick = { setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks) },
                         textToShow = topMixData.message.toString()
                     )
                 }
@@ -276,7 +298,7 @@ fun SpotifyHomeScreen(
         when (favouriteAlbums) {
 
             // Initialized State
-            is SpotifyNetworkCall.Initialized -> loadFavouriteAlbums()
+            is SpotifyNetworkCall.Initialized -> {}
 
             // Loading State
             is SpotifyNetworkCall.Loading -> {
@@ -304,13 +326,20 @@ fun SpotifyHomeScreen(
                                 imageUri = currentItem.images.firstOrNull()?.url,
                                 name = currentItem.name,
                                 secondaryText = textToShow,
-                                onCardClick = { playSong(currentItem.uri) }
+                                onCardClick = {
+                                    setEvent(
+                                        SpotifyUiEvent.HelperEvent.PlaySpotifySong(currentItem.uri)
+                                    )
+                                }
                             ) {
-                                onApplyClick(
-                                    ToneUiState(
-                                        name = currentItem.name,
-                                        type = 1,
-                                        uri = currentItem.uri
+
+                                setEvent(
+                                    SpotifyUiEvent.HelperEvent.OnApplyClick(
+                                        ToneUiState(
+                                            name = currentItem.name,
+                                            type = 1,
+                                            uri = currentItem.uri
+                                        )
                                     )
                                 )
                             }
@@ -323,7 +352,7 @@ fun SpotifyHomeScreen(
             is SpotifyNetworkCall.Failure -> {
                 item {
                     FailureScreen(
-                        onClick = loadTopMix,
+                        onClick = { setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums) },
                         textToShow = topMixData.message.toString()
                     )
                 }
