@@ -9,16 +9,16 @@ import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.PrefUtils
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ToneUiState
-import fit.asta.health.scheduler.model.SpotifyRepo
-import fit.asta.health.scheduler.model.net.spotify.me.SpotifyMeModel
-import fit.asta.health.scheduler.model.net.spotify.recently.SpotifyUserRecentlyPlayedModel
-import fit.asta.health.scheduler.model.net.spotify.search.SpotifySearchModel
-import fit.asta.health.scheduler.model.net.spotify.search.TrackList
 import fit.asta.health.scheduler.util.Constants
-import fit.asta.health.scheduler.util.SpotifyNetworkCall
 import fit.asta.health.thirdparty.spotify.model.MusicRepository
+import fit.asta.health.thirdparty.spotify.model.SpotifyRepo
 import fit.asta.health.thirdparty.spotify.model.net.common.Album
 import fit.asta.health.thirdparty.spotify.model.net.common.Track
+import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
+import fit.asta.health.thirdparty.spotify.model.net.recently.SpotifyUserRecentlyPlayedModel
+import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
+import fit.asta.health.thirdparty.spotify.model.net.search.TrackList
+import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -28,9 +28,9 @@ import javax.inject.Inject
 @HiltViewModel
 class SpotifyViewModel @Inject constructor(
     private val remoteRepository: SpotifyRepo,
-    application: Application,
-    private val prefUtils: PrefUtils,
     private val localRepository: MusicRepository,
+    private val prefUtils: PrefUtils,
+    application: Application,
 ) : AndroidViewModel(application) {
 
     private var isMusicPlaying = false
@@ -228,10 +228,9 @@ class SpotifyViewModel @Inject constructor(
     /**
      * This variable contains details of all the Tracks calls and states
      */
-    private val _allTracks =
-        MutableStateFlow<fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall<List<Track>>>(
-            fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall.Initialized()
-        )
+    private val _allTracks = MutableStateFlow<SpotifyNetworkCall<List<Track>>>(
+        SpotifyNetworkCall.Initialized()
+    )
     val allTracks = _allTracks.asStateFlow()
 
     /**
@@ -249,10 +248,9 @@ class SpotifyViewModel @Inject constructor(
     /**
      * This variable contains details of all the albums calls and states
      */
-    private val _allAlbums =
-        MutableStateFlow<fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall<List<Album>>>(
-            fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall.Initialized()
-        )
+    private val _allAlbums = MutableStateFlow<SpotifyNetworkCall<List<Album>>>(
+        SpotifyNetworkCall.Initialized()
+    )
     val allAlbums = _allAlbums.asStateFlow()
 
     /**
