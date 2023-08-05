@@ -85,7 +85,7 @@ fun TrackMenuScreen(
                     .size(cardSize)
                     .padding(8.dp)
                     .clickable {
-                        trackViewModel.changeTrackingOption(currentTrackingOption)
+//                        trackViewModel.changeTrackingOption(currentTrackingOption)
                         navController.navigate(TrackNavRoute.Detail.route)
                     },
                 shape = RoundedCornerShape(16.dp)

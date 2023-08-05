@@ -4,6 +4,7 @@ package fit.asta.health.common.ui.components.generic
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.outlined.NavigateBefore
@@ -39,23 +40,31 @@ fun AppTopBar(
     titleContentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     backIcon: ImageVector? = Icons.Outlined.NavigateBefore,
     onBack: () -> Unit = {},
+    windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
-    TopAppBar(title = {
-        AppTexts.TitleMedium(text = title)
-    }, navigationIcon = {
-        backIcon?.let {
-            AppButtons.AppIconButton(onClick = onBack) {
-                AppDefaultIcon(
-                    imageVector = it,
-                    contentDescription = "back",
-                    tint = MaterialTheme.colorScheme.primary
-                )
+    TopAppBar(
+        title = {
+            AppTexts.TitleMedium(text = title)
+        },
+        navigationIcon = {
+            backIcon?.let {
+                AppButtons.AppIconButton(onClick = onBack) {
+                    AppDefaultIcon(
+                        imageVector = it,
+                        contentDescription = "back",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
             }
-        }
-    }, colors = TopAppBarDefaults.topAppBarColors(
-        containerColor = containerColor, titleContentColor = titleContentColor
-    ), modifier = modifier, actions = actions, scrollBehavior = scrollBehavior
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = containerColor, titleContentColor = titleContentColor
+        ),
+        modifier = modifier,
+        actions = actions,
+        scrollBehavior = scrollBehavior,
+        windowInsets = windowInsets
     )
 }
 

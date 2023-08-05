@@ -6,7 +6,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -53,59 +51,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@Composable
-fun RateUsCard(viewModel: RateUsViewModel = hiltViewModel()) {
-
-    val context = LocalContext.current
-    LaunchedEffect(key1 = viewModel.state.reviewInfo) {
-        viewModel.state.reviewInfo?.let {
-            viewModel.reviewManager.launchReviewFlow((context as Activity), it)
-        }
-    }
-
-    AppCard(modifier = Modifier
-        .fillMaxWidth()
-        .aspectRatio(aspectRatio.common), content = {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(spacing.small)
-        ) {
-            AppDrawImg(
-                imgId = R.drawable.rate_us_image,
-                contentDescription = "Rate Us Card Img",
-                modifier = Modifier.aspectRatio(aspectRatio.fullScreen),
-            )
-            Spacer(modifier = Modifier.width(spacing.medium))
-            Box {
-                Column(verticalArrangement = Arrangement.SpaceBetween) {
-                    AppTexts.TitleMedium(text = "Rate Us")
-                    AppTexts.BodySmall(text = "We value your feedback pls let us know how we are doing by rating us.")
-                    Spacer(modifier = Modifier.height(spacing.small))
-
-                    AppButtons.AppStandardButton(onClick = {
-                        viewModel.onEvent(RateUsEvent.InAppReviewRequested)
-                    },
-                        modifier = Modifier.height(buttonSize.large),
-                        contentPadding = PaddingValues(
-                            vertical = spacing.minSmall, horizontal = spacing.small
-                        ),
-                        content = {
-                            AppTexts.LabelLarge(
-                                text = "Rate Us", color = MaterialTheme.colorScheme.onPrimary
-                            )
-                        })
-                }
-            }
-        }
-    })
-}
-
-
-@OptIn(ExperimentalCoroutinesApi::class)
 @Preview
 @Composable
-fun RateUsDemoCard(viewModel: RateUsViewModel = hiltViewModel()) {
+fun RateAppCard(viewModel: RateUsViewModel = hiltViewModel()) {
 
     val context = LocalContext.current
 
@@ -146,7 +94,7 @@ fun RateUsDemoCard(viewModel: RateUsViewModel = hiltViewModel()) {
                         horizontalArrangement = Arrangement.Center
                     ) {
                         AppDrawImg(
-                            imgId = R.drawable.splash_logo,
+                            painterResource(id = R.drawable.splash_logo),
                             contentDescription = "Tagline",
                             modifier = Modifier
                                 .fillMaxSize()

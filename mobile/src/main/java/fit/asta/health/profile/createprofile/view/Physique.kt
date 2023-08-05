@@ -80,7 +80,6 @@ fun PhysiqueCreateScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     eventPrevious: (() -> Unit)? = null,
     eventNext: (() -> Unit)? = null,
-    onSkipEvent: (Int) -> Unit,
 ) {
 
     //Calendar
@@ -433,7 +432,6 @@ fun CreateProfileButtons(
     text: String? = null,
     enableButton: Boolean = false,
 ) {
-
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(spacing.small)) {
         PrimaryButton(
             text = "Previous",
@@ -450,6 +448,4 @@ fun CreateProfileButtons(
             )
         }
     }
-
-
 }

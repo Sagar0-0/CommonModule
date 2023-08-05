@@ -35,8 +35,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.scheduler.navigation.SpotifyNavGraph
 import fit.asta.health.scheduler.util.Constants
-import fit.asta.health.scheduler.util.SpotifyNetworkCall
 import fit.asta.health.scheduler.viewmodel.SpotifyViewModel
+import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 
 @AndroidEntryPoint
 class SpotifyActivity : ComponentActivity() {

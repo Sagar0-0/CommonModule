@@ -10,19 +10,18 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.AppDefServerImg
 import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.testimonials.model.domain.Testimonial
 
 @Composable
 fun ArtistCard(testimonialsDataPages: Testimonial) {
 
-    val domainName = stringResource(id = R.string.media_url)
+    val imageUrl = getImgUrl(url = testimonialsDataPages.user.url)
 
     Row(
         Modifier.fillMaxWidth(),
@@ -30,7 +29,7 @@ fun ArtistCard(testimonialsDataPages: Testimonial) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         AppDefServerImg(
-            model = "$domainName${testimonialsDataPages.user.url}",
+            model = imageUrl,
             contentDescription = "Tst Profile Pic",
             modifier = Modifier.size(80.dp)
         )

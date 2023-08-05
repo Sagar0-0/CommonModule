@@ -24,18 +24,18 @@ import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.scheduler.compose.components.SpotifyHomeHeader
 import fit.asta.health.scheduler.compose.components.SpotifyMusicItem
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ToneUiState
-import fit.asta.health.scheduler.model.net.spotify.recently.SpotifyUserRecentlyPlayedModel
-import fit.asta.health.scheduler.model.net.spotify.search.TrackList
-import fit.asta.health.scheduler.util.SpotifyNetworkCall
 import fit.asta.health.thirdparty.spotify.model.net.common.Album
 import fit.asta.health.thirdparty.spotify.model.net.common.Track
+import fit.asta.health.thirdparty.spotify.model.net.recently.SpotifyUserRecentlyPlayedModel
+import fit.asta.health.thirdparty.spotify.model.net.search.TrackList
+import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 
 @Composable
 fun SpotifyHomeScreen(
     recentlyData: SpotifyNetworkCall<SpotifyUserRecentlyPlayedModel>,
     topMixData: SpotifyNetworkCall<TrackList>,
-    favouriteTracks: fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall<List<Track>>,
-    favouriteAlbums: fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall<List<Album>>,
+    favouriteTracks: SpotifyNetworkCall<List<Track>>,
+    favouriteAlbums: SpotifyNetworkCall<List<Album>>,
     loadRecentlyPlayed: () -> Unit,
     loadTopMix: () -> Unit,
     loadFavouriteTracks: () -> Unit,
@@ -209,17 +209,17 @@ fun SpotifyHomeScreen(
         when (favouriteTracks) {
 
             // Initialized state
-            is fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall.Initialized -> loadFavouriteTracks()
+            is SpotifyNetworkCall.Initialized -> loadFavouriteTracks()
 
             // Loading State
-            is fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall.Loading -> {
+            is SpotifyNetworkCall.Loading -> {
                 item {
                     LoadingAnimation()
                 }
             }
 
             // Success State
-            is fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall.Success -> {
+            is SpotifyNetworkCall.Success -> {
                 favouriteTracks.data.let { trackList ->
                     if (trackList != null) {
                         items(trackList.size) {
@@ -253,7 +253,7 @@ fun SpotifyHomeScreen(
             }
 
             // Failure State
-            is fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall.Failure -> {
+            is SpotifyNetworkCall.Failure -> {
                 item {
                     FailureScreen(
                         onClick = loadTopMix,
@@ -276,17 +276,17 @@ fun SpotifyHomeScreen(
         when (favouriteAlbums) {
 
             // Initialized State
-            is fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall.Initialized -> loadFavouriteAlbums()
+            is SpotifyNetworkCall.Initialized -> loadFavouriteAlbums()
 
             // Loading State
-            is fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall.Loading -> {
+            is SpotifyNetworkCall.Loading -> {
                 item {
                     LoadingAnimation()
                 }
             }
 
             // Success State
-            is fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall.Success -> {
+            is SpotifyNetworkCall.Success -> {
                 favouriteAlbums.data.let { albumList ->
                     if (albumList != null) {
                         items(albumList.size) {
@@ -320,7 +320,7 @@ fun SpotifyHomeScreen(
             }
 
             // Failure State
-            is fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall.Failure -> {
+            is SpotifyNetworkCall.Failure -> {
                 item {
                     FailureScreen(
                         onClick = loadTopMix,
