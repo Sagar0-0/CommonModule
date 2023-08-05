@@ -26,7 +26,6 @@ android {
 
     namespace = 'fit.asta.health'
     compileSdk = 34
-    buildToolsVersion '34.0.0'
 
     defaultConfig {
         applicationId = 'fit.asta.health'
@@ -49,19 +48,26 @@ android {
             }
         }
         buildConfigField("String", "BASE_URL", "\"${base_url}\"")
+        buildConfigField("String", "BASE_IMAGE_URL", "\"${base_image_url}\"")
+        buildConfigField("String", "BASE_VIDEO_URL", "\"${base_video_url}\"")
     }
 
-    flavorDimensions 'endpoints'
+    flavorDimensions = ["endpoints"]
+
     productFlavors {
         dev {
             dimension 'endpoints'
             resourceConfigurations += ['en', 'xxhdpi']
             buildConfigField("String", "BASE_URL", "\"${dev_base_url}\"")
+            buildConfigField("String", "BASE_IMAGE_URL", "\"${dev_image_url}\"")
+            buildConfigField("String", "BASE_VIDEO_URL", "\"${dev_video_url}\"")
         }
 
         prod {
             dimension 'endpoints'
             buildConfigField("String", "BASE_URL", "\"${prod_base_url}\"")
+            buildConfigField("String", "BASE_IMAGE_URL", "\"${prod_image_url}\"")
+            buildConfigField("String", "BASE_VIDEO_URL", "\"${prod_video_url}\"")
         }
     }
 
@@ -211,6 +217,13 @@ dependencies {
     //Firebase fire-store for nosql
     implementation "com.google.firebase:firebase-firestore-ktx:24.7.0"
 
+    //for animations
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
+    implementation "com.airbnb.android:lottie-compose:6.1.0"
+
+    //splash
+    implementation 'androidx.core:core-splashscreen:1.0.0-beta02'
+
     //Image - Glide library
     implementation 'com.github.bumptech.glide:glide:4.15.1'
     implementation "com.ramotion.fluidslider:fluid-slider:0.3.1"
@@ -354,7 +367,7 @@ dependencies {
     testImplementation "junit:junit:4.13.2"
     testImplementation "org.junit.jupiter:junit-jupiter:5.8.1"
     testImplementation "org.junit.vintage:junit-vintage-engine:5.8.1"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3"
     testImplementation 'androidx.arch.core:core-testing:2.2.0'
     testImplementation "com.google.truth:truth:1.0.1"
     testImplementation "androidx.paging:paging-common-ktx:$paging_ver"
@@ -363,13 +376,6 @@ dependencies {
     androidTestImplementation "androidx.room:room-testing:$room_ver"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
     androidTestImplementation "androidx.test.ext:junit:1.1.5"
-
-    //for animations
-    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
-    implementation "com.airbnb.android:lottie-compose:6.1.0"
-
-    //splash
-    implementation 'androidx.core:core-splashscreen:1.0.0-beta02'
 }
 
 kapt {
