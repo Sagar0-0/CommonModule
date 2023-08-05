@@ -57,6 +57,7 @@ fun AppDefaultIcon(
  *  represents.
  * @param contentScale Optional scale parameter used to determine the aspect ratio scaling to be
  *  used.
+ * @param placeholder A [Painter] that is displayed while the image is loading.
  */
 
 @Composable
@@ -65,13 +66,14 @@ fun AppDefServerImg(
     modifier: Modifier = Modifier,
     contentDescription: String?,
     contentScale: ContentScale = ContentScale.Fit,
+    placeholder: Painter? = painterResource(id = AppConstImg.placeHolderImg),
 ) {
     AsyncImage(
         model = model,
         contentDescription = contentDescription,
         modifier = modifier,
         contentScale = contentScale,
-        placeholder = painterResource(id = AppConstImg.placeHolderImg),
+        placeholder = placeholder,
         error = painterResource(id = AppConstImg.errorImg),
     )
 }

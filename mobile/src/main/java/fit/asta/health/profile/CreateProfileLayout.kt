@@ -104,8 +104,6 @@ fun CreateProfileLayoutDemo(
                         currentStep += 1
                     }, eventPrevious = {
                         currentStep -= 1
-                    }, onSkipEvent = {
-                        currentStep += 1
                     })
                 }
 

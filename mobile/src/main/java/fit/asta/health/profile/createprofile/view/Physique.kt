@@ -54,7 +54,6 @@ import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import fit.asta.health.common.ui.components.PrimaryButton
 import fit.asta.health.common.ui.components.functional.AppTextFieldValidate
 import fit.asta.health.common.ui.components.functional.RowToggleButtonGroup
-import fit.asta.health.common.ui.components.functional.TwoButtonLayout
 import fit.asta.health.common.ui.components.generic.AppButtons
 import fit.asta.health.common.ui.components.generic.AppCard
 import fit.asta.health.common.ui.components.generic.AppDefaultIcon
@@ -63,6 +62,7 @@ import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiString
 import fit.asta.health.profile.MultiRadioBtnKeys
+import fit.asta.health.profile.createprofile.view.components.CreateProfileTwoButtonLayout
 import fit.asta.health.profile.model.domain.ThreeRadioBtnSelections
 import fit.asta.health.profile.model.domain.TwoRadioBtnSelections
 import fit.asta.health.profile.view.ThreeTogglesGroups
@@ -130,15 +130,9 @@ fun PhysiqueCreateScreen(
                 focusManager
             )
             Spacer(modifier = Modifier.height(spacing.medium))
-            TwoButtonLayout(onClickButton1 = eventPrevious, contentButton1 = {
-                AppTexts.LabelLarge(
-                    text = "Previous", color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }, onClickButton2 = eventNext, contentButton2 = {
-                AppTexts.LabelLarge(
-                    text = "Next", color = MaterialTheme.colorScheme.onPrimary
-                )
-            })
+
+            CreateProfileTwoButtonLayout(eventPrevious, eventNext)
+
             Spacer(modifier = Modifier.height(spacing.medium))
         }
     }

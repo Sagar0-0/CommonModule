@@ -323,6 +323,9 @@ class ProfileViewModel
             MultiRadioBtnKeys.INJURIES, checkTwoRadioBtnSelections(health.injuries.isNullOrEmpty())
         )
         updateRadioButtonSelection(
+            MultiRadioBtnKeys.BODYPART, checkTwoRadioBtnSelections(health.bodyPart.isNullOrEmpty())
+        )
+        updateRadioButtonSelection(
             MultiRadioBtnKeys.AILMENTS, checkTwoRadioBtnSelections(health.ailments.isNullOrEmpty())
         )
         updateRadioButtonSelection(

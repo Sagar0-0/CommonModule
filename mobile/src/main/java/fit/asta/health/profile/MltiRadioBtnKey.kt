@@ -6,6 +6,7 @@ object MultiRadioBtnKeys {
     const val ISONPERIOD = "prd"
     const val HEALTHHIS = "hh"
     const val INJURIES = "inj"
+    const val BODYPART = "bp"
     const val AILMENTS = "ail"
     const val MEDICATIONS = "med"
     const val HEALTHTAR = "htg"
@@ -15,4 +16,5 @@ object MultiRadioBtnKeys {
     const val WORKINGSTYLE = "ws"
     const val WORKINGHRS = "whr"
     const val DIETREST = "drs"
+    const val NONE = "none"
 }
