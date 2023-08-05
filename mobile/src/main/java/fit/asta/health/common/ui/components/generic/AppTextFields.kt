@@ -8,7 +8,9 @@ import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
@@ -50,6 +52,7 @@ fun AppTextField(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     capitalization: KeyboardCapitalization = KeyboardCapitalization.Sentences,
     keyboardType: KeyboardType = KeyboardType.Text,
+    colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
     imeAction: ImeAction = ImeAction.Next,
 ) {
     OutlinedTextField(
@@ -70,5 +73,6 @@ fun AppTextField(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
         enabled = enabled,
+        colors = colors
     )
 }

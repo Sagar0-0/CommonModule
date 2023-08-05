@@ -1,4 +1,4 @@
-package fit.asta.health.profile.createprofile.view.components
+package fit.asta.health.common.ui.components.functional
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -20,7 +20,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -44,7 +44,7 @@ fun ColumnToggleButtonGroup(
     unselectedContentColor: Color = Color.Gray,
     buttonIconTint: Color = selectedContentColor,
     unselectedButtonIconTint: Color = unselectedContentColor,
-    borderColor: Color = selectedColor,
+    borderColor: Color = Color.Gray,
     buttonTexts: Array<String> = Array(buttonCount) { "" },
     buttonIcons: Array<Painter> = Array(buttonCount) { emptyPainter },
     shape: CornerBasedShape = MaterialTheme.shapes.small,
@@ -58,7 +58,7 @@ fun ColumnToggleButtonGroup(
 ) {
     Column(modifier = modifier) {
         val squareCorner = CornerSize(0.dp)
-        var selectionIndex by rememberSaveable { mutableStateOf(primarySelection) }
+        var selectionIndex by rememberSaveable { mutableIntStateOf(primarySelection) }
 
         repeat(buttonCount) { index ->
             val buttonShape = when (index) {
@@ -109,7 +109,7 @@ fun RowToggleButtonGroup(
     unselectedContentColor: Color = Color.Gray,
     buttonIconTint: Color = selectedContentColor,
     unselectedButtonIconTint: Color = unselectedContentColor,
-    borderColor: Color = selectedColor,
+    borderColor: Color = Color.Gray,
     buttonTexts: Array<String> = Array(buttonCount) { "" },
     buttonIcons: Array<Painter> = Array(buttonCount) { ColorPainter(Color.Transparent) },
     shape: CornerBasedShape = MaterialTheme.shapes.small,
@@ -123,7 +123,7 @@ fun RowToggleButtonGroup(
 ) {
     Row(modifier = modifier) {
         val squareCorner = CornerSize(0.dp)
-        var selectionIndex by rememberSaveable { mutableStateOf(primarySelection) }
+        var selectionIndex by rememberSaveable { mutableIntStateOf(primarySelection) }
 
         repeat(buttonCount) { index ->
             val buttonShape = when (index) {
@@ -245,58 +245,37 @@ private fun RowScope.ButtonWithIconAndText(
     when (iconPosition) {
         IconPosition.Start -> {
             IconContent(
-                Modifier.align(Alignment.CenterVertically),
-                iconTintColor,
-                buttonIcons,
-                index
+                Modifier.align(Alignment.CenterVertically), iconTintColor, buttonIcons, index
             )
             TextContent(
-                Modifier.align(Alignment.CenterVertically),
-                buttonTexts,
-                index,
-                contentColor
+                Modifier.align(Alignment.CenterVertically), buttonTexts, index, contentColor
             )
         }
+
         IconPosition.Top -> Column {
             IconContent(
-                Modifier.align(Alignment.CenterHorizontally),
-                iconTintColor,
-                buttonIcons,
-                index
+                Modifier.align(Alignment.CenterHorizontally), iconTintColor, buttonIcons, index
             )
             TextContent(
-                Modifier.align(Alignment.CenterHorizontally),
-                buttonTexts,
-                index,
-                contentColor
+                Modifier.align(Alignment.CenterHorizontally), buttonTexts, index, contentColor
             )
         }
+
         IconPosition.End -> {
             TextContent(
-                Modifier.align(Alignment.CenterVertically),
-                buttonTexts,
-                index,
-                contentColor
+                Modifier.align(Alignment.CenterVertically), buttonTexts, index, contentColor
             )
             IconContent(
-                Modifier.align(Alignment.CenterVertically),
-                iconTintColor,
-                buttonIcons,
-                index
+                Modifier.align(Alignment.CenterVertically), iconTintColor, buttonIcons, index
             )
         }
+
         IconPosition.Bottom -> Column {
             TextContent(
-                Modifier.align(Alignment.CenterHorizontally),
-                buttonTexts,
-                index,
-                contentColor
+                Modifier.align(Alignment.CenterHorizontally), buttonTexts, index, contentColor
             )
             IconContent(
-                Modifier.align(Alignment.CenterHorizontally),
-                iconTintColor,
-                buttonIcons,
-                index
+                Modifier.align(Alignment.CenterHorizontally), iconTintColor, buttonIcons, index
             )
         }
     }

@@ -20,9 +20,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowRow
+import fit.asta.health.common.ui.components.functional.RowToggleButtonGroup
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.profile.createprofile.view.components.RowToggleButtonGroup
 import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.HealthProperties
 import fit.asta.health.profile.model.domain.TwoRadioBtnSelections
