@@ -6,30 +6,29 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DeleteForever
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.Checkbox
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.rounded.AddAPhoto
+import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -40,30 +39,31 @@ import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.R
 import fit.asta.health.common.jetpack.getOneUrl
 import fit.asta.health.common.ui.components.*
+import fit.asta.health.common.ui.components.functional.AppTextFieldValidate
+import fit.asta.health.common.ui.components.generic.AppButtons
+import fit.asta.health.common.ui.components.generic.AppDefaultIcon
+import fit.asta.health.common.ui.components.generic.AppDrawImg
+import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.imageSize
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiString
 import fit.asta.health.profile.viewmodel.ProfileEvent
 import fit.asta.health.profile.viewmodel.ProfileViewModel
-import fit.asta.health.testimonials.view.components.ValidatedTextField
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalCoroutinesApi::class)
 @ExperimentalMaterial3Api
 @Composable
-fun DetailsCreateScreen(
+fun DetailsCreateScreenDemo(
     viewModel: ProfileViewModel = hiltViewModel(),
-    eventNext: (() -> Unit)? = null,
-    onSkipEvent: (Int) -> Unit,
+    eventNext: () -> Unit,
 ) {
-
     val focusManager = LocalFocusManager.current
-
-    val name by viewModel.name.collectAsStateWithLifecycle()
-    val email by viewModel.email.collectAsStateWithLifecycle()
-    val userImg by viewModel.userImg.collectAsStateWithLifecycle()
-
+    val nameState by viewModel.name.collectAsStateWithLifecycle()
+    val emailState by viewModel.email.collectAsStateWithLifecycle()
+    val userImage by viewModel.userImg.collectAsStateWithLifecycle()
+    val focusRequester = remember { FocusRequester() }
     val imgLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
             viewModel.onEvent(ProfileEvent.OnUserImgChange(url = uri))
@@ -72,7 +72,6 @@ fun DetailsCreateScreen(
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
     ) {
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -80,144 +79,97 @@ fun DetailsCreateScreen(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             Spacer(modifier = Modifier.height(spacing.medium))
-
-            UserCircleImage(url = getOneUrl(localUrl = userImg.localUrl, remoteUrl = userImg.url),
-                onUserProfileSelection = {
-                    imgLauncher.launch("image/*")
-                },
-                onProfilePicClear = {
-                    viewModel.onEvent(ProfileEvent.OnProfilePicClear)
-                })
-
+            UserCircleImage(url = getOneUrl(
+                localUrl = userImage.localUrl, remoteUrl = userImage.url
+            ), onUserProfileSelection = {
+                imgLauncher.launch("image/*")
+            }, onProfilePicClear = {
+                viewModel.onEvent(ProfileEvent.OnProfilePicClear)
+            })
             Spacer(modifier = Modifier.height(spacing.medium))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = "Name*",
-                    color = MaterialTheme.colorScheme.onTertiaryContainer,
-                    style = MaterialTheme.typography.titleSmall
-                )
-            }
-
-            Spacer(modifier = Modifier.height(spacing.extraSmall))
-
-            ValidatedTextField(
-                value = name.value,
+            AppTextFieldValidate(
+                value = nameState.value,
                 onValueChange = { viewModel.onEvent(ProfileEvent.OnNameChange(name = it)) },
-                showError = name.error !is UiString.Empty,
-                errorMessage = name.error,
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
+                isError = nameState.error !is UiString.Empty,
+                errorMessage = nameState.error,
                 label = "Name",
                 singleLine = true,
+                imeAction = ImeAction.Next,
+                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) })
             )
-
             Spacer(modifier = Modifier.height(spacing.medium))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = "E-mail*",
-                    color = MaterialTheme.colorScheme.onTertiaryContainer,
-                    style = MaterialTheme.typography.titleSmall
-                )
-            }
-
-            Spacer(modifier = Modifier.height(spacing.extraSmall))
-
-            ValidatedTextField(
-                value = email.value,
+            AppTextFieldValidate(
+                value = emailState.value,
                 onValueChange = { viewModel.onEvent(ProfileEvent.OnEmailChange(email = it)) },
-                showError = email.error !is UiString.Empty,
-                errorMessage = email.error,
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+                isError = emailState.error !is UiString.Empty,
+                errorMessage = emailState.error,
                 label = "E-mail",
                 singleLine = true,
+                imeAction = ImeAction.Done,
+                modifier = Modifier.focusRequester(focusRequester = focusRequester),
+                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
             )
-
             Spacer(modifier = Modifier.height(spacing.medium))
-
-            PrivacyStatement()
-
+            PrivacyAndUserConsent()
             Spacer(modifier = Modifier.height(spacing.medium))
-
-            UserConsent()
-
+            AppButtons.AppStandardButton(
+                onClick = eventNext,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = spacing.large),
+                enabled = true,
+                shape = CircleShape
+            ) {
+                AppTexts.LabelLarge(text = "Next", color = MaterialTheme.colorScheme.onPrimary)
+            }
             Spacer(modifier = Modifier.height(spacing.medium))
-
-            PrimaryButton(
-                text = "Next",
-                modifier = Modifier.fillMaxWidth(),
-                event = eventNext,
-                enableButton = true
-            )
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-        }
-    }
-
-
-}
-
-
-@Composable
-fun PrivacyStatement() {
-    Row(
-        modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Box {
-            Image(
-                painter = painterResource(id = R.drawable.privacy),
-                contentDescription = null,
-                modifier = Modifier.size(imageSize.standard)
-            )
-        }
-        Spacer(modifier = Modifier.width(spacing.medium))
-        Column {
-            Text(
-                text = "Privacy Statement",
-                style = MaterialTheme.typography.labelMedium,
-                color = Color(0xDE000000)
-            )
-            Spacer(modifier = Modifier.height(spacing.extraSmall))
-            Text(
-                text = "We value your privacy. We are committed to protecting your privacy and ask for your consent for the use of your personal health information as required during you health care.",
-                color = Color(0xDE000000),
-                style = MaterialTheme.typography.bodySmall,
-                softWrap = true
-            )
         }
     }
 }
 
 @Composable
-fun UserConsent() {
+fun PrivacyAndUserConsent() {
 
     val checkedState = remember { mutableStateOf(false) }
 
-    Row(
-        modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+    Column(
+        Modifier.fillMaxWidth(),
     ) {
-        Box {
-            Checkbox(
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Top
+        ) {
+            AppDrawImg(
+                painterResource(id = R.drawable.privacy),
+                contentDescription = "App Privacy",
+                modifier = Modifier.size(
+                    imageSize.standard
+                )
+            )
+            Spacer(modifier = Modifier.width(spacing.medium))
+            Column {
+                AppTexts.TitleLarge(text = "Privacy Statement")
+                Spacer(modifier = Modifier.height(spacing.extraSmall))
+                AppTexts.BodySmall(
+                    text = "We value your privacy. We are committed to protecting your " + "privacy and ask for your consent for the use of your personal health information " + "as required during you health care."
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(spacing.medium))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Top
+        ) {
+            AppButtons.AppCheckBox(
                 checked = checkedState.value,
                 onCheckedChange = { checkedState.value = it },
                 modifier = Modifier.size(imageSize.standard)
             )
-        }
-        Spacer(modifier = Modifier.width(spacing.medium))
-        Column {
-            Text(
-                text = "I CONSENT TO THE USE OF MY PERSONAL HEALTH INFORMATION AS REQUIRED DURING YOUR HEALTH CARE.",
-                color = Color(0xFF375369),
-                style = MaterialTheme.typography.bodyMedium
-            )
+            Spacer(modifier = Modifier.width(spacing.medium))
+            AppTexts.BodyMedium(text = "I CONSENT TO THE USE OF MY PERSONAL HEALTH INFORMATION AS REQUIRED DURING YOUR HEALTH CARE.")
         }
     }
 }
@@ -229,66 +181,72 @@ fun UserCircleImage(
     onProfilePicClear: () -> Unit,
 ) {
 
+    val imageBaseUrl = "https://dj9n1wsbrvg44.cloudfront.net"
+    val isImgNotAvail = url.isEmpty() || url == imageBaseUrl
+    val placeholderPainter = painterResource(id = R.drawable.userphoto)
+    val profilePainter = rememberAsyncImagePainter(model = url)
+
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.padding(start = spacing.extraSmall1, end = spacing.extraSmall1)
+        modifier = Modifier.padding(horizontal = spacing.extraSmall1)
     ) {
-
-        Image(
-            painter = if (url.isEmpty()) {
-                painterResource(id = R.drawable.userphoto)
-            } else {
-                rememberAsyncImagePainter(model = url)
-            },
-            contentDescription = null,
+        AppDrawImg(
+            painter = if (isImgNotAvail) placeholderPainter else profilePainter,
+            contentDescription = "User Image",
             modifier = Modifier
                 .size(customSize.extraLarge5)
-                .clip(shape = CircleShape)
+                .clip(CircleShape)
                 .border(
                     border = BorderStroke(
-                        width = 2.dp, color = MaterialTheme.colorScheme.primary
+                        width = 4.dp, color = MaterialTheme.colorScheme.primary
                     ), shape = CircleShape
-                )
-
+                ),
+            contentScale = ContentScale.Crop
         )
-
-        Row(
-            horizontalArrangement = Arrangement.Start,
-            modifier = Modifier.align(alignment = Alignment.TopEnd)
-        ) {
-            Box {
-                IconButton(onClick = onProfilePicClear) {
-
-                    Icon(
-                        imageVector = Icons.Filled.DeleteForever,
-                        contentDescription = null,
-                        modifier = Modifier.size(customSize.extraLarge),
-                        tint = MaterialTheme.colorScheme.error
-                    )
-
-                }
-
-            }
+        if (!isImgNotAvail) {
+            DeleteImageButton(onProfilePicClear, modifier = Modifier.align(Alignment.TopEnd))
         }
-
-        Row(
-            horizontalArrangement = Arrangement.End,
+        EditProfileImageButton(
+            isImgNotAvail,
+            onUserProfileSelection,
             modifier = Modifier.align(alignment = Alignment.BottomEnd)
-        ) {
-            Box {
-                IconButton(onClick = onUserProfileSelection) {
+        )
+    }
+}
 
-                    Icon(
-                        imageVector = Icons.Filled.Edit,
-                        contentDescription = null,
-                        modifier = Modifier.size(customSize.extraLarge),
-                        tint = MaterialTheme.colorScheme.secondary
-                    )
-
-                }
-
-            }
+@Composable
+private fun DeleteImageButton(onProfilePicClear: () -> Unit, modifier: Modifier = Modifier) {
+    Row(
+        horizontalArrangement = Arrangement.Start, modifier = modifier
+    ) {
+        AppButtons.AppIconButton(onClick = onProfilePicClear) {
+            AppDefaultIcon(
+                imageVector = Icons.Filled.Delete,
+                contentDescription = "Delete Image",
+                modifier = Modifier.size(customSize.extraLarge),
+                tint = MaterialTheme.colorScheme.error
+            )
         }
+    }
+}
 
+@Composable
+private fun EditProfileImageButton(
+    isImgNotAvail: Boolean,
+    onUserProfileSelection: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        horizontalArrangement = Arrangement.End, modifier = modifier
+    ) {
+        AppButtons.AppIconButton(onClick = onUserProfileSelection) {
+            val editIcon = if (isImgNotAvail) Icons.Rounded.AddAPhoto else Icons.Rounded.Edit
+            AppDefaultIcon(
+                imageVector = editIcon,
+                contentDescription = "Edit Profile Image",
+                modifier = Modifier.size(customSize.extraLarge),
+                tint = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
+            )
+        }
     }
 }

@@ -10,13 +10,13 @@ import fit.asta.health.BuildConfig
 import fit.asta.health.common.maps.api.remote.MapsApi
 import fit.asta.health.common.maps.api.remote.MapsRestApi
 import fit.asta.health.common.maps.api.search.SearchApi
+import fit.asta.health.common.maps.api.search.SearchRestApi
 import fit.asta.health.common.maps.repo.MapsRepo
 import fit.asta.health.common.maps.repo.MapsRepoImpl
 import fit.asta.health.common.maps.utils.LocationHelper
 import fit.asta.health.common.maps.utils.SEARCH_API_BASE_URL
+import fit.asta.health.common.utils.ResourcesProvider
 import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -30,19 +30,16 @@ object MapsModule {
 
     @Provides
     @Singleton
-    fun provideSearchApi(): SearchApi = Retrofit.Builder()
-        .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl(SEARCH_API_BASE_URL)
-        .build()
-        .create(SearchApi::class.java)
+    fun provideSearchApi(client: OkHttpClient): SearchApi =
+        SearchRestApi(baseUrl = SEARCH_API_BASE_URL, client = client)
 
     @Provides
     @Singleton
     fun provideMapsRepo(
         mapsApiService: MapsApi,
         searchApi: SearchApi,
-        @ApplicationContext context: Context
-    ): MapsRepo = MapsRepoImpl(mapsApiService, searchApi, context)
+        resourcesProvider: ResourcesProvider
+    ): MapsRepo = MapsRepoImpl(mapsApiService, searchApi, resourcesProvider)
 
     @Provides
     @Singleton

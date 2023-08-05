@@ -8,6 +8,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonElevation
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxColors
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -266,6 +269,32 @@ object AppButtons {
             border = border,
             contentPadding = contentPadding,
             content = content
+        )
+    }
+
+    /** [AppCheckBox] allow users to select one or more items from a set. Checkboxes can turn an option on
+     * or off.
+     * @param checked whether this checkbox is checked or unchecked
+     * @param onCheckedChange called when this checkbox is clicked.
+     * @param modifier the [Modifier] to be applied to this checkbox
+     * @param enabled controls the enabled state of this checkbox.
+     * @param colors [CheckboxColors] that will be used to resolve the colors used for this checkbox in
+     * different states.*/
+
+    @Composable
+    fun AppCheckBox(
+        checked: Boolean,
+        onCheckedChange: ((Boolean) -> Unit)?,
+        modifier: Modifier = Modifier,
+        enabled: Boolean = true,
+        colors: CheckboxColors = CheckboxDefaults.colors(),
+    ) {
+        Checkbox(
+            checked = checked,
+            onCheckedChange = onCheckedChange,
+            modifier = modifier,
+            enabled = enabled,
+            colors = colors
         )
     }
 }

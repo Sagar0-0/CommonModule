@@ -8,12 +8,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.AppDefServerImg
 import fit.asta.health.common.ui.components.generic.AppTexts
+import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
 
 @Composable
@@ -24,10 +23,9 @@ fun ToolsHmScreenTopBanner(
         modifier = Modifier.fillMaxSize()
 
     ) {
-        val domainName = stringResource(id = R.string.media_url)
 
         for (i in remember { listOf(bannerDataPages) }) {
-            val imgUrl = "$domainName${i.url}"
+            val imgUrl = getImgUrl(url = i.url)
             AppDefServerImg(
                 model = imgUrl,
                 contentDescription = "ToolsHm Banner",

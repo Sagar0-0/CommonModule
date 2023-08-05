@@ -3,9 +3,9 @@ package fit.asta.health.common.maps.view
 import android.content.Intent
 import android.location.Address
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,9 +18,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
@@ -28,7 +28,6 @@ import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -38,6 +37,7 @@ import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -60,25 +60,23 @@ import com.google.gson.GsonBuilder
 import fit.asta.health.common.maps.modal.AddressScreen
 import fit.asta.health.common.maps.modal.AddressesResponse
 import fit.asta.health.common.maps.modal.AddressesResponse.MyAddress
-import fit.asta.health.common.maps.modal.SearchResponse
 import fit.asta.health.common.maps.vm.MapsViewModel
+import fit.asta.health.common.ui.components.generic.AppBottomSheetScaffold
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.AppTopBar
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
-import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.iconSize
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.ResponseState
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun SavedAddressesScreen(
     navHostController: NavHostController,
     mapsViewModel: MapsViewModel,
-    onBackPressed: () -> Unit,
+    onBackPressed: () -> Unit
 ) {
     val gson: Gson = GsonBuilder().create()
-
     val context = LocalContext.current
 
     val addressListState by mapsViewModel.addressListState.collectAsStateWithLifecycle()
@@ -86,202 +84,207 @@ fun SavedAddressesScreen(
     val currentLatLng by mapsViewModel.currentLatLng.collectAsStateWithLifecycle()
     val currentAddressState by mapsViewModel.currentAddressState.collectAsStateWithLifecycle()
 
-    var searchQuery by rememberSaveable {
-        mutableStateOf("")
-    }
+    var sheetVisible by rememberSaveable { mutableStateOf(false) }
+    val scaffoldState = rememberBottomSheetScaffoldState()
 
-    Column(Modifier.fillMaxSize()) {
-        AppTopBar(title = "Saved Addresses", onBack = onBackPressed)
-        OutlinedTextField(
-            maxLines = 1,
-            singleLine = true,
-            readOnly = false,
-            shape = MaterialTheme.shapes.large,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = spacing.small, start = spacing.small, end = spacing.small),
-            value = searchQuery,
-            onValueChange = {
-                searchQuery = it
-                if (it.length > 2) mapsViewModel.search(searchQuery)
+    AppBottomSheetScaffold(
+        topBar = {
+            AppTopBar(title = "Saved Addresses", onBack = onBackPressed)
+        },
+        sheetPeekHeight = 0.dp,
+        sheetSwipeEnabled = false,
+        scaffoldState = scaffoldState,
+        sheetContent = {},
+        sheetDragHandle = null
+    ) {
+        if (sheetVisible) SearchBottomSheet(
+            onSearch = mapsViewModel::search,
+            searchResponseState = searchResponseState,
+            onResultClick = { route ->
+                navHostController.navigate(route)
             },
-            placeholder = {
-                Text(
-                    text = "Search for area,street name..",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            },
-            leadingIcon = {
-                Icon(imageVector = Icons.Default.Search, contentDescription = "")
-            },
-            trailingIcon = {
-                if (searchQuery.length > 2) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = "Search Button",
-                        modifier = Modifier.clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = rememberRipple(
-                                bounded = false,
-                                radius = customSize.extraMedium
-                            )
-                        ) {
-                            searchQuery = ""
-                        }
-                    )
-                }
-            },
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                focusedPlaceholderColor = MaterialTheme.colorScheme.primary,
-                unfocusedPlaceholderColor = MaterialTheme.colorScheme.primary,
-                focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                unfocusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                disabledPlaceholderColor = MaterialTheme.colorScheme.primary,
-                disabledLeadingIconColor = MaterialTheme.colorScheme.primary
-            )
+            onClose = {
+                sheetVisible = false
+            }
         )
 
-        Spacer(modifier = Modifier.height(spacing.medium))
-
-        OutlinedButton(
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                contentColor = MaterialTheme.colorScheme.primary
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = spacing.small),
-            onClick = {
-                onBackPressed()
-            }
+        Column(
+            Modifier
+                .fillMaxSize()
+                .padding(it)
         ) {
-            Icon(
+            AnimatedVisibility(!sheetVisible) {
+                OutlinedTextField(
+                    maxLines = 1,
+                    enabled = false,
+                    shape = MaterialTheme.shapes.large,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(spacing.small)
+                        .clickable {
+                            sheetVisible = true
+                        },
+                    value = "",
+                    onValueChange = {},
+                    placeholder = {
+                        Text(
+                            text = "Search for area,street name..",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    },
+                    leadingIcon = {
+                        Icon(imageVector = Icons.Default.Search, contentDescription = "")
+                    },
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                        focusedPlaceholderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedPlaceholderColor = MaterialTheme.colorScheme.primary,
+                        focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                        unfocusedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                        focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
+                        disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        disabledPlaceholderColor = MaterialTheme.colorScheme.primary,
+                        disabledLeadingIconColor = MaterialTheme.colorScheme.primary
+                    )
+                )
+            }
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            OutlinedButton(
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = MaterialTheme.colorScheme.primary
+                ),
                 modifier = Modifier
-                    .padding(end = spacing.extraSmall)
-                    .size(iconSize.mediumSmall),
-                imageVector = Icons.Default.LocationOn,
-                contentDescription = ""
-            )
-            Column(modifier = Modifier.weight(1f)) {
+                    .fillMaxWidth()
+                    .padding(horizontal = spacing.small),
+                onClick = {
+                    onBackPressed()
+                }
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .padding(end = spacing.extraSmall)
+                        .size(iconSize.mediumSmall),
+                    imageVector = Icons.Default.LocationOn,
+                    contentDescription = ""
+                )
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        text = "Use my current location",
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Start
+                    )
+                    when (currentAddressState) {
+                        is ResponseState.Loading -> {
+                            Text(
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                text = "Fetching location...",
+                                style = MaterialTheme.typography.bodyMedium,
+                                textAlign = TextAlign.Start
+                            )
+                        }
+
+                        is ResponseState.Success -> {
+                            Text(
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                text = (currentAddressState as ResponseState.Success<Address>).data.getAddressLine(
+                                    0
+                                ),
+                                style = MaterialTheme.typography.bodyMedium,
+                                textAlign = TextAlign.Start
+                            )
+                        }
+
+                        is ResponseState.Error -> {
+                            Text(
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                text = "Error fetching location",
+                                style = MaterialTheme.typography.bodyMedium,
+                                textAlign = TextAlign.Start
+                            )
+                        }
+
+                        else -> {}
+                    }
+                }
+
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowRight,
+                    contentDescription = ""
+                )
+            }
+
+            Spacer(modifier = Modifier.height(spacing.small))
+
+            OutlinedButton(
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = MaterialTheme.colorScheme.primary
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = spacing.small),
+                onClick = {
+                    val myAddressItem = MyAddress(
+                        selected = false,
+                        area = "",
+                        block = "",
+                        hn = "",
+                        id = "",
+                        lat = currentLatLng.latitude,
+                        loc = "",
+                        lon = currentLatLng.longitude,
+                        name = "",
+                        nearby = "",
+                        ph = "",
+                        pin = "",
+                        sub = "",
+                        uid = ""
+                    )
+                    val addJson = gson.toJson(myAddressItem)
+                    navHostController.navigate(route = "${AddressScreen.Map.route}/$addJson")
+                }
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .padding(end = spacing.extraSmall)
+                        .size(iconSize.mediumSmall),
+                    imageVector = Icons.Default.Add,
+                    contentDescription = ""
+                )
                 Text(
+                    modifier = Modifier.weight(1f),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    text = "Use my current location",
+                    text = "Add Address",
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Start
                 )
-                when (currentAddressState) {
-                    is ResponseState.Loading -> {
-                        Text(
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            text = "Fetching location...",
-                            style = MaterialTheme.typography.bodyMedium,
-                            textAlign = TextAlign.Start
-                        )
-                    }
-
-                    is ResponseState.Success -> {
-                        Text(
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            text = (currentAddressState as ResponseState.Success<Address>).data.getAddressLine(
-                                0
-                            ),
-                            style = MaterialTheme.typography.bodyMedium,
-                            textAlign = TextAlign.Start
-                        )
-                    }
-
-                    is ResponseState.Error -> {
-                        Text(
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            text = "Error fetching location",
-                            style = MaterialTheme.typography.bodyMedium,
-                            textAlign = TextAlign.Start
-                        )
-                    }
-
-                    else -> {}
-                }
-            }
-
-            Icon(
-                imageVector = Icons.Default.KeyboardArrowRight,
-                contentDescription = ""
-            )
-        }
-
-        Spacer(modifier = Modifier.height(spacing.small))
-
-        OutlinedButton(
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                contentColor = MaterialTheme.colorScheme.primary
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = spacing.small),
-            onClick = {
-                searchQuery = ""
-                val myAddressItem = MyAddress(
-                    selected = false,
-                    area = "",
-                    block = "",
-                    hn = "",
-                    id = "",
-                    lat = currentLatLng.latitude,
-                    loc = "",
-                    lon = currentLatLng.longitude,
-                    name = "",
-                    nearby = "",
-                    ph = "",
-                    pin = "",
-                    sub = "",
-                    uid = ""
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowRight,
+                    contentDescription = ""
                 )
-                val addJson = gson.toJson(myAddressItem)
-                navHostController.navigate(route = "${AddressScreen.Map.route}/$addJson")
             }
-        ) {
-            Icon(
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            Spacer(
                 modifier = Modifier
-                    .padding(end = spacing.extraSmall)
-                    .size(iconSize.mediumSmall),
-                imageVector = Icons.Default.Add,
-                contentDescription = ""
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(Color.LightGray)
             )
-            Text(
-                modifier = Modifier.weight(1f),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                text = "Add Address",
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Start
-            )
-            Icon(
-                imageVector = Icons.Default.KeyboardArrowRight,
-                contentDescription = ""
-            )
-        }
-
-        Spacer(modifier = Modifier.height(spacing.medium))
-
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(Color.LightGray)
-        )
 
 
-        if (searchQuery.length < 3) {
             Text(
                 modifier = Modifier.padding(spacing.small),
                 text = "SAVED ADDRESSES",
@@ -317,7 +320,6 @@ fun SavedAddressesScreen(
                                         onBackPressed()
                                     },
                                     onEditClick = {
-                                        searchQuery = ""
                                         val addJson = gson.toJson(item).replace("/", "|")
                                         navHostController.navigate(route = "${AddressScreen.Map.route}/$addJson")
                                     },
@@ -379,83 +381,9 @@ fun SavedAddressesScreen(
 
                 else -> {}
             }
-        } else {
-            Text(
-                modifier = Modifier.padding(spacing.small),
-                text = "SEARCH RESULTS",
-                style = MaterialTheme.typography.titleLarge
-            )
-            when (searchResponseState) {
-                is ResponseState.Success -> {
-                    val results =
-                        (searchResponseState as ResponseState.Success<SearchResponse>).data.results
-                    if (results.isEmpty()) {
-                        Text(
-                            modifier = Modifier.padding(spacing.small),
-                            text = "No result for \"$searchQuery\"",
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                    } else {
-                        LazyColumn {
-                            items(results) {
-                                Text(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .clickable {
-                                            searchQuery = ""
-                                            val myAddressItem = MyAddress(
-                                                selected = false,
-                                                area = "",
-                                                block = "",
-                                                hn = "",
-                                                id = "",
-                                                lat = it.geometry.location.lat,
-                                                loc = "",
-                                                lon = it.geometry.location.lng,
-                                                name = "",
-                                                nearby = "",
-                                                ph = "",
-                                                pin = "",
-                                                sub = "",
-                                                uid = ""
-                                            )
-                                            val addJson = gson
-                                                .toJson(myAddressItem)
-                                                .replace("/", "|")
-                                            navHostController.navigate(route = "${AddressScreen.Map.route}/$addJson")
-                                        }
-                                        .padding(spacing.medium),
-                                    text = it.name,
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    textAlign = TextAlign.Center
-                                )
-                            }
-                        }
-                    }
-                }
-
-                is ResponseState.Loading -> {
-                    Box(
-                        modifier = Modifier.padding(top = spacing.large),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        LoadingAnimation()
-                    }
-                }
-
-                is ResponseState.NoInternet -> {
-                    AppErrorScreen()
-                }
-
-                is ResponseState.Error -> {
-                    AppErrorScreen(desc = "Some internal error occurred! We are fixing it soon!")
-                }
-
-                else -> {}
-            }
         }
     }
+
 }
 
 @Composable
@@ -468,7 +396,7 @@ fun AddressItem(
     onClick: () -> Unit,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
-    onShareClick: () -> Unit,
+    onShareClick: () -> Unit
 ) {
     Row(
         modifier

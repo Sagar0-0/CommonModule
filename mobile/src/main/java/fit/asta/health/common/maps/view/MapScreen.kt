@@ -1,12 +1,14 @@
 package fit.asta.health.common.maps.view
 
 import android.location.Address
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -37,6 +39,7 @@ fun MapScreen(
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(LatLng(myAddressItem.lat, myAddressItem.lon), 18f)
     }
+    val searchResponseState by mapsViewModel.searchResponseState.collectAsStateWithLifecycle()
 
     val scope = rememberCoroutineScope()
 
@@ -119,7 +122,20 @@ fun MapScreen(
                 else -> {}
             }
 
-        }) { padding ->
+        }
+    ) { padding ->
+
+        var sheetVisible by rememberSaveable { mutableStateOf(false) }
+        if (sheetVisible) SearchBottomSheet(
+            onSearch = mapsViewModel::search,
+            searchResponseState = searchResponseState,
+            onResultClick = { route ->
+                //TODO: Get data and close sheet
+            },
+            onClose = {
+                sheetVisible = false
+            }
+        )
 
         Box(
             modifier = Modifier
@@ -140,42 +156,43 @@ fun MapScreen(
                 )
             }
 
-
-            OutlinedTextField(
-                maxLines = 1,
-                enabled = false,
-                shape = MaterialTheme.shapes.large,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(spacing.small)
-                    .clickable {
-//                        onSearchClick() TODO: SEARCH BOTTOM SHEET
+            AnimatedVisibility(!sheetVisible) {
+                OutlinedTextField(
+                    maxLines = 1,
+                    enabled = false,
+                    shape = MaterialTheme.shapes.large,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(spacing.small)
+                        .clickable {
+                            sheetVisible = true
+                        },
+                    value = "",
+                    onValueChange = {},
+                    placeholder = {
+                        Text(
+                            text = "Search for area,street name..",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
                     },
-                value = "",
-                onValueChange = {},
-                placeholder = {
-                    Text(
-                        text = "Search for area,street name..",
-                        style = MaterialTheme.typography.bodyMedium
+                    leadingIcon = {
+                        Icon(imageVector = Icons.Default.Search, contentDescription = "")
+                    },
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                        focusedPlaceholderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedPlaceholderColor = MaterialTheme.colorScheme.primary,
+                        focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                        unfocusedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                        focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
+                        disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        disabledPlaceholderColor = MaterialTheme.colorScheme.primary,
+                        disabledLeadingIconColor = MaterialTheme.colorScheme.primary
                     )
-                },
-                leadingIcon = {
-                    Icon(imageVector = Icons.Default.Search, contentDescription = "")
-                },
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                    focusedPlaceholderColor = MaterialTheme.colorScheme.primary,
-                    unfocusedPlaceholderColor = MaterialTheme.colorScheme.primary,
-                    focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                    unfocusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                    focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                    disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    disabledPlaceholderColor = MaterialTheme.colorScheme.primary,
-                    disabledLeadingIconColor = MaterialTheme.colorScheme.primary
                 )
-            )
+            }
 
             OutlinedButton(
                 modifier = Modifier

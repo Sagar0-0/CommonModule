@@ -1,6 +1,5 @@
 package fit.asta.health.common.maps.repo
 
-import android.content.Context
 import android.util.Log
 import fit.asta.health.R
 import fit.asta.health.common.maps.api.remote.MapsApi
@@ -9,6 +8,7 @@ import fit.asta.health.common.maps.modal.AddressesResponse
 import fit.asta.health.common.maps.modal.DeleteAddressResponse
 import fit.asta.health.common.maps.modal.PutAddressResponse
 import fit.asta.health.common.maps.modal.SearchResponse
+import fit.asta.health.common.utils.ResourcesProvider
 import fit.asta.health.common.utils.ResponseState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -19,7 +19,7 @@ import javax.inject.Inject
 class MapsRepoImpl @Inject constructor(
     private val mapsApi: MapsApi,
     private val searchApi: SearchApi,
-    private val context: Context
+    private val resourcesProvider: ResourcesProvider
 ) : MapsRepo {
 
     override suspend fun search(text: String): Flow<ResponseState<SearchResponse>> = callbackFlow {
@@ -29,7 +29,7 @@ class MapsRepoImpl @Inject constructor(
                 ResponseState.Success(
                     searchApi.search(
                         text,
-                        context.getString(R.string.MAPS_API_KEY)
+                        resourcesProvider.getString(R.string.MAPS_API_KEY)
                     )
                 )
             } catch (e: Exception) {
