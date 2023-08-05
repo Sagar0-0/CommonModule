@@ -20,6 +20,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalTime
+import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,14 +37,22 @@ class TodayPlanViewModel @Inject constructor(
     val alarmListAfternoon = MutableStateFlow(_alarmListAfternoon)
     private val _alarmListEvening = mutableStateListOf<AlarmEntity>()
     val alarmListEvening = MutableStateFlow(_alarmListEvening)
+    private val _alarmListNextDay = mutableStateListOf<AlarmEntity>()
+    val alarmListNextDay = MutableStateFlow(_alarmListNextDay)
 
     private val _todayUi = MutableStateFlow(TodayData())
     val todayUi = _todayUi.asStateFlow()
-
+    private val calendar: Calendar = Calendar.getInstance()
+    val today: Int = calendar.get(Calendar.DAY_OF_WEEK)
 
     init {
         getWeatherSunSlots()
         getAlarms()
+        val currentTime = LocalTime.now()
+        val alarmTime = LocalTime.of(21, 0)
+        if (currentTime.isAfter(alarmTime) || currentTime == alarmTime) {
+            getNextDayAlarm()
+        }
     }
 
     fun hSEvent(uiEvent: HomeEvent) {
@@ -104,6 +114,10 @@ class TodayPlanViewModel @Inject constructor(
                 Event.Evening -> {
                     _alarmListEvening.add(alarm)
                 }
+
+                Event.NextDay -> {
+                    _alarmListNextDay.add(alarm)
+                }
             }
         }
     }
@@ -121,6 +135,10 @@ class TodayPlanViewModel @Inject constructor(
             Event.Evening -> {
                 _alarmListEvening.remove(alarmItem)
             }
+
+            Event.NextDay -> {
+                _alarmListNextDay.remove(alarmItem)
+            }
         }
         viewModelScope.launch {
             if (alarmItem.status) alarmUtils.cancelScheduleAlarm(alarmItem, true)
@@ -134,6 +152,7 @@ class TodayPlanViewModel @Inject constructor(
     }
 
     private fun skipAlarm(alarmItem: AlarmEntity, event: Event) {
+        val skipDate = LocalDate.now().dayOfMonth
         when (event) {
             Event.Morning -> {
                 _alarmListMorning.remove(alarmItem)
@@ -146,10 +165,15 @@ class TodayPlanViewModel @Inject constructor(
             Event.Evening -> {
                 _alarmListEvening.remove(alarmItem)
             }
+
+            Event.NextDay -> {
+                _alarmListNextDay.remove(alarmItem)
+                skipDate.plus(1)
+            }
         }
         viewModelScope.launch {
             if (alarmItem.status) alarmUtils.cancelScheduleAlarm(alarmItem, true)
-            val alarm = alarmItem.copy(status = false, skipDate = LocalDate.now().dayOfMonth)
+            val alarm = alarmItem.copy(status = false, skipDate = skipDate)
             alarmLocalRepo.updateAlarm(alarm)
         }
     }
@@ -172,6 +196,10 @@ class TodayPlanViewModel @Inject constructor(
                 Event.Evening -> {
                     _alarmListEvening.add(alarmItem)
                 }
+
+                Event.NextDay -> {
+                    _alarmListNextDay.add(alarmItem)
+                }
             }
         }
     }
@@ -182,37 +210,36 @@ class TodayPlanViewModel @Inject constructor(
                 _alarmListMorning.clear()
                 _alarmListAfternoon.clear()
                 _alarmListEvening.clear()
-                val day = LocalDate.now().dayOfWeek.value
-                Log.d("alarm", "getAlarms: $list,day $day")
+                Log.d("alarm", "getAlarms: $list,day ${today}")
                 list.forEach {
                     if (it.status && it.skipDate != LocalDate.now().dayOfMonth) {
                         val today = if (it.week.recurring) {
-                            when (day) {
-                                1 -> {
+                            when (today) {
+                                Calendar.MONDAY -> {
                                     it.week.monday
                                 }
 
-                                2 -> {
+                                Calendar.TUESDAY -> {
                                     it.week.tuesday
                                 }
 
-                                3 -> {
+                                Calendar.WEDNESDAY -> {
                                     it.week.wednesday
                                 }
 
-                                4 -> {
+                                Calendar.THURSDAY -> {
                                     it.week.thursday
                                 }
 
-                                5 -> {
+                                Calendar.FRIDAY -> {
                                     it.week.friday
                                 }
 
-                                6 -> {
+                                Calendar.SATURDAY -> {
                                     it.week.saturday
                                 }
 
-                                7 -> {
+                                Calendar.SUNDAY -> {
                                     it.week.sunday
                                 }
 
@@ -243,6 +270,54 @@ class TodayPlanViewModel @Inject constructor(
         }
     }
 
+    private fun getNextDayAlarm() {
+        viewModelScope.launch {
+            alarmLocalRepo.getAllAlarm().collect { list ->
+                _alarmListNextDay.clear()
+                list.forEach {
+                    if (it.status) {
+                        val nextDay = if (it.week.recurring) {
+                            when (today) {
+                                Calendar.MONDAY -> {
+                                    it.week.tuesday
+                                }
+
+                                Calendar.TUESDAY -> {
+                                    it.week.wednesday
+                                }
+
+                                Calendar.WEDNESDAY -> {
+                                    it.week.thursday
+                                }
+
+                                Calendar.THURSDAY -> {
+                                    it.week.friday
+                                }
+
+                                Calendar.FRIDAY -> {
+                                    it.week.saturday
+                                }
+
+                                Calendar.SATURDAY -> {
+                                    it.week.sunday
+                                }
+
+                                Calendar.SUNDAY -> {
+                                    it.week.monday
+                                }
+
+                                else -> false
+                            }
+                        } else false
+                        if (nextDay) {
+                            _alarmListNextDay.add(it)
+                        }
+
+                    }
+                }
+            }
+        }
+    }
     private fun getWeatherSunSlots() {
         viewModelScope.launch {
             alarmBackendRepo.getTodayDataFromBackend(

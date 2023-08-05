@@ -31,7 +31,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -115,7 +114,12 @@ fun DetailsCreateScreenDemo(
             PrivacyAndUserConsent()
             Spacer(modifier = Modifier.height(spacing.medium))
             AppButtons.AppStandardButton(
-                onClick = eventNext, modifier = Modifier.fillMaxWidth(), enabled = true
+                onClick = eventNext,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = spacing.large),
+                enabled = true,
+                shape = CircleShape
             ) {
                 AppTexts.LabelLarge(text = "Next", color = MaterialTheme.colorScheme.onPrimary)
             }
@@ -176,7 +180,9 @@ fun UserCircleImage(
     onUserProfileSelection: () -> Unit,
     onProfilePicClear: () -> Unit,
 ) {
-    val isImgNotAvail = url.isEmpty() || url == stringResource(id = R.string.media_url1)
+
+    val imageBaseUrl = "https://dj9n1wsbrvg44.cloudfront.net"
+    val isImgNotAvail = url.isEmpty() || url == imageBaseUrl
     val placeholderPainter = painterResource(id = R.drawable.userphoto)
     val profilePainter = rememberAsyncImagePainter(model = url)
 
@@ -197,11 +203,9 @@ fun UserCircleImage(
                 ),
             contentScale = ContentScale.Crop
         )
-
         if (!isImgNotAvail) {
             DeleteImageButton(onProfilePicClear, modifier = Modifier.align(Alignment.TopEnd))
         }
-
         EditProfileImageButton(
             isImgNotAvail,
             onUserProfileSelection,
