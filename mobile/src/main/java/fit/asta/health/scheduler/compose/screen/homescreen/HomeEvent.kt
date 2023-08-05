@@ -12,5 +12,5 @@ sealed class HomeEvent {
     object SetAlarm : HomeEvent()
 }
 enum class Event{
-    Morning,Afternoon,Evening
+    Morning, Afternoon, Evening, NextDay
 }
