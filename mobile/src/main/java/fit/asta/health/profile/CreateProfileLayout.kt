@@ -16,6 +16,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.components.functional.DialogData
@@ -34,81 +35,51 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
 @Composable
-fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel(), onBack: () -> Unit) {
+fun CreateProfileLayoutDemo(
+    viewModel: ProfileViewModel = hiltViewModel(),
+    onBack: () -> Unit = {},
+) {
 
-
-    //Custom Dialog
     var showCustomDialogWithResult by remember { mutableStateOf(false) }
-
+    var currentStep by rememberSaveable { mutableIntStateOf(1) }
     val numberOfSteps = 5
 
-    var currentStep by rememberSaveable { mutableIntStateOf(1) }
-
-    val stepDescriptionList = arrayListOf("Details", "Physique", "Heath", "LifeStyle", "Diet")
-
-    val iconList = listOf(
-        Icons.Outlined.AccountCircle,
-        Icons.Outlined.Face,
-        Icons.Outlined.Favorite,
-        Icons.Default.Emergency,
-        Icons.Outlined.Egg
-    )
-
-    val descriptionList = MutableList(numberOfSteps) { "" }
-
-    stepDescriptionList.forEachIndexed { index, element ->
-        if (index < numberOfSteps) descriptionList[index] = element
-    }
+    val steps = listOf(StepData(1, Icons.Outlined.AccountCircle, "Details") { currentStep = 2 },
+        StepData(2, Icons.Outlined.Face, "Physique") { currentStep = 3 },
+        StepData(3, Icons.Outlined.Favorite, "Health") { currentStep = 4 },
+        StepData(4, Icons.Default.Emergency, "LifeStyle") { currentStep = 5 },
+        StepData(5, Icons.Outlined.Egg, "Diet") { currentStep = 6 })
 
     val primaryColor = MaterialTheme.colorScheme.primary
-    MaterialTheme.colorScheme.error
-
 
     AppScaffold(topBar = {
-
         Column {
             AppTopBar(
                 title = "Create Profile",
                 onBack = { showCustomDialogWithResult = !showCustomDialogWithResult },
-                backIcon = Icons.Filled.Close
+                backIcon = Icons.Filled.Close,
             )
-
-            Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
-                (1..numberOfSteps).forEachIndexed { _, step ->
-                    Stepper(
-                        modifier = Modifier.weight(1F),
-                        step = step,
-                        isCompete = step < currentStep,
-                        isCurrent = step == currentStep,
-                        isComplete = step == numberOfSteps,
-                        isRainbow = false,
-                        stepDescription = descriptionList[step - 1],
-                        unSelectedColor = Color.LightGray,
-                        selectedColor = null,
-                        icons = iconList[step - 1],
-                        logic = {
-                            currentStep = step
-                        },
-                        detailsColor = primaryColor,
-                        phyColor = primaryColor,
-                        healthColor = primaryColor,
-                        lifeStyleColor = primaryColor,
-                        dietColor = primaryColor,
-                        true,
-                        isPhyValid = true,
-                        isHealthValid = true,
-                        isLSValid = true,
-                        isDietValid = true,
-                    )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                steps.forEach { step ->
+                    Step(
+                        modifier = Modifier.weight(1f),
+                        step = step.step,
+                        isCompete = step.step < currentStep,
+                        isCurrent = step.step == currentStep,
+                        isComplete = step.step == numberOfSteps,
+                        stepDescription = step.description,
+                        selectedColor = primaryColor,
+                        icons = step.icon,
+                    ) {
+                        currentStep = step.step
+                    }
                 }
             }
-
             Spacer(modifier = Modifier.height(spacing.medium))
         }
-    }, content = { p ->
-
+    }, content = { innerPadding ->
         Box(
-            modifier = Modifier.padding(p)
+            modifier = Modifier.padding(innerPadding)
         ) {
             when (currentStep) {
                 1 -> {
@@ -164,27 +135,62 @@ fun CreateProfileLayout(viewModel: ProfileViewModel = hiltViewModel(), onBack: (
                 }
             }
         }
-
         if (showCustomDialogWithResult) {
             ShowCustomConfirmationDialog(
-                onDismiss = {
-                    showCustomDialogWithResult = !showCustomDialogWithResult
-                },
+                onDismiss = { showCustomDialogWithResult = !showCustomDialogWithResult },
                 onNegativeClick = onBack,
-                onPositiveClick = {
-                    showCustomDialogWithResult = !showCustomDialogWithResult
-                },
+                onPositiveClick = { showCustomDialogWithResult = !showCustomDialogWithResult },
                 dialogData = DialogData(
                     dialogTitle = "Discard Profile Creation",
-                    dialogDesc = "You will miss important FUTURE UPDATES like CUSTOM PLANS based on your PROFILE." + "CLICK Cancel to complete your PROFILE",
+                    dialogDesc = "You will miss important FUTURE UPDATES like CUSTOM PLANS based on your PROFILE. CLICK Cancel to complete your PROFILE",
                     negTitle = "Discard Profile Creation and Move to Home Screen",
                     posTitle = "Cancel And Continue to Create Profile"
                 ),
             )
         }
-
-
     })
-
 }
 
+@Composable
+fun Step(
+    step: Int,
+    modifier: Modifier = Modifier,
+    isCompete: Boolean,
+    isCurrent: Boolean,
+    isComplete: Boolean,
+    stepDescription: String,
+    selectedColor: Color,
+    icons: ImageVector,
+    onStepClick: () -> Unit,
+) {
+    Stepper(
+        modifier = modifier,
+        step = step,
+        isCompete = isCompete,
+        isCurrent = isCurrent,
+        isComplete = isComplete,
+        isRainbow = false,
+        stepDescription = stepDescription,
+        unSelectedColor = Color.LightGray,
+        selectedColor = if (isCurrent) selectedColor else null,
+        icons = icons,
+        logic = { onStepClick() },
+        detailsColor = selectedColor,
+        phyColor = selectedColor,
+        healthColor = selectedColor,
+        lifeStyleColor = selectedColor,
+        dietColor = selectedColor,
+        isDetailValid = true,
+        isPhyValid = true,
+        isHealthValid = true,
+        isLSValid = true,
+        isDietValid = true,
+    )
+}
+
+data class StepData(
+    val step: Int,
+    val icon: ImageVector,
+    val description: String,
+    val onStepClick: () -> Unit,
+)

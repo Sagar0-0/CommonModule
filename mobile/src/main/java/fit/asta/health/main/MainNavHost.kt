@@ -22,7 +22,7 @@ import fit.asta.health.onboarding.ui.onboardingScreen
 import fit.asta.health.payments.referral.view.referralScreens
 import fit.asta.health.payments.sub.view.subscriptionScreens
 import fit.asta.health.payments.wallet.view.walletScreen
-import fit.asta.health.profile.CreateProfileLayout
+import fit.asta.health.profile.CreateProfileLayoutDemo
 import fit.asta.health.profile.ProfileContent
 import fit.asta.health.scheduler.navigation.schedulerNavigation
 import fit.asta.health.settings.view.settingScreens
@@ -60,7 +60,7 @@ fun MainNavHost(isConnected: Boolean) {
                 onEdit = { navController.navigate(Graph.CreateProfile.route) })
         }
         composable(route = Graph.CreateProfile.route) {
-            CreateProfileLayout(onBack = { navController.popBackStack() })
+            CreateProfileLayoutDemo(onBack = { navController.popBackStack() })
         }
 
         breathingNavigation(navController, onBack = { navController.navigateUp() })
