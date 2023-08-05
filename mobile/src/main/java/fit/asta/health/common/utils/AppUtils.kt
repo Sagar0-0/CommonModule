@@ -24,7 +24,6 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.compose.runtime.Composable
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.documentfile.provider.DocumentFile
 import com.bumptech.glide.Glide
@@ -306,10 +305,8 @@ fun Context.shareReferralCode(code: String) {
     }
 }
 
-@Composable
 fun getImgUrl(url: String) = BuildConfig.BASE_IMAGE_URL + url
 
-@Composable
 fun getVideoUrl(url: String) = BuildConfig.BASE_VIDEO_URL + url
 
 fun getFirebaseStorageBucketUrl(context: Context): String {
