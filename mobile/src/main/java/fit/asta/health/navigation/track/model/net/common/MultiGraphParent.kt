@@ -9,4 +9,14 @@ data class MultiGraphParent(
     val unit: Int,
     @SerializedName("xAxis")
     val xAxis: List<String>
-)
+) {
+
+    data class MultiGraphData(
+        @SerializedName("name")
+        val name: String,
+        @SerializedName("xVal")
+        val xVal: List<String>,
+        @SerializedName("yVal")
+        val yVal: List<Double>
+    )
+}
