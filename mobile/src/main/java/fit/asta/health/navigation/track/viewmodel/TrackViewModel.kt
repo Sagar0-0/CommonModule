@@ -10,6 +10,7 @@ import fit.asta.health.navigation.track.model.net.sleep.SleepResponse
 import fit.asta.health.navigation.track.model.net.step.StepsResponse
 import fit.asta.health.navigation.track.model.net.sunlight.SunlightResponse
 import fit.asta.health.navigation.track.model.net.water.WaterResponse
+import fit.asta.health.navigation.track.view.util.TrackOption
 import fit.asta.health.navigation.track.view.util.TrackingNetworkCall
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -36,7 +37,7 @@ class TrackViewModel @Inject constructor(
     /**
      * This function fetches the Water Tracking Details from the Server
      */
-    fun getWaterDetails(status: String) {
+    private fun getWaterDetails(status: String) {
         viewModelScope.launch {
             trackingRepo.getWaterDetails(
                 uid = uid,
@@ -59,7 +60,7 @@ class TrackViewModel @Inject constructor(
     /**
      * This function fetches the steps Tracking details from the Server
      */
-    fun getStepsDetails() {
+    private fun getStepsDetails() {
         viewModelScope.launch {
             trackingRepo.getStepsDetails(
                 uid = uid,
@@ -79,7 +80,7 @@ class TrackViewModel @Inject constructor(
     )
     val meditationDetails = _meditationDetails.asStateFlow()
 
-    fun getMeditationDetails() {
+    private fun getMeditationDetails() {
         viewModelScope.launch {
             trackingRepo.getMeditationDetails(
                 uid = uid,
@@ -102,7 +103,7 @@ class TrackViewModel @Inject constructor(
     /**
      * This function fetches the breathing tracking details from the Server
      */
-    fun getBreathingDetails() {
+    private fun getBreathingDetails() {
         viewModelScope.launch {
             trackingRepo.getBreathingDetails(
                 uid = uid,
@@ -124,7 +125,7 @@ class TrackViewModel @Inject constructor(
     /**
      * This function fetches the sleep details from the Server
      */
-    fun getSleepDetails() {
+    private fun getSleepDetails() {
         viewModelScope.launch {
             trackingRepo.getSleepDetails(
                 uid = uid,
@@ -146,7 +147,7 @@ class TrackViewModel @Inject constructor(
     /**
      * This function fetches the Sunlight Tracking Details from the server
      */
-    fun getSunlightDetails() {
+    private fun getSunlightDetails() {
         viewModelScope.launch {
             trackingRepo.getSunlightDetails(
                 uid = uid,
@@ -158,4 +159,48 @@ class TrackViewModel @Inject constructor(
             }
         }
     }
+
+    private var currentTrackOption: TrackOption = TrackOption.WaterOption
+    fun setTrackOption(newTrackOption: TrackOption) {
+        currentTrackOption = newTrackOption
+    }
+
+    fun setTrackStatus(chosenOption: Int) {
+        when (chosenOption) {
+            0 -> currentTrackOption.trackStatus = TrackOption.TrackStatus.StatusDaily
+            1 -> currentTrackOption.trackStatus = TrackOption.TrackStatus.StatusWeekly
+            2 -> currentTrackOption.trackStatus = TrackOption.TrackStatus.StatusMonthly
+            3 -> currentTrackOption.trackStatus = TrackOption.TrackStatus.StatusYearly
+        }
+        handleRequest()
+    }
+
+    private fun handleRequest() {
+        when (currentTrackOption) {
+            is TrackOption.WaterOption -> {
+                getWaterDetails(status = currentTrackOption.trackStatus.status)
+            }
+
+            is TrackOption.StepsOption -> {
+                getStepsDetails()
+            }
+
+            is TrackOption.MeditationOption -> {
+                getMeditationDetails()
+            }
+
+            is TrackOption.BreathingOption -> {
+                getBreathingDetails()
+            }
+
+            is TrackOption.SleepOption -> {
+                getSleepDetails()
+            }
+
+            is TrackOption.SunlightOption -> {
+                getSunlightDetails()
+            }
+        }
+    }
+
 }

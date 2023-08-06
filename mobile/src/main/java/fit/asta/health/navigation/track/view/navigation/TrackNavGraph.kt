@@ -31,8 +31,8 @@ fun TrackNavGraph(
                 TrackNavRoute.Menu.route,
                 content = {
                     TrackMenuScreen(
-                        navController = navController,
-                        trackViewModel = trackViewModel
+                        setTrackOption = trackViewModel::setTrackOption,
+                        navigator = { navController.navigate(it) }
                     )
                 }
             )
@@ -47,7 +47,7 @@ fun TrackNavGraph(
 
                     TrackWaterScreen(
                         waterTrackData = waterTrackData,
-                        trackViewModel = trackViewModel
+                        setTrackStatus = trackViewModel::setTrackStatus
                     )
                 }
             )
