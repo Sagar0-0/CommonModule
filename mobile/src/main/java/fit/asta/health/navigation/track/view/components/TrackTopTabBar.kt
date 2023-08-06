@@ -57,11 +57,11 @@ private fun DefaultPreview() {
 @Composable
 fun TrackTopTabBar(
     modifier: Modifier = Modifier,
-    tabList: List<String>,
+    tabList: List<String> = listOf("DAY", "WEEK", "MONTH", "ALL"),
     selectedItem: Int,
     strokeWidth: Float = 10f,
-    selectedColor: Color,
-    unselectedColor: Color,
+    selectedColor: Color = Color.Blue,
+    unselectedColor: Color = Color.Gray,
     onNewTabClicked: (Int) -> Unit
 ) {
 
