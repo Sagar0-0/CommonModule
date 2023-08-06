@@ -1,6 +1,7 @@
 package fit.asta.health.navigation.track.model
 
 import fit.asta.health.navigation.track.model.api.TrackingApi
+import fit.asta.health.navigation.track.model.net.breathing.BreathingResponse
 import fit.asta.health.navigation.track.model.net.meditation.MeditationResponse
 import fit.asta.health.navigation.track.model.net.step.StepsResponse
 import fit.asta.health.navigation.track.model.net.water.WaterResponse
@@ -49,6 +50,21 @@ class TrackingRepoImpl @Inject constructor(
     ): Response<MeditationResponse> {
 
         return trackingApi.getMeditationDetails(
+            uid = uid,
+            date = date,
+            location = location,
+            status = status
+        )
+    }
+
+    override suspend fun getBreathingDetails(
+        uid: String,
+        date: String,
+        location: String,
+        status: String
+    ): Response<BreathingResponse> {
+
+        return trackingApi.getBreathingDetails(
             uid = uid,
             date = date,
             location = location,

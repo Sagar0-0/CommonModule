@@ -46,4 +46,14 @@ class TrackViewModel @Inject constructor(
         }
     }
 
+    fun getBreathingDetails() {
+        viewModelScope.launch {
+            trackingRepo.getBreathingDetails(
+                uid = "6309a9379af54f142c65fbfe",
+                date = "2023",
+                location = "bangalore",
+                status = "yearly"
+            )
+        }
+    }
 }

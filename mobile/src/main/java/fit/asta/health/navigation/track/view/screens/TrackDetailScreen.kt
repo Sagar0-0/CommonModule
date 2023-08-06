@@ -91,7 +91,8 @@ fun TrackDetailScreen(
             0 -> {
 //                trackViewModel.getWaterDetails()
 //                trackViewModel.getStepsDetails()
-                trackViewModel.getMeditationDetails()
+//                trackViewModel.getMeditationDetails()
+                trackViewModel.getBreathingDetails()
                 TrackStatisticsUI(trackViewModel = trackViewModel)
             }
 

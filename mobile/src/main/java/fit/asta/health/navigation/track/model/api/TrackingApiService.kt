@@ -1,5 +1,6 @@
 package fit.asta.health.navigation.track.model.api
 
+import fit.asta.health.navigation.track.model.net.breathing.BreathingResponse
 import fit.asta.health.navigation.track.model.net.meditation.MeditationResponse
 import fit.asta.health.navigation.track.model.net.step.StepsResponse
 import fit.asta.health.navigation.track.model.net.water.WaterResponse
@@ -32,4 +33,13 @@ interface TrackingApiService {
         @Query("loc") location: String,
         @Query("sts") status: String
     ): Response<MeditationResponse>
+
+    @GET("tracking/breathing/get/")
+    suspend fun getBreathingDetails(
+        @Query("uid") uid: String,
+        @Query("date") date: String,
+        @Query("loc") location: String,
+        @Query("sts") status: String
+    ): Response<BreathingResponse>
+
 }
