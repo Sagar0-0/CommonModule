@@ -6,7 +6,6 @@ plugins {
 android {
     namespace 'com.dev.anirban.chartlibrary'
     compileSdk 34
-    buildToolsVersion '34.0.0'
 
     defaultConfig {
         minSdk 24
@@ -30,12 +29,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_18
-        targetCompatibility JavaVersion.VERSION_18
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = "18"
+        jvmTarget = "17"
     }
 
     buildFeatures {

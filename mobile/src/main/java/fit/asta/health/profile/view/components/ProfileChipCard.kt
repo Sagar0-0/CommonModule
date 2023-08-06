@@ -66,12 +66,10 @@ fun ProfileChipCard(
                     )
                 }
             }
-
             Spacer(modifier = Modifier.height(spacing.medium))
-
             FlowRow(mainAxisSpacing = spacing.small, crossAxisSpacing = spacing.extraSmall) {
                 list.forEach {
-                    ChipsForList(textOnChip = it.name)
+                    DisabledChipForList(textOnChip = it.name)
                 }
             }
         }

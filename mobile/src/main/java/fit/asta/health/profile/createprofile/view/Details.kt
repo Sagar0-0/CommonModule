@@ -17,8 +17,10 @@ import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.rounded.AddAPhoto
 import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.PrivacyTip
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
@@ -28,21 +30,20 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.compose.rememberAsyncImagePainter
-import fit.asta.health.R
+import fit.asta.health.BuildConfig
 import fit.asta.health.common.jetpack.getOneUrl
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.components.functional.AppTextFieldValidate
 import fit.asta.health.common.ui.components.generic.AppButtons
+import fit.asta.health.common.ui.components.generic.AppDefServerImg
 import fit.asta.health.common.ui.components.generic.AppDefaultIcon
-import fit.asta.health.common.ui.components.generic.AppDrawImg
 import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.imageSize
@@ -141,12 +142,10 @@ fun PrivacyAndUserConsent() {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Top
         ) {
-            AppDrawImg(
-                painterResource(id = R.drawable.privacy),
+            AppDefaultIcon(
+                imageVector = Icons.Rounded.PrivacyTip,
                 contentDescription = "App Privacy",
-                modifier = Modifier.size(
-                    imageSize.standard
-                )
+                tint = MaterialTheme.colorScheme.primary
             )
             Spacer(modifier = Modifier.width(spacing.medium))
             Column {
@@ -181,18 +180,17 @@ fun UserCircleImage(
     onProfilePicClear: () -> Unit,
 ) {
 
-    val imageBaseUrl = "https://dj9n1wsbrvg44.cloudfront.net"
+    val imageBaseUrl = BuildConfig.BASE_IMAGE_URL
     val isImgNotAvail = url.isEmpty() || url == imageBaseUrl
-    val placeholderPainter = painterResource(id = R.drawable.userphoto)
-    val profilePainter = rememberAsyncImagePainter(model = url)
 
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.padding(horizontal = spacing.extraSmall1)
     ) {
-        AppDrawImg(
-            painter = if (isImgNotAvail) placeholderPainter else profilePainter,
+        AppDefServerImg(
+            model = url,
             contentDescription = "User Image",
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(customSize.extraLarge5)
                 .clip(CircleShape)
@@ -201,7 +199,7 @@ fun UserCircleImage(
                         width = 4.dp, color = MaterialTheme.colorScheme.primary
                     ), shape = CircleShape
                 ),
-            contentScale = ContentScale.Crop
+            placeholder = rememberVectorPainter(image = Icons.Filled.Person)
         )
         if (!isImgNotAvail) {
             DeleteImageButton(onProfilePicClear, modifier = Modifier.align(Alignment.TopEnd))
