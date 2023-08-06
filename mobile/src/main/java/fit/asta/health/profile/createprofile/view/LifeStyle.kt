@@ -42,6 +42,71 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import java.util.*
 
+@Composable
+fun LifeStyleCreateScreen(
+    viewModel: ProfileViewModel = hiltViewModel(),
+    eventPrevious: (() -> Unit)? = null,
+    eventNext: (() -> Unit)? = null,
+    onSkipEvent: (Int) -> Unit,
+) {
+
+    var currentBottomSheet: LifeStyleCreateBottomSheetType? by remember {
+        mutableStateOf(null)
+    }
+
+    var modalBottomSheetValue by remember {
+        mutableStateOf(ModalBottomSheetValue.Hidden)
+    }
+
+    val modalBottomSheetState =
+        androidx.compose.material.rememberModalBottomSheetState(modalBottomSheetValue)
+
+    val scope = rememberCoroutineScope()
+
+    val openSheet = {
+        scope.launch {
+            modalBottomSheetState.show()
+            if (modalBottomSheetValue == ModalBottomSheetValue.HalfExpanded) {
+                modalBottomSheetValue = ModalBottomSheetValue.Expanded
+            }
+        }
+    }
+
+    val closeSheet = {
+        scope.launch { modalBottomSheetState.hide() }
+    }
+
+    val onBottomSheetItemClick: (String) -> Unit = { propertyType ->
+        currentBottomSheet?.let {
+            openSheet()
+            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = propertyType))
+        }
+    }
+
+    val onItemClick: (LifeStyleCreateBottomSheetType, String) -> Unit = { sheetType, propertyType ->
+        currentBottomSheet = sheetType
+        onBottomSheetItemClick(propertyType)
+    }
+
+    AppModalBottomSheetLayout(sheetContent = {
+        Spacer(modifier = Modifier.height(1.dp))
+        currentBottomSheet?.let {
+            LifeStyleCreateBottomSheetLayout(
+                sheetLayout = it, closeSheet = { closeSheet() }, viewModel = viewModel
+            )
+        }
+    }, sheetState = modalBottomSheetState, content = {
+        LifeStyleContent(viewModel = viewModel,
+            eventPrevious = eventPrevious,
+            eventNext = eventNext,
+            onSkipEvent = onSkipEvent,
+            onCurrentActivity = { onItemClick(CURRENTACTIVITIES, "activity") },
+            onPreferredActivity = { onItemClick(PREFERREDACTIVITIES, "activity") },
+            onLifeStyleTargets = { onItemClick(LIFESTYLETARGETS, "goal") })
+    })
+}
+
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LifeStyleContent(
@@ -53,8 +118,6 @@ fun LifeStyleContent(
     onPreferredActivity: () -> Unit,
     onLifeStyleTargets: () -> Unit,
 ) {
-
-    val checkedState = remember { mutableStateOf(true) }
 
     //Radio Buttons Selection
     val radioButtonSelections by viewModel.radioButtonSelections.collectAsStateWithLifecycle()
@@ -71,7 +134,7 @@ fun LifeStyleContent(
 
     //Data
     val propertiesDataState by viewModel.propertiesData.collectAsStateWithLifecycle()
-    val composeThirdData: Map<Int, SnapshotStateList<HealthProperties>>? =
+    val composeSecondData: Map<Int, SnapshotStateList<HealthProperties>>? =
         propertiesDataState[ComposeIndex.Second]
 
     //Time Picker Params
@@ -103,10 +166,11 @@ fun LifeStyleContent(
             Spacer(modifier = Modifier.height(spacing.medium))
 
             //Sleep Schedule
-            LifeStyleTimePicker(firstEvent = {
-                showWakeUpTimeContent.value = true
-                clockWakeUpState.show()
-            },
+            LifeStyleTimePicker(
+                firstEvent = {
+                    showWakeUpTimeContent.value = true
+                    clockWakeUpState.show()
+                },
                 secondEvent = {
                     showBedTimeContent.value = true
                     clockBedState.show()
@@ -122,10 +186,11 @@ fun LifeStyleContent(
             Spacer(modifier = Modifier.height(spacing.medium))
 
             //Job Schedule
-            LifeStyleTimePicker(firstEvent = {
-                showJobStartContent.value = true
-                clockJStartState.show()
-            },
+            LifeStyleTimePicker(
+                firstEvent = {
+                    showJobStartContent.value = true
+                    clockJStartState.show()
+                },
                 secondEvent = {
                     showJobEndContent.value = true
                     clockJEndState.show()
@@ -139,14 +204,16 @@ fun LifeStyleContent(
             )
 
             if (showWakeUpTimeContent.value) {
-                CreateProfileTimePicker(clockState = clockWakeUpState,
+                CreateProfileTimePicker(
+                    clockState = clockWakeUpState,
                     onPositiveClick = { hours, minutes ->
                         viewModel.onEvent(event = ProfileEvent.OnUserWakeUpTimeChange("$hours:$minutes"))
                     })
             }
 
             if (showBedTimeContent.value) {
-                CreateProfileTimePicker(clockState = clockBedState,
+                CreateProfileTimePicker(
+                    clockState = clockBedState,
                     onPositiveClick = { hours, minutes ->
                         viewModel.onEvent(event = ProfileEvent.OnUserBedTimeChange("$hours:$minutes"))
                     })
@@ -155,14 +222,16 @@ fun LifeStyleContent(
             }
 
             if (showJobStartContent.value) {
-                CreateProfileTimePicker(clockState = clockJStartState,
+                CreateProfileTimePicker(
+                    clockState = clockJStartState,
                     onPositiveClick = { hours, minutes ->
                         viewModel.onEvent(event = ProfileEvent.OnUserJStartTimeChange("$hours:$minutes"))
                     })
             }
 
             if (showJobEndContent.value) {
-                CreateProfileTimePicker(clockState = clockJEndState,
+                CreateProfileTimePicker(
+                    clockState = clockJEndState,
                     onPositiveClick = { hours, minutes ->
                         viewModel.onEvent(event = ProfileEvent.OnUserJEndTimeChange("$hours:$minutes"))
                     })
@@ -201,8 +270,7 @@ fun LifeStyleContent(
                     selectedOption = selectedWorkingEnvOptionDemo,
                     onStateChange = { state ->
                         viewModel.updateRadioButtonSelection(
-                            MultiRadioBtnKeys.WORKINGENV.key,
-                            state
+                            MultiRadioBtnKeys.WORKINGENV.key, state
                         )
                     },
                     firstOption = "Standing",
@@ -223,8 +291,7 @@ fun LifeStyleContent(
                     selectedOption = selectedWorkingStyOptionDemo,
                     onStateChange = { state ->
                         viewModel.updateRadioButtonSelection(
-                            MultiRadioBtnKeys.WORKINGSTYLE.key,
-                            state
+                            MultiRadioBtnKeys.WORKINGSTYLE.key, state
                         )
                     },
                     firstOption = "Indoor",
@@ -245,8 +312,7 @@ fun LifeStyleContent(
                     selectedOption = selectedWorkingHrsOptionDemo,
                     onStateChange = { state ->
                         viewModel.updateRadioButtonSelection(
-                            MultiRadioBtnKeys.WORKINGHRS.key,
-                            state
+                            MultiRadioBtnKeys.WORKINGHRS.key, state
                         )
                     },
                     firstOption = "Morning",
@@ -259,8 +325,7 @@ fun LifeStyleContent(
 
             OnlyChipSelectionCard(
                 cardType = "Current Activities?",
-                cardList = composeThirdData?.get(0),
-                checkedState = checkedState,
+                cardList = composeSecondData?.get(0),
                 onItemsSelect = onCurrentActivity,
                 cardIndex = 0,
                 composeIndex = ComposeIndex.Second
@@ -270,8 +335,7 @@ fun LifeStyleContent(
 
             OnlyChipSelectionCard(
                 cardType = "Preferred Activities?",
-                cardList = composeThirdData?.get(1),
-                checkedState = checkedState,
+                cardList = composeSecondData?.get(1),
                 onItemsSelect = onPreferredActivity,
                 cardIndex = 1,
                 composeIndex = ComposeIndex.Second
@@ -281,8 +345,7 @@ fun LifeStyleContent(
 
             OnlyChipSelectionCard(
                 cardType = "LifeStyleTargets?",
-                cardList = composeThirdData?.get(2),
-                checkedState = checkedState,
+                cardList = composeSecondData?.get(2),
                 onItemsSelect = onLifeStyleTargets,
                 cardIndex = 2,
                 composeIndex = ComposeIndex.Second
@@ -301,140 +364,27 @@ fun LifeStyleContent(
 }
 
 @Composable
-fun LifeStyleCreateScreen(
-    viewModel: ProfileViewModel = hiltViewModel(),
-    eventPrevious: (() -> Unit)? = null,
-    eventNext: (() -> Unit)? = null,
-    onSkipEvent: (Int) -> Unit,
-) {
-
-    var currentBottomSheet: LifeStyleCreateBottomSheetType? by remember {
-        mutableStateOf(null)
-    }
-
-    var modalBottomSheetValue by remember {
-        mutableStateOf(ModalBottomSheetValue.Hidden)
-    }
-
-    val modalBottomSheetState =
-        androidx.compose.material.rememberModalBottomSheetState(modalBottomSheetValue)
-
-    val scope = rememberCoroutineScope()
-
-    val closeSheet = {
-        scope.launch { modalBottomSheetState.hide() }
-    }
-
-    val openSheet = {
-        scope.launch {
-            modalBottomSheetState.show()
-            if (modalBottomSheetValue == ModalBottomSheetValue.HalfExpanded) {
-                modalBottomSheetValue = ModalBottomSheetValue.Expanded
-            }
-        }
-    }
-
-    AppModalBottomSheetLayout(sheetContent = {
-        Spacer(modifier = Modifier.height(1.dp))
-        currentBottomSheet?.let {
-            LifeStyleCreateBottomSheetLayout(
-                sheetLayout = it, closeSheet = { closeSheet() }, viewModel = viewModel
-            )
-        }
-    }, sheetState = modalBottomSheetState, content = {
-        LifeStyleContent(eventPrevious = eventPrevious,
-            eventNext = eventNext,
-            onSkipEvent = onSkipEvent,
-            onCurrentActivity = {
-                currentBottomSheet = CURRENTACTIVITIES
-                openSheet()
-                viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "activity"))
-            },
-            onPreferredActivity = {
-                currentBottomSheet = PREFERREDACTIVITIES
-                openSheet()
-                viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "activity"))
-            },
-            onLifeStyleTargets = {
-                currentBottomSheet = LIFESTYLETARGETS
-                openSheet()
-                viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "goal"))
-            })
-    })
-}
-
-
-enum class LifeStyleCreateBottomSheetType {
-    CURRENTACTIVITIES, PREFERREDACTIVITIES, LIFESTYLETARGETS
-}
-
-
-@Composable
 fun LifeStyleCreateBottomSheetLayout(
     viewModel: ProfileViewModel = hiltViewModel(),
     sheetLayout: LifeStyleCreateBottomSheetType,
     closeSheet: () -> Unit,
 ) {
-    when (sheetLayout) {
-        CURRENTACTIVITIES -> {
-            when (val state = viewModel.stateHp.collectAsState().value) {
-                is HPropState.Empty -> {}
-                is HPropState.Error -> {}
-                is HPropState.Loading -> LoadingAnimation()
-                is HPropState.NoInternet -> {
-                    AppErrorScreen(onTryAgain = {})
-                }
 
-                is HPropState.Success -> {
-                    ItemSelectionLayout(
-                        cardList = state.properties,
-                        cardIndex = 0,
-                        composeIndex = ComposeIndex.Second
-                    )
-                }
-            }
-        }
+    val cardIndex = sheetLayout.cardIndex
+    val state by viewModel.stateHp.collectAsStateWithLifecycle()
 
-        PREFERREDACTIVITIES -> {
-            when (val state = viewModel.stateHp.collectAsState().value) {
-                is HPropState.Empty -> {}
-                is HPropState.Error -> {}
-                is HPropState.Loading -> LoadingAnimation()
-                is HPropState.NoInternet -> {
-                    AppErrorScreen(onTryAgain = {})
-                }
-
-                is HPropState.Success -> {
-                    ItemSelectionLayout(
-                        cardList = state.properties,
-                        cardIndex = 1,
-                        composeIndex = ComposeIndex.Second
-                    )
-                }
-            }
-        }
-
-        LIFESTYLETARGETS -> {
-            when (val state = viewModel.stateHp.collectAsState().value) {
-                is HPropState.Empty -> {}
-                is HPropState.Error -> {}
-                is HPropState.Loading -> LoadingAnimation()
-                is HPropState.NoInternet -> {
-                    AppErrorScreen(onTryAgain = {})
-                }
-
-                is HPropState.Success -> {
-                    ItemSelectionLayout(
-                        cardList = state.properties,
-                        cardIndex = 2,
-                        composeIndex = ComposeIndex.Second
-                    )
-                }
-            }
-        }
+    when (state) {
+        is HPropState.Empty -> TODO()
+        is HPropState.Error -> TODO()
+        is HPropState.Loading -> LoadingAnimation()
+        is HPropState.NoInternet -> AppErrorScreen(onTryAgain = {})
+        is HPropState.Success -> ItemSelectionLayout(
+            cardList = (state as HPropState.Success).properties,
+            cardIndex = cardIndex,
+            composeIndex = ComposeIndex.First
+        )
     }
 }
-
 
 @Composable
 private fun LifeStyleTimePicker(
@@ -509,4 +459,11 @@ private fun LifeStyleTimePicker(
 
         }
     }
+}
+
+
+sealed class LifeStyleCreateBottomSheetType(val cardIndex: Int) {
+    object CURRENTACTIVITIES : LifeStyleCreateBottomSheetType(0)
+    object PREFERREDACTIVITIES : LifeStyleCreateBottomSheetType(1)
+    object LIFESTYLETARGETS : LifeStyleCreateBottomSheetType(2)
 }

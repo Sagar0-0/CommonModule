@@ -5,6 +5,7 @@
     ExperimentalCoroutinesApi::class,
     ExperimentalCoroutinesApi::class
 )
+
 package fit.asta.health.profile.view
 
 import androidx.compose.foundation.layout.*
@@ -12,18 +13,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.common.ui.components.generic.AppButtons
+import fit.asta.health.common.ui.components.generic.AppCard
 import fit.asta.health.common.ui.components.generic.AppDefaultIcon
 import fit.asta.health.common.ui.components.generic.AppTexts
-import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.profile.createprofile.view.ValidateListError
 import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.HealthProperties
 import fit.asta.health.profile.model.domain.ThreeRadioBtnSelections
@@ -65,8 +64,7 @@ fun TwoTogglesGroup(
                 Row(
                     verticalAlignment = CenterVertically, modifier = Modifier.weight(1f)
                 ) {
-                    AppButtons.AppRadioButton(
-                        selected = selectedOption == option,
+                    AppButtons.AppRadioButton(selected = selectedOption == option,
                         onClick = { onStateChange(option) })
                     AppTexts.LabelSmall(
                         text = when (option) {
@@ -79,6 +77,7 @@ fun TwoTogglesGroup(
         }
     }
 }
+
 
 @Composable
 fun ThreeTogglesGroups(
@@ -111,8 +110,7 @@ fun ThreeTogglesGroups(
                 Row(
                     verticalAlignment = CenterVertically, modifier = Modifier.weight(1f)
                 ) {
-                    AppButtons.AppRadioButton(
-                        selected = selectedOption == option,
+                    AppButtons.AppRadioButton(selected = selectedOption == option,
                         onClick = { onStateChange(option) })
                     AppTexts.LabelSmall(
                         text = when (option) {
@@ -137,17 +135,12 @@ fun SelectionCardCreateProfile(
     onItemsSelect: () -> Unit,
     selectedOption: TwoRadioBtnSelections?,
     onStateChange: (TwoRadioBtnSelections) -> Unit,
-    cardIndex: Int? = null,
+    cardIndex: Int,
     composeIndex: ComposeIndex,
     listName: String = "",
 ) {
     Column(Modifier.fillMaxWidth()) {
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.medium,
-            colors = CardDefaults.cardColors(containerColor = Color.White),
-            elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
-        ) {
+        AppCard(modifier = Modifier.fillMaxWidth()) {
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -163,16 +156,11 @@ fun SelectionCardCreateProfile(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = CenterVertically
                     ) {
-                        Text(
-                            text = cardType,
-                            color = MaterialTheme.colorScheme.onTertiaryContainer,
-                            style = MaterialTheme.typography.titleSmall
-                        )
+                        AppTexts.TitleSmall(text = cardType)
                     }
                     if (selectedOption == TwoRadioBtnSelections.First) {
                         ProfileAddIcon(onClick = onItemsSelect)
                     }
-
                 }
                 TwoTogglesGroup(
                     selectionTypeText = null,
@@ -180,21 +168,17 @@ fun SelectionCardCreateProfile(
                     onStateChange = onStateChange
                 )
                 if (selectedOption == TwoRadioBtnSelections.First) {
-                    com.google.accompanist.flowlayout.FlowRow(
+                    FlowRow(
                         mainAxisSpacing = spacing.minSmall,
                         modifier = Modifier.padding(start = spacing.medium),
                     ) {
                         cardList?.forEach {
                             RemoveChipOnCard(textOnChip = it.name, onClick = {
-                                cardIndex?.let { index ->
-                                    ProfileEvent.SetSelectedRemoveItemOption(
-                                        it, index = index, composeIndex = composeIndex
+                                viewModel.onEvent(
+                                    event = ProfileEvent.SetSelectedRemoveItemOption(
+                                        it, index = cardIndex, composeIndex
                                     )
-                                }?.let { event ->
-                                    viewModel.onEvent(
-                                        event
-                                    )
-                                }
+                                )
                             })
                         }
                     }
@@ -210,23 +194,18 @@ fun SelectionCardCreateProfile(
     }
 }
 
+
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun OnlyChipSelectionCard(
     viewModel: ProfileViewModel = hiltViewModel(),
     cardType: String,
     cardList: SnapshotStateList<HealthProperties>?,
-    checkedState: MutableState<Boolean>? = null,
     onItemsSelect: () -> Unit,
-    cardIndex: Int? = null,
+    cardIndex: Int,
     composeIndex: ComposeIndex,
 ) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.medium,
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
-    ) {
+    AppCard(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -241,26 +220,22 @@ fun OnlyChipSelectionCard(
                 Row(
                     horizontalArrangement = Arrangement.Center, verticalAlignment = CenterVertically
                 ) {
-                    Text(
-                        text = cardType,
-                        color = MaterialTheme.colorScheme.onTertiaryContainer,
-                        style = MaterialTheme.typography.titleSmall
-                    )
+                    AppTexts.TitleSmall(text = cardType)
                 }
                 ProfileAddIcon(onClick = onItemsSelect)
             }
             Spacer(modifier = Modifier.height(spacing.small))
-            com.google.accompanist.flowlayout.FlowRow(
+            FlowRow(
                 mainAxisSpacing = spacing.minSmall,
                 modifier = Modifier.padding(start = spacing.medium),
             ) {
                 cardList?.forEach {
                     RemoveChipOnCard(textOnChip = it.name, onClick = {
-                        cardIndex?.let { index ->
+                        viewModel.onEvent(
                             ProfileEvent.SetSelectedRemoveItemOption(
-                                item = it, index = index, composeIndex = composeIndex
+                                item = it, index = cardIndex, composeIndex = composeIndex
                             )
-                        }?.let { event -> viewModel.onEvent(event) }
+                        )
                     })
                 }
             }
@@ -280,5 +255,22 @@ private fun ProfileAddIcon(
             contentDescription = "Add Item",
             tint = MaterialTheme.colorScheme.primary
         )
+    }
+}
+
+@Composable
+private fun ValidateListError(
+    viewModel: ProfileViewModel = hiltViewModel(),
+    selectedOption: TwoRadioBtnSelections?,
+    cardList: SnapshotStateList<HealthProperties>,
+    listName: String,
+) {
+    Row(Modifier.fillMaxWidth()) {
+        if (selectedOption is TwoRadioBtnSelections.First && cardList.isEmpty()) {
+            AppTexts.TitleSmall(
+                text = viewModel.validateDataList(cardList, listName).asString(),
+                color = MaterialTheme.colorScheme.error
+            )
+        }
     }
 }

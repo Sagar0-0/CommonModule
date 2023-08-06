@@ -281,7 +281,7 @@ private fun HealthContentLayout(
     ) {
         Spacer(modifier = Modifier.height(spacing.medium))
 
-        for (index in cardTypes.indices) {
+        cardTypes.indices.forEach { index ->
             val (composeIndex, selectedOption) = selections[index]
             val cardType = cardTypes[index]
             val onItemSelect = onItemSelectFunctions[index]
