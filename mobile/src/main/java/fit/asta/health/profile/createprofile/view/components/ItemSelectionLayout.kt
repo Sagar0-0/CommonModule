@@ -16,10 +16,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.AddCircle
+import androidx.compose.material.icons.rounded.RemoveCircle
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.material3.ChipColors
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
@@ -27,6 +34,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import fit.asta.health.common.ui.components.generic.AppChips
 import fit.asta.health.common.ui.components.generic.AppDefaultIcon
 import fit.asta.health.common.ui.components.generic.AppDivider
 import fit.asta.health.common.ui.components.generic.AppTextField
@@ -34,7 +42,6 @@ import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.HealthProperties
-import fit.asta.health.profile.view.components.AddChipOnCard
 import fit.asta.health.profile.viewmodel.ProfileEvent
 import fit.asta.health.profile.viewmodel.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -110,4 +117,44 @@ fun ChipRow(
             })
         }
     }
+}
+
+
+@Composable
+fun AddChipOnCard(
+    textOnChip: String,
+    onClick: () -> Unit,
+) {
+
+    var isToggled by remember { mutableStateOf(false) }
+
+    val colors =
+        rememberAssistChipColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+    AppChips.AppAssistChip(onClick = {
+        isToggled = !isToggled
+        onClick()
+    }, label = {
+        AppTexts.LabelSmall(
+            text = textOnChip, color = MaterialTheme.colorScheme.onPrimaryContainer
+        )
+    }, trailingIcon = {
+        AppDefaultIcon(
+            imageVector = if (isToggled) Icons.Rounded.RemoveCircle else Icons.Rounded.AddCircle,
+            contentDescription = if (isToggled) "Remove Items" else "Add Items",
+            tint = if (isToggled) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
+        )
+    }, colors = colors
+    )
+}
+
+@Composable
+fun rememberAssistChipColors(
+    containerColor: Color? = null,
+    disabledContainerColor: Color? = null,
+): ChipColors {
+    return AssistChipDefaults.assistChipColors(
+        containerColor = containerColor ?: MaterialTheme.colorScheme.primaryContainer,
+        disabledContainerColor = disabledContainerColor
+            ?: MaterialTheme.colorScheme.primaryContainer
+    )
 }

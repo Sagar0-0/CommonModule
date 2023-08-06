@@ -231,7 +231,6 @@ private fun HealthCreateBtmSheetLayout(
     sheetLayout: HealthCreateBottomSheetTypes,
     sheetState: () -> Unit,
 ) {
-
     val cardIndex = sheetLayout.cardIndex
     val state by viewModel.stateHp.collectAsStateWithLifecycle()
     when (state) {
