@@ -24,4 +24,15 @@ class TrackViewModel @Inject constructor(
         }
     }
 
+    fun getStepsDetails() {
+        viewModelScope.launch {
+            trackingRepo.getStepsDetails(
+                uid = "6309a9379af54f142c65fbfe",
+                date = "2023-June-05",
+                location = "bangalore",
+                status = "yearly"
+            )
+        }
+    }
+
 }

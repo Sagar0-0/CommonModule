@@ -1,6 +1,7 @@
 package fit.asta.health.navigation.track.model
 
 import fit.asta.health.navigation.track.model.api.TrackingApi
+import fit.asta.health.navigation.track.model.net.step.StepsResponse
 import fit.asta.health.navigation.track.model.net.water.WaterResponse
 import retrofit2.Response
 import javax.inject.Inject
@@ -15,7 +16,23 @@ class TrackingRepoImpl @Inject constructor(
         location: String,
         status: String
     ): Response<WaterResponse> {
+
         return trackingApi.getWaterDetails(
+            uid = uid,
+            date = date,
+            location = location,
+            status = status
+        )
+    }
+
+    override suspend fun getStepsDetails(
+        uid: String,
+        date: String,
+        location: String,
+        status: String
+    ): Response<StepsResponse> {
+
+        return trackingApi.getStepsDetails(
             uid = uid,
             date = date,
             location = location,
