@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.track.model.net.water
+package fit.asta.health.navigation.track.model.net.common
 
 import com.google.gson.annotations.SerializedName
 
