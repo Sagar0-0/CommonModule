@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.rounded.AddAPhoto
 import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.PrivacyTip
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
@@ -32,20 +33,17 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.BuildConfig
-import fit.asta.health.R
 import fit.asta.health.common.jetpack.getOneUrl
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.components.functional.AppTextFieldValidate
 import fit.asta.health.common.ui.components.generic.AppButtons
 import fit.asta.health.common.ui.components.generic.AppDefServerImg
 import fit.asta.health.common.ui.components.generic.AppDefaultIcon
-import fit.asta.health.common.ui.components.generic.AppDrawImg
 import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.imageSize
@@ -144,12 +142,10 @@ fun PrivacyAndUserConsent() {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Top
         ) {
-            AppDrawImg(
-                painterResource(id = R.drawable.privacy),
+            AppDefaultIcon(
+                imageVector = Icons.Rounded.PrivacyTip,
                 contentDescription = "App Privacy",
-                modifier = Modifier.size(
-                    imageSize.standard
-                )
+                tint = MaterialTheme.colorScheme.primary
             )
             Spacer(modifier = Modifier.width(spacing.medium))
             Column {
