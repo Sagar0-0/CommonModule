@@ -28,7 +28,7 @@ class TrackViewModel @Inject constructor(
         viewModelScope.launch {
             trackingRepo.getStepsDetails(
                 uid = "6309a9379af54f142c65fbfe",
-                date = "2023-June-05",
+                date = "2023",
                 location = "bangalore",
                 status = "yearly"
             )
@@ -49,6 +49,28 @@ class TrackViewModel @Inject constructor(
     fun getBreathingDetails() {
         viewModelScope.launch {
             trackingRepo.getBreathingDetails(
+                uid = "6309a9379af54f142c65fbfe",
+                date = "2023",
+                location = "bangalore",
+                status = "yearly"
+            )
+        }
+    }
+
+    fun getSleepDetails() {
+        viewModelScope.launch {
+            trackingRepo.getSleepDetails(
+                uid = "6309a9379af54f142c65fbfe",
+                date = "2023",
+                location = "bangalore",
+                status = "yearly"
+            )
+        }
+    }
+
+    fun getSunlightDetails() {
+        viewModelScope.launch {
+            trackingRepo.getSunlightDetails(
                 uid = "6309a9379af54f142c65fbfe",
                 date = "2023",
                 location = "bangalore",
