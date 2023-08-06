@@ -1,0 +1,12 @@
+package fit.asta.health.navigation.track.model.net.common
+
+import com.google.gson.annotations.SerializedName
+
+data class MultiGraphParent(
+    @SerializedName("data")
+    val multiGraphDataList: List<MultiGraphData>,
+    @SerializedName("unit")
+    val unit: Int,
+    @SerializedName("xAxis")
+    val xAxis: List<String>
+)
