@@ -35,4 +35,15 @@ class TrackViewModel @Inject constructor(
         }
     }
 
+    fun getMeditationDetails() {
+        viewModelScope.launch {
+            trackingRepo.getMeditationDetails(
+                uid = "6309a9379af54f142c65fbfe",
+                date = "2023",
+                location = "bangalore",
+                status = "yearly"
+            )
+        }
+    }
+
 }

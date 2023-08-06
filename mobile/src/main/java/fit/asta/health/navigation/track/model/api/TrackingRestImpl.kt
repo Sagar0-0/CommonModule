@@ -1,6 +1,7 @@
 package fit.asta.health.navigation.track.model.api
 
 import fit.asta.health.common.utils.NetworkUtil
+import fit.asta.health.navigation.track.model.net.meditation.MeditationResponse
 import fit.asta.health.navigation.track.model.net.step.StepsResponse
 import fit.asta.health.navigation.track.model.net.water.WaterResponse
 import okhttp3.OkHttpClient
@@ -36,6 +37,21 @@ class TrackingRestImpl(baseUrl: String, client: OkHttpClient) : TrackingApi {
     ): Response<StepsResponse> {
 
         return trackingApiService.getStepsDetails(
+            uid = uid,
+            date = date,
+            location = location,
+            status = status
+        )
+    }
+
+    override suspend fun getMeditationDetails(
+        uid: String,
+        date: String,
+        location: String,
+        status: String
+    ): Response<MeditationResponse> {
+
+        return trackingApiService.getMeditationDetails(
             uid = uid,
             date = date,
             location = location,

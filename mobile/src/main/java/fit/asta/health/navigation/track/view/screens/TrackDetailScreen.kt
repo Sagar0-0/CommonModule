@@ -90,7 +90,8 @@ fun TrackDetailScreen(
         when (selectedItem.intValue) {
             0 -> {
 //                trackViewModel.getWaterDetails()
-                trackViewModel.getStepsDetails()
+//                trackViewModel.getStepsDetails()
+                trackViewModel.getMeditationDetails()
                 TrackStatisticsUI(trackViewModel = trackViewModel)
             }
 
