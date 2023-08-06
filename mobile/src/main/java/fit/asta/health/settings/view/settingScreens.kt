@@ -49,6 +49,10 @@ fun NavGraphBuilder.settingScreens(
                         navController.navigate(Graph.Wallet.route)
                     }
 
+                    SettingsUiEvent.ADDRESS -> {
+                        navController.navigate(Graph.Address.route)
+                    }
+
                     SettingsUiEvent.BACK -> {
                         navController.navigateUp()
                     }
@@ -89,7 +93,9 @@ fun NavGraphBuilder.settingScreens(
                                     popUpToTop(navController)
                                 }
                             },
-                            onFailure = { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() }
+                            onFailure = {
+                                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                            }
                         )
                     }
 
@@ -123,6 +129,7 @@ fun NavGraphBuilder.settingScreens(
                     }
                 }
             }
+
 
             SettingsScreenLayout(
                 builtVersion = context.getCurrentBuildVersion(),

@@ -2,6 +2,7 @@ package fit.asta.health.settings.data
 
 sealed class SettingsUiEvent {
     object BACK : SettingsUiEvent()
+    object ADDRESS : SettingsUiEvent()
     object REFERRAL : SettingsUiEvent()
     object WALLET : SettingsUiEvent()
     object SUBSCRIBE : SettingsUiEvent()
