@@ -4,6 +4,7 @@ import fit.asta.health.navigation.track.model.net.breathing.BreathingResponse
 import fit.asta.health.navigation.track.model.net.meditation.MeditationResponse
 import fit.asta.health.navigation.track.model.net.sleep.SleepResponse
 import fit.asta.health.navigation.track.model.net.step.StepsResponse
+import fit.asta.health.navigation.track.model.net.sunlight.SunlightResponse
 import fit.asta.health.navigation.track.model.net.water.WaterResponse
 import retrofit2.Response
 
@@ -43,4 +44,11 @@ interface TrackingApi {
         location: String,
         status: String
     ): Response<SleepResponse>
+
+    suspend fun getSunlightDetails(
+        uid: String,
+        date: String,
+        location: String,
+        status: String
+    ): Response<SunlightResponse>
 }

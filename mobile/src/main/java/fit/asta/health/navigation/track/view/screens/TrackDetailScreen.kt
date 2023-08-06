@@ -93,7 +93,8 @@ fun TrackDetailScreen(
 //                trackViewModel.getStepsDetails()
 //                trackViewModel.getMeditationDetails()
 //                trackViewModel.getBreathingDetails()
-                trackViewModel.getSleepDetails()
+//                trackViewModel.getSleepDetails()
+                trackViewModel.getSunlightDetails()
                 TrackStatisticsUI(trackViewModel = trackViewModel)
             }
 

@@ -5,6 +5,7 @@ import fit.asta.health.navigation.track.model.net.breathing.BreathingResponse
 import fit.asta.health.navigation.track.model.net.meditation.MeditationResponse
 import fit.asta.health.navigation.track.model.net.sleep.SleepResponse
 import fit.asta.health.navigation.track.model.net.step.StepsResponse
+import fit.asta.health.navigation.track.model.net.sunlight.SunlightResponse
 import fit.asta.health.navigation.track.model.net.water.WaterResponse
 import okhttp3.OkHttpClient
 import retrofit2.Response
@@ -84,6 +85,21 @@ class TrackingRestImpl(baseUrl: String, client: OkHttpClient) : TrackingApi {
     ): Response<SleepResponse> {
 
         return trackingApiService.getSleepDetails(
+            uid = uid,
+            date = date,
+            location = location,
+            status = status
+        )
+    }
+
+    override suspend fun getSunlightDetails(
+        uid: String,
+        date: String,
+        location: String,
+        status: String
+    ): Response<SunlightResponse> {
+
+        return trackingApiService.getSunlightDetails(
             uid = uid,
             date = date,
             location = location,

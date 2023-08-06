@@ -4,6 +4,7 @@ import fit.asta.health.navigation.track.model.net.breathing.BreathingResponse
 import fit.asta.health.navigation.track.model.net.meditation.MeditationResponse
 import fit.asta.health.navigation.track.model.net.sleep.SleepResponse
 import fit.asta.health.navigation.track.model.net.step.StepsResponse
+import fit.asta.health.navigation.track.model.net.sunlight.SunlightResponse
 import fit.asta.health.navigation.track.model.net.water.WaterResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -50,4 +51,12 @@ interface TrackingApiService {
         @Query("loc") location: String,
         @Query("sts") status: String
     ): Response<SleepResponse>
+
+    @GET("tracking/sunlight/get/")
+    suspend fun getSunlightDetails(
+        @Query("uid") uid: String,
+        @Query("date") date: String,
+        @Query("loc") location: String,
+        @Query("sts") status: String
+    ): Response<SunlightResponse>
 }
