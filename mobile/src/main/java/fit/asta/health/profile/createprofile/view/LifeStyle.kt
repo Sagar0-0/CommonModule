@@ -2,51 +2,72 @@
 
 package fit.asta.health.profile.createprofile.view
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalOverscrollConfiguration
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
-import fit.asta.health.common.ui.components.*
+import fit.asta.health.common.ui.components.generic.AppButtons
+import fit.asta.health.common.ui.components.generic.AppCard
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.AppModalBottomSheetLayout
+import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
-import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.MultiRadioBtnKeys
-import fit.asta.health.profile.createprofile.view.LifeStyleCreateBottomSheetType.*
+import fit.asta.health.profile.createprofile.view.LifeStyleCreateBottomSheetType.CURRENTACTIVITIES
+import fit.asta.health.profile.createprofile.view.LifeStyleCreateBottomSheetType.LIFESTYLETARGETS
+import fit.asta.health.profile.createprofile.view.LifeStyleCreateBottomSheetType.PREFERREDACTIVITIES
 import fit.asta.health.profile.createprofile.view.components.CreateProfileTimePicker
+import fit.asta.health.profile.createprofile.view.components.CreateProfileTwoButtonLayout
 import fit.asta.health.profile.createprofile.view.components.ItemSelectionLayout
 import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.HealthProperties
 import fit.asta.health.profile.model.domain.ThreeRadioBtnSelections
 import fit.asta.health.profile.model.domain.TwoRadioBtnSelections
 import fit.asta.health.profile.model.domain.UserPropertyType
-import fit.asta.health.profile.view.*
+import fit.asta.health.profile.view.OnlyChipSelectionCard
+import fit.asta.health.profile.view.ThreeTogglesGroups
+import fit.asta.health.profile.view.TwoTogglesGroup
 import fit.asta.health.profile.view.components.UserSleepCycles
 import fit.asta.health.profile.viewmodel.HPropState
 import fit.asta.health.profile.viewmodel.ProfileEvent
 import fit.asta.health.profile.viewmodel.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-import java.util.*
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun LifeStyleCreateScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
-    eventPrevious: (() -> Unit)? = null,
-    eventNext: (() -> Unit)? = null,
+    eventPrevious: () -> Unit,
+    eventNext: () -> Unit,
     onSkipEvent: (Int) -> Unit,
 ) {
 
@@ -107,12 +128,12 @@ fun LifeStyleCreateScreen(
 }
 
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun LifeStyleContent(
     viewModel: ProfileViewModel = hiltViewModel(),
-    eventPrevious: (() -> Unit)? = null,
-    eventNext: (() -> Unit)? = null,
+    eventPrevious: () -> Unit,
+    eventNext: () -> Unit,
     onSkipEvent: (Int) -> Unit,
     onCurrentActivity: () -> Unit,
     onPreferredActivity: () -> Unit,
@@ -122,20 +143,26 @@ fun LifeStyleContent(
     //Radio Buttons Selection
     val radioButtonSelections by viewModel.radioButtonSelections.collectAsStateWithLifecycle()
 
-    val selectedPhyActiveOptionDemo =
-        radioButtonSelections[MultiRadioBtnKeys.PHYACTIVE.key] as ThreeRadioBtnSelections?
-    val selectedWorkingEnvOptionDemo =
-        radioButtonSelections[MultiRadioBtnKeys.WORKINGENV.key] as TwoRadioBtnSelections?
-    val selectedWorkingStyOptionDemo =
-        radioButtonSelections[MultiRadioBtnKeys.WORKINGSTYLE.key] as TwoRadioBtnSelections?
-    val selectedWorkingHrsOptionDemo =
-        radioButtonSelections[MultiRadioBtnKeys.WORKINGHRS.key] as ThreeRadioBtnSelections?
-
-
     //Data
     val propertiesDataState by viewModel.propertiesData.collectAsStateWithLifecycle()
     val composeSecondData: Map<Int, SnapshotStateList<HealthProperties>>? =
         propertiesDataState[ComposeIndex.Second]
+
+    val cardDataList = listOf(
+        OnlySelectionCardData(
+            "Current Activities",
+            composeSecondData?.get(0),
+            onCurrentActivity,
+            0
+        ),
+        OnlySelectionCardData(
+            "Preferred Activities",
+            composeSecondData?.get(1),
+            onPreferredActivity,
+            1
+        ),
+        OnlySelectionCardData("LifeStyleTargets", composeSecondData?.get(2), onLifeStyleTargets, 2)
+    )
 
     //Time Picker Params
     val clockWakeUpState = rememberUseCaseState()
@@ -204,16 +231,14 @@ fun LifeStyleContent(
             )
 
             if (showWakeUpTimeContent.value) {
-                CreateProfileTimePicker(
-                    clockState = clockWakeUpState,
+                CreateProfileTimePicker(clockState = clockWakeUpState,
                     onPositiveClick = { hours, minutes ->
                         viewModel.onEvent(event = ProfileEvent.OnUserWakeUpTimeChange("$hours:$minutes"))
                     })
             }
 
             if (showBedTimeContent.value) {
-                CreateProfileTimePicker(
-                    clockState = clockBedState,
+                CreateProfileTimePicker(clockState = clockBedState,
                     onPositiveClick = { hours, minutes ->
                         viewModel.onEvent(event = ProfileEvent.OnUserBedTimeChange("$hours:$minutes"))
                     })
@@ -222,145 +247,65 @@ fun LifeStyleContent(
             }
 
             if (showJobStartContent.value) {
-                CreateProfileTimePicker(
-                    clockState = clockJStartState,
+                CreateProfileTimePicker(clockState = clockJStartState,
                     onPositiveClick = { hours, minutes ->
                         viewModel.onEvent(event = ProfileEvent.OnUserJStartTimeChange("$hours:$minutes"))
                     })
             }
 
             if (showJobEndContent.value) {
-                CreateProfileTimePicker(
-                    clockState = clockJEndState,
+                CreateProfileTimePicker(clockState = clockJEndState,
                     onPositiveClick = { hours, minutes ->
                         viewModel.onEvent(event = ProfileEvent.OnUserJEndTimeChange("$hours:$minutes"))
                     })
             }
 
             Spacer(modifier = Modifier.height(spacing.medium))
+            LifeStyleToggleSelectionCard(selectionTypeText = "Are you Physically Active",
+                options = listOf("Less", "Moderate", "Very"),
+                selectedOption = radioButtonSelections[MultiRadioBtnKeys.PHYACTIVE.key] as ThreeRadioBtnSelections?,
+                onStateChange = { state ->
+                    viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.PHYACTIVE.key, state)
+                })
+            Spacer(modifier = Modifier.height(spacing.medium))
+            LifeStyleToggleSelectionCard(selectionTypeText = "Current Working Environment",
+                options = listOf("Standing", "Sitting"),
+                selectedOption = radioButtonSelections[MultiRadioBtnKeys.WORKINGENV.key] as TwoRadioBtnSelections?,
+                onStateChange = { state ->
+                    viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.WORKINGENV.key, state)
+                })
+            Spacer(modifier = Modifier.height(spacing.medium))
+            LifeStyleToggleSelectionCard(selectionTypeText = "Current WorkStyle",
+                options = listOf("Indoor", "Outdoor"),
+                selectedOption = radioButtonSelections[MultiRadioBtnKeys.WORKINGSTYLE.key] as TwoRadioBtnSelections?,
+                onStateChange = { state ->
+                    viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.WORKINGSTYLE.key, state)
+                })
+            Spacer(modifier = Modifier.height(spacing.medium))
+            LifeStyleToggleSelectionCard(selectionTypeText = "What are your working hours",
+                options = listOf("Morning", "Afternoon", "Night"),
+                selectedOption = radioButtonSelections[MultiRadioBtnKeys.WORKINGHRS.key] as ThreeRadioBtnSelections?,
+                onStateChange = { state ->
+                    viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.WORKINGHRS.key, state)
+                })
+            Spacer(modifier = Modifier.height(spacing.medium))
 
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = MaterialTheme.shapes.medium,
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
-            ) {
-                ThreeTogglesGroups(
-                    selectionTypeText = "Are you Physically Active",
-                    selectedOption = selectedPhyActiveOptionDemo,
-                    onStateChange = { state ->
-                        viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.PHYACTIVE.key, state)
-                    },
-                    firstOption = "Less",
-                    secondOption = "Moderate",
-                    thirdOption = "Very"
+            cardDataList.forEach { cardData ->
+                OnlyChipSelectionCard(
+                    cardType = cardData.cardType,
+                    cardList = cardData.cardList,
+                    onItemsSelect = cardData.onItemsSelect,
+                    cardIndex = cardData.cardIndex,
+                    composeIndex = ComposeIndex.Second,
                 )
+                Spacer(modifier = Modifier.height(spacing.medium))
             }
 
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = MaterialTheme.shapes.medium,
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
-            ) {
-                TwoTogglesGroup(
-                    selectionTypeText = "Current Working Environment",
-                    selectedOption = selectedWorkingEnvOptionDemo,
-                    onStateChange = { state ->
-                        viewModel.updateRadioButtonSelection(
-                            MultiRadioBtnKeys.WORKINGENV.key, state
-                        )
-                    },
-                    firstOption = "Standing",
-                    secondOption = "Sitting"
-                )
-            }
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = MaterialTheme.shapes.medium,
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
-            ) {
-                TwoTogglesGroup(
-                    selectionTypeText = "Current WorkStyle",
-                    selectedOption = selectedWorkingStyOptionDemo,
-                    onStateChange = { state ->
-                        viewModel.updateRadioButtonSelection(
-                            MultiRadioBtnKeys.WORKINGSTYLE.key, state
-                        )
-                    },
-                    firstOption = "Indoor",
-                    secondOption = "Outdoor"
-                )
-            }
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = MaterialTheme.shapes.medium,
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
-            ) {
-                ThreeTogglesGroups(
-                    selectionTypeText = "What are your working hours",
-                    selectedOption = selectedWorkingHrsOptionDemo,
-                    onStateChange = { state ->
-                        viewModel.updateRadioButtonSelection(
-                            MultiRadioBtnKeys.WORKINGHRS.key, state
-                        )
-                    },
-                    firstOption = "Morning",
-                    secondOption = "Afternoon",
-                    thirdOption = "Night"
-                )
-            }
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            OnlyChipSelectionCard(
-                cardType = "Current Activities?",
-                cardList = composeSecondData?.get(0),
-                onItemsSelect = onCurrentActivity,
-                cardIndex = 0,
-                composeIndex = ComposeIndex.Second
-            )
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            OnlyChipSelectionCard(
-                cardType = "Preferred Activities?",
-                cardList = composeSecondData?.get(1),
-                onItemsSelect = onPreferredActivity,
-                cardIndex = 1,
-                composeIndex = ComposeIndex.Second
-            )
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            OnlyChipSelectionCard(
-                cardType = "LifeStyleTargets?",
-                cardList = composeSecondData?.get(2),
-                onItemsSelect = onLifeStyleTargets,
-                cardIndex = 2,
-                composeIndex = ComposeIndex.Second
-            )
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            CreateProfileButtons(
-                eventPrevious, eventNext, text = "Next", enableButton = true
-            )
+            CreateProfileTwoButtonLayout(eventPrevious, eventNext)
 
             Spacer(modifier = Modifier.height(spacing.medium))
         }
     }
-
 }
 
 @Composable
@@ -386,6 +331,13 @@ fun LifeStyleCreateBottomSheetLayout(
     }
 }
 
+
+sealed class LifeStyleCreateBottomSheetType(val cardIndex: Int) {
+    object CURRENTACTIVITIES : LifeStyleCreateBottomSheetType(0)
+    object PREFERREDACTIVITIES : LifeStyleCreateBottomSheetType(1)
+    object LIFESTYLETARGETS : LifeStyleCreateBottomSheetType(2)
+}
+
 @Composable
 private fun LifeStyleTimePicker(
     firstEvent: () -> Unit,
@@ -397,31 +349,17 @@ private fun LifeStyleTimePicker(
     firstButtonType: String,
     secButtonType: String,
 ) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.medium,
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
-    ) {
 
-        Column(modifier = Modifier.padding(vertical = 16.dp)) {
+    AppCard(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(vertical = spacing.medium)) {
 
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 8.dp),
+                    .padding(start = spacing.medium, end = spacing.small),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-
-                Text(
-                    text = UserPropertyType.SleepSchedule.title,
-                    fontSize = 10.sp,
-                    lineHeight = 16.sp,
-                    letterSpacing = 1.5.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black
-                )
-
+                AppTexts.TitleMedium(text = UserPropertyType.SleepSchedule.title)
             }
 
             Spacer(modifier = Modifier.height(spacing.medium))
@@ -429,41 +367,102 @@ private fun LifeStyleTimePicker(
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    .padding(horizontal = spacing.medium),
+                horizontalArrangement = Arrangement.spacedBy(spacing.small),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                PrimaryButton(
-                    text = firstButtonType,
-                    event = firstEvent,
-                    enableButton = true,
-                    modifier = Modifier.weight(1f)
-                )
-                PrimaryButton(
-                    text = secButtonType,
-                    event = secondEvent,
-                    enableButton = true,
-                    modifier = Modifier.weight(1f)
-                )
+                AppButtons.AppStandardButton(onClick = firstEvent, modifier = Modifier.weight(1f)) {
+                    AppTexts.LabelMedium(text = firstButtonType, textAlign = TextAlign.Center)
+                }
+                AppButtons.AppStandardButton(
+                    onClick = secondEvent, modifier = Modifier.weight(1f)
+                ) {
+                    AppTexts.LabelMedium(text = secButtonType, textAlign = TextAlign.Center)
+                }
             }
-
             Spacer(modifier = Modifier.height(spacing.medium))
-
             Row(
-                Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
+                Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
             ) {
                 UserSleepCycles(columnType = firstColType, columnValue = firstColValue)
-                Spacer(modifier = Modifier.width(40.dp))
+                Spacer(modifier = Modifier.width(spacing.large))
                 UserSleepCycles(columnType = secColType, columnValue = secColValue)
             }
+        }
+    }
 
+}
+
+@Composable
+private fun LifeStyleThreeToggleSelectionCard(
+    firstOption: String,
+    secondOption: String,
+    thirdOption: String,
+    selectionTypeText: String?,
+    selectedOption: ThreeRadioBtnSelections?,
+    onStateChange: (ThreeRadioBtnSelections) -> Unit,
+) {
+    AppCard(modifier = Modifier.fillMaxWidth()) {
+        ThreeTogglesGroups(
+            selectionTypeText,
+            selectedOption,
+            onStateChange,
+            firstOption,
+            secondOption,
+            thirdOption,
+        )
+    }
+}
+
+
+@Composable
+private fun LifeStyleTwoToggleSelectionCard(
+    selectionTypeText: String?,
+    selectedOption: TwoRadioBtnSelections?,
+    onStateChange: (TwoRadioBtnSelections) -> Unit,
+    firstOption: String = "Yes",
+    secondOption: String = "No",
+) {
+    AppCard {
+        TwoTogglesGroup(selectionTypeText, selectedOption, onStateChange, firstOption, secondOption)
+    }
+}
+
+
+@Composable
+private fun LifeStyleToggleSelectionCard(
+    selectionTypeText: String?,
+    options: List<String>,
+    selectedOption: Any?,
+    onStateChange: (Any) -> Unit,
+) {
+    AppCard(modifier = Modifier.fillMaxWidth()) {
+        when (options.size) {
+            2 -> TwoTogglesGroup(
+                selectionTypeText,
+                selectedOption as TwoRadioBtnSelections?,
+                onStateChange,
+                options[0],
+                options[1],
+            )
+
+            3 -> ThreeTogglesGroups(
+                selectionTypeText,
+                selectedOption as ThreeRadioBtnSelections?,
+                onStateChange,
+                options[0],
+                options[1],
+                options[2],
+            )
         }
     }
 }
 
 
-sealed class LifeStyleCreateBottomSheetType(val cardIndex: Int) {
-    object CURRENTACTIVITIES : LifeStyleCreateBottomSheetType(0)
-    object PREFERREDACTIVITIES : LifeStyleCreateBottomSheetType(1)
-    object LIFESTYLETARGETS : LifeStyleCreateBottomSheetType(2)
-}
+data class OnlySelectionCardData(
+    val cardType: String,
+    val cardList: SnapshotStateList<HealthProperties>?,
+    val onItemsSelect: () -> Unit,
+    val cardIndex: Int,
+)
