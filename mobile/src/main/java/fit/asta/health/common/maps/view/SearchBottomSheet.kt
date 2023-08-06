@@ -208,17 +208,16 @@ fun SearchBottomSheet(
                     }
                 }
 
-                is ResponseState.NoInternet -> {
-                    AppErrorScreen()
-                }
-
                 is ResponseState.Error -> {
                     AppErrorScreen(desc = "Some internal error occurred! We are fixing it soon!")
                 }
 
+                is ResponseState.Idle -> {
+                    Text(text = "Your search results will appear here.")
+                }
+
                 else -> {}
             }
-
         }
     }
 

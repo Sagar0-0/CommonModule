@@ -48,7 +48,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.maps.modal.AddressesResponse
 import fit.asta.health.common.ui.components.ValidatedTextField
-import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.spacing
@@ -310,10 +309,6 @@ fun FillAddressSheet(
                         Text(text = "Save address", style = MaterialTheme.typography.titleLarge)
                     }
                 }
-            }
-
-            is ResponseState.Error -> {
-                AppErrorScreen()
             }
 
             else -> {}

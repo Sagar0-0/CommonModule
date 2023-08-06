@@ -49,6 +49,10 @@ fun NavGraphBuilder.settingScreens(
                         navController.navigate(Graph.Wallet.route)
                     }
 
+                    SettingsUiEvent.ADDRESS -> {
+                        navController.navigate(Graph.Address.route)
+                    }
+
                     SettingsUiEvent.BACK -> {
                         navController.navigateUp()
                     }

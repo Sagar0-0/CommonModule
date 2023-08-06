@@ -49,6 +49,8 @@ fun MapScreen(
     val currentLatLng by mapsViewModel.currentLatLng.collectAsStateWithLifecycle()
     val scaffoldState = rememberBottomSheetScaffoldState()
 
+    val bottomCardHeight = 140.dp
+
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(LatLng(myAddressItem.lat, myAddressItem.lon), 18f)
     }
@@ -80,6 +82,7 @@ fun MapScreen(
                     CameraPosition.fromLatLngZoom(LatLng(addressItem.lat, addressItem.lon), 18f)
             },
             onClose = {
+                mapsViewModel.clearSearchResponse()
                 searchSheetVisible = false
             }
         )
@@ -157,7 +160,7 @@ fun MapScreen(
                     modifier = Modifier
                         .padding(spacing.medium)
                         .align(Alignment.End)
-                        .size(iconButtonSize.large),
+                        .size(iconButtonSize.extraLarge2),
                     colors = IconButtonDefaults.iconButtonColors(
                         containerColor = MaterialTheme.colorScheme.surface,
                         contentColor = MaterialTheme.colorScheme.primary
@@ -168,7 +171,12 @@ fun MapScreen(
                             CameraPosition.fromLatLngZoom(currentLatLng, 18f)
                     }
                 ) {
-                    Icon(imageVector = Icons.Default.MyLocation, contentDescription = "My Location")
+                    Icon(
+                        modifier = Modifier
+                            .size(iconButtonSize.large),
+                        imageVector = Icons.Default.MyLocation,
+                        contentDescription = "My Location"
+                    )
                 }
 
                 Column(
@@ -188,7 +196,9 @@ fun MapScreen(
                     when (markerAddress) {
                         is ResponseState.Loading -> {
                             Box(
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(bottomCardHeight),
                                 contentAlignment = Alignment.Center
                             ) {
                                 LoadingAnimation()
@@ -224,7 +234,14 @@ fun MapScreen(
                         }
 
                         else -> {
-                            Text(text = "Something went wrong")//TODO: ERROR HANDLING
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(bottomCardHeight),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(text = "Something went wrong")
+                            }
                         }
                     }
                 }

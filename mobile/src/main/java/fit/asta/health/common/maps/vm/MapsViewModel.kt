@@ -40,6 +40,7 @@ import fit.asta.health.common.utils.ResourcesProvider
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getLocationName
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.cancellable
@@ -81,6 +82,7 @@ class MapsViewModel
     val searchResponseState = _searchResponseState.asStateFlow()
 
     private var searchJob: Job? = null
+    private var addressDetailJob: Job? = null
 
     private val _addressListState =
         MutableStateFlow<ResponseState<AddressesResponse>>(ResponseState.Loading)
@@ -94,7 +96,6 @@ class MapsViewModel
 
     init {
         updateLocationServiceStatus()
-
         viewModelScope.launch {
             prefUtils.getPreferences(
                 resourcesProvider.getString(R.string.user_pref_current_address),
@@ -104,6 +105,10 @@ class MapsViewModel
                 Log.d("LOC", "init: $it")
             }
         }
+    }
+
+    fun clearSearchResponse() {
+        _searchResponseState.value = ResponseState.Idle
     }
 
     fun updateCurrentLocationData(context: Context) {
@@ -256,34 +261,39 @@ class MapsViewModel
 
     fun getMarkerAddressDetails(lat: Double, long: Double, context: Context) {
         _markerAddressDetail.value = ResponseState.Loading
-        try {
-            val geocoder = Geocoder(context, Locale.getDefault())
-            if (SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                geocoder.getFromLocation(
-                    lat,
-                    long,
-                    1,
-                ) { p0 ->
-                    _markerAddressDetail.value = ResponseState.Success(p0[0])
-                }
-            } else {
-                val addresses = geocoder.getFromLocation(
-                    lat,
-                    long,
-                    1,
-                )
-                _markerAddressDetail.value =
-                    if (!addresses.isNullOrEmpty()) {
-                        ResponseState.Success(addresses[0])
-                    } else {
-                        ResponseState.Error(Exception("Address is null"))
+        addressDetailJob?.cancel()
+        addressDetailJob = viewModelScope.launch {
+            delay(200)
+            try {
+                val geocoder = Geocoder(context, Locale.getDefault())
+                if (SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    geocoder.getFromLocation(
+                        lat,
+                        long,
+                        1,
+                    ) { p0 ->
+                        _markerAddressDetail.value = ResponseState.Success(p0[0])
                     }
+                } else {
+                    val addresses = geocoder.getFromLocation(
+                        lat,
+                        long,
+                        1,
+                    )
+                    _markerAddressDetail.value =
+                        if (!addresses.isNullOrEmpty()) {
+                            ResponseState.Success(addresses[0])
+                        } else {
+                            ResponseState.Error(Exception("Address is null"))
+                        }
+                }
+            } catch (e: Exception) {
+                _markerAddressDetail.value = ResponseState.Error(e)
             }
-        } catch (e: Exception) {
-            _markerAddressDetail.value = ResponseState.Error(e)
-        }
 
+        }
     }
+
 
     fun search(query: String) {
         _searchResponseState.value = ResponseState.Loading

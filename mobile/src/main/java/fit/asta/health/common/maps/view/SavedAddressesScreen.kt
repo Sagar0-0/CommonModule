@@ -105,6 +105,7 @@ fun SavedAddressesScreen(
                 navHostController.navigate(route = "${AddressScreen.Map.route}/$addJson")
             },
             onClose = {
+                mapsViewModel.clearSearchResponse()
                 sheetVisible = false
             }
         )

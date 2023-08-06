@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Feedback
 import androidx.compose.material.icons.filled.FileCopy
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material.icons.filled.NightShelter
@@ -135,6 +136,10 @@ fun SettingsScreenLayout(
                     title = "Refer and earn",
                     imageVector = Icons.Default.MonetizationOn
                 ) { onClickEvent(SettingsUiEvent.REFERRAL) }
+                PreferenceItem(
+                    title = "Saved Address",
+                    imageVector = Icons.Default.LocationOn
+                ) { onClickEvent(SettingsUiEvent.ADDRESS) }
 
                 PreferenceItem(
                     title = "Wallet",
