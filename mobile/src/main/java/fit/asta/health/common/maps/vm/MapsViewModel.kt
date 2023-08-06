@@ -286,10 +286,10 @@ class MapsViewModel
     }
 
     fun search(query: String) {
+        _searchResponseState.value = ResponseState.Loading
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
-            _searchResponseState.value = ResponseState.Loading
-            mapsRepo.search(query).cancellable().collect {
+            mapsRepo.search(query, _currentLatLng.value).cancellable().collect {
                 _searchResponseState.value = it
             }
         }

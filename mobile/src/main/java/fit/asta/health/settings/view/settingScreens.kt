@@ -89,7 +89,9 @@ fun NavGraphBuilder.settingScreens(
                                     popUpToTop(navController)
                                 }
                             },
-                            onFailure = { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() }
+                            onFailure = {
+                                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                            }
                         )
                     }
 
@@ -123,6 +125,7 @@ fun NavGraphBuilder.settingScreens(
                     }
                 }
             }
+
 
             SettingsScreenLayout(
                 builtVersion = context.getCurrentBuildVersion(),

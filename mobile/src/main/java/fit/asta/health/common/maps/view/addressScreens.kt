@@ -40,7 +40,7 @@ fun NavGraphBuilder.addressScreens(navController: NavHostController) {
     composable(route = Graph.Address.route) {
         val nestedNavController = rememberNavController()
         val mapsViewModel: MapsViewModel = hiltViewModel()
-        setup(mapsViewModel, navController)
+        Setup(mapsViewModel, navController)
 
         NavHost(
             navController = nestedNavController,
@@ -50,7 +50,7 @@ fun NavGraphBuilder.addressScreens(navController: NavHostController) {
             composable(
                 route = AddressScreen.SavedAdd.route
             ) {
-                LaunchedEffect(key1 = Unit, block = { mapsViewModel.getAllAddresses() })
+                LaunchedEffect(Unit) { mapsViewModel.getAllAddresses() }
                 SavedAddressesScreen(
                     navHostController = nestedNavController,
                     mapsViewModel = mapsViewModel,
@@ -75,7 +75,7 @@ fun NavGraphBuilder.addressScreens(navController: NavHostController) {
 }
 
 @Composable
-private fun setup(mapsViewModel: MapsViewModel, navController: NavHostController) {
+private fun Setup(mapsViewModel: MapsViewModel, navController: NavHostController) {
     val context = LocalContext.current
     val br = LocationProviderChangedReceiver()
     LaunchedEffect(Unit) {
@@ -128,8 +128,6 @@ private fun setup(mapsViewModel: MapsViewModel, navController: NavHostController
             }
         }
     }
-//            Places.initialize(context.applicationContext, context.getString(R.string.MAPS_API_KEY)) TODO: ONLY FOR SEARCHING
-
 
     val permissionResultLauncher =
         rememberLauncherForActivityResult(
@@ -155,7 +153,9 @@ private fun setup(mapsViewModel: MapsViewModel, navController: NavHostController
         }
 
     val locationRequestLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { activityResult ->
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.StartIntentSenderForResult()
+        ) { activityResult ->
             if (activityResult.resultCode == AppCompatActivity.RESULT_OK)
                 mapsViewModel.updateCurrentLocationData(context)
             else {
@@ -202,6 +202,7 @@ private fun setup(mapsViewModel: MapsViewModel, navController: NavHostController
             }
         }
     }
+
     LaunchedEffect(isLocationEnabled) {
         if (!isLocationEnabled) {
             mapsViewModel.enableLocationRequest(context) { intent ->

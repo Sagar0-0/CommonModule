@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
@@ -69,7 +68,7 @@ import fit.asta.health.common.ui.theme.iconSize
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.ResponseState
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SavedAddressesScreen(
     navHostController: NavHostController,
@@ -96,12 +95,14 @@ fun SavedAddressesScreen(
         scaffoldState = scaffoldState,
         sheetContent = {},
         sheetDragHandle = null
-    ) {
+    ) { padding ->
         if (sheetVisible) SearchBottomSheet(
+            modifier = Modifier.padding(padding),
             onSearch = mapsViewModel::search,
             searchResponseState = searchResponseState,
-            onResultClick = { route ->
-                navHostController.navigate(route)
+            onResultClick = { myAddressItem ->
+                val addJson = gson.toJson(myAddressItem)
+                navHostController.navigate(route = "${AddressScreen.Map.route}/$addJson")
             },
             onClose = {
                 sheetVisible = false
@@ -111,7 +112,7 @@ fun SavedAddressesScreen(
         Column(
             Modifier
                 .fillMaxSize()
-                .padding(it)
+                .padding(padding)
         ) {
             AnimatedVisibility(!sheetVisible) {
                 OutlinedTextField(
