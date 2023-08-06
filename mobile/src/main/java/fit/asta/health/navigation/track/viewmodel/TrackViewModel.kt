@@ -56,4 +56,15 @@ class TrackViewModel @Inject constructor(
             )
         }
     }
+
+    fun getSleepDetails() {
+        viewModelScope.launch {
+            trackingRepo.getSleepDetails(
+                uid = "6309a9379af54f142c65fbfe",
+                date = "2023",
+                location = "bangalore",
+                status = "yearly"
+            )
+        }
+    }
 }

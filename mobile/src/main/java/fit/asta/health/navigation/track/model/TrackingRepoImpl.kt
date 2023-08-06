@@ -3,6 +3,7 @@ package fit.asta.health.navigation.track.model
 import fit.asta.health.navigation.track.model.api.TrackingApi
 import fit.asta.health.navigation.track.model.net.breathing.BreathingResponse
 import fit.asta.health.navigation.track.model.net.meditation.MeditationResponse
+import fit.asta.health.navigation.track.model.net.sleep.SleepResponse
 import fit.asta.health.navigation.track.model.net.step.StepsResponse
 import fit.asta.health.navigation.track.model.net.water.WaterResponse
 import retrofit2.Response
@@ -65,6 +66,21 @@ class TrackingRepoImpl @Inject constructor(
     ): Response<BreathingResponse> {
 
         return trackingApi.getBreathingDetails(
+            uid = uid,
+            date = date,
+            location = location,
+            status = status
+        )
+    }
+
+    override suspend fun getSleepDetails(
+        uid: String,
+        date: String,
+        location: String,
+        status: String
+    ): Response<SleepResponse> {
+
+        return trackingApi.getSleepDetails(
             uid = uid,
             date = date,
             location = location,
