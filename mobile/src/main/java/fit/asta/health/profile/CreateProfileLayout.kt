@@ -3,6 +3,7 @@
 package fit.asta.health.profile
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Emergency
@@ -33,7 +34,10 @@ import fit.asta.health.profile.createprofile.view.components.Stepper
 import fit.asta.health.profile.viewmodel.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
+@OptIn(
+    ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class,
+    ExperimentalMaterialApi::class
+)
 @Composable
 fun CreateProfileLayoutDemo(
     viewModel: ProfileViewModel = hiltViewModel(),
