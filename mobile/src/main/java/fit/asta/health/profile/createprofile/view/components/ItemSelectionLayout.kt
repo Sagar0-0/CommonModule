@@ -6,20 +6,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -31,91 +28,86 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.flowlayout.FlowRow
+import fit.asta.health.common.ui.components.generic.AppDefaultIcon
+import fit.asta.health.common.ui.components.generic.AppDivider
+import fit.asta.health.common.ui.components.generic.AppTextField
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.HealthProperties
 import fit.asta.health.profile.view.components.AddChipOnCard
 import fit.asta.health.profile.viewmodel.ProfileEvent
 import fit.asta.health.profile.viewmodel.ProfileViewModel
-import fit.asta.health.tools.sunlight.view.components.DividerLine
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun ItemSelectionLayout(
     viewModel: ProfileViewModel = hiltViewModel(),
-    cardList: ArrayList<HealthProperties>,
+    cardList: List<HealthProperties>,
     cardIndex: Int,
     composeIndex: ComposeIndex,
 ) {
-
-    val focusManager = LocalFocusManager.current
-
     Box(
         Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
-
-        Column(Modifier.fillMaxWidth()) {
-
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(spacing.medium)
+        ) {
             Spacer(modifier = Modifier.height(spacing.medium))
-
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                DividerLine()
+                AppDivider(lineWidth = 80.dp)
             }
-
-            Row(
-                modifier = Modifier.padding(spacing.medium)
-            ) {
-
-                val searchQuery = remember { mutableStateOf("") }
-
-                OutlinedTextField(
-
-                    value = searchQuery.value,
-                    onValueChange = { searchQuery.value = it },
-                    modifier = Modifier.weight(1f),
-                    placeholder = { Text("Search") },
-                    trailingIcon = {
-                        Icon(
-                            imageVector = Icons.Filled.Search,
-                            contentDescription = null,
-                            tint = Color.Gray,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text, imeAction = ImeAction.Done
-                    ),
-                    keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-                    shape = MaterialTheme.shapes.medium
-
-                )
-
-            }
-
-            FlowRow(
-                mainAxisSpacing = spacing.minSmall,
-                modifier = Modifier.padding(start = spacing.medium),
-            ) {
-
-                cardList.forEach { healthProperties ->
-                    AddChipOnCard(textOnChip = healthProperties.name, onClick = {
-                        viewModel.onEvent(
-                            ProfileEvent.SetSelectedAddItemOption(
-                                item = healthProperties,
-                                index = cardIndex,
-                                composeIndex = composeIndex
-                            )
-                        )
-                    })
-                }
-            }
-
+            Spacer(modifier = Modifier.height(spacing.medium))
+            SearchBar(onSearchQueryChange = {})
+            Spacer(modifier = Modifier.height(spacing.small))
+            ChipRow(cardList, viewModel, cardIndex, composeIndex)
+            Spacer(modifier = Modifier.height(spacing.medium))
         }
     }
-
-
 }
 
+@Composable
+fun SearchBar(onSearchQueryChange: (String) -> Unit) {
+    val focusManager = LocalFocusManager.current
+    val searchQuery = remember { mutableStateOf("") }
+    AppTextField(
+        value = searchQuery.value,
+        onValueChange = {
+            searchQuery.value = it
+            onSearchQueryChange(it)
+        },
+        modifier = Modifier.fillMaxWidth(),
+        keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+        keyboardType = KeyboardType.Text,
+        imeAction = ImeAction.Done,
+        placeholder = { Text("Search") },
+        leadingIcon = {
+            AppDefaultIcon(imageVector = Icons.Rounded.Search, contentDescription = "Search Icon")
+        },
+    )
+}
+
+@OptIn(ExperimentalLayoutApi::class, ExperimentalCoroutinesApi::class)
+@Composable
+fun ChipRow(
+    cardList: List<HealthProperties>,
+    viewModel: ProfileViewModel,
+    cardIndex: Int,
+    composeIndex: ComposeIndex,
+) {
+    FlowRow(horizontalArrangement = Arrangement.spacedBy(spacing.small)) {
+        cardList.forEach { healthProperties ->
+            AddChipOnCard(textOnChip = healthProperties.name, onClick = {
+                viewModel.onEvent(
+                    ProfileEvent.SetSelectedAddItemOption(
+                        item = healthProperties, index = cardIndex, composeIndex = composeIndex
+                    )
+                )
+            })
+        }
+    }
+}

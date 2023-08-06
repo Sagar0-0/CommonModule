@@ -47,8 +47,6 @@ fun DietContent(
 
     val context = LocalContext.current
 
-    val checkedState = remember { mutableStateOf(true) }
-
     //Data
     val propertiesDataState by viewModel.propertiesData.collectAsStateWithLifecycle()
 
@@ -66,7 +64,7 @@ fun DietContent(
     val radioButtonSelections by viewModel.radioButtonSelections.collectAsStateWithLifecycle()
 
     val selectedFoodResDemo =
-        radioButtonSelections[MultiRadioBtnKeys.DIETREST] as TwoRadioBtnSelections?
+        radioButtonSelections[MultiRadioBtnKeys.DIETREST.key] as TwoRadioBtnSelections?
 
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
@@ -85,7 +83,6 @@ fun DietContent(
             OnlyChipSelectionCard(
                 cardType = "Dietary Preferences",
                 cardList = composeThirdData?.get(0),
-                checkedState = checkedState,
                 onItemsSelect = onDietaryPref,
                 cardIndex = 0,
                 composeIndex = ComposeIndex.Third
@@ -96,7 +93,6 @@ fun DietContent(
             OnlyChipSelectionCard(
                 cardType = "Non-Veg Consumption Days?",
                 cardList = composeThirdData?.get(1),
-                checkedState = checkedState,
                 onItemsSelect = onNonVegDays,
                 cardIndex = 1,
                 composeIndex = ComposeIndex.Third
@@ -107,7 +103,6 @@ fun DietContent(
             OnlyChipSelectionCard(
                 cardType = "Food Allergies?",
                 cardList = composeThirdData?.get(2),
-                checkedState = checkedState,
                 onItemsSelect = onFoodAllergies,
                 cardIndex = 2,
                 composeIndex = ComposeIndex.Third
@@ -118,7 +113,6 @@ fun DietContent(
             OnlyChipSelectionCard(
                 cardType = "Cuisines?",
                 cardList = composeThirdData?.get(3),
-                checkedState = checkedState,
                 onItemsSelect = onCuisines,
                 cardIndex = 3,
                 composeIndex = ComposeIndex.Third
@@ -129,11 +123,10 @@ fun DietContent(
             SelectionCardCreateProfile(
                 cardType = "Food Restrictions?",
                 cardList = composeThirdData?.get(4),
-                checkedState = checkedState,
                 onItemsSelect = onFoodRes,
                 selectedOption = selectedFoodResDemo,
                 onStateChange = { state ->
-                    viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.DIETREST, state)
+                    viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.DIETREST.key, state)
                 },
                 cardIndex = 4,
                 composeIndex = ComposeIndex.Third,

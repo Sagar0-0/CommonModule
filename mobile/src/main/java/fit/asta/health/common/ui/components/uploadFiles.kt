@@ -4,7 +4,6 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -19,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.rounded.CloudUpload
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -34,11 +34,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import fit.asta.health.R
 import fit.asta.health.common.jetpack.dashedBorder
+import fit.asta.health.common.ui.components.generic.AppDefaultIcon
 import fit.asta.health.common.ui.theme.Shapes
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.iconButtonSize
@@ -60,9 +59,7 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
                     list.forEach {
                         if (uriList.size >= 5) {
                             Toast.makeText(
-                                context,
-                                "You can upload maximum 5 files.",
-                                Toast.LENGTH_SHORT
+                                context, "You can upload maximum 5 files.", Toast.LENGTH_SHORT
                             ).show()
                             return@lit
                         } else {
@@ -70,11 +67,8 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
                                 uriList.add(it)
                             } else {
                                 Toast.makeText(
-                                    context,
-                                    "Duplicate files are ignored!",
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
+                                    context, "Duplicate files are ignored!", Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
                     }
@@ -128,19 +122,16 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
                                     overflow = TextOverflow.Ellipsis
                                 )
                                 Spacer(modifier = Modifier.width(1.dp))
-                                IconButton(
-                                    modifier = Modifier.size(iconButtonSize.extraMedium),
+                                IconButton(modifier = Modifier.size(iconButtonSize.extraMedium),
                                     onClick = { uriList.remove(it) }) {
                                     Icon(
-                                        imageVector = Icons.Default.Close,
-                                        contentDescription = null
+                                        imageVector = Icons.Default.Close, contentDescription = null
                                     )
                                 }
                             }
                         }
                     }
                 }
-
 
                 Button(
                     enabled = uriList.size < 5,
@@ -150,9 +141,10 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     shape = MaterialTheme.shapes.extraLarge
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.upload),
-                        contentDescription = null,
+                    AppDefaultIcon(
+                        imageVector = Icons.Rounded.CloudUpload,
+                        contentDescription = "Upload File",
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(imageSize.standard)
                     )
                 }

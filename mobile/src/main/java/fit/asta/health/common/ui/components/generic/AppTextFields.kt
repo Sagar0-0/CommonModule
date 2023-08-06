@@ -38,6 +38,10 @@ import androidx.compose.ui.text.style.TextAlign
  * the keyboard will show the requested action.
  * @param isError indicates if the text field's current value is in error. If set to true, the
  * label, bottom indicator and trailing icon by default will be displayed in error color
+ * @param placeholder the optional placeholder to be displayed when the text field is in focus and
+ * the input text is empty.
+ * @param leadingIcon the optional leading icon to be displayed at the beginning of the text field
+ * container
  * */
 
 @Composable
@@ -54,6 +58,8 @@ fun AppTextField(
     keyboardType: KeyboardType = KeyboardType.Text,
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
     imeAction: ImeAction = ImeAction.Next,
+    placeholder: @Composable (() -> Unit)? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
 ) {
     OutlinedTextField(
         value = value,
@@ -73,6 +79,8 @@ fun AppTextField(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
         enabled = enabled,
-        colors = colors
+        colors = colors,
+        leadingIcon = leadingIcon,
+        placeholder = placeholder
     )
 }
