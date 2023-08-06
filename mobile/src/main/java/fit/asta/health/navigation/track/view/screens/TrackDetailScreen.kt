@@ -89,6 +89,7 @@ fun TrackDetailScreen(
         // Checking which tab option is selected by the User and showing the UI Accordingly
         when (selectedItem.intValue) {
             0 -> {
+                trackViewModel.getWaterDetails()
                 TrackStatisticsUI(trackViewModel = trackViewModel)
             }
 
