@@ -3,6 +3,7 @@ package fit.asta.health.navigation.track.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.navigation.track.TrackingOptions
 import fit.asta.health.navigation.track.model.TrackingRepo
 import fit.asta.health.navigation.track.model.net.breathing.BreathingResponse
 import fit.asta.health.navigation.track.model.net.meditation.MeditationResponse
@@ -36,13 +37,13 @@ class TrackViewModel @Inject constructor(
     /**
      * This function fetches the Water Tracking Details from the Server
      */
-    fun getWaterDetails() {
+    fun getWaterDetails(status: String) {
         viewModelScope.launch {
             trackingRepo.getWaterDetails(
                 uid = uid,
                 date = "2023",
                 location = "bangalore",
-                status = "yearly"
+                status = status
             ).collect {
                 _waterDetails.value = it
             }
@@ -157,5 +158,10 @@ class TrackViewModel @Inject constructor(
                 _sunlightDetails.value = it
             }
         }
+    }
+
+    private var currentTrackingOption: TrackingOptions = TrackingOptions.WaterTrackingOption
+    fun changeTrackingOption(currentTrackingOption: TrackingOptions) {
+        this.currentTrackingOption = currentTrackingOption
     }
 }
