@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import fit.asta.health.common.ui.AppTheme
-import fit.asta.health.navigation.track.TrackNavGraph
+import fit.asta.health.navigation.track.view.navigation.TrackNavGraph
 import fit.asta.health.navigation.track.viewmodel.TrackViewModel
 
 @Composable
