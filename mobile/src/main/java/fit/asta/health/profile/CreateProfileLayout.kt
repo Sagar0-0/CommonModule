@@ -35,7 +35,8 @@ import fit.asta.health.profile.viewmodel.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(
-    ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class,
+    ExperimentalMaterial3Api::class,
+    ExperimentalCoroutinesApi::class,
     ExperimentalMaterialApi::class
 )
 @Composable

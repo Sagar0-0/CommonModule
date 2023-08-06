@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.common.ui.components.generic.AppDefaultIcon
 import fit.asta.health.common.ui.components.generic.AppDivider
 import fit.asta.health.common.ui.components.generic.AppTextField
+import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.HealthProperties
@@ -84,7 +84,7 @@ fun SearchBar(onSearchQueryChange: (String) -> Unit) {
         keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
         keyboardType = KeyboardType.Text,
         imeAction = ImeAction.Done,
-        placeholder = { Text("Search") },
+        placeholder = { AppTexts.LabelSmall(text = "Search") },
         leadingIcon = {
             AppDefaultIcon(imageVector = Icons.Rounded.Search, contentDescription = "Search Icon")
         },
