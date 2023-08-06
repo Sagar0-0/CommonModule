@@ -8,6 +8,8 @@
 package fit.asta.health.profile.view
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -17,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.common.ui.components.generic.AppButtons
+import fit.asta.health.common.ui.components.generic.AppDefaultIcon
 import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
@@ -25,7 +28,6 @@ import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.HealthProperties
 import fit.asta.health.profile.model.domain.ThreeRadioBtnSelections
 import fit.asta.health.profile.model.domain.TwoRadioBtnSelections
-import fit.asta.health.profile.view.components.ProfileAddIcon
 import fit.asta.health.profile.view.components.RemoveChipOnCard
 import fit.asta.health.profile.viewmodel.ProfileEvent
 import fit.asta.health.profile.viewmodel.ProfileViewModel
@@ -52,8 +54,7 @@ fun TwoTogglesGroup(
                     .padding(horizontal = spacing.medium)
             ) {
                 AppTexts.TitleSmall(
-                    text = selectionTypeText,
-                    color = MaterialTheme.colorScheme.onTertiaryContainer
+                    text = selectionTypeText, color = MaterialTheme.colorScheme.onTertiaryContainer
                 )
             }
         }
@@ -64,7 +65,8 @@ fun TwoTogglesGroup(
                 Row(
                     verticalAlignment = CenterVertically, modifier = Modifier.weight(1f)
                 ) {
-                    AppButtons.AppRadioButton(selected = selectedOption == option,
+                    AppButtons.AppRadioButton(
+                        selected = selectedOption == option,
                         onClick = { onStateChange(option) })
                     AppTexts.LabelSmall(
                         text = when (option) {
@@ -109,7 +111,8 @@ fun ThreeTogglesGroups(
                 Row(
                     verticalAlignment = CenterVertically, modifier = Modifier.weight(1f)
                 ) {
-                    AppButtons.AppRadioButton(selected = selectedOption == option,
+                    AppButtons.AppRadioButton(
+                        selected = selectedOption == option,
                         onClick = { onStateChange(option) })
                     AppTexts.LabelSmall(
                         text = when (option) {
@@ -131,7 +134,6 @@ fun SelectionCardCreateProfile(
     viewModel: ProfileViewModel = hiltViewModel(),
     cardType: String,
     cardList: SnapshotStateList<HealthProperties>?,
-    checkedState: MutableState<Boolean>? = null,
     onItemsSelect: () -> Unit,
     selectedOption: TwoRadioBtnSelections?,
     onStateChange: (TwoRadioBtnSelections) -> Unit,
@@ -139,7 +141,6 @@ fun SelectionCardCreateProfile(
     composeIndex: ComposeIndex,
     listName: String = "",
 ) {
-
     Column(Modifier.fillMaxWidth()) {
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -147,14 +148,10 @@ fun SelectionCardCreateProfile(
             colors = CardDefaults.cardColors(containerColor = Color.White),
             elevation = CardDefaults.cardElevation(cardElevation.extraSmall)
         ) {
-
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-
                 Spacer(modifier = Modifier.height(spacing.small))
-
-
                 Row(
                     Modifier
                         .fillMaxWidth()
@@ -162,7 +159,6 @@ fun SelectionCardCreateProfile(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = CenterVertically
                 ) {
-
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = CenterVertically
@@ -173,60 +169,45 @@ fun SelectionCardCreateProfile(
                             style = MaterialTheme.typography.titleSmall
                         )
                     }
-
                     if (selectedOption == TwoRadioBtnSelections.First) {
                         ProfileAddIcon(onClick = onItemsSelect)
                     }
 
                 }
-
-
                 TwoTogglesGroup(
                     selectionTypeText = null,
                     selectedOption = selectedOption,
                     onStateChange = onStateChange
                 )
-
-
                 if (selectedOption == TwoRadioBtnSelections.First) {
-
                     com.google.accompanist.flowlayout.FlowRow(
                         mainAxisSpacing = spacing.minSmall,
                         modifier = Modifier.padding(start = spacing.medium),
                     ) {
                         cardList?.forEach {
-                            RemoveChipOnCard(
-                                textOnChip = it.name,
-                                isEnabled = true,
-                                checkedState = checkedState,
-                                onClick = {
-                                    cardIndex?.let { index ->
-                                        ProfileEvent.SetSelectedRemoveItemOption(
-                                            it, index = index, composeIndex = composeIndex
-                                        )
-                                    }?.let { event ->
-                                        viewModel.onEvent(
-                                            event
-                                        )
-                                    }
-                                })
+                            RemoveChipOnCard(textOnChip = it.name, onClick = {
+                                cardIndex?.let { index ->
+                                    ProfileEvent.SetSelectedRemoveItemOption(
+                                        it, index = index, composeIndex = composeIndex
+                                    )
+                                }?.let { event ->
+                                    viewModel.onEvent(
+                                        event
+                                    )
+                                }
+                            })
                         }
                     }
-
                 }
                 Spacer(modifier = Modifier.height(spacing.small))
             }
         }
-
         if (cardList != null) {
             ValidateListError(
                 selectedOption = selectedOption, cardList = cardList, listName = listName
             )
         }
-
     }
-
-
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -240,7 +221,6 @@ fun OnlyChipSelectionCard(
     cardIndex: Int? = null,
     composeIndex: ComposeIndex,
 ) {
-
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
@@ -250,9 +230,7 @@ fun OnlyChipSelectionCard(
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
-
             Spacer(modifier = Modifier.height(spacing.small))
-
             Row(
                 Modifier
                     .fillMaxWidth()
@@ -271,26 +249,36 @@ fun OnlyChipSelectionCard(
                 }
                 ProfileAddIcon(onClick = onItemsSelect)
             }
-
             Spacer(modifier = Modifier.height(spacing.small))
-
             com.google.accompanist.flowlayout.FlowRow(
                 mainAxisSpacing = spacing.minSmall,
                 modifier = Modifier.padding(start = spacing.medium),
             ) {
                 cardList?.forEach {
-                    RemoveChipOnCard(textOnChip = it.name, checkedState = checkedState, onClick = {
+                    RemoveChipOnCard(textOnChip = it.name, onClick = {
                         cardIndex?.let { index ->
                             ProfileEvent.SetSelectedRemoveItemOption(
                                 item = it, index = index, composeIndex = composeIndex
                             )
                         }?.let { event -> viewModel.onEvent(event) }
-                    }, isEnabled = true)
+                    })
                 }
             }
-
             Spacer(modifier = Modifier.height(spacing.small))
-
         }
+    }
+}
+
+
+@Composable
+private fun ProfileAddIcon(
+    onClick: () -> Unit,
+) {
+    AppButtons.AppIconButton(onClick = onClick) {
+        AppDefaultIcon(
+            imageVector = Icons.Rounded.AddCircle,
+            contentDescription = "Add Item",
+            tint = MaterialTheme.colorScheme.primary
+        )
     }
 }

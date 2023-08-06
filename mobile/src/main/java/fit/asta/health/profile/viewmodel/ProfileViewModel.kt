@@ -276,7 +276,6 @@ class ProfileViewModel
 
         //Profile Data
         _mutableState.value = ProfileGetState.Success(data)
-
     }
 
     private fun handleContactData(contact: Contact, id: String) {
@@ -295,20 +294,13 @@ class ProfileViewModel
         savedState[DOB] = dob
         savedState[WEIGHT] = InputWrapper(value = physique.weight.toString())
         savedState[HEIGHT] = InputWrapper(value = physique.height.toString())
-
-        loadThreeRadioBtnSelection(physique.gender, GENDER)
-
-
+        loadThreeRadioBtnSelection(physique.gender, GENDER.key)
         loadTwoRadioBtnSelection(
-            result = physique.isPregnant, radioBtnName = ISPREG
+            result = physique.isPregnant, radioBtnName = ISPREG.key
         )
-
-
         loadTwoRadioBtnSelection(
-            result = physique.onPeriod, radioBtnName = ISONPERIOD
+            result = physique.onPeriod, radioBtnName = ISONPERIOD.key
         )
-
-
         savedState[PREGNANCY_WEEK] = InputWrapper(value = physique.pregnancyWeek.toString())
     }
 
@@ -316,28 +308,31 @@ class ProfileViewModel
         // Handle health data
 
         updateRadioButtonSelection(
-            MultiRadioBtnKeys.HEALTHHIS,
+            MultiRadioBtnKeys.HEALTHHIS.key,
             checkTwoRadioBtnSelections(health.healthHistory.isNullOrEmpty())
         )
         updateRadioButtonSelection(
-            MultiRadioBtnKeys.INJURIES, checkTwoRadioBtnSelections(health.injuries.isNullOrEmpty())
+            MultiRadioBtnKeys.INJURIES.key,
+            checkTwoRadioBtnSelections(health.injuries.isNullOrEmpty())
         )
         updateRadioButtonSelection(
-            MultiRadioBtnKeys.BODYPART, checkTwoRadioBtnSelections(health.bodyPart.isNullOrEmpty())
+            MultiRadioBtnKeys.BODYPART.key,
+            checkTwoRadioBtnSelections(health.bodyPart.isNullOrEmpty())
         )
         updateRadioButtonSelection(
-            MultiRadioBtnKeys.AILMENTS, checkTwoRadioBtnSelections(health.ailments.isNullOrEmpty())
+            MultiRadioBtnKeys.AILMENTS.key,
+            checkTwoRadioBtnSelections(health.ailments.isNullOrEmpty())
         )
         updateRadioButtonSelection(
-            MultiRadioBtnKeys.MEDICATIONS,
+            MultiRadioBtnKeys.MEDICATIONS.key,
             checkTwoRadioBtnSelections(health.medications.isNullOrEmpty())
         )
         updateRadioButtonSelection(
-            MultiRadioBtnKeys.HEALTHTAR,
+            MultiRadioBtnKeys.HEALTHTAR.key,
             checkTwoRadioBtnSelections(health.healthTargets.isNullOrEmpty())
         )
         updateRadioButtonSelection(
-            MultiRadioBtnKeys.ADDICTION,
+            MultiRadioBtnKeys.ADDICTION.key,
             checkTwoRadioBtnSelections(health.addiction.isNullOrEmpty())
         )
 
@@ -354,7 +349,6 @@ class ProfileViewModel
             modifyPropertiesData(6, health.addiction!!, ComposeIndex.First, add = true)
 
         }
-
     }
 
     private fun handleLifeStyleData(lifeStyle: LifeStyle) {
@@ -363,19 +357,19 @@ class ProfileViewModel
         savedState[BEDTIME] = InputWrapper(value = lifeStyle.sleep.to.toString())
 
         loadThreeRadioBtnSelection(
-            lifeStyle.physicalActivity, MultiRadioBtnKeys.PHYACTIVE
+            lifeStyle.physicalActivity, MultiRadioBtnKeys.PHYACTIVE.key
         )
 
         loadTwoRadioBtnSelection(
-            lifeStyle.workingEnv, MultiRadioBtnKeys.WORKINGENV
+            lifeStyle.workingEnv, MultiRadioBtnKeys.WORKINGENV.key
         )
 
         loadTwoRadioBtnSelection(
-            lifeStyle.workStyle, MultiRadioBtnKeys.WORKINGSTYLE
+            lifeStyle.workStyle, MultiRadioBtnKeys.WORKINGSTYLE.key
         )
 
         loadThreeRadioBtnSelection(
-            lifeStyle.workingHours, MultiRadioBtnKeys.WORKINGHRS
+            lifeStyle.workingHours, MultiRadioBtnKeys.WORKINGHRS.key
         )
 
         _propertiesData.value = _propertiesData.value.toMutableMap().apply {
@@ -406,7 +400,7 @@ class ProfileViewModel
 
         updateRadioButtonSelection(
             selection = checkTwoRadioBtnSelections(diet.foodRestrictions.isNullOrEmpty()),
-            radioButtonName = MultiRadioBtnKeys.DIETREST
+            radioButtonName = MultiRadioBtnKeys.DIETREST.key
         )
     }
 
@@ -500,12 +494,12 @@ class ProfileViewModel
             bodyType = bodyType.value.value,
             gender = uploadThreeRadioBtnSelection(
                 value = getSelectedValueForRadioButton(
-                    GENDER
+                    GENDER.key
                 )
             ),
             isPregnant = uploadTwoRadioBtnSelection(
                 getSelectedValueForRadioButton(
-                    ISPREG
+                    ISPREG.key
                 )
             ),
             bmi = userBMI(
@@ -513,7 +507,7 @@ class ProfileViewModel
             ),
             onPeriod = uploadTwoRadioBtnSelection(
                 getSelectedValueForRadioButton(
-                    ISONPERIOD
+                    ISONPERIOD.key
                 )
             )
         )
@@ -522,7 +516,8 @@ class ProfileViewModel
 
     private fun createHealth(): Health {
         // Extract the health creation logic here
-        return Health(healthHistory = getValueAtIndex(ComposeIndex.First, 0)?.let { ArrayList(it) },
+        return Health(
+            healthHistory = getValueAtIndex(ComposeIndex.First, 0)?.let { ArrayList(it) },
             injuries = getValueAtIndex(ComposeIndex.First, 1)?.let { ArrayList(it) },
             bodyPart = getValueAtIndex(ComposeIndex.First, 2)?.let { ArrayList(it) },
             ailments = getValueAtIndex(ComposeIndex.First, 3)?.let { ArrayList(it) },
@@ -545,21 +540,21 @@ class ProfileViewModel
             prefActivities = getValueAtIndex(ComposeIndex.Second, 1)?.let { ArrayList(it) },
             lifeStyleTargets = getValueAtIndex(ComposeIndex.Second, 2)?.let { ArrayList(it) },
             physicalActivity = uploadThreeRadioBtnSelection(
-                getSelectedValueForRadioButton(MultiRadioBtnKeys.PHYACTIVE)
+                getSelectedValueForRadioButton(MultiRadioBtnKeys.PHYACTIVE.key)
             ),
             workingEnv = uploadTwoRadioBtnSelection(
                 getSelectedValueForRadioButton(
-                    MultiRadioBtnKeys.WORKINGENV
+                    MultiRadioBtnKeys.WORKINGENV.key
                 )
             ),
             workStyle = uploadTwoRadioBtnSelection(
                 getSelectedValueForRadioButton(
-                    MultiRadioBtnKeys.WORKINGSTYLE
+                    MultiRadioBtnKeys.WORKINGSTYLE.key
                 )
             ),
             workingHours = uploadThreeRadioBtnSelection(
                 getSelectedValueForRadioButton(
-                    MultiRadioBtnKeys.WORKINGHRS
+                    MultiRadioBtnKeys.WORKINGHRS.key
                 )
             ),
         )
