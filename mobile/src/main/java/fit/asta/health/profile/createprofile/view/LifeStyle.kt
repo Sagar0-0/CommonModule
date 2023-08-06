@@ -19,11 +19,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import fit.asta.health.common.ui.components.*
-import fit.asta.health.common.ui.components.generic.AppModalBottomSheetLayout
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
+import fit.asta.health.common.ui.components.generic.AppModalBottomSheetLayout
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.theme.cardElevation
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.profile.MultiRadioBtnKeys
 import fit.asta.health.profile.createprofile.view.LifeStyleCreateBottomSheetType.*
 import fit.asta.health.profile.createprofile.view.components.CreateProfileTimePicker
@@ -60,13 +60,13 @@ fun LifeStyleContent(
     val radioButtonSelections by viewModel.radioButtonSelections.collectAsStateWithLifecycle()
 
     val selectedPhyActiveOptionDemo =
-        radioButtonSelections[MultiRadioBtnKeys.PHYACTIVE] as ThreeRadioBtnSelections?
+        radioButtonSelections[MultiRadioBtnKeys.PHYACTIVE.key] as ThreeRadioBtnSelections?
     val selectedWorkingEnvOptionDemo =
-        radioButtonSelections[MultiRadioBtnKeys.WORKINGENV] as TwoRadioBtnSelections?
+        radioButtonSelections[MultiRadioBtnKeys.WORKINGENV.key] as TwoRadioBtnSelections?
     val selectedWorkingStyOptionDemo =
-        radioButtonSelections[MultiRadioBtnKeys.WORKINGSTYLE] as TwoRadioBtnSelections?
+        radioButtonSelections[MultiRadioBtnKeys.WORKINGSTYLE.key] as TwoRadioBtnSelections?
     val selectedWorkingHrsOptionDemo =
-        radioButtonSelections[MultiRadioBtnKeys.WORKINGHRS] as ThreeRadioBtnSelections?
+        radioButtonSelections[MultiRadioBtnKeys.WORKINGHRS.key] as ThreeRadioBtnSelections?
 
 
     //Data
@@ -180,7 +180,7 @@ fun LifeStyleContent(
                     selectionTypeText = "Are you Physically Active",
                     selectedOption = selectedPhyActiveOptionDemo,
                     onStateChange = { state ->
-                        viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.PHYACTIVE, state)
+                        viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.PHYACTIVE.key, state)
                     },
                     firstOption = "Less",
                     secondOption = "Moderate",
@@ -200,7 +200,10 @@ fun LifeStyleContent(
                     selectionTypeText = "Current Working Environment",
                     selectedOption = selectedWorkingEnvOptionDemo,
                     onStateChange = { state ->
-                        viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.WORKINGENV, state)
+                        viewModel.updateRadioButtonSelection(
+                            MultiRadioBtnKeys.WORKINGENV.key,
+                            state
+                        )
                     },
                     firstOption = "Standing",
                     secondOption = "Sitting"
@@ -219,7 +222,10 @@ fun LifeStyleContent(
                     selectionTypeText = "Current WorkStyle",
                     selectedOption = selectedWorkingStyOptionDemo,
                     onStateChange = { state ->
-                        viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.WORKINGSTYLE, state)
+                        viewModel.updateRadioButtonSelection(
+                            MultiRadioBtnKeys.WORKINGSTYLE.key,
+                            state
+                        )
                     },
                     firstOption = "Indoor",
                     secondOption = "Outdoor"
@@ -238,7 +244,10 @@ fun LifeStyleContent(
                     selectionTypeText = "What are your working hours",
                     selectedOption = selectedWorkingHrsOptionDemo,
                     onStateChange = { state ->
-                        viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.WORKINGHRS, state)
+                        viewModel.updateRadioButtonSelection(
+                            MultiRadioBtnKeys.WORKINGHRS.key,
+                            state
+                        )
                     },
                     firstOption = "Morning",
                     secondOption = "Afternoon",

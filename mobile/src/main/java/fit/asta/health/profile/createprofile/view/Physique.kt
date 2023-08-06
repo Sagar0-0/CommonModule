@@ -98,11 +98,11 @@ fun PhysiqueCreateScreen(
     val radioButtonSelections by viewModel.radioButtonSelections.collectAsStateWithLifecycle()
 
     val selectedGenderOptionDemo =
-        radioButtonSelections[MultiRadioBtnKeys.GENDER] as ThreeRadioBtnSelections?
+        radioButtonSelections[MultiRadioBtnKeys.GENDER.key] as ThreeRadioBtnSelections?
     val selectedIsPregOptionDemo =
-        radioButtonSelections[MultiRadioBtnKeys.ISPREG] as TwoRadioBtnSelections?
+        radioButtonSelections[MultiRadioBtnKeys.ISPREG.key] as TwoRadioBtnSelections?
     val selectedIsOnPeriodOptionDemo =
-        radioButtonSelections[MultiRadioBtnKeys.ISONPERIOD] as TwoRadioBtnSelections?
+        radioButtonSelections[MultiRadioBtnKeys.ISONPERIOD.key] as TwoRadioBtnSelections?
 
     val focusManager = LocalFocusManager.current
 
@@ -175,7 +175,7 @@ private fun GenderSection(
                     selectedOption = selectedGenderOptionDemo,
                     onStateChange = { state ->
                         viewModel.updateRadioButtonSelection(
-                            MultiRadioBtnKeys.GENDER, state
+                            MultiRadioBtnKeys.GENDER.key, state
                         )
                     })
                 if (selectedGenderOptionDemo == ThreeRadioBtnSelections.Second) {
@@ -183,14 +183,14 @@ private fun GenderSection(
                         selectedOption = selectedIsOnPeriodOptionDemo,
                         onStateChange = { state ->
                             viewModel.updateRadioButtonSelection(
-                                MultiRadioBtnKeys.ISONPERIOD, state
+                                MultiRadioBtnKeys.ISONPERIOD.key, state
                             )
                         })
                     TwoTogglesGroup(selectionTypeText = "Are you Pregnant",
                         selectedOption = selectedIsPregOptionDemo,
                         onStateChange = { state ->
                             viewModel.updateRadioButtonSelection(
-                                radioButtonName = MultiRadioBtnKeys.ISPREG, selection = state
+                                radioButtonName = MultiRadioBtnKeys.ISPREG.key, selection = state
                             )
                         })
                     if (selectedIsPregOptionDemo == TwoRadioBtnSelections.First) {

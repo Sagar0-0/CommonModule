@@ -26,10 +26,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -68,6 +68,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun HealthCreateScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
@@ -75,23 +76,14 @@ fun HealthCreateScreen(
     eventNext: () -> Unit,
 ) {
 
+    val scope = rememberCoroutineScope()
     var currentBottomSheet: HealthCreateBottomSheetTypes? by remember {
         mutableStateOf(null)
     }
-
     var modalBottomSheetValue by remember {
         mutableStateOf(ModalBottomSheetValue.Hidden)
     }
-
-    val modalBottomSheetState = androidx.compose.material.rememberModalBottomSheetState(
-        initialValue = modalBottomSheetValue
-    )
-
-    val scope = rememberCoroutineScope()
-
-    val closeSheet = {
-        scope.launch { modalBottomSheetState.hide() }
-    }
+    val modalBottomSheetState = rememberModalBottomSheetState(initialValue = modalBottomSheetValue)
 
     val openSheet = {
         scope.launch {
@@ -102,6 +94,22 @@ fun HealthCreateScreen(
         }
     }
 
+    val closeSheet = {
+        scope.launch { modalBottomSheetState.hide() }
+    }
+
+    val onBottomSheetItemClick: (String) -> Unit = { propertyType ->
+        currentBottomSheet?.let {
+            openSheet()
+            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = propertyType))
+        }
+    }
+
+    val onItemClick: (HealthCreateBottomSheetTypes, String) -> Unit = { sheetType, propertyType ->
+        currentBottomSheet = sheetType
+        onBottomSheetItemClick(propertyType)
+    }
+
     AppModalBottomSheetLayout(sheetContent = {
         Spacer(modifier = Modifier.height(1.dp))
         currentBottomSheet?.let {
@@ -110,38 +118,20 @@ fun HealthCreateScreen(
             )
         }
     }, sheetState = modalBottomSheetState, content = {
-        HealthContent(eventPrevious = eventPrevious, eventNext = eventNext, onHealthHistory = {
-            currentBottomSheet = HEALTHHISTORY
-            openSheet()
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "ailment"))
-        }, onInjuries = {
-            currentBottomSheet = INJURIES
-            openSheet()
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "injury"))
-        }, onAilments = {
-            currentBottomSheet = AILMENTS
-            openSheet()
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "ailment"))
-        }, onMedications = {
-            currentBottomSheet = MEDICATIONS
-            openSheet()
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "med"))
-        }, onHealthTargets = {
-            currentBottomSheet = HEALTHTARGETS
-            openSheet()
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "tgt"))
-        }, onBodyInjurySelect = {
-            currentBottomSheet = BODYPARTS
-            openSheet()
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "bp"))
-        }, onAddictionSelect = {
-            currentBottomSheet = ADDICTION
-            openSheet()
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "add"))
-        })
+        HealthContent(eventPrevious = eventPrevious,
+            eventNext = eventNext,
+            onHealthHistory = { onItemClick(HEALTHHISTORY, "ailment") },
+            onInjuries = { onItemClick(INJURIES, "injury") },
+            onAilments = { onItemClick(AILMENTS, "ailment") },
+            onMedications = { onItemClick(MEDICATIONS, "med") },
+            onHealthTargets = { onItemClick(HEALTHTARGETS, "tgt") },
+            onBodyInjurySelect = { onItemClick(BODYPARTS, "bp") },
+            onAddictionSelect = { onItemClick(ADDICTION, "add") })
     })
 }
 
+
+@ExperimentalCoroutinesApi
 @Composable
 fun HealthContent(
     viewModel: ProfileViewModel = hiltViewModel(),
@@ -165,19 +155,19 @@ fun HealthContent(
     val radioButtonSelections by viewModel.radioButtonSelections.collectAsStateWithLifecycle()
 
     val selectedHealthHistory =
-        radioButtonSelections[MultiRadioBtnKeys.HEALTHHIS] as TwoRadioBtnSelections?
+        radioButtonSelections[MultiRadioBtnKeys.HEALTHHIS.key] as TwoRadioBtnSelections?
     val selectedInjuries =
-        radioButtonSelections[MultiRadioBtnKeys.INJURIES] as TwoRadioBtnSelections?
+        radioButtonSelections[MultiRadioBtnKeys.INJURIES.key] as TwoRadioBtnSelections?
     val selectedAilment =
-        radioButtonSelections[MultiRadioBtnKeys.AILMENTS] as TwoRadioBtnSelections?
+        radioButtonSelections[MultiRadioBtnKeys.AILMENTS.key] as TwoRadioBtnSelections?
     val selectedMedication =
-        radioButtonSelections[MultiRadioBtnKeys.MEDICATIONS] as TwoRadioBtnSelections?
+        radioButtonSelections[MultiRadioBtnKeys.MEDICATIONS.key] as TwoRadioBtnSelections?
     val selectedHealthTarget =
-        radioButtonSelections[MultiRadioBtnKeys.HEALTHTAR] as TwoRadioBtnSelections?
+        radioButtonSelections[MultiRadioBtnKeys.HEALTHTAR.key] as TwoRadioBtnSelections?
     val selectedAddiction =
-        radioButtonSelections[MultiRadioBtnKeys.ADDICTION] as TwoRadioBtnSelections?
+        radioButtonSelections[MultiRadioBtnKeys.ADDICTION.key] as TwoRadioBtnSelections?
     val selectedBodyPart =
-        radioButtonSelections[MultiRadioBtnKeys.BODYPART] as TwoRadioBtnSelections?
+        radioButtonSelections[MultiRadioBtnKeys.BODYPART.key] as TwoRadioBtnSelections?
 
     // Data
     val propertiesDataState by viewModel.propertiesData.collectAsStateWithLifecycle()
@@ -185,47 +175,53 @@ fun HealthContent(
     val composeFirstData: Map<Int, SnapshotStateList<HealthProperties>>? =
         propertiesDataState[ComposeIndex.First]
 
-    val checkedState = remember { mutableStateOf(true) }
+    //List Creation
+
+    val selectionList = listOf(
+        Pair(ComposeIndex.First, selectedHealthHistory),
+        Pair(ComposeIndex.First, selectedInjuries),
+        Pair(ComposeIndex.First, selectedBodyPart),
+        Pair(ComposeIndex.First, selectedAilment),
+        Pair(ComposeIndex.First, selectedMedication),
+        Pair(ComposeIndex.First, selectedHealthTarget),
+        Pair(ComposeIndex.First, selectedAddiction)
+    )
+
+    val onItemSelectionFunctionList = listOf(
+        onHealthHistory,
+        onInjuries,
+        onBodyInjurySelect,
+        onAilments,
+        onMedications,
+        onHealthTargets,
+        onAddictionSelect
+    )
+
+    val cardTypeList = listOf(
+        MultiRadioBtnKeys.HEALTHHIS,
+        MultiRadioBtnKeys.INJURIES,
+        MultiRadioBtnKeys.BODYPART,
+        MultiRadioBtnKeys.AILMENTS,
+        MultiRadioBtnKeys.MEDICATIONS,
+        MultiRadioBtnKeys.HEALTHTAR,
+        MultiRadioBtnKeys.ADDICTION
+    )
 
     CompositionLocalProvider(LocalOverscrollConfiguration provides null) {
         HealthContentLayout(
             viewModel = hiltViewModel(),
             composeFirstData = composeFirstData,
             radioButtonList = radioButtonList,
-            selections = listOf(
-                Pair(ComposeIndex.First, selectedHealthHistory),
-                Pair(ComposeIndex.First, selectedInjuries),
-                Pair(ComposeIndex.First, selectedBodyPart),
-                Pair(ComposeIndex.First, selectedAilment),
-                Pair(ComposeIndex.First, selectedMedication),
-                Pair(ComposeIndex.First, selectedHealthTarget),
-                Pair(ComposeIndex.First, selectedAddiction)
-            ),
-            checkedState = checkedState,
-            onItemSelectFunctions = listOf(
-                onHealthHistory,
-                onInjuries,
-                onBodyInjurySelect,
-                onAilments,
-                onMedications,
-                onHealthTargets,
-                onAddictionSelect
-            ),
-            cardTypes = listOf(
-                "Any Significant Health History?",
-                "Any Injuries",
-                "Body Part",
-                "Any Ailments?",
-                "Any Medications?",
-                "Any Health Targets?",
-                "Any Addiction?"
-            ),
+            selections = selectionList,
+            onItemSelectFunctions = onItemSelectionFunctionList,
+            cardTypes = cardTypeList,
             inputWrappers = listOf(injurySince),
             eventPrevious = eventPrevious,
             eventNext = eventNext
         )
     }
 }
+
 
 @Composable
 private fun HealthCreateBtmSheetLayout(
@@ -234,20 +230,8 @@ private fun HealthCreateBtmSheetLayout(
     sheetState: () -> Unit,
 ) {
 
-
-    //Sealed Classes
-    val cardIndex = when (sheetLayout) {
-        is HEALTHHISTORY -> 0
-        is INJURIES -> 1
-        is BODYPARTS -> 2
-        is AILMENTS -> 3
-        is MEDICATIONS -> 4
-        is HEALTHTARGETS -> 5
-        is ADDICTION -> 6
-    }
-
+    val cardIndex = sheetLayout.cardIndex
     val state by viewModel.stateHp.collectAsStateWithLifecycle()
-
     when (state) {
         is HPropState.NoInternet -> {
             AppErrorScreen(onTryAgain = {})
@@ -273,6 +257,7 @@ private fun HealthCreateBtmSheetLayout(
     }
 }
 
+
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 private fun HealthContentLayout(
@@ -280,9 +265,8 @@ private fun HealthContentLayout(
     composeFirstData: Map<Int, SnapshotStateList<HealthProperties>>?,
     radioButtonList: List<ButtonListTypes>,
     selections: List<Pair<ComposeIndex, TwoRadioBtnSelections?>>,
-    checkedState: MutableState<Boolean>,
     onItemSelectFunctions: List<() -> Unit>,
-    cardTypes: List<String>,
+    cardTypes: List<MultiRadioBtnKeys>,
     inputWrappers: List<InputWrapper>,
     eventPrevious: () -> Unit,
     eventNext: () -> Unit,
@@ -303,44 +287,32 @@ private fun HealthContentLayout(
             val onItemSelect = onItemSelectFunctions[index]
 
             SelectionCardCreateProfile(
-                cardType = cardType,
+                cardType = cardType.listName,
                 cardList = composeFirstData?.get(index),
-                checkedState = checkedState,
                 onItemsSelect = onItemSelect,
                 selectedOption = selectedOption,
                 onStateChange = { state ->
-                    val multiRadioBtnKey = when (index) {
-                        0 -> MultiRadioBtnKeys.HEALTHHIS
-                        1 -> MultiRadioBtnKeys.INJURIES
-                        2 -> MultiRadioBtnKeys.BODYPART
-                        3 -> MultiRadioBtnKeys.AILMENTS
-                        4 -> MultiRadioBtnKeys.MEDICATIONS
-                        5 -> MultiRadioBtnKeys.HEALTHTAR
-                        6 -> MultiRadioBtnKeys.ADDICTION
-                        else -> MultiRadioBtnKeys.NONE //Sealed Classes
-                    }
-                    viewModel.updateRadioButtonSelection(multiRadioBtnKey, state)
+                    viewModel.updateRadioButtonSelection(cardType.key, state)
                 },
                 cardIndex = index,
                 composeIndex = composeIndex,
-                listName = cardType
+                listName = cardType.listName
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
         }
-
         CreateProfileTwoButtonLayout(eventPrevious, eventNext)
-
         Spacer(modifier = Modifier.height(spacing.medium))
     }
 }
 
-sealed class HealthCreateBottomSheetTypes {
-    object HEALTHHISTORY : HealthCreateBottomSheetTypes()
-    object INJURIES : HealthCreateBottomSheetTypes()
-    object AILMENTS : HealthCreateBottomSheetTypes()
-    object MEDICATIONS : HealthCreateBottomSheetTypes()
-    object HEALTHTARGETS : HealthCreateBottomSheetTypes()
-    object BODYPARTS : HealthCreateBottomSheetTypes()
-    object ADDICTION : HealthCreateBottomSheetTypes()
+
+sealed class HealthCreateBottomSheetTypes(val cardIndex: Int) {
+    object HEALTHHISTORY : HealthCreateBottomSheetTypes(0)
+    object INJURIES : HealthCreateBottomSheetTypes(1)
+    object AILMENTS : HealthCreateBottomSheetTypes(2)
+    object MEDICATIONS : HealthCreateBottomSheetTypes(3)
+    object HEALTHTARGETS : HealthCreateBottomSheetTypes(4)
+    object BODYPARTS : HealthCreateBottomSheetTypes(5)
+    object ADDICTION : HealthCreateBottomSheetTypes(6)
 }
