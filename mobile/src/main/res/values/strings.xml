@@ -2,8 +2,8 @@
     <string name="app_name" translatable="false">Asta</string>
 
     <!-- Web Urls -->
-    <string name="url_privacy_policy" translatable="false">terms/privacy_policy.htm</string>
-    <string name="url_terms_of_use" translatable="false">terms/terms_of_use.htm</string>
+    <string name="url_privacy_policy" translatable="false">tos_pp/privacy_policy.htm</string>
+    <string name="url_terms_of_use" translatable="false">tos_pp/terms_of_use.htm</string>
     <string name="google_market_url" translatable="false">market://details?id=</string>
     <string name="google_play_store_url" translatable="false">https://play.google.com/store/apps/details?id=</string>
     <string name="fire_storage_url" translatable="false">https://firebasestorage.googleapis.com/v0/b/</string>
