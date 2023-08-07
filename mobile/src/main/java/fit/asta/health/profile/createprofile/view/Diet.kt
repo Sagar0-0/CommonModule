@@ -40,6 +40,12 @@ fun DietCreateScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     eventPrevious: () -> Unit,
 ) {
+
+    //Data
+    val propertiesDataState by viewModel.propertiesData.collectAsStateWithLifecycle()
+    val composeThirdData: Map<Int, SnapshotStateList<HealthProperties>>? =
+        propertiesDataState[ComposeIndex.Third]
+
     var currentBottomSheet: DietCreateBottomSheetType? by remember {
         mutableStateOf(null)
     }
@@ -67,33 +73,49 @@ fun DietCreateScreen(
         }
     }
 
+    val cardList = listOf(
+        OnlySelectionCardData(
+            "Dietary Preferences", composeThirdData?.get(DIETARYPREF.cardIndex), {
+                currentBottomSheet = DIETARYPREF
+                openSheet()
+                viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = DIETARYPREF.propertyType))
+            }, DIETARYPREF.cardIndex
+        ), OnlySelectionCardData(
+            "Non Veg Days", composeThirdData?.get(NONVEGDAYS.cardIndex), {
+                currentBottomSheet = NONVEGDAYS
+                openSheet()/* TODO non-veg days property type?*/
+                viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = NONVEGDAYS.propertyType))
+            }, NONVEGDAYS.cardIndex
+        ), OnlySelectionCardData(
+            "Food Allergies?", composeThirdData?.get(FOODALLERGIES.cardIndex), {
+                currentBottomSheet = FOODALLERGIES
+                openSheet()
+                viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = FOODALLERGIES.propertyType))
+            }, FOODALLERGIES.cardIndex
+        ), OnlySelectionCardData(
+            "Cuisines?", composeThirdData?.get(CUISINES.cardIndex), {
+                currentBottomSheet = CUISINES
+                openSheet()
+                viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = CUISINES.propertyType))
+            }, CUISINES.cardIndex
+        )
+    )
+
     AppModalBottomSheetLayout(sheetContent = {
         Spacer(modifier = Modifier.height(1.dp))
         currentBottomSheet?.let {
-            DietCreateBottomSheetLayout(sheetLayout = it, closeSheet = { closeSheet() })
+            DietCreateBottomSheetLayout(
+                sheetLayout = it,
+                closeSheet = { closeSheet() },
+                cardList2 = composeThirdData?.get(it.cardIndex)
+            )
         }
     }, sheetState = modalBottomSheetState, content = {
-        DietContent(eventPrevious = eventPrevious, onNonVegDays = {
-            currentBottomSheet = NONVEGDAYS
-            openSheet()/* TODO non-veg days property type?*/
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = NONVEGDAYS.propertyType))
-        }, onFoodAllergies = {
-            currentBottomSheet = FOODALLERGIES
-            openSheet()
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = FOODALLERGIES.propertyType))
-        }, onCuisines = {
-            currentBottomSheet = CUISINES
-            openSheet()
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = CUISINES.propertyType))
-        }, onFoodRes = {
+        DietContent(eventPrevious = eventPrevious, onFoodRes = {
             currentBottomSheet = FOODRES
             openSheet()
             viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = FOODRES.propertyType))
-        }, onDietaryPref = {
-            currentBottomSheet = DIETARYPREF
-            openSheet()
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = DIETARYPREF.propertyType))
-        })
+        }, cardList = cardList, composeThirdData = composeThirdData)
     })
 }
 
@@ -102,40 +124,12 @@ fun DietCreateScreen(
 fun DietContent(
     viewModel: ProfileViewModel = hiltViewModel(),
     eventPrevious: () -> Unit,
-    onNonVegDays: () -> Unit,
-    onFoodAllergies: () -> Unit,
-    onCuisines: () -> Unit,
     onFoodRes: () -> Unit,
-    onDietaryPref: () -> Unit,
+    cardList: List<OnlySelectionCardData>,
+    composeThirdData: Map<Int, SnapshotStateList<HealthProperties>>?,
 ) {
 
     val context = LocalContext.current
-
-    //Data
-    val propertiesDataState by viewModel.propertiesData.collectAsStateWithLifecycle()
-    val composeThirdData: Map<Int, SnapshotStateList<HealthProperties>>? =
-        propertiesDataState[ComposeIndex.Third]
-
-    val cardList = listOf(
-        OnlySelectionCardData(
-            "Dietary Preferences",
-            composeThirdData?.get(DIETARYPREF.cardIndex),
-            onDietaryPref,
-            DIETARYPREF.cardIndex
-        ), OnlySelectionCardData(
-            "Non Veg Days",
-            composeThirdData?.get(NONVEGDAYS.cardIndex),
-            onNonVegDays,
-            NONVEGDAYS.cardIndex
-        ), OnlySelectionCardData(
-            "Food Allergies?",
-            composeThirdData?.get(FOODALLERGIES.cardIndex),
-            onFoodAllergies,
-            FOODALLERGIES.cardIndex
-        ), OnlySelectionCardData(
-            "Cuisines?", composeThirdData?.get(CUISINES.cardIndex), onCuisines, CUISINES.cardIndex
-        )
-    )
 
     val event = viewModel.stateSubmit.collectAsState()
     val events = event.value
@@ -218,20 +212,12 @@ fun DietContent(
     }
 }
 
-
-sealed class DietCreateBottomSheetType(val cardIndex: Int, val propertyType: String) {
-    object DIETARYPREF : DietCreateBottomSheetType(0, "dp")
-    object NONVEGDAYS : DietCreateBottomSheetType(1, "dp")
-    object FOODALLERGIES : DietCreateBottomSheetType(2, "food")
-    object CUISINES : DietCreateBottomSheetType(3, "cu")
-    object FOODRES : DietCreateBottomSheetType(4, "food")
-}
-
 @Composable
 fun DietCreateBottomSheetLayout(
     viewModel: ProfileViewModel = hiltViewModel(),
     sheetLayout: DietCreateBottomSheetType,
     closeSheet: () -> Unit,
+    cardList2: SnapshotStateList<HealthProperties>?,
 ) {
 
     val cardIndex = sheetLayout.cardIndex
@@ -245,7 +231,16 @@ fun DietCreateBottomSheetLayout(
         is HPropState.Success -> ItemSelectionLayout(
             cardList = (state as HPropState.Success).properties,
             cardIndex = cardIndex,
-            composeIndex = ComposeIndex.Third
+            composeIndex = ComposeIndex.Third,
+            cardList2 = cardList2
         )
     }
+}
+
+sealed class DietCreateBottomSheetType(val cardIndex: Int, val propertyType: String) {
+    object DIETARYPREF : DietCreateBottomSheetType(0, "dp")
+    object NONVEGDAYS : DietCreateBottomSheetType(1, "dp")
+    object FOODALLERGIES : DietCreateBottomSheetType(2, "food")
+    object CUISINES : DietCreateBottomSheetType(3, "cu")
+    object FOODRES : DietCreateBottomSheetType(4, "food")
 }

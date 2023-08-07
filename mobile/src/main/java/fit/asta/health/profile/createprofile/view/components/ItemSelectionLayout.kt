@@ -23,10 +23,9 @@ import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.ChipColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
@@ -51,9 +50,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 fun ItemSelectionLayout(
     viewModel: ProfileViewModel = hiltViewModel(),
     cardList: List<HealthProperties>,
+    cardList2: SnapshotStateList<HealthProperties>?,
     cardIndex: Int,
     composeIndex: ComposeIndex,
 ) {
+
+    val searchQuery = remember { mutableStateOf("") }
+
     Box(
         Modifier
             .fillMaxSize()
@@ -69,9 +72,9 @@ fun ItemSelectionLayout(
                 AppDivider(lineWidth = 80.dp)
             }
             Spacer(modifier = Modifier.height(spacing.medium))
-            SearchBar(onSearchQueryChange = {})
+            SearchBar(onSearchQueryChange = { searchQuery.value = it })
             Spacer(modifier = Modifier.height(spacing.small))
-            ChipRow(cardList, viewModel, cardIndex, composeIndex)
+            ChipRow(cardList, cardList2, viewModel, cardIndex, composeIndex, searchQuery.value)
             Spacer(modifier = Modifier.height(spacing.medium))
         }
     }
@@ -102,50 +105,62 @@ fun SearchBar(onSearchQueryChange: (String) -> Unit) {
 @Composable
 fun ChipRow(
     cardList: List<HealthProperties>,
+    cardList2: SnapshotStateList<HealthProperties>?,
     viewModel: ProfileViewModel,
     cardIndex: Int,
     composeIndex: ComposeIndex,
+    searchQuery: String,
 ) {
+
+    val filteredList = cardList.filter {
+        it.name.contains(searchQuery, ignoreCase = true)
+    }
+
     FlowRow(horizontalArrangement = Arrangement.spacedBy(spacing.small)) {
-        cardList.forEach { healthProperties ->
-            AddChipOnCard(textOnChip = healthProperties.name, onClick = {
-                viewModel.onEvent(
-                    ProfileEvent.SetSelectedAddItemOption(
-                        item = healthProperties, index = cardIndex, composeIndex = composeIndex
+        filteredList.forEach { healthProperties ->
+            val isSelected = cardList2?.contains(healthProperties) == true
+            AddChipOnCard(textOnChip = healthProperties.name, isSelected = isSelected, onClick = {
+                if (isSelected) {
+                    viewModel.onEvent(
+                        ProfileEvent.SetSelectedRemoveItemOption(
+                            item = healthProperties, index = cardIndex, composeIndex = composeIndex
+                        )
                     )
-                )
+                } else {
+                    viewModel.onEvent(
+                        ProfileEvent.SetSelectedAddItemOption(
+                            item = healthProperties, index = cardIndex, composeIndex = composeIndex
+                        )
+                    )
+                }
             })
         }
     }
 }
 
-
 @Composable
 fun AddChipOnCard(
     textOnChip: String,
+    isSelected: Boolean,
     onClick: () -> Unit,
 ) {
 
-    var isToggled by remember { mutableStateOf(false) }
-
     val colors =
         rememberAssistChipColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
-    AppChips.AppAssistChip(onClick = {
-        isToggled = !isToggled
-        onClick()
-    }, label = {
+    AppChips.AppAssistChip(onClick = onClick, label = {
         AppTexts.LabelSmall(
             text = textOnChip, color = MaterialTheme.colorScheme.onPrimaryContainer
         )
     }, trailingIcon = {
         AppDefaultIcon(
-            imageVector = if (isToggled) Icons.Rounded.RemoveCircle else Icons.Rounded.AddCircle,
-            contentDescription = if (isToggled) "Remove Items" else "Add Items",
-            tint = if (isToggled) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
+            imageVector = if (isSelected) Icons.Rounded.RemoveCircle else Icons.Rounded.AddCircle,
+            contentDescription = if (isSelected) "Remove Items" else "Add Items",
+            tint = if (isSelected) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
         )
     }, colors = colors
     )
 }
+
 
 @Composable
 fun rememberAssistChipColors(

@@ -77,6 +77,10 @@ fun HealthCreateScreen(
     eventNext: () -> Unit,
 ) {
 
+    val propertiesDataState by viewModel.propertiesData.collectAsStateWithLifecycle()
+    val composeFirstData: Map<Int, SnapshotStateList<HealthProperties>>? =
+        propertiesDataState[ComposeIndex.First]
+
     val scope = rememberCoroutineScope()
     var currentBottomSheet: HealthCreateBottomSheetTypes? by remember {
         mutableStateOf(null)
@@ -115,11 +119,15 @@ fun HealthCreateScreen(
         Spacer(modifier = Modifier.height(1.dp))
         currentBottomSheet?.let {
             HealthCreateBtmSheetLayout(
-                sheetLayout = it, sheetState = { closeSheet() }, viewModel = viewModel
+                sheetLayout = it,
+                sheetState = { closeSheet() },
+                viewModel = viewModel,
+                cardList2 = composeFirstData?.get(it.cardIndex)
             )
         }
     }, sheetState = modalBottomSheetState, content = {
-        HealthContent(eventPrevious = eventPrevious,
+        HealthContent(
+            eventPrevious = eventPrevious,
             eventNext = eventNext,
             onHealthHistory = { onItemClick(HEALTHHISTORY, "ailment") },
             onInjuries = { onItemClick(INJURIES, "injury") },
@@ -127,7 +135,9 @@ fun HealthCreateScreen(
             onMedications = { onItemClick(MEDICATIONS, "med") },
             onHealthTargets = { onItemClick(HEALTHTARGETS, "tgt") },
             onBodyInjurySelect = { onItemClick(BODYPARTS, "bp") },
-            onAddictionSelect = { onItemClick(ADDICTION, "add") })
+            onAddictionSelect = { onItemClick(ADDICTION, "add") },
+            composeFirstData = composeFirstData
+        )
     })
 }
 
@@ -145,6 +155,7 @@ fun HealthContent(
     onHealthTargets: () -> Unit,
     onBodyInjurySelect: () -> Unit,
     onAddictionSelect: () -> Unit,
+    composeFirstData: Map<Int, SnapshotStateList<HealthProperties>>?,
 ) {
     val radioButtonList =
         listOf(ButtonListTypes(buttonType = "First"), ButtonListTypes(buttonType = "Second"))
@@ -170,14 +181,7 @@ fun HealthContent(
     val selectedBodyPart =
         radioButtonSelections[MultiRadioBtnKeys.BODYPART.key] as TwoRadioBtnSelections?
 
-    // Data
-    val propertiesDataState by viewModel.propertiesData.collectAsStateWithLifecycle()
-
-    val composeFirstData: Map<Int, SnapshotStateList<HealthProperties>>? =
-        propertiesDataState[ComposeIndex.First]
-
     //List Creation
-
     val selectionList = listOf(
         Pair(ComposeIndex.First, selectedHealthHistory),
         Pair(ComposeIndex.First, selectedInjuries),
@@ -230,6 +234,7 @@ private fun HealthCreateBtmSheetLayout(
     viewModel: ProfileViewModel = hiltViewModel(),
     sheetLayout: HealthCreateBottomSheetTypes,
     sheetState: () -> Unit,
+    cardList2: SnapshotStateList<HealthProperties>?,
 ) {
     val cardIndex = sheetLayout.cardIndex
     val state by viewModel.stateHp.collectAsStateWithLifecycle()
@@ -242,7 +247,8 @@ private fun HealthCreateBtmSheetLayout(
             ItemSelectionLayout(
                 cardList = (state as HPropState.Success).properties,
                 cardIndex = cardIndex,
-                composeIndex = ComposeIndex.First
+                composeIndex = ComposeIndex.First,
+                cardList2 = cardList2
             )
         }
 
@@ -311,9 +317,9 @@ private fun HealthContentLayout(
 sealed class HealthCreateBottomSheetTypes(val cardIndex: Int) {
     object HEALTHHISTORY : HealthCreateBottomSheetTypes(0)
     object INJURIES : HealthCreateBottomSheetTypes(1)
-    object AILMENTS : HealthCreateBottomSheetTypes(2)
-    object MEDICATIONS : HealthCreateBottomSheetTypes(3)
-    object HEALTHTARGETS : HealthCreateBottomSheetTypes(4)
-    object BODYPARTS : HealthCreateBottomSheetTypes(5)
+    object BODYPARTS : HealthCreateBottomSheetTypes(2)
+    object AILMENTS : HealthCreateBottomSheetTypes(3)
+    object MEDICATIONS : HealthCreateBottomSheetTypes(4)
+    object HEALTHTARGETS : HealthCreateBottomSheetTypes(5)
     object ADDICTION : HealthCreateBottomSheetTypes(6)
 }
