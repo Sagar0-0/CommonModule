@@ -54,6 +54,9 @@ fun ItemSelectionLayout(
     cardIndex: Int,
     composeIndex: ComposeIndex,
 ) {
+
+    val searchQuery = remember { mutableStateOf("") }
+
     Box(
         Modifier
             .fillMaxSize()
@@ -69,9 +72,9 @@ fun ItemSelectionLayout(
                 AppDivider(lineWidth = 80.dp)
             }
             Spacer(modifier = Modifier.height(spacing.medium))
-            SearchBar(onSearchQueryChange = {})
+            SearchBar(onSearchQueryChange = { searchQuery.value = it })
             Spacer(modifier = Modifier.height(spacing.small))
-            ChipRow(cardList, cardList2, viewModel, cardIndex, composeIndex)
+            ChipRow(cardList, cardList2, viewModel, cardIndex, composeIndex, searchQuery.value)
             Spacer(modifier = Modifier.height(spacing.medium))
         }
     }
@@ -106,9 +109,15 @@ fun ChipRow(
     viewModel: ProfileViewModel,
     cardIndex: Int,
     composeIndex: ComposeIndex,
+    searchQuery: String,
 ) {
+
+    val filteredList = cardList.filter {
+        it.name.contains(searchQuery, ignoreCase = true)
+    }
+
     FlowRow(horizontalArrangement = Arrangement.spacedBy(spacing.small)) {
-        cardList.forEach { healthProperties ->
+        filteredList.forEach { healthProperties ->
             val isSelected = cardList2?.contains(healthProperties) == true
             AddChipOnCard(textOnChip = healthProperties.name, isSelected = isSelected, onClick = {
                 if (isSelected) {
