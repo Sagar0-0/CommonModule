@@ -76,6 +76,11 @@ fun LifeStyleCreateScreen(
     onSkipEvent: (Int) -> Unit,
 ) {
 
+    //Data
+    val propertiesDataState by viewModel.propertiesData.collectAsStateWithLifecycle()
+    val composeSecondData: Map<Int, SnapshotStateList<HealthProperties>>? =
+        propertiesDataState[ComposeIndex.Second]
+
     var currentBottomSheet: LifeStyleCreateBottomSheetType? by remember {
         mutableStateOf(null)
     }
@@ -114,21 +119,43 @@ fun LifeStyleCreateScreen(
         onBottomSheetItemClick(propertyType)
     }
 
+    val cardDataList = listOf(
+        OnlySelectionCardData(
+            "Current Activities",
+            composeSecondData?.get(0),
+            { onItemClick(CURRENTACTIVITIES, "activity") },
+            0
+        ), OnlySelectionCardData(
+            "Preferred Activities",
+            composeSecondData?.get(1),
+            { onItemClick(PREFERREDACTIVITIES, "activity") },
+            1
+        ), OnlySelectionCardData(
+            "LifeStyleTargets",
+            composeSecondData?.get(2),
+            { onItemClick(LIFESTYLETARGETS, "goal") },
+            2
+        )
+    )
+
     AppModalBottomSheetLayout(sheetContent = {
         Spacer(modifier = Modifier.height(1.dp))
         currentBottomSheet?.let {
             LifeStyleCreateBottomSheetLayout(
-                sheetLayout = it, closeSheet = { closeSheet() }, viewModel = viewModel
+                sheetLayout = it,
+                closeSheet = { closeSheet() },
+                viewModel = viewModel,
+                cardList2 = composeSecondData?.get(it.cardIndex)
             )
         }
     }, sheetState = modalBottomSheetState, content = {
-        LifeStyleContent(viewModel = viewModel,
+        LifeStyleContent(
+            viewModel = viewModel,
             eventPrevious = eventPrevious,
             eventNext = eventNext,
             onSkipEvent = onSkipEvent,
-            onCurrentActivity = { onItemClick(CURRENTACTIVITIES, "activity") },
-            onPreferredActivity = { onItemClick(PREFERREDACTIVITIES, "activity") },
-            onLifeStyleTargets = { onItemClick(LIFESTYLETARGETS, "goal") })
+            cardList = cardDataList
+        )
     })
 }
 
@@ -139,28 +166,12 @@ fun LifeStyleContent(
     eventPrevious: () -> Unit,
     eventNext: () -> Unit,
     onSkipEvent: (Int) -> Unit,
-    onCurrentActivity: () -> Unit,
-    onPreferredActivity: () -> Unit,
-    onLifeStyleTargets: () -> Unit,
+    cardList: List<OnlySelectionCardData>,
 ) {
 
     //Radio Buttons Selection
     val radioButtonSelections by viewModel.radioButtonSelections.collectAsStateWithLifecycle()
 
-    //Data
-    val propertiesDataState by viewModel.propertiesData.collectAsStateWithLifecycle()
-    val composeSecondData: Map<Int, SnapshotStateList<HealthProperties>>? =
-        propertiesDataState[ComposeIndex.Second]
-
-    val cardDataList = listOf(
-        OnlySelectionCardData(
-            "Current Activities", composeSecondData?.get(0), onCurrentActivity, 0
-        ),
-        OnlySelectionCardData(
-            "Preferred Activities", composeSecondData?.get(1), onPreferredActivity, 1
-        ),
-        OnlySelectionCardData("LifeStyleTargets", composeSecondData?.get(2), onLifeStyleTargets, 2)
-    )
 
     //Time Picker Params
     val timePickers = listOf(
@@ -272,7 +283,7 @@ fun LifeStyleContent(
                 })
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            cardDataList.forEach { cardData ->
+            cardList.forEach { cardData ->
                 OnlyChipSelectionCard(
                     cardType = cardData.cardType,
                     cardList = cardData.cardList,
@@ -293,6 +304,7 @@ fun LifeStyleCreateBottomSheetLayout(
     viewModel: ProfileViewModel = hiltViewModel(),
     sheetLayout: LifeStyleCreateBottomSheetType,
     closeSheet: () -> Unit,
+    cardList2: SnapshotStateList<HealthProperties>?,
 ) {
 
     val cardIndex = sheetLayout.cardIndex
@@ -306,16 +318,10 @@ fun LifeStyleCreateBottomSheetLayout(
         is HPropState.Success -> ItemSelectionLayout(
             cardList = (state as HPropState.Success).properties,
             cardIndex = cardIndex,
-            composeIndex = ComposeIndex.First,
-            cardList2 = null
+            composeIndex = ComposeIndex.Second,
+            cardList2 = cardList2
         )
     }
-}
-
-sealed class LifeStyleCreateBottomSheetType(val cardIndex: Int) {
-    object CURRENTACTIVITIES : LifeStyleCreateBottomSheetType(0)
-    object PREFERREDACTIVITIES : LifeStyleCreateBottomSheetType(1)
-    object LIFESTYLETARGETS : LifeStyleCreateBottomSheetType(2)
 }
 
 @Composable
@@ -468,3 +474,9 @@ data class TimePickerData(
     val secondColType: String,
     val showContent: MutableState<Boolean>,
 )
+
+sealed class LifeStyleCreateBottomSheetType(val cardIndex: Int) {
+    object CURRENTACTIVITIES : LifeStyleCreateBottomSheetType(0)
+    object PREFERREDACTIVITIES : LifeStyleCreateBottomSheetType(1)
+    object LIFESTYLETARGETS : LifeStyleCreateBottomSheetType(2)
+}
