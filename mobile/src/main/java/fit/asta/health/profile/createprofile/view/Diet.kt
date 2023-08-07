@@ -46,6 +46,8 @@ fun DietCreateScreen(
     val composeThirdData: Map<Int, SnapshotStateList<HealthProperties>>? =
         propertiesDataState[ComposeIndex.Third]
 
+    val searchQuery = remember { mutableStateOf("") }
+
     var currentBottomSheet: DietCreateBottomSheetType? by remember {
         mutableStateOf(null)
     }
@@ -73,30 +75,36 @@ fun DietCreateScreen(
         }
     }
 
+    val onBottomSheetItemClick: (String) -> Unit = { propertyType ->
+        currentBottomSheet?.let {
+            openSheet()
+            searchQuery.value = ""
+            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = propertyType))
+        }
+    }
+
+    val onItemClick: (DietCreateBottomSheetType, String) -> Unit = { sheetType, propertyType ->
+        currentBottomSheet = sheetType
+        onBottomSheetItemClick(propertyType)
+    }
+
     val cardList = listOf(
         OnlySelectionCardData(
             "Dietary Preferences", composeThirdData?.get(DIETARYPREF.cardIndex), {
-                currentBottomSheet = DIETARYPREF
-                openSheet()
-                viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = DIETARYPREF.propertyType))
+                onItemClick(DIETARYPREF, DIETARYPREF.propertyType)
             }, DIETARYPREF.cardIndex
         ), OnlySelectionCardData(
             "Non Veg Days", composeThirdData?.get(NONVEGDAYS.cardIndex), {
-                currentBottomSheet = NONVEGDAYS
-                openSheet()/* TODO non-veg days property type?*/
-                viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = NONVEGDAYS.propertyType))
+                /* TODO non-veg days property type?*/
+                onItemClick(NONVEGDAYS, NONVEGDAYS.propertyType)
             }, NONVEGDAYS.cardIndex
         ), OnlySelectionCardData(
             "Food Allergies?", composeThirdData?.get(FOODALLERGIES.cardIndex), {
-                currentBottomSheet = FOODALLERGIES
-                openSheet()
-                viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = FOODALLERGIES.propertyType))
+                onItemClick(FOODALLERGIES, FOODALLERGIES.propertyType)
             }, FOODALLERGIES.cardIndex
         ), OnlySelectionCardData(
             "Cuisines?", composeThirdData?.get(CUISINES.cardIndex), {
-                currentBottomSheet = CUISINES
-                openSheet()
-                viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = CUISINES.propertyType))
+                onItemClick(CUISINES, CUISINES.propertyType)
             }, CUISINES.cardIndex
         )
     )
@@ -107,14 +115,13 @@ fun DietCreateScreen(
             DietCreateBottomSheetLayout(
                 sheetLayout = it,
                 closeSheet = { closeSheet() },
-                cardList2 = composeThirdData?.get(it.cardIndex)
+                cardList2 = composeThirdData?.get(it.cardIndex),
+                searchQuery = searchQuery
             )
         }
     }, sheetState = modalBottomSheetState, content = {
         DietContent(eventPrevious = eventPrevious, onFoodRes = {
-            currentBottomSheet = FOODRES
-            openSheet()
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = FOODRES.propertyType))
+            onItemClick(FOODRES, FOODRES.propertyType)
         }, cardList = cardList, composeThirdData = composeThirdData)
     })
 }
@@ -218,6 +225,7 @@ fun DietCreateBottomSheetLayout(
     sheetLayout: DietCreateBottomSheetType,
     closeSheet: () -> Unit,
     cardList2: SnapshotStateList<HealthProperties>?,
+    searchQuery: MutableState<String>,
 ) {
 
     val cardIndex = sheetLayout.cardIndex
@@ -230,9 +238,10 @@ fun DietCreateBottomSheetLayout(
         is HPropState.NoInternet -> AppErrorScreen(onTryAgain = {})
         is HPropState.Success -> ItemSelectionLayout(
             cardList = (state as HPropState.Success).properties,
+            cardList2 = cardList2,
             cardIndex = cardIndex,
             composeIndex = ComposeIndex.Third,
-            cardList2 = cardList2
+            searchQuery = searchQuery
         )
     }
 }

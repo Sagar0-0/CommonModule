@@ -23,8 +23,7 @@ import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.ChipColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -53,9 +52,8 @@ fun ItemSelectionLayout(
     cardList2: SnapshotStateList<HealthProperties>?,
     cardIndex: Int,
     composeIndex: ComposeIndex,
+    searchQuery: MutableState<String>,
 ) {
-
-    val searchQuery = remember { mutableStateOf("") }
 
     Box(
         Modifier
@@ -72,7 +70,7 @@ fun ItemSelectionLayout(
                 AppDivider(lineWidth = 80.dp)
             }
             Spacer(modifier = Modifier.height(spacing.medium))
-            SearchBar(onSearchQueryChange = { searchQuery.value = it })
+            SearchBar(onSearchQueryChange = { searchQuery.value = it }, searchQuery)
             Spacer(modifier = Modifier.height(spacing.small))
             ChipRow(cardList, cardList2, viewModel, cardIndex, composeIndex, searchQuery.value)
             Spacer(modifier = Modifier.height(spacing.medium))
@@ -81,15 +79,14 @@ fun ItemSelectionLayout(
 }
 
 @Composable
-fun SearchBar(onSearchQueryChange: (String) -> Unit) {
+fun SearchBar(
+    onSearchQueryChange: (String) -> Unit,
+    searchQuery: MutableState<String>,
+) {
     val focusManager = LocalFocusManager.current
-    val searchQuery = remember { mutableStateOf("") }
     AppTextField(
         value = searchQuery.value,
-        onValueChange = {
-            searchQuery.value = it
-            onSearchQueryChange(it)
-        },
+        onValueChange = { onSearchQueryChange(it) },
         modifier = Modifier.fillMaxWidth(),
         keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
         keyboardType = KeyboardType.Text,

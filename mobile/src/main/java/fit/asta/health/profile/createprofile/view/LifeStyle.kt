@@ -81,6 +81,8 @@ fun LifeStyleCreateScreen(
     val composeSecondData: Map<Int, SnapshotStateList<HealthProperties>>? =
         propertiesDataState[ComposeIndex.Second]
 
+    val searchQuery = remember { mutableStateOf("") }
+
     var currentBottomSheet: LifeStyleCreateBottomSheetType? by remember {
         mutableStateOf(null)
     }
@@ -110,6 +112,7 @@ fun LifeStyleCreateScreen(
     val onBottomSheetItemClick: (String) -> Unit = { propertyType ->
         currentBottomSheet?.let {
             openSheet()
+            searchQuery.value = ""
             viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = propertyType))
         }
     }
@@ -142,10 +145,11 @@ fun LifeStyleCreateScreen(
         Spacer(modifier = Modifier.height(1.dp))
         currentBottomSheet?.let {
             LifeStyleCreateBottomSheetLayout(
+                viewModel = viewModel,
                 sheetLayout = it,
                 closeSheet = { closeSheet() },
-                viewModel = viewModel,
-                cardList2 = composeSecondData?.get(it.cardIndex)
+                cardList2 = composeSecondData?.get(it.cardIndex),
+                searchQuery = searchQuery
             )
         }
     }, sheetState = modalBottomSheetState, content = {
@@ -305,6 +309,7 @@ fun LifeStyleCreateBottomSheetLayout(
     sheetLayout: LifeStyleCreateBottomSheetType,
     closeSheet: () -> Unit,
     cardList2: SnapshotStateList<HealthProperties>?,
+    searchQuery: MutableState<String>,
 ) {
 
     val cardIndex = sheetLayout.cardIndex
@@ -317,9 +322,10 @@ fun LifeStyleCreateBottomSheetLayout(
         is HPropState.NoInternet -> AppErrorScreen(onTryAgain = {})
         is HPropState.Success -> ItemSelectionLayout(
             cardList = (state as HPropState.Success).properties,
+            cardList2 = cardList2,
             cardIndex = cardIndex,
             composeIndex = ComposeIndex.Second,
-            cardList2 = cardList2
+            searchQuery = searchQuery
         )
     }
 }

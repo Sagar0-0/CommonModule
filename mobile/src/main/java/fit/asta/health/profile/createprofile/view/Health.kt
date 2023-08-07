@@ -30,6 +30,7 @@ import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -81,6 +82,8 @@ fun HealthCreateScreen(
     val composeFirstData: Map<Int, SnapshotStateList<HealthProperties>>? =
         propertiesDataState[ComposeIndex.First]
 
+    val searchQuery = remember { mutableStateOf("") }
+
     val scope = rememberCoroutineScope()
     var currentBottomSheet: HealthCreateBottomSheetTypes? by remember {
         mutableStateOf(null)
@@ -106,6 +109,7 @@ fun HealthCreateScreen(
     val onBottomSheetItemClick: (String) -> Unit = { propertyType ->
         currentBottomSheet?.let {
             openSheet()
+            searchQuery.value = ""
             viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = propertyType))
         }
     }
@@ -122,7 +126,7 @@ fun HealthCreateScreen(
                 sheetLayout = it,
                 sheetState = { closeSheet() },
                 viewModel = viewModel,
-                cardList2 = composeFirstData?.get(it.cardIndex)
+                cardList2 = composeFirstData?.get(it.cardIndex), searchQuery = searchQuery
             )
         }
     }, sheetState = modalBottomSheetState, content = {
@@ -235,6 +239,7 @@ private fun HealthCreateBtmSheetLayout(
     sheetLayout: HealthCreateBottomSheetTypes,
     sheetState: () -> Unit,
     cardList2: SnapshotStateList<HealthProperties>?,
+    searchQuery: MutableState<String>,
 ) {
     val cardIndex = sheetLayout.cardIndex
     val state by viewModel.stateHp.collectAsStateWithLifecycle()
@@ -248,7 +253,8 @@ private fun HealthCreateBtmSheetLayout(
                 cardList = (state as HPropState.Success).properties,
                 cardIndex = cardIndex,
                 composeIndex = ComposeIndex.First,
-                cardList2 = cardList2
+                cardList2 = cardList2,
+                searchQuery = searchQuery
             )
         }
 
