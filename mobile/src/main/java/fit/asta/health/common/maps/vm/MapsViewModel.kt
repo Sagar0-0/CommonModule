@@ -45,6 +45,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -100,9 +101,9 @@ class MapsViewModel
             prefUtils.getPreferences(
                 resourcesProvider.getString(R.string.user_pref_current_address),
                 "Select location"
-            ).collect {
+            ).collectLatest {
                 _currentAddressStringState.value = ResponseState.Success(it)
-                Log.d("LOC", "init: $it")
+                Log.d("INIT", "init: $it")
             }
         }
     }
@@ -182,7 +183,7 @@ class MapsViewModel
                     viewModelScope.launch {
                         prefUtils.setPreferences(
                             resourcesProvider.getString(R.string.user_pref_current_address),
-                            _currentAddressStringState.value
+                            p0[0]
                         )
                     }
                     Log.d(TAG, "getCurrentAddress: Success: ${_currentAddressState.value}")
@@ -200,7 +201,7 @@ class MapsViewModel
                     viewModelScope.launch {
                         prefUtils.setPreferences(
                             resourcesProvider.getString(R.string.user_pref_current_address),
-                            _currentAddressStringState.value
+                            addresses[0]
                         )
                     }
                     Log.d(TAG, "getCurrentAddress: Success: ${_currentAddressState.value}")
