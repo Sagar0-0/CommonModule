@@ -44,6 +44,7 @@ import fit.asta.health.R
 import fit.asta.health.common.ui.theme.buttonSize
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.getPublicStorageUrl
+import fit.asta.health.common.utils.showUrlInBrowser
 
 @Composable
 fun SignInScreen(navHostController: NavHostController, onSuccess: () -> Unit) {
@@ -231,12 +232,12 @@ fun SignInScreen(navHostController: NavHostController, onSuccess: () -> Unit) {
                 annotatedLinkString
                     .getStringAnnotations("terms", it, it)
                     .firstOrNull()?.let { stringAnnotation ->
-                        uriHandler.openUri(stringAnnotation.item)
+                        context.showUrlInBrowser(stringAnnotation.item)
                     }
                 annotatedLinkString
                     .getStringAnnotations("privacy", it, it)
                     .firstOrNull()?.let { stringAnnotation ->
-                        uriHandler.openUri(stringAnnotation.item)
+                        context.showUrlInBrowser(stringAnnotation.item)
                     }
             }
         )

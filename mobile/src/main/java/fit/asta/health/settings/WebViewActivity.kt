@@ -5,15 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.core.widget.ContentLoadingProgressBar
-import com.google.android.material.appbar.MaterialToolbar
-import fit.asta.health.R
+import androidx.compose.ui.viewinterop.AndroidView
 
-class WebViewActivity : AppCompatActivity() {
+class WebViewActivity : ComponentActivity() {
 
     companion object {
 
@@ -29,33 +28,17 @@ class WebViewActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.webview_activity)
 
-        val toolbarWebView = findViewById<MaterialToolbar>(R.id.toolbarWebView)
-        setSupportActionBar(toolbarWebView)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-        toolbarWebView?.setNavigationOnClickListener {
-            finish()
-        }
-        val webView = findViewById<WebView>(R.id.webView)
-        webView.webViewClient = SubWebClient()
-        webView.loadUrl(webUrl)
-    }
-
-    inner class SubWebClient : WebViewClient() {
-
-        @Deprecated("Deprecated in Java")
-        override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-
-            findViewById<ContentLoadingProgressBar>(R.id.progressWebView).show()
-            view.loadUrl(url)
-            return true
+        setContent {
+            AndroidView(
+                factory = { context ->
+                    WebView(context).apply {
+                        webViewClient = WebViewClient()
+                        loadUrl(webUrl)
+                    }
+                }
+            )
         }
 
-        override fun onPageFinished(view: WebView, url: String) {
-            super.onPageFinished(view, url)
-
-            findViewById<ContentLoadingProgressBar>(R.id.progressWebView).hide()
-        }
     }
 }
