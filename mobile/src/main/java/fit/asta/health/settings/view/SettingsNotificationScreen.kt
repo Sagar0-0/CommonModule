@@ -5,13 +5,18 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.HealthAndSafety
+import androidx.compose.material.icons.filled.LocalOffer
+import androidx.compose.material.icons.filled.Message
+import androidx.compose.material.icons.filled.NewReleases
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.*
@@ -46,7 +51,7 @@ fun SettingsNotificationLayout(
         LazyColumn(modifier = Modifier.padding(spacing.medium)) {
             item {
                 SwitchItem(
-                    painter = painterResource(id = R.drawable.ic_notifications),
+                    imageVector = Icons.Default.Notifications,
                     text = stringResource(
                         id = R.string.user_pref_notification_cat_title
                     ),
@@ -67,7 +72,7 @@ fun SettingsNotificationLayout(
                 )
 
                 SwitchItem(
-                    painter = painterResource(id = R.drawable.messages),
+                    imageVector = Icons.Default.Message,
                     text = stringResource(
                         id = R.string.user_pref_reminder_alarm_title
                     ),
@@ -83,7 +88,7 @@ fun SettingsNotificationLayout(
                 )
 
                 SwitchItem(
-                    painter = painterResource(id = R.drawable.messages),
+                    imageVector = Icons.Default.Message,
                     text = stringResource(
                         id = R.string.user_pref_activity_tips_title
                     ),
@@ -99,7 +104,7 @@ fun SettingsNotificationLayout(
                 )
 
                 SwitchItem(
-                    painter = painterResource(id = R.drawable.messages),
+                    imageVector = Icons.Default.Message,
                     text = stringResource(
                         id = R.string.user_pref_goal_progress_tips_title
                     ),
@@ -115,7 +120,7 @@ fun SettingsNotificationLayout(
                 )
 
                 SwitchItem(
-                    painter = painterResource(id = R.drawable.messages),
+                    imageVector = Icons.Default.Message,
                     text = stringResource(
                         id = R.string.user_pref_goal_adjustment_title
                     ),
@@ -131,7 +136,7 @@ fun SettingsNotificationLayout(
                 )
 
                 SwitchItem(
-                    painter = painterResource(id = R.drawable.messages),
+                    imageVector = Icons.Default.Message,
                     text = stringResource(
                         id = R.string.user_pref_goals_completed_title
                     ),
@@ -147,7 +152,7 @@ fun SettingsNotificationLayout(
                 )
 
                 SwitchItem(
-                    painter = painterResource(id = R.drawable.ic_new_release),
+                    imageVector = Icons.Default.NewReleases,
                     text = stringResource(
                         id = R.string.user_pref_new_release_title
                     ),
@@ -163,7 +168,7 @@ fun SettingsNotificationLayout(
                 )
 
                 SwitchItem(
-                    painter = painterResource(id = R.drawable.ic_health_tips),
+                    imageVector = Icons.Default.HealthAndSafety,
                     text = stringResource(
                         id = R.string.user_pref_health_tips_title
                     ),
@@ -179,7 +184,7 @@ fun SettingsNotificationLayout(
                 )
 
                 SwitchItem(
-                    painter = painterResource(id = R.drawable.ic_offers),
+                    imageVector = Icons.Default.LocalOffer,
                     text = stringResource(
                         id = R.string.user_pref_promotions_title
                     ),
@@ -200,7 +205,7 @@ fun SettingsNotificationLayout(
 
 @Composable
 fun SwitchItem(
-    painter: Painter,
+    imageVector: ImageVector,
     text: String,
     subtitle: String? = null,
     isChecked: Boolean,
@@ -210,7 +215,7 @@ fun SwitchItem(
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Icon(
             modifier = Modifier.padding(spacing.extraSmall),
-            painter = painter,
+            imageVector = imageVector,
             contentDescription = ""
         )
 

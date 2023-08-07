@@ -95,8 +95,8 @@ fun NavGraphBuilder.homeScreen(
                 )
                 == PackageManager.PERMISSION_GRANTED
             ) {
-                mapsViewModel.enableLocationRequest(context) {
-                    locationRequestLauncher.launch(it)
+                mapsViewModel.enableLocationRequest(context) { intent ->
+                    locationRequestLauncher.launch(intent)
                 }
             } else {
                 if (PrefUtils.getLocationPermissionRejectedCount(context) >= 2) {

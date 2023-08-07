@@ -48,7 +48,6 @@ fun NavGraphBuilder.settingScreens(
                     SettingsUiEvent.WALLET -> {
                         navController.navigate(Graph.Wallet.route)
                     }
-
                     SettingsUiEvent.ADDRESS -> {
                         navController.navigate(Graph.Address.route)
                     }
@@ -127,6 +126,8 @@ fun NavGraphBuilder.settingScreens(
                             Toast.LENGTH_SHORT
                         ).show()
                     }
+
+                    else -> {}
                 }
             }
 
