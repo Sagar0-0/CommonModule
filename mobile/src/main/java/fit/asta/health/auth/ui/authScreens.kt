@@ -5,7 +5,6 @@ package fit.asta.health.auth.ui
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -13,6 +12,7 @@ import androidx.navigation.compose.navigation
 import fit.asta.health.auth.viewmodel.AuthViewModel
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.main.Graph
+import fit.asta.health.main.sharedViewModel
 
 fun NavGraphBuilder.authScreens(navController: NavHostController) {
     navigation(
@@ -21,14 +21,14 @@ fun NavGraphBuilder.authScreens(navController: NavHostController) {
     ) {
         composable(AuthScreen.SignIn.route) {
             val context = LocalContext.current
-            val authViewModel: AuthViewModel = hiltViewModel()
+            val authViewModel: AuthViewModel = it.sharedViewModel(navController)
             SignInScreen(navController) {
                 onSuccess(navController, context, authViewModel.isAuthenticated())
             }
         }
         composable(AuthScreen.Phone.route) {
             val context = LocalContext.current
-            val authViewModel: AuthViewModel = hiltViewModel()
+            val authViewModel: AuthViewModel = it.sharedViewModel(navController)
             PhoneLoginScreen {
                 onSuccess(navController, context, authViewModel.isAuthenticated())
             }

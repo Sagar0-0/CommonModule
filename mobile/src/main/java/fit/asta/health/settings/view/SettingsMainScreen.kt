@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.BugReport
+import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Feedback
 import androidx.compose.material.icons.filled.FileCopy
@@ -38,7 +39,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
@@ -158,7 +158,7 @@ fun SettingsScreenLayout(
             PreferenceCategory(titleId = R.string.user_pref_display_cat_title) {
                 ListPreference(
                     titleId = R.string.user_pref_theme_title,
-                    iconId = R.drawable.ic_theme_settings,
+                    imageVector = Icons.Default.ColorLens,
                     entries = stringArrayResource(id = R.array.user_pref_theme_entries),
                     values = stringArrayResource(id = R.array.user_pref_theme_values)
                 ) {
@@ -254,7 +254,7 @@ fun PreferenceItem(
 @Composable
 fun ListPreference(
     titleId: Int,
-    iconId: Int,
+    imageVector: ImageVector,
     entries: Array<String>,
     values: Array<String>,
     onValueChange: (String) -> Unit
@@ -273,7 +273,7 @@ fun ListPreference(
             .padding(spacing.extraSmall)
     ) {
         Icon(
-            painter = painterResource(id = iconId),
+            imageVector = imageVector,
             contentDescription = title,
             modifier = Modifier.padding(end = spacing.medium)
         )

@@ -3,7 +3,6 @@ package fit.asta.health.settings
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
@@ -21,7 +20,7 @@ class WebViewActivity : AppCompatActivity() {
         private var webUrl by mutableStateOf("")
         fun launch(context: Context, url: String) {
             webUrl = url
-            Intent(context, WebSettings::class.java)
+            Intent(context, WebViewActivity::class.java)
                 .apply {
                     context.startActivity(this)
                 }
