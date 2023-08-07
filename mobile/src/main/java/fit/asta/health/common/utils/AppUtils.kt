@@ -269,11 +269,6 @@ fun Context.sendEmail(to: String, subject: String) {
     this.startActivity(Intent.createChooser(intent, this.getString(R.string.share_app_choose_text)))
 }
 
-fun Context.sendFeedbackMessage() {
-
-    sendEmail("intuminds@gmail.com", "Feedback for ASTA android app")
-}
-
 fun Context.sendBugReportMessage() {
 
     sendEmail("intuminds@gmail.com", "Bug report from ASTA android app")
@@ -317,7 +312,6 @@ fun getFirebaseStorageBucketUrl(context: Context): String {
 fun getFileName(context: Context, uri: Uri) = DocumentFile.fromSingleUri(context, uri)?.name ?: ""
 
 fun getPublicStorageUrl(context: Context, url: String): String {
-
     return getFirebaseStorageBucketUrl(context) + Uri.encode(url) + "?alt=media"
 }
 

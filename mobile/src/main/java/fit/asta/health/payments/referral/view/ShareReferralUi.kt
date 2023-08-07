@@ -35,7 +35,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -241,10 +240,7 @@ private fun ReferralCard(code: String) {
                 .padding(spacing.medium)
                 .clickable {
                     context.shareReferralCode(code)
-                }
-                .paint(
-                    painterResource(id = R.drawable.error_404)
-                ),
+                },
             shape = MaterialTheme.shapes.extraLarge,
         ) {
             Text(
