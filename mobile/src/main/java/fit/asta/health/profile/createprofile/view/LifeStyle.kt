@@ -73,13 +73,14 @@ fun LifeStyleCreateScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     eventPrevious: () -> Unit,
     eventNext: () -> Unit,
-    onSkipEvent: (Int) -> Unit,
 ) {
 
     //Data
     val propertiesDataState by viewModel.propertiesData.collectAsStateWithLifecycle()
     val composeSecondData: Map<Int, SnapshotStateList<HealthProperties>>? =
         propertiesDataState[ComposeIndex.Second]
+
+    val searchQuery = remember { mutableStateOf("") }
 
     var currentBottomSheet: LifeStyleCreateBottomSheetType? by remember {
         mutableStateOf(null)
@@ -110,6 +111,7 @@ fun LifeStyleCreateScreen(
     val onBottomSheetItemClick: (String) -> Unit = { propertyType ->
         currentBottomSheet?.let {
             openSheet()
+            searchQuery.value = ""
             viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = propertyType))
         }
     }
@@ -142,10 +144,11 @@ fun LifeStyleCreateScreen(
         Spacer(modifier = Modifier.height(1.dp))
         currentBottomSheet?.let {
             LifeStyleCreateBottomSheetLayout(
+                viewModel = viewModel,
                 sheetLayout = it,
                 closeSheet = { closeSheet() },
-                viewModel = viewModel,
-                cardList2 = composeSecondData?.get(it.cardIndex)
+                cardList2 = composeSecondData?.get(it.cardIndex),
+                searchQuery = searchQuery
             )
         }
     }, sheetState = modalBottomSheetState, content = {
@@ -153,7 +156,6 @@ fun LifeStyleCreateScreen(
             viewModel = viewModel,
             eventPrevious = eventPrevious,
             eventNext = eventNext,
-            onSkipEvent = onSkipEvent,
             cardList = cardDataList
         )
     })
@@ -165,7 +167,6 @@ fun LifeStyleContent(
     viewModel: ProfileViewModel = hiltViewModel(),
     eventPrevious: () -> Unit,
     eventNext: () -> Unit,
-    onSkipEvent: (Int) -> Unit,
     cardList: List<OnlySelectionCardData>,
 ) {
 
@@ -252,8 +253,9 @@ fun LifeStyleContent(
                         }
                     )
                 }
+
+                Spacer(modifier = Modifier.height(spacing.medium))
             }
-            Spacer(modifier = Modifier.height(spacing.medium))
             LifeStyleToggleSelectionCard(selectionTypeText = "Are you Physically Active",
                 options = listOf("Less", "Moderate", "Very"),
                 selectedOption = radioButtonSelections[MultiRadioBtnKeys.PHYACTIVE.key] as ThreeRadioBtnSelections?,
@@ -299,12 +301,14 @@ fun LifeStyleContent(
     }
 }
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun LifeStyleCreateBottomSheetLayout(
     viewModel: ProfileViewModel = hiltViewModel(),
     sheetLayout: LifeStyleCreateBottomSheetType,
     closeSheet: () -> Unit,
     cardList2: SnapshotStateList<HealthProperties>?,
+    searchQuery: MutableState<String>,
 ) {
 
     val cardIndex = sheetLayout.cardIndex
@@ -317,9 +321,10 @@ fun LifeStyleCreateBottomSheetLayout(
         is HPropState.NoInternet -> AppErrorScreen(onTryAgain = {})
         is HPropState.Success -> ItemSelectionLayout(
             cardList = (state as HPropState.Success).properties,
+            cardList2 = cardList2,
             cardIndex = cardIndex,
             composeIndex = ComposeIndex.Second,
-            cardList2 = cardList2
+            searchQuery = searchQuery
         )
     }
 }
