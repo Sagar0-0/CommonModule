@@ -71,22 +71,30 @@ fun ScheduleButtonIcon(
             .fillMaxWidth()
             .padding(spacing.small), horizontalArrangement = Arrangement.End
     ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .size(iconSize.regularSize)
-                .clip(RoundedCornerShape(spacing.small))
-                .background(color = Color.White)
+        ScheduleIconLayout(onButtonClick, imageVector)
+    }
+}
+
+@Composable
+fun ScheduleIconLayout(
+    onButtonClick: () -> Unit,
+    imageVector: ImageVector = Icons.Filled.Schedule,
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .size(iconSize.regularSize)
+            .clip(RoundedCornerShape(spacing.small))
+            .background(color = Color.White)
+    ) {
+        AppButtons.AppIconButton(
+            onClick = onButtonClick,
         ) {
-            AppButtons.AppIconButton(
-                onClick = onButtonClick,
-            ) {
-                AppDefaultIcon(
-                    imageVector = imageVector,
-                    contentDescription = "Schedule Icon",
-                    tint = Color.DarkGray
-                )
-            }
+            AppDefaultIcon(
+                imageVector = imageVector,
+                contentDescription = "Schedule Icon",
+                tint = Color.DarkGray
+            )
         }
     }
 }
