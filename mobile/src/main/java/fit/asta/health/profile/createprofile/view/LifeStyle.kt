@@ -73,7 +73,6 @@ fun LifeStyleCreateScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     eventPrevious: () -> Unit,
     eventNext: () -> Unit,
-    onSkipEvent: (Int) -> Unit,
 ) {
 
     //Data
@@ -157,7 +156,6 @@ fun LifeStyleCreateScreen(
             viewModel = viewModel,
             eventPrevious = eventPrevious,
             eventNext = eventNext,
-            onSkipEvent = onSkipEvent,
             cardList = cardDataList
         )
     })
@@ -169,7 +167,6 @@ fun LifeStyleContent(
     viewModel: ProfileViewModel = hiltViewModel(),
     eventPrevious: () -> Unit,
     eventNext: () -> Unit,
-    onSkipEvent: (Int) -> Unit,
     cardList: List<OnlySelectionCardData>,
 ) {
 
@@ -256,8 +253,9 @@ fun LifeStyleContent(
                         }
                     )
                 }
+
+                Spacer(modifier = Modifier.height(spacing.medium))
             }
-            Spacer(modifier = Modifier.height(spacing.medium))
             LifeStyleToggleSelectionCard(selectionTypeText = "Are you Physically Active",
                 options = listOf("Less", "Moderate", "Very"),
                 selectedOption = radioButtonSelections[MultiRadioBtnKeys.PHYACTIVE.key] as ThreeRadioBtnSelections?,
@@ -303,6 +301,7 @@ fun LifeStyleContent(
     }
 }
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun LifeStyleCreateBottomSheetLayout(
     viewModel: ProfileViewModel = hiltViewModel(),
