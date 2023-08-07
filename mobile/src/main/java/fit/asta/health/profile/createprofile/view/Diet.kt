@@ -245,7 +245,7 @@ fun DietCreateBottomSheetLayout(
         is HPropState.Success -> ItemSelectionLayout(
             cardList = (state as HPropState.Success).properties,
             cardIndex = cardIndex,
-            composeIndex = ComposeIndex.Third
+            composeIndex = ComposeIndex.Third, cardList2 = null
         )
     }
 }

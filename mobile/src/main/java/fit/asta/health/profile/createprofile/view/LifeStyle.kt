@@ -306,7 +306,8 @@ fun LifeStyleCreateBottomSheetLayout(
         is HPropState.Success -> ItemSelectionLayout(
             cardList = (state as HPropState.Success).properties,
             cardIndex = cardIndex,
-            composeIndex = ComposeIndex.First
+            composeIndex = ComposeIndex.First,
+            cardList2 = null
         )
     }
 }
@@ -422,6 +423,7 @@ private fun LifeStyleToggleSelectionCard(
                 options[0],
                 options[1],
             )
+
             3 -> ThreeTogglesGroups(
                 selectionTypeText,
                 selectedOption as ThreeRadioBtnSelections?,
