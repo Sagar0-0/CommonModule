@@ -40,6 +40,7 @@ import fit.asta.health.common.utils.ResourcesProvider
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getLocationName
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.cancellable
@@ -81,6 +82,7 @@ class MapsViewModel
     val searchResponseState = _searchResponseState.asStateFlow()
 
     private var searchJob: Job? = null
+    private var addressDetailJob: Job? = null
 
     private val _addressListState =
         MutableStateFlow<ResponseState<AddressesResponse>>(ResponseState.Loading)
@@ -94,16 +96,19 @@ class MapsViewModel
 
     init {
         updateLocationServiceStatus()
-
         viewModelScope.launch {
             prefUtils.getPreferences(
                 resourcesProvider.getString(R.string.user_pref_current_address),
                 "Select location"
             ).collect {
                 _currentAddressStringState.value = ResponseState.Success(it)
-                Log.d("LOC", "init: $it")
+                Log.d("INIT", "init: $it")
             }
         }
+    }
+
+    fun clearSearchResponse() {
+        _searchResponseState.value = ResponseState.Idle
     }
 
     fun updateCurrentLocationData(context: Context) {
@@ -177,7 +182,7 @@ class MapsViewModel
                     viewModelScope.launch {
                         prefUtils.setPreferences(
                             resourcesProvider.getString(R.string.user_pref_current_address),
-                            _currentAddressStringState.value
+                            getLocationName(p0[0])
                         )
                     }
                     Log.d(TAG, "getCurrentAddress: Success: ${_currentAddressState.value}")
@@ -195,7 +200,7 @@ class MapsViewModel
                     viewModelScope.launch {
                         prefUtils.setPreferences(
                             resourcesProvider.getString(R.string.user_pref_current_address),
-                            _currentAddressStringState.value
+                            getLocationName(addresses[0])
                         )
                     }
                     Log.d(TAG, "getCurrentAddress: Success: ${_currentAddressState.value}")
@@ -211,7 +216,7 @@ class MapsViewModel
     }
 
     //Call this and start observing currentLatLng
-    fun getCurrentLatLng(context: Context) {
+    private fun getCurrentLatLng(context: Context) {
         Log.d(TAG, "getCurrentLatLng: Called")
         val fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(context)
@@ -223,13 +228,6 @@ class MapsViewModel
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return
         }
         fusedLocationProviderClient.requestLocationUpdates(
@@ -256,40 +254,45 @@ class MapsViewModel
 
     fun getMarkerAddressDetails(lat: Double, long: Double, context: Context) {
         _markerAddressDetail.value = ResponseState.Loading
-        try {
-            val geocoder = Geocoder(context, Locale.getDefault())
-            if (SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                geocoder.getFromLocation(
-                    lat,
-                    long,
-                    1,
-                ) { p0 ->
-                    _markerAddressDetail.value = ResponseState.Success(p0[0])
-                }
-            } else {
-                val addresses = geocoder.getFromLocation(
-                    lat,
-                    long,
-                    1,
-                )
-                _markerAddressDetail.value =
-                    if (!addresses.isNullOrEmpty()) {
-                        ResponseState.Success(addresses[0])
-                    } else {
-                        ResponseState.Error(Exception("Address is null"))
+        addressDetailJob?.cancel()
+        addressDetailJob = viewModelScope.launch {
+            delay(200)
+            try {
+                val geocoder = Geocoder(context, Locale.getDefault())
+                if (SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    geocoder.getFromLocation(
+                        lat,
+                        long,
+                        1,
+                    ) { p0 ->
+                        _markerAddressDetail.value = ResponseState.Success(p0[0])
                     }
+                } else {
+                    val addresses = geocoder.getFromLocation(
+                        lat,
+                        long,
+                        1,
+                    )
+                    _markerAddressDetail.value =
+                        if (!addresses.isNullOrEmpty()) {
+                            ResponseState.Success(addresses[0])
+                        } else {
+                            ResponseState.Error(Exception("Address is null"))
+                        }
+                }
+            } catch (e: Exception) {
+                _markerAddressDetail.value = ResponseState.Error(e)
             }
-        } catch (e: Exception) {
-            _markerAddressDetail.value = ResponseState.Error(e)
-        }
 
+        }
     }
 
+
     fun search(query: String) {
+        _searchResponseState.value = ResponseState.Loading
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
-            _searchResponseState.value = ResponseState.Loading
-            mapsRepo.search(query).cancellable().collect {
+            mapsRepo.search(query, _currentLatLng.value).cancellable().collect {
                 _searchResponseState.value = it
             }
         }

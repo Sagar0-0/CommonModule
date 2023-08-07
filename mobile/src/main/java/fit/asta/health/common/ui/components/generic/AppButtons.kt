@@ -183,7 +183,7 @@ object AppButtons {
         onClick: () -> Unit,
         modifier: Modifier = Modifier,
         enabled: Boolean = true,
-        colors: IconButtonColors = IconButtonDefaults.iconButtonColors(),
+        colors: IconButtonColors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.surface),
         content: @Composable () -> Unit,
     ) {
         IconButton(

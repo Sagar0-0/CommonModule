@@ -1,6 +1,7 @@
 package fit.asta.health.common.maps.repo
 
 import android.util.Log
+import com.google.android.gms.maps.model.LatLng
 import fit.asta.health.R
 import fit.asta.health.common.maps.api.remote.MapsApi
 import fit.asta.health.common.maps.api.search.SearchApi
@@ -22,16 +23,26 @@ class MapsRepoImpl @Inject constructor(
     private val resourcesProvider: ResourcesProvider
 ) : MapsRepo {
 
-    override suspend fun search(text: String): Flow<ResponseState<SearchResponse>> = callbackFlow {
-        trySend(ResponseState.Loading)
-        trySend(
-            try {
-                ResponseState.Success(
-                    searchApi.search(
-                        text,
-                        resourcesProvider.getString(R.string.MAPS_API_KEY)
+    override suspend fun search(text: String, latLng: LatLng): Flow<ResponseState<SearchResponse>> =
+        callbackFlow {
+            trySend(ResponseState.Loading)
+            trySend(
+                try {
+                    ResponseState.Success(
+                        if (latLng.latitude == 0.00 && latLng.longitude == 0.00) {
+                            searchApi.search(
+                                text,
+                                resourcesProvider.getString(R.string.MAPS_API_KEY)
+                            )
+                        } else {
+                            searchApi.searchBiased(
+                                "${latLng.latitude},${latLng.longitude}",
+                                "distance",
+                                text,
+                                resourcesProvider.getString(R.string.MAPS_API_KEY)
+                            )
+                        }
                     )
-                )
             } catch (e: Exception) {
                 ResponseState.Error(
                     e

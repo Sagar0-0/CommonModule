@@ -1,5 +1,6 @@
 package fit.asta.health.common.maps.repo
 
+import com.google.android.gms.maps.model.LatLng
 import fit.asta.health.common.maps.modal.AddressesResponse
 import fit.asta.health.common.maps.modal.AddressesResponse.MyAddress
 import fit.asta.health.common.maps.modal.DeleteAddressResponse
@@ -10,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface MapsRepo {
 
-    suspend fun search(text: String): Flow<ResponseState<SearchResponse>>
+    suspend fun search(text: String, latLng: LatLng): Flow<ResponseState<SearchResponse>>
 
     suspend fun getAddresses(uid: String): ResponseState<AddressesResponse>
 

@@ -11,7 +11,7 @@ import androidx.navigation.compose.navigation
 import fit.asta.health.R
 import fit.asta.health.auth.viewmodel.AuthViewModel
 import fit.asta.health.common.utils.getCurrentBuildVersion
-import fit.asta.health.common.utils.getPublicStorageUrl
+import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.common.utils.rateUs
 import fit.asta.health.common.utils.sendBugReportMessage
@@ -47,6 +47,9 @@ fun NavGraphBuilder.settingScreens(
 
                     SettingsUiEvent.WALLET -> {
                         navController.navigate(Graph.Wallet.route)
+                    }
+                    SettingsUiEvent.ADDRESS -> {
+                        navController.navigate(Graph.Address.route)
                     }
 
                     SettingsUiEvent.BACK -> {
@@ -89,7 +92,9 @@ fun NavGraphBuilder.settingScreens(
                                     popUpToTop(navController)
                                 }
                             },
-                            onFailure = { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() }
+                            onFailure = {
+                                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                            }
                         )
                     }
 
@@ -99,18 +104,13 @@ fun NavGraphBuilder.settingScreens(
 
                     SettingsUiEvent.TERMS -> {
                         context.showUrlInBrowser(
-                            getPublicStorageUrl(
-                                context, context.getString(R.string.url_terms_of_use)
-                            )
+                            getImgUrl(context.getString(R.string.url_terms_of_use))
                         )
                     }
 
                     SettingsUiEvent.PRIVACY -> {
                         context.showUrlInBrowser(
-                            getPublicStorageUrl(
-                                context,
-                                context.getString(R.string.url_privacy_policy)
-                            )
+                            getImgUrl(context.getString(R.string.url_privacy_policy))
                         )
                     }
 
@@ -121,8 +121,11 @@ fun NavGraphBuilder.settingScreens(
                             Toast.LENGTH_SHORT
                         ).show()
                     }
+
+                    else -> {}
                 }
             }
+
 
             SettingsScreenLayout(
                 builtVersion = context.getCurrentBuildVersion(),

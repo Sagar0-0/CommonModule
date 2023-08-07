@@ -95,8 +95,8 @@ fun NavGraphBuilder.homeScreen(
                 )
                 == PackageManager.PERMISSION_GRANTED
             ) {
-                mapsViewModel.enableLocationRequest(context) {
-                    locationRequestLauncher.launch(it)
+                mapsViewModel.enableLocationRequest(context) { intent ->
+                    locationRequestLauncher.launch(intent)
                 }
             } else {
                 if (PrefUtils.getLocationPermissionRejectedCount(context) >= 2) {
@@ -200,8 +200,8 @@ fun NavGraphBuilder.homeScreen(
             onClick = { key ->
                 when (key) {
                     MainTopBarActions.Location -> {
-//                        enableLocationAndUpdateAddress()
-                        navController.navigate(Graph.Address.route)
+                        enableLocationAndUpdateAddress()
+//                        navController.navigate(Graph.Address.route)
                     }
 
                     MainTopBarActions.Notification -> {

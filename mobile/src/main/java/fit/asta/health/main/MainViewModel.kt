@@ -30,7 +30,7 @@ class MainViewModel
                 true
             ).collect {
                 _notificationsEnabled.value = it
-                Log.d("NOT", "init: $it")
+                Log.d("INIT", "init: $it")
             }
         }
     }
@@ -38,13 +38,6 @@ class MainViewModel
     fun setNotificationStatus(newValue: Boolean) = viewModelScope.launch {
         prefUtils.setPreferences(
             resourcesProvider.getString(R.string.user_pref_notification_key),
-            newValue
-        )
-    }
-
-    fun setCurrentLocation(newValue: String) = viewModelScope.launch {
-        prefUtils.setPreferences(
-            resourcesProvider.getString(R.string.user_pref_current_address),
             newValue
         )
     }
