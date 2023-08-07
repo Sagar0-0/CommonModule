@@ -26,7 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.common.ui.components.generic.AppScaffold
@@ -44,11 +43,8 @@ fun ProfileReadyScreen(userProfile: UserProfile, onBack: () -> Unit, onEdit: () 
 
     var content by remember { mutableIntStateOf(1) }
 
-    val context = LocalContext.current
-
     AppScaffold(topBar = {
         Column {
-
             AppTopBar(
                 title = "Profile Screen",
                 onBack = onBack,

@@ -12,13 +12,20 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import fit.asta.health.MainActivity
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
+import fit.asta.health.common.ui.components.generic.AppCard
+import fit.asta.health.common.ui.components.generic.AppDialog
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.AppModalBottomSheetLayout
+import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.MultiRadioBtnKeys
@@ -39,6 +46,7 @@ import kotlinx.coroutines.launch
 fun DietCreateScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     eventPrevious: () -> Unit,
+    navigateBack: () -> Unit,
 ) {
 
     //Data
@@ -122,7 +130,7 @@ fun DietCreateScreen(
     }, sheetState = modalBottomSheetState, content = {
         DietContent(eventPrevious = eventPrevious, onFoodRes = {
             onItemClick(FOODRES, FOODRES.propertyType)
-        }, cardList = cardList, composeThirdData = composeThirdData)
+        }, cardList = cardList, composeThirdData = composeThirdData, navigateBack = navigateBack)
     })
 }
 
@@ -134,9 +142,8 @@ fun DietContent(
     onFoodRes: () -> Unit,
     cardList: List<OnlySelectionCardData>,
     composeThirdData: Map<Int, SnapshotStateList<HealthProperties>>?,
+    navigateBack: () -> Unit,
 ) {
-
-    val context = LocalContext.current
 
     val event = viewModel.stateSubmit.collectAsState()
     val events = event.value
@@ -206,11 +213,11 @@ fun DietContent(
                         )
                     }
 
-                    is ProfileSubmitState.Loading -> LoadingAnimation()
+                    is ProfileSubmitState.Loading -> SubmitLottie(animationUrl = "https://lottie.host/7fcf75d6-531a-461c-9acb-31370774504a/6ShcaO6XLD.json")
                     is ProfileSubmitState.NoInternet -> AppErrorScreen(onTryAgain = {})
                     is ProfileSubmitState.Success -> {
-                        (context as MainActivity).startMainNavHost()
-                        Log.d("validate", "Success -> ${events.userProfile}")
+                        SubmitLottie(animationUrl = "https://lottie.host/4336e482-0d0c-4853-b981-3e8cda6421a6/hhMtaUVhwn.json",
+                            onDismissRequest = {})
                     }
                 }
             }
@@ -219,6 +226,62 @@ fun DietContent(
     }
 }
 
+@Composable
+fun SubmitLottie(animationUrl: String?, onDismissRequest: () -> Unit = {}) {
+
+    val celebrate = "https://lottie.host/c4755a28-fa6f-45f1-a96e-482555167578/DTAL8JmaeY.json"
+    val celebrateComposition by rememberLottieComposition(spec = LottieCompositionSpec.Url(celebrate))
+
+    animationUrl?.let { url ->
+        val composition by rememberLottieComposition(
+            spec = LottieCompositionSpec.Url(url)
+        )
+
+        val progress by animateLottieCompositionAsState(composition)
+
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            LottieAnimation(
+                composition = celebrateComposition,
+                iterations = LottieConstants.IterateForever,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.FillBounds
+            )
+            AppDialog(onDismissRequest = {
+                if (progress == 1f) {
+                    onDismissRequest()
+                }
+            }) {
+                AppCard(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(spacing.medium)
+                ) {
+                    Column(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(spacing.small),
+                    ) {
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                            LottieAnimation(
+                                composition = composition,
+                                iterations = 1,
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(spacing.medium))
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                            AppTexts.TitleMedium(text = "Profile Created Successfully 👍")
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+
+
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun DietCreateBottomSheetLayout(
     viewModel: ProfileViewModel = hiltViewModel(),

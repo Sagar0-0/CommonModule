@@ -28,7 +28,7 @@ fun ProfileContent(
             onEdit = onEdit
         )
         is ProfileGetState.Error -> {}
-        ProfileGetState.Empty -> CreateProfileLayoutDemo(onBack = onBack)
+        ProfileGetState.Empty -> CreateProfileLayout(onBack = onBack)
         ProfileGetState.NoInternet -> AppErrorScreen(onTryAgain = { viewModel.loadUserProfile() })
     }
 

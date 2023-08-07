@@ -45,7 +45,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
     ExperimentalMaterialApi::class
 )
 @Composable
-fun CreateProfileLayoutDemo(
+fun CreateProfileLayout(
     viewModel: ProfileViewModel = hiltViewModel(),
     onBack: () -> Unit = {},
 ) {
@@ -54,7 +54,8 @@ fun CreateProfileLayoutDemo(
     var currentStep by rememberSaveable { mutableIntStateOf(1) }
     val numberOfSteps = 5
 
-    val steps = listOf(StepData(1, Icons.Outlined.AccountCircle, "Details") { currentStep = 2 },
+    val steps = listOf(
+        StepData(1, Icons.Outlined.AccountCircle, "Details") { currentStep = 2 },
         StepData(2, Icons.Outlined.Face, "Physique") { currentStep = 3 },
         StepData(3, Icons.Outlined.Favorite, "Health") { currentStep = 4 },
         StepData(4, Icons.Default.Emergency, "LifeStyle") { currentStep = 5 },
@@ -138,7 +139,7 @@ fun CreateProfileLayoutDemo(
                 5 -> {
                     DietCreateScreen(eventPrevious = {
                         currentStep -= 1
-                    })
+                    }, navigateBack = onBack)
                 }
             }
         }
