@@ -51,7 +51,6 @@ import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarConfig
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
-import fit.asta.health.common.ui.components.PrimaryButton
 import fit.asta.health.common.ui.components.functional.AppTextFieldValidate
 import fit.asta.health.common.ui.components.functional.RowToggleButtonGroup
 import fit.asta.health.common.ui.components.generic.AppButtons
@@ -397,31 +396,6 @@ private fun AgeSection(
         ) {
             AppTexts.BodyLarge(
                 text = userAge.error.asString(), color = MaterialTheme.colorScheme.error
-            )
-        }
-    }
-}
-
-@Composable
-fun CreateProfileButtons(
-    eventPrevious: (() -> Unit)? = null,
-    eventNext: (() -> Unit)? = null,
-    text: String? = null,
-    enableButton: Boolean = false,
-) {
-    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(spacing.small)) {
-        PrimaryButton(
-            text = "Previous",
-            modifier = Modifier.fillMaxWidth(0.5f),
-            event = eventPrevious,
-            enableButton = true
-        )
-        if (text != null) {
-            PrimaryButton(
-                text = text,
-                modifier = Modifier.fillMaxWidth(1f),
-                event = eventNext,
-                enableButton = enableButton
             )
         }
     }

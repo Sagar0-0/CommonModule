@@ -23,6 +23,7 @@ import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.MultiRadioBtnKeys
 import fit.asta.health.profile.createprofile.view.DietCreateBottomSheetType.*
+import fit.asta.health.profile.createprofile.view.components.CreateProfileTwoButtonLayout
 import fit.asta.health.profile.createprofile.view.components.ItemSelectionLayout
 import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.HealthProperties
@@ -37,7 +38,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun DietCreateScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
-    eventPrevious: (() -> Unit)? = null,
+    eventPrevious: () -> Unit,
 ) {
     var currentBottomSheet: DietCreateBottomSheetType? by remember {
         mutableStateOf(null)
@@ -74,25 +75,24 @@ fun DietCreateScreen(
     }, sheetState = modalBottomSheetState, content = {
         DietContent(eventPrevious = eventPrevious, onNonVegDays = {
             currentBottomSheet = NONVEGDAYS
-            openSheet()
-            /* TODO non-veg days property type?*/
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "dp"))
+            openSheet()/* TODO non-veg days property type?*/
+            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = NONVEGDAYS.propertyType))
         }, onFoodAllergies = {
             currentBottomSheet = FOODALLERGIES
             openSheet()
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "food"))
+            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = FOODALLERGIES.propertyType))
         }, onCuisines = {
             currentBottomSheet = CUISINES
             openSheet()
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "cu"))
+            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = CUISINES.propertyType))
         }, onFoodRes = {
             currentBottomSheet = FOODRES
             openSheet()
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "food"))
+            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = FOODRES.propertyType))
         }, onDietaryPref = {
             currentBottomSheet = DIETARYPREF
             openSheet()
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "dp"))
+            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = DIETARYPREF.propertyType))
         })
     })
 }
@@ -101,7 +101,7 @@ fun DietCreateScreen(
 @Composable
 fun DietContent(
     viewModel: ProfileViewModel = hiltViewModel(),
-    eventPrevious: (() -> Unit)? = null,
+    eventPrevious: () -> Unit,
     onNonVegDays: () -> Unit,
     onFoodAllergies: () -> Unit,
     onCuisines: () -> Unit,
@@ -113,11 +113,29 @@ fun DietContent(
 
     //Data
     val propertiesDataState by viewModel.propertiesData.collectAsStateWithLifecycle()
-
-    // Get the data for ComposeIndex.Third (key = ComposeIndex.First)
     val composeThirdData: Map<Int, SnapshotStateList<HealthProperties>>? =
         propertiesDataState[ComposeIndex.Third]
 
+    val cardList = listOf(
+        OnlySelectionCardData(
+            "Dietary Preferences",
+            composeThirdData?.get(DIETARYPREF.cardIndex),
+            onDietaryPref,
+            DIETARYPREF.cardIndex
+        ), OnlySelectionCardData(
+            "Non Veg Days",
+            composeThirdData?.get(NONVEGDAYS.cardIndex),
+            onNonVegDays,
+            NONVEGDAYS.cardIndex
+        ), OnlySelectionCardData(
+            "Food Allergies?",
+            composeThirdData?.get(FOODALLERGIES.cardIndex),
+            onFoodAllergies,
+            FOODALLERGIES.cardIndex
+        ), OnlySelectionCardData(
+            "Cuisines?", composeThirdData?.get(CUISINES.cardIndex), onCuisines, CUISINES.cardIndex
+        )
+    )
 
     val event = viewModel.stateSubmit.collectAsState()
     val events = event.value
@@ -144,45 +162,16 @@ fun DietContent(
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            OnlyChipSelectionCard(
-                cardType = "Dietary Preferences",
-                cardList = composeThirdData?.get(0),
-                onItemsSelect = onDietaryPref,
-                cardIndex = 0,
-                composeIndex = ComposeIndex.Third
-            )
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            OnlyChipSelectionCard(
-                cardType = "Non-Veg Consumption Days?",
-                cardList = composeThirdData?.get(1),
-                onItemsSelect = onNonVegDays,
-                cardIndex = 1,
-                composeIndex = ComposeIndex.Third
-            )
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            OnlyChipSelectionCard(
-                cardType = "Food Allergies?",
-                cardList = composeThirdData?.get(2),
-                onItemsSelect = onFoodAllergies,
-                cardIndex = 2,
-                composeIndex = ComposeIndex.Third
-            )
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            OnlyChipSelectionCard(
-                cardType = "Cuisines?",
-                cardList = composeThirdData?.get(3),
-                onItemsSelect = onCuisines,
-                cardIndex = 3,
-                composeIndex = ComposeIndex.Third
-            )
-
-            Spacer(modifier = Modifier.height(spacing.medium))
+            cardList.forEach { cardData ->
+                OnlyChipSelectionCard(
+                    cardType = cardData.cardType,
+                    cardList = cardData.cardList,
+                    onItemsSelect = cardData.onItemsSelect,
+                    cardIndex = cardData.cardIndex,
+                    composeIndex = ComposeIndex.Second,
+                )
+                Spacer(modifier = Modifier.height(spacing.medium))
+            }
 
             SelectionCardCreateProfile(
                 cardType = "Food Restrictions?",
@@ -199,11 +188,11 @@ fun DietContent(
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            CreateProfileButtons(
-                eventPrevious, eventNext = {
+            CreateProfileTwoButtonLayout(
+                eventPrevious = eventPrevious, eventNext = {
                     buttonClicked = !buttonClicked
                     viewModel.onEvent(ProfileEvent.OnSubmit)
-                }, text = "Submit", enableButton = true
+                }, titleButton2 = "Submit"
             )
 
             if (buttonClicked) {
@@ -224,18 +213,18 @@ fun DietContent(
                     }
                 }
             }
-
             Spacer(modifier = Modifier.height(spacing.medium))
-
         }
     }
-
-
 }
 
 
-enum class DietCreateBottomSheetType {
-    DIETARYPREF, NONVEGDAYS, FOODALLERGIES, CUISINES, FOODRES
+sealed class DietCreateBottomSheetType(val cardIndex: Int, val propertyType: String) {
+    object DIETARYPREF : DietCreateBottomSheetType(0, "dp")
+    object NONVEGDAYS : DietCreateBottomSheetType(1, "dp")
+    object FOODALLERGIES : DietCreateBottomSheetType(2, "food")
+    object CUISINES : DietCreateBottomSheetType(3, "cu")
+    object FOODRES : DietCreateBottomSheetType(4, "food")
 }
 
 @Composable
@@ -244,100 +233,19 @@ fun DietCreateBottomSheetLayout(
     sheetLayout: DietCreateBottomSheetType,
     closeSheet: () -> Unit,
 ) {
-    when (sheetLayout) {
-        DIETARYPREF -> {
-            when (val state = viewModel.stateHp.collectAsState().value) {
-                is HPropState.Empty -> {}
-                is HPropState.Error -> {}
-                is HPropState.Loading -> LoadingAnimation()
-                is HPropState.NoInternet -> {
-                    AppErrorScreen(onTryAgain = {})
-                }
 
-                is HPropState.Success -> {
-                    ItemSelectionLayout(
-                        cardList = state.properties,
-                        cardIndex = 0,
-                        composeIndex = ComposeIndex.Third
-                    )
-                }
-            }
-        }
+    val cardIndex = sheetLayout.cardIndex
+    val state by viewModel.stateHp.collectAsStateWithLifecycle()
 
-        NONVEGDAYS -> {
-            when (val state = viewModel.stateHp.collectAsState().value) {
-                is HPropState.Empty -> {}
-                is HPropState.Error -> {}
-                is HPropState.Loading -> LoadingAnimation()
-                is HPropState.NoInternet -> {
-                    AppErrorScreen(onTryAgain = {})
-                }
-
-                is HPropState.Success -> {
-                    ItemSelectionLayout(
-                        cardList = state.properties,
-                        cardIndex = 1,
-                        composeIndex = ComposeIndex.Third
-                    )
-                }
-            }
-        }
-
-        FOODALLERGIES -> {
-            when (val state = viewModel.stateHp.collectAsState().value) {
-                is HPropState.Empty -> {}
-                is HPropState.Error -> {}
-                is HPropState.Loading -> LoadingAnimation()
-                is HPropState.NoInternet -> {
-                    AppErrorScreen(onTryAgain = {})
-                }
-
-                is HPropState.Success -> {
-                    ItemSelectionLayout(
-                        cardList = state.properties,
-                        cardIndex = 2,
-                        composeIndex = ComposeIndex.Third
-                    )
-                }
-            }
-        }
-
-        CUISINES -> {
-            when (val state = viewModel.stateHp.collectAsState().value) {
-                is HPropState.Empty -> {}
-                is HPropState.Error -> {}
-                is HPropState.Loading -> LoadingAnimation()
-                is HPropState.NoInternet -> {
-                    AppErrorScreen(onTryAgain = {})
-                }
-
-                is HPropState.Success -> {
-                    ItemSelectionLayout(
-                        cardList = state.properties,
-                        cardIndex = 3,
-                        composeIndex = ComposeIndex.Third
-                    )
-                }
-            }
-        }
-
-        FOODRES -> {
-            when (val state = viewModel.stateHp.collectAsState().value) {
-                is HPropState.Empty -> {}
-                is HPropState.Error -> {}
-                is HPropState.Loading -> LoadingAnimation()
-                is HPropState.NoInternet -> {
-                    AppErrorScreen(onTryAgain = {})
-                }
-
-                is HPropState.Success -> {
-                    ItemSelectionLayout(
-                        cardList = state.properties,
-                        cardIndex = 4,
-                        composeIndex = ComposeIndex.Third
-                    )
-                }
-            }
-        }
+    when (state) {
+        is HPropState.Empty -> TODO()
+        is HPropState.Error -> TODO()
+        is HPropState.Loading -> LoadingAnimation()
+        is HPropState.NoInternet -> AppErrorScreen(onTryAgain = {})
+        is HPropState.Success -> ItemSelectionLayout(
+            cardList = (state as HPropState.Success).properties,
+            cardIndex = cardIndex,
+            composeIndex = ComposeIndex.Third
+        )
     }
 }
