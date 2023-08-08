@@ -107,7 +107,7 @@ fun TrackWaterScreenControl(
             }
 
             is TrackingNetworkCall.Failure -> {
-                d("Water Track Screen", waterTrackData.message.toString())
+                d("Water Screen", waterTrackData.message.toString())
                 Toast.makeText(context, waterTrackData.message.toString(), Toast.LENGTH_SHORT)
                     .show()
             }

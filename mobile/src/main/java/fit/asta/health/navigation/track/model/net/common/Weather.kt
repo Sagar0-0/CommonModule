@@ -12,13 +12,13 @@ data class Weather(
     val vitD: CardItem,
     @SerializedName("wea")
     val weatherData: WeatherData
-){
+) {
 
     data class WeatherData(
         @SerializedName("loc")
         val location: String,
         @SerializedName("temp")
-        val temperature: Int,
+        val temperature: Float,
         @SerializedName("unit")
         val unit: String,
         @SerializedName("wea")

@@ -13,21 +13,21 @@ data class StepsDetails(
 
     data class Distance(
         @SerializedName("dis")
-        val dis: Int,
+        val dis: Float,
         @SerializedName("unit")
         val unit: String
     )
 
     data class Duration(
         @SerializedName("dur")
-        val dur: Int,
+        val dur: Float,
         @SerializedName("unit")
         val unit: String
     )
 
     data class Steps(
         @SerializedName("Steps")
-        val Steps: Int,
+        val steps: Int,
         @SerializedName("unit")
         val unit: String
     )
