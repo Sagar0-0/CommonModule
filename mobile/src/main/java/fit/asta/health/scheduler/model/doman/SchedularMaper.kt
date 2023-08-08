@@ -134,3 +134,10 @@ fun ASUiState.getAlarm(userId:String,alarmId:Int,idFromServer:String,interval:Iv
     val jsonObject: String? = Gson().toJson(map)
     return Gson().fromJson(jsonObject, AlarmEntity::class.java)
 }
+
+fun AlarmEntity.isValid(): Boolean {
+    return (this.time.minutes.toInt() != 0 && this.time.hours.toInt() != 0) || this.info.tag.isNotEmpty() ||
+            this.info.name.isNotEmpty() || this.info.description.isNotEmpty() ||
+            (if (this.vibration.status) this.vibration.percentage.isNotEmpty() else true) ||
+            this.tone.uri.isNotEmpty()
+}

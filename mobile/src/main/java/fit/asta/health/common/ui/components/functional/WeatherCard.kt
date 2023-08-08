@@ -10,7 +10,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.sharp.LocationOn
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,12 +21,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.generic.AppTexts
 
 @Composable
 fun WeatherCardImage(
@@ -32,17 +32,21 @@ fun WeatherCardImage(
     date: String,
     modifier: Modifier = Modifier,
 ) {
-    Box(modifier = modifier
-        .fillMaxWidth()
-        .height(151.dp)
-        .padding(horizontal = 16.dp)
-        .clip(RoundedCornerShape(10.dp))) {
-        Image(painter = painterResource(id = R.drawable.weatherimage),
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(151.dp)
+            .padding(horizontal = 16.dp)
+            .clip(RoundedCornerShape(10.dp))
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.weatherimage),
             contentDescription = null,
             contentScale = ContentScale.FillBounds,
             modifier = Modifier
                 .fillMaxSize()
-                .align(Alignment.TopCenter))
+                .align(Alignment.TopCenter)
+        )
         TemperatureAndWeather(temperature = temperature)
         LocationAndDate(location = location, date = date)
     }
@@ -51,36 +55,41 @@ fun WeatherCardImage(
 @Composable
 fun TemperatureAndWeather(temperature: String) {
 
-    val interFontFamily = FontFamily(Font(R.font.inter_regular, FontWeight.Normal))
 
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .padding(start = 14.dp, end = 18.dp, top = 10.dp, bottom = 62.41.dp),
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 14.dp, end = 18.dp, top = 10.dp, bottom = 62.41.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically) {
-        Box(Modifier.size(100.dp, 80.dp)) {
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box {
             Row(horizontalArrangement = Arrangement.SpaceBetween) {
                 Box {
-                    Text(text = temperature,
-                        fontFamily = interFontFamily,
-                        fontSize = 72.sp,
+                    AppTexts.HeadlineLarge(
+                        text = temperature,
                         color = Color.White,
-                        modifier = Modifier.align(alignment = Alignment.TopCenter))
+                        modifier = Modifier.align(alignment = Alignment.TopCenter)
+                    )
                 }
                 Box(Modifier.size(13.5.dp)) {
-                    Image(painter = painterResource(id = R.drawable.temperaturedegreeimage),
+                    Image(
+                        painter = painterResource(id = R.drawable.temperaturedegreeimage),
                         contentDescription = null,
                         modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Fit)
+                        contentScale = ContentScale.Fit
+                    )
                 }
             }
         }
 
-        Box(modifier = Modifier.size(63.dp, 58.dp)) {
-            Image(painter = painterResource(id = R.drawable.rainimage),
+        Box {
+            Image(
+                painter = painterResource(id = R.drawable.rainimage),
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.FillBounds)
+                contentScale = ContentScale.FillBounds
+            )
         }
     }
 }
@@ -91,26 +100,28 @@ fun LocationAndDate(
     date: String,
 ) {
 
-    val interFontFamily = FontFamily(Font(R.font.inter_regular, FontWeight.Normal))
-
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .padding(start = 14.dp, end = 18.dp, top = 104.dp, bottom = 23.dp),
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 14.dp, end = 18.dp, top = 104.dp, bottom = 23.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically) {
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Box(modifier = Modifier.size(154.dp, 24.dp)) {
-            Image(painter = painterResource(id = R.drawable.location),
+            Icon(
+                imageVector = Icons.Sharp.LocationOn,
                 contentDescription = null,
                 modifier = Modifier.size(24.dp),
-                contentScale = ContentScale.Fit)
-            Text(text = location,
-                fontFamily = interFontFamily,
+                tint = MaterialTheme.colors.onPrimary
+            )
+            AppTexts.TitleMedium(
+                text = location,
                 modifier = Modifier
                     .align(alignment = Alignment.Center)
                     .padding(start = 4.dp),
-                fontSize = 14.sp,
-                color = Color(0xFFFFFFFF))
+                color = MaterialTheme.colors.onPrimary
+            )
         }
-        Text(text = date, color = Color.White, fontFamily = interFontFamily, fontSize = 14.sp)
+        AppTexts.TitleMedium(text = date, color = MaterialTheme.colors.onPrimary)
     }
 }

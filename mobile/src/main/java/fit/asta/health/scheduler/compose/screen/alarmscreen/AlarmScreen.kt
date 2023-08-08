@@ -8,23 +8,22 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.generic.AppButtons
+import fit.asta.health.common.ui.components.generic.AppDefServerImg
 import fit.asta.health.common.ui.components.generic.AppScaffold
+import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.getImgUrl
 
@@ -38,20 +37,37 @@ fun AlarmScreen(uiState: AlarmUiState, event: (AlarmEvent) -> Unit) {
         snackBarHostState = snackBarHostState
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-            AsyncImage(
+            AppDefServerImg(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(getImgUrl(url = uiState.image))
                     .crossfade(true)
                     .build(),
-                alpha = 0.5f,
-                placeholder = painterResource(R.drawable.placeholder_tag),
+                alpha = 0.8f,
                 contentDescription = stringResource(R.string.description),
-                contentScale = ContentScale.Fit,
+                contentScale = ContentScale.FillBounds,
                 modifier = Modifier.fillMaxSize()
             )
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                contentAlignment = Alignment.TopCenter
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(it)
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    AppTexts.DisplayMedium(text = uiState.alarmTime, color = Color.White)
+                }
+            }
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                contentAlignment = Alignment.BottomCenter
+            ) {
                 Column(
                     modifier = Modifier
                         .padding(it)
@@ -59,17 +75,29 @@ fun AlarmScreen(uiState: AlarmUiState, event: (AlarmEvent) -> Unit) {
                     verticalArrangement = Arrangement.spacedBy(spacing.extraLarge),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = uiState.alarmTime, style = MaterialTheme.typography.displayMedium)
                     Row(horizontalArrangement = Arrangement.spacedBy(space = spacing.large)) {
-                        Button(onClick = { event(AlarmEvent.onSwipedLeft(context)) }) {
-                            Text(text = "Snooze", style = MaterialTheme.typography.titleMedium)
+                        AppButtons.AppStandardButton(onClick = {
+                            event(
+                                AlarmEvent.onSwipedLeft(
+                                    context
+                                )
+                            )
+                        }) {
+                            AppTexts.TitleMedium(text = "Snooze")
                         }
-                        Button(onClick = { event(AlarmEvent.onSwipedRight(context)) }) {
-                            Text(text = "stop", style = MaterialTheme.typography.titleMedium)
+                        AppButtons.AppStandardButton(onClick = {
+                            event(
+                                AlarmEvent.onSwipedRight(
+                                    context
+                                )
+                            )
+                        }) {
+                            AppTexts.TitleMedium(text = "stop")
                         }
                     }
                 }
             }
+
         }
     }
 }

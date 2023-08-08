@@ -2,6 +2,7 @@ package fit.asta.health.navigation.today.model
 
 import com.google.gson.annotations.SerializedName
 import fit.asta.health.network.data.Status
+import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 
 
 data class TodaySchedules(
@@ -14,9 +15,9 @@ data class TodaySchedules(
         @SerializedName("wtr")
         val weather: Weather,
         @SerializedName("schedule")
-        val schedule: Any,
+        val schedule: List<AlarmEntity>,
         @SerializedName("slot")
-        val slot: Slot
+        val slot: Slots? = null
     ) {
         data class Weather(
             @SerializedName("current_weather")
@@ -78,47 +79,29 @@ data class TodaySchedules(
             val windSpeed: Double
         )
 
-        data class Slot(
+        data class Slots(
             @SerializedName("date")
             val date: String,
-            @SerializedName("elevation")
-            val elevation: Int,
-            @SerializedName("generationtime_ms")
-            val generationtimeMs: Double,
-            @SerializedName("hourly")
-            val hourly: Hourly,
-            @SerializedName("hourly_units")
-            val hourlyUnits: HourlyUnits,
-            @SerializedName("latitude")
-            val latitude: Double,
-            @SerializedName("location")
+            @SerializedName("id")
+            val id: String,
+            @SerializedName("lat")
+            val latitude: String,
+            @SerializedName("loc")
             val location: String,
-            @SerializedName("longitude")
-            val longitude: Double,
-            @SerializedName("timezone")
-            val timezone: String,
-            @SerializedName("timezone_abbreviation")
-            val timezoneAbbreviation: String,
-            @SerializedName("utc_offset_seconds")
-            val utcOffsetSeconds: Int
-        ) {
-            data class Hourly(
-                @SerializedName("temperature_2m")
-                val temperature2m: List<Double>,
-                @SerializedName("time")
-                val time: List<String>,
-                @SerializedName("weathercode")
-                val weathercode: List<Int>
-            )
+            @SerializedName("lon")
+            val longitude: String,
+            @SerializedName("slot")
+            val slot: List<Slot>
+        )
 
-            data class HourlyUnits(
-                @SerializedName("temperature_2m")
-                val temperature2m: String,
-                @SerializedName("time")
-                val time: String,
-                @SerializedName("weathercode")
-                val weathercode: String
-            )
-        }
+        data class Slot(
+            @SerializedName("temp")
+            val temp: Double,
+            @SerializedName("time")
+            val time: String,
+            @SerializedName("uv")
+            val uv: Int
+        )
+
     }
 }

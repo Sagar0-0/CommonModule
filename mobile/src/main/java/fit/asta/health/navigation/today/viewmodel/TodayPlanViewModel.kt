@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.common.ui.components.generic.AppState
 import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.common.utils.PrefUtils
 import fit.asta.health.navigation.today.domain.model.TodayData
@@ -17,7 +18,6 @@ import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.db.entity.AlarmSync
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
@@ -40,10 +40,11 @@ class TodayPlanViewModel @Inject constructor(
     private val _alarmListNextDay = mutableStateListOf<AlarmEntity>()
     val alarmListNextDay = MutableStateFlow(_alarmListNextDay)
 
-    private val _todayUi = MutableStateFlow(TodayData())
-    val todayUi = _todayUi.asStateFlow()
     private val calendar: Calendar = Calendar.getInstance()
     val today: Int = calendar.get(Calendar.DAY_OF_WEEK)
+
+    private val _todayState = MutableStateFlow<AppState<TodayData>>(AppState.Loading())
+    val todayState = _todayState.asStateFlow()
 
     init {
         getWeatherSunSlots()
@@ -197,14 +198,17 @@ class TodayPlanViewModel @Inject constructor(
                         if (today) {
                             when (it.time.hours.toInt()) {
                                 in 0..2 -> {
-                                    _alarmListEvening.add(it)
+                                    if (it.time.minutes.toInt() > 0) _alarmListMorning.add(it)
+                                    else _alarmListEvening.add(it)
                                 }
 
                                 in 3..12 -> {
-                                    _alarmListMorning.add(it)
+                                    if (it.time.minutes.toInt() > 0) _alarmListAfternoon.add(it)
+                                    else _alarmListMorning.add(it)
                                 }
-                                in  13..16->{
-                                    _alarmListAfternoon.add(it)
+                                in  13..16-> {
+                                    if (it.time.minutes.toInt() > 0) _alarmListEvening.add(it)
+                                    else _alarmListAfternoon.add(it)
                                 }
 
                                 in 17..23 -> {
@@ -278,26 +282,23 @@ class TodayPlanViewModel @Inject constructor(
                 when (result) {
                     is NetworkResult.Success -> {
                         result.data?.let { todayData ->
-                            Log.d("today", "getWeatherSunSlots: $todayData")
-                            _todayUi.update {
-                                it.copy(
-                                    date = todayData.date,
-                                    weatherCode = todayData.weatherCode,
-                                    location = todayData.location,
-                                    weatherCodeList = todayData.weatherCodeList,
-                                    temperatureList = todayData.temperatureList,
-                                    temperature = todayData.temperature
-                                )
-                            }
+                            _todayState.value = AppState.Success(data = todayData)
                         }
                     }
 
-                    is NetworkResult.Loading -> {}
+                    is NetworkResult.Loading -> {
+                        _todayState.value = AppState.Loading()
+                    }
+
                     is NetworkResult.Error -> {
-                        Log.d("today", "getWeatherSunSlots: ${result.message}")
+                        _todayState.value = AppState.Empty()
                     }
                 }
             }
         }
+    }
+
+    fun retry() {
+        getWeatherSunSlots()
     }
 }
