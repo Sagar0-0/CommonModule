@@ -16,11 +16,11 @@ data class WaterResponse(
 
     data class WaterData(
         @SerializedName("amount_consumed")
-        val amountConsumed: AmountConsumed,
+        val amountConsumed: AmountConsumed?,
         @SerializedName("beverages")
-        val beverageData: MultiGraphParent,
+        val beverageData: MultiGraphParent?,
         @SerializedName("dailyProgress")
-        val dailyProgress: Graph,
+        val dailyProgress: Graph?,
         @SerializedName("endDate")
         val endDate: String,
         @SerializedName("id")
@@ -28,17 +28,17 @@ data class WaterResponse(
         @SerializedName("month")
         val month: String,
         @SerializedName("progress")
-        val progress: Progress,
+        val progress: Progress?,
         @SerializedName("ratio")
-        val ratio: Ratio,
+        val ratio: Ratio?,
         @SerializedName("startDate")
         val startDate: String,
         @SerializedName("uid")
         val uid: String,
         @SerializedName("weather")
-        val weather: Weather,
+        val weather: Weather?,
         @SerializedName("weekly")
-        val weekly: List<Weekly>,
+        val weekly: List<Weekly>?,
         @SerializedName("year")
         val year: String
     )

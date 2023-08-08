@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Progress(
     @SerializedName("achieved")
-    val achieved: Int,
+    val achieved: Float,
     @SerializedName("target")
-    val target: Int
+    val target: Float
 )

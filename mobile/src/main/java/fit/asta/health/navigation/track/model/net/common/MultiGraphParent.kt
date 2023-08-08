@@ -17,6 +17,6 @@ data class MultiGraphParent(
         @SerializedName("xVal")
         val xVal: List<String>,
         @SerializedName("yVal")
-        val yVal: List<Double>
+        val yVal: List<Float>
     )
 }
