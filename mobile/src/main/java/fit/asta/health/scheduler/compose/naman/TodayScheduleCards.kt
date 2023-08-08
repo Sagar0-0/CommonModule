@@ -1,7 +1,9 @@
 package fit.asta.health.scheduler.compose.naman
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,8 +16,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Schedule
 import androidx.compose.material.icons.rounded.Timelapse
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -33,13 +38,14 @@ import androidx.compose.ui.unit.dp
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.AppButtons
 import fit.asta.health.common.ui.components.generic.AppCard
+import fit.asta.health.common.ui.components.generic.AppDefaultIcon
 import fit.asta.health.common.ui.components.generic.AppDrawImg
 import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.aspectRatio
+import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.navigation.home.view.component.ScheduleIconLayout
 
-@Preview
 @Composable
 fun TodayCardType1(
     progressValue: String = "55%",
@@ -74,7 +80,7 @@ private fun CardImage(cardImgId: Int) {
         painter = painterResource(id = cardImgId),
         contentDescription = "Card Image",
         modifier = Modifier.fillMaxSize(),
-        contentScale = ContentScale.Crop
+        contentScale = ContentScale.FillBounds
     )
 }
 
@@ -110,7 +116,7 @@ private fun CardContent(
             .padding(horizontal = spacing.medium, vertical = spacing.small),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        CardTitleAndButton(cardTitle, buttonTitle)
+        CardTitleAndButton(cardTitle)
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
             DisabledAssistChip(progressValue)
         }
@@ -119,7 +125,7 @@ private fun CardContent(
 }
 
 @Composable
-private fun CardTitleAndButton(cardTitle: String, buttonTitle: String) {
+private fun CardTitleAndButton(cardTitle: String) {
     Row(
         Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -142,7 +148,6 @@ private fun CardDescriptionAndTime(cardDesc: String, cardTime: String) {
     }
 }
 
-@Preview
 @Composable
 fun TodayCardType2(
     progressValue: String = "75%",
@@ -155,20 +160,21 @@ fun TodayCardType2(
     secondaryTitle: String = "Intermittent Fasting",
     onButtonClick: () -> Unit = { /* TODO */ },
 ) {
-    AppCard(modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = spacing.medium)
-        .aspectRatio(aspectRatio.wideScreen), content = {
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Image(
-                painter = painterResource(id = cardImgId),
-                contentDescription = "Card Image",
-                contentScale = ContentScale.Crop,
+    AppCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = spacing.medium)
+            .aspectRatio(aspectRatio.fullScreen), content = {
+            Box(
                 modifier = Modifier.fillMaxSize()
-            )
-            Column(
+            ) {
+                Image(
+                    painter = painterResource(id = cardImgId),
+                    contentDescription = "Card Image",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
+                Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = spacing.medium, vertical = spacing.small),
@@ -261,3 +267,78 @@ private fun DisabledAssistChip(progressValue: String) {
     }
 }
 
+@Preview
+@Composable
+fun CardDemo() {
+    Column(
+        Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+    ) {
+        TodayCardType1()
+        Spacer(modifier = Modifier.height(spacing.medium))
+        TodayCardType2()
+        Spacer(modifier = Modifier.height(spacing.medium))
+        AppointmentCard()
+    }
+}
+
+@Composable
+fun AppointmentCard(url: String = "") {
+
+    AppCard(
+        modifier = Modifier
+            .padding(horizontal = spacing.medium)
+            .aspectRatio(aspectRatio.wideScreen)
+    ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            CardImage(cardImgId = R.drawable.weatherimage)
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = spacing.medium, vertical = spacing.small),
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                CardTitleAndButton(cardTitle = "Appointment")
+                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    AppDrawImg(
+                        painter = painterResource(id = R.drawable.barsha),
+                        contentDescription = "Doctor Pic",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(customSize.extraLarge4)
+                            .clip(CircleShape)
+                            .border(
+                                border = BorderStroke(
+                                    width = 1.dp, color = MaterialTheme.colorScheme.primary
+                                ), shape = CircleShape
+                            ),
+                    )
+                    Spacer(modifier = Modifier.width(spacing.medium))
+                    DoctorLayout()
+                }
+                Row(
+                    Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AppDefaultIcon(
+                        imageVector = Icons.Rounded.Schedule,
+                        contentDescription = "Scheduled",
+                        tint = Color.White
+                    )
+                    Spacer(modifier = Modifier.width(spacing.extraSmall))
+                    AppTexts.BodyLarge(text = "30th Feb 7 GM", color = Color.White)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun DoctorLayout() {
+    Column {
+        AppTexts.HeadlineSmall(text = "Dr. Varsha", color = Color.White)
+        AppTexts.BodyLarge(text = "", color = Color.White)
+    }
+}

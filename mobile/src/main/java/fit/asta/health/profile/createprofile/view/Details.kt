@@ -213,7 +213,7 @@ fun UserCircleImage(
 }
 
 @Composable
-private fun DeleteImageButton(onProfilePicClear: () -> Unit, modifier: Modifier = Modifier) {
+fun DeleteImageButton(onProfilePicClear: () -> Unit, modifier: Modifier = Modifier) {
     Row(
         horizontalArrangement = Arrangement.Start, modifier = modifier
     ) {
@@ -229,7 +229,7 @@ private fun DeleteImageButton(onProfilePicClear: () -> Unit, modifier: Modifier 
 }
 
 @Composable
-private fun EditProfileImageButton(
+fun EditProfileImageButton(
     isImgNotAvail: Boolean,
     onUserProfileSelection: () -> Unit,
     modifier: Modifier = Modifier,
