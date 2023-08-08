@@ -96,19 +96,15 @@ fun ProfileReadyScreen(userProfile: UserProfile, onBack: () -> Unit, onEdit: () 
                 1 -> {
                     ContactLayout(basicDetails = userProfile.contact)
                 }
-
                 2 -> {
                     PhysiqueLayout(phy = userProfile.physique)
                 }
-
                 3 -> {
                     HealthLayout(health = userProfile.health)
                 }
-
                 4 -> {
                     LifeStyleLayout(lifeStyle = userProfile.lifeStyle)
                 }
-
                 5 -> {
                     DietLayout(diet = userProfile.diet)
                 }
