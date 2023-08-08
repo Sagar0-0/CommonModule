@@ -37,11 +37,11 @@ class TrackViewModel @Inject constructor(
     /**
      * This function fetches the Water Tracking Details from the Server
      */
-    private fun getWaterDetails(status: String) {
+    private fun getWaterDetails(status: String, date: String) {
         viewModelScope.launch {
             trackingRepo.getWaterDetails(
                 uid = uid,
-                date = "2023",
+                date = date,
                 location = "bangalore",
                 status = status
             ).collect {
@@ -172,13 +172,16 @@ class TrackViewModel @Inject constructor(
             2 -> currentTrackOption.trackStatus = TrackOption.TrackStatus.StatusMonthly
             3 -> currentTrackOption.trackStatus = TrackOption.TrackStatus.StatusYearly
         }
-        handleRequest()
+        handleTrackerOption()
     }
 
-    private fun handleRequest() {
+    private fun handleTrackerOption() {
         when (currentTrackOption) {
             is TrackOption.WaterOption -> {
-                getWaterDetails(status = currentTrackOption.trackStatus.status)
+                getWaterDetails(
+                    status = currentTrackOption.trackStatus.status,
+                    date = handleTrackerDate()
+                )
             }
 
             is TrackOption.StepsOption -> {
@@ -203,4 +206,12 @@ class TrackViewModel @Inject constructor(
         }
     }
 
+    private fun handleTrackerDate(): String {
+        return when (currentTrackOption.trackStatus) {
+            is TrackOption.TrackStatus.StatusDaily -> "2023-June-05"
+            is TrackOption.TrackStatus.StatusWeekly -> "2023-June-05"
+            is TrackOption.TrackStatus.StatusMonthly -> "June-2023"
+            is TrackOption.TrackStatus.StatusYearly -> "2023"
+        }
+    }
 }

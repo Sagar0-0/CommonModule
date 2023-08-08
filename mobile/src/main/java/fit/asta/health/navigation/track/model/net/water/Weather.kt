@@ -6,7 +6,7 @@ data class Weather(
     @SerializedName("des")
     val des: String,
     @SerializedName("temp")
-    val temp: Int,
+    val temp: Float,
     @SerializedName("waterExtra")
     val waterExtra: Int,
     @SerializedName("weather")

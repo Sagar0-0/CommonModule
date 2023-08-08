@@ -10,5 +10,5 @@ data class Graph(
     @SerializedName("xData")
     val xData: List<String>,
     @SerializedName("yData")
-    val yData: List<Double>
+    val yData: List<Float>
 )

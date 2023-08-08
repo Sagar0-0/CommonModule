@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class Ratio(
     @SerializedName("drink")
-    val drink: Double,
+    val drink: Float,
     @SerializedName("juice")
-    val juice: Double,
+    val juice: Float,
     @SerializedName("water")
-    val water: Double
+    val water: Float
 )

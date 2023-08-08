@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Weekly(
     @SerializedName("ach")
-    val ach: Double,
+    val ach: Float,
     @SerializedName("tgt")
-    val tgt: Int
+    val tgt: Float
 )

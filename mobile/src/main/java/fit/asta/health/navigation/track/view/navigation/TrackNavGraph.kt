@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import fit.asta.health.navigation.track.view.screens.TrackMenuScreen
-import fit.asta.health.navigation.track.view.screens.TrackWaterScreen
+import fit.asta.health.navigation.track.view.screens.TrackWaterScreenControl
 import fit.asta.health.navigation.track.viewmodel.TrackViewModel
 
 /**
@@ -45,7 +45,7 @@ fun TrackNavGraph(
                     val waterTrackData = trackViewModel.waterDetails
                         .collectAsState().value
 
-                    TrackWaterScreen(
+                    TrackWaterScreenControl(
                         waterTrackData = waterTrackData,
                         setTrackStatus = trackViewModel::setTrackStatus
                     )
