@@ -1,4 +1,4 @@
-package fit.asta.health.auth.ui
+package fit.asta.health.auth.view
 
 import android.app.Activity
 import android.app.PendingIntent

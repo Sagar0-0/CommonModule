@@ -1,6 +1,6 @@
 @file:JvmName("AuthScreenKt")
 
-package fit.asta.health.auth.ui
+package fit.asta.health.auth.view
 
 import android.content.Context
 import android.widget.Toast

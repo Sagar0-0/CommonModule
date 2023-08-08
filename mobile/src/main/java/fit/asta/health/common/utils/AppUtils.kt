@@ -37,7 +37,6 @@ import com.google.firebase.storage.FirebaseStorage
 import fit.asta.health.BuildConfig
 import fit.asta.health.R
 import fit.asta.health.common.ui.usingDarkMode
-import fit.asta.health.settings.WebViewActivity
 import java.io.IOException
 import java.io.InputStream
 import java.net.HttpURLConnection
@@ -331,9 +330,6 @@ fun Context.showDialog(title: String, desc: String, okTitle: String, notifyOK: (
 
 fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
 
-fun Context.showUrlInBrowser(url: String) {
-    WebViewActivity.launch(this, url)
-}
 
 fun getLocationName(address: Address?): String {
     if (address == null) return ""
