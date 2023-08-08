@@ -62,6 +62,8 @@ fun AppTextFieldValidate(
     imeAction: ImeAction = ImeAction.Next,
     onValueChange: (String) -> Unit,
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
+    placeholder: @Composable (() -> Unit)? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
 ) {
     Column(Modifier.fillMaxWidth()) {
         AppTextField(
@@ -75,7 +77,9 @@ fun AppTextFieldValidate(
             capitalization = capitalization,
             keyboardType = keyboardType,
             imeAction = imeAction,
-            colors = colors
+            colors = colors,
+            placeholder = placeholder,
+            leadingIcon = leadingIcon
         )
         TxtFieldErrorMsg(showError = isError, errorMessage = errorMessage.asString())
         if (showLenErrorMsg != null) {

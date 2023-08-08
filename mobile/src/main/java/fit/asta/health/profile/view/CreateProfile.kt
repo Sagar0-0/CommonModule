@@ -27,8 +27,7 @@ import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.HealthProperties
 import fit.asta.health.profile.model.domain.ThreeRadioBtnSelections
 import fit.asta.health.profile.model.domain.TwoRadioBtnSelections
-import fit.asta.health.profile.view.components.RemoveChipOnCard
-import fit.asta.health.profile.viewmodel.ProfileEvent
+import fit.asta.health.profile.view.components.DisabledChipForList
 import fit.asta.health.profile.viewmodel.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -173,13 +172,7 @@ fun SelectionCardCreateProfile(
                         modifier = Modifier.padding(start = spacing.medium),
                     ) {
                         cardList?.forEach {
-                            RemoveChipOnCard(textOnChip = it.name, onClick = {
-                                viewModel.onEvent(
-                                    event = ProfileEvent.SetSelectedRemoveItemOption(
-                                        it, index = cardIndex, composeIndex
-                                    )
-                                )
-                            })
+                            DisabledChipForList(textOnChip = it.name)
                         }
                     }
                 }
@@ -230,13 +223,7 @@ fun OnlyChipSelectionCard(
                 modifier = Modifier.padding(start = spacing.medium),
             ) {
                 cardList?.forEach {
-                    RemoveChipOnCard(textOnChip = it.name, onClick = {
-                        viewModel.onEvent(
-                            ProfileEvent.SetSelectedRemoveItemOption(
-                                item = it, index = cardIndex, composeIndex = composeIndex
-                            )
-                        )
-                    })
+                    DisabledChipForList(textOnChip = it.name)
                 }
             }
             Spacer(modifier = Modifier.height(spacing.small))

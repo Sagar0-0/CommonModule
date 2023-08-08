@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -33,13 +34,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import fit.asta.health.common.maps.modal.AddressScreen
+import com.google.android.libraries.places.api.Places
+import fit.asta.health.R
 import fit.asta.health.common.maps.modal.AddressesResponse
 import fit.asta.health.common.maps.modal.SearchResponse
+import fit.asta.health.common.ui.components.generic.AppButtons
+import fit.asta.health.common.ui.components.generic.AppDefServerImg
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
+import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.spacing
@@ -49,8 +53,9 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBottomSheet(
+    modifier: Modifier = Modifier,
     searchResponseState: ResponseState<SearchResponse>,
-    onResultClick: (String) -> Unit,
+    onResultClick: (AddressesResponse.MyAddress) -> Unit,
     onSearch: (String) -> Unit,
     onClose: () -> Unit
 ) {
@@ -62,6 +67,8 @@ fun SearchBottomSheet(
 
     val scope = rememberCoroutineScope()
     val bottomSheetState = rememberModalBottomSheetState()
+    val context = LocalContext.current
+
     val closeSheet = {
         scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
             if (!bottomSheetState.isVisible) {
@@ -69,8 +76,12 @@ fun SearchBottomSheet(
             }
         }
     }
+    LaunchedEffect(Unit) {
+        Places.initialize(context.applicationContext, context.getString(R.string.MAPS_API_KEY))
+    }
 
     ModalBottomSheet(
+        modifier = modifier,
         sheetState = bottomSheetState,
         dragHandle = null,
         onDismissRequest = { closeSheet() },
@@ -87,7 +98,7 @@ fun SearchBottomSheet(
                 modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(textFieldFocus)
-                    .padding(top = spacing.small, start = spacing.small, end = spacing.small),
+                    .padding(spacing.medium),
                 value = searchQuery,
                 onValueChange = {
                     searchQuery = it
@@ -134,18 +145,11 @@ fun SearchBottomSheet(
                 )
             )
 
-
-            Text(
-                modifier = Modifier.padding(spacing.small),
-                text = "SEARCH RESULTS",
-                style = MaterialTheme.typography.titleLarge
-            )
-
             when (searchResponseState) {
                 is ResponseState.Success -> {
-                    val results =
+                    var results =
                         searchResponseState.data.results
-                    if (results.isEmpty()) {
+                    if (results.isNullOrEmpty()) {
                         Text(
                             modifier = Modifier.padding(spacing.small),
                             text = "No result for \"$searchQuery\"",
@@ -155,40 +159,41 @@ fun SearchBottomSheet(
                     } else {
                         LazyColumn {
                             items(results) {
-                                Text(
+                                AppButtons.AppTextButton(
+                                    onClick = {
+                                        searchQuery = ""
+                                        val myAddressItem = AddressesResponse.MyAddress(
+                                            selected = false,
+                                            area = "",
+                                            block = "",
+                                            hn = "",
+                                            id = "",
+                                            lat = it.geometry.location.lat,
+                                            loc = "",
+                                            lon = it.geometry.location.lng,
+                                            name = "",
+                                            nearby = "",
+                                            ph = "",
+                                            pin = "",
+                                            sub = "",
+                                            uid = ""
+                                        )
+                                        closeSheet()
+                                        onResultClick(myAddressItem)
+                                        results = listOf()
+                                    },
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .clickable {
-                                            searchQuery = ""
-                                            val myAddressItem = AddressesResponse.MyAddress(
-                                                selected = false,
-                                                area = "",
-                                                block = "",
-                                                hn = "",
-                                                id = "",
-                                                lat = it.geometry.location.lat,
-                                                loc = "",
-                                                lon = it.geometry.location.lng,
-                                                name = "",
-                                                nearby = "",
-                                                ph = "",
-                                                pin = "",
-                                                sub = "",
-                                                uid = ""
-                                            )
-                                            val gson: Gson = GsonBuilder().create()
-                                            val addJson = gson
-                                                .toJson(myAddressItem)
-                                                .replace("/", "|")
-
-                                            closeSheet()
-                                            onResultClick("${AddressScreen.Map.route}/$addJson")
-                                        }
-                                        .padding(spacing.medium),
-                                    text = it.name,
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    textAlign = TextAlign.Center
-                                )
+                                        .padding(spacing.extraSmall)
+                                ) {
+                                    AppDefServerImg(
+                                        model = it.icon,
+                                        contentDescription = null,
+                                        modifier = Modifier.padding(end = spacing.medium)
+                                    )
+                                    AppTexts.BodyLarge(text = it.name)
+                                    Spacer(modifier = Modifier.weight(1f))
+                                }
                             }
                         }
                     }
@@ -203,18 +208,18 @@ fun SearchBottomSheet(
                     }
                 }
 
-                is ResponseState.NoInternet -> {
-                    AppErrorScreen()
-                }
-
                 is ResponseState.Error -> {
                     AppErrorScreen(desc = "Some internal error occurred! We are fixing it soon!")
                 }
 
+                is ResponseState.Idle -> {
+                    Text(text = "Your search results will appear here.")
+                }
+
                 else -> {}
             }
-
         }
     }
+
 
 }

@@ -43,6 +43,8 @@ import com.google.firebase.ktx.Firebase
 import fit.asta.health.R
 import fit.asta.health.common.ui.theme.buttonSize
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.showUrlInBrowser
 
 @Composable
 fun SignInScreen(navHostController: NavHostController, onSuccess: () -> Unit) {
@@ -54,7 +56,6 @@ fun SignInScreen(navHostController: NavHostController, onSuccess: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Bottom
     ) {
-
         Image(
             painter = painterResource(id = R.mipmap.ic_launcher_foreground),
             contentDescription = "",
@@ -200,14 +201,14 @@ fun SignInScreen(navHostController: NavHostController, onSuccess: () -> Unit) {
 
             addStringAnnotation(
                 tag = "terms",
-                annotation = "https://firebasestorage.googleapis.com/v0/b/asta-health-dev-963f0.appspot.com/o/tos_pp%2Fterms_of_use.htm?alt=media",
+                annotation = getImgUrl(context.getString(R.string.url_terms_of_use)),
                 start = startTIndex,
                 end = endTIndex
             )
 
             addStringAnnotation(
                 tag = "privacy",
-                annotation = "https://firebasestorage.googleapis.com/v0/b/asta-health-dev-963f0.appspot.com/o/tos_pp%2Fprivacy_policy.htm?alt=media",
+                annotation = getImgUrl(context.getString(R.string.url_privacy_policy)),
                 start = startPIndex,
                 end = endPIndex
             )
@@ -226,12 +227,12 @@ fun SignInScreen(navHostController: NavHostController, onSuccess: () -> Unit) {
                 annotatedLinkString
                     .getStringAnnotations("terms", it, it)
                     .firstOrNull()?.let { stringAnnotation ->
-                        uriHandler.openUri(stringAnnotation.item)
+                        context.showUrlInBrowser(stringAnnotation.item)
                     }
                 annotatedLinkString
                     .getStringAnnotations("privacy", it, it)
                     .firstOrNull()?.let { stringAnnotation ->
-                        uriHandler.openUri(stringAnnotation.item)
+                        context.showUrlInBrowser(stringAnnotation.item)
                     }
             }
         )

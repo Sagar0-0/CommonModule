@@ -13,11 +13,12 @@ import androidx.compose.ui.window.DialogProperties
 @Composable
 fun AppDialog(
     onDismissRequest: () -> Unit,
+    properties: DialogProperties = DialogProperties(dismissOnClickOutside = false),
     content: @Composable () -> Unit,
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
         content = content,
-        properties = DialogProperties(dismissOnClickOutside = false)
+        properties = properties
     )
 }

@@ -1,5 +1,7 @@
 package fit.asta.health.settings.view
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,9 +15,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.BugReport
+import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Feedback
 import androidx.compose.material.icons.filled.FileCopy
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material.icons.filled.NightShelter
@@ -29,17 +33,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.window.DialogProperties
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.*
+import fit.asta.health.common.ui.components.generic.AppButtons
+import fit.asta.health.common.ui.components.generic.AppCard
+import fit.asta.health.common.ui.components.generic.AppDialog
 import fit.asta.health.common.ui.components.generic.AppScaffold
+import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.components.generic.AppTopBar
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.PrefUtils
@@ -55,6 +64,54 @@ fun SettingsScreenLayout(
 
     val context = LocalContext.current
     val snackBarHostState = remember { SnackbarHostState() }
+    var showDeleteConfirmationDialog by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    AnimatedVisibility(showDeleteConfirmationDialog) {
+        AppDialog(
+            properties = DialogProperties(
+                dismissOnBackPress = true,
+                dismissOnClickOutside = true
+            ),
+            onDismissRequest = { showDeleteConfirmationDialog = false }
+        ) {
+            AppCard(modifier = Modifier.fillMaxWidth()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(spacing.medium),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    AppTexts.HeadlineMedium(
+                        text = "Confirm delete?"
+                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = spacing.medium),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        AppButtons.AppTextButton(
+                            onClick = {
+                                showDeleteConfirmationDialog = false
+                            }
+                        ) {
+                            Text(text = "Cancel")
+                        }
+                        AppButtons.AppTextButton(
+                            onClick = {
+                                onClickEvent(SettingsUiEvent.DELETE)
+                            }
+                        ) {
+                            Text(text = "Yes")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     AppScaffold(snackBarHostState = snackBarHostState) { padding ->
         Column(
             modifier = Modifier
@@ -79,6 +136,10 @@ fun SettingsScreenLayout(
                     title = "Refer and earn",
                     imageVector = Icons.Default.MonetizationOn
                 ) { onClickEvent(SettingsUiEvent.REFERRAL) }
+                PreferenceItem(
+                    title = "Saved Address",
+                    imageVector = Icons.Default.LocationOn
+                ) { onClickEvent(SettingsUiEvent.ADDRESS) }
 
                 PreferenceItem(
                     title = "Wallet",
@@ -97,7 +158,7 @@ fun SettingsScreenLayout(
             PreferenceCategory(titleId = R.string.user_pref_display_cat_title) {
                 ListPreference(
                     titleId = R.string.user_pref_theme_title,
-                    iconId = R.drawable.ic_theme_settings,
+                    imageVector = Icons.Default.ColorLens,
                     entries = stringArrayResource(id = R.array.user_pref_theme_entries),
                     values = stringArrayResource(id = R.array.user_pref_theme_values)
                 ) {
@@ -114,7 +175,7 @@ fun SettingsScreenLayout(
                     titleId = R.string.user_pref_delete_account_title,
                     secondary = stringResource(id = R.string.user_pref_delete_account_summary),
                     imageVector = Icons.Default.DeleteForever
-                ) { onClickEvent(SettingsUiEvent.DELETE) }
+                ) { showDeleteConfirmationDialog = true }
             }
 
             PreferenceCategory(titleId = R.string.user_pref_about_cat_title) {
@@ -193,7 +254,7 @@ fun PreferenceItem(
 @Composable
 fun ListPreference(
     titleId: Int,
-    iconId: Int,
+    imageVector: ImageVector,
     entries: Array<String>,
     values: Array<String>,
     onValueChange: (String) -> Unit
@@ -212,7 +273,7 @@ fun ListPreference(
             .padding(spacing.extraSmall)
     ) {
         Icon(
-            painter = painterResource(id = iconId),
+            imageVector = imageVector,
             contentDescription = title,
             modifier = Modifier.padding(end = spacing.medium)
         )
