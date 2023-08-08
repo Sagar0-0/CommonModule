@@ -45,19 +45,16 @@ fun ProfileReadyScreen(userProfile: UserProfile, onBack: () -> Unit, onEdit: () 
 
     AppScaffold(topBar = {
         Column {
-            AppTopBar(
-                title = "Profile Screen",
-                onBack = onBack,
-                actions = {
-                    IconButton(onClick = onEdit) {
-                        Icon(
-                            imageVector = Icons.Filled.Edit,
-                            contentDescription = null,
-                            modifier = Modifier.size(24.dp),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                })
+            AppTopBar(title = "Profile Screen", onBack = onBack, actions = {
+                IconButton(onClick = onEdit) {
+                    Icon(
+                        imageVector = Icons.Filled.Edit,
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+            })
 
             val colors =
                 NavigationBarItemDefaults.colors(selectedIconColor = MaterialTheme.colorScheme.primary)
@@ -97,7 +94,7 @@ fun ProfileReadyScreen(userProfile: UserProfile, onBack: () -> Unit, onEdit: () 
                     ContactLayout(basicDetails = userProfile.contact)
                 }
                 2 -> {
-                    PhysiqueLayout(phy = userProfile.physique)
+                    PhysiqueLayout(physique = userProfile.physique)
                 }
                 3 -> {
                     HealthLayout(health = userProfile.health)
