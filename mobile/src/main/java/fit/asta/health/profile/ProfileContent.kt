@@ -3,6 +3,7 @@ package fit.asta.health.profile
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
@@ -16,20 +17,27 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 fun ProfileContent(
     viewModel: ProfileViewModel = hiltViewModel(),
     onBack: () -> Unit,
-    onEdit: () -> Unit
+    onEdit: () -> Unit,
 ) {
+    val profileState by viewModel.state.collectAsState()
 
-
-    when (val profileState = viewModel.state.collectAsState().value) {
+    when (profileState) {
         is ProfileGetState.Loading -> LoadingAnimation()
-        is ProfileGetState.Success -> ProfileReadyScreen(
-            userProfile = profileState.userProfile,
-            onBack = onBack,
-            onEdit = onEdit
-        )
-        is ProfileGetState.Error -> {}
-        ProfileGetState.Empty -> CreateProfileLayout(onBack = onBack)
-        ProfileGetState.NoInternet -> AppErrorScreen(onTryAgain = { viewModel.loadUserProfile() })
-    }
+        is ProfileGetState.Success -> {
+            ProfileReadyScreen(
+                userProfile = (profileState as ProfileGetState.Success).userProfile,
+                onBack = onBack,
+                onEdit = onEdit
+            )
+        }
 
+        is ProfileGetState.Empty -> CreateProfileLayout(onBack = onBack)
+        is ProfileGetState.NoInternet -> {
+            AppErrorScreen(onTryAgain = { viewModel.loadUserProfile() })
+        }
+
+        is ProfileGetState.Error -> {
+            // Handle error case if needed
+        }
+    }
 }
