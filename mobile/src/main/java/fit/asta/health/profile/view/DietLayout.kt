@@ -32,9 +32,7 @@ fun DietLayout(
             .fillMaxWidth()
             .padding(spacing.medium)
     ) {
-
         Spacer(modifier = Modifier.height(spacing.medium))
-
         diet.preference?.let {
             ProfileChipCard(
                 icon = UserPropertyType.DietPref.icon,
@@ -42,9 +40,7 @@ fun DietLayout(
                 list = it,
             )
         }
-
         Spacer(modifier = Modifier.height(spacing.medium))
-
         diet.nonVegDays?.let {
             ProfileChipCard(
                 icon = UserPropertyType.NvDays.icon,
@@ -52,9 +48,7 @@ fun DietLayout(
                 list = it,
             )
         }
-
         Spacer(modifier = Modifier.height(spacing.medium))
-
         diet.allergies?.let {
             ProfileChipCard(
                 icon = UserPropertyType.FoodAllergies.icon,
@@ -62,9 +56,7 @@ fun DietLayout(
                 list = it,
             )
         }
-
         Spacer(modifier = Modifier.height(spacing.medium))
-
         diet.cuisines?.let {
             ProfileChipCard(
                 icon = UserPropertyType.Cuisines.icon,
@@ -72,9 +64,7 @@ fun DietLayout(
                 list = it,
             )
         }
-
         Spacer(modifier = Modifier.height(spacing.medium))
-
         diet.foodRestrictions?.let {
             ProfileChipCard(
                 icon = UserPropertyType.FoodRestrictions.icon,
@@ -82,7 +72,6 @@ fun DietLayout(
                 list = it,
             )
         }
-
         Spacer(modifier = Modifier.height(spacing.medium))
     }
 }

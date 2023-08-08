@@ -3,8 +3,7 @@
 package fit.asta.health.profile.view
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import fit.asta.health.common.ui.theme.spacing
@@ -15,87 +14,36 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 @Composable
-fun HealthLayout(
-    health: Health,
-) {
-
-    Column(
+fun HealthLayout(health: Health) {
+    LazyColumn(
         modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .fillMaxWidth()
+            .fillMaxSize()
             .padding(spacing.medium)
     ) {
-
-        Spacer(modifier = Modifier.height(spacing.medium))
-
-        health.healthHistory?.let { healthHistoryList ->
-            ProfileChipCard(
-                icon = UserPropertyType.SignificantHealthHis.icon,
-                title = UserPropertyType.SignificantHealthHis.title,
-                list = healthHistoryList
-            )
+        item {
+            Spacer(modifier = Modifier.height(spacing.medium))
         }
 
-        Spacer(modifier = Modifier.height(spacing.medium))
+        val healthItems = listOf(
+            UserPropertyType.SignificantHealthHis to health.healthHistory,
+            UserPropertyType.Injuries to health.injuries,
+            UserPropertyType.BodyParts to health.bodyPart,
+            UserPropertyType.Ailments to health.ailments,
+            UserPropertyType.Medications to health.medications,
+            UserPropertyType.HealthTargets to health.healthTargets,
+            UserPropertyType.Addictions to health.addiction
+        )
 
-        health.injuries?.let { injuriesList ->
-            ProfileChipCard(
-                icon = UserPropertyType.Injuries.icon,
-                title = UserPropertyType.Injuries.title,
-                list = injuriesList
-            )
+        healthItems.forEach { (propertyType, itemList) ->
+            itemList?.let { list ->
+                item {
+                    ProfileChipCard(
+                        icon = propertyType.icon, title = propertyType.title, list = list
+                    )
+                    Spacer(modifier = Modifier.height(spacing.medium))
+                }
+            }
         }
-
-        Spacer(modifier = Modifier.height(spacing.medium))
-
-        health.bodyPart?.let { bodyPartsList ->
-            ProfileChipCard(
-                icon = UserPropertyType.BodyParts.icon,
-                title = UserPropertyType.BodyParts.title,
-                list = bodyPartsList
-            )
-        }
-
-        Spacer(modifier = Modifier.height(spacing.medium))
-
-        health.ailments?.let {
-            ProfileChipCard(
-                icon = UserPropertyType.Ailments.icon,
-                title = UserPropertyType.Ailments.title,
-                list = it,
-            )
-        }
-
-        Spacer(modifier = Modifier.height(spacing.medium))
-
-        health.medications?.let {
-            ProfileChipCard(
-                icon = UserPropertyType.Medications.icon,
-                title = UserPropertyType.Medications.title,
-                list = it,
-            )
-        }
-
-        Spacer(modifier = Modifier.height(spacing.medium))
-
-        health.healthTargets?.let {
-            ProfileChipCard(
-                icon = UserPropertyType.HealthTargets.icon,
-                title = UserPropertyType.HealthTargets.title,
-                list = it,
-            )
-        }
-
-        Spacer(modifier = Modifier.height(spacing.medium))
-
-        health.addiction?.let { addictionList ->
-            ProfileChipCard(
-                icon = UserPropertyType.Addictions.icon,
-                title = UserPropertyType.Addictions.title,
-                list = addictionList
-            )
-        }
-
-        Spacer(modifier = Modifier.height(spacing.medium))
     }
 }
+
