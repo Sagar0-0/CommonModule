@@ -43,7 +43,7 @@ import com.google.firebase.ktx.Firebase
 import fit.asta.health.R
 import fit.asta.health.common.ui.theme.buttonSize
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.common.utils.getPublicStorageUrl
+import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.main.Graph
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -203,19 +203,14 @@ fun SignInScreen(navHostController: NavHostController, onSuccess: () -> Unit) {
 
             addStringAnnotation(
                 tag = "terms",
-                annotation = getPublicStorageUrl(
-                    context, context.getString(R.string.url_terms_of_use)
-                ),
+                annotation = getImgUrl(context.getString(R.string.url_terms_of_use)),
                 start = startTIndex,
                 end = endTIndex
             )
 
             addStringAnnotation(
                 tag = "privacy",
-                annotation = getPublicStorageUrl(
-                    context,
-                    context.getString(R.string.url_privacy_policy)
-                ),
+                annotation = getImgUrl(context.getString(R.string.url_privacy_policy)),
                 start = startPIndex,
                 end = endPIndex
             )

@@ -1,11 +1,12 @@
-package fit.asta.health.navigation.track
+package fit.asta.health.navigation.track.view.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import fit.asta.health.navigation.track.view.screens.TrackDetailScreen
 import fit.asta.health.navigation.track.view.screens.TrackMenuScreen
+import fit.asta.health.navigation.track.view.screens.TrackWaterScreen
 import fit.asta.health.navigation.track.viewmodel.TrackViewModel
 
 /**
@@ -30,8 +31,8 @@ fun TrackNavGraph(
                 TrackNavRoute.Menu.route,
                 content = {
                     TrackMenuScreen(
-                        navController = navController,
-                        trackViewModel = trackViewModel
+                        setTrackOption = trackViewModel::setTrackOption,
+                        navigator = { navController.navigate(it) }
                     )
                 }
             )
@@ -39,7 +40,16 @@ fun TrackNavGraph(
             // Detail Screen for Tracking Details
             composable(
                 TrackNavRoute.Detail.route,
-                content = { TrackDetailScreen(trackViewModel = trackViewModel) }
+                content = {
+
+                    val waterTrackData = trackViewModel.waterDetails
+                        .collectAsState().value
+
+                    TrackWaterScreen(
+                        waterTrackData = waterTrackData,
+                        setTrackStatus = trackViewModel::setTrackStatus
+                    )
+                }
             )
         }
     )

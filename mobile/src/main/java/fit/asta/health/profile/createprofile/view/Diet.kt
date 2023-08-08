@@ -23,6 +23,7 @@ import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.MultiRadioBtnKeys
 import fit.asta.health.profile.createprofile.view.DietCreateBottomSheetType.*
+import fit.asta.health.profile.createprofile.view.components.CreateProfileTwoButtonLayout
 import fit.asta.health.profile.createprofile.view.components.ItemSelectionLayout
 import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.HealthProperties
@@ -33,149 +34,20 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalCoroutinesApi::class)
-@Composable
-fun DietContent(
-    viewModel: ProfileViewModel = hiltViewModel(),
-    eventPrevious: (() -> Unit)? = null,
-    onNonVegDays: () -> Unit,
-    onFoodAllergies: () -> Unit,
-    onCuisines: () -> Unit,
-    onFoodRes: () -> Unit,
-    onDietaryPref: () -> Unit,
-) {
-
-    val context = LocalContext.current
-
-    //Data
-    val propertiesDataState by viewModel.propertiesData.collectAsStateWithLifecycle()
-
-    // Get the data for ComposeIndex.Third (key = ComposeIndex.First)
-    val composeThirdData: Map<Int, SnapshotStateList<HealthProperties>>? =
-        propertiesDataState[ComposeIndex.Third]
-
-
-    val event = viewModel.stateSubmit.collectAsState()
-    val events = event.value
-
-    var buttonClicked by remember { mutableStateOf(false) }
-
-    //Radio Button Selection
-    val radioButtonSelections by viewModel.radioButtonSelections.collectAsStateWithLifecycle()
-
-    val selectedFoodResDemo =
-        radioButtonSelections[MultiRadioBtnKeys.DIETREST.key] as TwoRadioBtnSelections?
-
-    CompositionLocalProvider(
-        LocalOverscrollConfiguration provides null
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = spacing.medium)
-                .verticalScroll(rememberScrollState())
-                .background(color = MaterialTheme.colorScheme.background),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            OnlyChipSelectionCard(
-                cardType = "Dietary Preferences",
-                cardList = composeThirdData?.get(0),
-                onItemsSelect = onDietaryPref,
-                cardIndex = 0,
-                composeIndex = ComposeIndex.Third
-            )
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            OnlyChipSelectionCard(
-                cardType = "Non-Veg Consumption Days?",
-                cardList = composeThirdData?.get(1),
-                onItemsSelect = onNonVegDays,
-                cardIndex = 1,
-                composeIndex = ComposeIndex.Third
-            )
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            OnlyChipSelectionCard(
-                cardType = "Food Allergies?",
-                cardList = composeThirdData?.get(2),
-                onItemsSelect = onFoodAllergies,
-                cardIndex = 2,
-                composeIndex = ComposeIndex.Third
-            )
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            OnlyChipSelectionCard(
-                cardType = "Cuisines?",
-                cardList = composeThirdData?.get(3),
-                onItemsSelect = onCuisines,
-                cardIndex = 3,
-                composeIndex = ComposeIndex.Third
-            )
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            SelectionCardCreateProfile(
-                cardType = "Food Restrictions?",
-                cardList = composeThirdData?.get(4),
-                onItemsSelect = onFoodRes,
-                selectedOption = selectedFoodResDemo,
-                onStateChange = { state ->
-                    viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.DIETREST.key, state)
-                },
-                cardIndex = 4,
-                composeIndex = ComposeIndex.Third,
-                listName = "Diet"
-            )
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-            CreateProfileButtons(
-                eventPrevious, eventNext = {
-                    buttonClicked = !buttonClicked
-                    viewModel.onEvent(ProfileEvent.OnSubmit)
-                }, text = "Submit", enableButton = true
-            )
-
-            if (buttonClicked) {
-                when (events) {
-                    is ProfileSubmitState.Empty -> {}
-                    is ProfileSubmitState.Error -> {
-                        Log.d(
-                            "validate",
-                            "Error -> ${events.error} and message -> ${events.error.message} and ${events.error.localizedMessage}"
-                        )
-                    }
-
-                    is ProfileSubmitState.Loading -> LoadingAnimation()
-                    is ProfileSubmitState.NoInternet -> AppErrorScreen(onTryAgain = {})
-                    is ProfileSubmitState.Success -> {
-                        (context as MainActivity).startMainNavHost()
-                        Log.d("validate", "Success -> ${events.userProfile}")
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(spacing.medium))
-
-        }
-    }
-
-
-}
-
-
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DietCreateScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
-    eventPrevious: (() -> Unit)? = null,
+    eventPrevious: () -> Unit,
 ) {
+
+    //Data
+    val propertiesDataState by viewModel.propertiesData.collectAsStateWithLifecycle()
+    val composeThirdData: Map<Int, SnapshotStateList<HealthProperties>>? =
+        propertiesDataState[ComposeIndex.Third]
+
+    val searchQuery = remember { mutableStateOf("") }
+
     var currentBottomSheet: DietCreateBottomSheetType? by remember {
         mutableStateOf(null)
     }
@@ -203,39 +75,148 @@ fun DietCreateScreen(
         }
     }
 
+    val onBottomSheetItemClick: (String) -> Unit = { propertyType ->
+        currentBottomSheet?.let {
+            openSheet()
+            searchQuery.value = ""
+            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = propertyType))
+        }
+    }
+
+    val onItemClick: (DietCreateBottomSheetType, String) -> Unit = { sheetType, propertyType ->
+        currentBottomSheet = sheetType
+        onBottomSheetItemClick(propertyType)
+    }
+
+    val cardList = listOf(
+        OnlySelectionCardData(
+            "Dietary Preferences", composeThirdData?.get(DIETARYPREF.cardIndex), {
+                onItemClick(DIETARYPREF, DIETARYPREF.propertyType)
+            }, DIETARYPREF.cardIndex
+        ), OnlySelectionCardData(
+            "Non Veg Days", composeThirdData?.get(NONVEGDAYS.cardIndex), {
+                /* TODO non-veg days property type?*/
+                onItemClick(NONVEGDAYS, NONVEGDAYS.propertyType)
+            }, NONVEGDAYS.cardIndex
+        ), OnlySelectionCardData(
+            "Food Allergies?", composeThirdData?.get(FOODALLERGIES.cardIndex), {
+                onItemClick(FOODALLERGIES, FOODALLERGIES.propertyType)
+            }, FOODALLERGIES.cardIndex
+        ), OnlySelectionCardData(
+            "Cuisines?", composeThirdData?.get(CUISINES.cardIndex), {
+                onItemClick(CUISINES, CUISINES.propertyType)
+            }, CUISINES.cardIndex
+        )
+    )
+
     AppModalBottomSheetLayout(sheetContent = {
         Spacer(modifier = Modifier.height(1.dp))
         currentBottomSheet?.let {
-            DietCreateBottomSheetLayout(sheetLayout = it, closeSheet = { closeSheet() })
+            DietCreateBottomSheetLayout(
+                sheetLayout = it,
+                closeSheet = { closeSheet() },
+                cardList2 = composeThirdData?.get(it.cardIndex),
+                searchQuery = searchQuery
+            )
         }
     }, sheetState = modalBottomSheetState, content = {
-        DietContent(eventPrevious = eventPrevious, onNonVegDays = {
-            currentBottomSheet = NONVEGDAYS
-            openSheet()
-        }, onFoodAllergies = {
-            currentBottomSheet = FOODALLERGIES
-            openSheet()
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "food"))
-        }, onCuisines = {
-            currentBottomSheet = CUISINES
-            openSheet()
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "cu"))
-        }, onFoodRes = {
-            currentBottomSheet = FOODRES
-            openSheet()
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "food"))
-        }, onDietaryPref = {
-            currentBottomSheet = DIETARYPREF
-            openSheet()
-            viewModel.onEvent(ProfileEvent.GetHealthProperties(propertyType = "dp"))
-        })
+        DietContent(eventPrevious = eventPrevious, onFoodRes = {
+            onItemClick(FOODRES, FOODRES.propertyType)
+        }, cardList = cardList, composeThirdData = composeThirdData)
     })
-
 }
 
+@OptIn(ExperimentalFoundationApi::class, ExperimentalCoroutinesApi::class)
+@Composable
+fun DietContent(
+    viewModel: ProfileViewModel = hiltViewModel(),
+    eventPrevious: () -> Unit,
+    onFoodRes: () -> Unit,
+    cardList: List<OnlySelectionCardData>,
+    composeThirdData: Map<Int, SnapshotStateList<HealthProperties>>?,
+) {
 
-enum class DietCreateBottomSheetType {
-    DIETARYPREF, NONVEGDAYS, FOODALLERGIES, CUISINES, FOODRES
+    val context = LocalContext.current
+
+    val event = viewModel.stateSubmit.collectAsState()
+    val events = event.value
+
+    var buttonClicked by remember { mutableStateOf(false) }
+
+    //Radio Button Selection
+    val radioButtonSelections by viewModel.radioButtonSelections.collectAsStateWithLifecycle()
+
+    val selectedFoodResDemo =
+        radioButtonSelections[MultiRadioBtnKeys.DIETREST.key] as TwoRadioBtnSelections?
+
+    CompositionLocalProvider(
+        LocalOverscrollConfiguration provides null
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = spacing.medium)
+                .verticalScroll(rememberScrollState())
+                .background(color = MaterialTheme.colorScheme.background),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            cardList.forEach { cardData ->
+                OnlyChipSelectionCard(
+                    cardType = cardData.cardType,
+                    cardList = cardData.cardList,
+                    onItemsSelect = cardData.onItemsSelect,
+                    cardIndex = cardData.cardIndex,
+                    composeIndex = ComposeIndex.Second,
+                )
+                Spacer(modifier = Modifier.height(spacing.medium))
+            }
+
+            SelectionCardCreateProfile(
+                cardType = "Food Restrictions?",
+                cardList = composeThirdData?.get(4),
+                onItemsSelect = onFoodRes,
+                selectedOption = selectedFoodResDemo,
+                onStateChange = { state ->
+                    viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.DIETREST.key, state)
+                },
+                cardIndex = 4,
+                composeIndex = ComposeIndex.Third,
+                listName = "Diet"
+            )
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
+            CreateProfileTwoButtonLayout(
+                eventPrevious = eventPrevious, eventNext = {
+                    buttonClicked = !buttonClicked
+                    viewModel.onEvent(ProfileEvent.OnSubmit)
+                }, titleButton2 = "Submit"
+            )
+
+            if (buttonClicked) {
+                when (events) {
+                    is ProfileSubmitState.Empty -> {}
+                    is ProfileSubmitState.Error -> {
+                        Log.d(
+                            "validate",
+                            "Error -> ${events.error} and message -> ${events.error.message} and ${events.error.localizedMessage}"
+                        )
+                    }
+
+                    is ProfileSubmitState.Loading -> LoadingAnimation()
+                    is ProfileSubmitState.NoInternet -> AppErrorScreen(onTryAgain = {})
+                    is ProfileSubmitState.Success -> {
+                        (context as MainActivity).startMainNavHost()
+                        Log.d("validate", "Success -> ${events.userProfile}")
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(spacing.medium))
+        }
+    }
 }
 
 @Composable
@@ -243,101 +224,32 @@ fun DietCreateBottomSheetLayout(
     viewModel: ProfileViewModel = hiltViewModel(),
     sheetLayout: DietCreateBottomSheetType,
     closeSheet: () -> Unit,
+    cardList2: SnapshotStateList<HealthProperties>?,
+    searchQuery: MutableState<String>,
 ) {
-    when (sheetLayout) {
-        DIETARYPREF -> {
-            when (val state = viewModel.stateHp.collectAsState().value) {
-                is HPropState.Empty -> {}
-                is HPropState.Error -> {}
-                is HPropState.Loading -> LoadingAnimation()
-                is HPropState.NoInternet -> {
-                    AppErrorScreen(onTryAgain = {})
-                }
 
-                is HPropState.Success -> {
-                    ItemSelectionLayout(
-                        cardList = state.properties,
-                        cardIndex = 0,
-                        composeIndex = ComposeIndex.Third
-                    )
-                }
-            }
-        }
+    val cardIndex = sheetLayout.cardIndex
+    val state by viewModel.stateHp.collectAsStateWithLifecycle()
 
-        NONVEGDAYS -> {
-            when (val state = viewModel.stateHp.collectAsState().value) {
-                is HPropState.Empty -> {}
-                is HPropState.Error -> {}
-                is HPropState.Loading -> LoadingAnimation()
-                is HPropState.NoInternet -> {
-                    AppErrorScreen(onTryAgain = {})
-                }
-
-                is HPropState.Success -> {
-                    ItemSelectionLayout(
-                        cardList = state.properties,
-                        cardIndex = 1,
-                        composeIndex = ComposeIndex.Third
-                    )
-                }
-            }
-        }
-
-        FOODALLERGIES -> {
-            when (val state = viewModel.stateHp.collectAsState().value) {
-                is HPropState.Empty -> {}
-                is HPropState.Error -> {}
-                is HPropState.Loading -> LoadingAnimation()
-                is HPropState.NoInternet -> {
-                    AppErrorScreen(onTryAgain = {})
-                }
-
-                is HPropState.Success -> {
-                    ItemSelectionLayout(
-                        cardList = state.properties,
-                        cardIndex = 2,
-                        composeIndex = ComposeIndex.Third
-                    )
-                }
-            }
-        }
-
-        CUISINES -> {
-            when (val state = viewModel.stateHp.collectAsState().value) {
-                is HPropState.Empty -> {}
-                is HPropState.Error -> {}
-                is HPropState.Loading -> LoadingAnimation()
-                is HPropState.NoInternet -> {
-                    AppErrorScreen(onTryAgain = {})
-                }
-
-                is HPropState.Success -> {
-                    ItemSelectionLayout(
-                        cardList = state.properties,
-                        cardIndex = 3,
-                        composeIndex = ComposeIndex.Third
-                    )
-                }
-            }
-        }
-
-        FOODRES -> {
-            when (val state = viewModel.stateHp.collectAsState().value) {
-                is HPropState.Empty -> {}
-                is HPropState.Error -> {}
-                is HPropState.Loading -> LoadingAnimation()
-                is HPropState.NoInternet -> {
-                    AppErrorScreen(onTryAgain = {})
-                }
-
-                is HPropState.Success -> {
-                    ItemSelectionLayout(
-                        cardList = state.properties,
-                        cardIndex = 4,
-                        composeIndex = ComposeIndex.Third
-                    )
-                }
-            }
-        }
+    when (state) {
+        is HPropState.Empty -> TODO()
+        is HPropState.Error -> TODO()
+        is HPropState.Loading -> LoadingAnimation()
+        is HPropState.NoInternet -> AppErrorScreen(onTryAgain = {})
+        is HPropState.Success -> ItemSelectionLayout(
+            cardList = (state as HPropState.Success).properties,
+            cardList2 = cardList2,
+            cardIndex = cardIndex,
+            composeIndex = ComposeIndex.Third,
+            searchQuery = searchQuery
+        )
     }
+}
+
+sealed class DietCreateBottomSheetType(val cardIndex: Int, val propertyType: String) {
+    object DIETARYPREF : DietCreateBottomSheetType(0, "dp")
+    object NONVEGDAYS : DietCreateBottomSheetType(1, "dp")
+    object FOODALLERGIES : DietCreateBottomSheetType(2, "food")
+    object CUISINES : DietCreateBottomSheetType(3, "cu")
+    object FOODRES : DietCreateBottomSheetType(4, "food")
 }

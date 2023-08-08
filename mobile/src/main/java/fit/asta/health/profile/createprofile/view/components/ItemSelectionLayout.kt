@@ -16,11 +16,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.AddCircle
+import androidx.compose.material.icons.rounded.RemoveCircle
 import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material3.Text
+import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.material3.ChipColors
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
@@ -28,13 +32,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import fit.asta.health.common.ui.components.generic.AppChips
 import fit.asta.health.common.ui.components.generic.AppDefaultIcon
 import fit.asta.health.common.ui.components.generic.AppDivider
 import fit.asta.health.common.ui.components.generic.AppTextField
+import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.HealthProperties
-import fit.asta.health.profile.view.components.AddChipOnCard
 import fit.asta.health.profile.viewmodel.ProfileEvent
 import fit.asta.health.profile.viewmodel.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -44,9 +49,12 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 fun ItemSelectionLayout(
     viewModel: ProfileViewModel = hiltViewModel(),
     cardList: List<HealthProperties>,
+    cardList2: SnapshotStateList<HealthProperties>?,
     cardIndex: Int,
     composeIndex: ComposeIndex,
+    searchQuery: MutableState<String>,
 ) {
+
     Box(
         Modifier
             .fillMaxSize()
@@ -62,29 +70,28 @@ fun ItemSelectionLayout(
                 AppDivider(lineWidth = 80.dp)
             }
             Spacer(modifier = Modifier.height(spacing.medium))
-            SearchBar(onSearchQueryChange = {})
+            SearchBar(onSearchQueryChange = { searchQuery.value = it }, searchQuery)
             Spacer(modifier = Modifier.height(spacing.small))
-            ChipRow(cardList, viewModel, cardIndex, composeIndex)
+            ChipRow(cardList, cardList2, viewModel, cardIndex, composeIndex, searchQuery.value)
             Spacer(modifier = Modifier.height(spacing.medium))
         }
     }
 }
 
 @Composable
-fun SearchBar(onSearchQueryChange: (String) -> Unit) {
+fun SearchBar(
+    onSearchQueryChange: (String) -> Unit,
+    searchQuery: MutableState<String>,
+) {
     val focusManager = LocalFocusManager.current
-    val searchQuery = remember { mutableStateOf("") }
     AppTextField(
         value = searchQuery.value,
-        onValueChange = {
-            searchQuery.value = it
-            onSearchQueryChange(it)
-        },
+        onValueChange = { onSearchQueryChange(it) },
         modifier = Modifier.fillMaxWidth(),
         keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
         keyboardType = KeyboardType.Text,
         imeAction = ImeAction.Done,
-        placeholder = { Text("Search") },
+        placeholder = { AppTexts.LabelSmall(text = "Search") },
         leadingIcon = {
             AppDefaultIcon(imageVector = Icons.Rounded.Search, contentDescription = "Search Icon")
         },
@@ -95,19 +102,71 @@ fun SearchBar(onSearchQueryChange: (String) -> Unit) {
 @Composable
 fun ChipRow(
     cardList: List<HealthProperties>,
+    cardList2: SnapshotStateList<HealthProperties>?,
     viewModel: ProfileViewModel,
     cardIndex: Int,
     composeIndex: ComposeIndex,
+    searchQuery: String,
 ) {
+
+    val filteredList = cardList.filter {
+        it.name.contains(searchQuery, ignoreCase = true)
+    }
+
     FlowRow(horizontalArrangement = Arrangement.spacedBy(spacing.small)) {
-        cardList.forEach { healthProperties ->
-            AddChipOnCard(textOnChip = healthProperties.name, onClick = {
-                viewModel.onEvent(
-                    ProfileEvent.SetSelectedAddItemOption(
-                        item = healthProperties, index = cardIndex, composeIndex = composeIndex
+        filteredList.forEach { healthProperties ->
+            val isSelected = cardList2?.contains(healthProperties) == true
+            AddChipOnCard(textOnChip = healthProperties.name, isSelected = isSelected, onClick = {
+                if (isSelected) {
+                    viewModel.onEvent(
+                        ProfileEvent.SetSelectedRemoveItemOption(
+                            item = healthProperties, index = cardIndex, composeIndex = composeIndex
+                        )
                     )
-                )
+                } else {
+                    viewModel.onEvent(
+                        ProfileEvent.SetSelectedAddItemOption(
+                            item = healthProperties, index = cardIndex, composeIndex = composeIndex
+                        )
+                    )
+                }
             })
         }
     }
+}
+
+@Composable
+fun AddChipOnCard(
+    textOnChip: String,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+) {
+
+    val colors =
+        rememberAssistChipColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+    AppChips.AppAssistChip(onClick = onClick, label = {
+        AppTexts.LabelSmall(
+            text = textOnChip, color = MaterialTheme.colorScheme.onPrimaryContainer
+        )
+    }, trailingIcon = {
+        AppDefaultIcon(
+            imageVector = if (isSelected) Icons.Rounded.RemoveCircle else Icons.Rounded.AddCircle,
+            contentDescription = if (isSelected) "Remove Items" else "Add Items",
+            tint = if (isSelected) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
+        )
+    }, colors = colors
+    )
+}
+
+
+@Composable
+fun rememberAssistChipColors(
+    containerColor: Color? = null,
+    disabledContainerColor: Color? = null,
+): ChipColors {
+    return AssistChipDefaults.assistChipColors(
+        containerColor = containerColor ?: MaterialTheme.colorScheme.primaryContainer,
+        disabledContainerColor = disabledContainerColor
+            ?: MaterialTheme.colorScheme.primaryContainer
+    )
 }

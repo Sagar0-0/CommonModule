@@ -513,7 +513,6 @@ class ProfileViewModel
         )
     }
 
-
     private fun createHealth(): Health {
         // Extract the health creation logic here
         return Health(
@@ -531,7 +530,6 @@ class ProfileViewModel
             }
         )
     }
-
 
     private fun createLifeStyle(): LifeStyle {
         // Extract the lifestyle creation logic here
@@ -560,7 +558,6 @@ class ProfileViewModel
         )
     }
 
-
     private fun createDiet(): Diet {
         // Extract the diet creation logic here
         return Diet(preference = getValueAtIndex(ComposeIndex.Third, 0)?.let { ArrayList(it) },
@@ -587,7 +584,6 @@ class ProfileViewModel
 
     }
 
-
     private fun getHealthProperties(propertyType: String) {
 
         if (networkHelper.isConnected()) {
@@ -604,7 +600,6 @@ class ProfileViewModel
 
     }
 
-
     private fun onValidateDetailsText(value: String, min: Int = 1, max: Int): UiString {
         return when {
             value.isBlank() -> UiString.Resource(R.string.the_field_can_not_be_blank)
@@ -616,7 +611,6 @@ class ProfileViewModel
             else -> UiString.Empty
         }
     }
-
 
     private fun onValidateDetailsEmail(value: String): UiString {
         return when {
@@ -638,7 +632,6 @@ class ProfileViewModel
         }
     }
 
-
     private fun onValidatePhy(type: String, value: String, min: Double, max: Double): UiString {
         return when {
             value.isBlank() -> UiString.Resource(R.string.the_field_can_not_be_blank)
@@ -654,11 +647,9 @@ class ProfileViewModel
         }
     }
 
-
     private fun userBMI(userWeight: Float, userHeight: Float): Float {
         return ((userWeight / (userHeight * userHeight)) * 10000)
     }
-
 
     fun validateDataList(
         list: SnapshotStateList<HealthProperties>,
@@ -778,10 +769,8 @@ class ProfileViewModel
     }
 
     //Profile Validations
-
     val areDetailsInputsValid = combine(name, email) { name, email ->
         name.value.isNotEmpty() && name.error is UiString.Empty && email.value.isNotEmpty() && email.error is UiString.Empty
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
-
 
 }

@@ -56,7 +56,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @OptIn(ExperimentalFoundationApi::class, ExperimentalCoroutinesApi::class)
 @ExperimentalMaterial3Api
 @Composable
-fun DetailsCreateScreenDemo(
+fun DetailsCreateScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     eventNext: () -> Unit,
 ) {
