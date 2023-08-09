@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName
 import fit.asta.health.navigation.track.model.net.common.Graph
 import fit.asta.health.navigation.track.model.net.common.Health
 import fit.asta.health.navigation.track.model.net.common.MultiGraphParent
-import fit.asta.health.navigation.track.model.net.common.Progress
 import fit.asta.health.navigation.track.model.net.common.Status
 import fit.asta.health.navigation.track.model.net.common.Weather
 import fit.asta.health.navigation.track.model.net.common.Weekly

@@ -38,6 +38,10 @@ class TrackViewModel @Inject constructor(
      * This function fetches the Water Tracking Details from the Server
      */
     private fun getWaterDetails(status: String, date: String) {
+
+        if (_waterDetails.value is TrackingNetworkCall.Loading)
+            return
+
         viewModelScope.launch {
             trackingRepo.getWaterDetails(
                 uid = uid,
@@ -60,13 +64,17 @@ class TrackViewModel @Inject constructor(
     /**
      * This function fetches the steps Tracking details from the Server
      */
-    private fun getStepsDetails() {
+    private fun getStepsDetails(status: String, date: String) {
+
+        if (_stepsDetails.value is TrackingNetworkCall.Loading)
+            return
+
         viewModelScope.launch {
             trackingRepo.getStepsDetails(
                 uid = uid,
-                date = "2023",
+                date = date,
                 location = "bangalore",
-                status = "yearly"
+                status = status
             ).collect {
                 _stepsDetails.value = it
             }
@@ -80,13 +88,17 @@ class TrackViewModel @Inject constructor(
     )
     val meditationDetails = _meditationDetails.asStateFlow()
 
-    private fun getMeditationDetails() {
+    private fun getMeditationDetails(status: String, date: String) {
+
+        if (_meditationDetails.value is TrackingNetworkCall.Loading)
+            return
+
         viewModelScope.launch {
             trackingRepo.getMeditationDetails(
                 uid = uid,
-                date = "2023",
+                date = date,
                 location = "bangalore",
-                status = "yearly"
+                status = status
             ).collect {
                 _meditationDetails.value = it
             }
@@ -103,13 +115,17 @@ class TrackViewModel @Inject constructor(
     /**
      * This function fetches the breathing tracking details from the Server
      */
-    private fun getBreathingDetails() {
+    private fun getBreathingDetails(status: String, date: String) {
+
+        if (_breathingDetails.value is TrackingNetworkCall.Loading)
+            return
+
         viewModelScope.launch {
             trackingRepo.getBreathingDetails(
                 uid = uid,
-                date = "2023",
+                date = date,
                 location = "bangalore",
-                status = "yearly"
+                status = status
             ).collect {
                 _breathingDetails.value = it
             }
@@ -125,13 +141,17 @@ class TrackViewModel @Inject constructor(
     /**
      * This function fetches the sleep details from the Server
      */
-    private fun getSleepDetails() {
+    private fun getSleepDetails(status: String, date: String) {
+
+        if (_sleepDetails.value is TrackingNetworkCall.Loading)
+            return
+
         viewModelScope.launch {
             trackingRepo.getSleepDetails(
                 uid = uid,
-                date = "2023",
+                date = date,
                 location = "bangalore",
-                status = "yearly"
+                status = status
             ).collect {
                 _sleepDetails.value = it
             }
@@ -147,13 +167,17 @@ class TrackViewModel @Inject constructor(
     /**
      * This function fetches the Sunlight Tracking Details from the server
      */
-    private fun getSunlightDetails() {
+    private fun getSunlightDetails(status: String, date: String) {
+
+        if (_sunlightDetails.value is TrackingNetworkCall.Loading)
+            return
+
         viewModelScope.launch {
             trackingRepo.getSunlightDetails(
                 uid = uid,
-                date = "2023",
+                date = date,
                 location = "bangalore",
-                status = "yearly"
+                status = status
             ).collect {
                 _sunlightDetails.value = it
             }
@@ -185,23 +209,38 @@ class TrackViewModel @Inject constructor(
             }
 
             is TrackOption.StepsOption -> {
-                getStepsDetails()
+                getStepsDetails(
+                    status = currentTrackOption.trackStatus.status,
+                    date = handleTrackerDate()
+                )
             }
 
             is TrackOption.MeditationOption -> {
-                getMeditationDetails()
+                getMeditationDetails(
+                    status = currentTrackOption.trackStatus.status,
+                    date = handleTrackerDate()
+                )
             }
 
             is TrackOption.BreathingOption -> {
-                getBreathingDetails()
+                getBreathingDetails(
+                    status = currentTrackOption.trackStatus.status,
+                    date = handleTrackerDate()
+                )
             }
 
             is TrackOption.SleepOption -> {
-                getSleepDetails()
+                getSleepDetails(
+                    status = currentTrackOption.trackStatus.status,
+                    date = handleTrackerDate()
+                )
             }
 
             is TrackOption.SunlightOption -> {
-                getSunlightDetails()
+                getSunlightDetails(
+                    status = currentTrackOption.trackStatus.status,
+                    date = handleTrackerDate()
+                )
             }
         }
     }
