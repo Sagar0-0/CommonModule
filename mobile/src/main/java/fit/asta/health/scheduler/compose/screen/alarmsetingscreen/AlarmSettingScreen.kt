@@ -26,7 +26,6 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.common.ui.components.*
@@ -41,7 +40,6 @@ import fit.asta.health.tools.breathing.model.domain.mapper.convert12hrTo24hr
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
 @Composable
 fun AlarmSettingScreen(
     alarmSettingUiState: ASUiState = ASUiState(),
@@ -68,15 +66,6 @@ fun AlarmSettingScreen(
         scope.launch { bottomSheetState.show() }
     }
     val snackBarHostState = remember { SnackbarHostState() }
-    LaunchedEffect(uiError) {
-        scope.launch {
-            snackBarHostState.showSnackbar(
-                message = uiError,
-                withDismissAction = true,
-                duration = SnackbarDuration.Short
-            )
-        }
-    }
 
     AppScaffold(
         modifier = Modifier.fillMaxSize(), snackBarHostState = snackBarHostState,
@@ -117,9 +106,9 @@ fun AlarmSettingScreen(
             ) {
                 DigitalDemo(
                     time = AMPMHoursMin(
-                        hours = alarmSettingUiState.time_hours.toInt(),
-                        minutes = alarmSettingUiState.time_minutes.toInt(),
-                        dayTime = if (alarmSettingUiState.time_midDay) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
+                        hours = alarmSettingUiState.timeHours.toInt(),
+                        minutes = alarmSettingUiState.timeMinutes.toInt(),
+                        dayTime = if (alarmSettingUiState.timeMidDay) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
                     )
                 ) {
                     currentBottomSheet = TIME
@@ -135,7 +124,7 @@ fun AlarmSettingScreen(
                     onCheckClicked = { aSEvent(AlarmSettingEvent.SetStatus(it)) })
                 TextSelection(imageIcon = Icons.Default.Tag,
                     title = "Tag",
-                    arrowTitle = alarmSettingUiState.tag_name,
+                    arrowTitle = alarmSettingUiState.tagName,
                     btnEnabled = true,
                     onNavigateAction = {
                         aSEvent(AlarmSettingEvent.GotoTagScreen)
@@ -143,7 +132,7 @@ fun AlarmSettingScreen(
                     })
                 TextSelection(imageIcon = Icons.Default.Label,
                     title = "Label",
-                    arrowTitle = alarmSettingUiState.alarm_name,
+                    arrowTitle = alarmSettingUiState.alarmName,
                     btnEnabled = true,
                     onNavigateAction = {
                         currentBottomSheet = LABEL
@@ -151,7 +140,7 @@ fun AlarmSettingScreen(
                     })
                 TextSelection(imageIcon = Icons.Default.Description,
                     title = "Description",
-                    arrowTitle = alarmSettingUiState.alarm_description,
+                    arrowTitle = alarmSettingUiState.alarmDescription,
                     btnEnabled = true,
                     onNavigateAction = {
                         currentBottomSheet = DESCRIPTION
@@ -175,7 +164,7 @@ fun AlarmSettingScreen(
                     })
                 OnlyToggleButton(imageIcon = Icons.Default.Vibration,
                     title = "Vibration ",
-                    mCheckedState = alarmSettingUiState.vibration_status,
+                    mCheckedState = alarmSettingUiState.vibrationStatus,
                     onCheckClicked = {
                         aSEvent(AlarmSettingEvent.SetVibration(it))
                     },
@@ -282,25 +271,23 @@ fun AlarmCreateBtmSheetLayout(
         }
 
         VIBRATION -> {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                VibrationBottomSheetLayout(
-                    text = "Select Vibration Intensity",
-                    onNavigateBack = closeSheet,
-                    onSave = {
-                        closeSheet()
-                        aSEvent(AlarmSettingEvent.SetVibrationIntensity(it))
-                    })
-            }
+            VibrationBottomSheetLayout(
+                text = "Select Vibration Intensity",
+                onNavigateBack = closeSheet,
+                onSave = {
+                    closeSheet()
+                    aSEvent(AlarmSettingEvent.SetVibrationIntensity(it))
+                })
         }
 
         TIME -> {
             TimePickerBottomSheet(
                 time = AMPMHoursMin(
-                    hours = if (alarmSettingUiState.time_hours.toInt() > 12) {
-                        alarmSettingUiState.time_hours.toInt() - 12
-                    } else alarmSettingUiState.time_hours.toInt(),
-                    minutes = alarmSettingUiState.time_minutes.toInt(),
-                    dayTime = if (alarmSettingUiState.time_midDay) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
+                    hours = if (alarmSettingUiState.timeHours.toInt() > 12) {
+                        alarmSettingUiState.timeHours.toInt() - 12
+                    } else alarmSettingUiState.timeHours.toInt(),
+                    minutes = alarmSettingUiState.timeMinutes.toInt(),
+                    dayTime = if (alarmSettingUiState.timeMidDay) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
                 ),
                 onSave = {
                     closeSheet()

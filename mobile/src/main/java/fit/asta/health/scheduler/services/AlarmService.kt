@@ -27,6 +27,7 @@ import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_ALARM_OBJECT
 import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_ALARM_OBJECT_NOTIFICATION
 import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_VARIANT_INTERVAL_OBJECT
 import fit.asta.health.scheduler.util.Constants.Companion.BUNDLE_VARIANT_INTERVAL_OBJECT_NOTIFICATION
+import fit.asta.health.scheduler.util.Constants.Companion.getVibrationPattern
 import fit.asta.health.scheduler.util.SerializableAndParcelable.parcelable
 import fit.asta.health.scheduler.util.SerializableAndParcelable.serializable
 import javax.inject.Inject
@@ -168,14 +169,13 @@ class AlarmService : Service() {
             .setStyle(bigTextStyle)
             .addAction(0, "Snooze", pendingIntentSnooze)
             .addAction(0, "Stop", pendingIntentStop)
-        val vibrationStrong: Boolean = alarmEntity.vibration.percentage.toFloat() > 50f
 //        mediaPlayer.setOnPreparedListener { mediaPlayer -> mediaPlayer.start() }
         player.play()
         startForGroundService(
             notification = builder.build(),
             status = alarmEntity.vibration.status,
             id = alarmEntity.alarmId,
-            vibrationStrong = vibrationStrong
+            vibrationPattern = getVibrationPattern(alarmEntity.vibration.pattern)
         )
 
     }
@@ -214,15 +214,13 @@ class AlarmService : Service() {
             .setStyle(bigTextStyle)
             .setWhen(0)
             .setAutoCancel(true)
-
-        val vibrationStrong: Boolean = alarmEntity.vibration.percentage.toFloat() > 50f
 //        mediaPlayer.setOnPreparedListener { mediaPlayer -> mediaPlayer.start() }
         player.play()
         startForGroundService(
             notification = builder.build(),
             status = alarmEntity.vibration.status,
             id = alarmEntity.alarmId,
-            vibrationStrong = vibrationStrong
+            vibrationPattern = getVibrationPattern(alarmEntity.vibration.pattern)
         )
 
     }
@@ -232,49 +230,19 @@ class AlarmService : Service() {
         notification: Notification?,
         status: Boolean,
         id: Int,
-        vibrationStrong: Boolean
+        vibrationPattern: LongArray
     ) {
         if (status) {
-            val pattern = if (vibrationStrong) longArrayOf(0, 100, 1000, 200, 1000, 300)
-            else longArrayOf(
-                0,
-                30,
-                1000,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1
-            )
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 vibrator.vibrate(
                     VibrationEffect.createWaveform(
-                        pattern,
+                        vibrationPattern,
                         0
                     )
                 )
             } else {
-                vibrator.vibrate(pattern, 0)
+                vibrator.vibrate(vibrationPattern, 0)
             }
         }
         Log.d("alarmtest", "startForGroundService")

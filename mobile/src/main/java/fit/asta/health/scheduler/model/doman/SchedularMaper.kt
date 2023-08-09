@@ -84,28 +84,28 @@ fun ASUiState.getAlarm(userId:String,alarmId:Int,idFromServer:String,interval:Iv
             recurring = this.recurring
         ),
         info = Info(
-            name = this.alarm_name,
-            description = this.alarm_description,
-            tag = this.tag_name,
+            name = this.alarmName,
+            description = this.alarmDescription,
+            tag = this.tagName,
             tagId = this.tagId,
-            url = this.tag_url
+            url = this.tagUrl
         ),
         time = Time(
-            hours = this.time_hours,
-            minutes = this.time_minutes,
-            midDay = this.time_midDay,
+            hours = this.timeHours,
+            minutes = this.timeMinutes,
+            midDay = this.timeMidDay,
         ),
         interval = interval.getInterval(),
         mode = this.mode,
         important = this.important,
         vibration = Vib(
-            percentage = this.vibration_percentage,
-            status = this.vibration_status
+            pattern = this.vibration,
+            status = this.vibrationStatus
         ),
         tone = Tone(
-            name = this.tone_name,
-            type = this.tone_type,
-            uri = this.tone_uri
+            name = this.toneName,
+            type = this.toneType,
+            uri = this.toneUri
         ),
         userId = userId,
         idFromServer =idFromServer,
@@ -133,11 +133,4 @@ fun ASUiState.getAlarm(userId:String,alarmId:Int,idFromServer:String,interval:Iv
     map["tone"] = newAlarmItem.tone
     val jsonObject: String? = Gson().toJson(map)
     return Gson().fromJson(jsonObject, AlarmEntity::class.java)
-}
-
-fun AlarmEntity.isValid(): Boolean {
-    return (this.time.minutes.toInt() != 0 && this.time.hours.toInt() != 0) || this.info.tag.isNotEmpty() ||
-            this.info.name.isNotEmpty() || this.info.description.isNotEmpty() ||
-            (if (this.vibration.status) this.vibration.percentage.isNotEmpty() else true) ||
-            this.tone.uri.isNotEmpty()
 }
