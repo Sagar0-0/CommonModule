@@ -1,22 +1,28 @@
-@file:OptIn(ExperimentalCoroutinesApi::class)
+@file:OptIn(
+    ExperimentalCoroutinesApi::class, ExperimentalCoroutinesApi::class, ExperimentalLayoutApi::class
+)
 
 package fit.asta.health.profile.view.components
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.flowlayout.FlowRow
-import fit.asta.health.common.ui.theme.cardElevation
+import fit.asta.health.common.ui.components.generic.AppCard
+import fit.asta.health.common.ui.components.generic.AppDrawImg
+import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.imageSize
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.profile.model.domain.HealthProperties
@@ -31,47 +37,49 @@ fun ProfileChipCard(
     title: String,
     list: List<HealthProperties>,
 ) {
-
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(spacing.small),
-        elevation = CardDefaults.cardElevation(cardElevation.smallExtraMedium)
-    ) {
+    AppCard {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(spacing.medium)
         ) {
-            Row(
-                Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Image(
-                        painter = painterResource(id = icon),
-                        contentDescription = null,
-                        modifier = Modifier.size(imageSize.largeMedium)
-                    )
-                    Spacer(modifier = Modifier.width(spacing.small))
-                    Text(
-                        text = title,
-                        fontSize = 10.sp,
-                        lineHeight = 16.sp,
-                        letterSpacing = 1.5.sp,
-                        color = Color.Black
-                    )
-                }
-            }
+            ProfileHeader(icon, title)
             Spacer(modifier = Modifier.height(spacing.medium))
-            FlowRow(mainAxisSpacing = spacing.small, crossAxisSpacing = spacing.extraSmall) {
-                list.forEach {
-                    DisabledChipForList(textOnChip = it.name)
-                }
-            }
+            ChipList(list)
+        }
+    }
+}
+
+@Composable
+private fun ProfileHeader(icon: Int, title: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            AppDrawImg(
+                painter = painterResource(id = icon),
+                contentDescription = "Card Image",
+                modifier = Modifier.size(imageSize.largeMedium)
+            )
+            Spacer(modifier = Modifier.width(spacing.small))
+            AppTexts.BodySmall(text = title)
+        }
+    }
+}
+
+@Composable
+private fun ChipList(list: List<HealthProperties>) {
+    FlowRow(
+        horizontalArrangement = Arrangement.spacedBy(spacing.small),
+        verticalArrangement = Arrangement.spacedBy(spacing.minSmall)
+    ) {
+        list.forEach { healthProperty ->
+            DisabledChipForList(textOnChip = healthProperty.name)
         }
     }
 }

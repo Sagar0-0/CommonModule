@@ -26,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.common.ui.components.generic.AppScaffold
@@ -39,66 +40,69 @@ import fit.asta.health.profile.view.PhysiqueLayout
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileReadyScreen(userProfile: UserProfile, onBack: () -> Unit, onEdit: () -> Unit) {
-
+fun ProfileReadyScreen(
+    userProfile: UserProfile,
+    onBack: () -> Unit,
+    onEdit: () -> Unit,
+) {
     var content by remember { mutableIntStateOf(1) }
 
     AppScaffold(topBar = {
         Column {
-            AppTopBar(
-                title = "Profile Screen",
-                onBack = onBack,
-                actions = {
-                    IconButton(onClick = onEdit) {
-                        Icon(
-                            imageVector = Icons.Filled.Edit,
-                            contentDescription = null,
-                            modifier = Modifier.size(24.dp),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                })
+            AppTopBar(title = "Profile Screen", onBack = onBack, actions = {
+                IconButton(onClick = onEdit) {
+                    Icon(
+                        imageVector = Icons.Filled.Edit,
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+            })
 
-            val colors =
-                NavigationBarItemDefaults.colors(selectedIconColor = MaterialTheme.colorScheme.primary)
+            val colors = NavigationBarItemDefaults.colors(
+                selectedIconColor = MaterialTheme.colorScheme.primary
+            )
 
-            NavigationBar(containerColor = Color.White, tonalElevation = 0.dp) {
-                NavigationBarItem(selected = false, onClick = { content = 1 }, icon = {
-                    Icon(Icons.Outlined.AccountCircle, contentDescription = "Profile Screen 1")
-                }, label = {
-                    Text(text = "Details", fontSize = 11.sp, maxLines = 1)
-                }, colors = colors)
-                NavigationBarItem(selected = false, onClick = { content = 2 }, icon = {
-                    Icon(Icons.Outlined.Face, contentDescription = "Profile Screen 2")
-                }, label = {
-                    Text(text = "Physique", fontSize = 11.sp, maxLines = 1)
-                }, colors = colors)
-                NavigationBarItem(selected = false, onClick = { content = 3 }, icon = {
-                    Icon(Icons.Outlined.Favorite, contentDescription = "Profile Screen 3")
-                }, label = {
-                    Text(text = "Health", fontSize = 11.sp, maxLines = 1)
-                }, colors = colors)
-                NavigationBarItem(selected = false, onClick = { content = 4 }, icon = {
-                    Icon(Icons.Default.Emergency, contentDescription = "Profile Screen 4")
-                }, label = {
-                    Text(text = "Lifestyle", fontSize = 11.sp, maxLines = 1)
-                }, colors = colors)
-                NavigationBarItem(selected = true, onClick = { content = 5 }, icon = {
-                    Icon(Icons.Outlined.Egg, contentDescription = "Profile Screen 2")
-                }, label = {
-                    Text(text = "Diet", fontSize = 11.sp, maxLines = 1)
-                }, colors = colors)
+            NavigationBar(
+                containerColor = Color.Transparent, tonalElevation = 0.dp
+            ) {
+                val navigationItems = listOf(
+                    navigationItemDetails,
+                    navigationItemPhysique,
+                    navigationItemHealth,
+                    navigationItemLifestyle,
+                    navigationItemDiet
+                )
+
+                navigationItems.forEachIndexed { index, item ->
+                    NavigationBarItem(
+                        selected = content == index + 1,
+                        onClick = { content = index + 1 },
+                        icon = {
+                            Icon(
+                                item.icon, contentDescription = item.contentDescription
+                            )
+                        },
+                        label = {
+                            Text(
+                                text = item.label, fontSize = 11.sp, maxLines = 1
+                            )
+                        },
+                        colors = colors
+                    )
+                }
             }
         }
-    }) { p ->
-        Box(modifier = Modifier.padding(p)) {
+    }) { padding ->
+        Box(modifier = Modifier.padding(padding)) {
             when (content) {
                 1 -> {
                     ContactLayout(basicDetails = userProfile.contact)
                 }
 
                 2 -> {
-                    PhysiqueLayout(phy = userProfile.physique)
+                    PhysiqueLayout(physique = userProfile.physique)
                 }
 
                 3 -> {
@@ -116,3 +120,29 @@ fun ProfileReadyScreen(userProfile: UserProfile, onBack: () -> Unit, onEdit: () 
         }
     }
 }
+
+private data class NavigationItem(
+    val icon: ImageVector,
+    val contentDescription: String,
+    val label: String,
+)
+
+private val navigationItemDetails = NavigationItem(
+    icon = Icons.Outlined.AccountCircle, contentDescription = "Profile Screen 1", label = "Details",
+)
+
+private val navigationItemPhysique = NavigationItem(
+    icon = Icons.Outlined.Face, contentDescription = "Profile Screen 2", label = "Physique"
+)
+
+private val navigationItemHealth = NavigationItem(
+    icon = Icons.Outlined.Favorite, contentDescription = "Profile Screen 3", label = "Health"
+)
+
+private val navigationItemLifestyle = NavigationItem(
+    icon = Icons.Default.Emergency, contentDescription = "Profile Screen 4", label = "Lifestyle"
+)
+
+private val navigationItemDiet = NavigationItem(
+    icon = Icons.Outlined.Egg, contentDescription = "Profile Screen 2", label = "Diet"
+)
