@@ -7,7 +7,7 @@ data class BreathDetail(
     @SerializedName("breath")
     val breath: CardItem,
     @SerializedName("cal")
-    val cal: CardItem,
+    val calories: CardItem,
     @SerializedName("in")
     val inhaled: CardItem
 )

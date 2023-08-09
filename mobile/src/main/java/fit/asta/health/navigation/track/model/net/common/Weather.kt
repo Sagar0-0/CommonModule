@@ -7,7 +7,7 @@ data class Weather(
     @SerializedName("dur")
     val duration: StepsDetails.Duration,
     @SerializedName("exp")
-    val exp: CardItem,
+    val exposure: CardItem,
     @SerializedName("vitD")
     val vitD: CardItem,
     @SerializedName("wea")
