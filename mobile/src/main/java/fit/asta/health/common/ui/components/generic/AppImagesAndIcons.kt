@@ -64,7 +64,7 @@ fun AppDefaultIcon(
 fun AppDefServerImg(
     model: Any?,
     modifier: Modifier = Modifier,
-    alpha: Float = 0f,
+    alpha: Float = 1f,
     contentDescription: String?,
     contentScale: ContentScale = ContentScale.Fit,
     placeholder: Painter? = painterResource(id = AppConstImg.placeHolderImg),
