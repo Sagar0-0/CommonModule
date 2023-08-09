@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -64,7 +65,8 @@ private fun UserProfileSection(basicDetails: Contact) {
     Column(
         modifier = Modifier
             .padding(top = spacing.medium)
-            .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         UserProfileImg(userProfilePic = basicDetails.url)
         Spacer(modifier = Modifier.height(spacing.medium))
@@ -88,13 +90,13 @@ private fun UserAchievementsSection() {
     ) {
         UserAchievCard(
             scoreBoard = "24/346",
-            cardType = "LeaderBoard",
+            cardType = stringResource(R.string.leaderboard),
             imageID = R.drawable.leaderboard,
             modifier = Modifier.weight(1f)
         )
         UserAchievCard(
             scoreBoard = "12",
-            cardType = "Badges",
+            cardType = stringResource(R.string.badges),
             imageID = R.drawable.badgecompleted,
             modifier = Modifier.weight(1f)
         )
@@ -111,17 +113,23 @@ private fun UserProfileDetailsSection() {
         verticalAlignment = Alignment.CenterVertically
     ) {
         ProfileDetails(
-            imageID = R.drawable.ssidchart, profileType = "Level", modifier = Modifier.weight(1f)
+            imageID = R.drawable.ssidchart,
+            profileType = stringResource(R.string.level),
+            modifier = Modifier.weight(1f)
         )
         ProfileDetails(
-            imageID = R.drawable.description, profileType = "Plan", modifier = Modifier.weight(1f)
+            imageID = R.drawable.description,
+            profileType = stringResource(R.string.plan),
+            modifier = Modifier.weight(1f)
         )
         ProfileDetails(
-            imageID = R.drawable.sportsscore, profileType = "Goal", modifier = Modifier.weight(1f)
+            imageID = R.drawable.sportsscore,
+            profileType = stringResource(R.string.goal),
+            modifier = Modifier.weight(1f)
         )
         ProfileDetails(
             imageID = R.drawable.healthandsafety,
-            profileType = "Health",
+            profileType = stringResource(R.string.details_health),
             modifier = Modifier.weight(1f)
         )
     }

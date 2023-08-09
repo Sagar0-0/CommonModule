@@ -375,4 +375,20 @@
     <string name="refer_invite_text">Invite your friends to Asta and get Cashback to your wallet when they subscribe to our Health Plan</string>
     <string name="code_side_text">"Click to copy code: "</string>
 
+    //Profile String Resources
+    //View Profile
+    <string name="profile_screen">Profile Screen</string>
+    <string name="details">Details</string>
+    <string name="physique">Physique</string>
+    <string name="health">Health</string>
+    <string name="lifestyle">Lifestyle</string>
+    <string name="diet">Diet</string>
+    //View Details
+    <string name="leaderboard">LeaderBoard</string>
+    <string name="badges">Badges</string>
+    <string name="level">Level</string>
+    <string name="plan">Plan</string>
+    <string name="goal">Goal</string>
+    <string name="details_health">Health</string>
+
 </resources>
