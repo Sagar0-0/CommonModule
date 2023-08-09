@@ -390,5 +390,16 @@
     <string name="plan">Plan</string>
     <string name="goal">Goal</string>
     <string name="details_health">Health</string>
+    //View Physique
+    <string name="age">AGE</string>
+    <string name="gender">GENDER</string>
+    <string name="height">HEIGHT</string>
+    <string name="weight">WEIGHT</string>
+    <string name="bmi">BMI</string>
+    <string name="pregnancy">PREGNANCY</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="others">Others</string>
+
 
 </resources>

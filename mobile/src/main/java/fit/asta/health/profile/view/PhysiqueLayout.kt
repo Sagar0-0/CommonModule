@@ -3,6 +3,7 @@ package fit.asta.health.profile.view
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.AppVerticalGrid
 import fit.asta.health.common.ui.theme.spacing
@@ -35,21 +36,41 @@ fun PhysiqueLayout(
 private fun createGenderLayoutDataList(physique: Physique): List<GenderLayoutData> {
     val genderList = if (physique.gender == 2) {
         listOf(
-            GenderLayoutData(R.drawable.age, "AGE", physique.age.toString()),
-            GenderLayoutData(R.drawable.gender, "GENDER", getGenderLabel(physique.gender)),
-            GenderLayoutData(R.drawable.height, "HEIGHT", "${physique.height.toInt()} Cm"),
-            GenderLayoutData(R.drawable.weight, "WEIGHT", "${physique.weight.toInt()} Kg"),
-            GenderLayoutData(R.drawable.bmi, "BMI", physique.bmi.toInt().toString()),
-            GenderLayoutData(R.drawable.pregnant, "PREGNANCY", "${physique.pregnancyWeek} Week")
+            GenderLayoutData(R.drawable.age, stringResource(R.string.age), physique.age.toString()),
+            GenderLayoutData(
+                R.drawable.gender, stringResource(R.string.gender), getGenderLabel(physique.gender)
+            ),
+            GenderLayoutData(
+                R.drawable.height, stringResource(R.string.height), "${physique.height.toInt()} Cm"
+            ),
+            GenderLayoutData(
+                R.drawable.weight, stringResource(R.string.weight), "${physique.weight.toInt()} Kg"
+            ),
+            GenderLayoutData(
+                R.drawable.bmi, stringResource(R.string.bmi), physique.bmi.toInt().toString()
+            ),
+            GenderLayoutData(
+                R.drawable.pregnant,
+                stringResource(R.string.pregnancy),
+                "${physique.pregnancyWeek} Week"
+            )
         )
 
     } else {
         listOf(
-            GenderLayoutData(R.drawable.age, "AGE", physique.age.toString()),
-            GenderLayoutData(R.drawable.gender, "GENDER", getGenderLabel(physique.gender)),
-            GenderLayoutData(R.drawable.height, "HEIGHT", "${physique.height.toInt()} Cm"),
-            GenderLayoutData(R.drawable.weight, "WEIGHT", "${physique.weight.toInt()} Kg"),
-            GenderLayoutData(R.drawable.bmi, "BMI", physique.bmi.toInt().toString())
+            GenderLayoutData(R.drawable.age, stringResource(R.string.age), physique.age.toString()),
+            GenderLayoutData(
+                R.drawable.gender, stringResource(R.string.gender), getGenderLabel(physique.gender)
+            ),
+            GenderLayoutData(
+                R.drawable.height, stringResource(R.string.height), "${physique.height.toInt()} Cm"
+            ),
+            GenderLayoutData(
+                R.drawable.weight, stringResource(R.string.weight), "${physique.weight.toInt()} Kg"
+            ),
+            GenderLayoutData(
+                R.drawable.bmi, stringResource(R.string.bmi), physique.bmi.toInt().toString()
+            ),
         )
     }
 
@@ -59,9 +80,9 @@ private fun createGenderLayoutDataList(physique: Physique): List<GenderLayoutDat
 @Composable
 private fun getGenderLabel(gender: Int): String {
     return when (gender) {
-        1 -> "Male"
-        2 -> "Female"
-        else -> "Others"
+        1 -> stringResource(R.string.male)
+        2 -> stringResource(R.string.female)
+        else -> stringResource(R.string.others)
     }
 }
 
