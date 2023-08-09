@@ -35,20 +35,25 @@ fun NavGraphBuilder.schedulerNavigation(
 //        }
         composable(route = AlarmSchedulerScreen.AlarmSettingHome.route) {
             val schedulerViewModel: SchedulerViewModel = it.sharedViewModel(navController)
-            val alarmSettingUiState = schedulerViewModel.alarmSettingUiState.value
-            Log.d("manish", "schedulerNavigation: setting viewmodel${schedulerViewModel}")
+            val alarmSettingUiState by schedulerViewModel.alarmSettingUiState.collectAsStateWithLifecycle()
+            val uiError by schedulerViewModel.uiError.collectAsStateWithLifecycle()
+            val areInputsValid by schedulerViewModel.areInputsValid.collectAsStateWithLifecycle()
             AlarmSettingScreen(
                 alarmSettingUiState = alarmSettingUiState,
+                uiError = uiError,
+                areInputsValid = areInputsValid,
                 aSEvent = schedulerViewModel::aSEvent,
                 navTagSelection = { navController.navigate(route = AlarmSchedulerScreen.TagSelection.route) },
-                navTimeSetting = { navController.navigate(route = AlarmSchedulerScreen.IntervalSettingsSelection.route) },
+                navTimeSetting = {
+                    navController.navigate(route = AlarmSchedulerScreen.IntervalSettingsSelection.route)
+                },
                 navBack = onBack,
             )
         }
 
         composable(route = AlarmSchedulerScreen.TagSelection.route) {
             val schedulerViewModel: SchedulerViewModel = it.sharedViewModel(navController)
-            val tagsUiState = schedulerViewModel.tagsUiState.value
+            val tagsUiState by schedulerViewModel.tagsUiState.collectAsStateWithLifecycle()
             Log.d(
                 "manish",
                 "schedulerNavigation: ${tagsUiState.tagsList} viewmodel${schedulerViewModel}"

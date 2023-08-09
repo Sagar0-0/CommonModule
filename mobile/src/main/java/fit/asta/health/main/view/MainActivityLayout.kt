@@ -6,8 +6,10 @@ import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
@@ -23,6 +25,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
@@ -37,8 +40,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.AppScaffold
+import fit.asta.health.common.ui.components.generic.AppState
 import fit.asta.health.common.ui.components.generic.AppTopBar
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.theme.elevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.MainTopBarActions
@@ -282,16 +288,36 @@ private fun MainNavHost(
             val listAfternoon by todayPlanViewModel.alarmListAfternoon.collectAsStateWithLifecycle()
             val listEvening by todayPlanViewModel.alarmListEvening.collectAsStateWithLifecycle()
             val listNextDay by todayPlanViewModel.alarmListNextDay.collectAsStateWithLifecycle()
-            val uiState by todayPlanViewModel.todayUi.collectAsStateWithLifecycle()
-            TodayContent(
-                uiState = uiState,
-                listMorning = listMorning,
-                listAfternoon = listAfternoon,
-                listEvening = listEvening,
-                listNextDay = listNextDay,
-                hSEvent = todayPlanViewModel::hSEvent,
-                onNav = onNav
-            )
+            val state by todayPlanViewModel.todayState.collectAsStateWithLifecycle()
+            when (state) {
+                is AppState.Loading -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        LoadingAnimation()
+                    }
+                }
+
+                is AppState.Error -> AppErrorScreen(onTryAgain = {
+                    todayPlanViewModel.retry()
+                }, isInternetError = false)
+
+                is AppState.Success -> {
+                    TodayContent(
+                        uiState = state.data!!,
+                        listMorning = listMorning,
+                        listAfternoon = listAfternoon,
+                        listEvening = listEvening,
+                        listNextDay = listNextDay,
+                        hSEvent = todayPlanViewModel::hSEvent,
+                        onNav = onNav
+                    )
+                }
+
+                is AppState.Empty -> {}
+
+                is AppState.NetworkError -> AppErrorScreen(onTryAgain = {
+                    todayPlanViewModel.retry()
+                })
+            }
         }
 
         composable(BottomBarDestination.Track.route) {

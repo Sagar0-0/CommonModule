@@ -55,6 +55,7 @@ class AlarmService : Service() {
         mediaPlayer.isLooping = true
         player.apply {
             playWhenReady = true
+            repeatMode = Player.REPEAT_MODE_ONE
             prepare()
         }
         vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -167,12 +168,14 @@ class AlarmService : Service() {
             .setStyle(bigTextStyle)
             .addAction(0, "Snooze", pendingIntentSnooze)
             .addAction(0, "Stop", pendingIntentStop)
-
-        mediaPlayer.setOnPreparedListener { mediaPlayer -> mediaPlayer.start() }
+        val vibrationStrong: Boolean = alarmEntity.vibration.percentage.toFloat() > 50f
+//        mediaPlayer.setOnPreparedListener { mediaPlayer -> mediaPlayer.start() }
+        player.play()
         startForGroundService(
             notification = builder.build(),
             status = alarmEntity.vibration.status,
-            id = alarmEntity.alarmId
+            id = alarmEntity.alarmId,
+            vibrationStrong = vibrationStrong
         )
 
     }
@@ -192,6 +195,10 @@ class AlarmService : Service() {
             splashIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
+        player.apply {
+            setMediaItem(MediaItem.fromUri(alarmEntity.tone.uri))
+            player
+        }
         val alarmName: String = variantInterval?.name ?: alarmEntity.info.name
         setMediaData()
         val bigTextStyle = NotificationCompat.BigTextStyle()
@@ -208,19 +215,57 @@ class AlarmService : Service() {
             .setWhen(0)
             .setAutoCancel(true)
 
-        mediaPlayer.setOnPreparedListener { mediaPlayer -> mediaPlayer.start() }
+        val vibrationStrong: Boolean = alarmEntity.vibration.percentage.toFloat() > 50f
+//        mediaPlayer.setOnPreparedListener { mediaPlayer -> mediaPlayer.start() }
+        player.play()
         startForGroundService(
             notification = builder.build(),
             status = alarmEntity.vibration.status,
-            id = alarmEntity.alarmId
+            id = alarmEntity.alarmId,
+            vibrationStrong = vibrationStrong
         )
 
     }
 
 
-    private fun startForGroundService(notification: Notification?, status: Boolean, id: Int) {
+    private fun startForGroundService(
+        notification: Notification?,
+        status: Boolean,
+        id: Int,
+        vibrationStrong: Boolean
+    ) {
         if (status) {
-            val pattern = longArrayOf(0, 100, 1000)
+            val pattern = if (vibrationStrong) longArrayOf(0, 100, 1000, 200, 1000, 300)
+            else longArrayOf(
+                0,
+                30,
+                1000,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            )
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 vibrator.vibrate(
                     VibrationEffect.createWaveform(

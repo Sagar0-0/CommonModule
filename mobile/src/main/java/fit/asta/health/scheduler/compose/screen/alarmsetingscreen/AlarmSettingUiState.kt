@@ -51,8 +51,7 @@ data class ASUiState(
     var uDate: String = "1",
 
     //save
-    val saveButtonEnable:Boolean=true,
-    val saveProgress:String="Alarm Setting"
+    val uiError: String = ""
 )
 
 

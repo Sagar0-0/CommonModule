@@ -6,5 +6,9 @@ data class TodayData(
     val location: String = "wait",
     val date: String = "01-01-23",
     val temperatureList: List<Int> = listOf(23),
-    val weatherCodeList: List<Int> = emptyList()
+    val weatherCodeList: List<Int> = emptyList(),
+    val slotTempFloat: List<Float> = emptyList(),
+    val slotTime: List<String> = emptyList(),
+    val slotTemp: List<String> = emptyList(),
+    val visible: Boolean = false
 )

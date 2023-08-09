@@ -59,7 +59,7 @@ fun TextSelection(
             ) {
                 SelectableText(arrowTitle,btnEnabled,onNavigateAction)
                 Box(contentAlignment = Alignment.Center) {
-                    IconButton(onClick = onNavigateAction) {
+                    IconButton(enabled = btnEnabled, onClick = onNavigateAction) {
                         Icon(
                             imageVector = Icons.Default.ChevronRight,
                             contentDescription = null,

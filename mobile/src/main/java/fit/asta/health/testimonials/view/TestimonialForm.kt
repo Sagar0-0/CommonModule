@@ -26,7 +26,7 @@ fun LoadTestimonialForm(
     //onNavigateAfterImgCropper: () -> Unit = {},
 ) {
 
-    when (val state = getViewModel.state.collectAsState().value) {
+    when (getViewModel.state.collectAsState().value) {
         TestimonialGetState.Loading -> {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 LoadingAnimation()

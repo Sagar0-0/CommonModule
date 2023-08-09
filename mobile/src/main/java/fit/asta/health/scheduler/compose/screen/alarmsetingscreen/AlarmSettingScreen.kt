@@ -45,6 +45,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun AlarmSettingScreen(
     alarmSettingUiState: ASUiState = ASUiState(),
+    uiError: String,
+    areInputsValid: Boolean,
     aSEvent: (AlarmSettingEvent) -> Unit = {},
     navTagSelection: () -> Unit = {},
     navTimeSetting: () -> Unit = {},
@@ -66,10 +68,21 @@ fun AlarmSettingScreen(
         scope.launch { bottomSheetState.show() }
     }
     val snackBarHostState = remember { SnackbarHostState() }
+    LaunchedEffect(uiError) {
+        scope.launch {
+            snackBarHostState.showSnackbar(
+                message = uiError,
+                withDismissAction = true,
+                duration = SnackbarDuration.Short
+            )
+        }
+    }
 
-    AppScaffold(modifier = Modifier.fillMaxSize(), snackBarHostState = snackBarHostState,
+    AppScaffold(
+        modifier = Modifier.fillMaxSize(), snackBarHostState = snackBarHostState,
         topBar = {
-            AppTopBar(title = "Alarm Setting",
+            AppTopBar(
+                title = "Alarm Setting",
                 backIcon = Icons.Default.Close,
                 onBack = {
                     navBack()
@@ -80,7 +93,7 @@ fun AlarmSettingScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
-                        IconButton(enabled = alarmSettingUiState.saveButtonEnable,
+                        IconButton(enabled = areInputsValid,
                             onClick = {
                                 aSEvent(AlarmSettingEvent.Save(context = context))
                                 navBack()
@@ -147,7 +160,7 @@ fun AlarmSettingScreen(
                 TextSelection(imageIcon = Icons.Default.AddAlarm,
                     title = "Intervals Settings",
                     arrowTitle = "Optional",
-                    btnEnabled = true,
+                    btnEnabled = areInputsValid,
                     onNavigateAction = {
                         aSEvent(AlarmSettingEvent.GotoTimeSettingScreen)
                         navTimeSetting()
@@ -307,7 +320,6 @@ fun AlarmCreateBtmSheetLayout(
     }
 
 }
-
 
 
 @Composable
