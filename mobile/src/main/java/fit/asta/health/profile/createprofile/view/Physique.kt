@@ -41,6 +41,7 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -51,6 +52,7 @@ import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarConfig
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
+import fit.asta.health.R
 import fit.asta.health.common.ui.components.functional.AppTextFieldValidate
 import fit.asta.health.common.ui.components.functional.RowToggleButtonGroup
 import fit.asta.health.common.ui.components.generic.AppButtons
@@ -170,7 +172,7 @@ private fun GenderSection(
             Column(
                 Modifier.fillMaxWidth()
             ) {
-                ThreeTogglesGroups(selectionTypeText = "Gender",
+                ThreeTogglesGroups(selectionTypeText = stringResource(id = R.string.gender),
                     selectedOption = selectedGenderOptionDemo,
                     onStateChange = { state ->
                         viewModel.updateRadioButtonSelection(
@@ -178,14 +180,14 @@ private fun GenderSection(
                         )
                     })
                 if (selectedGenderOptionDemo == ThreeRadioBtnSelections.Second) {
-                    TwoTogglesGroup(selectionTypeText = "Are you having periods?",
+                    TwoTogglesGroup(selectionTypeText = stringResource(R.string.periodTitle_profile_creation),
                         selectedOption = selectedIsOnPeriodOptionDemo,
                         onStateChange = { state ->
                             viewModel.updateRadioButtonSelection(
                                 MultiRadioBtnKeys.ISONPERIOD.key, state
                             )
                         })
-                    TwoTogglesGroup(selectionTypeText = "Are you Pregnant",
+                    TwoTogglesGroup(selectionTypeText = stringResource(R.string.pregnantTitle_profile_creation),
                         selectedOption = selectedIsPregOptionDemo,
                         onStateChange = { state ->
                             viewModel.updateRadioButtonSelection(
@@ -200,7 +202,7 @@ private fun GenderSection(
                             horizontalArrangement = Arrangement.Start
                         ) {
                             Text(
-                                "Please Enter your Pregnancy Week",
+                                stringResource(R.string.pregnancyWeekInput_profile_creation),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer,
                                 style = MaterialTheme.typography.titleSmall
                             )
@@ -251,7 +253,7 @@ private fun MeasurementSection(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     AppTexts.TitleMedium(
-                        text = "Weight",
+                        text = stringResource(id = R.string.weight),
                         color = MaterialTheme.colorScheme.onTertiaryContainer,
                     )
                     RowToggleButtonGroup(
@@ -294,7 +296,7 @@ private fun MeasurementSection(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     AppTexts.TitleMedium(
-                        text = "Height",
+                        text = stringResource(id = R.string.height),
                         color = MaterialTheme.colorScheme.onTertiaryContainer,
                     )
                     RowToggleButtonGroup(
@@ -348,7 +350,8 @@ private fun AgeSection(
         modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
     ) {
         AppTexts.TitleMedium(
-            text = "Age", color = MaterialTheme.colorScheme.onTertiaryContainer
+            text = stringResource(id = R.string.age),
+            color = MaterialTheme.colorScheme.onTertiaryContainer
         )
         if (userAge.value.isNotEmpty()) {
             AppTexts.BodyLarge(
@@ -380,7 +383,7 @@ private fun AgeSection(
                 }
             )
             AppTexts.BodyMedium(
-                text = userDOB.value.ifEmpty { "Date of Birth" },
+                text = userDOB.value.ifEmpty { stringResource(R.string.date_of_birth) },
                 modifier = Modifier.padding(spacing.small),
                 color = ageColorSelection
             )
