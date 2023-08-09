@@ -430,6 +430,13 @@
     <string name="dialogDesc_profile_creation">You will miss important FUTURE UPDATES like CUSTOM PLANS based on your PROFILE. CLICK Cancel to complete your PROFILE</string>
     <string name="negativeTitle_profile_creation">Discard Profile Creation and Move to Home Screen</string>
     <string name="positiveTitle_profile_creation">Cancel And Continue to Create Profile</string>
+    //Create Profile Details
+    <string name="name_profile_creation">Name</string>
+    <string name="email_profile_creation">E-mail</string>
+    <string name="next_button">Next</string>
+    <string name="privacy_statement_title">Privacy Statement</string>
+    <string name="privacy_statement">We value your privacy. We are committed to protecting your privacy and ask for your consent for the use of your personal health information as required during you health care.</string>
+    <string name="user_consent">I CONSENT TO THE USE OF MY PERSONAL HEALTH INFORMATION AS REQUIRED DURING YOUR HEALTH CARE.</string>
 
 
 </resources>
