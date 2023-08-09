@@ -400,6 +400,36 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="others">Others</string>
+    //View Health
+    <string name="significant_health_history">SIGNIFICANT HEALTH HISTORY</string>
+    <string name="injuries">INJURIES</string>
+    <string name="body_parts">BODY PARTS</string>
+    <string name="ailments">AILMENTS</string>
+    <string name="medications">MEDICATIONS</string>
+    <string name="health_targets">HEALTH TARGETS</string>
+    <string name="addictions">ADDICTIONS</string>
+    //View LifeStyle
+    <string name="sleep_schedule">SLEEP SCHEDULE</string>
+    <string name="work_schedule">WORK SCHEDULE</string>
+    <string name="physically_active">PHYSICALLY ACTIVE</string>
+    <string name="working_environment">WORKING ENVIRONMENT</string>
+    <string name="work_style">WORK STYLE</string>
+    <string name="working_hours">WORKING HOURS</string>
+    <string name="current_activities">CURRENT ACTIVITIES</string>
+    <string name="preferred_activities">PREFERRED ACTIVITIES</string>
+    <string name="lifestyle_targets">LIFESTYLE TARGETS</string>
+    //View Diet
+    <string name="dietary_preferences">DIETARY PREFERENCES</string>
+    <string name="days_you_consume_non_veg">DAYS YOU CONSUME NON-VEG</string>
+    <string name="food_allergies">FOOD ALLERGIES</string>
+    <string name="cuisines">CUISINES</string>
+    <string name="food_restrictions">FOOD RESTRICTIONS</string>
+    //Create Profile String Resources
+    <string name="create_profile">Create Profile</string>
+    <string name="discard_profile_creation">Discard Profile Creation</string>
+    <string name="dialogDesc_profile_creation">You will miss important FUTURE UPDATES like CUSTOM PLANS based on your PROFILE. CLICK Cancel to complete your PROFILE</string>
+    <string name="negativeTitle_profile_creation">Discard Profile Creation and Move to Home Screen</string>
+    <string name="positiveTitle_profile_creation">Cancel And Continue to Create Profile</string>
 
 
 </resources>

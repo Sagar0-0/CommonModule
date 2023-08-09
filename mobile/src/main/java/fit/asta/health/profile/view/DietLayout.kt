@@ -44,7 +44,7 @@ fun DietLayout(
             property?.let {
                 ProfileChipCard(
                     icon = type.icon,
-                    title = type.title,
+                    title = type.getTitle(),
                     list = it,
                 )
             }

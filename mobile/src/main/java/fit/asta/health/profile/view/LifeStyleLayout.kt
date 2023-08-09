@@ -48,20 +48,20 @@ fun LifeStyleLayout(
     ) {
         item {
             ProfileSessionCard(
-                title = UserPropertyType.SleepSchedule.title, session = lifeStyle.sleep
+                title = UserPropertyType.SleepSchedule.getTitle(), session = lifeStyle.sleep
             )
         }
 
         item {
             ProfileSessionCard(
-                title = UserPropertyType.WorkSchedule.title, session = lifeStyle.workingTime
+                title = UserPropertyType.WorkSchedule.getTitle(), session = lifeStyle.workingTime
             )
         }
 
         item {
             SingleSelectionProfileCard(
                 icon = UserPropertyType.PhysActive.icon,
-                title = UserPropertyType.PhysActive.title,
+                title = UserPropertyType.PhysActive.getTitle(),
                 value = lifeStyle.physicalActivity,
                 valueMap = physicalActivityMap
             )
@@ -70,7 +70,7 @@ fun LifeStyleLayout(
         item {
             SingleSelectionProfileCard(
                 icon = UserPropertyType.WorkingEnv.icon,
-                title = UserPropertyType.WorkingEnv.title,
+                title = UserPropertyType.WorkingEnv.getTitle(),
                 value = lifeStyle.workingEnv,
                 valueMap = workingEnvMap
             )
@@ -79,7 +79,7 @@ fun LifeStyleLayout(
         item {
             SingleSelectionProfileCard(
                 icon = UserPropertyType.WorkStyle.icon,
-                title = UserPropertyType.WorkStyle.title,
+                title = UserPropertyType.WorkStyle.getTitle(),
                 value = lifeStyle.workStyle,
                 valueMap = workStyleMap
             )
@@ -88,7 +88,7 @@ fun LifeStyleLayout(
         item {
             SingleSelectionProfileCard(
                 icon = UserPropertyType.WorkingHours.icon,
-                title = UserPropertyType.WorkingHours.title,
+                title = UserPropertyType.WorkingHours.getTitle(),
                 value = lifeStyle.workingHours,
                 valueMap = workingHoursMap
             )
@@ -104,7 +104,7 @@ fun LifeStyleLayout(
             item {
                 activities?.let {
                     ProfileChipCard(
-                        icon = propertyType.icon, title = propertyType.title, list = it
+                        icon = propertyType.icon, title = propertyType.getTitle(), list = it
                     )
                 }
             }

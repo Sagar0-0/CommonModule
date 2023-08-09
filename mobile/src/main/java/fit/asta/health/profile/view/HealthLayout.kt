@@ -38,7 +38,7 @@ fun HealthLayout(health: Health) {
             itemList?.let { list ->
                 item {
                     ProfileChipCard(
-                        icon = propertyType.icon, title = propertyType.title, list = list
+                        icon = propertyType.icon, title = propertyType.getTitle(), list = list
                     )
                     Spacer(modifier = Modifier.height(spacing.medium))
                 }
