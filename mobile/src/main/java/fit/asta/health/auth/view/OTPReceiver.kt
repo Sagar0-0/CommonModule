@@ -1,4 +1,4 @@
-package fit.asta.health.auth.ui
+package fit.asta.health.auth.view
 
 import android.content.ActivityNotFoundException
 import android.content.BroadcastReceiver
@@ -11,7 +11,7 @@ import com.google.android.gms.auth.api.phone.SmsRetriever
 import com.google.android.gms.auth.api.phone.SmsRetrieverClient
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.common.api.Status
-import fit.asta.health.auth.ui.OTPReceiver.Companion.TAG
+import fit.asta.health.auth.view.OTPReceiver.Companion.TAG
 
 class OTPReceiver : BroadcastReceiver() {
 

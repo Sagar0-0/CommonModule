@@ -16,12 +16,13 @@ import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.common.utils.rateUs
 import fit.asta.health.common.utils.sendBugReportMessage
 import fit.asta.health.common.utils.shareApp
-import fit.asta.health.common.utils.showUrlInBrowser
 import fit.asta.health.main.Graph
 import fit.asta.health.settings.data.SettingsNotificationsStatus
 import fit.asta.health.settings.data.SettingsUiEvent
 import fit.asta.health.settings.data.SettingsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @OptIn(ExperimentalCoroutinesApi::class)
 fun NavGraphBuilder.settingScreens(
@@ -103,15 +104,19 @@ fun NavGraphBuilder.settingScreens(
                     }
 
                     SettingsUiEvent.TERMS -> {
-                        context.showUrlInBrowser(
-                            getImgUrl(context.getString(R.string.url_terms_of_use))
+                        val url = URLEncoder.encode(
+                            getImgUrl(context.getString(R.string.url_terms_of_use)),
+                            StandardCharsets.UTF_8.toString()
                         )
+                        navController.navigate(Graph.WebView.route + "/$url")
                     }
 
                     SettingsUiEvent.PRIVACY -> {
-                        context.showUrlInBrowser(
-                            getImgUrl(context.getString(R.string.url_privacy_policy))
+                        val url = URLEncoder.encode(
+                            getImgUrl(context.getString(R.string.url_privacy_policy)),
+                            StandardCharsets.UTF_8.toString()
                         )
+                        navController.navigate(Graph.WebView.route + "/$url")
                     }
 
                     SettingsUiEvent.VERSION -> {

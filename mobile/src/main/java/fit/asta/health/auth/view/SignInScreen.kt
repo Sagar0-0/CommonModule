@@ -1,4 +1,4 @@
-package fit.asta.health.auth.ui
+package fit.asta.health.auth.view
 
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -24,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -44,7 +43,9 @@ import fit.asta.health.R
 import fit.asta.health.common.ui.theme.buttonSize
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.getImgUrl
-import fit.asta.health.common.utils.showUrlInBrowser
+import fit.asta.health.main.Graph
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @Composable
 fun SignInScreen(navHostController: NavHostController, onSuccess: () -> Unit) {
@@ -215,8 +216,6 @@ fun SignInScreen(navHostController: NavHostController, onSuccess: () -> Unit) {
 
         }
 
-        val uriHandler = LocalUriHandler.current
-
         ClickableText(
             modifier = Modifier
                 .padding(vertical = spacing.medium)
@@ -227,12 +226,20 @@ fun SignInScreen(navHostController: NavHostController, onSuccess: () -> Unit) {
                 annotatedLinkString
                     .getStringAnnotations("terms", it, it)
                     .firstOrNull()?.let { stringAnnotation ->
-                        context.showUrlInBrowser(stringAnnotation.item)
+                        val url = URLEncoder.encode(
+                            stringAnnotation.item,
+                            StandardCharsets.UTF_8.toString()
+                        )
+                        navHostController.navigate(Graph.WebView.route + "/$url")
                     }
                 annotatedLinkString
                     .getStringAnnotations("privacy", it, it)
                     .firstOrNull()?.let { stringAnnotation ->
-                        context.showUrlInBrowser(stringAnnotation.item)
+                        val url = URLEncoder.encode(
+                            stringAnnotation.item,
+                            StandardCharsets.UTF_8.toString()
+                        )
+                        navHostController.navigate(Graph.WebView.route + "/$url")
                     }
             }
         )
