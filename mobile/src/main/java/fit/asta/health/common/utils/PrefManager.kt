@@ -24,12 +24,14 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PrefUtils
+class PrefManager
 @Inject constructor(
-    private val dataStore: DataStore<Preferences>
+    private val dataStore: DataStore<Preferences>,
+    private val resourcesProvider: ResourcesProvider
 ) {
 
-    suspend fun <T> getPreferences(key: String, defaultValue: T): Flow<T> {
+    suspend fun <T> getPreferences(keyId: Int, defaultValue: T): Flow<T> {
+        val key = resourcesProvider.getString(keyId)
         return dataStore.data
             .catch { exception ->
                 // dataStore.data throws an IOException when an error is encountered when reading data
@@ -77,36 +79,42 @@ class PrefUtils
             }
     }
 
-    suspend fun <T> setPreferences(key: String, value: T) {
-        dataStore.edit {
-            when (value) {
-                is String -> {
-                    it[stringPreferencesKey(key)] = value
-                }
+    suspend fun <T> setPreferences(keyId: Int, value: T) {
+        try {
+            val key = resourcesProvider.getString(keyId)
+            dataStore.edit {
+                when (value) {
+                    is String -> {
+                        it[stringPreferencesKey(key)] = value
+                    }
 
-                is Boolean -> {
-                    it[booleanPreferencesKey(key)] = value
-                }
+                    is Boolean -> {
+                        it[booleanPreferencesKey(key)] = value
+                    }
 
-                is Int -> {
-                    it[intPreferencesKey(key)] = value
-                }
+                    is Int -> {
+                        it[intPreferencesKey(key)] = value
+                    }
 
-                is Float -> {
-                    it[floatPreferencesKey(key)] = value
-                }
+                    is Float -> {
+                        it[floatPreferencesKey(key)] = value
+                    }
 
-                is Long -> {
-                    it[longPreferencesKey(key)] = value
-                }
+                    is Long -> {
+                        it[longPreferencesKey(key)] = value
+                    }
 
-                is Double -> {
-                    it[doublePreferencesKey(key)] = value
-                }
+                    is Double -> {
+                        it[doublePreferencesKey(key)] = value
+                    }
 
-                else -> {}
+                    else -> {}
+                }
             }
+        } catch (e: IOException) {
+            Log.e("PREF", "setPreferences: $e")
         }
+
     }
 
     companion object {

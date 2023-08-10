@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.util.Log
@@ -13,16 +14,16 @@ import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.common.api.Status
 import fit.asta.health.auth.view.OTPReceiver.Companion.TAG
 
-class OTPReceiver : BroadcastReceiver() {
+class OTPReceiver(
+    val onSuccess: (Intent?) -> Unit,
+    val onFailure: () -> Unit
+) : BroadcastReceiver() {
 
     companion object {
         const val TAG = "OTP"
     }
 
-    private var otpReceiveListener: OTPReceiveListener? = null
-    fun init(otpReceiveListener: OTPReceiveListener?) {
-        this.otpReceiveListener = otpReceiveListener
-    }
+    private var registered = false
 
     override fun onReceive(context: Context?, intent: Intent?) {
         Log.d(TAG, "onReceive: Called ${intent?.action}")
@@ -39,22 +40,32 @@ class OTPReceiver : BroadcastReceiver() {
                     }
 
                     try {
-                        otpReceiveListener?.onSuccess(consentIntent)
+                        onSuccess(consentIntent)
                     } catch (e: ActivityNotFoundException) {
                         // Handle the exception ...
                     }
                 }
 
                 CommonStatusCodes.TIMEOUT -> {
-                    otpReceiveListener?.onFailure()
+                    onFailure()
                 }
             }
         }
     }
 
-    interface OTPReceiveListener {
-        fun onSuccess(intent: Intent?)
-        fun onFailure()
+    fun register(context: Context) {
+        if (!registered) {
+            val filter = IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION)
+            context.registerReceiver(this, filter)
+            registered = true
+        }
+    }
+
+    fun unregister(context: Context) {
+        if (registered) {
+            context.unregisterReceiver(this)
+            registered = false
+        }
     }
 }
 

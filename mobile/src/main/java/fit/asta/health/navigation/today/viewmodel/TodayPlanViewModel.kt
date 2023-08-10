@@ -5,9 +5,10 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.AppState
 import fit.asta.health.common.utils.NetworkResult
-import fit.asta.health.common.utils.PrefUtils
+import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.navigation.today.domain.model.TodayData
 import fit.asta.health.scheduler.compose.screen.homescreen.Event
 import fit.asta.health.scheduler.compose.screen.homescreen.HomeEvent
@@ -28,7 +29,7 @@ import javax.inject.Inject
 class TodayPlanViewModel @Inject constructor(
     private val alarmLocalRepo: AlarmLocalRepo,
     private val alarmBackendRepo: AlarmBackendRepo,
-    private val prefUtils: PrefUtils,
+    private val prefManager: PrefManager,
     private val alarmUtils: AlarmUtils
 ) : ViewModel() {
     private val _alarmListMorning = mutableStateListOf<AlarmEntity>()
@@ -60,15 +61,20 @@ class TodayPlanViewModel @Inject constructor(
         when (uiEvent) {
             is HomeEvent.EditAlarm -> {
                 viewModelScope.launch {
-                    prefUtils.setPreferences(
-                        key = "alarm",
+                    prefManager.setPreferences(
+                        keyId = R.string.alarm,
                         value = uiEvent.alarm.alarmId
                     )
                 }
             }
 
             is HomeEvent.SetAlarm -> {
-                viewModelScope.launch { prefUtils.setPreferences(key = "alarm", value = 999) }
+                viewModelScope.launch {
+                    prefManager.setPreferences(
+                        keyId = R.string.alarm,
+                        value = 999
+                    )
+                }
             }
 
             is HomeEvent.DeleteAlarm -> {

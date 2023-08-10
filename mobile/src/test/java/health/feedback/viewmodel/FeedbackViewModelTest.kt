@@ -1,24 +1,26 @@
-package fit.asta.health.feedback.viewmodel
+package health.feedback.viewmodel
 
-import CoroutinesTestExtension
-import InstantExecutorExtension
+import MainDispatcherRule
 import com.google.common.truth.Truth.assertThat
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.feedback.model.FakeFeedbackRepoImpl
 import fit.asta.health.feedback.model.network.An
+import fit.asta.health.feedback.viewmodel.FeedbackViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
+import kotlinx.coroutines.test.runTest
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
-@ExtendWith(InstantExecutorExtension::class, CoroutinesTestExtension::class)
 class FeedbackViewModelTest {
+
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
 
     private lateinit var viewModel: FeedbackViewModel
     private val repo = FakeFeedbackRepoImpl()
 
-    @BeforeEach
+    @Before
     fun setup() {
         viewModel = FeedbackViewModel(
             repo,
@@ -27,41 +29,42 @@ class FeedbackViewModelTest {
     }
 
     @Test
-    fun `loadFeedbackQuestions with valid uid valid fid, return success`() {
+    fun `loadFeedbackQuestions with valid uid valid fid, return success`() = runTest {
         repo.setUid("valid")
         viewModel.loadFeedbackQuestions("valid")
         assertThat(viewModel.feedbackQuestions.value).isInstanceOf(ResponseState.Success::class.java)
     }
 
     @Test
-    fun `loadFeedbackQuestions with valid uid invalid fid, return error`() {
+    fun `loadFeedbackQuestions with valid uid invalid fid, return error`() = runTest {
         repo.setUid("valid")
         viewModel.loadFeedbackQuestions("invalid")
         assertThat(viewModel.feedbackQuestions.value).isInstanceOf(ResponseState.Error::class.java)
     }
 
     @Test
-    fun `loadFeedbackQuestions with invalid uid valid fid, return error`() {
+    fun `loadFeedbackQuestions with invalid uid valid fid, return error`() = runTest {
         repo.setUid("invalid")
         viewModel.loadFeedbackQuestions("valid")
         assertThat(viewModel.feedbackQuestions.value).isInstanceOf(ResponseState.Error::class.java)
     }
 
     @Test
-    fun `loadFeedbackQuestions with invalid uid invalid fid, return error`() {
+    fun `loadFeedbackQuestions with invalid uid invalid fid, return error`() = runTest {
         repo.setUid("invalid")
         viewModel.loadFeedbackQuestions("invalid")
         assertThat(viewModel.feedbackQuestions.value).isInstanceOf(ResponseState.Error::class.java)
     }
 
     @Test
-    fun `postUserFeedback empty data, return error`() {
+    fun `postUserFeedback empty data, return error`() = runTest {
         viewModel.postUserFeedback(listOf())
         assertThat(viewModel.feedbackPostState.value).isInstanceOf(ResponseState.Error::class.java)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `postUserFeedback valid data, return success`() {
+    fun `postUserFeedback valid data, return success`() = runTest {
         viewModel.postUserFeedback(
             listOf(
                 An()

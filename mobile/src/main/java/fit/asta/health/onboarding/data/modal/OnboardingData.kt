@@ -1,4 +1,4 @@
-package fit.asta.health.onboarding.modal
+package fit.asta.health.onboarding.data.modal
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

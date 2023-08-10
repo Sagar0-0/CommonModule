@@ -18,7 +18,7 @@ import fit.asta.health.common.maps.view.addressScreens
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.feedback.ui.feedbackScreen
 import fit.asta.health.main.view.homeScreen
-import fit.asta.health.onboarding.ui.onboardingScreen
+import fit.asta.health.onboarding.ui.onboardingRoute
 import fit.asta.health.payments.referral.view.referralScreens
 import fit.asta.health.payments.sub.view.subscriptionScreens
 import fit.asta.health.payments.wallet.view.walletScreen
@@ -52,7 +52,7 @@ fun MainNavHost(isConnected: Boolean) {
         startDestination = Graph.Splash.route
     ) {
         splashScreen(navController)
-        onboardingScreen(navController)
+        onboardingRoute(navController)
         authScreens(navController)
         homeScreen(navController)
 

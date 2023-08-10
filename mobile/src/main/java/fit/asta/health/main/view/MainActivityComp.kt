@@ -23,7 +23,7 @@ import fit.asta.health.R
 import fit.asta.health.auth.viewmodel.AuthViewModel
 import fit.asta.health.common.maps.vm.MapsViewModel
 import fit.asta.health.common.utils.MainTopBarActions
-import fit.asta.health.common.utils.PrefUtils
+import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.common.utils.shareApp
 import fit.asta.health.main.Graph
 import fit.asta.health.main.MainViewModel
@@ -66,7 +66,7 @@ fun NavGraphBuilder.homeScreen(
             ) { perms ->
                 perms.keys.forEach loop@{ perm ->
                     if ((perms[perm] == true) && (perm == Manifest.permission.ACCESS_FINE_LOCATION || perm == Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                        PrefUtils.setLocationPermissionRejectedCount(context, 1)
+                        PrefManager.setLocationPermissionRejectedCount(context, 1)
                         mapsViewModel.enableLocationRequest(context) {
                             locationRequestLauncher.launch(it)
                         }
@@ -77,9 +77,9 @@ fun NavGraphBuilder.homeScreen(
                             context.getString(R.string.location_access_required),
                             Toast.LENGTH_SHORT
                         ).show()
-                        PrefUtils.setLocationPermissionRejectedCount(
+                        PrefManager.setLocationPermissionRejectedCount(
                             context,
-                            PrefUtils.getLocationPermissionRejectedCount(context) + 1
+                            PrefManager.getLocationPermissionRejectedCount(context) + 1
                         )
                     }
                 }
@@ -99,7 +99,7 @@ fun NavGraphBuilder.homeScreen(
                     locationRequestLauncher.launch(intent)
                 }
             } else {
-                if (PrefUtils.getLocationPermissionRejectedCount(context) >= 2) {
+                if (PrefManager.getLocationPermissionRejectedCount(context) >= 2) {
                     Toast.makeText(
                         context,
                         "Please allow Location permission access.",
@@ -135,7 +135,7 @@ fun NavGraphBuilder.homeScreen(
                         "Notification is recommended for better functionality.",
                         Toast.LENGTH_SHORT
                     ).show()
-                    PrefUtils.setNotificationPermissionRejectedCount(context, 1)
+                    PrefManager.setNotificationPermissionRejectedCount(context, 1)
                     navController.navigate(Graph.Scheduler.route)
                 } else {
                     Toast.makeText(
@@ -143,9 +143,9 @@ fun NavGraphBuilder.homeScreen(
                         "Notification is recommended for better functionality.",
                         Toast.LENGTH_SHORT
                     ).show()
-                    PrefUtils.setNotificationPermissionRejectedCount(
+                    PrefManager.setNotificationPermissionRejectedCount(
                         context,
-                        PrefUtils.getNotificationPermissionRejectedCount(context) + 1
+                        PrefManager.getNotificationPermissionRejectedCount(context) + 1
                     )
                 }
             }
@@ -154,10 +154,10 @@ fun NavGraphBuilder.homeScreen(
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
                 == PackageManager.PERMISSION_GRANTED
             ) {
-                PrefUtils.setNotificationPermissionRejectedCount(context, 1)
+                PrefManager.setNotificationPermissionRejectedCount(context, 1)
                 navController.navigate(Graph.Scheduler.route)
             } else {
-                if (PrefUtils.getNotificationPermissionRejectedCount(context) >= 2) {
+                if (PrefManager.getNotificationPermissionRejectedCount(context) >= 2) {
                     Toast.makeText(
                         context,
                         "Please allow Notification permission access.",

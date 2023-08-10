@@ -1,4 +1,4 @@
-package fit.asta.health.onboarding.ui
+package fit.asta.health.onboarding.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

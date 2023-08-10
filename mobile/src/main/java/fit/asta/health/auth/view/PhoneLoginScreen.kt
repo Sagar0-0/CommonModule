@@ -3,8 +3,6 @@ package fit.asta.health.auth.view
 import android.app.Activity
 import android.app.PendingIntent
 import android.content.ContentValues.TAG
-import android.content.Intent
-import android.content.IntentFilter
 import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
@@ -30,6 +28,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -170,27 +169,24 @@ fun PhoneLoginScreen(onSuccess: () -> Unit) {
         }
     )
 
-    val registerOTPReceiver = {
-        val myOTPReceiver = OTPReceiver()
+    DisposableEffect(context) {
         Log.d("OTP", "PhoneLoginScreen: Registered Receiver")
-        myOTPReceiver.init(object : OTPReceiver.OTPReceiveListener {
-            override fun onSuccess(intent: Intent?) {
+        val myOTPReceiver = OTPReceiver(
+            onSuccess = { intent ->
                 Log.d(TAG, "OTP Received $intent")
                 smsReceiverLauncher.launch(intent)
-                context.unregisterReceiver(myOTPReceiver)
-            }
-
-            override fun onFailure() {
+            },
+            onFailure = {
                 Log.e(TAG, "Timeout")
                 Toast.makeText(context, "Otp retrieval failed", Toast.LENGTH_SHORT).show()
                 loading = false
                 codeSent = false
-                context.unregisterReceiver(myOTPReceiver)
             }
-        })
-
-        val intentFilter = IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION)
-        context.registerReceiver(myOTPReceiver, intentFilter)
+        )
+        myOTPReceiver.register(context)
+        onDispose {
+            myOTPReceiver.unregister(context)
+        }
     }
 
     val onSendOtp = {
@@ -208,7 +204,6 @@ fun PhoneLoginScreen(onSuccess: () -> Unit) {
             loading = true
             val number = "${postalCode}${phoneNumber}"
             startSMSRetrieverClient(context)
-            registerOTPReceiver()
             startPhoneVerification(number, mAuth, context as Activity, callbacks)
         }
     }

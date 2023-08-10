@@ -1,15 +1,16 @@
-package fit.asta.health.onboarding.di
+package fit.asta.health.onboarding
 
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.BuildConfig
-import fit.asta.health.onboarding.api.OnboardingApi
-import fit.asta.health.onboarding.api.OnboardingRestApi
-import fit.asta.health.onboarding.modal.OnboardingDataMapper
-import fit.asta.health.onboarding.repo.OnboardingRepo
-import fit.asta.health.onboarding.repo.OnboardingRepoImpl
+import fit.asta.health.common.utils.PrefManager
+import fit.asta.health.onboarding.data.remote.api.OnboardingApi
+import fit.asta.health.onboarding.data.remote.api.OnboardingRestApi
+import fit.asta.health.onboarding.data.repo.OnboardingRepo
+import fit.asta.health.onboarding.data.repo.OnboardingRepoImpl
+import fit.asta.health.onboarding.data.util.OnboardingDataMapper
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
@@ -33,10 +34,12 @@ object OnboardingModule {
     fun provideOnboardingRepo(
         remoteApi: OnboardingApi,
         onboardingMapper: OnboardingDataMapper,
+        prefManager: PrefManager
     ): OnboardingRepo {
         return OnboardingRepoImpl(
             remoteApi = remoteApi,
-            mapper = onboardingMapper
+            mapper = onboardingMapper,
+            prefManager = prefManager
         )
     }
 }

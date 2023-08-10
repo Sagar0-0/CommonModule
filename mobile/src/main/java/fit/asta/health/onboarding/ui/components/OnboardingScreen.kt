@@ -1,4 +1,4 @@
-package fit.asta.health.onboarding.ui
+package fit.asta.health.onboarding.ui.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
@@ -17,21 +17,22 @@ import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
-import fit.asta.health.onboarding.modal.OnboardingData
+import fit.asta.health.common.utils.getStringRes
+import fit.asta.health.onboarding.data.modal.OnboardingData
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun OnBoardingPager(
-    state: ResponseState<List<OnboardingData>>,
+fun OnboardingScreen(
+    state: UiState<List<OnboardingData>>,
     onReload: () -> Unit,
     onFinish: () -> Unit
 ) {
     when (state) {
-        ResponseState.Loading -> {
+        UiState.Loading -> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -40,18 +41,15 @@ fun OnBoardingPager(
             }
         }
 
-        ResponseState.NoInternet -> {
-            AppErrorScreen(onTryAgain = onReload)
-        }
-        is ResponseState.Error -> {
+        is UiState.Error -> {
             AppErrorScreen(
                 onTryAgain = onReload,
-                desc = state.error.message ?: "ERROR 404",
+                desc = state.resId.getStringRes(),
                 imgID = (R.drawable.error_404)
             )
         }
 
-        is ResponseState.Success -> {
+        is UiState.Success -> {
             val items = state.data
             val coroutine = rememberCoroutineScope()
 

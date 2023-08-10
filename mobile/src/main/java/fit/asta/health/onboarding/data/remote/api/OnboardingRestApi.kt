@@ -1,4 +1,4 @@
-package fit.asta.health.onboarding.api
+package fit.asta.health.onboarding.data.remote.api
 
 import fit.asta.health.common.utils.NetworkUtil
 import okhttp3.OkHttpClient

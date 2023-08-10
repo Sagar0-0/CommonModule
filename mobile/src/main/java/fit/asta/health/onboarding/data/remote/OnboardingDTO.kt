@@ -1,9 +1,9 @@
-package fit.asta.health.onboarding.modal
+package fit.asta.health.onboarding.data.remote
 
 
 import com.google.gson.annotations.SerializedName
 
-data class OnboardingResponse(
+data class OnboardingDTO(
     @SerializedName("data")
     val `data`: List<Data>,
     @SerializedName("status")

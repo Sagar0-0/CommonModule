@@ -5,8 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.R
-import fit.asta.health.common.utils.PrefUtils
-import fit.asta.health.common.utils.ResourcesProvider
+import fit.asta.health.common.utils.PrefManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -15,8 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel
 @Inject constructor(
-    private val prefUtils: PrefUtils,
-    private val resourcesProvider: ResourcesProvider
+    private val prefManager: PrefManager
 ) : ViewModel() {
 
     private val _notificationsEnabled = MutableStateFlow(false)
@@ -25,8 +23,8 @@ class MainViewModel
 
     init {
         viewModelScope.launch {
-            prefUtils.getPreferences(
-                resourcesProvider.getString(R.string.user_pref_notification_key),
+            prefManager.getPreferences(
+                R.string.user_pref_notification_key,
                 true
             ).collect {
                 _notificationsEnabled.value = it
@@ -36,8 +34,8 @@ class MainViewModel
     }
 
     fun setNotificationStatus(newValue: Boolean) = viewModelScope.launch {
-        prefUtils.setPreferences(
-            resourcesProvider.getString(R.string.user_pref_notification_key),
+        prefManager.setPreferences(
+            R.string.user_pref_notification_key,
             newValue
         )
     }

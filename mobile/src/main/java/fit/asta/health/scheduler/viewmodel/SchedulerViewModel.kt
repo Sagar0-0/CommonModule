@@ -10,8 +10,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.R
 import fit.asta.health.common.utils.NetworkResult
-import fit.asta.health.common.utils.PrefUtils
+import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ASUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AdvUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AlarmSettingEvent
@@ -29,7 +30,6 @@ import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.db.entity.AlarmSync
 import fit.asta.health.scheduler.model.doman.getAlarm
 import fit.asta.health.scheduler.model.net.tag.ScheduleTagNetData
-import fit.asta.health.scheduler.util.Constants
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -50,7 +50,7 @@ class SchedulerViewModel
 @Inject constructor(
     private val alarmLocalRepo: AlarmLocalRepo,
     private val backendRepo: AlarmBackendRepo,
-    private val prefUtils: PrefUtils,
+    private val prefManager: PrefManager,
     private val alarmUtils: AlarmUtils
 ) : ViewModel() {
     private var alarmEntity: AlarmEntity? = null
@@ -86,7 +86,7 @@ class SchedulerViewModel
 
     private fun getEditUiData() {
         viewModelScope.launch {
-            prefUtils.getPreferences("alarm", defaultValue = 999).collect {
+            prefManager.getPreferences(R.string.alarm, defaultValue = 999).collect {
                 if (it != 999) {
                     alarmLocalRepo.getAlarm(it)?.let { alarm ->
                         alarmEntity = alarm
@@ -103,7 +103,7 @@ class SchedulerViewModel
             }
         }
         viewModelScope.launch {
-            prefUtils.getPreferences(Constants.SPOTIFY_SONG_KEY_URI, "hi").collectLatest {
+            prefManager.getPreferences(R.string.SPOTIFY_SONG_KEY_URI, "hi").collectLatest {
                 if (it != "hi" && alarmEntity == null) {
                     _alarmSettingUiState.value = _alarmSettingUiState.value.copy(tone_uri = it)
                 }

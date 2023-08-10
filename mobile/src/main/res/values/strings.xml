@@ -338,7 +338,7 @@
     <string name="refer_code_not_exist">Referral code doesn\'t exist!</string>
     <string name="own_refer_code_error">You can not apply your own referral code!</string>
     <string name="already_referred_error">You are already referred!</string>
-    <string name="unknown_error">Unknown Error!</string>
+    <string name="unknown_error">An Unknown Error occurred!</string>
 
     <item name="repeatTimeTag" type="id" />
     <item name="repeatTimeUnitTag" type="id" />
@@ -374,5 +374,8 @@
     <string name="refer_and_earn">Refer and earn</string>
     <string name="refer_invite_text">Invite your friends to Asta and get Cashback to your wallet when they subscribe to our Health Plan</string>
     <string name="code_side_text">"Click to copy code: "</string>
+    <string name="no_internet">Internet connection not available</string>
+    <string name="alarm">alarm</string>
+    <string name="SPOTIFY_SONG_KEY_URI">\"bundle_spotify_song\"</string>
 
 </resources>
