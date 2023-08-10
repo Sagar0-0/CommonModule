@@ -25,7 +25,7 @@ fun NavGraphBuilder.onboardingRoute(navController: NavController) {
             state = state,
             onReload = onboardingViewModel::getData,
             onFinish = {
-                onboardingViewModel.setOnboardingShown()
+                onboardingViewModel.dismissOnboarding()
                 navController.navigate(Graph.Authentication.route) {
                     popUpToTop(navController)
                 }

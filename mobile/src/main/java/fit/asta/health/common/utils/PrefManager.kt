@@ -30,7 +30,7 @@ class PrefManager
     private val resourcesProvider: ResourcesProvider
 ) {
 
-    suspend fun <T> getPreferences(keyId: Int, defaultValue: T): Flow<T> {
+    fun <T> getPreferences(keyId: Int, defaultValue: T): Flow<T> {
         val key = resourcesProvider.getString(keyId)
         return dataStore.data
             .catch { exception ->

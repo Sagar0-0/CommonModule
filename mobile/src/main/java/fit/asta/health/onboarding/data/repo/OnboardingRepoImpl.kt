@@ -2,6 +2,7 @@ package fit.asta.health.onboarding.data.repo
 
 import fit.asta.health.R
 import fit.asta.health.common.utils.PrefManager
+import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.onboarding.data.modal.OnboardingData
 import fit.asta.health.onboarding.data.remote.api.OnboardingApi
@@ -15,29 +16,21 @@ class OnboardingRepoImpl(
     private val mapper: OnboardingDataMapper,
     private val prefManager: PrefManager
 ) : OnboardingRepo {
-    override suspend fun getData(): Flow<UiState<List<OnboardingData>>> = callbackFlow {
-        trySend(
-            try {
+    override suspend fun getData(): ResponseState<List<OnboardingData>> {
+        return try {
                 val response = remoteApi.getData()
-                UiState.Success(mapper.mapToDomainModel(response))
+                ResponseState.Success(mapper.mapToDomainModel(response))
             } catch (e: Exception) {
-                UiState.Error(getStringFromException(e))
+                ResponseState.Error(e)
             }
-        )
-        awaitClose { close() }
     }
 
-    override suspend fun setOnboardingShown() {
+    override suspend fun dismissOnboarding() {
         prefManager.setPreferences(R.string.user_pref_onboarding_shown, true)
     }
 
-    override suspend fun getOnboardingShown(): Flow<Boolean> =
+    override fun getOnboardingShown(): Flow<Boolean> =
         prefManager.getPreferences(R.string.user_pref_onboarding_shown, false)
 
 }
 
-fun getStringFromException(e: Exception): Int {
-    return when (e.message) {
-        else -> R.string.unknown_error
-    }
-}
