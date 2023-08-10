@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import fit.asta.health.navigation.track.view.screens.TrackBreathingScreenControl
 import fit.asta.health.navigation.track.view.screens.TrackMeditationScreenControl
-import fit.asta.health.navigation.track.view.screens.TrackMenuScreen
+import fit.asta.health.navigation.track.view.screens.TrackMenuScreenControl
 import fit.asta.health.navigation.track.view.screens.TrackSleepScreenControl
 import fit.asta.health.navigation.track.view.screens.TrackStepsScreenControl
 import fit.asta.health.navigation.track.view.screens.TrackSunlightScreenControl
@@ -35,7 +35,13 @@ fun TrackNavGraph(
             composable(
                 TrackNavRoute.TrackMenu.route,
                 content = {
-                    TrackMenuScreen(
+
+                    val homeMenuState = trackViewModel.homeScreenDetails
+                        .collectAsStateWithLifecycle().value
+
+                    TrackMenuScreenControl(
+                        homeMenuState = homeMenuState,
+                        loadHomeData = trackViewModel::getHomeDetails,
                         setTrackOption = trackViewModel::setTrackOption,
                         navigator = { navController.navigate(it) }
                     )
