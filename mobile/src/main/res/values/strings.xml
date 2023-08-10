@@ -473,6 +473,8 @@
     <string name="jobSchedule_profile_creation">Job Schedule</string>
     <string name="jobStart_profile_creation">Job Start Time</string>
     <string name="jobEnd_profile_creation">Job End Time</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 
 </resources>

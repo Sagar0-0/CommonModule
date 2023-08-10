@@ -163,6 +163,7 @@ fun LifeStyleCreateScreen(
     })
 }
 
+
 @OptIn(ExperimentalFoundationApi::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun LifeStyleContent(
@@ -174,7 +175,6 @@ fun LifeStyleContent(
 
     //Radio Buttons Selection
     val radioButtonSelections by viewModel.radioButtonSelections.collectAsStateWithLifecycle()
-
 
     //Time Picker Params
     val timePickers = listOf(
@@ -303,6 +303,7 @@ fun LifeStyleContent(
     }
 }
 
+
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun LifeStyleCreateBottomSheetLayout(
@@ -330,6 +331,7 @@ fun LifeStyleCreateBottomSheetLayout(
         )
     }
 }
+
 
 @Composable
 private fun LifeStyleTimePicker(
@@ -411,8 +413,8 @@ private fun LifeStyleTwoToggleSelectionCard(
     selectionTypeText: String?,
     selectedOption: TwoRadioBtnSelections?,
     onStateChange: (TwoRadioBtnSelections) -> Unit,
-    firstOption: String = "Yes",
-    secondOption: String = "No",
+    firstOption: String = stringResource(R.string.yes),
+    secondOption: String = stringResource(R.string.no),
 ) {
     AppCard {
         TwoTogglesGroup(selectionTypeText, selectedOption, onStateChange, firstOption, secondOption)
@@ -449,6 +451,7 @@ private fun LifeStyleToggleSelectionCard(
     }
 }
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CreateProfileTimePicker(
@@ -460,6 +463,7 @@ private fun CreateProfileTimePicker(
         selection = ClockSelection.HoursMinutes(onPositiveClick = onPositiveClick)
     )
 }
+
 
 data class OnlySelectionCardData(
     val cardType: String,
