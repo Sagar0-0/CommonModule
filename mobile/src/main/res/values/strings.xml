@@ -463,6 +463,15 @@
     <string name="foodAllergies_profile_creation">Food Allergies?</string>
     <string name="cuisines_profile_creation">Cuisines?</string>
     <string name="submit">Submit</string>
+    <string name="currentAct_profile_creation">Current Activities</string>
+    <string name="prefAct_profile_creation">Preferred Activities</string>
+    <string name="lifeStyleTarget_profile_creation">LifeStyleTargets</string>
+    <string name="sleepSchedule_profile_creation">Sleep Schedule</string>
+    <string name="wakeUpTime_profile_creation">Wake Up Time</string>
+    <string name="sleepTime_profile_creation">Sleep Time</string>
+    <string name="jobSchedule_profile_creation">Job Schedule</string>
+    <string name="jobStart_profile_creation">Job Start Time</string>
+    <string name="jobEnd_profile_creation">Job End Time</string>
 
 
 </resources>
