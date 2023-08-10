@@ -54,16 +54,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/MAPS_API_KEY" />
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="${crashlyticsCollectionEnabled}" />
+        <meta-data
+            android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
+            android:value="com.google.android.exoplayer2.ext.cast.DefaultCastOptionsProvider" />
+
         <activity
             android:name=".tools.sleep.SleepToolActivity"
             android:exported="false"
             android:label="@string/title_activity_sleep_tool" />
         <activity android:name=".payments.pay.PaymentActivity" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/MAPS_API_KEY" />
-
         <activity android:name=".BillingActivity" />
         <activity
             android:name=".scheduler.compose.AlarmScreenActivity"
@@ -75,11 +81,6 @@
             android:taskAffinity=""
             android:windowSoftInputMode="stateAlwaysHidden"
             tools:targetApi="o_mr1" />
-
-        <meta-data
-            android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
-            android:value="com.google.android.exoplayer2.ext.cast.DefaultCastOptionsProvider" />
-
         <activity
             android:name=".player.jetpack_audio.AudioPlayerActivity"
             android:exported="true"
@@ -88,18 +89,6 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
-        <service
-            android:name=".player.jetpack_audio.exo_player.MusicService"
-            android:exported="true"
-            android:foregroundServiceType="mediaPlayback"
-            tools:ignore="ExportedService">
-            <intent-filter>
-                <action android:name="androidx.media3.session.MediaLibraryService" />
-                <action android:name="android.media.browse.MediaBrowserService" />
-            </intent-filter>
-        </service>
-
         <activity android:name=".tools.walking.view.WalkingActivity" />
         <activity
             android:name=".thirdparty.spotify.SpotifyLoginActivity"
@@ -116,8 +105,6 @@
                     android:scheme="fit.asta.health" />
             </intent-filter>
         </activity>
-
-
         <activity
             android:name=".scheduler.SpotifyActivity"
             android:exported="true"
@@ -133,8 +120,6 @@
                     android:scheme="fit.asta.health" />
             </intent-filter>
         </activity>
-
-
         <activity
             android:name="com.spotify.sdk.android.auth.LoginActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
@@ -153,6 +138,17 @@
             android:name=".player.jetpack_video.VideoActivity"
             android:configChanges="colorMode|density|fontScale|keyboard|keyboardHidden|layoutDirection|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode"
             android:exported="true" />
+
+        <service
+            android:name=".player.jetpack_audio.exo_player.MusicService"
+            android:exported="true"
+            android:foregroundServiceType="mediaPlayback"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="androidx.media3.session.MediaLibraryService" />
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
 
         <receiver android:name=".notify.receiver.AlarmReceiver" />
         <receiver android:name=".notify.receiver.SnoozeReceiver" />
