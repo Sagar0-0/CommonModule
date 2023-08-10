@@ -72,7 +72,6 @@ import fit.asta.health.navigation.today.domain.model.TodayData
 import fit.asta.health.navigation.today.view.utils.HourMinAmPm
 import fit.asta.health.navigation.today.view.utils.Utils
 import fit.asta.health.scheduler.compose.naman.WeatherCard
-import fit.asta.health.scheduler.compose.naman.WeatherData
 import fit.asta.health.scheduler.compose.screen.homescreen.Event
 import fit.asta.health.scheduler.compose.screen.homescreen.HomeEvent
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
@@ -81,6 +80,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
+import java.time.LocalTime
 
 @Composable
 fun TodayContent(
@@ -120,6 +120,14 @@ fun TodayContent(
             FloatingActionButton(
                 onClick = {
                     hSEvent(HomeEvent.SetAlarm)
+                    onSchedule(
+                        HourMinAmPm(
+                            LocalTime.now().hour,
+                            LocalTime.now().minute,
+                            LocalTime.now().hour > 12,
+                            0
+                        )
+                    )
                     onNav(Graph.Scheduler.route)
                 },
                 containerColor = MaterialTheme.colorScheme.primary,
@@ -152,17 +160,10 @@ fun TodayContent(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     items(items = uiState.slots) { slot ->
-                        val dayAndTime = Utils.getDayAndTime(slot.time)
                         WeatherCard(
-                            weatherData = WeatherData(
-                                time = dayAndTime.time,
-                                temperature = "${slot.temp}°C",
-                                uvDetails = "${slot.uv} Uv",
-                                timeSlot = dayAndTime.timeOfDay,
-                                title = dayAndTime.day
-                            ),
+                            weatherData = slot,
                             onSchedule = {
-                                onSchedule(Utils.getHourMinAmPm(dayAndTime.time, dayAndTime.day))
+                                onSchedule(Utils.getHourMinAmPm(slot.time, slot.title))
                                 onNav(Graph.Scheduler.route)
                             }
                         )
