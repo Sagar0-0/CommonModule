@@ -27,8 +27,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.common.ui.components.generic.AppTopBar
 import fit.asta.health.profile.model.domain.UserProfile
@@ -47,9 +49,43 @@ fun ProfileReadyScreen(
 ) {
     var content by remember { mutableIntStateOf(1) }
 
+    val navigationItemDetails = NavigationItem(
+        icon = Icons.Outlined.AccountCircle,
+        contentDescription = "Profile Screen 1",
+        label = stringResource(id = R.string.details),
+    )
+
+    val navigationItemPhysique = NavigationItem(
+        icon = Icons.Outlined.Face, contentDescription = "Profile Screen 2", label = stringResource(
+            R.string.physique
+        )
+    )
+
+    val navigationItemHealth = NavigationItem(
+        icon = Icons.Outlined.Favorite,
+        contentDescription = "Profile Screen 3",
+        label = stringResource(
+            R.string.health
+        )
+    )
+
+    val navigationItemLifestyle = NavigationItem(
+        icon = Icons.Default.Emergency,
+        contentDescription = "Profile Screen 4",
+        label = stringResource(
+            R.string.lifestyle
+        )
+    )
+
+    val navigationItemDiet = NavigationItem(
+        icon = Icons.Outlined.Egg,
+        contentDescription = "Profile Screen 2",
+        label = stringResource(R.string.diet)
+    )
+
     AppScaffold(topBar = {
         Column {
-            AppTopBar(title = "Profile Screen", onBack = onBack, actions = {
+            AppTopBar(title = stringResource(R.string.profile_screen), onBack = onBack, actions = {
                 IconButton(onClick = onEdit) {
                     Icon(
                         imageVector = Icons.Filled.Edit,
@@ -125,24 +161,4 @@ private data class NavigationItem(
     val icon: ImageVector,
     val contentDescription: String,
     val label: String,
-)
-
-private val navigationItemDetails = NavigationItem(
-    icon = Icons.Outlined.AccountCircle, contentDescription = "Profile Screen 1", label = "Details",
-)
-
-private val navigationItemPhysique = NavigationItem(
-    icon = Icons.Outlined.Face, contentDescription = "Profile Screen 2", label = "Physique"
-)
-
-private val navigationItemHealth = NavigationItem(
-    icon = Icons.Outlined.Favorite, contentDescription = "Profile Screen 3", label = "Health"
-)
-
-private val navigationItemLifestyle = NavigationItem(
-    icon = Icons.Default.Emergency, contentDescription = "Profile Screen 4", label = "Lifestyle"
-)
-
-private val navigationItemDiet = NavigationItem(
-    icon = Icons.Outlined.Egg, contentDescription = "Profile Screen 2", label = "Diet"
 )
