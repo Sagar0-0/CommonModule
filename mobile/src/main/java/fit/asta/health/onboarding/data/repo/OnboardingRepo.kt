@@ -7,4 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface OnboardingRepo {
     suspend fun getData(): Flow<UiState<List<OnboardingData>>>
     suspend fun setOnboardingShown()
+    suspend fun getOnboardingShown(): Flow<Boolean>
 }

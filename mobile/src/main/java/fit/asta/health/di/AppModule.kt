@@ -13,12 +13,17 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.HealthCareApp
 import fit.asta.health.auth.model.AuthRepo
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Provides
+    @Singleton
+    fun providesDispatcher() = Dispatchers.IO
 
     @Provides
     @Named("UId")

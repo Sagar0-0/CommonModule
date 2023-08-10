@@ -30,6 +30,10 @@ class OnboardingRepoImpl(
     override suspend fun setOnboardingShown() {
         prefManager.setPreferences(R.string.user_pref_onboarding_shown, true)
     }
+
+    override suspend fun getOnboardingShown(): Flow<Boolean> =
+        prefManager.getPreferences(R.string.user_pref_onboarding_shown, false)
+
 }
 
 fun getStringFromException(e: Exception): Int {
