@@ -15,6 +15,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.NotificationsActive
+import androidx.compose.material.icons.filled.NotificationsOff
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.rounded.BarChart
+import androidx.compose.material.icons.rounded.Celebration
+import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -28,6 +35,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -53,6 +61,7 @@ import fit.asta.health.main.Graph
 import fit.asta.health.main.sharedViewModel
 import fit.asta.health.navigation.home.view.HomeContent
 import fit.asta.health.navigation.today.view.TodayContent
+import fit.asta.health.navigation.today.view.utils.HourMinAmPm
 import fit.asta.health.navigation.today.viewmodel.TodayPlanViewModel
 import fit.asta.health.navigation.track.view.TrackContent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -66,6 +75,7 @@ fun MainActivityLayout(
     isNotificationEnabled: Boolean,
     onClick: (key: MainTopBarActions) -> Unit,
     onNav: (String) -> Unit,
+    onSchedule: (HourMinAmPm?) -> Unit
 ) {
 
     val navController = rememberNavController()
@@ -81,7 +91,10 @@ fun MainActivityLayout(
             )
         }, content = {
             MainNavHost(
-                navController = navController, onNav = onNav, innerPadding = it
+                navController = navController,
+                onNav = onNav,
+                onSchedule = onSchedule,
+                innerPadding = it
             )
         }, topBar = {
             AppTopBar(
@@ -120,7 +133,7 @@ private fun BottomAppBarLayout(
             NavigationBarItem(
                 icon = {
                     Icon(
-                        painter = painterResource(id = item.icon), contentDescription = item.title
+                        imageVector = item.icon, contentDescription = item.title
                     )
                 },
                 label = { Text(text = item.title) },
@@ -184,14 +197,14 @@ private fun NewMainTopBarActions(
     ) {
         IconButton(onClick = { onClick(MainTopBarActions.Notification) }) {
             Icon(
-                painterResource(id = if (isNotificationEnabled) R.drawable.ic_notifications_on else R.drawable.ic_notifications_off),
+                imageVector = if (isNotificationEnabled) Icons.Default.NotificationsActive else Icons.Default.NotificationsOff,
                 contentDescription = "Notifications",
                 tint = MaterialTheme.colorScheme.onBackground
             )
         }
         IconButton(onClick = { onClick(MainTopBarActions.Share) }) {
             Icon(
-                painterResource(id = R.drawable.ic_share_app),
+                imageVector = Icons.Default.Share,
                 contentDescription = "Share",
                 tint = MaterialTheme.colorScheme.onBackground
             )
@@ -208,7 +221,7 @@ private fun NewMainTopBarActions(
         }
         IconButton(onClick = { onClick(MainTopBarActions.Settings) }) {
             Icon(
-                painterResource(id = R.drawable.ic_settings),
+                imageVector = Icons.Default.Settings,
                 contentDescription = "Settings",
                 tint = MaterialTheme.colorScheme.onBackground
             )
@@ -226,9 +239,9 @@ private fun MainBottomAppBar(
     val currentRoute = navController.currentDestination?.route ?: BottomBarDestination.Home.route
 
     BottomAppBarLayout(items = listOf(
-        BottomNavItem(BottomBarDestination.Home.route, R.drawable.ic_home, "Home"),
-        BottomNavItem(BottomBarDestination.Today.route, R.drawable.ic_today, "Today"),
-        BottomNavItem(BottomBarDestination.Track.route, R.drawable.ic_track, "Track")
+        BottomNavItem(BottomBarDestination.Home.route, Icons.Rounded.Home, "Home"),
+        BottomNavItem(BottomBarDestination.Today.route, Icons.Rounded.Celebration, "Today"),
+        BottomNavItem(BottomBarDestination.Track.route, Icons.Rounded.BarChart, "Track")
     ),
         currentRoute = currentRoute,
         onNavigate = { route -> onNavigate(navController, route, currentDestination) })
@@ -269,6 +282,7 @@ private fun MainNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     onNav: (String) -> Unit,
+    onSchedule: (HourMinAmPm?) -> Unit,
     innerPadding: PaddingValues,
 ) {
     NavHost(
@@ -308,7 +322,8 @@ private fun MainNavHost(
                         listEvening = listEvening,
                         listNextDay = listNextDay,
                         hSEvent = todayPlanViewModel::hSEvent,
-                        onNav = onNav
+                        onNav = onNav,
+                        onSchedule = onSchedule
                     )
                 }
 
@@ -329,6 +344,6 @@ private fun MainNavHost(
 
 data class BottomNavItem(
     val route: String,
-    val icon: Int,
+    val icon: ImageVector,
     val title: String,
 )

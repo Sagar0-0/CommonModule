@@ -12,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.common.utils.PrefUtils
+import fit.asta.health.navigation.today.view.utils.HourMinAmPm
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ASUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AdvUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AlarmSettingEvent
@@ -607,6 +608,16 @@ class SchedulerViewModel
 
     private fun checkRecurring(): Boolean {
         return (_alarmSettingUiState.value.sunday || _alarmSettingUiState.value.monday || _alarmSettingUiState.value.tuesday || _alarmSettingUiState.value.wednesday || _alarmSettingUiState.value.thursday || _alarmSettingUiState.value.friday || _alarmSettingUiState.value.saturday)
+    }
+
+    fun setHourMin(hourMinAmPm: HourMinAmPm?) {
+        hourMinAmPm?.let {
+            _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+                timeHours = it.hour.toString(),
+                timeMidDay = it.amPm,
+                timeMinutes = hourMinAmPm.min.toString()
+            )
+        }
     }
 
     companion object {

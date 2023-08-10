@@ -19,9 +19,9 @@ import androidx.media3.session.MediaStyleNotificationHelper.MediaStyle
 import com.google.common.collect.ImmutableList
 import dagger.hilt.android.qualifiers.ApplicationContext
 import fit.asta.health.R
+import fit.asta.health.player.jetpack_audio.di.AppDispatchers.IO
+import fit.asta.health.player.jetpack_audio.di.AppDispatchers.MAIN
 import fit.asta.health.player.jetpack_audio.di.Dispatcher
-import fit.asta.health.player.jetpack_audio.di.LoulaDispatchers.IO
-import fit.asta.health.player.jetpack_audio.di.LoulaDispatchers.MAIN
 import fit.asta.health.player.jetpack_audio.domain.utils.AppIcons
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope

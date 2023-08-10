@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -62,13 +63,16 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.*
-import fit.asta.health.common.ui.components.functional.SunlightSlotsCardLayout
 import fit.asta.health.common.ui.components.functional.WeatherCardImage
 import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.main.Graph
 import fit.asta.health.navigation.today.domain.model.TodayData
+import fit.asta.health.navigation.today.view.utils.HourMinAmPm
+import fit.asta.health.navigation.today.view.utils.Utils
+import fit.asta.health.scheduler.compose.naman.WeatherCard
+import fit.asta.health.scheduler.compose.naman.WeatherData
 import fit.asta.health.scheduler.compose.screen.homescreen.Event
 import fit.asta.health.scheduler.compose.screen.homescreen.HomeEvent
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
@@ -86,7 +90,8 @@ fun TodayContent(
     listEvening: SnapshotStateList<AlarmEntity>,
     listNextDay: SnapshotStateList<AlarmEntity>,
     hSEvent: (HomeEvent) -> Unit,
-    onNav: (String) -> Unit
+    onNav: (String) -> Unit,
+    onSchedule: (HourMinAmPm?) -> Unit
 ) {
 
 
@@ -143,10 +148,26 @@ fun TodayContent(
                 )
             }
             item {
-                SunlightSlotsCardLayout(
-                    time = "4.58 pm",
-                    temperature = uiState.temperatureList[0].toString()
-                )
+                LazyRow(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    items(items = uiState.slots) { slot ->
+                        val dayAndTime = Utils.getDayAndTime(slot.time)
+                        WeatherCard(
+                            weatherData = WeatherData(
+                                time = dayAndTime.time,
+                                temperature = "${slot.temp}°C",
+                                uvDetails = "${slot.uv} Uv",
+                                timeSlot = dayAndTime.timeOfDay,
+                                title = dayAndTime.day
+                            ),
+                            onSchedule = {
+                                onSchedule(Utils.getHourMinAmPm(dayAndTime.time, dayAndTime.day))
+                                onNav(Graph.Scheduler.route)
+                            }
+                        )
+                    }
+                }
             }
             item {
                 AnimatedVisibility(visible = listMorning.isNotEmpty()) {
@@ -157,32 +178,27 @@ fun TodayContent(
                 SwipeDemoToday(data = data, onSwipeRight = {
                     showSnackBar = true
                     deletedItem = data
-                    swipeRight(
-                        Event.Morning,
+                    swipeRight(Event.Morning,
                         data,
                         coroutineScope,
                         snackBarHostState,
                         hSEvent,
-                        onUndo = { showSnackBar = false }
-                    )
+                        onUndo = { showSnackBar = false })
                 }, onSwipeLeft = {
                     showSnackBar = true
                     skipItem = data
-                    swipeLeft(
-                        Event.Morning,
+                    swipeLeft(Event.Morning,
                         data,
                         coroutineScope,
                         snackBarHostState,
                         hSEvent,
-                        onUndo = { showSnackBar = false }
-                    )
+                        onUndo = { showSnackBar = false })
                 }, onDone = {
                     onNav(goToTool(data.info.tag))
                 }, onReschedule = {
                     onNav(Graph.Scheduler.route)
                     hSEvent(HomeEvent.EditAlarm(data))
-                }
-                )
+                })
             }
             item {
                 AnimatedVisibility(visible = listAfternoon.isNotEmpty()) {
@@ -193,32 +209,27 @@ fun TodayContent(
                 SwipeDemoToday(data = data, onSwipeRight = {
                     showSnackBar = true
                     deletedItem = data
-                    swipeRight(
-                        Event.Afternoon,
+                    swipeRight(Event.Afternoon,
                         data,
                         coroutineScope,
                         snackBarHostState,
                         hSEvent,
-                        onUndo = { showSnackBar = false }
-                    )
+                        onUndo = { showSnackBar = false })
                 }, onSwipeLeft = {
                     showSnackBar = true
                     skipItem = data
-                    swipeLeft(
-                        Event.Afternoon,
+                    swipeLeft(Event.Afternoon,
                         data,
                         coroutineScope,
                         snackBarHostState,
                         hSEvent,
-                        onUndo = { showSnackBar = false }
-                    )
+                        onUndo = { showSnackBar = false })
                 }, onDone = {
                     onNav(goToTool(data.info.tag))
                 }, onReschedule = {
                     onNav(Graph.Scheduler.route)
                     hSEvent(HomeEvent.EditAlarm(data))
-                }
-                )
+                })
             }
             item {
                 AnimatedVisibility(visible = listEvening.isNotEmpty()) {
@@ -238,21 +249,18 @@ fun TodayContent(
                 }, onSwipeLeft = {
                     showSnackBar = true
                     skipItem = data
-                    swipeLeft(
-                        Event.Evening,
+                    swipeLeft(Event.Evening,
                         data,
                         coroutineScope,
                         snackBarHostState,
                         hSEvent,
-                        onUndo = { showSnackBar = false }
-                    )
+                        onUndo = { showSnackBar = false })
                 }, onDone = {
                     onNav(goToTool(data.info.tag))
                 }, onReschedule = {
                     onNav(Graph.Scheduler.route)
                     hSEvent(HomeEvent.EditAlarm(data))
-                }
-                )
+                })
             }
             item {
                 AnimatedVisibility(visible = listNextDay.isNotEmpty()) {
@@ -263,32 +271,27 @@ fun TodayContent(
                 SwipeDemoToday(data = data, onSwipeRight = {
                     showSnackBar = true
                     deletedItem = data
-                    swipeRight(
-                        Event.NextDay,
+                    swipeRight(Event.NextDay,
                         data,
                         coroutineScope,
                         snackBarHostState,
                         hSEvent,
-                        onUndo = { showSnackBar = false }
-                    )
+                        onUndo = { showSnackBar = false })
                 }, onSwipeLeft = {
                     showSnackBar = true
                     skipItem = data
-                    swipeLeft(
-                        Event.NextDay,
+                    swipeLeft(Event.NextDay,
                         data,
                         coroutineScope,
                         snackBarHostState,
                         hSEvent,
-                        onUndo = { showSnackBar = false }
-                    )
+                        onUndo = { showSnackBar = false })
                 }, onDone = {
                     onNav(goToTool(data.info.tag))
                 }, onReschedule = {
                     onNav(Graph.Scheduler.route)
                     hSEvent(HomeEvent.EditAlarm(data))
-                }
-                )
+                })
             }
         }
     }
@@ -390,10 +393,8 @@ fun TodayItem(
                 modifier = modifier.fillMaxWidth()
             ) {
                 AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(getImgUrl(url = image))
-                        .crossfade(true)
-                        .build(),
+                    model = ImageRequest.Builder(LocalContext.current).data(getImgUrl(url = image))
+                        .crossfade(true).build(),
                     placeholder = painterResource(R.drawable.placeholder_tag),
                     contentDescription = stringResource(R.string.description),
                     contentScale = ContentScale.Crop,
@@ -439,8 +440,7 @@ fun TodayItem(
                     OutlinedButton(
                         onClick = onDone,
                         border = BorderStroke(
-                            width = 2.dp,
-                            color = color
+                            width = 2.dp, color = color
                         ),
                         interactionSource = interactionSource,
                         shape = RoundedCornerShape(10.dp),

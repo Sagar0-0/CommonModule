@@ -1,10 +1,10 @@
 package fit.asta.health.player.jetpack_audio.di
 
-import fit.asta.health.player.jetpack_audio.di.LoulaDispatchers.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import fit.asta.health.player.jetpack_audio.di.AppDispatchers.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 

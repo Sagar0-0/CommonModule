@@ -37,7 +37,7 @@ data class WeatherData(
 )
 
 @Composable
-fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier) {
+fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier, onSchedule: () -> Unit) {
 
     AppCard(
         modifier = modifier
@@ -55,7 +55,7 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier) {
             ) {
                 AppTexts.BodyLarge(text = weatherData.title)
                 Spacer(modifier = Modifier.width(spacing.small))
-                ScheduleIconLayout(onButtonClick = { /*TODO*/ })
+                ScheduleIconLayout(onButtonClick = onSchedule)
             }
             Row(
                 horizontalArrangement = Arrangement.spacedBy(spacing.small),
@@ -99,7 +99,7 @@ fun WeatherCardList(weatherDataList: List<WeatherData>) {
     Box(modifier = Modifier.fillMaxSize()) {
         LazyRow(modifier = Modifier.fillMaxWidth()) {
             items(weatherDataList) { weatherData ->
-                WeatherCard(weatherData = weatherData)
+                WeatherCard(weatherData = weatherData) {}
             }
         }
     }
