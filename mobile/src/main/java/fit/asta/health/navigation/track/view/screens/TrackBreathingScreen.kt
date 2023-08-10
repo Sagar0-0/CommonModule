@@ -211,9 +211,20 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
             }
         }
 
-        // TODO :- Weekly Progress Bar Chart Graph
-        // TODO :- Monthly Progress Line Chart Graph
-        // TODO :- Yearly Progress Line Chart Graph
+
+        // Progress Bar Chart
+        breathingData.progressGraph?.let {
+            item {
+                TrackingChartCard(title = "Weekly Progress") {
+                    LinearChart.BarChart(
+                        linearData = LinearStringData(
+                            yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
+                            xAxisReadings = ChartPoint.pointDataBuilder(it.xAxis)
+                        )
+                    )
+                }
+            }
+        }
 
 
         // Vitamin D Details Card
@@ -352,7 +363,7 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
 
 
         // Mood Graph Line Chart
-        breathingData.moodGph?.let {
+        breathingData.moodGraph?.let {
             item {
                 TrackingChartCard(title = "Mood Graph") {
                     LinearChart.EmojiLineChart(
@@ -393,13 +404,11 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
                     )
                 }
             }
-
-
         }
 
 
         // Heart Rate Line Chart
-        breathingData.heartRateGph?.let {
+        breathingData.heartRateGraph?.let {
             item {
                 TrackingChartCard(title = "Heart Rate") {
                     LinearChart.LineChart(
@@ -414,7 +423,7 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
 
 
         // Blood Pressure Line Chart
-        breathingData.bloodPressureGph?.let { graphData ->
+        breathingData.bloodPressureGraph?.let { graphData ->
             item {
                 TrackingChartCard(title = "Blood Pressure") {
                     LinearChart.LineChart(

@@ -24,23 +24,23 @@ data class BreathingResponse(
         @SerializedName("bDtl")
         val breathDetail: BreathDetail?,
         @SerializedName("bpGph")
-        val bloodPressureGph: MultiGraphParent?,
+        val bloodPressureGraph: MultiGraphParent?,
         @SerializedName("endDate")
         val endDate: String,
         @SerializedName("hDtl")
         val health: Health?,
         @SerializedName("hrtRtGph")
-        val heartRateGph: Graph?,
+        val heartRateGraph: Graph?,
         @SerializedName("id")
         val id: String,
         @SerializedName("mdGph")
-        val moodGph: Graph?,
+        val moodGraph: Graph?,
         @SerializedName("mid")
         val mid: List<String>?,
         @SerializedName("month")
         val month: String,
         @SerializedName("proGph")
-        val proGph: Graph?,
+        val progressGraph: Graph?,
         @SerializedName("prog")
         val progress: Progress?,
         @SerializedName("startDate")

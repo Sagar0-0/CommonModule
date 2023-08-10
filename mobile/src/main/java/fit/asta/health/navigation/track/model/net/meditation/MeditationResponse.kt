@@ -18,13 +18,13 @@ data class MeditationResponse(
 
     data class MeditationData(
         @SerializedName("bpGph")
-        val bpGph: MultiGraphParent,
+        val bloodPressureGraph: MultiGraphParent?,
         @SerializedName("endDate")
         val endDate: String,
         @SerializedName("healthDtl")
-        val healthDtl: Health,
+        val healthDetail: Health?,
         @SerializedName("hrtRateGph")
-        val hrtRateGph: Graph,
+        val heartRateGraph: Graph?,
         @SerializedName("id")
         val id: String,
         @SerializedName("mid")
@@ -32,19 +32,19 @@ data class MeditationResponse(
         @SerializedName("month")
         val month: String,
         @SerializedName("moodGph")
-        val moodGph: Graph,
+        val moodGraph: Graph?,
         @SerializedName("proGph")
-        val proGph: Graph,
+        val progressGraph: Graph?,
         @SerializedName("progress")
-        val progress: Progress,
+        val progress: Progress?,
         @SerializedName("startDate")
         val startDate: String,
         @SerializedName("uid")
         val uid: String,
         @SerializedName("weatherDtl")
-        val weatherDtl: Weather,
+        val weatherDetail: Weather?,
         @SerializedName("weekly")
-        val weekly: List<Weekly>,
+        val weekly: List<Weekly>?,
         @SerializedName("year")
         val year: String
     )
