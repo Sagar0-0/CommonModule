@@ -463,6 +463,7 @@
     <string name="foodAllergies_profile_creation">Food Allergies?</string>
     <string name="cuisines_profile_creation">Cuisines?</string>
     <string name="submit">Submit</string>
+    //Create Profile LifeStyle
     <string name="currentAct_profile_creation">Current Activities</string>
     <string name="prefAct_profile_creation">Preferred Activities</string>
     <string name="lifeStyleTarget_profile_creation">LifeStyleTargets</string>
