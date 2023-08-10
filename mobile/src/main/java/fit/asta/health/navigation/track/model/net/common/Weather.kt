@@ -1,7 +1,6 @@
 package fit.asta.health.navigation.track.model.net.common
 
 import com.google.gson.annotations.SerializedName
-import fit.asta.health.navigation.track.model.net.step.StepsDetails
 
 data class Weather(
     @SerializedName("dur")
