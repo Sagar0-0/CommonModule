@@ -6,10 +6,10 @@ import androidx.media3.session.MediaLibraryService.MediaLibrarySession
 import androidx.media3.session.MediaSession
 import androidx.media3.session.SessionCommand
 import androidx.media3.session.SessionResult
-import fit.asta.health.player.jetpack_audio.di.Dispatcher
-import fit.asta.health.player.jetpack_audio.di.LoulaDispatchers.MAIN
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
+import fit.asta.health.player.jetpack_audio.di.AppDispatchers.MAIN
+import fit.asta.health.player.jetpack_audio.di.Dispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob

@@ -7,9 +7,10 @@ import androidx.media3.common.Player
 import androidx.media3.session.CommandButton
 import androidx.media3.session.MediaSession
 import androidx.media3.session.SessionCommand
+import dagger.hilt.android.qualifiers.ApplicationContext
 import fit.asta.health.R
+import fit.asta.health.player.jetpack_audio.di.AppDispatchers
 import fit.asta.health.player.jetpack_audio.di.Dispatcher
-import fit.asta.health.player.jetpack_audio.di.LoulaDispatchers
 import fit.asta.health.player.jetpack_audio.domain.utils.AppIcons
 import fit.asta.health.player.jetpack_audio.domain.utils.common.MusicCommands.REPEAT
 import fit.asta.health.player.jetpack_audio.domain.utils.common.MusicCommands.REPEAT_ONE
@@ -17,7 +18,6 @@ import fit.asta.health.player.jetpack_audio.domain.utils.common.MusicCommands.RE
 import fit.asta.health.player.jetpack_audio.domain.utils.common.MusicCommands.SHUFFLE
 import fit.asta.health.player.jetpack_audio.exo_player.util.Constants.UNHANDLED_STATE_ERROR_MESSAGE
 import fit.asta.health.player.jetpack_audio.exo_player.util.Constants.UNKNOWN_CUSTOM_ACTION_ERROR_MESSAGE
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -25,7 +25,7 @@ import kotlinx.coroutines.cancel
 import javax.inject.Inject
 
 class MusicActionHandler @Inject constructor(
-    @Dispatcher(LoulaDispatchers.MAIN) mainDispatcher: CoroutineDispatcher,
+    @Dispatcher(AppDispatchers.MAIN) mainDispatcher: CoroutineDispatcher,
     @ApplicationContext private val context: Context
 ) {
     private val coroutineScope = CoroutineScope(mainDispatcher + SupervisorJob())

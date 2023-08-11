@@ -12,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.common.utils.PrefUtils
+import fit.asta.health.navigation.today.view.utils.HourMinAmPm
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ASUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AdvUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AlarmSettingEvent
@@ -40,7 +41,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.time.LocalTime
 import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
@@ -77,7 +77,6 @@ class SchedulerViewModel
     val uiError = _uiError.asStateFlow()
     val areInputsValid =
         combine(alarmSettingUiState, tagsUiState) { alarm, _ ->
-            Log.d("valid", "valid: $alarm")
             alarm.alarmName.isNotEmpty() && alarm.alarmDescription.isNotEmpty() && alarm.tagName.isNotEmpty()
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
@@ -93,14 +92,7 @@ class SchedulerViewModel
                         alarmEntity = alarm
                         updateUi(alarm)
                     }
-                } else {
-                    _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
-                        timeHours = LocalTime.now().hour.toString(),
-                        timeMidDay = LocalTime.now().hour > 12,
-                        timeMinutes = LocalTime.now().minute.toString()
-                    )
                 }
-                Log.d("tone", "getEditUiData alarm: ${_alarmSettingUiState.value}")
             }
         }
         viewModelScope.launch {
@@ -108,9 +100,7 @@ class SchedulerViewModel
                 if (it != "hi" && alarmEntity == null) {
                     _alarmSettingUiState.value = _alarmSettingUiState.value.copy(toneUri = it)
                 }
-                Log.d("tone", "getEditUiData: $it")
             }
-            Log.d("tone", "getEditUiData: outside")
         }
     }
 
@@ -607,6 +597,16 @@ class SchedulerViewModel
 
     private fun checkRecurring(): Boolean {
         return (_alarmSettingUiState.value.sunday || _alarmSettingUiState.value.monday || _alarmSettingUiState.value.tuesday || _alarmSettingUiState.value.wednesday || _alarmSettingUiState.value.thursday || _alarmSettingUiState.value.friday || _alarmSettingUiState.value.saturday)
+    }
+
+    fun setHourMin(hourMinAmPm: HourMinAmPm?) {
+        hourMinAmPm?.let {
+            _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+                timeHours = it.hour.toString(),
+                timeMidDay = it.amPm,
+                timeMinutes = hourMinAmPm.min.toString()
+            )
+        }
     }
 
     companion object {

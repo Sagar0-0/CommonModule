@@ -27,6 +27,7 @@ import fit.asta.health.common.utils.PrefUtils
 import fit.asta.health.common.utils.shareApp
 import fit.asta.health.main.Graph
 import fit.asta.health.main.MainViewModel
+import fit.asta.health.navigation.today.view.utils.Utils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -196,6 +197,12 @@ fun NavGraphBuilder.homeScreen(
                         navController.navigate(it)
                     }
                 }
+            },
+            onSchedule = { hourMinAmPm ->
+                navController.currentBackStackEntry?.savedStateHandle?.set(
+                    key = Utils.HourMinAmPmKey,
+                    value = hourMinAmPm
+                )
             },
             onClick = { key ->
                 when (key) {

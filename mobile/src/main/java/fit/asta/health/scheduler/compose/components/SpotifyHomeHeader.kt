@@ -13,10 +13,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fit.asta.health.R
 
 @Composable
 fun SpotifyHomeHeader(
@@ -31,7 +33,7 @@ fun SpotifyHomeHeader(
 
         // Welcoming Text with User Name
         Text(
-            text = "Spotify",
+            text = stringResource(id = R.string.spotify),
 
             // Text and Font Properties
             fontFamily = FontFamily.SansSerif,
@@ -43,7 +45,7 @@ fun SpotifyHomeHeader(
         // Search Icon
         Icon(
             imageVector = Icons.Outlined.Search,
-            contentDescription = "Search",
+            contentDescription = stringResource(R.string.search),
             tint = MaterialTheme.colorScheme.onSurface,
 
             // Modifications

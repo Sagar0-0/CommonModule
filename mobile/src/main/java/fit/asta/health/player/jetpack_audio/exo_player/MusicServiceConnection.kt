@@ -13,8 +13,8 @@ import androidx.media3.session.MediaBrowser
 import androidx.media3.session.SessionToken
 import androidx.work.await
 import dagger.hilt.android.qualifiers.ApplicationContext
+import fit.asta.health.player.jetpack_audio.di.AppDispatchers
 import fit.asta.health.player.jetpack_audio.di.Dispatcher
-import fit.asta.health.player.jetpack_audio.di.LoulaDispatchers
 import fit.asta.health.player.jetpack_audio.domain.data.Song
 import fit.asta.health.player.jetpack_audio.domain.utils.MediaConstants.DEFAULT_INDEX
 import fit.asta.health.player.jetpack_audio.domain.utils.MediaConstants.DEFAULT_POSITION_MS
@@ -43,7 +43,7 @@ import javax.inject.Singleton
 @UnstableApi @Singleton
 class MusicServiceConnection @Inject constructor(
     @ApplicationContext context: Context,
-    @Dispatcher(LoulaDispatchers.MAIN) mainDispatcher: CoroutineDispatcher,
+    @Dispatcher(AppDispatchers.MAIN) mainDispatcher: CoroutineDispatcher,
 ) {
     private var mediaBrowser: MediaBrowser? = null
     private val coroutineScope = CoroutineScope(mainDispatcher + SupervisorJob())
@@ -146,10 +146,6 @@ class MusicServiceConnection @Inject constructor(
 
         }
 
-        override fun onTracksChanged(tracks: Tracks) {
-            super.onTracksChanged(tracks)
-
-        }
     }
 
     private fun updateMusicState(player: Player) = with(player) {

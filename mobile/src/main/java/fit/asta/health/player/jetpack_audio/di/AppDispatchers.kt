@@ -5,6 +5,6 @@ import kotlin.annotation.AnnotationRetention.RUNTIME
 
 @Qualifier
 @Retention(RUNTIME)
-annotation class Dispatcher(val loulaDispatcher: LoulaDispatchers)
+annotation class Dispatcher(val dispatcher: AppDispatchers)
 
-enum class LoulaDispatchers { DEFAULT, MAIN, UNCONFINED, IO }
+enum class AppDispatchers { DEFAULT, MAIN, UNCONFINED, IO }

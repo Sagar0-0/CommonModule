@@ -16,12 +16,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import fit.asta.health.R
 
 @Composable
 fun SpotifyMusicItem(
@@ -60,7 +62,7 @@ fun SpotifyMusicItem(
             // Playlist Image
             Image(
                 painter = painter,
-                contentDescription = "Playlist Image",
+                contentDescription = stringResource(R.string.playlist_image),
                 modifier = Modifier
                     .size(64.dp)
             )
@@ -106,7 +108,7 @@ fun SpotifyMusicItem(
                 .weight(.3f)
         ) {
             Text(
-                text = "Apply",
+                text = stringResource(R.string.apply),
                 fontSize = 14.sp,
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSecondaryContainer

@@ -16,10 +16,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Snooze
 import androidx.compose.material.icons.filled.Timelapse
+import androidx.compose.material.icons.rounded.RemoveCircle
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -35,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -71,33 +74,36 @@ fun SettingsLayout(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TextSelection(
-            imageIcon =Icons.Default.Snooze,
-            title = "Snooze",
+            imageIcon = Icons.Default.Snooze,
+            title = stringResource(id = R.string.snooze),
             arrowTitle = "${timeSettingUiState.snoozeTime} Minutes",
             btnEnabled = true,
             onNavigateAction = onNavigateSnooze
         )
         OnlyToggleButton(
             imageIcon = Icons.Default.Notifications,
-            title = "Advanced\nReminder",
-            btnEnabled =true ,
-            switchTitle = "${timeSettingUiState.advancedReminder.time} Minutes",
+            title = stringResource(id = R.string.advanced_reminder),
+            btnEnabled = true,
+            switchTitle = stringResource(
+                R.string.minutes,
+                timeSettingUiState.advancedReminder.time
+            ),
             mCheckedState = timeSettingUiState.advancedReminder.status,
             onCheckClicked = { onChoice(it) },
             onNavigateToClickText = onNavigateAdvanced
         )
         OnlyToggleButton(
             imageIcon = Icons.Default.Timelapse,
-            title = "Post\nReminder",
-            btnEnabled =true ,
-            switchTitle = "${timeSettingUiState.duration} Minutes",
+            title = stringResource(R.string.post_reminder),
+            btnEnabled = true,
+            switchTitle = stringResource(R.string.minutes, timeSettingUiState.duration),
             mCheckedState = timeSettingUiState.isRemainderAtTheEnd,
             onCheckClicked = { onRemainderAtEnd(it) },
             onNavigateToClickText = onNavigateDuration
         )
         OnlyToggleButton(
             imageIcon = Icons.Default.Schedule,
-            title = "Interval's Status",
+            title = stringResource(id = R.string.interval_s_status),
             switchTitle = "",
             mCheckedState = timeSettingUiState.status,
             onCheckClicked = { onStateChange(it) },
@@ -135,7 +141,7 @@ fun ShowMoreContent(
     ) {
         CustomIntervalToggleButton(
             icon = R.drawable.ic_ic24_time,
-            title = "Variant Intervals",
+            title = stringResource(id = R.string.variant_intervals),
             switchTitle = "",
             onNavigateToClickText = null,
             onNavigateRepetitiveInterval = onNavigateRepetitiveInterval,
@@ -215,6 +221,8 @@ fun TimePickerDemo(
     onValueChange: (Int) -> Unit = {},
     onSave: (RepUiState) -> Unit
 ) {
+    val min = stringResource(R.string.minute)
+    val hour = stringResource(R.string.hour)
     AndroidView(modifier = Modifier.fillMaxWidth(), factory = {
         val view = View.inflate(it, R.layout.scheduler_layout_dialog_number_picker, null)
 
@@ -227,7 +235,7 @@ fun TimePickerDemo(
         val cancelButton = it.findViewById<Button>(R.id.cancelButton)
         val saveButton = it.findViewById<Button>(R.id.okButton)
 
-        val data = arrayOf("Minute", "Hour")
+        val data = arrayOf(min, hour)
 
         var amOrPm: String
         minOrHourPicker.setOnValueChangedListener { picker, _, _ ->
@@ -342,7 +350,7 @@ fun CustomIntervalToggleButton(
         } else {
             TextSelection(
                 imageIcon = Icons.Default.Snooze,
-                title = "Repetitive \n Intervals",
+                title = stringResource(R.string.repetitive_intervals),
                 arrowTitle = repetitiveInterval,
                 btnEnabled = true,
                 onNavigateAction = onNavigateRepetitiveInterval
@@ -365,7 +373,8 @@ fun CustomFloatingButton(
         verticalArrangement = Arrangement.spacedBy(spacing.small)
     ) {
         variantIntervals.forEach { state ->
-            val ampm: String = if (state.midDay) "pm" else "am"
+            val ampm: String =
+                if (state.midDay) stringResource(R.string.pm) else stringResource(R.string.am)
             val time: String = if (state.midDay) "${state.hours.toInt() - 12}" else state.hours
             CustomVariantInterval(
                 time = "$time:${state.minutes} $ampm ",
@@ -385,7 +394,7 @@ fun CustomFloatingButton(
                 containerColor = MaterialTheme.colorScheme.primary
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_baseline_add_24),
+                    imageVector = Icons.Default.Add,
                     contentDescription = null,
                     tint = Color.White
                 )
@@ -433,7 +442,7 @@ fun CustomVariantInterval(
                 Box(Modifier.size(24.dp), contentAlignment = Alignment.Center) {
                     IconButton(onClick = onClick) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_round_remove_circle_24),
+                            imageVector = Icons.Rounded.RemoveCircle,
                             contentDescription = null,
                             Modifier.size(24.dp),
                             tint = MaterialTheme.colorScheme.primary

@@ -27,8 +27,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fit.asta.health.R
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.common.ui.components.generic.AppTopBar
@@ -63,6 +65,8 @@ fun TagsScreen(
     }
     val snackBarHostState = remember { SnackbarHostState() }
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
+    val undo = stringResource(id = R.string.undo)
+    val delete = stringResource(id = R.string.deleted)
     AppScaffold(snackBarHostState = snackBarHostState,
         content = {
             LazyColumn(
@@ -76,8 +80,8 @@ fun TagsScreen(
                         tagsEvent(TagsEvent.DeleteTag(data))
                         coroutineScope.launch {
                             val snackBarResult = snackBarHostState.showSnackbar(
-                                message = "Deleted ${data.meta.name}",
-                                actionLabel = "Undo",
+                                message = "$delete ${data.meta.name}",
+                                actionLabel = undo,
                                 duration = SnackbarDuration.Long
                             )
                             when (snackBarResult) {
@@ -109,7 +113,7 @@ fun TagsScreen(
                 Icon(Icons.Filled.Add, contentDescription = null)
             }
         },
-        topBar = { AppTopBar(title = "Tags", onBack = onNavBack) })
+        topBar = { AppTopBar(title = stringResource(id = R.string.tags), onBack = onNavBack) })
 
     CustomModelBottomSheet(
         targetState = bottomSheetState.isVisible,

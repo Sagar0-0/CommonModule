@@ -26,8 +26,10 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fit.asta.health.R
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.common.ui.components.generic.AppTopBar
@@ -71,7 +73,7 @@ fun AlarmSettingScreen(
         modifier = Modifier.fillMaxSize(), snackBarHostState = snackBarHostState,
         topBar = {
             AppTopBar(
-                title = "Alarm Setting",
+                title = stringResource(R.string.alarm_setting),
                 backIcon = Icons.Default.Close,
                 onBack = {
                     navBack()
@@ -117,13 +119,13 @@ fun AlarmSettingScreen(
                 RepeatAlarm(alarmSettingUiState = alarmSettingUiState,
                     onDaySelect = { aSEvent(AlarmSettingEvent.SetWeek(it)) })
                 OnlyToggleButton(imageIcon = if (alarmSettingUiState.status) Icons.Default.AlarmOn else Icons.Default.AlarmOff,
-                    title = "Status",
+                    title = stringResource(id = R.string.status),
                     switchTitle = "",
                     onNavigateToClickText = null,
                     mCheckedState = alarmSettingUiState.status,
                     onCheckClicked = { aSEvent(AlarmSettingEvent.SetStatus(it)) })
                 TextSelection(imageIcon = Icons.Default.Tag,
-                    title = "Tag",
+                    title = stringResource(id = R.string.tag),
                     arrowTitle = alarmSettingUiState.tagName,
                     btnEnabled = true,
                     onNavigateAction = {
@@ -131,7 +133,7 @@ fun AlarmSettingScreen(
                         navTagSelection()
                     })
                 TextSelection(imageIcon = Icons.Default.Label,
-                    title = "Label",
+                    title = stringResource(id = R.string.label),
                     arrowTitle = alarmSettingUiState.alarmName,
                     btnEnabled = true,
                     onNavigateAction = {
@@ -139,7 +141,7 @@ fun AlarmSettingScreen(
                         openSheet()
                     })
                 TextSelection(imageIcon = Icons.Default.Description,
-                    title = "Description",
+                    title = stringResource(id = R.string.description),
                     arrowTitle = alarmSettingUiState.alarmDescription,
                     btnEnabled = true,
                     onNavigateAction = {
@@ -147,15 +149,15 @@ fun AlarmSettingScreen(
                         openSheet()
                     })
                 TextSelection(imageIcon = Icons.Default.AddAlarm,
-                    title = "Intervals Settings",
-                    arrowTitle = "Optional",
+                    title = stringResource(R.string.intervals_settings),
+                    arrowTitle = stringResource(R.string.optional),
                     btnEnabled = areInputsValid,
                     onNavigateAction = {
                         aSEvent(AlarmSettingEvent.GotoTimeSettingScreen)
                         navTimeSetting()
                     })
                 TextSelection(imageIcon = if (alarmSettingUiState.mode == "Notification") Icons.Default.NotificationsActive else Icons.Default.Wysiwyg,
-                    title = "Reminder Mode",
+                    title = stringResource(id = R.string.reminder_mode),
                     arrowTitle = alarmSettingUiState.mode,
                     btnEnabled = true,
                     onNavigateAction = {
@@ -163,7 +165,7 @@ fun AlarmSettingScreen(
                         openSheet()
                     })
                 OnlyToggleButton(imageIcon = Icons.Default.Vibration,
-                    title = "Vibration ",
+                    title = stringResource(R.string.vibration),
                     mCheckedState = alarmSettingUiState.vibrationStatus,
                     onCheckClicked = {
                         aSEvent(AlarmSettingEvent.SetVibration(it))
@@ -179,7 +181,7 @@ fun AlarmSettingScreen(
 
                 OnlyToggleButton(
                     imageIcon = Icons.Default.NotificationImportant,
-                    title = "Important",
+                    title = stringResource(R.string.important),
                     mCheckedState = alarmSettingUiState.important,
                     onCheckClicked = {
                         aSEvent(AlarmSettingEvent.SetImportant(it))
@@ -188,7 +190,7 @@ fun AlarmSettingScreen(
                     onNavigateToClickText = null
                 )
                 Text(
-                    text = "This will make sure you attempt with the help of flashlight, sound changes, vibration etc.",
+                    text = stringResource(id = R.string.this_will_make_sure_you_attempt_with_the_help_of_flashlight_sound_changes_vibration_etc),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 16.sp,
                     modifier = Modifier.padding(horizontal = 16.dp)
@@ -228,8 +230,9 @@ fun AlarmCreateBtmSheetLayout(
     when (sheetLayout) {
         LABEL -> {
             Column(modifier = Modifier.fillMaxWidth()) {
-                CustomLabelBottomSheetLayout(text = "Labels",
-                    label = "Enter your Label",
+                CustomLabelBottomSheetLayout(
+                    text = stringResource(R.string.labels),
+                    label = stringResource(R.string.enter_your_label),
                     onNavigateBack = {
                         keyboardController?.hide()
                         closeSheet()
@@ -244,8 +247,9 @@ fun AlarmCreateBtmSheetLayout(
 
         DESCRIPTION -> {
             Column(modifier = Modifier.fillMaxWidth()) {
-                CustomLabelBottomSheetLayout(text = "Add Description",
-                    label = "Enter Description",
+                CustomLabelBottomSheetLayout(
+                    text = stringResource(id = R.string.add_description),
+                    label = stringResource(id = R.string.enter_description),
                     onNavigateBack = {
                         closeSheet()
                         keyboardController?.hide()
@@ -261,7 +265,7 @@ fun AlarmCreateBtmSheetLayout(
         REMINDER -> {
             Column(modifier = Modifier.fillMaxWidth()) {
                 NotificationBottomSheetLayout(
-                    text = "Select Reminder Mode",
+                    text = stringResource(id = R.string.select_reminder_mode),
                     onNavigateBack = closeSheet,
                     onSave = {
                         closeSheet()
@@ -272,7 +276,7 @@ fun AlarmCreateBtmSheetLayout(
 
         VIBRATION -> {
             VibrationBottomSheetLayout(
-                text = "Select Vibration Intensity",
+                text = stringResource(R.string.select_vibration_pattern),
                 onNavigateBack = closeSheet,
                 onSave = {
                     closeSheet()
@@ -327,7 +331,7 @@ private fun SoundOptionsUI() {
                 )
             }
             Text(
-                text = "Sound",
+                text = stringResource(R.string.sound),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSecondaryContainer
             )
@@ -344,7 +348,7 @@ private fun SoundOptionsUI() {
                 activity.startActivity(intent)
             }) {
                 Text(
-                    text = "Spotify",
+                    text = stringResource(R.string.spotify),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
@@ -352,7 +356,7 @@ private fun SoundOptionsUI() {
 
             TextButton(onClick = { /*TODO*/ }) {
                 Text(
-                    text = "Local Music",
+                    text = stringResource(R.string.local_music),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )

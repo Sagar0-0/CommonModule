@@ -23,9 +23,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.AppButtons
 import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.spacing
@@ -85,7 +87,7 @@ fun VibrationBottomSheetLayout(
                     else MaterialTheme.colorScheme.onPrimary
                 )
             ) {
-                AppTexts.TitleMedium(text = "Short")
+                AppTexts.TitleMedium(text = stringResource(id = R.string.shortPattern))
             }
             AppButtons.AppOutlinedButton(
                 onClick = { value = VibrationPattern.Long },
@@ -94,7 +96,7 @@ fun VibrationBottomSheetLayout(
                     else MaterialTheme.colorScheme.onPrimary
                 )
             ) {
-                AppTexts.TitleMedium(text = "Long")
+                AppTexts.TitleMedium(text = stringResource(id = R.string.longPattern))
             }
             AppButtons.AppOutlinedButton(
                 onClick = { value = VibrationPattern.Intermittent },
@@ -103,7 +105,7 @@ fun VibrationBottomSheetLayout(
                     else MaterialTheme.colorScheme.onPrimary
                 )
             ) {
-                AppTexts.TitleMedium(text = "Intermittent")
+                AppTexts.TitleMedium(text = stringResource(R.string.intermittent))
             }
         }
     }
