@@ -1,5 +1,6 @@
 package fit.asta.health.navigation.today.view
 
+import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -96,6 +97,7 @@ fun TodayContent(
 
 
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
     val snackBarHostState = remember { SnackbarHostState() }
     var showSnackBar by rememberSaveable { mutableStateOf(false) }
     var deletedItem by remember { mutableStateOf<AlarmEntity?>(null) }
@@ -172,7 +174,10 @@ fun TodayContent(
             }
             item {
                 AnimatedVisibility(visible = listMorning.isNotEmpty()) {
-                    Text(text = "Morning Events", style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        text = stringResource(R.string.morning_events),
+                        style = MaterialTheme.typography.titleMedium
+                    )
                 }
             }
             items(listMorning) { data ->
@@ -182,6 +187,7 @@ fun TodayContent(
                     swipeRight(Event.Morning,
                         data,
                         coroutineScope,
+                        context = context,
                         snackBarHostState,
                         hSEvent,
                         onUndo = { showSnackBar = false })
@@ -191,6 +197,7 @@ fun TodayContent(
                     swipeLeft(Event.Morning,
                         data,
                         coroutineScope,
+                        context = context,
                         snackBarHostState,
                         hSEvent,
                         onUndo = { showSnackBar = false })
@@ -203,7 +210,10 @@ fun TodayContent(
             }
             item {
                 AnimatedVisibility(visible = listAfternoon.isNotEmpty()) {
-                    Text(text = "Afternoon Events", style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        text = stringResource(R.string.afternoon_events),
+                        style = MaterialTheme.typography.titleMedium
+                    )
                 }
             }
             items(listAfternoon) { data ->
@@ -213,6 +223,7 @@ fun TodayContent(
                     swipeRight(Event.Afternoon,
                         data,
                         coroutineScope,
+                        context = context,
                         snackBarHostState,
                         hSEvent,
                         onUndo = { showSnackBar = false })
@@ -222,6 +233,7 @@ fun TodayContent(
                     swipeLeft(Event.Afternoon,
                         data,
                         coroutineScope,
+                        context = context,
                         snackBarHostState,
                         hSEvent,
                         onUndo = { showSnackBar = false })
@@ -234,7 +246,10 @@ fun TodayContent(
             }
             item {
                 AnimatedVisibility(visible = listEvening.isNotEmpty()) {
-                    Text(text = "Evening Events", style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        text = stringResource(R.string.evening_events),
+                        style = MaterialTheme.typography.titleMedium
+                    )
                 }
             }
             items(listEvening) { data ->
@@ -244,6 +259,7 @@ fun TodayContent(
                     swipeRight(Event.Evening,
                         data,
                         coroutineScope,
+                        context = context,
                         snackBarHostState,
                         hSEvent,
                         onUndo = { showSnackBar = false })
@@ -253,6 +269,7 @@ fun TodayContent(
                     swipeLeft(Event.Evening,
                         data,
                         coroutineScope,
+                        context = context,
                         snackBarHostState,
                         hSEvent,
                         onUndo = { showSnackBar = false })
@@ -265,7 +282,10 @@ fun TodayContent(
             }
             item {
                 AnimatedVisibility(visible = listNextDay.isNotEmpty()) {
-                    Text(text = "Tomorrow Events", style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        text = stringResource(R.string.tomorrow_events),
+                        style = MaterialTheme.typography.titleMedium
+                    )
                 }
             }
             items(listNextDay) { data ->
@@ -275,6 +295,7 @@ fun TodayContent(
                     swipeRight(Event.NextDay,
                         data,
                         coroutineScope,
+                        context = context,
                         snackBarHostState,
                         hSEvent,
                         onUndo = { showSnackBar = false })
@@ -284,6 +305,7 @@ fun TodayContent(
                     swipeLeft(Event.NextDay,
                         data,
                         coroutineScope,
+                        context = context,
                         snackBarHostState,
                         hSEvent,
                         onUndo = { showSnackBar = false })
@@ -305,15 +327,17 @@ private fun swipeRight(
     event: Event,
     data: AlarmEntity,
     coroutineScope: CoroutineScope,
+    context: Context,
     snackBarHostState: SnackbarHostState,
     hSEvent: (HomeEvent) -> Unit,
     onUndo: () -> Unit,
 ) {
+
     hSEvent(HomeEvent.RemoveAlarm(data, event))
     coroutineScope.launch {
         val snackBarResult = snackBarHostState.showSnackbar(
             message = "Deleted ${data.info.name}",
-            actionLabel = "Undo",
+            actionLabel = context.getString(R.string.undo),
             duration = SnackbarDuration.Long
         )
         when (snackBarResult) {
@@ -332,6 +356,7 @@ private fun swipeLeft(
     event: Event,
     data: AlarmEntity,
     coroutineScope: CoroutineScope,
+    context: Context,
     snackBarHostState: SnackbarHostState,
     hSEvent: (HomeEvent) -> Unit,
     onUndo: () -> Unit
@@ -340,7 +365,7 @@ private fun swipeLeft(
     coroutineScope.launch {
         val snackBarResult = snackBarHostState.showSnackbar(
             message = "Skip ${data.info.name}",
-            actionLabel = "Undo",
+            actionLabel = context.getString(R.string.undo),
             duration = SnackbarDuration.Long
         )
         when (snackBarResult) {

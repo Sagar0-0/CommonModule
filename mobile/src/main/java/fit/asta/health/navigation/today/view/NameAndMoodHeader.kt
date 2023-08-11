@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -42,7 +43,9 @@ fun NameAndMoodHomeScreenHeader() {
         ) {
             Box(modifier = Modifier.size(153.dp, 36.dp)) {
                 Text(
-                    text = "Hello Aastha", fontSize = 24.sp, fontFamily = poppinsFontFamily,
+                    text = stringResource(id = R.string.hello_Aastha),
+                    fontSize = 24.sp,
+                    fontFamily = poppinsFontFamily,
                     color = MaterialTheme.colorScheme.onBackground
                 )
             }
@@ -52,7 +55,7 @@ fun NameAndMoodHomeScreenHeader() {
         }
         Box(modifier = Modifier.size(147.dp, 15.dp)) {
             Text(
-                text = "What’s your mood today ?",
+                text = stringResource(id = R.string.greeting),
                 fontSize = 12.sp,
                 fontFamily = interFontFamily,
                 color = MaterialTheme.colorScheme.onSurfaceVariant

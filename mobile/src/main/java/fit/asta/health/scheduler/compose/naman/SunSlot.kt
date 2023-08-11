@@ -19,7 +19,9 @@ import androidx.compose.material.icons.filled.Waves
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.AppCard
 import fit.asta.health.common.ui.components.generic.AppDefaultIcon
 import fit.asta.health.common.ui.components.generic.AppTexts
@@ -61,7 +63,8 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier, onSched
                 horizontalArrangement = Arrangement.spacedBy(spacing.small),
             ) {
                 AppDefaultIcon(
-                    imageVector = Icons.Default.Event, contentDescription = "Event Icon"
+                    imageVector = Icons.Default.Event,
+                    contentDescription = stringResource(R.string.event_icon)
                 )
                 AppTexts.BodySmall(text = weatherData.time)
             }
@@ -70,7 +73,8 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier, onSched
                 horizontalArrangement = Arrangement.spacedBy(spacing.small),
             ) {
                 AppDefaultIcon(
-                    imageVector = Icons.Default.Thermostat, contentDescription = "Temperature Icon"
+                    imageVector = Icons.Default.Thermostat,
+                    contentDescription = stringResource(R.string.temperature_icon)
                 )
                 AppTexts.BodySmall(text = weatherData.temperature)
             }
@@ -78,7 +82,8 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier, onSched
                 horizontalArrangement = Arrangement.spacedBy(spacing.small),
             ) {
                 AppDefaultIcon(
-                    imageVector = Icons.Default.Waves, contentDescription = "Event Icon"
+                    imageVector = Icons.Default.Waves,
+                    contentDescription = stringResource(R.string.event_icon)
                 )
                 AppTexts.BodySmall(text = weatherData.uvDetails)
             }
@@ -86,7 +91,8 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier, onSched
                 horizontalArrangement = Arrangement.spacedBy(spacing.small),
             ) {
                 AppDefaultIcon(
-                    imageVector = Icons.Default.AccessTime, contentDescription = "Temperature Icon"
+                    imageVector = Icons.Default.AccessTime,
+                    contentDescription = stringResource(R.string.temperature_icon)
                 )
                 AppTexts.BodySmall(text = weatherData.timeSlot)
             }
