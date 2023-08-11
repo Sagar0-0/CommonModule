@@ -13,14 +13,14 @@ data class HomeMenuResponse(
 ) {
     data class HomeMenuData(
         @SerializedName("HealthDtl")
-        val healthDetail: Health,
+        val healthDetail: Health?,
         @SerializedName("TimeSpent")
-        val timeSpent: TimeSpent,
+        val timeSpent: TimeSpent?,
         @SerializedName("Tools")
-        val tools: List<Tool>,
+        val tools: List<Tool>?,
         @SerializedName("bmi")
-        val bmi: BmiData,
+        val bmi: BmiData?,
         @SerializedName("walking")
-        val walking: Walking
+        val walking: Walking?
     )
 }
