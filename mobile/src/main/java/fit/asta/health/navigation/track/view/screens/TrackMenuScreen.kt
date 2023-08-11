@@ -161,7 +161,8 @@ private fun TrackMenuSuccessScreen(
                                 Color(0xFFF7AD1A),
                                 Color(0xFF299F23),
                                 Color(0xFFFF2E2E),
-                                Color(0xFF6C27C7)
+                                Color(0xFF6C27C7),
+                                Color(0xFFB25FC0)
                             )
                         )
                     )
