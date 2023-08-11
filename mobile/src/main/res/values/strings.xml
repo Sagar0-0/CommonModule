@@ -506,6 +506,39 @@
     <string name="pregnantTitle_profile_creation">Are you Pregnant</string>
     <string name="pregnancyWeekInput_profile_creation">Please Enter your Pregnancy Week</string>
     <string name="date_of_birth">Date of Birth</string>
+    //Create Profile List
+    <string name="gender_profile_creation">Gender</string>
+    <string name="pregnant_profile_creation">Pregnant</string>
+    <string name="period_profile_creation">Period</string>
+    <string name="healthHis_profile_creation">Health History</string>
+    <string name="injury_profile_creation">Injury</string>
+    <string name="bodyPart_profile_creation">Body Part</string>
+    <string name="ailments_profile_creation">Ailments</string>
+    <string name="medication_profile_creation">Medication</string>
+    <string name="healthTarget_profile_creation">Health Target</string>
+    <string name="addictions_profile_creation">Addictions</string>
+    <string name="physicalActive_profile_creation">Physical Active</string>
+    <string name="workingEnv_profile_creation">Working Environment</string>
+    <string name="workingStyle_profile_creation">Working Style</string>
+    <string name="workingHour_profile_creation">Working Hour</string>
+    <string name="dietRes_profile_creation">Diet Restrictions</string>
+    <string name="dietaryPref_profile_creation">Dietary Preferences</string>
+    <string name="nonVegDays_profile_creation">Non Veg Days</string>
+    <string name="foodAllergies_profile_creation">Food Allergies?</string>
+    <string name="cuisines_profile_creation">Cuisines?</string>
+    <string name="submit">Submit</string>
+    //Create Profile LifeStyle
+    <string name="currentAct_profile_creation">Current Activities</string>
+    <string name="prefAct_profile_creation">Preferred Activities</string>
+    <string name="lifeStyleTarget_profile_creation">LifeStyleTargets</string>
+    <string name="sleepSchedule_profile_creation">Sleep Schedule</string>
+    <string name="wakeUpTime_profile_creation">Wake Up Time</string>
+    <string name="sleepTime_profile_creation">Sleep Time</string>
+    <string name="jobSchedule_profile_creation">Job Schedule</string>
+    <string name="jobStart_profile_creation">Job Start Time</string>
+    <string name="jobEnd_profile_creation">Job End Time</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 
 </resources>

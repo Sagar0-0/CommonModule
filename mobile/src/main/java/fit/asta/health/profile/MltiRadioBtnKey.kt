@@ -1,19 +1,27 @@
 package fit.asta.health.profile
 
-sealed class MultiRadioBtnKeys(val key: String, val listName: String) {
-    object GENDER : MultiRadioBtnKeys("gen", "Gender")
-    object ISPREG : MultiRadioBtnKeys("prg", "Pregnant")
-    object ISONPERIOD : MultiRadioBtnKeys("prd", "Period")
-    object HEALTHHIS : MultiRadioBtnKeys("hh", "Health History")
-    object INJURIES : MultiRadioBtnKeys("inj", "Injury")
-    object BODYPART : MultiRadioBtnKeys("bp", "Body Part")
-    object AILMENTS : MultiRadioBtnKeys("ail", "Ailments")
-    object MEDICATIONS : MultiRadioBtnKeys("med", "Medication")
-    object HEALTHTAR : MultiRadioBtnKeys("htg", "Health Target")
-    object ADDICTION : MultiRadioBtnKeys("add", "Addictions")
-    object PHYACTIVE : MultiRadioBtnKeys("act", "Physical Active")
-    object WORKINGENV : MultiRadioBtnKeys("we", "Working Environment")
-    object WORKINGSTYLE : MultiRadioBtnKeys("ws", "Working Style")
-    object WORKINGHRS : MultiRadioBtnKeys("whr", "Working Hour")
-    object DIETREST : MultiRadioBtnKeys("drs", "Diet Restrictions")
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import fit.asta.health.R
+
+sealed class MultiRadioBtnKeys(val key: String, private val listName: Int) {
+
+    @Composable
+    fun getListName(): String = stringResource(id = listName)
+
+    object GENDER : MultiRadioBtnKeys("gen", R.string.gender_profile_creation)
+    object ISPREG : MultiRadioBtnKeys("prg", R.string.pregnant_profile_creation)
+    object ISONPERIOD : MultiRadioBtnKeys("prd", (R.string.period_profile_creation))
+    object HEALTHHIS : MultiRadioBtnKeys("hh", (R.string.healthHis_profile_creation))
+    object INJURIES : MultiRadioBtnKeys("inj", (R.string.injury_profile_creation))
+    object BODYPART : MultiRadioBtnKeys("bp", R.string.bodyPart_profile_creation)
+    object AILMENTS : MultiRadioBtnKeys("ail", (R.string.ailments_profile_creation))
+    object MEDICATIONS : MultiRadioBtnKeys("med", (R.string.medication_profile_creation))
+    object HEALTHTAR : MultiRadioBtnKeys("htg", (R.string.healthTarget_profile_creation))
+    object ADDICTION : MultiRadioBtnKeys("add", (R.string.addictions_profile_creation))
+    object PHYACTIVE : MultiRadioBtnKeys("act", (R.string.physicalActive_profile_creation))
+    object WORKINGENV : MultiRadioBtnKeys("we", (R.string.workingEnv_profile_creation))
+    object WORKINGSTYLE : MultiRadioBtnKeys("ws", (R.string.workingStyle_profile_creation))
+    object WORKINGHRS : MultiRadioBtnKeys("whr", (R.string.workingHour_profile_creation))
+    object DIETREST : MultiRadioBtnKeys("drs", (R.string.dietRes_profile_creation))
 }
