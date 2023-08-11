@@ -8,10 +8,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.main.Graph
 import fit.asta.health.main.sharedViewModel
-import fit.asta.health.common.ui.components.generic.LoadingAnimation
-import fit.asta.health.testimonials.view.ServerErrorLayout
+import fit.asta.health.testimonials.ui.create.view.ServerErrorLayout
 import fit.asta.health.tools.water.view.screen.WaterToolScreen
 import fit.asta.health.tools.water.viewmodel.WaterState
 import fit.asta.health.tools.water.viewmodel.WaterViewModel

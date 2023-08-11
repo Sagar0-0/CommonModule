@@ -47,8 +47,8 @@ import fit.asta.health.profile.viewmodel.ProfileConstants.PROFILE_DATA
 import fit.asta.health.profile.viewmodel.ProfileConstants.USER_IMG
 import fit.asta.health.profile.viewmodel.ProfileConstants.WAKEUPTIME
 import fit.asta.health.profile.viewmodel.ProfileConstants.WEIGHT
-import fit.asta.health.testimonials.model.domain.InputIntWrapper
-import fit.asta.health.testimonials.model.domain.InputWrapper
+import fit.asta.health.testimonials.data.model.InputIntWrapper
+import fit.asta.health.testimonials.data.model.InputWrapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

@@ -70,7 +70,7 @@ import fit.asta.health.profile.view.ThreeTogglesGroups
 import fit.asta.health.profile.view.TwoTogglesGroup
 import fit.asta.health.profile.viewmodel.ProfileEvent
 import fit.asta.health.profile.viewmodel.ProfileViewModel
-import fit.asta.health.testimonials.model.domain.InputWrapper
+import fit.asta.health.testimonials.data.model.InputWrapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.time.format.DateTimeFormatter
 import java.util.Calendar

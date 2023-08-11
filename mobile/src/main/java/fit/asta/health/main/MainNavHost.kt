@@ -28,7 +28,7 @@ import fit.asta.health.scheduler.navigation.schedulerNavigation
 import fit.asta.health.settings.view.settingScreens
 import fit.asta.health.settings.webView
 import fit.asta.health.splash.splashScreen
-import fit.asta.health.testimonials.testimonialsNavigation
+import fit.asta.health.testimonials.ui.testimonialsRoute
 import fit.asta.health.tools.breathing.nav.breathingNavigation
 import fit.asta.health.tools.exercise.nav.exerciseNavigation
 import fit.asta.health.tools.meditation.nav.meditationNavigation
@@ -70,7 +70,7 @@ fun MainNavHost(isConnected: Boolean) {
         sunlightNavigation(navController, onBack = { navController.navigateUp() })
         //sleepNavGraph(navController,  onBack = { navController.navigateUp() })
         exerciseNavigation(navController, onBack = { navController.navigateUp() })
-        testimonialsNavigation(navController)
+        testimonialsRoute(navController)
         schedulerNavigation(navController, onBack = { navController.navigateUp() })
 
         settingScreens(navController)

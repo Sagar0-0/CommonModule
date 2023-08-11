@@ -33,7 +33,7 @@ import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.buttonSize
 import fit.asta.health.common.ui.theme.iconSize
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.testimonials.view.components.SuccessfulCard
+import fit.asta.health.testimonials.ui.components.SuccessfulCard
 import kotlinx.coroutines.delay
 
 data class DialogData(

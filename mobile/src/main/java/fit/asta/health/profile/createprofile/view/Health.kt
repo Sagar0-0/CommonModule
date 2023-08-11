@@ -64,7 +64,7 @@ import fit.asta.health.profile.view.SelectionCardCreateProfile
 import fit.asta.health.profile.viewmodel.HPropState
 import fit.asta.health.profile.viewmodel.ProfileEvent
 import fit.asta.health.profile.viewmodel.ProfileViewModel
-import fit.asta.health.testimonials.model.domain.InputWrapper
+import fit.asta.health.testimonials.data.model.InputWrapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
