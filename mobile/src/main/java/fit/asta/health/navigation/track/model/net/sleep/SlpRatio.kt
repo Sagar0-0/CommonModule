@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName
 
 data class SlpRatio(
     @SerializedName("deep")
-    val deep: Int,
+    val deep: Float,
     @SerializedName("delay")
-    val delay: Int,
+    val delay: Float,
     @SerializedName("disturbed")
-    val disturbed: Int,
+    val disturbed: Float,
     @SerializedName("normal")
-    val normal: Int
+    val normal: Float
 )

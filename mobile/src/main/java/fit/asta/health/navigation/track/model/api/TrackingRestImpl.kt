@@ -3,6 +3,7 @@ package fit.asta.health.navigation.track.model.api
 import fit.asta.health.common.utils.NetworkUtil
 import fit.asta.health.navigation.track.model.net.breathing.BreathingResponse
 import fit.asta.health.navigation.track.model.net.meditation.MeditationResponse
+import fit.asta.health.navigation.track.model.net.menu.HomeMenuResponse
 import fit.asta.health.navigation.track.model.net.sleep.SleepResponse
 import fit.asta.health.navigation.track.model.net.step.StepsResponse
 import fit.asta.health.navigation.track.model.net.sunlight.SunlightResponse
@@ -16,6 +17,14 @@ class TrackingRestImpl(baseUrl: String, client: OkHttpClient) : TrackingApi {
     private val trackingApiService: TrackingApiService = NetworkUtil
         .getRetrofit(baseUrl, client)
         .create(TrackingApiService::class.java)
+
+    override suspend fun getHomeDetails(
+        uid: String,
+        date: String,
+        location: String
+    ): Response<HomeMenuResponse> {
+        return trackingApiService.getHomeDetails(uid = uid, date = date, location = location)
+    }
 
     override suspend fun getWaterDetails(
         uid: String,

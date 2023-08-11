@@ -2,6 +2,7 @@ package fit.asta.health.navigation.track.model
 
 import fit.asta.health.navigation.track.model.net.breathing.BreathingResponse
 import fit.asta.health.navigation.track.model.net.meditation.MeditationResponse
+import fit.asta.health.navigation.track.model.net.menu.HomeMenuResponse
 import fit.asta.health.navigation.track.model.net.sleep.SleepResponse
 import fit.asta.health.navigation.track.model.net.step.StepsResponse
 import fit.asta.health.navigation.track.model.net.sunlight.SunlightResponse
@@ -10,6 +11,12 @@ import fit.asta.health.navigation.track.view.util.TrackingNetworkCall
 import kotlinx.coroutines.flow.Flow
 
 interface TrackingRepo {
+
+    suspend fun getHomeDetails(
+        uid: String,
+        date: String,
+        location: String
+    ): Flow<TrackingNetworkCall<HomeMenuResponse>>
 
     suspend fun getWaterDetails(
         uid: String,

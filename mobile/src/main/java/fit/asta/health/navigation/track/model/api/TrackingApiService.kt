@@ -2,6 +2,7 @@ package fit.asta.health.navigation.track.model.api
 
 import fit.asta.health.navigation.track.model.net.breathing.BreathingResponse
 import fit.asta.health.navigation.track.model.net.meditation.MeditationResponse
+import fit.asta.health.navigation.track.model.net.menu.HomeMenuResponse
 import fit.asta.health.navigation.track.model.net.sleep.SleepResponse
 import fit.asta.health.navigation.track.model.net.step.StepsResponse
 import fit.asta.health.navigation.track.model.net.sunlight.SunlightResponse
@@ -11,6 +12,13 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface TrackingApiService {
+
+    @GET("tracking/home/get/")
+    suspend fun getHomeDetails(
+        @Query("uid") uid: String,
+        @Query("date") date: String,
+        @Query("loc") location: String
+    ): Response<HomeMenuResponse>
 
     @GET("tracking/water/get/")
     suspend fun getWaterDetails(

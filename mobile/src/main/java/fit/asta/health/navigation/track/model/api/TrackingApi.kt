@@ -2,6 +2,7 @@ package fit.asta.health.navigation.track.model.api
 
 import fit.asta.health.navigation.track.model.net.breathing.BreathingResponse
 import fit.asta.health.navigation.track.model.net.meditation.MeditationResponse
+import fit.asta.health.navigation.track.model.net.menu.HomeMenuResponse
 import fit.asta.health.navigation.track.model.net.sleep.SleepResponse
 import fit.asta.health.navigation.track.model.net.step.StepsResponse
 import fit.asta.health.navigation.track.model.net.sunlight.SunlightResponse
@@ -9,6 +10,12 @@ import fit.asta.health.navigation.track.model.net.water.WaterResponse
 import retrofit2.Response
 
 interface TrackingApi {
+
+    suspend fun getHomeDetails(
+        uid: String,
+        date: String,
+        location: String
+    ): Response<HomeMenuResponse>
 
     suspend fun getWaterDetails(
         uid: String,

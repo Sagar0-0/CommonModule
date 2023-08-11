@@ -3,6 +3,7 @@ package fit.asta.health.navigation.track.model
 import fit.asta.health.navigation.track.model.api.TrackingApi
 import fit.asta.health.navigation.track.model.net.breathing.BreathingResponse
 import fit.asta.health.navigation.track.model.net.meditation.MeditationResponse
+import fit.asta.health.navigation.track.model.net.menu.HomeMenuResponse
 import fit.asta.health.navigation.track.model.net.sleep.SleepResponse
 import fit.asta.health.navigation.track.model.net.step.StepsResponse
 import fit.asta.health.navigation.track.model.net.sunlight.SunlightResponse
@@ -19,6 +20,27 @@ import javax.inject.Inject
 class TrackingRepoImpl @Inject constructor(
     private val trackingApi: TrackingApi
 ) : TrackingRepo {
+
+    override suspend fun getHomeDetails(
+        uid: String,
+        date: String,
+        location: String
+    ): Flow<TrackingNetworkCall<HomeMenuResponse>> {
+
+        return flow {
+            emit(TrackingNetworkCall.Loading())
+
+            // Fetching Data
+            val response = trackingApi.getHomeDetails(
+                uid = uid,
+                date = date,
+                location = location
+            )
+            emit(handleResponse(response))
+        }.catch {
+            emit(TrackingNetworkCall.Failure(message = it.message.toString()))
+        }.flowOn(Dispatchers.IO)
+    }
 
     override suspend fun getWaterDetails(
         uid: String,

@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.navigation.track.model.TrackingRepo
 import fit.asta.health.navigation.track.model.net.breathing.BreathingResponse
 import fit.asta.health.navigation.track.model.net.meditation.MeditationResponse
+import fit.asta.health.navigation.track.model.net.menu.HomeMenuResponse
 import fit.asta.health.navigation.track.model.net.sleep.SleepResponse
 import fit.asta.health.navigation.track.model.net.step.StepsResponse
 import fit.asta.health.navigation.track.model.net.sunlight.SunlightResponse
@@ -27,6 +28,32 @@ class TrackViewModel @Inject constructor(
     // User Id For testing
     private val uid = "6309a9379af54f142c65fbfe"
 
+    // This variable contains the Home Screen Menu Details
+    private val _homeScreenDetails = MutableStateFlow<TrackingNetworkCall<HomeMenuResponse>>(
+        TrackingNetworkCall.Initialized()
+    )
+    val homeScreenDetails = _homeScreenDetails.asStateFlow()
+
+    /**
+     * This function fetches the Home Screen Details from the Server
+     */
+    fun getHomeDetails() {
+
+        if (_homeScreenDetails.value is TrackingNetworkCall.Loading)
+            return
+
+        val date = "2023-June-05"
+
+        viewModelScope.launch {
+            trackingRepo.getHomeDetails(
+                uid = uid,
+                date = date,
+                location = "bangalore"
+            ).collect {
+                _homeScreenDetails.value = it
+            }
+        }
+    }
 
     // This variable contains the water tracking details
     private val _waterDetails = MutableStateFlow<TrackingNetworkCall<WaterResponse>>(

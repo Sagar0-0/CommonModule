@@ -1,13 +1,12 @@
 package fit.asta.health.navigation.track.model.net.common
 
 import com.google.gson.annotations.SerializedName
-import fit.asta.health.navigation.track.model.net.step.StepsDetails
 
 data class Weather(
     @SerializedName("dur")
     val duration: StepsDetails.Duration,
     @SerializedName("exp")
-    val exp: CardItem,
+    val exposure: CardItem,
     @SerializedName("vitD")
     val vitD: CardItem,
     @SerializedName("wea")
