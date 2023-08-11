@@ -25,8 +25,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import fit.asta.health.common.ui.theme.boxSize
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.feedback.model.network.An
-import fit.asta.health.feedback.model.network.Qn
+import fit.asta.health.feedback.data.remote.modal.An
+import fit.asta.health.feedback.data.remote.modal.Qn
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

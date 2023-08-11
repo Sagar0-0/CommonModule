@@ -3,6 +3,7 @@ package fit.asta.health.settings.view
 import android.widget.Toast
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -16,6 +17,7 @@ import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.common.utils.rateUs
 import fit.asta.health.common.utils.sendBugReportMessage
 import fit.asta.health.common.utils.shareApp
+import fit.asta.health.feedback.ui.navigateToFeedback
 import fit.asta.health.main.Graph
 import fit.asta.health.settings.data.SettingsNotificationsStatus
 import fit.asta.health.settings.data.SettingsUiEvent
@@ -71,7 +73,7 @@ fun NavGraphBuilder.settingScreens(
 
 
                     SettingsUiEvent.FEEDBACK -> {
-                        navController.navigate(Graph.Feedback.route + "/application")
+                        navController.navigateToFeedback(context.getString(R.string.application_fid))
                     }
 
                     SettingsUiEvent.SIGNOUT -> {

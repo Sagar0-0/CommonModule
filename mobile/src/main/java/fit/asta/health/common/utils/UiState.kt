@@ -12,4 +12,4 @@ sealed interface UiState<out T> {
 }
 
 @Composable
-fun Int.getStringRes() = stringResource(this)
+fun Int.toStringRes() = stringResource(this)

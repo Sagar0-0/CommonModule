@@ -1,4 +1,4 @@
-package fit.asta.health.feedback.model.network
+package fit.asta.health.feedback.data.remote.modal
 
 
 import android.os.Parcelable
@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class PostFeedbackRes(
+data class PostFeedbackDTO(
     @SerializedName("data")
     val `data`: Data = Data(),
     @SerializedName("status")

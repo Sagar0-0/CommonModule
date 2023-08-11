@@ -6,6 +6,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.R
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.mapToUiState
+import fit.asta.health.di.IODispatcher
 import fit.asta.health.onboarding.data.modal.OnboardingData
 import fit.asta.health.onboarding.data.repo.OnboardingRepo
 import kotlinx.coroutines.CoroutineDispatcher
@@ -18,12 +20,13 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 class OnboardingViewModel
 @Inject constructor(
     private val repo: OnboardingRepo,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    @IODispatcher val coroutineContext: CoroutineContext = Dispatchers.IO
 ) : ViewModel() {
 
 
@@ -44,30 +47,12 @@ class OnboardingViewModel
 
     fun getData() {
         _mutableState.value = UiState.Loading
-        viewModelScope.launch(dispatcher) {
+        viewModelScope.launch(coroutineContext) {
             _mutableState.value = repo.getData().mapToUiState()
         }
     }
 
-    fun dismissOnboarding() = viewModelScope.launch(dispatcher) {
+    fun dismissOnboarding() = viewModelScope.launch(coroutineContext) {
         repo.dismissOnboarding()
-    }
-}
-
-
-fun getStringFromException(e: Exception): Int {
-    return when (e.message) {
-        else -> R.string.unknown_error
-    }
-}
-fun <T> ResponseState<T>.mapToUiState() : UiState<T> {
-    return when(this){
-        is ResponseState.Success->{
-            UiState.Success(this.data)
-        }
-        is ResponseState.Error->{
-            UiState.Error(getStringFromException(this.error))
-        }
-        else->{ UiState.Idle }
     }
 }

@@ -1,9 +1,9 @@
-package fit.asta.health.feedback.model.api
+package fit.asta.health.feedback.data.remote
 
 import fit.asta.health.common.utils.NetworkUtil
-import fit.asta.health.feedback.model.network.FeedbackQuesResponse
-import fit.asta.health.feedback.model.network.PostFeedbackRes
-import fit.asta.health.feedback.model.network.UserFeedback
+import fit.asta.health.feedback.data.remote.modal.FeedbackQuesDTO
+import fit.asta.health.feedback.data.remote.modal.PostFeedbackDTO
+import fit.asta.health.feedback.data.remote.modal.UserFeedbackDTO
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 
@@ -18,14 +18,14 @@ class FeedbackRestApi(baseUrl: String, client: OkHttpClient) : FeedbackApi {
     override suspend fun getFeedbackQuestions(
         userId: String,
         featureId: String
-    ): FeedbackQuesResponse {
+    ): FeedbackQuesDTO {
         return apiService.getFeedbackQuestions(userId, featureId)
     }
 
     override suspend fun postUserFeedback(
-        feedback: UserFeedback,
+        feedback: UserFeedbackDTO,
         files: List<MultipartBody.Part>
-    ): PostFeedbackRes {
+    ): PostFeedbackDTO {
         return apiService.postUserFeedback(feedback, files)
     }
 }

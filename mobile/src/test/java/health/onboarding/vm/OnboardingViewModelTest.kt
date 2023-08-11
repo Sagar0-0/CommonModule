@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test
 
 class OnboardingViewModelTest {
 
-    private lateinit var viewModel: OnboardingViewModel
+    lateinit var viewModel: OnboardingViewModel
 
     private val repo: OnboardingRepoImpl = mockk(relaxed = true)
 
@@ -40,8 +40,11 @@ class OnboardingViewModelTest {
     @Test
     fun `getData with error, return error`() = runTest {
         coEvery { repo.getData() } returns ResponseState.Error(Exception())
+
         viewModel.getData()
+
         coVerify { repo.getData() }
+
         viewModel.state.test {
             assert(awaitItem() is UiState.Error)
         }
@@ -51,8 +54,11 @@ class OnboardingViewModelTest {
     fun `getData no error, return success`() = runTest {
         val mockList = emptyList<OnboardingData>()
         coEvery { repo.getData() } returns ResponseState.Success(mockList)
+
         viewModel.getData()
+
         coVerify { repo.getData() }
+
         viewModel.state.test {
             assert(awaitItem() is UiState.Success)
         }
@@ -62,12 +68,15 @@ class OnboardingViewModelTest {
     fun `getData no error, return data list`() = runTest {
         val mockList = listOf(OnboardingData(), OnboardingData())
         coEvery { repo.getData() } returns ResponseState.Success(mockList)
+
         viewModel.getData()
+
         coVerify { repo.getData() }
+
         viewModel.state.test {
             val item = awaitItem()
             assert(item is UiState.Success)
-            assertEquals(mockList.size,(item as UiState.Success).data.size)
+            assertEquals(mockList.size, (item as UiState.Success).data.size)
         }
     }
 }

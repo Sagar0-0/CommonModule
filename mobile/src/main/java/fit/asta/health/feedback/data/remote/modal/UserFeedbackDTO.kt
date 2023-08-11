@@ -1,4 +1,4 @@
-package fit.asta.health.feedback.model.network
+package fit.asta.health.feedback.data.remote.modal
 
 import android.net.Uri
 import android.os.Parcelable
@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class UserFeedback(
+data class UserFeedbackDTO(
     @SerializedName("ans")
     val ans: List<An> = listOf(),
     @SerializedName("fid")

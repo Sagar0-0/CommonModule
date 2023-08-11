@@ -1,4 +1,4 @@
-package fit.asta.health.feedback.ui
+package fit.asta.health.feedback.ui.components
 
 import android.util.Log
 import android.widget.Toast
@@ -16,6 +16,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,20 +28,18 @@ import fit.asta.health.common.ui.components.generic.AppTopBar
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.components.uploadFiles
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getFileName
-import fit.asta.health.feedback.model.network.An
-import fit.asta.health.feedback.model.network.FeedbackQuesResponse
-import fit.asta.health.feedback.model.network.Media
-import fit.asta.health.feedback.model.network.Qn
-import fit.asta.health.feedback.ui.components.SubmitButton
-import fit.asta.health.feedback.ui.components.WelcomeCard
-import fit.asta.health.feedback.ui.components.feedbackTextFieldItem
+import fit.asta.health.common.utils.toStringRes
+import fit.asta.health.feedback.data.remote.modal.An
+import fit.asta.health.feedback.data.remote.modal.FeedbackQuesDTO
+import fit.asta.health.feedback.data.remote.modal.Media
+import fit.asta.health.feedback.data.remote.modal.Qn
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SessionFeedback(
-    feedbackQuesState: ResponseState<FeedbackQuesResponse>,
+    feedbackQuesState: UiState<FeedbackQuesDTO>,
     onBack: () -> Unit,
     onSubmit: (ans: List<An>) -> Unit
 ) {
@@ -51,7 +50,7 @@ fun SessionFeedback(
         }
     ) {
         when (feedbackQuesState) {
-            ResponseState.Loading -> {
+            UiState.Loading -> {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -62,18 +61,19 @@ fun SessionFeedback(
                 }
             }
 
-            is ResponseState.Error -> {
-                feedbackQuesState.error.message?.let { it1 -> Text(text = it1) }
-                Log.e("QUES", "SessionFeedback: ${feedbackQuesState.error}")
-                Toast.makeText(
-                    context,
-                    "Unexpected error occurred.",
-                    Toast.LENGTH_SHORT
-                ).show()
+            is UiState.Error -> {
+                Text(text = feedbackQuesState.resId.toStringRes())
+                LaunchedEffect(feedbackQuesState){
+                    Toast.makeText(
+                        context,
+                        "Unexpected error occurred.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
                 onBack()
             }
 
-            is ResponseState.Success -> {
+            is UiState.Success -> {
                 val qns = feedbackQuesState.data.data.qns
                 val ansList = remember {
                     mutableStateOf(

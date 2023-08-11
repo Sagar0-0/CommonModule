@@ -16,7 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import fit.asta.health.auth.view.authScreens
 import fit.asta.health.common.maps.view.addressScreens
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
-import fit.asta.health.feedback.ui.feedbackScreen
+import fit.asta.health.feedback.ui.feedbackRoute
 import fit.asta.health.main.view.homeScreen
 import fit.asta.health.onboarding.ui.onboardingRoute
 import fit.asta.health.payments.referral.view.referralScreens
@@ -74,7 +74,7 @@ fun MainNavHost(isConnected: Boolean) {
         schedulerNavigation(navController, onBack = { navController.navigateUp() })
 
         settingScreens(navController)
-        feedbackScreen(navController)
+        feedbackRoute(navController)
         addressScreens(navController)
 
         subscriptionScreens(navController)

@@ -1,8 +1,8 @@
-package fit.asta.health.feedback.model.api
+package fit.asta.health.feedback.data.remote
 
-import fit.asta.health.feedback.model.network.FeedbackQuesResponse
-import fit.asta.health.feedback.model.network.PostFeedbackRes
-import fit.asta.health.feedback.model.network.UserFeedback
+import fit.asta.health.feedback.data.remote.modal.FeedbackQuesDTO
+import fit.asta.health.feedback.data.remote.modal.PostFeedbackDTO
+import fit.asta.health.feedback.data.remote.modal.UserFeedbackDTO
 import okhttp3.MultipartBody
 import retrofit2.http.*
 
@@ -13,12 +13,12 @@ interface FeedbackApiService {
     suspend fun getFeedbackQuestions(
         @Query("uid") userId: String,
         @Query("fid") featureId: String
-    ): FeedbackQuesResponse
+    ): FeedbackQuesDTO
 
     @Multipart
     @POST("feedback/user/post")
     suspend fun postUserFeedback(
-        @Part("json") feedback: UserFeedback,
+        @Part("json") feedback: UserFeedbackDTO,
         @Part files: List<MultipartBody.Part>
-    ): PostFeedbackRes
+    ): PostFeedbackDTO
 }

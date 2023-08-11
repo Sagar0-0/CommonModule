@@ -19,7 +19,7 @@ import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
-import fit.asta.health.common.utils.getStringRes
+import fit.asta.health.common.utils.toStringRes
 import fit.asta.health.onboarding.data.modal.OnboardingData
 import kotlinx.coroutines.launch
 
@@ -44,7 +44,7 @@ fun OnboardingScreen(
         is UiState.Error -> {
             AppErrorScreen(
                 onTryAgain = onReload,
-                desc = state.resId.getStringRes(),
+                desc = state.resId.toStringRes(),
                 imgID = (R.drawable.error_404)
             )
         }

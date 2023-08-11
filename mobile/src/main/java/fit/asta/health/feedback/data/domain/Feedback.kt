@@ -1,4 +1,4 @@
-package fit.asta.health.feedback.model.domain
+package fit.asta.health.feedback.data.domain
 
 data class Feedback(
     val id: String = "",

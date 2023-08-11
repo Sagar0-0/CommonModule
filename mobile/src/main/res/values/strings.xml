@@ -377,5 +377,6 @@
     <string name="no_internet">Internet connection not available</string>
     <string name="alarm">alarm</string>
     <string name="SPOTIFY_SONG_KEY_URI">\"bundle_spotify_song\"</string>
+    <string name="application_fid">application</string>
 
 </resources>

@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -11,37 +12,44 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
-import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.feedback.viewmodel.FeedbackViewModel
-import fit.asta.health.main.Graph
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toStringRes
+import fit.asta.health.feedback.ui.components.SessionFeedback
+import fit.asta.health.feedback.ui.vm.FeedbackViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+private const val FEEDBACK_GRAPH_ROUTE = "graph_feedback"
+fun NavController.navigateToFeedback(fid: String, navOptions: NavOptions? = null) {
+    this.navigate("$FEEDBACK_GRAPH_ROUTE/$fid", navOptions)
+}
+
 @OptIn(ExperimentalCoroutinesApi::class)
-fun NavGraphBuilder.feedbackScreen(navController: NavController) {
-    composable(Graph.Feedback.route + "/{fid}") {
-        val fid = it.arguments?.getString("fid")!!
+fun NavGraphBuilder.feedbackRoute(navController: NavController) {
+    composable("$FEEDBACK_GRAPH_ROUTE/{fid}") {
+        val fid = it.arguments?.getString("fid")?:""
 
         val context = LocalContext.current
         val feedbackViewModel: FeedbackViewModel = hiltViewModel()
 
         LaunchedEffect(Unit) { feedbackViewModel.loadFeedbackQuestions(fid) }
 
-        val quesState = feedbackViewModel.feedbackQuestions.collectAsStateWithLifecycle()
-        val postResultState = feedbackViewModel.feedbackPostState.collectAsStateWithLifecycle()
+        val quesState by feedbackViewModel.feedbackQuestions.collectAsStateWithLifecycle()
+        val postResultState by feedbackViewModel.feedbackPostState.collectAsStateWithLifecycle()
 
-        when (postResultState.value) {
-            ResponseState.Idle -> {
+        when (postResultState) {
+            UiState.Idle -> {
                 SessionFeedback(
-                    feedbackQuesState = quesState.value,
+                    feedbackQuesState = quesState,
                     onBack = navController::navigateUp,
                     onSubmit = feedbackViewModel::postUserFeedback
                 )
             }
 
-            ResponseState.Loading -> {
+            UiState.Loading -> {
                 Box(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -51,7 +59,7 @@ fun NavGraphBuilder.feedbackScreen(navController: NavController) {
                 }
             }
 
-            is ResponseState.Success -> {
+            is UiState.Success -> {
                 EndScreenPopup(
                     title = "Thank you!",
                     desc = "Your feedback has been submitted",
@@ -59,15 +67,16 @@ fun NavGraphBuilder.feedbackScreen(navController: NavController) {
                 )
             }
 
-            is ResponseState.Error -> {
-                Toast.makeText(
-                    context,
-                    "ERROR MSG: " + (postResultState.value as ResponseState.Error).error.message,
-                    Toast.LENGTH_SHORT
-                ).show()
+            is UiState.Error -> {
+                val error = (postResultState as UiState.Error).resId.toStringRes()
+                LaunchedEffect(postResultState){
+                    Toast.makeText(
+                        context,
+                        "ERROR MSG: $error",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
-
-            else -> {}
         }
     }
 }

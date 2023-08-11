@@ -1,13 +1,14 @@
-package fit.asta.health.feedback.model
+package fit.asta.health.feedback.data.repo
 
 import android.content.Context
 import fit.asta.health.common.utils.InputStreamRequestBody
-import fit.asta.health.feedback.model.api.FeedbackApi
-import fit.asta.health.feedback.model.network.FeedbackQuesResponse
-import fit.asta.health.feedback.model.network.PostFeedbackRes
-import fit.asta.health.feedback.model.network.UserFeedback
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.sendResponseState
+import fit.asta.health.feedback.data.utils.FeedbackDataMapper
+import fit.asta.health.feedback.data.remote.FeedbackApi
+import fit.asta.health.feedback.data.remote.modal.FeedbackQuesDTO
+import fit.asta.health.feedback.data.remote.modal.PostFeedbackDTO
+import fit.asta.health.feedback.data.remote.modal.UserFeedbackDTO
 import okhttp3.MultipartBody
 
 
@@ -20,15 +21,11 @@ class FeedbackRepoImpl(
     override suspend fun getFeedback(
         userId: String,
         featureId: String
-    ): Flow<FeedbackQuesResponse> {
-        return flow {
-            emit(
-                remoteApi.getFeedbackQuestions(userId = userId, featureId = featureId)
-            )
-        }
+    ): ResponseState<FeedbackQuesDTO> {
+        return remoteApi.getFeedbackQuestions(userId = userId, featureId = featureId).sendResponseState()
     }
 
-    override suspend fun postUserFeedback(feedback: UserFeedback): Flow<PostFeedbackRes> {
+    override suspend fun postUserFeedback(feedback: UserFeedbackDTO): ResponseState<PostFeedbackDTO> {
         val parts: ArrayList<MultipartBody.Part> = ArrayList()
 
         feedback.ans.forEach { an ->
@@ -45,10 +42,6 @@ class FeedbackRepoImpl(
             }
         }
 
-        return flow {
-            emit(
-                remoteApi.postUserFeedback(feedback,parts)
-            )
-        }
+        return remoteApi.postUserFeedback(feedback,parts).sendResponseState()
     }
 }

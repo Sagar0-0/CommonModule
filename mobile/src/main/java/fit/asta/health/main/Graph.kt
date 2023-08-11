@@ -23,7 +23,6 @@ sealed class Graph(val route: String) {
     object Testimonials : Graph("graph_testimonials_tool")
     object Referral : Graph("graph_referral")
     object Wallet : Graph("graph_wallet")
-    object Feedback : Graph("graph_feedback")//Always pass fid
     object Subscription : Graph("graph_subscription")
     object Splash : Graph("graph_splash")
     object Authentication : Graph("graph_auth")

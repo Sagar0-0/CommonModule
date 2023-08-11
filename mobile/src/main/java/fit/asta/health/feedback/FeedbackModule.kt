@@ -1,4 +1,4 @@
-package fit.asta.health.feedback.di
+package fit.asta.health.feedback
 
 import android.content.Context
 import dagger.Module
@@ -7,11 +7,11 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.BuildConfig
-import fit.asta.health.feedback.model.FeedbackDataMapper
-import fit.asta.health.feedback.model.FeedbackRepo
-import fit.asta.health.feedback.model.FeedbackRepoImpl
-import fit.asta.health.feedback.model.api.FeedbackApi
-import fit.asta.health.feedback.model.api.FeedbackRestApi
+import fit.asta.health.feedback.data.utils.FeedbackDataMapper
+import fit.asta.health.feedback.data.repo.FeedbackRepo
+import fit.asta.health.feedback.data.repo.FeedbackRepoImpl
+import fit.asta.health.feedback.data.remote.FeedbackApi
+import fit.asta.health.feedback.data.remote.FeedbackRestApi
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 

@@ -13,17 +13,21 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.HealthCareApp
 import fit.asta.health.auth.model.AuthRepo
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Named
+import javax.inject.Qualifier
 import javax.inject.Singleton
+import kotlin.coroutines.CoroutineContext
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
+    @IODispatcher
     @Provides
-    @Singleton
-    fun providesDispatcher() = Dispatchers.IO
+    fun provideIODispatcher(): CoroutineContext = Dispatchers.IO
 
     @Provides
     @Named("UId")
@@ -48,4 +52,16 @@ object AppModule {
             produceFile = { context.preferencesDataStoreFile("USER_PREFERENCES") }
         )
     }
+    @IOCoroutine
+    @Provides
+    fun provideCoroutineScope(@IODispatcher coroutineContext: CoroutineContext): CoroutineScope =
+        CoroutineScope(coroutineContext)
+
 }
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class IODispatcher
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class IOCoroutine
