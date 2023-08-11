@@ -1,6 +1,6 @@
 package fit.asta.health.common.utils
 
-fun <T> ResponseState<T>.mapToUiState() : UiState<T> {
+fun <T> ResponseState<T>.toUiState() : UiState<T> {
     return when(this){
         is ResponseState.Success->{
             UiState.Success(this.data)

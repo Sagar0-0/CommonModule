@@ -1,11 +1,10 @@
 package fit.asta.health.feedback.data.repo
 
-import android.content.Context
+import android.content.ContentResolver
 import fit.asta.health.common.utils.InputStreamRequestBody
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.common.utils.sendResponseState
-import fit.asta.health.feedback.data.utils.FeedbackDataMapper
-import fit.asta.health.feedback.data.remote.FeedbackApi
+import fit.asta.health.common.utils.toResponseState
+import fit.asta.health.feedback.data.remote.api.FeedbackApi
 import fit.asta.health.feedback.data.remote.modal.FeedbackQuesDTO
 import fit.asta.health.feedback.data.remote.modal.PostFeedbackDTO
 import fit.asta.health.feedback.data.remote.modal.UserFeedbackDTO
@@ -13,16 +12,15 @@ import okhttp3.MultipartBody
 
 
 class FeedbackRepoImpl(
-    private val context: Context,
     private val remoteApi: FeedbackApi,
-    private val mapper: FeedbackDataMapper,
+    private val contentResolver: ContentResolver
 ) : FeedbackRepo {
 
-    override suspend fun getFeedback(
+    override suspend fun getFeedbackQuestions(
         userId: String,
         featureId: String
     ): ResponseState<FeedbackQuesDTO> {
-        return remoteApi.getFeedbackQuestions(userId = userId, featureId = featureId).sendResponseState()
+        return remoteApi.getFeedbackQuestions(userId = userId, featureId = featureId).toResponseState()
     }
 
     override suspend fun postUserFeedback(feedback: UserFeedbackDTO): ResponseState<PostFeedbackDTO> {
@@ -35,13 +33,13 @@ class FeedbackRepoImpl(
                         MultipartBody.Part.createFormData(
                             name = "file",
                             filename = media.name,
-                            body = InputStreamRequestBody(context.contentResolver, media.localUri)
+                            body = InputStreamRequestBody(contentResolver, media.localUri)
                         )
                     )
                 }
             }
         }
 
-        return remoteApi.postUserFeedback(feedback,parts).sendResponseState()
+        return remoteApi.postUserFeedback(feedback,parts).toResponseState()
     }
 }

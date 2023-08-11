@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test
 
 class OnboardingViewModelTest {
 
-    lateinit var viewModel: OnboardingViewModel
+    private lateinit var viewModel: OnboardingViewModel
 
     private val repo: OnboardingRepoImpl = mockk(relaxed = true)
 

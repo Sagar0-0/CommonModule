@@ -1,7 +1,7 @@
 package fit.asta.health.onboarding.data.util
 
 import fit.asta.health.onboarding.data.modal.OnboardingData
-import fit.asta.health.onboarding.data.remote.OnboardingDTO
+import fit.asta.health.onboarding.data.remote.modal.OnboardingDTO
 
 class OnboardingDataMapper {
 

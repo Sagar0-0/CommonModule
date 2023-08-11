@@ -42,25 +42,37 @@ class FeedbackViewModelTest {
     }
 
     @Test
-    fun `loadFeedbackQuestions with valid uid valid fid, return success`() = runTest {
-        coEvery {
-            repo.getFeedback(
-                any(),
-                "valid"
-            )
-        } returns ResponseState.Success(FeedbackQuesDTO())
-        viewModel.loadFeedbackQuestions("valid")
-        coVerify { repo.getFeedback(any(), "valid") }
+    fun `initial state, return Idle`() = runTest {
+        viewModel.feedbackQuestions.test {
+            assert(awaitItem() is UiState.Idle)
+        }
+    }
+
+    @Test
+    fun `loadFeedbackQuestions, return Loading`() = runTest {
+        viewModel.loadFeedbackQuestions("")
+        viewModel.feedbackQuestions.test {
+            assert(awaitItem() is UiState.Loading)
+        }
+    }
+
+    @Test
+    fun `loadFeedbackQuestions with valid fid, return success`() = runTest {
+        val fid = "valid"
+        coEvery { repo.getFeedbackQuestions(any(),any()) } returns ResponseState.Success(FeedbackQuesDTO())
+        viewModel.loadFeedbackQuestions(fid)
+        coVerify { repo.getFeedbackQuestions(any(), fid) }
         viewModel.feedbackQuestions.test {
             assert(awaitItem() is UiState.Success)
         }
     }
 
     @Test
-    fun `loadFeedbackQuestions with valid uid invalid fid, return error`() = runTest {
-        coEvery { repo.getFeedback(any(), "invalid") } returns ResponseState.Error(Exception())
-        viewModel.loadFeedbackQuestions("invalid")
-        coVerify { repo.getFeedback(any(), "invalid") }
+    fun `loadFeedbackQuestions with invalid fid, return error`() = runTest {
+        val fid = "invalid"
+        coEvery { repo.getFeedbackQuestions(any(), any()) } returns ResponseState.Error(Exception())
+        viewModel.loadFeedbackQuestions(fid)
+        coVerify { repo.getFeedbackQuestions(any(), fid) }
         viewModel.feedbackQuestions.test {
             assert(awaitItem() is UiState.Error)
         }
@@ -85,7 +97,8 @@ class FeedbackViewModelTest {
         viewModel.postUserFeedback(mockList)
         coVerify { repo.postUserFeedback(any()) }
         viewModel.feedbackPostState.test {
-            assert(awaitItem() is UiState.Success)
+            val item = awaitItem()
+            assert(item is UiState.Success)
         }
     }
 

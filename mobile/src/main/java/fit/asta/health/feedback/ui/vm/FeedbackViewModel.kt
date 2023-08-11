@@ -8,14 +8,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.common.utils.mapToUiState
+import fit.asta.health.common.utils.toUiState
 import fit.asta.health.di.IODispatcher
 import fit.asta.health.feedback.data.repo.FeedbackRepo
 import fit.asta.health.feedback.data.remote.modal.An
 import fit.asta.health.feedback.data.remote.modal.FeedbackQuesDTO
 import fit.asta.health.feedback.data.remote.modal.PostFeedbackDTO
 import fit.asta.health.feedback.data.remote.modal.UserFeedbackDTO
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,7 +39,7 @@ class FeedbackViewModel
     private var _qnrId by mutableStateOf("")
 
     private val _feedbackQuestions =
-        MutableStateFlow<UiState<FeedbackQuesDTO>>(UiState.Loading)
+        MutableStateFlow<UiState<FeedbackQuesDTO>>(UiState.Idle)
     val feedbackQuestions = _feedbackQuestions.asStateFlow()
 
     private val _feedbackPostState =
@@ -49,8 +48,9 @@ class FeedbackViewModel
 
     //call this before starting feedback form
     fun loadFeedbackQuestions(featureId: String) {
+        _feedbackQuestions.value = UiState.Loading
         viewModelScope.launch(coroutineContext) {
-            _feedbackQuestions.value = feedbackRepo.getFeedback(userId = uId, featureId = featureId).mapToUiState()
+            _feedbackQuestions.value = feedbackRepo.getFeedbackQuestions(uId,featureId).toUiState()
             _fid = featureId
             if(_feedbackQuestions.value is UiState.Success)_qnrId = (_feedbackQuestions.value as UiState.Success<FeedbackQuesDTO>).data.data.id
         }
@@ -67,7 +67,7 @@ class FeedbackViewModel
         )
         Log.i("ANS", "Submitting answers as: $feedback")
         viewModelScope.launch(coroutineContext) {
-            _feedbackPostState.value = feedbackRepo.postUserFeedback(feedback).mapToUiState()
+            _feedbackPostState.value = feedbackRepo.postUserFeedback(feedback).toUiState()
         }
     }
 }

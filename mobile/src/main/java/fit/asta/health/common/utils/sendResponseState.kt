@@ -1,6 +1,6 @@
 package fit.asta.health.common.utils
 
-fun <T> T.sendResponseState() : ResponseState<T> {
+fun <T> T.toResponseState() : ResponseState<T> {
     return try{
         ResponseState.Success(this)
     }catch (e: Exception){

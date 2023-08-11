@@ -104,8 +104,8 @@ fun SignInScreen(navHostController: NavHostController, onSuccess: () -> Unit) {
         val launcher = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.StartActivityForResult()
         ) { result ->
-            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             try {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
                 val account = task.getResult(ApiException::class.java)!!
                 val credential = GoogleAuthProvider.getCredential(account.idToken, null)
                 auth.signInWithCredential(credential)

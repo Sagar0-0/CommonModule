@@ -1,4 +1,4 @@
-package fit.asta.health.onboarding.data.remote
+package fit.asta.health.onboarding.data.remote.modal
 
 
 import com.google.gson.annotations.SerializedName

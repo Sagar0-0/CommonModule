@@ -1,4 +1,4 @@
-package fit.asta.health.settings
+package fit.asta.health.common.ui
 
 import android.webkit.WebView
 import android.webkit.WebViewClient

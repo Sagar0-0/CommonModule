@@ -26,6 +26,7 @@ fun NavGraphBuilder.splashScreen(navController: NavController) {
                     popUpToTop(navController)
                 }
             )
+
         } else {
             if (!authViewModel.isAuthenticated()) {
                 navController.navigate(Graph.Authentication.route) {
@@ -36,8 +37,6 @@ fun NavGraphBuilder.splashScreen(navController: NavController) {
                     popUpToTop(navController)
                 }
             }
-
         }
-
     }
 }

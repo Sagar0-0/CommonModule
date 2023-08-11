@@ -108,6 +108,13 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "$compose_compiler"
     }
+
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+            unitTests.includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {

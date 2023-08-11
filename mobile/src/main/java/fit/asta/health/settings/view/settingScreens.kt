@@ -3,7 +3,6 @@ package fit.asta.health.settings.view
 import android.widget.Toast
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -32,9 +31,9 @@ fun NavGraphBuilder.settingScreens(
 ) {
     navigation(
         route = Graph.Settings.route,
-        startDestination = SettingScreens.Main.route
+        startDestination = SettingDestination.Main.route
     ) {
-        composable(route = SettingScreens.Main.route) {
+        composable(route = SettingDestination.Main.route) {
             val context = LocalContext.current
             val authViewModel: AuthViewModel = hiltViewModel()
 
@@ -60,7 +59,7 @@ fun NavGraphBuilder.settingScreens(
                     }
 
                     SettingsUiEvent.NOTIFICATION -> {
-                        navController.navigate(SettingScreens.Notifications.route)
+                        navController.navigate(SettingDestination.Notifications.route)
                     }
 
                     SettingsUiEvent.SHARE -> {
@@ -139,7 +138,7 @@ fun NavGraphBuilder.settingScreens(
                 onClickEvent = onUiClickEvent
             )
         }
-        composable(route = SettingScreens.Notifications.route) {
+        composable(route = SettingDestination.Notifications.route) {
             val settingsViewModel: SettingsViewModel = hiltViewModel()
             val status by remember {
                 mutableStateOf(
@@ -166,7 +165,7 @@ fun NavGraphBuilder.settingScreens(
 
 }
 
-sealed class SettingScreens(val route: String) {
-    object Main : SettingScreens("ss_main")
-    object Notifications : SettingScreens("ss_notif")
+sealed class SettingDestination(val route: String) {
+    object Main : SettingDestination("ss_main")
+    object Notifications : SettingDestination("ss_notif")
 }

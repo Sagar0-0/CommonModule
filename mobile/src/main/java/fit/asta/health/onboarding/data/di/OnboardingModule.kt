@@ -1,4 +1,4 @@
-package fit.asta.health.onboarding
+package fit.asta.health.onboarding.data.di
 
 import dagger.Module
 import dagger.Provides

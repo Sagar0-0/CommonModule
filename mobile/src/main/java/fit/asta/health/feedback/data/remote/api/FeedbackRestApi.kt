@@ -1,4 +1,4 @@
-package fit.asta.health.feedback.data.remote
+package fit.asta.health.feedback.data.remote.api
 
 import fit.asta.health.common.utils.NetworkUtil
 import fit.asta.health.feedback.data.remote.modal.FeedbackQuesDTO

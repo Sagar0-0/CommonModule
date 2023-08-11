@@ -3,20 +3,15 @@ package fit.asta.health.onboarding.ui.vm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.R
-import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.common.utils.mapToUiState
+import fit.asta.health.common.utils.toUiState
 import fit.asta.health.di.IODispatcher
 import fit.asta.health.onboarding.data.modal.OnboardingData
 import fit.asta.health.onboarding.data.repo.OnboardingRepo
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -48,7 +43,7 @@ class OnboardingViewModel
     fun getData() {
         _mutableState.value = UiState.Loading
         viewModelScope.launch(coroutineContext) {
-            _mutableState.value = repo.getData().mapToUiState()
+            _mutableState.value = repo.getData().toUiState()
         }
     }
 

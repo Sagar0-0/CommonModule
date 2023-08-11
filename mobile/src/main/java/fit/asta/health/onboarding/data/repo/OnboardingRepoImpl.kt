@@ -3,13 +3,11 @@ package fit.asta.health.onboarding.data.repo
 import fit.asta.health.R
 import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toResponseState
 import fit.asta.health.onboarding.data.modal.OnboardingData
 import fit.asta.health.onboarding.data.remote.api.OnboardingApi
 import fit.asta.health.onboarding.data.util.OnboardingDataMapper
-import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 
 class OnboardingRepoImpl(
     private val remoteApi: OnboardingApi,
@@ -17,12 +15,8 @@ class OnboardingRepoImpl(
     private val prefManager: PrefManager
 ) : OnboardingRepo {
     override suspend fun getData(): ResponseState<List<OnboardingData>> {
-        return try {
-                val response = remoteApi.getData()
-                ResponseState.Success(mapper.mapToDomainModel(response))
-            } catch (e: Exception) {
-                ResponseState.Error(e)
-            }
+        val response = remoteApi.getData()
+        return mapper.mapToDomainModel(response).toResponseState()
     }
 
     override suspend fun dismissOnboarding() {
