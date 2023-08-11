@@ -19,10 +19,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.chargemap.compose.numberpicker.NumberPicker
+import fit.asta.health.R
 import fit.asta.health.common.ui.components.ButtonWithColor
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AMPMHoursMin
@@ -58,6 +60,7 @@ fun TimePickerClock(
     dividersColor: Color = Color.Green,
     textStyle: TextStyle = LocalTextStyle.current,
 ) {
+    val selectionTimePassed = stringResource(R.string.selected_time_is_passed)
     var ampmHoursMin by remember(value) {
         mutableStateOf(value)
     }
@@ -72,7 +75,7 @@ fun TimePickerClock(
     LaunchedEffect(key1 = ampmHoursMin) {
         val timeDifference = getTimeDifference(ampmHoursMin.convert12hrTo24hr())
         time = if (timeDifference < 0) {
-            "Selected time is passed"
+            selectionTimePassed
         } else {
             // Convert the time difference to hours and minutes
             val hour = timeDifference / 60
@@ -163,10 +166,14 @@ fun TimePickerClock(
         }
         Row(horizontalArrangement = Arrangement.spacedBy(spacing.medium)) {
             ButtonWithColor(
-                modifier = Modifier.weight(0.5f), color = Color.Red, text = "CANCEL"
+                modifier = Modifier.weight(0.5f),
+                color = Color.Red,
+                text = stringResource(id = R.string.cancel)
             ) { onCancel() }
             ButtonWithColor(
-                modifier = Modifier.weight(0.5f), color = Color.Blue, text = "SAVE"
+                modifier = Modifier.weight(0.5f),
+                color = Color.Blue,
+                text = stringResource(R.string.save)
             ) { onSave(ampmHoursMin) }
         }
     }

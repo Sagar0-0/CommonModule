@@ -33,11 +33,13 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.BuildConfig
+import fit.asta.health.R
 import fit.asta.health.common.jetpack.getOneUrl
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.components.functional.AppTextFieldValidate
@@ -94,7 +96,7 @@ fun DetailsCreateScreen(
                 onValueChange = { viewModel.onEvent(ProfileEvent.OnNameChange(name = it)) },
                 isError = nameState.error !is UiString.Empty,
                 errorMessage = nameState.error,
-                label = "Name",
+                label = stringResource(R.string.name_profile_creation),
                 singleLine = true,
                 imeAction = ImeAction.Next,
                 keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) })
@@ -105,7 +107,7 @@ fun DetailsCreateScreen(
                 onValueChange = { viewModel.onEvent(ProfileEvent.OnEmailChange(email = it)) },
                 isError = emailState.error !is UiString.Empty,
                 errorMessage = emailState.error,
-                label = "E-mail",
+                label = stringResource(R.string.email_profile_creation),
                 singleLine = true,
                 imeAction = ImeAction.Done,
                 modifier = Modifier.focusRequester(focusRequester = focusRequester),
@@ -122,7 +124,10 @@ fun DetailsCreateScreen(
                 enabled = true,
                 shape = CircleShape
             ) {
-                AppTexts.LabelLarge(text = "Next", color = MaterialTheme.colorScheme.onPrimary)
+                AppTexts.LabelLarge(
+                    text = stringResource(R.string.next_button),
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
             }
             Spacer(modifier = Modifier.height(spacing.medium))
         }
@@ -149,10 +154,10 @@ fun PrivacyAndUserConsent() {
             )
             Spacer(modifier = Modifier.width(spacing.medium))
             Column {
-                AppTexts.TitleLarge(text = "Privacy Statement")
+                AppTexts.TitleLarge(text = stringResource(R.string.privacy_statement_title))
                 Spacer(modifier = Modifier.height(spacing.extraSmall))
                 AppTexts.BodySmall(
-                    text = "We value your privacy. We are committed to protecting your " + "privacy and ask for your consent for the use of your personal health information " + "as required during you health care."
+                    text = stringResource(R.string.privacy_statement)
                 )
             }
         }
@@ -168,7 +173,7 @@ fun PrivacyAndUserConsent() {
                 modifier = Modifier.size(imageSize.standard)
             )
             Spacer(modifier = Modifier.width(spacing.medium))
-            AppTexts.BodyMedium(text = "I CONSENT TO THE USE OF MY PERSONAL HEALTH INFORMATION AS REQUIRED DURING YOUR HEALTH CARE.")
+            AppTexts.BodyMedium(text = stringResource(R.string.user_consent))
         }
     }
 }

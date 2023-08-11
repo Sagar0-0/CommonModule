@@ -12,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.common.utils.PrefUtils
+import fit.asta.health.navigation.today.view.utils.HourMinAmPm
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ASUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AdvUiState
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AlarmSettingEvent
@@ -30,6 +31,7 @@ import fit.asta.health.scheduler.model.db.entity.AlarmSync
 import fit.asta.health.scheduler.model.doman.getAlarm
 import fit.asta.health.scheduler.model.net.tag.ScheduleTagNetData
 import fit.asta.health.scheduler.util.Constants
+import fit.asta.health.scheduler.util.VibrationPattern
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -39,7 +41,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.time.LocalTime
 import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
@@ -76,8 +77,7 @@ class SchedulerViewModel
     val uiError = _uiError.asStateFlow()
     val areInputsValid =
         combine(alarmSettingUiState, tagsUiState) { alarm, _ ->
-            Log.d("valid", "valid: $alarm")
-            alarm.alarm_name.isNotEmpty() && alarm.alarm_description.isNotEmpty() && alarm.tag_name.isNotEmpty()
+            alarm.alarmName.isNotEmpty() && alarm.alarmDescription.isNotEmpty() && alarm.tagName.isNotEmpty()
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
     init {
@@ -92,24 +92,15 @@ class SchedulerViewModel
                         alarmEntity = alarm
                         updateUi(alarm)
                     }
-                } else {
-                    _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
-                        time_hours = LocalTime.now().hour.toString(),
-                        time_midDay = LocalTime.now().hour > 12,
-                        time_minutes = LocalTime.now().minute.toString()
-                    )
                 }
-                Log.d("tone", "getEditUiData alarm: ${_alarmSettingUiState.value}")
             }
         }
         viewModelScope.launch {
             prefUtils.getPreferences(Constants.SPOTIFY_SONG_KEY_URI, "hi").collectLatest {
                 if (it != "hi" && alarmEntity == null) {
-                    _alarmSettingUiState.value = _alarmSettingUiState.value.copy(tone_uri = it)
+                    _alarmSettingUiState.value = _alarmSettingUiState.value.copy(toneUri = it)
                 }
-                Log.d("tone", "getEditUiData: $it")
             }
-            Log.d("tone", "getEditUiData: outside")
         }
     }
 
@@ -117,9 +108,9 @@ class SchedulerViewModel
         when (uiEvent) {
             is AlarmSettingEvent.SetAlarmTime -> {
                 _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
-                    time_hours = uiEvent.Time.hours,
-                    time_midDay = uiEvent.Time.midDay,
-                    time_minutes = uiEvent.Time.minutes
+                    timeHours = uiEvent.Time.hours,
+                    timeMidDay = uiEvent.Time.midDay,
+                    timeMinutes = uiEvent.Time.minutes
                 )
             }
 
@@ -189,12 +180,12 @@ class SchedulerViewModel
 
             is AlarmSettingEvent.SetLabel -> {
                 _alarmSettingUiState.value =
-                    _alarmSettingUiState.value.copy(alarm_name = uiEvent.label)
+                    _alarmSettingUiState.value.copy(alarmName = uiEvent.label)
             }
 
             is AlarmSettingEvent.SetDescription -> {
                 _alarmSettingUiState.value =
-                    _alarmSettingUiState.value.copy(alarm_description = uiEvent.description)
+                    _alarmSettingUiState.value.copy(alarmDescription = uiEvent.description)
             }
 
             is AlarmSettingEvent.SetReminderMode -> {
@@ -203,19 +194,26 @@ class SchedulerViewModel
 
             is AlarmSettingEvent.SetVibration -> {
                 _alarmSettingUiState.value =
-                    _alarmSettingUiState.value.copy(vibration_status = uiEvent.choice)
+                    _alarmSettingUiState.value.copy(vibrationStatus = uiEvent.choice)
             }
 
             is AlarmSettingEvent.SetVibrationIntensity -> {
                 _alarmSettingUiState.value =
-                    _alarmSettingUiState.value.copy(vibration_percentage = uiEvent.vibration.toString())
+                    _alarmSettingUiState.value.copy(
+                        vibrationPattern = uiEvent.vibration,
+                        vibration = when (uiEvent.vibration) {
+                            VibrationPattern.Short -> "Short"
+                            VibrationPattern.Long -> "Long"
+                            VibrationPattern.Intermittent -> "Intermittent"
+                        }
+                    )
             }
 
             is AlarmSettingEvent.SetSound -> {
                 _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
-                    tone_name = uiEvent.tone.name,
-                    tone_type = uiEvent.tone.type,
-                    tone_uri = uiEvent.tone.uri
+                    toneName = uiEvent.tone.name,
+                    toneType = uiEvent.tone.type,
+                    toneUri = uiEvent.tone.uri
                 )
             }
 
@@ -279,7 +277,7 @@ class SchedulerViewModel
                     )
                 )
                 _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
-                    tagId = tag.meta.id, tag_name = tag.meta.name, tag_url = tag.meta.url
+                    tagId = tag.meta.id, tagName = tag.meta.name, tagUrl = tag.meta.url
                 )
             }
 
@@ -371,8 +369,8 @@ class SchedulerViewModel
     }
 
     private fun isValidAdvancedDuration(time: Int): Boolean {
-        val hour = _alarmSettingUiState.value.time_hours.toInt()
-        val min = _alarmSettingUiState.value.time_minutes.toInt() - time
+        val hour = _alarmSettingUiState.value.timeHours.toInt()
+        val min = _alarmSettingUiState.value.timeMinutes.toInt() - time
         if (hour == 0 && min < 0) {
             return false
         }
@@ -380,19 +378,19 @@ class SchedulerViewModel
     }
 
     fun isValidAlarm(): Boolean {
-        if (_alarmSettingUiState.value.tag_name.isNotEmpty()) {
+        if (_alarmSettingUiState.value.tagName.isNotEmpty()) {
             _uiError.value = "select tag "
             return false
         }
-        if (_alarmSettingUiState.value.alarm_description.isNotEmpty()) {
+        if (_alarmSettingUiState.value.alarmDescription.isNotEmpty()) {
             _uiError.value = "enter description"
             return false
         }
-        if (_alarmSettingUiState.value.alarm_name.isNotEmpty()) {
+        if (_alarmSettingUiState.value.alarmName.isNotEmpty()) {
             _uiError.value = "enter alarm label"
             return false
         }
-        if (_alarmSettingUiState.value.time_hours.toInt() != 0 && _alarmSettingUiState.value.time_minutes.toInt() != 0) {
+        if (_alarmSettingUiState.value.timeHours.toInt() != 0 && _alarmSettingUiState.value.timeMinutes.toInt() != 0) {
             _uiError.value = "select alarm time"
             return false
         }
@@ -416,9 +414,9 @@ class SchedulerViewModel
         val alarmTone: Uri = RingtoneManager.getActualDefaultRingtoneUri(
             context, RingtoneManager.TYPE_ALARM
         )
-        if (_alarmSettingUiState.value.tone_uri.isEmpty()) {
+        if (_alarmSettingUiState.value.toneUri.isEmpty()) {
             _alarmSettingUiState.value =
-                _alarmSettingUiState.value.copy(tone_uri = alarmTone.toString())
+                _alarmSettingUiState.value.copy(toneUri = alarmTone.toString())
         }
         val entity = alarmSettingUiState.value.getAlarm(
             userId = alarmItem?.userId ?: userId,
@@ -488,24 +486,24 @@ class SchedulerViewModel
 
         _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
             important = it.important,
-            alarm_description = it.info.description,
-            alarm_name = it.info.name,
-            tag_name = it.info.tag,
+            alarmDescription = it.info.description,
+            alarmName = it.info.name,
+            tagName = it.info.tag,
             tagId = it.info.tagId,
-            tag_url = it.info.url,
+            tagUrl = it.info.url,
             cBy = it.meta.cBy,
             cDate = it.meta.cDate,
             sync = it.meta.sync,
             uDate = it.meta.uDate,
             status = it.status,
-            time_hours = it.time.hours,
-            time_midDay = it.time.midDay,
-            time_minutes = it.time.minutes,
-            tone_name = it.tone.name,
-            tone_type = it.tone.type,
-            tone_uri = it.tone.uri,
-            vibration_percentage = it.vibration.percentage,
-            vibration_status = it.vibration.status,
+            timeHours = it.time.hours,
+            timeMidDay = it.time.midDay,
+            timeMinutes = it.time.minutes,
+            toneName = it.tone.name,
+            toneType = it.tone.type,
+            toneUri = it.tone.uri,
+            vibration = it.vibration.pattern,
+            vibrationStatus = it.vibration.status,
             friday = it.week.friday,
             saturday = it.week.saturday,
             sunday = it.week.sunday,
@@ -527,7 +525,7 @@ class SchedulerViewModel
             val format = "yyyy-MM-dd HH:mm"
             val sdf = SimpleDateFormat(format, Locale.getDefault())
             val dateObj1: Date = sdf.parse(
-                dateFormat.format(date) + " " + alarmSettingUiState.value.time_hours + ":" + alarmSettingUiState.value.time_minutes
+                dateFormat.format(date) + " " + alarmSettingUiState.value.timeHours + ":" + alarmSettingUiState.value.timeMinutes
             )!!
 
             val dateObj2: Date = sdf.parse(
@@ -543,7 +541,7 @@ class SchedulerViewModel
                 slots.add(
                     StatUiState(
                         id = (1..999999999).random(),
-                        name = alarmSettingUiState.value.alarm_name,
+                        name = alarmSettingUiState.value.alarmName,
                         hours = timeParts[0],
                         minutes = timeParts[1],
                         midDay = timeParts[2].lowercase() != "am"
@@ -575,7 +573,7 @@ class SchedulerViewModel
             val format = "yyyy-MM-dd HH:mm"
             val sdf = SimpleDateFormat(format, Locale.getDefault())
             val dateObj1: Date = sdf.parse(
-                dateFormat.format(date) + " " + alarmSettingUiState.value.time_hours + ":" + alarmSettingUiState.value.time_minutes
+                dateFormat.format(date) + " " + alarmSettingUiState.value.timeHours + ":" + alarmSettingUiState.value.timeMinutes
             )!!
             val dateObj2: Date = sdf.parse(
                 dateFormat.format(date) + " " + state.hours + ":" + state.minutes
@@ -599,6 +597,16 @@ class SchedulerViewModel
 
     private fun checkRecurring(): Boolean {
         return (_alarmSettingUiState.value.sunday || _alarmSettingUiState.value.monday || _alarmSettingUiState.value.tuesday || _alarmSettingUiState.value.wednesday || _alarmSettingUiState.value.thursday || _alarmSettingUiState.value.friday || _alarmSettingUiState.value.saturday)
+    }
+
+    fun setHourMin(hourMinAmPm: HourMinAmPm?) {
+        hourMinAmPm?.let {
+            _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+                timeHours = it.hour.toString(),
+                timeMidDay = it.amPm,
+                timeMinutes = hourMinAmPm.min.toString()
+            )
+        }
     }
 
     companion object {

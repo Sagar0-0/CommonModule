@@ -17,8 +17,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.scheduler.compose.components.SpotifyHomeHeader
@@ -65,7 +67,7 @@ fun SpotifyHomeScreen(
         // Recently Played Text
         item {
             Text(
-                text = "Recently Played",
+                text = stringResource(R.string.recently_played),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSecondaryContainer
             )
@@ -140,7 +142,7 @@ fun SpotifyHomeScreen(
         // Top Mixes Text
         item {
             Text(
-                text = "Top Mixes",
+                text = stringResource(R.string.top_mixes),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSecondaryContainer
             )
@@ -213,7 +215,7 @@ fun SpotifyHomeScreen(
         // Favourite Tracks Text
         item {
             Text(
-                text = "Favourite Tracks",
+                text = stringResource(R.string.favourite_tracks),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSecondaryContainer
             )
@@ -288,7 +290,7 @@ fun SpotifyHomeScreen(
         // Favourite Albums Text
         item {
             Text(
-                text = "Favourite Albums",
+                text = stringResource(R.string.favourite_albums),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSecondaryContainer
             )

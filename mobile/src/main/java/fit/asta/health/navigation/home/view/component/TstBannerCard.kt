@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import fit.asta.health.common.ui.components.generic.AppCard
 import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.testimonials.model.domain.Testimonial
+import fit.asta.health.testimonials.data.model.Testimonial
 
 @Composable
 fun TstBannerCard(testimonialsData: Testimonial) {

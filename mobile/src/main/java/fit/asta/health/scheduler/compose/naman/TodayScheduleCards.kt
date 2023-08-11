@@ -32,6 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -78,7 +79,7 @@ fun TodayCardType1(
 private fun CardImage(cardImgId: Int) {
     AppDrawImg(
         painter = painterResource(id = cardImgId),
-        contentDescription = "Card Image",
+        contentDescription = stringResource(R.string.card_image),
         modifier = Modifier.fillMaxSize(),
         contentScale = ContentScale.FillBounds
     )
@@ -170,7 +171,7 @@ fun TodayCardType2(
             ) {
                 Image(
                     painter = painterResource(id = cardImgId),
-                    contentDescription = "Card Image",
+                    contentDescription = stringResource(id = R.string.card_image),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -223,7 +224,7 @@ private fun CardBottomLayout(cardTime: String, remainingTime: String) {
         ) {
             Icon(
                 imageVector = Icons.Rounded.Timelapse,
-                contentDescription = "Remaining Time",
+                contentDescription = stringResource(R.string.remaining_time),
                 tint = Color.White,
                 modifier = Modifier.size(16.dp)
             )
@@ -299,11 +300,11 @@ fun AppointmentCard(url: String = "") {
                     .padding(horizontal = spacing.medium, vertical = spacing.small),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                CardTitleAndButton(cardTitle = "Appointment")
+                CardTitleAndButton(cardTitle = stringResource(R.string.appointment))
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                     AppDrawImg(
                         painter = painterResource(id = R.drawable.barsha),
-                        contentDescription = "Doctor Pic",
+                        contentDescription = stringResource(R.string.doctor_pic),
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .size(customSize.extraLarge4)
@@ -324,7 +325,7 @@ fun AppointmentCard(url: String = "") {
                 ) {
                     AppDefaultIcon(
                         imageVector = Icons.Rounded.Schedule,
-                        contentDescription = "Scheduled",
+                        contentDescription = stringResource(R.string.scheduled),
                         tint = Color.White
                     )
                     Spacer(modifier = Modifier.width(spacing.extraSmall))

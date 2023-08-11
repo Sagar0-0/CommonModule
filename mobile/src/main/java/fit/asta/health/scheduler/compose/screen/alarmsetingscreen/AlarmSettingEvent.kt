@@ -2,6 +2,7 @@ package fit.asta.health.scheduler.compose.screen.alarmsetingscreen
 
 import android.content.Context
 import fit.asta.health.scheduler.model.net.scheduler.Time
+import fit.asta.health.scheduler.util.VibrationPattern
 
 sealed class AlarmSettingEvent{
     data class SetAlarmTime(val Time:Time) : AlarmSettingEvent()
@@ -10,7 +11,7 @@ sealed class AlarmSettingEvent{
     data class SetLabel(val label:String) : AlarmSettingEvent()
     data class SetDescription(val description:String) : AlarmSettingEvent()
     data class SetReminderMode(val choice: String) : AlarmSettingEvent()
-    data class SetVibrationIntensity(val vibration: Float) : AlarmSettingEvent()
+    data class SetVibrationIntensity(val vibration: VibrationPattern) : AlarmSettingEvent()
     data class SetVibration(val choice: Boolean) : AlarmSettingEvent()
     data class SetSound(val tone: ToneUiState) : AlarmSettingEvent()
     data class SetImportant(val important: Boolean) : AlarmSettingEvent()

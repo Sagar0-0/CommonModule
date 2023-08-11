@@ -22,13 +22,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.scheduler.compose.components.SearchBarUI
 import fit.asta.health.scheduler.compose.components.SpotifyMusicItem
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ToneUiState
@@ -53,7 +55,7 @@ fun SpotifySearchScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
     ) {
-
+        val toast = stringResource(R.string.search_bar_empty)
         // This function Draws the Search Bar to the Screen
         SearchBarUI(
             modifier = Modifier
@@ -75,7 +77,7 @@ fun SpotifySearchScreen(
                 // No Search Query
                 Toast.makeText(
                     context,
-                    "Search Bar Empty!",
+                    toast,
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -103,7 +105,7 @@ fun SpotifySearchScreen(
 
                     // Tracks
                     Text(
-                        text = "Tracks",
+                        text = stringResource(R.string.tracks),
 
                         modifier = Modifier
                             .padding(16.dp),

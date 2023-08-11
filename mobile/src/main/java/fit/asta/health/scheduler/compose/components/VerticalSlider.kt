@@ -3,7 +3,11 @@ package fit.asta.health.scheduler.compose.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -13,7 +17,7 @@ import com.chargemap.compose.numberpicker.NumberPicker
 @Composable
 fun NumberPickerDemo() {
 
-    var pickerValue by remember { mutableStateOf(0) }
+    var pickerValue by remember { mutableIntStateOf(0) }
 
     Column(
         Modifier.fillMaxSize(),

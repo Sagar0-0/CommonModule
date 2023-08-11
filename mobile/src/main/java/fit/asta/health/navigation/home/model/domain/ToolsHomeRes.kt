@@ -1,7 +1,7 @@
 package fit.asta.health.navigation.home.model.domain
 
 import com.google.gson.annotations.SerializedName
-import fit.asta.health.testimonials.model.domain.Testimonial
+import fit.asta.health.testimonials.data.model.Testimonial
 
 
 data class ToolsHomeRes(

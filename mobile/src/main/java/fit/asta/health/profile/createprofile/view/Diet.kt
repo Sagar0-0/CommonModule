@@ -12,9 +12,11 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.AppModalBottomSheetLayout
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
@@ -32,7 +34,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun DietCreateScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
@@ -89,22 +91,34 @@ fun DietCreateScreen(
 
     val cardList = listOf(
         OnlySelectionCardData(
-            "Dietary Preferences", composeThirdData?.get(DIETARYPREF.cardIndex), {
+            stringResource(R.string.dietaryPref_profile_creation),
+            composeThirdData?.get(DIETARYPREF.cardIndex),
+            {
                 onItemClick(DIETARYPREF, DIETARYPREF.propertyType)
-            }, DIETARYPREF.cardIndex
+            },
+            DIETARYPREF.cardIndex
         ), OnlySelectionCardData(
-            "Non Veg Days", composeThirdData?.get(NONVEGDAYS.cardIndex), {
+            stringResource(R.string.nonVegDays_profile_creation),
+            composeThirdData?.get(NONVEGDAYS.cardIndex),
+            {
                 /* TODO non-veg days property type?*/
                 onItemClick(NONVEGDAYS, NONVEGDAYS.propertyType)
-            }, NONVEGDAYS.cardIndex
+            },
+            NONVEGDAYS.cardIndex
         ), OnlySelectionCardData(
-            "Food Allergies?", composeThirdData?.get(FOODALLERGIES.cardIndex), {
+            stringResource(R.string.foodAllergies_profile_creation),
+            composeThirdData?.get(FOODALLERGIES.cardIndex),
+            {
                 onItemClick(FOODALLERGIES, FOODALLERGIES.propertyType)
-            }, FOODALLERGIES.cardIndex
+            },
+            FOODALLERGIES.cardIndex
         ), OnlySelectionCardData(
-            "Cuisines?", composeThirdData?.get(CUISINES.cardIndex), {
+            stringResource(R.string.cuisines_profile_creation),
+            composeThirdData?.get(CUISINES.cardIndex),
+            {
                 onItemClick(CUISINES, CUISINES.propertyType)
-            }, CUISINES.cardIndex
+            },
+            CUISINES.cardIndex
         )
     )
 
@@ -173,7 +187,7 @@ fun DietContent(
             }
 
             SelectionCardCreateProfile(
-                cardType = "Food Restrictions?",
+                cardType = MultiRadioBtnKeys.DIETREST.getListName(),
                 cardList = composeThirdData?.get(4),
                 onItemsSelect = onFoodRes,
                 selectedOption = selectedFoodResDemo,
@@ -191,7 +205,7 @@ fun DietContent(
                 eventPrevious = eventPrevious, eventNext = {
                     buttonClicked = !buttonClicked
                     viewModel.onEvent(ProfileEvent.OnSubmit)
-                }, titleButton2 = "Submit"
+                }, titleButton2 = stringResource(R.string.submit)
             )
 
             if (buttonClicked) {

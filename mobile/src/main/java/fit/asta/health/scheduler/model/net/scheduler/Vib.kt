@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Vib(
     @SerializedName("pct")
-    val percentage: String, // 1
+    val pattern: String, // 1
     @SerializedName("sts")
     val status: Boolean // true
 ) : Parcelable

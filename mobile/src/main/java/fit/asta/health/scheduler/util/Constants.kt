@@ -4,10 +4,12 @@ import android.app.KeyguardManager
 import android.content.Context
 import android.media.RingtoneManager
 import android.os.Build
+import android.os.Parcelable
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.Time24hr
+import kotlinx.parcelize.Parcelize
 import xyz.aprildown.ultimateringtonepicker.UltimateRingtonePicker
 import java.time.LocalTime
 import java.time.temporal.ChronoUnit
@@ -111,5 +113,29 @@ class Constants {
             return currentTime.until(targetTime, ChronoUnit.MINUTES)
         }
 
+        fun getVibrationPattern(value: VibrationPattern): LongArray {
+            return when (value) {
+                VibrationPattern.Short -> longArrayOf(0, 500, 250, 500, 250, 500)
+                VibrationPattern.Long -> longArrayOf(0, 1000, 500, 1000)
+                VibrationPattern.Intermittent -> longArrayOf(0, 500, 250, 500, 250, 500, 2500)
+            }
+        }
+
+        fun getVibrationPattern(value: String): LongArray {
+            return when (value) {
+                "Short" -> longArrayOf(0, 500, 250, 500, 250, 500)
+                "Long" -> longArrayOf(0, 1000, 500, 1000)
+                "Intermittent" -> longArrayOf(0, 500, 250, 500, 250, 500, 2500)
+                else -> longArrayOf(0, 500, 250, 500, 250, 500, 2500)
+            }
+        }
+
     }
+}
+
+@Parcelize
+sealed class VibrationPattern : Parcelable {
+    object Short : VibrationPattern(), Parcelable
+    object Long : VibrationPattern(), Parcelable
+    object Intermittent : VibrationPattern(), Parcelable
 }

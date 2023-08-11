@@ -374,5 +374,171 @@
     <string name="refer_and_earn">Refer and earn</string>
     <string name="refer_invite_text">Invite your friends to Asta and get Cashback to your wallet when they subscribe to our Health Plan</string>
     <string name="code_side_text">"Click to copy code: "</string>
+    <!--    TodayScreen-->
+    <string name="hello_Aastha">Hello Aastha</string>
+    <string name="greeting">What’s your mood today ?</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="morning_events">Morning Events</string>
+    <string name="afternoon_events">Afternoon Events</string>
+    <string name="evening_events">Evening Events</string>
+    <string name="tomorrow_events">Tomorrow Events</string>
+    <string name="undo">Undo</string>
+    <string name="alarm_setting">Alarm Setting</string>
+    <string name="intervals_settings">Intervals Settings</string>
+    <string name="optional">Optional</string>
+    <string name="vibration">"Vibration "</string>
+    <string name="important">Important</string>
+    <string name="labels">Labels</string>
+    <string name="enter_your_label">Enter your Label</string>
+    <string name="select_vibration_pattern">Select Vibration Pattern</string>
+    <string name="sound">Sound</string>
+    <string name="spotify">Spotify</string>
+    <string name="local_music">Local Music</string>
+    <string name="stop">stop</string>
+    <string name="recently_played">Recently Played</string>
+    <string name="top_mixes">Top Mixes</string>
+    <string name="favourite_tracks">Favourite Tracks</string>
+    <string name="favourite_albums">Favourite Albums</string>
+    <string name="search_bar_empty">Search Bar Empty!</string>
+    <string name="tracks">Tracks</string>
+    <string name="deleted">Deleted</string>
+    <string name="custom_tags">Custom Tags</string>
+    <string name="tag_name">Tag Name</string>
+    <string name="intervals_and_time_settings">Intervals and Time Settings</string>
+    <string name="repetitive_intervals">Repetitive \n Intervals</string>
+    <string name="pm">pm</string>
+    <string name="am">am</string>
+    <string name="minutes">%1$s Minutes</string>
+    <string name="post_reminder">Post\nReminder</string>
+    <string name="minute">Minute</string>
+    <string name="hour">Hour</string>
+    <string name="once">Once</string>
+    <string name="mon">"Mon "</string>
+    <string name="tue">"Tue "</string>
+    <string name="wed">"Wed "</string>
+    <string name="thu">"Thu "</string>
+    <string name="fri">"Fri "</string>
+    <string name="sat">"Sat "</string>
+    <string name="sun">"Sun "</string>
+    <string name="search_from_spotify">Search from Spotify</string>
+    <string name="clear_button">Clear Button</string>
+    <string name="search">Search</string>
+    <string name="playlist_image">Playlist Image</string>
+    <string name="apply">Apply</string>
+    <string name="camera_icon">Camera Icon</string>
+    <string name="selected_time_is_passed">Selected time is passed</string>
+    <string name="save">SAVE</string>
+    <string name="shortPattern">Short</string>
+    <string name="longPattern">Long</string>
+    <string name="intermittent">Intermittent</string>
+    <string name="event_icon">Event Icon</string>
+    <string name="temperature_icon">Temperature Icon</string>
+    <string name="card_image">Card Image</string>
+    <string name="remaining_time">Remaining Time</string>
+    <string name="appointment">Appointment</string>
+    <string name="doctor_pic">Doctor Pic</string>
+    <string name="scheduled">Scheduled</string>
+
+    //Profile String Resources
+    //View Profile
+    <string name="profile_screen">Profile Screen</string>
+    <string name="details">Details</string>
+    <string name="physique">Physique</string>
+    <string name="health">Health</string>
+    <string name="lifestyle">Lifestyle</string>
+    <string name="diet">Diet</string>
+    //View Details
+    <string name="leaderboard">LeaderBoard</string>
+    <string name="badges">Badges</string>
+    <string name="level">Level</string>
+    <string name="plan">Plan</string>
+    <string name="goal">Goal</string>
+    <string name="details_health">Health</string>
+    //View Physique
+    <string name="age">AGE</string>
+    <string name="gender">GENDER</string>
+    <string name="height">HEIGHT</string>
+    <string name="weight">WEIGHT</string>
+    <string name="bmi">BMI</string>
+    <string name="pregnancy">PREGNANCY</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="others">Others</string>
+    //View Health
+    <string name="significant_health_history">SIGNIFICANT HEALTH HISTORY</string>
+    <string name="injuries">INJURIES</string>
+    <string name="body_parts">BODY PARTS</string>
+    <string name="ailments">AILMENTS</string>
+    <string name="medications">MEDICATIONS</string>
+    <string name="health_targets">HEALTH TARGETS</string>
+    <string name="addictions">ADDICTIONS</string>
+    //View LifeStyle
+    <string name="sleep_schedule">SLEEP SCHEDULE</string>
+    <string name="work_schedule">WORK SCHEDULE</string>
+    <string name="physically_active">PHYSICALLY ACTIVE</string>
+    <string name="working_environment">WORKING ENVIRONMENT</string>
+    <string name="work_style">WORK STYLE</string>
+    <string name="working_hours">WORKING HOURS</string>
+    <string name="current_activities">CURRENT ACTIVITIES</string>
+    <string name="preferred_activities">PREFERRED ACTIVITIES</string>
+    <string name="lifestyle_targets">LIFESTYLE TARGETS</string>
+    //View Diet
+    <string name="dietary_preferences">DIETARY PREFERENCES</string>
+    <string name="days_you_consume_non_veg">DAYS YOU CONSUME NON-VEG</string>
+    <string name="food_allergies">FOOD ALLERGIES</string>
+    <string name="cuisines">CUISINES</string>
+    <string name="food_restrictions">FOOD RESTRICTIONS</string>
+    //Create Profile String Resources
+    <string name="create_profile">Create Profile</string>
+    <string name="discard_profile_creation">Discard Profile Creation</string>
+    <string name="dialogDesc_profile_creation">You will miss important FUTURE UPDATES like CUSTOM PLANS based on your PROFILE. CLICK Cancel to complete your PROFILE</string>
+    <string name="negativeTitle_profile_creation">Discard Profile Creation and Move to Home Screen</string>
+    <string name="positiveTitle_profile_creation">Cancel And Continue to Create Profile</string>
+    //Create Profile Details
+    <string name="name_profile_creation">Name</string>
+    <string name="email_profile_creation">E-mail</string>
+    <string name="next_button">Next</string>
+    <string name="privacy_statement_title">Privacy Statement</string>
+    <string name="privacy_statement">We value your privacy. We are committed to protecting your privacy and ask for your consent for the use of your personal health information as required during you health care.</string>
+    <string name="user_consent">I CONSENT TO THE USE OF MY PERSONAL HEALTH INFORMATION AS REQUIRED DURING YOUR HEALTH CARE.</string>
+    //Create Profile Physique
+    <string name="periodTitle_profile_creation">Are you having periods?</string>
+    <string name="pregnantTitle_profile_creation">Are you Pregnant</string>
+    <string name="pregnancyWeekInput_profile_creation">Please Enter your Pregnancy Week</string>
+    <string name="date_of_birth">Date of Birth</string>
+    //Create Profile List
+    <string name="gender_profile_creation">Gender</string>
+    <string name="pregnant_profile_creation">Pregnant</string>
+    <string name="period_profile_creation">Period</string>
+    <string name="healthHis_profile_creation">Health History</string>
+    <string name="injury_profile_creation">Injury</string>
+    <string name="bodyPart_profile_creation">Body Part</string>
+    <string name="ailments_profile_creation">Ailments</string>
+    <string name="medication_profile_creation">Medication</string>
+    <string name="healthTarget_profile_creation">Health Target</string>
+    <string name="addictions_profile_creation">Addictions</string>
+    <string name="physicalActive_profile_creation">Physical Active</string>
+    <string name="workingEnv_profile_creation">Working Environment</string>
+    <string name="workingStyle_profile_creation">Working Style</string>
+    <string name="workingHour_profile_creation">Working Hour</string>
+    <string name="dietRes_profile_creation">Diet Restrictions</string>
+    <string name="dietaryPref_profile_creation">Dietary Preferences</string>
+    <string name="nonVegDays_profile_creation">Non Veg Days</string>
+    <string name="foodAllergies_profile_creation">Food Allergies?</string>
+    <string name="cuisines_profile_creation">Cuisines?</string>
+    <string name="submit">Submit</string>
+    //Create Profile LifeStyle
+    <string name="currentAct_profile_creation">Current Activities</string>
+    <string name="prefAct_profile_creation">Preferred Activities</string>
+    <string name="lifeStyleTarget_profile_creation">LifeStyleTargets</string>
+    <string name="sleepSchedule_profile_creation">Sleep Schedule</string>
+    <string name="wakeUpTime_profile_creation">Wake Up Time</string>
+    <string name="sleepTime_profile_creation">Sleep Time</string>
+    <string name="jobSchedule_profile_creation">Job Schedule</string>
+    <string name="jobStart_profile_creation">Job Start Time</string>
+    <string name="jobEnd_profile_creation">Job End Time</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
 
 </resources>

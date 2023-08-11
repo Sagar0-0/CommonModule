@@ -33,9 +33,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.AppCard
 import fit.asta.health.common.ui.theme.TSelected
 import fit.asta.health.common.ui.theme.spacing
@@ -141,8 +143,17 @@ fun DigitalDemo(time: AMPMHoursMin, open: () -> Unit = {}) {
 fun RepeatAlarm(
     onDaySelect: (Int) -> Unit, alarmSettingUiState: ASUiState,
 ) {
-    var text by remember { mutableStateOf("One Time") }
-    text = getRecurringDaysText(alarmSettingUiState)
+    val map: HashMap<Int, String> = HashMap()
+    map[1] = stringResource(R.string.once)
+    map[2] = stringResource(R.string.mon)
+    map[3] = stringResource(R.string.tue)
+    map[4] = stringResource(R.string.wed)
+    map[5] = stringResource(R.string.thu)
+    map[6] = stringResource(R.string.fri)
+    map[7] = stringResource(R.string.sat)
+    map[8] = stringResource(R.string.sun)
+    var text by remember { mutableStateOf(map[1]) }
+    text = getRecurringDaysText(alarmSettingUiState, map)
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -173,7 +184,7 @@ fun RepeatAlarm(
                         )
                         Spacer(modifier = Modifier.height(1.dp))
                         Text(
-                            text = text,
+                            text = text!!,
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -227,31 +238,33 @@ fun AllDays(
     }
 }
 
-fun getRecurringDaysText(alarmWeek: ASUiState): String {
+fun getRecurringDaysText(alarmWeek: ASUiState, map: Map<Int, String>): String {
+
+
     if (!alarmWeek.recurring) {
-        return "Once"
+        return map[1]!!
     }
     var days = ""
     if (alarmWeek.monday) {
-        days += "Mon "
+        days += map[2]
     }
     if (alarmWeek.tuesday) {
-        days += "Tue "
+        days += map[3]
     }
     if (alarmWeek.wednesday) {
-        days += "Wed "
+        days += map[4]
     }
     if (alarmWeek.thursday) {
-        days += "Thu "
+        days += map[5]
     }
     if (alarmWeek.friday) {
-        days += "Fri "
+        days += map[6]
     }
     if (alarmWeek.saturday) {
-        days += "Sat "
+        days += map[7]
     }
     if (alarmWeek.sunday) {
-        days += "Sun "
+        days += map[8]
     }
     return days
 }

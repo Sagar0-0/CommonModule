@@ -83,7 +83,7 @@ fun AlarmScreen(uiState: AlarmUiState, event: (AlarmEvent) -> Unit) {
                                 )
                             )
                         }) {
-                            AppTexts.TitleMedium(text = "Snooze")
+                            AppTexts.TitleMedium(text = stringResource(id = R.string.snooze))
                         }
                         AppButtons.AppStandardButton(onClick = {
                             event(
@@ -92,7 +92,7 @@ fun AlarmScreen(uiState: AlarmUiState, event: (AlarmEvent) -> Unit) {
                                 )
                             )
                         }) {
-                            AppTexts.TitleMedium(text = "stop")
+                            AppTexts.TitleMedium(text = stringResource(R.string.stop))
                         }
                     }
                 }

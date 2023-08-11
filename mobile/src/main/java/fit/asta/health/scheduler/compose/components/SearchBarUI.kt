@@ -16,9 +16,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import fit.asta.health.R
 
 /**
  * This composable function creates a Outlined Search Bar UI in the Screen
@@ -59,7 +61,7 @@ fun SearchBarUI(
         // This is the Label of the input which is shown to the top left when selected
         label = {
             Text(
-                "Search from Spotify",
+                stringResource(R.string.search_from_spotify),
                 color = MaterialTheme.colorScheme.primary
             )
         },
@@ -78,7 +80,7 @@ fun SearchBarUI(
             // Search Icon
             Icon(
                 imageVector = Icons.Outlined.Search,
-                contentDescription = "Search Button",
+                contentDescription = stringResource(id = R.string.search_button),
                 modifier = Modifier
                     .size(24.dp)
             )
@@ -90,7 +92,7 @@ fun SearchBarUI(
                 // Clear Button
                 Icon(
                     imageVector = Icons.Outlined.Clear,
-                    contentDescription = "Clear Button",
+                    contentDescription = stringResource(R.string.clear_button),
                     modifier = Modifier
                         .size(24.dp)
                         .clickable {

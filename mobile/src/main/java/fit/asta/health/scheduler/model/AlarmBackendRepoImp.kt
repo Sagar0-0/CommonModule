@@ -2,7 +2,7 @@ package fit.asta.health.scheduler.model
 
 import android.util.Log
 import fit.asta.health.common.utils.NetworkResult
-import fit.asta.health.navigation.today.domain.mapper.getTadayData
+import fit.asta.health.navigation.today.domain.mapper.getTodayData
 import fit.asta.health.navigation.today.domain.model.TodayData
 import fit.asta.health.network.data.Status
 import fit.asta.health.scheduler.model.api.SchedulerApi
@@ -40,7 +40,7 @@ class AlarmBackendRepoImp(
                 remoteApi.getTodayDataFromBackend(userID, date, location, latitude, longitude)
             if (result.isSuccessful) {
                 Log.d("today", "getTodayDataFromBackend: ${result.body()}")
-                emit(NetworkResult.Success(result.body()!!.getTadayData()))
+                emit(NetworkResult.Success(result.body()!!.getTodayData()))
             } else {
                 NetworkResult.Error<TodayData>(message = result.message())
             }

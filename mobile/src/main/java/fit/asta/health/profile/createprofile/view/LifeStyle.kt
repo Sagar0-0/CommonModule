@@ -31,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -39,6 +40,7 @@ import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.clock.ClockDialog
 import com.maxkeppeler.sheets.clock.models.ClockSelection
+import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.AppButtons
 import fit.asta.health.common.ui.components.generic.AppCard
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
@@ -63,7 +65,7 @@ import fit.asta.health.profile.view.components.UserSleepCycles
 import fit.asta.health.profile.viewmodel.HPropState
 import fit.asta.health.profile.viewmodel.ProfileEvent
 import fit.asta.health.profile.viewmodel.ProfileViewModel
-import fit.asta.health.testimonials.model.domain.InputWrapper
+import fit.asta.health.testimonials.data.model.InputWrapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
@@ -123,17 +125,17 @@ fun LifeStyleCreateScreen(
 
     val cardDataList = listOf(
         OnlySelectionCardData(
-            "Current Activities",
+            stringResource(R.string.currentAct_profile_creation),
             composeSecondData?.get(0),
             { onItemClick(CURRENTACTIVITIES, "activity") },
             0
         ), OnlySelectionCardData(
-            "Preferred Activities",
+            stringResource(R.string.prefAct_profile_creation),
             composeSecondData?.get(1),
             { onItemClick(PREFERREDACTIVITIES, "activity") },
             1
         ), OnlySelectionCardData(
-            "LifeStyleTargets",
+            stringResource(R.string.lifeStyleTarget_profile_creation),
             composeSecondData?.get(2),
             { onItemClick(LIFESTYLETARGETS, "goal") },
             2
@@ -161,6 +163,7 @@ fun LifeStyleCreateScreen(
     })
 }
 
+
 @OptIn(ExperimentalFoundationApi::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun LifeStyleContent(
@@ -173,10 +176,9 @@ fun LifeStyleContent(
     //Radio Buttons Selection
     val radioButtonSelections by viewModel.radioButtonSelections.collectAsStateWithLifecycle()
 
-
     //Time Picker Params
     val timePickers = listOf(
-        TimePickerData(title = "Sleep Schedule",
+        TimePickerData(title = stringResource(R.string.sleepSchedule_profile_creation),
             firstColTime = viewModel.wakeUpTime.collectAsStateWithLifecycle(),
             secColTime = viewModel.bedTime.collectAsStateWithLifecycle(),
             showSecondContent = remember { mutableStateOf(false) },
@@ -188,10 +190,10 @@ fun LifeStyleContent(
                 viewModel.onEvent(event = ProfileEvent.OnUserBedTimeChange("$hours:$minutes"))
             },
             showFirstContent = remember { mutableStateOf(false) },
-            firstColType = "Wake Up Time",
-            secondColType = "Sleep Time",
+            firstColType = stringResource(R.string.wakeUpTime_profile_creation),
+            secondColType = stringResource(R.string.sleepTime_profile_creation),
             showContent = remember { mutableStateOf(false) }),
-        TimePickerData(title = "Job Schedule",
+        TimePickerData(title = stringResource(R.string.jobSchedule_profile_creation),
             firstColTime = viewModel.jStartTime.collectAsStateWithLifecycle(),
             secColTime = viewModel.jEndTime.collectAsStateWithLifecycle(),
             showSecondContent = remember { mutableStateOf(false) },
@@ -203,8 +205,8 @@ fun LifeStyleContent(
                 viewModel.onEvent(event = ProfileEvent.OnUserJEndTimeChange("$hours:$minutes"))
             },
             showFirstContent = remember { mutableStateOf(false) },
-            firstColType = "Job Start Time",
-            secondColType = "Job End Time",
+            firstColType = stringResource(R.string.jobStart_profile_creation),
+            secondColType = stringResource(R.string.jobEnd_profile_creation),
             showContent = remember { mutableStateOf(false) })
     )
 
@@ -256,28 +258,28 @@ fun LifeStyleContent(
 
                 Spacer(modifier = Modifier.height(spacing.medium))
             }
-            LifeStyleToggleSelectionCard(selectionTypeText = "Are you Physically Active",
+            LifeStyleToggleSelectionCard(selectionTypeText = MultiRadioBtnKeys.PHYACTIVE.getListName(),
                 options = listOf("Less", "Moderate", "Very"),
                 selectedOption = radioButtonSelections[MultiRadioBtnKeys.PHYACTIVE.key] as ThreeRadioBtnSelections?,
                 onStateChange = { state ->
                     viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.PHYACTIVE.key, state)
                 })
             Spacer(modifier = Modifier.height(spacing.medium))
-            LifeStyleToggleSelectionCard(selectionTypeText = "Current Working Environment",
+            LifeStyleToggleSelectionCard(selectionTypeText = MultiRadioBtnKeys.WORKINGENV.getListName(),
                 options = listOf("Standing", "Sitting"),
                 selectedOption = radioButtonSelections[MultiRadioBtnKeys.WORKINGENV.key] as TwoRadioBtnSelections?,
                 onStateChange = { state ->
                     viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.WORKINGENV.key, state)
                 })
             Spacer(modifier = Modifier.height(spacing.medium))
-            LifeStyleToggleSelectionCard(selectionTypeText = "Current WorkStyle",
+            LifeStyleToggleSelectionCard(selectionTypeText = MultiRadioBtnKeys.WORKINGSTYLE.getListName(),
                 options = listOf("Indoor", "Outdoor"),
                 selectedOption = radioButtonSelections[MultiRadioBtnKeys.WORKINGSTYLE.key] as TwoRadioBtnSelections?,
                 onStateChange = { state ->
                     viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.WORKINGSTYLE.key, state)
                 })
             Spacer(modifier = Modifier.height(spacing.medium))
-            LifeStyleToggleSelectionCard(selectionTypeText = "What are your working hours",
+            LifeStyleToggleSelectionCard(selectionTypeText = MultiRadioBtnKeys.WORKINGHRS.getListName(),
                 options = listOf("Morning", "Afternoon", "Night"),
                 selectedOption = radioButtonSelections[MultiRadioBtnKeys.WORKINGHRS.key] as ThreeRadioBtnSelections?,
                 onStateChange = { state ->
@@ -300,6 +302,7 @@ fun LifeStyleContent(
         }
     }
 }
+
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
@@ -328,6 +331,7 @@ fun LifeStyleCreateBottomSheetLayout(
         )
     }
 }
+
 
 @Composable
 private fun LifeStyleTimePicker(
@@ -409,8 +413,8 @@ private fun LifeStyleTwoToggleSelectionCard(
     selectionTypeText: String?,
     selectedOption: TwoRadioBtnSelections?,
     onStateChange: (TwoRadioBtnSelections) -> Unit,
-    firstOption: String = "Yes",
-    secondOption: String = "No",
+    firstOption: String = stringResource(R.string.yes),
+    secondOption: String = stringResource(R.string.no),
 ) {
     AppCard {
         TwoTogglesGroup(selectionTypeText, selectedOption, onStateChange, firstOption, secondOption)
@@ -447,6 +451,7 @@ private fun LifeStyleToggleSelectionCard(
     }
 }
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CreateProfileTimePicker(
@@ -458,6 +463,7 @@ private fun CreateProfileTimePicker(
         selection = ClockSelection.HoursMinutes(onPositiveClick = onPositiveClick)
     )
 }
+
 
 data class OnlySelectionCardData(
     val cardType: String,

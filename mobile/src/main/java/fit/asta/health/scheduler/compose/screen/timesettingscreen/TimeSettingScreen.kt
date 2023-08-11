@@ -9,6 +9,8 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import fit.asta.health.R
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.common.ui.components.generic.AppTopBar
@@ -81,7 +83,7 @@ fun TimeSettingScreen(
         },
         topBar = {
             AppTopBar(
-                title = "Intervals and Time Settings",
+                title = stringResource(R.string.intervals_and_time_settings),
                 onBack = { navBack() },
             )
         })

@@ -1,6 +1,6 @@
 package fit.asta.health.scheduler.navigation
 
-import android.util.Log
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
@@ -9,6 +9,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import fit.asta.health.main.Graph
 import fit.asta.health.main.sharedViewModel
+import fit.asta.health.navigation.today.view.utils.HourMinAmPm
+import fit.asta.health.navigation.today.view.utils.Utils
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AlarmSettingScreen
 import fit.asta.health.scheduler.compose.screen.tagscreen.TagsScreen
 import fit.asta.health.scheduler.compose.screen.timesettingscreen.TimeSettingScreen
@@ -35,6 +37,11 @@ fun NavGraphBuilder.schedulerNavigation(
 //        }
         composable(route = AlarmSchedulerScreen.AlarmSettingHome.route) {
             val schedulerViewModel: SchedulerViewModel = it.sharedViewModel(navController)
+            LaunchedEffect(key1 = it) {
+                schedulerViewModel.setHourMin(
+                    navController.previousBackStackEntry?.savedStateHandle?.get<HourMinAmPm>(key = Utils.HourMinAmPmKey)
+                )
+            }
             val alarmSettingUiState by schedulerViewModel.alarmSettingUiState.collectAsStateWithLifecycle()
             val uiError by schedulerViewModel.uiError.collectAsStateWithLifecycle()
             val areInputsValid by schedulerViewModel.areInputsValid.collectAsStateWithLifecycle()
@@ -54,10 +61,6 @@ fun NavGraphBuilder.schedulerNavigation(
         composable(route = AlarmSchedulerScreen.TagSelection.route) {
             val schedulerViewModel: SchedulerViewModel = it.sharedViewModel(navController)
             val tagsUiState by schedulerViewModel.tagsUiState.collectAsStateWithLifecycle()
-            Log.d(
-                "manish",
-                "schedulerNavigation: ${tagsUiState.tagsList} viewmodel${schedulerViewModel}"
-            )
             TagsScreen(
                 onNavBack = { navController.popBackStack() },
                 tagsEvent = schedulerViewModel::tagsEvent,
@@ -66,9 +69,8 @@ fun NavGraphBuilder.schedulerNavigation(
         }
         composable(route = AlarmSchedulerScreen.IntervalSettingsSelection.route) {
             val schedulerViewModel: SchedulerViewModel = it.sharedViewModel(navController)
-            val timeSettingUiState = schedulerViewModel.timeSettingUiState.value
+            val timeSettingUiState by schedulerViewModel.timeSettingUiState.collectAsStateWithLifecycle()
             val list by schedulerViewModel.variantIntervalsList.collectAsStateWithLifecycle()
-            Log.d("manish", "schedulerNavigation:viewmodel${schedulerViewModel}")
             TimeSettingScreen(
                 list = list,
                 timeSettingUiState = timeSettingUiState,

@@ -1,11 +1,13 @@
 package fit.asta.health.scheduler.compose.screen.alarmsetingscreen
 
+import fit.asta.health.scheduler.util.VibrationPattern
+
 
 data class ASUiState(
     //time
-    var time_hours: String = "0",
-    var time_midDay: Boolean = false,
-    var time_minutes: String = "0",
+    var timeHours: String = "0",
+    var timeMidDay: Boolean = false,
+    var timeMinutes: String = "0",
 
     //week
     var friday: Boolean = false,
@@ -18,30 +20,30 @@ data class ASUiState(
     var recurring: Boolean = false,
 
     //status
-    var status: Boolean=false,
+    var status: Boolean = false,
 
     //tag, label,description
-    var alarm_description: String = "",
-    var alarm_name: String = "",
-    var tag_name: String = "",
+    var alarmDescription: String = "",
+    var alarmName: String = "",
+    var tagName: String = "",
     var tagId: String = "",
-    var tag_url: String = "",
+    var tagUrl: String = "",
 
     //reminder mode
-    var mode: String="Notification",
+    var mode: String = "Notification",
 
     //tone
-    var tone_name: String = "default",
-    var tone_type: Int = 1,
-    var tone_uri: String = "",
+    var toneName: String = "default",
+    var toneType: Int = 1,
+    var toneUri: String = "",
 
-   //important
-    var important: Boolean=false,
+    //important
+    var important: Boolean = false,
 
     //vibration
-    var vibration: String = "Pattern1",
-    var vibration_percentage: String = "",
-    var vibration_status: Boolean = false,
+    var vibration: String = "Select",
+    var vibrationPattern: VibrationPattern = VibrationPattern.Short,
+    var vibrationStatus: Boolean = false,
 
 
     //meta
@@ -56,33 +58,32 @@ data class ASUiState(
 
 
 data class IvlUiState(
-    val advancedReminder: AdvUiState=AdvUiState(),
-    val duration: Int=0,
-    val isRemainderAtTheEnd: Boolean=false,
-    val repeatableInterval: RepUiState=RepUiState(),
-    val snoozeTime: Int=5,
+    val advancedReminder: AdvUiState = AdvUiState(),
+    val duration: Int = 0,
+    val isRemainderAtTheEnd: Boolean = false,
+    val repeatableInterval: RepUiState = RepUiState(),
+    val snoozeTime: Int = 5,
     val staticIntervals: List<StatUiState> = emptyList(),
-    val status: Boolean=false,
+    val status: Boolean = false,
     val variantIntervals: List<StatUiState> = emptyList(),
-    val isVariantInterval: Boolean=false
+    val isVariantInterval: Boolean = false
 )
 
 data class AdvUiState(
-    val status: Boolean=false,
-    val time: Int=0
+    val status: Boolean = false,
+    val time: Int = 0
 )
 
 data class RepUiState(
-    val time: Int=0,
-    val unit: String=""
+    val time: Int = 0,
+    val unit: String = ""
 )
 
 
-
 data class ToneUiState(
-    val name: String="",
-    val type: Int=1,
-    val uri: String=""
+    val name: String = "",
+    val type: Int = 1,
+    val uri: String = ""
 )
 
 

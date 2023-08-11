@@ -8,7 +8,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.ui.components.generic.AppState
 import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.common.utils.PrefUtils
+import fit.asta.health.common.utils.getCurrentDate
 import fit.asta.health.navigation.today.domain.model.TodayData
+import fit.asta.health.navigation.today.view.utils.Utils
 import fit.asta.health.scheduler.compose.screen.homescreen.Event
 import fit.asta.health.scheduler.compose.screen.homescreen.HomeEvent
 import fit.asta.health.scheduler.model.AlarmBackendRepo
@@ -274,15 +276,16 @@ class TodayPlanViewModel @Inject constructor(
         viewModelScope.launch {
             alarmBackendRepo.getTodayDataFromBackend(
                 userID = "6309a9379af54f142c65fbfe",
-                date = "2023-07-03",
-                location = "bangalore",
-                latitude = 28.6353f,
-                longitude = 7.2250f
+                date = getCurrentDate(),
+                location = "jaipur",
+                latitude = 26.835598f,
+                longitude = 75.541794f
             ).collect { result ->
                 when (result) {
                     is NetworkResult.Success -> {
                         result.data?.let { todayData ->
                             _todayState.value = AppState.Success(data = todayData)
+                            Utils.getDayAndTime()
                         }
                     }
 

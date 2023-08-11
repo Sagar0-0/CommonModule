@@ -12,7 +12,6 @@ import androidx.compose.material.icons.outlined.Egg
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.NavigateBefore
-import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -20,12 +19,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import fit.asta.health.R
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.components.functional.DialogData
 import fit.asta.health.common.ui.components.functional.ShowCustomConfirmationDialog
-import fit.asta.health.common.ui.components.generic.AppButtons
 import fit.asta.health.common.ui.components.generic.AppDefaultIcon
 import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.common.ui.components.generic.AppTexts
@@ -54,12 +53,19 @@ fun CreateProfileLayout(
     var currentStep by rememberSaveable { mutableIntStateOf(1) }
     val numberOfSteps = 5
 
-    val steps = listOf(
-        StepData(1, Icons.Outlined.AccountCircle, "Details") { currentStep = 2 },
-        StepData(2, Icons.Outlined.Face, "Physique") { currentStep = 3 },
-        StepData(3, Icons.Outlined.Favorite, "Health") { currentStep = 4 },
-        StepData(4, Icons.Default.Emergency, "LifeStyle") { currentStep = 5 },
-        StepData(5, Icons.Outlined.Egg, "Diet") { currentStep = 6 })
+    val steps = listOf(StepData(
+        1, Icons.Outlined.AccountCircle, stringResource(id = R.string.details)
+    ) { currentStep = 2 },
+        StepData(2, Icons.Outlined.Face, stringResource(id = R.string.physique)) {
+            currentStep = 3
+        },
+        StepData(3, Icons.Outlined.Favorite, stringResource(id = R.string.health)) {
+            currentStep = 4
+        },
+        StepData(
+            4, Icons.Default.Emergency, stringResource(id = R.string.lifestyle)
+        ) { currentStep = 5 },
+        StepData(5, Icons.Outlined.Egg, stringResource(id = R.string.diet)) { currentStep = 6 })
 
     val primaryColor = MaterialTheme.colorScheme.primary
 
@@ -78,7 +84,7 @@ fun CreateProfileLayout(
                         showCustomDialogWithResult = !showCustomDialogWithResult
                     })
                 Spacer(modifier = Modifier.width(spacing.small))
-                AppTexts.TitleSmall(text = "Create Profile")
+                AppTexts.TitleSmall(text = stringResource(R.string.create_profile))
             }
             Row(Modifier.fillMaxWidth()) {
                 steps.forEach { step ->
@@ -149,10 +155,10 @@ fun CreateProfileLayout(
                 onNegativeClick = onBack,
                 onPositiveClick = { showCustomDialogWithResult = !showCustomDialogWithResult },
                 dialogData = DialogData(
-                    dialogTitle = "Discard Profile Creation",
-                    dialogDesc = "You will miss important FUTURE UPDATES like CUSTOM PLANS based on your PROFILE. CLICK Cancel to complete your PROFILE",
-                    negTitle = "Discard Profile Creation and Move to Home Screen",
-                    posTitle = "Cancel And Continue to Create Profile"
+                    dialogTitle = stringResource(R.string.discard_profile_creation),
+                    dialogDesc = stringResource(R.string.dialogDesc_profile_creation),
+                    negTitle = stringResource(R.string.negativeTitle_profile_creation),
+                    posTitle = stringResource(R.string.positiveTitle_profile_creation)
                 ),
             )
         }
@@ -202,17 +208,3 @@ data class StepData(
     val description: String,
     val onStepClick: () -> Unit,
 )
-
-@Preview
-@Composable
-private fun CustomProfileTopBar(onClick: () -> Unit = {}) {
-    Row(
-        Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
-    ) {
-        AppButtons.AppIconButton(onClick = onClick) {
-            AppDefaultIcon(imageVector = Icons.Rounded.Close, contentDescription = "Close")
-        }
-        Spacer(modifier = Modifier.width(spacing.small))
-        AppTexts.TitleMedium(text = "Create Profile")
-    }
-}

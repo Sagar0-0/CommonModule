@@ -144,7 +144,7 @@ fun CustomTagBottomSheetLayout(
                 )
             }
             Text(
-                text = "Custom Tags",
+                text = stringResource(R.string.custom_tags),
                 fontSize = 20.sp,
                 color = MaterialTheme.colorScheme.onTertiaryContainer,
                 textAlign = TextAlign.Center
@@ -163,7 +163,7 @@ fun CustomTagBottomSheetLayout(
         Spacer(modifier = Modifier.height(20.dp))
         CustomTagImage(onImageSelect = onImageSelect, image = image)
         Spacer(modifier = Modifier.height(20.dp))
-        CustomTagTextField(label = "Tag Name", onValueChange = onValueChange)
+        CustomTagTextField(label = stringResource(R.string.tag_name), onValueChange = onValueChange)
 
     }
 }
@@ -191,7 +191,7 @@ fun CustomTagImage(image: String, onImageSelect: () -> Unit) {
             )
             Image(
                 painter = painterResource(id = R.drawable.cameraicon),
-                contentDescription = "Camera Icon",
+                contentDescription = stringResource(R.string.camera_icon),
                 contentScale = ContentScale.FillBounds
             )
         }

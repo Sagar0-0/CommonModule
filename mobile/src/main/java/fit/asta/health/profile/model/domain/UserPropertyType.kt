@@ -1,6 +1,8 @@
 package fit.asta.health.profile.model.domain
 
 import androidx.annotation.DrawableRes
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import fit.asta.health.R
 
 enum class ProfileItemType(val value: Int) {
@@ -16,30 +18,34 @@ enum class ProfileItemType(val value: Int) {
 
 sealed class UserPropertyType(
     val name: String,
-    val title: String,
+    val title: Int?,
     val type: ProfileItemType,
     @DrawableRes val icon: Int,
 ) {
+
+    @Composable
+    fun getTitle(): String = title?.let { stringResource(id = it) } ?: ""
+
 
     //Health Section
     object SignificantHealthHis : UserPropertyType(
         name = "significanthealthhis",
         type = ProfileItemType.ChipsCard,
-        title = "SIGNIFICANT HEALTH HISTORY",
+        title = R.string.significant_health_history,
         icon = R.drawable.ailements
     )
 
     object Injuries : UserPropertyType(
         name = "injuries",
         type = ProfileItemType.ChipsCard,
-        title = "INJURIES",
+        title = R.string.injuries,
         icon = R.drawable.targets
     )
 
     object BodyParts : UserPropertyType(
         name = "bodyParts",
         type = ProfileItemType.ChipsCard,
-        title = "BODY PARTS",
+        title = (R.string.body_parts),
         icon = R.drawable.targets
     )
 
@@ -47,14 +53,14 @@ sealed class UserPropertyType(
     object Ailments : UserPropertyType(
         name = "ailments",
         type = ProfileItemType.ChipsCard,
-        title = "AILMENTS",
+        title = (R.string.ailments),
         icon = R.drawable.ailements
     )
 
     object Medications : UserPropertyType(
         name = "medications",
         type = ProfileItemType.ChipsCard,
-        title = "MEDICATIONS",
+        title = (R.string.medications),
         icon = R.drawable.medications
     )
 
@@ -62,14 +68,14 @@ sealed class UserPropertyType(
     object HealthTargets : UserPropertyType(
         name = "health-lifeStyleTargets",
         type = ProfileItemType.ChipsCard,
-        title = "HEALTH TARGETS",
+        title = (R.string.health_targets),
         icon = R.drawable.targets
     )
 
     object Addictions : UserPropertyType(
         name = "addictions",
         type = ProfileItemType.ChipsCard,
-        title = "ADDICTIONS",
+        title = (R.string.addictions),
         icon = R.drawable.targets
     )
 
@@ -78,63 +84,63 @@ sealed class UserPropertyType(
     object SleepSchedule : UserPropertyType(
         name = "sleep-schedule",
         type = ProfileItemType.SessionCard,
-        title = "SLEEP SCHEDULE",
+        title = (R.string.sleep_schedule),
         icon = R.drawable.ic_sunny
     )
 
     object WorkSchedule : UserPropertyType(
         name = "work-schedule",
         type = ProfileItemType.SessionCard,
-        title = "WORK SCHEDULE",
+        title = (R.string.work_schedule),
         icon = R.drawable.ic_sunny
     )
 
     object PhysActive : UserPropertyType(
         name = "physically-active",
         type = ProfileItemType.ChipsCard,
-        title = "PHYSICALLY ACTIVE",
+        title = (R.string.physically_active),
         icon = R.drawable.indoorwork
     )
 
     object WorkingEnv : UserPropertyType(
         name = "working-env",
         type = ProfileItemType.ChipsCard,
-        title = "WORKING ENVIRONMENT",
+        title = (R.string.working_environment),
         icon = R.drawable.indoorwork
     )
 
     object WorkStyle : UserPropertyType(
         name = "work-style",
         type = ProfileItemType.PlainCard,
-        title = "WORK STYLE",
+        title = (R.string.work_style),
         icon = R.drawable.indoorwork
     )
 
     object WorkingHours : UserPropertyType(
         name = "work-hours",
         type = ProfileItemType.PlainCard,
-        title = "WORKING HOURS",
+        title = (R.string.working_hours),
         icon = R.drawable.indoorwork
     )
 
     object CurActivities : UserPropertyType(
         name = "current-activities",
         type = ProfileItemType.ChipsCard,
-        title = "CURRENT ACTIVITIES",
+        title = (R.string.current_activities),
         icon = R.drawable.currentactivities
     )
 
     object PrefActivities : UserPropertyType(
         name = "preferred-activities",
         type = ProfileItemType.ChipsCard,
-        title = "PREFERRED ACTIVITIES",
+        title = (R.string.preferred_activities),
         icon = R.drawable.preferredactivities
     )
 
     object LifeStyleTargets : UserPropertyType(
         name = "lifestyle-lifeStyleTargets",
         type = ProfileItemType.ChipsCard,
-        title = "LIFESTYLE TARGETS",
+        title = (R.string.lifestyle_targets),
         icon = R.drawable.targets
     )
 
@@ -143,40 +149,40 @@ sealed class UserPropertyType(
     object DietPref : UserPropertyType(
         name = "dietary-preferences",
         type = ProfileItemType.PlainCard,
-        title = "DIETARY PREFERENCES",
+        title = (R.string.dietary_preferences),
         icon = R.drawable.age
     )
 
     object NvDays : UserPropertyType(
         name = "nv-days",
         type = ProfileItemType.ChipsCard,
-        title = "DAYS YOU CONSUME NON-VEG",
+        title = (R.string.days_you_consume_non_veg),
         icon = R.drawable.nonveg
     )
 
     object FoodAllergies : UserPropertyType(
         name = "food-allergies",
         type = ProfileItemType.ChipsCard,
-        title = "FOOD ALLERGIES",
+        title = (R.string.food_allergies),
         icon = R.drawable.foodrestrictions
     )
 
     object Cuisines : UserPropertyType(
         name = "cuisines",
         type = ProfileItemType.ChipsCard,
-        title = "CUISINES",
+        title = (R.string.cuisines),
         icon = R.drawable.cuisine
     )
 
     object FoodRestrictions : UserPropertyType(
         name = "food-restrictions",
         type = ProfileItemType.ChipsCard,
-        title = "FOOD RESTRICTIONS",
+        title = (R.string.food_restrictions),
         icon = R.drawable.foodrestrictions
     )
 
     object NONE : UserPropertyType(
-        name = "", type = ProfileItemType.PlainCard, title = "", icon = 0
+        name = "", type = ProfileItemType.PlainCard, title = null, icon = 0
     )
 
     companion object {

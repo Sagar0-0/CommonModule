@@ -64,7 +64,7 @@ import fit.asta.health.profile.view.SelectionCardCreateProfile
 import fit.asta.health.profile.viewmodel.HPropState
 import fit.asta.health.profile.viewmodel.ProfileEvent
 import fit.asta.health.profile.viewmodel.ProfileViewModel
-import fit.asta.health.testimonials.model.domain.InputWrapper
+import fit.asta.health.testimonials.data.model.InputWrapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
@@ -126,7 +126,8 @@ fun HealthCreateScreen(
                 sheetLayout = it,
                 sheetState = { closeSheet() },
                 viewModel = viewModel,
-                cardList2 = composeFirstData?.get(it.cardIndex), searchQuery = searchQuery
+                cardList2 = composeFirstData?.get(it.cardIndex),
+                searchQuery = searchQuery
             )
         }
     }, sheetState = modalBottomSheetState, content = {
@@ -300,7 +301,7 @@ private fun HealthContentLayout(
             val onItemSelect = onItemSelectFunctions[index]
 
             SelectionCardCreateProfile(
-                cardType = cardType.listName,
+                cardType = cardType.getListName(),
                 cardList = composeFirstData?.get(index),
                 onItemsSelect = onItemSelect,
                 selectedOption = selectedOption,
@@ -309,7 +310,7 @@ private fun HealthContentLayout(
                 },
                 cardIndex = index,
                 composeIndex = composeIndex,
-                listName = cardType.listName
+                listName = cardType.getListName()
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
