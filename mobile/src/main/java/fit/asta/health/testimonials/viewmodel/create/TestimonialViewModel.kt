@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.media3.common.Player
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.R
-import fit.asta.health.auth.model.AuthRepo
+import fit.asta.health.auth.data.repo.AuthRepo
 import fit.asta.health.common.utils.UiString
 import fit.asta.health.network.data.ApiResponse
 import fit.asta.health.testimonials.model.TestimonialRepo

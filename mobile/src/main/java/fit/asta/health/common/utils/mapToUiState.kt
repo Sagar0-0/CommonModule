@@ -6,7 +6,7 @@ fun <T> ResponseState<T>.toUiState() : UiState<T> {
             UiState.Success(this.data)
         }
         is ResponseState.Error->{
-            UiState.Error(getStringFromException(this.error))
+            UiState.Error(this.exception.toStringResId())
         }
         else->{ UiState.Idle }
     }

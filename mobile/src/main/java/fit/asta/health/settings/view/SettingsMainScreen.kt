@@ -101,6 +101,7 @@ fun SettingsScreenLayout(
                         }
                         AppButtons.AppTextButton(
                             onClick = {
+                                showDeleteConfirmationDialog = false
                                 onClickEvent(SettingsUiEvent.DELETE)
                             }
                         ) {

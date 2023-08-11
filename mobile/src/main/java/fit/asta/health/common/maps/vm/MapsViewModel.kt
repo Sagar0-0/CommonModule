@@ -317,7 +317,7 @@ class MapsViewModel
                     getAllAddresses()
                     Log.d(TAG, "deleteAddress " + it.data.status.code.toString())
                 } else if (it is ResponseState.Error) {
-                    Log.e(TAG, "deleteAddress " + it.error.message)
+                    Log.e(TAG, "deleteAddress " + it.exception.message)
                 }
             }
     }

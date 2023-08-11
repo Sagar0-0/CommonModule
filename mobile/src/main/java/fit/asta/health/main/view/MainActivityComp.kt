@@ -20,7 +20,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import fit.asta.health.R
-import fit.asta.health.auth.viewmodel.AuthViewModel
+import fit.asta.health.auth.ui.vm.AuthViewModel
 import fit.asta.health.common.maps.vm.MapsViewModel
 import fit.asta.health.common.utils.MainTopBarActions
 import fit.asta.health.common.utils.PrefManager

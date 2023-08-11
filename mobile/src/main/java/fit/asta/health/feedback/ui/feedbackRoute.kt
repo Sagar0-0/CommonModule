@@ -17,7 +17,7 @@ import androidx.navigation.compose.composable
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.common.utils.toStringRes
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.feedback.ui.components.SessionFeedback
 import fit.asta.health.feedback.ui.vm.FeedbackViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -68,7 +68,7 @@ fun NavGraphBuilder.feedbackRoute(navController: NavController) {
             }
 
             is UiState.Error -> {
-                val error = (postResultState as UiState.Error).resId.toStringRes()
+                val error = (postResultState as UiState.Error).resId.toStringFromResId()
                 LaunchedEffect(postResultState){
                     Toast.makeText(
                         context,

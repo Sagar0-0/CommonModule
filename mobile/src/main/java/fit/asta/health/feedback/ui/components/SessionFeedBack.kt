@@ -30,7 +30,7 @@ import fit.asta.health.common.ui.components.uploadFiles
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getFileName
-import fit.asta.health.common.utils.toStringRes
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.feedback.data.remote.modal.An
 import fit.asta.health.feedback.data.remote.modal.FeedbackQuesDTO
 import fit.asta.health.feedback.data.remote.modal.Media
@@ -62,7 +62,7 @@ fun SessionFeedback(
             }
 
             is UiState.Error -> {
-                Text(text = feedbackQuesState.resId.toStringRes())
+                Text(text = feedbackQuesState.resId.toStringFromResId())
                 LaunchedEffect(feedbackQuesState){
                     Toast.makeText(
                         context,

@@ -1,4 +1,4 @@
-package fit.asta.health.auth.view
+package fit.asta.health.auth.ui.screens
 
 import android.app.Activity
 import android.app.PendingIntent
@@ -45,6 +45,7 @@ import com.google.android.gms.auth.api.identity.GetPhoneNumberHintIntentRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import com.google.firebase.FirebaseException
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
@@ -67,11 +68,12 @@ fun PhoneUIPreview() {
 }
 
 @Composable
-fun PhoneLoginScreen(onSuccess: () -> Unit) {
+fun PhoneLoginScreen(signInWithCredentials: (AuthCredential) -> Unit) {
 
     var phoneNumber by rememberSaveable {
         mutableStateOf("")
     }
+
     var postalCode by rememberSaveable {
         mutableStateOf("+91")
     }
@@ -97,41 +99,16 @@ fun PhoneLoginScreen(onSuccess: () -> Unit) {
     val mAuth: FirebaseAuth = Firebase.auth
     lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
 
-    val signInWithPhoneAuthCredential: (credential: PhoneAuthCredential) -> Unit = { credential ->
-        mAuth.signInWithCredential(credential)
-            .addOnCompleteListener(context as Activity) { task ->
-                if (task.isSuccessful) {
-                    onSuccess()
-                } else {
-                    loading = false
-                    if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                        Toast.makeText(
-                            context,
-                            "Verification failed.." + (task.exception as FirebaseAuthInvalidCredentialsException).message,
-                            Toast.LENGTH_LONG
-                        ).show()
-                        if ((task.exception as FirebaseAuthInvalidCredentialsException).message?.contains(
-                                "expired"
-                            ) == true
-                        ) {
-                            codeSent = false
-                        }
-                    }
-                }
-            }
-    }
-
     var shouldStartSMSRetrieval by rememberSaveable {
         mutableStateOf(false)
     }
     LaunchedEffect(shouldStartSMSRetrieval) {
-        launch {
-            if (shouldStartSMSRetrieval) {
-                Log.d(TAG, "SMS Retrieval is Starting...")
-                startSMSRetrieverClient(context)
-            }
+        if (shouldStartSMSRetrieval) {
+            Log.d(TAG, "SMS Retrieval is Starting...")
+            startSMSRetrieverClient(context)
         }
     }
+
     val onOtpSubmit = {
         if (TextUtils.isEmpty(otp) || otp.length < 6) {
             Toast.makeText(
@@ -143,11 +120,11 @@ fun PhoneLoginScreen(onSuccess: () -> Unit) {
         } else {
             loading = true
             shouldStartSMSRetrieval = false
-            val credential: PhoneAuthCredential =
+            val credential: AuthCredential =
                 PhoneAuthProvider.getCredential(
                     verificationID, otp
                 )
-            signInWithPhoneAuthCredential(credential)
+            signInWithCredentials(credential)
         }
     }
 
@@ -388,7 +365,7 @@ fun PhoneLoginScreen(onSuccess: () -> Unit) {
     callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
             Log.d("OTP", "onVerificationCompleted:$credential")
-            signInWithPhoneAuthCredential(credential)
+            signInWithCredentials(credential)
         }
 
         override fun onVerificationFailed(p0: FirebaseException) {

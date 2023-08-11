@@ -1,4 +1,4 @@
-package fit.asta.health.auth.view
+package fit.asta.health.auth.ui.screens
 
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -32,13 +32,12 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import fit.asta.health.R
 import fit.asta.health.common.ui.theme.buttonSize
 import fit.asta.health.common.ui.theme.spacing
@@ -48,8 +47,7 @@ import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 @Composable
-fun SignInScreen(navHostController: NavHostController, onSuccess: () -> Unit) {
-    val auth = Firebase.auth
+fun SignInScreen(navController: NavController, signInWithCredentials: (AuthCredential) -> Unit) {
     val context = LocalContext.current
 
     Column(
@@ -72,7 +70,7 @@ fun SignInScreen(navHostController: NavHostController, onSuccess: () -> Unit) {
                 .fillMaxWidth()
                 .height(buttonSize.extraLarge),
             onClick = {
-                navHostController.navigate(AuthScreen.Phone.route)
+                navController.navigate(AuthDestination.Phone.route)
             },
             content = {
                 Row(
@@ -108,18 +106,9 @@ fun SignInScreen(navHostController: NavHostController, onSuccess: () -> Unit) {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
                 val account = task.getResult(ApiException::class.java)!!
                 val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-                auth.signInWithCredential(credential)
-                    .addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            onSuccess()
-                        }
-                    }
-                    .addOnFailureListener {
-                        Log.e("Login", "GoogleSignIn", it)
-                    }
-
+                signInWithCredentials(credential)
             } catch (e: ApiException) {
-                Log.e("TAG", "Google sign in failed", e)
+                Log.e("Login", "Google sign in failed", e)
             }
         }
 
@@ -230,7 +219,7 @@ fun SignInScreen(navHostController: NavHostController, onSuccess: () -> Unit) {
                             stringAnnotation.item,
                             StandardCharsets.UTF_8.toString()
                         )
-                        navHostController.navigate(Graph.WebView.route + "/$url")
+                        navController.navigate(Graph.WebView.route + "/$url")
                     }
                 annotatedLinkString
                     .getStringAnnotations("privacy", it, it)
@@ -239,7 +228,7 @@ fun SignInScreen(navHostController: NavHostController, onSuccess: () -> Unit) {
                             stringAnnotation.item,
                             StandardCharsets.UTF_8.toString()
                         )
-                        navHostController.navigate(Graph.WebView.route + "/$url")
+                        navController.navigate(Graph.WebView.route + "/$url")
                     }
             }
         )

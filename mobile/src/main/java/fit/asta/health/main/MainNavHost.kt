@@ -13,7 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import fit.asta.health.auth.view.authScreens
+import fit.asta.health.auth.ui.authRoute
 import fit.asta.health.common.maps.view.addressScreens
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.feedback.ui.feedbackRoute
@@ -53,7 +53,7 @@ fun MainNavHost(isConnected: Boolean) {
     ) {
         splashScreen(navController)
         onboardingRoute(navController)
-        authScreens(navController)
+        authRoute(navController)
         homeScreen(navController)
 
         composable(route = Graph.Profile.route) {

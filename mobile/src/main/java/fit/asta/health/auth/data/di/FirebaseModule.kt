@@ -1,4 +1,4 @@
-package fit.asta.health.auth.di
+package fit.asta.health.auth.data.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth

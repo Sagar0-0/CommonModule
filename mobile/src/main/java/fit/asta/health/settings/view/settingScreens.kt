@@ -4,18 +4,23 @@ import android.widget.Toast
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.navOptions
 import fit.asta.health.R
-import fit.asta.health.auth.viewmodel.AuthViewModel
+import fit.asta.health.auth.ui.navigateToAuth
+import fit.asta.health.auth.ui.vm.AuthViewModel
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentBuildVersion
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.common.utils.rateUs
 import fit.asta.health.common.utils.sendBugReportMessage
 import fit.asta.health.common.utils.shareApp
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.feedback.ui.navigateToFeedback
 import fit.asta.health.main.Graph
 import fit.asta.health.settings.data.SettingsNotificationsStatus
@@ -36,6 +41,18 @@ fun NavGraphBuilder.settingScreens(
         composable(route = SettingDestination.Main.route) {
             val context = LocalContext.current
             val authViewModel: AuthViewModel = hiltViewModel()
+            val deleteAccountState by authViewModel.deleteState.collectAsStateWithLifecycle()
+            LaunchedEffect(key1 = deleteAccountState){
+                when(deleteAccountState){
+                    is UiState.Success->{
+                        navController.navigateToAuth()
+                    }
+                    is UiState.Error->{
+                        Toast.makeText(context, (deleteAccountState as UiState.Error).resId.toStringFromResId(context), Toast.LENGTH_SHORT).show()
+                    }
+                    else->{}
+                }
+            }
 
             val onUiClickEvent: (key: SettingsUiEvent) -> Unit = { key ->
                 when (key) {
@@ -50,6 +67,7 @@ fun NavGraphBuilder.settingScreens(
                     SettingsUiEvent.WALLET -> {
                         navController.navigate(Graph.Wallet.route)
                     }
+
                     SettingsUiEvent.ADDRESS -> {
                         navController.navigate(Graph.Address.route)
                     }
@@ -79,25 +97,14 @@ fun NavGraphBuilder.settingScreens(
                         authViewModel.logout(
                             context = context,
                             onSuccess = {
-                                navController.navigate(Graph.Authentication.route) {
-                                    popUpToTop(navController)
-                                }
+                                navController.navigateToAuth()
                             },
                             onFailure = { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() }
                         )
                     }
 
                     SettingsUiEvent.DELETE -> {
-                        authViewModel.deleteAccount(
-                            onSuccess = {
-                                navController.navigate(Graph.Authentication.route) {
-                                    popUpToTop(navController)
-                                }
-                            },
-                            onFailure = {
-                                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-                            }
-                        )
+                        authViewModel.deleteAccount()
                     }
 
                     SettingsUiEvent.BUG -> {
@@ -131,7 +138,6 @@ fun NavGraphBuilder.settingScreens(
                     else -> {}
                 }
             }
-
 
             SettingsScreenLayout(
                 builtVersion = context.getCurrentBuildVersion(),

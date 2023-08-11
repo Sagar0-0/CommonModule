@@ -1,5 +1,6 @@
 package fit.asta.health.common.utils
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 
@@ -12,4 +13,6 @@ sealed interface UiState<out T> {
 }
 
 @Composable
-fun Int.toStringRes() = stringResource(this)
+fun Int.toStringFromResId() = stringResource(this)
+
+fun Int.toStringFromResId(context: Context) = context.getString(this)

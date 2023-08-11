@@ -25,5 +25,4 @@ sealed class Graph(val route: String) {
     object Wallet : Graph("graph_wallet")
     object Subscription : Graph("graph_subscription")
     object Splash : Graph("graph_splash")
-    object Authentication : Graph("graph_auth")
 }
