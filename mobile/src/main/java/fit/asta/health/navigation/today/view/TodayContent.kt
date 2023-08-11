@@ -1,6 +1,5 @@
 package fit.asta.health.navigation.today.view
 
-import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -33,17 +32,13 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -60,12 +55,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.components.functional.WeatherCardImage
+import fit.asta.health.common.ui.components.generic.AppButtons
+import fit.asta.health.common.ui.components.generic.AppCard
+import fit.asta.health.common.ui.components.generic.AppDialog
 import fit.asta.health.common.ui.components.generic.AppScaffold
+import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.main.Graph
@@ -76,9 +76,6 @@ import fit.asta.health.scheduler.compose.naman.WeatherCard
 import fit.asta.health.scheduler.compose.screen.homescreen.Event
 import fit.asta.health.scheduler.compose.screen.homescreen.HomeEvent
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import java.time.LocalTime
@@ -94,27 +91,38 @@ fun TodayContent(
     onNav: (String) -> Unit,
     onSchedule: (HourMinAmPm?) -> Unit
 ) {
-
-
-    val coroutineScope: CoroutineScope = rememberCoroutineScope()
-    val context = LocalContext.current
     val snackBarHostState = remember { SnackbarHostState() }
-    var showSnackBar by rememberSaveable { mutableStateOf(false) }
+    var deleteDialog by rememberSaveable { mutableStateOf(false) }
+    var skipDialog by rememberSaveable { mutableStateOf(false) }
     var deletedItem by remember { mutableStateOf<AlarmEntity?>(null) }
     var skipItem by remember { mutableStateOf<AlarmEntity?>(null) }
+    var evenType by remember { mutableStateOf(Event.Morning) }
 
-    if (showSnackBar) {
-        LaunchedEffect(Unit) {
-            delay(9000L) // 9-second countdown timer
-            if (showSnackBar) {
-                // SnackBar is still visible after 5 seconds
+    if (deleteDialog) {
+        AlertDialogPopUp(
+            content = "Are you sure you want to delete this alarm?",
+            actionButton = stringResource(id = R.string.delete),
+            onDismiss = {
+                deletedItem?.let { hSEvent(HomeEvent.UndoAlarm(it, evenType)) }
+                deleteDialog = false
+            },
+            onDone = {
                 deletedItem?.let { hSEvent(HomeEvent.DeleteAlarm(it)) }
+                deleteDialog = false
+            })
+    }
+    if (skipDialog) {
+        AlertDialogPopUp(
+            content = "Are you sure you want to skip this alarm?",
+            actionButton = stringResource(id = R.string.skip),
+            onDismiss = {
+                skipItem?.let { hSEvent(HomeEvent.UndoAlarm(it, evenType)) }
+                skipDialog = false
+            },
+            onDone = {
                 skipItem?.let { hSEvent(HomeEvent.SkipAlarm(it)) }
-            }
-            skipItem = null
-            deletedItem = null
-            showSnackBar = false
-        }
+                skipDialog = false
+            })
     }
     AppScaffold(
         snackBarHostState = snackBarHostState,
@@ -182,25 +190,15 @@ fun TodayContent(
             }
             items(listMorning) { data ->
                 SwipeDemoToday(data = data, onSwipeRight = {
-                    showSnackBar = true
+                    evenType = Event.Morning
+                    hSEvent(HomeEvent.RemoveAlarm(data, evenType))
+                    deleteDialog = true
                     deletedItem = data
-                    swipeRight(Event.Morning,
-                        data,
-                        coroutineScope,
-                        context = context,
-                        snackBarHostState,
-                        hSEvent,
-                        onUndo = { showSnackBar = false })
                 }, onSwipeLeft = {
-                    showSnackBar = true
+                    evenType = Event.Morning
+                    hSEvent(HomeEvent.RemoveAlarm(data, evenType))
+                    skipDialog = true
                     skipItem = data
-                    swipeLeft(Event.Morning,
-                        data,
-                        coroutineScope,
-                        context = context,
-                        snackBarHostState,
-                        hSEvent,
-                        onUndo = { showSnackBar = false })
                 }, onDone = {
                     onNav(goToTool(data.info.tag))
                 }, onReschedule = {
@@ -218,25 +216,15 @@ fun TodayContent(
             }
             items(listAfternoon) { data ->
                 SwipeDemoToday(data = data, onSwipeRight = {
-                    showSnackBar = true
+                    evenType = Event.Afternoon
+                    hSEvent(HomeEvent.RemoveAlarm(data, evenType))
+                    deleteDialog = true
                     deletedItem = data
-                    swipeRight(Event.Afternoon,
-                        data,
-                        coroutineScope,
-                        context = context,
-                        snackBarHostState,
-                        hSEvent,
-                        onUndo = { showSnackBar = false })
                 }, onSwipeLeft = {
-                    showSnackBar = true
+                    evenType = Event.Afternoon
+                    hSEvent(HomeEvent.RemoveAlarm(data, evenType))
+                    skipDialog = true
                     skipItem = data
-                    swipeLeft(Event.Afternoon,
-                        data,
-                        coroutineScope,
-                        context = context,
-                        snackBarHostState,
-                        hSEvent,
-                        onUndo = { showSnackBar = false })
                 }, onDone = {
                     onNav(goToTool(data.info.tag))
                 }, onReschedule = {
@@ -254,25 +242,15 @@ fun TodayContent(
             }
             items(listEvening) { data ->
                 SwipeDemoToday(data = data, onSwipeRight = {
-                    showSnackBar = true
+                    evenType = Event.Evening
+                    hSEvent(HomeEvent.RemoveAlarm(data, evenType))
+                    deleteDialog = true
                     deletedItem = data
-                    swipeRight(Event.Evening,
-                        data,
-                        coroutineScope,
-                        context = context,
-                        snackBarHostState,
-                        hSEvent,
-                        onUndo = { showSnackBar = false })
                 }, onSwipeLeft = {
-                    showSnackBar = true
+                    evenType = Event.Evening
+                    hSEvent(HomeEvent.RemoveAlarm(data, evenType))
+                    skipDialog = true
                     skipItem = data
-                    swipeLeft(Event.Evening,
-                        data,
-                        coroutineScope,
-                        context = context,
-                        snackBarHostState,
-                        hSEvent,
-                        onUndo = { showSnackBar = false })
                 }, onDone = {
                     onNav(goToTool(data.info.tag))
                 }, onReschedule = {
@@ -290,25 +268,15 @@ fun TodayContent(
             }
             items(listNextDay) { data ->
                 SwipeDemoToday(data = data, onSwipeRight = {
-                    showSnackBar = true
+                    evenType = Event.NextDay
+                    hSEvent(HomeEvent.RemoveAlarm(data, evenType))
+                    deleteDialog = true
                     deletedItem = data
-                    swipeRight(Event.NextDay,
-                        data,
-                        coroutineScope,
-                        context = context,
-                        snackBarHostState,
-                        hSEvent,
-                        onUndo = { showSnackBar = false })
                 }, onSwipeLeft = {
-                    showSnackBar = true
+                    evenType = Event.NextDay
+                    hSEvent(HomeEvent.RemoveAlarm(data, evenType))
+                    skipDialog = true
                     skipItem = data
-                    swipeLeft(Event.NextDay,
-                        data,
-                        coroutineScope,
-                        context = context,
-                        snackBarHostState,
-                        hSEvent,
-                        onUndo = { showSnackBar = false })
                 }, onDone = {
                     onNav(goToTool(data.info.tag))
                 }, onReschedule = {
@@ -323,61 +291,6 @@ fun TodayContent(
 }
 
 
-private fun swipeRight(
-    event: Event,
-    data: AlarmEntity,
-    coroutineScope: CoroutineScope,
-    context: Context,
-    snackBarHostState: SnackbarHostState,
-    hSEvent: (HomeEvent) -> Unit,
-    onUndo: () -> Unit,
-) {
-
-    hSEvent(HomeEvent.RemoveAlarm(data, event))
-    coroutineScope.launch {
-        val snackBarResult = snackBarHostState.showSnackbar(
-            message = "Deleted ${data.info.name}",
-            actionLabel = context.getString(R.string.undo),
-            duration = SnackbarDuration.Long
-        )
-        when (snackBarResult) {
-            SnackbarResult.ActionPerformed -> {
-                onUndo()
-                hSEvent(HomeEvent.UndoAlarm(data, event))
-            }
-
-            else -> {}
-        }
-    }
-}
-
-
-private fun swipeLeft(
-    event: Event,
-    data: AlarmEntity,
-    coroutineScope: CoroutineScope,
-    context: Context,
-    snackBarHostState: SnackbarHostState,
-    hSEvent: (HomeEvent) -> Unit,
-    onUndo: () -> Unit
-) {
-    hSEvent(HomeEvent.RemoveAlarm(data, event))
-    coroutineScope.launch {
-        val snackBarResult = snackBarHostState.showSnackbar(
-            message = "Skip ${data.info.name}",
-            actionLabel = context.getString(R.string.undo),
-            duration = SnackbarDuration.Long
-        )
-        when (snackBarResult) {
-            SnackbarResult.ActionPerformed -> {
-                onUndo()
-                hSEvent(HomeEvent.UndoAlarm(data, event))
-            }
-
-            else -> {}
-        }
-    }
-}
 
 @Composable
 @Preview
@@ -570,6 +483,57 @@ fun TodayCard(
         onDone = onDone,
         modifier = modifier
     )
+}
+
+@Composable
+fun AlertDialogPopUp(
+    content: String,
+    actionButton: String,
+    onDismiss: () -> Unit,
+    onDone: () -> Unit
+) {
+    AppDialog(
+        onDismissRequest = onDismiss, properties = DialogProperties(
+            dismissOnBackPress = false, dismissOnClickOutside = false
+        )
+    ) {
+        AppCard(
+            shape = RoundedCornerShape(10.dp),
+            elevation = CardDefaults.cardElevation(8.dp)
+        ) {
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Row(horizontalArrangement = Arrangement.Center) {
+                    AppTexts.DisplaySmall(text = stringResource(id = R.string.alert))
+                }
+                AppTexts.BodyLarge(text = content)
+                Row {
+                    AppButtons.AppOutlinedButton(
+                        onClick = onDismiss,
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                            .weight(1F)
+                    ) {
+                        AppTexts.BodyLarge(text = stringResource(id = R.string.cancel))
+                    }
+                    AppButtons.AppStandardButton(
+                        onClick = onDone,
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                            .weight(1F)
+                    ) {
+                        AppTexts.BodyLarge(text = actionButton)
+                    }
+                }
+            }
+        }
+    }
 }
 
 fun goToTool(tag: String): String {
