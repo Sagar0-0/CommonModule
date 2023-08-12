@@ -57,6 +57,9 @@ fun NavGraphBuilder.addressRoute(navController: NavHostController) {
             composable(
                 route = AddressScreen.SavedAdd.route
             ) {
+                LaunchedEffect(Unit){
+                    addressViewModel.getAllAddresses()
+                }
                 SavedAddressesScreen(
                     navHostController = nestedNavController,
                     addressViewModel = addressViewModel,

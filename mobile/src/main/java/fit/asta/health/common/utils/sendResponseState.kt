@@ -1,24 +1,21 @@
 package fit.asta.health.common.utils
 
-import retrofit2.HttpException
+import android.util.Log
 
 
-fun <T> T.toResponseState(): ResponseState<T?> {
+fun <T> T.toResponseState(): ResponseState<T> {
     return try {
         ResponseState.Success(this)
     } catch (e: Exception) {
-        e.getResponseState()
+        Log.e("ERR", "toResponseState: $e")
+        ResponseState.Error(e)
     }
 }
 
-private fun <T> Exception.getResponseState(): ResponseState<T?> {
-    return when (this) {
-        is HttpException -> {
-            ResponseState.Success(null)
-        }
-
-        else -> {
-            ResponseState.Error(this)
-        }
+suspend fun <T> getResponseState(request:suspend ()->T) : ResponseState<T> {
+    return try{
+        ResponseState.Success(request())
+    }catch (e:Exception){
+        ResponseState.Error(e)
     }
 }

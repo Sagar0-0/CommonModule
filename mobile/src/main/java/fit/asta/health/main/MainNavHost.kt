@@ -4,15 +4,18 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import fit.asta.health.auth.ui.AUTH_GRAPH_ROUTE
 import fit.asta.health.auth.ui.authRoute
 import fit.asta.health.common.address.ui.addressRoute
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
@@ -46,10 +49,23 @@ fun MainNavHost(isConnected: Boolean) {
         }
     }
 
+    val mainViewModel : MainViewModel = hiltViewModel()
+
+    val startDestination = if(mainViewModel.isAuth()){
+        Graph.Home.route
+    }else{
+        val onboardingShown by mainViewModel.onboardingStatus.collectAsStateWithLifecycle()
+        if(onboardingShown){
+            AUTH_GRAPH_ROUTE
+        }else{
+            ONBOARDING_GRAPH_ROUTE
+        }
+    }
+
     NavHost(
         navController = navController,
         route = Graph.ROOT.route,
-        startDestination = ONBOARDING_GRAPH_ROUTE
+        startDestination = startDestination
     ) {
         onboardingRoute(navController)
         authRoute(navController)

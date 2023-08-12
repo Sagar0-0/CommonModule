@@ -116,7 +116,6 @@ class AddressViewModel
 
     init {
         updateLocationServiceStatus()
-        getAllAddresses()
     }
 
     fun updateLocationPermissionRejectedCount(newValue: Int) = viewModelScope.launch(dispatcher) {

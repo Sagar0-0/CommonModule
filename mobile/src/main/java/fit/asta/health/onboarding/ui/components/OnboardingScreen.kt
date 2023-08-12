@@ -20,7 +20,7 @@ import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.onboarding.data.remote.modal.OnboardingDTO.OnboardingData
+import fit.asta.health.onboarding.data.model.OnboardingData
 import kotlinx.coroutines.launch
 
 

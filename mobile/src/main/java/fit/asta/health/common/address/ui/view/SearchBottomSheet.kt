@@ -55,7 +55,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SearchBottomSheet(
     modifier: Modifier = Modifier,
-    searchResponseState: UiState<SearchResponse>,
+    searchResponseState: UiState<SearchResponse?>,
     onResultClick: (AddressesResponse.MyAddress) -> Unit,
     onSearch: (String) -> Unit,
     onClose: () -> Unit
@@ -149,7 +149,7 @@ fun SearchBottomSheet(
             when (searchResponseState) {
                 is UiState.Success -> {
                     var results =
-                        searchResponseState.data.results
+                        searchResponseState.data?.results
                     if (results.isNullOrEmpty()) {
                         Text(
                             modifier = Modifier.padding(spacing.small),
@@ -159,7 +159,7 @@ fun SearchBottomSheet(
                         )
                     } else {
                         LazyColumn {
-                            items(results) {
+                            items(results!!) {
                                 AppButtons.AppTextButton(
                                     onClick = {
                                         searchQuery = ""

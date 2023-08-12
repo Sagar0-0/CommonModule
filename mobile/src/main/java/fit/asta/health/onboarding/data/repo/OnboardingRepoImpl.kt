@@ -4,8 +4,8 @@ import fit.asta.health.UserPreferences
 import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.toResponseState
+import fit.asta.health.onboarding.data.model.OnboardingData
 import fit.asta.health.onboarding.data.remote.OnboardingApi
-import fit.asta.health.onboarding.data.remote.modal.OnboardingDTO.OnboardingData
 import kotlinx.coroutines.flow.Flow
 
 class OnboardingRepoImpl(
@@ -13,8 +13,7 @@ class OnboardingRepoImpl(
     private val prefManager: PrefManager
 ) : OnboardingRepo {
 
-    override val userPreferences: Flow<UserPreferences>
-        = prefManager.userData
+    override val userPreferences: Flow<UserPreferences> = prefManager.userData
 
     override suspend fun getData(): ResponseState<List<OnboardingData>> {
         val response = remoteApi.getData()

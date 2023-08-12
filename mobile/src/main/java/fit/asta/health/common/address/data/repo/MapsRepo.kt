@@ -13,13 +13,13 @@ import kotlinx.coroutines.flow.Flow
 interface MapsRepo {
 
     val userPreferences : Flow<UserPreferences>
-    suspend fun search(text: String, latLng: LatLng): ResponseState<SearchResponse?>
+    suspend fun search(text: String, latLng: LatLng): ResponseState<SearchResponse>
 
-    suspend fun getAddresses(uid: String): ResponseState<AddressesResponse?>
+    suspend fun getAddresses(uid: String): ResponseState<AddressesResponse>
 
-    suspend fun putAddress(myAddress: MyAddress): ResponseState<PutAddressResponse?>
+    suspend fun putAddress(myAddress: MyAddress): ResponseState<PutAddressResponse>
 
-    suspend fun deleteAddress(uid: String, id: String): ResponseState<DeleteAddressResponse?>
+    suspend fun deleteAddress(uid: String, id: String): ResponseState<DeleteAddressResponse>
 
     suspend fun selectCurrent(cid: String, pid: String?)
 

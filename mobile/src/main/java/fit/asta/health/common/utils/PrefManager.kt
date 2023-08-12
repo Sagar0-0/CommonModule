@@ -49,7 +49,7 @@ class PrefManager
         try {
             userPreferences.updateData {
                 it.copy {
-//                    this.onboardingShown = true TODO
+                    this.currentAddress = location
                 }
             }
         } catch (ioException: IOException) {
@@ -73,7 +73,7 @@ class PrefManager
         try {
             userPreferences.updateData {
                 it.copy {
-//                    this.notificationStatus = value TODO
+                    this.locationPermissionRejectedCount = value
                 }
             }
         } catch (ioException: IOException) {

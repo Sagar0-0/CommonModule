@@ -7,7 +7,7 @@ import fit.asta.health.auth.data.repo.AuthRepo
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.di.IODispatcher
-import fit.asta.health.onboarding.data.remote.modal.OnboardingDTO.OnboardingData
+import fit.asta.health.onboarding.data.model.OnboardingData
 import fit.asta.health.onboarding.data.repo.OnboardingRepo
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

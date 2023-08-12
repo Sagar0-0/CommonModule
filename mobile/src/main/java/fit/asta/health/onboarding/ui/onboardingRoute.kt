@@ -10,8 +10,11 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import fit.asta.health.auth.ui.navigateToAuth
 import fit.asta.health.auth.ui.vm.AuthViewModel
+import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.main.Graph
+import fit.asta.health.onboarding.data.model.OnboardingData
 import fit.asta.health.onboarding.ui.components.OnboardingScreen
 import fit.asta.health.onboarding.ui.vm.OnboardingViewModel
 
