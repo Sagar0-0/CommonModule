@@ -1,9 +1,24 @@
 package fit.asta.health.common.utils
 
-fun <T> T.toResponseState() : ResponseState<T> {
-    return try{
+import retrofit2.HttpException
+
+
+fun <T> T.toResponseState(): ResponseState<T?> {
+    return try {
         ResponseState.Success(this)
-    }catch (e: Exception){
-        ResponseState.Error(e)
+    } catch (e: Exception) {
+        e.getResponseState()
+    }
+}
+
+private fun <T> Exception.getResponseState(): ResponseState<T?> {
+    return when (this) {
+        is HttpException -> {
+            ResponseState.Success(null)
+        }
+
+        else -> {
+            ResponseState.Error(this)
+        }
     }
 }

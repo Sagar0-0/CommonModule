@@ -71,7 +71,7 @@ class AddressViewModel
     val isPermissionGranted = MutableStateFlow(true)
 
     private val _currentAddressState =
-        MutableStateFlow<UiState<Address>>(UiState.Loading)
+        MutableStateFlow<UiState<Address?>>(UiState.Loading)
     val currentAddressState = _currentAddressState.asStateFlow()
 
     val currentAddressStringState = mapsRepo.userPreferences
@@ -94,19 +94,18 @@ class AddressViewModel
             initialValue = 0,
         )
 
-
     private val _currentLatLng = MutableStateFlow(LatLng(0.0, 0.0))
     val currentLatLng = _currentLatLng.asStateFlow()
 
     private val _searchUiState =
-        MutableStateFlow<UiState<SearchResponse>>(UiState.Idle)
+        MutableStateFlow<UiState<SearchResponse?>>(UiState.Idle)
     val searchUiState = _searchUiState.asStateFlow()
 
     private var searchJob: Job? = null
     private var addressDetailJob: Job? = null
 
     private val _addressListState =
-        MutableStateFlow<UiState<AddressesResponse>>(UiState.Loading)
+        MutableStateFlow<UiState<AddressesResponse?>>(UiState.Loading)
     val addressListState = _addressListState.asStateFlow()
 
     private var selectedAddressId by mutableStateOf<String?>(null)
@@ -300,9 +299,7 @@ class AddressViewModel
         _searchUiState.value = UiState.Loading
         searchJob?.cancel()
         searchJob = viewModelScope.launch(dispatcher) {
-            mapsRepo.search(query, _currentLatLng.value).cancellable().collect {
-                _searchUiState.value = it.toUiState()
-            }
+            _searchUiState.value = mapsRepo.search(query, _currentLatLng.value).toUiState()
         }
     }
 
@@ -320,7 +317,7 @@ class AddressViewModel
     fun deleteAddress(name: String, onSuccess: () -> Unit) = viewModelScope.launch(dispatcher) {
         val response = mapsRepo.deleteAddress(uId, name)
         if (response is ResponseState.Success) {
-            Log.d(TAG, "DEL: " + response.data.status.code.toString())
+            Log.d(TAG, "DEL: $response")
             onSuccess()
             getAllAddresses()
         } else {
@@ -332,7 +329,7 @@ class AddressViewModel
         viewModelScope.launch(dispatcher) {
             val response = mapsRepo.putAddress(myAddress.copy(uid = uId))
             if (response is ResponseState.Success) {
-                Log.d(TAG, "PUT: " + response.data.status.code.toString())
+                Log.d(TAG, "PUT: $response")
                 onSuccess()
                 getAllAddresses()
             } else {
