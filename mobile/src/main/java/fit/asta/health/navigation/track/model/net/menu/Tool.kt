@@ -4,21 +4,21 @@ import com.google.gson.annotations.SerializedName
 
 data class Tool(
     @SerializedName("achieved")
-    val achieved: Int,
+    val achieved: Float,
     @SerializedName("description")
     val description: String,
     @SerializedName("endTime")
     val endTime: String,
     @SerializedName("progress")
-    val progress: Int,
+    val progress: Float,
     @SerializedName("remaining")
-    val remaining: Int,
+    val remaining: Float,
     @SerializedName("startTime")
     val startTime: String,
     @SerializedName("target")
-    val target: Int,
+    val target: Float,
     @SerializedName("title")
     val title: String,
     @SerializedName("vitaminD")
-    val vitaminD: Int
+    val vitaminD: Float
 )
