@@ -31,10 +31,10 @@ class PrefManager
     private val userPreferences: DataStore<UserPreferences>,
     private val dataStore: DataStore<Preferences>
 ) {
-    val userData : Flow<UserPreferences> = userPreferences.data
+    val userData: Flow<UserPreferences> = userPreferences.data
 
-    suspend fun setOnboardingShown(){
-        try{
+    suspend fun setOnboardingShown() {
+        try {
             userPreferences.updateData {
                 it.copy {
                     this.onboardingShown = true
@@ -45,11 +45,35 @@ class PrefManager
         }
     }
 
-    suspend fun setNotificationStatus(value: Boolean){
-        try{
+    suspend fun setCurrentLocation(location: String) {
+        try {
+            userPreferences.updateData {
+                it.copy {
+//                    this.onboardingShown = true TODO
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("Pref", "Failed to update user preferences", ioException)
+        }
+    }
+
+    suspend fun setNotificationStatus(value: Boolean) {
+        try {
             userPreferences.updateData {
                 it.copy {
                     this.notificationStatus = value
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("Pref", "Failed to update user preferences", ioException)
+        }
+    }
+
+    suspend fun setLocationPermissionRejectedCount(value: Int) {
+        try {
+            userPreferences.updateData {
+                it.copy {
+//                    this.notificationStatus = value TODO
                 }
             }
         } catch (ioException: IOException) {
@@ -159,6 +183,7 @@ class PrefManager
                 .putInt(context.getString(R.string.user_pref_location_permission_count), newCount)
                 .apply()
         }
+
         fun getNotificationPermissionRejectedCount(context: Context): Int {
             val preferences = PreferenceManager.getDefaultSharedPreferences(context)
             return preferences.getInt("notification", 0)

@@ -14,7 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import fit.asta.health.auth.ui.authRoute
-import fit.asta.health.common.maps.view.addressScreens
+import fit.asta.health.common.address.ui.addressRoute
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.webView
 import fit.asta.health.feedback.ui.feedbackRoute
@@ -74,7 +74,7 @@ fun MainNavHost(isConnected: Boolean) {
 
         settingScreens(navController)
         feedbackRoute(navController)
-        addressScreens(navController)
+        addressRoute(navController)
 
         subscriptionScreens(navController)
         referralScreens(navController)

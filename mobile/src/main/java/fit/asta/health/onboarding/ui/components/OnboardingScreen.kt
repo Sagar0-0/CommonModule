@@ -89,14 +89,14 @@ fun OnboardingScreen(
                         }
 
                         Text(
-                            text = items[page].ttl,
+                            text = items[page].title,
                             style = MaterialTheme.typography.headlineMedium,
                             color = MaterialTheme.colorScheme.primary
                         )
                         Text(
                             modifier = Modifier.padding(horizontal = spacing.extraMedium),
                             textAlign = TextAlign.Center,
-                            text = items[page].dsc,
+                            text = items[page].desc,
                             style = MaterialTheme.typography.titleSmall,
                             color = MaterialTheme.colorScheme.primary
                         )

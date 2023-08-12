@@ -11,19 +11,19 @@ data class OnboardingDTO(
 ) {
     data class OnboardingData(
         @SerializedName("dsc")
-        val dsc: String,
+        val desc: String = "",
         @SerializedName("id")
-        val id: String,
+        val id: String = "",
         @SerializedName("ttl")
-        val ttl: String,
+        val title: String = "",
         @SerializedName("type")
-        val type: Int,
+        val type: Int = 0,
         @SerializedName("url")
-        val url: String,
+        val url: String = "",
         @SerializedName("ver")
-        val ver: Int,
+        val ver: Int = 0,
         @SerializedName("vis")
-        val vis: Boolean
+        val vis: Boolean = true
     )
 
     data class Status(

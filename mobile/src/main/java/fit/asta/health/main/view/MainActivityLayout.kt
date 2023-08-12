@@ -49,6 +49,7 @@ import fit.asta.health.common.ui.theme.elevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.MainTopBarActions
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.main.Graph
 import fit.asta.health.main.sharedViewModel
 import fit.asta.health.navigation.home.view.HomeContent
@@ -61,7 +62,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainActivityLayout(
-    currentAddressState: ResponseState<String>,
+    currentAddressState: UiState<String>,
     profileImageUri: Uri?,
     isNotificationEnabled: Boolean,
     onClick: (key: MainTopBarActions) -> Unit,
@@ -138,7 +139,7 @@ private fun NewMainTopBarActions(
     onClick: (key: MainTopBarActions) -> Unit,
     isNotificationEnabled: Boolean,
     profileImageUri: Uri?,
-    currentAddressState: ResponseState<String>,
+    currentAddressState: UiState<String>,
 ) {
     Row(Modifier.clickable { onClick(MainTopBarActions.Location) }) {
         Icon(
@@ -149,7 +150,7 @@ private fun NewMainTopBarActions(
         )
 
         when (currentAddressState) {
-            is ResponseState.Loading -> {
+            UiState.Loading -> {
                 Text(
                     text = "Fetching...",
                     textAlign = TextAlign.Center,
@@ -158,7 +159,7 @@ private fun NewMainTopBarActions(
                 )
             }
 
-            is ResponseState.Success -> {
+            is UiState.Success -> {
                 Text(
                     text = currentAddressState.data,
                     textAlign = TextAlign.Center,
@@ -167,7 +168,7 @@ private fun NewMainTopBarActions(
                 )
             }
 
-            is ResponseState.Error -> {
+            is UiState.Error -> {
                 Text(
                     text = "Error fetching location",
                     textAlign = TextAlign.Center,
