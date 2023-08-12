@@ -3,6 +3,7 @@ package fit.asta.health.scheduler.services
 import android.app.Notification
 import android.app.PendingIntent
 import android.app.Service
+import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -25,6 +26,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.HealthCareApp.Companion.CHANNEL_ID
 import fit.asta.health.R
 import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.main.deepLinkUrl
+import fit.asta.health.navigation.today.view.goToTool
 import fit.asta.health.scheduler.AlarmBroadcastReceiver
 import fit.asta.health.scheduler.compose.AlarmScreenActivity
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
@@ -68,16 +71,13 @@ class AlarmService : Service() {
             repeatMode = Player.REPEAT_MODE_ONE
         }
         vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val vibratorManager =
-                getSystemService(VIBRATOR_MANAGER_SERVICE) as VibratorManager
+            val vibratorManager = getSystemService(VIBRATOR_MANAGER_SERVICE) as VibratorManager
             vibratorManager.defaultVibrator
         } else {
-            @Suppress("DEPRECATION")
-            getSystemService(VIBRATOR_SERVICE) as Vibrator
+            @Suppress("DEPRECATION") getSystemService(VIBRATOR_SERVICE) as Vibrator
         }
         ringtone = RingtoneManager.getActualDefaultRingtoneUri(
-            this.baseContext,
-            RingtoneManager.TYPE_ALARM
+            this.baseContext, RingtoneManager.TYPE_ALARM
         )
     }
 
@@ -129,10 +129,7 @@ class AlarmService : Service() {
     }
 
     private fun notificationAlarm(
-        alarmEntity: AlarmEntity,
-        bundle: Bundle,
-        putString: String,
-        variantInterval: Stat? = null
+        alarmEntity: AlarmEntity, bundle: Bundle, putString: String, variantInterval: Stat? = null
     ) {
         val stopIntent = Intent(this, AlarmBroadcastReceiver::class.java).apply {
             action = "stop"
@@ -161,19 +158,22 @@ class AlarmService : Service() {
             setMediaItem(MediaItem.fromUri(alarmEntity.tone.uri))
             prepare()
         }
-
+        val intent = Intent(
+            Intent.ACTION_VIEW, Uri.parse("$deepLinkUrl/${goToTool(alarmEntity.info.tag)}")
+        )
+        val pendingIntent = TaskStackBuilder.create(applicationContext).run {
+            addNextIntentWithParentStack(intent)
+            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        }
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_round_access_alarm_24)
-            .setSound(null)
+            .setSmallIcon(R.drawable.ic_round_access_alarm_24).setSound(null)
             .setForegroundServiceBehavior(FOREGROUND_SERVICE_IMMEDIATE)
             .setStyle(NotificationCompat.DecoratedCustomViewStyle())
             .setCategory(NotificationCompat.CATEGORY_ALARM)
-            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setOngoing(true)
-            .setWhen(0)
+            .setContentIntent(pendingIntent)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC).setOngoing(true).setWhen(0)
             .setPriority(NotificationCompat.PRIORITY_MAX)
-            .addAction(0, "Snooze", pendingIntentSnooze)
-            .addAction(0, "Stop", pendingIntentStop)
+            .addAction(0, "Snooze", pendingIntentSnooze).addAction(0, "Stop", pendingIntentStop)
         val notificationLayout = RemoteViews(packageName, R.layout.notification_small)
         val notificationLayoutExpanded = RemoteViews(packageName, R.layout.notification_large)
         notificationLayout.apply {
@@ -185,15 +185,11 @@ class AlarmService : Service() {
             setTextViewText(R.id.tag, alarmEntity.info.tag)
         }
 
-        Glide.with(this)
-            .asBitmap()
-            .load(getImgUrl(url = alarmEntity.info.url))
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .placeholder(R.drawable.weatherimage)
+        Glide.with(this).asBitmap().load(getImgUrl(url = alarmEntity.info.url))
+            .diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.weatherimage)
             .into(object : CustomTarget<Bitmap?>() {
                 override fun onResourceReady(
-                    resource: Bitmap,
-                    transition: Transition<in Bitmap?>?
+                    resource: Bitmap, transition: Transition<in Bitmap?>?
                 ) {
                     notificationLayout.setImageViewBitmap(R.id.image, resource)
                     notificationLayoutExpanded.setImageViewBitmap(R.id.image, resource)
@@ -216,10 +212,7 @@ class AlarmService : Service() {
     }
 
     private fun splashAlarm(
-        alarmEntity: AlarmEntity,
-        bundle: Bundle,
-        putString: String,
-        variantInterval: Stat? = null
+        alarmEntity: AlarmEntity, bundle: Bundle, putString: String, variantInterval: Stat? = null
     ) {
         val splashIntent = Intent(this, AlarmScreenActivity::class.java).apply {
             putExtra(putString, bundle)
@@ -236,18 +229,13 @@ class AlarmService : Service() {
         }
         val alarmName: String = variantInterval?.name ?: alarmEntity.info.name
         setMediaData()
-        val bigTextStyle = NotificationCompat.BigTextStyle()
-            .bigText(alarmEntity.info.description)
-        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle(alarmName)
-            .setContentText(alarmEntity.info.tag)
-            .setSmallIcon(R.drawable.ic_round_access_alarm_24)
+        val bigTextStyle = NotificationCompat.BigTextStyle().bigText(alarmEntity.info.description)
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID).setContentTitle(alarmName)
+            .setContentText(alarmEntity.info.tag).setSmallIcon(R.drawable.ic_round_access_alarm_24)
             .setCategory(NotificationCompat.CATEGORY_ALARM)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setPriority(NotificationCompat.PRIORITY_MAX) // set base on important in alarm entity
-            .setFullScreenIntent(pendingIntent, true)
-            .setStyle(bigTextStyle)
-            .setWhen(0)
+            .setFullScreenIntent(pendingIntent, true).setStyle(bigTextStyle).setWhen(0)
             .setAutoCancel(true)
         player.play()
         startForGroundService(
@@ -261,18 +249,14 @@ class AlarmService : Service() {
 
 
     private fun startForGroundService(
-        notification: Notification?,
-        status: Boolean,
-        id: Int,
-        vibrationPattern: LongArray
+        notification: Notification?, status: Boolean, id: Int, vibrationPattern: LongArray
     ) {
         if (status) {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 vibrator.vibrate(
                     VibrationEffect.createWaveform(
-                        vibrationPattern,
-                        0
+                        vibrationPattern, 0
                     )
                 )
             } else {
@@ -295,8 +279,7 @@ class AlarmService : Service() {
     private fun setMediaData() {
         try {
             mediaPlayer.setDataSource(
-                this.baseContext,
-                (alarmEntity?.tone?.uri ?: ringtone) as Uri
+                this.baseContext, (alarmEntity?.tone?.uri ?: ringtone) as Uri
             )
             mediaPlayer.prepareAsync()
         } catch (exception: Exception) {

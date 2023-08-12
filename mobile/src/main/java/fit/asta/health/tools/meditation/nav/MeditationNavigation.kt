@@ -1,5 +1,6 @@
 package fit.asta.health.tools.meditation.nav
 
+import android.content.Intent
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -7,7 +8,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.navDeepLink
 import fit.asta.health.main.Graph
+import fit.asta.health.main.deepLinkUrl
 import fit.asta.health.main.sharedViewModel
 import fit.asta.health.tools.meditation.view.audio_meditation.AudioMeditationScreen
 import fit.asta.health.tools.meditation.view.home.MEvent
@@ -23,10 +26,14 @@ fun NavGraphBuilder.meditationNavigation(
 ) {
     navigation(
         route = Graph.MeditationTool.route,
-        startDestination = MeditationScreen.MeditationHomeScreen.route
+        startDestination = MeditationScreen.MeditationHomeScreen.route,
+        deepLinks = listOf(navDeepLink {
+            uriPattern = "$deepLinkUrl/${Graph.MeditationTool.route}"
+            action = Intent.ACTION_VIEW
+        })
     ) {
         composable(MeditationScreen.MeditationHomeScreen.route) {
-            val viewModel:MeditationViewModel= it.sharedViewModel(navController)
+            val viewModel: MeditationViewModel = it.sharedViewModel(navController)
             val uiState = viewModel.uiState.value
             val level by viewModel.selectedLevel.collectAsStateWithLifecycle()
             val language by viewModel.selectedLanguage.collectAsStateWithLifecycle()
@@ -49,7 +56,7 @@ fun NavGraphBuilder.meditationNavigation(
             )
         }
         composable(MeditationScreen.Music.route) {
-            val viewModel:MeditationViewModel= it.sharedViewModel(navController)
+            val viewModel: MeditationViewModel = it.sharedViewModel(navController)
             val state by viewModel.state.collectAsStateWithLifecycle()
             val musicState by viewModel.musicState.collectAsStateWithLifecycle()
             val currentPosition by viewModel.currentPosition.collectAsStateWithLifecycle()
@@ -63,19 +70,19 @@ fun NavGraphBuilder.meditationNavigation(
             )
         }
         composable(MeditationScreen.Level.route) {
-            val viewModel:MeditationViewModel= it.sharedViewModel(navController)
+            val viewModel: MeditationViewModel = it.sharedViewModel(navController)
             LevelScreen(
                 onClick = { viewModel.event(MEvent.SetLevel(it)) },
                 onBack = { navController.popBackStack() })
         }
         composable(MeditationScreen.Instructor.route) {
-            val viewModel:MeditationViewModel= it.sharedViewModel(navController)
+            val viewModel: MeditationViewModel = it.sharedViewModel(navController)
             InstructorScreen(
                 onClick = { viewModel.event(MEvent.SetInstructor(it)) },
                 onBack = { navController.popBackStack() })
         }
         composable(MeditationScreen.AudioMeditation.route) {
-            val viewModel:MeditationViewModel= it.sharedViewModel(navController)
+            val viewModel: MeditationViewModel = it.sharedViewModel(navController)
             val musicState by viewModel.musicState.collectAsStateWithLifecycle()
             val currentPosition by viewModel.currentPosition.collectAsStateWithLifecycle()
             AudioMeditationScreen(
@@ -86,7 +93,7 @@ fun NavGraphBuilder.meditationNavigation(
             )
         }
         composable(MeditationScreen.Language.route) {
-            val viewModel:MeditationViewModel= it.sharedViewModel(navController)
+            val viewModel: MeditationViewModel = it.sharedViewModel(navController)
             LanguageScreen(
                 onClick = { viewModel.event(MEvent.SetLanguage(it)) },
                 onBack = { navController.popBackStack() })

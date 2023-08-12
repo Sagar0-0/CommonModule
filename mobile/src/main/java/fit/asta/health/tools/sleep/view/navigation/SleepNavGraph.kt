@@ -1,5 +1,6 @@
 package fit.asta.health.tools.sleep.view.navigation
 
+import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -7,11 +8,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import fit.asta.health.tools.sleep.view.screens.SleepJetLagTipsScreen
+import androidx.navigation.navDeepLink
+import fit.asta.health.main.Graph
+import fit.asta.health.main.deepLinkUrl
 import fit.asta.health.tools.sleep.view.screens.SleepDisturbanceScreen
 import fit.asta.health.tools.sleep.view.screens.SleepFactorsScreen
 import fit.asta.health.tools.sleep.view.screens.SleepGoalsScreen
 import fit.asta.health.tools.sleep.view.screens.SleepHomeScreen
+import fit.asta.health.tools.sleep.view.screens.SleepJetLagTipsScreen
 import fit.asta.health.tools.sleep.viewmodel.SleepToolViewModel
 
 @Composable
@@ -28,6 +32,10 @@ fun SleepNavGraph(
             // Sleep Home Screen
             composable(
                 SleepToolNavRoutes.SleepHomeRoute.routes,
+                deepLinks = listOf(navDeepLink {
+                    uriPattern = "$deepLinkUrl/${Graph.SleepTool.route}"
+                    action = Intent.ACTION_VIEW
+                }),
                 content = {
 
                     // Progress Data which is shown in the Home Screen
