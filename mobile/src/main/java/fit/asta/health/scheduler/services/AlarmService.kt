@@ -5,6 +5,8 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.media.MediaPlayer
 import android.media.RingtoneManager
 import android.net.Uri
@@ -12,11 +14,13 @@ import android.os.*
 import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
-import androidx.core.net.toUri
+import androidx.core.app.NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.AppWidgetTarget
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.HealthCareApp.Companion.CHANNEL_ID
 import fit.asta.health.R
@@ -54,7 +58,7 @@ class AlarmService : Service() {
         super.onCreate()
         partialWakeLock = (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
             newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "AlarmService::WakeLock").apply {
-                acquire(3 * 60 * 1000L /*3 minutes*/)
+                acquire(60 * 1000L /*1 minutes*/)
             }
         }
         mediaPlayer = MediaPlayer()
@@ -62,7 +66,6 @@ class AlarmService : Service() {
         player.apply {
             playWhenReady = true
             repeatMode = Player.REPEAT_MODE_ONE
-            prepare()
         }
         vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val vibratorManager =
@@ -153,36 +156,17 @@ class AlarmService : Service() {
         )
 
         val alarmName: String = variantInterval?.name ?: alarmEntity.info.name
-//        setMediaData()
+
         player.apply {
             setMediaItem(MediaItem.fromUri(alarmEntity.tone.uri))
-            player
+            prepare()
         }
-
-
-        val remoteViews = RemoteViews(this.packageName, R.layout.custom_notification_layout)
-        try {
-            val appWidgetTarget = AppWidgetTarget(
-                this,
-                R.id.image,
-                remoteViews
-            )
-            Glide.with(this).asBitmap()
-                .load(getImgUrl(url = alarmEntity.info.url))
-                .placeholder(R.drawable.weatherimage)
-                .into(appWidgetTarget)
-        } catch (e: Exception) {
-            Log.d("image", "notificationAlarm: ${e.message}")
-        }
-        remoteViews.setImageViewUri(R.id.image, alarmEntity.info.url.toUri())
-        remoteViews.setTextViewText(R.id.title, alarmName)
-        remoteViews.setTextViewText(R.id.tag, alarmEntity.info.tag)
-        val bigTextStyle = NotificationCompat.BigTextStyle()
-            .bigText(alarmEntity.info.description)
 
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_round_access_alarm_24)
             .setSound(null)
+            .setForegroundServiceBehavior(FOREGROUND_SERVICE_IMMEDIATE)
+            .setStyle(NotificationCompat.DecoratedCustomViewStyle())
             .setCategory(NotificationCompat.CATEGORY_ALARM)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOngoing(true)
@@ -190,14 +174,44 @@ class AlarmService : Service() {
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .addAction(0, "Snooze", pendingIntentSnooze)
             .addAction(0, "Stop", pendingIntentStop)
-//        mediaPlayer.setOnPreparedListener { mediaPlayer -> mediaPlayer.start() }
-        player.play()
-        startForGroundService(
-            notification = builder.build(),
-            status = alarmEntity.vibration.status,
-            id = alarmEntity.alarmId,
-            vibrationPattern = getVibrationPattern(alarmEntity.vibration.pattern)
-        )
+        val notificationLayout = RemoteViews(packageName, R.layout.notification_small)
+        val notificationLayoutExpanded = RemoteViews(packageName, R.layout.notification_large)
+        notificationLayout.apply {
+            setTextViewText(R.id.title, alarmName)
+            setTextViewText(R.id.tag, alarmEntity.info.tag)
+        }
+        notificationLayoutExpanded.apply {
+            setTextViewText(R.id.title, alarmName)
+            setTextViewText(R.id.tag, alarmEntity.info.tag)
+        }
+
+        Glide.with(this)
+            .asBitmap()
+            .load(getImgUrl(url = alarmEntity.info.url))
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .placeholder(R.drawable.weatherimage)
+            .into(object : CustomTarget<Bitmap?>() {
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: Transition<in Bitmap?>?
+                ) {
+                    notificationLayout.setImageViewBitmap(R.id.image, resource)
+                    notificationLayoutExpanded.setImageViewBitmap(R.id.image, resource)
+
+                    builder.setCustomContentView(notificationLayout)
+                        .setCustomBigContentView(notificationLayoutExpanded)
+
+                    player.play()
+                    startForGroundService(
+                        notification = builder.build(),
+                        status = alarmEntity.vibration.status,
+                        id = alarmEntity.alarmId,
+                        vibrationPattern = getVibrationPattern(alarmEntity.vibration.pattern)
+                    )
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {}
+            })
 
     }
 
@@ -218,7 +232,7 @@ class AlarmService : Service() {
         )
         player.apply {
             setMediaItem(MediaItem.fromUri(alarmEntity.tone.uri))
-            player
+            prepare()
         }
         val alarmName: String = variantInterval?.name ?: alarmEntity.info.name
         setMediaData()
@@ -235,7 +249,6 @@ class AlarmService : Service() {
             .setStyle(bigTextStyle)
             .setWhen(0)
             .setAutoCancel(true)
-//        mediaPlayer.setOnPreparedListener { mediaPlayer -> mediaPlayer.start() }
         player.play()
         startForGroundService(
             notification = builder.build(),
