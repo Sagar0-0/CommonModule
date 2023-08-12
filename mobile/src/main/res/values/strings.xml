@@ -539,6 +539,9 @@
     <string name="jobEnd_profile_creation">Job End Time</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="delete">Delete</string>
+    <string name="alert">Alert</string>
+    <string name="skip">Skip</string>
 
 
 </resources>

@@ -10,12 +10,17 @@ import android.media.RingtoneManager
 import android.net.Uri
 import android.os.*
 import android.util.Log
+import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
+import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.AppWidgetTarget
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.HealthCareApp.Companion.CHANNEL_ID
 import fit.asta.health.R
+import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.scheduler.AlarmBroadcastReceiver
 import fit.asta.health.scheduler.compose.AlarmScreenActivity
 import fit.asta.health.scheduler.model.db.entity.AlarmEntity
@@ -153,12 +158,29 @@ class AlarmService : Service() {
             setMediaItem(MediaItem.fromUri(alarmEntity.tone.uri))
             player
         }
+
+
+        val remoteViews = RemoteViews(this.packageName, R.layout.custom_notification_layout)
+        try {
+            val appWidgetTarget = AppWidgetTarget(
+                this,
+                R.id.image,
+                remoteViews
+            )
+            Glide.with(this).asBitmap()
+                .load(getImgUrl(url = alarmEntity.info.url))
+                .placeholder(R.drawable.weatherimage)
+                .into(appWidgetTarget)
+        } catch (e: Exception) {
+            Log.d("image", "notificationAlarm: ${e.message}")
+        }
+        remoteViews.setImageViewUri(R.id.image, alarmEntity.info.url.toUri())
+        remoteViews.setTextViewText(R.id.title, alarmName)
+        remoteViews.setTextViewText(R.id.tag, alarmEntity.info.tag)
         val bigTextStyle = NotificationCompat.BigTextStyle()
             .bigText(alarmEntity.info.description)
 
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle(alarmName)
-            .setContentText(alarmEntity.info.tag)
             .setSmallIcon(R.drawable.ic_round_access_alarm_24)
             .setSound(null)
             .setCategory(NotificationCompat.CATEGORY_ALARM)
@@ -166,7 +188,6 @@ class AlarmService : Service() {
             .setOngoing(true)
             .setWhen(0)
             .setPriority(NotificationCompat.PRIORITY_MAX)
-            .setStyle(bigTextStyle)
             .addAction(0, "Snooze", pendingIntentSnooze)
             .addAction(0, "Stop", pendingIntentStop)
 //        mediaPlayer.setOnPreparedListener { mediaPlayer -> mediaPlayer.start() }
