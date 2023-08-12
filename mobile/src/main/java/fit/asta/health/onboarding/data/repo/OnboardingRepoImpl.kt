@@ -1,11 +1,10 @@
 package fit.asta.health.onboarding.data.repo
 
-import fit.asta.health.R
 import fit.asta.health.UserPreferences
 import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.toResponseState
-import fit.asta.health.onboarding.data.remote.api.OnboardingApi
+import fit.asta.health.onboarding.data.remote.OnboardingApi
 import fit.asta.health.onboarding.data.remote.modal.OnboardingDTO.OnboardingData
 import kotlinx.coroutines.flow.Flow
 
@@ -25,7 +24,5 @@ class OnboardingRepoImpl(
     override suspend fun dismissOnboarding() {
         prefManager.setOnboardingShown()
     }
-
-
 }
 

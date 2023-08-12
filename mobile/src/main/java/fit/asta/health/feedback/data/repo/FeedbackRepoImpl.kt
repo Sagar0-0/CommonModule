@@ -4,7 +4,7 @@ import android.content.ContentResolver
 import fit.asta.health.common.utils.InputStreamRequestBody
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.toResponseState
-import fit.asta.health.feedback.data.remote.api.FeedbackApi
+import fit.asta.health.feedback.data.remote.FeedbackApi
 import fit.asta.health.feedback.data.remote.modal.FeedbackQuesDTO
 import fit.asta.health.feedback.data.remote.modal.PostFeedbackDTO
 import fit.asta.health.feedback.data.remote.modal.UserFeedbackDTO

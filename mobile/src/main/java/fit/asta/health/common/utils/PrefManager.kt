@@ -28,9 +28,9 @@ import javax.inject.Singleton
 @Singleton
 class PrefManager
 @Inject constructor(
-    private val userPreferences: DataStore<UserPreferences>
+    private val userPreferences: DataStore<UserPreferences>,
+    private val dataStore: DataStore<Preferences>
 ) {
-
     val userData : Flow<UserPreferences> = userPreferences.data
 
     suspend fun setOnboardingShown(){
@@ -41,97 +41,107 @@ class PrefManager
                 }
             }
         } catch (ioException: IOException) {
-            Log.e("NiaPreferences", "Failed to update user preferences", ioException)
+            Log.e("Pref", "Failed to update user preferences", ioException)
+        }
+    }
+
+    suspend fun setNotificationStatus(value: Boolean){
+        try{
+            userPreferences.updateData {
+                it.copy {
+                    this.notificationStatus = value
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("Pref", "Failed to update user preferences", ioException)
         }
     }
 
 
-//    fun <T> getPreferences(keyId: Int, defaultValue: T): Flow<T> {
-//        val key = resourcesProvider.getString(keyId)
-//        return dataStore.data
-//            .catch { exception ->
-//                // dataStore.data throws an IOException when an error is encountered when reading data
-//                if (exception is IOException) {
-//                    emit(emptyPreferences())
-//                } else {
-//                    throw exception
-//                }
-//            }.map {
-//                val value = when (defaultValue) {
-//                    is String -> {
-//                        it[stringPreferencesKey(key)]
-//                    }
-//
-//                    is Boolean -> {
-//                        it[booleanPreferencesKey(key)]
-//                    }
-//
-//                    is Int -> {
-//                        it[intPreferencesKey(key)]
-//                    }
-//
-//                    is Float -> {
-//                        it[floatPreferencesKey(key)]
-//                    }
-//
-//                    is Long -> {
-//                        it[longPreferencesKey(key)]
-//                    }
-//
-//                    is Double -> {
-//                        it[doublePreferencesKey(key)]
-//                    }
-//
-//                    else -> {
-//                        it[stringPreferencesKey(key)]
-//                    }
-//                }
-//                Log.d("TAG", "getPreferences: $value --- $defaultValue")
-//                if (value == null) {
-//                    defaultValue
-//                } else {
-//                    value as T
-//                }
-//            }
-//    }
-//
-//    suspend fun <T> setPreferences(keyId: Int, value: T) {
-//        try {
-//            val key = resourcesProvider.getString(keyId)
-//            dataStore.edit {
-//                when (value) {
-//                    is String -> {
-//                        it[stringPreferencesKey(key)] = value
-//                    }
-//
-//                    is Boolean -> {
-//                        it[booleanPreferencesKey(key)] = value
-//                    }
-//
-//                    is Int -> {
-//                        it[intPreferencesKey(key)] = value
-//                    }
-//
-//                    is Float -> {
-//                        it[floatPreferencesKey(key)] = value
-//                    }
-//
-//                    is Long -> {
-//                        it[longPreferencesKey(key)] = value
-//                    }
-//
-//                    is Double -> {
-//                        it[doublePreferencesKey(key)] = value
-//                    }
-//
-//                    else -> {}
-//                }
-//            }
-//        } catch (e: IOException) {
-//            Log.e("PREF", "setPreferences: $e")
-//        }
-//
-//    }
+    fun <T> getPreferences(key: String, defaultValue: T): Flow<T> {
+        return dataStore.data
+            .catch { exception ->
+                // dataStore.data throws an IOException when an error is encountered when reading data
+                if (exception is IOException) {
+                    emit(emptyPreferences())
+                } else {
+                    throw exception
+                }
+            }.map {
+                val value = when (defaultValue) {
+                    is String -> {
+                        it[stringPreferencesKey(key)]
+                    }
+
+                    is Boolean -> {
+                        it[booleanPreferencesKey(key)]
+                    }
+
+                    is Int -> {
+                        it[intPreferencesKey(key)]
+                    }
+
+                    is Float -> {
+                        it[floatPreferencesKey(key)]
+                    }
+
+                    is Long -> {
+                        it[longPreferencesKey(key)]
+                    }
+
+                    is Double -> {
+                        it[doublePreferencesKey(key)]
+                    }
+
+                    else -> {
+                        it[stringPreferencesKey(key)]
+                    }
+                }
+                Log.d("TAG", "getPreferences: $value --- $defaultValue")
+                if (value == null) {
+                    defaultValue
+                } else {
+                    value as T
+                }
+            }
+    }
+
+    suspend fun <T> setPreferences(key: String, value: T) {
+        try {
+            dataStore.edit {
+                when (value) {
+                    is String -> {
+                        it[stringPreferencesKey(key)] = value
+                    }
+
+                    is Boolean -> {
+                        it[booleanPreferencesKey(key)] = value
+                    }
+
+                    is Int -> {
+                        it[intPreferencesKey(key)] = value
+                    }
+
+                    is Float -> {
+                        it[floatPreferencesKey(key)] = value
+                    }
+
+                    is Long -> {
+                        it[longPreferencesKey(key)] = value
+                    }
+
+                    is Double -> {
+                        it[doublePreferencesKey(key)] = value
+                    }
+
+                    else -> {}
+                }
+            }
+        } catch (e: IOException) {
+            Log.e("PREF", "setPreferences: $e")
+        }
+
+    }
 
     companion object {
 

@@ -8,8 +8,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.BuildConfig
-import fit.asta.health.feedback.data.remote.api.FeedbackApi
-import fit.asta.health.feedback.data.remote.api.FeedbackRestApi
+import fit.asta.health.common.utils.NetworkUtil
+import fit.asta.health.feedback.data.remote.FeedbackApi
 import fit.asta.health.feedback.data.repo.FeedbackRepo
 import fit.asta.health.feedback.data.repo.FeedbackRepoImpl
 import okhttp3.OkHttpClient
@@ -22,9 +22,9 @@ object FeedbackModule {
 
     @Singleton
     @Provides
-    fun provideFeedbackApi(client: OkHttpClient): FeedbackApi {
-        return FeedbackRestApi(baseUrl = BuildConfig.BASE_URL, client = client)
-    }
+    fun provideFeedbackApi(client: OkHttpClient): FeedbackApi =
+        NetworkUtil.getRetrofit(baseUrl = BuildConfig.BASE_URL, client = client)
+            .create(FeedbackApi::class.java)
 
 
     @Provides

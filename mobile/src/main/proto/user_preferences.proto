@@ -5,4 +5,5 @@ option java_multiple_files = true;
 
 message UserPreferences {
   bool onboardingShown = 1;
+  bool notificationStatus = 2;
 }

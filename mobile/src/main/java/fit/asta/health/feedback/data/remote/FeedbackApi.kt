@@ -1,4 +1,4 @@
-package fit.asta.health.feedback.data.remote.api
+package fit.asta.health.feedback.data.remote
 
 import fit.asta.health.feedback.data.remote.modal.FeedbackQuesDTO
 import fit.asta.health.feedback.data.remote.modal.PostFeedbackDTO
@@ -7,7 +7,7 @@ import okhttp3.MultipartBody
 import retrofit2.http.*
 
 //Feedback Endpoints
-interface FeedbackApiService {
+interface FeedbackApi {
 
     @GET("feedback/user/get/?")
     suspend fun getFeedbackQuestions(
