@@ -15,6 +15,7 @@ import fit.asta.health.feedback.data.remote.modal.An
 import fit.asta.health.feedback.data.remote.modal.FeedbackQuesDTO
 import fit.asta.health.feedback.data.remote.modal.PostFeedbackDTO
 import fit.asta.health.feedback.data.remote.modal.UserFeedbackDTO
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,7 +33,7 @@ class FeedbackViewModel
     private val feedbackRepo: FeedbackRepo,
     @Named("UId")
     val uId: String,
-    @IODispatcher val coroutineContext: CoroutineContext = Dispatchers.IO
+    @IODispatcher val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
     private var _fid by mutableStateOf("")
@@ -49,7 +50,7 @@ class FeedbackViewModel
     //call this before starting feedback form
     fun loadFeedbackQuestions(featureId: String) {
         _feedbackQuestions.value = UiState.Loading
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch(coroutineDispatcher) {
             _feedbackQuestions.value = feedbackRepo.getFeedbackQuestions(uId,featureId).toUiState()
             _fid = featureId
             if(_feedbackQuestions.value is UiState.Success)_qnrId = (_feedbackQuestions.value as UiState.Success<FeedbackQuesDTO>).data.data.id
@@ -66,7 +67,7 @@ class FeedbackViewModel
             uid = uId
         )
         Log.i("ANS", "Submitting answers as: $feedback")
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch(coroutineDispatcher) {
             _feedbackPostState.value = feedbackRepo.postUserFeedback(feedback).toUiState()
         }
     }

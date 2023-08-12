@@ -86,29 +86,29 @@ class SchedulerViewModel
 
     private fun getEditUiData() {
         viewModelScope.launch {
-            prefManager.getPreferences(R.string.alarm, defaultValue = 999).collect {
-                if (it != 999) {
-                    alarmLocalRepo.getAlarm(it)?.let { alarm ->
-                        alarmEntity = alarm
-                        updateUi(alarm)
-                    }
-                } else {
-                    _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
-                        time_hours = LocalTime.now().hour.toString(),
-                        time_midDay = LocalTime.now().hour > 12,
-                        time_minutes = LocalTime.now().minute.toString()
-                    )
-                }
-                Log.d("tone", "getEditUiData alarm: ${_alarmSettingUiState.value}")
-            }
+//            prefManager.getPreferences(R.string.alarm, defaultValue = 999).collect {
+//                if (it != 999) {
+//                    alarmLocalRepo.getAlarm(it)?.let { alarm ->
+//                        alarmEntity = alarm
+//                        updateUi(alarm)
+//                    }
+//                } else {
+//                    _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+//                        time_hours = LocalTime.now().hour.toString(),
+//                        time_midDay = LocalTime.now().hour > 12,
+//                        time_minutes = LocalTime.now().minute.toString()
+//                    )
+//                }
+//                Log.d("tone", "getEditUiData alarm: ${_alarmSettingUiState.value}")
+//            } TODO
         }
         viewModelScope.launch {
-            prefManager.getPreferences(R.string.SPOTIFY_SONG_KEY_URI, "hi").collectLatest {
-                if (it != "hi" && alarmEntity == null) {
-                    _alarmSettingUiState.value = _alarmSettingUiState.value.copy(tone_uri = it)
-                }
-                Log.d("tone", "getEditUiData: $it")
-            }
+//            prefManager.getPreferences(R.string.SPOTIFY_SONG_KEY_URI, "hi").collectLatest {
+//                if (it != "hi" && alarmEntity == null) {
+//                    _alarmSettingUiState.value = _alarmSettingUiState.value.copy(tone_uri = it)
+//                }
+//                Log.d("tone", "getEditUiData: $it")
+//            } TODO
             Log.d("tone", "getEditUiData: outside")
         }
     }

@@ -61,19 +61,19 @@ class TodayPlanViewModel @Inject constructor(
         when (uiEvent) {
             is HomeEvent.EditAlarm -> {
                 viewModelScope.launch {
-                    prefManager.setPreferences(
-                        keyId = R.string.alarm,
-                        value = uiEvent.alarm.alarmId
-                    )
+//                    prefManager.setPreferences(
+//                        keyId = R.string.alarm,
+//                        value = uiEvent.alarm.alarmId
+//                    ) TODO
                 }
             }
 
             is HomeEvent.SetAlarm -> {
                 viewModelScope.launch {
-                    prefManager.setPreferences(
-                        keyId = R.string.alarm,
-                        value = 999
-                    )
+//                    prefManager.setPreferences(
+//                        keyId = R.string.alarm,
+//                        value = 999
+//                    ) TODO
                 }
             }
 

@@ -5,11 +5,11 @@ import com.google.gson.annotations.SerializedName
 
 data class OnboardingDTO(
     @SerializedName("data")
-    val `data`: List<Data>,
+    val `data`: List<OnboardingData>,
     @SerializedName("status")
     val status: Status
 ) {
-    data class Data(
+    data class OnboardingData(
         @SerializedName("dsc")
         val dsc: String,
         @SerializedName("id")

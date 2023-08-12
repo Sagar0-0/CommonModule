@@ -159,8 +159,8 @@ class SpotifyViewModel @Inject constructor(
     private fun onApplyClick(toneUiState: ToneUiState) {
         Log.d("tone", "onApplyClick: $toneUiState")
         viewModelScope.launch {
-            prefManager.setPreferences(R.string.SPOTIFY_SONG_KEY_URI, toneUiState.uri)
-            prefManager.setPreferences(R.string.SPOTIFY_SONG_KEY_URI, toneUiState.type)
+//            prefManager.setPreferences(R.string.SPOTIFY_SONG_KEY_URI, toneUiState.uri)
+//            prefManager.setPreferences(R.string.SPOTIFY_SONG_KEY_URI, toneUiState.type) TODO
         }
     }
 

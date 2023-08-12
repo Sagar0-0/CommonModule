@@ -23,20 +23,20 @@ class MainViewModel
 
     init {
         viewModelScope.launch {
-            prefManager.getPreferences(
-                R.string.user_pref_notification_key,
-                true
-            ).collect {
-                _notificationsEnabled.value = it
-                Log.d("INIT", "init: $it")
-            }
+//            prefManager.getPreferences(
+//                R.string.user_pref_notification_key,
+//                true
+//            ).collect {
+//                _notificationsEnabled.value = it
+//                Log.d("INIT", "init: $it")
+//            } TODO
         }
     }
 
     fun setNotificationStatus(newValue: Boolean) = viewModelScope.launch {
-        prefManager.setPreferences(
-            R.string.user_pref_notification_key,
-            newValue
-        )
+//        prefManager.setPreferences(
+//            R.string.user_pref_notification_key,
+//            newValue
+//        ) TODO
     }
 }

@@ -12,6 +12,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringResId
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.di.IODispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +26,7 @@ import kotlin.coroutines.CoroutineContext
 class AuthViewModel
 @Inject constructor(
     private val authRepo: AuthRepo,
-    @IODispatcher val coroutineContext: CoroutineContext = Dispatchers.IO
+    @IODispatcher val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
 
@@ -47,7 +48,7 @@ class AuthViewModel
 
     fun signInWithGoogleCredentials(authCredential: AuthCredential) {
         _loginState.value = UiState.Loading
-        viewModelScope.launch(coroutineContext){
+        viewModelScope.launch(coroutineDispatcher){
             try{
                 authRepo.signInWithCredential(authCredential).collect{
                     _loginState.value = it.toUiState()
@@ -71,7 +72,7 @@ class AuthViewModel
 
     fun deleteAccount(){
         _deleteState.value = UiState.Loading
-        viewModelScope.launch(coroutineContext){
+        viewModelScope.launch(coroutineDispatcher){
             try{
                 authRepo.deleteAccount().collect{
                     _deleteState.value = it.toUiState()

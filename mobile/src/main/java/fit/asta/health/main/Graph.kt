@@ -24,5 +24,4 @@ sealed class Graph(val route: String) {
     object Referral : Graph("graph_referral")
     object Wallet : Graph("graph_wallet")
     object Subscription : Graph("graph_subscription")
-    object Splash : Graph("graph_splash")
 }

@@ -95,13 +95,13 @@ class MapsViewModel
     init {
         updateLocationServiceStatus()
         viewModelScope.launch {
-            prefManager.getPreferences(
-                R.string.user_pref_current_address,
-                "Select location"
-            ).collect {
-                _currentAddressStringState.value = ResponseState.Success(it)
-                Log.d("INIT", "init: $it")
-            }
+//            prefManager.getPreferences(
+//                R.string.user_pref_current_address,
+//                "Select location"
+//            ).collect {
+//                _currentAddressStringState.value = ResponseState.Success(it)
+//                Log.d("INIT", "init: $it")
+//            } TODO
         }
     }
 
@@ -178,10 +178,10 @@ class MapsViewModel
                     _currentAddressState.value = ResponseState.Success(p0[0])
                     _currentAddressStringState.value = ResponseState.Success(getLocationName(p0[0]))
                     viewModelScope.launch {
-                        prefManager.setPreferences(
-                            R.string.user_pref_current_address,
-                            getLocationName(p0[0])
-                        )
+//                        prefManager.setPreferences(
+//                            R.string.user_pref_current_address,
+//                            getLocationName(p0[0])
+//                        ) TODO
                     }
                     Log.d(TAG, "getCurrentAddress: Success: ${_currentAddressState.value}")
                 }
@@ -196,10 +196,10 @@ class MapsViewModel
                     _currentAddressStringState.value =
                         ResponseState.Success(getLocationName(addresses[0]))
                     viewModelScope.launch {
-                        prefManager.setPreferences(
-                            R.string.user_pref_current_address,
-                            getLocationName(addresses[0])
-                        )
+//                        prefManager.setPreferences(
+//                            R.string.user_pref_current_address,
+//                            getLocationName(addresses[0])
+//                        ) TODO
                     }
                     Log.d(TAG, "getCurrentAddress: Success: ${_currentAddressState.value}")
                 } else {

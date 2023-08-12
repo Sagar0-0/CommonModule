@@ -16,8 +16,10 @@ import androidx.navigation.compose.rememberNavController
 import fit.asta.health.auth.ui.authRoute
 import fit.asta.health.common.maps.view.addressScreens
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
+import fit.asta.health.common.ui.webView
 import fit.asta.health.feedback.ui.feedbackRoute
 import fit.asta.health.main.view.homeScreen
+import fit.asta.health.onboarding.ui.ONBOARDING_GRAPH_ROUTE
 import fit.asta.health.onboarding.ui.onboardingRoute
 import fit.asta.health.payments.referral.view.referralScreens
 import fit.asta.health.payments.sub.view.subscriptionScreens
@@ -26,8 +28,6 @@ import fit.asta.health.profile.CreateProfileLayout
 import fit.asta.health.profile.ProfileContent
 import fit.asta.health.scheduler.navigation.schedulerNavigation
 import fit.asta.health.settings.view.settingScreens
-import fit.asta.health.common.ui.webView
-import fit.asta.health.splash.splashScreen
 import fit.asta.health.testimonials.testimonialsNavigation
 import fit.asta.health.tools.breathing.nav.breathingNavigation
 import fit.asta.health.tools.exercise.nav.exerciseNavigation
@@ -49,9 +49,8 @@ fun MainNavHost(isConnected: Boolean) {
     NavHost(
         navController = navController,
         route = Graph.ROOT.route,
-        startDestination = Graph.Splash.route
+        startDestination = ONBOARDING_GRAPH_ROUTE
     ) {
-        splashScreen(navController)
         onboardingRoute(navController)
         authRoute(navController)
         homeScreen(navController)

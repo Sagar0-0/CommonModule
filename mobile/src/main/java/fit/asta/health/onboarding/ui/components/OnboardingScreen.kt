@@ -20,7 +20,7 @@ import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.onboarding.data.modal.OnboardingData
+import fit.asta.health.onboarding.data.remote.modal.OnboardingDTO.OnboardingData
 import kotlinx.coroutines.launch
 
 
@@ -73,7 +73,7 @@ fun OnboardingScreen(
                     ) {
                         if (items[page].type == 1) {
                             GifImage(
-                                url = getImgUrl(url = items[page].imgUrl),
+                                url = getImgUrl(url = items[page].url),
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(bottom = spacing.medium),
@@ -81,7 +81,7 @@ fun OnboardingScreen(
                             )
                         } else {
                             AsyncImage(
-                                model = getImgUrl(url = items[page].imgUrl),
+                                model = getImgUrl(url = items[page].url),
                                 contentDescription = null,
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier.fillMaxWidth()
@@ -89,14 +89,14 @@ fun OnboardingScreen(
                         }
 
                         Text(
-                            text = items[page].title,
+                            text = items[page].ttl,
                             style = MaterialTheme.typography.headlineMedium,
                             color = MaterialTheme.colorScheme.primary
                         )
                         Text(
                             modifier = Modifier.padding(horizontal = spacing.extraMedium),
                             textAlign = TextAlign.Center,
-                            text = items[page].desc,
+                            text = items[page].dsc,
                             style = MaterialTheme.typography.titleSmall,
                             color = MaterialTheme.colorScheme.primary
                         )

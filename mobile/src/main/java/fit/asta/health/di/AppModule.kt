@@ -3,6 +3,8 @@ package fit.asta.health.di
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.datastore.core.DataStore
+import androidx.datastore.core.DataStoreFactory
+import androidx.datastore.dataStoreFile
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
@@ -12,9 +14,15 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.HealthCareApp
+import fit.asta.health.UserPreferences
 import fit.asta.health.auth.data.repo.AuthRepo
+import fit.asta.health.common.utils.UserPreferencesSerializer
+import fit.asta.health.player.jetpack_audio.di.Dispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.SupervisorJob
 import javax.inject.Named
 import javax.inject.Qualifier
 import javax.inject.Singleton
@@ -24,9 +32,28 @@ import kotlin.coroutines.CoroutineContext
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    @IODispatcher
     @Provides
-    fun provideIODispatcher(): CoroutineContext = Dispatchers.IO
+    @Singleton
+    fun providesUserPreferencesDataStore(
+        @ApplicationContext context: Context,
+        @IODispatcher ioDispatcher: CoroutineDispatcher,
+        @ApplicationScope scope: CoroutineScope,
+        userPreferencesSerializer: UserPreferencesSerializer,
+    ): DataStore<UserPreferences> =
+        DataStoreFactory.create(
+            serializer = userPreferencesSerializer,
+            scope = CoroutineScope(scope.coroutineContext + ioDispatcher),
+        ) {
+            context.dataStoreFile("user_preferences.pb")
+        }
+
+    @Provides
+    @IODispatcher
+    fun provideIODispatcher(): CoroutineDispatcher = Dispatchers.IO
+
+    @Provides
+    @DefaultDispatcher
+    fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
 
     @Provides
     @Named("UId")
@@ -51,16 +78,32 @@ object AppModule {
             produceFile = { context.preferencesDataStoreFile("USER_PREFERENCES") }
         )
     }
-    @IOCoroutine
+
+    @IOCoroutineScope
     @Provides
     fun provideCoroutineScope(@IODispatcher coroutineContext: CoroutineContext): CoroutineScope =
         CoroutineScope(coroutineContext)
+
+    @Provides
+    @Singleton
+    @ApplicationScope
+    fun providesCoroutineScope(
+        @DefaultDispatcher dispatcher: CoroutineDispatcher,
+    ): CoroutineScope = CoroutineScope(SupervisorJob() + dispatcher)
 
 }
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class IODispatcher
+
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class IOCoroutine
+annotation class DefaultDispatcher
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class IOCoroutineScope
+
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
+annotation class ApplicationScope
