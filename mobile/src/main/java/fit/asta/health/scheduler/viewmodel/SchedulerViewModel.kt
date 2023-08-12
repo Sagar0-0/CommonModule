@@ -30,6 +30,7 @@ import fit.asta.health.scheduler.model.db.entity.AlarmEntity
 import fit.asta.health.scheduler.model.db.entity.AlarmSync
 import fit.asta.health.scheduler.model.doman.getAlarm
 import fit.asta.health.scheduler.model.net.tag.ScheduleTagNetData
+import fit.asta.health.scheduler.util.Constants
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -86,29 +87,29 @@ class SchedulerViewModel
 
     private fun getEditUiData() {
         viewModelScope.launch {
-//            prefManager.getPreferences(R.string.alarm, defaultValue = 999).collect {
-//                if (it != 999) {
-//                    alarmLocalRepo.getAlarm(it)?.let { alarm ->
-//                        alarmEntity = alarm
-//                        updateUi(alarm)
-//                    }
-//                } else {
-//                    _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
-//                        time_hours = LocalTime.now().hour.toString(),
-//                        time_midDay = LocalTime.now().hour > 12,
-//                        time_minutes = LocalTime.now().minute.toString()
-//                    )
-//                }
-//                Log.d("tone", "getEditUiData alarm: ${_alarmSettingUiState.value}")
-//            } TODO
+            prefManager.getPreferences("alarm", defaultValue = 999).collect {
+                if (it != 999) {
+                    alarmLocalRepo.getAlarm(it)?.let { alarm ->
+                        alarmEntity = alarm
+                        updateUi(alarm)
+                    }
+                } else {
+                    _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+                        time_hours = LocalTime.now().hour.toString(),
+                        time_midDay = LocalTime.now().hour > 12,
+                        time_minutes = LocalTime.now().minute.toString()
+                    )
+                }
+                Log.d("tone", "getEditUiData alarm: ${_alarmSettingUiState.value}")
+            }
         }
         viewModelScope.launch {
-//            prefManager.getPreferences(R.string.SPOTIFY_SONG_KEY_URI, "hi").collectLatest {
-//                if (it != "hi" && alarmEntity == null) {
-//                    _alarmSettingUiState.value = _alarmSettingUiState.value.copy(tone_uri = it)
-//                }
-//                Log.d("tone", "getEditUiData: $it")
-//            } TODO
+            prefManager.getPreferences(Constants.SPOTIFY_SONG_KEY_URI, "hi").collectLatest {
+                if (it != "hi" && alarmEntity == null) {
+                    _alarmSettingUiState.value = _alarmSettingUiState.value.copy(tone_uri = it)
+                }
+                Log.d("tone", "getEditUiData: $it")
+            }
             Log.d("tone", "getEditUiData: outside")
         }
     }
