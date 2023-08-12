@@ -197,8 +197,8 @@ sealed class AppThemeType(val value: String) {
 }
 
 fun setAppTheme(newValue: String, context: Context) {
-    PrefUtils.setTheme(newValue, context)
-    when (PrefUtils.getTheme(context)) {
+    PrefManager.setTheme(newValue, context)
+    when (PrefManager.getTheme(context)) {
         AppThemeType.Dark.value -> {
             usingDarkMode.value = true
         }

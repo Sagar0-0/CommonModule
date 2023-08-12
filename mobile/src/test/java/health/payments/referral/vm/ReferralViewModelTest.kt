@@ -1,7 +1,5 @@
 package fit.asta.health.payments.referral.vm
 
-import CoroutinesTestExtension
-import InstantExecutorExtension
 import com.google.common.truth.Truth
 import fit.asta.health.common.utils.ResponseState
 import health.payments.referral.repo.FakeReferralRepoImpl
@@ -10,8 +8,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
-@OptIn(ExperimentalCoroutinesApi::class)
-@ExtendWith(InstantExecutorExtension::class, CoroutinesTestExtension::class)
 class ReferralViewModelTest {
 
     private lateinit var viewModel: ReferralViewModel

@@ -51,7 +51,7 @@ import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.components.generic.AppTopBar
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.common.utils.PrefUtils
+import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.common.utils.setAppTheme
 import fit.asta.health.settings.data.SettingsUiEvent
 
@@ -101,6 +101,7 @@ fun SettingsScreenLayout(
                         }
                         AppButtons.AppTextButton(
                             onClick = {
+                                showDeleteConfirmationDialog = false
                                 onClickEvent(SettingsUiEvent.DELETE)
                             }
                         ) {
@@ -261,7 +262,7 @@ fun ListPreference(
 ) {
     val title = stringResource(id = titleId)
     val context = LocalContext.current
-    val theme = PrefUtils.getTheme(context)
+    val theme = PrefManager.getTheme(context)
     val idx = values.indexOf(theme)
     var showDialog by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableIntStateOf(idx) }

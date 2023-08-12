@@ -11,7 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.LocalContext
 import fit.asta.health.common.ui.theme.*
 import fit.asta.health.common.utils.AppThemeType
-import fit.asta.health.common.utils.PrefUtils
+import fit.asta.health.common.utils.PrefManager
 
 
 private val LightColors = lightColorScheme(
@@ -81,7 +81,7 @@ fun AppTheme(
     content: @Composable () -> Unit,
 ) {
     val context = LocalContext.current
-    when (PrefUtils.getTheme(context)) {
+    when (PrefManager.getTheme(context)) {
         AppThemeType.Dark.value -> {
             usingDarkMode.value = true
         }

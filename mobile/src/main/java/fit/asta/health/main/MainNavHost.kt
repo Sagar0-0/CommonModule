@@ -13,12 +13,12 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import fit.asta.health.auth.view.authScreens
+import fit.asta.health.auth.ui.authRoute
 import fit.asta.health.common.maps.view.addressScreens
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
-import fit.asta.health.feedback.ui.feedbackScreen
+import fit.asta.health.feedback.ui.feedbackRoute
 import fit.asta.health.main.view.homeScreen
-import fit.asta.health.onboarding.ui.onboardingScreen
+import fit.asta.health.onboarding.ui.onboardingRoute
 import fit.asta.health.payments.referral.view.referralScreens
 import fit.asta.health.payments.sub.view.subscriptionScreens
 import fit.asta.health.payments.wallet.view.walletScreen
@@ -26,7 +26,7 @@ import fit.asta.health.profile.CreateProfileLayout
 import fit.asta.health.profile.ProfileContent
 import fit.asta.health.scheduler.navigation.schedulerNavigation
 import fit.asta.health.settings.view.settingScreens
-import fit.asta.health.settings.webView
+import fit.asta.health.common.ui.webView
 import fit.asta.health.splash.splashScreen
 import fit.asta.health.testimonials.ui.testimonialsRoute
 import fit.asta.health.tools.breathing.nav.breathingNavigation
@@ -52,8 +52,8 @@ fun MainNavHost(isConnected: Boolean) {
         startDestination = Graph.Splash.route
     ) {
         splashScreen(navController)
-        onboardingScreen(navController)
-        authScreens(navController)
+        onboardingRoute(navController)
+        authRoute(navController)
         homeScreen(navController)
 
         composable(route = Graph.Profile.route) {
@@ -74,7 +74,7 @@ fun MainNavHost(isConnected: Boolean) {
         schedulerNavigation(navController, onBack = { navController.navigateUp() })
 
         settingScreens(navController)
-        feedbackScreen(navController)
+        feedbackRoute(navController)
         addressScreens(navController)
 
         subscriptionScreens(navController)

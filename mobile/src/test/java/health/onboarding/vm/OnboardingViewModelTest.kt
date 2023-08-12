@@ -1,52 +1,82 @@
 package health.onboarding.vm
 
-import CoroutinesTestExtension
-import InstantExecutorExtension
-import com.google.common.truth.Truth.assertThat
+import app.cash.turbine.test
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.onboarding.repo.FakeOnboardingRepoImpl
-import fit.asta.health.onboarding.vm.OnboardingViewModel
-import health.network.FakeNetworkHelperImpl
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.onboarding.data.modal.OnboardingData
+import fit.asta.health.onboarding.data.repo.OnboardingRepoImpl
+import fit.asta.health.onboarding.ui.vm.OnboardingViewModel
+import io.mockk.clearAllMocks
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.mockk
+import io.mockk.spyk
+import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 
-@OptIn(ExperimentalCoroutinesApi::class)
-@ExtendWith(InstantExecutorExtension::class, CoroutinesTestExtension::class)
 class OnboardingViewModelTest {
+
     private lateinit var viewModel: OnboardingViewModel
-    private val repo = FakeOnboardingRepoImpl()
+
+    private val repo: OnboardingRepoImpl = mockk(relaxed = true)
 
     @BeforeEach
     fun setup() {
-        viewModel = OnboardingViewModel(
-            repo,
-            FakeNetworkHelperImpl()
+        viewModel = spyk(
+            OnboardingViewModel(
+                repo
+            )
         )
     }
 
-    @Test
-    fun `getData with error, return error`() {
-        repo.setError(true)
-        viewModel.getData()
-        assertThat(viewModel.state.value).isInstanceOf(ResponseState.Error::class.java)
+    @AfterEach
+    fun afterEach() {
+        clearAllMocks()
     }
 
     @Test
-    fun `getData no error, return success`() {
-        repo.setError(false)
+    fun `getData with error, return error`() = runTest {
+        coEvery { repo.getData() } returns ResponseState.Error(Exception())
+
         viewModel.getData()
-        assertThat(viewModel.state.value).isInstanceOf(ResponseState.Success::class.java)
+
+        coVerify { repo.getData() }
+
+        viewModel.state.test {
+            assert(awaitItem() is UiState.Error)
+        }
     }
 
     @Test
-    fun `getData no error, return data list`() {
-        repo.setError(false)
+    fun `getData no error, return success`() = runTest {
+        val mockList = emptyList<OnboardingData>()
+        coEvery { repo.getData() } returns ResponseState.Success(mockList)
+
         viewModel.getData()
-        if (viewModel.state.value is ResponseState.Success) {
-            val data = (viewModel.state.value as ResponseState.Success).data
-            assertThat(data).isNotEmpty()
+
+        coVerify { repo.getData() }
+
+        viewModel.state.test {
+            assert(awaitItem() is UiState.Success)
+        }
+    }
+
+    @Test
+    fun `getData no error, return data list`() = runTest {
+        val mockList = listOf(OnboardingData(), OnboardingData())
+        coEvery { repo.getData() } returns ResponseState.Success(mockList)
+
+        viewModel.getData()
+
+        coVerify { repo.getData() }
+
+        viewModel.state.test {
+            val item = awaitItem()
+            assert(item is UiState.Success)
+            assertEquals(mockList.size, (item as UiState.Success).data.size)
         }
     }
 }

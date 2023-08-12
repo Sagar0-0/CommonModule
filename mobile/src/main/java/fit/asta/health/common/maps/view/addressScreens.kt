@@ -2,9 +2,7 @@ package fit.asta.health.common.maps.view
 
 import android.Manifest
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.location.LocationManager
 import android.net.Uri
 import android.provider.Settings
 import android.util.Log
@@ -13,6 +11,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
@@ -32,7 +31,7 @@ import fit.asta.health.common.maps.modal.AddressScreen
 import fit.asta.health.common.maps.modal.AddressesResponse
 import fit.asta.health.common.maps.utils.LocationProviderChangedReceiver
 import fit.asta.health.common.maps.vm.MapsViewModel
-import fit.asta.health.common.utils.PrefUtils
+import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.common.utils.rememberLifecycleEvent
 import fit.asta.health.main.Graph
 
@@ -77,23 +76,21 @@ fun NavGraphBuilder.addressScreens(navController: NavHostController) {
 @Composable
 private fun Setup(mapsViewModel: MapsViewModel, navController: NavHostController) {
     val context = LocalContext.current
-    val br = LocationProviderChangedReceiver()
-    LaunchedEffect(Unit) {
-        br.init(
-            object : LocationProviderChangedReceiver.LocationListener {
-                override fun onEnabled() {
-                    mapsViewModel.isLocationEnabled.value = true
-                    mapsViewModel.updateCurrentLocationData(context)
-                }
 
-                override fun onDisabled() {
-                    mapsViewModel.isLocationEnabled.value = false
-                }
-
+    DisposableEffect(context) {
+        val br = LocationProviderChangedReceiver(
+            onEnabled = {
+                mapsViewModel.isLocationEnabled.value = true
+                mapsViewModel.updateCurrentLocationData(context)
+            },
+            onDisabled = {
+                mapsViewModel.isLocationEnabled.value = false
             }
         )
-        val intentFilter = IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION)
-        context.registerReceiver(br, intentFilter)
+        br.register(context)
+        onDispose {
+            br.unregister(context)
+        }
     }
 
     val lifecycleEvent = rememberLifecycleEvent()
@@ -115,17 +112,7 @@ private fun Setup(mapsViewModel: MapsViewModel, navController: NavHostController
                 mapsViewModel.updateCurrentLocationData(context)
             }
 
-            Lifecycle.Event.ON_STOP -> {
-                try {
-                    context.unregisterReceiver(br)
-                } catch (e: Exception) {
-                    Log.e("TAG", "setup: $e")
-                }
-            }
-
-            else -> {
-
-            }
+            else -> {}
         }
     }
 
@@ -135,7 +122,7 @@ private fun Setup(mapsViewModel: MapsViewModel, navController: NavHostController
         ) { perms ->
             perms.keys.forEach loop@{ perm ->
                 if ((perms[perm] == true) && (perm == Manifest.permission.ACCESS_FINE_LOCATION || perm == Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                    PrefUtils.setLocationPermissionRejectedCount(context, 1)
+                    PrefManager.setLocationPermissionRejectedCount(context, 1)
                     return@loop
                 } else {
                     Toast.makeText(
@@ -143,9 +130,9 @@ private fun Setup(mapsViewModel: MapsViewModel, navController: NavHostController
                         context.getString(R.string.location_access_required),
                         Toast.LENGTH_SHORT
                     ).show()
-                    PrefUtils.setLocationPermissionRejectedCount(
+                    PrefManager.setLocationPermissionRejectedCount(
                         context,
-                        PrefUtils.getLocationPermissionRejectedCount(context) + 1
+                        PrefManager.getLocationPermissionRejectedCount(context) + 1
                     )
                     navController.navigateUp()
                 }
@@ -176,7 +163,7 @@ private fun Setup(mapsViewModel: MapsViewModel, navController: NavHostController
 
     LaunchedEffect(isPermissionGranted) {
         if (!isPermissionGranted) {
-            if (PrefUtils.getLocationPermissionRejectedCount(context) >= 2) {
+            if (PrefManager.getLocationPermissionRejectedCount(context) >= 2) {
                 Toast.makeText(
                     context,
                     "Please allow Location permission access.",

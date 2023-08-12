@@ -338,7 +338,7 @@
     <string name="refer_code_not_exist">Referral code doesn\'t exist!</string>
     <string name="own_refer_code_error">You can not apply your own referral code!</string>
     <string name="already_referred_error">You are already referred!</string>
-    <string name="unknown_error">Unknown Error!</string>
+    <string name="unknown_error">An Unknown Error occurred!</string>
 
     <item name="repeatTimeTag" type="id" />
     <item name="repeatTimeUnitTag" type="id" />
@@ -543,5 +543,9 @@
     <string name="alert">Alert</string>
     <string name="skip">Skip</string>
 
+    <string name="no_internet">Internet connection not available</string>
+    <string name="alarm">alarm</string>
+    <string name="SPOTIFY_SONG_KEY_URI">\"bundle_spotify_song\"</string>
+    <string name="application_fid">application</string>
 
 </resources>

@@ -1,7 +1,5 @@
 package fit.asta.health.payments.wallet.vm
 
-import CoroutinesTestExtension
-import InstantExecutorExtension
 import com.google.common.truth.Truth
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.payments.wallet.repo.FakeWalletRepoImpl
@@ -11,7 +9,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@ExtendWith(InstantExecutorExtension::class, CoroutinesTestExtension::class)
 class WalletViewModelTest {
 
     private lateinit var viewModel: WalletViewModel

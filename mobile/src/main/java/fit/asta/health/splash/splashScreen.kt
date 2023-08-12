@@ -1,35 +1,37 @@
 package fit.asta.health.splash
 
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import fit.asta.health.auth.viewmodel.AuthViewModel
-import fit.asta.health.common.utils.PrefUtils
+import androidx.navigation.navOptions
+import fit.asta.health.auth.ui.navigateToAuth
+import fit.asta.health.auth.ui.vm.AuthViewModel
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.main.Graph
+import fit.asta.health.onboarding.ui.navigateToOnboarding
+import fit.asta.health.onboarding.ui.vm.OnboardingViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@OptIn(ExperimentalCoroutinesApi::class)
 fun NavGraphBuilder.splashScreen(navController: NavController) {
     composable(Graph.Splash.route) {
         val authViewModel: AuthViewModel = hiltViewModel()
-        val context = LocalContext.current
-        if (!PrefUtils.getOnboardingShownStatus(context)) {
-            navController.navigate(Graph.Onboarding.route) {
-                popUpToTop(navController)
-            }
+        val onboardingViewModel: OnboardingViewModel = hiltViewModel()
+        val onboardingShown by onboardingViewModel.onboardingState.collectAsStateWithLifecycle()
+        if (!onboardingShown) {
+            navController.navigateToOnboarding()
+
         } else {
             if (!authViewModel.isAuthenticated()) {
-                navController.navigate(Graph.Authentication.route) {
-                    popUpToTop(navController)
-                }
+                navController.navigateToAuth()
             } else {
                 navController.navigate(Graph.Home.route) {
                     popUpToTop(navController)
                 }
             }
-
         }
-
     }
 }

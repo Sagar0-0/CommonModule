@@ -68,7 +68,7 @@ fun WalletScreenUi(
             }
 
             is ResponseState.Error -> {
-                Log.e("Wallet", "WalletScreen: ${walletDataState.error}")
+                Log.e("Wallet", "WalletScreen: ${walletDataState.exception}")
                 AppErrorScreen(
                     modifier = Modifier.padding(paddingValues),
                     desc = "Something went wrong!",

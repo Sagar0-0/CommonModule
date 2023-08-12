@@ -9,7 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.model.AuthRepo
+import fit.asta.health.auth.data.repo.AuthRepo
 import fit.asta.health.common.utils.getCurrentDate
 import fit.asta.health.tools.water.db.WaterData
 import fit.asta.health.tools.water.model.WaterLocalRepo

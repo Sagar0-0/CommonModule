@@ -44,7 +44,7 @@ fun SubscriptionPlansUi(
             }
 
             is ResponseState.Error -> {
-                Log.e("Sub", "SubScreen: ${state.error}")
+                Log.e("Sub", "SubScreen: ${state.exception}")
                 AppErrorScreen(
                     modifier = Modifier.padding(paddingValues),
                     desc = "Something went wrong!",

@@ -7,10 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.common.utils.PrefUtils
+import fit.asta.health.R
+import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.ToneUiState
 import fit.asta.health.scheduler.compose.screen.spotify.SpotifyUiEvent
-import fit.asta.health.scheduler.util.Constants
 import fit.asta.health.thirdparty.spotify.model.MusicRepository
 import fit.asta.health.thirdparty.spotify.model.SpotifyRepo
 import fit.asta.health.thirdparty.spotify.model.net.common.Album
@@ -30,7 +30,7 @@ import javax.inject.Inject
 class SpotifyViewModel @Inject constructor(
     private val remoteRepository: SpotifyRepo,
     private val localRepository: MusicRepository,
-    private val prefUtils: PrefUtils,
+    private val prefManager: PrefManager,
     application: Application,
 ) : AndroidViewModel(application) {
 
@@ -159,8 +159,8 @@ class SpotifyViewModel @Inject constructor(
     private fun onApplyClick(toneUiState: ToneUiState) {
         Log.d("tone", "onApplyClick: $toneUiState")
         viewModelScope.launch {
-            prefUtils.setPreferences(Constants.SPOTIFY_SONG_KEY_URI, toneUiState.uri)
-            prefUtils.setPreferences(Constants.SPOTIFY_SONG_KEY_TYPE, toneUiState.type)
+            prefManager.setPreferences(R.string.SPOTIFY_SONG_KEY_URI, toneUiState.uri)
+            prefManager.setPreferences(R.string.SPOTIFY_SONG_KEY_URI, toneUiState.type)
         }
     }
 

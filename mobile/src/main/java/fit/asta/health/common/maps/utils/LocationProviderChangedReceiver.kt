@@ -3,22 +3,22 @@ package fit.asta.health.common.maps.utils
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.location.LocationManager
 import android.util.Log
 
-class LocationProviderChangedReceiver : BroadcastReceiver() {
+class LocationProviderChangedReceiver(
+    val onEnabled: () -> Unit,
+    val onDisabled: () -> Unit
+) : BroadcastReceiver() {
 
     private var isGpsEnabled: Boolean = false
     private var isNetworkEnabled: Boolean = false
-    private var locationListener: LocationListener? = null
-
-    fun init(locationListener: LocationListener) {
-        this.locationListener = locationListener
-    }
+    private var registered = false
 
     override fun onReceive(context: Context, intent: Intent) {
         intent.action?.let { act ->
-            if (act.matches("android.location.PROVIDERS_CHANGED".toRegex())) {
+            if (act == LocationManager.PROVIDERS_CHANGED_ACTION) {
                 val locationManager =
                     context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
                 isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
@@ -29,17 +29,27 @@ class LocationProviderChangedReceiver : BroadcastReceiver() {
 
                 //Start your Activity if location was enabled:
                 if (isGpsEnabled && isNetworkEnabled) {
-                    locationListener?.onEnabled()
+                    onEnabled()
                 } else {
-                    locationListener?.onDisabled()
+                    onDisabled()
                 }
             }
         }
     }
 
-    interface LocationListener {
-        fun onEnabled()
-        fun onDisabled()
+    fun register(context: Context) {
+        if (!registered) {
+            val filter = IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION)
+            context.registerReceiver(this, filter)
+            registered = true
+        }
+    }
+
+    fun unregister(context: Context) {
+        if (registered) {
+            context.unregisterReceiver(this)
+            registered = false
+        }
     }
 
     companion object {

@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.R
-import fit.asta.health.auth.model.AuthRepo
-import fit.asta.health.auth.model.domain.User
+import fit.asta.health.auth.data.repo.AuthRepo
+import fit.asta.health.auth.data.model.domain.User
 import fit.asta.health.common.utils.UiString
 import fit.asta.health.network.NetworkHelper
 import fit.asta.health.network.data.ApiResponse

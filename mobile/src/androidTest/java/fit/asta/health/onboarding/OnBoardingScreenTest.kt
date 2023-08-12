@@ -4,9 +4,9 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.onboarding.modal.OnboardingData
-import fit.asta.health.onboarding.ui.OnBoardingPager
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.onboarding.data.modal.OnboardingData
+import fit.asta.health.onboarding.ui.components.OnboardingScreen
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -37,8 +37,8 @@ class OnBoardingScreenTest {
     @Before
     fun setup() {
         rule.setContent {
-            OnBoardingPager(
-                state = ResponseState.Success(
+            OnboardingScreen(
+                state = UiState.Success(
                     data
                 ),
                 onReload = {

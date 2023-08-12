@@ -110,6 +110,13 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "$compose_compiler"
     }
+
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+            unitTests.includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -366,17 +373,24 @@ dependencies {
 
     //test
     testImplementation "junit:junit:4.13.2"
-    testImplementation "org.junit.jupiter:junit-jupiter:5.8.1"
-    testImplementation "org.junit.vintage:junit-vintage-engine:5.8.1"
+    testImplementation "org.junit.jupiter:junit-jupiter:5.9.3"
+    testImplementation "org.junit.vintage:junit-vintage-engine:5.9.3"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3"
     testImplementation 'androidx.arch.core:core-testing:2.2.0'
     testImplementation "com.google.truth:truth:1.0.1"
     testImplementation "androidx.paging:paging-common-ktx:$paging_ver"
+    testImplementation "io.mockk:mockk:1.13.5"
+    testImplementation "io.mockk:mockk-android:1.13.5"
+    testImplementation "io.mockk:mockk-agent:1.13.5"
+    testImplementation 'app.cash.turbine:turbine:1.0.0'
 
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ver"
     androidTestImplementation "androidx.room:room-testing:$room_ver"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
     androidTestImplementation "androidx.test.ext:junit:1.1.5"
+
+    //referral
+    implementation "com.android.installreferrer:installreferrer:2.2"
 }
 
 kapt {

@@ -25,7 +25,7 @@ import com.razorpay.PaymentData
 import com.razorpay.PaymentResultWithDataListener
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.R
-import fit.asta.health.auth.viewmodel.AuthViewModel
+import fit.asta.health.auth.ui.vm.AuthViewModel
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.LoadingAnimation

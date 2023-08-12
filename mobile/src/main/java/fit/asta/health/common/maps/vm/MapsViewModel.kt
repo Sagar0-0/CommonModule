@@ -35,8 +35,7 @@ import fit.asta.health.common.maps.modal.AddressesResponse.MyAddress
 import fit.asta.health.common.maps.modal.SearchResponse
 import fit.asta.health.common.maps.repo.MapsRepo
 import fit.asta.health.common.maps.utils.LocationHelper
-import fit.asta.health.common.utils.PrefUtils
-import fit.asta.health.common.utils.ResourcesProvider
+import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getLocationName
 import kotlinx.coroutines.Job
@@ -57,8 +56,7 @@ class MapsViewModel
     @Named("UId")
     val uId: String,
     private val locationHelper: LocationHelper,
-    private val prefUtils: PrefUtils,
-    private val resourcesProvider: ResourcesProvider
+    private val prefManager: PrefManager
 ) : ViewModel() {
 
     private val TAG = "MAPS"
@@ -97,8 +95,8 @@ class MapsViewModel
     init {
         updateLocationServiceStatus()
         viewModelScope.launch {
-            prefUtils.getPreferences(
-                resourcesProvider.getString(R.string.user_pref_current_address),
+            prefManager.getPreferences(
+                R.string.user_pref_current_address,
                 "Select location"
             ).collect {
                 _currentAddressStringState.value = ResponseState.Success(it)
@@ -180,8 +178,8 @@ class MapsViewModel
                     _currentAddressState.value = ResponseState.Success(p0[0])
                     _currentAddressStringState.value = ResponseState.Success(getLocationName(p0[0]))
                     viewModelScope.launch {
-                        prefUtils.setPreferences(
-                            resourcesProvider.getString(R.string.user_pref_current_address),
+                        prefManager.setPreferences(
+                            R.string.user_pref_current_address,
                             getLocationName(p0[0])
                         )
                     }
@@ -198,8 +196,8 @@ class MapsViewModel
                     _currentAddressStringState.value =
                         ResponseState.Success(getLocationName(addresses[0]))
                     viewModelScope.launch {
-                        prefUtils.setPreferences(
-                            resourcesProvider.getString(R.string.user_pref_current_address),
+                        prefManager.setPreferences(
+                            R.string.user_pref_current_address,
                             getLocationName(addresses[0])
                         )
                     }
@@ -319,7 +317,7 @@ class MapsViewModel
                     getAllAddresses()
                     Log.d(TAG, "deleteAddress " + it.data.status.code.toString())
                 } else if (it is ResponseState.Error) {
-                    Log.e(TAG, "deleteAddress " + it.error.message)
+                    Log.e(TAG, "deleteAddress " + it.exception.message)
                 }
             }
     }

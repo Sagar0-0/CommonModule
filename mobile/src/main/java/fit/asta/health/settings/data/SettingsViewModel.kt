@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.R
-import fit.asta.health.common.utils.PrefUtils
+import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.common.utils.ResourcesProvider
 import javax.inject.Inject
 
@@ -16,7 +16,7 @@ import javax.inject.Inject
 class SettingsViewModel
 @Inject constructor(
     private val resourcesProvider: ResourcesProvider,
-    private val prefUtils: PrefUtils,
+    private val prefManager: PrefManager,
     private val firebaseMessaging: FirebaseMessaging
 ) : ViewModel() {
 
@@ -36,7 +36,7 @@ class SettingsViewModel
     }
 
     private fun getAllNotificationsStatus() {
-//        isReminderAlarmOn = prefUtils TODO: NEED ALL...
+//        isReminderAlarmOn = prefManager TODO: NEED ALL...
     }
 
     fun onSwitchToggle(key: String) {
