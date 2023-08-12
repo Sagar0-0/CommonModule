@@ -3,6 +3,8 @@
     <base-config cleartextTrafficPermitted="true">
         <trust-anchors>
             <certificates src="system" />
+            <!-- TODO Make sure its deleted in production release -->
+            <certificates src="@raw/server" />
         </trust-anchors>
     </base-config>
     <debug-overrides>

@@ -19,40 +19,28 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keepattributes Signature
--keepattributes *Annotation*
 
-# Retrofit does reflection on generic parameters. InnerClasses is required to use Signature and
-# EnclosingMethod is required to use InnerClasses.
--keepattributes Signature, InnerClasses, EnclosingMethod
+# to prevent proguard from warning sdk users about missing classes
+#Spotify-----------------------------------------------------------
+-dontwarn com.fasterxml.jackson.databind.deser.std.*
+-dontwarn com.fasterxml.jackson.databind.ser.std.*
+-dontwarn com.spotify.base.annotations.*
+#Spotify-----------------------------------------------------------
 
-# Retrofit does reflection on method and parameter annotations.
--keepattributes RuntimeVisibleAnnotations, RuntimeVisibleParameterAnnotations
-
-# Retain service method parameters when optimizing.
--keepclassmembers,allowshrinking,allowobfuscation interface * {
-    @retrofit2.http.* <methods>;
+#Razorpay-----------------------------------------------------------
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
 }
 
-# Ignore annotation used for build tooling.
--dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+-keepattributes JavascriptInterface
+-keepattributes *Annotation*
 
-# Ignore JSR 305 annotations for embedding nullability information.
--dontwarn javax.annotation.**
+-dontwarn com.razorpay.**
+-keep class com.razorpay.** {*;}
 
-# Guarded by a NoClassDefFoundError try/catch and only used when on the classpath.
--dontwarn kotlin.Unit
+-optimizations !method/inlining/*
 
--dontwarn com.fasterxml.jackson.databind.deser.std.StdDeserializer
--dontwarn com.fasterxml.jackson.databind.ser.std.StdSerializer
--dontwarn com.spotify.base.annotations.NotNull
--dontwarn proguard.annotation.Keep
--dontwarn proguard.annotation.KeepClassMembers
-
-# Top-level functions that can only be used by Kotlin.
--dontwarn retrofit2.KotlinExtensions
-
-# With R8 full mode, it sees no subtypes of Retrofit interfaces since they are created with a Proxy
-# and replaces all potential values with null. Explicitly keeping the interfaces prevents this.
--if interface * { @retrofit2.http.* <methods>; }
--keep,allowobfuscation interface <1>
+-keepclasseswithmembers class * {
+  public void onPayment*(...);
+}
+#Razorpay-----------------------------------------------------------

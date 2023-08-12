@@ -58,7 +58,8 @@ object NetworkUtil {
             builder.certificatePinner(buildCertificatePinner())
         }
 
-        if (BuildConfig.DEBUG) {
+        //TODO Make sure its deleted in production release
+        if (BuildConfig.FLAVOR.contentEquals("dev")) {
             //For self signed SSL Certificate - Only for dev and test environments
             builder.hostnameVerifier { _, _ -> true }
         }

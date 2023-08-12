@@ -115,7 +115,6 @@ android {
 dependencies {
 
     implementation project(path: ":chartLibrary")
-    implementation fileTree(dir: "libs", include: ["*.jar"])
     // Spotify App remote Dependency
     implementation fileTree(include: ["*.jar", "*.aar"], dir: "libs")
 
