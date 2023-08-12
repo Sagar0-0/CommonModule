@@ -21,6 +21,28 @@
 #-renamesourcefileattribute SourceFile
 
 # to prevent proguard from warning sdk users about missing classes
+#Coroutines---------------------------------------------------------
+-keepattributes Signature
+-keep class kotlin.coroutines.Continuation
+#Coroutines---------------------------------------------------------
+
+#Retrofit-----------------------------------------------------------
+-if interface * { @retrofit2.http.* *** *(...); }
+-keep,allowobfuscation interface <3>
+
+-keep,allowobfuscation,allowshrinking interface retrofit2.Call
+#Retrofit-----------------------------------------------------------
+
+#Gson---------------------------------------------------------------
+-keepclassmembers,allowobfuscation class * {
+ @com.google.gson.annotations.SerializedName <fields>;
+}
+
+-keepattributes Signature
+-keep class com.google.gson.reflect.TypeToken { *; }
+-keep class * extends com.google.gson.reflect.TypeToken
+#Gson---------------------------------------------------------------
+
 #Spotify-----------------------------------------------------------
 -dontwarn com.fasterxml.jackson.databind.deser.std.*
 -dontwarn com.fasterxml.jackson.databind.ser.std.*
