@@ -5,7 +5,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.onboarding.data.remote.modal.OnboardingDTO.OnboardingData
+import fit.asta.health.onboarding.data.model.OnboardingData
 import fit.asta.health.onboarding.ui.components.OnboardingScreen
 import org.junit.Before
 import org.junit.Rule

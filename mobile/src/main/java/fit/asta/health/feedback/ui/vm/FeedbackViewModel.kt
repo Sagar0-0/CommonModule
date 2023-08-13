@@ -9,21 +9,17 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
-import fit.asta.health.di.IODispatcher
-import fit.asta.health.feedback.data.repo.FeedbackRepo
 import fit.asta.health.feedback.data.remote.modal.An
 import fit.asta.health.feedback.data.remote.modal.FeedbackQuesDTO
 import fit.asta.health.feedback.data.remote.modal.PostFeedbackDTO
 import fit.asta.health.feedback.data.remote.modal.UserFeedbackDTO
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
+import fit.asta.health.feedback.data.repo.FeedbackRepo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
-import kotlin.coroutines.CoroutineContext
 
 
 @ExperimentalCoroutinesApi
@@ -32,8 +28,7 @@ class FeedbackViewModel
 @Inject constructor(
     private val feedbackRepo: FeedbackRepo,
     @Named("UId")
-    val uId: String,
-    @IODispatcher val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
+    val uId: String
 ) : ViewModel() {
 
     private var _fid by mutableStateOf("")
@@ -50,10 +45,11 @@ class FeedbackViewModel
     //call this before starting feedback form
     fun loadFeedbackQuestions(featureId: String) {
         _feedbackQuestions.value = UiState.Loading
-        viewModelScope.launch(coroutineDispatcher) {
-            _feedbackQuestions.value = feedbackRepo.getFeedbackQuestions(uId,featureId).toUiState()
+        viewModelScope.launch {
+            _feedbackQuestions.value = feedbackRepo.getFeedbackQuestions(uId, featureId).toUiState()
             _fid = featureId
-            if(_feedbackQuestions.value is UiState.Success)_qnrId = (_feedbackQuestions.value as UiState.Success<FeedbackQuesDTO>).data.data.id
+            if (_feedbackQuestions.value is UiState.Success) _qnrId =
+                (_feedbackQuestions.value as UiState.Success<FeedbackQuesDTO>).data.data.id
         }
     }
 
@@ -66,8 +62,7 @@ class FeedbackViewModel
             qnrId = _qnrId,
             uid = uId
         )
-        Log.i("ANS", "Submitting answers as: $feedback")
-        viewModelScope.launch(coroutineDispatcher) {
+        viewModelScope.launch {
             _feedbackPostState.value = feedbackRepo.postUserFeedback(feedback).toUiState()
         }
     }

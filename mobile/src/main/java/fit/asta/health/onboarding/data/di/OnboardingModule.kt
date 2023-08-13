@@ -10,6 +10,7 @@ import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.onboarding.data.remote.OnboardingApi
 import fit.asta.health.onboarding.data.repo.OnboardingRepo
 import fit.asta.health.onboarding.data.repo.OnboardingRepoImpl
+import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
@@ -27,11 +28,13 @@ object OnboardingModule {
     @Provides
     fun provideOnboardingRepo(
         remoteApi: OnboardingApi,
-        prefManager: PrefManager
+        prefManager: PrefManager,
+        coroutineDispatcher: CoroutineDispatcher
     ): OnboardingRepo {
         return OnboardingRepoImpl(
             remoteApi = remoteApi,
-            prefManager = prefManager
+            prefManager = prefManager,
+            coroutineDispatcher = coroutineDispatcher
         )
     }
 }

@@ -400,9 +400,7 @@ dependencies {
     testImplementation 'androidx.arch.core:core-testing:2.2.0'
     testImplementation "com.google.truth:truth:1.0.1"
     testImplementation "androidx.paging:paging-common-ktx:$paging_ver"
-    testImplementation "io.mockk:mockk:1.13.5"
     testImplementation "io.mockk:mockk-android:1.13.5"
-    testImplementation "io.mockk:mockk-agent:1.13.5"
     testImplementation 'app.cash.turbine:turbine:1.0.0'
 
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ver"

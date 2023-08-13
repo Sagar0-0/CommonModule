@@ -16,6 +16,7 @@ import dagger.hilt.components.SingletonComponent
 import fit.asta.health.HealthCareApp
 import fit.asta.health.UserPreferences
 import fit.asta.health.auth.data.repo.AuthRepo
+import fit.asta.health.common.utils.CoroutineDispatcherProvider
 import fit.asta.health.common.utils.UserPreferencesSerializer
 import fit.asta.health.player.jetpack_audio.di.Dispatcher
 import kotlinx.coroutines.CoroutineDispatcher
@@ -48,12 +49,15 @@ object AppModule {
         }
 
     @Provides
+    @Singleton
+    fun provideDispatcherProvider() = CoroutineDispatcherProvider()
+
+    @Provides
     @IODispatcher
     fun provideIODispatcher(): CoroutineDispatcher = Dispatchers.IO
 
     @Provides
-    @DefaultDispatcher
-    fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
+    fun providesCoroutineDispatcher(): CoroutineDispatcher = Dispatchers.Default
 
     @Provides
     @Named("UId")
@@ -79,31 +83,19 @@ object AppModule {
         )
     }
 
-    @IOCoroutineScope
-    @Provides
-    fun provideCoroutineScope(@IODispatcher coroutineContext: CoroutineContext): CoroutineScope =
-        CoroutineScope(coroutineContext)
-
     @Provides
     @Singleton
     @ApplicationScope
     fun providesCoroutineScope(
-        @DefaultDispatcher dispatcher: CoroutineDispatcher,
+        dispatcher: CoroutineDispatcher,
     ): CoroutineScope = CoroutineScope(SupervisorJob() + dispatcher)
 
 }
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class IODispatcher
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class DefaultDispatcher
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class IOCoroutineScope
+private annotation class IODispatcher
 
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
-annotation class ApplicationScope
+private annotation class ApplicationScope

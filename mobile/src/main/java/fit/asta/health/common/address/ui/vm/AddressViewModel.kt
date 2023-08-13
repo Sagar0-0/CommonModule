@@ -39,15 +39,11 @@ import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getLocationName
 import fit.asta.health.common.utils.toUiState
-import fit.asta.health.di.IODispatcher
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -62,7 +58,6 @@ class AddressViewModel
     @Named("UId")
     val uId: String,
     private val locationHelper: LocationHelper,
-    @IODispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
     private val TAG = "MAPS"
@@ -118,7 +113,7 @@ class AddressViewModel
         updateLocationServiceStatus()
     }
 
-    fun updateLocationPermissionRejectedCount(newValue: Int) = viewModelScope.launch(dispatcher) {
+    fun updateLocationPermissionRejectedCount(newValue: Int) = viewModelScope.launch {
         mapsRepo.updateLocationPermissionRejectedCount(newValue)
     }
 
@@ -191,7 +186,7 @@ class AddressViewModel
                     1
                 ) { addresses ->
                     _currentAddressState.value = UiState.Success(addresses[0])
-                    viewModelScope.launch(dispatcher) {
+                    viewModelScope.launch {
                         mapsRepo.setCurrentLocation(getLocationName(addresses[0]))
                     }
                     Log.d(TAG, "getCurrentAddress: Success: ${_currentAddressState.value}")
@@ -204,8 +199,8 @@ class AddressViewModel
                 )
                 if (!addresses.isNullOrEmpty()) {
                     _currentAddressState.value = UiState.Success(addresses[0])
-                    viewModelScope.launch(dispatcher) {
-                        viewModelScope.launch(dispatcher) {
+                    viewModelScope.launch {
+                        viewModelScope.launch {
                             mapsRepo.setCurrentLocation(getLocationName(addresses[0]))
                         }
                     }
@@ -261,7 +256,7 @@ class AddressViewModel
     fun getMarkerAddressDetails(lat: Double, long: Double, context: Context) {
         _markerAddressDetail.value = UiState.Loading
         addressDetailJob?.cancel()
-        addressDetailJob = viewModelScope.launch(dispatcher) {
+        addressDetailJob = viewModelScope.launch {
             delay(200)
             try {
                 val geocoder = Geocoder(context, Locale.getDefault())
@@ -297,23 +292,23 @@ class AddressViewModel
     fun search(query: String) {
         _searchUiState.value = UiState.Loading
         searchJob?.cancel()
-        searchJob = viewModelScope.launch(dispatcher) {
+        searchJob = viewModelScope.launch {
             _searchUiState.value = mapsRepo.search(query, _currentLatLng.value).toUiState()
         }
     }
 
-    fun selectCurrentAddress(myAddress: MyAddress) = viewModelScope.launch(dispatcher) {
+    fun selectCurrentAddress(myAddress: MyAddress) = viewModelScope.launch {
         mapsRepo.selectCurrent(myAddress.id, selectedAddressId)
     }
 
     fun getAllAddresses() {
         _addressListState.value = UiState.Loading
-        viewModelScope.launch(dispatcher) {
+        viewModelScope.launch {
             _addressListState.value = mapsRepo.getAddresses(uId).toUiState()
         }
     }
 
-    fun deleteAddress(name: String, onSuccess: () -> Unit) = viewModelScope.launch(dispatcher) {
+    fun deleteAddress(name: String, onSuccess: () -> Unit) = viewModelScope.launch {
         val response = mapsRepo.deleteAddress(uId, name)
         if (response is ResponseState.Success) {
             Log.d(TAG, "DEL: $response")
@@ -325,7 +320,7 @@ class AddressViewModel
     }
 
     fun putAddress(myAddress: MyAddress, onSuccess: () -> Unit) =
-        viewModelScope.launch(dispatcher) {
+        viewModelScope.launch {
             val response = mapsRepo.putAddress(myAddress.copy(uid = uId))
             if (response is ResponseState.Success) {
                 Log.d(TAG, "PUT: $response")

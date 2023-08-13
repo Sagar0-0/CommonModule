@@ -6,11 +6,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.data.repo.AuthRepo
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
-import fit.asta.health.di.IODispatcher
 import fit.asta.health.onboarding.data.model.OnboardingData
 import fit.asta.health.onboarding.data.repo.OnboardingRepo
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -24,10 +21,8 @@ import javax.inject.Inject
 class OnboardingViewModel
 @Inject constructor(
     private val repo: OnboardingRepo,
-    private val authRepo: AuthRepo,
-    @IODispatcher val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val authRepo: AuthRepo
 ) : ViewModel() {
-
 
     private val _mutableState = MutableStateFlow<UiState<List<OnboardingData>>>(UiState.Idle)
     val state = _mutableState.asStateFlow()
@@ -51,12 +46,12 @@ class OnboardingViewModel
 
     fun getData() {
         _mutableState.value = UiState.Loading
-        viewModelScope.launch(coroutineDispatcher) {
+        viewModelScope.launch {
             _mutableState.value = repo.getData().toUiState()
         }
     }
 
-    fun dismissOnboarding() = viewModelScope.launch(coroutineDispatcher) {
+    fun dismissOnboarding() = viewModelScope.launch {
         repo.dismissOnboarding()
     }
 }

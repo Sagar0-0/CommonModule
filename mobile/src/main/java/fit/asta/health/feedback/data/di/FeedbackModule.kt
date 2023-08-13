@@ -12,6 +12,7 @@ import fit.asta.health.common.utils.NetworkUtil
 import fit.asta.health.feedback.data.remote.FeedbackApi
 import fit.asta.health.feedback.data.repo.FeedbackRepo
 import fit.asta.health.feedback.data.repo.FeedbackRepoImpl
+import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
@@ -36,11 +37,13 @@ object FeedbackModule {
     @Provides
     fun provideFeedbackRepo(
         remoteApi: FeedbackApi,
-        contentResolver: ContentResolver
+        contentResolver: ContentResolver,
+        coroutineDispatcher: CoroutineDispatcher
     ): FeedbackRepo {
         return FeedbackRepoImpl(
             remoteApi = remoteApi,
-            contentResolver = contentResolver
+            contentResolver = contentResolver,
+            coroutineDispatcher = coroutineDispatcher
         )
     }
 }

@@ -7,6 +7,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.onboarding.data.model.OnboardingData
 import fit.asta.health.onboarding.data.repo.OnboardingRepoImpl
 import fit.asta.health.onboarding.ui.vm.OnboardingViewModel
+import health.BaseTest
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -18,7 +19,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class OnboardingViewModelTest {
+class OnboardingViewModelTest : BaseTest() {
 
     private lateinit var viewModel: OnboardingViewModel
 
@@ -26,7 +27,8 @@ class OnboardingViewModelTest {
     private val authRepo: AuthRepoImpl = mockk(relaxed = true)
 
     @BeforeEach
-    fun setup() {
+    override fun beforeEach() {
+        super.beforeEach()
         viewModel = spyk(
             OnboardingViewModel(
                 onboardingRepoImpl,
@@ -36,7 +38,8 @@ class OnboardingViewModelTest {
     }
 
     @AfterEach
-    fun afterEach() {
+    override fun afterEach() {
+        super.afterEach()
         clearAllMocks()
     }
 
