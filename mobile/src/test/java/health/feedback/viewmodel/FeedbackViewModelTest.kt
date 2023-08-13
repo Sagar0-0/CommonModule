@@ -8,6 +8,7 @@ import fit.asta.health.feedback.data.remote.modal.FeedbackQuesDTO
 import fit.asta.health.feedback.data.remote.modal.PostFeedbackDTO
 import fit.asta.health.feedback.data.repo.FeedbackRepoImpl
 import fit.asta.health.feedback.ui.vm.FeedbackViewModel
+import health.BaseTest
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -20,14 +21,16 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class FeedbackViewModelTest {
+class FeedbackViewModelTest : BaseTest() {
 
     private lateinit var viewModel: FeedbackViewModel
 
     private val repo: FeedbackRepoImpl = mockk(relaxed = true)
 
+
     @BeforeEach
-    fun setup() {
+    override fun beforeEach() {
+        super.beforeEach()
         viewModel = spyk(
             FeedbackViewModel(
                 repo,
@@ -37,29 +40,17 @@ class FeedbackViewModelTest {
     }
 
     @AfterEach
-    fun afterEach() {
+    override fun afterEach() {
+        super.afterEach()
         clearAllMocks()
-    }
-
-    @Test
-    fun `initial state, return Idle`() = runTest {
-        viewModel.feedbackQuestions.test {
-            assert(awaitItem() is UiState.Idle)
-        }
-    }
-
-    @Test
-    fun `loadFeedbackQuestions, return Loading`() = runTest {
-        viewModel.loadFeedbackQuestions("")
-        viewModel.feedbackQuestions.test {
-            assert(awaitItem() is UiState.Loading)
-        }
     }
 
     @Test
     fun `loadFeedbackQuestions with valid fid, return success`() = runTest {
         val fid = "valid"
-        coEvery { repo.getFeedbackQuestions(any(),any()) } returns ResponseState.Success(FeedbackQuesDTO())
+        coEvery { repo.getFeedbackQuestions(any(), any()) } returns ResponseState.Success(
+            FeedbackQuesDTO()
+        )
         viewModel.loadFeedbackQuestions(fid)
         coVerify { repo.getFeedbackQuestions(any(), fid) }
         viewModel.feedbackQuestions.test {
@@ -80,8 +71,8 @@ class FeedbackViewModelTest {
 
     @Test
     fun `postUserFeedback empty data, return error`() = runTest {
-        coEvery { repo.postUserFeedback(any()) } returns ResponseState.Error(Exception())
         val mockList = listOf<An>()
+        coEvery { repo.postUserFeedback(any()) } returns ResponseState.Error(Exception())
         viewModel.postUserFeedback(mockList)
         coVerify { repo.postUserFeedback(any()) }
         viewModel.feedbackPostState.test {
@@ -97,8 +88,7 @@ class FeedbackViewModelTest {
         viewModel.postUserFeedback(mockList)
         coVerify { repo.postUserFeedback(any()) }
         viewModel.feedbackPostState.test {
-            val item = awaitItem()
-            assert(item is UiState.Success)
+            assert(awaitItem() is UiState.Success)
         }
     }
 

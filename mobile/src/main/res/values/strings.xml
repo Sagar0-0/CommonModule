@@ -547,5 +547,7 @@
     <string name="alarm">alarm</string>
     <string name="SPOTIFY_SONG_KEY_URI">\"bundle_spotify_song\"</string>
     <string name="application_fid">application</string>
+    <string name="error_fetching_location">Error fetching location</string>
+    <string name="unable_to_fetch_location">Unable to fetch location!</string>
 
 </resources>

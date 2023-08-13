@@ -21,7 +21,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import fit.asta.health.R
 import fit.asta.health.auth.ui.vm.AuthViewModel
-import fit.asta.health.common.maps.vm.MapsViewModel
+import fit.asta.health.common.address.ui.vm.AddressViewModel
 import fit.asta.health.common.utils.MainTopBarActions
 import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.common.utils.shareApp
@@ -39,16 +39,16 @@ fun NavGraphBuilder.homeScreen(
 
         val authViewModel: AuthViewModel = hiltViewModel()
         val mainViewModel: MainViewModel = hiltViewModel()
-        val mapsViewModel: MapsViewModel = hiltViewModel()
+        val addressViewModel: AddressViewModel = hiltViewModel()
 
-        val isLocationEnabled by mapsViewModel.isLocationEnabled.collectAsStateWithLifecycle()
+        val isLocationEnabled by addressViewModel.isLocationEnabled.collectAsStateWithLifecycle()
         val notificationEnabled by mainViewModel.notificationsEnabled.collectAsStateWithLifecycle()
-        val currentAddressState by mapsViewModel.currentAddressStringState.collectAsStateWithLifecycle()
+        val currentAddressState by addressViewModel.currentAddressStringState.collectAsStateWithLifecycle()
 
         val locationRequestLauncher =
             rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { activityResult ->
                 if (activityResult.resultCode == AppCompatActivity.RESULT_OK)
-                    mapsViewModel.updateCurrentLocationData(context)
+                    addressViewModel.updateCurrentLocationData(context)
                 else {
                     if (!isLocationEnabled) {
                         Toast.makeText(
@@ -68,7 +68,7 @@ fun NavGraphBuilder.homeScreen(
                 perms.keys.forEach loop@{ perm ->
                     if ((perms[perm] == true) && (perm == Manifest.permission.ACCESS_FINE_LOCATION || perm == Manifest.permission.ACCESS_COARSE_LOCATION)) {
                         PrefManager.setLocationPermissionRejectedCount(context, 1)
-                        mapsViewModel.enableLocationRequest(context) {
+                        addressViewModel.enableLocationRequest(context) {
                             locationRequestLauncher.launch(it)
                         }
                         return@loop
@@ -96,7 +96,7 @@ fun NavGraphBuilder.homeScreen(
                 )
                 == PackageManager.PERMISSION_GRANTED
             ) {
-                mapsViewModel.enableLocationRequest(context) { intent ->
+                addressViewModel.enableLocationRequest(context) { intent ->
                     locationRequestLauncher.launch(intent)
                 }
             } else {

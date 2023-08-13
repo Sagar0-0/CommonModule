@@ -9,14 +9,13 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import androidx.navigation.navOptions
 import fit.asta.health.R
 import fit.asta.health.auth.ui.navigateToAuth
 import fit.asta.health.auth.ui.vm.AuthViewModel
+import fit.asta.health.common.address.ui.navigateToAddress
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentBuildVersion
 import fit.asta.health.common.utils.getImgUrl
-import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.common.utils.rateUs
 import fit.asta.health.common.utils.sendBugReportMessage
 import fit.asta.health.common.utils.shareApp
@@ -69,7 +68,7 @@ fun NavGraphBuilder.settingScreens(
                     }
 
                     SettingsUiEvent.ADDRESS -> {
-                        navController.navigate(Graph.Address.route)
+                        navController.navigateToAddress()
                     }
 
                     SettingsUiEvent.BACK -> {

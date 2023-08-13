@@ -8,6 +8,7 @@ plugins {
     id 'com.google.firebase.firebase-perf'
     id 'kotlin-parcelize'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+    id "com.google.protobuf" version "0.9.3"
 }
 
 def secretProps = new Properties()
@@ -119,6 +120,24 @@ android {
     }
 }
 
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.23.4"
+    }
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                register("java") {
+                    option("lite")
+                }
+                register("kotlin") {
+                    option("lite")
+                }
+            }
+        }
+    }
+}
+
 dependencies {
 
     implementation project(path: ":chartLibrary")
@@ -141,8 +160,6 @@ dependencies {
     //Androidx
     implementation "androidx.core:core-ktx:1.10.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
-    implementation "androidx.datastore:datastore-core:1.0.0"
-    implementation "androidx.datastore:datastore-preferences:1.0.0"
     implementation "androidx.appcompat:appcompat:1.6.1"
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
@@ -164,6 +181,11 @@ dependencies {
     implementation "androidx.activity:activity-compose:1.7.2"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
     implementation "androidx.compose.foundation:foundation:$compose_ver"
+
+    //Datastore
+    implementation "androidx.datastore:datastore:1.0.0"
+    implementation  "com.google.protobuf:protobuf-kotlin-lite:3.23.4"
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
 
     //Jetpack Compose - Material theme components
     implementation "androidx.compose.material3:material3:1.1.1"
@@ -379,9 +401,7 @@ dependencies {
     testImplementation 'androidx.arch.core:core-testing:2.2.0'
     testImplementation "com.google.truth:truth:1.0.1"
     testImplementation "androidx.paging:paging-common-ktx:$paging_ver"
-    testImplementation "io.mockk:mockk:1.13.5"
     testImplementation "io.mockk:mockk-android:1.13.5"
-    testImplementation "io.mockk:mockk-agent:1.13.5"
     testImplementation 'app.cash.turbine:turbine:1.0.0'
 
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ver"

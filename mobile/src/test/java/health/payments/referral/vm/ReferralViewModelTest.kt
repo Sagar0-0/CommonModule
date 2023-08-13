@@ -3,10 +3,8 @@ package fit.asta.health.payments.referral.vm
 import com.google.common.truth.Truth
 import fit.asta.health.common.utils.ResponseState
 import health.payments.referral.repo.FakeReferralRepoImpl
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 
 class ReferralViewModelTest {
 

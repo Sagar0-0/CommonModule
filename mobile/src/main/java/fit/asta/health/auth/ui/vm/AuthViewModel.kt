@@ -11,21 +11,19 @@ import fit.asta.health.auth.data.model.domain.User
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringResId
 import fit.asta.health.common.utils.toUiState
-import fit.asta.health.di.IODispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class AuthViewModel
 @Inject constructor(
-    private val authRepo: AuthRepo,
-    @IODispatcher val coroutineContext: CoroutineContext = Dispatchers.IO
+    private val authRepo: AuthRepo
 ) : ViewModel() {
 
 
@@ -47,7 +45,7 @@ class AuthViewModel
 
     fun signInWithGoogleCredentials(authCredential: AuthCredential) {
         _loginState.value = UiState.Loading
-        viewModelScope.launch(coroutineContext){
+        viewModelScope.launch{
             try{
                 authRepo.signInWithCredential(authCredential).collect{
                     _loginState.value = it.toUiState()
@@ -71,7 +69,7 @@ class AuthViewModel
 
     fun deleteAccount(){
         _deleteState.value = UiState.Loading
-        viewModelScope.launch(coroutineContext){
+        viewModelScope.launch{
             try{
                 authRepo.deleteAccount().collect{
                     _deleteState.value = it.toUiState()

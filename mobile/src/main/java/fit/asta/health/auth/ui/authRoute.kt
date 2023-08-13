@@ -29,7 +29,7 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.main.Graph
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-private const val AUTH_GRAPH_ROUTE = "graph_auth"
+const val AUTH_GRAPH_ROUTE = "graph_auth"
 fun NavController.navigateToAuth(navOptions: NavOptions? = null) {
     if(navOptions==null) {
         this.navigate(AUTH_GRAPH_ROUTE){
