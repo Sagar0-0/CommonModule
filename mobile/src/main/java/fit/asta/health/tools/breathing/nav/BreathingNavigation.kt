@@ -1,12 +1,15 @@
 package fit.asta.health.tools.breathing.nav
 
+import android.content.Intent
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.navDeepLink
 import fit.asta.health.main.Graph
+import fit.asta.health.main.deepLinkUrl
 import fit.asta.health.main.sharedViewModel
 import fit.asta.health.tools.breathing.view.break_time.BreakTimeScreen
 import fit.asta.health.tools.breathing.view.course_level.CourseLevelScreen
@@ -26,9 +29,15 @@ fun NavGraphBuilder.breathingNavigation(
 ) {
     navigation(
         route = Graph.BreathingTool.route,
-        startDestination = BreathingScreen.HomeScreen.route
+        startDestination = BreathingScreen.HomeScreen.route,
+        deepLinks = listOf(navDeepLink {
+            uriPattern = "$deepLinkUrl/${Graph.BreathingTool.route}"
+            action = Intent.ACTION_VIEW
+        })
     ) {
-        composable(BreathingScreen.HomeScreen.route) {
+        composable(
+            route = BreathingScreen.HomeScreen.route,
+        ) {
             val viewModel: BreathingViewModel = it.sharedViewModel(navController)
             val uiState by viewModel.homeUiState
             val exercise by viewModel.selectedExercise.collectAsStateWithLifecycle()

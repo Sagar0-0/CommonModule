@@ -23,8 +23,8 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import fit.asta.health.MainActivity
 import fit.asta.health.R
-import fit.asta.health.notify.receiver.SnoozeReceiver
 import fit.asta.health.common.utils.getUriFromResourceId
+import fit.asta.health.notify.receiver.SnoozeReceiver
 
 
 private const val NOTIFICATION_ID = 0
@@ -344,22 +344,20 @@ private fun Context.notify(builder: NotificationCompat.Builder) {
 private fun Context.getNotificationMgr() =
     ContextCompat.getSystemService(this, NotificationManager::class.java) as NotificationManager
 
-private fun Context.wakeUpScreen() {
+private fun Context.wakeUpScreen(lock: (PowerManager.WakeLock) -> Unit = {}) {
 
     val tag = "${this.packageName}-${this.getString(R.string.app_name)}:wakeUp"
     val pm = this.getSystemService(Context.POWER_SERVICE) as PowerManager
 
-    @Suppress("DEPRECATION")
-    val bIsWake =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) pm.isInteractive else pm.isScreenOn
+    val partialWakeLock: PowerManager.WakeLock
 
-    if (bIsWake) {
-
-        val wl = pm.newWakeLock(
-            PowerManager.ACQUIRE_CAUSES_WAKEUP or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or PowerManager.ON_AFTER_RELEASE,
+    if (pm.isInteractive) {
+        partialWakeLock = pm.newWakeLock(
+            PowerManager.PARTIAL_WAKE_LOCK or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or PowerManager.ON_AFTER_RELEASE,
             tag
         )
-        wl.acquire(3000)
+        partialWakeLock.acquire(3000)
+        lock(partialWakeLock)
         //wl.release()
     }
 }

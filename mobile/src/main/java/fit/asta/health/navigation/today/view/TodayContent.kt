@@ -554,7 +554,7 @@ fun goToTool(tag: String): String {
         }
 //        "Sleep Therapy" -> {}
         "Stretches" -> {
-            Graph.Yoga.route
+            (Graph.ExerciseTool.route + "?activity=yoga")
         }
 
         "SunLight" -> {
@@ -570,11 +570,11 @@ fun goToTool(tag: String): String {
         }
 
         "Workout" -> {
-            Graph.Workout.route
+            (Graph.ExerciseTool.route + "?activity=workout")
         }
 
         "Yoga" -> {
-            Graph.Yoga.route
+            (Graph.ExerciseTool.route + "?activity=yoga")
         }
 
         else -> {

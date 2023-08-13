@@ -36,6 +36,7 @@ import fit.asta.health.tools.sunlight.nav.sunlightNavigation
 import fit.asta.health.tools.water.nav.waterToolNavigation
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+const val deepLinkUrl: String = "https://www.asta.com"
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun MainNavHost(isConnected: Boolean) {
