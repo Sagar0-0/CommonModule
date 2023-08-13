@@ -138,3 +138,7 @@
 # Keep classes used by Kotlin reflection
 -dontwarn kotlin.reflect.**
 -dontwarn kotlin.Metadata
+
+-keepclassmembers class * extends androidx.datastore.preferences.protobuf.GeneratedMessageLite {
+    <fields>;
+}
