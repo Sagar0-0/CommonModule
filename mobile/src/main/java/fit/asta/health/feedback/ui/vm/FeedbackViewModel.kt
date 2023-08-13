@@ -1,6 +1,5 @@
 package fit.asta.health.feedback.ui.vm
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue

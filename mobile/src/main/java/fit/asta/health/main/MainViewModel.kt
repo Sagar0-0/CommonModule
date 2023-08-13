@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.data.repo.AuthRepo
 import fit.asta.health.common.utils.PrefManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -34,8 +36,8 @@ class MainViewModel
         }
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = false,
+            started = SharingStarted.Eagerly,
+            initialValue = true,
         )
 
     fun setNotificationStatus(newValue: Boolean) = viewModelScope.launch {
