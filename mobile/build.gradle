@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
     id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
@@ -262,14 +262,14 @@ dependencies {
     // Room Library
     def room_ver = "2.5.2"
     implementation "androidx.room:room-runtime:$room_ver"
-    kapt "androidx.room:room-compiler:$room_ver"
+    ksp "androidx.room:room-compiler:$room_ver"
     implementation "androidx.room:room-ktx:$room_ver"
     androidTestImplementation "androidx.room:room-testing:$room_ver"
 
     //Dagger Hilt
     implementation "com.google.dagger:hilt-android:$dagger_ver"
-    kapt "com.google.dagger:hilt-android-compiler:$dagger_ver"
-    kapt "androidx.hilt:hilt-compiler:1.0.0"
+    ksp "com.google.dagger:hilt-android-compiler:$dagger_ver"
+    ksp "androidx.hilt:hilt-compiler:1.0.0"
     implementation "androidx.hilt:hilt-common:1.0.0"
     implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
     implementation "androidx.hilt:hilt-work:1.0.0"
@@ -391,8 +391,4 @@ dependencies {
 
     //referral
     implementation "com.android.installreferrer:installreferrer:2.2"
-}
-
-kapt {
-    correctErrorTypes = true
 }
