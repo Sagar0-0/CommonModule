@@ -43,6 +43,7 @@ fun NavGraphBuilder.homeScreen(
         val isLocationEnabled by addressViewModel.isLocationEnabled.collectAsStateWithLifecycle()
         val notificationEnabled by mainViewModel.notificationsEnabled.collectAsStateWithLifecycle()
         val currentAddressState by addressViewModel.currentAddressStringState.collectAsStateWithLifecycle()
+        val locationPermissionRejectedCount by addressViewModel.locationPermissionRejectedCount.collectAsStateWithLifecycle()
 
         val locationRequestLauncher =
             rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { activityResult ->
@@ -66,7 +67,7 @@ fun NavGraphBuilder.homeScreen(
             ) { perms ->
                 perms.keys.forEach loop@{ perm ->
                     if ((perms[perm] == true) && (perm == Manifest.permission.ACCESS_FINE_LOCATION || perm == Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                        PrefManager.setLocationPermissionRejectedCount(context, 1)
+                        addressViewModel.updateLocationPermissionRejectedCount(1)
                         addressViewModel.enableLocationRequest(context) {
                             locationRequestLauncher.launch(it)
                         }
@@ -77,9 +78,8 @@ fun NavGraphBuilder.homeScreen(
                             context.getString(R.string.location_access_required),
                             Toast.LENGTH_SHORT
                         ).show()
-                        PrefManager.setLocationPermissionRejectedCount(
-                            context,
-                            PrefManager.getLocationPermissionRejectedCount(context) + 1
+                        addressViewModel.updateLocationPermissionRejectedCount(
+                            locationPermissionRejectedCount + 1
                         )
                     }
                 }
@@ -99,7 +99,7 @@ fun NavGraphBuilder.homeScreen(
                     locationRequestLauncher.launch(intent)
                 }
             } else {
-                if (PrefManager.getLocationPermissionRejectedCount(context) >= 2) {
+                if (locationPermissionRejectedCount >= 2) {
                     Toast.makeText(
                         context,
                         "Please allow Location permission access.",

@@ -6,14 +6,14 @@ import fit.asta.health.onboarding.data.model.OnboardingData
 
 data class OnboardingDTO(
     @SerializedName("data")
-    val `data`: List<OnboardingData>,
+    val `data`: List<OnboardingData> = listOf(),
     @SerializedName("status")
-    val status: Status
+    val status: Status = Status()
 ) {
     data class Status(
         @SerializedName("code")
-        val code: Int,
+        val code: Int = 0,
         @SerializedName("msg")
-        val msg: String
+        val msg: String =""
     )
 }

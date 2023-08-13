@@ -34,6 +34,7 @@ class PrefManager
     val userData: Flow<UserPreferences> = userPreferences.data
 
     suspend fun setOnboardingShown() {
+
         try {
             userPreferences.updateData {
                 it.copy {
@@ -169,21 +170,6 @@ class PrefManager
 
     companion object {
 
-        fun getLocationPermissionRejectedCount(context: Context): Int {
-            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-            return preferences.getInt(
-                context.getString(R.string.user_pref_location_permission_count),
-                0
-            )
-        }
-
-        fun setLocationPermissionRejectedCount(context: Context, newCount: Int) {
-            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-            preferences.edit()
-                .putInt(context.getString(R.string.user_pref_location_permission_count), newCount)
-                .apply()
-        }
-
         fun getNotificationPermissionRejectedCount(context: Context): Int {
             val preferences = PreferenceManager.getDefaultSharedPreferences(context)
             return preferences.getInt("notification", 0)
@@ -192,21 +178,6 @@ class PrefManager
         fun setNotificationPermissionRejectedCount(context: Context, newCount: Int) {
             val preferences = PreferenceManager.getDefaultSharedPreferences(context)
             preferences.edit().putInt("notification", newCount).apply()
-        }
-
-        fun getOnboardingShownStatus(context: Context): Boolean {
-            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-            return preferences.getBoolean(
-                context.getString(R.string.user_pref_onboarding_shown),
-                false
-            )
-        }
-
-        fun setOnboardingShownStatus(status: Boolean, context: Context) {
-            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-            preferences.edit()
-                .putBoolean(context.getString(R.string.user_pref_onboarding_shown), status)
-                .apply()
         }
 
         fun getUnitHeight(context: Context): String {

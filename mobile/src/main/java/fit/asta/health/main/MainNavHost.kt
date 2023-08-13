@@ -1,5 +1,6 @@
 package fit.asta.health.main
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -49,18 +50,19 @@ fun MainNavHost(isConnected: Boolean) {
         }
     }
 
-    val mainViewModel : MainViewModel = hiltViewModel()
+    val mainViewModel: MainViewModel = hiltViewModel()
 
-    val startDestination = if(mainViewModel.isAuth()){
+    val startDestination = if (mainViewModel.isAuth()) {
         Graph.Home.route
-    }else{
+    } else {
         val onboardingShown by mainViewModel.onboardingStatus.collectAsStateWithLifecycle()
-        if(onboardingShown){
+        if (onboardingShown) {
             AUTH_GRAPH_ROUTE
-        }else{
+        } else {
             ONBOARDING_GRAPH_ROUTE
         }
     }
+    Log.d("TAG", "MainNavHost: $startDestination")
 
     NavHost(
         navController = navController,
