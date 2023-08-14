@@ -16,31 +16,31 @@ data class SunlightResponse(
 
     data class SunlightData(
         @SerializedName("durGph")
-        val durationGraph: Graph,
+        val durationGraph: Graph?,
         @SerializedName("endDate")
         val endDate: String,
         @SerializedName("expGph")
-        val exposureGraph: Graph,
+        val exposureGraph: Graph?,
         @SerializedName("id")
         val id: String,
         @SerializedName("mid")
         val mid: List<String>,
         @SerializedName("month")
-        val month: String,
+        val month: String?,
         @SerializedName("moodGph")
-        val moodGraph: Graph,
+        val moodGraph: Graph?,
         @SerializedName("progress")
-        val progress: Progress,
+        val progress: Progress?,
         @SerializedName("startDate")
         val startDate: String,
         @SerializedName("uid")
         val uid: String,
         @SerializedName("vitGph")
-        val vitaminGraph: Graph,
+        val vitaminGraph: Graph?,
         @SerializedName("weatherDtl")
-        val weather: Weather,
+        val weather: Weather?,
         @SerializedName("weekly")
-        val weekly: List<Weekly>,
+        val weekly: List<Weekly>?,
         @SerializedName("year")
         val year: String
     )
