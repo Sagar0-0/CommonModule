@@ -70,10 +70,12 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
         }
         when (intent.action) {
             "snooze" -> {
-                alarmEntity?.let {
-                    setNextAlarm(it, variantInterval)
-                    it.info.name = "Snooze ${it.info.name}"
-                    alarmUtils.snooze(it)
+                alarmEntity?.let { alarm ->
+                    if (!alarm.week.recurring) {
+                        GlobalScope.launch(Dispatchers.Default) { updateState(alarm) }
+                    } else setNextAlarm(alarm, variantInterval)
+                    alarm.info.name = "Snooze ${alarm.info.name}"
+                    alarmUtils.snooze(alarm)
                 }
                 val intentService = Intent(context, AlarmService::class.java)
                 context?.stopService(intentService)
@@ -86,7 +88,7 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
                     }
                     if (!alarm.week.recurring) {
                         GlobalScope.launch(Dispatchers.Default) { updateState(alarm) }
-                    }
+                    } else setNextAlarm(alarm, variantInterval)
                     Log.d("TAGTAGTAG", "onSwipedRight: ")
                 }
                 val intentService =
@@ -216,10 +218,14 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
         } // alarm is snooze in past so no need to reschedule
         if (variantInt == null) {
             alarmUtils.scheduleNextAlarm(alarm)
-            alarmUtils.schedulerAlarmNextPreNotification(alarm, false, null, alarm.alarmId)
+            if (alarm.interval.advancedReminder.status) {
+                alarmUtils.schedulerAlarmNextPreNotification(alarm, false, null, alarm.alarmId)
+            }
         } else {
             alarmUtils.scheduleNextIntervalAlarm(alarm, variantInt)
-            alarmUtils.schedulerAlarmNextPreNotification(alarm, true, variantInt, variantInt.id)
+            if (alarm.interval.advancedReminder.status) {
+                alarmUtils.schedulerAlarmNextPreNotification(alarm, true, variantInt, variantInt.id)
+            }
         }
     }
 
