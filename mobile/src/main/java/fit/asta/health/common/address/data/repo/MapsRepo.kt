@@ -8,11 +8,12 @@ import fit.asta.health.common.address.data.modal.DeleteAddressResponse
 import fit.asta.health.common.address.data.modal.PutAddressResponse
 import fit.asta.health.common.address.data.modal.SearchResponse
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.UserPreferencesData
 import kotlinx.coroutines.flow.Flow
 
 interface MapsRepo {
 
-    val userPreferences : Flow<UserPreferences>
+    val userPreferences : Flow<UserPreferencesData>
     suspend fun search(text: String, latLng: LatLng): ResponseState<SearchResponse>
 
     suspend fun getAddresses(uid: String): ResponseState<AddressesResponse>
