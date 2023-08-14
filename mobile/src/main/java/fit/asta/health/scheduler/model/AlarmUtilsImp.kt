@@ -50,11 +50,11 @@ class AlarmUtilsImp(
             schedulerAlarmPreNotification(alarmEntity, false, null, alarmEntity.alarmId)
             if (alarmEntity.interval.status) {
                 if (alarmEntity.interval.isVariantInterval) {
-                    alarmEntity.interval.variantIntervals.forEach {
+                    alarmEntity.interval.variantIntervals?.forEach {
                         schedulerAlarmPreNotification(alarmEntity, true, it, it.id)
                     }
                 } else {
-                    alarmEntity.interval.staticIntervals.forEach {
+                    alarmEntity.interval.staticIntervals?.forEach {
                         schedulerAlarmPreNotification(alarmEntity, true, it, it.id)
                     }
                 }
@@ -436,7 +436,7 @@ class AlarmUtilsImp(
         }
         if (cancelAllIntervals && alarmEntity.interval.status) {
             if (alarmEntity.interval.isVariantInterval) {
-                alarmEntity.interval.variantIntervals.forEach { variantInterval ->
+                alarmEntity.interval.variantIntervals?.forEach { variantInterval ->
                     removeAllAlarm(
                         alarmEntity = alarmEntity,
                         intent = intent,
@@ -463,7 +463,7 @@ class AlarmUtilsImp(
                     )
                 }
             } else {
-                alarmEntity.interval.staticIntervals.forEach { variantInterval ->
+                alarmEntity.interval.staticIntervals?.forEach { variantInterval ->
                     removeAllAlarm(
                         alarmEntity = alarmEntity,
                         intent = intent,

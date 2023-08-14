@@ -76,6 +76,7 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
                     } else setNextAlarm(alarm, variantInterval)
                     alarm.info.name = "Snooze ${alarm.info.name}"
                     alarmUtils.snooze(alarm)
+                    Log.d("TAGTAGTAG", "snooze: ")
                 }
                 val intentService = Intent(context, AlarmService::class.java)
                 context?.stopService(intentService)
@@ -89,7 +90,7 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
                     if (!alarm.week.recurring) {
                         GlobalScope.launch(Dispatchers.Default) { updateState(alarm) }
                     } else setNextAlarm(alarm, variantInterval)
-                    Log.d("TAGTAGTAG", "onSwipedRight: ")
+                    Log.d("TAGTAGTAG", "stop: ")
                 }
                 val intentService =
                     Intent(context, AlarmService::class.java)
@@ -131,7 +132,8 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
             }
             val bundleForPreNotification = intent.getBundleExtra(BUNDLE_PRE_NOTIFICATION_OBJECT)
             if (bundleForPreNotification != null) {
-                preNotificationAlarmEntity = bundleForPreNotification.serializable(ARG_PRE_NOTIFICATION_OBJET)
+                preNotificationAlarmEntity =
+                    bundleForPreNotification.serializable(ARG_PRE_NOTIFICATION_OBJET)
                 val id = bundleForPreNotification.getInt("id", 1)
                 if (preNotificationAlarmEntity != null) {
                     val notificationIntent = Intent(context, MainActivity::class.java)
