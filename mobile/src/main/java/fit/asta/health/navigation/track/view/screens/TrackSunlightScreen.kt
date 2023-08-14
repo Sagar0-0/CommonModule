@@ -47,6 +47,7 @@ import fit.asta.health.navigation.track.model.net.sunlight.SunlightResponse
 import fit.asta.health.navigation.track.view.components.TrackTopTabBar
 import fit.asta.health.navigation.track.view.components.TrackingChartCard
 import fit.asta.health.navigation.track.view.components.TrackingDetailsCard
+import fit.asta.health.navigation.track.view.components.TrackingWeatherCard
 import fit.asta.health.navigation.track.view.util.TrackingNetworkCall
 import java.text.DecimalFormat
 
@@ -155,9 +156,16 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
         }
 
         // Weather Card
-        sunlightData.weather?.let {
+        sunlightData.weather?.weatherData?.let {
             item {
-                // TODO
+                TrackingChartCard(title = "Weather Details") {
+                    TrackingWeatherCard(
+                        weatherType = "Sunny",
+                        temperature = it.temperature.toString(),
+                        location = it.location,
+                        image = R.drawable.image_sun
+                    )
+                }
             }
         }
 

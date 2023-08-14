@@ -50,6 +50,7 @@ import fit.asta.health.navigation.track.model.net.meditation.MeditationResponse
 import fit.asta.health.navigation.track.view.components.TrackTopTabBar
 import fit.asta.health.navigation.track.view.components.TrackingChartCard
 import fit.asta.health.navigation.track.view.components.TrackingDetailsCard
+import fit.asta.health.navigation.track.view.components.TrackingWeatherCard
 import fit.asta.health.navigation.track.view.util.TrackingNetworkCall
 import java.text.DecimalFormat
 
@@ -159,9 +160,16 @@ fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData) {
 
 
         // Weather Card
-        meditationData.weatherDetail?.let {
+        meditationData.weatherDetail?.weatherData?.let {
             item {
-                // TODO
+                TrackingChartCard(title = "Weather Details") {
+                    TrackingWeatherCard(
+                        weatherType = "Sunny",
+                        temperature = it.temperature.toString(),
+                        location = it.location,
+                        image = R.drawable.image_sun
+                    )
+                }
             }
         }
 
