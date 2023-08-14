@@ -134,7 +134,7 @@ fun TodayContent(
                         HourMinAmPm(
                             LocalTime.now().hour,
                             LocalTime.now().minute,
-                            LocalTime.now().hour > 12,
+                            !LocalTime.now().isBefore(LocalTime.NOON),
                             0
                         )
                     )
