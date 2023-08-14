@@ -148,9 +148,9 @@ fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData) {
                         circularData = CircularTargetDataBuilder(
                             target = it.target,
                             achieved = it.achieved,
-                            siUnit = "min",
+                            siUnit = "Hrs",
                             cgsUnit = "min",
-                            conversionRate = { it }
+                            conversionRate = { it / 60f }
                         )
                     )
                 }
