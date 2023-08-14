@@ -31,7 +31,14 @@ class PrefManager
     private val userPreferences: DataStore<UserPreferences>,
     private val dataStore: DataStore<Preferences>
 ) {
-    val userData: Flow<UserPreferences> = userPreferences.data
+    val userData: Flow<UserPreferencesData> = userPreferences.data.map {
+        UserPreferencesData(
+            onboardingShown = it.onboardingShown,
+            notificationStatus = it.notificationStatus,
+            locationPermissionRejectedCount = it.locationPermissionRejectedCount,
+            currentAddress = it.currentAddress
+        )
+    }
 
     suspend fun setOnboardingShown() {
 

@@ -12,6 +12,7 @@ import fit.asta.health.common.address.data.remote.SearchLocationApi
 import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.common.utils.ResourcesProvider
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.UserPreferencesData
 import fit.asta.health.common.utils.getResponseState
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -23,7 +24,7 @@ class MapsRepoImpl @Inject constructor(
     private val resourcesProvider: ResourcesProvider
 ) : MapsRepo {
 
-    override val userPreferences: Flow<UserPreferences> = prefManager.userData
+    override val userPreferences: Flow<UserPreferencesData> = prefManager.userData
 
     override suspend fun updateLocationPermissionRejectedCount(newValue: Int) {
         prefManager.setLocationPermissionRejectedCount(newValue)

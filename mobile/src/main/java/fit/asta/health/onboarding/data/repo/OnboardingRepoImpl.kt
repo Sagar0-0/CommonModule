@@ -4,6 +4,7 @@ import fit.asta.health.UserPreferences
 import fit.asta.health.common.utils.CoroutineDispatcherProvider
 import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.UserPreferencesData
 import fit.asta.health.common.utils.getResponseState
 import fit.asta.health.common.utils.toResponseState
 import fit.asta.health.onboarding.data.model.OnboardingData
@@ -21,7 +22,7 @@ class OnboardingRepoImpl(
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : OnboardingRepo {
 
-    override val userPreferences: Flow<UserPreferences> = prefManager.userData
+    override val userPreferences: Flow<UserPreferencesData> = prefManager.userData
 
     override suspend fun getData() = withContext(coroutineDispatcher) {
         getResponseState { remoteApi.getData().data }
