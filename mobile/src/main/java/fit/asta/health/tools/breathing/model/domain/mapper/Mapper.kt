@@ -1,8 +1,8 @@
 package fit.asta.health.tools.breathing.model.domain.mapper
 
 
-import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.AMPMHoursMin
-import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.Time24hr
+import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.AMPMHoursMin
+import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.Time24hr
 import fit.asta.health.tools.breathing.model.domain.model.BreathingTool
 import fit.asta.health.tools.breathing.model.network.NetGetRes
 import fit.asta.health.tools.breathing.model.network.NetGetStart

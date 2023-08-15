@@ -5,8 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 
 sealed interface UiState<out T> {
-    object Loading : UiState<Nothing>
-    object Idle : UiState<Nothing>
+    data object Loading : UiState<Nothing>
+    data object Idle : UiState<Nothing>
     data class Success<T>(val data: T) : UiState<T>
 
     data class Error(val resId: Int) : UiState<Nothing>

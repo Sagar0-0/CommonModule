@@ -1,0 +1,18 @@
+package fit.asta.health.navigation.today.ui.view
+
+import fit.asta.health.navigation.today.ui.view.utils.HourMinAmPm
+import fit.asta.health.scheduler.data.db.entity.AlarmEntity
+
+sealed class HomeEvent {
+    data class DeleteAlarm(val alarm: AlarmEntity) : HomeEvent()
+    data class RemoveAlarm(val alarm: AlarmEntity, val event: Event) : HomeEvent()
+    data class UndoAlarm(val alarm: AlarmEntity, val event: Event) : HomeEvent()
+    data class SkipAlarm(val alarm: AlarmEntity) : HomeEvent()
+    data class NavSchedule(val hourMinAmPm: HourMinAmPm?) : HomeEvent()
+    data class EditAlarm(val alarm: AlarmEntity) : HomeEvent()
+    data object SetAlarm : HomeEvent()
+    data object SetDefaultSchedule : HomeEvent()
+}
+enum class Event{
+    Morning, Afternoon, Evening, NextDay
+}

@@ -7,11 +7,11 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import fit.asta.health.common.utils.NetworkResult
-import fit.asta.health.scheduler.model.AlarmBackendRepo
-import fit.asta.health.scheduler.model.AlarmLocalRepo
-import fit.asta.health.scheduler.model.db.entity.TagEntity
-import fit.asta.health.scheduler.model.net.tag.Data
+import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.scheduler.data.api.net.tag.Data
+import fit.asta.health.scheduler.data.db.entity.TagEntity
+import fit.asta.health.scheduler.data.repo.AlarmBackendRepo
+import fit.asta.health.scheduler.data.repo.AlarmLocalRepo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -41,10 +41,16 @@ class SchedulerWorker @AssistedInject constructor(
                 val result = withContext(Dispatchers.Default) {
                     backendRepo.updateScheduleDataOnBackend(schedule = alarmEntity)
                 }
-                if (result.data?.data?.flag == true) {
-                    val alarm = alarmEntity.copy(idFromServer = result.data.data.id)
-                    alarmLocalRepo.insertAlarm(alarm)
-                    Log.d("TAGTAG", "doWork:noidfromserver alarm $alarm")
+                when (result) {
+                    is ResponseState.Success -> {
+                        if (result.data.data.flag) {
+                            val alarm = alarmEntity.copy(idFromServer = result.data.data.id)
+                            alarmLocalRepo.insertAlarm(alarm)
+                            Log.d("TAGTAG", "doWork:noidfromserver alarm $alarm")
+                        }
+                    }
+
+                    else -> {}
                 }
             }
         }
@@ -59,11 +65,17 @@ class SchedulerWorker @AssistedInject constructor(
                     val result = withContext(Dispatchers.Default) {
                         backendRepo.updateScheduleDataOnBackend(schedule = alarmEntity)
                     }
-                    if (result.data?.data?.flag == true) {
-                        alarm = alarmEntity.copy(idFromServer = result.data.data.id)
-                        alarmLocalRepo.insertAlarm(alarm!!)
-                        alarmLocalRepo.deleteSyncData(alarmSync)
-                        Log.d("TAGTAG", "doWork: alarm $alarm")
+                    when (result) {
+                        is ResponseState.Success -> {
+                            if (result.data.data.flag) {
+                                alarm = alarmEntity.copy(idFromServer = result.data.data.id)
+                                alarmLocalRepo.insertAlarm(alarm!!)
+                                alarmLocalRepo.deleteSyncData(alarmSync)
+                                Log.d("TAGTAG", "doWork: alarm $alarm")
+                            }
+                        }
+
+                        else -> {}
                     }
                 }
                 if (alarm == null) {
@@ -78,17 +90,16 @@ class SchedulerWorker @AssistedInject constructor(
     private suspend fun syncTagsData() {
         alarmLocalRepo.getAllTags().collect {
             if (it.isEmpty()) {
-                backendRepo.getTagListFromBackend("6309a9379af54f142c65fbff").collect { tags ->
-                    when (tags) {
-                        is NetworkResult.Success -> {
-                            tags.data.let { schedulerGetTagsList ->
-                                schedulerGetTagsList?.list?.forEach { tag ->
-                                    insertTag(tag)
-                                }
+                when (val result = backendRepo.getTagListFromBackend("6309a9379af54f142c65fbff")) {
+                    is ResponseState.Success -> {
+                        result.data.let { schedulerGetTagsList ->
+                            schedulerGetTagsList.list.forEach { tag ->
+                                insertTag(tag)
                             }
                         }
-                        else -> {}
                     }
+
+                    else -> {}
                 }
             }
         }

@@ -8,7 +8,7 @@ import android.os.Parcelable
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import fit.asta.health.scheduler.compose.screen.alarmsetingscreen.Time24hr
+import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.Time24hr
 import kotlinx.parcelize.Parcelize
 import xyz.aprildown.ultimateringtonepicker.UltimateRingtonePicker
 import java.time.LocalTime

@@ -352,7 +352,7 @@ private fun ToolsItemsCard(
                         )
 
                         // Description Text
-                        Text(text = bodyDescription)
+                        Text(text = "$bodyDescription")
                     }
 
                     // Trailing Image of this row at the bottom of the Chart
