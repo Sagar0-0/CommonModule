@@ -42,6 +42,7 @@ import com.dev.anirban.chartlibrary.linear.LinearChart
 import com.dev.anirban.chartlibrary.linear.colorconvention.LinearGridColorConvention
 import com.dev.anirban.chartlibrary.linear.data.LinearEmojiData
 import com.dev.anirban.chartlibrary.linear.data.LinearStringData
+import com.dev.anirban.chartlibrary.linear.plots.LinearGradientLinePlot
 import com.dev.anirban.chartlibrary.util.ChartPoint
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
@@ -148,8 +149,8 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
                         circularData = CircularTargetDataBuilder(
                             target = it.target,
                             achieved = it.achieved,
-                            siUnit = "min",
-                            cgsUnit = "Hrs",
+                            siUnit = "Hrs",
+                            cgsUnit = "min",
                             conversionRate = { it / 60f }
                         )
                     )
@@ -224,7 +225,7 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
         sleepData.sleepRegularityGraph?.let {
             item {
                 TrackingChartCard(title = "Sleep Regularity") {
-                    LinearChart.LineChart(
+                    LinearChart.GradientChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
                             xAxisReadings = ChartPoint.pointDataBuilder(it.xAxis),
@@ -235,6 +236,17 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
                                 "Asleep",
                                 "Bed Time"
                             ).toMutableList()
+                        ),
+                        plot = LinearGradientLinePlot(
+                            colorList = listOf(
+                                Color(0xFFE5E787).copy(alpha = .6f),
+                                Color(0xFF85DE50).copy(alpha = .6f),
+                                Color(0xFF57D6BF).copy(alpha = .6f),
+                                Color(0xFF43B4E4).copy(alpha = .6f),
+                                Color(0xFF3A60E6).copy(alpha = .6f),
+                                Color(0xFF57D6BF).copy(alpha = .6f),
+                                Color(0xFFD02596).copy(alpha = .6f)
+                            )
                         )
                     )
                 }

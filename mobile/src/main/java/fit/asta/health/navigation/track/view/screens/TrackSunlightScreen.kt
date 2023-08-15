@@ -1,14 +1,21 @@
 package fit.asta.health.navigation.track.view.screens
 
+import android.graphics.drawable.BitmapDrawable
 import android.util.Log.d
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
@@ -18,12 +25,31 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
+import com.dev.anirban.chartlibrary.circular.CircularChart
+import com.dev.anirban.chartlibrary.circular.center.CircularImageCenter
+import com.dev.anirban.chartlibrary.circular.charts.CircularDonutChartRow
+import com.dev.anirban.chartlibrary.circular.data.CircularTargetDataBuilder
+import com.dev.anirban.chartlibrary.circular.foreground.CircularDonutTargetForeground
+import com.dev.anirban.chartlibrary.linear.LinearChart
+import com.dev.anirban.chartlibrary.linear.data.LinearEmojiData
+import com.dev.anirban.chartlibrary.linear.data.LinearStringData
+import com.dev.anirban.chartlibrary.util.ChartPoint
+import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
+import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.navigation.track.model.net.sunlight.SunlightResponse
 import fit.asta.health.navigation.track.view.components.TrackTopTabBar
+import fit.asta.health.navigation.track.view.components.TrackingChartCard
+import fit.asta.health.navigation.track.view.components.TrackingDetailsCard
+import fit.asta.health.navigation.track.view.components.TrackingWeatherCard
 import fit.asta.health.navigation.track.view.util.TrackingNetworkCall
+import java.text.DecimalFormat
 
 @Composable
 fun TrackSunlightScreenControl(
@@ -95,6 +121,9 @@ fun TrackSunlightScreenControl(
 
 @Composable
 fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
+
+    val context = LocalContext.current
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -109,5 +138,196 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
             )
     ) {
 
+        // Daily Progress
+        sunlightData.progress?.let {
+            item {
+                TrackingChartCard(title = "Daily Progress") {
+                    CircularDonutChartRow.TargetDonutChart(
+                        circularData = CircularTargetDataBuilder(
+                            target = it.target,
+                            achieved = it.achieved,
+                            siUnit = "Hrs",
+                            cgsUnit = "min",
+                            conversionRate = { it / 60f }
+                        )
+                    )
+                }
+            }
+        }
+
+        // Weather Card
+        sunlightData.weather?.weatherData?.let {
+            item {
+                TrackingChartCard(title = "Weather Details") {
+                    TrackingWeatherCard(
+                        weatherType = "Sunny",
+                        temperature = it.temperature.toString(),
+                        location = it.location,
+                        image = R.drawable.image_sun
+                    )
+                }
+            }
+        }
+
+        // Weekly Progress
+        sunlightData.weekly?.let {
+            item {
+                val weekDaysString = listOf("M", "T", "W", "T", "F", "S", "S")
+                TrackingChartCard(title = "Weekly Progress") {
+                    Row {
+                        it.forEachIndexed { index, weekly ->
+                            Column(
+                                modifier = Modifier.weight(1f),
+                                verticalArrangement = Arrangement.spacedBy(spacing.small),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+
+                                CircularChart.DonutChartImage(
+                                    modifier = Modifier
+                                        .size(55.dp),
+                                    circularData = CircularTargetDataBuilder(
+                                        target = weekly.tgt,
+                                        achieved = weekly.ach,
+                                        siUnit = "",
+                                        cgsUnit = "",
+                                        conversionRate = { it }
+                                    ),
+                                    circularCenter = CircularImageCenter(
+                                        image = Icons.Default.Check,
+                                        contentDescription = null
+                                    ),
+                                    circularForeground = CircularDonutTargetForeground(strokeWidth = 10f)
+                                )
+
+                                Text(
+                                    text = weekDaysString[index],
+
+                                    // Text Features
+                                    textAlign = TextAlign.Start,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.W700,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        // Vitamin D Details Card
+        sunlightData.weather?.let {
+            item {
+                TrackingChartCard(title = "Vitamin D Details") {
+                    TrackingDetailsCard(
+                        imageList = listOf(
+                            R.drawable.image_sun,
+                            R.drawable.track_image_duration,
+                            R.drawable.track_image_exposure
+                        ),
+                        headerTextList = listOf("Avg Vitamin D", "Avg Duration", "Avg Exposure"),
+                        valueList = listOf(
+                            "${DecimalFormat("#.##").format(it.vitD.avg)} ${it.vitD.unit}",
+                            "${DecimalFormat("#.##").format(it.duration.dur)} ${it.duration.unit}",
+                            "${DecimalFormat("#.##").format(it.exposure.avg)} ${it.exposure.unit}"
+                        )
+                    )
+                }
+            }
+        }
+
+
+        // Vitamin D Graph
+        sunlightData.vitaminGraph?.let {
+            item {
+                TrackingChartCard(title = "Vitamin D") {
+                    LinearChart.BarChart(
+                        linearData = LinearStringData(
+                            yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
+                            xAxisReadings = ChartPoint.pointDataBuilder(it.xAxis)
+                        )
+                    )
+                }
+            }
+        }
+
+
+        // Sunlight Duration Graph
+        sunlightData.durationGraph?.let {
+            item {
+                TrackingChartCard(title = "Sunlight Duration") {
+                    LinearChart.BarChart(
+                        linearData = LinearStringData(
+                            yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
+                            xAxisReadings = ChartPoint.pointDataBuilder(it.xAxis)
+                        )
+                    )
+                }
+            }
+        }
+
+
+        // Skin Exposure Graph
+        sunlightData.exposureGraph?.let {
+            item {
+                TrackingChartCard(title = "Skin Exposure") {
+                    LinearChart.BarChart(
+                        linearData = LinearStringData(
+                            yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
+                            xAxisReadings = ChartPoint.pointDataBuilder(it.xAxis)
+                        )
+                    )
+                }
+            }
+        }
+
+
+        // TODO :- Your Mood Card Composable needs to be implemented
+
+
+        // Mood Graph Line Chart
+        sunlightData.moodGraph?.let {
+            item {
+                TrackingChartCard(title = "Mood Graph") {
+                    LinearChart.EmojiLineChart(
+                        linearData = LinearEmojiData(
+                            yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
+                            xAxisReadings = ChartPoint.pointDataBuilder(it.xAxis),
+                            yMarkerList = ChartPoint.pointDataBuilder(
+                                ContextCompat.getDrawable(
+                                    context,
+                                    R.drawable.emoji_furious
+                                ) as BitmapDrawable,
+                                ContextCompat.getDrawable(
+                                    context,
+                                    R.drawable.emoji_angry
+                                ) as BitmapDrawable,
+                                ContextCompat.getDrawable(
+                                    context,
+                                    R.drawable.emoji_sad
+                                ) as BitmapDrawable,
+                                ContextCompat.getDrawable(
+                                    context,
+                                    R.drawable.emoji_depressed
+                                ) as BitmapDrawable,
+                                ContextCompat.getDrawable(
+                                    context,
+                                    R.drawable.emoji_confused
+                                ) as BitmapDrawable,
+                                ContextCompat.getDrawable(
+                                    context,
+                                    R.drawable.emoji_calm
+                                ) as BitmapDrawable,
+                                ContextCompat.getDrawable(
+                                    context,
+                                    R.drawable.emoji_happy
+                                ) as BitmapDrawable
+                            ).toMutableList()
+                        )
+                    )
+                }
+            }
+        }
     }
 }

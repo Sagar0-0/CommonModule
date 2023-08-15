@@ -50,7 +50,9 @@ import fit.asta.health.navigation.track.model.net.meditation.MeditationResponse
 import fit.asta.health.navigation.track.view.components.TrackTopTabBar
 import fit.asta.health.navigation.track.view.components.TrackingChartCard
 import fit.asta.health.navigation.track.view.components.TrackingDetailsCard
+import fit.asta.health.navigation.track.view.components.TrackingWeatherCard
 import fit.asta.health.navigation.track.view.util.TrackingNetworkCall
+import java.text.DecimalFormat
 
 @Composable
 fun TrackMeditationScreenControl(
@@ -147,8 +149,8 @@ fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData) {
                         circularData = CircularTargetDataBuilder(
                             target = it.target,
                             achieved = it.achieved,
-                            siUnit = "min",
-                            cgsUnit = "Hrs",
+                            siUnit = "Hrs",
+                            cgsUnit = "min",
                             conversionRate = { it / 60f }
                         )
                     )
@@ -158,9 +160,16 @@ fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData) {
 
 
         // Weather Card
-        meditationData.weatherDetail?.let {
+        meditationData.weatherDetail?.weatherData?.let {
             item {
-                // TODO
+                TrackingChartCard(title = "Weather Details") {
+                    TrackingWeatherCard(
+                        weatherType = "Sunny",
+                        temperature = it.temperature.toString(),
+                        location = it.location,
+                        image = R.drawable.image_sun
+                    )
+                }
             }
         }
 
@@ -215,7 +224,7 @@ fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData) {
         // Progress Bar Chart
         meditationData.progressGraph?.let {
             item {
-                TrackingChartCard(title = "Weekly Progress") {
+                TrackingChartCard(title = "Progress") {
                     LinearChart.BarChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -239,9 +248,9 @@ fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData) {
                         ),
                         headerTextList = listOf("Inhaled Quantity", "Total Breathes", "Calories"),
                         valueList = listOf(
-                            "${it.vitD.avg} ${it.vitD.unit}",
-                            "${it.duration.dur} ${it.duration.unit}",
-                            "${it.exposure.avg} ${it.exposure.unit}"
+                            "${DecimalFormat("#.##").format(it.vitD.avg)} ${it.vitD.unit}",
+                            "${DecimalFormat("#.##").format(it.duration.dur)} ${it.duration.unit}",
+                            "${DecimalFormat("#.##").format(it.exposure.avg)} ${it.exposure.unit}"
                         )
                     )
                 }

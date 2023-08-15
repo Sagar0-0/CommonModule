@@ -196,17 +196,19 @@ private fun TrackMenuSuccessScreen(
             item {
                 ToolsItemsCard(
                     title = it.title,
-                    target = it.target,
-                    achieved = it.achieved,
-                    bodyDescription = it.description
+                    target = it.detail.toolProgress.target,
+                    achieved = it.detail.toolProgress.achieved,
+                    bodyDescription = it.detail.description,
+                    siUnit = it.detail.toolProgress.unit,
+                    cgsUnit = it.detail.toolProgress.unit
                 ) {
 
                     // checking the title before redirecting the user to the screen and setting it
                     when (it.title) {
 
-                        "breathing" -> {
-                            setTrackOption(TrackOption.BreathingOption)
-                            navigator(TrackNavRoute.BreathingTrackDetail.route)
+                        "water" -> {
+                            setTrackOption(TrackOption.WaterOption)
+                            navigator(TrackNavRoute.WaterTrackDetail.route)
                         }
 
                         "meditation" -> {
@@ -214,14 +216,24 @@ private fun TrackMenuSuccessScreen(
                             navigator(TrackNavRoute.MeditationTrackDetail.route)
                         }
 
-                        "sleep" -> {
-                            setTrackOption(TrackOption.SleepOption)
-                            navigator(TrackNavRoute.SleepTrackDetail.route)
+                        "breathing" -> {
+                            setTrackOption(TrackOption.BreathingOption)
+                            navigator(TrackNavRoute.BreathingTrackDetail.route)
                         }
 
                         "sunlight" -> {
                             setTrackOption(TrackOption.SunlightOption)
                             navigator(TrackNavRoute.SunlightTrackDetail.route)
+                        }
+
+                        "steps" -> {
+                            setTrackOption(TrackOption.StepsOption)
+                            navigator(TrackNavRoute.StepsTrackDetail.route)
+                        }
+
+                        "sleep" -> {
+                            setTrackOption(TrackOption.SleepOption)
+                            navigator(TrackNavRoute.SleepTrackDetail.route)
                         }
 
                         "yoga" -> {
@@ -264,8 +276,8 @@ private fun ToolsItemsCard(
     title: String,
     target: Float,
     achieved: Float,
-    siUnit: String = "",
-    cgsUnit: String = "",
+    siUnit: String,
+    cgsUnit: String,
     bodyDescription: String,
     onOptionClick: () -> Unit
 ) {
