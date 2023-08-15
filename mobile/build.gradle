@@ -44,8 +44,8 @@ android {
         javaCompileOptions {
 
             annotationProcessorOptions {
-
-                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+                arguments = ["room.schemaLocation":
+                                     "$projectDir/schemas".toString()]
             }
         }
         buildConfigField("String", "BASE_URL", "\"${base_url}\"")

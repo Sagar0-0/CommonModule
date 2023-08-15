@@ -63,12 +63,12 @@ class AlarmScreenViewModel
     fun event(uiEvent: AlarmEvent) {
         when (uiEvent) {
             is AlarmEvent.onSwipedLeft -> {
-
-                Log.d("TAGTAGTAG", "onSwipedLeft::  ")
-                alarmEntity?.let {
-                    setNextAlarm(it, variantInterval)
-                    it.info.name = "Snooze ${it.info.name}"
-                    alarmUtils.snooze(it)
+                alarmEntity?.let { alarm ->
+                    if (!alarm.week.recurring) updateState(alarm)
+                    else setNextAlarm(alarm, variantInterval)
+                    alarm.info.name = "Snooze ${alarm.info.name}"
+                    alarmUtils.snooze(alarm)
+                    Log.d("TAGTAGTAG", "snooze: ")
                 }
                 val intentService =
                     Intent(uiEvent.context, AlarmService::class.java)
@@ -77,13 +77,13 @@ class AlarmScreenViewModel
             }
 
             is AlarmEvent.onSwipedRight -> {
-                Log.d("TAGTAG", "event: alarm $alarmEntity")
                 alarmEntity?.let { alarm ->
                     if (alarm.interval.isRemainderAtTheEnd) {
                         setPostNotification(alarm, variantInterval)
                     }
                     if (!alarm.week.recurring) updateState(alarm)
-                    Log.d("TAGTAGTAG", "onSwipedRight: ")
+                    else setNextAlarm(alarm, variantInterval)
+                    Log.d("TAGTAGTAG", "stop: ")
                 }
                 val intentService =
                     Intent(uiEvent.context, AlarmService::class.java)

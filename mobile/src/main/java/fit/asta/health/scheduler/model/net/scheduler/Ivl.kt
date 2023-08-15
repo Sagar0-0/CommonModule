@@ -17,12 +17,12 @@ data class Ivl(
     var repeatableInterval: Rep,
     @SerializedName("snu")
     var snoozeTime: Int, // 10
-     @SerializedName("sts")
+    @SerializedName("sts")
     var status: Boolean,
     @SerializedName("stat")
-    var staticIntervals: List<Stat>,
+    var staticIntervals: List<Stat>?,
     @SerializedName("vars")
-    val variantIntervals: List<Stat>,
+    val variantIntervals: List<Stat>?,
     @SerializedName("vit")
     val isVariantInterval: Boolean // true
 ) : Parcelable
