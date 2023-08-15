@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
 import fit.asta.health.common.ui.AppTheme
+import fit.asta.health.common.ui.theme.spacing
 
 // Preview Composable Function
 @Preview(
@@ -38,7 +39,8 @@ private fun DefaultPreview() {
     AppTheme {
         Surface {
             TrackingWeatherCard(
-                temperature = "22°C",
+                weatherType = "Sunny",
+                temperature = "22",
                 location = "Bengaluru",
                 image = R.drawable.image_sun
             )
@@ -49,124 +51,38 @@ private fun DefaultPreview() {
 @Composable
 fun TrackingWeatherCard(
     modifier: Modifier = Modifier,
+    weatherType: String,
     temperature: String,
     location: String,
     image: Int
 ) {
-    Column {
-        Row(
-            modifier = modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = "Sunny - $temperature",
 
-                    modifier = Modifier
-                        .padding(top = 16.dp, start = 16.dp),
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
 
-                    // Text Features
-                    textAlign = TextAlign.Start,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.W500,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-
-
-                Text(
-                    text = location,
-
-                    modifier = Modifier
-                        .padding(top = 4.dp, start = 16.dp),
-
-                    // Text Features
-                    textAlign = TextAlign.Start,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.W400,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = .7f),
-                )
-
-            }
-
-            Image(
-                painter = painterResource(id = image),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(120.dp)
-                    .weight(1f),
-                alignment = Alignment.CenterEnd
-            )
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(end = 16.dp, top = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+        Column(
+            modifier = Modifier.padding(start = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(spacing.extraSmall)
         ) {
 
-            Row {
-                Text(
-                    text = "Avg Vitamin D - ",
-
-                    modifier = Modifier
-                        .padding(start = 16.dp),
-
-                    // Text Features
-                    textAlign = TextAlign.Start,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.W400,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = .7f),
-                )
-                Text(
-                    text = "300 IU",
-
-                    // Text Features
-                    textAlign = TextAlign.Start,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.W600,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-            }
-
-            Row {
-                Text(
-                    text = "Avg Duration - ",
-
-                    modifier = Modifier
-                        .padding(start = 16.dp),
-
-                    // Text Features
-                    textAlign = TextAlign.Start,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.W400,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = .7f),
-                )
-
-
-                Text(
-                    text = "15 Min",
-
-                    // Text Features
-                    textAlign = TextAlign.Start,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.W600,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-            }
-        }
-
-        Row(
-            modifier = Modifier
-                .padding(top = 8.dp)
-        ) {
+            // Weather type and the temperature
             Text(
-                text = "Avg Exposure - ",
+                text = "$weatherType - $temperature °C",
 
-                modifier = Modifier
-                    .padding(start = 16.dp),
+                // Text Features
+                textAlign = TextAlign.Start,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.W500,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+
+
+            // Location
+            Text(
+                text = location,
 
                 // Text Features
                 textAlign = TextAlign.Start,
@@ -175,16 +91,14 @@ fun TrackingWeatherCard(
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = .7f),
             )
 
-
-            Text(
-                text = "30 %",
-
-                // Text Features
-                textAlign = TextAlign.Start,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.W600,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
         }
+
+        // Image of the weather type
+        Image(
+            painter = painterResource(id = image),
+            contentDescription = null,
+            modifier = Modifier.size(90.dp),
+            alignment = Alignment.CenterEnd
+        )
     }
 }

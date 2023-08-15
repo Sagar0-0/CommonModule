@@ -50,7 +50,9 @@ import fit.asta.health.navigation.track.model.net.breathing.BreathingResponse
 import fit.asta.health.navigation.track.view.components.TrackTopTabBar
 import fit.asta.health.navigation.track.view.components.TrackingChartCard
 import fit.asta.health.navigation.track.view.components.TrackingDetailsCard
+import fit.asta.health.navigation.track.view.components.TrackingWeatherCard
 import fit.asta.health.navigation.track.view.util.TrackingNetworkCall
+import java.text.DecimalFormat
 
 @Composable
 fun TrackBreathingScreenControl(
@@ -148,8 +150,8 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
                         circularData = CircularTargetDataBuilder(
                             target = it.target,
                             achieved = it.achieved,
-                            siUnit = "min",
-                            cgsUnit = "Hrs",
+                            siUnit = "Hrs",
+                            cgsUnit = "min",
                             conversionRate = { it / 60f }
                         )
                     )
@@ -158,9 +160,16 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
         }
 
         // Weather Card
-        breathingData.weather?.let {
+        breathingData.weather?.weatherData?.let {
             item {
-                // TODO
+                TrackingChartCard(title = "Weather Details") {
+                    TrackingWeatherCard(
+                        weatherType = "Sunny",
+                        temperature = it.temperature.toString(),
+                        location = it.location,
+                        image = R.drawable.image_sun
+                    )
+                }
             }
         }
 
@@ -215,7 +224,7 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
         // Progress Bar Chart
         breathingData.progressGraph?.let {
             item {
-                TrackingChartCard(title = "Weekly Progress") {
+                TrackingChartCard(title = "Progress") {
                     LinearChart.BarChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -237,11 +246,11 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
                             R.drawable.track_image_duration,
                             R.drawable.track_image_exposure
                         ),
-                        headerTextList = listOf("Inhaled Quantity", "Total Breathes", "Calories"),
+                        headerTextList = listOf("Avg Vitamin D", "Avg Duration", "Avg Exposure"),
                         valueList = listOf(
-                            "${it.vitD.avg} ${it.vitD.unit}",
-                            "${it.duration.dur} ${it.duration.unit}",
-                            "${it.exposure.avg} ${it.exposure.unit}"
+                            "${DecimalFormat("#.##").format(it.vitD.avg)} ${it.vitD.unit}",
+                            "${DecimalFormat("#.##").format(it.duration.dur)} ${it.duration.unit}",
+                            "${DecimalFormat("#.##").format(it.exposure.avg)} ${it.exposure.unit}"
                         )
                     )
                 }
@@ -255,15 +264,15 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
                 TrackingChartCard(title = "Air Purity") {
                     CircularRingChart.SingleRingChart(
                         circularData = CircularTargetDataBuilder(
-                            target = it.meta.max.toFloat(),
-                            achieved = it.lvl.toFloat(),
+                            target = it.meta.max,
+                            achieved = it.lvl,
                             siUnit = "",
                             cgsUnit = "",
                             conversionRate = { it }
                         ),
                         circularCenter = CircularRingTextCenter(
                             title = it.unit,
-                            centerValue = it.lvl.toString(),
+                            centerValue = DecimalFormat("#.##").format(it.lvl),
                             status = it.sts
                         )
                     )
@@ -330,9 +339,9 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
                             "Calories"
                         ),
                         valueList = listOf(
-                            "${it.inhaled.avg} ${it.inhaled.unit}",
-                            "${it.breath.avg} ${it.breath.unit}",
-                            "${it.calories.avg} ${it.calories.unit}"
+                            "${DecimalFormat("#.##").format(it.inhaled.avg)} ${it.inhaled.unit}",
+                            "${DecimalFormat("#.##").format(it.breath.avg)} ${it.breath.unit}",
+                            "${DecimalFormat("#.##").format(it.calories.avg)} ${it.calories.unit}"
                         )
                     )
                 }
@@ -350,7 +359,7 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
                             xAxisReadings = ChartPoint.pointDataBuilder(it.xAxis),
                             yMarkerList = ChartPoint.pointDataBuilder(
                                 "Hazardous",
-                                "Very Unhealthy",
+                                "V.Unhealthy",
                                 "Unhealthy",
                                 "Moderate",
                                 "Good"

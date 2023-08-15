@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Air(
     @SerializedName("lvl")
-    val lvl: Int,
+    val lvl: Float,
     @SerializedName("meta")
     val meta: Meta,
     @SerializedName("sts")
@@ -15,8 +15,8 @@ data class Air(
 
     data class Meta(
         @SerializedName("max")
-        val max: String,
+        val max: Float,
         @SerializedName("min")
-        val min: String
+        val min: Float
     )
 }

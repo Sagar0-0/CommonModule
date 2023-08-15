@@ -462,7 +462,8 @@ class SchedulerViewModel
                 time = it.interval.repeatableInterval.time,
                 unit = it.interval.repeatableInterval.unit
             ),
-            staticIntervals = it.interval.staticIntervals.map {
+            staticIntervals = if (it.interval.staticIntervals == null) emptyList()
+            else it.interval.staticIntervals!!.map {
                 StatUiState(
                     hours = it.hours,
                     midDay = it.midDay,
@@ -472,7 +473,8 @@ class SchedulerViewModel
                 )
             },
             snoozeTime = it.interval.snoozeTime,
-            variantIntervals = it.interval.variantIntervals.map {
+            variantIntervals = if (it.interval.variantIntervals == null) emptyList()
+            else it.interval.variantIntervals!!.map {
                 StatUiState(
                     hours = it.hours,
                     midDay = it.midDay,

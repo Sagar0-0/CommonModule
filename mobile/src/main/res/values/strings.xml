@@ -549,37 +549,5 @@
     <string name="application_fid">application</string>
     <string name="error_fetching_location">Error fetching location</string>
     <string name="unable_to_fetch_location">Unable to fetch location!</string>
-    <string name="location_permission_not_granted">Location permissions are not granted!</string>
-    <string name="saved_address">SAVED ADDRESSES</string>
-    <string name="no_saved_address">No Saved Address</string>
-    <string name="add_address">Add Address</string>
-    <string name="fetching_location">Fetching location...</string>
-    <string name="use_my_current_location">Use my current location</string>
-    <string name="search_for_area_street">Search for area,street name..</string>
-    <string name="your_search_results_will_appear_here">Your search results will appear here.</string>
-    <string name="no_result_for">"No result for "</string>
-    <string name="address_selected">Address Selected!</string>
-    <string name="save_address">Save address</string>
-    <string name="something_went_wrong">Something went wrong</string>
-    <string name="enter_complete_address">Enter complete address</string>
-    <string name="choose_location">Choose Location</string>
-    <string name="location">Location</string>
-    <string name="address_saved_successfully">Address Saved Successfully</string>
-    <string name="close">Close</string>
-    <string name="save_address_as">Save address as*</string>
-    <string name="work">Work</string>
-    <string name="home">Home</string>
-    <string name="other">Other</string>
-    <string name="location_name">Location Name</string>
-    <string name="this_field_cant_be_empty">This Field can\'t be empty</string>
-    <string name="house_number">House Number</string>
-    <string name="block_street_road">Block / Street / Road</string>
-    <string name="nearby_landmark">Nearby landmark</string>
-    <string name="phone_number">Phone number</string>
-    <string name="share_via">Share via</string>
-    <string name="please_allow_location_permissions">Please allow Location permission access.</string>
-    <string name="confirm_delete">Confirm delete?</string>
-    <string name="subscribe">Subscribe</string>
-    <string name="wallet">Wallet</string>
 
 </resources>

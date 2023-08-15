@@ -20,6 +20,7 @@ fun TodaySchedules.getTodayData(): TodayData {
                 timeSlot = dayAndTime.timeOfDay,
                 title = dayAndTime.day
             )
-        } ?: emptyList()
+        } ?: emptyList(),
+        schedule = this.data.schedule
     )
 }

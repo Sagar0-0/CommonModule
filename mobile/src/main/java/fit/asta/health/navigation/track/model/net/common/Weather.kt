@@ -10,7 +10,7 @@ data class Weather(
     @SerializedName("vitD")
     val vitD: CardItem,
     @SerializedName("wea")
-    val weatherData: WeatherData
+    val weatherData: WeatherData?
 ) {
 
     data class WeatherData(

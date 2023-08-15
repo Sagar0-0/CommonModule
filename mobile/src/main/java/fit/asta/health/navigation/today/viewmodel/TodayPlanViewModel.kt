@@ -5,12 +5,11 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.AppState
 import fit.asta.health.common.utils.NetworkResult
-import fit.asta.health.navigation.today.domain.model.TodayData
-import fit.asta.health.common.utils.getCurrentDate
 import fit.asta.health.common.utils.PrefManager
+import fit.asta.health.common.utils.getCurrentDate
+import fit.asta.health.navigation.today.domain.model.TodayData
 import fit.asta.health.navigation.today.view.utils.Utils
 import fit.asta.health.scheduler.compose.screen.homescreen.Event
 import fit.asta.health.scheduler.compose.screen.homescreen.HomeEvent
@@ -93,6 +92,21 @@ class TodayPlanViewModel @Inject constructor(
 
             is HomeEvent.SkipAlarm -> {
                 skipAlarm(uiEvent.alarm)
+            }
+
+            is HomeEvent.SetDefaultSchedule -> {
+                getDefaultSchedule()
+            }
+        }
+    }
+
+    private fun getDefaultSchedule() {
+        _todayState.value.data.let { todayData ->
+            todayData?.schedule?.forEach { alarmEntity ->
+//                alarmUtils.scheduleAlarm(alarmEntity)
+                viewModelScope.launch {
+                    alarmLocalRepo.insertAlarm(alarmEntity)
+                }
             }
         }
     }
@@ -214,7 +228,8 @@ class TodayPlanViewModel @Inject constructor(
                                     if (it.time.minutes.toInt() > 0) _alarmListAfternoon.add(it)
                                     else _alarmListMorning.add(it)
                                 }
-                                in  13..16-> {
+
+                                in 13..16 -> {
                                     if (it.time.minutes.toInt() > 0) _alarmListEvening.add(it)
                                     else _alarmListAfternoon.add(it)
                                 }
@@ -278,6 +293,7 @@ class TodayPlanViewModel @Inject constructor(
             }
         }
     }
+
     private fun getWeatherSunSlots() {
         viewModelScope.launch {
             alarmBackendRepo.getTodayDataFromBackend(
