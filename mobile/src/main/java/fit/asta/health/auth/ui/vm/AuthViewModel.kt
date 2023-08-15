@@ -9,10 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.data.repo.AuthRepo
 import fit.asta.health.auth.data.model.domain.User
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.common.utils.toStringResId
 import fit.asta.health.common.utils.toUiState
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

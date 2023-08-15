@@ -1,18 +1,14 @@
 package fit.asta.health.common.address.data.di
 
-import android.content.Context
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.BuildConfig
 import fit.asta.health.common.address.data.remote.AddressApi
 import fit.asta.health.common.address.data.remote.SearchLocationApi
 import fit.asta.health.common.address.data.repo.AddressRepo
 import fit.asta.health.common.address.data.repo.AddressRepoImpl
-import fit.asta.health.common.address.data.utils.LocationHelper
 import fit.asta.health.common.address.data.utils.LocationResourceProvider
 import fit.asta.health.common.utils.NetworkUtil
 import fit.asta.health.common.utils.PrefManager
@@ -23,11 +19,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AddressModule {
-
-    @Provides
-    fun provideLocationHelper(@ApplicationContext context: Context): LocationHelper {
-        return LocationHelper(context)
-    }
 
     @Provides
     @Singleton
@@ -43,7 +34,13 @@ object AddressModule {
         resourcesProvider: ResourcesProvider,
         prefManager: PrefManager,
         locationResourceProvider: LocationResourceProvider
-    ): AddressRepo = AddressRepoImpl(addressApi, searchLocationApi, prefManager,resourcesProvider,locationResourceProvider)
+    ): AddressRepo = AddressRepoImpl(
+        addressApi,
+        searchLocationApi,
+        prefManager,
+        resourcesProvider,
+        locationResourceProvider
+    )
 
     @Provides
     @Singleton

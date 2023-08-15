@@ -98,6 +98,9 @@ internal fun MapScreen(
             putAddressState = putAddressState,
             onUiEvent = {
                 when (it) {
+                    FillAddressUiEvent.ResetPutState->{
+                        onUiEvent(MapScreenUiEvent.ResetPutState)
+                    }
                     is FillAddressUiEvent.CloseSheet -> {
                         fillAddressSheetVisible = false
                     }

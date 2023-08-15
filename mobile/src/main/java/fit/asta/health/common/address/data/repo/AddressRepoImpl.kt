@@ -45,11 +45,18 @@ class AddressRepoImpl @Inject constructor(
 
     override val userPreferences: Flow<UserPreferencesData> = prefManager.userData
 
+    override fun isPermissionGranted(): Boolean {
+        return locationResourcesProvider.isPermissionGranted()
+    }
+    override fun isLocationEnabled(): Boolean {
+        return locationResourcesProvider.isLocationEnabled()
+    }
+
     @SuppressLint("MissingPermission")//No need, as permissions are being handled using locationResourcesProvider
-    override fun updateCurrentLocationData(): Flow<ResponseState<Address>> = callbackFlow {
+    override fun checkPermissionAndGetLatLng(): Flow<ResponseState<LatLng>> = callbackFlow {
         val fusedLocationProviderClient = locationResourcesProvider.getFusedLocationProviderClient()
-        if (!locationResourcesProvider.isPermissionGranted()) {
-            trySend(ResponseState.Error(MyException(R.string.location_permission_not_granted)))
+        if (!locationResourcesProvider.isPermissionGranted() || !locationResourcesProvider.isLocationEnabled()) {
+            trySend(ResponseState.Error(MyException(R.string.location_access_required)))
         } else {
             fusedLocationProviderClient.requestLocationUpdates(
                 LocationRequest.Builder(
@@ -63,12 +70,7 @@ class AddressRepoImpl @Inject constructor(
                         if (location == null) {
                             trySend(ResponseState.Error(MyException(R.string.unable_to_fetch_location)))
                         } else {
-                            getAddressDetails(
-                                LatLng(
-                                    location.latitude,
-                                    location.longitude
-                                )
-                            )
+                            trySend(ResponseState.Success(LatLng(location.latitude,location.longitude)))
                         }
                     }
                 },
@@ -98,11 +100,11 @@ class AddressRepoImpl @Inject constructor(
                 if (!addresses.isNullOrEmpty()) {
                     trySend(ResponseState.Success(addresses[0]))
                 } else {
-                    trySend(ResponseState.Error(MyException(R.string.error_fetching_location)))
+                    trySend(ResponseState.Error(MyException(R.string.unable_to_fetch_location)))
                 }
             }
         } catch (e: Exception) {
-            trySend(ResponseState.Error(MyException(R.string.error_fetching_location)))
+            trySend(ResponseState.Error(MyException(R.string.unable_to_fetch_location)))
         }
 
         awaitClose { close() }
@@ -160,7 +162,7 @@ class AddressRepoImpl @Inject constructor(
         }
     }
 
-    override fun enableLocationRequest(onAvailable:()->Unit,showPopup: (IntentSenderRequest) -> Unit) {
+    override fun enableLocationRequest(showPopup: (IntentSenderRequest) -> Unit) {
             val locationRequest = LocationRequest.Builder(
                 Priority.PRIORITY_HIGH_ACCURACY,
                 10000
@@ -176,7 +178,6 @@ class AddressRepoImpl @Inject constructor(
                     "Location",
                     "createLocationRequest: Success ${locationSettingsResponse.locationSettingsStates}"
                 )
-                onAvailable()
             }
             task.addOnFailureListener { exception ->
                 if (exception is ResolvableApiException) {

@@ -3,10 +3,7 @@ package fit.asta.health.common.address.data.repo
 import android.location.Address
 import androidx.activity.result.IntentSenderRequest
 import com.google.android.gms.maps.model.LatLng
-import fit.asta.health.common.address.data.modal.AddressesDTO
-import fit.asta.health.common.address.data.modal.DeleteAddressResponse
 import fit.asta.health.common.address.data.modal.MyAddress
-import fit.asta.health.common.address.data.modal.PutAddressResponse
 import fit.asta.health.common.address.data.modal.SearchResponse
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UserPreferencesData
@@ -16,7 +13,9 @@ interface AddressRepo {
 
     val userPreferences: Flow<UserPreferencesData>
 
-    fun updateCurrentLocationData() : Flow<ResponseState<Address>>
+    fun isLocationEnabled() : Boolean
+    fun isPermissionGranted() : Boolean
+    fun checkPermissionAndGetLatLng() : Flow<ResponseState<LatLng>>
 
     fun getAddressDetails(latLng: LatLng) : Flow<ResponseState<Address>>
 
@@ -33,5 +32,5 @@ interface AddressRepo {
     suspend fun updateLocationPermissionRejectedCount(newValue: Int)
 
     suspend fun setCurrentLocation(location: String)
-    fun enableLocationRequest(onAvailable: () -> Unit, showPopup: (IntentSenderRequest) -> Unit)
+    fun enableLocationRequest(showPopup: (IntentSenderRequest) -> Unit)
 }

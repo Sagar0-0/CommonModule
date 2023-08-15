@@ -6,4 +6,6 @@ internal sealed interface FillAddressUiEvent {
     object Back : FillAddressUiEvent
     object CloseSheet : FillAddressUiEvent
     data class SaveAddress(val myAddress: MyAddress) : FillAddressUiEvent
+
+    object ResetPutState : FillAddressUiEvent
 }

@@ -49,7 +49,7 @@ fun NavGraphBuilder.homeScreen(
         val locationRequestLauncher =
             rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { activityResult ->
                 if (activityResult.resultCode == AppCompatActivity.RESULT_OK)
-                    addressViewModel.updateCurrentLocationData()
+                    addressViewModel.checkPermissionAndUpdateCurrentAddress()
                 else {
                     if (!isLocationEnabled) {
                         Toast.makeText(

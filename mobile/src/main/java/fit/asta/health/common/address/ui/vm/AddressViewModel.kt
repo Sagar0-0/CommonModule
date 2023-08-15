@@ -10,12 +10,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.R
 import fit.asta.health.common.address.data.modal.MyAddress
 import fit.asta.health.common.address.data.modal.SearchResponse
 import fit.asta.health.common.address.data.repo.AddressRepo
-import fit.asta.health.common.address.data.utils.LocationHelper
+import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toResIdFromException
 import fit.asta.health.common.utils.toUiState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -35,8 +35,7 @@ class AddressViewModel
 @Inject constructor(
     private val addressRepo: AddressRepo,
     @Named("UId")
-    val uId: String,
-    private val locationHelper: LocationHelper,
+    val uId: String
 ) : ViewModel() {
 
     private val addressTAG = "MAP"
@@ -83,16 +82,18 @@ class AddressViewModel
 
     private var selectedAddressId by mutableStateOf<String?>(null)
 
-    init {
-        updateLocationServiceStatus()
+    init{
+        setIsLocationEnabled()
+        setIsPermissionGranted()
     }
 
-    fun setIsLocationEnabled(value: Boolean) {
-        _isLocationEnabled.value = value
+    fun setIsLocationEnabled() {
+        _isLocationEnabled.value = addressRepo.isLocationEnabled()
+        checkPermissionAndUpdateCurrentAddress()
     }
 
-    fun setIsPermissionGranted(value: Boolean) {
-        _isPermissionGranted.value = value
+    fun setIsPermissionGranted() {
+        _isPermissionGranted.value = addressRepo.isPermissionGranted()
     }
 
     fun updateLocationPermissionRejectedCount(newValue: Int) = viewModelScope.launch {
@@ -103,34 +104,28 @@ class AddressViewModel
         _searchResultState.value = UiState.Idle
     }
 
-    fun updateCurrentLocationData() = viewModelScope.launch {
-        _currentAddressState.value = UiState.Loading
-
+    fun checkPermissionAndUpdateCurrentAddress() {
         Log.d(addressTAG, "updateCurrentLocationData Called")
-        updateLocationServiceStatus()
-        if (isLocationEnabled.value && isPermissionGranted.value) {
-            addressRepo.updateCurrentLocationData().collect { addressRes ->
-                _currentAddressState.value = addressRes.toUiState()
+        _currentAddressState.value = UiState.Loading
+        viewModelScope.launch {
+            addressRepo.checkPermissionAndGetLatLng().collect { latLng ->
+                if (latLng is ResponseState.Success) {
+                    addressRepo.getAddressDetails(latLng.data).collect { addressRes ->
+                        _currentAddressState.value = addressRes.toUiState()
+                    }
+                } else {
+                    _currentAddressState.value =
+                        UiState.Error((latLng as ResponseState.Error).exception.toResIdFromException())
+                }
             }
-        } else {
-            _currentAddressState.value = UiState.Error(R.string.unable_to_fetch_location)
         }
-    }
-
-    private fun updateLocationServiceStatus() {
-        _isLocationEnabled.value = locationHelper.isConnected()
     }
 
 
     fun enableLocationRequest(
         showPopup: (intentSenderRequest: IntentSenderRequest) -> Unit
     ) {
-        addressRepo.enableLocationRequest(
-            onAvailable = {
-                updateCurrentLocationData()
-            },
-            showPopup = showPopup
-        )
+        addressRepo.enableLocationRequest(showPopup)
     }
 
     fun setSelectedAdId(id: String) {

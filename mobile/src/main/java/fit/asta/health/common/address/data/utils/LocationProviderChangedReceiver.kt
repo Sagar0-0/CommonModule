@@ -8,8 +8,7 @@ import android.location.LocationManager
 import android.util.Log
 
 class LocationProviderChangedReceiver(
-    val onEnabled: () -> Unit,
-    val onDisabled: () -> Unit
+    val onToggleLocation:()->Unit
 ) : BroadcastReceiver() {
 
     private var isGpsEnabled: Boolean = false
@@ -19,20 +18,21 @@ class LocationProviderChangedReceiver(
     override fun onReceive(context: Context, intent: Intent) {
         intent.action?.let { act ->
             if (act == LocationManager.PROVIDERS_CHANGED_ACTION) {
-                val locationManager =
-                    context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-                isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-                isNetworkEnabled =
-                    locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-
-                Log.i(TAG, "Location Providers changed, is GPS Enabled: $isGpsEnabled")
-
-                //Start your Activity if location was enabled:
-                if (isGpsEnabled && isNetworkEnabled) {
-                    onEnabled()
-                } else {
-                    onDisabled()
-                }
+                onToggleLocation()
+//                val locationManager =
+//                    context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+//                isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+//                isNetworkEnabled =
+//                    locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+//
+//                Log.i(TAG, "Location Providers changed, is GPS Enabled: $isGpsEnabled")
+//
+//                //Start your service if location was enabled:
+//                if (isGpsEnabled && isNetworkEnabled) {
+//                    onEnabled()
+//                } else {
+//                    onDisabled()
+//                }
             }
         }
     }
@@ -53,6 +53,6 @@ class LocationProviderChangedReceiver(
     }
 
     companion object {
-        private val TAG = "Location"
+        private const val TAG = "Location"
     }
 }

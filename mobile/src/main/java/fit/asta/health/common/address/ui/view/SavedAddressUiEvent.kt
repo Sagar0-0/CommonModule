@@ -13,4 +13,5 @@ internal sealed interface SavedAddressUiEvent {
     object Back : SavedAddressUiEvent
     object ResetDelete: SavedAddressUiEvent
     object ResetSelect: SavedAddressUiEvent
+    object UpdateCurrentLocation : SavedAddressUiEvent
 }

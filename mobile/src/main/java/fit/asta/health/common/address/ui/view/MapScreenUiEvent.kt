@@ -7,6 +7,7 @@ internal sealed interface MapScreenUiEvent {
     data class GetMarkerAddress(val latLng: LatLng) : MapScreenUiEvent
     object Back : MapScreenUiEvent
     data class Search(val query: String) : MapScreenUiEvent
+    object ResetPutState: MapScreenUiEvent
     object ClearSearch : MapScreenUiEvent
     data class PutAddress(val myAddress: MyAddress) : MapScreenUiEvent
     object UseCurrentLocation : MapScreenUiEvent

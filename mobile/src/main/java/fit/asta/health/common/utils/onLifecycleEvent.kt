@@ -11,16 +11,18 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 
 @Composable
-fun rememberLifecycleEvent(lifecycle: Lifecycle = LocalLifecycleOwner.current.lifecycle): Lifecycle.Event {
+fun onLifecycleEvent(): Lifecycle.Event {
     var state by remember { mutableStateOf(Lifecycle.Event.ON_ANY) }
-    DisposableEffect(lifecycle) {
-        val observer = LifecycleEventObserver { _, event ->
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(key1 = lifecycleOwner, effect = {
+        val eventObserver = LifecycleEventObserver { _, event ->
             state = event
         }
-        lifecycle.addObserver(observer)
+        lifecycleOwner.lifecycle.addObserver(eventObserver)
+
         onDispose {
-            lifecycle.removeObserver(observer)
+            lifecycleOwner.lifecycle.removeObserver(eventObserver)
         }
-    }
+    })
     return state
 }

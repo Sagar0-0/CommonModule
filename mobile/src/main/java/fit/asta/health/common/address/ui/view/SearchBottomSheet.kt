@@ -210,7 +210,7 @@ internal fun SearchBottomSheet(
                 }
 
                 is UiState.Error -> {
-                    AppErrorScreen(desc = searchResponseState.resId.toStringFromResId())
+                    Text(text = searchResponseState.resId.toStringFromResId())
                 }
 
                 UiState.Idle -> {

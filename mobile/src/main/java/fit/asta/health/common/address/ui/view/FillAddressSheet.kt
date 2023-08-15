@@ -111,8 +111,10 @@ internal fun FillAddressSheet(
 
     LaunchedEffect(putAddressState) {
         if (putAddressState is UiState.Success) {
+            closeSheet()
             Toast.makeText(context, R.string.address_saved_successfully.toStringFromResId(context), Toast.LENGTH_SHORT).show()
             onUiEvent(FillAddressUiEvent.Back)
+            onUiEvent(FillAddressUiEvent.ResetPutState)
         }
     }
 
@@ -275,50 +277,52 @@ internal fun FillAddressSheet(
                         singleLine = true,
                         value = phone.value,
                         onValueChange = {
-                            if (phone.value.length < 10) phone.value = it
+                            if (it.length <= 10) phone.value = it
                         },
                         label = R.string.phone_number.toStringFromResId(),
                         showError = phone.value.isEmpty() || phone.value.length < 10,
                         errorMessage = UiString.Dynamic(R.string.this_field_cant_be_empty.toStringFromResId())
                     )
 
-                    OutlinedButton(
-                        onClick = {
-                            val newMyAddress = MyAddress(
-                                area = address.data.adminArea,
-                                selected = if (myAddressItem.id.isEmpty()) true else myAddressItem.selected,
-                                block = block.value,
-                                hn = houseNo.value,
-                                id = myAddressItem.id,
-                                lat = address.data.latitude,
-                                lon = address.data.longitude,
-                                loc = address.data.locality,
-                                nearby = nearby.value,
-                                name = name.value,
-                                pin = address.data.postalCode,
-                                ph = phone.value,
-                                sub = address.data.subLocality,
-                                uid = ""
-                            )
-                            onUiEvent(FillAddressUiEvent.SaveAddress(newMyAddress))
-                        },
-                        modifier = Modifier
-                            .padding(spacing.medium)
-                            .fillMaxWidth()
-                            .clip(MaterialTheme.shapes.large),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            contentColor = MaterialTheme.colorScheme.onSurface
-                        ),
-                        enabled = houseNo.value.isNotEmpty() && block.value.isNotEmpty() && phone.value.isNotEmpty() && name.value.isNotEmpty()
-                    ) {
-                        Crossfade(targetState = putAddressState, label = "") {
-                            when (it) {
-                                is UiState.Loading -> {
+                    Crossfade(targetState = putAddressState, label = "") {
+                        when (it) {
+                            is UiState.Loading -> {
+                                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                                     CircularProgressIndicator()
                                 }
+                            }
 
-                                else -> {
+                            else -> {
+                                OutlinedButton(
+                                    onClick = {
+                                        val newMyAddress = MyAddress(
+                                            area = address.data.adminArea,
+                                            selected = if (myAddressItem.id.isEmpty()) true else myAddressItem.selected,
+                                            block = block.value,
+                                            hn = houseNo.value,
+                                            id = myAddressItem.id,
+                                            lat = address.data.latitude,
+                                            lon = address.data.longitude,
+                                            loc = address.data.locality,
+                                            nearby = nearby.value,
+                                            name = name.value,
+                                            pin = address.data.postalCode,
+                                            ph = phone.value,
+                                            sub = address.data.subLocality,
+                                            uid = ""
+                                        )
+                                        onUiEvent(FillAddressUiEvent.SaveAddress(newMyAddress))
+                                    },
+                                    modifier = Modifier
+                                        .padding(spacing.medium)
+                                        .fillMaxWidth()
+                                        .clip(MaterialTheme.shapes.large),
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = MaterialTheme.colorScheme.primary,
+                                        contentColor = MaterialTheme.colorScheme.onSurface
+                                    ),
+                                    enabled = houseNo.value.isNotEmpty() && block.value.isNotEmpty() && phone.value.isNotEmpty() && phone.value.length==10 && name.value.isNotEmpty()
+                                ) {
                                     Text(
                                         text = R.string.save_address.toStringFromResId(),
                                         style = MaterialTheme.typography.titleLarge

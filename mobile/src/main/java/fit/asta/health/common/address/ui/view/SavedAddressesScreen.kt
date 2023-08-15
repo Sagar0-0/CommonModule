@@ -43,6 +43,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -53,7 +54,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
-import com.google.android.gms.maps.model.LatLng
 import fit.asta.health.R
 import fit.asta.health.common.address.data.modal.MyAddress
 import fit.asta.health.common.address.data.modal.SearchResponse
@@ -81,23 +81,16 @@ internal fun SavedAddressesScreen(
     var sheetVisible by rememberSaveable { mutableStateOf(false) }
     val scaffoldState = rememberBottomSheetScaffoldState()
 
-    LaunchedEffect(deleteAddressState){
-        if(deleteAddressState is UiState.Success){
+    LaunchedEffect(deleteAddressState) {
+        if (deleteAddressState is UiState.Success) {
+            onUiEvent(SavedAddressUiEvent.GetSavedAddress)
             onUiEvent(SavedAddressUiEvent.ResetDelete)
         }
     }
-    LaunchedEffect(selectAddressState){
+    LaunchedEffect(selectAddressState) {
         if (selectAddressState is UiState.Success) {
-            onUiEvent(SavedAddressUiEvent.Back)
+            onUiEvent(SavedAddressUiEvent.GetSavedAddress)
             onUiEvent(SavedAddressUiEvent.ResetSelect)
-            Toast.makeText(
-                context,
-                R.string.address_selected.toStringFromResId(
-                    context
-                ),
-                Toast.LENGTH_SHORT
-            )
-                .show()
         }
     }
 
@@ -175,8 +168,13 @@ internal fun SavedAddressesScreen(
                     .fillMaxWidth()
                     .padding(horizontal = spacing.small),
                 onClick = {
-                    onUiEvent(SavedAddressUiEvent.Back)
-                }) {
+                    if (currentAddressState is UiState.Success) {
+                        onUiEvent(SavedAddressUiEvent.Back)
+                    } else if (currentAddressState is UiState.Error) {
+                        onUiEvent(SavedAddressUiEvent.UpdateCurrentLocation)
+                    }
+                }
+            ) {
                 Icon(
                     modifier = Modifier
                         .padding(end = spacing.extraSmall)
@@ -319,9 +317,7 @@ internal fun SavedAddressesScreen(
                                     onClick = {
                                         when (it) {
                                             is AddressEvent.Select -> {
-                                                if (!item.selected) onUiEvent(
-                                                    SavedAddressUiEvent.SelectAddress(item)
-                                                )
+                                                onUiEvent(SavedAddressUiEvent.SelectAddress(item))
                                             }
 
                                             is AddressEvent.Edit -> {
@@ -330,13 +326,9 @@ internal fun SavedAddressesScreen(
 
                                             is AddressEvent.Delete -> {
                                                 if (item.selected) {
-                                                    for (i in addresses) {
-                                                        if (i.id != item.id) {
-                                                            onUiEvent(
-                                                                SavedAddressUiEvent.SelectAddress(
-                                                                    item
-                                                                )
-                                                            )
+                                                    for (other in addresses) {
+                                                        if (other.id != item.id) {
+                                                            onUiEvent(SavedAddressUiEvent.SelectAddress(other))
                                                             break
                                                         }
                                                     }
@@ -395,15 +387,21 @@ private fun AddressItem(
     selectAddressState: UiState<Unit>,
     onClick: (AddressEvent) -> Unit
 ) {
+    var loading by remember {
+        mutableStateOf(false)
+    }
+    LaunchedEffect(deleteAddressState) {
+        if (deleteAddressState is UiState.Error) loading = false
+    }
     Row(
         Modifier
             .background(
                 color =
                 if (item.selected) MaterialTheme.colorScheme.primary.copy(0.5f)
                 else if (selectAddressState is UiState.Loading) MaterialTheme.colorScheme.background
-                else MaterialTheme.colorScheme.onBackground
+                else Color.Transparent
             )
-            .clickable { if (selectAddressState is UiState.Idle) onClick(AddressEvent.Select) }
+            .clickable { if (selectAddressState is UiState.Idle && !item.selected) onClick(AddressEvent.Select) }
             .fillMaxWidth()
             .padding(spacing.small)
     ) {
@@ -434,24 +432,21 @@ private fun AddressItem(
                 Spacer(modifier = Modifier.width(spacing.extraSmall))
 
                 Crossfade(
-                    targetState = deleteAddressState, label = ""
+                    targetState = loading, label = ""
                 ) {
-                    when (it) {
-                        is UiState.Loading -> {
-                            OutlinedIconButton(onClick = {}) {
-                                CircularProgressIndicator(modifier = Modifier.padding(1.dp))
-                            }
+                    if (it) {
+                        OutlinedIconButton(onClick = {}) {
+                            CircularProgressIndicator(modifier = Modifier.padding(2.dp))
                         }
-
-                        else -> {
+                    } else {
                         OutlinedIconButton(onClick = {
                             onClick(AddressEvent.Delete)
+                            loading = true
                         }) {
                             Icon(
                                 imageVector = Icons.Default.Delete, contentDescription = ""
                             )
                         }
-                    }
                     }
                 }
 
