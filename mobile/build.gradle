@@ -109,7 +109,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "$compose_compiler"
+        kotlinCompilerExtensionVersion = "1.5.1"
     }
 
     testOptions {
@@ -149,6 +149,10 @@ protobuf {
 }*/
 
 dependencies {
+
+    def kotlin_ver = '1.9.0'
+    def compose_ver = '1.5.0'
+    def dagger_ver = '2.47'
 
     implementation project(path: ":chartLibrary")
     // Spotify App remote Dependency
