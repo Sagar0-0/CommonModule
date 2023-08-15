@@ -5,8 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.data.repo.AuthRepo
 import fit.asta.health.common.utils.PrefManager
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import fit.asta.health.common.utils.UiState
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -28,6 +27,16 @@ class MainViewModel
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = false,
+        )
+
+    val currentAddressName = prefManager.userData
+        .map {
+            UiState.Success(it.currentAddress)
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = UiState.Loading,
         )
 
     val onboardingStatus = prefManager.userData

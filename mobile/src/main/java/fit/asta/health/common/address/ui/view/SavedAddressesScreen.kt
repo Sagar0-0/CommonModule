@@ -4,6 +4,7 @@ import android.content.Intent
 import android.location.Address
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -28,6 +29,7 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -38,28 +40,23 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import fit.asta.health.common.address.data.modal.AddressScreen
-import fit.asta.health.common.address.data.modal.AddressesResponse
-import fit.asta.health.common.address.data.modal.AddressesResponse.MyAddress
-import fit.asta.health.common.address.ui.vm.AddressViewModel
+import com.google.android.gms.maps.model.LatLng
+import fit.asta.health.R
+import fit.asta.health.common.address.data.modal.MyAddress
+import fit.asta.health.common.address.data.modal.SearchResponse
 import fit.asta.health.common.ui.components.generic.AppBottomSheetScaffold
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.AppTopBar
@@ -71,25 +68,44 @@ import fit.asta.health.common.utils.toStringFromResId
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SavedAddressesScreen(
-    navHostController: NavHostController,
-    addressViewModel: AddressViewModel,
-    onBackPressed: () -> Unit
+internal fun SavedAddressesScreen(
+    savedAddressListState: UiState<List<MyAddress>>,
+    deleteAddressState: UiState<Boolean>,
+    selectAddressState: UiState<Unit>,
+    currentAddressState: UiState<Address>,
+    searchResultState: UiState<SearchResponse>,
+    onUiEvent: (SavedAddressUiEvent) -> Unit
 ) {
-    val gson: Gson = GsonBuilder().create()
     val context = LocalContext.current
-
-    val addressListState by addressViewModel.addressListState.collectAsStateWithLifecycle()
-    val searchResponseState by addressViewModel.searchUiState.collectAsStateWithLifecycle()
-    val currentLatLng by addressViewModel.currentLatLng.collectAsStateWithLifecycle()
-    val currentAddressState by addressViewModel.currentAddressState.collectAsStateWithLifecycle()
 
     var sheetVisible by rememberSaveable { mutableStateOf(false) }
     val scaffoldState = rememberBottomSheetScaffoldState()
 
+    LaunchedEffect(deleteAddressState){
+        if(deleteAddressState is UiState.Success){
+            onUiEvent(SavedAddressUiEvent.ResetDelete)
+        }
+    }
+    LaunchedEffect(selectAddressState){
+        if (selectAddressState is UiState.Success) {
+            onUiEvent(SavedAddressUiEvent.Back)
+            onUiEvent(SavedAddressUiEvent.ResetSelect)
+            Toast.makeText(
+                context,
+                R.string.address_selected.toStringFromResId(
+                    context
+                ),
+                Toast.LENGTH_SHORT
+            )
+                .show()
+        }
+    }
+
     AppBottomSheetScaffold(
         topBar = {
-            AppTopBar(title = "Saved Addresses", onBack = onBackPressed)
+            AppTopBar(title = R.string.saved_address.toStringFromResId(), onBack = {
+                onUiEvent(SavedAddressUiEvent.Back)
+            })
         },
         sheetPeekHeight = 0.dp,
         sheetSwipeEnabled = false,
@@ -97,19 +113,14 @@ fun SavedAddressesScreen(
         sheetContent = {},
         sheetDragHandle = null
     ) { padding ->
-        if (sheetVisible) SearchBottomSheet(
-            modifier = Modifier.padding(padding),
-            onSearch = addressViewModel::search,
-            searchResponseState = searchResponseState,
-            onResultClick = { myAddressItem ->
-                val addJson = gson.toJson(myAddressItem)
-                navHostController.navigate(route = "${AddressScreen.Map.route}/$addJson")
-            },
-            onClose = {
-                addressViewModel.clearSearchResponse()
-                sheetVisible = false
-            }
-        )
+        if (sheetVisible) SearchBottomSheet(modifier = Modifier.padding(padding), onSearch = {
+            onUiEvent(SavedAddressUiEvent.Search(it))
+        }, searchResponseState = searchResultState, onResultClick = {
+            onUiEvent(SavedAddressUiEvent.NavigateToMaps(it))
+        }, onClose = {
+            onUiEvent(SavedAddressUiEvent.ClearSearch)
+            sheetVisible = false
+        })
 
         Column(
             Modifier
@@ -131,7 +142,7 @@ fun SavedAddressesScreen(
                     onValueChange = {},
                     placeholder = {
                         Text(
-                            text = "Search for area,street name..",
+                            text = R.string.search_for_area_street.toStringFromResId(),
                             style = MaterialTheme.typography.bodyMedium
                         )
                     },
@@ -156,18 +167,16 @@ fun SavedAddressesScreen(
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            OutlinedButton(
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    contentColor = MaterialTheme.colorScheme.primary
-                ),
+            OutlinedButton(colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                contentColor = MaterialTheme.colorScheme.primary
+            ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = spacing.small),
                 onClick = {
-                    onBackPressed()
-                }
-            ) {
+                    onUiEvent(SavedAddressUiEvent.Back)
+                }) {
                 Icon(
                     modifier = Modifier
                         .padding(end = spacing.extraSmall)
@@ -179,7 +188,7 @@ fun SavedAddressesScreen(
                     Text(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        text = "Use my current location",
+                        text = R.string.use_my_current_location.toStringFromResId(),
                         style = MaterialTheme.typography.bodyMedium,
                         textAlign = TextAlign.Start
                     )
@@ -188,7 +197,7 @@ fun SavedAddressesScreen(
                             Text(
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
-                                text = "Fetching location...",
+                                text = R.string.fetching_location.toStringFromResId(),
                                 style = MaterialTheme.typography.bodyMedium,
                                 textAlign = TextAlign.Start
                             )
@@ -198,7 +207,7 @@ fun SavedAddressesScreen(
                             Text(
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
-                                text = (currentAddressState as UiState.Success<Address>).data.getAddressLine(
+                                text = currentAddressState.data.getAddressLine(
                                     0
                                 ),
                                 style = MaterialTheme.typography.bodyMedium,
@@ -210,7 +219,7 @@ fun SavedAddressesScreen(
                             Text(
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
-                                text = (currentAddressState as UiState.Error).resId.toStringFromResId(),
+                                text = currentAddressState.resId.toStringFromResId(),
                                 style = MaterialTheme.typography.bodyMedium,
                                 textAlign = TextAlign.Start
                             )
@@ -221,18 +230,16 @@ fun SavedAddressesScreen(
                 }
 
                 Icon(
-                    imageVector = Icons.Default.KeyboardArrowRight,
-                    contentDescription = ""
+                    imageVector = Icons.Default.KeyboardArrowRight, contentDescription = ""
                 )
             }
 
             Spacer(modifier = Modifier.height(spacing.small))
 
-            OutlinedButton(
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    contentColor = MaterialTheme.colorScheme.primary
-                ),
+            OutlinedButton(colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                contentColor = MaterialTheme.colorScheme.primary
+            ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = spacing.small),
@@ -243,9 +250,9 @@ fun SavedAddressesScreen(
                         block = "",
                         hn = "",
                         id = "",
-                        lat = currentLatLng.latitude,
+                        lat = (currentAddressState as? UiState.Success)?.data?.latitude ?: 0.0,
                         loc = "",
-                        lon = currentLatLng.longitude,
+                        lon = (currentAddressState as? UiState.Success)?.data?.longitude ?: 0.0,
                         name = "",
                         nearby = "",
                         ph = "",
@@ -253,10 +260,8 @@ fun SavedAddressesScreen(
                         sub = "",
                         uid = ""
                     )
-                    val addJson = gson.toJson(myAddressItem)
-                    navHostController.navigate(route = "${AddressScreen.Map.route}/$addJson")
-                }
-            ) {
+                    onUiEvent(SavedAddressUiEvent.NavigateToMaps(myAddressItem))
+                }) {
                 Icon(
                     modifier = Modifier
                         .padding(end = spacing.extraSmall)
@@ -268,13 +273,12 @@ fun SavedAddressesScreen(
                     modifier = Modifier.weight(1f),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    text = "Add Address",
+                    text = R.string.add_address.toStringFromResId(),
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Start
                 )
                 Icon(
-                    imageVector = Icons.Default.KeyboardArrowRight,
-                    contentDescription = ""
+                    imageVector = Icons.Default.KeyboardArrowRight, contentDescription = ""
                 )
             }
 
@@ -287,20 +291,18 @@ fun SavedAddressesScreen(
                     .background(Color.LightGray)
             )
 
-
             Text(
                 modifier = Modifier.padding(spacing.small),
-                text = "SAVED ADDRESSES",
+                text = R.string.saved_address.toStringFromResId(),
                 style = MaterialTheme.typography.titleLarge
             )
-            when (addressListState) {
+            when (savedAddressListState) {
                 is UiState.Success -> {
-                    val addresses =
-                        (addressListState as UiState.Success<AddressesResponse>).data.data
+                    val addresses = savedAddressListState.data
                     if (addresses.isEmpty()) {
                         Text(
                             modifier = Modifier.padding(spacing.small),
-                            text = "No Saved Address",
+                            text = R.string.no_saved_address.toStringFromResId(),
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.titleMedium
                         )
@@ -308,55 +310,58 @@ fun SavedAddressesScreen(
                         LazyColumn {
                             items(addresses) { item ->
                                 if (item.selected) {
-                                    addressViewModel.setSelectedAdId(item.id)
+                                    onUiEvent(SavedAddressUiEvent.SetSelectedAddress(item.id))
                                 }
                                 AddressItem(
-                                    modifier = if (item.selected) Modifier.background(
-                                        MaterialTheme.colorScheme.primary.copy(0.5f)
-                                    ) else Modifier,
-                                    icon = Icons.Default.Home,
-                                    name = item.name,
-                                    address = "${item.hn}, ${item.block}, ${item.sub}, ${item.loc}, ${item.area}",
-                                    contactNo = item.ph,
+                                    item = item,
+                                    deleteAddressState = deleteAddressState,
+                                    selectAddressState = selectAddressState,
                                     onClick = {
-                                        if (!item.selected) addressViewModel.selectCurrentAddress(item)
-                                        onBackPressed()
-                                    },
-                                    onEditClick = {
-                                        val addJson = gson.toJson(item).replace("/", "|")
-                                        navHostController.navigate(route = "${AddressScreen.Map.route}/$addJson")
-                                    },
-                                    onDeleteClick = {
-                                        if (item.selected) {
-                                            for (i in addresses) {
-                                                if (i.id != item.id) {
-                                                    addressViewModel.selectCurrentAddress(i)
-                                                    break
+                                        when (it) {
+                                            is AddressEvent.Select -> {
+                                                if (!item.selected) onUiEvent(
+                                                    SavedAddressUiEvent.SelectAddress(item)
+                                                )
+                                            }
+
+                                            is AddressEvent.Edit -> {
+                                                onUiEvent(SavedAddressUiEvent.NavigateToMaps(item))
+                                            }
+
+                                            is AddressEvent.Delete -> {
+                                                if (item.selected) {
+                                                    for (i in addresses) {
+                                                        if (i.id != item.id) {
+                                                            onUiEvent(
+                                                                SavedAddressUiEvent.SelectAddress(
+                                                                    item
+                                                                )
+                                                            )
+                                                            break
+                                                        }
+                                                    }
                                                 }
+                                                onUiEvent(SavedAddressUiEvent.DeleteAddress(item.id))
+                                            }
+
+                                            is AddressEvent.Share -> {
+                                                val myAddress =
+                                                    "${item.name}\n${item.hn}, ${item.block}, ${item.sub}, ${item.loc}, ${item.area}\nPhone number: ${item.ph}"
+                                                val intent = Intent(Intent.ACTION_SEND).apply {
+                                                    type = "text/plain"
+                                                    putExtra(Intent.EXTRA_TEXT, myAddress)
+                                                }
+
+                                                val chooserIntent =
+                                                    Intent.createChooser(
+                                                        intent,
+                                                        R.string.share_via.toStringFromResId(context)
+                                                    )
+                                                chooserIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                                startActivity(context, chooserIntent, null)
                                             }
                                         }
-                                        addressViewModel.deleteAddress(item.id) {
-                                            Toast.makeText(
-                                                context,
-                                                "Address Deleted Successfully",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
-                                    },
-                                    onShareClick = {
-                                        val myAddress =
-                                            "${item.name}\n${item.hn}, ${item.block}, ${item.sub}, ${item.loc}, ${item.area}\nPhone number: ${item.ph}"
-                                        val intent = Intent(Intent.ACTION_SEND).apply {
-                                            type = "text/plain"
-                                            putExtra(Intent.EXTRA_TEXT, myAddress)
-                                        }
-
-                                        val chooserIntent =
-                                            Intent.createChooser(intent, "Share via")
-                                        chooserIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                        startActivity(context, chooserIntent, null)
-                                    }
-                                )
+                                    })
                             }
                         }
                     }
@@ -364,17 +369,15 @@ fun SavedAddressesScreen(
 
                 UiState.Loading -> {
                     Box(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        contentAlignment = Alignment.Center
+                        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
                     ) {
                         LoadingAnimation()
                     }
                 }
 
                 is UiState.Error -> {
-                    AppErrorScreen(desc = (addressListState as UiState.Error).resId.toStringFromResId()) {
-                        addressViewModel.getAllAddresses()
+                    AppErrorScreen(desc = savedAddressListState.resId.toStringFromResId()) {
+                        onUiEvent(SavedAddressUiEvent.GetSavedAddress)
                     }
                 }
 
@@ -386,74 +389,87 @@ fun SavedAddressesScreen(
 }
 
 @Composable
-fun AddressItem(
-    modifier: Modifier = Modifier,
-    icon: ImageVector,
-    name: String,
-    address: String,
-    contactNo: String,
-    onClick: () -> Unit,
-    onEditClick: () -> Unit,
-    onDeleteClick: () -> Unit,
-    onShareClick: () -> Unit
+private fun AddressItem(
+    item: MyAddress,
+    deleteAddressState: UiState<Boolean>,
+    selectAddressState: UiState<Unit>,
+    onClick: (AddressEvent) -> Unit
 ) {
     Row(
-        modifier
-            .clickable { onClick() }
+        Modifier
+            .background(
+                color =
+                if (item.selected) MaterialTheme.colorScheme.primary.copy(0.5f)
+                else if (selectAddressState is UiState.Loading) MaterialTheme.colorScheme.background
+                else MaterialTheme.colorScheme.onBackground
+            )
+            .clickable { if (selectAddressState is UiState.Idle) onClick(AddressEvent.Select) }
             .fillMaxWidth()
-            .padding(spacing.small)) {
+            .padding(spacing.small)
+    ) {
         Icon(
             modifier = Modifier.padding(end = spacing.extraSmall),
-            imageVector = icon,
+            imageVector = Icons.Default.Home,
             contentDescription = ""
         )
         Column(Modifier.fillMaxWidth()) {
-            Text(text = name, style = MaterialTheme.typography.titleLarge)
+            Text(text = item.name, style = MaterialTheme.typography.titleLarge)
             Text(
-                text = address,
+                text = "${item.hn}, ${item.block}, ${item.sub}, ${item.loc}, ${item.area}",
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(vertical = 5.dp)
             )
             Text(
-                text = "Phone number: $contactNo",
+                text = R.string.phone_number.toStringFromResId() + ": ${item.ph}",
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(bottom = 5.dp)
             )
             Row(Modifier.fillMaxWidth()) {
-                OutlinedIconButton(onClick = { onEditClick() }) {
+                OutlinedIconButton(onClick = { onClick(AddressEvent.Edit) }) {
                     Icon(
-                        imageVector = Icons.Default.Edit,
-                        contentDescription = ""
+                        imageVector = Icons.Default.Edit, contentDescription = ""
                     )
                 }
 
                 Spacer(modifier = Modifier.width(spacing.extraSmall))
 
-                var deleteButton by remember {
-                    mutableStateOf(true)
-                }
-                OutlinedIconButton(
-                    enabled = deleteButton,
-                    onClick = {
-                        deleteButton = false
-                        onDeleteClick()
-                    }) {
-                    Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = ""
-                    )
+                Crossfade(
+                    targetState = deleteAddressState, label = ""
+                ) {
+                    when (it) {
+                        is UiState.Loading -> {
+                            OutlinedIconButton(onClick = {}) {
+                                CircularProgressIndicator(modifier = Modifier.padding(1.dp))
+                            }
+                        }
+
+                        else -> {
+                        OutlinedIconButton(onClick = {
+                            onClick(AddressEvent.Delete)
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Delete, contentDescription = ""
+                            )
+                        }
+                    }
+                    }
                 }
 
                 Spacer(modifier = Modifier.width(spacing.extraSmall))
 
-                OutlinedIconButton(onClick = { onShareClick() }) {
+                OutlinedIconButton(onClick = { onClick(AddressEvent.Share) }) {
                     Icon(
-                        imageVector = Icons.Default.Share,
-                        contentDescription = ""
+                        imageVector = Icons.Default.Share, contentDescription = ""
                     )
                 }
-
             }
         }
     }
+}
+
+private sealed interface AddressEvent {
+    object Select : AddressEvent
+    object Edit : AddressEvent
+    object Delete : AddressEvent
+    object Share : AddressEvent
 }

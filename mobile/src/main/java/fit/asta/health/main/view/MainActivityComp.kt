@@ -43,13 +43,13 @@ fun NavGraphBuilder.homeScreen(
 
         val isLocationEnabled by addressViewModel.isLocationEnabled.collectAsStateWithLifecycle()
         val notificationEnabled by mainViewModel.notificationsEnabled.collectAsStateWithLifecycle()
-        val currentAddressState by addressViewModel.currentAddressStringState.collectAsStateWithLifecycle()
+        val currentAddressName by mainViewModel.currentAddressName.collectAsStateWithLifecycle()
         val locationPermissionRejectedCount by addressViewModel.locationPermissionRejectedCount.collectAsStateWithLifecycle()
 
         val locationRequestLauncher =
             rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { activityResult ->
                 if (activityResult.resultCode == AppCompatActivity.RESULT_OK)
-                    addressViewModel.updateCurrentLocationData(context)
+                    addressViewModel.updateCurrentLocationData()
                 else {
                     if (!isLocationEnabled) {
                         Toast.makeText(
@@ -69,7 +69,7 @@ fun NavGraphBuilder.homeScreen(
                 perms.keys.forEach loop@{ perm ->
                     if ((perms[perm] == true) && (perm == Manifest.permission.ACCESS_FINE_LOCATION || perm == Manifest.permission.ACCESS_COARSE_LOCATION)) {
                         addressViewModel.updateLocationPermissionRejectedCount(1)
-                        addressViewModel.enableLocationRequest(context) {
+                        addressViewModel.enableLocationRequest {
                             locationRequestLauncher.launch(it)
                         }
                         return@loop
@@ -96,7 +96,7 @@ fun NavGraphBuilder.homeScreen(
                 )
                 == PackageManager.PERMISSION_GRANTED
             ) {
-                addressViewModel.enableLocationRequest(context) { intent ->
+                addressViewModel.enableLocationRequest { intent ->
                     locationRequestLauncher.launch(intent)
                 }
             } else {
@@ -184,7 +184,7 @@ fun NavGraphBuilder.homeScreen(
         }
 
         MainActivityLayout(
-            currentAddressState = currentAddressState,
+            currentAddressState = currentAddressName,
             profileImageUri = authViewModel.getUser()?.photoUrl,
             isNotificationEnabled = notificationEnabled,
             onNav = {

@@ -38,7 +38,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import com.google.android.libraries.places.api.Places
 import fit.asta.health.R
-import fit.asta.health.common.address.data.modal.AddressesResponse
+import fit.asta.health.common.address.data.modal.MyAddress
 import fit.asta.health.common.address.data.modal.SearchResponse
 import fit.asta.health.common.ui.components.generic.AppButtons
 import fit.asta.health.common.ui.components.generic.AppDefServerImg
@@ -53,10 +53,10 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBottomSheet(
+internal fun SearchBottomSheet(
     modifier: Modifier = Modifier,
-    searchResponseState: UiState<SearchResponse?>,
-    onResultClick: (AddressesResponse.MyAddress) -> Unit,
+    searchResponseState: UiState<SearchResponse>,
+    onResultClick: (MyAddress) -> Unit,
     onSearch: (String) -> Unit,
     onClose: () -> Unit
 ) {
@@ -107,7 +107,7 @@ fun SearchBottomSheet(
                 },
                 placeholder = {
                     Text(
-                        text = "Search for area,street name..",
+                        text = R.string.search_for_area_street.toStringFromResId(),
                         style = MaterialTheme.typography.bodyMedium
                     )
                 },
@@ -149,21 +149,21 @@ fun SearchBottomSheet(
             when (searchResponseState) {
                 is UiState.Success -> {
                     var results =
-                        searchResponseState.data?.results
-                    if (results.isNullOrEmpty()) {
+                        searchResponseState.data.results
+                    if (results.isEmpty()) {
                         Text(
                             modifier = Modifier.padding(spacing.small),
-                            text = "No result for \"$searchQuery\"",
+                            text = R.string.no_result_for.toStringFromResId() + "\"$searchQuery\"",
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.titleMedium
                         )
                     } else {
                         LazyColumn {
-                            items(results!!) {
+                            items(results) {
                                 AppButtons.AppTextButton(
                                     onClick = {
                                         searchQuery = ""
-                                        val myAddressItem = AddressesResponse.MyAddress(
+                                        val myAddressItem = MyAddress(
                                             selected = false,
                                             area = "",
                                             block = "",
@@ -214,10 +214,8 @@ fun SearchBottomSheet(
                 }
 
                 UiState.Idle -> {
-                    Text(text = "Your search results will appear here.")
+                    Text(text = R.string.your_search_results_will_appear_here.toStringFromResId())
                 }
-
-                else -> {}
             }
         }
     }

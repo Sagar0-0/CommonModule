@@ -20,6 +20,9 @@ fun <T> ResponseState<T>.toUiState(): UiState<T> {
 
 fun Exception.toStringResId(): Int {
     return when (this) {
+        is MyException->{
+            this.resId
+        }
         else -> R.string.unknown_error
     }
 }

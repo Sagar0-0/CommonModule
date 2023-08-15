@@ -26,7 +26,6 @@ class AuthViewModel
     private val authRepo: AuthRepo
 ) : ViewModel() {
 
-
     private val _loginState = MutableStateFlow<UiState<Boolean>>(UiState.Idle)
     val loginState = _loginState.asStateFlow()
 
@@ -46,12 +45,8 @@ class AuthViewModel
     fun signInWithGoogleCredentials(authCredential: AuthCredential) {
         _loginState.value = UiState.Loading
         viewModelScope.launch{
-            try{
-                authRepo.signInWithCredential(authCredential).collect{
-                    _loginState.value = it.toUiState()
-                }
-            }catch (e:Exception){
-                _loginState.value = UiState.Error(e.toStringResId())
+            authRepo.signInWithCredential(authCredential).collect{
+                _loginState.value = it.toUiState()
             }
         }
     }
@@ -70,12 +65,8 @@ class AuthViewModel
     fun deleteAccount(){
         _deleteState.value = UiState.Loading
         viewModelScope.launch{
-            try{
-                authRepo.deleteAccount().collect{
-                    _deleteState.value = it.toUiState()
-                }
-            }catch (e:Exception){
-                _deleteState.value = UiState.Error(e.toStringResId())
+            authRepo.deleteAccount().collect{
+                _deleteState.value = it.toUiState()
             }
         }
     }

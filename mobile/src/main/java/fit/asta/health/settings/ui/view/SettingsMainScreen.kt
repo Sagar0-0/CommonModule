@@ -1,4 +1,4 @@
-package fit.asta.health.settings.view
+package fit.asta.health.settings.ui.view
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -53,7 +53,7 @@ import fit.asta.health.common.ui.components.generic.AppTopBar
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.common.utils.setAppTheme
-import fit.asta.health.settings.data.SettingsUiEvent
+import fit.asta.health.common.utils.toStringFromResId
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -84,7 +84,7 @@ fun SettingsScreenLayout(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     AppTexts.HeadlineMedium(
-                        text = "Confirm delete?"
+                        text = R.string.confirm_delete.toStringFromResId()
                     )
                     Row(
                         modifier = Modifier
@@ -97,7 +97,7 @@ fun SettingsScreenLayout(
                                 showDeleteConfirmationDialog = false
                             }
                         ) {
-                            Text(text = "Cancel")
+                            Text(text = R.string.cancel.toStringFromResId())
                         }
                         AppButtons.AppTextButton(
                             onClick = {
@@ -105,7 +105,7 @@ fun SettingsScreenLayout(
                                 onClickEvent(SettingsUiEvent.DELETE)
                             }
                         ) {
-                            Text(text = "Yes")
+                            Text(text = R.string.yes.toStringFromResId())
                         }
                     }
                 }
@@ -130,20 +130,20 @@ fun SettingsScreenLayout(
                     imageVector = Icons.Default.Share
                 ) { onClickEvent(SettingsUiEvent.SHARE) }
                 PreferenceItem(
-                    title = "Subscribe",
+                    title = R.string.subscribe.toStringFromResId(),
                     imageVector = Icons.Default.Subscriptions
                 ) { onClickEvent(SettingsUiEvent.SUBSCRIBE) }
                 PreferenceItem(
-                    title = "Refer and earn",
+                    title = R.string.refer_and_earn.toStringFromResId(),
                     imageVector = Icons.Default.MonetizationOn
                 ) { onClickEvent(SettingsUiEvent.REFERRAL) }
                 PreferenceItem(
-                    title = "Saved Address",
+                    title = R.string.saved_address.toStringFromResId(),
                     imageVector = Icons.Default.LocationOn
                 ) { onClickEvent(SettingsUiEvent.ADDRESS) }
 
                 PreferenceItem(
-                    title = "Wallet",
+                    title = R.string.wallet.toStringFromResId(),
                     imageVector = Icons.Default.AccountBalanceWallet
                 ) { onClickEvent(SettingsUiEvent.WALLET) }
                 PreferenceItem(

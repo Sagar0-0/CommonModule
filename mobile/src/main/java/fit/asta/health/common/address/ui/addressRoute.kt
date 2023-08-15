@@ -29,18 +29,22 @@ import androidx.navigation.compose.rememberNavController
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import fit.asta.health.R
-import fit.asta.health.common.address.data.modal.AddressScreen
-import fit.asta.health.common.address.data.modal.AddressesResponse
+import fit.asta.health.common.address.data.modal.MyAddress
 import fit.asta.health.common.address.data.utils.LocationProviderChangedReceiver
+import fit.asta.health.common.address.ui.view.AddressDestination
 import fit.asta.health.common.address.ui.view.MapScreen
+import fit.asta.health.common.address.ui.view.MapScreenUiEvent
+import fit.asta.health.common.address.ui.view.SavedAddressUiEvent
 import fit.asta.health.common.address.ui.view.SavedAddressesScreen
 import fit.asta.health.common.address.ui.vm.AddressViewModel
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.rememberLifecycleEvent
+import fit.asta.health.common.utils.toStringFromResId
 
 private const val ADDRESS_GRAPH_ROUTE = "graph_address"
 
-fun NavController.navigateToAddress(navOptions: NavOptions?=null){
-    this.navigate(ADDRESS_GRAPH_ROUTE,navOptions)
+fun NavController.navigateToAddress(navOptions: NavOptions? = null) {
+    this.navigate(ADDRESS_GRAPH_ROUTE, navOptions)
 }
 
 fun NavGraphBuilder.addressRoute(navController: NavHostController) {
@@ -49,34 +53,114 @@ fun NavGraphBuilder.addressRoute(navController: NavHostController) {
         val addressViewModel: AddressViewModel = hiltViewModel()
         Setup(addressViewModel, navController)
 
+        val savedAddressListState by addressViewModel.savedAddressListState.collectAsStateWithLifecycle()
+        val putAddressState by addressViewModel.putAddressState.collectAsStateWithLifecycle()
+        val deleteAddressState by addressViewModel.deleteAddressState.collectAsStateWithLifecycle()
+        val selectAddressState by addressViewModel.selectAddressState.collectAsStateWithLifecycle()
+        val currentAddressState by addressViewModel.currentAddressState.collectAsStateWithLifecycle()
+        val searchResultState by addressViewModel.searchResultState.collectAsStateWithLifecycle()
+        val markerAddressState by addressViewModel.markerAddressState.collectAsStateWithLifecycle()
+
         NavHost(
             navController = nestedNavController,
             route = ADDRESS_GRAPH_ROUTE,
-            startDestination = AddressScreen.SavedAdd.route
+            startDestination = AddressDestination.SavedAdd.route
         ) {
             composable(
-                route = AddressScreen.SavedAdd.route
+                route = AddressDestination.SavedAdd.route
             ) {
-                LaunchedEffect(Unit){
-                    addressViewModel.getAllAddresses()
-                }
+                LaunchedEffect(Unit) { addressViewModel.getSavedAddresses() }
                 SavedAddressesScreen(
-                    navHostController = nestedNavController,
-                    addressViewModel = addressViewModel,
-                    onBackPressed = navController::navigateUp
+                    savedAddressListState = savedAddressListState,
+                    deleteAddressState = deleteAddressState,
+                    selectAddressState = selectAddressState,
+                    currentAddressState = currentAddressState,
+                    searchResultState = searchResultState,
+                    onUiEvent = { event ->
+                        when (event) {
+                            SavedAddressUiEvent.ResetDelete->{
+                                addressViewModel.resetDeleteState()
+                            }
+                            SavedAddressUiEvent.ResetSelect->{
+                                addressViewModel.resetSelectAddressState()
+                            }
+                            is SavedAddressUiEvent.Search -> {
+                                addressViewModel.search(event.query)
+                            }
+
+                            SavedAddressUiEvent.ClearSearch -> {
+                                addressViewModel.clearSearchResponse()
+                            }
+
+                            is SavedAddressUiEvent.SetSelectedAddress -> {
+                                addressViewModel.setSelectedAdId(event.id)
+                            }
+
+                            is SavedAddressUiEvent.SelectAddress -> {
+                                addressViewModel.selectAddress(event.address)
+                            }
+
+                            is SavedAddressUiEvent.DeleteAddress -> {
+                                addressViewModel.deleteAddress(event.id)
+                            }
+
+                            SavedAddressUiEvent.GetSavedAddress -> {
+                                addressViewModel.getSavedAddresses()
+                            }
+
+                            is SavedAddressUiEvent.NavigateToMaps -> {
+                                val gson: Gson = GsonBuilder().create()
+                                val json = gson.toJson(event.address).replace("/", "|")
+                                nestedNavController.navigate(AddressDestination.Map.route + "/$json")
+                            }
+
+                            SavedAddressUiEvent.Back -> {
+                                navController.popBackStack()
+                            }
+                        }
+                    }
                 )
             }
 
             composable(
-                route = AddressScreen.Map.route + "/{address}"
+                route = AddressDestination.Map.route + "/{address}"
             ) {
                 val gson: Gson = GsonBuilder().create()
                 val addJson = it.arguments?.getString("address")!!.replace("|", "/")
-                val myAddressItem = gson.fromJson(addJson, AddressesResponse.MyAddress::class.java)
+                val myAddressItem = gson.fromJson(addJson, MyAddress::class.java)
                 MapScreen(
                     myAddressItem = myAddressItem,
-                    addressViewModel = addressViewModel,
-                    onBackPressed = nestedNavController::navigateUp
+                    searchResultState = searchResultState,
+                    markerAddressState = markerAddressState,
+                    currentAddressState = currentAddressState,
+                    putAddressState = putAddressState,
+                    onUiEvent = { event ->
+                        when (event) {
+                            is MapScreenUiEvent.GetMarkerAddress -> {
+                                addressViewModel.getMarkerAddressDetails(event.latLng)
+                            }
+
+                            is MapScreenUiEvent.Back -> {
+                                nestedNavController.popBackStack()
+                            }
+
+                            is MapScreenUiEvent.Search -> {
+                                addressViewModel.search(event.query)
+                            }
+
+                            is MapScreenUiEvent.ClearSearch -> {
+                                addressViewModel.clearSearchResponse()
+                            }
+
+                            is MapScreenUiEvent.PutAddress -> {
+                                addressViewModel.putAddress(event.myAddress)
+                            }
+
+                            is MapScreenUiEvent.UseCurrentLocation -> {
+                                addressViewModel.updateCurrentLocationData()
+                            }
+                        }
+                    }
                 )
             }
         }
@@ -91,11 +175,11 @@ private fun Setup(addressViewModel: AddressViewModel, navController: NavHostCont
     DisposableEffect(context) {
         val br = LocationProviderChangedReceiver(
             onEnabled = {
-                addressViewModel.isLocationEnabled.value = true
-                addressViewModel.updateCurrentLocationData(context)
+                addressViewModel.setIsLocationEnabled(true)
+                addressViewModel.updateCurrentLocationData()
             },
             onDisabled = {
-                addressViewModel.isLocationEnabled.value = false
+                addressViewModel.setIsLocationEnabled(false)
             }
         )
         br.register(context)
@@ -109,7 +193,7 @@ private fun Setup(addressViewModel: AddressViewModel, navController: NavHostCont
         Log.e("TAG", lifecycleEvent.name)
         when (lifecycleEvent) {
             Lifecycle.Event.ON_RESUME -> {
-                addressViewModel.isPermissionGranted.value =
+                addressViewModel.setIsPermissionGranted(
                     (ContextCompat.checkSelfPermission(
                         context,
                         Manifest.permission.ACCESS_FINE_LOCATION
@@ -117,10 +201,11 @@ private fun Setup(addressViewModel: AddressViewModel, navController: NavHostCont
                         context,
                         Manifest.permission.ACCESS_COARSE_LOCATION
                     ) == PackageManager.PERMISSION_GRANTED)
+                )
             }
 
             Lifecycle.Event.ON_START -> {
-                addressViewModel.updateCurrentLocationData(context)
+                addressViewModel.updateCurrentLocationData()
             }
 
             else -> {}
@@ -154,12 +239,12 @@ private fun Setup(addressViewModel: AddressViewModel, navController: NavHostCont
             contract = ActivityResultContracts.StartIntentSenderForResult()
         ) { activityResult ->
             if (activityResult.resultCode == AppCompatActivity.RESULT_OK)
-                addressViewModel.updateCurrentLocationData(context)
+                addressViewModel.updateCurrentLocationData()
             else {
                 if (!addressViewModel.isLocationEnabled.value) {
                     Toast.makeText(
                         context,
-                        "Location access is mandatory to use this feature!!",
+                        R.string.location_access_required.toStringFromResId(context),
                         Toast.LENGTH_SHORT
                     )
                         .show()
@@ -176,7 +261,7 @@ private fun Setup(addressViewModel: AddressViewModel, navController: NavHostCont
             if (locationPermissionRejectedCount >= 2) {
                 Toast.makeText(
                     context,
-                    "Please allow Location permission access.",
+                    R.string.please_allow_location_permissions.toStringFromResId(context),
                     Toast.LENGTH_SHORT
                 )
                     .show()
@@ -202,7 +287,7 @@ private fun Setup(addressViewModel: AddressViewModel, navController: NavHostCont
 
     LaunchedEffect(isLocationEnabled) {
         if (!isLocationEnabled) {
-            addressViewModel.enableLocationRequest(context) { intent ->
+            addressViewModel.enableLocationRequest { intent ->
                 locationRequestLauncher.launch(intent)
             }
         }
