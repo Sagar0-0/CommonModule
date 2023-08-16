@@ -150,26 +150,19 @@ protobuf {
 
 dependencies {
 
-    def compose_ver = "1.5.0"
-    def dagger_ver = "2.47"
-
-    implementation project(path: ":chartLibrary")
+    implementation(project(path: ":chartLibrary"))
     // Spotify App remote Dependency
-    implementation fileTree(include: ["*.jar", "*.aar"], dir: "libs")
+    implementation(fileTree(include: ["*.jar", "*.aar"], dir: "libs"))
 
     //De-sugaring
     coreLibraryDesugaring(libs.android.desugarJdkLibs)
 
-    debugImplementation("androidx.compose.ui:ui-tooling:$compose_ver")
-    debugImplementation(libs.androidx.ui.test.manifest)
-
     //multidex support
-    //implementation ("androidx.multidex:multidex:2.0.1")
+    //implementation("androidx.multidex:multidex:2.0.1")
 
     implementation(libs.kotlin.stdlib)
     // Coroutines
     implementation(libs.kotlinx.coroutines.core)
-
     //Androidx
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
@@ -183,17 +176,19 @@ dependencies {
     implementation(libs.androidx.window.manager)
 
     //Jetpack Compose
-    implementation("androidx.compose.ui:ui:$compose_ver")
-    implementation("androidx.compose.ui:ui-tooling-preview:$compose_ver")
-    implementation("androidx.compose.ui:ui-tooling:$compose_ver")
-    implementation("androidx.compose.ui:ui-util:$compose_ver")
-    implementation("androidx.compose.animation:animation:$compose_ver")
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.androidx.compose.ui.util)
+    implementation(libs.androidx.compose.animation)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewModelCompose)
     implementation(libs.androidx.lifecycle.runtimeCompose)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.constraintlayout.compose)
-    implementation("androidx.compose.foundation:foundation:$compose_ver")
+    implementation(libs.androidx.compose.foundation)
 
     //Datastore
     implementation(libs.androidx.dataStore.core)
@@ -202,8 +197,8 @@ dependencies {
 
     //Jetpack Compose - Material theme components
     implementation(libs.androidx.material3)
-    implementation("androidx.compose.material3:material3-window-size-class:1.1.1")
-    implementation("androidx.compose.material:material-icons-extended:$compose_ver")
+    implementation(libs.androidx.material3.window.size)
+    implementation(libs.androidx.material.icons.extended.android)
     implementation(libs.compose.theme.adapter)
 
     //Jetpack Compose - Pager
@@ -235,7 +230,7 @@ dependencies {
     implementation(libs.review.ktx)
 
     //Firebase authentication
-    implementation platform("com.google.firebase:firebase-bom:32.2.0")
+    implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth.ktx)
     implementation(libs.play.services.auth)
     implementation(libs.play.services.auth.api.phone)
@@ -275,51 +270,28 @@ dependencies {
     //Image - Circular view
     implementation(libs.circularimageview)
 
-    //Image Picker
-    implementation("com.github.Drjacky:ImagePicker:2.3.22")
-
-    //Image Cropper Dependencies
-    // Colorful Customizable Sliders
-    implementation("com.github.SmartToolFactory:Compose-Colorful-Sliders:1.2.0")
-    // Color picker
-    implementation("com.github.SmartToolFactory:Compose-Color-Picker-Bundle:1.0.0")
-    // Gestures
-    implementation("com.github.SmartToolFactory:Compose-Extended-Gestures:3.0.0")
-    // Animated List
-    implementation("com.github.SmartToolFactory:Compose-AnimatedList:0.5.1")
-    // Photo Picker
-    implementation("com.google.modernstorage:modernstorage-photopicker:1.0.0-alpha06")
-
     // Room Library
-    def room_ver = "2.5.2"
-    implementation("androidx.room:room-runtime:$room_ver")
-    ksp("androidx.room:room-compiler:$room_ver")
-    implementation("androidx.room:room-ktx:$room_ver")
-    androidTestImplementation("androidx.room:room-testing:$room_ver")
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+    implementation(libs.room.ktx)
+    androidTestImplementation(libs.androidx.room.testing)
 
     //Dagger Hilt
-    implementation("com.google.dagger:hilt-android:$dagger_ver")
-    ksp("com.google.dagger:hilt-android-compiler:$dagger_ver")
-    ksp("androidx.hilt:hilt-compiler:1.0.0")
-    implementation("androidx.hilt:hilt-common:1.0.0")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    implementation("androidx.hilt:hilt-work:1.0.0")
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    ksp(libs.hilt.ext.compiler)
+    implementation(libs.androidx.hilt.common)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.hilt.ext.work)
 
     // Retrofit and OkHttp
-    def retrofit = "2.9.0"
-    retrofit = [retrofit               : "com.squareup.retrofit2:retrofit:$retrofit",
-                retrofitGsonConverter  : "com.squareup.retrofit2:converter-gson:$retrofit",
-                retrofitRxJavaAdapter  : "com.squareup.retrofit2:adapter-rxjava2:$retrofit",
-                retrofitScalarConverter: "com.squareup.retrofit2:converter-scalars:$retrofit",
-                retrofitMoshiConverter : "com.squareup.retrofit2:converter-moshi:$retrofit"]
-
-    def okhttp3 = "4.11.0"
-    implementation("com.squareup.okhttp3:okhttp:$okhttp3")
-    implementation("com.squareup.okhttp3:logging-interceptor:$okhttp3")
-    implementation retrofit.values()
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+    implementation(libs.retrofit.core)
+    implementation(libs.converter.gson)
 
     //Json parser
-    implementation("com.google.code.gson:gson:2.10.1")
+    implementation(libs.gson)
 
     //Exo player
     implementation(libs.exoplayer)
@@ -349,16 +321,11 @@ dependencies {
     implementation(libs.checkout)
 
     //Calendar
-    def cal_ver = "1.2.0"
     implementation(libs.core)
     implementation(libs.calendar)
 
     //Clock
     implementation(libs.clock)
-
-    //Rating-Bar
-    implementation("com.github.a914-gowtham:compose-ratingbar:1.2.4")
-    implementation("com.github.SmartToolFactory:Compose-RatingBar:2.1.1")
 
     //FlexBox
     implementation(libs.flexbox)
@@ -369,33 +336,54 @@ dependencies {
     //Number Picker
     implementation(libs.number.picker)
 
-    //Recyclerview swipe decorator
-    implementation("com.github.xabaras:RecyclerViewSwipeDecorator:1.4")
-
     //Spotify Auth
     implementation(libs.auth)
 
     //Stepper
     implementation(libs.compose.stepper)
 
-    //Swipe action view for snooze and stop
-    def swipe_ver = "1.4.0"
-    implementation("com.github.Tunous:SwipeActionView:$swipe_ver")
-
     //Swipe
     implementation(libs.swipe)
-
-    //Tone picking
-    implementation("xyz.aprildown:UltimateRingtonePicker:3.1.0")
 
     //Transformation view
     implementation(libs.transformationlayout)
 
     //Work Manager
-    implementation("androidx.work:work-runtime-ktx:2.8.1")
+    implementation(libs.androidx.work.runtime.ktx)
 
     //Moshi
     implementation(libs.moshi.kotlin)
+
+    //referral
+    implementation(libs.installreferrer)
+
+    //Rating-Bar
+    implementation("com.github.a914-gowtham:compose-ratingbar:1.2.4")
+    implementation("com.github.SmartToolFactory:Compose-RatingBar:2.1.1")
+
+    //Recyclerview swipe decorator
+    implementation("com.github.xabaras:RecyclerViewSwipeDecorator:1.4")
+
+    //Swipe action view for snooze and stop
+    implementation("com.github.Tunous:SwipeActionView:1.4.0")
+
+    //Tone picking
+    implementation("xyz.aprildown:UltimateRingtonePicker:3.1.0")
+
+    //Image Picker
+    implementation("com.github.Drjacky:ImagePicker:2.3.22")
+
+    //Image Cropper Dependencies
+    // Colorful Customizable Sliders
+    implementation("com.github.SmartToolFactory:Compose-Colorful-Sliders:1.2.0")
+    // Color picker
+    implementation("com.github.SmartToolFactory:Compose-Color-Picker-Bundle:1.0.0")
+    // Gestures
+    implementation("com.github.SmartToolFactory:Compose-Extended-Gestures:3.0.0")
+    // Animated List
+    implementation("com.github.SmartToolFactory:Compose-AnimatedList:0.5.1")
+    // Photo Picker
+    implementation("com.google.modernstorage:modernstorage-photopicker:1.0.0-alpha06")
 
     //test
     testImplementation(libs.junit4)
@@ -408,11 +396,9 @@ dependencies {
     testImplementation(libs.mockk.android)
     testImplementation(libs.turbine)
 
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$compose_ver")
-    androidTestImplementation("androidx.room:room-testing:$room_ver")
+    androidTestImplementation(libs.androidx.ui.test.junit4.android)
+    androidTestImplementation(libs.androidx.room.testing)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.junit)
 
-    //referral
-    implementation(libs.installreferrer)
 }
