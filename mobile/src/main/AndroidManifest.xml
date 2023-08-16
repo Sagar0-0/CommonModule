@@ -68,9 +68,9 @@
             android:exported="true"
             android:label="@string/title_activity_sleep_tool">
             <intent-filter android:autoVerify="true">
-                <data
-                    android:host="www.asta.com"
-                    android:scheme="https" />
+                <data android:scheme="https" />
+                <data android:scheme="http" />
+                <data android:host="www.asta.care" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -102,9 +102,10 @@
             android:name=".tools.walking.view.WalkingActivity"
             android:exported="true">
             <intent-filter android:autoVerify="true">
-                <data
-                    android:host="www.asta.com"
-                    android:scheme="https" />
+
+                <data android:scheme="https" />
+                <data android:scheme="http" />
+                <data android:host="www.asta.care" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -156,9 +157,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter android:autoVerify="true">
-                <data
-                    android:host="www.asta.com"
-                    android:scheme="https" />
+
+                <data android:scheme="https" />
+                <data android:scheme="http" />
+                <data android:host="www.asta.care" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />

@@ -14,14 +14,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BarChart
+import androidx.compose.material.icons.filled.Celebration
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.filled.NotificationsOff
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.rounded.BarChart
-import androidx.compose.material.icons.rounded.Celebration
-import androidx.compose.material.icons.rounded.Home
+import androidx.compose.material.icons.outlined.BarChart
+import androidx.compose.material.icons.outlined.Celebration
+import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -56,7 +59,6 @@ import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.theme.elevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.MainTopBarActions
-import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.main.Graph
 import fit.asta.health.main.sharedViewModel
@@ -85,32 +87,27 @@ fun MainActivityLayout(
 
     val currentDestination = navBackStackEntry?.destination
 
-    AppScaffold(
-        bottomBar = {
-            MainBottomAppBar(
-                navController = navController, currentDestination = currentDestination
+    AppScaffold(bottomBar = {
+        MainBottomAppBar(
+            navController = navController, currentDestination = currentDestination
+        )
+    }, content = {
+        MainNavHost(
+            navController = navController,
+            onNav = onNav,
+            onSchedule = onSchedule,
+            innerPadding = it
+        )
+    }, topBar = {
+        AppTopBar(backIcon = null, actions = {
+            NewMainTopBarActions(
+                onClick = onClick,
+                isNotificationEnabled = isNotificationEnabled,
+                profileImageUri = profileImageUri,
+                currentAddressState = currentAddressState
             )
-        }, content = {
-            MainNavHost(
-                navController = navController,
-                onNav = onNav,
-                onSchedule = onSchedule,
-                innerPadding = it
-            )
-        }, topBar = {
-            AppTopBar(
-                backIcon = null,
-                actions = {
-                    NewMainTopBarActions(
-                        onClick = onClick,
-                        isNotificationEnabled = isNotificationEnabled,
-                        profileImageUri = profileImageUri,
-                        currentAddressState = currentAddressState
-                    )
-                }
-            )
-        }
-    )
+        })
+    })
 }
 
 
@@ -134,7 +131,8 @@ private fun BottomAppBarLayout(
             NavigationBarItem(
                 icon = {
                     Icon(
-                        imageVector = item.icon, contentDescription = item.title
+                        imageVector = if (currentRoute == item.route) item.selectedIcon else item.unselectedIcon,
+                        contentDescription = item.title
                     )
                 },
                 label = { Text(text = item.title) },
@@ -240,9 +238,21 @@ private fun MainBottomAppBar(
     val currentRoute = navController.currentDestination?.route ?: BottomBarDestination.Home.route
 
     BottomAppBarLayout(items = listOf(
-        BottomNavItem(BottomBarDestination.Home.route, Icons.Rounded.Home, "Home"),
-        BottomNavItem(BottomBarDestination.Today.route, Icons.Rounded.Celebration, "Today"),
-        BottomNavItem(BottomBarDestination.Track.route, Icons.Rounded.BarChart, "Track")
+        BottomNavItem(
+            BottomBarDestination.Home.route,
+            Icons.Filled.Home, Icons.Outlined.Home,
+            "Home"
+        ), BottomNavItem(
+            BottomBarDestination.Today.route,
+            Icons.Filled.Celebration,
+            Icons.Outlined.Celebration,
+            "Today"
+        ), BottomNavItem(
+            BottomBarDestination.Track.route,
+            Icons.Filled.BarChart,
+            Icons.Outlined.BarChart,
+            "Track"
+        )
     ),
         currentRoute = currentRoute,
         onNavigate = { route -> onNavigate(navController, route, currentDestination) })
@@ -345,6 +355,7 @@ private fun MainNavHost(
 
 data class BottomNavItem(
     val route: String,
-    val icon: ImageVector,
+    val selectedIcon: ImageVector,
+    val unselectedIcon: ImageVector,
     val title: String,
 )

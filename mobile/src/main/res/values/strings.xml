@@ -549,5 +549,6 @@
     <string name="application_fid">application</string>
     <string name="error_fetching_location">Error fetching location</string>
     <string name="unable_to_fetch_location">Unable to fetch location!</string>
+    <string name="default_schedule">Default Schedule</string>
 
 </resources>
