@@ -20,7 +20,7 @@ interface AddressRepo {
 
     fun getAddressDetails(latLng: LatLng) : Flow<ResponseState<Address>>
 
-    suspend fun search(text: String, latLng: LatLng): ResponseState<SearchResponse>
+    suspend fun search(text: String, latitude : Double, longitude: Double): ResponseState<SearchResponse>
 
     suspend fun getSavedAddresses(uid: String): ResponseState<List<MyAddress>>
 

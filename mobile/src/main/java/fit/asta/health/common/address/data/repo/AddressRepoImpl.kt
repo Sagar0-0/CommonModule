@@ -122,16 +122,16 @@ class AddressRepoImpl @Inject constructor(
         prefManager.setCurrentLocation(location)
     }
 
-    override suspend fun search(text: String, latLng: LatLng): ResponseState<SearchResponse> {
+    override suspend fun search(text: String, latitude : Double, longitude: Double): ResponseState<SearchResponse> {
         return getResponseState {
-            if (latLng.latitude == 0.0 && latLng.longitude == 0.0) {
+            if (latitude == 0.0 && longitude == 0.0) {
                 searchLocationApi.search(
                     text,
                     resourcesProvider.getString(R.string.MAPS_API_KEY)
                 )
             } else {
                 searchLocationApi.searchBiased(
-                    "${latLng.latitude},${latLng.longitude}",
+                    "${latitude},${longitude}",
                     "distance",
                     text,
                     resourcesProvider.getString(R.string.MAPS_API_KEY)

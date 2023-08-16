@@ -3,6 +3,7 @@ package fit.asta.health.common.address.ui.vm
 import android.location.Address
 import android.util.Log
 import androidx.activity.result.IntentSenderRequest
+import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -159,14 +160,12 @@ class AddressViewModel
                 _searchResultState.value =
                     addressRepo.search(
                         query,
-                        LatLng(
-                            (_currentAddressState.value as UiState.Success).data.latitude,
-                            (_currentAddressState.value as UiState.Success).data.latitude
-                        )
+                        (_currentAddressState.value as UiState.Success).data.latitude,
+                        (_currentAddressState.value as UiState.Success).data.latitude
                     ).toUiState()
             } else {
                 _searchResultState.value =
-                    addressRepo.search(query, LatLng(0.0, 0.0)).toUiState()
+                    addressRepo.search(query, 0.0, 0.0).toUiState()
             }
         }
     }
