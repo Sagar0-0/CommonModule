@@ -9,10 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.data.repo.AuthRepo
 import fit.asta.health.auth.data.model.domain.User
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.common.utils.toStringResId
 import fit.asta.health.common.utils.toUiState
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,7 +22,6 @@ class AuthViewModel
 @Inject constructor(
     private val authRepo: AuthRepo
 ) : ViewModel() {
-
 
     private val _loginState = MutableStateFlow<UiState<Boolean>>(UiState.Idle)
     val loginState = _loginState.asStateFlow()
@@ -46,12 +42,8 @@ class AuthViewModel
     fun signInWithGoogleCredentials(authCredential: AuthCredential) {
         _loginState.value = UiState.Loading
         viewModelScope.launch{
-            try{
-                authRepo.signInWithCredential(authCredential).collect{
-                    _loginState.value = it.toUiState()
-                }
-            }catch (e:Exception){
-                _loginState.value = UiState.Error(e.toStringResId())
+            authRepo.signInWithCredential(authCredential).collect{
+                _loginState.value = it.toUiState()
             }
         }
     }
@@ -70,12 +62,8 @@ class AuthViewModel
     fun deleteAccount(){
         _deleteState.value = UiState.Loading
         viewModelScope.launch{
-            try{
-                authRepo.deleteAccount().collect{
-                    _deleteState.value = it.toUiState()
-                }
-            }catch (e:Exception){
-                _deleteState.value = UiState.Error(e.toStringResId())
+            authRepo.deleteAccount().collect{
+                _deleteState.value = it.toUiState()
             }
         }
     }

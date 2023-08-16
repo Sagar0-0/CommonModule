@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.di.Uid
 import fit.asta.health.payments.sub.model.SubscriptionResponse
 import fit.asta.health.payments.sub.repo.SubscriptionRepo
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,13 +14,12 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import javax.inject.Inject
-import javax.inject.Named
 
 @HiltViewModel
 class SubscriptionViewModel
 @Inject constructor(
     private val subscriptionRepo: SubscriptionRepo,
-    @Named("UId") private val uid: String
+    @Uid private val uid: String
 ) : ViewModel() {
 
     private val _state =

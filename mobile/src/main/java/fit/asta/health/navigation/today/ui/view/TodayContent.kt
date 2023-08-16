@@ -69,6 +69,7 @@ import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.main.Graph
+import fit.asta.health.main.view.HOME_GRAPH_ROUTE
 import fit.asta.health.navigation.today.domain.model.TodayData
 import fit.asta.health.navigation.today.ui.view.utils.HourMinAmPm
 import fit.asta.health.navigation.today.ui.view.utils.Utils
@@ -590,7 +591,7 @@ fun goToTool(tag: String): String {
         }
 
         else -> {
-            Graph.Home.route
+            HOME_GRAPH_ROUTE
         }
     }
 }

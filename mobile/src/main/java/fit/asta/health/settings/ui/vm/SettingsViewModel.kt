@@ -1,4 +1,4 @@
-package fit.asta.health.settings.data
+package fit.asta.health.settings.ui.vm
 
 import android.util.Log
 import androidx.compose.runtime.getValue

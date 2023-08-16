@@ -18,16 +18,12 @@ import fit.asta.health.UserPreferences
 import fit.asta.health.auth.data.repo.AuthRepo
 import fit.asta.health.common.utils.CoroutineDispatcherProvider
 import fit.asta.health.common.utils.UserPreferencesSerializer
-import fit.asta.health.player.jetpack_audio.di.Dispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.SupervisorJob
-import javax.inject.Named
 import javax.inject.Qualifier
 import javax.inject.Singleton
-import kotlin.coroutines.CoroutineContext
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -60,7 +56,7 @@ object AppModule {
     fun providesCoroutineDispatcher(): CoroutineDispatcher = Dispatchers.Default
 
     @Provides
-    @Named("UId")
+    @Uid
     fun provideUId(authRepo: AuthRepo): String = authRepo.getUserId() ?: ""
 
     @Singleton
@@ -95,6 +91,10 @@ object AppModule {
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 private annotation class IODispatcher
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class Uid
 
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
