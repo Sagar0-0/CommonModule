@@ -1,27 +1,32 @@
+import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
+import com.google.firebase.perf.plugin.FirebasePerfExtension
+import java.util.Properties
+
 plugins {
-    id "com.android.application"
-    id "org.jetbrains.kotlin.android"
-    id "com.google.devtools.ksp"
-    id "dagger.hilt.android.plugin"
-    id "com.google.gms.google-services"
-    id "com.google.firebase.crashlytics"
-    id "com.google.firebase.firebase-perf"
-    id "kotlin-parcelize"
-    id "com.google.android.libraries.mapsplatform.secrets-gradle-plugin"
-    id "com.google.protobuf"
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
+    id("dagger.hilt.android.plugin")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
+    id("com.google.firebase.firebase-perf")
+    id("kotlin-parcelize")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("com.google.protobuf")
 }
 
-def secretProps = new Properties()
-secretProps.load(new FileInputStream(rootProject.file("secrets.defaults.properties")))
+val secretProps = Properties().apply {
+    load(rootProject.file("secrets.defaults.properties").inputStream())
+}
 
 android {
 
     signingConfigs {
-        release {
-            storeFile file("..\\Keys\\AstaKey")
-            storePassword 'ma123$%^SH'
-            keyAlias "AstaKey"
-            keyPassword 'ra123$%^NI'
+        create("release") {
+            storeFile = file("..\\Keys\\AstaKey")
+            storePassword = "ma123$%^SH"
+            keyAlias = "AstaKey"
+            keyPassword = "ra123$%^NI"
         }
     }
 
@@ -33,49 +38,82 @@ android {
         minSdk = 24
         targetSdk = 34
         versionCode = 12
-        versionName "0.12"
+        versionName = "0.12"
 
         vectorDrawables.useSupportLibrary = true
-        signingConfig = signingConfigs.release
-        archivesBaseName = "$applicationId-$versionName"
-        manifestPlaceholders = [redirectSchemeName: "spotify-sdk", redirectHostName: "auth"]
+        signingConfig = signingConfigs.getByName("release")
+
+        //archivesBaseName = "$applicationId-$versionName"
+        manifestPlaceholders["redirectSchemeName"] = "spotify-sdk"
+        manifestPlaceholders["redirectHostName"] = "auth"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions {
-
             annotationProcessorOptions {
-                arguments = ["room.schemaLocation":
-                                     "$projectDir/schemas".toString()]
+                arguments["room.schemaLocation"] = "$projectDir/schemas"
             }
         }
-        buildConfigField("String", "BASE_URL", "\"${base_url}\"")
-        buildConfigField("String", "BASE_IMAGE_URL", "\"${base_image_url}\"")
-        buildConfigField("String", "BASE_VIDEO_URL", "\"${base_video_url}\"")
+
+        buildConfigField("String", "BASE_URL", "\"${project.findProperty("base_url") ?: ""}\"")
+        buildConfigField(
+            "String",
+            "BASE_IMAGE_URL",
+            "\"${project.findProperty("base_image_url") ?: ""}\""
+        )
+        buildConfigField(
+            "String",
+            "BASE_VIDEO_URL",
+            "\"${project.findProperty("base_video_url") ?: ""}\""
+        )
     }
 
-    flavorDimensions = ["endpoints"]
+    flavorDimensions += "endpoints"
 
     productFlavors {
-        dev {
-            dimension "endpoints"
-            resourceConfigurations += ["en", "xxhdpi"]
-            buildConfigField("String", "BASE_URL", "\"${dev_base_url}\"")
-            buildConfigField("String", "BASE_IMAGE_URL", "\"${dev_image_url}\"")
-            buildConfigField("String", "BASE_VIDEO_URL", "\"${dev_video_url}\"")
+        create("dev") {
+            dimension = "endpoints"
+            resourceConfigurations += listOf("en", "xxhdpi")
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                "\"${project.findProperty("dev_base_url") ?: ""}\""
+            )
+            buildConfigField(
+                "String",
+                "BASE_IMAGE_URL",
+                "\"${project.findProperty("dev_image_url") ?: ""}\""
+            )
+            buildConfigField(
+                "String",
+                "BASE_VIDEO_URL",
+                "\"${project.findProperty("dev_video_url") ?: ""}\""
+            )
         }
 
-        prod {
-            dimension "endpoints"
-            buildConfigField("String", "BASE_URL", "\"${prod_base_url}\"")
-            buildConfigField("String", "BASE_IMAGE_URL", "\"${prod_image_url}\"")
-            buildConfigField("String", "BASE_VIDEO_URL", "\"${prod_video_url}\"")
+        create("prod") {
+            dimension = "endpoints"
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                "\"${project.findProperty("prod_base_url") ?: ""}\""
+            )
+            buildConfigField(
+                "String",
+                "BASE_IMAGE_URL",
+                "\"${project.findProperty("prod_image_url") ?: ""}\""
+            )
+            buildConfigField(
+                "String",
+                "BASE_VIDEO_URL",
+                "\"${project.findProperty("prod_video_url") ?: ""}\""
+            )
         }
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
-        coreLibraryDesugaringEnabled = true
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
@@ -83,23 +121,34 @@ android {
     }
 
     buildTypes {
-        debug {
-            applicationIdSuffix ".dev"
-            minifyEnabled = false
+        getByName("debug") {
+            applicationIdSuffix = ".dev"
+            isMinifyEnabled = false
             //multiDexEnabled = true
             aaptOptions.cruncherEnabled = false
-            FirebasePerformance.instrumentationEnabled = false
-            ext.enableCrashlytics = false
-            resValue("string", "MAPS_API_KEY", secretProps["MAPS_API_KEY"])
+            configure<FirebasePerfExtension> {
+                setInstrumentationEnabled(false)
+            }
+            configure<CrashlyticsExtension> {
+                mappingFileUploadEnabled = false
+                nativeSymbolUploadEnabled = false
+            }
+            resValue("string", "MAPS_API_KEY", secretProps["MAPS_API_KEY"].toString())
             manifestPlaceholders["crashlyticsCollectionEnabled"] = false
-            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
-        release {
-            minifyEnabled = true
-            shrinkResources = true
-            resValue("string", "MAPS_API_KEY", secretProps["MAPS_API_KEY"])
+        getByName("release") {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            resValue("string", "MAPS_API_KEY", secretProps["MAPS_API_KEY"].toString())
             manifestPlaceholders["crashlyticsCollectionEnabled"] = true
-            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
@@ -113,9 +162,8 @@ android {
     }
 
     testOptions {
-        unitTests.all {
-            useJUnitPlatform()
-            unitTests.includeAndroidResources = true
+        unitTests {
+            isIncludeAndroidResources = true
         }
     }
 }
@@ -140,7 +188,7 @@ protobuf {
 
 /*androidComponents {
     beforeEvaluate { variant ->
-        def variantName = variant.name
+        val variantName = variant.name
         android.sourceSets.register(variantName) {
             java.srcDir(buildDir.resolve("generated/source/proto/${variantName}/java"))
             kotlin.srcDir(buildDir.resolve("generated/source/proto/${variantName}/kotlin"))
@@ -150,9 +198,9 @@ protobuf {
 
 dependencies {
 
-    implementation(project(path: ":chartLibrary"))
+    implementation(project(path = ":chartLibrary"))
     // Spotify App remote Dependency
-    implementation(fileTree(include: ["*.jar", "*.aar"], dir: "libs"))
+    implementation(fileTree(mapOf("include" to listOf("*.jar", "*.aar"), "dir" to "libs")))
 
     //De-sugaring
     coreLibraryDesugaring(libs.android.desugarJdkLibs)
