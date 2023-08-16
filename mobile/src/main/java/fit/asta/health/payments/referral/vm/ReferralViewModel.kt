@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.di.Uid
 import fit.asta.health.payments.referral.model.ApplyCodeResponse
 import fit.asta.health.payments.referral.model.ReferralDataResponse
 import fit.asta.health.payments.referral.repo.ReferralRepo
@@ -11,13 +12,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Named
 
 @HiltViewModel
 class ReferralViewModel
 @Inject constructor(
     private val referralRepo: ReferralRepo,
-    @Named("UId")
+    @Uid
     private val uid: String
 ) : ViewModel() {
 

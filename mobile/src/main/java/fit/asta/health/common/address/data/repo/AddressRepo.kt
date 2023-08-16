@@ -22,7 +22,7 @@ interface AddressRepo {
 
     suspend fun search(text: String, latLng: LatLng): ResponseState<SearchResponse>
 
-    suspend fun getAddresses(uid: String): ResponseState<List<MyAddress>>
+    suspend fun getSavedAddresses(uid: String): ResponseState<List<MyAddress>>
 
     suspend fun putAddress(myAddress: MyAddress): ResponseState<Boolean>
 

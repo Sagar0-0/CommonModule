@@ -25,7 +25,7 @@ class FeedbackRepoImplTest {
 
     @BeforeEach
     fun beforeEach() {
-        MockKAnnotations.init(this, true)
+        MockKAnnotations.init(this, relaxed = true)
         feedbackRepoImpl = FeedbackRepoImpl(
             feedbackApi, contentResolver, UnconfinedTestDispatcher()
         )

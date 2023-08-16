@@ -16,6 +16,7 @@ import fit.asta.health.common.address.data.repo.AddressRepo
 import fit.asta.health.common.utils.LocationResponse
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
+import fit.asta.health.di.Uid
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,16 +26,13 @@ import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
-import javax.inject.Named
 
 @HiltViewModel
 class AddressViewModel
 @Inject constructor(
     private val addressRepo: AddressRepo,
-    @Named("UId")
-    val uId: String
+    @Uid private val uId: String
 ) : ViewModel() {
 
     private val addressTAG = "MAP"
@@ -188,7 +186,7 @@ class AddressViewModel
     fun getSavedAddresses() {
         _savedAddressListState.value = UiState.Loading
         viewModelScope.launch {
-            _savedAddressListState.value = addressRepo.getAddresses(uId).toUiState()
+            _savedAddressListState.value = addressRepo.getSavedAddresses(uId).toUiState()
         }
     }
 

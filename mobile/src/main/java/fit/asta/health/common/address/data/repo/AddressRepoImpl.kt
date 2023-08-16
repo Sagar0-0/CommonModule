@@ -140,7 +140,7 @@ class AddressRepoImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAddresses(uid: String): ResponseState<List<MyAddress>> {
+    override suspend fun getSavedAddresses(uid: String): ResponseState<List<MyAddress>> {
         return getResponseState {
             addressApi.getAddresses(uid).data
         }
