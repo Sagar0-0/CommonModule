@@ -30,7 +30,7 @@ import fit.asta.health.payments.sub.view.subscriptionScreens
 import fit.asta.health.payments.wallet.view.walletScreen
 import fit.asta.health.profile.CreateProfileLayout
 import fit.asta.health.profile.ProfileContent
-import fit.asta.health.scheduler.navigation.schedulerNavigation
+import fit.asta.health.scheduler.ui.navigation.schedulerNavigation
 import fit.asta.health.settings.view.settingScreens
 import fit.asta.health.testimonials.ui.testimonialsRoute
 import fit.asta.health.tools.breathing.nav.breathingNavigation

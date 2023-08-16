@@ -27,7 +27,7 @@ import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.common.utils.shareApp
 import fit.asta.health.main.Graph
 import fit.asta.health.main.MainViewModel
-import fit.asta.health.navigation.today.view.utils.Utils
+import fit.asta.health.navigation.today.ui.view.utils.Utils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)

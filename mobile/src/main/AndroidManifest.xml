@@ -81,7 +81,7 @@
         <activity android:name=".payments.pay.PaymentActivity" />
         <activity android:name=".BillingActivity" />
         <activity
-            android:name=".scheduler.compose.AlarmScreenActivity"
+            android:name=".scheduler.ui.AlarmScreenActivity"
             android:directBootAware="true"
             android:excludeFromRecents="true"
             android:resizeableActivity="true"
@@ -129,7 +129,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".scheduler.SpotifyActivity"
+            android:name=".scheduler.ui.SpotifyActivity"
             android:exported="true"
             android:launchMode="singleInstance">
             <intent-filter>
@@ -187,7 +187,7 @@
         <receiver android:name=".notify.receiver.AlarmReceiver" />
         <receiver android:name=".notify.receiver.SnoozeReceiver" />
         <receiver
-            android:name=".scheduler.AlarmBroadcastReceiver"
+            android:name=".scheduler.ui.AlarmBroadcastReceiver"
             android:directBootAware="true"
             android:enabled="true"
             android:exported="true">

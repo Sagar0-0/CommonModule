@@ -7,7 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.scheduler.model.db.AlarmDatabase
+import fit.asta.health.scheduler.data.db.AlarmDatabase
 import javax.inject.Singleton
 
 

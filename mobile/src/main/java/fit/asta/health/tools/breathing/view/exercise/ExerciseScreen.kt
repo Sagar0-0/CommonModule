@@ -35,7 +35,7 @@ import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.common.ui.components.generic.AppTopBarWithHelp
 import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.scheduler.compose.components.SnoozeBottomSheet
+import fit.asta.health.scheduler.ui.components.SnoozeBottomSheet
 import fit.asta.health.tools.breathing.model.domain.model.Exercise
 import fit.asta.health.tools.breathing.model.domain.model.Ratio
 import fit.asta.health.tools.breathing.model.domain.model.toStr

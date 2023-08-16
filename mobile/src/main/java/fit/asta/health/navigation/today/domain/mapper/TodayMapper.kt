@@ -1,9 +1,9 @@
 package fit.asta.health.navigation.today.domain.mapper
 
+import fit.asta.health.navigation.today.data.model.TodaySchedules
 import fit.asta.health.navigation.today.domain.model.TodayData
-import fit.asta.health.navigation.today.model.TodaySchedules
-import fit.asta.health.navigation.today.view.utils.Utils
-import fit.asta.health.scheduler.compose.naman.WeatherData
+import fit.asta.health.navigation.today.ui.view.utils.Utils
+import fit.asta.health.scheduler.ui.naman.WeatherData
 
 fun TodaySchedules.getTodayData(): TodayData {
     return TodayData(
