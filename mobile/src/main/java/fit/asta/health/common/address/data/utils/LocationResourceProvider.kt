@@ -7,9 +7,7 @@ import android.location.Geocoder
 import android.location.LocationManager
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationServices
-import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.qualifiers.ApplicationContext
-import fit.asta.health.common.address.data.di.MyContext
 import java.util.Locale
 import javax.inject.Inject
 

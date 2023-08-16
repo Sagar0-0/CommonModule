@@ -20,10 +20,12 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AddressModule {
 
+    private const val SEARCH_API_BASE_URL = "https://maps.googleapis.com/maps/api/"
+
     @Provides
     @Singleton
     fun provideSearchApi(client: OkHttpClient): SearchLocationApi =
-        NetworkUtil.getRetrofit(baseUrl = BuildConfig.BASE_URL, client = client)
+        NetworkUtil.getRetrofit(baseUrl = SEARCH_API_BASE_URL, client = client)
             .create(SearchLocationApi::class.java)
 
     @Provides

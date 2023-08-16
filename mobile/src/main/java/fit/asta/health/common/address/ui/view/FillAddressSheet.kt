@@ -152,7 +152,7 @@ internal fun FillAddressSheet(
                     Box(Modifier.fillMaxWidth()) {
                         CurrentLocationUi(
                             name = address.data.getAddressLine(0),
-                            area = getLocationName(address.data)
+                            area = address.data.getLocationName()
                         )
                         IconButton(
                             modifier = Modifier

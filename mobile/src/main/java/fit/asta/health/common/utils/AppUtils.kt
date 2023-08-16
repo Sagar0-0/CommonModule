@@ -331,11 +331,13 @@ fun Context.showDialog(title: String, desc: String, okTitle: String, notifyOK: (
 fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
 
 
-fun getLocationName(address: Address?): String {
-    if (address == null) return ""
-    return if (address.subLocality.isNotEmpty()) {
-        "${address.subLocality}, ${address.locality}"
-    } else {
-        "${address.locality}, ${address.adminArea}"
+fun Address?.getLocationName(): String {
+    if (this == null) return ""
+    return if (!this.subLocality.isNullOrEmpty()) {
+        "${this.subLocality}, ${this.locality}"
+    } else if(!this.locality.isNullOrEmpty()){
+        "${this.locality}, ${this.adminArea}"
+    }else{
+        this.adminArea
     }
 }

@@ -191,7 +191,6 @@ private fun Setup(addressViewModel: AddressViewModel, navController: NavHostCont
             Lifecycle.Event.ON_START -> {
                 addressViewModel.setIsPermissionGranted()
             }
-
             else -> {}
         }
     }

@@ -5,10 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.location.LocationManager
-import android.util.Log
 
 class LocationProviderChangedReceiver(
-    val onToggleLocation:()->Unit
+    val onToggleLocation: () -> Unit
 ) : BroadcastReceiver() {
 
     private var isGpsEnabled: Boolean = false

@@ -13,9 +13,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.address.data.modal.MyAddress
 import fit.asta.health.common.address.data.modal.SearchResponse
 import fit.asta.health.common.address.data.repo.AddressRepo
-import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.LocationResponse
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.common.utils.toResIdFromException
 import fit.asta.health.common.utils.toUiState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -82,7 +81,7 @@ class AddressViewModel
 
     private var selectedAddressId by mutableStateOf<String?>(null)
 
-    init{
+    init {
         setIsLocationEnabled()
         setIsPermissionGranted()
     }
@@ -109,13 +108,24 @@ class AddressViewModel
         _currentAddressState.value = UiState.Loading
         viewModelScope.launch {
             addressRepo.checkPermissionAndGetLatLng().collect { latLng ->
-                if (latLng is ResponseState.Success) {
-                    addressRepo.getAddressDetails(latLng.data).collect { addressRes ->
-                        _currentAddressState.value = addressRes.toUiState()
+                when (latLng) {
+                    is LocationResponse.Success -> {
+                        addressRepo.getAddressDetails(latLng.latLng).collect { addressRes ->
+                            _currentAddressState.value = addressRes.toUiState()
+                        }
                     }
-                } else {
-                    _currentAddressState.value =
-                        UiState.Error((latLng as ResponseState.Error).exception.toResIdFromException())
+
+                    is LocationResponse.Error -> {
+                        _currentAddressState.value = UiState.Error(latLng.resId)
+                    }
+
+                    LocationResponse.PermissionDenied -> {
+                        _isPermissionGranted.value = false
+                    }
+
+                    LocationResponse.ServiceDisabled -> {
+                        _isLocationEnabled.value = false
+                    }
                 }
             }
         }

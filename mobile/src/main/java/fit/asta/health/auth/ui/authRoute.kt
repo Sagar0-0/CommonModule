@@ -27,6 +27,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.main.Graph
+import fit.asta.health.main.view.navigateToHome
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 const val AUTH_GRAPH_ROUTE = "graph_auth"
@@ -78,9 +79,7 @@ fun NavGraphBuilder.authRoute(navController: NavHostController) {
                         Toast.makeText(
                             context, "Sign in Successful", Toast.LENGTH_SHORT
                         ).show()
-                        navController.navigate(Graph.Home.route) {
-                            popUpToTop(navController)
-                        }
+                        navController.navigateToHome()
                     }
                 }
                 else->{}

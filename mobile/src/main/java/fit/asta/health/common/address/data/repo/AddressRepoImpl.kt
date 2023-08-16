@@ -23,6 +23,7 @@ import fit.asta.health.common.address.data.modal.SearchResponse
 import fit.asta.health.common.address.data.remote.AddressApi
 import fit.asta.health.common.address.data.remote.SearchLocationApi
 import fit.asta.health.common.address.data.utils.LocationResourceProvider
+import fit.asta.health.common.utils.LocationResponse
 import fit.asta.health.common.utils.MyException
 import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.common.utils.ResourcesProvider
@@ -53,10 +54,12 @@ class AddressRepoImpl @Inject constructor(
     }
 
     @SuppressLint("MissingPermission")//No need, as permissions are being handled using locationResourcesProvider
-    override fun checkPermissionAndGetLatLng(): Flow<ResponseState<LatLng>> = callbackFlow {
+    override fun checkPermissionAndGetLatLng(): Flow<LocationResponse> = callbackFlow {
         val fusedLocationProviderClient = locationResourcesProvider.getFusedLocationProviderClient()
-        if (!locationResourcesProvider.isPermissionGranted() || !locationResourcesProvider.isLocationEnabled()) {
-            trySend(ResponseState.Error(MyException(R.string.location_access_required)))
+        if (!locationResourcesProvider.isPermissionGranted()) {
+            trySend(LocationResponse.PermissionDenied)
+        } else if(!locationResourcesProvider.isLocationEnabled()){
+            trySend(LocationResponse.ServiceDisabled)
         } else {
             fusedLocationProviderClient.requestLocationUpdates(
                 LocationRequest.Builder(
@@ -68,9 +71,9 @@ class AddressRepoImpl @Inject constructor(
                         // Get the current location
                         val location = locationResult.locations.firstOrNull()
                         if (location == null) {
-                            trySend(ResponseState.Error(MyException(R.string.unable_to_fetch_location)))
+                            trySend(LocationResponse.Error(R.string.unable_to_fetch_location))
                         } else {
-                            trySend(ResponseState.Success(LatLng(location.latitude,location.longitude)))
+                            trySend(LocationResponse.Success(LatLng(location.latitude,location.longitude)))
                         }
                     }
                 },

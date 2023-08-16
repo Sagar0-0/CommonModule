@@ -554,7 +554,7 @@
     <string name="saved_address">SAVED ADDRESSES</string>
     <string name="no_saved_address">No Saved Address</string>
     <string name="add_address">Add Address</string>
-    <string name="fetching_location">Fetching location...</string>
+    <string name="fetching_location">Fetching...</string>
     <string name="use_my_current_location">Use my current location</string>
     <string name="search_for_area_street">Search for area,street name..</string>
     <string name="your_search_results_will_appear_here">Your search results will appear here.</string>
@@ -582,5 +582,6 @@
     <string name="confirm_delete">Confirm delete?</string>
     <string name="subscribe">Subscribe</string>
     <string name="wallet">Wallet</string>
+    <string name="select_location">Select Location</string>
 
 </resources>

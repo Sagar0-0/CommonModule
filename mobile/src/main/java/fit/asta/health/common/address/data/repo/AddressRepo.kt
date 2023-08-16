@@ -5,6 +5,7 @@ import androidx.activity.result.IntentSenderRequest
 import com.google.android.gms.maps.model.LatLng
 import fit.asta.health.common.address.data.modal.MyAddress
 import fit.asta.health.common.address.data.modal.SearchResponse
+import fit.asta.health.common.utils.LocationResponse
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UserPreferencesData
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +16,7 @@ interface AddressRepo {
 
     fun isLocationEnabled() : Boolean
     fun isPermissionGranted() : Boolean
-    fun checkPermissionAndGetLatLng() : Flow<ResponseState<LatLng>>
+    fun checkPermissionAndGetLatLng() : Flow<LocationResponse>
 
     fun getAddressDetails(latLng: LatLng) : Flow<ResponseState<Address>>
 

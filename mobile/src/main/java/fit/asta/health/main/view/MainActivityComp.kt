@@ -11,6 +11,8 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
@@ -18,112 +20,47 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import fit.asta.health.R
-import fit.asta.health.auth.ui.vm.AuthViewModel
-import fit.asta.health.common.address.ui.vm.AddressViewModel
 import fit.asta.health.common.utils.MainTopBarActions
 import fit.asta.health.common.utils.PrefManager
+import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.common.utils.shareApp
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.main.Graph
 import fit.asta.health.main.MainViewModel
 import fit.asta.health.navigation.today.view.utils.Utils
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@OptIn(ExperimentalCoroutinesApi::class)
+const val HOME_GRAPH_ROUTE = "graph_home"
+fun NavController.navigateToHome(navOptions: NavOptions? = null) {
+    if (navOptions == null) {
+        this.navigate(HOME_GRAPH_ROUTE) {
+            popUpToTop(this@navigateToHome)
+        }
+    } else {
+        this.navigate(HOME_GRAPH_ROUTE, navOptions)
+    }
+}
+
 fun NavGraphBuilder.homeScreen(
     navController: NavController,
 ) {
-    composable(Graph.Home.route) {
+    composable(HOME_GRAPH_ROUTE) {
+
         val context = LocalContext.current
 
-        val authViewModel: AuthViewModel = hiltViewModel()
         val mainViewModel: MainViewModel = hiltViewModel()
-        val addressViewModel: AddressViewModel = hiltViewModel()
 
-        val isLocationEnabled by addressViewModel.isLocationEnabled.collectAsStateWithLifecycle()
         val notificationEnabled by mainViewModel.notificationsEnabled.collectAsStateWithLifecycle()
         val currentAddressName by mainViewModel.currentAddressName.collectAsStateWithLifecycle()
-        val locationPermissionRejectedCount by addressViewModel.locationPermissionRejectedCount.collectAsStateWithLifecycle()
 
-        val locationRequestLauncher =
-            rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { activityResult ->
-                if (activityResult.resultCode == AppCompatActivity.RESULT_OK)
-                    addressViewModel.checkPermissionAndUpdateCurrentAddress()
-                else {
-                    if (!isLocationEnabled) {
-                        Toast.makeText(
-                            context,
-                            "Location services are required to update the location.",
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
-                    }
-                }
-            }
-
-        val permissionResultLauncher =
-            rememberLauncherForActivityResult(
-                contract = ActivityResultContracts.RequestMultiplePermissions()
-            ) { perms ->
-                perms.keys.forEach loop@{ perm ->
-                    if ((perms[perm] == true) && (perm == Manifest.permission.ACCESS_FINE_LOCATION || perm == Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                        addressViewModel.updateLocationPermissionRejectedCount(1)
-                        addressViewModel.enableLocationRequest {
-                            locationRequestLauncher.launch(it)
-                        }
-                        return@loop
-                    } else {
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.location_access_required),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        addressViewModel.updateLocationPermissionRejectedCount(
-                            locationPermissionRejectedCount + 1
-                        )
-                    }
-                }
-            }
-
+        SetUpLocations(mainViewModel)
 
         fun enableLocationAndUpdateAddress() {
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(
-                    context,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                )
-                == PackageManager.PERMISSION_GRANTED
-            ) {
-                addressViewModel.enableLocationRequest { intent ->
-                    locationRequestLauncher.launch(intent)
-                }
-            } else {
-                if (locationPermissionRejectedCount >= 2) {
-                    Toast.makeText(
-                        context,
-                        "Please allow Location permission access.",
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-                    with(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)) {
-                        data = Uri.fromParts("package", context.packageName, null)
-                        addCategory(Intent.CATEGORY_DEFAULT)
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                        addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
-                        context.startActivity(this)
-                    }
-                } else {
-                    permissionResultLauncher.launch(
-                        arrayOf(
-                            Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_COARSE_LOCATION
-                        )
-                    )
-                }
-            }
+            mainViewModel.setIsPermissionGranted()
+            mainViewModel.setIsLocationEnabled()
+            mainViewModel.checkPermissionAndUpdateCurrentAddress()
         }
 
         val notificationPermissionResultLauncher: ActivityResultLauncher<String> =
@@ -185,7 +122,7 @@ fun NavGraphBuilder.homeScreen(
 
         MainActivityLayout(
             currentAddressState = currentAddressName,
-            profileImageUri = authViewModel.getUser()?.photoUrl,
+            profileImageUri = mainViewModel.getUser()?.photoUrl,
             isNotificationEnabled = notificationEnabled,
             onNav = {
                 when (it) {
@@ -208,7 +145,6 @@ fun NavGraphBuilder.homeScreen(
                 when (key) {
                     MainTopBarActions.Location -> {
                         enableLocationAndUpdateAddress()
-//                        navController.navigate(Graph.Address.route)
                     }
 
                     MainTopBarActions.Notification -> {
@@ -229,5 +165,90 @@ fun NavGraphBuilder.homeScreen(
                 }
             }
         )
+    }
+}
+
+@Composable
+fun SetUpLocations(mainViewModel: MainViewModel) {
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        mainViewModel.setCurrentLocation()
+    }
+
+    val locationPermissionRejectedCount by mainViewModel.locationPermissionRejectedCount.collectAsStateWithLifecycle()
+    val isLocationEnabled by mainViewModel.isLocationEnabled.collectAsStateWithLifecycle()
+    val isPermissionGranted by mainViewModel.isPermissionGranted.collectAsStateWithLifecycle()
+    val permissionResultLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestMultiplePermissions()
+        ) { perms ->
+            perms.keys.forEach loop@{ perm ->
+                if ((perms[perm] == true) && (perm == Manifest.permission.ACCESS_FINE_LOCATION || perm == Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                    mainViewModel.updateLocationPermissionRejectedCount(1)
+                    mainViewModel.checkPermissionAndUpdateCurrentAddress()
+                    return@loop
+                } else {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.location_access_required),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    mainViewModel.updateLocationPermissionRejectedCount(
+                        locationPermissionRejectedCount + 1
+                    )
+                }
+            }
+        }
+    LaunchedEffect(isPermissionGranted) {
+        if (!isPermissionGranted) {
+            if (locationPermissionRejectedCount >= 2) {
+                Toast.makeText(
+                    context,
+                    "Please allow Location permission access.",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+                with(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)) {
+                    data = Uri.fromParts("package", context.packageName, null)
+                    addCategory(Intent.CATEGORY_DEFAULT)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                    addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+                    context.startActivity(this)
+                }
+            } else {
+                permissionResultLauncher.launch(
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    )
+                )
+            }
+        }
+    }
+
+    val locationRequestLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { activityResult ->
+            if (activityResult.resultCode == AppCompatActivity.RESULT_OK)
+                mainViewModel.checkPermissionAndUpdateCurrentAddress()
+            else {
+                mainViewModel.setIsLocationEnabled()
+                if (!isLocationEnabled) {
+                    Toast.makeText(
+                        context,
+                        R.string.location_access_required.toStringFromResId(context),
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            }
+        }
+    LaunchedEffect(isLocationEnabled) {
+        if (!isLocationEnabled) {
+            mainViewModel.enableLocationRequest { intent ->
+                locationRequestLauncher.launch(intent)
+            }
+        }
     }
 }

@@ -238,7 +238,7 @@ internal fun MapScreen(
                                 name = markerAddressState.data.getAddressLine(
                                     0
                                 ),
-                                area = getLocationName(markerAddressState.data)
+                                area = markerAddressState.data.getLocationName()
                             )
 
                             OutlinedButton(
