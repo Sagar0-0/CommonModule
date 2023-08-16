@@ -3,7 +3,6 @@ package fit.asta.health.common.address.ui.vm
 import android.location.Address
 import android.util.Log
 import androidx.activity.result.IntentSenderRequest
-import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue

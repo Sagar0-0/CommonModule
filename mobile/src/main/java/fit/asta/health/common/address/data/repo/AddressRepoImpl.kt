@@ -43,7 +43,6 @@ class AddressRepoImpl @Inject constructor(
     private val locationResourcesProvider: LocationResourceProvider
 ) : AddressRepo {
 
-
     override val userPreferences: Flow<UserPreferencesData> = prefManager.userData
 
     override fun isPermissionGranted(): Boolean {
