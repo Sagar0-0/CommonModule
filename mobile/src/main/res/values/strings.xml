@@ -551,4 +551,16 @@
     <string name="unable_to_fetch_location">Unable to fetch location!</string>
     <string name="default_schedule">Default Schedule</string>
 
+    // testing
+    <string name="action_dismiss">action dismiss</string>
+    <string name="label_notification">label notification</string>
+    <string name="action_snooze">action snooze</string>
+    <string name="default_label">default label</string>
+    <string name="alarm_alert_predismiss_title">alarm_alert_predismiss_title</string>
+    <string name="alarm_alert_dismiss_text">dismiss</string>
+    <string name="alarm_alert_snooze_text">Snooze</string>
+    <string name="alarm_missed_title">alarm missed</string>
+    <string name="day_concat">:</string>
+    // testing
+
 </resources>
