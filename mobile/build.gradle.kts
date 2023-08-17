@@ -186,16 +186,6 @@ protobuf {
     }
 }
 
-/*androidComponents {
-    beforeEvaluate { variant ->
-        val variantName = variant.name
-        android.sourceSets.register(variantName) {
-            java.srcDir(buildDir.resolve("generated/source/proto/${variantName}/java"))
-            kotlin.srcDir(buildDir.resolve("generated/source/proto/${variantName}/kotlin"))
-        }
-    }
-}*/
-
 dependencies {
 
     implementation(project(path = ":chartLibrary"))
@@ -405,8 +395,11 @@ dependencies {
     //referral
     implementation(libs.installreferrer)
 
+    // Photo Picker
+    implementation(libs.modernstorage.photopicker)
+
     //Rating-Bar
-    implementation("com.github.a914-gowtham:compose-ratingbar:1.2.4")
+    implementation(libs.compose.ratingbar)
     implementation("com.github.SmartToolFactory:Compose-RatingBar:2.1.1")
 
     //Recyclerview swipe decorator
@@ -430,8 +423,6 @@ dependencies {
     implementation("com.github.SmartToolFactory:Compose-Extended-Gestures:3.0.0")
     // Animated List
     implementation("com.github.SmartToolFactory:Compose-AnimatedList:0.5.1")
-    // Photo Picker
-    implementation("com.google.modernstorage:modernstorage-photopicker:1.0.0-alpha06")
 
     //test
     testImplementation(libs.junit4)

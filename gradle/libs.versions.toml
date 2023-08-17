@@ -6,12 +6,12 @@ accompanistNavigationMaterial = "0.27.1"
 accompanistPager = "0.13.0"
 androidDesugarJdkLibs = "2.0.3"
 androidGradlePlugin = "8.1.0"
-androidxActivity = "1.8.0-alpha06"
+androidxActivity = "1.7.2"
 androidxAppCompat = "1.6.1"
 androidxBrowser = "1.6.0"
 androidxComposeBom = "2023.08.00"
 androidxComposeCompiler = "1.5.0"
-androidxComposeRuntimeTracing = "1.0.0-alpha03"
+androidxComposeRuntimeTracing = "1.5.0"
 androidxCore = "1.10.1"
 androidxCoreSplashscreen = "1.0.1"
 androidxDataStore = "1.0.0"
@@ -19,7 +19,7 @@ androidxEspresso = "3.5.1"
 androidxHiltNavigationCompose = "1.0.0"
 androidxLifecycle = "2.6.1"
 androidxMacroBenchmark = "1.2.0-beta03"
-androidxMetrics = "1.0.0-alpha04"
+androidxMetrics = "1.2.0-beta03"
 androidxNavigation = "2.7.0"
 androidxProfileinstaller = "1.3.1"
 androidxStartup = "1.1.1"
@@ -30,7 +30,7 @@ androidxTestRunner = "1.5.2"
 androidxTracing = "1.1.0"
 androidxUiAutomator = "2.2.0"
 androidxWindowManager = "1.1.0"
-androidxWork = "2.9.0-alpha02"
+androidxWork = "2.8.1"
 appUpdateKtx = "2.1.0"
 auth = "2.1.0"
 billing = "6.0.1"
@@ -54,7 +54,7 @@ converterGson = "2.9.0"
 core = "1.2.0"
 coreTesting = "2.2.0"
 datastorePreferences = "1.0.0"
-exo = "2.19.0"
+exo = "2.19.1"
 firebaseAnalyticsKtx = "21.3.0"
 firebaseAuthKtx = "22.1.1"
 firebaseBom = "32.2.2"
@@ -102,11 +102,7 @@ mapsCompose = "2.12.0"
 material3 = "1.1.1"
 material3WindowSizeClass = "1.1.1"
 materialIconsExtendedAndroid = "1.5.0"
-media3Common = "1.1.0"
-media3Exoplayer = "1.1.0"
-media3ExoplayerDash = "1.1.0"
-media3Session = "1.1.0"
-media3Ui = "1.1.0"
+media3 = "1.1.1"
 mockkAndroid = "1.13.5"
 modernstoragePhotopicker = "1.0.0-alpha06"
 moshiKotlin = "1.15.0"
@@ -199,11 +195,11 @@ androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "li
 androidx-material-icons-extended-android = { module = "androidx.compose.material:material-icons-extended-android", version.ref = "materialIconsExtendedAndroid" }
 androidx-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 androidx-material3-window-size = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref = "material3WindowSizeClass" }
-androidx-media3-common = { module = "androidx.media3:media3-common", version.ref = "media3Common" }
-androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media3Exoplayer" }
-androidx-media3-exoplayer-dash = { module = "androidx.media3:media3-exoplayer-dash", version.ref = "media3ExoplayerDash" }
-androidx-media3-session = { module = "androidx.media3:media3-session", version.ref = "media3Session" }
-androidx-media3-ui = { module = "androidx.media3:media3-ui", version.ref = "media3Ui" }
+androidx-media3-common = { module = "androidx.media3:media3-common", version.ref = "media3" }
+androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media3" }
+androidx-media3-exoplayer-dash = { module = "androidx.media3:media3-exoplayer-dash", version.ref = "media3" }
+androidx-media3-session = { module = "androidx.media3:media3-session", version.ref = "media3" }
+androidx-media3-ui = { module = "androidx.media3:media3-ui", version.ref = "media3" }
 androidx-metrics = { group = "androidx.metrics", name = "metrics-performance", version.ref = "androidxMetrics" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
 androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
