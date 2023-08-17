@@ -43,13 +43,28 @@ fun NavGraphBuilder.settingScreens(
             val context = LocalContext.current
             val authViewModel: AuthViewModel = hiltViewModel()
             val deleteAccountState by authViewModel.deleteState.collectAsStateWithLifecycle()
-            LaunchedEffect(key1 = deleteAccountState){
+            LaunchedEffect(deleteAccountState){
                 when(deleteAccountState){
                     is UiState.Success->{
+                        authViewModel.resetDeleteState()
                         navController.navigateToAuth()
                     }
                     is UiState.Error->{
                         Toast.makeText(context, (deleteAccountState as UiState.Error).resId.toStringFromResId(context), Toast.LENGTH_SHORT).show()
+                    }
+                    else->{}
+                }
+            }
+
+            val logoutState by authViewModel.logoutState.collectAsStateWithLifecycle()
+            LaunchedEffect(logoutState){
+                when(logoutState){
+                    is UiState.Success->{
+                        authViewModel.resetLogoutState()
+                        navController.navigateToAuth()
+                    }
+                    is UiState.Error->{
+                        Toast.makeText(context, (logoutState as UiState.Error).resId.toStringFromResId(context), Toast.LENGTH_SHORT).show()
                     }
                     else->{}
                 }
@@ -95,13 +110,7 @@ fun NavGraphBuilder.settingScreens(
                     }
 
                     SettingsUiEvent.SIGNOUT -> {
-                        authViewModel.logout(
-                            context = context,
-                            onSuccess = {
-                                navController.navigateToAuth()
-                            },
-                            onFailure = { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() }
-                        )
+                        authViewModel.logout()
                     }
 
                     SettingsUiEvent.DELETE -> {
@@ -135,8 +144,6 @@ fun NavGraphBuilder.settingScreens(
                             Toast.LENGTH_SHORT
                         ).show()
                     }
-
-                    else -> {}
                 }
             }
 

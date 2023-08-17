@@ -1,3 +1,4 @@
+
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 import com.google.firebase.perf.plugin.FirebasePerfExtension
 import java.util.Properties
@@ -43,7 +44,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         signingConfig = signingConfigs.getByName("release")
 
-        //archivesBaseName = "$applicationId-$versionName"
+        base.archivesBaseName = "$applicationId-$versionName"
         manifestPlaceholders["redirectSchemeName"] = "spotify-sdk"
         manifestPlaceholders["redirectHostName"] = "auth"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -163,6 +164,9 @@ android {
 
     testOptions {
         unitTests {
+            this.all {
+                it.useJUnitPlatform()
+            }
             isIncludeAndroidResources = true
         }
     }
