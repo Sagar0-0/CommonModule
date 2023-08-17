@@ -7,12 +7,9 @@ import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UserPreferencesData
 import fit.asta.health.onboarding.data.remote.modal.OnboardingDTO
 import fit.asta.health.onboarding.data.repo.OnboardingRepoImpl
-import io.mockk.Runs
 import io.mockk.every
-import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -63,8 +60,8 @@ class OnboardingApiTest {
         res.setResponseCode(404)
         server.enqueue(res)
 
-        val pref : PrefManager = mockk()
-        every { pref.userData }returns MutableStateFlow(UserPreferencesData())
+        val pref: PrefManager = mockk()
+        every { pref.userData } returns MutableStateFlow(UserPreferencesData())
         val onboardingRepoImpl = OnboardingRepoImpl(api, pref)
         val data = onboardingRepoImpl.getData()
         server.takeRequest()
