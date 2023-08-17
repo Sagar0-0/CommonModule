@@ -37,7 +37,7 @@ class AuthRepoImpl @Inject constructor(
     }
 
     override fun signInWithCredential(googleAuthCredential: AuthCredential) : Flow<ResponseState<Boolean>> = callbackFlow{
-        FirebaseAuth.getInstance()
+        firebaseAuth
             .signInWithCredential(googleAuthCredential)
             .addOnCompleteListener {
             if(it.isSuccessful){
@@ -75,8 +75,13 @@ class AuthRepoImpl @Inject constructor(
         }
     }
 
-    override fun signOut() {
-        firebaseAuth.signOut()
+    override fun signOut() : ResponseState<Boolean>{
+        return try{
+            firebaseAuth.signOut()
+            ResponseState.Success(true)
+        }catch (e:Exception){
+            ResponseState.Error(e)
+        }
     }
 
 

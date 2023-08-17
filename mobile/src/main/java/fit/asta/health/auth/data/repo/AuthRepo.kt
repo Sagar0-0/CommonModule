@@ -13,6 +13,6 @@ interface AuthRepo {
     fun signInWithCredential(googleAuthCredential: AuthCredential): Flow<ResponseState<Boolean>>
     fun signInWithPhone(phone: String, activity: Activity): ResponseState<String>
     fun verifyPhoneOtp(otp: String): Flow<ResponseState<String>>
-    fun signOut()
+    fun signOut(): ResponseState<Boolean>
     fun deleteAccount(): Flow<ResponseState<Boolean>>
 }

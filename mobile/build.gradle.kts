@@ -163,6 +163,9 @@ android {
 
     testOptions {
         unitTests {
+            this.all {
+                it.useJUnitPlatform()
+            }
             isIncludeAndroidResources = true
         }
     }
