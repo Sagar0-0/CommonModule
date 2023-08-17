@@ -19,41 +19,41 @@ data class StepsResponse(
 
     data class StepsData(
         @SerializedName("bmi")
-        val bmiData: BmiData,
+        val bmiData: BmiData?,
         @SerializedName("bpGph")
-        val bpGph: MultiGraphParent,
+        val bloodPressureGraph: MultiGraphParent?,
         @SerializedName("disGph")
-        val disGph: Graph,
+        val distanceGraph: Graph?,
         @SerializedName("endDate")
         val endDate: String,
         @SerializedName("health")
-        val health: Health,
+        val health: Health?,
         @SerializedName("id")
         val id: String,
         @SerializedName("intGph")
-        val intGph: Graph,
+        val intensityGraph: Graph?,
         @SerializedName("mid")
         val mid: List<String>,
         @SerializedName("month")
         val month: String,
         @SerializedName("moodGph")
-        val moodGph: Graph,
+        val moodGraph: Graph?,
         @SerializedName("progress")
-        val progress: Progress,
+        val progress: Progress?,
         @SerializedName("speed")
-        val speed: Speed,
+        val speed: Speed?,
         @SerializedName("startDate")
         val startDate: String,
         @SerializedName("stepDtl")
-        val stepDtl: StepsDetails,
+        val stepsDetail: StepsDetails?,
         @SerializedName("stpGph")
-        val stpGph: Graph,
+        val stepGraph: Graph?,
         @SerializedName("uid")
         val uid: String,
         @SerializedName("weather")
-        val weather: Weather,
+        val weather: Weather?,
         @SerializedName("weekly")
-        val weekly: List<Weekly>,
+        val weekly: List<Weekly>?,
         @SerializedName("year")
         val year: String
     )
