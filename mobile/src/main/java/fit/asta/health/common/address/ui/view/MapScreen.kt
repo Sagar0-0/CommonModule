@@ -15,15 +15,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
-import fit.asta.health.common.address.data.modal.AddressesResponse.MyAddress
-import fit.asta.health.common.address.ui.vm.AddressViewModel
+import fit.asta.health.R
+import fit.asta.health.common.address.data.modal.MyAddress
+import fit.asta.health.common.address.data.modal.SearchResponse
 import fit.asta.health.common.ui.components.generic.AppBottomSheetScaffold
 import fit.asta.health.common.ui.components.generic.AppButtons
 import fit.asta.health.common.ui.components.generic.AppTopBar
@@ -32,21 +31,21 @@ import fit.asta.health.common.ui.theme.iconButtonSize
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getLocationName
+import fit.asta.health.common.utils.toStringFromResId
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MapScreen(
+internal fun MapScreen(
     myAddressItem: MyAddress,
-    addressViewModel: AddressViewModel,
-    onBackPressed: () -> Unit
+    searchResultState: UiState<SearchResponse>,
+    markerAddressState: UiState<Address>,
+    currentAddressState: UiState<Address>,
+    putAddressState: UiState<Boolean>,
+    onUiEvent: (MapScreenUiEvent) -> Unit
 ) {
-    val context = LocalContext.current
-    val searchUiState by addressViewModel.searchUiState.collectAsStateWithLifecycle()
     var searchSheetVisible by rememberSaveable { mutableStateOf(false) }
     var fillAddressSheetVisible by rememberSaveable { mutableStateOf(false) }
-    val markerAddress by addressViewModel.markerAddressDetail.collectAsStateWithLifecycle()
-    val currentLatLng by addressViewModel.currentLatLng.collectAsStateWithLifecycle()
     val scaffoldState = rememberBottomSheetScaffoldState()
 
     val bottomCardHeight = 140.dp
@@ -55,16 +54,21 @@ fun MapScreen(
         position = CameraPosition.fromLatLngZoom(LatLng(myAddressItem.lat, myAddressItem.lon), 18f)
     }
     LaunchedEffect(cameraPositionState.position.target) {
-        addressViewModel.getMarkerAddressDetails(
-            cameraPositionState.position.target.latitude,
-            cameraPositionState.position.target.longitude,
-            context
+        onUiEvent(
+            MapScreenUiEvent.GetMarkerAddress(
+                LatLng(
+                    cameraPositionState.position.target.latitude,
+                    cameraPositionState.position.target.longitude
+                )
+            )
         )
     }
 
     AppBottomSheetScaffold(
         topBar = {
-            AppTopBar(title = "Choose Location", onBack = onBackPressed)
+            AppTopBar(title = R.string.choose_location.toStringFromResId(), onBack = {
+                onUiEvent(MapScreenUiEvent.Back)
+            })
         },
         sheetPeekHeight = 0.dp,
         sheetSwipeEnabled = false,
@@ -75,23 +79,41 @@ fun MapScreen(
 
         if (searchSheetVisible) SearchBottomSheet(
             modifier = Modifier.padding(padding),
-            onSearch = addressViewModel::search,
-            searchResponseState = searchUiState,
+            onSearch = {
+                onUiEvent(MapScreenUiEvent.Search(it))
+            },
+            searchResponseState = searchResultState,
             onResultClick = { addressItem ->
                 cameraPositionState.position =
                     CameraPosition.fromLatLngZoom(LatLng(addressItem.lat, addressItem.lon), 18f)
             },
             onClose = {
-                addressViewModel.clearSearchResponse()
+                onUiEvent(MapScreenUiEvent.ClearSearch)
                 searchSheetVisible = false
             }
         )
         if (fillAddressSheetVisible) FillAddressSheet(
-            address = markerAddress,
+            address = markerAddressState,
             myAddressItem = myAddressItem,
-            onCloseSheet = { fillAddressSheetVisible = false },
-            onGoBack = onBackPressed,
-            onSaveAddress = addressViewModel::putAddress
+            putAddressState = putAddressState,
+            onUiEvent = {
+                when (it) {
+                    FillAddressUiEvent.ResetPutState->{
+                        onUiEvent(MapScreenUiEvent.ResetPutState)
+                    }
+                    is FillAddressUiEvent.CloseSheet -> {
+                        fillAddressSheetVisible = false
+                    }
+
+                    is FillAddressUiEvent.Back -> {
+                        onUiEvent(MapScreenUiEvent.Back)
+                    }
+
+                    is FillAddressUiEvent.SaveAddress -> {
+                        onUiEvent(MapScreenUiEvent.PutAddress(it.myAddress))
+                    }
+                }
+            }
         )
 
         Box(
@@ -128,7 +150,7 @@ fun MapScreen(
                     onValueChange = {},
                     placeholder = {
                         Text(
-                            text = "Search for area,street name..",
+                            text = R.string.search_for_area_street.toStringFromResId(),
                             style = MaterialTheme.typography.bodyMedium
                         )
                     },
@@ -166,16 +188,22 @@ fun MapScreen(
                         contentColor = MaterialTheme.colorScheme.primary
                     ),
                     onClick = {
-                        addressViewModel.updateCurrentLocationData(context)
-                        cameraPositionState.position =
-                            CameraPosition.fromLatLngZoom(currentLatLng, 18f)
+                        onUiEvent(MapScreenUiEvent.UseCurrentLocation)
+                        if (currentAddressState is UiState.Success) {
+                            val latLng = LatLng(
+                                currentAddressState.data.latitude,
+                                currentAddressState.data.longitude
+                            )
+                            cameraPositionState.position =
+                                CameraPosition.fromLatLngZoom(latLng, 18f)
+                        }
                     }
                 ) {
                     Icon(
                         modifier = Modifier
                             .size(iconButtonSize.large),
                         imageVector = Icons.Default.MyLocation,
-                        contentDescription = "My Location"
+                        contentDescription = R.string.use_my_current_location.toStringFromResId()
                     )
                 }
 
@@ -193,7 +221,7 @@ fun MapScreen(
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    when (markerAddress) {
+                    when (markerAddressState) {
                         UiState.Loading -> {
                             Box(
                                 modifier = Modifier
@@ -207,10 +235,10 @@ fun MapScreen(
 
                         is UiState.Success -> {
                             CurrentLocationUi(
-                                name = (markerAddress as UiState.Success<Address>).data.getAddressLine(
+                                name = markerAddressState.data.getAddressLine(
                                     0
                                 ),
-                                area = getLocationName((markerAddress as UiState.Success<Address>).data)
+                                area = markerAddressState.data.getLocationName()
                             )
 
                             OutlinedButton(
@@ -226,7 +254,7 @@ fun MapScreen(
                             ) {
                                 Text(
                                     maxLines = 1,
-                                    text = "Enter complete address",
+                                    text = R.string.enter_complete_address.toStringFromResId(),
                                     overflow = TextOverflow.Ellipsis,
                                     style = MaterialTheme.typography.titleLarge
                                 )
@@ -240,7 +268,7 @@ fun MapScreen(
                                     .height(bottomCardHeight),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text(text = "Something went wrong")
+                                Text(text = R.string.something_went_wrong.toStringFromResId())
                             }
                         }
                     }

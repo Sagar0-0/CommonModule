@@ -11,11 +11,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven(url = "https://jitpack.io")
+        maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
     }
 }
 
-rootProject.name = 'Asta'
-include ':mobile'
-include ':chartLibrary'
+rootProject.name = "Asta"
+include(":mobile")
+include(":chartLibrary")

@@ -5,13 +5,13 @@ import com.google.gson.annotations.SerializedName
 
 data class SearchResponse(
     @SerializedName("html_attributions")
-    val htmlAttributions: List<Any>,
+    val htmlAttributions: List<Any> = listOf(),
     @SerializedName("next_page_token")
-    val nextPageToken: String,
+    val nextPageToken: String = "",
     @SerializedName("results")
-    val results: List<Result>,
+    val results: List<Result> = listOf(),
     @SerializedName("status")
-    val status: String
+    val status: String = ""
 ) {
     data class Result(
         @SerializedName("business_status")

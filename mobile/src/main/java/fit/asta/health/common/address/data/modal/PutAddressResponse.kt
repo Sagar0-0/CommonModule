@@ -5,23 +5,23 @@ import com.google.gson.annotations.SerializedName
 
 data class PutAddressResponse(
     @SerializedName("data")
-    val `data`: Data,
+    val `data`: Data = Data(),
     @SerializedName("status")
-    val status: Status
+    val status: Status = Status()
 ) {
     data class Data(
         @SerializedName("flag")
-        val flag: Boolean,
+        val flag: Boolean =false,
         @SerializedName("id")
-        val id: String,
+        val id: String = "",
         @SerializedName("msg")
-        val msg: String
+        val msg: String=""
     )
 
     data class Status(
         @SerializedName("code")
-        val code: Int,
+        val code: Int=0,
         @SerializedName("msg")
-        val msg: String
+        val msg: String=""
     )
 }

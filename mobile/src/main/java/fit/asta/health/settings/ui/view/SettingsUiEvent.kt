@@ -1,4 +1,4 @@
-package fit.asta.health.settings.data
+package fit.asta.health.settings.ui.view
 
 sealed class SettingsUiEvent {
     object BACK : SettingsUiEvent()

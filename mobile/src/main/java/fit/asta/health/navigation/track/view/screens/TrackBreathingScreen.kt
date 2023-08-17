@@ -50,7 +50,6 @@ import fit.asta.health.navigation.track.model.net.breathing.BreathingResponse
 import fit.asta.health.navigation.track.view.components.TrackTopTabBar
 import fit.asta.health.navigation.track.view.components.TrackingChartCard
 import fit.asta.health.navigation.track.view.components.TrackingDetailsCard
-import fit.asta.health.navigation.track.view.components.TrackingWeatherCard
 import fit.asta.health.navigation.track.view.util.TrackingNetworkCall
 import java.text.DecimalFormat
 
@@ -154,20 +153,6 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
                             cgsUnit = "min",
                             conversionRate = { it / 60f }
                         )
-                    )
-                }
-            }
-        }
-
-        // Weather Card
-        breathingData.weather?.weatherData?.let {
-            item {
-                TrackingChartCard(title = "Weather Details") {
-                    TrackingWeatherCard(
-                        weatherType = "Sunny",
-                        temperature = it.temperature.toString(),
-                        location = it.location,
-                        image = R.drawable.image_sun
                     )
                 }
             }

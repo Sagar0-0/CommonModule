@@ -22,6 +22,7 @@ import fit.asta.health.common.address.ui.addressRoute
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.webView
 import fit.asta.health.feedback.ui.feedbackRoute
+import fit.asta.health.main.view.HOME_GRAPH_ROUTE
 import fit.asta.health.main.view.homeScreen
 import fit.asta.health.onboarding.ui.ONBOARDING_GRAPH_ROUTE
 import fit.asta.health.onboarding.ui.onboardingRoute
@@ -31,7 +32,7 @@ import fit.asta.health.payments.wallet.view.walletScreen
 import fit.asta.health.profile.CreateProfileLayout
 import fit.asta.health.profile.ProfileContent
 import fit.asta.health.scheduler.ui.navigation.schedulerNavigation
-import fit.asta.health.settings.view.settingScreens
+import fit.asta.health.settings.ui.settingScreens
 import fit.asta.health.testimonials.ui.testimonialsRoute
 import fit.asta.health.tools.breathing.nav.breathingNavigation
 import fit.asta.health.tools.exercise.nav.exerciseNavigation
@@ -54,7 +55,7 @@ fun MainNavHost(isConnected: Boolean) {
     val mainViewModel: MainViewModel = hiltViewModel()
 
     val startDestination = if (mainViewModel.isAuth()) {
-        Graph.Home.route
+        HOME_GRAPH_ROUTE
     } else {
         val onboardingShown by mainViewModel.onboardingStatus.collectAsStateWithLifecycle()
         if (onboardingShown) {

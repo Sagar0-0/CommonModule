@@ -1,4 +1,4 @@
-package fit.asta.health.settings.view
+package fit.asta.health.settings.ui
 
 import android.widget.Toast
 import androidx.compose.runtime.*
@@ -23,8 +23,10 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.feedback.ui.navigateToFeedback
 import fit.asta.health.main.Graph
 import fit.asta.health.settings.data.SettingsNotificationsStatus
-import fit.asta.health.settings.data.SettingsUiEvent
-import fit.asta.health.settings.data.SettingsViewModel
+import fit.asta.health.settings.ui.view.SettingsUiEvent
+import fit.asta.health.settings.ui.vm.SettingsViewModel
+import fit.asta.health.settings.ui.view.SettingsNotificationLayout
+import fit.asta.health.settings.ui.view.SettingsScreenLayout
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -170,7 +172,7 @@ fun NavGraphBuilder.settingScreens(
 
 }
 
-sealed class SettingDestination(val route: String) {
+internal sealed class SettingDestination(val route: String) {
     object Main : SettingDestination("ss_main")
     object Notifications : SettingDestination("ss_notif")
 }

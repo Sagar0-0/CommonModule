@@ -3,7 +3,6 @@ package fit.asta.health.main
 sealed class Graph(val route: String) {
     object ROOT : Graph("graph_root")
     object WebView : Graph("graph_webView")
-    object Home : Graph("graph_home")
     object Scheduler : Graph("graph_today_scheduler")
     object Settings : Graph("graph_settings")
     object BreathingTool : Graph("graph_breathing_tool")

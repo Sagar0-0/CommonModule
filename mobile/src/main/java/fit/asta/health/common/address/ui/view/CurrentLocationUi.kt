@@ -14,11 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
+import fit.asta.health.R
 import fit.asta.health.common.ui.theme.iconSize
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.common.utils.toStringFromResId
 
 @Composable
-fun CurrentLocationUi(name: String, area: String) {
+internal fun CurrentLocationUi(name: String, area: String) {
     Column(
         Modifier
             .fillMaxWidth()
@@ -31,7 +33,7 @@ fun CurrentLocationUi(name: String, area: String) {
                     .padding(end = spacing.extraSmall1)
                     .size(iconSize.mediumSmall),
                 imageVector = Icons.Default.LocationOn,
-                contentDescription = "Location",
+                contentDescription = R.string.location.toStringFromResId(),
                 tint = MaterialTheme.colorScheme.primary
             )
             Text(

@@ -1,16 +1,17 @@
 package health.onboarding.vm
 
 import app.cash.turbine.test
-import fit.asta.health.auth.data.repo.AuthRepoImpl
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.onboarding.data.model.OnboardingData
 import fit.asta.health.onboarding.data.repo.OnboardingRepoImpl
 import fit.asta.health.onboarding.ui.vm.OnboardingViewModel
 import health.BaseTest
+import io.mockk.Runs
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.just
 import io.mockk.mockk
 import io.mockk.spyk
 import kotlinx.coroutines.test.runTest
@@ -24,15 +25,13 @@ class OnboardingViewModelTest : BaseTest() {
     private lateinit var viewModel: OnboardingViewModel
 
     private val onboardingRepoImpl: OnboardingRepoImpl = mockk(relaxed = true)
-    private val authRepo: AuthRepoImpl = mockk(relaxed = true)
 
     @BeforeEach
     override fun beforeEach() {
         super.beforeEach()
         viewModel = spyk(
             OnboardingViewModel(
-                onboardingRepoImpl,
-                authRepo
+                onboardingRepoImpl
             )
         )
     }
@@ -84,5 +83,14 @@ class OnboardingViewModelTest : BaseTest() {
             assert(item is UiState.Success)
             assertEquals(mockList.size, (item as UiState.Success).data.size)
         }
+    }
+
+    @Test
+    fun `dismissOnboarding, calls Repo`() = runTest {
+        coEvery {
+            onboardingRepoImpl.dismissOnboarding()
+        }just Runs
+        viewModel.dismissOnboarding()
+        coVerify { onboardingRepoImpl.dismissOnboarding() }
     }
 }

@@ -1,4 +1,4 @@
-package fit.asta.health.settings.view
+package fit.asta.health.settings.ui.view
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

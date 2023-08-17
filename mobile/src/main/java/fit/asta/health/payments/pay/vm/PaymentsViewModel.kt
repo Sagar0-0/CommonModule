@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.di.Uid
 import fit.asta.health.payments.pay.model.OrderRequest
 import fit.asta.health.payments.pay.model.OrderResponse
 import fit.asta.health.payments.pay.model.PaymentResponse
@@ -12,13 +13,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Named
 
 @HiltViewModel
 class PaymentsViewModel
 @Inject constructor(
     private val repo: PaymentsRepo,
-    @Named("UId") private val uid: String,
+    @Uid private val uid: String,
 ) : ViewModel() {
 
     private val _orderResponseState =

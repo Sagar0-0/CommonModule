@@ -59,7 +59,7 @@ import fit.asta.health.common.ui.theme.elevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.MainTopBarActions
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.main.Graph
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.main.sharedViewModel
 import fit.asta.health.navigation.home.view.HomeContent
 import fit.asta.health.navigation.today.domain.model.TodayData
@@ -161,36 +161,29 @@ private fun NewMainTopBarActions(
             tint = MaterialTheme.colorScheme.onBackground
         )
 
-        when (currentAddressState) {
-            UiState.Loading -> {
-                Text(
-                    text = "Fetching...",
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(spacing.minSmall),
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-            }
+        Text(
+            text =
+            when (currentAddressState) {
+                UiState.Idle -> {
+                    R.string.select_location.toStringFromResId()
+                }
 
-            is UiState.Success -> {
-                Text(
-                    text = currentAddressState.data,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(spacing.minSmall),
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-            }
+                UiState.Loading -> {
+                    R.string.fetching_location.toStringFromResId()
+                }
 
-            is UiState.Error -> {
-                Text(
-                    text = "Error fetching location",
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(spacing.minSmall),
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-            }
+                is UiState.Success -> {
+                    currentAddressState.data
+                }
 
-            else -> {}
-        }
+                is UiState.Error -> {
+                    currentAddressState.resId.toStringFromResId()
+                }
+            },
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(spacing.minSmall),
+            color = MaterialTheme.colorScheme.onBackground
+        )
     }
     Row(
         Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
@@ -298,7 +291,7 @@ private fun MainNavHost(
     innerPadding: PaddingValues,
 ) {
     NavHost(
-        route = Graph.Home.route,
+        route = HOME_GRAPH_ROUTE,
         navController = navController,
         startDestination = BottomBarDestination.Home.route,
         modifier = modifier.padding(innerPadding)
