@@ -1,5 +1,6 @@
 package fit.asta.health.scheduler.data.db
 
+import android.net.Uri
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import fit.asta.health.scheduler.data.api.net.scheduler.Info
@@ -10,6 +11,7 @@ import fit.asta.health.scheduler.data.api.net.scheduler.Tone
 import fit.asta.health.scheduler.data.api.net.scheduler.Vib
 import fit.asta.health.scheduler.data.api.net.scheduler.Wk
 import fit.asta.health.scheduler.data.api.net.tag.Data
+import fit.asta.health.scheduler.ref.data.Weekdays
 
 class CustomTypeConvertors {
     @TypeConverter
@@ -68,10 +70,29 @@ class CustomTypeConvertors {
     fun stringToTagItem(string: String): Data =
         Gson().fromJson(string, Data::class.java)
 
-//    @TypeConverter
+    //    @TypeConverter
 //    fun snoozeItemToString(snoozeItem: SnoozeItem): String = Gson().toJson(snoozeItem)
 //
 //    @TypeConverter
 //    fun stringToSnoozeItem(string: String): SnoozeItem =
 //        Gson().fromJson(string, SnoozeItem::class.java)
+    @TypeConverter
+    fun fromUri(uri: Uri?): String? {
+        return uri?.toString()
+    }
+
+    @TypeConverter
+    fun toUri(uriString: String?): Uri? {
+        return uriString?.let { Uri.parse(it) }
+    }
+
+    @TypeConverter
+    fun fromWeekdays(weekdays: Weekdays): Int {
+        return weekdays.bits
+    }
+
+    @TypeConverter
+    fun toWeekdays(bits: Int): Weekdays {
+        return Weekdays(bits)
+    }
 }

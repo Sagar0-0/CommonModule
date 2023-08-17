@@ -29,6 +29,14 @@ class DatabaseModule {
     @Provides
     fun provideAlarmDao(database: AlarmDatabase) = database.alarmDao()
 
+    @Singleton
+    @Provides
+    fun provideAlarmRefDao(database: AlarmDatabase) = database.alarmRefDao()
+
+    @Singleton
+    @Provides
+    fun provideAlarmInstanceDao(database: AlarmDatabase) = database.alarmInstanceDao()
+
 //    @Singleton
 //    @Provides
 //    fun provideMusicDatabase(

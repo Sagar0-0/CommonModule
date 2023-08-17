@@ -19,7 +19,6 @@ package fit.asta.health.scheduler.ref.alarms
 
 import android.app.Service
 import android.content.BroadcastReceiver
-import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -28,10 +27,16 @@ import android.os.Build
 import android.os.IBinder
 import android.telephony.TelephonyManager
 import androidx.annotation.RequiresApi
+import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.scheduler.ref.AlarmAlertWakeLock
 import fit.asta.health.scheduler.ref.LogUtils
+import fit.asta.health.scheduler.ref.db.AlarmInstanceDao
 import fit.asta.health.scheduler.ref.provider.AlarmInstance
 import fit.asta.health.scheduler.ref.provider.ClockContract.InstancesColumns
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * This service is in charge of starting/stopping the alarm. It will bring up and manage the
@@ -40,9 +45,15 @@ import fit.asta.health.scheduler.ref.provider.ClockContract.InstancesColumns
  * Registers a broadcast receiver to listen for snooze/dismiss intents. The broadcast receiver
  * exits early if AlarmActivity is bound to prevent double-processing of the snooze/dismiss intents.
  */
+@AndroidEntryPoint
 class AlarmService : Service() {
+    @Inject
+    lateinit var alarmInstanceDao: AlarmInstanceDao
+    val scope = CoroutineScope(Dispatchers.Main)
+
     /** Binder given to AlarmActivity.  */
     private val mBinder: IBinder = Binder()
+    val alarmStateManager = AlarmStateManager()
 
     /** Whether the service is currently bound to AlarmActivity  */
     private var mIsBound = false
@@ -66,7 +77,7 @@ class AlarmService : Service() {
     private fun startAlarm(instance: AlarmInstance) {
         LogUtils.v("AlarmService.start with instance: " + instance.mId)
         if (mCurrentAlarm != null) {
-            AlarmStateManager.setMissedState(this, mCurrentAlarm!!)
+            alarmStateManager.setMissedState(this, mCurrentAlarm!!)
             stopCurrentAlarm()
         }
 
@@ -117,12 +128,12 @@ class AlarmService : Service() {
                     // Set the alarm state to snoozed.
                     // If this broadcast receiver is handling the snooze intent then AlarmActivity
                     // must not be showing, so always show snooze toast.
-                    AlarmStateManager.setSnoozeState(context, mCurrentAlarm!!, true /* showToast */)
+                    alarmStateManager.setSnoozeState(context, mCurrentAlarm!!, true /* showToast */)
                 }
 
                 ALARM_DISMISS_ACTION -> {
                     // Set the alarm state to dismissed.
-                    AlarmStateManager.deleteInstanceAndUpdateParent(context, mCurrentAlarm!!)
+                    alarmStateManager.deleteInstanceAndUpdateParent(context, mCurrentAlarm!!)
                 }
             }
         }
@@ -146,26 +157,27 @@ class AlarmService : Service() {
             return START_NOT_STICKY
         }
 
-        val instanceId = AlarmInstance.getId(intent.data!!)
+        val instanceId = intent.getLongExtra("id", -1)
         when (intent.action) {
-            AlarmStateManager.CHANGE_STATE_ACTION -> {
-                AlarmStateManager.handleIntent(this, intent)
+            alarmStateManager.CHANGE_STATE_ACTION -> {
+                alarmStateManager.handleIntent(this, intent)
 
                 // If state is changed to firing, actually fire the alarm!
-                val alarmState: Int = intent.getIntExtra(AlarmStateManager.ALARM_STATE_EXTRA, -1)
+                val alarmState: Int = intent.getIntExtra(alarmStateManager.ALARM_STATE_EXTRA, -1)
                 if (alarmState == InstancesColumns.FIRED_STATE) {
-                    val cr: ContentResolver = this.contentResolver
-                    val instance: AlarmInstance? = AlarmInstance.getInstance(cr, instanceId)
-                    if (instance == null) {
-                        LogUtils.e("No instance found to start alarm: %d", instanceId)
-                        if (mCurrentAlarm != null) {
-                            // Only release lock if we are not firing alarm
-                            AlarmAlertWakeLock.releaseCpuLock()
+                    scope.launch {
+                        val instance: AlarmInstance? = alarmInstanceDao.getInstance(instanceId)
+                        if (instance == null) {
+                            LogUtils.e("No instance found to start alarm: %d", instanceId)
+                            if (mCurrentAlarm != null) {
+                                // Only release lock if we are not firing alarm
+                                AlarmAlertWakeLock.releaseCpuLock()
+                            }
+                        } else if (mCurrentAlarm != null && mCurrentAlarm!!.mId == instanceId) {
+                            LogUtils.e("Alarm already started for instance: %d", instanceId)
+                        } else {
+                            startAlarm(instance)
                         }
-                    } else if (mCurrentAlarm != null && mCurrentAlarm!!.mId == instanceId) {
-                        LogUtils.e("Alarm already started for instance: %d", instanceId)
-                    } else {
-                        startAlarm(instance)
                     }
                 }
             }

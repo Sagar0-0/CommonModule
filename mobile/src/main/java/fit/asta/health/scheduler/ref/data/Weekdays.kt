@@ -17,9 +17,11 @@
 package fit.asta.health.scheduler.ref.data
 
 import android.content.Context
+import android.os.Parcelable
 import androidx.annotation.VisibleForTesting
 
 import fit.asta.health.R
+import kotlinx.parcelize.Parcelize
 
 import java.text.DateFormatSymbols
 import java.util.Calendar
@@ -29,7 +31,10 @@ import java.util.Calendar
  * also converts between those bits and the [Calendar.DAY_OF_WEEK] values for easier mutation
  * and querying.
  */
-class Weekdays private constructor(bits: Int) {
+@Parcelize
+data class Weekdays(
+    private val encodedBits: Int
+) : Parcelable {
     /**
      * The preferred starting day of the week can differ by locale. This enumerated value is used to
      * describe the preferred ordering.
@@ -113,8 +118,8 @@ class Weekdays private constructor(bits: Int) {
         }
     }
 
-    /** An encoded form of a weekly repeat schedule.  */
-    val bits: Int = ALL_DAYS and bits
+    /** An encoded form of a weekly repeat schedule. */
+    val bits: Int = ALL_DAYS and this.encodedBits
 
     /**
      * @param calendarDay any of the following values

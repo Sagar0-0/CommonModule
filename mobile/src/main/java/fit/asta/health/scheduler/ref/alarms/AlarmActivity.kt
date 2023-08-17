@@ -29,13 +29,25 @@ import android.os.IBinder
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.scheduler.ref.LogUtils
 import fit.asta.health.scheduler.ref.Utils
+import fit.asta.health.scheduler.ref.db.AlarmInstanceDao
 import fit.asta.health.scheduler.ref.provider.AlarmInstance
 import fit.asta.health.scheduler.ref.provider.ClockContract.InstancesColumns
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class AlarmActivity : AppCompatActivity() {
 
+    @Inject
+    lateinit var alarmInstanceDao: AlarmInstanceDao
+    val scope = CoroutineScope(Dispatchers.Main)
+
+    val alarmStateManager = AlarmStateManager()
     private val mReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
             val action: String? = intent.action
@@ -76,8 +88,10 @@ class AlarmActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         volumeControlStream = AudioManager.STREAM_ALARM
-        val instanceId = AlarmInstance.getId(intent.data!!)
-        mAlarmInstance = AlarmInstance.getInstance(contentResolver, instanceId)
+        val instanceId = intent.getLongExtra("id", -1)
+        scope.launch {
+            mAlarmInstance = alarmInstanceDao.getInstance(instanceId)
+        }
         if (mAlarmInstance == null) {
             // The alarm was deleted before the activity got created, so just finish()
             LOGGER.e("Error displaying alarm for intent: %s", intent)
@@ -119,8 +133,10 @@ class AlarmActivity : AppCompatActivity() {
         super.onResume()
 
         // Re-query for AlarmInstance in case the state has changed externally
-        val instanceId = AlarmInstance.getId(intent.data!!)
-        mAlarmInstance = AlarmInstance.getInstance(contentResolver, instanceId)
+        val instanceId = intent.getLongExtra("id", -1)
+        scope.launch {
+            mAlarmInstance = alarmInstanceDao.getInstance(instanceId)
+        }
 
         if (mAlarmInstance == null) {
             LOGGER.i("No alarm instance for instanceId: %d", instanceId)
@@ -164,7 +180,7 @@ class AlarmActivity : AppCompatActivity() {
     private fun snooze() {
         mAlarmHandled = true
         LOGGER.v("Snoozed: %s", mAlarmInstance)
-        AlarmStateManager.setSnoozeState(this, mAlarmInstance!!, false /* showToast */)
+        alarmStateManager.setSnoozeState(this, mAlarmInstance!!, false /* showToast */)
         // Unbind here, otherwise alarm will keep ringing until activity finishes.
         unbindAlarmService()
     }
@@ -175,7 +191,7 @@ class AlarmActivity : AppCompatActivity() {
     private fun dismiss() {
         mAlarmHandled = true
         LOGGER.v("Dismissed: %s", mAlarmInstance)
-        AlarmStateManager.deleteInstanceAndUpdateParent(this, mAlarmInstance!!)
+        alarmStateManager.deleteInstanceAndUpdateParent(this, mAlarmInstance!!)
         // Unbind here, otherwise alarm will keep ringing until activity finishes.
         unbindAlarmService()
     }
