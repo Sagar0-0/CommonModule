@@ -146,7 +146,7 @@ class AddressRepoImpl @Inject constructor(
     }
 
     override suspend fun putAddress(myAddress: MyAddress): ResponseState<Boolean> {
-        return getResponseState { addressApi.addNewAddress(myAddress).data.flag }
+        return getResponseState { addressApi.putAddress(myAddress).data.flag }
     }
 
     override suspend fun deleteAddress(
