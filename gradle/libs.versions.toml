@@ -140,6 +140,7 @@ uiTestJunit4Android = "1.5.0"
 uiTestManifest = "1.5.0"
 uiToolingPreview = "1.5.0"
 workRuntimeKtx = "2.8.1"
+mockwebserver = "4.11.0"
 
 [libraries]
 accompanist-coil = { module = "com.google.accompanist:accompanist-coil", version.ref = "accompanistCoil" }
@@ -314,6 +315,7 @@ swipe = { module = "me.saket.swipe:swipe", version.ref = "swipe" }
 transformationlayout = { module = "com.github.skydoves:transformationlayout", version.ref = "transformationlayout" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "mockwebserver" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
