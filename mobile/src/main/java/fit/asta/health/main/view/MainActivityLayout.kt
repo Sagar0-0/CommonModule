@@ -53,19 +53,20 @@ import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.AppScaffold
-import fit.asta.health.common.ui.components.generic.AppState
 import fit.asta.health.common.ui.components.generic.AppTopBar
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.theme.elevation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.MainTopBarActions
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.main.Graph
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.main.sharedViewModel
 import fit.asta.health.navigation.home.view.HomeContent
-import fit.asta.health.navigation.today.view.TodayContent
-import fit.asta.health.navigation.today.view.utils.HourMinAmPm
-import fit.asta.health.navigation.today.viewmodel.TodayPlanViewModel
+import fit.asta.health.navigation.today.domain.model.TodayData
+import fit.asta.health.navigation.today.ui.view.HomeEvent
+import fit.asta.health.navigation.today.ui.view.TodayContent
+import fit.asta.health.navigation.today.ui.view.utils.HourMinAmPm
+import fit.asta.health.navigation.today.ui.vm.TodayPlanViewModel
 import fit.asta.health.navigation.track.view.TrackContent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -160,36 +161,29 @@ private fun NewMainTopBarActions(
             tint = MaterialTheme.colorScheme.onBackground
         )
 
-        when (currentAddressState) {
-            UiState.Loading -> {
-                Text(
-                    text = "Fetching...",
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(spacing.minSmall),
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-            }
+        Text(
+            text =
+            when (currentAddressState) {
+                UiState.Idle -> {
+                    R.string.select_location.toStringFromResId()
+                }
 
-            is UiState.Success -> {
-                Text(
-                    text = currentAddressState.data,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(spacing.minSmall),
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-            }
+                UiState.Loading -> {
+                    R.string.fetching_location.toStringFromResId()
+                }
 
-            is UiState.Error -> {
-                Text(
-                    text = "Error fetching location",
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(spacing.minSmall),
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-            }
+                is UiState.Success -> {
+                    currentAddressState.data
+                }
 
-            else -> {}
-        }
+                is UiState.Error -> {
+                    currentAddressState.resId.toStringFromResId()
+                }
+            },
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(spacing.minSmall),
+            color = MaterialTheme.colorScheme.onBackground
+        )
     }
     Row(
         Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
@@ -297,7 +291,7 @@ private fun MainNavHost(
     innerPadding: PaddingValues,
 ) {
     NavHost(
-        route = Graph.Home.route,
+        route = HOME_GRAPH_ROUTE,
         navController = navController,
         startDestination = BottomBarDestination.Home.route,
         modifier = modifier.padding(innerPadding)
@@ -315,34 +309,63 @@ private fun MainNavHost(
             val listNextDay by todayPlanViewModel.alarmListNextDay.collectAsStateWithLifecycle()
             val state by todayPlanViewModel.todayState.collectAsStateWithLifecycle()
             when (state) {
-                is AppState.Loading -> {
+                is UiState.Loading -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         LoadingAnimation()
                     }
                 }
 
-                is AppState.Error -> AppErrorScreen(onTryAgain = {
+                is UiState.Error -> AppErrorScreen(onTryAgain = {
                     todayPlanViewModel.retry()
                 }, isInternetError = false)
 
-                is AppState.Success -> {
+                is UiState.Success -> {
                     TodayContent(
-                        uiState = state.data!!,
+                        uiState = (state as UiState.Success<TodayData>).data,
                         listMorning = listMorning,
                         listAfternoon = listAfternoon,
                         listEvening = listEvening,
                         listNextDay = listNextDay,
-                        hSEvent = todayPlanViewModel::hSEvent,
                         onNav = onNav,
-                        onSchedule = onSchedule
+                        hSEvent = { uiEvent ->
+                            when (uiEvent) {
+                                is HomeEvent.EditAlarm -> {
+                                    todayPlanViewModel.setAlarmPreferences(uiEvent.alarm.alarmId)
+                                }
+
+                                is HomeEvent.SetAlarm -> {
+                                    todayPlanViewModel.setAlarmPreferences(999)
+                                }
+
+                                is HomeEvent.DeleteAlarm -> {
+                                    todayPlanViewModel.deleteAlarm(uiEvent.alarm)
+                                }
+
+                                is HomeEvent.RemoveAlarm -> {
+                                    todayPlanViewModel.removeAlarm(uiEvent.alarm, uiEvent.event)
+                                }
+
+                                is HomeEvent.UndoAlarm -> {
+                                    todayPlanViewModel.undo(uiEvent.alarm, uiEvent.event)
+                                }
+
+                                is HomeEvent.SkipAlarm -> {
+                                    todayPlanViewModel.skipAlarm(uiEvent.alarm)
+                                }
+
+                                is HomeEvent.SetDefaultSchedule -> {
+                                    todayPlanViewModel.getDefaultSchedule()
+                                }
+
+                                is HomeEvent.NavSchedule -> {
+                                    onSchedule(uiEvent.hourMinAmPm)
+                                }
+                            }
+                        },
                     )
                 }
 
-                is AppState.Empty -> {}
-
-                is AppState.NetworkError -> AppErrorScreen(onTryAgain = {
-                    todayPlanViewModel.retry()
-                })
+                else -> {}
             }
         }
 

@@ -1,7 +1,7 @@
 package fit.asta.health.navigation.today.domain.model
 
-import fit.asta.health.scheduler.compose.naman.WeatherData
-import fit.asta.health.scheduler.model.db.entity.AlarmEntity
+import fit.asta.health.scheduler.data.db.entity.AlarmEntity
+import fit.asta.health.scheduler.ui.naman.WeatherData
 
 data class TodayData(
     val temperature: String = "22",

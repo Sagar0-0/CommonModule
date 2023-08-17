@@ -4,8 +4,8 @@ import android.content.Intent
 import android.os.IBinder
 import androidx.lifecycle.LifecycleService
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.scheduler.model.AlarmLocalRepo
-import fit.asta.health.scheduler.model.AlarmUtils
+import fit.asta.health.scheduler.data.repo.AlarmLocalRepo
+import fit.asta.health.scheduler.data.repo.AlarmUtils
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

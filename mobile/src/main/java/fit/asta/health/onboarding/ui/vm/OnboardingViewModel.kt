@@ -16,8 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class OnboardingViewModel
 @Inject constructor(
-    private val repo: OnboardingRepo,
-    private val authRepo: AuthRepo
+    private val repo: OnboardingRepo
 ) : ViewModel() {
 
     private val _mutableState = MutableStateFlow<UiState<List<OnboardingData>>>(UiState.Idle)

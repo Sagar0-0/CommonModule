@@ -9,7 +9,7 @@ fun <T> ResponseState<T>.toUiState(): UiState<T> {
         }
 
         is ResponseState.Error -> {
-            UiState.Error(this.exception.toStringResId())
+            UiState.Error(this.exception.toResIdFromException())
         }
 
         else -> {
@@ -18,8 +18,11 @@ fun <T> ResponseState<T>.toUiState(): UiState<T> {
     }
 }
 
-fun Exception.toStringResId(): Int {
+fun Exception.toResIdFromException(): Int {
     return when (this) {
+        is MyException->{
+            this.resId
+        }
         else -> R.string.unknown_error
     }
 }

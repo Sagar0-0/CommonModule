@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
+import fit.asta.health.di.Uid
 import fit.asta.health.feedback.data.remote.modal.An
 import fit.asta.health.feedback.data.remote.modal.FeedbackQuesDTO
 import fit.asta.health.feedback.data.remote.modal.PostFeedbackDTO
@@ -18,7 +19,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Named
 
 
 @ExperimentalCoroutinesApi
@@ -26,8 +26,7 @@ import javax.inject.Named
 class FeedbackViewModel
 @Inject constructor(
     private val feedbackRepo: FeedbackRepo,
-    @Named("UId")
-    val uId: String
+    @Uid private val uId: String
 ) : ViewModel() {
 
     private var _fid by mutableStateOf("")

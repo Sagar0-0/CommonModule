@@ -27,11 +27,11 @@ import fit.asta.health.HealthCareApp.Companion.CHANNEL_ID
 import fit.asta.health.R
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.main.deepLinkUrl
-import fit.asta.health.navigation.today.view.goToTool
-import fit.asta.health.scheduler.AlarmBroadcastReceiver
-import fit.asta.health.scheduler.compose.AlarmScreenActivity
-import fit.asta.health.scheduler.model.db.entity.AlarmEntity
-import fit.asta.health.scheduler.model.net.scheduler.Stat
+import fit.asta.health.navigation.today.ui.view.goToTool
+import fit.asta.health.scheduler.data.api.net.scheduler.Stat
+import fit.asta.health.scheduler.data.db.entity.AlarmEntity
+import fit.asta.health.scheduler.ui.AlarmBroadcastReceiver
+import fit.asta.health.scheduler.ui.AlarmScreenActivity
 import fit.asta.health.scheduler.util.Constants.Companion.ARG_ALARM_OBJET
 import fit.asta.health.scheduler.util.Constants.Companion.ARG_VARIANT_INTERVAL_ALARM_OBJECT
 import fit.asta.health.scheduler.util.Constants.Companion.ARG_VARIANT_INTERVAL_OBJECT

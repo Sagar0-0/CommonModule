@@ -199,8 +199,7 @@ private fun TrackMenuSuccessScreen(
                     target = it.detail.toolProgress.target,
                     achieved = it.detail.toolProgress.achieved,
                     bodyDescription = it.detail.description,
-                    siUnit = it.detail.toolProgress.unit,
-                    cgsUnit = it.detail.toolProgress.unit
+                    unit = it.detail.toolProgress.unit
                 ) {
 
                     // checking the title before redirecting the user to the screen and setting it
@@ -224,11 +223,6 @@ private fun TrackMenuSuccessScreen(
                         "sunlight" -> {
                             setTrackOption(TrackOption.SunlightOption)
                             navigator(TrackNavRoute.SunlightTrackDetail.route)
-                        }
-
-                        "steps" -> {
-                            setTrackOption(TrackOption.StepsOption)
-                            navigator(TrackNavRoute.StepsTrackDetail.route)
                         }
 
                         "sleep" -> {
@@ -257,6 +251,25 @@ private fun TrackMenuSuccessScreen(
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }
+
+
+        // Steps Card Item
+        homeMenuData.walking?.let {
+            item {
+                ToolsItemsCard(
+                    title = it.title,
+                    target = it.target.steps.steps.toFloat(),
+                    achieved = it.achieved.steps.steps.toFloat(),
+                    bodyDescription = it.description.stepsDescription,
+                    unit = "steps"
+                ) {
+                    setTrackOption(TrackOption.StepsOption)
+                    navigator(TrackNavRoute.StepsTrackDetail.route)
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+        }
     }
 }
 
@@ -266,8 +279,7 @@ private fun TrackMenuSuccessScreen(
  * @param title This denotes the title of the Card or the tools type
  * @param target This denotes the target for the Circular chart
  * @param achieved This denotes the achieved for the Circular Chart
- * @param siUnit This contains the SI Unit for the Circular Chart
- * @param cgsUnit This contains the cgs Unit for the Circular Chart
+ * @param unit This contains the Unit for the Circular Chart
  * @param bodyDescription This is the description given at the bottom of the Card beside the button
  * @param onOptionClick This function is executed when the Tool Button is clicked
  */
@@ -276,8 +288,7 @@ private fun ToolsItemsCard(
     title: String,
     target: Float,
     achieved: Float,
-    siUnit: String,
-    cgsUnit: String,
+    unit: String,
     bodyDescription: String,
     onOptionClick: () -> Unit
 ) {
@@ -323,8 +334,8 @@ private fun ToolsItemsCard(
                     circularData = CircularTargetDataBuilder(
                         target = target,
                         achieved = achieved,
-                        siUnit = siUnit,
-                        cgsUnit = cgsUnit,
+                        siUnit = unit,
+                        cgsUnit = unit,
                         conversionRate = { it }
                     )
                 )
@@ -352,7 +363,7 @@ private fun ToolsItemsCard(
                         )
 
                         // Description Text
-                        Text(text = bodyDescription)
+                        Text(text = "$bodyDescription")
                     }
 
                     // Trailing Image of this row at the bottom of the Chart

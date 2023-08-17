@@ -26,7 +26,7 @@ class OnboardingRepoImplTest {
 
     @BeforeEach
     fun beforeEach() {
-        MockKAnnotations.init(this, true)
+        MockKAnnotations.init(this, relaxed = true)
         onboardingRepoImpl = spyk(
             OnboardingRepoImpl(
                 remoteApi = onboardingApi,

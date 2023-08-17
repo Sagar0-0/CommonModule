@@ -3,6 +3,7 @@ package fit.asta.health.common.address.ui.view
 import android.location.Address
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +22,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -46,7 +48,8 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import fit.asta.health.common.address.data.modal.AddressesResponse
+import fit.asta.health.R
+import fit.asta.health.common.address.data.modal.MyAddress
 import fit.asta.health.common.ui.components.ValidatedTextField
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.theme.customSize
@@ -54,19 +57,18 @@ import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.UiString
 import fit.asta.health.common.utils.getLocationName
+import fit.asta.health.common.utils.toStringFromResId
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FillAddressSheet(
+internal fun FillAddressSheet(
     modifier: Modifier = Modifier,
     address: UiState<Address>,//Used while saving new address
-    myAddressItem: AddressesResponse.MyAddress,//Used while editing only
-    onGoBack: () -> Unit,
-    onCloseSheet: () -> Unit,
-    onSaveAddress: (address: AddressesResponse.MyAddress, onSuccess: () -> Unit) -> Unit
+    myAddressItem: MyAddress,//Used while editing only
+    putAddressState: UiState<Boolean>,
+    onUiEvent: (FillAddressUiEvent) -> Unit
 ) {
-
     val focusManager = LocalFocusManager.current
     val scope = rememberCoroutineScope()
     val bottomSheetState = rememberModalBottomSheetState(true)
@@ -75,7 +77,7 @@ fun FillAddressSheet(
     val closeSheet = {
         scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
             if (!bottomSheetState.isVisible) {
-                onCloseSheet()
+                onUiEvent(FillAddressUiEvent.CloseSheet)
             }
         }
     }
@@ -93,17 +95,26 @@ fun FillAddressSheet(
         mutableStateOf(myAddressItem.nearby)
     }
     val phone = rememberSaveable {
-        mutableStateOf(if (myAddressItem.ph == "Unknown") "" else myAddressItem.ph)
+        mutableStateOf(myAddressItem.ph)
     }
     val name = rememberSaveable {
-        mutableStateOf(myAddressItem.name.ifEmpty { "Home" })
+        mutableStateOf(myAddressItem.name.ifEmpty { R.string.home.toStringFromResId(context) })
     }
 
     LaunchedEffect(name.value) {
-        if (name.value == "") {
+        if (name.value.isEmpty()) {
             nameField.requestFocus()
         } else {
             defaultField.requestFocus()
+        }
+    }
+
+    LaunchedEffect(putAddressState) {
+        if (putAddressState is UiState.Success) {
+            closeSheet()
+            Toast.makeText(context, R.string.address_saved_successfully.toStringFromResId(context), Toast.LENGTH_SHORT).show()
+            onUiEvent(FillAddressUiEvent.Back)
+            onUiEvent(FillAddressUiEvent.ResetPutState)
         }
     }
 
@@ -141,41 +152,41 @@ fun FillAddressSheet(
                     Box(Modifier.fillMaxWidth()) {
                         CurrentLocationUi(
                             name = address.data.getAddressLine(0),
-                            area = getLocationName(address.data)
+                            area = address.data.getLocationName()
                         )
                         IconButton(
                             modifier = Modifier
                                 .align(Alignment.CenterEnd),
                             onClick = { closeSheet() }
                         ) {
-                            Icon(imageVector = Icons.Default.Close, contentDescription = "Close")
+                            Icon(imageVector = Icons.Default.Close, contentDescription = R.string.close.toStringFromResId())
                         }
                     }
 
-                    Text(text = "Save address as*", Modifier.padding(bottom = 8.dp))
+                    Text(text = R.string.save_address_as.toStringFromResId(), Modifier.padding(bottom = spacing.small))
                     Row(Modifier.fillMaxWidth()) {
                         Text(modifier = Modifier
                             .clip(RoundedCornerShape(10.dp))
-                            .background(if (name.value == "Home") MaterialTheme.colorScheme.primary else Color.Transparent)
-                            .clickable { name.value = "Home" }
-                            .padding(8.dp), text = "Home")
+                            .background(if (name.value == R.string.home.toStringFromResId()) MaterialTheme.colorScheme.primary else Color.Transparent)
+                            .clickable { name.value = R.string.home.toStringFromResId(context) }
+                            .padding(8.dp), text = R.string.home.toStringFromResId())
                         Spacer(modifier = Modifier.padding(horizontal = 3.dp))
                         Text(modifier = Modifier
                             .clip(RoundedCornerShape(10.dp))
-                            .background(if (name.value == "Work") MaterialTheme.colorScheme.primary else Color.Transparent)
-                            .clickable { name.value = "Work" }
-                            .padding(8.dp), text = "Work")
+                            .background(if (name.value == R.string.work.toStringFromResId()) MaterialTheme.colorScheme.primary else Color.Transparent)
+                            .clickable { name.value = R.string.work.toStringFromResId(context) }
+                            .padding(8.dp), text = R.string.work.toStringFromResId())
                         Spacer(modifier = Modifier.padding(horizontal = 3.dp))
                         Text(modifier = Modifier
                             .clip(RoundedCornerShape(10.dp))
-                            .background(if (name.value != "Home" && name.value != "Work") MaterialTheme.colorScheme.primary else Color.Transparent)
+                            .background(if (name.value != R.string.home.toStringFromResId() && name.value != R.string.work.toStringFromResId()) MaterialTheme.colorScheme.primary else Color.Transparent)
                             .clickable { name.value = "" }
-                            .padding(8.dp), text = "Other")
+                            .padding(8.dp), text = R.string.other.toStringFromResId())
                     }
 
                     Spacer(modifier = Modifier.height(spacing.medium))
 
-                    AnimatedVisibility(name.value != "Home" && name.value != "Work") {
+                    AnimatedVisibility(name.value != R.string.home.toStringFromResId() && name.value != R.string.work.toStringFromResId()) {
                         ValidatedTextField(
                             modifier = Modifier.focusRequester(nameField),
                             keyboardOptions = KeyboardOptions(
@@ -191,9 +202,9 @@ fun FillAddressSheet(
                             onValueChange = {
                                 name.value = it
                             },
-                            label = "Location Name",
+                            label = R.string.location_name.toStringFromResId(),
                             showError = name.value.isEmpty(),
-                            errorMessage = UiString.Dynamic("This Field can't be empty")
+                            errorMessage = UiString.Dynamic(R.string.this_field_cant_be_empty.toStringFromResId())
                         )
                         Spacer(modifier = Modifier.height(spacing.medium))
                     }
@@ -211,9 +222,9 @@ fun FillAddressSheet(
                         onValueChange = {
                             houseNo.value = it
                         },
-                        label = "House Number*",
+                        label = R.string.house_number.toStringFromResId(),
                         showError = houseNo.value.isEmpty(),
-                        errorMessage = UiString.Dynamic("This Field can't be empty")
+                        errorMessage = UiString.Dynamic(R.string.this_field_cant_be_empty.toStringFromResId())
                     )
 
                     Spacer(modifier = Modifier.height(spacing.medium))
@@ -230,9 +241,9 @@ fun FillAddressSheet(
                         onValueChange = {
                             block.value = it
                         },
-                        label = "Block / Street / Road*",
+                        label = R.string.block_street_road.toStringFromResId(),
                         showError = block.value.isEmpty(),
-                        errorMessage = UiString.Dynamic("This Field can't be empty")
+                        errorMessage = UiString.Dynamic(R.string.this_field_cant_be_empty.toStringFromResId())
                     )
 
                     Spacer(modifier = Modifier.height(spacing.medium))
@@ -249,7 +260,7 @@ fun FillAddressSheet(
                         onValueChange = {
                             nearby.value = it
                         },
-                        label = "Nearby landmark",
+                        label = R.string.nearby_landmark.toStringFromResId(),
                         errorMessage = UiString.Empty
                     )
 
@@ -266,47 +277,59 @@ fun FillAddressSheet(
                         singleLine = true,
                         value = phone.value,
                         onValueChange = {
-                            if (phone.value.length < 10) phone.value = it
+                            if (it.length <= 10) phone.value = it
                         },
-                        label = "Phone number",
+                        label = R.string.phone_number.toStringFromResId(),
                         showError = phone.value.isEmpty() || phone.value.length < 10,
-                        errorMessage = UiString.Dynamic("This Field can't be empty")
+                        errorMessage = UiString.Dynamic(R.string.this_field_cant_be_empty.toStringFromResId())
                     )
 
-                    OutlinedButton(
-                        onClick = {
-                            val newMyAddress = AddressesResponse.MyAddress(
-                                area = address.data.adminArea,
-                                selected = if (myAddressItem.id.isEmpty()) true else myAddressItem.selected,
-                                block = block.value,
-                                hn = houseNo.value,
-                                id = myAddressItem.id,
-                                lat = address.data.latitude,
-                                lon = address.data.longitude,
-                                loc = address.data.locality,
-                                nearby = nearby.value,
-                                name = name.value,
-                                pin = address.data.postalCode,
-                                ph = phone.value,
-                                sub = address.data.subLocality,
-                                uid = ""
-                            )
-                            onSaveAddress(newMyAddress) {
-                                Toast.makeText(context, "Address Saved", Toast.LENGTH_SHORT).show()
-                                onGoBack()
+                    Crossfade(targetState = putAddressState, label = "") {
+                        when (it) {
+                            is UiState.Loading -> {
+                                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                                    CircularProgressIndicator()
+                                }
                             }
-                        },
-                        modifier = Modifier
-                            .padding(spacing.medium)
-                            .fillMaxWidth()
-                            .clip(MaterialTheme.shapes.large),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            contentColor = MaterialTheme.colorScheme.onSurface
-                        ),
-                        enabled = houseNo.value.isNotEmpty() && block.value.isNotEmpty() && phone.value.isNotEmpty() && name.value.isNotEmpty()
-                    ) {
-                        Text(text = "Save address", style = MaterialTheme.typography.titleLarge)
+
+                            else -> {
+                                OutlinedButton(
+                                    onClick = {
+                                        val newMyAddress = MyAddress(
+                                            area = address.data.adminArea,
+                                            selected = if (myAddressItem.id.isEmpty()) true else myAddressItem.selected,
+                                            block = block.value,
+                                            hn = houseNo.value,
+                                            id = myAddressItem.id,
+                                            lat = address.data.latitude,
+                                            lon = address.data.longitude,
+                                            loc = address.data.locality,
+                                            nearby = nearby.value,
+                                            name = name.value,
+                                            pin = address.data.postalCode,
+                                            ph = phone.value,
+                                            sub = address.data.subLocality,
+                                            uid = ""
+                                        )
+                                        onUiEvent(FillAddressUiEvent.SaveAddress(newMyAddress))
+                                    },
+                                    modifier = Modifier
+                                        .padding(spacing.medium)
+                                        .fillMaxWidth()
+                                        .clip(MaterialTheme.shapes.large),
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = MaterialTheme.colorScheme.primary,
+                                        contentColor = MaterialTheme.colorScheme.onSurface
+                                    ),
+                                    enabled = houseNo.value.isNotEmpty() && block.value.isNotEmpty() && phone.value.isNotEmpty() && phone.value.length==10 && name.value.isNotEmpty()
+                                ) {
+                                    Text(
+                                        text = R.string.save_address.toStringFromResId(),
+                                        style = MaterialTheme.typography.titleLarge
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
             }
