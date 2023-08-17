@@ -174,7 +174,7 @@ android {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:3.23.4"
+        artifact = libs.protobuf.protoc.get().toString()
     }
     generateProtoTasks {
         all().forEach { task ->
@@ -381,9 +381,6 @@ dependencies {
     //Spotify Auth
     implementation(libs.auth)
 
-    //Stepper
-    implementation(libs.compose.stepper)
-
     //Swipe
     implementation(libs.swipe)
 
@@ -402,8 +399,12 @@ dependencies {
     // Photo Picker
     implementation(libs.modernstorage.photopicker)
 
+    //TODO-------------------Low standard libraries - consider removing later---------------------//
+    //Stepper
+    implementation("com.github.maryamrzdh:compose-stepper:1.0.0-beta01")
+
     //Rating-Bar
-    implementation(libs.compose.ratingbar)
+    implementation("com.github.a914-gowtham:compose-ratingbar:1.2.4")
     implementation("com.github.SmartToolFactory:Compose-RatingBar:2.1.1")
 
     //Recyclerview swipe decorator
@@ -427,6 +428,7 @@ dependencies {
     implementation("com.github.SmartToolFactory:Compose-Extended-Gestures:3.0.0")
     // Animated List
     implementation("com.github.SmartToolFactory:Compose-AnimatedList:0.5.1")
+    //TODO-------------------Low standard libraries - consider removing later---------------------//
 
     //test
     testImplementation(libs.junit4)
