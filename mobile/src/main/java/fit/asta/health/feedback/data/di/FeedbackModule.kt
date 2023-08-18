@@ -9,6 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.BuildConfig
 import fit.asta.health.common.utils.NetworkUtil
+import fit.asta.health.di.IODispatcher
 import fit.asta.health.feedback.data.remote.FeedbackApi
 import fit.asta.health.feedback.data.repo.FeedbackRepo
 import fit.asta.health.feedback.data.repo.FeedbackRepoImpl
@@ -38,7 +39,7 @@ object FeedbackModule {
     fun provideFeedbackRepo(
         remoteApi: FeedbackApi,
         contentResolver: ContentResolver,
-        coroutineDispatcher: CoroutineDispatcher
+        @IODispatcher coroutineDispatcher: CoroutineDispatcher
     ): FeedbackRepo {
         return FeedbackRepoImpl(
             remoteApi = remoteApi,

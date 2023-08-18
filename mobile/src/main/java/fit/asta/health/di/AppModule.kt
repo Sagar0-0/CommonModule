@@ -84,7 +84,7 @@ object AppModule {
     @Singleton
     @ApplicationScope
     fun providesCoroutineScope(
-        dispatcher: CoroutineDispatcher,
+        @IODispatcher dispatcher: CoroutineDispatcher,
     ): CoroutineScope = CoroutineScope(SupervisorJob() + dispatcher)
 
 }

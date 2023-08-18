@@ -4,6 +4,7 @@ import android.content.ContentResolver
 import fit.asta.health.common.utils.InputStreamRequestBody
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getResponseState
+import fit.asta.health.di.IODispatcher
 import fit.asta.health.feedback.data.remote.FeedbackApi
 import fit.asta.health.feedback.data.remote.modal.FeedbackQuesDTO
 import fit.asta.health.feedback.data.remote.modal.PostFeedbackDTO
@@ -17,7 +18,7 @@ import okhttp3.MultipartBody
 class FeedbackRepoImpl(
     private val remoteApi: FeedbackApi,
     private val contentResolver: ContentResolver,
-    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.Default
+    @IODispatcher private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : FeedbackRepo {
 
     override suspend fun getFeedbackQuestions(
