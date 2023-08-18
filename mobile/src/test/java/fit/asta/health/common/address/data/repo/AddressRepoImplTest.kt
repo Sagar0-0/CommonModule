@@ -154,18 +154,18 @@ class AddressRepoImplTest{
     @Test
     fun `putAddress, returns Success`() = runTest {
         val myAddress = MyAddress()
-        coEvery { addressApi.addNewAddress(any()) }returns PutAddressResponse()
+        coEvery { addressApi.putAddress(any()) }returns PutAddressResponse()
         val res = repo.putAddress(myAddress)
-        coVerify { addressApi.addNewAddress(myAddress) }
+        coVerify { addressApi.putAddress(myAddress) }
         assert(res is ResponseState.Success)
     }
 
     @Test
     fun `putAddress, returns Error`() = runTest {
         val myAddress = MyAddress()
-        coEvery { addressApi.addNewAddress(any()) }throws Exception()
+        coEvery { addressApi.putAddress(any()) }throws Exception()
         val res = repo.putAddress(myAddress)
-        coVerify { addressApi.addNewAddress(myAddress) }
+        coVerify { addressApi.putAddress(myAddress) }
         assert(res is ResponseState.Error)
     }
 

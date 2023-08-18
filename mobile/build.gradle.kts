@@ -4,23 +4,32 @@ import com.google.firebase.perf.plugin.FirebasePerfExtension
 import java.util.Properties
 
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    id("asta.android.application")
+    id("asta.android.application.compose")
+    id("asta.android.application.flavors")
+    id("asta.android.application.jacoco")
+    id("jacoco")
+    id("asta.android.hilt")
     id("com.google.devtools.ksp")
-    id("dagger.hilt.android.plugin")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
-    id("com.google.firebase.firebase-perf")
     id("kotlin-parcelize")
-    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     id("com.google.protobuf")
+    id("asta.android.application.firebase")
+    id("com.google.gms.google-services")
+    id("com.google.android.gms.oss-licenses-plugin")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 val secretProps = Properties().apply {
-    load(rootProject.file("secrets.defaults.properties").inputStream())
+    load(rootProject.file("secrets.debug.properties").inputStream())
 }
 
 android {
+
+    namespace = "fit.asta.health"
+
+    buildFeatures {
+        buildConfig = true
+    }
 
     signingConfigs {
         create("release") {
@@ -31,16 +40,34 @@ android {
         }
     }
 
-    namespace = "fit.asta.health"
-    compileSdk = 34
+    /* TODO - Need to test
+    signingConfigs {
+        if (rootProject.file("signing-debug.properties").exists()) {
+            val signingDebug = Properties()
+            signingDebug.load(java.io.FileInputStream(rootProject.file("signing-debug.properties")))
+            getByName("debug") {
+                storeFile = rootProject.file(signingDebug.getProperty("storeFile"))
+                storePassword = signingDebug.getProperty("storePassword")
+                keyAlias = signingDebug.getProperty("keyAlias")
+                keyPassword = signingDebug.getProperty("keyPassword")
+            }
+        }
+        if (rootProject.file("signing-release.properties").exists()) {
+            val signingRelease = Properties()
+            signingRelease.load(java.io.FileInputStream(rootProject.file("signing-release.properties")))
+            create("release") {
+                storeFile =  rootProject.file(signingRelease.getProperty("storeFile"))
+                storePassword = signingRelease.getProperty("storePassword")
+                keyAlias = signingRelease.getProperty("keyAlias")
+                keyPassword = signingRelease.getProperty("keyPassword")
+            }
+        }
+    }*/
 
     defaultConfig {
         applicationId = "fit.asta.health"
-        minSdk = 24
-        targetSdk = 34
         versionCode = 14
-        versionName = "0.14"
-
+        versionName = "0.1.4" // X.Y.Z; X = Major, Y = minor, Z = Patch level
         vectorDrawables.useSupportLibrary = true
         signingConfig = signingConfigs.getByName("release")
 
@@ -54,78 +81,12 @@ android {
                 arguments["room.schemaLocation"] = "$projectDir/schemas"
             }
         }
-
-        buildConfigField("String", "BASE_URL", "\"${project.findProperty("base_url") ?: ""}\"")
-        buildConfigField(
-            "String",
-            "BASE_IMAGE_URL",
-            "\"${project.findProperty("base_image_url") ?: ""}\""
-        )
-        buildConfigField(
-            "String",
-            "BASE_VIDEO_URL",
-            "\"${project.findProperty("base_video_url") ?: ""}\""
-        )
-    }
-
-    flavorDimensions += "endpoints"
-
-    productFlavors {
-        create("dev") {
-            dimension = "endpoints"
-            resourceConfigurations += listOf("en", "xxhdpi")
-            buildConfigField(
-                "String",
-                "BASE_URL",
-                "\"${project.findProperty("dev_base_url") ?: ""}\""
-            )
-            buildConfigField(
-                "String",
-                "BASE_IMAGE_URL",
-                "\"${project.findProperty("dev_image_url") ?: ""}\""
-            )
-            buildConfigField(
-                "String",
-                "BASE_VIDEO_URL",
-                "\"${project.findProperty("dev_video_url") ?: ""}\""
-            )
-        }
-
-        create("prod") {
-            dimension = "endpoints"
-            buildConfigField(
-                "String",
-                "BASE_URL",
-                "\"${project.findProperty("prod_base_url") ?: ""}\""
-            )
-            buildConfigField(
-                "String",
-                "BASE_IMAGE_URL",
-                "\"${project.findProperty("prod_image_url") ?: ""}\""
-            )
-            buildConfigField(
-                "String",
-                "BASE_VIDEO_URL",
-                "\"${project.findProperty("prod_video_url") ?: ""}\""
-            )
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-        isCoreLibraryDesugaringEnabled = true
-    }
-
-    kotlinOptions {
-        jvmTarget = "17"
     }
 
     buildTypes {
-        getByName("debug") {
-            applicationIdSuffix = ".dev"
-            isMinifyEnabled = false
+        debug {
             //multiDexEnabled = true
+            isDebuggable = true
             aaptOptions.cruncherEnabled = false
             configure<FirebasePerfExtension> {
                 setInstrumentationEnabled(false)
@@ -136,16 +97,17 @@ android {
             }
             resValue("string", "MAPS_API_KEY", secretProps["MAPS_API_KEY"].toString())
             manifestPlaceholders["crashlyticsCollectionEnabled"] = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            //signingConfig = signingConfigs.getByName("debug")
         }
-        getByName("release") {
+        release {
+            isDebuggable = false
             isMinifyEnabled = true
             isShrinkResources = true
+            isJniDebuggable = false
+            isRenderscriptDebuggable = false
             resValue("string", "MAPS_API_KEY", secretProps["MAPS_API_KEY"].toString())
             manifestPlaceholders["crashlyticsCollectionEnabled"] = true
+            //signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -153,14 +115,18 @@ android {
         }
     }
 
-    // Enables data binding.
-    buildFeatures {
-        compose = true
+    packaging {
+        resources {
+            excludes.add("/META-INF/{AL2.0,LGPL2.1}")
+        }
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
+    /*TODO - Need to test
+    bundle {
+        language { enableSplit = true }
+        density { enableSplit = true }
+        abi { enableSplit = true }
+    }*/
 
     testOptions {
         unitTests {
@@ -174,7 +140,7 @@ android {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:3.23.4"
+        artifact = libs.protobuf.protoc.get().toString()
     }
     generateProtoTasks {
         all().forEach { task ->
@@ -192,7 +158,7 @@ protobuf {
 
 dependencies {
 
-    implementation(project(path = ":chartLibrary"))
+    implementation(project(":chartLibrary"))
     // Spotify App remote Dependency
     implementation(fileTree(mapOf("include" to listOf("*.jar", "*.aar"), "dir" to "libs")))
 
@@ -233,9 +199,9 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
 
     //Datastore
-    implementation(libs.androidx.dataStore.core)
-    implementation(libs.protobuf.kotlin.lite)
+    implementation(libs.androidx.datastore.core)
     implementation(libs.androidx.datastore.preferences)
+    implementation(libs.protobuf.kotlin.lite)
 
     //Jetpack Compose - Material theme components
     implementation(libs.androidx.material3)
@@ -381,9 +347,6 @@ dependencies {
     //Spotify Auth
     implementation(libs.auth)
 
-    //Stepper
-    implementation(libs.compose.stepper)
-
     //Swipe
     implementation(libs.swipe)
 
@@ -402,8 +365,12 @@ dependencies {
     // Photo Picker
     implementation(libs.modernstorage.photopicker)
 
+    //TODO-------------------Low standard libraries - consider removing later---------------------//
+    //Stepper
+    implementation("com.github.maryamrzdh:compose-stepper:1.0.0-beta01")
+
     //Rating-Bar
-    implementation(libs.compose.ratingbar)
+    implementation("com.github.a914-gowtham:compose-ratingbar:1.2.4")
     implementation("com.github.SmartToolFactory:Compose-RatingBar:2.1.1")
 
     //Recyclerview swipe decorator
@@ -427,6 +394,7 @@ dependencies {
     implementation("com.github.SmartToolFactory:Compose-Extended-Gestures:3.0.0")
     // Animated List
     implementation("com.github.SmartToolFactory:Compose-AnimatedList:0.5.1")
+    //TODO-------------------Low standard libraries - consider removing later---------------------//
 
     //test
     testImplementation(libs.junit4)
@@ -438,6 +406,7 @@ dependencies {
     testImplementation(libs.androidx.paging.common.ktx)
     testImplementation(libs.mockk.android)
     testImplementation(libs.turbine)
+    testImplementation(libs.mockwebserver)
 
     androidTestImplementation(libs.androidx.ui.test.junit4.android)
     androidTestImplementation(libs.androidx.room.testing)

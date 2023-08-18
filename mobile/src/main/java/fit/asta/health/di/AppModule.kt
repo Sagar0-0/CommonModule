@@ -53,6 +53,7 @@ object AppModule {
     fun provideIODispatcher(): CoroutineDispatcher = Dispatchers.IO
 
     @Provides
+    @DefaultDispatcher
     fun providesCoroutineDispatcher(): CoroutineDispatcher = Dispatchers.Default
 
     @Provides
@@ -83,14 +84,19 @@ object AppModule {
     @Singleton
     @ApplicationScope
     fun providesCoroutineScope(
-        dispatcher: CoroutineDispatcher,
+        @IODispatcher dispatcher: CoroutineDispatcher,
     ): CoroutineScope = CoroutineScope(SupervisorJob() + dispatcher)
 
 }
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-private annotation class IODispatcher
+annotation class IODispatcher
+
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class DefaultDispatcher
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)

@@ -30,9 +30,13 @@ import fit.asta.health.common.utils.ResourcesProvider
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UserPreferencesData
 import fit.asta.health.common.utils.getResponseState
+import fit.asta.health.di.IODispatcher
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class AddressRepoImpl @Inject constructor(
@@ -40,7 +44,8 @@ class AddressRepoImpl @Inject constructor(
     private val searchLocationApi: SearchLocationApi,
     private val prefManager: PrefManager,
     private val resourcesProvider: ResourcesProvider,
-    private val locationResourcesProvider: LocationResourceProvider
+    private val locationResourcesProvider: LocationResourceProvider,
+    @IODispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : AddressRepo {
 
     override val userPreferences: Flow<UserPreferencesData> = prefManager.userData
@@ -72,7 +77,14 @@ class AddressRepoImpl @Inject constructor(
                         if (location == null) {
                             trySend(LocationResponse.Error(R.string.unable_to_fetch_location))
                         } else {
-                            trySend(LocationResponse.Success(LatLng(location.latitude,location.longitude)))
+                            trySend(
+                                LocationResponse.Success(
+                                    LatLng(
+                                        location.latitude,
+                                        location.longitude
+                                    )
+                                )
+                            )
                         }
                     }
                 },
@@ -82,34 +94,38 @@ class AddressRepoImpl @Inject constructor(
         awaitClose { close() }
     }
 
-    override fun getAddressDetails(latLng: LatLng): Flow<ResponseState<Address>> = callbackFlow {
-        try {
-            val geocoder = locationResourcesProvider.getGeocoder()
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                geocoder.getFromLocation(
-                    latLng.latitude,
-                    latLng.longitude,
-                    1
-                ) { addresses ->
-                    trySend(ResponseState.Success(addresses[0]))
-                }
-            } else {
-                val addresses = geocoder.getFromLocation(
-                    latLng.latitude,
-                    latLng.longitude,
-                    1,
-                )
-                if (!addresses.isNullOrEmpty()) {
-                    trySend(ResponseState.Success(addresses[0]))
-                } else {
+    override suspend fun getAddressDetails(latLng: LatLng): Flow<ResponseState<Address>> {
+        return withContext(dispatcher) {
+            callbackFlow {
+                try {
+                    val geocoder = locationResourcesProvider.getGeocoder()
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        geocoder.getFromLocation(
+                            latLng.latitude,
+                            latLng.longitude,
+                            1
+                        ) { addresses ->
+                            trySend(ResponseState.Success(addresses[0]))
+                        }
+                    } else {
+                        val addresses = geocoder.getFromLocation(
+                            latLng.latitude,
+                            latLng.longitude,
+                            1,
+                        )
+                        if (!addresses.isNullOrEmpty()) {
+                            trySend(ResponseState.Success(addresses[0]))
+                        } else {
+                            trySend(ResponseState.Error(MyException(R.string.unable_to_fetch_location)))
+                        }
+                    }
+                } catch (e: Exception) {
                     trySend(ResponseState.Error(MyException(R.string.unable_to_fetch_location)))
                 }
-            }
-        } catch (e: Exception) {
-            trySend(ResponseState.Error(MyException(R.string.unable_to_fetch_location)))
-        }
 
-        awaitClose { close() }
+                awaitClose { close() }
+            }
+        }
     }
 
 
@@ -122,19 +138,21 @@ class AddressRepoImpl @Inject constructor(
     }
 
     override suspend fun search(text: String, latitude : Double, longitude: Double): ResponseState<SearchResponse> {
-        return getResponseState {
-            if (latitude == 0.0 && longitude == 0.0) {
-                searchLocationApi.search(
-                    text,
-                    resourcesProvider.getString(R.string.MAPS_API_KEY)
-                )
-            } else {
-                searchLocationApi.searchBiased(
-                    "${latitude},${longitude}",
-                    "distance",
-                    text,
-                    resourcesProvider.getString(R.string.MAPS_API_KEY)
-                )
+        return withContext(dispatcher) {
+            getResponseState {
+                if (latitude == 0.0 && longitude == 0.0) {
+                    searchLocationApi.search(
+                        text,
+                        resourcesProvider.getString(R.string.MAPS_API_KEY)
+                    )
+                } else {
+                    searchLocationApi.searchBiased(
+                        "${latitude},${longitude}",
+                        "distance",
+                        text,
+                        resourcesProvider.getString(R.string.MAPS_API_KEY)
+                    )
+                }
             }
         }
     }
@@ -146,7 +164,7 @@ class AddressRepoImpl @Inject constructor(
     }
 
     override suspend fun putAddress(myAddress: MyAddress): ResponseState<Boolean> {
-        return getResponseState { addressApi.addNewAddress(myAddress).data.flag }
+        return getResponseState { addressApi.putAddress(myAddress).data.flag }
     }
 
     override suspend fun deleteAddress(

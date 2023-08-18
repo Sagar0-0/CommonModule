@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google()
         mavenCentral()
@@ -16,6 +17,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Asta"
+rootProject.name = "asta"
 include(":mobile")
 include(":chartLibrary")
