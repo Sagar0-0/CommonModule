@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class AmountConsumed(
     @SerializedName("dailyAvg")
-    val dailyAvg: Double,
+    val dailyAvg: Float,
     @SerializedName("totalAmt")
-    val totalAmt: Int
+    val totalAmt: Float
 )

@@ -20,7 +20,7 @@ data class WaterResponse(
         @SerializedName("beverages")
         val beverageData: MultiGraphParent?,
         @SerializedName("dailyProgress")
-        val dailyProgress: Graph?,
+        val progress: Graph?,
         @SerializedName("endDate")
         val endDate: String,
         @SerializedName("id")
@@ -28,7 +28,7 @@ data class WaterResponse(
         @SerializedName("month")
         val month: String,
         @SerializedName("progress")
-        val progress: Progress?,
+        val dailyProgress: Progress?,
         @SerializedName("ratio")
         val ratio: Ratio?,
         @SerializedName("startDate")

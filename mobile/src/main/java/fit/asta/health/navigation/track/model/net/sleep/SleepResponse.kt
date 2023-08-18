@@ -2,7 +2,6 @@ package fit.asta.health.navigation.track.model.net.sleep
 
 import com.google.gson.annotations.SerializedName
 import fit.asta.health.navigation.track.model.net.common.Graph
-import fit.asta.health.navigation.track.model.net.common.MultiGraphParent
 import fit.asta.health.navigation.track.model.net.common.Progress
 import fit.asta.health.navigation.track.model.net.common.Status
 import fit.asta.health.navigation.track.model.net.common.Weekly
@@ -18,7 +17,7 @@ data class SleepResponse(
         @SerializedName("endDate")
         val endDate: String,
         @SerializedName("goalGph")
-        val goalGraph: MultiGraphParent?,
+        val goalGraph: Graph?,
         @SerializedName("id")
         val id: String,
         @SerializedName("mid")

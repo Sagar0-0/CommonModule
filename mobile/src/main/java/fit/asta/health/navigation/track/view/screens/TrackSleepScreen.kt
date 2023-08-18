@@ -39,7 +39,6 @@ import com.dev.anirban.chartlibrary.circular.data.CircularDonutListData
 import com.dev.anirban.chartlibrary.circular.data.CircularTargetDataBuilder
 import com.dev.anirban.chartlibrary.circular.foreground.CircularDonutTargetForeground
 import com.dev.anirban.chartlibrary.linear.LinearChart
-import com.dev.anirban.chartlibrary.linear.colorconvention.LinearGridColorConvention
 import com.dev.anirban.chartlibrary.linear.data.LinearEmojiData
 import com.dev.anirban.chartlibrary.linear.data.LinearStringData
 import com.dev.anirban.chartlibrary.linear.plots.LinearGradientLinePlot
@@ -325,15 +324,13 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
 
 
         // Goals Graph
-        sleepData.goalGraph?.let { graphData ->
+        sleepData.goalGraph?.let {
             item {
-                TrackingChartCard(title = "Blood Pressure") {
+                TrackingChartCard(title = "Goals") {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
-                            yAxisReadings = graphData.multiGraphDataList.map {
-                                ChartPoint.pointDataBuilder(it.yVal)
-                            },
-                            xAxisReadings = ChartPoint.pointDataBuilder(graphData.xAxis),
+                            yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
+                            xAxisReadings = ChartPoint.pointDataBuilder(it.xAxis),
                             yMarkerList = ChartPoint.pointDataBuilder(
                                 "Sound Sleep",
                                 "Clear Mind",
@@ -341,9 +338,6 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
                                 "De-stress",
                                 "Goal"
                             ).toMutableList()
-                        ),
-                        colorConvention = LinearGridColorConvention(
-                            textList = graphData.multiGraphDataList.map { it.name }
                         )
                     )
                 }
