@@ -1,6 +1,7 @@
 package fit.asta.health.navigation.track.model
 
 import fit.asta.health.navigation.track.model.net.breathing.BreathingResponse
+import fit.asta.health.navigation.track.model.net.exercise.ExerciseResponse
 import fit.asta.health.navigation.track.model.net.meditation.MeditationResponse
 import fit.asta.health.navigation.track.model.net.menu.HomeMenuResponse
 import fit.asta.health.navigation.track.model.net.sleep.SleepResponse
@@ -59,4 +60,12 @@ interface TrackingRepo {
         location: String,
         status: String
     ): Flow<TrackingNetworkCall<SunlightResponse>>
+
+    suspend fun getExerciseDetails(
+        uid: String,
+        date: String,
+        location: String,
+        exercise: String,
+        status: String
+    ): Flow<TrackingNetworkCall<ExerciseResponse>>
 }

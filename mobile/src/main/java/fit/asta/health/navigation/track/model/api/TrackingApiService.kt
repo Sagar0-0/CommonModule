@@ -1,6 +1,7 @@
 package fit.asta.health.navigation.track.model.api
 
 import fit.asta.health.navigation.track.model.net.breathing.BreathingResponse
+import fit.asta.health.navigation.track.model.net.exercise.ExerciseResponse
 import fit.asta.health.navigation.track.model.net.meditation.MeditationResponse
 import fit.asta.health.navigation.track.model.net.menu.HomeMenuResponse
 import fit.asta.health.navigation.track.model.net.sleep.SleepResponse
@@ -67,4 +68,13 @@ interface TrackingApiService {
         @Query("loc") location: String,
         @Query("sts") status: String
     ): Response<SunlightResponse>
+
+    @GET("tracking/exercise/get/")
+    suspend fun getExerciseDetails(
+        @Query("uid") uid: String,
+        @Query("date") date: String,
+        @Query("loc") location: String,
+        @Query("exe") exercise: String,
+        @Query("sts") status: String
+    ): Response<ExerciseResponse>
 }

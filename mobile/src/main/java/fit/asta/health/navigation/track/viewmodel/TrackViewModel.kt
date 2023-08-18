@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.navigation.track.model.TrackingRepo
 import fit.asta.health.navigation.track.model.net.breathing.BreathingResponse
+import fit.asta.health.navigation.track.model.net.exercise.ExerciseResponse
 import fit.asta.health.navigation.track.model.net.meditation.MeditationResponse
 import fit.asta.health.navigation.track.model.net.menu.HomeMenuResponse
 import fit.asta.health.navigation.track.model.net.sleep.SleepResponse
@@ -207,6 +208,34 @@ class TrackViewModel @Inject constructor(
                 status = status
             ).collect {
                 _sunlightDetails.value = it
+            }
+        }
+    }
+
+
+    // This variable contains the Sunlight Tracking Details
+    private val _exerciseDetails = MutableStateFlow<TrackingNetworkCall<ExerciseResponse>>(
+        TrackingNetworkCall.Initialized()
+    )
+    val exerciseDetails = _exerciseDetails.asStateFlow()
+
+    /**
+     * This function fetches the Sunlight Tracking Details from the server
+     */
+    private fun getExerciseDetails(status: String, date: String) {
+
+        if (_exerciseDetails.value is TrackingNetworkCall.Loading)
+            return
+
+        viewModelScope.launch {
+            trackingRepo.getExerciseDetails(
+                uid = uid,
+                date = date,
+                location = "bangalore",
+                exercise = "workout",
+                status = status
+            ).collect {
+                _exerciseDetails.value = it
             }
         }
     }
