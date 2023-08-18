@@ -42,7 +42,7 @@ fun TrackNavGraph(
                     TrackMenuScreenControl(
                         homeMenuState = homeMenuState,
                         loadHomeData = trackViewModel::getHomeDetails,
-                        setTrackOption = trackViewModel::setTrackOption,
+                        setUiEvent = trackViewModel::uiEventListener,
                         navigator = { navController.navigate(it) }
                     )
                 }
@@ -58,7 +58,7 @@ fun TrackNavGraph(
 
                     TrackWaterScreenControl(
                         waterTrackData = waterTrackData,
-                        setTrackStatus = trackViewModel::setTrackStatus
+                        setUiEvent = trackViewModel::uiEventListener
                     )
                 }
             )
@@ -73,7 +73,7 @@ fun TrackNavGraph(
 
                     TrackStepsScreenControl(
                         stepsTrackData = stepsTrackData,
-                        setTrackStatus = trackViewModel::setTrackStatus
+                        setUiEvent = trackViewModel::uiEventListener
                     )
                 }
             )
@@ -88,7 +88,7 @@ fun TrackNavGraph(
 
                     TrackSleepScreenControl(
                         sleepTrackData = sleepTrackData,
-                        setTrackStatus = trackViewModel::setTrackStatus
+                        setUiEvent = trackViewModel::uiEventListener
                     )
                 }
             )
@@ -103,7 +103,7 @@ fun TrackNavGraph(
 
                     TrackSunlightScreenControl(
                         sunlightTrackData = sunlightTrackData,
-                        setTrackStatus = trackViewModel::setTrackStatus
+                        setUiEvent = trackViewModel::uiEventListener
                     )
                 }
             )
@@ -118,7 +118,7 @@ fun TrackNavGraph(
 
                     TrackBreathingScreenControl(
                         breathingTrackData = breathingTrackData,
-                        setTrackStatus = trackViewModel::setTrackStatus
+                        setUiEvent = trackViewModel::uiEventListener
                     )
                 }
             )
@@ -133,7 +133,7 @@ fun TrackNavGraph(
 
                     TrackMeditationScreenControl(
                         meditationTrackData = meditationTrackData,
-                        setTrackStatus = trackViewModel::setTrackStatus
+                        setUiEvent = trackViewModel::uiEventListener
                     )
                 }
             )

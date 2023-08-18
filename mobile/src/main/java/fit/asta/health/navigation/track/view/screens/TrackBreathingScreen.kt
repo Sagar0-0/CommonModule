@@ -1,7 +1,6 @@
 package fit.asta.health.navigation.track.view.screens
 
 import android.graphics.drawable.BitmapDrawable
-import android.util.Log.d
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -50,13 +49,14 @@ import fit.asta.health.navigation.track.model.net.breathing.BreathingResponse
 import fit.asta.health.navigation.track.view.components.TrackTopTabBar
 import fit.asta.health.navigation.track.view.components.TrackingChartCard
 import fit.asta.health.navigation.track.view.components.TrackingDetailsCard
+import fit.asta.health.navigation.track.view.util.TrackUiEvent
 import fit.asta.health.navigation.track.view.util.TrackingNetworkCall
 import java.text.DecimalFormat
 
 @Composable
 fun TrackBreathingScreenControl(
     breathingTrackData: TrackingNetworkCall<BreathingResponse>,
-    setTrackStatus: (Int) -> Unit
+    setUiEvent: (TrackUiEvent) -> Unit
 ) {
 
     // This is the Item which is selected in the Top Tab Bar Layout
@@ -65,7 +65,7 @@ fun TrackBreathingScreenControl(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        setTrackStatus(selectedItem.intValue)
+        setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
     }
 
     Column(
@@ -90,14 +90,14 @@ fun TrackBreathingScreenControl(
 
                 // Checking which tab option is selected by the User and showing the UI Accordingly
                 selectedItem.intValue = it
-                setTrackStatus(selectedItem.intValue)
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
             }
         }
 
         when (breathingTrackData) {
 
             is TrackingNetworkCall.Initialized -> {
-                setTrackStatus(selectedItem.intValue)
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
             }
 
             is TrackingNetworkCall.Loading -> {
@@ -114,7 +114,6 @@ fun TrackBreathingScreenControl(
             }
 
             is TrackingNetworkCall.Failure -> {
-                d("Breathing Screen", breathingTrackData.message.toString())
                 Toast.makeText(context, breathingTrackData.message.toString(), Toast.LENGTH_SHORT)
                     .show()
             }

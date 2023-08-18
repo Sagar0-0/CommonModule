@@ -2,18 +2,18 @@ package fit.asta.health.navigation.track.view.util
 
 sealed class TrackOption(var trackStatus: TrackStatus) {
 
-    object WaterOption : TrackOption(TrackStatus.StatusDaily)
-    object StepsOption : TrackOption(TrackStatus.StatusDaily)
-    object MeditationOption : TrackOption(TrackStatus.StatusDaily)
-    object BreathingOption : TrackOption(TrackStatus.StatusDaily)
-    object SleepOption : TrackOption(TrackStatus.StatusDaily)
-    object SunlightOption : TrackOption(TrackStatus.StatusDaily)
+    data object WaterOption : TrackOption(TrackStatus.StatusDaily)
+    data object StepsOption : TrackOption(TrackStatus.StatusDaily)
+    data object MeditationOption : TrackOption(TrackStatus.StatusDaily)
+    data object BreathingOption : TrackOption(TrackStatus.StatusDaily)
+    data object SleepOption : TrackOption(TrackStatus.StatusDaily)
+    data object SunlightOption : TrackOption(TrackStatus.StatusDaily)
 
     sealed class TrackStatus(val status: String) {
 
-        object StatusDaily : TrackStatus("daily")
-        object StatusWeekly : TrackStatus("weekly")
-        object StatusMonthly : TrackStatus("monthly")
-        object StatusYearly : TrackStatus("yearly")
+        data object StatusDaily : TrackStatus("daily")
+        data object StatusWeekly : TrackStatus("weekly")
+        data object StatusMonthly : TrackStatus("monthly")
+        data object StatusYearly : TrackStatus("yearly")
     }
 }

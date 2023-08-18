@@ -48,6 +48,7 @@ import fit.asta.health.navigation.track.view.components.TrackingChartCard
 import fit.asta.health.navigation.track.view.components.TrackingDetailsCard
 import fit.asta.health.navigation.track.view.navigation.TrackNavRoute
 import fit.asta.health.navigation.track.view.util.TrackOption
+import fit.asta.health.navigation.track.view.util.TrackUiEvent
 import fit.asta.health.navigation.track.view.util.TrackingNetworkCall
 
 /**
@@ -57,13 +58,13 @@ import fit.asta.health.navigation.track.view.util.TrackingNetworkCall
  * @param homeMenuState This variable contains the state of the Home Menu Api call
  * @param loadHomeData This is the function which fetches the data from the server
  * @param navigator Controller which lets us navigate to a different Screen
- * @param setTrackOption This option sets the Track Option which is selected by the user
+ * @param setUiEvent This option sets the Ui Event which is selected by the user
  */
 @Composable
 fun TrackMenuScreenControl(
     homeMenuState: TrackingNetworkCall<HomeMenuResponse>,
     loadHomeData: () -> Unit,
-    setTrackOption: (TrackOption) -> Unit,
+    setUiEvent: (TrackUiEvent) -> Unit,
     navigator: (String) -> Unit
 ) {
 
@@ -91,7 +92,7 @@ fun TrackMenuScreenControl(
             if (homeMenuState.data != null)
                 TrackMenuSuccessScreen(
                     homeMenuData = homeMenuState.data.homeMenuData,
-                    setTrackOption = setTrackOption,
+                    setUiEvent = setUiEvent,
                     navigator = navigator
                 )
             else
@@ -111,14 +112,14 @@ fun TrackMenuScreenControl(
  *
  * @param homeMenuData This function contains the data of the response of the Api call for the home
  * menu state
- * @param setTrackOption This function is used to set the track Option i.e Water , breathing , steps,
+ * @param setUiEvent This function is used to set the track Option i.e Water , breathing , steps,
  * meditation etc
  * @param navigator This function is used to navigate from one screen to another
  */
 @Composable
 private fun TrackMenuSuccessScreen(
     homeMenuData: HomeMenuResponse.HomeMenuData,
-    setTrackOption: (TrackOption) -> Unit,
+    setUiEvent: (TrackUiEvent) -> Unit,
     navigator: (String) -> Unit
 ) {
 
@@ -206,27 +207,27 @@ private fun TrackMenuSuccessScreen(
                     when (it.title) {
 
                         "water" -> {
-                            setTrackOption(TrackOption.WaterOption)
+                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.WaterOption))
                             navigator(TrackNavRoute.WaterTrackDetail.route)
                         }
 
                         "meditation" -> {
-                            setTrackOption(TrackOption.MeditationOption)
+                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.MeditationOption))
                             navigator(TrackNavRoute.MeditationTrackDetail.route)
                         }
 
                         "breathing" -> {
-                            setTrackOption(TrackOption.BreathingOption)
+                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.BreathingOption))
                             navigator(TrackNavRoute.BreathingTrackDetail.route)
                         }
 
                         "sunlight" -> {
-                            setTrackOption(TrackOption.SunlightOption)
+                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.SunlightOption))
                             navigator(TrackNavRoute.SunlightTrackDetail.route)
                         }
 
                         "sleep" -> {
-                            setTrackOption(TrackOption.SleepOption)
+                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.SleepOption))
                             navigator(TrackNavRoute.SleepTrackDetail.route)
                         }
 
@@ -263,7 +264,7 @@ private fun TrackMenuSuccessScreen(
                     bodyDescription = it.description.stepsDescription,
                     unit = "steps"
                 ) {
-                    setTrackOption(TrackOption.StepsOption)
+                    setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.StepsOption))
                     navigator(TrackNavRoute.StepsTrackDetail.route)
                 }
 
@@ -363,7 +364,7 @@ private fun ToolsItemsCard(
                         )
 
                         // Description Text
-                        Text(text = "$bodyDescription")
+                        Text(text = bodyDescription)
                     }
 
                     // Trailing Image of this row at the bottom of the Chart

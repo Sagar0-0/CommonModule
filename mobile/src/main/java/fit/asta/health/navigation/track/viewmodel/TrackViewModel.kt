@@ -13,6 +13,7 @@ import fit.asta.health.navigation.track.model.net.step.StepsResponse
 import fit.asta.health.navigation.track.model.net.sunlight.SunlightResponse
 import fit.asta.health.navigation.track.model.net.water.WaterResponse
 import fit.asta.health.navigation.track.view.util.TrackOption
+import fit.asta.health.navigation.track.view.util.TrackUiEvent
 import fit.asta.health.navigation.track.view.util.TrackingNetworkCall
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -241,18 +242,23 @@ class TrackViewModel @Inject constructor(
     }
 
     private var currentTrackOption: TrackOption = TrackOption.WaterOption
-    fun setTrackOption(newTrackOption: TrackOption) {
-        currentTrackOption = newTrackOption
-    }
 
-    fun setTrackStatus(chosenOption: Int) {
-        when (chosenOption) {
-            0 -> currentTrackOption.trackStatus = TrackOption.TrackStatus.StatusDaily
-            1 -> currentTrackOption.trackStatus = TrackOption.TrackStatus.StatusWeekly
-            2 -> currentTrackOption.trackStatus = TrackOption.TrackStatus.StatusMonthly
-            3 -> currentTrackOption.trackStatus = TrackOption.TrackStatus.StatusYearly
+    fun uiEventListener(event: TrackUiEvent) {
+        when (event) {
+            is TrackUiEvent.SetTrackOption -> {
+                currentTrackOption = event.trackOption
+            }
+
+            is TrackUiEvent.SetTrackStatus -> {
+                when (event.chosenOption) {
+                    0 -> currentTrackOption.trackStatus = TrackOption.TrackStatus.StatusDaily
+                    1 -> currentTrackOption.trackStatus = TrackOption.TrackStatus.StatusWeekly
+                    2 -> currentTrackOption.trackStatus = TrackOption.TrackStatus.StatusMonthly
+                    3 -> currentTrackOption.trackStatus = TrackOption.TrackStatus.StatusYearly
+                }
+                handleTrackerOption()
+            }
         }
-        handleTrackerOption()
     }
 
     private fun handleTrackerOption() {

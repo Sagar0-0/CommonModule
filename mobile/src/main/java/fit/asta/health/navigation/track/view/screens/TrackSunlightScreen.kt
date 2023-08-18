@@ -1,7 +1,6 @@
 package fit.asta.health.navigation.track.view.screens
 
 import android.graphics.drawable.BitmapDrawable
-import android.util.Log.d
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -47,13 +46,14 @@ import fit.asta.health.navigation.track.model.net.sunlight.SunlightResponse
 import fit.asta.health.navigation.track.view.components.TrackTopTabBar
 import fit.asta.health.navigation.track.view.components.TrackingChartCard
 import fit.asta.health.navigation.track.view.components.TrackingDetailsCard
+import fit.asta.health.navigation.track.view.util.TrackUiEvent
 import fit.asta.health.navigation.track.view.util.TrackingNetworkCall
 import java.text.DecimalFormat
 
 @Composable
 fun TrackSunlightScreenControl(
     sunlightTrackData: TrackingNetworkCall<SunlightResponse>,
-    setTrackStatus: (Int) -> Unit
+    setUiEvent: (TrackUiEvent) -> Unit
 ) {
     // This is the Item which is selected in the Top Tab Bar Layout
     val selectedItem = remember { mutableIntStateOf(0) }
@@ -61,7 +61,7 @@ fun TrackSunlightScreenControl(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        setTrackStatus(selectedItem.intValue)
+        setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
     }
 
     Column(
@@ -86,14 +86,14 @@ fun TrackSunlightScreenControl(
 
                 // Checking which tab option is selected by the User and showing the UI Accordingly
                 selectedItem.intValue = it
-                setTrackStatus(selectedItem.intValue)
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
             }
         }
 
         when (sunlightTrackData) {
 
             is TrackingNetworkCall.Initialized -> {
-                setTrackStatus(selectedItem.intValue)
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
             }
 
             is TrackingNetworkCall.Loading -> {
@@ -110,7 +110,6 @@ fun TrackSunlightScreenControl(
             }
 
             is TrackingNetworkCall.Failure -> {
-                d("Sunlight Screen", sunlightTrackData.message.toString())
                 Toast.makeText(context, sunlightTrackData.message.toString(), Toast.LENGTH_SHORT)
                     .show()
             }
