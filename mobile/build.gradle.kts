@@ -42,8 +42,6 @@ android {
 
     defaultConfig {
         applicationId = "fit.asta.health"
-        minSdk = 24
-        targetSdk = 34
         versionCode = 14
         versionName = "0.1.4" // X.Y.Z; X = Major, Y = minor, Z = Patch level
 
@@ -63,8 +61,7 @@ android {
     }
 
     buildTypes {
-        getByName("debug") {
-            isMinifyEnabled = false
+        debug {
             //multiDexEnabled = true
             aaptOptions.cruncherEnabled = false
             configure<FirebasePerfExtension> {
@@ -76,12 +73,8 @@ android {
             }
             resValue("string", "MAPS_API_KEY", secretProps["MAPS_API_KEY"].toString())
             manifestPlaceholders["crashlyticsCollectionEnabled"] = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
         }
-        getByName("release") {
+        release {
             isMinifyEnabled = true
             isShrinkResources = true
             resValue("string", "MAPS_API_KEY", secretProps["MAPS_API_KEY"].toString())
