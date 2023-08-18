@@ -31,19 +31,44 @@ enum class FlavorDimension {
 // purposes, or from a production backend server which supplies up-to-date, real content.
 // These two product flavors reflect this behaviour.
 @Suppress("EnumEntryName")
-enum class NiaFlavor(val dimension: FlavorDimension, val applicationIdSuffix: String? = null) {
-    demo(contentType, applicationIdSuffix = ".demo"),
-    prod(contentType)
+enum class AstaFlavor(
+    val dimension: FlavorDimension,
+    val applicationIdSuffix: String,
+    val baseUrl: String,
+    val imgUrl: String,
+    val vdoUrl: String,
+) {
+    dev(
+        contentType,
+        applicationIdSuffix = ".dev",
+        baseUrl = "https://asta-m1-dev.ap-southeast-1.elasticbeanstalk.com/",
+        imgUrl = "https://dj9n1wsbrvg44.cloudfront.net",
+        vdoUrl = "https://d28fbw0qer0joz.cloudfront.net"
+    ),
+    tst(
+        contentType,
+        applicationIdSuffix = ".test",
+        baseUrl = "https://asta-m1-dev.ap-southeast-1.elasticbeanstalk.com/",
+        imgUrl = "https://dj9n1wsbrvg44.cloudfront.net",
+        vdoUrl = "https://d28fbw0qer0joz.cloudfront.net"
+    ),
+    prod(
+        contentType,
+        applicationIdSuffix = "",
+        baseUrl = "https://asta.fit/",
+        imgUrl = "https://img1.asta.fit",
+        vdoUrl = "https://stream.asta.fit"
+    )
 }
 
 fun configureFlavors(
     commonExtension: CommonExtension<*, *, *, *, *>,
-    flavorConfigurationBlock: ProductFlavor.(flavor: NiaFlavor) -> Unit = {}
+    flavorConfigurationBlock: ProductFlavor.(flavor: AstaFlavor) -> Unit = {}
 ) {
     commonExtension.apply {
         flavorDimensions += contentType.name
         productFlavors {
-            NiaFlavor.values().forEach {
+            AstaFlavor.values().forEach {
                 create(it.name) {
                     dimension = it.dimension.name
                     flavorConfigurationBlock(this, it)
@@ -51,6 +76,9 @@ fun configureFlavors(
                         if (it.applicationIdSuffix != null) {
                             applicationIdSuffix = it.applicationIdSuffix
                         }
+                        buildConfigField("String", "BASE_URL", "\"${it.baseUrl}\"")
+                        buildConfigField("String", "BASE_IMAGE_URL", "\"${it.imgUrl}\"")
+                        buildConfigField("String", "BASE_VIDEO_URL", "\"${it.vdoUrl}\"")
                     }
                 }
             }

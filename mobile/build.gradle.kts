@@ -6,24 +6,21 @@ import java.util.Properties
 plugins {
     id("asta.android.application")
     id("asta.android.application.compose")
-    //id("asta.android.application.flavors")
+    id("asta.android.application.flavors")
     id("asta.android.application.jacoco")
-    id("asta.android.hilt")
     id("jacoco")
-    id("asta.android.application.firebase")
-    id("com.google.android.gms.oss-licenses-plugin")
-    id("org.jetbrains.kotlin.android")
+    id("asta.android.hilt")
     id("com.google.devtools.ksp")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
-    id("com.google.firebase.firebase-perf")
     id("kotlin-parcelize")
-    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     id("com.google.protobuf")
+    id("asta.android.application.firebase")
+    id("com.google.gms.google-services")
+    id("com.google.android.gms.oss-licenses-plugin")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 val secretProps = Properties().apply {
-    load(rootProject.file("secrets.defaults.properties").inputStream())
+    load(rootProject.file("secrets.debug.properties").inputStream())
 }
 
 android {
@@ -48,7 +45,7 @@ android {
         minSdk = 24
         targetSdk = 34
         versionCode = 14
-        versionName = "0.14"
+        versionName = "0.1.4" // X.Y.Z; X = Major, Y = minor, Z = Patch level
 
         vectorDrawables.useSupportLibrary = true
         signingConfig = signingConfigs.getByName("release")
@@ -63,66 +60,10 @@ android {
                 arguments["room.schemaLocation"] = "$projectDir/schemas"
             }
         }
-
-        buildConfigField("String", "BASE_URL", "\"${project.findProperty("base_url") ?: ""}\"")
-        buildConfigField(
-            "String",
-            "BASE_IMAGE_URL",
-            "\"${project.findProperty("base_image_url") ?: ""}\""
-        )
-        buildConfigField(
-            "String",
-            "BASE_VIDEO_URL",
-            "\"${project.findProperty("base_video_url") ?: ""}\""
-        )
-    }
-
-    flavorDimensions += "endpoints"
-
-    productFlavors {
-        create("dev") {
-            dimension = "endpoints"
-            resourceConfigurations += listOf("en", "xxhdpi")
-            buildConfigField(
-                "String",
-                "BASE_URL",
-                "\"${project.findProperty("dev_base_url") ?: ""}\""
-            )
-            buildConfigField(
-                "String",
-                "BASE_IMAGE_URL",
-                "\"${project.findProperty("dev_image_url") ?: ""}\""
-            )
-            buildConfigField(
-                "String",
-                "BASE_VIDEO_URL",
-                "\"${project.findProperty("dev_video_url") ?: ""}\""
-            )
-        }
-
-        create("prod") {
-            dimension = "endpoints"
-            buildConfigField(
-                "String",
-                "BASE_URL",
-                "\"${project.findProperty("prod_base_url") ?: ""}\""
-            )
-            buildConfigField(
-                "String",
-                "BASE_IMAGE_URL",
-                "\"${project.findProperty("prod_image_url") ?: ""}\""
-            )
-            buildConfigField(
-                "String",
-                "BASE_VIDEO_URL",
-                "\"${project.findProperty("prod_video_url") ?: ""}\""
-            )
-        }
     }
 
     buildTypes {
         getByName("debug") {
-            applicationIdSuffix = ".dev"
             isMinifyEnabled = false
             //multiDexEnabled = true
             aaptOptions.cruncherEnabled = false
