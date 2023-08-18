@@ -25,6 +25,12 @@ val secretProps = Properties().apply {
 
 android {
 
+    namespace = "fit.asta.health"
+
+    buildFeatures {
+        buildConfig = true
+    }
+
     signingConfigs {
         create("release") {
             storeFile = file("..\\Keys\\AstaKey")
@@ -34,17 +40,34 @@ android {
         }
     }
 
-    namespace = "fit.asta.health"
-
-    buildFeatures {
-        buildConfig = true
-    }
+    /* TODO - Need to test
+    signingConfigs {
+        if (rootProject.file("signing-debug.properties").exists()) {
+            val signingDebug = Properties()
+            signingDebug.load(java.io.FileInputStream(rootProject.file("signing-debug.properties")))
+            getByName("debug") {
+                storeFile = rootProject.file(signingDebug.getProperty("storeFile"))
+                storePassword = signingDebug.getProperty("storePassword")
+                keyAlias = signingDebug.getProperty("keyAlias")
+                keyPassword = signingDebug.getProperty("keyPassword")
+            }
+        }
+        if (rootProject.file("signing-release.properties").exists()) {
+            val signingRelease = Properties()
+            signingRelease.load(java.io.FileInputStream(rootProject.file("signing-release.properties")))
+            create("release") {
+                storeFile =  rootProject.file(signingRelease.getProperty("storeFile"))
+                storePassword = signingRelease.getProperty("storePassword")
+                keyAlias = signingRelease.getProperty("keyAlias")
+                keyPassword = signingRelease.getProperty("keyPassword")
+            }
+        }
+    }*/
 
     defaultConfig {
         applicationId = "fit.asta.health"
         versionCode = 14
         versionName = "0.1.4" // X.Y.Z; X = Major, Y = minor, Z = Patch level
-
         vectorDrawables.useSupportLibrary = true
         signingConfig = signingConfigs.getByName("release")
 
@@ -63,6 +86,7 @@ android {
     buildTypes {
         debug {
             //multiDexEnabled = true
+            isDebuggable = true
             aaptOptions.cruncherEnabled = false
             configure<FirebasePerfExtension> {
                 setInstrumentationEnabled(false)
@@ -73,12 +97,17 @@ android {
             }
             resValue("string", "MAPS_API_KEY", secretProps["MAPS_API_KEY"].toString())
             manifestPlaceholders["crashlyticsCollectionEnabled"] = false
+            //signingConfig = signingConfigs.getByName("debug")
         }
         release {
+            isDebuggable = false
             isMinifyEnabled = true
             isShrinkResources = true
+            isJniDebuggable = false
+            isRenderscriptDebuggable = false
             resValue("string", "MAPS_API_KEY", secretProps["MAPS_API_KEY"].toString())
             manifestPlaceholders["crashlyticsCollectionEnabled"] = true
+            //signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -91,6 +120,13 @@ android {
             excludes.add("/META-INF/{AL2.0,LGPL2.1}")
         }
     }
+
+    /*TODO - Need to test
+    bundle {
+        language { enableSplit = true }
+        density { enableSplit = true }
+        abi { enableSplit = true }
+    }*/
 
     testOptions {
         unitTests {
