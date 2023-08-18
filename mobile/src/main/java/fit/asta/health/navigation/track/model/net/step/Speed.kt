@@ -4,13 +4,13 @@ import com.google.gson.annotations.SerializedName
 
 data class Speed(
     @SerializedName("avgCal")
-    val avgCal: Int,
+    val avgCalories: Int,
     @SerializedName("avgCalUnit")
-    val avgCalUnit: String,
+    val avgCaloriesUnit: String,
     @SerializedName("avgInt")
-    val avgInt: Int,
+    val avgIntensity: Int,
     @SerializedName("avgIntUnit")
-    val avgIntUnit: String,
+    val avgIntensityUnit: String,
     @SerializedName("avgSpeed")
     val avgSpeed: Int,
     @SerializedName("avgSpeedUnit")
