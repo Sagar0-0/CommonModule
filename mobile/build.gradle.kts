@@ -38,7 +38,10 @@ android {
     }
 
     namespace = "fit.asta.health"
-    compileSdk = 34
+
+    buildFeatures {
+        buildConfig = true
+    }
 
     defaultConfig {
         applicationId = "fit.asta.health"
@@ -185,7 +188,7 @@ protobuf {
 
 dependencies {
 
-    implementation(project(path = ":chartLibrary"))
+    implementation(project(":chartLibrary"))
     // Spotify App remote Dependency
     implementation(fileTree(mapOf("include" to listOf("*.jar", "*.aar"), "dir" to "libs")))
 

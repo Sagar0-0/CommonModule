@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.dev.anirban.chartlibrary"
+    namespace = "fit.asta.health.chartLibrary"
     compileSdk = 34
 
     defaultConfig {
