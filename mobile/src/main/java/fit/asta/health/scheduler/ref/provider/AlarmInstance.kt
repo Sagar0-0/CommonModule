@@ -519,7 +519,7 @@ import java.util.Calendar
 
 @Entity(tableName = "alarm_instances")
 data class AlarmInstance(
-    @PrimaryKey(autoGenerate = true) var mId: Long = 0,
+    @PrimaryKey(autoGenerate = false) var mId: Long = 0,
     @ColumnInfo(name = "year") var mYear: Int = 0,
     @ColumnInfo(name = "month") var mMonth: Int = 0,
     @ColumnInfo(name = "day") var mDay: Int = 0,
@@ -552,7 +552,7 @@ data class AlarmInstance(
             return Intent(context, cls).putExtra(
                 "id",
                 instanceId
-            ) //.setData(getContentUri(instanceId))
+            )
         }
     }
 
@@ -577,7 +577,7 @@ data class AlarmInstance(
         }
     val timeout: Calendar?
         get() {
-            val timeoutMinutes = 15
+            val timeoutMinutes = 10
 
             // Alarm silence has been set to "None"
             if (timeoutMinutes < 0) {

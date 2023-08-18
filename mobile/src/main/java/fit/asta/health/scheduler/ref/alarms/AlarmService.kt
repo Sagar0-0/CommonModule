@@ -30,6 +30,8 @@ import androidx.annotation.RequiresApi
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.scheduler.ref.AlarmAlertWakeLock
 import fit.asta.health.scheduler.ref.LogUtils
+import fit.asta.health.scheduler.ref.Utils.ALARM_STATE_EXTRA
+import fit.asta.health.scheduler.ref.Utils.CHANGE_STATE_ACTION
 import fit.asta.health.scheduler.ref.db.AlarmInstanceDao
 import fit.asta.health.scheduler.ref.provider.AlarmInstance
 import fit.asta.health.scheduler.ref.provider.ClockContract.InstancesColumns
@@ -51,9 +53,12 @@ class AlarmService : Service() {
     lateinit var alarmInstanceDao: AlarmInstanceDao
     val scope = CoroutineScope(Dispatchers.Main)
 
+    @Inject
+    lateinit var alarmDataManager: AlarmDataManager
+
+
     /** Binder given to AlarmActivity.  */
     private val mBinder: IBinder = Binder()
-    val alarmStateManager = AlarmStateManager()
 
     /** Whether the service is currently bound to AlarmActivity  */
     private var mIsBound = false
@@ -77,7 +82,7 @@ class AlarmService : Service() {
     private fun startAlarm(instance: AlarmInstance) {
         LogUtils.v("AlarmService.start with instance: " + instance.mId)
         if (mCurrentAlarm != null) {
-            alarmStateManager.setMissedState(this, mCurrentAlarm!!)
+            alarmDataManager.setMissedState(this, mCurrentAlarm!!)
             stopCurrentAlarm()
         }
 
@@ -128,12 +133,12 @@ class AlarmService : Service() {
                     // Set the alarm state to snoozed.
                     // If this broadcast receiver is handling the snooze intent then AlarmActivity
                     // must not be showing, so always show snooze toast.
-                    alarmStateManager.setSnoozeState(context, mCurrentAlarm!!, true /* showToast */)
+                    alarmDataManager.setSnoozeState(context, mCurrentAlarm!!, true /* showToast */)
                 }
 
                 ALARM_DISMISS_ACTION -> {
                     // Set the alarm state to dismissed.
-                    alarmStateManager.deleteInstanceAndUpdateParent(context, mCurrentAlarm!!)
+                    alarmDataManager.deleteInstanceAndUpdateParent(context, mCurrentAlarm!!)
                 }
             }
         }
@@ -159,11 +164,11 @@ class AlarmService : Service() {
 
         val instanceId = intent.getLongExtra("id", -1)
         when (intent.action) {
-            alarmStateManager.CHANGE_STATE_ACTION -> {
-                alarmStateManager.handleIntent(this, intent)
+            CHANGE_STATE_ACTION -> {
+                alarmDataManager.handleIntent(this, intent)
 
                 // If state is changed to firing, actually fire the alarm!
-                val alarmState: Int = intent.getIntExtra(alarmStateManager.ALARM_STATE_EXTRA, -1)
+                val alarmState: Int = intent.getIntExtra(ALARM_STATE_EXTRA, -1)
                 if (alarmState == InstancesColumns.FIRED_STATE) {
                     scope.launch {
                         val instance: AlarmInstance? = alarmInstanceDao.getInstance(instanceId)
@@ -242,7 +247,7 @@ class AlarmService : Service() {
          * @param context application context
          * @param instance you are trying to stop
          */
-        @JvmStatic
+
         fun stopAlarm(context: Context, instance: AlarmInstance) {
             val intent: Intent =
                 AlarmInstance.createIntent(context, AlarmService::class.java, instance.mId)

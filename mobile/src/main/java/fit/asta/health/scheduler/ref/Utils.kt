@@ -20,6 +20,7 @@ import android.app.AlarmManager
 import android.app.AlarmManager.AlarmClockInfo
 import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Build
 import android.text.Spannable
@@ -31,10 +32,73 @@ import android.text.style.TypefaceSpan
 import android.widget.TextClock
 import androidx.annotation.DrawableRes
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
+import fit.asta.health.scheduler.ref.alarms.AlarmService
+import fit.asta.health.scheduler.ref.provider.AlarmInstance
 import java.util.Locale
 
 object Utils {
 
+
+    // Intent action to trigger an instance state change.
+    val CHANGE_STATE_ACTION = "change_state"
+
+    // Intent action to show the alarm and dismiss the instance
+    val SHOW_AND_DISMISS_ALARM_ACTION = "show_and_dismiss_alarm"
+
+    // Intent action for an AlarmManager alarm serving only to set the next alarm indicators
+    val INDICATOR_ACTION = "indicator"
+
+    // System intent action to notify AppWidget that we changed the alarm text.
+    val ACTION_ALARM_CHANGED = "com.android.deskclock.ALARM_CHANGED"
+
+    // Extra key to set the desired state change.
+    val ALARM_STATE_EXTRA = "intent.extra.alarm.state"
+
+    // Extra key to indicate the state change was launched from a notification.
+    val FROM_NOTIFICATION_EXTRA = "intent.extra.from.notification"
+
+    // Extra key to set the global broadcast id.
+    val ALARM_GLOBAL_ID_EXTRA = "intent.extra.alarm.global.id"
+
+    // Intent category tags used to dismiss, snooze or delete an alarm
+    val ALARM_DISMISS_TAG = "DISMISS_TAG"
+    val ALARM_SNOOZE_TAG = "SNOOZE_TAG"
+    val ALARM_DELETE_TAG = "DELETE_TAG"
+
+    // Intent category tag used when schedule state change intents in alarm manager.
+    val ALARM_MANAGER_TAG = "ALARM_MANAGER"
+
+    /**
+     * Utility method to create a proper change state intent.
+     *
+     * @param context application context
+     * @param tag used to make intent differ from other state change intents.
+     * @param instance to change state to
+     * @param state to change to.
+     * @return intent that can be used to change an alarm instance state
+     */
+    fun createStateChangeIntent(
+        context: Context?,
+        tag: String?,
+        instance: AlarmInstance,
+        state: Int?
+    ): Intent {
+        // This intent is directed to AlarmService, though the actual handling of it occurs here
+        // in AlarmStateManager. The reason is that evidence exists showing the jump between the
+        // broadcast receiver (AlarmStateManager) and service (AlarmService) can be thwarted by
+        // the Out Of Memory killer. If clock is killed during that jump, firing an alarm can
+        // fail to occur. To be safer, the call begins in AlarmService, which has the power to
+        // display the firing alarm if needed, so no jump is needed.
+        val intent: Intent =
+            AlarmInstance.createIntent(context, AlarmService::class.java, instance.mId)
+        intent.action = CHANGE_STATE_ACTION
+        intent.addCategory(tag)
+        intent.putExtra(ALARM_GLOBAL_ID_EXTRA, -1)// DataModel.dataModel.globalIntentId)
+        if (state != null) {
+            intent.putExtra(ALARM_STATE_EXTRA, state.toInt())
+        }
+        return intent
+    }
 
     /**
      * @return `true` if the device is [Build.VERSION_CODES.O] or later

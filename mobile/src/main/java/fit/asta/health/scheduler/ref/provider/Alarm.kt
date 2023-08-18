@@ -28,6 +28,7 @@ import fit.asta.health.scheduler.ref.data.Weekdays
 import fit.asta.health.scheduler.ref.provider.ClockContract.InstancesColumns
 import kotlinx.parcelize.Parcelize
 import java.util.Calendar
+import java.util.concurrent.atomic.AtomicLong
 
 //class Alarm : Parcelable, AlarmsColumns {
 //    // Public fields
@@ -453,23 +454,21 @@ import java.util.Calendar
 @Entity(tableName = "alarms")
 @Parcelize
 data class Alarm(
-    @PrimaryKey(autoGenerate = true) var id: Long = 0,
+    @PrimaryKey(autoGenerate = false) var id: Long = 0,
     @ColumnInfo(name = "hour") var hour: Int,
     @ColumnInfo(name = "minutes") var minutes: Int,
     @ColumnInfo(name = "daysOfWeek") var daysOfWeek: Weekdays = Weekdays.NONE,
     @ColumnInfo(name = "enabled") var enabled: Boolean,
     @ColumnInfo(name = "vibrate") var vibrate: Boolean = true,
-    @ColumnInfo(name = "label") var label: String? = "",
+    @ColumnInfo(name = "label") var label: String? = "hi",
     @ColumnInfo(name = "alert") var alert: Uri? = null,
-    @ColumnInfo(name = "deleteAfterUse") var deleteAfterUse: Boolean = false,
-    @ColumnInfo(name = "instanceState") var instanceState: Int = 0,
-    @ColumnInfo(name = "instanceId") var instanceId: Int = 0,
+    @ColumnInfo(name = "deleteAfterUse") var deleteAfterUse: Boolean = false
 ) : Parcelable {
 
     fun getLabelOrDefault(context: Context): String {
         return if (label.isNullOrEmpty()) context.getString(R.string.label) else label!!
     }
-
+    var instanceState = 0
     fun canPreemptivelyDismiss(): Boolean {
         return instanceState == InstancesColumns.SNOOZE_STATE ||
                 instanceState == InstancesColumns.HIGH_NOTIFICATION_STATE ||
@@ -494,6 +493,23 @@ data class Alarm(
         } else {
             null
         }
+    }
+
+    fun createInstanceAfter(time: Calendar): AlarmInstance {
+        val nextInstanceTime = this.getNextAlarmTime(time)
+        return AlarmInstance(
+            mId = (System.currentTimeMillis() + AtomicLong().incrementAndGet()),
+            mLabel = this.label,
+            mVibrate = this.vibrate,
+            mRingtone = this.alert.toString(),
+            mAlarmState = InstancesColumns.SILENT_STATE,
+            mAlarmId = this.id,
+            mYear = nextInstanceTime[Calendar.YEAR],
+            mMonth = nextInstanceTime[Calendar.MONTH],
+            mDay = nextInstanceTime[Calendar.DAY_OF_MONTH],
+            mHour = nextInstanceTime[Calendar.HOUR_OF_DAY],
+            mMinute = nextInstanceTime[Calendar.MINUTE]
+        )
     }
 
     fun getNextAlarmTime(currentTime: Calendar): Calendar {

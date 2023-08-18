@@ -17,7 +17,6 @@
 package fit.asta.health.scheduler.ref.alarms
 
 import android.Manifest
-import android.annotation.TargetApi
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -36,6 +35,7 @@ import androidx.core.content.ContextCompat
 import fit.asta.health.R
 import fit.asta.health.scheduler.ref.AlarmUtils
 import fit.asta.health.scheduler.ref.LogUtils
+import fit.asta.health.scheduler.ref.Utils
 import fit.asta.health.scheduler.ref.provider.Alarm
 import fit.asta.health.scheduler.ref.provider.AlarmInstance
 import fit.asta.health.scheduler.ref.provider.ClockContract.InstancesColumns
@@ -44,7 +44,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 internal object AlarmNotifications {
-    val alarmStateManager = AlarmStateManager()
+
     const val EXTRA_NOTIFICATION_ID = "extra_notification_id"
 
     /**
@@ -141,30 +141,30 @@ internal object AlarmNotifications {
         builder.setGroup(UPCOMING_GROUP_KEY)
 
         // Setup up hide notification
-        val hideIntent: Intent = alarmStateManager.createStateChangeIntent(
+        val hideIntent: Intent = Utils.createStateChangeIntent(
             context,
-            alarmStateManager.ALARM_DELETE_TAG, instance,
+            Utils.ALARM_DELETE_TAG, instance,
             InstancesColumns.HIDE_NOTIFICATION_STATE
         )
         val id = instance.hashCode()
         builder.setDeleteIntent(
             PendingIntent.getService(
                 context, id,
-                hideIntent, PendingIntent.FLAG_UPDATE_CURRENT
+                hideIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
         )
 
         // Setup up dismiss action
-        val dismissIntent: Intent = alarmStateManager.createStateChangeIntent(
+        val dismissIntent: Intent = Utils.createStateChangeIntent(
             context,
-            alarmStateManager.ALARM_DISMISS_TAG, instance, InstancesColumns.PREDISMISSED_STATE
+            Utils.ALARM_DISMISS_TAG, instance, InstancesColumns.PREDISMISSED_STATE
         )
         builder.addAction(
             R.drawable.ic_notifications_off,
             context.getString(R.string.alarm_alert_dismiss_text),
             PendingIntent.getService(
                 context, id,
-                dismissIntent, PendingIntent.FLAG_UPDATE_CURRENT
+                dismissIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
         )
 
@@ -173,7 +173,7 @@ internal object AlarmNotifications {
         builder.setContentIntent(
             PendingIntent.getActivity(
                 context, id,
-                viewAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT
+                viewAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
         )
 
@@ -211,7 +211,7 @@ internal object AlarmNotifications {
         context: Context,
         instance: AlarmInstance
     ) {
-//        LogUtils.v("Displaying high priority notification for alarm instance: " + instance.mId)
+        LogUtils.v("Displaying high priority notification for alarm instance: " + instance.mId)
 
         val builder: NotificationCompat.Builder = NotificationCompat.Builder(
             context, ALARM_HIGH_PRIORITY_NOTIFICATION_CHANNEL_ID
@@ -240,9 +240,9 @@ internal object AlarmNotifications {
 
 
         // Setup up dismiss action
-        val dismissIntent: Intent = alarmStateManager.createStateChangeIntent(
+        val dismissIntent: Intent = Utils.createStateChangeIntent(
             context,
-            alarmStateManager.ALARM_DISMISS_TAG, instance, InstancesColumns.PREDISMISSED_STATE
+            Utils.ALARM_DISMISS_TAG, instance, InstancesColumns.PREDISMISSED_STATE
         )
         val id = instance.hashCode()
         builder.addAction(
@@ -250,7 +250,7 @@ internal object AlarmNotifications {
             context.getString(R.string.alarm_alert_dismiss_text),
             PendingIntent.getService(
                 context, id,
-                dismissIntent, PendingIntent.FLAG_UPDATE_CURRENT
+                dismissIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
         )
 
@@ -259,7 +259,7 @@ internal object AlarmNotifications {
         builder.setContentIntent(
             PendingIntent.getActivity(
                 context, id,
-                viewAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT
+                viewAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
         )
 
@@ -291,7 +291,6 @@ internal object AlarmNotifications {
         updateUpcomingAlarmGroupNotification(context, -1, notification)
     }
 
-    @TargetApi(Build.VERSION_CODES.N)
     private fun isGroupSummary(n: Notification): Boolean {
         return n.flags and Notification.FLAG_GROUP_SUMMARY == Notification.FLAG_GROUP_SUMMARY
     }
@@ -309,7 +308,6 @@ internal object AlarmNotifications {
      * @param postedNotification The notification that was just posted
      * @return The first active notification for the group
      */
-    @TargetApi(Build.VERSION_CODES.N)
     private fun getFirstActiveNotification(
         context: Context,
         group: String,
@@ -326,7 +324,7 @@ internal object AlarmNotifications {
                 statusBarNotification.id != canceledNotificationId
             ) {
                 if (firstActiveNotification == null ||
-                    n.sortKey.compareTo(firstActiveNotification.sortKey) < 0
+                    n.sortKey < firstActiveNotification.sortKey
                 ) {
                     firstActiveNotification = n
                 }
@@ -481,7 +479,7 @@ internal object AlarmNotifications {
         context: Context,
         instance: AlarmInstance
     ) {
-//        LogUtils.v("Displaying snoozed notification for alarm instance: " + instance.mId)
+        LogUtils.v("Displaying snoozed notification for alarm instance: " + instance.mId)
 
         val builder: NotificationCompat.Builder = NotificationCompat.Builder(
             context, ALARM_SNOOZE_NOTIFICATION_CHANNEL_ID
@@ -501,9 +499,9 @@ internal object AlarmNotifications {
 
 
         // Setup up dismiss action
-        val dismissIntent: Intent = alarmStateManager.createStateChangeIntent(
+        val dismissIntent: Intent = Utils.createStateChangeIntent(
             context,
-            alarmStateManager.ALARM_DISMISS_TAG, instance, InstancesColumns.DISMISSED_STATE
+            Utils.ALARM_DISMISS_TAG, instance, InstancesColumns.DISMISSED_STATE
         )
         val id = instance.hashCode()
         builder.addAction(
@@ -511,7 +509,7 @@ internal object AlarmNotifications {
             context.getString(R.string.alarm_alert_dismiss_text),
             PendingIntent.getService(
                 context, id,
-                dismissIntent, PendingIntent.FLAG_UPDATE_CURRENT
+                dismissIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
         )
 
@@ -520,7 +518,7 @@ internal object AlarmNotifications {
         builder.setContentIntent(
             PendingIntent.getActivity(
                 context, id,
-                viewAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT
+                viewAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
         )
 
@@ -558,7 +556,7 @@ internal object AlarmNotifications {
         context: Context,
         instance: AlarmInstance
     ) {
-//        LogUtils.v("Displaying missed notification for alarm instance: " + instance.mId)
+        LogUtils.v("Displaying missed notification for alarm instance: " + instance.mId)
 
         val label = instance.mLabel
         val alarmTime: String = AlarmUtils.getFormattedTime(context, instance.alarmTime)
@@ -582,28 +580,29 @@ internal object AlarmNotifications {
         val id = instance.hashCode()
 
         // Setup dismiss intent
-        val dismissIntent: Intent = alarmStateManager.createStateChangeIntent(
+        val dismissIntent: Intent = Utils.createStateChangeIntent(
             context,
-            alarmStateManager.ALARM_DISMISS_TAG, instance, InstancesColumns.DISMISSED_STATE
+            Utils.ALARM_DISMISS_TAG, instance, InstancesColumns.DISMISSED_STATE
         )
         builder.setDeleteIntent(
             PendingIntent.getService(
                 context, id,
-                dismissIntent, PendingIntent.FLAG_UPDATE_CURRENT
+                dismissIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
         )
 
         // Setup content intent
         val showAndDismiss: Intent = AlarmInstance.createIntent(
             context,
-            AlarmStateManager::class.java, instance.mId
+            Utils::class.java, instance.mId
         )
         showAndDismiss.putExtra(EXTRA_NOTIFICATION_ID, id)
-        showAndDismiss.action = alarmStateManager.SHOW_AND_DISMISS_ALARM_ACTION
+        showAndDismiss.action = Utils.SHOW_AND_DISMISS_ALARM_ACTION
         builder.setContentIntent(
             PendingIntent.getBroadcast(
                 context, id,
-                showAndDismiss, PendingIntent.FLAG_UPDATE_CURRENT
+                showAndDismiss,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
         )
 
@@ -637,7 +636,7 @@ internal object AlarmNotifications {
 
     @Synchronized
     fun showAlarmNotification(service: Service, instance: AlarmInstance) {
-//        LogUtils.v("Displaying alarm notification for alarm instance: " + instance.mId)
+        LogUtils.v("Displaying alarm notification for alarm instance: " + instance.mId)
 
         val resources: Resources = service.resources
         val notification: NotificationCompat.Builder = NotificationCompat.Builder(
@@ -660,14 +659,16 @@ internal object AlarmNotifications {
             .setLocalOnly(true)
 
         // Setup Snooze Action
-        val snoozeIntent: Intent = alarmStateManager.createStateChangeIntent(
+        val snoozeIntent: Intent = Utils.createStateChangeIntent(
             service,
-            alarmStateManager.ALARM_SNOOZE_TAG, instance, InstancesColumns.SNOOZE_STATE
+            Utils.ALARM_SNOOZE_TAG, instance, InstancesColumns.SNOOZE_STATE
         )
-        snoozeIntent.putExtra(alarmStateManager.FROM_NOTIFICATION_EXTRA, true)
+        snoozeIntent.putExtra(Utils.FROM_NOTIFICATION_EXTRA, true)
         val snoozePendingIntent: PendingIntent = PendingIntent.getService(
             service,
-            ALARM_FIRING_NOTIFICATION_ID, snoozeIntent, PendingIntent.FLAG_UPDATE_CURRENT
+            ALARM_FIRING_NOTIFICATION_ID,
+            snoozeIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         notification.addAction(
             R.drawable.ic_round_access_alarm_24,
@@ -675,14 +676,16 @@ internal object AlarmNotifications {
         )
 
         // Setup Dismiss Action
-        val dismissIntent: Intent = alarmStateManager.createStateChangeIntent(
+        val dismissIntent: Intent = Utils.createStateChangeIntent(
             service,
-            alarmStateManager.ALARM_DISMISS_TAG, instance, InstancesColumns.DISMISSED_STATE
+            Utils.ALARM_DISMISS_TAG, instance, InstancesColumns.DISMISSED_STATE
         )
-        dismissIntent.putExtra(alarmStateManager.FROM_NOTIFICATION_EXTRA, true)
+        dismissIntent.putExtra(Utils.FROM_NOTIFICATION_EXTRA, true)
         val dismissPendingIntent: PendingIntent = PendingIntent.getService(
             service,
-            ALARM_FIRING_NOTIFICATION_ID, dismissIntent, PendingIntent.FLAG_UPDATE_CURRENT
+            ALARM_FIRING_NOTIFICATION_ID,
+            dismissIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         notification.addAction(
             R.drawable.ic_notifications_off,
@@ -698,7 +701,9 @@ internal object AlarmNotifications {
         notification.setContentIntent(
             PendingIntent.getActivity(
                 service,
-                ALARM_FIRING_NOTIFICATION_ID, contentIntent, PendingIntent.FLAG_UPDATE_CURRENT
+                ALARM_FIRING_NOTIFICATION_ID,
+                contentIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
         )
 
@@ -712,7 +717,9 @@ internal object AlarmNotifications {
         notification.setFullScreenIntent(
             PendingIntent.getActivity(
                 service,
-                ALARM_FIRING_NOTIFICATION_ID, fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT
+                ALARM_FIRING_NOTIFICATION_ID,
+                fullScreenIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             ),
             true
         )
@@ -725,7 +732,7 @@ internal object AlarmNotifications {
     @JvmStatic
     @Synchronized
     fun clearNotification(context: Context, instance: AlarmInstance) {
-//        LogUtils.v("Clearing notifications for alarm instance: " + instance.mId)
+        LogUtils.v("Clearing notifications for alarm instance: " + instance.mId)
         val nm: NotificationManagerCompat = NotificationManagerCompat.from(context)
         val id = instance.hashCode()
         nm.cancel(id)
@@ -749,7 +756,9 @@ internal object AlarmNotifications {
 
             InstancesColumns.SNOOZE_STATE -> showSnoozeNotification(context, instance)
             InstancesColumns.MISSED_STATE -> showMissedNotification(context, instance)
-            else -> {} //LogUtils.d("No notification to update")
+            else -> {
+                LogUtils.d("No notification to update")
+            }
         }
     }
 

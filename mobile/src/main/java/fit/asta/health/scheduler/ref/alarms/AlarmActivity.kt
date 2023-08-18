@@ -27,14 +27,19 @@ import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.view.WindowManager
+import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
+import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.scheduler.ref.LogUtils
 import fit.asta.health.scheduler.ref.Utils
 import fit.asta.health.scheduler.ref.db.AlarmInstanceDao
 import fit.asta.health.scheduler.ref.provider.AlarmInstance
 import fit.asta.health.scheduler.ref.provider.ClockContract.InstancesColumns
+import fit.asta.health.scheduler.ui.screen.alarmscreen.AlarmEvent
+import fit.asta.health.scheduler.ui.screen.alarmscreen.AlarmScreen
+import fit.asta.health.scheduler.ui.screen.alarmscreen.AlarmUiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -47,7 +52,8 @@ class AlarmActivity : AppCompatActivity() {
     lateinit var alarmInstanceDao: AlarmInstanceDao
     val scope = CoroutineScope(Dispatchers.Main)
 
-    val alarmStateManager = AlarmStateManager()
+    @Inject
+    lateinit var alarmDataManager: AlarmDataManager
     private val mReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
             val action: String? = intent.action
@@ -86,7 +92,21 @@ class AlarmActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O_MR1)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContent {
+            AppTheme {
+                AlarmScreen(uiState = AlarmUiState(), event = { uiEvent ->
+                    when (uiEvent) {
+                        is AlarmEvent.onSwipedLeft -> {
+                            snooze()
+                        }
 
+                        is AlarmEvent.onSwipedRight -> {
+                            dismiss()
+                        }
+                    }
+                })
+            }
+        }
         volumeControlStream = AudioManager.STREAM_ALARM
         val instanceId = intent.getLongExtra("id", -1)
         scope.launch {
@@ -180,7 +200,7 @@ class AlarmActivity : AppCompatActivity() {
     private fun snooze() {
         mAlarmHandled = true
         LOGGER.v("Snoozed: %s", mAlarmInstance)
-        alarmStateManager.setSnoozeState(this, mAlarmInstance!!, false /* showToast */)
+        alarmDataManager.setSnoozeState(this, mAlarmInstance!!, false /* showToast */)
         // Unbind here, otherwise alarm will keep ringing until activity finishes.
         unbindAlarmService()
     }
@@ -191,7 +211,7 @@ class AlarmActivity : AppCompatActivity() {
     private fun dismiss() {
         mAlarmHandled = true
         LOGGER.v("Dismissed: %s", mAlarmInstance)
-        alarmStateManager.deleteInstanceAndUpdateParent(this, mAlarmInstance!!)
+        alarmDataManager.deleteInstanceAndUpdateParent(this, mAlarmInstance!!)
         // Unbind here, otherwise alarm will keep ringing until activity finishes.
         unbindAlarmService()
     }
