@@ -163,9 +163,9 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
 
     //Datastore
-    implementation(libs.androidx.dataStore.core)
-    implementation(libs.protobuf.kotlin.lite)
+    implementation(libs.androidx.datastore.core)
     implementation(libs.androidx.datastore.preferences)
+    implementation(libs.protobuf.kotlin.lite)
 
     //Jetpack Compose - Material theme components
     implementation(libs.androidx.material3)
