@@ -18,7 +18,7 @@ interface AddressRepo {
     fun isPermissionGranted() : Boolean
     fun checkPermissionAndGetLatLng() : Flow<LocationResponse>
 
-    fun getAddressDetails(latLng: LatLng) : Flow<ResponseState<Address>>
+    suspend fun getAddressDetails(latLng: LatLng): Flow<ResponseState<Address>>
 
     suspend fun search(text: String, latitude : Double, longitude: Double): ResponseState<SearchResponse>
 
