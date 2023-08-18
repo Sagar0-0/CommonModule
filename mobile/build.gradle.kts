@@ -4,10 +4,16 @@ import com.google.firebase.perf.plugin.FirebasePerfExtension
 import java.util.Properties
 
 plugins {
-    id("com.android.application")
+    id("asta.android.application")
+    id("asta.android.application.compose")
+    //id("asta.android.application.flavors")
+    id("asta.android.application.jacoco")
+    id("asta.android.hilt")
+    id("jacoco")
+    id("asta.android.application.firebase")
+    id("com.google.android.gms.oss-licenses-plugin")
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
-    id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
@@ -111,16 +117,6 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-        isCoreLibraryDesugaringEnabled = true
-    }
-
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
     buildTypes {
         getByName("debug") {
             applicationIdSuffix = ".dev"
@@ -153,13 +149,10 @@ android {
         }
     }
 
-    // Enables data binding.
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+    packaging {
+        resources {
+            excludes.add("/META-INF/{AL2.0,LGPL2.1}")
+        }
     }
 
     testOptions {
