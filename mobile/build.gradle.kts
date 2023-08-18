@@ -370,6 +370,7 @@ dependencies {
     testImplementation(libs.androidx.paging.common.ktx)
     testImplementation(libs.mockk.android)
     testImplementation(libs.turbine)
+    testImplementation(libs.mockwebserver)
 
     androidTestImplementation(libs.androidx.ui.test.junit4.android)
     androidTestImplementation(libs.androidx.room.testing)
