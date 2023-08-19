@@ -8,6 +8,10 @@ sealed class TrackOption(var trackStatus: TrackStatus) {
     data object BreathingOption : TrackOption(TrackStatus.StatusDaily)
     data object SleepOption : TrackOption(TrackStatus.StatusDaily)
     data object SunlightOption : TrackOption(TrackStatus.StatusDaily)
+    data object YogaOption : TrackOption(TrackStatus.StatusDaily)
+    data object DanceOption : TrackOption(TrackStatus.StatusDaily)
+    data object WorkoutOption : TrackOption(TrackStatus.StatusDaily)
+    data object HiitOption : TrackOption(TrackStatus.StatusDaily)
 
     sealed class TrackStatus(val status: String) {
 

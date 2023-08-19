@@ -4,11 +4,12 @@ package fit.asta.health.navigation.track.view.navigation
  * This contains all the Navigation Routes for the Tracking Feature
  */
 sealed class TrackNavRoute(val route: String) {
-    object TrackMenu : TrackNavRoute("track-menu-route")
-    object WaterTrackDetail : TrackNavRoute("water-track-detail")
-    object StepsTrackDetail : TrackNavRoute("steps-track-detail")
-    object BreathingTrackDetail : TrackNavRoute("breathing-track-detail")
-    object MeditationTrackDetail : TrackNavRoute("meditation-track-detail")
-    object SleepTrackDetail : TrackNavRoute("sleep-track-detail")
-    object SunlightTrackDetail : TrackNavRoute("sunlight-track-detail")
+    data object TrackMenu : TrackNavRoute("track-menu-route")
+    data object WaterTrackDetail : TrackNavRoute("water-track-detail")
+    data object StepsTrackDetail : TrackNavRoute("steps-track-detail")
+    data object BreathingTrackDetail : TrackNavRoute("breathing-track-detail")
+    data object MeditationTrackDetail : TrackNavRoute("meditation-track-detail")
+    data object SleepTrackDetail : TrackNavRoute("sleep-track-detail")
+    data object SunlightTrackDetail : TrackNavRoute("sunlight-track-detail")
+    data object ExerciseTrackDetail : TrackNavRoute("exercise-track-detail")
 }

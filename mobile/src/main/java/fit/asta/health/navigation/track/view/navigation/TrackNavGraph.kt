@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import fit.asta.health.navigation.track.view.screens.TrackBreathingScreenControl
+import fit.asta.health.navigation.track.view.screens.TrackExerciseScreenControl
 import fit.asta.health.navigation.track.view.screens.TrackMeditationScreenControl
 import fit.asta.health.navigation.track.view.screens.TrackMenuScreenControl
 import fit.asta.health.navigation.track.view.screens.TrackSleepScreenControl
@@ -133,6 +134,21 @@ fun TrackNavGraph(
 
                     TrackMeditationScreenControl(
                         meditationTrackData = meditationTrackData,
+                        setUiEvent = trackViewModel::uiEventListener
+                    )
+                }
+            )
+
+            // Detail Screen for Exercise(Yoga , Dance , Hiit , workout) Tracking Details
+            composable(
+                TrackNavRoute.ExerciseTrackDetail.route,
+                content = {
+
+                    val exerciseTrackData = trackViewModel.exerciseDetails
+                        .collectAsStateWithLifecycle().value
+
+                    TrackExerciseScreenControl(
+                        exerciseTrackData = exerciseTrackData,
                         setUiEvent = trackViewModel::uiEventListener
                     )
                 }

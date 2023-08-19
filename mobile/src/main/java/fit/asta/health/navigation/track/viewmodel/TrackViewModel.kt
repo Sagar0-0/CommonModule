@@ -223,7 +223,7 @@ class TrackViewModel @Inject constructor(
     /**
      * This function fetches the Sunlight Tracking Details from the server
      */
-    private fun getExerciseDetails(status: String, date: String) {
+    private fun getExerciseDetails(status: String, date: String, exercise: String) {
 
         if (_exerciseDetails.value is TrackingNetworkCall.Loading)
             return
@@ -233,7 +233,7 @@ class TrackViewModel @Inject constructor(
                 uid = uid,
                 date = date,
                 location = "bangalore",
-                exercise = "workout",
+                exercise = exercise,
                 status = status
             ).collect {
                 _exerciseDetails.value = it
@@ -302,6 +302,38 @@ class TrackViewModel @Inject constructor(
                 getSunlightDetails(
                     status = currentTrackOption.trackStatus.status,
                     date = handleTrackerDate()
+                )
+            }
+
+            is TrackOption.YogaOption -> {
+                getExerciseDetails(
+                    status = currentTrackOption.trackStatus.status,
+                    date = handleTrackerDate(),
+                    exercise = "yoga"
+                )
+            }
+
+            is TrackOption.DanceOption -> {
+                getExerciseDetails(
+                    status = currentTrackOption.trackStatus.status,
+                    date = handleTrackerDate(),
+                    exercise = "dance"
+                )
+            }
+
+            is TrackOption.WorkoutOption -> {
+                getExerciseDetails(
+                    status = currentTrackOption.trackStatus.status,
+                    date = handleTrackerDate(),
+                    exercise = "workout"
+                )
+            }
+
+            is TrackOption.HiitOption -> {
+                getExerciseDetails(
+                    status = currentTrackOption.trackStatus.status,
+                    date = handleTrackerDate(),
+                    exercise = "hiit"
                 )
             }
         }

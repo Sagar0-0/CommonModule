@@ -232,19 +232,23 @@ private fun TrackMenuSuccessScreen(
                         }
 
                         "yoga" -> {
-                            // TODO :- No UI for it given
+                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.YogaOption))
+                            navigator(TrackNavRoute.ExerciseTrackDetail.route)
                         }
 
                         "dance" -> {
-                            // TODO :- No UI for it given
+                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.DanceOption))
+                            navigator(TrackNavRoute.ExerciseTrackDetail.route)
                         }
 
                         "workout" -> {
-                            // TODO :- No UI for it given
+                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.WorkoutOption))
+                            navigator(TrackNavRoute.ExerciseTrackDetail.route)
                         }
 
                         "hiit" -> {
-                            // TODO :- No UI for it given
+                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.HiitOption))
+                            navigator(TrackNavRoute.ExerciseTrackDetail.route)
                         }
                     }
                 }
