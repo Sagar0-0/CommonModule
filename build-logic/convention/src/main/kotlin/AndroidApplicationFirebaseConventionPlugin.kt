@@ -16,11 +16,13 @@
 
 import com.android.build.api.dsl.ApplicationExtension
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
+import com.google.firebase.perf.plugin.FirebasePerfExtension
 import fit.asta.health.apps.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+
 
 class AndroidApplicationFirebaseConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -40,12 +42,19 @@ class AndroidApplicationFirebaseConventionPlugin : Plugin<Project> {
             }
 
             extensions.configure<ApplicationExtension> {
-                buildTypes.configureEach {
-                    // Disable the Crashlytics mapping file upload. This feature should only be
-                    // enabled if a Firebase backend is available and configured in
-                    // google-services.json.
-                    configure<CrashlyticsExtension> {
-                        mappingFileUploadEnabled = false
+                buildTypes {
+                    getByName("debug") {
+                        configure<FirebasePerfExtension> {
+                            setInstrumentationEnabled(false)
+                        }
+                        configure<CrashlyticsExtension> {
+                            mappingFileUploadEnabled = false
+                            nativeSymbolUploadEnabled = false
+                        }
+                        manifestPlaceholders["crashlyticsCollectionEnabled"] = false
+                    }
+                    getByName("release") {
+                        manifestPlaceholders["crashlyticsCollectionEnabled"] = true
                     }
                 }
             }

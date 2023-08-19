@@ -1,6 +1,4 @@
 
-import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
-import com.google.firebase.perf.plugin.FirebasePerfExtension
 import java.util.Properties
 
 plugins {
@@ -69,18 +67,12 @@ android {
         versionCode = 14
         versionName = "0.1.4" // X.Y.Z; X = Major, Y = minor, Z = Patch level
         vectorDrawables.useSupportLibrary = true
-        signingConfig = signingConfigs.getByName("release")
 
+        signingConfig = signingConfigs.getByName("release")
         base.archivesBaseName = "$applicationId-$versionName"
         manifestPlaceholders["redirectSchemeName"] = "spotify-sdk"
         manifestPlaceholders["redirectHostName"] = "auth"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments["room.schemaLocation"] = "$projectDir/schemas"
-            }
-        }
     }
 
     buildTypes {
@@ -88,15 +80,7 @@ android {
             //multiDexEnabled = true
             isDebuggable = true
             aaptOptions.cruncherEnabled = false
-            configure<FirebasePerfExtension> {
-                setInstrumentationEnabled(false)
-            }
-            configure<CrashlyticsExtension> {
-                mappingFileUploadEnabled = false
-                nativeSymbolUploadEnabled = false
-            }
             resValue("string", "MAPS_API_KEY", secretProps["MAPS_API_KEY"].toString())
-            manifestPlaceholders["crashlyticsCollectionEnabled"] = false
             //signingConfig = signingConfigs.getByName("debug")
         }
         release {
@@ -106,7 +90,6 @@ android {
             isJniDebuggable = false
             isRenderscriptDebuggable = false
             resValue("string", "MAPS_API_KEY", secretProps["MAPS_API_KEY"].toString())
-            manifestPlaceholders["crashlyticsCollectionEnabled"] = true
             //signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
