@@ -1,5 +1,4 @@
 
-import java.util.Properties
 
 plugins {
     id("asta.android.application")
@@ -12,13 +11,7 @@ plugins {
     id("kotlin-parcelize")
     id("com.google.protobuf")
     id("asta.android.application.firebase")
-    id("com.google.gms.google-services")
-    id("com.google.android.gms.oss-licenses-plugin")
-    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-}
-
-val secretProps = Properties().apply {
-    load(rootProject.file("secrets.debug.properties").inputStream())
+    id("asta.gms.application")
 }
 
 android {
@@ -80,7 +73,6 @@ android {
             //multiDexEnabled = true
             isDebuggable = true
             aaptOptions.cruncherEnabled = false
-            resValue("string", "MAPS_API_KEY", secretProps["MAPS_API_KEY"].toString())
             //signingConfig = signingConfigs.getByName("debug")
         }
         release {
@@ -89,7 +81,7 @@ android {
             isShrinkResources = true
             isJniDebuggable = false
             isRenderscriptDebuggable = false
-            resValue("string", "MAPS_API_KEY", secretProps["MAPS_API_KEY"].toString())
+
             //signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -297,12 +289,6 @@ dependencies {
     implementation(libs.androidx.media3.ui)
     implementation(libs.androidx.media3.common)
     implementation(libs.androidx.media3.session)
-
-    //Maps
-    implementation(libs.maps.compose)
-    implementation(libs.play.services.maps)
-    implementation(libs.play.services.location)
-    implementation(libs.places)
 
     //Billing
     implementation(libs.billing)

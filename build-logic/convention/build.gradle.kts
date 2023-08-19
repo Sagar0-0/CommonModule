@@ -96,5 +96,13 @@ gradlePlugin {
             id = "asta.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
         }
+        register("androidApplicationGoogleMaps") {
+            id = "asta.gms.application"
+            implementationClass = "AndroidApplicationGoogleMapsConventionPlugin"
+        }
+        register("androidLibraryGoogleMaps") {
+            id = "asta.gms.library"
+            implementationClass = "AndroidLibraryGoogleMapsConventionPlugin"
+        }
     }
 }
