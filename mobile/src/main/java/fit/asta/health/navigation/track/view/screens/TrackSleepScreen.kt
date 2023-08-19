@@ -48,6 +48,7 @@ import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.navigation.track.model.net.sleep.SleepResponse
 import fit.asta.health.navigation.track.view.components.TrackTopTabBar
 import fit.asta.health.navigation.track.view.components.TrackingChartCard
+import fit.asta.health.navigation.track.view.util.TrackStringConstants
 import fit.asta.health.navigation.track.view.util.TrackUiEvent
 import fit.asta.health.navigation.track.view.util.TrackingNetworkCall
 
@@ -104,7 +105,7 @@ fun TrackSleepScreenControl(
 
             is TrackingNetworkCall.Success -> {
                 if (sleepTrackData.data == null)
-                    Toast.makeText(context, "No Data", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, TrackStringConstants.NO_DATA, Toast.LENGTH_SHORT).show()
                 else {
                     Spacer(modifier = Modifier.height(8.dp))
                     TrackSuccessScreen(sleepTrackData.data.sleepData)
@@ -147,8 +148,8 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
                         circularData = CircularTargetDataBuilder(
                             target = it.target,
                             achieved = it.achieved,
-                            siUnit = "Hrs",
-                            cgsUnit = "min",
+                            siUnit = TrackStringConstants.TIME_SI_UNIT,
+                            cgsUnit = TrackStringConstants.TIME_CGS_UNIT,
                             conversionRate = { it / 60f }
                         )
                     )
@@ -160,8 +161,7 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
         // Weekly Progress
         sleepData.weekly?.let {
             item {
-                val weekDaysString = listOf("M", "T", "W", "T", "F", "S", "S")
-                TrackingChartCard(title = "Weekly Progress") {
+                TrackingChartCard(title = TrackStringConstants.WEEKLY_PROGRESS) {
                     Row {
                         it.forEachIndexed { index, weekly ->
                             Column(
@@ -188,7 +188,7 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
                                 )
 
                                 Text(
-                                    text = weekDaysString[index],
+                                    text = TrackStringConstants.WEEKDAYS_STRINGS[index],
 
                                     // Text Features
                                     textAlign = TextAlign.Start,
@@ -207,7 +207,7 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
         // Sleep Duration Line Chart
         sleepData.sleepDurationGraph?.let {
             item {
-                TrackingChartCard(title = "Sleep Duration") {
+                TrackingChartCard(title = TrackStringConstants.SLEEP_DURATION) {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -222,17 +222,17 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
         // Sleep Regularity
         sleepData.sleepRegularityGraph?.let {
             item {
-                TrackingChartCard(title = "Sleep Regularity") {
+                TrackingChartCard(title = TrackStringConstants.SLEEP_REGULARITY) {
                     LinearChart.GradientChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
                             xAxisReadings = ChartPoint.pointDataBuilder(it.xAxis),
                             yMarkerList = ChartPoint.pointDataBuilder(
-                                "Awake",
-                                "Deep Sleep",
-                                "Sleep",
-                                "Asleep",
-                                "Bed Time"
+                                TrackStringConstants.AWAKE,
+                                TrackStringConstants.DEEP_SLEEP,
+                                TrackStringConstants.SLEEP,
+                                TrackStringConstants.ASLEEP,
+                                TrackStringConstants.BED_TIME
                             ).toMutableList()
                         ),
                         plot = LinearGradientLinePlot(
@@ -255,17 +255,17 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
         // Sleep Ratio Circular Graph
         sleepData.sleepRatio?.let {
             item {
-                TrackingChartCard(title = "Sleep Ratio") {
+                TrackingChartCard(title = TrackStringConstants.SLEEP_RATIO) {
                     CircularDonutChartColumn.DonutChartColumn(
                         circularData = CircularDonutListData(
                             itemsList = listOf(
-                                Pair("Normal", it.normal),
-                                Pair("Deep", it.deep),
-                                Pair("Delay", it.delay),
-                                Pair("Disturbed", it.disturbed)
+                                Pair(TrackStringConstants.NORMAL, it.normal),
+                                Pair(TrackStringConstants.DEEP, it.deep),
+                                Pair(TrackStringConstants.DELAY, it.delay),
+                                Pair(TrackStringConstants.DISTURBED, it.disturbed)
                             ),
-                            siUnit = "Hrs",
-                            cgsUnit = "min",
+                            siUnit = TrackStringConstants.TIME_SI_UNIT,
+                            cgsUnit = TrackStringConstants.TIME_CGS_UNIT,
                             conversionRate = { it / 60f }
                         )
                     )
@@ -280,7 +280,7 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
         // Mood Line Graph Card
         sleepData.moodGraph?.let {
             item {
-                TrackingChartCard(title = "Mood Graph") {
+                TrackingChartCard(title = TrackStringConstants.MOOD_GRAPH) {
                     LinearChart.EmojiLineChart(
                         linearData = LinearEmojiData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -325,17 +325,17 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
         // Goals Graph
         sleepData.goalGraph?.let {
             item {
-                TrackingChartCard(title = "Goals") {
+                TrackingChartCard(title = TrackStringConstants.GOALS) {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
                             xAxisReadings = ChartPoint.pointDataBuilder(it.xAxis),
                             yMarkerList = ChartPoint.pointDataBuilder(
-                                "Sound Sleep",
-                                "Clear Mind",
-                                "Fall Asleep",
-                                "De-stress",
-                                "Goal"
+                                TrackStringConstants.SOUND_SLEEP,
+                                TrackStringConstants.CLEAR_MIND,
+                                TrackStringConstants.FALL_ASLEEP,
+                                TrackStringConstants.DE_STRESS,
+                                TrackStringConstants.GOAL
                             ).toMutableList()
                         )
                     )

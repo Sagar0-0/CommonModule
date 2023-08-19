@@ -49,6 +49,7 @@ import fit.asta.health.navigation.track.model.net.breathing.BreathingResponse
 import fit.asta.health.navigation.track.view.components.TrackTopTabBar
 import fit.asta.health.navigation.track.view.components.TrackingChartCard
 import fit.asta.health.navigation.track.view.components.TrackingDetailsCard
+import fit.asta.health.navigation.track.view.util.TrackStringConstants
 import fit.asta.health.navigation.track.view.util.TrackUiEvent
 import fit.asta.health.navigation.track.view.util.TrackingNetworkCall
 import java.text.DecimalFormat
@@ -106,7 +107,7 @@ fun TrackBreathingScreenControl(
 
             is TrackingNetworkCall.Success -> {
                 if (breathingTrackData.data == null)
-                    Toast.makeText(context, "No Data", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, TrackStringConstants.NO_DATA, Toast.LENGTH_SHORT).show()
                 else {
                     Spacer(modifier = Modifier.height(8.dp))
                     TrackSuccessScreen(breathingTrackData.data.breathingData)
@@ -143,13 +144,13 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
         // Daily Progress
         breathingData.progress?.let {
             item {
-                TrackingChartCard(title = "Daily Progress") {
+                TrackingChartCard(title = TrackStringConstants.DAILY_PROGRESS) {
                     CircularDonutChartRow.TargetDonutChart(
                         circularData = CircularTargetDataBuilder(
                             target = it.target,
                             achieved = it.achieved,
-                            siUnit = "Hrs",
-                            cgsUnit = "min",
+                            siUnit = TrackStringConstants.TIME_SI_UNIT,
+                            cgsUnit = TrackStringConstants.TIME_CGS_UNIT,
                             conversionRate = { it / 60f }
                         )
                     )
@@ -161,8 +162,7 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
         // Weekly Progress
         breathingData.weekly?.let {
             item {
-                val weekDaysString = listOf("M", "T", "W", "T", "F", "S", "S")
-                TrackingChartCard(title = "Weekly Progress") {
+                TrackingChartCard(title = TrackStringConstants.WEEKLY_PROGRESS) {
                     Row {
                         it.forEachIndexed { index, weekly ->
                             Column(
@@ -189,7 +189,7 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
                                 )
 
                                 Text(
-                                    text = weekDaysString[index],
+                                    text = TrackStringConstants.WEEKDAYS_STRINGS[index],
 
                                     // Text Features
                                     textAlign = TextAlign.Start,
@@ -208,7 +208,7 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
         // Progress Bar Chart
         breathingData.progressGraph?.let {
             item {
-                TrackingChartCard(title = "Progress") {
+                TrackingChartCard(title = TrackStringConstants.PROGRESS) {
                     LinearChart.BarChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -223,14 +223,18 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
         // Vitamin D Details Card
         breathingData.weather?.let {
             item {
-                TrackingChartCard(title = "Vitamin D Details") {
+                TrackingChartCard(title = TrackStringConstants.VITAMIN_D_DETAILS) {
                     TrackingDetailsCard(
                         imageList = listOf(
                             R.drawable.image_sun,
                             R.drawable.track_image_duration,
                             R.drawable.track_image_exposure
                         ),
-                        headerTextList = listOf("Avg Vitamin D", "Avg Duration", "Avg Exposure"),
+                        headerTextList = listOf(
+                            TrackStringConstants.AVG_VITAMIN_D,
+                            TrackStringConstants.AVG_DURATION,
+                            TrackStringConstants.AVG_EXPOSURE
+                        ),
                         valueList = listOf(
                             "${DecimalFormat("#.##").format(it.vitD.avg)} ${it.vitD.unit}",
                             "${DecimalFormat("#.##").format(it.duration.dur)} ${it.duration.unit}",
@@ -245,7 +249,7 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
         // Air Purity Single Circle Chart
         breathingData.air?.let {
             item {
-                TrackingChartCard(title = "Air Purity") {
+                TrackingChartCard(title = TrackStringConstants.AIR_PURITY) {
                     CircularRingChart.SingleRingChart(
                         circularData = CircularTargetDataBuilder(
                             target = it.meta.max,
@@ -268,7 +272,7 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
         // Heart Health Double Circular Chart
         breathingData.health?.let {
             item {
-                TrackingChartCard(title = "Heart Health") {
+                TrackingChartCard(title = TrackStringConstants.HEART_HEALTH) {
                     CircularRingChart.MultipleRingChart(
                         circularData = listOf(
                             CircularTargetDataBuilder(
@@ -288,12 +292,12 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
                         ),
                         circularCenter = listOf(
                             CircularRingTextCenter(
-                                title = "Heart Rate",
+                                title = TrackStringConstants.HEART_RATE,
                                 centerValue = "${it.heartRate.rate} ${it.heartRate.unit}",
                                 status = it.heartRate.sts
                             ),
                             CircularRingTextCenter(
-                                title = "BP",
+                                title = TrackStringConstants.BP,
                                 centerValue =
                                 "${it.bloodPressure.mm}/${it.bloodPressure.hg} ${it.bloodPressure.unit}",
                                 status = it.bloodPressure.sts
@@ -310,7 +314,7 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
         // Breathing Details Card
         breathingData.breathDetail?.let {
             item {
-                TrackingChartCard(title = "Breathing Details") {
+                TrackingChartCard(title = TrackStringConstants.BREATHING_DETAILS) {
                     TrackingDetailsCard(
                         imageList = listOf(
                             R.drawable.image_inhaled_quantity,
@@ -318,9 +322,9 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
                             R.drawable.image_calories
                         ),
                         headerTextList = listOf(
-                            "Inhaled Quantity",
-                            "Total Breathes",
-                            "Calories"
+                            TrackStringConstants.INHALED_QUANTITY,
+                            TrackStringConstants.TOTAL_BREATHES,
+                            TrackStringConstants.CALORIES
                         ),
                         valueList = listOf(
                             "${DecimalFormat("#.##").format(it.inhaled.avg)} ${it.inhaled.unit}",
@@ -336,17 +340,17 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
         // Air Purity Line Chart
         breathingData.airGraph?.let {
             item {
-                TrackingChartCard(title = "Air Purity") {
+                TrackingChartCard(title = TrackStringConstants.AIR_PURITY) {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
                             xAxisReadings = ChartPoint.pointDataBuilder(it.xAxis),
                             yMarkerList = ChartPoint.pointDataBuilder(
-                                "Hazardous",
-                                "V.Unhealthy",
-                                "Unhealthy",
-                                "Moderate",
-                                "Good"
+                                TrackStringConstants.HAZARDOUS,
+                                TrackStringConstants.V_UNHEALTHY,
+                                TrackStringConstants.UNHEALTHY,
+                                TrackStringConstants.MODERATE,
+                                TrackStringConstants.GOOD
                             ).toMutableList()
                         )
                     )
@@ -358,7 +362,7 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
         // Mood Graph Line Chart
         breathingData.moodGraph?.let {
             item {
-                TrackingChartCard(title = "Mood Graph") {
+                TrackingChartCard(title = TrackStringConstants.MOOD_GRAPH) {
                     LinearChart.EmojiLineChart(
                         linearData = LinearEmojiData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -403,7 +407,7 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
         // Heart Rate Line Chart
         breathingData.heartRateGraph?.let {
             item {
-                TrackingChartCard(title = "Heart Rate") {
+                TrackingChartCard(title = TrackStringConstants.HEART_RATE) {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -418,7 +422,7 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
         // Blood Pressure Line Chart
         breathingData.bloodPressureGraph?.let { graphData ->
             item {
-                TrackingChartCard(title = "Blood Pressure") {
+                TrackingChartCard(title = TrackStringConstants.BLOOD_PRESSURE) {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
                             yAxisReadings = graphData.multiGraphDataList.map {

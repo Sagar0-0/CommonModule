@@ -49,6 +49,7 @@ import fit.asta.health.navigation.track.model.net.step.StepsResponse
 import fit.asta.health.navigation.track.view.components.TrackTopTabBar
 import fit.asta.health.navigation.track.view.components.TrackingChartCard
 import fit.asta.health.navigation.track.view.components.TrackingDetailsCard
+import fit.asta.health.navigation.track.view.util.TrackStringConstants
 import fit.asta.health.navigation.track.view.util.TrackUiEvent
 import fit.asta.health.navigation.track.view.util.TrackingNetworkCall
 import java.text.DecimalFormat
@@ -106,7 +107,7 @@ fun TrackStepsScreenControl(
 
             is TrackingNetworkCall.Success -> {
                 if (stepsTrackData.data == null)
-                    Toast.makeText(context, "No Data", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, TrackStringConstants.NO_DATA, Toast.LENGTH_SHORT).show()
                 else {
                     Spacer(modifier = Modifier.height(8.dp))
                     TrackSuccessScreen(stepsTrackData.data.stepsData)
@@ -144,7 +145,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Daily Progress
         stepsTrackData.progress?.let {
             item {
-                TrackingChartCard(title = "Daily Progress") {
+                TrackingChartCard(title = TrackStringConstants.DAILY_PROGRESS) {
                     CircularDonutChartRow.TargetDonutChart(
                         circularData = CircularTargetDataBuilder(
                             target = it.target.distance.dis,
@@ -162,8 +163,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Weekly Progress
         stepsTrackData.weekly?.let {
             item {
-                val weekDaysString = listOf("M", "T", "W", "T", "F", "S", "S")
-                TrackingChartCard(title = "Weekly Progress") {
+                TrackingChartCard(title = TrackStringConstants.WEEKLY_PROGRESS) {
                     Row {
                         it.forEachIndexed { index, weekly ->
                             Column(
@@ -190,7 +190,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
                                 )
 
                                 Text(
-                                    text = weekDaysString[index],
+                                    text = TrackStringConstants.WEEKDAYS_STRINGS[index],
 
                                     // Text Features
                                     textAlign = TextAlign.Start,
@@ -209,14 +209,18 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Vitamin D Details Card
         stepsTrackData.weather?.let {
             item {
-                TrackingChartCard(title = "Vitamin D Details") {
+                TrackingChartCard(title = TrackStringConstants.VITAMIN_D_DETAILS) {
                     TrackingDetailsCard(
                         imageList = listOf(
                             R.drawable.image_sun,
                             R.drawable.track_image_duration,
                             R.drawable.track_image_exposure
                         ),
-                        headerTextList = listOf("Avg Vitamin D", "Avg Duration", "Avg Exposure"),
+                        headerTextList = listOf(
+                            TrackStringConstants.AVG_VITAMIN_D,
+                            TrackStringConstants.AVG_DURATION,
+                            TrackStringConstants.AVG_EXPOSURE
+                        ),
                         valueList = listOf(
                             "${DecimalFormat("#.##").format(it.vitD.avg)} ${it.vitD.unit}",
                             "${DecimalFormat("#.##").format(it.duration.dur)} ${it.duration.unit}",
@@ -231,14 +235,18 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Steps details Card
         stepsTrackData.stepsDetail?.let {
             item {
-                TrackingChartCard(title = "Steps Details") {
+                TrackingChartCard(title = TrackStringConstants.STEPS_DETAILS) {
                     TrackingDetailsCard(
                         imageList = listOf(
                             R.drawable.image_total_distance,
                             R.drawable.track_image_duration,
                             R.drawable.image_walking_intensity
                         ),
-                        headerTextList = listOf("Distance", "Duration", "Steps"),
+                        headerTextList = listOf(
+                            TrackStringConstants.DISTANCE,
+                            TrackStringConstants.DURATION,
+                            TrackStringConstants.STEPS
+                        ),
                         valueList = listOf(
                             "${DecimalFormat("#.##").format(it.distance.dis)} ${it.distance.unit}",
                             "${DecimalFormat("#.##").format(it.duration.dur)} ${it.duration.unit}",
@@ -259,14 +267,18 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Speed Card Composable
         stepsTrackData.speed?.let {
             item {
-                TrackingChartCard(title = "Speed Details") {
+                TrackingChartCard(title = TrackStringConstants.SPEED_DETAILS) {
                     TrackingDetailsCard(
                         imageList = listOf(
                             R.drawable.image_walking_intensity,
                             R.drawable.image_exercise_intensity,
                             R.drawable.image_calories
                         ),
-                        headerTextList = listOf("Avg Speed", "Avg Intensity", "Calories"),
+                        headerTextList = listOf(
+                            TrackStringConstants.AVG_SPEED,
+                            TrackStringConstants.AVG_INTENSITY,
+                            TrackStringConstants.CALORIES
+                        ),
                         valueList = listOf(
                             "${DecimalFormat("#.##").format(it.avgSpeed)} ${it.avgSpeedUnit}",
                             "${DecimalFormat("#.##").format(it.avgIntensity)} ${it.avgIntensityUnit}",
@@ -281,7 +293,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Heart Health Double Circular Chart
         stepsTrackData.health?.let {
             item {
-                TrackingChartCard(title = "Heart Health") {
+                TrackingChartCard(title = TrackStringConstants.HEART_HEALTH) {
                     CircularRingChart.MultipleRingChart(
                         circularData = listOf(
                             CircularTargetDataBuilder(
@@ -301,12 +313,12 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
                         ),
                         circularCenter = listOf(
                             CircularRingTextCenter(
-                                title = "Heart Rate",
+                                title = TrackStringConstants.HEART_RATE,
                                 centerValue = "${it.heartRate.rate} ${it.heartRate.unit}",
                                 status = it.heartRate.sts
                             ),
                             CircularRingTextCenter(
-                                title = "BP",
+                                title = TrackStringConstants.BP,
                                 centerValue =
                                 "${it.bloodPressure.mm}/${it.bloodPressure.hg} ${it.bloodPressure.unit}",
                                 status = it.bloodPressure.sts
@@ -321,7 +333,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Steps Line Chart
         stepsTrackData.stepGraph?.let {
             item {
-                TrackingChartCard(title = "Steps") {
+                TrackingChartCard(title = TrackStringConstants.STEPS) {
                     LinearChart.BarChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -336,7 +348,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Steps Line Chart
         stepsTrackData.distanceGraph?.let {
             item {
-                TrackingChartCard(title = "Distance") {
+                TrackingChartCard(title = TrackStringConstants.DISTANCE) {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -351,7 +363,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Steps Line Chart
         stepsTrackData.intensityGraph?.let {
             item {
-                TrackingChartCard(title = "Intensity") {
+                TrackingChartCard(title = TrackStringConstants.INTENSITY) {
                     LinearChart.BarChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -369,7 +381,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Mood Graph Line Chart
         stepsTrackData.moodGraph?.let {
             item {
-                TrackingChartCard(title = "Mood Graph") {
+                TrackingChartCard(title = TrackStringConstants.MOOD_GRAPH) {
                     LinearChart.EmojiLineChart(
                         linearData = LinearEmojiData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -414,7 +426,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Blood Pressure Line Chart
         stepsTrackData.bloodPressureGraph?.let { graphData ->
             item {
-                TrackingChartCard(title = "Blood Pressure") {
+                TrackingChartCard(title = TrackStringConstants.BLOOD_PRESSURE) {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
                             yAxisReadings = graphData.multiGraphDataList.map {

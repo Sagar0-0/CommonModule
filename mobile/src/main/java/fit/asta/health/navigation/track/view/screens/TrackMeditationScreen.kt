@@ -49,6 +49,7 @@ import fit.asta.health.navigation.track.model.net.meditation.MeditationResponse
 import fit.asta.health.navigation.track.view.components.TrackTopTabBar
 import fit.asta.health.navigation.track.view.components.TrackingChartCard
 import fit.asta.health.navigation.track.view.components.TrackingDetailsCard
+import fit.asta.health.navigation.track.view.util.TrackStringConstants
 import fit.asta.health.navigation.track.view.util.TrackUiEvent
 import fit.asta.health.navigation.track.view.util.TrackingNetworkCall
 import java.text.DecimalFormat
@@ -105,7 +106,7 @@ fun TrackMeditationScreenControl(
 
             is TrackingNetworkCall.Success -> {
                 if (meditationTrackData.data == null)
-                    Toast.makeText(context, "No Data", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, TrackStringConstants.NO_DATA, Toast.LENGTH_SHORT).show()
                 else {
                     Spacer(modifier = Modifier.height(8.dp))
                     TrackSuccessScreen(meditationTrackData.data.meditationData)
@@ -142,13 +143,13 @@ fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData) {
         // Daily Progress
         meditationData.progress?.let {
             item {
-                TrackingChartCard(title = "Daily Progress") {
+                TrackingChartCard(title = TrackStringConstants.DAILY_PROGRESS) {
                     CircularDonutChartRow.TargetDonutChart(
                         circularData = CircularTargetDataBuilder(
                             target = it.target,
                             achieved = it.achieved,
-                            siUnit = "Hrs",
-                            cgsUnit = "min",
+                            siUnit = TrackStringConstants.TIME_SI_UNIT,
+                            cgsUnit = TrackStringConstants.TIME_CGS_UNIT,
                             conversionRate = { it / 60f }
                         )
                     )
@@ -160,8 +161,7 @@ fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData) {
         // Weekly Progress
         meditationData.weekly?.let {
             item {
-                val weekDaysString = listOf("M", "T", "W", "T", "F", "S", "S")
-                TrackingChartCard(title = "Weekly Progress") {
+                TrackingChartCard(title = TrackStringConstants.WEEKLY_PROGRESS) {
                     Row {
                         it.forEachIndexed { index, weekly ->
                             Column(
@@ -188,7 +188,7 @@ fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData) {
                                 )
 
                                 Text(
-                                    text = weekDaysString[index],
+                                    text = TrackStringConstants.WEEKDAYS_STRINGS[index],
 
                                     // Text Features
                                     textAlign = TextAlign.Start,
@@ -207,7 +207,7 @@ fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData) {
         // Progress Bar Chart
         meditationData.progressGraph?.let {
             item {
-                TrackingChartCard(title = "Progress") {
+                TrackingChartCard(title = TrackStringConstants.PROGRESS) {
                     LinearChart.BarChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -222,14 +222,18 @@ fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData) {
         // Vitamin D Details Card
         meditationData.weatherDetail?.let {
             item {
-                TrackingChartCard(title = "Vitamin D Details") {
+                TrackingChartCard(title = TrackStringConstants.VITAMIN_D_DETAILS) {
                     TrackingDetailsCard(
                         imageList = listOf(
                             R.drawable.image_sun,
                             R.drawable.track_image_duration,
                             R.drawable.track_image_exposure
                         ),
-                        headerTextList = listOf("Inhaled Quantity", "Total Breathes", "Calories"),
+                        headerTextList = listOf(
+                            TrackStringConstants.INHALED_QUANTITY,
+                            TrackStringConstants.TOTAL_BREATHES,
+                            TrackStringConstants.CALORIES
+                        ),
                         valueList = listOf(
                             "${DecimalFormat("#.##").format(it.vitD.avg)} ${it.vitD.unit}",
                             "${DecimalFormat("#.##").format(it.duration.dur)} ${it.duration.unit}",
@@ -244,7 +248,7 @@ fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData) {
         // Heart Health Double Circular Chart
         meditationData.healthDetail?.let {
             item {
-                TrackingChartCard(title = "Heart Health") {
+                TrackingChartCard(title = TrackStringConstants.HEART_HEALTH) {
                     CircularRingChart.MultipleRingChart(
                         circularData = listOf(
                             CircularTargetDataBuilder(
@@ -264,12 +268,12 @@ fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData) {
                         ),
                         circularCenter = listOf(
                             CircularRingTextCenter(
-                                title = "Heart Rate",
+                                title = TrackStringConstants.HEART_RATE,
                                 centerValue = "${it.heartRate.rate} ${it.heartRate.unit}",
                                 status = it.heartRate.sts
                             ),
                             CircularRingTextCenter(
-                                title = "BP",
+                                title = TrackStringConstants.BP,
                                 centerValue =
                                 "${it.bloodPressure.mm}/${it.bloodPressure.hg} ${it.bloodPressure.unit}",
                                 status = it.bloodPressure.sts
@@ -287,7 +291,7 @@ fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData) {
         // Mood Graph Line Chart
         meditationData.moodGraph?.let {
             item {
-                TrackingChartCard(title = "Mood Graph") {
+                TrackingChartCard(title = TrackStringConstants.MOOD_GRAPH) {
                     LinearChart.EmojiLineChart(
                         linearData = LinearEmojiData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -332,7 +336,7 @@ fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData) {
         // Heart Rate Line Chart
         meditationData.heartRateGraph?.let {
             item {
-                TrackingChartCard(title = "Heart Rate") {
+                TrackingChartCard(title = TrackStringConstants.HEART_RATE) {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -347,7 +351,7 @@ fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData) {
         // Blood Pressure Line Chart
         meditationData.bloodPressureGraph?.let { graphData ->
             item {
-                TrackingChartCard(title = "Blood Pressure") {
+                TrackingChartCard(title = TrackStringConstants.BLOOD_PRESSURE) {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
                             yAxisReadings = graphData.multiGraphDataList.map {

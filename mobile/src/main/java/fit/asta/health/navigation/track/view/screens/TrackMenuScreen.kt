@@ -48,6 +48,7 @@ import fit.asta.health.navigation.track.view.components.TrackingChartCard
 import fit.asta.health.navigation.track.view.components.TrackingDetailsCard
 import fit.asta.health.navigation.track.view.navigation.TrackNavRoute
 import fit.asta.health.navigation.track.view.util.TrackOption
+import fit.asta.health.navigation.track.view.util.TrackStringConstants
 import fit.asta.health.navigation.track.view.util.TrackUiEvent
 import fit.asta.health.navigation.track.view.util.TrackingNetworkCall
 
@@ -96,7 +97,7 @@ fun TrackMenuScreenControl(
                     navigator = navigator
                 )
             else
-                Toast.makeText(context, "No Data", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, TrackStringConstants.NO_DATA, Toast.LENGTH_SHORT).show()
         }
 
         // failure State
@@ -141,19 +142,19 @@ private fun TrackMenuSuccessScreen(
         // Time Spent Chart Card
         homeMenuData.timeSpent?.let {
             item {
-                TrackingChartCard(title = "Time Spent") {
+                TrackingChartCard(title = TrackStringConstants.TIME_SPENT) {
                     CircularDonutChartColumn.DonutChartColumn(
                         circularData = CircularDonutListData(
                             itemsList = listOf(
-                                Pair("Meditation", it.meditation),
-                                Pair("Steps", it.steps),
-                                Pair("Sleep", it.sleep),
-                                Pair("Sunlight", it.sunlight),
-                                Pair("Breathing", it.breathing),
-                                Pair("Water", it.water)
+                                Pair(TrackStringConstants.MEDITATION, it.meditation),
+                                Pair(TrackStringConstants.STEPS, it.steps),
+                                Pair(TrackStringConstants.SLEEP, it.sleep),
+                                Pair(TrackStringConstants.SUNLIGHT, it.sunlight),
+                                Pair(TrackStringConstants.BREATHING, it.breathing),
+                                Pair(TrackStringConstants.WATER, it.water)
                             ),
-                            siUnit = "Min",
-                            cgsUnit = "Min",
+                            siUnit = TrackStringConstants.TIME_CGS_UNIT,
+                            cgsUnit = TrackStringConstants.TIME_CGS_UNIT,
                             conversionRate = { it }
                         ),
                         circularDecoration = CircularDecoration.donutChartDecorations(
@@ -175,10 +176,13 @@ private fun TrackMenuSuccessScreen(
         // Heart Health Details Card
         homeMenuData.healthDetail?.let {
             item {
-                TrackingChartCard(title = "Heart Health") {
+                TrackingChartCard(title = TrackStringConstants.HEART_HEALTH) {
                     TrackingDetailsCard(
                         imageList = listOf(R.drawable.heartrate, R.drawable.pulse_rate),
-                        headerTextList = listOf("Blood Pressure", "Heart Rate"),
+                        headerTextList = listOf(
+                            TrackStringConstants.BLOOD_PRESSURE,
+                            TrackStringConstants.HEART_RATE
+                        ),
                         valueList = listOf(
                             "${it.bloodPressure.mm}/${it.bloodPressure.hg} ${it.bloodPressure.unit}",
                             "${it.heartRate.rate} ${it.heartRate.unit}"
@@ -266,7 +270,7 @@ private fun TrackMenuSuccessScreen(
                     target = it.target.steps.steps.toFloat(),
                     achieved = it.achieved.steps.steps.toFloat(),
                     bodyDescription = it.description.stepsDescription,
-                    unit = "steps"
+                    unit = TrackStringConstants.STEPS_STEP_UNIT
                 ) {
                     setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.StepsOption))
                     navigator(TrackNavRoute.StepsTrackDetail.route)

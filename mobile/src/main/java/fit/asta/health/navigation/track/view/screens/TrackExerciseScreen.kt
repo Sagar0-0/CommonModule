@@ -44,6 +44,7 @@ import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.navigation.track.model.net.exercise.ExerciseResponse
 import fit.asta.health.navigation.track.view.components.TrackTopTabBar
 import fit.asta.health.navigation.track.view.components.TrackingChartCard
+import fit.asta.health.navigation.track.view.util.TrackStringConstants
 import fit.asta.health.navigation.track.view.util.TrackUiEvent
 import fit.asta.health.navigation.track.view.util.TrackingNetworkCall
 
@@ -100,7 +101,7 @@ fun TrackExerciseScreenControl(
 
             is TrackingNetworkCall.Success -> {
                 if (exerciseTrackData.data == null)
-                    Toast.makeText(context, "No Data", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, TrackStringConstants.NO_DATA, Toast.LENGTH_SHORT).show()
                 else {
                     Spacer(modifier = Modifier.height(8.dp))
                     TrackSuccessScreen(exerciseTrackData.data.exerciseData)
@@ -134,13 +135,13 @@ private fun TrackSuccessScreen(exerciseTrackData: ExerciseResponse.ExerciseData)
         // Daily Progress
         exerciseTrackData.dailyProgress?.let {
             item {
-                TrackingChartCard(title = "Daily Progress") {
+                TrackingChartCard(title = TrackStringConstants.DAILY_PROGRESS) {
                     CircularDonutChartRow.TargetDonutChart(
                         circularData = CircularTargetDataBuilder(
                             target = it.target,
                             achieved = it.achieved,
-                            siUnit = "Hrs",
-                            cgsUnit = "min",
+                            siUnit = TrackStringConstants.TIME_SI_UNIT,
+                            cgsUnit = TrackStringConstants.TIME_CGS_UNIT,
                             conversionRate = { it / 60f }
                         )
                     )
@@ -152,8 +153,7 @@ private fun TrackSuccessScreen(exerciseTrackData: ExerciseResponse.ExerciseData)
         // Weekly Progress
         exerciseTrackData.weekly?.let {
             item {
-                val weekDaysString = listOf("M", "T", "W", "T", "F", "S", "S")
-                TrackingChartCard(title = "Weekly Progress") {
+                TrackingChartCard(title = TrackStringConstants.WEEKLY_PROGRESS) {
                     Row {
                         it.forEachIndexed { index, weekly ->
                             Column(
@@ -180,7 +180,7 @@ private fun TrackSuccessScreen(exerciseTrackData: ExerciseResponse.ExerciseData)
                                 )
 
                                 Text(
-                                    text = weekDaysString[index],
+                                    text = TrackStringConstants.WEEKDAYS_STRINGS[index],
 
                                     // Text Features
                                     textAlign = TextAlign.Start,
@@ -199,7 +199,7 @@ private fun TrackSuccessScreen(exerciseTrackData: ExerciseResponse.ExerciseData)
         // Progress Bar Chart
         exerciseTrackData.progressGraph?.let {
             item {
-                TrackingChartCard(title = "Progress") {
+                TrackingChartCard(title = TrackStringConstants.PROGRESS) {
                     LinearChart.BarChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -214,7 +214,7 @@ private fun TrackSuccessScreen(exerciseTrackData: ExerciseResponse.ExerciseData)
         // Heart Health Double Circular Chart
         exerciseTrackData.heartDetail?.let {
             item {
-                TrackingChartCard(title = "Heart Health") {
+                TrackingChartCard(title = TrackStringConstants.HEART_HEALTH) {
                     CircularRingChart.MultipleRingChart(
                         circularData = listOf(
                             CircularTargetDataBuilder(
@@ -234,12 +234,12 @@ private fun TrackSuccessScreen(exerciseTrackData: ExerciseResponse.ExerciseData)
                         ),
                         circularCenter = listOf(
                             CircularRingTextCenter(
-                                title = "Heart Rate",
+                                title = TrackStringConstants.HEART_RATE,
                                 centerValue = "${it.heartRate.rate} ${it.heartRate.unit}",
                                 status = it.heartRate.sts
                             ),
                             CircularRingTextCenter(
-                                title = "BP",
+                                title = TrackStringConstants.BP,
                                 centerValue =
                                 "${it.bloodPressure.mm}/${it.bloodPressure.hg} ${it.bloodPressure.unit}",
                                 status = it.bloodPressure.sts
@@ -254,7 +254,7 @@ private fun TrackSuccessScreen(exerciseTrackData: ExerciseResponse.ExerciseData)
         // Heart Rate Line Chart
         exerciseTrackData.heartRateGraph?.let {
             item {
-                TrackingChartCard(title = "Heart Rate") {
+                TrackingChartCard(title = TrackStringConstants.HEART_RATE) {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -269,7 +269,7 @@ private fun TrackSuccessScreen(exerciseTrackData: ExerciseResponse.ExerciseData)
         // Blood Pressure Line Chart
         exerciseTrackData.bloodPressureGraph?.let { graphData ->
             item {
-                TrackingChartCard(title = "Blood Pressure") {
+                TrackingChartCard(title = TrackStringConstants.BLOOD_PRESSURE) {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
                             yAxisReadings = graphData.multiGraphDataList.map {

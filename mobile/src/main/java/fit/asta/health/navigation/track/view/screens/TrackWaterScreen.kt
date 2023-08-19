@@ -45,6 +45,7 @@ import fit.asta.health.navigation.track.model.net.water.WaterResponse
 import fit.asta.health.navigation.track.view.components.TrackTopTabBar
 import fit.asta.health.navigation.track.view.components.TrackingChartCard
 import fit.asta.health.navigation.track.view.components.TrackingDetailsCard
+import fit.asta.health.navigation.track.view.util.TrackStringConstants
 import fit.asta.health.navigation.track.view.util.TrackUiEvent
 import fit.asta.health.navigation.track.view.util.TrackingNetworkCall
 import java.text.DecimalFormat
@@ -102,7 +103,7 @@ fun TrackWaterScreenControl(
 
             is TrackingNetworkCall.Success -> {
                 if (waterTrackData.data == null)
-                    Toast.makeText(context, "No Data", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, TrackStringConstants.NO_DATA, Toast.LENGTH_SHORT).show()
                 else {
                     Spacer(modifier = Modifier.height(8.dp))
                     TrackSuccessScreen(waterTrackData.data.waterData)
@@ -136,13 +137,13 @@ private fun TrackSuccessScreen(waterTrackData: WaterResponse.WaterData) {
         // Daily Progress Circular Target Chart 
         waterTrackData.dailyProgress?.let {
             item {
-                TrackingChartCard(title = "Daily Progress") {
+                TrackingChartCard(title = TrackStringConstants.DAILY_PROGRESS) {
                     CircularDonutChartRow.TargetDonutChart(
                         circularData = CircularTargetDataBuilder(
                             target = it.target,
                             achieved = it.achieved,
-                            siUnit = "L",
-                            cgsUnit = "L",
+                            siUnit = TrackStringConstants.LITRES_SI_UNIT,
+                            cgsUnit = TrackStringConstants.LITRES_SI_UNIT,
                             conversionRate = { it }
                         )
                     )
@@ -154,8 +155,7 @@ private fun TrackSuccessScreen(waterTrackData: WaterResponse.WaterData) {
         // Weekly Progress Target Charts
         waterTrackData.weekly?.let { weeklyData ->
             item {
-                val weekDaysString = listOf("M", "T", "W", "T", "F", "S", "S")
-                TrackingChartCard(title = "Weekly Progress") {
+                TrackingChartCard(title = TrackStringConstants.WEEKLY_PROGRESS) {
                     Row {
                         weeklyData.forEachIndexed { index, weekly ->
                             Column(
@@ -165,8 +165,7 @@ private fun TrackSuccessScreen(waterTrackData: WaterResponse.WaterData) {
                             ) {
 
                                 CircularChart.DonutChartImage(
-                                    modifier = Modifier
-                                        .size(55.dp),
+                                    modifier = Modifier.size(55.dp),
                                     circularData = CircularTargetDataBuilder(
                                         target = weekly.tgt,
                                         achieved = weekly.ach,
@@ -176,13 +175,13 @@ private fun TrackSuccessScreen(waterTrackData: WaterResponse.WaterData) {
                                     ),
                                     circularCenter = CircularImageCenter(
                                         image = Icons.Default.Check,
-                                        contentDescription = "Achieved"
+                                        contentDescription = null
                                     ),
                                     circularForeground = CircularDonutTargetForeground(strokeWidth = 10f)
                                 )
 
                                 Text(
-                                    text = weekDaysString[index],
+                                    text = TrackStringConstants.WEEKDAYS_STRINGS[index],
 
                                     // Text Features
                                     textAlign = TextAlign.Start,
@@ -201,13 +200,16 @@ private fun TrackSuccessScreen(waterTrackData: WaterResponse.WaterData) {
         // Amount Consumed Composable Card
         waterTrackData.amountConsumed?.let {
             item {
-                TrackingChartCard(title = "Amount Consumed") {
+                TrackingChartCard(title = TrackStringConstants.AMOUNT_CONSUMED) {
                     TrackingDetailsCard(
                         imageList = listOf(
                             R.drawable.track_water_glass,
                             R.drawable.track_water_total
                         ),
-                        headerTextList = listOf("Daily Avg", "Total"),
+                        headerTextList = listOf(
+                            TrackStringConstants.DAILY_AVG,
+                            TrackStringConstants.TOTAL
+                        ),
                         valueList = listOf(
                             "${DecimalFormat("#.##").format(it.dailyAvg)} L",
                             "${DecimalFormat("#.##").format(it.totalAmt)} L"
@@ -221,7 +223,7 @@ private fun TrackSuccessScreen(waterTrackData: WaterResponse.WaterData) {
         // Daily Progress , Monthly Progress , Yearly Progress Line Charts
         waterTrackData.progress?.let { graphData ->
             item {
-                TrackingChartCard(title = "Progress") {
+                TrackingChartCard(title = TrackStringConstants.PROGRESS) {
                     LinearChart.BarChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(graphData.yData)),
@@ -236,16 +238,16 @@ private fun TrackSuccessScreen(waterTrackData: WaterResponse.WaterData) {
         // Ratio Donut Chart is drawn
         waterTrackData.ratio?.let {
             item {
-                TrackingChartCard(title = "Ratio") {
+                TrackingChartCard(title = TrackStringConstants.RATIO) {
                     CircularDonutChartRow.DonutChartRow(
                         circularData = CircularDonutListData(
                             itemsList = listOf(
-                                Pair("Water", it.water),
-                                Pair("Juice", it.juice),
-                                Pair("Soft Drink", it.drink)
+                                Pair(TrackStringConstants.WATER, it.water),
+                                Pair(TrackStringConstants.JUICE, it.juice),
+                                Pair(TrackStringConstants.SOFT_DRINK, it.drink)
                             ),
-                            siUnit = "L",
-                            cgsUnit = "L",
+                            siUnit = TrackStringConstants.LITRES_SI_UNIT,
+                            cgsUnit = TrackStringConstants.LITRES_SI_UNIT,
                             conversionRate = { it }
                         )
                     )
@@ -257,7 +259,7 @@ private fun TrackSuccessScreen(waterTrackData: WaterResponse.WaterData) {
         // Double Line Chart is drawn here
         waterTrackData.beverageData?.let { graphData ->
             item {
-                TrackingChartCard(title = "Beverages") {
+                TrackingChartCard(title = TrackStringConstants.BEVERAGES) {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
                             yAxisReadings = graphData.multiGraphDataList.map {

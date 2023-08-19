@@ -46,6 +46,7 @@ import fit.asta.health.navigation.track.model.net.sunlight.SunlightResponse
 import fit.asta.health.navigation.track.view.components.TrackTopTabBar
 import fit.asta.health.navigation.track.view.components.TrackingChartCard
 import fit.asta.health.navigation.track.view.components.TrackingDetailsCard
+import fit.asta.health.navigation.track.view.util.TrackStringConstants
 import fit.asta.health.navigation.track.view.util.TrackUiEvent
 import fit.asta.health.navigation.track.view.util.TrackingNetworkCall
 import java.text.DecimalFormat
@@ -102,7 +103,7 @@ fun TrackSunlightScreenControl(
 
             is TrackingNetworkCall.Success -> {
                 if (sunlightTrackData.data == null)
-                    Toast.makeText(context, "No Data", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, TrackStringConstants.NO_DATA, Toast.LENGTH_SHORT).show()
                 else {
                     Spacer(modifier = Modifier.height(8.dp))
                     TrackSuccessScreen(sunlightTrackData.data.sunlightData)
@@ -139,13 +140,13 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
         // Daily Progress
         sunlightData.progress?.let {
             item {
-                TrackingChartCard(title = "Daily Progress") {
+                TrackingChartCard(title = TrackStringConstants.DAILY_PROGRESS) {
                     CircularDonutChartRow.TargetDonutChart(
                         circularData = CircularTargetDataBuilder(
                             target = it.target,
                             achieved = it.achieved,
-                            siUnit = "Hrs",
-                            cgsUnit = "min",
+                            siUnit = TrackStringConstants.TIME_SI_UNIT,
+                            cgsUnit = TrackStringConstants.TIME_CGS_UNIT,
                             conversionRate = { it / 60f }
                         )
                     )
@@ -157,8 +158,7 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
         // Weekly Progress
         sunlightData.weekly?.let {
             item {
-                val weekDaysString = listOf("M", "T", "W", "T", "F", "S", "S")
-                TrackingChartCard(title = "Weekly Progress") {
+                TrackingChartCard(title = TrackStringConstants.WEEKLY_PROGRESS) {
                     Row {
                         it.forEachIndexed { index, weekly ->
                             Column(
@@ -185,7 +185,7 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
                                 )
 
                                 Text(
-                                    text = weekDaysString[index],
+                                    text = TrackStringConstants.WEEKDAYS_STRINGS[index],
 
                                     // Text Features
                                     textAlign = TextAlign.Start,
@@ -204,14 +204,18 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
         // Vitamin D Details Card
         sunlightData.weather?.let {
             item {
-                TrackingChartCard(title = "Vitamin D Details") {
+                TrackingChartCard(title = TrackStringConstants.VITAMIN_D_DETAILS) {
                     TrackingDetailsCard(
                         imageList = listOf(
                             R.drawable.image_sun,
                             R.drawable.track_image_duration,
                             R.drawable.track_image_exposure
                         ),
-                        headerTextList = listOf("Avg Vitamin D", "Avg Duration", "Avg Exposure"),
+                        headerTextList = listOf(
+                            TrackStringConstants.AVG_VITAMIN_D,
+                            TrackStringConstants.AVG_DURATION,
+                            TrackStringConstants.AVG_EXPOSURE
+                        ),
                         valueList = listOf(
                             "${DecimalFormat("#.##").format(it.vitD.avg)} ${it.vitD.unit}",
                             "${DecimalFormat("#.##").format(it.duration.dur)} ${it.duration.unit}",
@@ -226,7 +230,7 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
         // Vitamin D Graph
         sunlightData.vitaminGraph?.let {
             item {
-                TrackingChartCard(title = "Vitamin D") {
+                TrackingChartCard(title = TrackStringConstants.VITAMIN_D) {
                     LinearChart.BarChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -241,7 +245,7 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
         // Sunlight Duration Graph
         sunlightData.durationGraph?.let {
             item {
-                TrackingChartCard(title = "Sunlight Duration") {
+                TrackingChartCard(title = TrackStringConstants.SUNLIGHT_DURATION) {
                     LinearChart.BarChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -256,7 +260,7 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
         // Skin Exposure Graph
         sunlightData.exposureGraph?.let {
             item {
-                TrackingChartCard(title = "Skin Exposure") {
+                TrackingChartCard(title = TrackStringConstants.SKIN_EXPOSURE) {
                     LinearChart.BarChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -274,7 +278,7 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
         // Mood Graph Line Chart
         sunlightData.moodGraph?.let {
             item {
-                TrackingChartCard(title = "Mood Graph") {
+                TrackingChartCard(title = TrackStringConstants.MOOD_GRAPH) {
                     LinearChart.EmojiLineChart(
                         linearData = LinearEmojiData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
