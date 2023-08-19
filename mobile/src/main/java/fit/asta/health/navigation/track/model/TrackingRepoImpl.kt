@@ -1,6 +1,6 @@
 package fit.asta.health.navigation.track.model
 
-import fit.asta.health.navigation.track.model.api.TrackingApi
+import fit.asta.health.navigation.track.model.api.TrackingApiService
 import fit.asta.health.navigation.track.model.net.breathing.BreathingResponse
 import fit.asta.health.navigation.track.model.net.exercise.ExerciseResponse
 import fit.asta.health.navigation.track.model.net.meditation.MeditationResponse
@@ -16,10 +16,9 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.Response
-import javax.inject.Inject
 
-class TrackingRepoImpl @Inject constructor(
-    private val trackingApi: TrackingApi
+class TrackingRepoImpl(
+    private val trackingApiService: TrackingApiService
 ) : TrackingRepo {
 
     override suspend fun getHomeDetails(
@@ -32,7 +31,7 @@ class TrackingRepoImpl @Inject constructor(
             emit(TrackingNetworkCall.Loading())
 
             // Fetching Data
-            val response = trackingApi.getHomeDetails(
+            val response = trackingApiService.getHomeDetails(
                 uid = uid,
                 date = date,
                 location = location
@@ -54,7 +53,7 @@ class TrackingRepoImpl @Inject constructor(
             emit(TrackingNetworkCall.Loading())
 
             // Fetching Data
-            val response = trackingApi.getWaterDetails(
+            val response = trackingApiService.getWaterDetails(
                 uid = uid,
                 date = date,
                 location = location,
@@ -77,7 +76,7 @@ class TrackingRepoImpl @Inject constructor(
             emit(TrackingNetworkCall.Loading())
 
             // Fetching Data
-            val response = trackingApi.getStepsDetails(
+            val response = trackingApiService.getStepsDetails(
                 uid = uid,
                 date = date,
                 location = location,
@@ -100,7 +99,7 @@ class TrackingRepoImpl @Inject constructor(
             emit(TrackingNetworkCall.Loading())
 
             // Fetching Data
-            val response = trackingApi.getMeditationDetails(
+            val response = trackingApiService.getMeditationDetails(
                 uid = uid,
                 date = date,
                 location = location,
@@ -122,7 +121,7 @@ class TrackingRepoImpl @Inject constructor(
             emit(TrackingNetworkCall.Loading())
 
             // Fetching Data
-            val response = trackingApi.getBreathingDetails(
+            val response = trackingApiService.getBreathingDetails(
                 uid = uid,
                 date = date,
                 location = location,
@@ -145,7 +144,7 @@ class TrackingRepoImpl @Inject constructor(
             emit(TrackingNetworkCall.Loading())
 
             // Fetching Data
-            val response = trackingApi.getSleepDetails(
+            val response = trackingApiService.getSleepDetails(
                 uid = uid,
                 date = date,
                 location = location,
@@ -168,7 +167,7 @@ class TrackingRepoImpl @Inject constructor(
             emit(TrackingNetworkCall.Loading())
 
             // Fetching Data
-            val response = trackingApi.getSunlightDetails(
+            val response = trackingApiService.getSunlightDetails(
                 uid = uid,
                 date = date,
                 location = location,
@@ -192,7 +191,7 @@ class TrackingRepoImpl @Inject constructor(
             emit(TrackingNetworkCall.Loading())
 
             // Fetching Data
-            val response = trackingApi.getExerciseDetails(
+            val response = trackingApiService.getExerciseDetails(
                 uid = uid,
                 date = date,
                 location = location,

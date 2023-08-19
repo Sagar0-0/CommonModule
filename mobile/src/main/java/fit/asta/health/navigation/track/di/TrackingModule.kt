@@ -5,10 +5,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.BuildConfig
+import fit.asta.health.common.utils.NetworkUtil
 import fit.asta.health.navigation.track.model.TrackingRepo
 import fit.asta.health.navigation.track.model.TrackingRepoImpl
-import fit.asta.health.navigation.track.model.api.TrackingApi
-import fit.asta.health.navigation.track.model.api.TrackingRestImpl
+import fit.asta.health.navigation.track.model.api.TrackingApiService
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
@@ -21,17 +21,15 @@ object TrackingModule {
 
     @Singleton
     @Provides
-    fun provideTrackingApi(client: OkHttpClient): TrackingApi {
-        return TrackingRestImpl(
-            baseUrl = BuildConfig.BASE_URL,
-            client = client
-        )
+    fun provideTrackingApi(client: OkHttpClient): TrackingApiService {
+        return NetworkUtil.getRetrofit(baseUrl = BuildConfig.BASE_URL, client = client)
+            .create(TrackingApiService::class.java)
     }
 
 
     @Singleton
     @Provides
-    fun provideTrackingRepository(trackingApi: TrackingApi): TrackingRepo {
-        return TrackingRepoImpl(trackingApi = trackingApi)
+    fun provideTrackingRepository(trackingApiService: TrackingApiService): TrackingRepo {
+        return TrackingRepoImpl(trackingApiService = trackingApiService)
     }
 }
