@@ -17,42 +17,44 @@ data class ExerciseResponse(
 
     data class ExerciseData(
         @SerializedName("bdy")
-        val bdy: Any,
+        val bdy: List<String>?,
         @SerializedName("bdyWeekly")
-        val bdyWeekly: BdyWeekly,
-        @SerializedName("bpGph")
-        val bpGph: MultiGraphParent,
+        val bdyWeekly: BdyWeekly?,
         @SerializedName("cal")
-        val cal: Int,
+        val cal: Float,
         @SerializedName("dur")
-        val dur: Int,
+        val dur: Float,
         @SerializedName("endDate")
         val endDate: String,
-        @SerializedName("exe")
-        val exe: String,
-        @SerializedName("hDtl")
-        val hDtl: Health,
-        @SerializedName("hrtRtGph")
-        val hrtRtGph: Graph,
+        @SerializedName("sty")
+        val sty: List<String>?,
+        @SerializedName("styWeekly")
+        val styWeekly: StyWeekly?,
+
+        // Used Variables
         @SerializedName("id")
         val id: String,
-        @SerializedName("month")
-        val month: String,
-        @SerializedName("proGph")
-        val proGph: Graph,
-        @SerializedName("prog")
-        val prog: Progress,
-        @SerializedName("startDate")
-        val startDate: String,
-        @SerializedName("sty")
-        val sty: Any,
-        @SerializedName("styWeekly")
-        val styWeekly: StyWeekly,
         @SerializedName("uid")
         val uid: String,
-        @SerializedName("wk")
-        val wk: Weekly,
+        @SerializedName("exe")
+        val exe: String,
+        @SerializedName("startDate")
+        val startDate: String,
+        @SerializedName("month")
+        val month: String,
         @SerializedName("year")
-        val year: String
+        val year: String,
+        @SerializedName("prog")
+        val dailyProgress: Progress?,
+        @SerializedName("wk")
+        val weekly: List<Weekly>?,
+        @SerializedName("proGph")
+        val progressGraph: Graph?,
+        @SerializedName("hDtl")
+        val heartDetail: Health?,
+        @SerializedName("hrtRtGph")
+        val heartRateGraph: Graph?,
+        @SerializedName("bpGph")
+        val bloodPressureGraph: MultiGraphParent?,
     )
 }
