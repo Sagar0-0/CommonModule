@@ -1,8 +1,8 @@
 package com.example.payment.api
 
-import fit.asta.health.payments.pay.model.OrderRequest
-import fit.asta.health.payments.pay.model.OrderResponse
-import fit.asta.health.payments.pay.model.PaymentResponse
+import com.example.payment.model.OrderRequest
+import com.example.payment.model.OrderResponse
+import com.example.payment.model.PaymentResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST

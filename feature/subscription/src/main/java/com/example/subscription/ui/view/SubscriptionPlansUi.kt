@@ -11,11 +11,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.common.utils.UiState
 import com.example.common.utils.toStringFromResId
+import com.example.payment.model.OrderRequest
 import com.example.subscription.data.model.SubscriptionResponse
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.AppTopBar
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
-import fit.asta.health.payments.pay.model.OrderRequest
 
 @Composable
 fun SubscriptionPlansUi(

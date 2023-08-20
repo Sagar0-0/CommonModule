@@ -3,12 +3,12 @@ package com.example.payment.di
 import com.example.network.BuildConfig
 import com.example.network.NetworkUtil
 import com.example.payment.api.PaymentsApi
+import com.example.payment.repo.PaymentsRepo
+import com.example.payment.repo.PaymentsRepoImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.payments.pay.repo.PaymentsRepo
-import fit.asta.health.payments.pay.repo.PaymentsRepoImpl
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 

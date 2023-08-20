@@ -46,6 +46,16 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.test.espresso.core)
 
+    //material3
+    implementation(libs.androidx.material3)
+
     //hilt
     implementation(libs.androidx.hilt.navigation.compose)
+
+    //lifecycle compose
+    implementation(libs.androidx.lifecycle.runtimeCompose)
+
+    //Payment - Razorpay
+    implementation(libs.checkout)
+
 }

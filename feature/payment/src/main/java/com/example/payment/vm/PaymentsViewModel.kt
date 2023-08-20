@@ -3,12 +3,13 @@ package com.example.payment.vm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.common.utils.UiState
+import com.example.common.utils.toUiState
+import com.example.payment.model.OrderRequest
+import com.example.payment.model.OrderResponse
+import com.example.payment.model.PaymentResponse
+import com.example.payment.repo.PaymentsRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.data.repo.AuthRepo
-import fit.asta.health.payments.pay.model.OrderRequest
-import fit.asta.health.payments.pay.model.OrderResponse
-import fit.asta.health.payments.pay.model.PaymentResponse
-import fit.asta.health.payments.pay.repo.PaymentsRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -20,6 +21,8 @@ class PaymentsViewModel
     private val paymentRepo: PaymentsRepo,
     private val authRepo: AuthRepo
 ) : ViewModel() {
+
+    val currentUser = authRepo.getUser()
 
     private val _orderResponseState =
         MutableStateFlow<UiState<OrderResponse>>(UiState.Loading)
@@ -37,13 +40,15 @@ class PaymentsViewModel
                 country = "india",
                 type = 1
             )
-        )
+        ).toUiState()
     }
 
     fun verifyAndUpdateProfile(paymentId: String) {
         _paymentResponseState.value = UiState.Loading
         viewModelScope.launch {
-            _paymentResponseState.value = paymentRepo.verifyAndUpdateProfile(paymentId, uid)
+            _paymentResponseState.value =
+                paymentRepo.verifyAndUpdateProfile(paymentId, authRepo.getUserId() ?: "")
+                    .toUiState()
         }
     }
 

@@ -1,8 +1,8 @@
 package fit.asta.health.auth.data.repo
 
 import android.app.Activity
+import com.example.auth.model.domain.User
 import com.google.firebase.auth.AuthCredential
-import fit.asta.health.auth.data.model.domain.User
 import fit.asta.health.common.utils.ResponseState
 import kotlinx.coroutines.flow.Flow
 

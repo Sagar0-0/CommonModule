@@ -2,13 +2,13 @@ package fit.asta.health.auth.data.repo
 
 import android.app.Activity
 import android.util.Log
+import com.example.auth.model.domain.User
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.PhoneAuthProvider
 import fit.asta.health.auth.data.model.AuthDataMapper
-import fit.asta.health.auth.data.model.domain.User
 import fit.asta.health.common.utils.ResponseState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow

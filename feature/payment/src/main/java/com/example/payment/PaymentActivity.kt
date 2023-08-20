@@ -19,6 +19,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.common.utils.UiState
+import com.example.payment.model.OrderRequest
+import com.example.payment.model.OrderResponse
+import com.example.payment.model.PaymentResponse
 import com.example.payment.vm.PaymentsViewModel
 import com.razorpay.Checkout
 import com.razorpay.PayloadHelper
@@ -28,20 +32,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
-import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.payments.pay.model.OrderRequest
-import fit.asta.health.payments.pay.model.OrderResponse
-import fit.asta.health.payments.pay.model.PaymentResponse
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
 class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
 
     private val paymentsViewModel: PaymentsViewModel by viewModels()
 
     companion object {
-        private val DATA_KEY = "orderRequest"
+        private const val DATA_KEY = "orderRequest"
         private var onSuccess: () -> Unit = {}
         fun launch(context: Context, orderRequest: OrderRequest, onSuccess: () -> Unit) {
             this.onSuccess = onSuccess
@@ -56,8 +54,8 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val data = intent.getParcelableExtra(DATA_KEY, OrderRequest::class.java)
-        paymentsViewModel.createOrder(OrderRequest(subType = "2", durType = "2", type = 1))
+        val data = intent.getParcelableExtra(DATA_KEY, OrderRequest::class.java)!!
+        paymentsViewModel.createOrder(data)
         setContent {
             AppTheme {
                 ShowPaymentScreen()
@@ -71,31 +69,31 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
         val paymentResponse by paymentsViewModel.paymentResponseState.collectAsStateWithLifecycle()
 
         when (orderResponse) {
-            ResponseState.Loading -> {
+            UiState.Loading -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     LoadingAnimation()
                 }
             }
 
-            is ResponseState.Success -> {
+            is UiState.Success -> {
                 LaunchedEffect(
                     key1 = Unit,
                     block = {
                         try {
                             Checkout.preload(applicationContext)
                             val co = Checkout()
-                            co.setKeyID((orderResponse as ResponseState.Success<OrderResponse>).data.data.apiKey)
-                            co.setImage(R.drawable.splash_logo)
+                            co.setKeyID((orderResponse as UiState.Success<OrderResponse>).data.data.apiKey)
+                            co.setImage(com.razorpay.R.drawable.abc_ab_share_pack_mtrl_alpha)
                             val payloadHelper = PayloadHelper(
                                 "INR",
                                 0,
-                                (orderResponse as ResponseState.Success<OrderResponse>).data.data.orderId
+                                (orderResponse as UiState.Success<OrderResponse>).data.data.orderId
                             ).apply {
                                 name = "Asta.fit"
                                 description = "Silver Plan 3 month subscription"
-                                prefillEmail = authViewModel.currentUser?.email
-                                prefillContact = authViewModel.currentUser?.phoneNumber
-                                prefillName = authViewModel.currentUser?.name
+                                prefillEmail = paymentsViewModel.currentUser?.email
+                                prefillContact = paymentsViewModel.currentUser?.phoneNumber
+                                prefillName = paymentsViewModel.currentUser?.name
                                 retryEnabled = true
                                 rememberCustomer = true
                             }
@@ -111,7 +109,7 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
                     }
                 )
                 when (paymentResponse) {
-                    ResponseState.Loading -> {
+                    UiState.Loading -> {
                         Box(
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
@@ -120,14 +118,14 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
                         }
                     }
 
-                    is ResponseState.Success -> {
-                        if ((paymentResponse as ResponseState.Success<PaymentResponse>).data.status.code == 200) {
+                    is UiState.Success -> {
+                        if ((paymentResponse as UiState.Success<PaymentResponse>).data.status.code == 200) {
                             finish()
                             onSuccess()
                         }
                     }
 
-                    is ResponseState.Error -> {
+                    is UiState.Error -> {
                         Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show()
                         finish()
                     }

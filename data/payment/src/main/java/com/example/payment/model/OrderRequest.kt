@@ -1,4 +1,4 @@
-package fit.asta.health.payments.pay.model
+package com.example.payment.model
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

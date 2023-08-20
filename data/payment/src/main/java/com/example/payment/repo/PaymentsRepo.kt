@@ -1,9 +1,9 @@
-package fit.asta.health.payments.pay.repo
+package com.example.payment.repo
 
-import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.payments.pay.model.OrderRequest
-import fit.asta.health.payments.pay.model.OrderResponse
-import fit.asta.health.payments.pay.model.PaymentResponse
+import com.example.common.utils.ResponseState
+import com.example.payment.model.OrderRequest
+import com.example.payment.model.OrderResponse
+import com.example.payment.model.PaymentResponse
 
 interface PaymentsRepo {
 
