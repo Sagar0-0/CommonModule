@@ -59,6 +59,7 @@ android {
         versionName = "0.1.4" // X.Y.Z; X = Major, Y = minor, Z = Patch level
         vectorDrawables.useSupportLibrary = true
 
+        base.archivesName.set("$applicationId-$versionName")
         signingConfig = signingConfigs.getByName("release")
         manifestPlaceholders["redirectSchemeName"] = "spotify-sdk"
         manifestPlaceholders["redirectHostName"] = "auth"
