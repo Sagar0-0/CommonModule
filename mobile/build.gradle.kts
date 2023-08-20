@@ -1,5 +1,3 @@
-
-
 plugins {
     id("asta.android.application")
     id("asta.android.application.compose")
@@ -62,7 +60,6 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         signingConfig = signingConfigs.getByName("release")
-        base.archivesBaseName = "$applicationId-$versionName"
         manifestPlaceholders["redirectSchemeName"] = "spotify-sdk"
         manifestPlaceholders["redirectHostName"] = "auth"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
