@@ -15,7 +15,7 @@ interface AddressApi {
     ): AddressesDTO
 
     @PUT("location/put")
-    suspend fun addNewAddress(@Body myAddress: MyAddress): PutAddressResponse
+    suspend fun putAddress(@Body myAddress: MyAddress): PutAddressResponse
 
     @DELETE("location/delete")
     suspend fun deleteAddress(

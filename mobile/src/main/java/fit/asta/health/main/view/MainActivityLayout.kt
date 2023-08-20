@@ -323,8 +323,6 @@ private fun MainNavHost(
                 }, isInternetError = false)
 
                 is UiState.Success -> {
-                    val vm: AlarmVM = hiltViewModel()
-                    val context = LocalContext.current
                     TodayContent(
                         uiState = (state as UiState.Success<TodayData>).data,
                         listMorning = listMorning,

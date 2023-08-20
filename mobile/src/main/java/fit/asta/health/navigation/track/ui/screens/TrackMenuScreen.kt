@@ -1,0 +1,391 @@
+package fit.asta.health.navigation.track.ui.screens
+
+
+import android.widget.Toast
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.core.graphics.ColorUtils
+import com.dev.anirban.chartlibrary.circular.charts.CircularDonutChartColumn
+import com.dev.anirban.chartlibrary.circular.charts.CircularDonutChartRow
+import com.dev.anirban.chartlibrary.circular.data.CircularDonutListData
+import com.dev.anirban.chartlibrary.circular.data.CircularTargetDataBuilder
+import com.dev.anirban.chartlibrary.circular.decoration.CircularDecoration
+import fit.asta.health.R
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
+import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.navigation.track.data.remote.model.menu.HomeMenuResponse
+import fit.asta.health.navigation.track.ui.components.TrackingChartCard
+import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
+import fit.asta.health.navigation.track.ui.navigation.TrackNavRoute
+import fit.asta.health.navigation.track.ui.util.TrackOption
+import fit.asta.health.navigation.track.ui.util.TrackStringConstants
+import fit.asta.health.navigation.track.ui.util.TrackUiEvent
+import fit.asta.health.navigation.track.ui.util.TrackingNetworkCall
+
+/**
+ * This Screen shows all the Statistics Options that are there in the App for the user to choose
+ * the specific Option they want to see
+ *
+ * @param homeMenuState This variable contains the state of the Home Menu Api call
+ * @param loadHomeData This is the function which fetches the data from the server
+ * @param navigator Controller which lets us navigate to a different Screen
+ * @param setUiEvent This option sets the Ui Event which is selected by the user
+ */
+@Composable
+fun TrackMenuScreenControl(
+    homeMenuState: TrackingNetworkCall<HomeMenuResponse>,
+    loadHomeData: () -> Unit,
+    setUiEvent: (TrackUiEvent) -> Unit,
+    navigator: (String) -> Unit
+) {
+
+    // Context Variable
+    val context = LocalContext.current
+
+    // This function loads the data for the Home Menu Screen
+    LaunchedEffect(Unit) {
+        loadHomeData()
+    }
+
+    // This conditional handles the State of the Api call and shows the UI according to the state
+    when (homeMenuState) {
+
+        // Initialized State
+        is TrackingNetworkCall.Initialized -> {}
+
+        // Loading State
+        is TrackingNetworkCall.Loading -> {
+            LoadingAnimation(modifier = Modifier.fillMaxSize())
+        }
+
+        // Success State
+        is TrackingNetworkCall.Success -> {
+            if (homeMenuState.data != null)
+                TrackMenuSuccessScreen(
+                    homeMenuData = homeMenuState.data.homeMenuData,
+                    setUiEvent = setUiEvent,
+                    navigator = navigator
+                )
+            else
+                Toast.makeText(context, TrackStringConstants.NO_DATA, Toast.LENGTH_SHORT).show()
+        }
+
+        // failure State
+        is TrackingNetworkCall.Failure -> {
+            Toast.makeText(context, homeMenuState.message.toString(), Toast.LENGTH_SHORT).show()
+        }
+    }
+}
+
+/**
+ * This function Provides the UI for the Home Menu Screen when the api state is Success i.e the data
+ * is fetched from the server successfully
+ *
+ * @param homeMenuData This function contains the data of the response of the Api call for the home
+ * menu state
+ * @param setUiEvent This function is used to set the track Option i.e Water , breathing , steps,
+ * meditation etc
+ * @param navigator This function is used to navigate from one screen to another
+ */
+@Composable
+private fun TrackMenuSuccessScreen(
+    homeMenuData: HomeMenuResponse.HomeMenuData,
+    setUiEvent: (TrackUiEvent) -> Unit,
+    navigator: (String) -> Unit
+) {
+
+    // Parent UI for all the composable
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                Color(
+                    ColorUtils.blendARGB(
+                        MaterialTheme.colorScheme.surface.toArgb(),
+                        MaterialTheme.colorScheme.onSurface.toArgb(),
+                        0.08f
+                    )
+                )
+            )
+    ) {
+
+        // Time Spent Chart Card
+        homeMenuData.timeSpent?.let {
+            item {
+                TrackingChartCard(title = TrackStringConstants.TIME_SPENT) {
+                    CircularDonutChartColumn.DonutChartColumn(
+                        circularData = CircularDonutListData(
+                            itemsList = listOf(
+                                Pair(TrackStringConstants.MEDITATION, it.meditation),
+                                Pair(TrackStringConstants.STEPS, it.steps),
+                                Pair(TrackStringConstants.SLEEP, it.sleep),
+                                Pair(TrackStringConstants.SUNLIGHT, it.sunlight),
+                                Pair(TrackStringConstants.BREATHING, it.breathing),
+                                Pair(TrackStringConstants.WATER, it.water)
+                            ),
+                            siUnit = TrackStringConstants.TIME_CGS_UNIT,
+                            cgsUnit = TrackStringConstants.TIME_CGS_UNIT,
+                            conversionRate = { it }
+                        ),
+                        circularDecoration = CircularDecoration.donutChartDecorations(
+                            colorList = listOf(
+                                Color(0xFF90EFD8),
+                                Color(0xFFF7AD1A),
+                                Color(0xFF299F23),
+                                Color(0xFFFF2E2E),
+                                Color(0xFF6C27C7),
+                                Color(0xFFB25FC0)
+                            )
+                        )
+                    )
+                }
+            }
+        }
+
+
+        // Heart Health Details Card
+        homeMenuData.healthDetail?.let {
+            item {
+                TrackingChartCard(title = TrackStringConstants.HEART_HEALTH) {
+                    TrackingDetailsCard(
+                        imageList = listOf(R.drawable.heartrate, R.drawable.pulse_rate),
+                        headerTextList = listOf(
+                            TrackStringConstants.BLOOD_PRESSURE,
+                            TrackStringConstants.HEART_RATE
+                        ),
+                        valueList = listOf(
+                            "${it.bloodPressure.mm}/${it.bloodPressure.hg} ${it.bloodPressure.unit}",
+                            "${it.heartRate.rate} ${it.heartRate.unit}"
+                        )
+                    )
+                }
+            }
+        }
+
+
+        // TODO :- BMI Chart Details Card
+
+
+        // All The Tools Data is drawn here
+        homeMenuData.tools?.forEach {
+            item {
+                ToolsItemsCard(
+                    title = it.title,
+                    target = it.detail.toolProgress.target,
+                    achieved = it.detail.toolProgress.achieved,
+                    bodyDescription = it.detail.description,
+                    unit = it.detail.toolProgress.unit
+                ) {
+
+                    // checking the title before redirecting the user to the screen and setting it
+                    when (it.title) {
+
+                        "water" -> {
+                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.WaterOption))
+                            navigator(TrackNavRoute.WaterTrackDetail.route)
+                        }
+
+                        "meditation" -> {
+                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.MeditationOption))
+                            navigator(TrackNavRoute.MeditationTrackDetail.route)
+                        }
+
+                        "breathing" -> {
+                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.BreathingOption))
+                            navigator(TrackNavRoute.BreathingTrackDetail.route)
+                        }
+
+                        "sunlight" -> {
+                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.SunlightOption))
+                            navigator(TrackNavRoute.SunlightTrackDetail.route)
+                        }
+
+                        "sleep" -> {
+                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.SleepOption))
+                            navigator(TrackNavRoute.SleepTrackDetail.route)
+                        }
+
+                        "yoga" -> {
+                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.YogaOption))
+                            navigator(TrackNavRoute.ExerciseTrackDetail.route)
+                        }
+
+                        "dance" -> {
+                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.DanceOption))
+                            navigator(TrackNavRoute.ExerciseTrackDetail.route)
+                        }
+
+                        "workout" -> {
+                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.WorkoutOption))
+                            navigator(TrackNavRoute.ExerciseTrackDetail.route)
+                        }
+
+                        "hiit" -> {
+                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.HiitOption))
+                            navigator(TrackNavRoute.ExerciseTrackDetail.route)
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+        }
+
+
+        // Steps Card Item
+        homeMenuData.walking?.let {
+            item {
+                ToolsItemsCard(
+                    title = it.title,
+                    target = it.target.steps.steps.toFloat(),
+                    achieved = it.achieved.steps.steps.toFloat(),
+                    bodyDescription = it.description.stepsDescription,
+                    unit = TrackStringConstants.STEPS_STEP_UNIT
+                ) {
+                    setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.StepsOption))
+                    navigator(TrackNavRoute.StepsTrackDetail.route)
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+        }
+    }
+}
+
+/**
+ * This function provides the UI For all the tools data fetched from the server
+ *
+ * @param title This denotes the title of the Card or the tools type
+ * @param target This denotes the target for the Circular chart
+ * @param achieved This denotes the achieved for the Circular Chart
+ * @param unit This contains the Unit for the Circular Chart
+ * @param bodyDescription This is the description given at the bottom of the Card beside the button
+ * @param onOptionClick This function is executed when the Tool Button is clicked
+ */
+@Composable
+private fun ToolsItemsCard(
+    title: String,
+    target: Float,
+    achieved: Float,
+    unit: String,
+    bodyDescription: String,
+    onOptionClick: () -> Unit
+) {
+
+    // This function draws an elevated Card View
+    ElevatedCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp, start = 16.dp, end = 16.dp),
+        shape = RoundedCornerShape(8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        colors = CardDefaults.elevatedCardColors(containerColor = Color.Transparent)
+    ) {
+
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.surface)
+                .fillMaxWidth()
+        ) {
+
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(spacing.medium)
+            ) {
+
+                // Title of the Card
+                Text(
+                    text = title,
+
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+
+                    // Text Features
+                    textAlign = TextAlign.Start,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.W600,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+
+                // Donut Chart
+                CircularDonutChartRow.TargetDonutChart(
+                    circularData = CircularTargetDataBuilder(
+                        target = target,
+                        achieved = achieved,
+                        siUnit = unit,
+                        cgsUnit = unit,
+                        conversionRate = { it }
+                    )
+                )
+
+
+                Row(
+                    modifier = Modifier.padding(start = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(spacing.medium)
+                ) {
+
+                    Row(
+                        modifier = Modifier.weight(.8f),
+                        horizontalArrangement = Arrangement.spacedBy(spacing.medium),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+
+                        // Leading Image of this row at the bottom of the Chart
+                        Image(
+                            painter = painterResource(id = R.drawable.track_image_info),
+                            contentDescription = null,
+                            modifier = Modifier.size(24.dp),
+
+                            contentScale = ContentScale.FillBounds
+                        )
+
+                        // Description Text
+                        Text(text = bodyDescription)
+                    }
+
+                    // Trailing Image of this row at the bottom of the Chart
+                    Image(
+                        painter = painterResource(id = R.drawable.track_image_go),
+                        contentDescription = null,
+
+                        modifier = Modifier
+                            .weight(.2f)
+                            .clickable { onOptionClick() }
+                    )
+                }
+            }
+        }
+    }
+}
