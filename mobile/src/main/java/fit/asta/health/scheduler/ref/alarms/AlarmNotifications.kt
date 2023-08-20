@@ -727,6 +727,7 @@ internal object AlarmNotifications {
 
         clearNotification(service, instance)
         service.startForeground(ALARM_FIRING_NOTIFICATION_ID, notification.build())
+//        ContextCompat.startForegroundService(service.applicationContext, createServiceIntent(service.applicationContext))
     }
 
     @JvmStatic
@@ -767,6 +768,10 @@ internal object AlarmNotifications {
         val alarmId = instance.mAlarmId ?: -1
         return Alarm.createIntent(context, AlarmActivity::class.java, alarmId)
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    }
+
+    fun createServiceIntent(context: Context): Intent {
+        return Intent(context, AlarmService::class.java)
     }
 
     /**
