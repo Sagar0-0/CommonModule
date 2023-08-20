@@ -45,13 +45,6 @@ enum class AstaFlavor(
         imgUrl = "https://dj9n1wsbrvg44.cloudfront.net",
         vdoUrl = "https://d28fbw0qer0joz.cloudfront.net"
     ),
-    tst(
-        contentType,
-        applicationIdSuffix = ".test",
-        baseUrl = "https://asta-m1-dev.ap-southeast-1.elasticbeanstalk.com/",
-        imgUrl = "https://dj9n1wsbrvg44.cloudfront.net",
-        vdoUrl = "https://d28fbw0qer0joz.cloudfront.net"
-    ),
     prod(
         contentType,
         applicationIdSuffix = "",
@@ -73,9 +66,7 @@ fun configureFlavors(
                     dimension = it.dimension.name
                     flavorConfigurationBlock(this, it)
                     if (this@apply is ApplicationExtension && this is ApplicationProductFlavor) {
-                        if (it.applicationIdSuffix != null) {
-                            applicationIdSuffix = it.applicationIdSuffix
-                        }
+                        applicationIdSuffix = it.applicationIdSuffix
                         buildConfigField("String", "BASE_URL", "\"${it.baseUrl}\"")
                         buildConfigField("String", "BASE_IMAGE_URL", "\"${it.imgUrl}\"")
                         buildConfigField("String", "BASE_VIDEO_URL", "\"${it.vdoUrl}\"")
