@@ -30,14 +30,12 @@ import androidx.annotation.RequiresApi
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.scheduler.ref.AlarmAlertWakeLock
 import fit.asta.health.scheduler.ref.LogUtils
-import fit.asta.health.scheduler.ref.Utils.ALARM_STATE_EXTRA
 import fit.asta.health.scheduler.ref.Utils.CHANGE_STATE_ACTION
 import fit.asta.health.scheduler.ref.db.AlarmInstanceDao
 import fit.asta.health.scheduler.ref.provider.AlarmInstance
 import fit.asta.health.scheduler.ref.provider.ClockContract.InstancesColumns
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -167,24 +165,9 @@ class AlarmService : Service() {
             CHANGE_STATE_ACTION -> {
                 alarmDataManager.handleIntent(this, intent)
 
-                // If state is changed to firing, actually fire the alarm!
-                val alarmState: Int = intent.getIntExtra(ALARM_STATE_EXTRA, -1)
-                if (alarmState == InstancesColumns.FIRED_STATE) {
-                    scope.launch {
-                        val instance: AlarmInstance? = alarmInstanceDao.getInstance(instanceId)
-                        if (instance == null) {
-                            LogUtils.e("No instance found to start alarm: %d", instanceId)
-                            if (mCurrentAlarm != null) {
-                                // Only release lock if we are not firing alarm
-                                AlarmAlertWakeLock.releaseCpuLock()
-                            }
-                        } else if (mCurrentAlarm != null && mCurrentAlarm!!.mId == instanceId) {
-                            LogUtils.e("Alarm already started for instance: %d", instanceId)
-                        } else {
-                            startAlarm(instance)
-                        }
-                    }
-                }
+//                // If state is changed to firing, actually fire the alarm!
+//                val alarmState: Int = intent.getIntExtra(ALARM_STATE_EXTRA, -1)
+//                startAlarm(instance)
             }
 
             STOP_ALARM_ACTION -> {

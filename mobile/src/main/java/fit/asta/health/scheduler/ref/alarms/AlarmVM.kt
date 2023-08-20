@@ -6,7 +6,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.scheduler.ref.LogUtils
 import fit.asta.health.scheduler.ref.Utils
 import fit.asta.health.scheduler.ref.data.Weekdays
 import fit.asta.health.scheduler.ref.db.AlarmInstanceDao
@@ -15,7 +14,6 @@ import fit.asta.health.scheduler.ref.provider.Alarm
 import fit.asta.health.scheduler.ref.provider.AlarmInstance
 import fit.asta.health.scheduler.ref.provider.ClockContract
 import kotlinx.coroutines.launch
-import java.util.Calendar
 import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 
@@ -29,21 +27,6 @@ class AlarmVM @Inject constructor(
 
     private var mSelectedAlarm: Alarm? = null
 
-    fun setAlarmEnabled(alarm: Alarm, newState: Boolean, context: Context) {
-        if (newState != alarm.enabled) {
-            alarm.enabled = newState
-            asyncUpdateAlarm(alarm, minorUpdate = false, mAppContext = context)
-            LogUtils.d("Updating alarm enabled state to $newState")
-        }
-    }
-
-    fun setAlarmVibrationEnabled(alarm: Alarm, newState: Boolean, context: Context) {
-        if (newState != alarm.vibrate) {
-            alarm.vibrate = newState
-            asyncUpdateAlarm(alarm, minorUpdate = true, mAppContext = context)
-            LogUtils.d("Updating vibrate state to $newState")
-        }
-    }
 
     fun setAlarmRepeatEnabled(alarm: Alarm, isEnabled: Boolean, context: Context) {
         val alarmId = alarm.id.toString()
@@ -76,10 +59,6 @@ class AlarmVM @Inject constructor(
         asyncUpdateAlarm(alarm, minorUpdate = false, context)
     }
 
-    fun onDeleteClicked(alarm: Alarm, context: Context) {
-        asyncDeleteAlarm(alarm, context)
-        LogUtils.d("Deleting alarm.")
-    }
 
 
     fun dismissAlarmInstance(alarmInstance: AlarmInstance, context: Context) {
@@ -99,7 +78,13 @@ class AlarmVM @Inject constructor(
                 minutes = minute,
                 enabled = true,
                 id = (System.currentTimeMillis() + AtomicLong().incrementAndGet()),
-                daysOfWeek = Weekdays.ALL
+                daysOfWeek = Weekdays.ALL,
+                endEnabled = false,
+                preEnabled = false,
+                preNotification = 1,
+                endHour = null,
+                endMinutes = null,
+                snooze = 5
             )
             asyncAddAlarm(alarm, context)
         } else {
@@ -120,7 +105,7 @@ class AlarmVM @Inject constructor(
         }
         // Create and add instance to db
         if (alarm.enabled) {
-            setupAlarmInstance(alarm, context)
+//            setupAlarmInstance(alarm, context)
         }
     }
 
@@ -134,39 +119,18 @@ class AlarmVM @Inject constructor(
             alarmRefDao.insertAndUpdate(alarm)
             if (minorUpdate) {
                 // just update the instance in the database and update notifications.
-                val instanceList = alarmInstanceDao.getInstancesByAlarmId(alarm.id)
-                for (instance in instanceList) {
-                    instance.mVibrate = alarm.vibrate
-                    instance.mRingtone = alarm.alert.toString()
-                    instance.mLabel = alarm.label
-
-                    alarmInstanceDao.insertAndUpdate(instance)
-                    // Update the notification for this instance.
-                    AlarmNotifications.updateNotification(mAppContext, instance)
-                }
+//                val instanceList = alarmInstanceDao.getInstancesByAlarmId(alarm.id)
+//                for (instance in instanceList) {
+//                    instance.mVibrate = alarm.vibrate
+//                    instance.mRingtone = alarm.alert.toString()
+//                    instance.mLabel = alarm.label
+//
+//                    alarmInstanceDao.insertAndUpdate(instance)
+//                    // Update the notification for this instance.
+//                    AlarmNotifications.updateNotification(mAppContext, instance)
+//                }
             }
         }
-    }
-
-    private fun asyncDeleteAlarm(alarm: Alarm, mAppContext: Context) {
-        alarmDataManager.deleteAllInstances(mAppContext, alarm.id)
-        viewModelScope.launch { alarmRefDao.delete(alarm) }
-    }
-
-    private fun setupAlarmInstance(alarm: Alarm, mAppContext: Context) {
-        val newInstance = alarm.createInstanceAfter(Calendar.getInstance())
-        viewModelScope.launch {
-            alarmInstanceDao.getInstancesByAlarmId(newInstance.mAlarmId!!)
-                .forEach { otherInstances ->
-                    if (otherInstances.alarmTime == newInstance.alarmTime) {
-                        newInstance.mId = otherInstances.mId
-                        alarmInstanceDao.insertAndUpdate(newInstance)
-                    }
-                }
-            alarmInstanceDao.insertAndUpdate(newInstance)
-        }
-        // Register instance to state manager
-        alarmDataManager.registerInstance(mAppContext, newInstance, true)
     }
 
 }

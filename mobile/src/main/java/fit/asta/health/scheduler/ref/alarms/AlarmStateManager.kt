@@ -20,14 +20,12 @@ package fit.asta.health.scheduler.ref.alarms
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.PowerManager
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.scheduler.ref.AlarmAlertWakeLock
-import fit.asta.health.scheduler.ref.Utils.INDICATOR_ACTION
+import fit.asta.health.scheduler.ref.newalarm.StateManager
+import fit.asta.health.scheduler.ref.newalarm.Utils.CHANGE_STATE_ACTION
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -41,20 +39,11 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class AlarmStateManager : BroadcastReceiver() {
     @Inject
-    lateinit var alarmDataManager: AlarmDataManager
+    lateinit var stateManager: StateManager
     val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     override fun onReceive(context: Context, intent: Intent) {
-        if (INDICATOR_ACTION == intent.action) {
-            return
-        }
-
-        val result: PendingResult = goAsync()
-        val wl: PowerManager.WakeLock = AlarmAlertWakeLock.createPartialWakeLock(context)
-        wl.acquire(10 * 60 * 1000L /*10 minutes*/)
-        scope.launch {
-            alarmDataManager.handleIntent(context, intent)
-            result.finish()
-            wl.release()
+        if (CHANGE_STATE_ACTION == intent.action) {
+            stateManager.handleIntent(context, intent)
         }
     }
 }

@@ -15,8 +15,8 @@ interface AlarmInstanceDao {
     suspend fun delete(alarmInstance: AlarmInstance)
 
 
-    @Query("SELECT * FROM alarm_instances WHERE alarm_id = :alarmId")
-    suspend fun getInstancesByAlarmId(alarmId: Long): List<AlarmInstance>
+    @Query("SELECT * FROM alarm_instances WHERE alarm_id = :alarmId LIMIT 1")
+    suspend fun getInstancesByAlarmId(alarmId: Long): AlarmInstance?
 
     @Query("SELECT * FROM alarm_instances WHERE alarm_state = :state")
     suspend fun getInstancesByState(state: Int): List<AlarmInstance>

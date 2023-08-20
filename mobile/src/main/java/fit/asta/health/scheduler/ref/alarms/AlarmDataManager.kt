@@ -5,7 +5,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
-import android.text.format.DateFormat
 import android.widget.Toast
 import androidx.core.app.NotificationManagerCompat
 import fit.asta.health.scheduler.ref.AlarmUtils
@@ -84,8 +83,6 @@ class AlarmDataManager @Inject constructor(
 
         val alarmManager: AlarmManager =
             context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-        val flags = if (nextAlarm == null) PendingIntent.FLAG_NO_CREATE else 0
         val operation: PendingIntent? = PendingIntent.getBroadcast(
             context,
             0 /* requestCode */,
@@ -106,6 +103,7 @@ class AlarmDataManager @Inject constructor(
                 )
 
             val info = AlarmManager.AlarmClockInfo(alarmTime, viewIntent)
+//            alarmManager.setAlarmClock(info, operation!!)
             Utils.updateNextAlarm(alarmManager, info, operation)
         } else if (operation != null) {
             LogUtils.i("Canceling upcoming AlarmClockInfo")
@@ -122,7 +120,7 @@ class AlarmDataManager @Inject constructor(
      */
     private fun updateParentAlarm(context: Context, instance: AlarmInstance) {
         scope.launch {
-            alarmRefDao.getAlarmById(instance.mAlarmId!!)?.let { alarm ->
+            alarmRefDao.getAlarmById(instance.mAlarmId)?.let { alarm ->
                 if (!alarm.daysOfWeek.isRepeating) {
                     if (alarm.deleteAfterUse) {
                         LogUtils.i("Deleting parent alarm: " + alarm.id)
@@ -136,23 +134,23 @@ class AlarmDataManager @Inject constructor(
                     // Schedule the next repeating instance which may be before the current instance if
                     // a time jump has occurred. Otherwise, if the current instance is the next instance
                     // and has already been fired, schedule the subsequent instance.
-                    var nextRepeatedInstance = alarm.createInstanceAfter(currentTime)
-                    if (instance.mAlarmState > ClockContract.InstancesColumns.FIRED_STATE &&
-                        nextRepeatedInstance.alarmTime == instance.alarmTime
-                    ) {
-                        nextRepeatedInstance = alarm.createInstanceAfter(instance.alarmTime)
-                    }
+//                    var nextRepeatedInstance = alarm.createInstanceAfter(currentTime)
+//                    if (instance.mAlarmState > ClockContract.InstancesColumns.FIRED_STATE &&
+//                        nextRepeatedInstance.alarmTime == instance.alarmTime
+//                    ) {
+//                        nextRepeatedInstance = alarm.createInstanceAfter(instance.alarmTime)
+//                    }
 
-                    LogUtils.i(
-                        "Creating new instance for repeating alarm " + alarm.id +
-                                " at " +
-                                AlarmUtils.getFormattedTime(
-                                    context,
-                                    nextRepeatedInstance.alarmTime
-                                )
-                    )
-                    alarmInstanceDao.insertAndUpdate(nextRepeatedInstance)
-                    registerInstance(context, nextRepeatedInstance, true)
+//                    LogUtils.i(
+//                        "Creating new instance for repeating alarm " + alarm.id +
+//                                " at " +
+//                                AlarmUtils.getFormattedTime(
+//                                    context,
+//                                    nextRepeatedInstance.alarmTime
+//                                )
+//                    )
+//                    alarmInstanceDao.insertAndUpdate(nextRepeatedInstance)
+//                    registerInstance(context, nextRepeatedInstance, true)
                 }
             }
         }
@@ -203,10 +201,10 @@ class AlarmDataManager @Inject constructor(
 
         // Setup instance notification and scheduling timers
         AlarmNotifications.clearNotification(context, instance)
-        scheduleInstanceStateChange(
-            context, instance.lowNotificationTime,
-            instance, ClockContract.InstancesColumns.LOW_NOTIFICATION_STATE
-        )
+//        scheduleInstanceStateChange(
+//            context, instance.lowNotificationTime,
+//            instance, ClockContract.InstancesColumns.LOW_NOTIFICATION_STATE
+//        )
     }
 
     /**
@@ -227,10 +225,10 @@ class AlarmDataManager @Inject constructor(
 
         // Setup instance notification and scheduling timers
         AlarmNotifications.showLowPriorityNotification(context, instance)
-        scheduleInstanceStateChange(
-            context, instance.highNotificationTime,
-            instance, ClockContract.InstancesColumns.HIGH_NOTIFICATION_STATE
-        )
+//        scheduleInstanceStateChange(
+//            context, instance.highNotificationTime,
+//            instance, ClockContract.InstancesColumns.HIGH_NOTIFICATION_STATE
+//        )
     }
 
     /**
@@ -251,10 +249,10 @@ class AlarmDataManager @Inject constructor(
 
         // Setup instance notification and scheduling timers
         AlarmNotifications.clearNotification(context, instance)
-        scheduleInstanceStateChange(
-            context, instance.highNotificationTime,
-            instance, ClockContract.InstancesColumns.HIGH_NOTIFICATION_STATE
-        )
+//        scheduleInstanceStateChange(
+//            context, instance.highNotificationTime,
+//            instance, ClockContract.InstancesColumns.HIGH_NOTIFICATION_STATE
+//        )
     }
 
     /**
@@ -297,22 +295,22 @@ class AlarmDataManager @Inject constructor(
         instance.mAlarmState = ClockContract.InstancesColumns.FIRED_STATE
         scope.launch { alarmInstanceDao.insertAndUpdate(instance) }
 
-        instance.mAlarmId?.let { alarmId ->
+        instance.mAlarmId.let { alarmId ->
             // if the time changed *backward* and pushed an instance from missed back to fired,
             // remove any other scheduled instances that may exist
             scope.launch {
-                alarmInstanceDao.getInstancesByAlarmId(alarmId).forEach {
-                    if (it.mId != instance.mId) {
-                        unregisterInstance(context, it)
-                        alarmInstanceDao.delete(it)
-                    }
-                }
+    //                alarmInstanceDao.getInstancesByAlarmId(alarmId).forEach {
+    //                    if (it.mId != instance.mId) {
+    //                        unregisterInstance(context, it)
+    //                        alarmInstanceDao.delete(it)
+    //                    }
+    //                }
             }
         }
 
 //            Events.sendAlarmEvent(R.string.action_fire, 0)
 
-        val timeout: Calendar? = instance.timeout
+        val timeout: Calendar = instance.timeout
         timeout?.let {
             scheduleInstanceStateChange(
                 context,
@@ -402,10 +400,10 @@ class AlarmDataManager @Inject constructor(
 
         // Setup instance notification and scheduling timers
         AlarmNotifications.showMissedNotification(context, instance)
-        scheduleInstanceStateChange(
-            context, instance.missedTimeToLive,
-            instance, ClockContract.InstancesColumns.DISMISSED_STATE
-        )
+//        scheduleInstanceStateChange(
+//            context, instance.missedTimeToLive,
+//            instance, ClockContract.InstancesColumns.DISMISSED_STATE
+//        )
 
         // Instance is not valid anymore, so find next alarm that will fire and notify system
         updateNextAlarm(context)
@@ -527,10 +525,10 @@ class AlarmDataManager @Inject constructor(
         LogUtils.i("Registering instance: " + instance.mId)
         val currentTime = currentTime
         val alarmTime: Calendar = instance.alarmTime
-        val timeoutTime: Calendar? = instance.timeout
-        val lowNotificationTime: Calendar = instance.lowNotificationTime
-        val highNotificationTime: Calendar = instance.highNotificationTime
-        val missedTTL: Calendar = instance.missedTimeToLive
+        val timeoutTime: Calendar = instance.timeout
+//        val lowNotificationTime: Calendar = instance.lowNotificationTime
+//        val highNotificationTime: Calendar = instance.highNotificationTime
+//        val missedTTL: Calendar = instance.missedTimeToLive
 
         // Handle special use cases here
         if (instance.mAlarmState == ClockContract.InstancesColumns.DISMISSED_STATE) {
@@ -562,7 +560,7 @@ class AlarmDataManager @Inject constructor(
                 // Make sure we re-enable the parent alarm of the instance
                 // because it will get activated by by the below code
                 scope.launch {
-                    alarmRefDao.getAlarmById(instance.mAlarmId!!)?.let {
+                    alarmRefDao.getAlarmById(instance.mAlarmId)?.let {
                         it.enabled = true
                         alarmRefDao.insertAndUpdate(it)
                     }
@@ -578,42 +576,43 @@ class AlarmDataManager @Inject constructor(
         }
 
         // Fix states that are time sensitive
-        if (currentTime.after(missedTTL)) {
-            // Alarm is so old, just dismiss it
-            deleteInstanceAndUpdateParent(context, instance)
-        } else if (currentTime.after(alarmTime)) {
-            // There is a chance that the TIME_SET occurred right when the alarm should go off,
-            // so we need to add a check to see if we should fire the alarm instead of marking
-            // it missed.
-            val alarmBuffer = Calendar.getInstance()
-            alarmBuffer.time = alarmTime.time
-            alarmBuffer.add(Calendar.SECOND, ALARM_FIRE_BUFFER)
-            if (currentTime.before(alarmBuffer)) {
-                setFiredState(context, instance)
-            } else {
-                setMissedState(context, instance)
-            }
-        } else if (instance.mAlarmState == ClockContract.InstancesColumns.SNOOZE_STATE) {
-            // We only want to display snooze notification and not update the time,
-            // so handle showing the notification directly
-            AlarmNotifications.showSnoozeNotification(context, instance)
-            scheduleInstanceStateChange(
-                context, instance.alarmTime,
-                instance, ClockContract.InstancesColumns.FIRED_STATE
-            )
-        } else if (currentTime.after(highNotificationTime)) {
-            setHighNotificationState(context, instance)
-        } else if (currentTime.after(lowNotificationTime)) {
-            // Only show low notification if it wasn't hidden in the past
-            if (instance.mAlarmState == ClockContract.InstancesColumns.HIDE_NOTIFICATION_STATE) {
-                setHideNotificationState(context, instance)
-            } else {
-                setLowNotificationState(context, instance)
-            }
-        } else {
-            // Alarm is still active, so initialize as a silent alarm
-            setSilentState(context, instance)
-        }
+//        if (currentTime.after(missedTTL)) {
+//            // Alarm is so old, just dismiss it
+//            deleteInstanceAndUpdateParent(context, instance)
+//        } else if (currentTime.after(alarmTime)) {
+//            // There is a chance that the TIME_SET occurred right when the alarm should go off,
+//            // so we need to add a check to see if we should fire the alarm instead of marking
+//            // it missed.
+//            val alarmBuffer = Calendar.getInstance()
+//            alarmBuffer.time = alarmTime.time
+//            alarmBuffer.add(Calendar.SECOND, ALARM_FIRE_BUFFER)
+//            if (currentTime.before(alarmBuffer)) {
+//                setFiredState(context, instance)
+//            } else {
+//                setMissedState(context, instance)
+//            }
+//        }
+//        else if (instance.mAlarmState == ClockContract.InstancesColumns.SNOOZE_STATE) {
+//            // We only want to display snooze notification and not update the time,
+//            // so handle showing the notification directly
+//            AlarmNotifications.showSnoozeNotification(context, instance)
+//            scheduleInstanceStateChange(
+//                context, instance.alarmTime,
+//                instance, ClockContract.InstancesColumns.FIRED_STATE
+//            )
+//        } else if (currentTime.after(highNotificationTime)) {
+//            setHighNotificationState(context, instance)
+//        } else if (currentTime.after(lowNotificationTime)) {
+//            // Only show low notification if it wasn't hidden in the past
+//            if (instance.mAlarmState == ClockContract.InstancesColumns.HIDE_NOTIFICATION_STATE) {
+//                setHideNotificationState(context, instance)
+//            } else {
+//                setLowNotificationState(context, instance)
+//            }
+//        } else {
+//            // Alarm is still active, so initialize as a silent alarm
+//            setSilentState(context, instance)
+//        }
 
         // The caller prefers to handle updateNextAlarm for optimization
         if (updateNextAlarm) {
@@ -628,34 +627,34 @@ class AlarmDataManager @Inject constructor(
      * @param context application context
      * @param alarmId to find instances to delete.
      */
-    fun deleteAllInstances(context: Context, alarmId: Long) {
-        LogUtils.i("Deleting all instances of alarm: $alarmId")
-        scope.launch {
-            alarmInstanceDao.getInstancesByAlarmId(alarmId).forEach { instance ->
-                unregisterInstance(context, instance)
-                alarmInstanceDao.delete(instance)
-            }
-        }
-        updateNextAlarm(context)
-    }
+//    fun deleteAllInstances(context: Context, alarmId: Long) {
+//        LogUtils.i("Deleting all instances of alarm: $alarmId")
+//        scope.launch {
+//            alarmInstanceDao.getInstancesByAlarmId(alarmId).forEach { instance ->
+//                unregisterInstance(context, instance)
+//                alarmInstanceDao.delete(instance)
+//            }
+//        }
+//        updateNextAlarm(context)
+//    }
 
     /**
      * Delete and unregister all instances unless they are snoozed. This is used whenever an
      * alarm is modified superficially (label, vibrate, or ringtone change).
      */
-    fun deleteNonSnoozeInstances(context: Context, alarmId: Long) {
-        LogUtils.i("Deleting all non-snooze instances of alarm: $alarmId")
-
-        scope.launch {
-            alarmInstanceDao.getInstancesByAlarmId(alarmId).forEach { instance ->
-                if (instance.mAlarmState != ClockContract.InstancesColumns.SNOOZE_STATE) {
-                    unregisterInstance(context, instance)
-                    alarmInstanceDao.delete(instance)
-                }
-            }
-        }
-        updateNextAlarm(context)
-    }
+//    fun deleteNonSnoozeInstances(context: Context, alarmId: Long) {
+//        LogUtils.i("Deleting all non-snooze instances of alarm: $alarmId")
+//
+//        scope.launch {
+//            alarmInstanceDao.getInstancesByAlarmId(alarmId).forEach { instance ->
+//                if (instance.mAlarmState != ClockContract.InstancesColumns.SNOOZE_STATE) {
+//                    unregisterInstance(context, instance)
+//                    alarmInstanceDao.delete(instance)
+//                }
+//            }
+//        }
+//        updateNextAlarm(context)
+//    }
 
     /**
      * Fix and update all alarm instance when a time change event occurs.
@@ -673,7 +672,7 @@ class AlarmDataManager @Inject constructor(
         // later instances).
         scope.launch {
             alarmInstanceDao.getInstancesSortedByTimeDescending().forEach { instance ->
-                val alarm = alarmRefDao.getAlarmById(instance.mAlarmId!!)
+                val alarm = alarmRefDao.getAlarmById(instance.mAlarmId)
                 if (alarm == null) {
                     unregisterInstance(context, instance)
                     alarmInstanceDao.delete(instance)
@@ -683,26 +682,26 @@ class AlarmDataManager @Inject constructor(
                     )
                 } else {
                     val priorAlarmTime = alarm.getPreviousAlarmTime(instance.alarmTime)
-                    val missedTTLTime: Calendar = instance.missedTimeToLive
-                    if (currentTime.before(priorAlarmTime) || currentTime.after(missedTTLTime)) {
-                        val oldAlarmTime: Calendar = instance.alarmTime
-                        val newAlarmTime = alarm.getNextAlarmTime(currentTime)
-                        val oldTime: CharSequence =
-                            DateFormat.format("MM/dd/yyyy hh:mm a", oldAlarmTime)
-                        val newTime: CharSequence =
-                            DateFormat.format("MM/dd/yyyy hh:mm a", newAlarmTime)
-                        LogUtils.i(
-                            "A time change has caused an existing alarm scheduled" +
-                                    " to fire at %s to be replaced by a new alarm scheduled to fire at %s",
-                            oldTime, newTime
-                        )
-
-                        // The time change is so dramatic the AlarmInstance doesn't make any sense;
-                        // remove it and schedule the new appropriate instance.
-                        deleteInstanceAndUpdateParent(context, instance)
-                    } else {
-                        registerInstance(context, instance, false /* updateNextAlarm */)
-                    }
+//                    val missedTTLTime: Calendar = instance.missedTimeToLive
+//                    if (currentTime.before(priorAlarmTime) || currentTime.after(missedTTLTime)) {
+//                        val oldAlarmTime: Calendar = instance.alarmTime
+//                        val newAlarmTime = alarm.getNextAlarmTime(currentTime)
+//                        val oldTime: CharSequence =
+//                            DateFormat.format("MM/dd/yyyy hh:mm a", oldAlarmTime)
+//                        val newTime: CharSequence =
+//                            DateFormat.format("MM/dd/yyyy hh:mm a", newAlarmTime)
+//                        LogUtils.i(
+//                            "A time change has caused an existing alarm scheduled" +
+//                                    " to fire at %s to be replaced by a new alarm scheduled to fire at %s",
+//                            oldTime, newTime
+//                        )
+//
+//                        // The time change is so dramatic the AlarmInstance doesn't make any sense;
+//                        // remove it and schedule the new appropriate instance.
+//                        deleteInstanceAndUpdateParent(context, instance)
+//                    } else {
+//                        registerInstance(context, instance, false /* updateNextAlarm */)
+//                    }
                 }
             }
         }
@@ -806,7 +805,7 @@ class AlarmDataManager @Inject constructor(
                     }
                     return@launch
                 } else {
-                    val alarmId = instance.mAlarmId ?: -1
+                    val alarmId = instance.mAlarmId
                     val viewAlarmIntent: Intent =
                         Alarm.createIntent(
                             context,

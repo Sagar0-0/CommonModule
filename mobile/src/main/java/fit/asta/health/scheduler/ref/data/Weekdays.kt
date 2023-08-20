@@ -62,11 +62,11 @@ data class Weekdays(
 
         /** An instance with all weekdays in the weekly repeat cycle.  */
         @JvmField
-        val ALL = fromBits(ALL_DAYS)
+        val ALL = Weekdays(ALL_DAYS)
 
         /** An instance with no weekdays in the weekly repeat cycle.  */
         @JvmField
-        val NONE = fromBits(0)
+        val NONE = Weekdays(0)
 
         /** Maps calendar weekdays to the bit masks that represent them in this class.  */
         private val sCalendarDayToBit: Map<Int, Int>
