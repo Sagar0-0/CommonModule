@@ -9,6 +9,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.example.subscription.ui.navigateToSubscription
 import fit.asta.health.R
 import fit.asta.health.auth.ui.navigateToAuth
 import fit.asta.health.auth.ui.vm.AuthViewModel
@@ -23,10 +24,10 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.feedback.ui.navigateToFeedback
 import fit.asta.health.main.Graph
 import fit.asta.health.settings.data.SettingsNotificationsStatus
-import fit.asta.health.settings.ui.view.SettingsUiEvent
-import fit.asta.health.settings.ui.vm.SettingsViewModel
 import fit.asta.health.settings.ui.view.SettingsNotificationLayout
 import fit.asta.health.settings.ui.view.SettingsScreenLayout
+import fit.asta.health.settings.ui.view.SettingsUiEvent
+import fit.asta.health.settings.ui.vm.SettingsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -73,7 +74,7 @@ fun NavGraphBuilder.settingScreens(
             val onUiClickEvent: (key: SettingsUiEvent) -> Unit = { key ->
                 when (key) {
                     SettingsUiEvent.SUBSCRIBE -> {
-                        navController.navigate(Graph.Subscription.route)
+                        navController.navigateToSubscription()
                     }
 
                     SettingsUiEvent.REFERRAL -> {
@@ -180,6 +181,6 @@ fun NavGraphBuilder.settingScreens(
 }
 
 internal sealed class SettingDestination(val route: String) {
-    object Main : SettingDestination("ss_main")
-    object Notifications : SettingDestination("ss_notif")
+    data object Main : SettingDestination("ss_main")
+    data object Notifications : SettingDestination("ss_notif")
 }

@@ -159,6 +159,8 @@ protobuf {
 dependencies {
 
     implementation(project(":chartLibrary"))
+    implementation(project(":feature:subscription"))
+
     // Spotify App remote Dependency
     implementation(fileTree(mapOf("include" to listOf("*.jar", "*.aar"), "dir" to "libs")))
 

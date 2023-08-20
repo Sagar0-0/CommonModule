@@ -23,6 +23,7 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.secrets) apply false
     alias(libs.plugins.protobuf) apply false
+    alias(libs.plugins.org.jetbrains.kotlin.android) apply false
 
     // id("org.jetbrains.kotlin.android") version "$kotlin_ver" apply false
     // id("com.faire.gradle.analyze") version "1.0.9" apply false //for analyzing the gradle builds

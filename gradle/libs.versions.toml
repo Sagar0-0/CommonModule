@@ -139,6 +139,8 @@ uiTestManifest = "1.5.0"
 uiToolingPreview = "1.5.0"
 workRuntimeKtx = "2.8.1"
 mockwebserver = "4.11.0"
+org-jetbrains-kotlin-android = "1.9.0"
+material = "1.9.0"
 
 [libraries]
 accompanist-coil = { module = "com.google.accompanist:accompanist-coil", version.ref = "accompanistCoil" }
@@ -320,6 +322,10 @@ firebase-performance-gradlePlugin = { group = "com.google.firebase", name = "per
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 firebase-perf-ktx = { group = "com.google.firebase", name = "firebase-perf-ktx", version = "20.4.0" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version = "2.7.0" }
+androidx-foundation-android = { group = "androidx.compose.foundation", name = "foundation-android", version = "1.5.0" }
+androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", version = "1.5.0" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -334,3 +340,4 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets" }
+org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }

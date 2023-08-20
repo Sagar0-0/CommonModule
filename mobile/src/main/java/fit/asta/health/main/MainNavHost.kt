@@ -16,6 +16,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.subscription.ui.subscriptionRoute
 import fit.asta.health.auth.ui.AUTH_GRAPH_ROUTE
 import fit.asta.health.auth.ui.authRoute
 import fit.asta.health.common.address.ui.addressRoute
@@ -27,7 +28,6 @@ import fit.asta.health.main.view.homeScreen
 import fit.asta.health.onboarding.ui.ONBOARDING_GRAPH_ROUTE
 import fit.asta.health.onboarding.ui.onboardingRoute
 import fit.asta.health.payments.referral.view.referralScreens
-import fit.asta.health.payments.sub.view.subscriptionScreens
 import fit.asta.health.payments.wallet.view.walletScreen
 import fit.asta.health.profile.CreateProfileLayout
 import fit.asta.health.profile.ProfileContent
@@ -96,7 +96,7 @@ fun MainNavHost(isConnected: Boolean) {
         feedbackRoute(navController)
         addressRoute(navController)
 
-        subscriptionScreens(navController)
+        subscriptionRoute(navController)
         referralScreens(navController)
         walletScreen(navController)
         webView()
