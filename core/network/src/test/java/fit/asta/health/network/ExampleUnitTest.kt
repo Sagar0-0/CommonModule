@@ -1,4 +1,4 @@
-package com.example.network
+package fit.asta.health.network
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

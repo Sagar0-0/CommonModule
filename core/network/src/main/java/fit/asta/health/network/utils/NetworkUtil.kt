@@ -1,8 +1,10 @@
-package com.example.network
+package fit.asta.health.network.utils
 
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import fit.asta.health.BuildConfig
+import fit.asta.health.network.Certificate
 import okhttp3.Cache
 import okhttp3.CertificatePinner
 import okhttp3.Interceptor
@@ -32,7 +34,7 @@ object NetworkUtil {
             .build()
     }
 
-    private fun getOkHttpClient(
+    fun getOkHttpClient(
         interceptors: List<Interceptor> = listOf(),
         networkInterceptors: List<Interceptor> = listOf(),
         certificatePinner: CertificatePinner? = null,
@@ -65,7 +67,7 @@ object NetworkUtil {
         return builder.build()
     }
 
-    private fun buildCertificatePinner(pins: List<Certificate> = listOf()): CertificatePinner {
+    fun buildCertificatePinner(pins: List<Certificate> = listOf()): CertificatePinner {
         val builder = CertificatePinner.Builder()
 
         pins.map {

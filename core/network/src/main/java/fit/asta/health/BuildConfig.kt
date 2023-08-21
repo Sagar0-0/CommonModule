@@ -1,4 +1,4 @@
-package com.example.network
+package fit.asta.health
 
 class BuildConfig {
     companion object {

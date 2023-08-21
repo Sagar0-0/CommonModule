@@ -1,4 +1,4 @@
-package com.example.network
+package fit.asta.health.network
 
 data class Certificate(
     val hostName: String = "asta.fit",
