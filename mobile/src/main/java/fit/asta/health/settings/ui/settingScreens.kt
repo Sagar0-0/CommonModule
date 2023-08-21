@@ -9,7 +9,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.example.referral.navigateToReferral
 import com.example.subscription.navigateToSubscription
+import com.example.wallet.navigateToWallet
 import fit.asta.health.R
 import fit.asta.health.auth.ui.navigateToAuth
 import fit.asta.health.auth.ui.vm.AuthViewModel
@@ -78,11 +80,11 @@ fun NavGraphBuilder.settingScreens(
                     }
 
                     SettingsUiEvent.REFERRAL -> {
-                        navController.navigate(Graph.Referral.route)
+                        navController.navigateToReferral()
                     }
 
                     SettingsUiEvent.WALLET -> {
-                        navController.navigate(Graph.Wallet.route)
+                        navController.navigateToWallet()
                     }
 
                     SettingsUiEvent.ADDRESS -> {

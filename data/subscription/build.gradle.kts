@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.subscription"
+    namespace = "fit.asta.health.subscription"
     compileSdk = 33
 
     defaultConfig {

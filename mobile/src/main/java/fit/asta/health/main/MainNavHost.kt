@@ -16,7 +16,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.referral.referralRoute
 import com.example.subscription.subscriptionRoute
+import com.example.wallet.walletRoute
 import fit.asta.health.auth.ui.AUTH_GRAPH_ROUTE
 import fit.asta.health.auth.ui.authRoute
 import fit.asta.health.common.address.ui.addressRoute
@@ -27,8 +29,6 @@ import fit.asta.health.main.view.HOME_GRAPH_ROUTE
 import fit.asta.health.main.view.homeScreen
 import fit.asta.health.onboarding.ui.ONBOARDING_GRAPH_ROUTE
 import fit.asta.health.onboarding.ui.onboardingRoute
-import fit.asta.health.payments.referral.view.referralScreens
-import fit.asta.health.payments.wallet.view.walletScreen
 import fit.asta.health.profile.CreateProfileLayout
 import fit.asta.health.profile.ProfileContent
 import fit.asta.health.scheduler.ui.navigation.schedulerNavigation
@@ -42,6 +42,7 @@ import fit.asta.health.tools.water.nav.waterToolNavigation
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 const val deepLinkUrl: String = "https://www.asta.com"
+
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun MainNavHost(isConnected: Boolean) {
@@ -97,8 +98,8 @@ fun MainNavHost(isConnected: Boolean) {
         addressRoute(navController)
 
         subscriptionRoute(navController)
-        referralScreens(navController)
-        walletScreen(navController)
+        referralRoute(navController)
+        walletRoute(navController)
         webView()
     }
 }
