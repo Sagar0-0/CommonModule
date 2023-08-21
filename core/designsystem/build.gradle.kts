@@ -1,36 +1,24 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.asta.android.library)
+    id("asta.android.library.compose")
     id("kotlin-parcelize")
 }
 
 android {
-    namespace = "com.example.designsystem"
-    compileSdk = 33
+    namespace = "fit.asta.health.designsystem"
 
     defaultConfig {
-        minSdk = 24
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
 }
 
@@ -45,6 +33,8 @@ dependencies {
     androidTestImplementation(libs.androidx.test.espresso.core)
 
     //Jetpack Compose
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.ui.tooling)
@@ -73,6 +63,25 @@ dependencies {
     implementation(libs.accompanist.coil)
 
     //Jetpack Compose - Navigation
+    implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.navigation.compose)
+
+    //Accompanist-BottomSheet Nav
+    implementation(libs.accompanist.navigation.material)
+    implementation(libs.accompanist.insets)
+    implementation(libs.accompanist.drawablepainter)
+    implementation(libs.accompanist.navigation.animation)
+    implementation(libs.accompanist.systemuicontroller)
+    implementation(libs.accompanist.flowlayout)
+
+    //Image - Coil library
+    implementation(libs.coil.kt.compose)
+    implementation(libs.coil.gif)
+
+    //TODO-------------------Low standard libraries - consider removing later---------------------//
+    //Rating-Bar
+    implementation("com.github.a914-gowtham:compose-ratingbar:1.2.4")
+    implementation("com.github.SmartToolFactory:Compose-RatingBar:2.1.1")
+    //TODO-------------------Low standard libraries - consider removing later---------------------//
 }
