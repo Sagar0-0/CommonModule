@@ -16,9 +16,9 @@ interface AlarmDao {
     suspend fun getAllAlarm(): List<AlarmEntity>
 
     @Query("SELECT * FROM alarm_table WHERE alarmId = :alarmId LIMIT 1")
-    suspend fun getAlarm(alarmId: Int): AlarmEntity?
+    suspend fun getAlarm(alarmId: Long): AlarmEntity?
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Upsert
     suspend fun insertAlarm(alarmEntity: AlarmEntity)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
@@ -49,7 +49,7 @@ interface AlarmDao {
     suspend fun getAllSyncData(): List<AlarmSync>
 
     @Query("SELECT * FROM alarm_sync_table WHERE id = :id LIMIT 1")
-    suspend fun getSyncData(id: Int): AlarmSync?
+    suspend fun getSyncData(id: Long): AlarmSync?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSyncData(alarmSync: AlarmSync)

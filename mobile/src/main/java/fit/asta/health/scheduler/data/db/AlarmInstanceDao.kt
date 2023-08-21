@@ -1,10 +1,10 @@
-package fit.asta.health.scheduler.ref.db
+package fit.asta.health.scheduler.data.db
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
-import fit.asta.health.scheduler.ref.provider.AlarmInstance
+import fit.asta.health.scheduler.data.db.entity.AlarmInstance
 
 @Dao
 interface AlarmInstanceDao {

@@ -29,7 +29,7 @@ class RescheduleAlarmService : LifecycleService() {
         GlobalScope.launch(Dispatchers.IO) {
             alarmLocalRepo.getAllAlarmList().forEach { alarm ->
                 if (alarm.skipDate != LocalDate.now().dayOfMonth) {
-                    alarmUtils.scheduleAlarm(alarm)
+//                    alarmUtils.scheduleAlarm(alarm)
                 }
             }
         }

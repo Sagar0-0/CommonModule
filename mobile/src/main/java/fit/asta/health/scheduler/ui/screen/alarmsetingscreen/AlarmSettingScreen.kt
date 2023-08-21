@@ -115,9 +115,9 @@ fun AlarmSettingScreen(
             ) {
                 DigitalDemo(
                     time = AMPMHoursMin(
-                        hours = alarmSettingUiState.timeHours.toInt(),
-                        minutes = alarmSettingUiState.timeMinutes.toInt(),
-                        dayTime = if (alarmSettingUiState.timeMidDay) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
+                        hours = alarmSettingUiState.timeHours,
+                        minutes = alarmSettingUiState.timeMinutes,
+                        dayTime = AMPMHoursMin.DayTime.AM
                     )
                 ) {
                     currentBottomSheet = TIME
@@ -294,11 +294,11 @@ fun AlarmCreateBtmSheetLayout(
         TIME -> {
             TimePickerBottomSheet(
                 time = AMPMHoursMin(
-                    hours = if (alarmSettingUiState.timeHours.toInt() > 12) {
-                        alarmSettingUiState.timeHours.toInt() - 12
-                    } else alarmSettingUiState.timeHours.toInt(),
-                    minutes = alarmSettingUiState.timeMinutes.toInt(),
-                    dayTime = if (alarmSettingUiState.timeMidDay) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
+                    hours = if (alarmSettingUiState.timeHours > 12) {
+                        alarmSettingUiState.timeHours - 12
+                    } else alarmSettingUiState.timeHours,
+                    minutes = alarmSettingUiState.timeMinutes,
+                    dayTime = AMPMHoursMin.DayTime.AM
                 ),
                 onSave = {
                     closeSheet()
@@ -306,9 +306,8 @@ fun AlarmCreateBtmSheetLayout(
                     aSEvent(
                         AlarmSettingEvent.SetAlarmTime(
                             Time(
-                                hours = time.hour.toString(),
-                                midDay = it.dayTime != AMPMHoursMin.DayTime.AM,
-                                minutes = it.minutes.toString()
+                                hours = time.hour,
+                                minutes = it.minutes
                             )
                         )
                     )

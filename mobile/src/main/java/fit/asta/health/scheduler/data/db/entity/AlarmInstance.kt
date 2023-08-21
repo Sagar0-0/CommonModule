@@ -1,4 +1,4 @@
-package fit.asta.health.scheduler.ref.provider
+package fit.asta.health.scheduler.data.db.entity
 
 import android.content.Context
 import android.content.Intent
@@ -15,7 +15,7 @@ data class AlarmInstance(
     @ColumnInfo(name = "day") var mDay: Int = 0,
     @ColumnInfo(name = "hour") var mHour: Int = 0,
     @ColumnInfo(name = "minute") var mMinute: Int = 0,
-    @ColumnInfo(name = "label") var mLabel: String? = null,
+    @ColumnInfo(name = "label") var mLabel: String = "",
     @ColumnInfo(name = "alarm_id") var mAlarmId: Long = 0,
     @ColumnInfo(name = "alarm_state") var mAlarmState: Int = 0
 ) {

@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class AlarmSync(
     @PrimaryKey
     @ColumnInfo(name = "id")
-    var alarmId: Int=0,
+    var alarmId: Long = 0,
     @ColumnInfo(name = "scheduleId")
-    var scheduleId: String=""
+    var scheduleId: String = ""
 )

@@ -8,9 +8,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Time(
     @SerializedName("hr")
-    var hours: String, // 10
-    @SerializedName("mdy")
-    val midDay: Boolean, // true
+    var hours: Int,
     @SerializedName("min")
-    var minutes: String // 12
+    var minutes: Int
 ) : Parcelable

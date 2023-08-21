@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface AlarmLocalRepo {
 
     fun getAllAlarm(): Flow<List<AlarmEntity>>
-    suspend fun getAlarm(alarmId: Int): AlarmEntity?
+    suspend fun getAlarm(alarmId: Long): AlarmEntity?
 
     suspend fun insertAlarm(alarmEntity: AlarmEntity)
 
@@ -31,7 +31,7 @@ interface AlarmLocalRepo {
 
     suspend fun getAllSyncData(): List<AlarmSync>
     suspend fun getAllAlarmList(): List<AlarmEntity>
-    suspend fun getSyncData(id: Int): AlarmSync?
+    suspend fun getSyncData(id: Long): AlarmSync?
     suspend fun insertSyncData(alarmSync: AlarmSync)
     suspend fun deleteAllSyncData()
     suspend fun deleteSyncData(alarmSync: AlarmSync)

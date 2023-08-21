@@ -7,12 +7,9 @@ import fit.asta.health.scheduler.data.api.net.scheduler.AstaSchedulerGetResponse
 import fit.asta.health.scheduler.data.api.net.scheduler.Info
 import fit.asta.health.scheduler.data.api.net.scheduler.Ivl
 import fit.asta.health.scheduler.data.api.net.scheduler.Meta
-import fit.asta.health.scheduler.data.api.net.scheduler.Rep
-import fit.asta.health.scheduler.data.api.net.scheduler.Stat
 import fit.asta.health.scheduler.data.api.net.scheduler.Time
 import fit.asta.health.scheduler.data.api.net.scheduler.Tone
 import fit.asta.health.scheduler.data.api.net.scheduler.Vib
-import fit.asta.health.scheduler.data.api.net.scheduler.Wk
 import fit.asta.health.scheduler.data.api.net.tag.AstaGetTagsListResponse
 import fit.asta.health.scheduler.data.db.entity.AlarmEntity
 import fit.asta.health.scheduler.doman.model.SchedulerGetData
@@ -21,8 +18,7 @@ import fit.asta.health.scheduler.doman.model.SchedulerGetTagsList
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.ASUiState
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.AdvUiState
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.IvlUiState
-import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.RepUiState
-import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.StatUiState
+import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.TimeUi
 
 fun AstaSchedulerGetResponse.mapToSchedulerGetData(): SchedulerGetData {
     return SchedulerGetData(data = this.data)
@@ -36,64 +32,31 @@ fun AstaGetTagsListResponse.mapToSchedulerGetTagsList(): SchedulerGetTagsList {
     return SchedulerGetTagsList(customTagList = this.customTagData, list = this.data)
 }
 
-fun IvlUiState.getInterval():Ivl{
+fun IvlUiState.getInterval(): Ivl {
     return Ivl(
         advancedReminder = Adv(
             status = this.advancedReminder.status,
             time = this.advancedReminder.time
         ),
-        duration = this.duration,
-        isRemainderAtTheEnd = this.isRemainderAtTheEnd,
-        repeatableInterval = Rep(
-            time = this.repeatableInterval.time,
-            unit = this.repeatableInterval.unit
-        ),
         snoozeTime = this.snoozeTime,
-        staticIntervals = if (this.status && !this.isVariantInterval) {
-            this.staticIntervals.map {
-                Stat(
-                    hours = it.hours,
-                    midDay = it.midDay,
-                    minutes = it.minutes,
-                    name = it.name,
-                    id = it.id
-                )
-            }
-        } else emptyList(),
-        variantIntervals = if (this.status && this.isVariantInterval) {
-            this.variantIntervals.map {
-                Stat(
-                    hours = it.hours,
-                    midDay = it.midDay,
-                    minutes = it.minutes,
-                    name = it.name,
-                    id = it.id
-                )
-            }
-        } else emptyList(),
-        isVariantInterval = this.isVariantInterval,
-        status = this.status
+        endAlarmTime = Time(
+            hours = this.endAlarmTime.hours,
+            minutes = this.endAlarmTime.minutes
+        ),
+        statusEnd = this.statusEnd
     )
 }
 
 fun ASUiState.getAlarm(
     userId: String,
-    alarmId: Int,
+    alarmId: Long,
     idFromServer: String,
     interval: IvlUiState
 ): AlarmEntity {
     val newAlarmItem = AlarmEntity(
         status = this.status,
-        week = Wk(
-            friday = this.friday,
-            monday = this.monday,
-            saturday = this.saturday,
-            sunday = this.sunday,
-            thursday = this.thursday,
-            tuesday = this.tuesday,
-            wednesday = this.wednesday,
-            recurring = this.recurring
-        ),
+        deleteAfterUse = this.deleteAfterUse,
+        daysOfWeek = this.week,
         info = Info(
             name = this.alarmName,
             description = this.alarmDescription,
@@ -104,7 +67,6 @@ fun ASUiState.getAlarm(
         time = Time(
             hours = this.timeHours,
             minutes = this.timeMinutes,
-            midDay = this.timeMidDay,
         ),
         interval = interval.getInterval(),
         mode = this.mode,
@@ -119,8 +81,8 @@ fun ASUiState.getAlarm(
             uri = this.toneUri
         ),
         userId = userId,
-        idFromServer =idFromServer,
-        alarmId =alarmId,
+        idFromServer = idFromServer,
+        alarmId = alarmId,
         meta = Meta(
             cDate = this.cDate,
             cBy = this.cBy,
@@ -138,7 +100,7 @@ fun ASUiState.getAlarm(
     map["sts"] = newAlarmItem.status
     map["imp"] = newAlarmItem.important
     map["mode"] = newAlarmItem.mode
-    map["wk"] = newAlarmItem.week
+    map["wk"] = newAlarmItem.daysOfWeek
     map["ivl"] = newAlarmItem.interval
     map["vib"] = newAlarmItem.vibration
     map["tone"] = newAlarmItem.tone
@@ -148,39 +110,16 @@ fun ASUiState.getAlarm(
 
 fun AlarmEntity.getIntervalUi(): IvlUiState {
     return IvlUiState(
-        status = this.interval.status,
         advancedReminder = AdvUiState(
             status = this.interval.advancedReminder.status,
             time = this.interval.advancedReminder.time
         ),
-        duration = this.interval.duration,
-        isRemainderAtTheEnd = this.interval.isRemainderAtTheEnd,
-        repeatableInterval = RepUiState(
-            time = this.interval.repeatableInterval.time,
-            unit = this.interval.repeatableInterval.unit
-        ),
-        staticIntervals = if (this.interval.staticIntervals == null) emptyList()
-        else this.interval.staticIntervals!!.map {
-            StatUiState(
-                hours = it.hours,
-                midDay = it.midDay,
-                minutes = it.minutes,
-                name = it.name,
-                id = it.id
-            )
-        },
         snoozeTime = this.interval.snoozeTime,
-        variantIntervals = if (this.interval.variantIntervals == null) emptyList()
-        else this.interval.variantIntervals!!.map {
-            StatUiState(
-                hours = it.hours,
-                midDay = it.midDay,
-                minutes = it.minutes,
-                name = it.name,
-                id = it.id
-            )
-        },
-        isVariantInterval = this.interval.isVariantInterval
+        statusEnd = this.interval.statusEnd,
+        endAlarmTime = TimeUi(
+            hours = this.interval.endAlarmTime.hours,
+            minutes = this.interval.endAlarmTime.minutes
+        )
     )
 }
 
@@ -198,21 +137,14 @@ fun AlarmEntity.getAlarmScreenUi(): ASUiState {
         uDate = this.meta.uDate,
         status = this.status,
         timeHours = this.time.hours,
-        timeMidDay = this.time.midDay,
         timeMinutes = this.time.minutes,
         toneName = this.tone.name,
         toneType = this.tone.type,
         toneUri = this.tone.uri,
         vibration = this.vibration.pattern,
         vibrationStatus = this.vibration.status,
-        friday = this.week.friday,
-        saturday = this.week.saturday,
-        sunday = this.week.sunday,
-        monday = this.week.monday,
-        thursday = this.week.thursday,
-        tuesday = this.week.tuesday,
-        wednesday = this.week.wednesday,
-        recurring = this.week.recurring,
+        week = this.daysOfWeek,
+        deleteAfterUse = this.daysOfWeek.isRepeating,
         mode = this.mode
     )
 }

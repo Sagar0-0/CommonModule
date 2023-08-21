@@ -46,8 +46,7 @@ import fit.asta.health.R
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.AMPMHoursMin
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.IvlUiState
-import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.RepUiState
-import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.StatUiState
+import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.TimeUi
 import fit.asta.health.tools.breathing.model.domain.mapper.convert12hrTo24hr
 
 
@@ -61,10 +60,9 @@ fun SettingsLayout(
     onRemainderAtEnd: (Boolean) -> Unit,
     onNavigateRepetitiveInterval: () -> Unit,
     timeSettingUiState: IvlUiState,
-    variantIntervals: SnapshotStateList<StatUiState>,
     onVariantStateChange: (Boolean) -> Unit,
     onStateChange: (Boolean) -> Unit,
-    onDelete: (StatUiState) -> Unit,
+    onDelete: (TimeUi) -> Unit,
     onAddVariantInterval: () -> Unit
 ) {
 

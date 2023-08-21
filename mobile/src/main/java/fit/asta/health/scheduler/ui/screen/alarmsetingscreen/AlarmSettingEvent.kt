@@ -5,7 +5,7 @@ import fit.asta.health.scheduler.data.api.net.scheduler.Time
 import fit.asta.health.scheduler.util.VibrationPattern
 
 sealed class AlarmSettingEvent{
-    data class SetAlarmTime(val Time: Time) : AlarmSettingEvent()
+    data class SetAlarmTime(val time: Time) : AlarmSettingEvent()
     data class SetWeek(val week: Int) : AlarmSettingEvent()
     data class SetStatus(val status: Boolean) : AlarmSettingEvent()
     data class SetLabel(val label: String) : AlarmSettingEvent()
@@ -16,9 +16,9 @@ sealed class AlarmSettingEvent{
     data class SetSound(val tone: ToneUiState) : AlarmSettingEvent()
     data class SetImportant(val important: Boolean) : AlarmSettingEvent()
     data class Save(val context: Context) : AlarmSettingEvent()
-    object GotoTagScreen : AlarmSettingEvent()
-    object GotoTimeSettingScreen : AlarmSettingEvent()
-    object ResetUi : AlarmSettingEvent()
+    data object GotoTagScreen : AlarmSettingEvent()
+    data object GotoTimeSettingScreen : AlarmSettingEvent()
+    data object ResetUi : AlarmSettingEvent()
 
 
 }

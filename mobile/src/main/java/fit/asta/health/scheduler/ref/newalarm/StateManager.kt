@@ -9,13 +9,13 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import fit.asta.health.HealthCareApp
 import fit.asta.health.R
+import fit.asta.health.scheduler.data.db.AlarmDao
+import fit.asta.health.scheduler.data.db.AlarmInstanceDao
+import fit.asta.health.scheduler.data.db.entity.AlarmEntity
+import fit.asta.health.scheduler.data.db.entity.AlarmInstance
 import fit.asta.health.scheduler.ref.AlarmUtils
 import fit.asta.health.scheduler.ref.LogUtils
-import fit.asta.health.scheduler.ref.Utils
-import fit.asta.health.scheduler.ref.alarms.AlarmService
-import fit.asta.health.scheduler.ref.alarms.AlarmStateManager
-import fit.asta.health.scheduler.ref.db.AlarmInstanceDao
-import fit.asta.health.scheduler.ref.db.AlarmRefDao
+import fit.asta.health.scheduler.ref.newalarm.Utils.ALARM_STATE_EXTRA
 import fit.asta.health.scheduler.ref.newalarm.Utils.CURRENT_ALARM_STATE
 import fit.asta.health.scheduler.ref.newalarm.Utils.END_ALARM_STATE
 import fit.asta.health.scheduler.ref.newalarm.Utils.PRE_ALARM_STATE
@@ -24,8 +24,8 @@ import fit.asta.health.scheduler.ref.newalarm.Utils.SKIP_ALARM_ACTION
 import fit.asta.health.scheduler.ref.newalarm.Utils.SNOOZE_CURRENT_ALARM_STATE
 import fit.asta.health.scheduler.ref.newalarm.Utils.SNOOZE_END_ALARM_STATE
 import fit.asta.health.scheduler.ref.newalarm.Utils.createStateChangeIntent
-import fit.asta.health.scheduler.ref.provider.Alarm
-import fit.asta.health.scheduler.ref.provider.AlarmInstance
+import fit.asta.health.scheduler.services.AlarmBroadcastReceiver
+import fit.asta.health.scheduler.services.AlarmService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -37,30 +37,30 @@ import javax.inject.Singleton
 
 @Singleton
 class StateManager @Inject constructor(
-    private val alarmRefDao: AlarmRefDao,
+    private val alarmDao: AlarmDao,
     private val alarmInstanceDao: AlarmInstanceDao,
     private val alarmManager: AlarmManager
 ) {
     val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
 
-    fun registerAlarm(context: Context, alarm: Alarm, oldId: Long? = null) {
+    fun registerAlarm(context: Context, alarm: AlarmEntity, oldId: Long? = null) {
         val currentTime: Calendar = Calendar.getInstance()
         LogUtils.v("register  ${AlarmUtils.getFormattedTime(context, currentTime)}")
         val time: Calendar
         val state: Int
-        if (alarm.preEnabled) {
-            time = alarm.getNextAlarmTime(currentTime, Alarm.State.PRE)
+        if (alarm.interval.advancedReminder.status) {
+            time = alarm.getNextAlarmTime(currentTime, AlarmEntity.State.PRE)
             state = PRE_ALARM_STATE
         } else {
-            time = alarm.getNextAlarmTime(currentTime, Alarm.State.CURRENT)
+            time = alarm.getNextAlarmTime(currentTime, AlarmEntity.State.CURRENT)
             state = CURRENT_ALARM_STATE
         }
         val instance = AlarmInstance(
             mId = (System.currentTimeMillis() + AtomicLong().incrementAndGet()),
             mAlarmState = state,
-            mAlarmId = alarm.id,
-            mLabel = alarm.label,
+            mAlarmId = alarm.alarmId,
+            mLabel = alarm.info.name,
             mYear = time[Calendar.YEAR],
             mMonth = time[Calendar.MONTH],
             mDay = time[Calendar.DAY_OF_MONTH],
@@ -78,18 +78,18 @@ class StateManager @Inject constructor(
         )
     }
 
-    fun updateAlarm(context: Context, alarm: Alarm, instanceOld: AlarmInstance) {
+    fun updateAlarm(context: Context, alarm: AlarmEntity, instanceOld: AlarmInstance) {
         val currentTime: Calendar = Calendar.getInstance()
         LogUtils.v("updateAlarm  ${AlarmUtils.getFormattedTime(context, currentTime)}")
         val oldTime: Calendar = instanceOld.alarmTime
         val state: Int
-        if (alarm.endEnabled) {
+        if (alarm.interval.statusEnd) {
             when (instanceOld.mAlarmState) {
                 PRE_ALARM_STATE -> {
-                    if (alarm.preEnabled) {
+                    if (alarm.interval.advancedReminder.status) {
                         if (oldTime.timeInMillis < alarm.getNextAlarmTime(
                                 currentTime,
-                                Alarm.State.PRE
+                                AlarmEntity.State.PRE
                             ).timeInMillis
                         ) {
                             state = PRE_ALARM_STATE
@@ -106,9 +106,7 @@ class StateManager @Inject constructor(
                 }
 
                 PRE_END_ALARM_STATE -> {
-                    if (alarm.preEnabled) {
 
-                    }
                 }
 
                 END_ALARM_STATE -> {
@@ -127,7 +125,7 @@ class StateManager @Inject constructor(
     fun handleIntent(context: Context, intent: Intent) {
         LogUtils.v("handle intent $intent")
         val id: Long = intent.getLongExtra("id", -1)
-        val alarmState: Int = intent.getIntExtra(Utils.ALARM_STATE_EXTRA, -1)
+        val alarmState: Int = intent.getIntExtra(ALARM_STATE_EXTRA, -1)
         scope.launch {
             alarmInstanceDao.getInstancesByAlarmId(id)?.let { instance ->
                 when (alarmState) {
@@ -181,7 +179,7 @@ class StateManager @Inject constructor(
 
     private fun missedAlarm(context: Context, instance: AlarmInstance) {
         scope.launch {
-            alarmRefDao.getAlarmById(instance.mAlarmId)?.let { alarm ->
+            alarmDao.getAlarm(instance.mAlarmId)?.let { alarm ->
                 registerAlarm(context, alarm, instance.mId)
             }
         }
@@ -192,15 +190,15 @@ class StateManager @Inject constructor(
         LogUtils.v("dismiss ${AlarmUtils.getFormattedTime(context, currentTime)}")
         scope.launch {
             alarmInstanceDao.getInstancesByAlarmId(id)?.let { instance ->
-                alarmRefDao.getAlarmById(instance.mAlarmId)?.let { alarm ->
-                    if (instance.mAlarmState == CURRENT_ALARM_STATE && alarm.endEnabled) {
+                alarmDao.getAlarm(instance.mAlarmId)?.let { alarm ->
+                    if (instance.mAlarmState == CURRENT_ALARM_STATE && alarm.interval.statusEnd) {
                         val time: Calendar
                         val state: Int
-                        if (alarm.preEnabled) {
-                            time = alarm.getNextAlarmTime(currentTime, Alarm.State.PREEND)
+                        if (alarm.interval.advancedReminder.status) {
+                            time = alarm.getNextAlarmTime(currentTime, AlarmEntity.State.PREEND)
                             state = PRE_END_ALARM_STATE
                         } else {
-                            time = alarm.getNextAlarmTime(currentTime, Alarm.State.END)
+                            time = alarm.getNextAlarmTime(currentTime, AlarmEntity.State.END)
                             state = END_ALARM_STATE
                         }
                         instance.alarmTime = time
@@ -212,7 +210,7 @@ class StateManager @Inject constructor(
                         if (alarm.deleteAfterUse) {
                             cancelScheduledInstanceStateChange(context, instance)
                             alarmInstanceDao.delete(instance)
-                            alarmRefDao.delete(alarm)
+                            alarmDao.deleteAlarm(alarm)
                             return@launch
                         } else {
                             registerAlarm(context, alarm, instance.mId)
@@ -229,7 +227,7 @@ class StateManager @Inject constructor(
         LogUtils.v("setSnooze  ${AlarmUtils.getFormattedTime(context, currentTime)}")
         scope.launch {
             alarmInstanceDao.getInstancesByAlarmId(id)?.let { instance ->
-                alarmRefDao.getAlarmById(id)?.let { alarm ->
+                alarmDao.getAlarm(id)?.let { alarm ->
                     val state: Int =
                         when (instance.mAlarmState) {
                             CURRENT_ALARM_STATE -> SNOOZE_CURRENT_ALARM_STATE
@@ -237,7 +235,7 @@ class StateManager @Inject constructor(
                             else -> SNOOZE_END_ALARM_STATE
                         }
                     val newAlarmTime = Calendar.getInstance()
-                    newAlarmTime.add(Calendar.MINUTE, alarm.snooze)
+                    newAlarmTime.add(Calendar.MINUTE, alarm.interval.snoozeTime)
                     instance.alarmTime = newAlarmTime
                     instance.mAlarmState = state
                     alarmInstanceDao.insertAndUpdate(instance)
@@ -264,8 +262,8 @@ class StateManager @Inject constructor(
             }"
         )
         scope.launch {
-            alarmRefDao.getAlarmById(instance.mAlarmId)?.let { alarm ->
-                val newAlarmTime = alarm.getNextAlarmTime(currentTime, Alarm.State.END)
+            alarmDao.getAlarm(instance.mAlarmId)?.let { alarm ->
+                val newAlarmTime = alarm.getNextAlarmTime(currentTime, AlarmEntity.State.END)
                 instance.alarmTime = newAlarmTime
                 instance.mAlarmState = END_ALARM_STATE
                 alarmInstanceDao.insertAndUpdate(instance)
@@ -278,15 +276,15 @@ class StateManager @Inject constructor(
         val currentTime: Calendar = Calendar.getInstance()
         LogUtils.v("setCurrentAlarm ${AlarmUtils.getFormattedTime(context, currentTime)}")
         scope.launch {
-            alarmRefDao.getAlarmById(instance.mAlarmId)?.let { alarm ->
+            alarmDao.getAlarm(instance.mAlarmId)?.let { alarm ->
                 val time: Calendar
                 val state: Int
-                if (alarm.endEnabled) {
-                    if (alarm.preEnabled) {
-                        time = alarm.getNextAlarmTime(currentTime, Alarm.State.PREEND)
+                if (alarm.interval.statusEnd) {
+                    if (alarm.interval.advancedReminder.status) {
+                        time = alarm.getNextAlarmTime(currentTime, AlarmEntity.State.PREEND)
                         state = PRE_END_ALARM_STATE
                     } else {
-                        time = alarm.getNextAlarmTime(currentTime, Alarm.State.END)
+                        time = alarm.getNextAlarmTime(currentTime, AlarmEntity.State.END)
                         state = END_ALARM_STATE
                     }
                     instance.alarmTime = time
@@ -297,7 +295,7 @@ class StateManager @Inject constructor(
                     if (alarm.deleteAfterUse) {
                         cancelScheduledInstanceStateChange(context, instance)
                         alarmInstanceDao.delete(instance)
-                        alarmRefDao.delete(alarm)
+                        alarmDao.deleteAlarm(alarm)
                         return@launch
                     } else {
                         registerAlarm(context, alarm, instance.mId)
@@ -311,8 +309,8 @@ class StateManager @Inject constructor(
         val currentTime: Calendar = Calendar.getInstance()
         LogUtils.v("setPreNotificationAlarm ${AlarmUtils.getFormattedTime(context, currentTime)}")
         scope.launch {
-            alarmRefDao.getAlarmById(instance.mAlarmId)?.let { alarm ->
-                val newAlarmTime = alarm.getNextAlarmTime(currentTime, Alarm.State.CURRENT)
+            alarmDao.getAlarm(instance.mAlarmId)?.let { alarm ->
+                val newAlarmTime = alarm.getNextAlarmTime(currentTime, AlarmEntity.State.CURRENT)
                 instance.alarmTime = newAlarmTime
                 instance.mAlarmState = CURRENT_ALARM_STATE
                 alarmInstanceDao.insertAndUpdate(instance)
@@ -331,14 +329,14 @@ class StateManager @Inject constructor(
         LogUtils.v("skipAlarm ${AlarmUtils.getFormattedTime(context, currentTime)}")
         scope.launch {
             alarmInstanceDao.getInstancesByAlarmId(id)?.let { instance ->
-                alarmRefDao.getAlarmById(id)?.let { alarm ->
+                alarmDao.getAlarm(id)?.let { alarm ->
                     cancelScheduledInstanceStateChange(context, instance)
                     if (instance.mAlarmState == END_ALARM_STATE) {
                         registerAlarm(context, alarm, instance.mId)
                     } else if (instance.mAlarmState == CURRENT_ALARM_STATE) {
-                        if (alarm.endEnabled) {
+                        if (alarm.interval.statusEnd) {
                             val newAlarmTime =
-                                alarm.getNextAlarmTime(currentTime, Alarm.State.PREEND)
+                                alarm.getNextAlarmTime(currentTime, AlarmEntity.State.PREEND)
                             instance.alarmTime = newAlarmTime
                             instance.mAlarmState = PRE_END_ALARM_STATE
                             alarmInstanceDao.insertAndUpdate(instance)
@@ -419,7 +417,7 @@ class StateManager @Inject constructor(
         LogUtils.v("show notification ${AlarmUtils.getFormattedTime(context, currentTime)}")
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val skipIntent = Intent(context, AlarmStateManager::class.java).apply {
+        val skipIntent = Intent(context, AlarmBroadcastReceiver::class.java).apply {
             action = SKIP_ALARM_ACTION
             putExtra("id", instance.mAlarmId)
         }

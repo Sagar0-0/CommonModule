@@ -11,7 +11,7 @@ import fit.asta.health.scheduler.data.api.net.scheduler.Tone
 import fit.asta.health.scheduler.data.api.net.scheduler.Vib
 import fit.asta.health.scheduler.data.api.net.scheduler.Wk
 import fit.asta.health.scheduler.data.api.net.tag.Data
-import fit.asta.health.scheduler.ref.data.Weekdays
+import fit.asta.health.scheduler.data.db.entity.Weekdays
 
 class CustomTypeConvertors {
     @TypeConverter

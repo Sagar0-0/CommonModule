@@ -1,4 +1,4 @@
-package fit.asta.health.scheduler.ref.alarms
+package fit.asta.health.scheduler.services
 
 
 import android.content.BroadcastReceiver
@@ -17,9 +17,10 @@ import kotlinx.coroutines.SupervisorJob
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AlarmStateManager : BroadcastReceiver() {
+class AlarmBroadcastReceiver : BroadcastReceiver() {
     @Inject
     lateinit var stateManager: StateManager
+
     val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     override fun onReceive(context: Context, intent: Intent) {
         when (intent.action) {

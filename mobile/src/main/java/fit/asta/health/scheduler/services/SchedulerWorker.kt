@@ -27,8 +27,8 @@ class SchedulerWorker @AssistedInject constructor(
     override fun doWork(): Result {
         CoroutineScope(Dispatchers.IO).launch {
             Log.d("TAGTAG", "doWork:start ")
-            syncAlarmLocal()
-            syncServerWithLocal()
+//            syncAlarmLocal()
+//            syncServerWithLocal()
             syncTagsData()
         }
         return Result.success()

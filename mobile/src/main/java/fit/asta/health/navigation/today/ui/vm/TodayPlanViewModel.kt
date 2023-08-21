@@ -57,7 +57,7 @@ class TodayPlanViewModel @Inject constructor(
     }
 
 
-    fun setAlarmPreferences(value: Int) {
+    fun setAlarmPreferences(value: Long) {
         viewModelScope.launch {
             prefManager.setPreferences(
                 key = "alarm",
@@ -154,53 +154,23 @@ class TodayPlanViewModel @Inject constructor(
                 Log.d("alarm", "getAlarms: $list,day ${today}")
                 list.forEach {
                     if (it.status && it.skipDate != LocalDate.now().dayOfMonth) {
-                        val today = if (it.week.recurring) {
-                            when (today) {
-                                Calendar.MONDAY -> {
-                                    it.week.monday
-                                }
-
-                                Calendar.TUESDAY -> {
-                                    it.week.tuesday
-                                }
-
-                                Calendar.WEDNESDAY -> {
-                                    it.week.wednesday
-                                }
-
-                                Calendar.THURSDAY -> {
-                                    it.week.thursday
-                                }
-
-                                Calendar.FRIDAY -> {
-                                    it.week.friday
-                                }
-
-                                Calendar.SATURDAY -> {
-                                    it.week.saturday
-                                }
-
-                                Calendar.SUNDAY -> {
-                                    it.week.sunday
-                                }
-
-                                else -> false
-                            }
+                        val today = if (it.daysOfWeek.isRepeating) {
+                            it.daysOfWeek.isBitOn(today)
                         } else true
                         if (today) {
-                            when (it.time.hours.toInt()) {
+                            when (it.time.hours) {
                                 in 0..2 -> {
-                                    if (it.time.minutes.toInt() > 0) _alarmListMorning.add(it)
+                                    if (it.time.minutes > 0) _alarmListMorning.add(it)
                                     else _alarmListEvening.add(it)
                                 }
 
                                 in 3..12 -> {
-                                    if (it.time.minutes.toInt() > 0) _alarmListAfternoon.add(it)
+                                    if (it.time.minutes > 0) _alarmListAfternoon.add(it)
                                     else _alarmListMorning.add(it)
                                 }
 
                                 in 13..16 -> {
-                                    if (it.time.minutes.toInt() > 0) _alarmListEvening.add(it)
+                                    if (it.time.minutes > 0) _alarmListEvening.add(it)
                                     else _alarmListAfternoon.add(it)
                                 }
 
@@ -221,38 +191,8 @@ class TodayPlanViewModel @Inject constructor(
                 _alarmListNextDay.clear()
                 list.forEach {
                     if (it.status) {
-                        val nextDay = if (it.week.recurring) {
-                            when (today) {
-                                Calendar.MONDAY -> {
-                                    it.week.tuesday
-                                }
-
-                                Calendar.TUESDAY -> {
-                                    it.week.wednesday
-                                }
-
-                                Calendar.WEDNESDAY -> {
-                                    it.week.thursday
-                                }
-
-                                Calendar.THURSDAY -> {
-                                    it.week.friday
-                                }
-
-                                Calendar.FRIDAY -> {
-                                    it.week.saturday
-                                }
-
-                                Calendar.SATURDAY -> {
-                                    it.week.sunday
-                                }
-
-                                Calendar.SUNDAY -> {
-                                    it.week.monday
-                                }
-
-                                else -> false
-                            }
+                        val nextDay = if (it.daysOfWeek.isRepeating) {
+                            it.daysOfWeek.isBitOn(today)
                         } else false
                         if (nextDay) {
                             _alarmListNextDay.add(it)

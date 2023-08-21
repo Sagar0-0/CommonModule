@@ -176,24 +176,6 @@
             android:configChanges="colorMode|density|fontScale|keyboard|keyboardHidden|layoutDirection|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode"
             android:exported="true" />
 
-        <activity
-            android:name=".scheduler.ref.alarms.AlarmActivity"
-            android:directBootAware="true"
-            android:excludeFromRecents="true"
-            android:resizeableActivity="true"
-            android:showOnLockScreen="true"
-            android:showWhenLocked="true"
-            android:taskAffinity=""
-            android:windowSoftInputMode="stateAlwaysHidden"
-            tools:targetApi="o_mr1" />
-
-        <receiver
-            android:name=".scheduler.ref.alarms.AlarmStateManager"
-            android:directBootAware="true" />
-
-        <service
-            android:name=".scheduler.ref.alarms.AlarmService"
-            android:directBootAware="true" />
 
         <service
             android:name=".player.jetpack_audio.exo_player.MusicService"
@@ -209,7 +191,7 @@
         <receiver android:name=".notify.receiver.AlarmReceiver" />
         <receiver android:name=".notify.receiver.SnoozeReceiver" />
         <receiver
-            android:name=".scheduler.ui.AlarmBroadcastReceiver"
+            android:name=".scheduler.services.AlarmBroadcastReceiver"
             android:directBootAware="true"
             android:enabled="true"
             android:exported="true">

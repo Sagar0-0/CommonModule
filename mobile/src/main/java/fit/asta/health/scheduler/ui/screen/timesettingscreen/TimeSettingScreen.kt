@@ -5,7 +5,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -19,14 +18,12 @@ import fit.asta.health.scheduler.ui.components.SettingsLayout
 import fit.asta.health.scheduler.ui.components.SnoozeBottomSheet
 import fit.asta.health.scheduler.ui.components.TimePickerDemo
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.IvlUiState
-import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.StatUiState
 import fit.asta.health.scheduler.ui.screen.timesettingscreen.TimeSettingCreateBottomSheetTypes.*
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TimeSettingScreen(
-    list: SnapshotStateList<StatUiState>,
     timeSettingUiState: IvlUiState,
     tSEvent: (TimeSettingEvent) -> Unit,
     navBack: () -> Unit
@@ -48,7 +45,6 @@ fun TimeSettingScreen(
         content = { paddingValues ->
             SettingsLayout(
                 timeSettingUiState = timeSettingUiState,
-                variantIntervals = list,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)

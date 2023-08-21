@@ -13,7 +13,7 @@ class AlarmLocalRepoImp(
         return alarmDao.getAll()
     }
 
-    override suspend fun getAlarm(alarmId: Int): AlarmEntity? {
+    override suspend fun getAlarm(alarmId: Long): AlarmEntity? {
         return alarmDao.getAlarm(alarmId)
     }
 
@@ -62,8 +62,8 @@ class AlarmLocalRepoImp(
         return alarmDao.getAllAlarm()
     }
 
-    override suspend fun getSyncData(id: Int): AlarmSync? {
-       return alarmDao.getSyncData(id)
+    override suspend fun getSyncData(id: Long): AlarmSync? {
+        return alarmDao.getSyncData(id)
     }
 
     override suspend fun insertSyncData(alarmSync: AlarmSync) {
