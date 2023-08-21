@@ -76,22 +76,9 @@ val usingDarkMode = mutableStateOf(false)
 @Composable
 fun AppTheme(
     content: @Composable () -> Unit,
+    theme: Boolean = isSystemInDarkTheme()
 ) {
-    val context = LocalContext.current
-    when (PrefManager.getTheme(context)) {
-        AppThemeType.Dark.value -> {
-            usingDarkMode.value = true
-        }
-
-        AppThemeType.Light.value -> {
-            usingDarkMode.value = false
-        }
-
-        else -> {
-            usingDarkMode.value = isSystemInDarkTheme()
-        }
-    }
-
+    usingDarkMode.value = theme
     val useDynamicColors = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
     val colors = when {
         useDynamicColors && usingDarkMode.value -> dynamicDarkColorScheme(LocalContext.current)
