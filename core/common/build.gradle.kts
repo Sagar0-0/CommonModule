@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.asta.android.library)
     alias(libs.plugins.asta.android.hilt)
     alias(libs.plugins.asta.android.library.compose)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -27,6 +28,8 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.ui.android)
+    implementation(libs.androidx.navigation.common.ktx)
+    implementation(libs.androidx.navigation.runtime.ktx)
     testImplementation(libs.junit4)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.test.espresso.core)

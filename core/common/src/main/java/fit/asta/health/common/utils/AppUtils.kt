@@ -16,7 +16,6 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import android.text.Editable
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -24,7 +23,6 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.documentfile.provider.DocumentFile
 import com.bumptech.glide.Glide
@@ -33,10 +31,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.review.ReviewManagerFactory
-import com.google.firebase.storage.FirebaseStorage
-import fit.asta.health.BuildConfig
+import fit.asta.health.common.BuildConfig
 import fit.asta.health.common.R
-import fit.asta.health.common.ui.usingDarkMode
 import java.io.IOException
 import java.io.InputStream
 import java.net.HttpURLConnection
@@ -190,52 +186,52 @@ fun showInAppReview(activity: Activity) {
 }
 
 sealed class AppThemeType(val value: String) {
-    object Dark : AppThemeType("dark")
-    object System : AppThemeType("system")
-    object Light : AppThemeType("light")
-    object Battery : AppThemeType("battery")
+    data object Dark : AppThemeType("dark")
+    data object System : AppThemeType("system")
+    data object Light : AppThemeType("light")
+    data object Battery : AppThemeType("battery")
 }
 
-fun setAppTheme(newValue: String, context: Context) {
-    PrefManager.setTheme(newValue, context)
-    when (PrefManager.getTheme(context)) {
-        AppThemeType.Dark.value -> {
-            usingDarkMode.value = true
-        }
-
-        AppThemeType.Light.value -> {
-            usingDarkMode.value = false
-        }
-
-        else -> {
-            usingDarkMode.value = isSystemDarkMode(context)
-        }
-    }
-
-    val mode = when (newValue) {
-        AppThemeType.Dark.value -> {
-            AppCompatDelegate.MODE_NIGHT_YES
-        }
-
-        AppThemeType.Light.value -> {
-            AppCompatDelegate.MODE_NIGHT_NO
-        }
-
-        AppThemeType.System.value -> {
-            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-        }
-
-        AppThemeType.Battery.value -> {
-            AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
-        }
-
-        else -> {
-            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-        }
-    }
-
-    AppCompatDelegate.setDefaultNightMode(mode)
-}
+//fun setAppTheme(newValue: String, context: Context) {
+//    PrefManager.setTheme(newValue, context)
+//    when (PrefManager.getTheme(context)) {
+//        AppThemeType.Dark.value -> {
+//            usingDarkMode.value = true
+//        }
+//
+//        AppThemeType.Light.value -> {
+//            usingDarkMode.value = false
+//        }
+//
+//        else -> {
+//            usingDarkMode.value = isSystemDarkMode(context)
+//        }
+//    }
+//
+//    val mode = when (newValue) {
+//        AppThemeType.Dark.value -> {
+//            AppCompatDelegate.MODE_NIGHT_YES
+//        }
+//
+//        AppThemeType.Light.value -> {
+//            AppCompatDelegate.MODE_NIGHT_NO
+//        }
+//
+//        AppThemeType.System.value -> {
+//            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+//        }
+//
+//        AppThemeType.Battery.value -> {
+//            AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
+//        }
+//
+//        else -> {
+//            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+//        }
+//    }
+//
+//    AppCompatDelegate.setDefaultNightMode(mode)
+//} TODO
 
 fun isSystemDarkMode(context: Context): Boolean {
     val nightModeFlags = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
@@ -304,18 +300,9 @@ fun getImgUrl(url: String) = BuildConfig.BASE_IMAGE_URL + url
 
 fun getVideoUrl(url: String) = BuildConfig.BASE_VIDEO_URL + url
 
-fun getFirebaseStorageBucketUrl(context: Context): String {
-    val url =
-        context.resources.getString(R.string.fire_storage_url) + FirebaseStorage.getInstance().reference.bucket + "/o/"
-    Log.d("URL", "getFirebaseStorageBucketUrl: $url")
-    return url
-}
 
 fun getFileName(context: Context, uri: Uri) = DocumentFile.fromSingleUri(context, uri)?.name ?: ""
 
-fun getPublicStorageUrl(context: Context, url: String): String {
-    return getFirebaseStorageBucketUrl(context) + Uri.encode(url) + "?alt=media"
-}
 
 fun Context.showDialog(title: String, desc: String, okTitle: String, notifyOK: () -> Unit) {
 

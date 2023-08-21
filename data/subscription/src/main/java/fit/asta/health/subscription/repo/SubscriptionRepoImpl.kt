@@ -1,6 +1,6 @@
 package fit.asta.health.subscription.repo
 
-import fit.asta.health.network.utils.ResponseState
+import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.network.utils.getResponseState
 import fit.asta.health.subscription.model.SubscriptionResponse
 import fit.asta.health.subscription.remote.SubscriptionApi
@@ -15,7 +15,7 @@ class SubscriptionRepoImpl
         uid: String,
         country: String,
         date: String
-    ): ResponseState<SubscriptionResponse> {
+    ): fit.asta.health.common.utils.ResponseState<SubscriptionResponse> {
         return getResponseState { remoteApi.getData(uid, country, date) }
     }
 }

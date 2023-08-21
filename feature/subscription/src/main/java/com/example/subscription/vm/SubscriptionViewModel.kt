@@ -3,9 +3,8 @@ package com.example.subscription.vm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.auth.di.UID
-import com.example.common.utils.UiState
-import com.example.common.utils.toUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.subscription.model.SubscriptionResponse
 import fit.asta.health.subscription.repo.SubscriptionRepo
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,5 +1,6 @@
 package fit.asta.health.common.utils
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -14,6 +15,7 @@ class ConnectivityReceiver(private val listener: ConnectivityListener?) : Broadc
         listener?.onNetworkStateChanged(isConnected(context))
     }
 
+    @SuppressLint("MissingPermission")
     private fun isConnected(context: Context): Boolean {
 
         val conMgr = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

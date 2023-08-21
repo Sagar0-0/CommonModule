@@ -39,18 +39,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.designsystem.theme.spacing
 import com.example.payment.model.OrderRequest
-import fit.asta.health.common.ui.components.generic.AppTexts
-import fit.asta.health.common.ui.components.generic.carouselTransition
-import fit.asta.health.common.ui.theme.iconButtonSize
-import fit.asta.health.common.ui.theme.iconSize
-import fit.asta.health.subscription.model.SubscriptionResponse.Data.SubscriptionPlans
+import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.components.generic.carouselTransition
+import fit.asta.health.designsystem.theme.iconButtonSize
+import fit.asta.health.designsystem.theme.iconSize
+import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.subscription.model.SubscriptionResponse
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun SubPlansPager(
-    subscriptionPlans: SubscriptionPlans,
+    subscriptionPlans: SubscriptionResponse.Data.SubscriptionPlans,
     onClick: (OrderRequest) -> Unit
 ) {
     val fullScreen = rememberSaveable { mutableStateOf(false) }
@@ -97,7 +97,7 @@ internal fun SubPlansPager(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SubPlanItem(
-    item: SubscriptionPlans.Category,
+    item: SubscriptionResponse.Data.SubscriptionPlans.Category,
     modifier: Modifier,
     color: CardColors,
     fullScreen: Boolean,

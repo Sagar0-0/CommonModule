@@ -10,12 +10,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.example.common.utils.UiState
-import com.example.common.utils.toStringFromResId
 import com.example.payment.model.OrderRequest
-import fit.asta.health.common.ui.components.generic.AppErrorScreen
-import fit.asta.health.common.ui.components.generic.AppTopBar
-import fit.asta.health.common.ui.components.generic.LoadingAnimation
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.designsystem.components.generic.AppErrorScreen
+import fit.asta.health.designsystem.components.generic.AppTopBar
+import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.subscription.model.SubscriptionResponse
 
 @OptIn(ExperimentalMaterial3Api::class)

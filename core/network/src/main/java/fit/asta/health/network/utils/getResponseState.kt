@@ -1,9 +1,9 @@
 package fit.asta.health.network.utils
 
-suspend fun <T> getResponseState(request: suspend () -> T): ResponseState<T> {
+suspend fun <T> getResponseState(request: suspend () -> T): fit.asta.health.common.utils.ResponseState<T> {
     return try {
-        ResponseState.Success(request())
+        fit.asta.health.common.utils.ResponseState.Success(request())
     } catch (e: Exception) {
-        ResponseState.Error(e)
+        fit.asta.health.common.utils.ResponseState.Error(e)
     }
 }

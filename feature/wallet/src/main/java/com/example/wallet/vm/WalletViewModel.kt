@@ -3,11 +3,10 @@ package com.example.wallet.vm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.auth.di.UID
-import com.example.common.utils.UiState
-import com.example.common.utils.toUiState
 import com.example.wallet.model.WalletResponse
 import com.example.wallet.repo.WalletRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.common.utils.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

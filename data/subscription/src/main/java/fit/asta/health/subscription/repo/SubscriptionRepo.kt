@@ -1,6 +1,6 @@
 package fit.asta.health.subscription.repo
 
-import fit.asta.health.network.utils.ResponseState
+import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.subscription.model.SubscriptionResponse
 
 interface SubscriptionRepo {
@@ -8,5 +8,5 @@ interface SubscriptionRepo {
         uid: String,
         country: String,
         date: String
-    ): ResponseState<SubscriptionResponse>
+    ): fit.asta.health.common.utils.ResponseState<SubscriptionResponse>
 }

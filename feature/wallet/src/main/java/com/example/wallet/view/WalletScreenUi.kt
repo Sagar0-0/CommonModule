@@ -34,14 +34,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.example.common.utils.UiState
-import com.example.common.utils.toStringFromResId
-import com.example.designsystem.theme.spacing
 import com.example.wallet.R
 import com.example.wallet.model.WalletResponse
-import fit.asta.health.common.ui.components.generic.AppErrorScreen
-import fit.asta.health.common.ui.components.generic.AppTopBar
-import fit.asta.health.common.ui.components.generic.LoadingAnimation
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.designsystem.components.generic.AppErrorScreen
+import fit.asta.health.designsystem.components.generic.AppTopBar
+import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.theme.spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
