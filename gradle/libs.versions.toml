@@ -1,4 +1,5 @@
 [versions]
+astaPluginVer = "0.1.4"
 accompanist = "0.28.0"
 accompanistCoil = "0.15.0"
 accompanistDrawablepainter = "0.30.1"
@@ -342,3 +343,18 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
+asta-android-application-compose = { id = "asta.android.application.compose", version.ref = "astaPluginVer" }
+asta-android-application = { id = "asta.android.application", version.ref = "astaPluginVer" }
+asta-android-application-jacoco = { id = "asta.android.application.jacoco", version.ref = "astaPluginVer" }
+asta-android-library-compose = { id = "asta.android.library.compose", version.ref = "astaPluginVer" }
+asta-android-library = { id = "asta.android.library", version.ref = "astaPluginVer" }
+asta-android-feature = { id = "asta.android.feature", version.ref = "astaPluginVer" }
+asta-android-library-jacoco = { id = "asta.android.library.jacoco", version.ref = "astaPluginVer" }
+asta-android-test = { id = "asta.android.test", version.ref = "astaPluginVer" }
+asta-android-hilt = { id = "asta.android.hilt", version.ref = "astaPluginVer" }
+asta-android-room = { id = "asta.android.room", version.ref = "astaPluginVer" }
+asta-android-application-firebase = { id = "asta.android.application.firebase", version.ref = "astaPluginVer" }
+asta-android-application-flavors = { id = "asta.android.application.flavors", version.ref = "astaPluginVer" }
+asta-jvm-library = { id = "asta.jvm.library", version.ref = "astaPluginVer" }
+asta-gms-application = { id = "asta.gms.application", version.ref = "astaPluginVer" }
+asta-gms-library = { id = "asta.gms.library", version.ref = "astaPluginVer" }
