@@ -1,4 +1,4 @@
-package com.example.common
+package fit.asta.health.common
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

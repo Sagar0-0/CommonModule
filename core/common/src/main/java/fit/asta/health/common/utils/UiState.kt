@@ -1,4 +1,4 @@
-package com.example.common.utils
+package fit.asta.health.common.utils
 
 import android.content.Context
 import androidx.compose.runtime.Composable

@@ -1,4 +1,4 @@
-package com.example.common.utils
+package fit.asta.health.common.utils
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
@@ -31,11 +31,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.example.common.R
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.google.firebase.storage.FirebaseStorage
 import fit.asta.health.BuildConfig
+import fit.asta.health.common.R
 import fit.asta.health.common.ui.usingDarkMode
 import java.io.IOException
 import java.io.InputStream
@@ -190,10 +190,10 @@ fun showInAppReview(activity: Activity) {
 }
 
 sealed class AppThemeType(val value: String) {
-    data object Dark : AppThemeType("dark")
-    data object System : AppThemeType("system")
-    data object Light : AppThemeType("light")
-    data object Battery : AppThemeType("battery")
+    object Dark : AppThemeType("dark")
+    object System : AppThemeType("system")
+    object Light : AppThemeType("light")
+    object Battery : AppThemeType("battery")
 }
 
 fun setAppTheme(newValue: String, context: Context) {

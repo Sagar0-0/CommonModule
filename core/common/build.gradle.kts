@@ -1,35 +1,23 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.asta.android.library)
+    alias(libs.plugins.asta.android.hilt)
+    alias(libs.plugins.asta.android.library.compose)
 }
 
 android {
-    namespace = "com.example.common"
-    compileSdk = 33
-
+    namespace = "fit.asta.health.common"
     defaultConfig {
-        minSdk = 24
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
 }
 
@@ -43,12 +31,47 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.test.espresso.core)
 
-    // Retrofit and OkHttp
-    implementation(libs.okhttp)
-    implementation(libs.okhttp.logging)
-    implementation(libs.retrofit.core)
-    implementation(libs.converter.gson)
+    //Jetpack Compose
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.androidx.compose.ui.util)
+    implementation(libs.androidx.compose.animation)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewModelCompose)
+    implementation(libs.androidx.lifecycle.runtimeCompose)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.androidx.compose.foundation)
 
-    //Json parser
-    implementation(libs.gson)
+    //Jetpack Compose - Material theme components
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.material3.window.size)
+    implementation(libs.androidx.material.icons.extended.android)
+    implementation(libs.compose.theme.adapter)
+
+    //Image - Glide library
+    implementation(libs.glide)
+    implementation(libs.fluid.slider)
+
+    //In-app reviews
+    implementation(libs.review.ktx)
+
+    // Photo Picker
+    implementation(libs.modernstorage.photopicker)
+
+    //TODO-------------------Low standard libraries - consider removing later---------------------//
+    //Image Cropper Dependencies
+    implementation("com.github.SmartToolFactory:Compose-RatingBar:2.1.1")
+    // Colorful Customizable Sliders
+    implementation("com.github.SmartToolFactory:Compose-Colorful-Sliders:1.2.0")
+    // Color picker
+    implementation("com.github.SmartToolFactory:Compose-Color-Picker-Bundle:1.0.0")
+    // Gestures
+    implementation("com.github.SmartToolFactory:Compose-Extended-Gestures:3.0.0")
+    // Animated List
+    implementation("com.github.SmartToolFactory:Compose-AnimatedList:0.5.1")
+    //TODO-------------------Low standard libraries - consider removing later---------------------//
 }
