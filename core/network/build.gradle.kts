@@ -1,6 +1,6 @@
 plugins {
-    id("asta.android.library")
-    id("asta.android.hilt")
+    alias(libs.plugins.asta.android.library)
+    alias(libs.plugins.asta.android.hilt)
 }
 
 android {
@@ -9,6 +9,15 @@ android {
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+    }
+
+    buildTypes {
+        release {
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
     }
 }
 
@@ -20,7 +29,6 @@ dependencies {
     testImplementation(libs.junit4)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.test.espresso.core)
-
 
     // Retrofit and OkHttp
     implementation(libs.okhttp)

@@ -4,6 +4,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import fit.asta.health.BuildConfig
+import fit.asta.health.network.utils.NetworkUtil
 import fit.asta.health.subscription.remote.SubscriptionApi
 import fit.asta.health.subscription.repo.SubscriptionRepo
 import fit.asta.health.subscription.repo.SubscriptionRepoImpl

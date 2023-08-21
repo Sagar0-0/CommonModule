@@ -1,6 +1,6 @@
 package fit.asta.health.subscription.repo
 
-import com.example.common.utils.ResponseState
+import fit.asta.health.network.utils.ResponseState
 import fit.asta.health.subscription.model.SubscriptionResponse
 
 interface SubscriptionRepo {

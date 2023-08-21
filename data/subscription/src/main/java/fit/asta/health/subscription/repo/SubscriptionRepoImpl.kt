@@ -1,7 +1,7 @@
 package fit.asta.health.subscription.repo
 
-import com.example.common.utils.ResponseState
-import com.example.common.utils.getResponseState
+import fit.asta.health.network.utils.ResponseState
+import fit.asta.health.network.utils.getResponseState
 import fit.asta.health.subscription.model.SubscriptionResponse
 import fit.asta.health.subscription.remote.SubscriptionApi
 import javax.inject.Inject
@@ -18,5 +18,4 @@ class SubscriptionRepoImpl
     ): ResponseState<SubscriptionResponse> {
         return getResponseState { remoteApi.getData(uid, country, date) }
     }
-
 }
