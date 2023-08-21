@@ -54,7 +54,6 @@ protobuf {
 }
 
 dependencies {
-    implementation(project(":core:common"))//remove after removing shared-preferences dep
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -65,6 +64,5 @@ dependencies {
 
     //Datastore
     implementation(libs.androidx.datastore.core)
-    implementation(libs.androidx.datastore.preferences)
     implementation(libs.protobuf.kotlin.lite)
 }

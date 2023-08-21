@@ -1,13 +1,9 @@
 package fit.asta.health.datastore
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.dataStoreFile
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStoreFile
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,22 +38,8 @@ object DatastoreModule {
 
 
     @Provides
-    @Singleton
-    fun providesSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
-        return context.getSharedPreferences("shared", Context.MODE_PRIVATE)
-    }
-
-    @Provides
     @IODispatcher
     fun provideIODispatcher(): CoroutineDispatcher = Dispatchers.IO
-
-    @Provides
-    @Singleton
-    fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
-        return PreferenceDataStoreFactory.create(
-            produceFile = { context.preferencesDataStoreFile("USER_PREFERENCES") }
-        )
-    }
 
     @Provides
     @Singleton
