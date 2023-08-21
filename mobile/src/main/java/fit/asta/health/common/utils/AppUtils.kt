@@ -26,7 +26,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat.getSystemService
-import androidx.documentfile.provider.DocumentFile
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -310,8 +309,6 @@ fun getFirebaseStorageBucketUrl(context: Context): String {
     Log.d("URL", "getFirebaseStorageBucketUrl: $url")
     return url
 }
-
-fun getFileName(context: Context, uri: Uri) = DocumentFile.fromSingleUri(context, uri)?.name ?: ""
 
 fun getPublicStorageUrl(context: Context, url: String): String {
     return getFirebaseStorageBucketUrl(context) + Uri.encode(url) + "?alt=media"

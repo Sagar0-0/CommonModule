@@ -23,13 +23,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.documentfile.provider.DocumentFile
 import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.common.ui.components.generic.AppTopBar
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.components.uploadFiles
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.common.utils.getFileName
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.feedback.data.remote.modal.An
 import fit.asta.health.feedback.data.remote.modal.FeedbackQuesDTO
@@ -63,7 +63,7 @@ fun SessionFeedback(
 
             is UiState.Error -> {
                 Text(text = feedbackQuesState.resId.toStringFromResId())
-                LaunchedEffect(feedbackQuesState){
+                LaunchedEffect(feedbackQuesState) {
                     Toast.makeText(
                         context,
                         "Unexpected error occurred.",
@@ -123,7 +123,7 @@ fun feedbackQuesItem(qn: Qn): MutableState<An> {
         )
         val medias = uriList.map {
             Media(
-                name = getFileName(context, it),
+                name = DocumentFile.fromSingleUri(context, it)?.name ?: "",
                 url = "",
                 localUri = it
             )

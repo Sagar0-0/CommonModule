@@ -1,4 +1,4 @@
-package fit.asta.health.common.ui.components
+package com.example.designsystem.components
 
 import android.net.Uri
 import android.widget.Toast
@@ -37,13 +37,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.documentfile.provider.DocumentFile
+import com.example.designsystem.theme.spacing
 import fit.asta.health.common.jetpack.dashedBorder
 import fit.asta.health.common.ui.components.generic.AppDefaultIcon
 import fit.asta.health.common.ui.theme.Shapes
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.iconButtonSize
 import fit.asta.health.common.ui.theme.imageSize
-import fit.asta.health.common.ui.theme.spacing
 
 
 @Composable
