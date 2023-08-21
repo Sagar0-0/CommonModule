@@ -2,6 +2,7 @@ package fit.asta.health.designsystem.components.functional
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DoNotDisturb
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -21,7 +23,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -31,7 +35,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.android.material.R
-import fit.asta.health.navigation.home.view.component.ScheduleButtonIcon
+import fit.asta.health.designsystem.components.generic.AppButtons
+import fit.asta.health.designsystem.components.generic.AppDefaultIcon
+import fit.asta.health.designsystem.theme.iconSize
+import fit.asta.health.designsystem.theme.spacing
 
 @Composable
 fun SunlightSlotsCardLayout(modifier: Modifier = Modifier, time: String, temperature: String) {
@@ -122,5 +129,42 @@ fun SunlightSlotsCardLayout(modifier: Modifier = Modifier, time: String, tempera
 
         }
     }
+}
 
+@Composable
+fun ScheduleButtonIcon(
+    onButtonClick: () -> Unit,
+    imageVector: ImageVector = Icons.Filled.Schedule,
+) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(spacing.small), horizontalArrangement = Arrangement.End
+    ) {
+        ScheduleIconLayout(onButtonClick, imageVector)
+    }
+}
+
+@Composable
+fun ScheduleIconLayout(
+    onButtonClick: () -> Unit,
+    imageVector: ImageVector = Icons.Filled.Schedule,
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .size(iconSize.regularSize)
+            .clip(RoundedCornerShape(spacing.small))
+            .background(color = Color.White)
+    ) {
+        AppButtons.AppIconButton(
+            onClick = onButtonClick,
+        ) {
+            AppDefaultIcon(
+                imageVector = imageVector,
+                contentDescription = "Schedule Icon",
+                tint = Color.DarkGray
+            )
+        }
+    }
 }
