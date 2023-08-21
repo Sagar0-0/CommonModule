@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="refer_code_not_exist">Referral code doesn\'t exist!</string>
+    <string name="own_refer_code_error">You can not apply your own referral code!</string>
+    <string name="already_referred_error">You are already referred!</string>
+    <string name="referring_my_referred">You can not apply code of YOUR referred users.</string>
+    <string name="no_transactions_text">New transactions will appear here as you start using our app credits</string>
+    <string name="refer_and_earn">Refer and earn</string>
+    <string name="refer_invite_text">Invite your friends to Asta and get Cashback to your wallet when they subscribe to our Health Plan</string>
+    <string name="code_side_text">"Click to copy code: "</string>
+</resources>

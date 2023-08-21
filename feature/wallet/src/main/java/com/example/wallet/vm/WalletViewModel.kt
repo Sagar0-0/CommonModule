@@ -1,30 +1,26 @@
-package com.example.subscription.vm
+package com.example.wallet.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.auth.di.UID
 import com.example.common.utils.UiState
 import com.example.common.utils.toUiState
+import com.example.wallet.model.WalletResponse
+import com.example.wallet.repo.WalletRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.subscription.model.SubscriptionResponse
-import fit.asta.health.subscription.repo.SubscriptionRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
-class SubscriptionViewModel
+class WalletViewModel
 @Inject constructor(
-    private val subscriptionRepo: SubscriptionRepo,
+    private val walletRepo: WalletRepo,
     @UID private val uid: String
 ) : ViewModel() {
 
-    private val _state =
-        MutableStateFlow<UiState<SubscriptionResponse>>(UiState.Loading)
+    private val _state = MutableStateFlow<UiState<WalletResponse>>(UiState.Loading)
     val state = _state.asStateFlow()
 
     init {
@@ -34,9 +30,7 @@ class SubscriptionViewModel
     fun getData() {
         _state.value = UiState.Loading
         viewModelScope.launch {
-            val c = Calendar.getInstance()
-            val df = SimpleDateFormat("yyyy-MM-dd", Locale.ROOT)
-            _state.value = subscriptionRepo.getData(uid, "india", df.format(c.time)).toUiState()
+            _state.value = walletRepo.getData(uid).toUiState()
         }
     }
 

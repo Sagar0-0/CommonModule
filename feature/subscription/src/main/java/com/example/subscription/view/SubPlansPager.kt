@@ -41,11 +41,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.designsystem.theme.spacing
 import com.example.payment.model.OrderRequest
-import com.example.subscription.model.SubscriptionResponse.Data.SubscriptionPlans
 import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.ui.components.generic.carouselTransition
 import fit.asta.health.common.ui.theme.iconButtonSize
 import fit.asta.health.common.ui.theme.iconSize
+import fit.asta.health.subscription.model.SubscriptionResponse.Data.SubscriptionPlans
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
