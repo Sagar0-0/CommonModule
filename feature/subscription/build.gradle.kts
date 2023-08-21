@@ -42,6 +42,7 @@ dependencies {
     implementation(project(":data:auth"))
     implementation(project(":feature:payment"))
     implementation(project(":core:common"))
+    implementation(project(":core:designsystem"))
 
 //    implementation(libs.hilt.android)
 //    ksp(libs.hilt.compiler)

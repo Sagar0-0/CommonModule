@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.common.utils.UiState
+import com.example.designsystem.AppTheme
 import com.example.payment.model.OrderRequest
 import com.example.payment.model.OrderResponse
 import com.example.payment.model.PaymentResponse
@@ -29,7 +30,6 @@ import com.razorpay.PayloadHelper
 import com.razorpay.PaymentData
 import com.razorpay.PaymentResultWithDataListener
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
 

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- User Preference - Notification Settings -->
+    <string name="user_pref_master_notification_key" translatable="false">user_pref_master_notification</string>
+    <string name="user_pref_master_notification_title">All Notifications</string>
+
+    <string name="user_pref_notification_key" translatable="false">user_pref_notification</string>
+    <string name="user_pref_notification_cat_key" translatable="false">user_pref_notification_cat</string>
+    <string name="user_pref_notification_cat_title">Notification</string>
+
+    <string name="user_pref_reminder_alarm_key" translatable="false">user_pref_reminder_alarm</string>
+    <string name="user_pref_reminder_alarm_summary">Get alarm to remind the activities</string>
+    <string name="user_pref_reminder_alarm_title">Reminder alarm</string>
+
+    <string name="user_pref_location_permission_count">user_pref_location_permission_count</string>
+    <string name="user_pref_onboarding_shown">user_pref_onboarding_shown</string>
+    <string name="user_pref_activity_tips_key" translatable="false">user_pref_activity_tips</string>
+    <string name="user_pref_activity_tips_summary">Get tips to help you meet physical activity recommendations</string>
+    <string name="user_pref_activity_tips_title">Activity tips</string>
+
+    <string name="user_pref_goal_progress_tips_key" translatable="false">user_pref_goal_progress_tips</string>
+    <string name="user_pref_goal_progress_tips_summary">Get tips to help you meet your activity goals</string>
+    <string name="user_pref_goal_progress_tips_title">Goal progress tips</string>
+
+    <string name="user_pref_goal_adjustment_key" translatable="false">user_pref_goal_adjustment</string>
+    <string name="user_pref_goal_adjustment_summary">Get suggestions to increase or decrease goals</string>
+    <string name="user_pref_goal_adjustment_title">Goal adjustment</string>
+
+    <string name="user_pref_goals_completed_key" translatable="false">user_pref_goals_completed</string>
+    <string name="user_pref_goals_completed_summary">Get updates when you reach your goals</string>
+    <string name="user_pref_goals_completed_title">Completed goals</string>
+
+    <string name="user_pref_new_release_key" translatable="false">user_pref_new_release</string>
+    <string name="user_pref_new_release_summary">Notified when important update is released</string>
+    <string name="user_pref_new_release_title">New Releases</string>
+
+    <string name="user_pref_health_tips_key" translatable="false">user_pref_health_tips</string>
+    <string name="user_pref_health_tips_summary">Notified with health tips</string>
+    <string name="user_pref_health_tips_title">Health Tips</string>
+
+    <string name="user_pref_promotions_key" translatable="false">user_pref_promotions</string>
+    <string name="user_pref_promotions_summary">Notified with if any discounts or offers available</string>
+    <string name="user_pref_promotions_title">Discounts/Offers</string>
+
+    <!-- User Preference - Payment Settings -->
+    <string name="user_pref_purchase_key" translatable="false">user_pref_purchase</string>
+    <string name="user_pref_donate_key" translatable="false">user_pref_donate</string>
+    <string name="user_pref_give_gift_key" translatable="false">user_pref_give_gift</string>
+
+    <!-- User Preference - Unit Settings -->
+    <string name="user_pref_unit_height_key" translatable="false">user_pref_unit_height</string>
+    <string name="user_pref_unit_weight_key" translatable="false">user_pref_unit_weight</string>
+    <string name="user_pref_unit_energy_key" translatable="false">user_pref_unit_energy</string>
+    <string name="user_pref_unit_distance_key" translatable="false">user_pref_unit_distance</string>
+
+    <!-- User Preference - Language Settings -->
+    <string name="user_pref_lang_key" translatable="false">user_pref_lang</string>
+
+
+    <!-- User Preferences - Video Settings -->
+    <string name="user_pref_video_cat_key" translatable="false">user_pref_video_cat</string>
+    <string name="user_pref_video_cat_title">Video</string>
+
+    <string name="user_pref_sanskrit_pose_name_key" translatable="false">user_pref_sanskrit_pose_name</string>
+    <string name="user_pref_sanskrit_pose_name_summary">Shows Sanskrit Pose Names</string>
+    <string name="user_pref_sanskrit_pose_name_title">Sanskrit Pose Names</string>
+
+    <string name="user_pref_timeline_visible_key" translatable="false">user_pref_timeline_visible</string>
+    <string name="user_pref_timeline_visible_summary">Shows Timeline Visible</string>
+    <string name="user_pref_timeline_visible_title">Timeline Visible</string>
+
+    <string name="user_pref_countdown_timer_key" translatable="false">user_pref_countdown_timer</string>
+    <string name="user_pref_countdown_timer_summary">Shows Countdown Timer</string>
+    <string name="user_pref_countdown_timer_title">Countdown Timer</string>
+
+    <!-- User Preferences - Background music -->
+    <string name="user_pref_bg_music_key" translatable="false">user_pref_bg_music</string>
+    <string name="user_pref_bg_music_title">Background Music</string>
+    <string name="user_pref_bg_music_dlg_title">Choose Background Music</string>
+
+    <string-array name="user_pref_bg_music_entries">
+        <item>Spiritual</item>
+        <item>Nature Sounds</item>
+        <item>Brain Waves</item>
+        <item>None</item>
+    </string-array>
+
+    <string-array name="user_pref_bg_music_values">
+        <item translatable="false">bg_music_01</item>
+        <item translatable="false">bg_music_02</item>
+        <item translatable="false">bg_music_03</item>
+        <item translatable="false">bg_music_04</item>
+        <item translatable="false">bg_music_none</item>
+    </string-array>
+
+    <!--Background Music Service Notification-->
+    <string name="notification_channel_name">Music Channel</string>
+    <string name="notification_channel_description">Shows the currently playing music</string>
+
+    <!-- User Preferences - Video Quality -->
+    <string name="user_pref_video_quality_key" translatable="false">user_pref_video_quality</string>
+    <string name="user_pref_video_quality_title">Quality</string>
+    <string name="user_pref_video_quality_dlg_title">Choose Video Quality</string>
+
+    <string-array name="user_pref_video_quality_entries">
+        <item>HD</item>
+        <item>High</item>
+        <item>Standard</item>
+        <item>Low</item>
+        <item>No Video</item>
+    </string-array>
+
+    <string-array name="user_pref_video_quality_values">
+        <item translatable="false">hd</item>
+        <item translatable="false">high</item>
+        <item translatable="false">standard</item>
+        <item translatable="false">low</item>
+        <item translatable="false">no_video</item>
+    </string-array>
+
+    <!-- User Preferences - Theme -->
+    <string name="user_pref_display_cat_key" translatable="false">user_pref_display_cat</string>
+    <string name="user_pref_display_cat_title">DISPLAY</string>
+    <string name="user_pref_theme_key" translatable="false">user_pref_theme</string>
+    <string name="user_pref_theme_title">Theme</string>
+    <string name="user_pref_theme_dlg_title">Choose theme</string>
+
+    <string-array name="user_pref_theme_entries">
+        <item>Dark</item>
+        <item>Light</item>
+        <item>Set by System</item>
+        <item>Set by Battery saver</item>
+    </string-array>
+
+    <string-array name="user_pref_theme_values">
+        <item translatable="false">dark</item>
+        <item translatable="false">light</item>
+        <item translatable="false">system</item>
+        <item translatable="false">battery</item>
+    </string-array>
+
+    <string name="user_pref_share_app_key" translatable="false">user_pref_share_app</string>
+    <string name="user_pref_share_app_title">Share</string>
+
+    <string name="user_pref_support_us_cat_key" translatable="false">user_pref_support_us_cat</string>
+    <string name="user_pref_support_us_cat_title">SUPPORT US</string>
+
+    <string name="user_pref_rate_us_key" translatable="false">user_pref_rate_us</string>
+    <string name="user_pref_rate_us_title">Rate Us</string>
+
+    <string name="user_pref_feedback_key" translatable="false">user_pref_feedback</string>
+    <string name="user_pref_feedback_title">Feedback</string>
+
+    <string name="user_pref_about_cat_key" translatable="false">user_pref_about_cat</string>
+    <string name="user_pref_about_cat_title">ABOUT</string>
+
+    <string name="user_pref_bug_report_key" translatable="false">user_pref_bug_report</string>
+    <string name="user_pref_bug_report_title">Bug report</string>
+
+    <string name="user_pref_terms_of_use_key" translatable="false">user_pref_terms_of_use</string>
+    <string name="user_pref_terms_of_use_title">Terms of Use</string>
+
+    <string name="user_pref_privacy_policy_key" translatable="false">user_pref_privacy_policy</string>
+    <string name="user_pref_privacy_policy_title">Privacy Policy</string>
+
+    <string name="user_pref_version_key" translatable="false">user_pref_version</string>
+    <string name="user_pref_version_title">Version</string>
+
+    <string name="user_pref_account_cat_key" translatable="false">user_pref_account_cat</string>
+    <string name="user_pref_account_cat_title">ACCOUNT</string>
+
+    <string name="user_pref_sign_out_key" translatable="false">user_pref_sign_out</string>
+    <string name="user_pref_sign_out_title">Sign Out</string>
+
+    <string name="user_pref_delete_account_key" translatable="false">user_pref_delete_account</string>
+    <string name="user_pref_delete_account_title">Delete</string>
+    <string name="user_pref_delete_account_summary">All your data will be lost and can\'t be restored</string>
+
+    <string name="user_pref_current_address" translatable="false">user_pref_current_address</string>
+</resources>

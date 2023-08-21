@@ -16,7 +16,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.subscription.ui.subscriptionRoute
+import com.example.subscription.subscriptionRoute
 import fit.asta.health.auth.ui.AUTH_GRAPH_ROUTE
 import fit.asta.health.auth.ui.authRoute
 import fit.asta.health.common.address.ui.addressRoute

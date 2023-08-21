@@ -190,10 +190,10 @@ fun showInAppReview(activity: Activity) {
 }
 
 sealed class AppThemeType(val value: String) {
-    object Dark : AppThemeType("dark")
-    object System : AppThemeType("system")
-    object Light : AppThemeType("light")
-    object Battery : AppThemeType("battery")
+    data object Dark : AppThemeType("dark")
+    data object System : AppThemeType("system")
+    data object Light : AppThemeType("light")
+    data object Battery : AppThemeType("battery")
 }
 
 fun setAppTheme(newValue: String, context: Context) {

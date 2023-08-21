@@ -1,5 +1,7 @@
 package com.example.common.utils
 
+import com.example.common.R
+
 fun <T> ResponseState<T>.toUiState(): UiState<T> {
     return when (this) {
         is ResponseState.Success -> {
@@ -8,10 +10,6 @@ fun <T> ResponseState<T>.toUiState(): UiState<T> {
 
         is ResponseState.Error -> {
             UiState.Error(this.exception.toResIdFromException())
-        }
-
-        else -> {
-            UiState.Idle
         }
     }
 }

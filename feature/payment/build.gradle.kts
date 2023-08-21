@@ -38,6 +38,8 @@ dependencies {
     implementation(project(":data:payment"))
     implementation(project(":data:auth"))
     implementation(project(":core:common"))
+    implementation(project(":core:designsystem"))
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

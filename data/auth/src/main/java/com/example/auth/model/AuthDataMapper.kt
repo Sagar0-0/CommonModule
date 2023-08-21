@@ -1,4 +1,4 @@
-package fit.asta.health.auth.data.model
+package com.example.auth.model
 
 import com.example.auth.model.domain.User
 import com.google.firebase.auth.FirebaseUser
