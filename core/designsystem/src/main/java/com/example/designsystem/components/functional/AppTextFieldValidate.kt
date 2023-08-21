@@ -11,9 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import com.example.designsystem.components.functional.UiString
 import fit.asta.health.common.ui.components.generic.AppTextField
 import fit.asta.health.common.ui.components.generic.AppTexts
-import fit.asta.health.common.utils.UiString
 
 /**[ValidateTxtLength] is an object that defines the default text length used in the [AppTextFieldValidate] composable.
  * */
