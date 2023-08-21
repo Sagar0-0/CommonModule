@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -127,7 +129,7 @@ fun OutlineBtnTick(text: String) {
         contentPadding = PaddingValues(8.dp)
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.ic_tick),
+            imageVector = Icons.Default.Done,
             contentDescription = null,
             modifier = Modifier.size(19.dp),
             tint = MaterialTheme.colorScheme.primary
