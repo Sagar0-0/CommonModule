@@ -2,11 +2,11 @@ package fit.asta.health.scheduler.ref.provider
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import fit.asta.health.scheduler.ref.LogUtils
 import fit.asta.health.scheduler.ref.data.Weekdays
 import kotlinx.parcelize.Parcelize
 import java.util.Calendar
@@ -24,12 +24,22 @@ data class Alarm(
     @ColumnInfo(name = "snooze") var snooze: Int,
     @ColumnInfo(name = "daysOfWeek") var daysOfWeek: Weekdays = Weekdays.NONE,
     @ColumnInfo(name = "enabled") var enabled: Boolean,
-    @ColumnInfo(name = "vibrate") var vibrate: Boolean = true,
+    @ColumnInfo(name = "vibrate") var vibrate: String = "Long",
+    @ColumnInfo(name = "imgUrl") var imgUrl: String = "img",
     @ColumnInfo(name = "label") var label: String? = "hi",
-    @ColumnInfo(name = "alert") var alert: Uri? = null,
+    @ColumnInfo(name = "alert") var alert: String = "",
+    @ColumnInfo(name = "tag") var tag: String = "Meditation",
     @ColumnInfo(name = "deleteAfterUse") var deleteAfterUse: Boolean = false
 ) : Parcelable {
 
+    override fun hashCode(): Int {
+        return java.lang.Long.valueOf(id).hashCode()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is Alarm) return false
+        return id == other.id
+    }
 
     fun getPreviousAlarmTime(currentTime: Calendar): Calendar? {
         val previousInstanceTime = Calendar.getInstance(currentTime.timeZone)
@@ -81,15 +91,16 @@ data class Alarm(
                 nextInstanceTime[Calendar.MINUTE] = endMinutes!!
             }
         }
+        LogUtils.v("time init ${nextInstanceTime.time}")
         if (nextInstanceTime.timeInMillis <= currentTime.timeInMillis) {
             nextInstanceTime.add(Calendar.DAY_OF_YEAR, 1)
         }
-
+        LogUtils.v("time mid ${nextInstanceTime.time}")
         val addDays = daysOfWeek.getDistanceToNextDay(nextInstanceTime)
         if (addDays > 0) {
             nextInstanceTime.add(Calendar.DAY_OF_WEEK, addDays)
         }
-
+        LogUtils.v("time end ${nextInstanceTime.time}")
 //        nextInstanceTime[Calendar.HOUR_OF_DAY] = hour
 //        nextInstanceTime[Calendar.MINUTE] = minutes
 

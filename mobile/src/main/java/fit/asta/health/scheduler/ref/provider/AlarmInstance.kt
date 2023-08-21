@@ -16,11 +16,18 @@ data class AlarmInstance(
     @ColumnInfo(name = "hour") var mHour: Int = 0,
     @ColumnInfo(name = "minute") var mMinute: Int = 0,
     @ColumnInfo(name = "label") var mLabel: String? = null,
-    @ColumnInfo(name = "vibrate") var mVibrate: Boolean = false,
-    @ColumnInfo(name = "ringtone") var mRingtone: String? = null,
     @ColumnInfo(name = "alarm_id") var mAlarmId: Long = 0,
     @ColumnInfo(name = "alarm_state") var mAlarmState: Int = 0
 ) {
+    override fun hashCode(): Int {
+        return java.lang.Long.valueOf(mId).hashCode()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is AlarmInstance) return false
+        return mId == other.mId
+    }
+
     companion object {
 
         fun createIntent(context: Context?, cls: Class<*>?, instanceId: Long): Intent {

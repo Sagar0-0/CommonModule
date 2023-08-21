@@ -1,243 +1,286 @@
-/*
- * Copyright (C) 2020 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package fit.asta.health.scheduler.ref.alarms
 
 
+import android.app.Notification
+import android.app.PendingIntent
 import android.app.Service
-import android.content.BroadcastReceiver
+import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
-import android.os.Binder
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
+import android.media.MediaPlayer
+import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.os.IBinder
-import android.telephony.TelephonyManager
-import androidx.annotation.RequiresApi
+import android.os.PowerManager
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
+import android.util.Log
+import android.widget.RemoteViews
+import androidx.core.app.NotificationCompat
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.scheduler.ref.AlarmAlertWakeLock
-import fit.asta.health.scheduler.ref.LogUtils
-import fit.asta.health.scheduler.ref.Utils.CHANGE_STATE_ACTION
-import fit.asta.health.scheduler.ref.db.AlarmInstanceDao
-import fit.asta.health.scheduler.ref.provider.AlarmInstance
-import fit.asta.health.scheduler.ref.provider.ClockContract.InstancesColumns
+import fit.asta.health.HealthCareApp
+import fit.asta.health.R
+import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.main.deepLinkUrl
+import fit.asta.health.navigation.today.ui.view.goToTool
+import fit.asta.health.scheduler.data.api.net.scheduler.Stat
+import fit.asta.health.scheduler.data.db.entity.AlarmEntity
+import fit.asta.health.scheduler.ref.db.AlarmRefDao
+import fit.asta.health.scheduler.ref.newalarm.Utils
+import fit.asta.health.scheduler.ref.provider.Alarm
+import fit.asta.health.scheduler.ui.AlarmScreenActivity
+import fit.asta.health.scheduler.util.Constants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-/**
- * This service is in charge of starting/stopping the alarm. It will bring up and manage the
- * [AlarmActivity] as well as [AlarmKlaxon].
- *
- * Registers a broadcast receiver to listen for snooze/dismiss intents. The broadcast receiver
- * exits early if AlarmActivity is bound to prevent double-processing of the snooze/dismiss intents.
- */
 @AndroidEntryPoint
 class AlarmService : Service() {
-    @Inject
-    lateinit var alarmInstanceDao: AlarmInstanceDao
-    val scope = CoroutineScope(Dispatchers.Main)
+    val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     @Inject
-    lateinit var alarmDataManager: AlarmDataManager
+    lateinit var alarmRefDao: AlarmRefDao
 
+    var alarmEntity: AlarmEntity? = null
+    private lateinit var ringtone: Uri
+    private lateinit var mediaPlayer: MediaPlayer
+    private lateinit var vibrator: Vibrator
+    private lateinit var partialWakeLock: PowerManager.WakeLock
 
-    /** Binder given to AlarmActivity.  */
-    private val mBinder: IBinder = Binder()
+    @Inject
+    lateinit var player: Player
 
-    /** Whether the service is currently bound to AlarmActivity  */
-    private var mIsBound = false
-
-    /** Whether the receiver is currently registered  */
-    private var mIsRegistered = false
-
-    override fun onBind(intent: Intent?): IBinder {
-        mIsBound = true
-        return mBinder
-    }
-
-    override fun onUnbind(intent: Intent?): Boolean {
-        mIsBound = false
-        return super.onUnbind(intent)
-    }
-
-    private lateinit var mTelephonyManager: TelephonyManager
-    private var mCurrentAlarm: AlarmInstance? = null
-
-    private fun startAlarm(instance: AlarmInstance) {
-        LogUtils.v("AlarmService.start with instance: " + instance.mId)
-        if (mCurrentAlarm != null) {
-            alarmDataManager.setMissedState(this, mCurrentAlarm!!)
-            stopCurrentAlarm()
-        }
-
-        AlarmAlertWakeLock.acquireCpuWakeLock(this)
-
-        mCurrentAlarm = instance
-        AlarmNotifications.showAlarmNotification(this, mCurrentAlarm!!)
-//        AlarmKlaxon.start(this, mCurrentAlarm!!)
-        sendBroadcast(Intent(ALARM_ALERT_ACTION))
-    }
-
-    private fun stopCurrentAlarm() {
-        if (mCurrentAlarm == null) {
-            LogUtils.v("There is no current alarm to stop")
-            return
-        }
-
-        val instanceId = mCurrentAlarm!!.mId
-        LogUtils.v("AlarmService.stop with instance: %s", instanceId)
-
-//        AlarmKlaxon.stop(this)
-        sendBroadcast(Intent(ALARM_DONE_ACTION))
-
-        stopForeground(true /* removeNotification */)
-
-        mCurrentAlarm = null
-        AlarmAlertWakeLock.releaseCpuLock()
-    }
-
-    private val mActionsReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            val action: String? = intent.action
-            LogUtils.i("AlarmService received intent %s", action)
-            if (mCurrentAlarm == null ||
-                mCurrentAlarm!!.mAlarmState != InstancesColumns.FIRED_STATE
-            ) {
-                LogUtils.i("No valid firing alarm")
-                return
-            }
-
-            if (mIsBound) {
-                LogUtils.i("AlarmActivity bound; AlarmService no-op")
-                return
-            }
-
-            when (action) {
-                ALARM_SNOOZE_ACTION -> {
-                    // Set the alarm state to snoozed.
-                    // If this broadcast receiver is handling the snooze intent then AlarmActivity
-                    // must not be showing, so always show snooze toast.
-                    alarmDataManager.setSnoozeState(context, mCurrentAlarm!!, true /* showToast */)
-                }
-
-                ALARM_DISMISS_ACTION -> {
-                    // Set the alarm state to dismissed.
-                    alarmDataManager.deleteInstanceAndUpdateParent(context, mCurrentAlarm!!)
-                }
-            }
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate() {
         super.onCreate()
-        mTelephonyManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-
-        // Register the broadcast receiver
-        val filter = IntentFilter(ALARM_SNOOZE_ACTION)
-        filter.addAction(ALARM_DISMISS_ACTION)
-        registerReceiver(mActionsReceiver, filter, Context.RECEIVER_EXPORTED)
-        mIsRegistered = true
+        partialWakeLock = (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
+            newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "AlarmService::WakeLock").apply {
+                acquire(60 * 1000L /*1 minutes*/)
+            }
+        }
+        mediaPlayer = MediaPlayer()
+        mediaPlayer.isLooping = true
+        player.apply {
+            playWhenReady = true
+            repeatMode = Player.REPEAT_MODE_ONE
+        }
+        vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val vibratorManager = getSystemService(VIBRATOR_MANAGER_SERVICE) as VibratorManager
+            vibratorManager.defaultVibrator
+        } else {
+            @Suppress("DEPRECATION") getSystemService(VIBRATOR_SERVICE) as Vibrator
+        }
+        ringtone = RingtoneManager.getActualDefaultRingtoneUri(
+            this.baseContext, RingtoneManager.TYPE_ALARM
+        )
     }
 
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        LogUtils.v("AlarmService.onStartCommand() with %s", intent)
-        if (intent == null) {
-            return START_NOT_STICKY
-        }
-
-        val instanceId = intent.getLongExtra("id", -1)
-        when (intent.action) {
-            CHANGE_STATE_ACTION -> {
-                alarmDataManager.handleIntent(this, intent)
-
-//                // If state is changed to firing, actually fire the alarm!
-//                val alarmState: Int = intent.getIntExtra(ALARM_STATE_EXTRA, -1)
-//                startAlarm(instance)
-            }
-
-            STOP_ALARM_ACTION -> {
-                if (mCurrentAlarm != null && mCurrentAlarm!!.mId != instanceId) {
-                    LogUtils.e(
-                        "Can't stop alarm for instance: %d because current alarm is: %d",
-                        instanceId, mCurrentAlarm!!.mId
-                    )
-                } else {
-                    stopCurrentAlarm()
-                    stopSelf()
+        //         getting bundle from intent
+        if (intent != null) {
+            val id: Long = intent.getLongExtra("id", -1)
+            scope.launch {
+                alarmRefDao.getAlarmById(id)?.let { alarm ->
+                    notificationAlarm(alarm)
                 }
             }
         }
+        return START_STICKY
+    }
 
-        return START_NOT_STICKY
+    private fun notificationAlarm(
+        alarm: Alarm
+    ) {
+        val stopIntent = Intent(this, AlarmStateManager::class.java).apply {
+            action = Utils.DISMISS_ACTION
+            putExtra("id", alarm.id)
+        }
+        val pendingIntentStop = PendingIntent.getBroadcast(
+            this,
+            555,
+            stopIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        val snoozeIntent = Intent(this, AlarmStateManager::class.java).apply {
+            action = Utils.SNOOZE_ACTION
+            putExtra("id", alarm.id)
+        }
+        val pendingIntentSnooze = PendingIntent.getBroadcast(
+            this,
+            666,
+            snoozeIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val alarmName: String = alarm.label ?: "Asta"
+
+        player.apply {
+            setMediaItem(MediaItem.fromUri(alarm.alert))
+            prepare()
+        }
+        val intent = Intent(
+//            Intent.ACTION_VIEW, Uri.parse("$deepLinkUrl/${goToTool(alarmEntity.info.tag)}")
+            Intent.ACTION_VIEW, Uri.parse("$deepLinkUrl/${goToTool(alarm.tag)}")
+        )
+        val pendingIntent = TaskStackBuilder.create(applicationContext).run {
+            addNextIntentWithParentStack(intent)
+            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        }
+        val builder = NotificationCompat.Builder(this, HealthCareApp.CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_round_access_alarm_24).setSound(null)
+            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
+            .setStyle(NotificationCompat.DecoratedCustomViewStyle())
+            .setCategory(NotificationCompat.CATEGORY_ALARM)
+            .setContentIntent(pendingIntent)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC).setOngoing(true).setWhen(0)
+            .setPriority(NotificationCompat.PRIORITY_MAX)
+            .addAction(0, "Snooze", pendingIntentSnooze).addAction(0, "Stop", pendingIntentStop)
+        val notificationLayout = RemoteViews(packageName, R.layout.notification_small)
+        val notificationLayoutExpanded = RemoteViews(packageName, R.layout.notification_large)
+        notificationLayout.apply {
+            setTextViewText(R.id.title, alarmName)
+            setTextViewText(R.id.tag, alarm.tag)
+//            setTextViewText(R.id.tag, alarmEntity.info.tag)
+        }
+        notificationLayoutExpanded.apply {
+            setTextViewText(R.id.title, alarmName)
+            setTextViewText(R.id.tag, alarm.tag)
+//            setTextViewText(R.id.tag, alarmEntity.info.tag)
+        }
+
+        Glide.with(this).asBitmap().load(getImgUrl(url = alarm.imgUrl))
+            .diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.weatherimage)
+            .into(object : CustomTarget<Bitmap?>() {
+                override fun onResourceReady(
+                    resource: Bitmap, transition: Transition<in Bitmap?>?
+                ) {
+                    notificationLayout.setImageViewBitmap(R.id.image, resource)
+                    notificationLayoutExpanded.setImageViewBitmap(R.id.image, resource)
+
+                    builder.setCustomContentView(notificationLayout)
+                        .setCustomBigContentView(notificationLayoutExpanded)
+
+                    player.play()
+                    startForGroundService(
+                        notification = builder.build(),
+//                        status = alarmEntity.vibration.status,
+//                        id = alarmEntity.alarmId,
+//                        vibrationPattern = Constants.getVibrationPattern(alarmEntity.vibration.pattern)
+                        status = true,
+                        id = alarm.hashCode(),
+                        vibrationPattern = Constants.getVibrationPattern(alarm.vibrate)
+                    )
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {}
+            })
+
+    }
+
+    private fun splashAlarm(
+        alarmEntity: AlarmEntity, bundle: Bundle, putString: String, variantInterval: Stat? = null
+    ) {
+        val splashIntent = Intent(this, AlarmScreenActivity::class.java).apply {
+            putExtra(putString, bundle)
+        }
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            variantInterval?.id ?: alarmEntity.alarmId,
+            splashIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        player.apply {
+            setMediaItem(MediaItem.fromUri(alarmEntity.tone.uri))
+            prepare()
+        }
+        val alarmName: String = variantInterval?.name ?: alarmEntity.info.name
+        setMediaData()
+        val bigTextStyle = NotificationCompat.BigTextStyle().bigText(alarmEntity.info.description)
+        val builder =
+            NotificationCompat.Builder(this, HealthCareApp.CHANNEL_ID).setContentTitle(alarmName)
+                .setContentText(alarmEntity.info.tag)
+                .setSmallIcon(R.drawable.ic_round_access_alarm_24)
+                .setCategory(NotificationCompat.CATEGORY_ALARM)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setPriority(NotificationCompat.PRIORITY_MAX) // set base on important in alarm entity
+                .setFullScreenIntent(pendingIntent, true).setStyle(bigTextStyle).setWhen(0)
+                .setAutoCancel(true)
+        player.play()
+        startForGroundService(
+            notification = builder.build(),
+            status = alarmEntity.vibration.status,
+            id = alarmEntity.alarmId,
+            vibrationPattern = Constants.getVibrationPattern(alarmEntity.vibration.pattern)
+        )
+
+    }
+
+
+    private fun startForGroundService(
+        notification: Notification?, status: Boolean, id: Int, vibrationPattern: LongArray
+    ) {
+        if (status) {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(
+                    VibrationEffect.createWaveform(
+                        vibrationPattern, 0
+                    )
+                )
+            } else {
+                vibrator.vibrate(vibrationPattern, 0)
+            }
+        }
+        Log.d("alarmtest", "startForGroundService")
+        startForeground(id, notification)
+    }
+
+    private fun setMediaDataDef() {
+        try {
+            mediaPlayer.setDataSource(this.baseContext, ringtone)
+            mediaPlayer.prepareAsync()
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
+    }
+
+    private fun setMediaData() {
+        try {
+            mediaPlayer.setDataSource(
+                this.baseContext, (alarmEntity?.tone?.uri ?: ringtone) as Uri
+            )
+            mediaPlayer.prepareAsync()
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+            Log.d("tone", "setMediaData: ${exception.message}")
+            setMediaDataDef()
+        }
     }
 
     override fun onDestroy() {
-        LogUtils.v("AlarmService.onDestroy() called")
         super.onDestroy()
-        if (mCurrentAlarm != null) {
-            stopCurrentAlarm()
+        if (mediaPlayer.isPlaying) {
+            mediaPlayer.stop()
         }
-
-        if (mIsRegistered) {
-            unregisterReceiver(mActionsReceiver)
-            mIsRegistered = false
-        }
+        vibrator.cancel()
+        partialWakeLock.release()
+        player.release()
     }
 
-
-    companion object {
-        /**
-         * AlarmActivity and AlarmService (when unbound) listen for this broadcast intent
-         * so that other applications can snooze the alarm (after ALARM_ALERT_ACTION and before
-         * ALARM_DONE_ACTION).
-         */
-        const val ALARM_SNOOZE_ACTION = "com.android.deskclock.ALARM_SNOOZE"
-
-        /**
-         * AlarmActivity and AlarmService listen for this broadcast intent so that other
-         * applications can dismiss the alarm (after ALARM_ALERT_ACTION and before ALARM_DONE_ACTION).
-         */
-        const val ALARM_DISMISS_ACTION = "com.android.deskclock.ALARM_DISMISS"
-
-        /** A public action sent by AlarmService when the alarm has started.  */
-        const val ALARM_ALERT_ACTION = "com.android.deskclock.ALARM_ALERT"
-
-        /** A public action sent by AlarmService when the alarm has stopped for any reason.  */
-        const val ALARM_DONE_ACTION = "com.android.deskclock.ALARM_DONE"
-
-        /** Private action used to stop an alarm with this service.  */
-        const val STOP_ALARM_ACTION = "STOP_ALARM"
-
-        /**
-         * Utility method to help stop an alarm properly. Nothing will happen, if alarm is not firing
-         * or using a different instance.
-         *
-         * @param context application context
-         * @param instance you are trying to stop
-         */
-
-        fun stopAlarm(context: Context, instance: AlarmInstance) {
-            val intent: Intent =
-                AlarmInstance.createIntent(context, AlarmService::class.java, instance.mId)
-                    .setAction(STOP_ALARM_ACTION)
-
-            // We don't need a wake lock here, since we are trying to kill an alarm
-            context.startService(intent)
-        }
+    override fun onBind(intent: Intent?): IBinder? {
+        return null
     }
 }

@@ -20,7 +20,6 @@ import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.ServiceConnection
 import android.media.AudioManager
 import android.os.Build
@@ -60,12 +59,12 @@ class AlarmActivity : AppCompatActivity() {
             LOGGER.v("Received broadcast: %s", action)
 
             if (!mAlarmHandled) {
-                when (action) {
-                    AlarmService.ALARM_SNOOZE_ACTION -> snooze()
-                    AlarmService.ALARM_DISMISS_ACTION -> dismiss()
-                    AlarmService.ALARM_DONE_ACTION -> finish()
-                    else -> LOGGER.i("Unknown broadcast: %s", action)
-                }
+//                when (action) {
+//                    AlarmService.ALARM_SNOOZE_ACTION -> snooze()
+//                    AlarmService.ALARM_DISMISS_ACTION -> dismiss()
+//                    AlarmService.ALARM_DONE_ACTION -> finish()
+//                    else -> LOGGER.i("Unknown broadcast: %s", action)
+//                }
             } else {
                 LOGGER.v("Ignored broadcast: %s", action)
             }
@@ -117,10 +116,6 @@ class AlarmActivity : AppCompatActivity() {
             LOGGER.e("Error displaying alarm for intent: %s", intent)
             finish()
             return
-        } else if (mAlarmInstance!!.mAlarmState != InstancesColumns.FIRED_STATE) {
-            LOGGER.i("Skip displaying alarm for instance: %s", mAlarmInstance)
-            finish()
-            return
         }
 
         LOGGER.i("Displaying alarm for instance: %s", mAlarmInstance)
@@ -143,7 +138,7 @@ class AlarmActivity : AppCompatActivity() {
         }
 
         // Close dialogs and window shade, so this is fully visible
-        sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
+//        sendBroadcast(Intent(ACTION_CLOSE_SYSTEM_DIALOGS))
 
     }
 
@@ -173,10 +168,14 @@ class AlarmActivity : AppCompatActivity() {
 
         if (!mReceiverRegistered) {
             // Register to get the alarm done/snooze/dismiss intent.
-            val filter = IntentFilter(AlarmService.ALARM_DONE_ACTION)
-            filter.addAction(AlarmService.ALARM_SNOOZE_ACTION)
-            filter.addAction(AlarmService.ALARM_DISMISS_ACTION)
-            registerReceiver(mReceiver, filter, Context.RECEIVER_EXPORTED)
+//            val filter = IntentFilter(AlarmService.ALARM_DONE_ACTION)
+//            filter.addAction(AlarmService.ALARM_SNOOZE_ACTION)
+//            filter.addAction(AlarmService.ALARM_DISMISS_ACTION)
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//                registerReceiver(mReceiver, filter, Context.RECEIVER_EXPORTED)
+//            } else{
+//                registerReceiver(mReceiver,filter,Context.RECEIVER_EXPORTED)
+//            }
             mReceiverRegistered = true
         }
         bindAlarmService()
@@ -200,7 +199,8 @@ class AlarmActivity : AppCompatActivity() {
     private fun snooze() {
         mAlarmHandled = true
         LOGGER.v("Snoozed: %s", mAlarmInstance)
-        alarmDataManager.setSnoozeState(this, mAlarmInstance!!, false /* showToast */)
+//        AlarmService.stopAlarm(this, mAlarmInstance!!)
+//        alarmDataManager.setSnoozeState(this, mAlarmInstance!!, false /* showToast */)
         // Unbind here, otherwise alarm will keep ringing until activity finishes.
         unbindAlarmService()
     }
@@ -211,6 +211,8 @@ class AlarmActivity : AppCompatActivity() {
     private fun dismiss() {
         mAlarmHandled = true
         LOGGER.v("Dismissed: %s", mAlarmInstance)
+//        AlarmService.stopAlarm(this, mAlarmInstance!!)
+        AlarmNotifications.clearNotification(this, mAlarmInstance!!)
         alarmDataManager.deleteInstanceAndUpdateParent(this, mAlarmInstance!!)
         // Unbind here, otherwise alarm will keep ringing until activity finishes.
         unbindAlarmService()

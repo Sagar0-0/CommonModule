@@ -19,6 +19,9 @@ object Utils {
     const val MISSED_ALARM_STATE = 7
 
     val CHANGE_STATE_ACTION = "change_state"
+    val SNOOZE_ACTION = "snooze_state"
+    val DISMISS_ACTION = "dismiss_state"
+    val SKIP_ALARM_ACTION = "skip_alarm_state"
     val ALARM_STATE_EXTRA = "intent.extra.alarm.state"
     fun createStateChangeIntent(
         context: Context?,

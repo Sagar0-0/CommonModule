@@ -311,7 +311,7 @@ class AlarmDataManager @Inject constructor(
 //            Events.sendAlarmEvent(R.string.action_fire, 0)
 
         val timeout: Calendar = instance.timeout
-        timeout?.let {
+        timeout.let {
             scheduleInstanceStateChange(
                 context,
                 it,
@@ -339,7 +339,7 @@ class AlarmDataManager @Inject constructor(
         showToast: Boolean
     ) {
         // Stop alarm if this instance is firing it
-        AlarmService.stopAlarm(context, instance)
+//        AlarmService.stopAlarm(context, instance)
 
         // Calculate the new snooze alarm time
         val snoozeMinutes = 5
@@ -386,7 +386,7 @@ class AlarmDataManager @Inject constructor(
     fun setMissedState(context: Context, instance: AlarmInstance) {
         LogUtils.i("Setting missed state to instance " + instance.mId)
         // Stop alarm if this instance is firing it
-        AlarmService.stopAlarm(context, instance)
+//        AlarmService.stopAlarm(context, instance)
 
         // Check parent if it needs to reschedule, disable or delete itself
         if (instance.mAlarmId != null) {
@@ -486,7 +486,7 @@ class AlarmDataManager @Inject constructor(
     fun unregisterInstance(context: Context, instance: AlarmInstance) {
         LogUtils.i("Unregistering instance " + instance.mId)
         // Stop alarm if this instance is firing it
-        AlarmService.stopAlarm(context, instance)
+//        AlarmService.stopAlarm(context, instance)
         AlarmNotifications.clearNotification(context, instance)
         cancelScheduledInstanceStateChange(context, instance)
         setDismissState(context, instance)

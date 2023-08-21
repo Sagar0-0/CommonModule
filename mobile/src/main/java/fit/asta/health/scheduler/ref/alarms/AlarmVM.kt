@@ -1,18 +1,15 @@
 package fit.asta.health.scheduler.ref.alarms
 
 import android.content.Context
-import android.content.Intent
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.scheduler.ref.Utils
 import fit.asta.health.scheduler.ref.data.Weekdays
 import fit.asta.health.scheduler.ref.db.AlarmInstanceDao
 import fit.asta.health.scheduler.ref.db.AlarmRefDao
+import fit.asta.health.scheduler.ref.newalarm.StateManager
 import fit.asta.health.scheduler.ref.provider.Alarm
-import fit.asta.health.scheduler.ref.provider.AlarmInstance
-import fit.asta.health.scheduler.ref.provider.ClockContract
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
@@ -22,7 +19,8 @@ class AlarmVM @Inject constructor(
     private val alarmRefDao: AlarmRefDao,
     private val alarmInstanceDao: AlarmInstanceDao,
     private val savedStateHandle: SavedStateHandle,
-    private val alarmDataManager: AlarmDataManager
+    private val alarmDataManager: AlarmDataManager,
+    private val stateManager: StateManager
 ) : ViewModel() {
 
     private var mSelectedAlarm: Alarm? = null
@@ -60,54 +58,31 @@ class AlarmVM @Inject constructor(
     }
 
 
-
-    fun dismissAlarmInstance(alarmInstance: AlarmInstance, context: Context) {
-        val dismissIntent: Intent = Utils.createStateChangeIntent(
-            context, Utils.ALARM_DISMISS_TAG, alarmInstance,
-            ClockContract.InstancesColumns.PREDISMISSED_STATE
+    fun onTimeSet(context: Context) {
+        val alarm = Alarm(
+            hour = 14,
+            minutes = 0,
+            enabled = true,
+            id = (System.currentTimeMillis() + AtomicLong().incrementAndGet()),
+            daysOfWeek = Weekdays.ALL,
+            preEnabled = true,
+            preNotification = 10,
+            endEnabled = true,
+            endHour = 16,
+            endMinutes = 0,
+            snooze = 5,
+            imgUrl = "/tags/Breathing+Tag.png",
+            alert = "https://p.scdn.co/mp3-preview/541e4aaccc03318918dabf72f93e02bca7dfedcc?cid=8f5ba8ca7b2a479aa6f766c931a6e8c4",
+            deleteAfterUse = false
         )
-        context.startService(dismissIntent)
-    }
-
-
-    fun onTimeSet(hourOfDay: Int, minute: Int, context: Context) {
-        if (mSelectedAlarm == null) {
-            // If mSelectedAlarm is null then we're creating a new alarm.
-            val alarm = Alarm(
-                hour = hourOfDay,
-                minutes = minute,
-                enabled = true,
-                id = (System.currentTimeMillis() + AtomicLong().incrementAndGet()),
-                daysOfWeek = Weekdays.ALL,
-                endEnabled = false,
-                preEnabled = false,
-                preNotification = 1,
-                endHour = null,
-                endMinutes = null,
-                snooze = 5
-            )
-            asyncAddAlarm(alarm, context)
-        } else {
-            mSelectedAlarm!!.hour = hourOfDay
-            mSelectedAlarm!!.minutes = minute
-            mSelectedAlarm!!.enabled = true
-            asyncUpdateAlarm(mSelectedAlarm!!, minorUpdate = false, context)
-            mSelectedAlarm = null
+        viewModelScope.launch {
+            alarmRefDao.insertAndUpdate(alarm)
         }
+        stateManager.registerAlarm(context, alarm)
     }
 
 
     // -------------------------------------------------------------------
-    private fun asyncAddAlarm(alarm: Alarm, context: Context) {
-        // Add alarm to db
-        viewModelScope.launch {
-            alarmRefDao.insertAndUpdate(alarm)
-        }
-        // Create and add instance to db
-        if (alarm.enabled) {
-//            setupAlarmInstance(alarm, context)
-        }
-    }
 
     private fun asyncUpdateAlarm(
         alarm: Alarm,

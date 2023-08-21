@@ -18,7 +18,6 @@ package fit.asta.health.scheduler.ref
 import android.content.Context
 import android.text.format.DateFormat
 import android.text.format.DateUtils
-import android.view.View
 import androidx.annotation.VisibleForTesting
 import fit.asta.health.scheduler.ref.provider.AlarmInstance
 import java.util.Calendar
@@ -87,13 +86,4 @@ object AlarmUtils {
         return " String.format(formats[index], daySeq, hourSeq, minSeq)"
     }
 
-    @JvmStatic
-    fun popAlarmSetToast(context: Context, alarmTime: Long) {
-
-    }
-
-    @JvmStatic
-    fun popAlarmSetSnackbar(snackbarAnchor: View, alarmTime: Long) {
-
-    }
 }

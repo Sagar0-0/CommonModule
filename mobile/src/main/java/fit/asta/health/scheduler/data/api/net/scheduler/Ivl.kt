@@ -7,6 +7,8 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Ivl(
+    @SerializedName("snu")
+    var snoozeTime: Int, // 10
     @SerializedName("adv")
     val advancedReminder: Adv,
     @SerializedName("dur")
@@ -15,8 +17,7 @@ data class Ivl(
     val isRemainderAtTheEnd: Boolean, // true
     @SerializedName("rep")
     var repeatableInterval: Rep,
-    @SerializedName("snu")
-    var snoozeTime: Int, // 10
+
     @SerializedName("sts")
     var status: Boolean,
     @SerializedName("stat")
