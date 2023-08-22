@@ -15,7 +15,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.HealthCareApp
 import fit.asta.health.UserPreferences
-import fit.asta.health.auth.data.repo.AuthRepo
 import fit.asta.health.common.utils.CoroutineDispatcherProvider
 import fit.asta.health.common.utils.UserPreferencesSerializer
 import kotlinx.coroutines.CoroutineDispatcher
@@ -56,10 +55,6 @@ object AppModule {
     @DefaultDispatcher
     fun providesCoroutineDispatcher(): CoroutineDispatcher = Dispatchers.Default
 
-    @Provides
-    @Uid
-    fun provideUId(authRepo: AuthRepo): String = authRepo.getUserId() ?: ""
-
     @Singleton
     @Provides
     fun provideApplication(@ApplicationContext app: Context): HealthCareApp {
@@ -97,10 +92,6 @@ annotation class IODispatcher
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class DefaultDispatcher
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class Uid
 
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier

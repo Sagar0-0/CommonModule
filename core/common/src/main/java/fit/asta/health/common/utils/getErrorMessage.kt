@@ -1,7 +1,7 @@
 package fit.asta.health.common.utils
 
 import android.content.Context
-import fit.asta.health.core.common.R
+import fit.asta.health.resources.strings.R
 
 fun Context.getErrorMessage(code: Int): String {
     return getString(

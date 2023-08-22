@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.auth.di.UID
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.address.data.modal.MyAddress
@@ -16,7 +17,6 @@ import fit.asta.health.common.address.data.repo.AddressRepo
 import fit.asta.health.common.utils.LocationResponse
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
-import fit.asta.health.di.Uid
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,7 +32,7 @@ import javax.inject.Inject
 class AddressViewModel
 @Inject constructor(
     private val addressRepo: AddressRepo,
-    @Uid private val uId: String
+    @UID private val uId: String
 ) : ViewModel() {
 
     private val addressTAG = "MAP"

@@ -37,11 +37,12 @@ import androidx.compose.ui.unit.dp
 import com.example.wallet.model.WalletResponse
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.core.common.R
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.resources.drawables.R as DrawR
+import fit.asta.health.resources.strings.R as StringR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -133,13 +134,13 @@ fun WalletScreenUi(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Image(
-                                painter = painterResource(id = R.drawable.placeholder_tag),
+                                painter = painterResource(id = DrawR.drawable.placeholder_tag),
                                 contentDescription = ""
                             )
                             Spacer(modifier = Modifier.height(spacing.medium))
                             Text(
                                 textAlign = TextAlign.Center,
-                                text = stringResource(id = R.string.no_transactions_text)
+                                text = stringResource(id = StringR.string.no_transactions_text)
                             )
                         }
                     }

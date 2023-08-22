@@ -8,8 +8,7 @@ const val ONE_MEGABYTE: Long = 1024 * 1024
 
 fun Context.loadJSONFromAsset(url: String?): String? {
 
-    val json: String
-    json = try {
+    val json: String = try {
         val `is` = this.assets.open(url!!)
         val size = `is`.available()
         val buffer = ByteArray(size)

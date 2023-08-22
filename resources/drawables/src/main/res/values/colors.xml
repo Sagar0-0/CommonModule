@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#007EEC</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorSecondary">#FFFFFF</color>
+    <color name="colorAccent">#007EEC</color>
+    <color name="colorWindowBackground">#F4F6F8</color>
+    <color name="colorSurface">#F7EBEF</color>
+    <color name="colorTransparent">#DDFFFFFF</color>
+
+    <!--colors for number picker-->
+    <color name="black">#0F0F0F</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="bottom_sheet_primary_sub_text_color">#4F4F4F</color>
+    <color name="bottom_sheet_primary_edit_text_background_color">#F0F0F0</color>
+    <color name="number_picker_un_selected_text">#ABABAB</color>
+    <!--colors for number picker-->
+
+</resources>

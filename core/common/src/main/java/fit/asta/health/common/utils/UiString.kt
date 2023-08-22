@@ -17,7 +17,7 @@ sealed class UiString : Parcelable {
 
     data class Dynamic(val value: String) : UiString()
     class Resource(@StringRes val id: Int, vararg val args: String) : UiString()
-    object Empty : UiString()
+    data object Empty : UiString()
 
     @Composable
     fun asString(): String {

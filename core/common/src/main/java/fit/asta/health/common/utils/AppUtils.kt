@@ -32,11 +32,12 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.review.ReviewManagerFactory
 import fit.asta.health.common.BuildConfig
-import fit.asta.health.core.common.R
 import java.io.IOException
 import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
+import fit.asta.health.resources.drawables.R as DrawR
+import fit.asta.health.resources.strings.R as StringR
 
 
 fun Context.getUriFromResourceId(resId: Int): Uri {
@@ -70,9 +71,9 @@ fun Context.showDrawableImage(resourceId: Int, imgView: ImageView) {
 fun Context.showImageByUrl(uriImg: Uri, imgView: ImageView?) {
 
     if (imgView != null) Glide.with(applicationContext).load(uriImg)
-        .thumbnail(Glide.with(applicationContext).load(R.drawable.shimmer)).centerCrop()
-        .transform(RoundedCorners(4)).error(R.drawable.ic_broken_image)
-        .fallback(R.drawable.ic_camera).diskCacheStrategy(DiskCacheStrategy.ALL)
+        .thumbnail(Glide.with(applicationContext).load(DrawR.drawable.shimmer)).centerCrop()
+        .transform(RoundedCorners(4)).error(DrawR.drawable.ic_broken_image)
+        .fallback(DrawR.drawable.ic_camera).diskCacheStrategy(DiskCacheStrategy.ALL)
         //.apply(RequestOptions.noTransformation())
         .into(imgView)
 }
@@ -80,9 +81,9 @@ fun Context.showImageByUrl(uriImg: Uri, imgView: ImageView?) {
 fun Context.showCircleImageByUrl(uriImg: Uri, imgView: ImageView?) {
 
     if (imgView != null) Glide.with(applicationContext).load(uriImg)
-        .thumbnail(Glide.with(applicationContext).load(R.drawable.shimmer)).centerCrop()
-        .placeholder(R.drawable.shimmer).error(R.drawable.ic_broken_image)
-        .fallback(R.drawable.shimmer).diskCacheStrategy(DiskCacheStrategy.ALL)
+        .thumbnail(Glide.with(applicationContext).load(DrawR.drawable.shimmer)).centerCrop()
+        .placeholder(DrawR.drawable.shimmer).error(DrawR.drawable.ic_broken_image)
+        .fallback(DrawR.drawable.shimmer).diskCacheStrategy(DiskCacheStrategy.ALL)
         .apply(RequestOptions.circleCropTransform()).into(imgView)
 }
 
@@ -132,15 +133,17 @@ fun Context.shareApp() {
     try {
         val sharingIntent = Intent()
         sharingIntent.action = Intent.ACTION_SEND
-        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, resources.getString(R.string.app_name))
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, resources.getString(StringR.string.app_name))
         sharingIntent.putExtra(
             Intent.EXTRA_TEXT,
-            resources.getString(R.string.share_app_extra_text) + "\n" + resources.getString(R.string.google_play_store_url) + BuildConfig.APPLICATION_ID
+            resources.getString(StringR.string.share_app_extra_text) + "\n" + resources.getString(
+                StringR.string.google_play_store_url
+            ) + BuildConfig.APPLICATION_ID
         )
         sharingIntent.type = "text/html"
         startActivity(
             Intent.createChooser(
-                sharingIntent, resources.getString(R.string.share_app_choose_text)
+                sharingIntent, resources.getString(StringR.string.share_app_choose_text)
             )
         )
 
@@ -156,14 +159,14 @@ fun Context.rateUs() {
         startActivity(
             Intent(
                 Intent.ACTION_VIEW,
-                Uri.parse(resources.getString(R.string.google_market_url) + BuildConfig.APPLICATION_ID)
+                Uri.parse(resources.getString(StringR.string.google_market_url) + BuildConfig.APPLICATION_ID)
             )
         )
     } catch (e: ActivityNotFoundException) {
         startActivity(
             Intent(
                 Intent.ACTION_VIEW,
-                Uri.parse(resources.getString(R.string.google_play_store_url) + BuildConfig.APPLICATION_ID)
+                Uri.parse(resources.getString(StringR.string.google_play_store_url) + BuildConfig.APPLICATION_ID)
             )
         )
     }
@@ -231,7 +234,7 @@ sealed class AppThemeType(val value: String) {
 //    }
 //
 //    AppCompatDelegate.setDefaultNightMode(mode)
-//} TODO
+//} TODO: use proto
 
 fun isSystemDarkMode(context: Context): Boolean {
     val nightModeFlags = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
@@ -262,7 +265,12 @@ fun Context.sendEmail(to: String, subject: String) {
     intent.putExtra(Intent.EXTRA_SUBJECT, subject)
     intent.putExtra(Intent.EXTRA_TEXT, body)
 
-    this.startActivity(Intent.createChooser(intent, this.getString(R.string.share_app_choose_text)))
+    this.startActivity(
+        Intent.createChooser(
+            intent,
+            this.getString(StringR.string.share_app_choose_text)
+        )
+    )
 }
 
 fun Context.sendBugReportMessage() {
@@ -280,14 +288,14 @@ fun Context.shareReferralCode(code: String) {
     try {
         val sharingIntent = Intent()
         sharingIntent.action = Intent.ACTION_SEND
-        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, resources.getString(R.string.app_name))
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, resources.getString(StringR.string.app_name))
         sharingIntent.putExtra(
             Intent.EXTRA_TEXT, code
         )
         sharingIntent.type = "text/html"
         startActivity(
             Intent.createChooser(
-                sharingIntent, resources.getString(R.string.share_app_choose_text)
+                sharingIntent, resources.getString(StringR.string.share_app_choose_text)
             )
         )
 
@@ -309,7 +317,7 @@ fun Context.showDialog(title: String, desc: String, okTitle: String, notifyOK: (
     AlertDialog.Builder(this).setTitle(title).setMessage(desc).setPositiveButton(okTitle) { _, _ ->
 
         notifyOK()
-    }.setNegativeButton(R.string.title_cancel) { dialog, _ ->
+    }.setNegativeButton(StringR.string.title_cancel) { dialog, _ ->
 
         dialog.cancel()
     }.create().show()

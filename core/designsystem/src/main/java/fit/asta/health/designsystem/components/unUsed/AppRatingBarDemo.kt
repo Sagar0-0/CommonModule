@@ -41,7 +41,7 @@ import com.smarttoolfactory.ratingbar.RatingBar
 import com.smarttoolfactory.ratingbar.model.FillShimmer
 import com.smarttoolfactory.ratingbar.model.RatingInterval
 import com.smarttoolfactory.ratingbar.model.ShimmerEffect
-import fit.asta.health.core.designsystem.R
+import fit.asta.health.resources.drawables.R
 
 @Preview
 @Composable

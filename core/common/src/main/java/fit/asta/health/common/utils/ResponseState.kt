@@ -1,6 +1,6 @@
 package fit.asta.health.common.utils
 
-import fit.asta.health.core.common.R
+import fit.asta.health.resources.strings.R
 
 sealed interface ResponseState<out T> {
     data class Error(val exception: Exception) : ResponseState<Nothing>

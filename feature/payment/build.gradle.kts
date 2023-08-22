@@ -28,6 +28,7 @@ dependencies {
     implementation(project(":data:auth"))
     implementation(project(":core:common"))
     implementation(project(":core:designsystem"))
+    implementation(project(":resources:drawables"))
 
 
     implementation(libs.checkout)

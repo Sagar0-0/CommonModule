@@ -28,6 +28,8 @@ dependencies {
     implementation(project(":data:auth"))
     implementation(project(":core:common"))
     implementation(project(":core:designsystem"))
+    implementation(project(":resources:strings"))
+    implementation(project(":resources:drawables"))
 
 
     implementation(libs.androidx.navigation.compose)

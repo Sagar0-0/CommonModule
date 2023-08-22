@@ -10,7 +10,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
-import fit.asta.health.designsystem.R
+import fit.asta.health.core.designsystem.R
 
 
 val MyTypography = Typography(

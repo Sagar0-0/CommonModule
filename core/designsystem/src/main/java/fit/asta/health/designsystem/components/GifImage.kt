@@ -14,7 +14,7 @@ import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import coil.size.Size
-import fit.asta.health.core.designsystem.R
+import fit.asta.health.resources.drawables.R
 
 @Composable
 fun GifImage(

@@ -24,6 +24,7 @@ android {
 dependencies {
 
     implementation(project(":core:common"))
+    implementation(project(":resources:strings"))
 
     //Firebase
     implementation(platform(libs.firebase.bom))

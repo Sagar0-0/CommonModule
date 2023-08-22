@@ -22,8 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import fit.asta.health.core.designsystem.R
 import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.resources.drawables.R
 
 @Composable
 fun WeatherCardImage(

@@ -50,12 +50,13 @@ import fit.asta.health.common.utils.copyTextToClipboard
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.shareReferralCode
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.core.common.R
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.jetpack.dashedBorder
 import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.resources.drawables.R as DrawR
+import fit.asta.health.resources.strings.R as StringR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -247,7 +248,7 @@ private fun ReferralCard(code: String) {
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(spacing.large),
-                text = stringResource(id = R.string.refer_and_earn),
+                text = stringResource(id = StringR.string.refer_and_earn),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.headlineMedium
             )
@@ -255,7 +256,7 @@ private fun ReferralCard(code: String) {
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(bottom = spacing.large, start = spacing.large, end = spacing.large),
-                text = stringResource(id = R.string.refer_invite_text),
+                text = stringResource(id = StringR.string.refer_invite_text),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -288,7 +289,7 @@ private fun ReferralCard(code: String) {
         ) {
             Text(
                 modifier = Modifier.padding(spacing.medium),
-                text = stringResource(id = R.string.code_side_text) + code,
+                text = stringResource(id = StringR.string.code_side_text) + code,
                 style = MaterialTheme.typography.labelLarge,
                 textAlign = TextAlign.Center
             )
@@ -317,7 +318,7 @@ private fun ReferredUserItem(
             painter = rememberAsyncImagePainter(
                 model = getImgUrl(url = user.pic),
                 placeholder = painterResource(
-                    id = R.drawable.ic_person
+                    id = DrawR.drawable.ic_person
                 )
             ), contentDescription = "Profile"
         )
