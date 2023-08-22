@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "fit.asta.health.datastore"
+    namespace = "fit.asta.health.core.datastore"
     compileSdk = 33
 
     defaultConfig {

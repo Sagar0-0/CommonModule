@@ -75,8 +75,8 @@ val usingDarkMode = mutableStateOf(false)
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AppTheme(
-    content: @Composable () -> Unit,
-    theme: Boolean = isSystemInDarkTheme()
+    theme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
 ) {
     usingDarkMode.value = theme
     val useDynamicColors = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S

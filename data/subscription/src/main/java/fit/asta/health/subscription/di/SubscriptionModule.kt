@@ -9,7 +9,6 @@ import fit.asta.health.network.utils.NetworkUtil
 import fit.asta.health.subscription.remote.SubscriptionApi
 import fit.asta.health.subscription.repo.SubscriptionRepo
 import fit.asta.health.subscription.repo.SubscriptionRepoImpl
-import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
 @Module
@@ -18,8 +17,8 @@ object SubscriptionModule {
 
     @Singleton
     @Provides
-    fun provideSubscriptionApi(client: OkHttpClient): SubscriptionApi =
-        NetworkUtil.getRetrofit(baseUrl = BuildConfig.BASE_URL, client = client)
+    fun provideSubscriptionApi(): SubscriptionApi =
+        NetworkUtil.getRetrofit(baseUrl = BuildConfig.BASE_URL)
             .create(SubscriptionApi::class.java)
 
     @Singleton

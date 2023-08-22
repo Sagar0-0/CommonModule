@@ -1,11 +1,20 @@
 package fit.asta.health.common.utils
 
-import fit.asta.health.common.R
+import fit.asta.health.core.common.R
 
 sealed interface ResponseState<out T> {
     data class Error(val exception: Exception) : ResponseState<Nothing>
     data class Success<R>(val data: R) : ResponseState<R>
 }
+
+suspend fun <T> getResponseState(request: suspend () -> T): ResponseState<T> {
+    return try {
+        ResponseState.Success(request())
+    } catch (e: Exception) {
+        ResponseState.Error(e)
+    }
+}
+
 
 fun <T> ResponseState<T>.toUiState(): UiState<T> {
     return when (this) {

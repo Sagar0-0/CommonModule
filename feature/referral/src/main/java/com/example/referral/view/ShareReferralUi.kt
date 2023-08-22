@@ -41,18 +41,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.common.utils.UiState
-import com.example.common.utils.copyTextToClipboard
-import com.example.common.utils.shareReferralCode
-import com.example.common.utils.toStringFromResId
-import com.example.designsystem.theme.spacing
-import com.example.referral.R
+import coil.compose.rememberAsyncImagePainter
 import com.example.referral.model.ApplyCodeResponse
 import com.example.referral.model.ReferralDataResponse
 import com.example.referral.model.UserDetails
-import fit.asta.health.common.ui.components.generic.AppErrorScreen
-import fit.asta.health.common.ui.components.generic.AppTopBar
-import fit.asta.health.common.ui.components.generic.LoadingAnimation
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.copyTextToClipboard
+import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.shareReferralCode
+import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.core.common.R
+import fit.asta.health.designsystem.components.generic.AppErrorScreen
+import fit.asta.health.designsystem.components.generic.AppTopBar
+import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.jetpack.dashedBorder
+import fit.asta.health.designsystem.theme.spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

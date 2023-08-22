@@ -2,14 +2,14 @@ package com.example.payment.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.common.utils.UiState
-import com.example.common.utils.toUiState
+import com.example.auth.repo.AuthRepo
 import com.example.payment.model.OrderRequest
 import com.example.payment.model.OrderResponse
 import com.example.payment.model.PaymentResponse
 import com.example.payment.repo.PaymentsRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.data.repo.AuthRepo
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

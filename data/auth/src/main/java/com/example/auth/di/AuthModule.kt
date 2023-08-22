@@ -1,13 +1,13 @@
 package com.example.auth.di
 
 import com.example.auth.model.AuthDataMapper
+import com.example.auth.repo.AuthRepo
 import com.example.auth.repo.AuthRepoImpl
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.auth.data.repo.AuthRepo
 import javax.inject.Qualifier
 import javax.inject.Singleton
 

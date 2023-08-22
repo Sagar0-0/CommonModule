@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "fit.asta.health.designsystem"
+    namespace = "fit.asta.health.core.designsystem"
 
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

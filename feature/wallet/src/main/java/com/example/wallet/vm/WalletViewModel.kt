@@ -7,6 +7,7 @@ import com.example.wallet.model.WalletResponse
 import com.example.wallet.repo.WalletRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

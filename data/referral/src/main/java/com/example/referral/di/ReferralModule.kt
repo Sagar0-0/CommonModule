@@ -8,7 +8,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.BuildConfig
-import okhttp3.OkHttpClient
+import fit.asta.health.network.utils.NetworkUtil
 import javax.inject.Singleton
 
 @Module
@@ -17,8 +17,8 @@ object ReferralModule {
 
     @Singleton
     @Provides
-    fun provideReferralApi(client: OkHttpClient): ReferralApi =
-        NetworkUtil.getRetrofit(baseUrl = BuildConfig.BASE_URL, client = client)
+    fun provideReferralApi(): ReferralApi =
+        NetworkUtil.getRetrofit(baseUrl = BuildConfig.BASE_URL)
             .create(ReferralApi::class.java)
 
     @Singleton

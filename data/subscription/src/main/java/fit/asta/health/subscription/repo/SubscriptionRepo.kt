@@ -8,5 +8,5 @@ interface SubscriptionRepo {
         uid: String,
         country: String,
         date: String
-    ): fit.asta.health.common.utils.ResponseState<SubscriptionResponse>
+    ): ResponseState<SubscriptionResponse>
 }

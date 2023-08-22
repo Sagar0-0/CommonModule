@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "fit.asta.health.subscription"
+    namespace = "fit.asta.health.data.subscription"
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -23,19 +23,8 @@ android {
 dependencies {
 
     implementation(project(":core:network"))
+    implementation(project(":core:common"))
 
-
-    // Retrofit and OkHttp
-    implementation(libs.okhttp)
-    implementation(libs.okhttp.logging)
-    implementation(libs.retrofit.core)
-    implementation(libs.converter.gson)
     implementation(libs.gson)
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    testImplementation(libs.junit4)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.test.espresso.core)
+    implementation(libs.retrofit.core)
 }

@@ -19,8 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.common.utils.UiState
-import com.example.designsystem.AppTheme
 import com.example.payment.model.OrderRequest
 import com.example.payment.model.OrderResponse
 import com.example.payment.model.PaymentResponse
@@ -30,8 +28,11 @@ import com.razorpay.PayloadHelper
 import com.razorpay.PaymentData
 import com.razorpay.PaymentResultWithDataListener
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.common.ui.components.generic.AppErrorScreen
-import fit.asta.health.common.ui.components.generic.LoadingAnimation
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.core.common.R
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.generic.AppErrorScreen
+import fit.asta.health.designsystem.components.generic.LoadingAnimation
 
 @AndroidEntryPoint
 class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
@@ -58,15 +59,19 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
         paymentsViewModel.createOrder(data)
         setContent {
             AppTheme {
-                ShowPaymentScreen()
+                val orderResponse by paymentsViewModel.orderResponseState.collectAsStateWithLifecycle()
+                val paymentResponse by paymentsViewModel.paymentResponseState.collectAsStateWithLifecycle()
+                ShowPaymentScreen(orderResponse, paymentResponse)
             }
         }
     }
 
     @Composable
-    fun ShowPaymentScreen() {
-        val orderResponse by paymentsViewModel.orderResponseState.collectAsStateWithLifecycle()
-        val paymentResponse by paymentsViewModel.paymentResponseState.collectAsStateWithLifecycle()
+    fun ShowPaymentScreen(
+        orderResponse: UiState<OrderResponse>,
+        paymentResponse: UiState<PaymentResponse>
+    ) {
+
 
         when (orderResponse) {
             UiState.Loading -> {
@@ -82,12 +87,12 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
                         try {
                             Checkout.preload(applicationContext)
                             val co = Checkout()
-                            co.setKeyID((orderResponse as UiState.Success<OrderResponse>).data.data.apiKey)
-                            co.setImage(com.razorpay.R.drawable.abc_ab_share_pack_mtrl_alpha)
+                            co.setKeyID(orderResponse.data.data.apiKey)
+                            co.setImage(R.drawable.ic_launcher)
                             val payloadHelper = PayloadHelper(
                                 "INR",
                                 0,
-                                (orderResponse as UiState.Success<OrderResponse>).data.data.orderId
+                                orderResponse.data.data.orderId
                             ).apply {
                                 name = "Asta.fit"
                                 description = "Silver Plan 3 month subscription"
@@ -119,7 +124,7 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
                     }
 
                     is UiState.Success -> {
-                        if ((paymentResponse as UiState.Success<PaymentResponse>).data.status.code == 200) {
+                        if (paymentResponse.data.status.code == 200) {
                             finish()
                             onSuccess()
                         }

@@ -1,7 +1,7 @@
 package com.example.wallet.repo
 
-import com.example.common.utils.getResponseState
 import com.example.wallet.api.WalletApi
+import fit.asta.health.common.utils.getResponseState
 import javax.inject.Inject
 
 class WalletRepoImpl

@@ -8,7 +8,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.BuildConfig
-import okhttp3.OkHttpClient
+import fit.asta.health.network.utils.NetworkUtil
 import javax.inject.Singleton
 
 @Module
@@ -17,8 +17,8 @@ object WalletModule {
 
     @Singleton
     @Provides
-    fun provideWalletApi(client: OkHttpClient): WalletApi =
-        NetworkUtil.getRetrofit(baseUrl = BuildConfig.BASE_URL, client = client)
+    fun provideWalletApi(): WalletApi =
+        NetworkUtil.getRetrofit(baseUrl = BuildConfig.BASE_URL)
             .create(WalletApi::class.java)
 
 

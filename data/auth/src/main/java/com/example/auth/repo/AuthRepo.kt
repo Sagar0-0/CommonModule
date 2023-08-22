@@ -1,4 +1,4 @@
-package fit.asta.health.auth.data.repo
+package com.example.auth.repo
 
 import android.app.Activity
 import com.example.auth.model.domain.User

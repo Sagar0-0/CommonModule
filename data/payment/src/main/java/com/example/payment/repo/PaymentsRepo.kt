@@ -1,9 +1,9 @@
 package com.example.payment.repo
 
-import com.example.common.utils.ResponseState
 import com.example.payment.model.OrderRequest
 import com.example.payment.model.OrderResponse
 import com.example.payment.model.PaymentResponse
+import fit.asta.health.common.utils.ResponseState
 
 interface PaymentsRepo {
 

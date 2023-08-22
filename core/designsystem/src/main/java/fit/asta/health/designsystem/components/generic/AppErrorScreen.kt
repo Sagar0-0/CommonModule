@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import fit.asta.health.designsystem.R
+import fit.asta.health.core.designsystem.R
 import fit.asta.health.designsystem.theme.Gradient1NoInternet
 import fit.asta.health.designsystem.theme.Gradient2NoInternet
 import fit.asta.health.designsystem.theme.imageHeight
