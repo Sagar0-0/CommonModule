@@ -18,10 +18,10 @@ import fit.asta.health.scheduler.data.db.entity.AlarmSync
 import fit.asta.health.scheduler.data.db.entity.TagEntity
 import fit.asta.health.scheduler.data.repo.AlarmBackendRepo
 import fit.asta.health.scheduler.data.repo.AlarmLocalRepo
-import fit.asta.health.scheduler.data.repo.AlarmUtils
 import fit.asta.health.scheduler.doman.getAlarm
 import fit.asta.health.scheduler.doman.getAlarmScreenUi
 import fit.asta.health.scheduler.doman.getIntervalUi
+import fit.asta.health.scheduler.ref.newalarm.StateManager
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.ASUiState
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.AdvUiState
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.IvlUiState
@@ -52,7 +52,7 @@ class SchedulerViewModel
     private val alarmLocalRepo: AlarmLocalRepo,
     private val backendRepo: AlarmBackendRepo,
     private val prefManager: PrefManager,
-    private val alarmUtils: AlarmUtils
+    private val stateManager: StateManager
 ) : ViewModel() {
     private var alarmEntity: AlarmEntity? = null
 
@@ -150,12 +150,13 @@ class SchedulerViewModel
             _alarmSettingUiState.value.copy(status = status)
     }
 
-    fun setWeek(week: Int) {
-        _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
-            deleteAfterUse =
-        )
+    fun setWeek(index: Int) {
+        val checked = _alarmSettingUiState.value.week.isBitOn(index)
         _alarmSettingUiState.value =
-            _alarmSettingUiState.value.copy(deleteAfterUse =)
+            _alarmSettingUiState.value.copy(
+                deleteAfterUse = false,
+                week = _alarmSettingUiState.value.week.setBit(index, !checked)
+            )
     }
 
     fun setAlarmTime(time: Time) {
@@ -237,8 +238,6 @@ class SchedulerViewModel
     }
 
 
-
-
     private fun isValidAdvancedDuration(time: Int): Boolean {
         val hour = _alarmSettingUiState.value.timeHours.toInt()
         val min = _alarmSettingUiState.value.timeMinutes.toInt() - time
@@ -273,13 +272,11 @@ class SchedulerViewModel
         )
         viewModelScope.launch {
             if (entity.status) {
-                alarmUtils.scheduleAlarm(entity)
+                stateManager.registerAlarm(context, entity)
             }
             if (alarmItem != null && alarmItem.idFromServer.isNotEmpty()) {
                 alarmLocalRepo.insertSyncData(
-                    AlarmSync(
-                        alarmId = entity.alarmId, scheduleId = entity.idFromServer
-                    )
+                    AlarmSync(alarmId = entity.alarmId, scheduleId = entity.idFromServer)
                 )
             }
             alarmLocalRepo.insertAlarm(entity)
@@ -330,6 +327,18 @@ class SchedulerViewModel
                 timeMinutes = hourMinAmPm.min
             )
         }
+    }
+
+    fun setEndAlarm(time: TimeUi) {
+        if (isValidState(time)) interval.value = interval.value.copy(endAlarmTime = time)
+    }
+
+    fun setStatusEndAlarm(choice: Boolean) {
+        interval.value = interval.value.copy(statusEnd = choice)
+    }
+
+    fun deleteEndAlarm() {
+        interval.value = interval.value.copy(endAlarmTime = TimeUi())
     }
 
     companion object {

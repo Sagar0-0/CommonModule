@@ -15,7 +15,7 @@ import fit.asta.health.scheduler.data.db.entity.AlarmEntity
 import fit.asta.health.scheduler.data.db.entity.AlarmSync
 import fit.asta.health.scheduler.data.repo.AlarmBackendRepo
 import fit.asta.health.scheduler.data.repo.AlarmLocalRepo
-import fit.asta.health.scheduler.data.repo.AlarmUtils
+import fit.asta.health.scheduler.ref.newalarm.StateManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -29,7 +29,7 @@ class TodayPlanViewModel @Inject constructor(
     private val alarmLocalRepo: AlarmLocalRepo,
     private val alarmBackendRepo: AlarmBackendRepo,
     private val prefManager: PrefManager,
-    private val alarmUtils: AlarmUtils
+    private val stateManager: StateManager
 ) : ViewModel() {
     private val _alarmListMorning = mutableStateListOf<AlarmEntity>()
     val alarmListMorning = MutableStateFlow(_alarmListMorning)
@@ -123,7 +123,7 @@ class TodayPlanViewModel @Inject constructor(
 
     fun deleteAlarm(alarmItem: AlarmEntity) {
         viewModelScope.launch {
-            if (alarmItem.status) alarmUtils.cancelScheduleAlarm(alarmItem, true)
+//            if (alarmItem.status) stateManager.cancelScheduledInstanceStateChange(context = ,)
             alarmLocalRepo.deleteAlarm(alarmItem)
             if (alarmItem.idFromServer.isNotEmpty()) {
                 alarmLocalRepo.insertSyncData(
@@ -137,7 +137,7 @@ class TodayPlanViewModel @Inject constructor(
     fun skipAlarm(alarmItem: AlarmEntity) {
         val skipDate = LocalDate.now().dayOfMonth
         viewModelScope.launch {
-            if (alarmItem.status) alarmUtils.cancelScheduleAlarm(alarmItem, true)
+//            if (alarmItem.status) stateManager.cancelScheduledInstanceStateChange(context = ,)
             val alarm = alarmItem.copy(status = false, skipDate = skipDate)
             alarmLocalRepo.updateAlarm(alarm)
             Log.d("today", "skipAlarm: done")

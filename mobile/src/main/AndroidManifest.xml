@@ -213,7 +213,8 @@
         </service>
         <service
             android:name=".scheduler.services.AlarmService"
-            android:directBootAware="true" />
+            android:directBootAware="true"
+            tools:targetApi="n" />
         <service android:name=".scheduler.services.RescheduleAlarmService" />
         <service
             android:name=".tools.walking.work.CountStepsService"

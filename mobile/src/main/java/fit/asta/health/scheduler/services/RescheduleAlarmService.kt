@@ -5,7 +5,6 @@ import android.os.IBinder
 import androidx.lifecycle.LifecycleService
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.scheduler.data.repo.AlarmLocalRepo
-import fit.asta.health.scheduler.data.repo.AlarmUtils
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -16,8 +15,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class RescheduleAlarmService : LifecycleService() {
 
-    @Inject
-    lateinit var alarmUtils: AlarmUtils
 
     @Inject
     lateinit var alarmLocalRepo: AlarmLocalRepo

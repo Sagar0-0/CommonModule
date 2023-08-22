@@ -78,7 +78,7 @@ fun setupWorker(context: Context) {
         .build()
     val workRequest = PeriodicWorkRequestBuilder<SchedulerWorker>(1, TimeUnit.HOURS)
         .setConstraints(constraint)
-        .setBackoffCriteria(BackoffPolicy.LINEAR, 5, TimeUnit.MINUTES)
+        .setBackoffCriteria(BackoffPolicy.LINEAR, 1, TimeUnit.MINUTES)
         .build()
     WorkManager.getInstance(context).enqueueUniquePeriodicWork(
         "worker_for_upload_data", ExistingPeriodicWorkPolicy.UPDATE, workRequest

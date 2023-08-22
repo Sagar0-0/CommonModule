@@ -123,7 +123,7 @@ fun AlarmSettingScreen(
                     currentBottomSheet = TIME
                     openSheet()
                 }
-                RepeatAlarm(alarmSettingUiState = alarmSettingUiState,
+                RepeatAlarm(weekdays = alarmSettingUiState.week,
                     onDaySelect = { aSEvent(AlarmSettingEvent.SetWeek(it)) })
                 OnlyToggleButton(imageIcon = if (alarmSettingUiState.status) Icons.Default.AlarmOn else Icons.Default.AlarmOff,
                     title = stringResource(id = R.string.status),

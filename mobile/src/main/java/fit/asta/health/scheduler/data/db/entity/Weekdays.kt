@@ -19,10 +19,9 @@ package fit.asta.health.scheduler.data.db.entity
 import android.content.Context
 import android.os.Parcelable
 import androidx.annotation.VisibleForTesting
-
+import com.google.gson.annotations.SerializedName
 import fit.asta.health.R
 import kotlinx.parcelize.Parcelize
-
 import java.text.DateFormatSymbols
 import java.util.Calendar
 
@@ -33,6 +32,7 @@ import java.util.Calendar
  */
 @Parcelize
 data class Weekdays(
+    @SerializedName("encodedBits")
     private val encodedBits: Int
 ) : Parcelable {
     /**
@@ -291,7 +291,7 @@ data class Weekdays(
      */
     private fun toString(context: Context, order: Order, forceLongNames: Boolean): String {
         if (!isRepeating) {
-            return ""
+            return context.getString(R.string.repeat_one)
         }
 
         if (bits == ALL_DAYS) {

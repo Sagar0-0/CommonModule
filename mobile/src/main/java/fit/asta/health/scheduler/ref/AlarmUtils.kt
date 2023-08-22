@@ -3,7 +3,6 @@ package fit.asta.health.scheduler.ref
 import android.content.Context
 import android.text.format.DateFormat
 import android.text.format.DateUtils
-import androidx.annotation.VisibleForTesting
 import fit.asta.health.scheduler.data.db.entity.AlarmInstance
 import java.util.Calendar
 import java.util.Locale
@@ -12,21 +11,21 @@ import java.util.Locale
  * Static utility methods for Alarms.
  */
 object AlarmUtils {
-    @JvmStatic
+
     fun getFormattedTime(context: Context, time: Calendar): String {
         val skeleton = if (DateFormat.is24HourFormat(context)) "EHm" else "Ehma"
         val pattern = DateFormat.getBestDateTimePattern(Locale.getDefault(), skeleton)
         return DateFormat.format(pattern, time) as String
     }
 
-    @JvmStatic
+
     fun getFormattedTime(context: Context, timeInMillis: Long): String {
         val c = Calendar.getInstance()
         c.timeInMillis = timeInMillis
         return getFormattedTime(context, c)
     }
 
-    @JvmStatic
+
     fun getAlarmText(context: Context, instance: AlarmInstance, includeLabel: Boolean): String {
         val alarmTimeStr: String = getFormattedTime(context, instance.alarmTime)
         return if (instance.mLabel.isEmpty() || !includeLabel) {
@@ -39,7 +38,7 @@ object AlarmUtils {
     /**
      * format "Alarm set for 2 days, 7 hours, and 53 minutes from now."
      */
-    @VisibleForTesting
+
     fun formatElapsedTimeUntilAlarm(context: Context, delta: Long): String {
         // If the alarm will ring within 60 seconds, just report "less than a minute."
         var variableDelta = delta

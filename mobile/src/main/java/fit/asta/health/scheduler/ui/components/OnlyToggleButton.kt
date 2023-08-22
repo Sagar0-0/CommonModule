@@ -28,21 +28,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.AppCard
 import fit.asta.health.common.ui.theme.TSelected
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.scheduler.data.db.entity.Weekdays
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.AMPMHoursMin
-import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.ASUiState
+import java.util.Calendar
 
 @Composable
 fun OnlyToggleButton(
@@ -141,19 +140,14 @@ fun DigitalDemo(time: AMPMHoursMin, open: () -> Unit = {}) {
 
 @Composable
 fun RepeatAlarm(
-    onDaySelect: (Int) -> Unit, alarmSettingUiState: ASUiState,
+    onDaySelect: (Int) -> Unit, weekdays: Weekdays,
 ) {
-    val map: HashMap<Int, String> = HashMap()
-    map[1] = stringResource(R.string.once)
-    map[2] = stringResource(R.string.mon)
-    map[3] = stringResource(R.string.tue)
-    map[4] = stringResource(R.string.wed)
-    map[5] = stringResource(R.string.thu)
-    map[6] = stringResource(R.string.fri)
-    map[7] = stringResource(R.string.sat)
-    map[8] = stringResource(R.string.sun)
-    var text by remember { mutableStateOf(map[1]) }
-    text = getRecurringDaysText(alarmSettingUiState, map)
+    val context = LocalContext.current
+    val text by remember(weekdays) {
+        mutableStateOf(
+            weekdays.toString(context = context, order = Weekdays.Order.SUN_TO_SAT)
+        )
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -184,7 +178,7 @@ fun RepeatAlarm(
                         )
                         Spacer(modifier = Modifier.height(1.dp))
                         Text(
-                            text = text!!,
+                            text = text,
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -193,7 +187,7 @@ fun RepeatAlarm(
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
-        AllDays(onDaySelect = onDaySelect, alarmSettingUiState = alarmSettingUiState)
+        AllDays(onDaySelect = onDaySelect, weekdays = weekdays)
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
@@ -222,49 +216,32 @@ fun DaysCircleButton(
 
 @Composable
 fun AllDays(
-    alarmSettingUiState: ASUiState,
+    weekdays: Weekdays,
     onDaySelect: (Int) -> Unit
 ) {
 
 
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-        DaysCircleButton(day = "S", isSelected = alarmSettingUiState.sunday) { onDaySelect(0) }
-        DaysCircleButton(day = "M", isSelected = alarmSettingUiState.monday) { onDaySelect(1) }
-        DaysCircleButton(day = "T", isSelected = alarmSettingUiState.tuesday) { onDaySelect(2) }
-        DaysCircleButton(day = "W", isSelected = alarmSettingUiState.wednesday) { onDaySelect(3) }
-        DaysCircleButton(day = "T", isSelected = alarmSettingUiState.thursday) { onDaySelect(4) }
-        DaysCircleButton(day = "F", isSelected = alarmSettingUiState.friday) { onDaySelect(5) }
-        DaysCircleButton(day = "S", isSelected = alarmSettingUiState.saturday) { onDaySelect(6) }
+        DaysCircleButton(day = "S", isSelected = weekdays.isBitOn(Calendar.SUNDAY)) {
+            onDaySelect(Calendar.SUNDAY)
+        }
+        DaysCircleButton(day = "M", isSelected = weekdays.isBitOn(Calendar.MONDAY)) {
+            onDaySelect(Calendar.MONDAY)
+        }
+        DaysCircleButton(day = "T", isSelected = weekdays.isBitOn(Calendar.TUESDAY)) {
+            onDaySelect(Calendar.TUESDAY)
+        }
+        DaysCircleButton(
+            day = "W", isSelected = weekdays.isBitOn(Calendar.WEDNESDAY)
+        ) { onDaySelect(Calendar.WEDNESDAY) }
+        DaysCircleButton(day = "T", isSelected = weekdays.isBitOn(Calendar.THURSDAY)) {
+            onDaySelect(Calendar.THURSDAY)
+        }
+        DaysCircleButton(day = "F", isSelected = weekdays.isBitOn(Calendar.FRIDAY)) {
+            onDaySelect(Calendar.FRIDAY)
+        }
+        DaysCircleButton(day = "S", isSelected = weekdays.isBitOn(Calendar.SATURDAY)) {
+            onDaySelect(Calendar.SATURDAY)
+        }
     }
-}
-
-fun getRecurringDaysText(alarmWeek: ASUiState, map: Map<Int, String>): String {
-
-
-    if (!alarmWeek.recurring) {
-        return map[1]!!
-    }
-    var days = ""
-    if (alarmWeek.monday) {
-        days += map[2]
-    }
-    if (alarmWeek.tuesday) {
-        days += map[3]
-    }
-    if (alarmWeek.wednesday) {
-        days += map[4]
-    }
-    if (alarmWeek.thursday) {
-        days += map[5]
-    }
-    if (alarmWeek.friday) {
-        days += map[6]
-    }
-    if (alarmWeek.saturday) {
-        days += map[7]
-    }
-    if (alarmWeek.sunday) {
-        days += map[8]
-    }
-    return days
 }

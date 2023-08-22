@@ -39,10 +39,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -70,7 +68,6 @@ import fit.asta.health.navigation.today.ui.view.TodayContent
 import fit.asta.health.navigation.today.ui.view.utils.HourMinAmPm
 import fit.asta.health.navigation.today.ui.vm.TodayPlanViewModel
 import fit.asta.health.navigation.track.ui.TrackContent
-import fit.asta.health.scheduler.ref.alarms.AlarmVM
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -311,8 +308,6 @@ private fun MainNavHost(
             val listEvening by todayPlanViewModel.alarmListEvening.collectAsStateWithLifecycle()
             val listNextDay by todayPlanViewModel.alarmListNextDay.collectAsStateWithLifecycle()
             val state by todayPlanViewModel.todayState.collectAsStateWithLifecycle()
-            val vm: AlarmVM = hiltViewModel()
-            val context = LocalContext.current
             when (state) {
                 is UiState.Loading -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -364,7 +359,6 @@ private fun MainNavHost(
 
                                 is HomeEvent.NavSchedule -> {
                                     onSchedule(uiEvent.hourMinAmPm)
-                                    vm.onTimeSet(context)
                                 }
                             }
                         },
