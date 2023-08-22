@@ -3,7 +3,7 @@ package fit.asta.health.main
 import androidx.activity.result.IntentSenderRequest
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.auth.repo.AuthRepo
+import fit.asta.health.auth.repo.AuthRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.R
 import fit.asta.health.common.address.data.repo.AddressRepo

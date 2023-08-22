@@ -3,7 +3,7 @@ package fit.asta.health.navigation.home.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.auth.repo.AuthRepo
+import fit.asta.health.auth.repo.AuthRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.getCurrentDate
 import fit.asta.health.common.utils.getCurrentTime

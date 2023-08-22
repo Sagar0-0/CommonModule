@@ -9,9 +9,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.example.referral.navigateToReferral
-import com.example.subscription.navigateToSubscription
-import com.example.wallet.navigateToWallet
+import fit.asta.health.referral.navigateToReferral
+import fit.asta.health.subscription.navigateToSubscription
+import fit.asta.health.wallet.navigateToWallet
 import fit.asta.health.R
 import fit.asta.health.auth.ui.navigateToAuth
 import fit.asta.health.auth.ui.vm.AuthViewModel

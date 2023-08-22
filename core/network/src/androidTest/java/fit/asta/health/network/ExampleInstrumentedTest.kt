@@ -17,6 +17,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.example.network.test", appContext.packageName)
+        assertEquals("fit.asta.health.network.test", appContext.packageName)
     }
 }

@@ -2,8 +2,8 @@ package fit.asta.health.auth.ui.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.auth.model.domain.User
-import com.example.auth.repo.AuthRepo
+import fit.asta.health.auth.model.domain.User
+import fit.asta.health.auth.repo.AuthRepo
 import com.google.firebase.auth.AuthCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.UiState

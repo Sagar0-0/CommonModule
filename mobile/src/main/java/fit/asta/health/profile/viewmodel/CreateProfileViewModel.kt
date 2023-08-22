@@ -2,7 +2,7 @@ package fit.asta.health.profile.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.example.auth.repo.AuthRepo
+import fit.asta.health.auth.repo.AuthRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.network.NetworkHelper
 import fit.asta.health.profile.model.ProfileRepo
