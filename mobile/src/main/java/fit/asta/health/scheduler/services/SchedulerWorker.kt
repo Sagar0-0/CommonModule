@@ -3,7 +3,12 @@ package fit.asta.health.scheduler.services
 import android.content.Context
 import android.util.Log
 import androidx.hilt.work.HiltWorker
-import androidx.work.Worker
+import androidx.work.Constraints
+import androidx.work.CoroutineWorker
+import androidx.work.ForegroundInfo
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -12,26 +17,26 @@ import fit.asta.health.scheduler.data.api.net.tag.Data
 import fit.asta.health.scheduler.data.db.entity.TagEntity
 import fit.asta.health.scheduler.data.repo.AlarmBackendRepo
 import fit.asta.health.scheduler.data.repo.AlarmLocalRepo
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @HiltWorker
 class SchedulerWorker @AssistedInject constructor(
-    @Assisted context: Context,
-    @Assisted params: WorkerParameters,
+    @Assisted private val appContext: Context,
+    @Assisted workerParams: WorkerParameters,
     private val alarmLocalRepo: AlarmLocalRepo,
     private val backendRepo: AlarmBackendRepo
-) : Worker(context, params) {
-    override fun doWork(): Result {
-        CoroutineScope(Dispatchers.IO).launch {
-            Log.d("TAGTAG", "doWork:start ")
+) : CoroutineWorker(appContext, workerParams) {
+    override suspend fun getForegroundInfo(): ForegroundInfo =
+        appContext.syncForegroundInfo()
+
+    override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
+
+        Log.d("TAGTAG", "doWork:start ")
 //            syncAlarmLocal()
 //            syncServerWithLocal()
-            syncTagsData()
-        }
-        return Result.success()
+        syncTagsData()
+        Result.success()
     }
 
     private suspend fun syncAlarmLocal() {
@@ -112,6 +117,28 @@ class SchedulerWorker @AssistedInject constructor(
                 selected = false
             )
         )
+    }
+
+    companion object {
+        private val SyncConstraints
+            get() = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+
+        /**
+         * Expedited one time work to sync data on app startup
+         */
+//        fun startUpSyncWork() = PeriodicWorkRequestBuilder<DelegatingWorker>(1, TimeUnit.HOURS)
+//            .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+//            .setConstraints(SyncConstraints)
+//            .setInputData(SchedulerWorker::class.delegatedData())
+//            .build()
+
+        fun startUpSyncWork() = OneTimeWorkRequestBuilder<DelegatingWorker>()
+            .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+            .setConstraints(SyncConstraints)
+            .setInputData(SchedulerWorker::class.delegatedData())
+            .build()
     }
 }
 

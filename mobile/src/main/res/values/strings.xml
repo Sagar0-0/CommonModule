@@ -596,6 +596,8 @@
     <string name="alarm_missed_title">alarm missed</string>
     <string name="day_concat">:</string>
     <string name="end_alarm">Post Alarm</string>
+    <string name="sync_notification_channel_name">Sync</string>
+    <string name="sync_notification_channel_description">Background tasks for Asta</string>
     // testing
 
 </resources>
