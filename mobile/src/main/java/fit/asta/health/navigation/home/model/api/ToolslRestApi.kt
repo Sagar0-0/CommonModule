@@ -1,7 +1,7 @@
 package fit.asta.health.navigation.home.model.api
 
-import fit.asta.health.common.utils.NetworkUtil
 import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
+import fit.asta.health.network.utils.NetworkUtil
 import okhttp3.OkHttpClient
 
 

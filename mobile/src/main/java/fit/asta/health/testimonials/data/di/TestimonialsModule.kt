@@ -7,10 +7,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.BuildConfig
-import fit.asta.health.common.utils.NetworkUtil
+import fit.asta.health.network.utils.NetworkUtil
+import fit.asta.health.testimonials.data.remote.TestimonialApiService
 import fit.asta.health.testimonials.data.repo.TestimonialRepo
 import fit.asta.health.testimonials.data.repo.TestimonialRepoImpl
-import fit.asta.health.testimonials.data.remote.TestimonialApiService
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 

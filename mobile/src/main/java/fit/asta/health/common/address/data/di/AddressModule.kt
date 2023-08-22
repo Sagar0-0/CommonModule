@@ -10,9 +10,9 @@ import fit.asta.health.common.address.data.remote.SearchLocationApi
 import fit.asta.health.common.address.data.repo.AddressRepo
 import fit.asta.health.common.address.data.repo.AddressRepoImpl
 import fit.asta.health.common.address.data.utils.LocationResourceProvider
-import fit.asta.health.common.utils.NetworkUtil
 import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.common.utils.ResourcesProvider
+import fit.asta.health.network.utils.NetworkUtil
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 

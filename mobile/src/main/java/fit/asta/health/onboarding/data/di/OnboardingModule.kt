@@ -5,9 +5,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.BuildConfig
-import fit.asta.health.common.utils.NetworkUtil
 import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.di.IODispatcher
+import fit.asta.health.network.utils.NetworkUtil
 import fit.asta.health.onboarding.data.remote.OnboardingApi
 import fit.asta.health.onboarding.data.repo.OnboardingRepo
 import fit.asta.health.onboarding.data.repo.OnboardingRepoImpl

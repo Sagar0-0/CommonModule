@@ -4,6 +4,7 @@ class BuildConfig {
     companion object {
         const val BASE_URL: String = "https://asta-m1-dev.ap-southeast-1.elasticbeanstalk.com/"
         const val FLAVOR = "dev"
+        const val DEBUG = true
     }
 }
 /*

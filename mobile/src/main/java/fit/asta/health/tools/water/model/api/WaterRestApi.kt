@@ -1,7 +1,7 @@
 package fit.asta.health.tools.water.model.api
 
-import fit.asta.health.common.utils.NetworkUtil
 import fit.asta.health.network.data.Status
+import fit.asta.health.network.utils.NetworkUtil
 import fit.asta.health.tools.water.model.network.NetBevQtyPut
 import fit.asta.health.tools.water.model.network.WaterToolData
 import fit.asta.health.tools.water.model.network.WaterToolResult

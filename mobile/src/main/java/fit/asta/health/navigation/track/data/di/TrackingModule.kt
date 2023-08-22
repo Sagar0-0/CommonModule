@@ -5,10 +5,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.BuildConfig
-import fit.asta.health.common.utils.NetworkUtil
+import fit.asta.health.navigation.track.data.remote.TrackingApiService
 import fit.asta.health.navigation.track.data.repo.TrackingRepo
 import fit.asta.health.navigation.track.data.repo.TrackingRepoImpl
-import fit.asta.health.navigation.track.data.remote.TrackingApiService
+import fit.asta.health.network.utils.NetworkUtil
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 

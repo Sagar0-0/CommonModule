@@ -1,20 +1,20 @@
 package fit.asta.health.thirdparty.spotify.model.api
 
-import fit.asta.health.common.utils.NetworkUtil
+import fit.asta.health.network.utils.NetworkUtil
 import fit.asta.health.thirdparty.spotify.model.net.common.Album
+import fit.asta.health.thirdparty.spotify.model.net.common.Track
 import fit.asta.health.thirdparty.spotify.model.net.library.albums.SpotifyLibraryAlbumModel
 import fit.asta.health.thirdparty.spotify.model.net.library.episodes.SpotifyLibraryEpisodesModel
 import fit.asta.health.thirdparty.spotify.model.net.library.following.SpotifyUserFollowingArtist
+import fit.asta.health.thirdparty.spotify.model.net.library.playlist.SpotifyUserPlaylistsModel
 import fit.asta.health.thirdparty.spotify.model.net.library.shows.SpotifyLibraryShowsModel
 import fit.asta.health.thirdparty.spotify.model.net.library.tracks.SpotifyLibraryTracksModel
-import fit.asta.health.thirdparty.spotify.model.net.library.playlist.SpotifyUserPlaylistsModel
-import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
-import fit.asta.health.thirdparty.spotify.model.net.search.ArtistList
-import fit.asta.health.thirdparty.spotify.model.net.search.TrackList
-import fit.asta.health.thirdparty.spotify.model.net.common.Track
 import fit.asta.health.thirdparty.spotify.model.net.me.SpotifyMeModel
 import fit.asta.health.thirdparty.spotify.model.net.recently.SpotifyUserRecentlyPlayedModel
 import fit.asta.health.thirdparty.spotify.model.net.recommendations.SpotifyRecommendationModel
+import fit.asta.health.thirdparty.spotify.model.net.search.ArtistList
+import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
+import fit.asta.health.thirdparty.spotify.model.net.search.TrackList
 import okhttp3.OkHttpClient
 import retrofit2.Response
 import javax.inject.Inject

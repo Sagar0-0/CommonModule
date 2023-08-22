@@ -1,8 +1,12 @@
 package fit.asta.health.network
 
-interface TokenProvider {
+class TokenProvider {
 
-    fun get(): String
-    fun load(token: String)
-    fun getToken(callback: (String) -> Unit)
+    private var token: String = ""
+
+    fun get() = token
+
+    fun load(token: String) {
+        this.token = token
+    }
 }

@@ -1,7 +1,7 @@
 package fit.asta.health.profile.model.api
 
-import fit.asta.health.common.utils.NetworkUtil
 import fit.asta.health.network.data.Status
+import fit.asta.health.network.utils.NetworkUtil
 import fit.asta.health.profile.model.domain.UserProfile
 import fit.asta.health.profile.model.network.NetHealthPropertiesRes
 import fit.asta.health.profile.model.network.NetUserProfileAvailableRes

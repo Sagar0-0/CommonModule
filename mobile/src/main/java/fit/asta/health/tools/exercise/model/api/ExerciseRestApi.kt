@@ -1,7 +1,7 @@
 package fit.asta.health.tools.exercise.model.api
 
-import fit.asta.health.common.utils.NetworkUtil
 import fit.asta.health.network.data.ServerRes
+import fit.asta.health.network.utils.NetworkUtil
 import fit.asta.health.tools.exercise.model.network.NetGetRes
 import fit.asta.health.tools.exercise.model.network.NetGetStart
 import fit.asta.health.tools.exercise.model.network.NetPost

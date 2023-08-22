@@ -1,4 +1,4 @@
-package fit.asta.health.di
+package fit.asta.health.network.di
 
 import android.content.Context
 import dagger.Module
@@ -7,7 +7,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.BuildConfig
-import fit.asta.health.common.utils.NetworkUtil
 import fit.asta.health.network.AstaNetwork
 import fit.asta.health.network.NetworkHelper
 import fit.asta.health.network.NetworkHelperImpl
@@ -16,13 +15,13 @@ import fit.asta.health.network.api.Api
 import fit.asta.health.network.api.ApiService
 import fit.asta.health.network.interceptor.OnlineInterceptor
 import fit.asta.health.network.repo.FileUploadRepo
+import fit.asta.health.network.utils.NetworkUtil
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import javax.inject.Singleton
 
-
-@Module(includes = [AppModule::class])
+@Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
