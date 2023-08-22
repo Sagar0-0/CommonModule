@@ -3,7 +3,6 @@ package fit.asta.health.onboarding.ui.vm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.data.repo.AuthRepo
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.onboarding.data.model.OnboardingData

@@ -1,9 +1,9 @@
 package fit.asta.health.auth.ui.vm
 
 import app.cash.turbine.test
+import com.example.auth.model.domain.User
+import com.example.auth.repo.AuthRepoImpl
 import com.google.firebase.auth.AuthCredential
-import fit.asta.health.auth.data.model.domain.User
-import fit.asta.health.auth.data.repo.AuthRepoImpl
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import health.BaseTest

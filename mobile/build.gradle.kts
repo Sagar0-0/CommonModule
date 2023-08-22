@@ -131,6 +131,7 @@ protobuf {
 
 dependencies {
 
+    implementation(project(":core:common"))
     implementation(project(":chartLibrary"))
     implementation(project(":feature:subscription"))
     implementation(project(":feature:referral"))

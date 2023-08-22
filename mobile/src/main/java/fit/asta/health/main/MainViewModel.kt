@@ -3,9 +3,9 @@ package fit.asta.health.main
 import androidx.activity.result.IntentSenderRequest
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.auth.repo.AuthRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.R
-import fit.asta.health.auth.data.repo.AuthRepo
 import fit.asta.health.common.address.data.repo.AddressRepo
 import fit.asta.health.common.utils.LocationResponse
 import fit.asta.health.common.utils.PrefManager
@@ -95,7 +95,8 @@ class MainViewModel
                         addressRepo.getAddressDetails(latLng.latLng).collectLatest { addressRes ->
                             if (addressRes is ResponseState.Success) {
                                 prefManager.setCurrentLocation(addressRes.data.getLocationName())
-                                _currentAddressName.value = UiState.Success(addressRes.data.getLocationName())
+                                _currentAddressName.value =
+                                    UiState.Success(addressRes.data.getLocationName())
                             }
                         }
                     }

@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.asta.android.library)
-    id("asta.android.library.compose")
+    alias(libs.plugins.asta.android.library.compose)
     id("kotlin-parcelize")
 }
 

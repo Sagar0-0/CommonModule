@@ -2,8 +2,8 @@ package fit.asta.health.profile.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.auth.repo.AuthRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.data.repo.AuthRepo
 import fit.asta.health.profile.model.ProfileRepo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
