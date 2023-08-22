@@ -1,4 +1,4 @@
-package fit.asta.health.auth.ui.screens
+package fit.asta.health.feature.auth.screens
 
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -38,16 +38,20 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
-import fit.asta.health.R
-import fit.asta.health.common.ui.theme.buttonSize
-import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.getImgUrl
-import fit.asta.health.main.Graph
+import fit.asta.health.designsystem.theme.buttonSize
+import fit.asta.health.designsystem.theme.spacing
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
+import fit.asta.health.resources.drawables.R as DrawR
+import fit.asta.health.resources.strings.R as StringR
 
 @Composable
-fun SignInScreen(navController: NavController, signInWithCredentials: (AuthCredential) -> Unit) {
+fun SignInScreen(
+    navigateToWebView: (String) -> Unit,
+    navController: NavController,
+    signInWithCredentials: (AuthCredential) -> Unit
+) {
     val context = LocalContext.current
 
     Column(
@@ -56,7 +60,7 @@ fun SignInScreen(navController: NavController, signInWithCredentials: (AuthCrede
         verticalArrangement = Arrangement.Bottom
     ) {
         Image(
-            painter = painterResource(id = R.mipmap.ic_launcher_foreground),
+            painter = painterResource(id = DrawR.drawable.ic_launcher),
             contentDescription = "",
             modifier = Modifier.weight(1f)
         )
@@ -112,7 +116,7 @@ fun SignInScreen(navController: NavController, signInWithCredentials: (AuthCrede
             }
         }
 
-        val token = stringResource(R.string.default_web_client_id)
+        val token = stringResource(StringR.string.default_web_client_id)
 
         OutlinedButton(
             colors = ButtonDefaults.buttonColors(
@@ -158,7 +162,7 @@ fun SignInScreen(navController: NavController, signInWithCredentials: (AuthCrede
 
         val annotatedLinkString: AnnotatedString = buildAnnotatedString {
 
-            val str = stringResource(id = R.string.tnc_text)
+            val str = stringResource(id = StringR.string.tnc_text)
             val startTIndex = str.indexOf("Terms")
             val endTIndex = startTIndex + 16
             val startPIndex = str.indexOf("Privacy")
@@ -191,14 +195,14 @@ fun SignInScreen(navController: NavController, signInWithCredentials: (AuthCrede
 
             addStringAnnotation(
                 tag = "terms",
-                annotation = getImgUrl(context.getString(R.string.url_terms_of_use)),
+                annotation = getImgUrl(context.getString(StringR.string.url_terms_of_use)),
                 start = startTIndex,
                 end = endTIndex
             )
 
             addStringAnnotation(
                 tag = "privacy",
-                annotation = getImgUrl(context.getString(R.string.url_privacy_policy)),
+                annotation = getImgUrl(context.getString(StringR.string.url_privacy_policy)),
                 start = startPIndex,
                 end = endPIndex
             )
@@ -219,7 +223,7 @@ fun SignInScreen(navController: NavController, signInWithCredentials: (AuthCrede
                             stringAnnotation.item,
                             StandardCharsets.UTF_8.toString()
                         )
-                        navController.navigate(Graph.WebView.route + "/$url")
+                        navigateToWebView(url)
                     }
                 annotatedLinkString
                     .getStringAnnotations("privacy", it, it)
@@ -228,7 +232,7 @@ fun SignInScreen(navController: NavController, signInWithCredentials: (AuthCrede
                             stringAnnotation.item,
                             StandardCharsets.UTF_8.toString()
                         )
-                        navController.navigate(Graph.WebView.route + "/$url")
+                        navigateToWebView(url)
                     }
             }
         )

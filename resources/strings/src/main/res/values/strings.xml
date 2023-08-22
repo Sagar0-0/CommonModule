@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name" translatable="false">Asta</string>
 
+    <string name="default_web_client_id" translatable="false">741337330426-vtf909jkfi8bk49qs8paf97vcjnvvtcs.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">741337330426</string>
+    <string name="google_api_key" translatable="false">AIzaSyCyOmX5Siqx76ME4rKIYeHYCeQJ2-M-hus</string>
+    <string name="google_app_id" translatable="false">1:741337330426:android:5221fbb361ac61acfd0f43</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCyOmX5Siqx76ME4rKIYeHYCeQJ2-M-hus</string>
+    <string name="google_storage_bucket" translatable="false">asta-health-dev-963f0.appspot.com</string>
+    <string name="project_id" translatable="false">asta-health-dev-963f0</string>
     <!-- Web Urls -->
     <string name="url_privacy_policy" translatable="false">/terms/privacy_policy.htm</string>
     <string name="url_terms_of_use" translatable="false">/terms/terms_of_use.htm</string>

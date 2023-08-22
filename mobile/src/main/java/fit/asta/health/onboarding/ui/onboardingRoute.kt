@@ -7,7 +7,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import fit.asta.health.auth.ui.navigateToAuth
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.onboarding.ui.components.OnboardingScreen
 import fit.asta.health.onboarding.ui.vm.OnboardingViewModel
@@ -23,7 +22,7 @@ fun NavController.navigateToOnboarding(navOptions: NavOptions? = null) {
     }
 }
 
-fun NavGraphBuilder.onboardingRoute(navController: NavController) {
+fun NavGraphBuilder.onboardingRoute(navigateToAuth: () -> Unit) {
     composable(ONBOARDING_GRAPH_ROUTE) {
         val onboardingViewModel: OnboardingViewModel = hiltViewModel()
         val state by onboardingViewModel.state.collectAsStateWithLifecycle()
@@ -33,7 +32,7 @@ fun NavGraphBuilder.onboardingRoute(navController: NavController) {
             onReload = onboardingViewModel::getData,
             onFinish = {
                 onboardingViewModel.dismissOnboarding()
-                navController.navigateToAuth()
+                navigateToAuth()
             }
         )
 

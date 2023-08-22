@@ -20,6 +20,7 @@ dependencyResolutionManagement {
 rootProject.name = "asta"
 include(":resources:strings")
 include(":resources:drawables")
+include(":feature:auth")
 include(":core:common")
 include(":core:network")
 include(":core:designsystem")

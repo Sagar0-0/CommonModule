@@ -1,4 +1,4 @@
-package fit.asta.health.auth.ui.screens
+package fit.asta.health.feature.auth.screens
 
 import android.app.Activity
 import android.app.PendingIntent
@@ -39,7 +39,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.auth.api.identity.GetPhoneNumberHintIntentRequest
 import com.google.android.gms.auth.api.identity.Identity
@@ -47,25 +46,15 @@ import com.google.android.gms.auth.api.phone.SmsRetriever
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import fit.asta.health.common.ui.components.ValidatedNumberField
-import fit.asta.health.common.ui.components.generic.LoadingAnimation
-import fit.asta.health.common.ui.theme.spacing
-import kotlinx.coroutines.launch
+import fit.asta.health.designsystem.components.ValidatedNumberField
+import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.theme.spacing
 import java.util.concurrent.TimeUnit
-
-@Composable
-@Preview(showBackground = true, showSystemUi = true)
-fun PhoneUIPreview() {
-    PhoneLoginScreen {
-
-    }
-}
 
 @Composable
 fun PhoneLoginScreen(signInWithCredentials: (AuthCredential) -> Unit) {

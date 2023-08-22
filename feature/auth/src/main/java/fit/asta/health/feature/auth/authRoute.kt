@@ -1,10 +1,10 @@
 @file:JvmName("AuthScreenKt")
 
-package fit.asta.health.auth.ui
+package fit.asta.health.feature.auth
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -13,39 +13,36 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import fit.asta.health.auth.ui.screens.AuthDestination
-import fit.asta.health.auth.ui.screens.PhoneLoginScreen
-import fit.asta.health.auth.ui.screens.SignInScreen
-import fit.asta.health.auth.ui.vm.AuthViewModel
-import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.main.Graph
-import fit.asta.health.main.view.navigateToHome
+import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.feature.auth.screens.AuthDestination
+import fit.asta.health.feature.auth.screens.PhoneLoginScreen
+import fit.asta.health.feature.auth.screens.SignInScreen
+import fit.asta.health.feature.auth.vm.AuthViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 const val AUTH_GRAPH_ROUTE = "graph_auth"
 fun NavController.navigateToAuth(navOptions: NavOptions? = null) {
-    if(navOptions==null) {
-        this.navigate(AUTH_GRAPH_ROUTE){
+    if (navOptions == null) {
+        this.navigate(AUTH_GRAPH_ROUTE) {
             popUpToTop(this@navigateToAuth)
         }
-    }else{
-        this.navigate(AUTH_GRAPH_ROUTE,navOptions)
+    } else {
+        this.navigate(AUTH_GRAPH_ROUTE, navOptions)
     }
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun NavGraphBuilder.authRoute(navController: NavHostController) {
-    composable(AUTH_GRAPH_ROUTE){
+fun NavGraphBuilder.authRoute(navigateToHome: () -> Unit, navigateToWebView: (String) -> Unit) {
+    composable(AUTH_GRAPH_ROUTE) {
         val context = LocalContext.current
-        val authViewModel : AuthViewModel = hiltViewModel()
+        val authViewModel: AuthViewModel = hiltViewModel()
         val loginState by authViewModel.loginState.collectAsStateWithLifecycle()
         val nestedNavController = rememberNavController()
 
@@ -56,33 +53,36 @@ fun NavGraphBuilder.authRoute(navController: NavHostController) {
                 startDestination = AuthDestination.SignIn.route
             ) {
                 composable(AuthDestination.SignIn.route) {
-                    SignInScreen(nestedNavController) {
+                    SignInScreen(navigateToWebView, nestedNavController) {
                         authViewModel.signInWithGoogleCredentials(it)
                     }
                 }
                 composable(AuthDestination.Phone.route) {
-                    PhoneLoginScreen{
+                    PhoneLoginScreen {
                         authViewModel.signInWithGoogleCredentials(it)
                     }
                 }
             }
 
-            when(loginState){
-                UiState.Loading->{
+            when (loginState) {
+                UiState.Loading -> {
                     LoadingAnimation()
                 }
-                is UiState.Error->{
+
+                is UiState.Error -> {
                     Text(text = (loginState as UiState.Error).resId.toStringFromResId())
                 }
-                is UiState.Success->{
-                    LaunchedEffect(loginState){
+
+                is UiState.Success -> {
+                    LaunchedEffect(loginState) {
                         Toast.makeText(
                             context, "Sign in Successful", Toast.LENGTH_SHORT
                         ).show()
-                        navController.navigateToHome()
+                        navigateToHome()
                     }
                 }
-                else->{}
+
+                else -> {}
             }
         }
     }

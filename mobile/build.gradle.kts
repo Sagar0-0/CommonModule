@@ -137,6 +137,7 @@ dependencies {
     implementation(project(":feature:subscription"))
     implementation(project(":feature:referral"))
     implementation(project(":feature:wallet"))
+    implementation(project(":feature:auth"))
     implementation(project(":data:auth"))
 
     // Spotify App remote Dependency
