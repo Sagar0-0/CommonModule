@@ -1,4 +1,4 @@
-package fit.asta.health.scheduler.ref
+package fit.asta.health.scheduler.util
 
 import android.content.Context
 import android.text.format.DateFormat

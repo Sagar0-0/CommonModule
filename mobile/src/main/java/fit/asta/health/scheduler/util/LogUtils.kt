@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fit.asta.health.scheduler.ref
+package fit.asta.health.scheduler.util
 
 import android.os.Build
 import android.util.Log

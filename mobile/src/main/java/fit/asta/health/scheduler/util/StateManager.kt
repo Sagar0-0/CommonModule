@@ -1,4 +1,4 @@
-package fit.asta.health.scheduler.ref.newalarm
+package fit.asta.health.scheduler.util
 
 import android.app.AlarmManager
 import android.app.NotificationManager
@@ -13,19 +13,17 @@ import fit.asta.health.scheduler.data.db.AlarmDao
 import fit.asta.health.scheduler.data.db.AlarmInstanceDao
 import fit.asta.health.scheduler.data.db.entity.AlarmEntity
 import fit.asta.health.scheduler.data.db.entity.AlarmInstance
-import fit.asta.health.scheduler.ref.AlarmUtils
-import fit.asta.health.scheduler.ref.LogUtils
-import fit.asta.health.scheduler.ref.newalarm.Utils.ALARM_STATE_EXTRA
-import fit.asta.health.scheduler.ref.newalarm.Utils.CURRENT_ALARM_STATE
-import fit.asta.health.scheduler.ref.newalarm.Utils.END_ALARM_STATE
-import fit.asta.health.scheduler.ref.newalarm.Utils.PRE_ALARM_STATE
-import fit.asta.health.scheduler.ref.newalarm.Utils.PRE_END_ALARM_STATE
-import fit.asta.health.scheduler.ref.newalarm.Utils.SKIP_ALARM_ACTION
-import fit.asta.health.scheduler.ref.newalarm.Utils.SNOOZE_CURRENT_ALARM_STATE
-import fit.asta.health.scheduler.ref.newalarm.Utils.SNOOZE_END_ALARM_STATE
-import fit.asta.health.scheduler.ref.newalarm.Utils.createStateChangeIntent
 import fit.asta.health.scheduler.services.AlarmBroadcastReceiver
 import fit.asta.health.scheduler.services.AlarmService
+import fit.asta.health.scheduler.util.Utils.ALARM_STATE_EXTRA
+import fit.asta.health.scheduler.util.Utils.CURRENT_ALARM_STATE
+import fit.asta.health.scheduler.util.Utils.END_ALARM_STATE
+import fit.asta.health.scheduler.util.Utils.PRE_ALARM_STATE
+import fit.asta.health.scheduler.util.Utils.PRE_END_ALARM_STATE
+import fit.asta.health.scheduler.util.Utils.SKIP_ALARM_ACTION
+import fit.asta.health.scheduler.util.Utils.SNOOZE_CURRENT_ALARM_STATE
+import fit.asta.health.scheduler.util.Utils.SNOOZE_END_ALARM_STATE
+import fit.asta.health.scheduler.util.Utils.createStateChangeIntent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
