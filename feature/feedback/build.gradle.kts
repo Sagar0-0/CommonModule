@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "fit.asta.health.feature.auth"
+    namespace = "fit.asta.health.feature.feedback"
 
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -33,20 +33,23 @@ android {
 dependencies {
 
     implementation(project(":resources:drawables"))
-    implementation(project(":resources:strings"))
 
     implementation(project(":core:common"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:test"))
 
+    implementation(project(":data:feedback"))
     implementation(project(":data:auth"))
 
-    //Firebase authentication
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.auth.ktx)
-    implementation(libs.play.services.auth)
-    implementation(libs.play.services.auth.api.phone)
-    implementation(libs.firebase.ui.auth)
+    //Jetpack Compose - Pager
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.androidx.paging.compose)
+
+    //Jetpack Compose - Paging
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicators)
+    implementation(libs.accompanist.coil)
+
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
@@ -61,9 +64,13 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.foundation.android)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.documentfile)
 
     testImplementation(libs.mockk.android)
     testImplementation(libs.turbine)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit.jupiter)
+
+    //Rating-Bar
+    implementation("com.github.a914-gowtham:compose-ratingbar:1.2.4")
 }

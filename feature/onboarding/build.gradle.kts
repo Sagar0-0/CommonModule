@@ -20,13 +20,23 @@ android {
             )
         }
     }
+    testOptions {
+        unitTests {
+            this.all {
+                it.useJUnitPlatform()
+            }
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
 
-    implementation(project(":data:onboarding"))
     implementation(project(":core:common"))
     implementation(project(":core:designsystem"))
+    implementation(project(":core:test"))
+
+    implementation(project(":data:onboarding"))
 
     //Jetpack Compose - Pager
     implementation(libs.androidx.paging.runtime.ktx)
@@ -51,7 +61,9 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.foundation.android)
     implementation(libs.androidx.material3)
-    testImplementation(libs.junit4)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.test.espresso.core)
+
+    testImplementation(libs.mockk.android)
+    testImplementation(libs.turbine)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.junit.jupiter)
 }

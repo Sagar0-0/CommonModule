@@ -1,6 +1,7 @@
 package fit.asta.health.main
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,25 +18,37 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.navigateToWebView
 import fit.asta.health.common.ui.webView
+import fit.asta.health.common.utils.getCurrentBuildVersion
+import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.rateUs
+import fit.asta.health.common.utils.sendBugReportMessage
+import fit.asta.health.common.utils.shareApp
 import fit.asta.health.feature.address.addressRoute
+import fit.asta.health.feature.address.navigateToAddress
 import fit.asta.health.feature.auth.AUTH_GRAPH_ROUTE
 import fit.asta.health.feature.auth.authRoute
 import fit.asta.health.feature.auth.navigateToAuth
+import fit.asta.health.feature.feedback.feedbackRoute
+import fit.asta.health.feature.feedback.navigateToFeedback
 import fit.asta.health.feature.onboarding.ONBOARDING_GRAPH_ROUTE
 import fit.asta.health.feature.onboarding.onboardingRoute
-import fit.asta.health.feedback.ui.feedbackRoute
 import fit.asta.health.main.view.HOME_GRAPH_ROUTE
 import fit.asta.health.main.view.homeScreen
 import fit.asta.health.main.view.navigateToHome
 import fit.asta.health.payment.PaymentActivity
 import fit.asta.health.profile.CreateProfileLayout
 import fit.asta.health.profile.ProfileContent
+import fit.asta.health.referral.navigateToReferral
 import fit.asta.health.referral.referralRoute
 import fit.asta.health.scheduler.ui.navigation.schedulerNavigation
+import fit.asta.health.settings.ui.SettingDestination
 import fit.asta.health.settings.ui.settingScreens
+import fit.asta.health.settings.ui.view.SettingsUiEvent
+import fit.asta.health.subscription.navigateToSubscription
 import fit.asta.health.subscription.subscriptionRoute
 import fit.asta.health.testimonials.ui.testimonialsRoute
 import fit.asta.health.tools.breathing.nav.breathingNavigation
@@ -43,8 +56,11 @@ import fit.asta.health.tools.exercise.nav.exerciseNavigation
 import fit.asta.health.tools.meditation.nav.meditationNavigation
 import fit.asta.health.tools.sunlight.nav.sunlightNavigation
 import fit.asta.health.tools.water.nav.waterToolNavigation
+import fit.asta.health.wallet.navigateToWallet
 import fit.asta.health.wallet.walletRoute
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 const val deepLinkUrl: String = "https://www.asta.com"
 
@@ -99,7 +115,76 @@ fun MainNavHost(isConnected: Boolean) {
         testimonialsRoute(navController)
         schedulerNavigation(navController, onBack = { navController.navigateUp() })
 
-        settingScreens(navController)
+        settingScreens { key ->
+            when (key) {
+                SettingsUiEvent.NavigateToSubscription -> {
+                    navController.navigateToSubscription()
+                }
+
+                SettingsUiEvent.REFERRAL -> {
+                    navController.navigateToReferral()
+                }
+
+                SettingsUiEvent.WALLET -> {
+                    navController.navigateToWallet()
+                }
+
+                SettingsUiEvent.ADDRESS -> {
+                    navController.navigateToAddress()
+                }
+
+                SettingsUiEvent.BACK -> {
+                    navController.popBackStack()
+                }
+
+                SettingsUiEvent.NOTIFICATION -> {
+                    navController.navigate(SettingDestination.Notifications.route)
+                }
+
+                SettingsUiEvent.SHARE -> {
+                    context.shareApp()
+                }
+
+                SettingsUiEvent.RATE -> {
+                    context.rateUs()
+                }
+
+
+                SettingsUiEvent.FEEDBACK -> {
+                    navController.navigateToFeedback(context.getString(R.string.application_fid))
+                }
+
+                SettingsUiEvent.BUG -> {
+                    context.sendBugReportMessage()
+                }
+
+                SettingsUiEvent.TERMS -> {
+                    val url = URLEncoder.encode(
+                        getImgUrl(context.getString(R.string.url_terms_of_use)),
+                        StandardCharsets.UTF_8.toString()
+                    )
+                    navController.navigate(Graph.WebView.route + "/$url")
+                }
+
+                SettingsUiEvent.PRIVACY -> {
+                    val url = URLEncoder.encode(
+                        getImgUrl(context.getString(R.string.url_privacy_policy)),
+                        StandardCharsets.UTF_8.toString()
+                    )
+                    navController.navigate(Graph.WebView.route + "/$url")
+                }
+
+                SettingsUiEvent.VERSION -> {
+                    Toast.makeText(
+                        context,
+                        context.getCurrentBuildVersion(),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                else -> {}
+            }
+        }
         feedbackRoute(navController)
         addressRoute(navController::popBackStack)
 

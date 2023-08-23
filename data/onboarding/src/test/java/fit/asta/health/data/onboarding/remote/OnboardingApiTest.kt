@@ -1,13 +1,12 @@
-package fit.asta.health.data.address.remote
+package fit.asta.health.data.onboarding.remote
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.data.address.modal.SearchResponse
-import fit.asta.health.data.address.repo.AddressRepoImpl
+import fit.asta.health.data.onboarding.remote.modal.OnboardingDTO
+import fit.asta.health.data.onboarding.repo.OnboardingRepoImpl
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.datastore.UserPreferencesData
-import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,9 +20,9 @@ import org.junit.jupiter.api.Test
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class SearchLocationApiTest {
+class OnboardingApiTest {
     private lateinit var server: MockWebServer
-    private lateinit var api: SearchLocationApi
+    private lateinit var api: OnboardingApi
 
     private val gson: Gson = GsonBuilder().create()
 
@@ -33,7 +32,7 @@ class SearchLocationApiTest {
         api = Retrofit.Builder()
             .baseUrl(server.url("/"))
             .addConverterFactory(GsonConverterFactory.create())
-            .build().create(SearchLocationApi::class.java)
+            .build().create(OnboardingApi::class.java)
     }
 
     @AfterEach
@@ -42,59 +41,29 @@ class SearchLocationApiTest {
     }
 
     @Test
-    fun `search,return Success`() = runTest {
-        val dto = SearchResponse()
+    fun `getData, returns Success`() = runTest {
+        val dto = OnboardingDTO(status = OnboardingDTO.Status(200, ""))
         val json = gson.toJson(dto)!!
         val res = MockResponse()
         res.setBody(json)
         server.enqueue(res)
 
-        val data = api.search("", "")
+        val data = api.getData()
         server.takeRequest()
 
         assertEquals(data, dto)
     }
 
     @Test
-    fun `searchBiased,return Success`() = runTest {
-        val dto = SearchResponse()
-        val json = gson.toJson(dto)!!
-        val res = MockResponse()
-        res.setBody(json)
-        server.enqueue(res)
-
-        val data = api.searchBiased("", "", "", "")
-        server.takeRequest()
-
-        assertEquals(data, dto)
-    }
-
-
-    @Test
-    fun `search, return Error`() = runTest {
-        val res = MockResponse()
-        res.setResponseCode(404)
-        server.enqueue(res)
-
-        val pref: PrefManager = mockk()
-        coEvery { pref.userData } returns MutableStateFlow(UserPreferencesData())
-        val repo = AddressRepoImpl(mockk(), api, pref, mockk(), mockk())
-        val data = repo.search("", 0.0, 0.0)
-        server.takeRequest()
-
-        assert(data is ResponseState.Error)
-    }
-
-    @Test
-    fun `searchBiased, return Error`() = runTest {
+    fun `getData, returns Error`() = runTest {
         val res = MockResponse()
         res.setResponseCode(404)
         server.enqueue(res)
 
         val pref: PrefManager = mockk()
         every { pref.userData } returns MutableStateFlow(UserPreferencesData())
-        val repo = AddressRepoImpl(mockk(), api, pref, mockk(), mockk())
-        val data = repo.search("", 10.0, 10.0)
+        val onboardingRepoImpl = OnboardingRepoImpl(api, pref)
+        val data = onboardingRepoImpl.getData()
         server.takeRequest()
 
         assert(data is ResponseState.Error)

@@ -1,16 +1,9 @@
-package fit.asta.health.data.address.remote
+package fit.asta.health.data.feedback.remote
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.data.address.modal.SearchResponse
-import fit.asta.health.data.address.repo.AddressRepoImpl
-import fit.asta.health.datastore.PrefManager
-import fit.asta.health.datastore.UserPreferencesData
-import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -21,9 +14,9 @@ import org.junit.jupiter.api.Test
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class SearchLocationApiTest {
+class FeedbackApiTest {
     private lateinit var server: MockWebServer
-    private lateinit var api: SearchLocationApi
+    private lateinit var api: FeedbackApi
 
     private val gson: Gson = GsonBuilder().create()
 
@@ -33,7 +26,7 @@ class SearchLocationApiTest {
         api = Retrofit.Builder()
             .baseUrl(server.url("/"))
             .addConverterFactory(GsonConverterFactory.create())
-            .build().create(SearchLocationApi::class.java)
+            .build().create(FeedbackApi::class.java)
     }
 
     @AfterEach
@@ -42,59 +35,57 @@ class SearchLocationApiTest {
     }
 
     @Test
-    fun `search,return Success`() = runTest {
-        val dto = SearchResponse()
+    fun `getFeedbackQuestions, returns Success`() = runTest {
+        val dto = fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO()
         val json = gson.toJson(dto)!!
         val res = MockResponse()
         res.setBody(json)
         server.enqueue(res)
 
-        val data = api.search("", "")
+        val data = api.getFeedbackQuestions("", "")
         server.takeRequest()
 
         assertEquals(data, dto)
     }
 
     @Test
-    fun `searchBiased,return Success`() = runTest {
-        val dto = SearchResponse()
-        val json = gson.toJson(dto)!!
-        val res = MockResponse()
-        res.setBody(json)
-        server.enqueue(res)
-
-        val data = api.searchBiased("", "", "", "")
-        server.takeRequest()
-
-        assertEquals(data, dto)
-    }
-
-
-    @Test
-    fun `search, return Error`() = runTest {
+    fun `getFeedbackQuestions, returns Error`() = runTest {
         val res = MockResponse()
         res.setResponseCode(404)
         server.enqueue(res)
 
-        val pref: PrefManager = mockk()
-        coEvery { pref.userData } returns MutableStateFlow(UserPreferencesData())
-        val repo = AddressRepoImpl(mockk(), api, pref, mockk(), mockk())
-        val data = repo.search("", 0.0, 0.0)
+        val repo = fit.asta.health.data.feedback.repo.FeedbackRepoImpl(api, mockk())
+        val data = repo.getFeedbackQuestions("", "")
         server.takeRequest()
 
         assert(data is ResponseState.Error)
     }
 
     @Test
-    fun `searchBiased, return Error`() = runTest {
+    fun `postUserFeedback, returns Success`() = runTest {
+        val resDto = fit.asta.health.data.feedback.remote.modal.PostFeedbackDTO()
+        val json = gson.toJson(resDto)!!
+        val res = MockResponse()
+        res.setBody(json)
+        server.enqueue(res)
+
+
+        val dto = fit.asta.health.data.feedback.remote.modal.UserFeedbackDTO()
+        val data = api.postUserFeedback(dto, emptyList())
+        server.takeRequest()
+
+        assertEquals(data, resDto)
+    }
+
+    @Test
+    fun `postUserFeedback, returns Error`() = runTest {
+        val dto = fit.asta.health.data.feedback.remote.modal.UserFeedbackDTO()
         val res = MockResponse()
         res.setResponseCode(404)
         server.enqueue(res)
 
-        val pref: PrefManager = mockk()
-        every { pref.userData } returns MutableStateFlow(UserPreferencesData())
-        val repo = AddressRepoImpl(mockk(), api, pref, mockk(), mockk())
-        val data = repo.search("", 10.0, 10.0)
+        val repo = fit.asta.health.data.feedback.repo.FeedbackRepoImpl(api, mockk())
+        val data = repo.postUserFeedback(dto)
         server.takeRequest()
 
         assert(data is ResponseState.Error)

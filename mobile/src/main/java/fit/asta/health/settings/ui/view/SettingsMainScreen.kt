@@ -132,7 +132,7 @@ fun SettingsScreenLayout(
                 PreferenceItem(
                     title = R.string.subscribe.toStringFromResId(),
                     imageVector = Icons.Default.Subscriptions
-                ) { onClickEvent(SettingsUiEvent.SUBSCRIBE) }
+                ) { onClickEvent(SettingsUiEvent.NavigateToSubscription) }
                 PreferenceItem(
                     title = R.string.refer_and_earn.toStringFromResId(),
                     imageVector = Icons.Default.MonetizationOn

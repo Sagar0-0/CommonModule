@@ -18,6 +18,14 @@ android {
             )
         }
     }
+    testOptions {
+        unitTests {
+            this.all {
+                it.useJUnitPlatform()
+            }
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -28,4 +36,11 @@ dependencies {
 
     implementation(libs.gson)
     implementation(libs.retrofit.core)
+    implementation(libs.converter.gson)
+
+    testImplementation(libs.mockk.android)
+    testImplementation(libs.turbine)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockwebserver)
+    testImplementation(libs.junit.jupiter)
 }

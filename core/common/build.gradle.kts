@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.asta.android.hilt)
     alias(libs.plugins.asta.android.library.compose)
     id("kotlin-parcelize")
-    id("asta.android.feature")
 }
 
 android {
