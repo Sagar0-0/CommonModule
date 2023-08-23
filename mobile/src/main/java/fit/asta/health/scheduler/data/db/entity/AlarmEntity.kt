@@ -9,7 +9,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import fit.asta.health.scheduler.data.api.net.scheduler.*
-import fit.asta.health.scheduler.ref.LogUtils
+import fit.asta.health.scheduler.util.LogUtils
 import kotlinx.parcelize.Parcelize
 import java.io.Serializable
 import java.util.*

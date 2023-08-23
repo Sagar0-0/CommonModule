@@ -35,9 +35,9 @@ import fit.asta.health.main.deepLinkUrl
 import fit.asta.health.navigation.today.ui.view.goToTool
 import fit.asta.health.scheduler.data.db.AlarmDao
 import fit.asta.health.scheduler.data.db.entity.AlarmEntity
-import fit.asta.health.scheduler.ref.newalarm.Utils
 import fit.asta.health.scheduler.ui.AlarmScreenActivity
 import fit.asta.health.scheduler.util.Constants
+import fit.asta.health.scheduler.util.Utils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
