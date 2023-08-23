@@ -56,8 +56,6 @@ data class AlarmEntity(
     @ColumnInfo(name = "week")
     @SerializedName("wk")
     var daysOfWeek: Weekdays = Weekdays.NONE,
-    @SerializedName("deleteAfterUse")
-    var deleteAfterUse: Boolean,
     @ColumnInfo(name = "skipDate")
     var skipDate: Int = -1
 ) : Serializable, Parcelable {
@@ -90,7 +88,48 @@ data class AlarmEntity(
         }
     }
 
-    fun getNextAlarmTime(currentTime: Calendar, state: State): Calendar {
+    fun getCurrentAlarmTime(currentTime: Calendar, state: State): Calendar {
+        val nextInstanceTime = Calendar.getInstance(currentTime.timeZone)
+        nextInstanceTime[Calendar.YEAR] = currentTime[Calendar.YEAR]
+        nextInstanceTime[Calendar.MONTH] = currentTime[Calendar.MONTH]
+        nextInstanceTime[Calendar.DAY_OF_MONTH] = currentTime[Calendar.DAY_OF_MONTH]
+        nextInstanceTime[Calendar.SECOND] = 0
+        nextInstanceTime[Calendar.MILLISECOND] = 0
+
+        when (state) {
+            State.PRE -> {
+                nextInstanceTime[Calendar.HOUR_OF_DAY] = time.hours
+                nextInstanceTime[Calendar.MINUTE] = time.minutes
+                nextInstanceTime.add(Calendar.MINUTE, -interval.advancedReminder.time)
+            }
+
+            State.CURRENT -> {
+                nextInstanceTime[Calendar.HOUR_OF_DAY] = time.hours
+                nextInstanceTime[Calendar.MINUTE] = time.minutes
+            }
+
+            State.PREEND -> {
+                nextInstanceTime[Calendar.HOUR_OF_DAY] = interval.endAlarmTime.hours
+                nextInstanceTime[Calendar.MINUTE] = interval.endAlarmTime.minutes
+                nextInstanceTime.add(Calendar.MINUTE, -interval.advancedReminder.time)
+            }
+
+            State.END -> {
+                nextInstanceTime[Calendar.HOUR_OF_DAY] = interval.endAlarmTime.hours
+                nextInstanceTime[Calendar.MINUTE] = interval.endAlarmTime.minutes
+            }
+        }
+
+        LogUtils.v("time ${nextInstanceTime.time}")
+
+        return nextInstanceTime
+    }
+
+    fun getNextAlarmTime(
+        currentTime: Calendar,
+        state: State,
+        skipToday: Boolean = false
+    ): Calendar {
         val nextInstanceTime = Calendar.getInstance(currentTime.timeZone)
         nextInstanceTime[Calendar.YEAR] = currentTime[Calendar.YEAR]
         nextInstanceTime[Calendar.MONTH] = currentTime[Calendar.MONTH]
@@ -122,7 +161,7 @@ data class AlarmEntity(
             }
         }
         LogUtils.v("time init ${nextInstanceTime.time}")
-        if (nextInstanceTime.timeInMillis <= currentTime.timeInMillis) {
+        if (nextInstanceTime.timeInMillis <= currentTime.timeInMillis || skipToday) {
             nextInstanceTime.add(Calendar.DAY_OF_YEAR, 1)
         }
         LogUtils.v("time mid ${nextInstanceTime.time}")
@@ -131,8 +170,6 @@ data class AlarmEntity(
             nextInstanceTime.add(Calendar.DAY_OF_WEEK, addDays)
         }
         LogUtils.v("time end ${nextInstanceTime.time}")
-//        nextInstanceTime[Calendar.HOUR_OF_DAY] = hour
-//        nextInstanceTime[Calendar.MINUTE] = minutes
 
         return nextInstanceTime
     }

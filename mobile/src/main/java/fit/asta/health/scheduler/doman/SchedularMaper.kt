@@ -1,5 +1,6 @@
 package fit.asta.health.scheduler.doman
 
+import android.util.Log
 import com.google.gson.Gson
 import fit.asta.health.scheduler.data.api.net.scheduler.Adv
 import fit.asta.health.scheduler.data.api.net.scheduler.AstaSchedulerGetListResponse
@@ -55,7 +56,6 @@ fun ASUiState.getAlarm(
 ): AlarmEntity {
     val newAlarmItem = AlarmEntity(
         status = this.status,
-        deleteAfterUse = this.deleteAfterUse,
         daysOfWeek = this.week,
         info = Info(
             name = this.alarmName,
@@ -105,6 +105,7 @@ fun ASUiState.getAlarm(
     map["vib"] = newAlarmItem.vibration
     map["tone"] = newAlarmItem.tone
     val jsonObject: String? = Gson().toJson(map)
+    Log.d("alarm", "getAlarm: $jsonObject")
     return Gson().fromJson(jsonObject, AlarmEntity::class.java)
 }
 
@@ -144,7 +145,6 @@ fun AlarmEntity.getAlarmScreenUi(): ASUiState {
         vibration = this.vibration.pattern,
         vibrationStatus = this.vibration.status,
         week = this.daysOfWeek,
-        deleteAfterUse = this.daysOfWeek.isRepeating,
         mode = this.mode
     )
 }

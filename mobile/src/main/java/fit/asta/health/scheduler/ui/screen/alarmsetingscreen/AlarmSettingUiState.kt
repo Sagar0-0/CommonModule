@@ -8,7 +8,6 @@ data class ASUiState(
     //time
     var timeHours: Int = 0,
     var timeMinutes: Int = 0,
-    var deleteAfterUse: Boolean = false,
 
     //week
     val week: Weekdays = Weekdays.NONE,

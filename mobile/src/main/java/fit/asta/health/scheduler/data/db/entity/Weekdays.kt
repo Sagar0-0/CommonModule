@@ -18,7 +18,6 @@ package fit.asta.health.scheduler.data.db.entity
 
 import android.content.Context
 import android.os.Parcelable
-import androidx.annotation.VisibleForTesting
 import com.google.gson.annotations.SerializedName
 import fit.asta.health.R
 import kotlinx.parcelize.Parcelize
@@ -33,7 +32,7 @@ import java.util.Calendar
 @Parcelize
 data class Weekdays(
     @SerializedName("encodedBits")
-    private val encodedBits: Int
+    val encodedBits: Int
 ) : Parcelable {
     /**
      * The preferred starting day of the week can differ by locale. This enumerated value is used to
@@ -61,11 +60,10 @@ data class Weekdays(
         private const val ALL_DAYS = 0x7F
 
         /** An instance with all weekdays in the weekly repeat cycle.  */
-        @JvmField
+
         val ALL = Weekdays(ALL_DAYS)
 
         /** An instance with no weekdays in the weekly repeat cycle.  */
-        @JvmField
         val NONE = Weekdays(0)
 
         /** Maps calendar weekdays to the bit masks that represent them in this class.  */
@@ -87,7 +85,7 @@ data class Weekdays(
          * @param bits [bits][.getBits] representing the encoded weekly repeat schedule
          * @return a Weekdays instance representing the same repeat schedule as the `bits`
          */
-        @JvmStatic
+
         fun fromBits(bits: Int): Weekdays {
             return Weekdays(bits)
         }
@@ -105,7 +103,6 @@ data class Weekdays(
          *
          * @return a Weekdays instance representing the given `calendarDays`
          */
-        @JvmStatic
         fun fromCalendarDays(vararg calendarDays: Int): Weekdays {
             var bits = 0
             for (calendarDay in calendarDays) {
@@ -119,7 +116,8 @@ data class Weekdays(
     }
 
     /** An encoded form of a weekly repeat schedule. */
-    val bits: Int = ALL_DAYS and this.encodedBits
+//    @IgnoredOnParcel
+//    val bits: Int = (ALL_DAYS and this.encodedBits)
 
     /**
      * @param calendarDay any of the following values
@@ -137,7 +135,7 @@ data class Weekdays(
      */
     fun setBit(calendarDay: Int, on: Boolean): Weekdays {
         val bit = sCalendarDayToBit[calendarDay] ?: return this
-        return Weekdays(if (on) bits or bit else bits and bit.inv())
+        return Weekdays(if (on) (ALL_DAYS and this.encodedBits) or bit else (ALL_DAYS and this.encodedBits) and bit.inv())
     }
 
     /**
@@ -156,14 +154,14 @@ data class Weekdays(
     fun isBitOn(calendarDay: Int): Boolean {
         val bit = sCalendarDayToBit[calendarDay]
             ?: throw IllegalArgumentException("$calendarDay is not a valid weekday")
-        return bits and bit > 0
+        return (ALL_DAYS and this.encodedBits) and bit > 0
     }
 
     /**
      * @return `true` iff at least one weekday is enabled in the repeat schedule
      */
     val isRepeating: Boolean
-        get() = bits != 0
+        get() = (ALL_DAYS and this.encodedBits) != 0
 
     /**
      * Note: only the day-of-week is read from the `time`. The time fields
@@ -217,11 +215,11 @@ data class Weekdays(
         if (other == null || javaClass != other.javaClass) return false
 
         val weekdays = other as Weekdays
-        return bits == weekdays.bits
+        return this.encodedBits == weekdays.encodedBits
     }
 
     override fun hashCode(): Int {
-        return bits
+        return (ALL_DAYS and this.encodedBits)
     }
 
     override fun toString(): String {
@@ -271,7 +269,6 @@ data class Weekdays(
         return toString(context, order, true /* forceLongNames */)
     }
 
-    @get:VisibleForTesting
     val count: Int
         get() {
             var count = 0
@@ -294,7 +291,7 @@ data class Weekdays(
             return context.getString(R.string.repeat_one)
         }
 
-        if (bits == ALL_DAYS) {
+        if ((ALL_DAYS and this.encodedBits) == ALL_DAYS) {
             return context.getString(R.string.every_day)
         }
 

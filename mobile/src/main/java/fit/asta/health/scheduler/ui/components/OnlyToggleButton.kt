@@ -110,9 +110,7 @@ fun OnlyToggleButton(
 @Composable
 fun DigitalDemo(time: AMPMHoursMin, open: () -> Unit = {}) {
     val hours by animateIntAsState(
-        targetValue = if (time.hours > 12) {
-            time.hours - 12
-        } else time.hours, label = "",
+        targetValue = time.hours, label = "",
         animationSpec = tween(700, easing = FastOutLinearInEasing)
     )
     val minutes by animateIntAsState(

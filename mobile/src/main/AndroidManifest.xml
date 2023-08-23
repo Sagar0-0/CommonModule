@@ -194,7 +194,8 @@
             android:name=".scheduler.services.AlarmBroadcastReceiver"
             android:directBootAware="true"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            tools:targetApi="n">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
@@ -219,25 +220,6 @@
         <service
             android:name=".tools.walking.work.CountStepsService"
             android:foregroundServiceType="location" />
-
-        <!--        <provider-->
-        <!--            android:name="androidx.startup.InitializationProvider"-->
-        <!--            android:authorities="${applicationId}.androidx-startup"-->
-        <!--            android:exported="false">-->
-        <!--            <meta-data-->
-        <!--                android:name="androidx.work.WorkManagerInitializer"-->
-        <!--                android:value="androidx.startup"-->
-        <!--                tools:node="remove" />-->
-        <!--        </provider>-->
-        <!--        <provider-->
-        <!--            android:name="androidx.startup.InitializationProvider"-->
-        <!--            android:authorities="${applicationId}.androidx-startup"-->
-        <!--            android:exported="false"-->
-        <!--            tools:node="merge" >-->
-        <!--            <meta-data-->
-        <!--                android:name="androidx.work.WorkManagerInitializer"-->
-        <!--                android:value="androidx.startup" />-->
-        <!--        </provider>-->
     </application>
 
 </manifest>

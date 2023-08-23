@@ -4,6 +4,8 @@ package fit.asta.health.scheduler.services
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
+import android.widget.Toast
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.scheduler.ref.LogUtils
 import fit.asta.health.scheduler.ref.newalarm.StateManager
@@ -23,6 +25,12 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
 
     val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     override fun onReceive(context: Context, intent: Intent) {
+        if (Intent.ACTION_BOOT_COMPLETED == intent.action || Intent.ACTION_LOCKED_BOOT_COMPLETED == intent.action
+        ) {
+            val toastText = String.format("Alarm Reboot")
+            Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
+            startRescheduleAlarmsService(context)
+        }
         when (intent.action) {
             SNOOZE_ACTION -> {
                 LogUtils.v("AlarmStateManager received SNOOZE_ACTION")
@@ -51,7 +59,16 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
                 stateManager.handleIntent(context, intent)
             }
 
-            else -> return
+            else -> {}
+        }
+    }
+
+    private fun startRescheduleAlarmsService(context: Context) {
+        val intentService = Intent(context, RescheduleAlarmService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(intentService)
+        } else {
+            context.startService(intentService)
         }
     }
 }

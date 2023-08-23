@@ -73,7 +73,7 @@ object Utils {
      * @param includeSeconds whether or not to include seconds in the time string
      * @return format string for 12 hours mode time, not including seconds
      */
-    fun get12ModeFormat(amPmRatio: Float, includeSeconds: Boolean): CharSequence {
+    fun get12ModeFormat(amPmRatio: Float = 0.4f, includeSeconds: Boolean): CharSequence {
         var pattern = DateFormat.getBestDateTimePattern(
             Locale.getDefault(),
             if (includeSeconds) "hmsa" else "hma"

@@ -115,9 +115,11 @@ fun AlarmSettingScreen(
             ) {
                 DigitalDemo(
                     time = AMPMHoursMin(
-                        hours = alarmSettingUiState.timeHours,
+                        hours = if (alarmSettingUiState.timeHours > 12) {
+                            alarmSettingUiState.timeHours - 12
+                        } else alarmSettingUiState.timeHours,
                         minutes = alarmSettingUiState.timeMinutes,
-                        dayTime = AMPMHoursMin.DayTime.AM
+                        dayTime = if (alarmSettingUiState.timeHours >= 12) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
                     )
                 ) {
                     currentBottomSheet = TIME
@@ -298,7 +300,7 @@ fun AlarmCreateBtmSheetLayout(
                         alarmSettingUiState.timeHours - 12
                     } else alarmSettingUiState.timeHours,
                     minutes = alarmSettingUiState.timeMinutes,
-                    dayTime = AMPMHoursMin.DayTime.AM
+                    dayTime = if (alarmSettingUiState.timeHours >= 12) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
                 ),
                 onSave = {
                     closeSheet()

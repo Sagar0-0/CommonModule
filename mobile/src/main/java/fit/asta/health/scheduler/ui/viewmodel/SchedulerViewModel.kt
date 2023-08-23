@@ -14,7 +14,6 @@ import fit.asta.health.navigation.today.ui.view.utils.HourMinAmPm
 import fit.asta.health.scheduler.data.api.net.scheduler.Time
 import fit.asta.health.scheduler.data.api.net.tag.ScheduleTagNetData
 import fit.asta.health.scheduler.data.db.entity.AlarmEntity
-import fit.asta.health.scheduler.data.db.entity.AlarmSync
 import fit.asta.health.scheduler.data.db.entity.TagEntity
 import fit.asta.health.scheduler.data.repo.AlarmBackendRepo
 import fit.asta.health.scheduler.data.repo.AlarmLocalRepo
@@ -40,6 +39,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
+import java.time.LocalTime
 import java.util.Date
 import java.util.Locale
 import java.util.concurrent.atomic.AtomicLong
@@ -154,7 +154,6 @@ class SchedulerViewModel
         val checked = _alarmSettingUiState.value.week.isBitOn(index)
         _alarmSettingUiState.value =
             _alarmSettingUiState.value.copy(
-                deleteAfterUse = false,
                 week = _alarmSettingUiState.value.week.setBit(index, !checked)
             )
     }
@@ -239,8 +238,8 @@ class SchedulerViewModel
 
 
     private fun isValidAdvancedDuration(time: Int): Boolean {
-        val hour = _alarmSettingUiState.value.timeHours.toInt()
-        val min = _alarmSettingUiState.value.timeMinutes.toInt() - time
+        val hour = _alarmSettingUiState.value.timeHours
+        val min = _alarmSettingUiState.value.timeMinutes - time
         if (hour == 0 && min < 0) {
             return false
         }
@@ -252,9 +251,20 @@ class SchedulerViewModel
         context: Context,
         alarmItem: AlarmEntity? = alarmEntity,
     ) {
-
-        alarmItem?.let {
-//            alarmUtils.cancelScheduleAlarm(it, true)
+        if (alarmItem == null) {
+            _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+                uDate = LocalTime.now().toString(),
+                cDate = LocalTime.now().toString(),
+                sync = 1,
+                cBy = 1
+            )
+        } else {
+            _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+                uDate = LocalTime.now().toString(),
+                cDate = alarmItem.meta.cDate,
+                sync = 1,
+                cBy = alarmItem.meta.cBy
+            )
         }
         val alarmTone: Uri = RingtoneManager.getActualDefaultRingtoneUri(
             context, RingtoneManager.TYPE_ALARM
@@ -271,13 +281,9 @@ class SchedulerViewModel
             interval = timeSettingUiState.value
         )
         viewModelScope.launch {
+            Log.d("alarm", "setDataAndSaveAlarm: $entity")
             if (entity.status) {
                 stateManager.registerAlarm(context, entity)
-            }
-            if (alarmItem != null && alarmItem.idFromServer.isNotEmpty()) {
-                alarmLocalRepo.insertSyncData(
-                    AlarmSync(alarmId = entity.alarmId, scheduleId = entity.idFromServer)
-                )
             }
             alarmLocalRepo.insertAlarm(entity)
             resetUi()

@@ -2,7 +2,6 @@ package fit.asta.health.scheduler.data.db
 
 import androidx.room.*
 import fit.asta.health.scheduler.data.db.entity.AlarmEntity
-import fit.asta.health.scheduler.data.db.entity.AlarmSync
 import fit.asta.health.scheduler.data.db.entity.TagEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -13,7 +12,7 @@ interface AlarmDao {
     fun getAll(): Flow<List<AlarmEntity>>
 
     @Query("SELECT * FROM alarm_table ORDER BY alarmId ASC")
-    suspend fun getAllAlarm(): List<AlarmEntity>
+    suspend fun getAllAlarm(): List<AlarmEntity>?
 
     @Query("SELECT * FROM alarm_table WHERE alarmId = :alarmId LIMIT 1")
     suspend fun getAlarm(alarmId: Long): AlarmEntity?
@@ -45,18 +44,4 @@ interface AlarmDao {
     @Query("DELETE FROM tag_table")
     suspend fun deleteAllTags()
 
-    @Query("SELECT * FROM alarm_sync_table ORDER BY id ASC")
-    suspend fun getAllSyncData(): List<AlarmSync>
-
-    @Query("SELECT * FROM alarm_sync_table WHERE id = :id LIMIT 1")
-    suspend fun getSyncData(id: Long): AlarmSync?
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertSyncData(alarmSync: AlarmSync)
-
-    @Query("DELETE FROM alarm_sync_table")
-    suspend fun deleteAllSyncData()
-
-    @Delete
-    suspend fun deleteSyncData(alarmSync: AlarmSync)
 }
