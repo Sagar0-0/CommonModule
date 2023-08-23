@@ -10,7 +10,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import fit.asta.health.R
-import fit.asta.health.common.address.ui.navigateToAddress
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentBuildVersion
 import fit.asta.health.common.utils.getImgUrl
@@ -18,6 +17,7 @@ import fit.asta.health.common.utils.rateUs
 import fit.asta.health.common.utils.sendBugReportMessage
 import fit.asta.health.common.utils.shareApp
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.feature.address.navigateToAddress
 import fit.asta.health.feature.auth.navigateToAuth
 import fit.asta.health.feature.auth.vm.AuthViewModel
 import fit.asta.health.feedback.ui.navigateToFeedback

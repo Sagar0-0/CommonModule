@@ -17,10 +17,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import fit.asta.health.common.address.ui.addressRoute
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.navigateToWebView
 import fit.asta.health.common.ui.webView
+import fit.asta.health.feature.address.addressRoute
 import fit.asta.health.feature.auth.AUTH_GRAPH_ROUTE
 import fit.asta.health.feature.auth.authRoute
 import fit.asta.health.feature.auth.navigateToAuth
@@ -101,7 +101,7 @@ fun MainNavHost(isConnected: Boolean) {
 
         settingScreens(navController)
         feedbackRoute(navController)
-        addressRoute(navController)
+        addressRoute(navController::popBackStack)
 
         subscriptionRoute(
             onBackPress = navController::popBackStack,

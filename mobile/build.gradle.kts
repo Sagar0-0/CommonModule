@@ -7,9 +7,7 @@ plugins {
     id("asta.android.hilt")
     id("com.google.devtools.ksp")
     id("kotlin-parcelize")
-    id("com.google.protobuf")
     id("asta.android.application.firebase")
-    id("asta.gms.application")
 }
 
 android {
@@ -111,38 +109,26 @@ android {
     }
 }
 
-protobuf {
-    protoc {
-        artifact = libs.protobuf.protoc.get().toString()
-    }
-    generateProtoTasks {
-        all().forEach { task ->
-            task.builtins {
-                register("java") {
-                    option("lite")
-                }
-                register("kotlin") {
-                    option("lite")
-                }
-            }
-        }
-    }
-}
-
 dependencies {
 
     implementation(project(":core:common"))
     implementation(project(":core:network"))
     implementation(project(":core:datastore"))
+
     implementation(project(":chartLibrary"))
+
+    implementation(project(":data:auth"))
+    implementation(project(":data:payment"))
+    implementation(project(":data:address"))
+
     implementation(project(":feature:subscription"))
     implementation(project(":feature:referral"))
     implementation(project(":feature:wallet"))
     implementation(project(":feature:payment"))
     implementation(project(":feature:auth"))
     implementation(project(":feature:onboarding"))
-    implementation(project(":data:auth"))
-    implementation(project(":data:payment"))
+    implementation(project(":feature:address"))
+
 
     // Spotify App remote Dependency
     implementation(fileTree(mapOf("include" to listOf("*.jar", "*.aar"), "dir" to "libs")))
@@ -186,7 +172,6 @@ dependencies {
     //Datastore
     implementation(libs.androidx.datastore.core)
     implementation(libs.androidx.datastore.preferences)
-    implementation(libs.protobuf.kotlin.lite)
 
     //Jetpack Compose - Material theme components
     implementation(libs.androidx.material3)

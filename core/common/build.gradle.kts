@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.asta.android.hilt)
     alias(libs.plugins.asta.android.library.compose)
     id("kotlin-parcelize")
+    id("asta.android.feature")
 }
 
 android {
@@ -33,9 +34,6 @@ dependencies {
     implementation(libs.androidx.ui.android)
     implementation(libs.androidx.navigation.common.ktx)
     implementation(libs.androidx.navigation.runtime.ktx)
-    testImplementation(libs.junit4)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.test.espresso.core)
 
     //Jetpack Compose
     debugImplementation(libs.androidx.compose.ui.tooling)
