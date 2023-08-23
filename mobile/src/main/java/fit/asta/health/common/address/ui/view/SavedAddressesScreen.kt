@@ -2,7 +2,6 @@ package fit.asta.health.common.address.ui.view
 
 import android.content.Intent
 import android.location.Address
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background

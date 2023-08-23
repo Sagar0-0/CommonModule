@@ -3,50 +3,83 @@ package fit.asta.health.scheduler.services
 import android.content.Context
 import android.util.Log
 import androidx.hilt.work.HiltWorker
-import androidx.work.Worker
+import androidx.work.Constraints
+import androidx.work.CoroutineWorker
+import androidx.work.ForegroundInfo
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.scheduler.data.api.net.scheduler.Meta
 import fit.asta.health.scheduler.data.api.net.tag.Data
 import fit.asta.health.scheduler.data.db.entity.TagEntity
 import fit.asta.health.scheduler.data.repo.AlarmBackendRepo
 import fit.asta.health.scheduler.data.repo.AlarmLocalRepo
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalTime
 
 @HiltWorker
 class SchedulerWorker @AssistedInject constructor(
-    @Assisted context: Context,
-    @Assisted params: WorkerParameters,
+    @Assisted private val appContext: Context,
+    @Assisted workerParams: WorkerParameters,
     private val alarmLocalRepo: AlarmLocalRepo,
     private val backendRepo: AlarmBackendRepo
-) : Worker(context, params) {
-    override fun doWork(): Result {
-        CoroutineScope(Dispatchers.IO).launch {
-            Log.d("TAGTAG", "doWork:start ")
-            syncAlarmLocal()
-            syncServerWithLocal()
-            syncTagsData()
-        }
-        return Result.success()
+) : CoroutineWorker(appContext, workerParams) {
+    override suspend fun getForegroundInfo(): ForegroundInfo =
+        appContext.syncForegroundInfo()
+
+    override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
+
+        Log.d("TAGTAG", "doWork:start ")
+        syncAlarmLocal()
+        syncTagsData()
+        Result.success()
     }
 
     private suspend fun syncAlarmLocal() {
-        alarmLocalRepo.getAllAlarmList().let {
-            Log.d("TAGTAG", "doWork:noidfromserver alarm  ")
-            it.filter { alarms -> alarms.idFromServer.isEmpty() }.forEach { alarmEntity ->
-                val result = withContext(Dispatchers.Default) {
-                    backendRepo.updateScheduleDataOnBackend(schedule = alarmEntity)
-                }
-                when (result) {
-                    is ResponseState.Success -> {
-                        if (result.data.data.flag) {
-                            val alarm = alarmEntity.copy(idFromServer = result.data.data.id)
-                            alarmLocalRepo.insertAlarm(alarm)
-                            Log.d("TAGTAG", "doWork:noidfromserver alarm $alarm")
+        alarmLocalRepo.getAllAlarmList()?.let {
+            Log.d("TAGTAG", "doWork:sync alarm  ")
+            it.forEach { entity ->
+                when (entity.meta.sync) {
+                    1 -> {//update
+                        val result = withContext(Dispatchers.Default) {
+                            backendRepo.updateScheduleDataOnBackend(schedule = entity)
+                        }
+                        when (result) {
+                            is ResponseState.Success -> {
+                                if (result.data.data.flag) {
+                                    val alarm = entity.copy(
+                                        idFromServer = result.data.data.id,
+                                        meta = Meta(
+                                            cBy = entity.meta.cBy,
+                                            cDate = entity.meta.cDate,
+                                            sync = 0,
+                                            uDate = LocalTime.now().toString()
+                                        )
+                                    )
+                                    alarmLocalRepo.insertAlarm(alarm)
+                                    Log.d("TAGTAG", "doWork:noidfromserver alarm $alarm")
+                                }
+                            }
+
+                            else -> {}
+                        }
+                    }
+
+                    2 -> { // delete
+                        val result = withContext(Dispatchers.Default) {
+                            backendRepo.deleteScheduleDataFromBackend(entity.idFromServer)
+                        }
+                        when (result) {
+                            is ResponseState.Success -> {
+                                alarmLocalRepo.deleteAlarm(entity)
+                            }
+
+                            else -> {}
                         }
                     }
 
@@ -56,36 +89,6 @@ class SchedulerWorker @AssistedInject constructor(
         }
     }
 
-    private suspend fun syncServerWithLocal() {
-        alarmLocalRepo.getAllSyncData().let {
-            Log.d("TAGTAG", "doWork: alarm ")
-            it.forEach { alarmSync ->
-                var alarm = alarmLocalRepo.getAlarm(alarmId = alarmSync.alarmId)
-                alarm?.let { alarmEntity ->
-                    val result = withContext(Dispatchers.Default) {
-                        backendRepo.updateScheduleDataOnBackend(schedule = alarmEntity)
-                    }
-                    when (result) {
-                        is ResponseState.Success -> {
-                            if (result.data.data.flag) {
-                                alarm = alarmEntity.copy(idFromServer = result.data.data.id)
-                                alarmLocalRepo.insertAlarm(alarm!!)
-                                alarmLocalRepo.deleteSyncData(alarmSync)
-                                Log.d("TAGTAG", "doWork: alarm $alarm")
-                            }
-                        }
-
-                        else -> {}
-                    }
-                }
-                if (alarm == null) {
-                    Log.d("TAGTAG", "doWork: alarm delete")
-                    backendRepo.deleteScheduleDataFromBackend(alarmSync.scheduleId)
-                    alarmLocalRepo.deleteSyncData(alarmSync)
-                }
-            }
-        }
-    }
 
     private suspend fun syncTagsData() {
         alarmLocalRepo.getAllTags().collect {
@@ -112,6 +115,28 @@ class SchedulerWorker @AssistedInject constructor(
                 selected = false
             )
         )
+    }
+
+    companion object {
+        private val SyncConstraints
+            get() = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+
+        /**
+         * Expedited one time work to sync data on app startup
+         */
+//        fun startUpSyncWork() = PeriodicWorkRequestBuilder<DelegatingWorker>(1, TimeUnit.HOURS)
+//            .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+//            .setConstraints(SyncConstraints)
+//            .setInputData(SchedulerWorker::class.delegatedData())
+//            .build()
+
+        fun startUpSyncWork() = OneTimeWorkRequestBuilder<DelegatingWorker>()
+            .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+            .setConstraints(SyncConstraints)
+            .setInputData(SchedulerWorker::class.delegatedData())
+            .build()
     }
 }
 

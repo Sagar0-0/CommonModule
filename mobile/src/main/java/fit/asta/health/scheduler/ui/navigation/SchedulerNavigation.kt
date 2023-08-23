@@ -43,7 +43,7 @@ fun NavGraphBuilder.schedulerNavigation(
                 aSEvent = { uiEvent ->
                     when (uiEvent) {
                         is AlarmSettingEvent.SetAlarmTime -> {
-                            schedulerViewModel.setAlarmTime(uiEvent.Time)
+                            schedulerViewModel.setAlarmTime(uiEvent.time)
                         }
 
                         is AlarmSettingEvent.SetWeek -> {
@@ -87,7 +87,7 @@ fun NavGraphBuilder.schedulerNavigation(
                         }
 
                         is AlarmSettingEvent.GotoTimeSettingScreen -> {
-                            schedulerViewModel.refreshStaticList()
+
                         }
 
                         is AlarmSettingEvent.Save -> {
@@ -137,18 +137,12 @@ fun NavGraphBuilder.schedulerNavigation(
         composable(route = AlarmSchedulerScreen.IntervalSettingsSelection.route) {
             val schedulerViewModel: SchedulerViewModel = it.sharedViewModel(navController)
             val timeSettingUiState by schedulerViewModel.timeSettingUiState.collectAsStateWithLifecycle()
-            val list by schedulerViewModel.variantIntervalsList.collectAsStateWithLifecycle()
             TimeSettingScreen(
-                list = list,
                 timeSettingUiState = timeSettingUiState,
                 tSEvent = { uiEvent ->
                     when (uiEvent) {
                         is TimeSettingEvent.SetSnooze -> {
                             schedulerViewModel.setSnoozeTime(uiEvent.time)
-                        }
-
-                        is TimeSettingEvent.SetDuration -> {
-                            schedulerViewModel.setPostNotificationDuration(uiEvent.time)
                         }
 
                         is TimeSettingEvent.SetAdvancedDuration -> {
@@ -159,28 +153,16 @@ fun NavGraphBuilder.schedulerNavigation(
                             schedulerViewModel.setPreNotificationStatus(uiEvent.choice)
                         }
 
-                        is TimeSettingEvent.RemindAtEndOfDuration -> {
-                            schedulerViewModel.setPostNotificationStatus(uiEvent.choice)
+                        is TimeSettingEvent.SetEndAlarm -> {
+                            schedulerViewModel.setEndAlarm(uiEvent.time)
                         }
 
-                        is TimeSettingEvent.SetStatus -> {
-                            schedulerViewModel.setIntervalStatus(uiEvent.choice)
+                        is TimeSettingEvent.SetStatusEndAlarm -> {
+                            schedulerViewModel.setStatusEndAlarm(uiEvent.choice)
                         }
 
-                        is TimeSettingEvent.SetVariantStatus -> {
-                            schedulerViewModel.setVariantStatus(uiEvent.choice)
-                        }
-
-                        is TimeSettingEvent.AddVariantInterval -> {
-                            schedulerViewModel.addVariantInterval(uiEvent.variantInterval)
-                        }
-
-                        is TimeSettingEvent.DeleteVariantInterval -> {
-                            schedulerViewModel.deleteVariantInterval(uiEvent.variantInterval)
-                        }
-
-                        is TimeSettingEvent.SetRepetitiveIntervals -> {
-                            schedulerViewModel.setRepetitiveIntervals(uiEvent.interval)
+                        is TimeSettingEvent.DeleteEndAlarm -> {
+                            schedulerViewModel.deleteEndAlarm()
                         }
 
                         is TimeSettingEvent.Save -> {

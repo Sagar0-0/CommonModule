@@ -259,9 +259,9 @@ dependencies {
 
     //Dagger Hilt
     implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
-    ksp(libs.hilt.ext.compiler)
-    implementation(libs.androidx.hilt.common)
+    kapt(libs.hilt.compiler)
+    kapt(libs.hilt.ext.compiler)
+//    implementation(libs.androidx.hilt.common)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.ext.work)
 
@@ -321,7 +321,7 @@ dependencies {
     implementation(libs.transformationlayout)
 
     //Work Manager
-    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.work.ktx)
 
     //Moshi
     implementation(libs.moshi.kotlin)

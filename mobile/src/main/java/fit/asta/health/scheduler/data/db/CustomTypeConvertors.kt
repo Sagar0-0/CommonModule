@@ -8,8 +8,8 @@ import fit.asta.health.scheduler.data.api.net.scheduler.Meta
 import fit.asta.health.scheduler.data.api.net.scheduler.Time
 import fit.asta.health.scheduler.data.api.net.scheduler.Tone
 import fit.asta.health.scheduler.data.api.net.scheduler.Vib
-import fit.asta.health.scheduler.data.api.net.scheduler.Wk
 import fit.asta.health.scheduler.data.api.net.tag.Data
+import fit.asta.health.scheduler.data.db.entity.Weekdays
 
 class CustomTypeConvertors {
     @TypeConverter
@@ -26,12 +26,6 @@ class CustomTypeConvertors {
     fun stringToVibrateItem(string: String): Vib =
         Gson().fromJson(string, Vib::class.java)
 
-    @TypeConverter
-    fun weekItemToString(weekItem: Wk): String = Gson().toJson(weekItem)
-
-    @TypeConverter
-    fun stringToWeekItem(string: String): Wk =
-        Gson().fromJson(string, Wk::class.java)
 
     @TypeConverter
     fun intervalItemToString(intervalItem: Ivl): String = Gson().toJson(intervalItem)
@@ -68,10 +62,10 @@ class CustomTypeConvertors {
     fun stringToTagItem(string: String): Data =
         Gson().fromJson(string, Data::class.java)
 
-//    @TypeConverter
-//    fun snoozeItemToString(snoozeItem: SnoozeItem): String = Gson().toJson(snoozeItem)
-//
-//    @TypeConverter
-//    fun stringToSnoozeItem(string: String): SnoozeItem =
-//        Gson().fromJson(string, SnoozeItem::class.java)
+    @TypeConverter
+    fun fromWeekdays(weekdays: Weekdays): String = Gson().toJson(weekdays)
+
+    @TypeConverter
+    fun toWeekdays(bits: String): Weekdays =
+        Gson().fromJson(bits, Weekdays::class.java)
 }

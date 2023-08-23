@@ -11,6 +11,9 @@
     <dist:module dist:instant="true" />
 
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission
+        android:name="android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -173,6 +176,7 @@
             android:configChanges="colorMode|density|fontScale|keyboard|keyboardHidden|layoutDirection|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode"
             android:exported="true" />
 
+
         <service
             android:name=".player.jetpack_audio.exo_player.MusicService"
             android:exported="true"
@@ -187,10 +191,11 @@
         <receiver android:name=".notify.receiver.AlarmReceiver" />
         <receiver android:name=".notify.receiver.SnoozeReceiver" />
         <receiver
-            android:name=".scheduler.ui.AlarmBroadcastReceiver"
+            android:name=".scheduler.services.AlarmBroadcastReceiver"
             android:directBootAware="true"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            tools:targetApi="n">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
@@ -209,21 +214,12 @@
         </service>
         <service
             android:name=".scheduler.services.AlarmService"
-            android:directBootAware="true" />
+            android:directBootAware="true"
+            tools:targetApi="n" />
         <service android:name=".scheduler.services.RescheduleAlarmService" />
         <service
             android:name=".tools.walking.work.CountStepsService"
             android:foregroundServiceType="location" />
-
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            android:exported="false">
-            <meta-data
-                android:name="androidx.work.WorkManagerInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
-        </provider>
     </application>
 
 </manifest>
