@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -23,12 +24,13 @@ import fit.asta.health.common.ui.webView
 import fit.asta.health.feature.auth.AUTH_GRAPH_ROUTE
 import fit.asta.health.feature.auth.authRoute
 import fit.asta.health.feature.auth.navigateToAuth
+import fit.asta.health.feature.onboarding.ONBOARDING_GRAPH_ROUTE
+import fit.asta.health.feature.onboarding.onboardingRoute
 import fit.asta.health.feedback.ui.feedbackRoute
 import fit.asta.health.main.view.HOME_GRAPH_ROUTE
 import fit.asta.health.main.view.homeScreen
 import fit.asta.health.main.view.navigateToHome
-import fit.asta.health.onboarding.ui.ONBOARDING_GRAPH_ROUTE
-import fit.asta.health.onboarding.ui.onboardingRoute
+import fit.asta.health.payment.PaymentActivity
 import fit.asta.health.profile.CreateProfileLayout
 import fit.asta.health.profile.ProfileContent
 import fit.asta.health.referral.referralRoute
@@ -57,6 +59,7 @@ fun MainNavHost(isConnected: Boolean) {
     }
 
     val mainViewModel: MainViewModel = hiltViewModel()
+    val context = LocalContext.current
 
     val startDestination = if (mainViewModel.isAuth()) {
         HOME_GRAPH_ROUTE
@@ -100,9 +103,16 @@ fun MainNavHost(isConnected: Boolean) {
         feedbackRoute(navController)
         addressRoute(navController)
 
-        subscriptionRoute(navController)
-        referralRoute(navController)
-        walletRoute(navController)
+        subscriptionRoute(
+            onBackPress = navController::popBackStack,
+            onLaunchPayments = { orderRequest, onSuccess ->
+                PaymentActivity.launch(context, orderRequest) {
+                    onSuccess()
+                }
+            }
+        )
+        referralRoute(navController::popBackStack)
+        walletRoute(navController::popBackStack)
         webView()
     }
 }

@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "fit.asta.health.feature.subscription"
+    namespace = "fit.asta.health.feature.onboarding"
 
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -24,11 +24,18 @@ android {
 
 dependencies {
 
-    implementation(project(":data:subscription"))
-    implementation(project(":data:payment"))
-    implementation(project(":data:auth"))
+    implementation(project(":data:onboarding"))
     implementation(project(":core:common"))
     implementation(project(":core:designsystem"))
+
+    //Jetpack Compose - Pager
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.androidx.paging.compose)
+
+    //Jetpack Compose - Paging
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicators)
+    implementation(libs.accompanist.coil)
 
 
     implementation(libs.androidx.navigation.compose)

@@ -30,6 +30,7 @@ class PrefManager
 @Inject constructor(
     private val userPreferences: DataStore<UserPreferences>,
     private val dataStore: DataStore<Preferences>
+
 ) {
     val userData: Flow<UserPreferencesData> = userPreferences.data.map {
         UserPreferencesData(
@@ -38,19 +39,6 @@ class PrefManager
             locationPermissionRejectedCount = it.locationPermissionRejectedCount,
             currentAddress = it.currentAddress
         )
-    }
-
-    suspend fun setOnboardingShown() {
-
-        try {
-            userPreferences.updateData {
-                it.copy {
-                    this.onboardingShown = true
-                }
-            }
-        } catch (ioException: IOException) {
-            Log.e("Pref", "Failed to update user preferences", ioException)
-        }
     }
 
     suspend fun setCurrentLocation(location: String) {

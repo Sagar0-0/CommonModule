@@ -4,7 +4,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
@@ -18,7 +17,7 @@ fun NavController.navigateToReferral(navOptions: NavOptions? = null) {
     this.navigate(REFERRAL_GRAPH_ROUTE, navOptions)
 }
 
-fun NavGraphBuilder.referralRoute(navController: NavHostController) {
+fun NavGraphBuilder.referralRoute(onBackPress: () -> Unit) {
     navigation(
         route = REFERRAL_GRAPH_ROUTE,
         startDestination = ReferralDestination.Share.route
@@ -33,7 +32,7 @@ fun NavGraphBuilder.referralRoute(navController: NavHostController) {
                 referralDataState = state.value,
                 applyCodeState = checkCodeState.value,
                 onCheckRefereeData = referralViewModel::applyCode,
-                onBackPress = navController::navigateUp,
+                onBackPress = onBackPress,
                 onTryAgain = referralViewModel::getData
             )
         }

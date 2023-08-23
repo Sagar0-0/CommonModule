@@ -3,8 +3,6 @@ package fit.asta.health.di
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.datastore.core.DataStore
-import androidx.datastore.core.DataStoreFactory
-import androidx.datastore.dataStoreFile
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
@@ -14,9 +12,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.HealthCareApp
-import fit.asta.health.UserPreferences
 import fit.asta.health.common.utils.CoroutineDispatcherProvider
-import fit.asta.health.common.utils.UserPreferencesSerializer
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,21 +23,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
-    @Provides
-    @Singleton
-    fun providesUserPreferencesDataStore(
-        @ApplicationContext context: Context,
-        @IODispatcher ioDispatcher: CoroutineDispatcher,
-        @ApplicationScope scope: CoroutineScope,
-        userPreferencesSerializer: UserPreferencesSerializer,
-    ): DataStore<UserPreferences> =
-        DataStoreFactory.create(
-            serializer = userPreferencesSerializer,
-            scope = CoroutineScope(scope.coroutineContext + ioDispatcher),
-        ) {
-            context.dataStoreFile("user_preferences.pb")
-        }
 
     @Provides
     @Singleton
