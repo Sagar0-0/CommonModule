@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -41,6 +42,8 @@ import com.dev.anirban.chartlibrary.linear.LinearChart
 import com.dev.anirban.chartlibrary.linear.colorconvention.LinearGridColorConvention
 import com.dev.anirban.chartlibrary.linear.data.LinearEmojiData
 import com.dev.anirban.chartlibrary.linear.data.LinearStringData
+import com.dev.anirban.chartlibrary.other.bmi.BmiChart
+import com.dev.anirban.chartlibrary.other.bmi.data.BmiData
 import com.dev.anirban.chartlibrary.util.ChartPoint
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
@@ -53,6 +56,7 @@ import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
 import fit.asta.health.navigation.track.ui.util.TrackingNetworkCall
 import java.text.DecimalFormat
+import kotlin.math.abs
 
 @Composable
 fun TrackStepsScreenControl(
@@ -258,10 +262,50 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         }
 
 
-        // TODO :- BMI Chart Card needs to be made here
+        // BMI Chart Data
+        stepsTrackData.bmiData?.let {
 
+            val idealWeight = DecimalFormat("#.##").format(it.idealWgt)
+            val weight = DecimalFormat("#.##").format(it.weight)
+            val difference = DecimalFormat("#.##").format(abs(it.weight - it.idealWgt))
 
-        // TODO :- BMI Line Chart Card Composable needs to be implemented
+            item {
+                TrackingChartCard {
+                    Column {
+                        BmiChart.BMIChart(
+                            bmiData = BmiData(
+                                readingValue = ChartPoint(it.bmi),
+                                idealWeight = "$idealWeight ${it.weightUnit}",
+                                weight = "$weight ${it.weightUnit}",
+                                bmiUnit = it.unit
+                            )
+                        )
+
+                        // Text to be shown Under the Chart
+                        val text = if (it.weight > it.idealWgt)
+                            "You need to lose $difference ${it.weightUnit} to reach healthy BMI around " +
+                                    "${DecimalFormat("#.##").format(it.idealBmi)} ${it.unit}"
+                        else if (it.weight == it.idealWgt)
+                            "You are at a healthy BMI"
+                        else
+                            "You need to gain $difference ${it.weightUnit} to reach healthy BMI around " +
+                                    "${DecimalFormat("#.##").format(it.idealBmi)} ${it.unit}"
+
+                        // Text Composable under BMI Chart
+                        Text(
+                            text = text,
+
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp),
+
+                            maxLines = 2,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.W400
+                        )
+                    }
+                }
+            }
+        }
 
 
         // Speed Card Composable

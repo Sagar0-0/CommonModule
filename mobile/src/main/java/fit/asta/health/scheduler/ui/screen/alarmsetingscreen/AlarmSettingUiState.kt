@@ -1,23 +1,16 @@
 package fit.asta.health.scheduler.ui.screen.alarmsetingscreen
 
+import fit.asta.health.scheduler.data.db.entity.Weekdays
 import fit.asta.health.scheduler.util.VibrationPattern
 
 
 data class ASUiState(
     //time
-    var timeHours: String = "0",
-    var timeMidDay: Boolean = false,
-    var timeMinutes: String = "0",
+    var timeHours: Int = 0,
+    var timeMinutes: Int = 0,
 
     //week
-    var friday: Boolean = false,
-    var monday: Boolean = false,
-    var saturday: Boolean = false,
-    var sunday: Boolean = false,
-    var thursday: Boolean = false,
-    var tuesday: Boolean = false,
-    var wednesday: Boolean = false,
-    var recurring: Boolean = false,
+    val week: Weekdays = Weekdays.NONE,
 
     //status
     var status: Boolean = false,
@@ -59,14 +52,14 @@ data class ASUiState(
 
 data class IvlUiState(
     val advancedReminder: AdvUiState = AdvUiState(),
-    val duration: Int = 0,
-    val isRemainderAtTheEnd: Boolean = false,
-    val repeatableInterval: RepUiState = RepUiState(),
     val snoozeTime: Int = 5,
-    val staticIntervals: List<StatUiState> = emptyList(),
-    val status: Boolean = false,
-    val variantIntervals: List<StatUiState> = emptyList(),
-    val isVariantInterval: Boolean = false
+    val statusEnd: Boolean = false,
+    val endAlarmTime: TimeUi = TimeUi()
+)
+
+data class TimeUi(
+    var hours: Int = 0,
+    var minutes: Int = 0
 )
 
 data class AdvUiState(
@@ -74,25 +67,10 @@ data class AdvUiState(
     val time: Int = 0
 )
 
-data class RepUiState(
-    val time: Int = 0,
-    val unit: String = ""
-)
-
-
 data class ToneUiState(
     val name: String = "",
     val type: Int = 1,
     val uri: String = ""
-)
-
-
-data class StatUiState(
-    val hours: String = "",
-    val midDay: Boolean = false,
-    val minutes: String = "",
-    val name: String = "",
-    val id: Int = 0
 )
 
 data class AMPMHoursMin(

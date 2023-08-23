@@ -338,7 +338,7 @@ private fun MainNavHost(
                                 }
 
                                 is HomeEvent.DeleteAlarm -> {
-                                    todayPlanViewModel.deleteAlarm(uiEvent.alarm)
+                                    todayPlanViewModel.deleteAlarm(uiEvent.alarm, uiEvent.context)
                                 }
 
                                 is HomeEvent.RemoveAlarm -> {
@@ -350,7 +350,7 @@ private fun MainNavHost(
                                 }
 
                                 is HomeEvent.SkipAlarm -> {
-                                    todayPlanViewModel.skipAlarm(uiEvent.alarm)
+                                    todayPlanViewModel.skipAlarm(uiEvent.alarm, uiEvent.context)
                                 }
 
                                 is HomeEvent.SetDefaultSchedule -> {

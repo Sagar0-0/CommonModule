@@ -15,10 +15,7 @@ import fit.asta.health.scheduler.data.repo.AlarmBackendRepo
 import fit.asta.health.scheduler.data.repo.AlarmBackendRepoImp
 import fit.asta.health.scheduler.data.repo.AlarmLocalRepo
 import fit.asta.health.scheduler.data.repo.AlarmLocalRepoImp
-import fit.asta.health.scheduler.data.repo.AlarmUtils
-import fit.asta.health.scheduler.data.repo.AlarmUtilsImp
 import okhttp3.OkHttpClient
-import java.util.Calendar
 import javax.inject.Singleton
 
 
@@ -57,16 +54,16 @@ object SchedulerModule {
         return context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     }
 
-    @Singleton
-    @Provides
-    fun provideAlarmUtils(
-        @ApplicationContext context: Context,
-        alarmManager: AlarmManager
-    ): AlarmUtils {
-        return AlarmUtilsImp(
-            alarmManager = alarmManager,
-            context = context,
-            calendar = Calendar.getInstance()
-        )
-    }
+//    @Singleton
+//    @Provides
+//    fun provideAlarmUtils(
+//        @ApplicationContext context: Context,
+//        alarmManager: AlarmManager
+//    ): AlarmUtils {
+//        return AlarmUtilsImp(
+//            alarmManager = alarmManager,
+//            context = context,
+//            calendar = Calendar.getInstance()
+//        )
+//    }
 }

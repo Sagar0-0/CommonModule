@@ -1,5 +1,6 @@
 package fit.asta.health.navigation.today.ui.vm
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
@@ -11,11 +12,11 @@ import fit.asta.health.common.utils.getCurrentDate
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.navigation.today.domain.model.TodayData
 import fit.asta.health.navigation.today.ui.view.Event
+import fit.asta.health.scheduler.data.api.net.scheduler.Meta
 import fit.asta.health.scheduler.data.db.entity.AlarmEntity
-import fit.asta.health.scheduler.data.db.entity.AlarmSync
 import fit.asta.health.scheduler.data.repo.AlarmBackendRepo
 import fit.asta.health.scheduler.data.repo.AlarmLocalRepo
-import fit.asta.health.scheduler.data.repo.AlarmUtils
+import fit.asta.health.scheduler.ref.newalarm.StateManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -29,7 +30,7 @@ class TodayPlanViewModel @Inject constructor(
     private val alarmLocalRepo: AlarmLocalRepo,
     private val alarmBackendRepo: AlarmBackendRepo,
     private val prefManager: PrefManager,
-    private val alarmUtils: AlarmUtils
+    private val stateManager: StateManager
 ) : ViewModel() {
     private val _alarmListMorning = mutableStateListOf<AlarmEntity>()
     val alarmListMorning = MutableStateFlow(_alarmListMorning)
@@ -57,7 +58,7 @@ class TodayPlanViewModel @Inject constructor(
     }
 
 
-    fun setAlarmPreferences(value: Int) {
+    fun setAlarmPreferences(value: Long) {
         viewModelScope.launch {
             prefManager.setPreferences(
                 key = "alarm",
@@ -121,23 +122,32 @@ class TodayPlanViewModel @Inject constructor(
         }
     }
 
-    fun deleteAlarm(alarmItem: AlarmEntity) {
+    fun deleteAlarm(alarmItem: AlarmEntity, context: Context) {
         viewModelScope.launch {
-            if (alarmItem.status) alarmUtils.cancelScheduleAlarm(alarmItem, true)
-            alarmLocalRepo.deleteAlarm(alarmItem)
+            if (alarmItem.status) stateManager.deleteAlarm(context, alarmItem)
             if (alarmItem.idFromServer.isNotEmpty()) {
-                alarmLocalRepo.insertSyncData(
-                    AlarmSync(alarmId = alarmItem.alarmId, scheduleId = alarmItem.idFromServer)
+                alarmLocalRepo.updateAlarm(
+                    alarmItem.copy(
+                        status = false,
+                        meta = Meta(
+                            cBy = alarmItem.meta.cBy,
+                            cDate = alarmItem.meta.cDate,
+                            sync = 2,
+                            uDate = LocalTime.now().toString()
+                        )
+                    )
                 )
+            } else {
+                alarmLocalRepo.deleteAlarm(alarmItem)
             }
             Log.d("today", "deleteAlarm: done")
         }
     }
 
-    fun skipAlarm(alarmItem: AlarmEntity) {
+    fun skipAlarm(alarmItem: AlarmEntity, context: Context) {
         val skipDate = LocalDate.now().dayOfMonth
         viewModelScope.launch {
-            if (alarmItem.status) alarmUtils.cancelScheduleAlarm(alarmItem, true)
+            if (alarmItem.status) stateManager.skipAlarmTodayOnly(context, alarmItem)
             val alarm = alarmItem.copy(status = false, skipDate = skipDate)
             alarmLocalRepo.updateAlarm(alarm)
             Log.d("today", "skipAlarm: done")
@@ -154,53 +164,23 @@ class TodayPlanViewModel @Inject constructor(
                 Log.d("alarm", "getAlarms: $list,day ${today}")
                 list.forEach {
                     if (it.status && it.skipDate != LocalDate.now().dayOfMonth) {
-                        val today = if (it.week.recurring) {
-                            when (today) {
-                                Calendar.MONDAY -> {
-                                    it.week.monday
-                                }
-
-                                Calendar.TUESDAY -> {
-                                    it.week.tuesday
-                                }
-
-                                Calendar.WEDNESDAY -> {
-                                    it.week.wednesday
-                                }
-
-                                Calendar.THURSDAY -> {
-                                    it.week.thursday
-                                }
-
-                                Calendar.FRIDAY -> {
-                                    it.week.friday
-                                }
-
-                                Calendar.SATURDAY -> {
-                                    it.week.saturday
-                                }
-
-                                Calendar.SUNDAY -> {
-                                    it.week.sunday
-                                }
-
-                                else -> false
-                            }
+                        val today = if (it.daysOfWeek.isRepeating) {
+                            it.daysOfWeek.isBitOn(today)
                         } else true
                         if (today) {
-                            when (it.time.hours.toInt()) {
+                            when (it.time.hours) {
                                 in 0..2 -> {
-                                    if (it.time.minutes.toInt() > 0) _alarmListMorning.add(it)
+                                    if (it.time.minutes > 0) _alarmListMorning.add(it)
                                     else _alarmListEvening.add(it)
                                 }
 
                                 in 3..12 -> {
-                                    if (it.time.minutes.toInt() > 0) _alarmListAfternoon.add(it)
+                                    if (it.time.minutes > 0) _alarmListAfternoon.add(it)
                                     else _alarmListMorning.add(it)
                                 }
 
                                 in 13..16 -> {
-                                    if (it.time.minutes.toInt() > 0) _alarmListEvening.add(it)
+                                    if (it.time.minutes > 0) _alarmListEvening.add(it)
                                     else _alarmListAfternoon.add(it)
                                 }
 
@@ -221,38 +201,8 @@ class TodayPlanViewModel @Inject constructor(
                 _alarmListNextDay.clear()
                 list.forEach {
                     if (it.status) {
-                        val nextDay = if (it.week.recurring) {
-                            when (today) {
-                                Calendar.MONDAY -> {
-                                    it.week.tuesday
-                                }
-
-                                Calendar.TUESDAY -> {
-                                    it.week.wednesday
-                                }
-
-                                Calendar.WEDNESDAY -> {
-                                    it.week.thursday
-                                }
-
-                                Calendar.THURSDAY -> {
-                                    it.week.friday
-                                }
-
-                                Calendar.FRIDAY -> {
-                                    it.week.saturday
-                                }
-
-                                Calendar.SATURDAY -> {
-                                    it.week.sunday
-                                }
-
-                                Calendar.SUNDAY -> {
-                                    it.week.monday
-                                }
-
-                                else -> false
-                            }
+                        val nextDay = if (it.daysOfWeek.isRepeating) {
+                            it.daysOfWeek.isBitOn(today + 1)
                         } else false
                         if (nextDay) {
                             _alarmListNextDay.add(it)

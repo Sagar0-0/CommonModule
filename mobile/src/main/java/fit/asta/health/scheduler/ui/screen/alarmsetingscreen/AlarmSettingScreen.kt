@@ -115,15 +115,17 @@ fun AlarmSettingScreen(
             ) {
                 DigitalDemo(
                     time = AMPMHoursMin(
-                        hours = alarmSettingUiState.timeHours.toInt(),
-                        minutes = alarmSettingUiState.timeMinutes.toInt(),
-                        dayTime = if (alarmSettingUiState.timeMidDay) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
+                        hours = if (alarmSettingUiState.timeHours > 12) {
+                            alarmSettingUiState.timeHours - 12
+                        } else alarmSettingUiState.timeHours,
+                        minutes = alarmSettingUiState.timeMinutes,
+                        dayTime = if (alarmSettingUiState.timeHours >= 12) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
                     )
                 ) {
                     currentBottomSheet = TIME
                     openSheet()
                 }
-                RepeatAlarm(alarmSettingUiState = alarmSettingUiState,
+                RepeatAlarm(weekdays = alarmSettingUiState.week,
                     onDaySelect = { aSEvent(AlarmSettingEvent.SetWeek(it)) })
                 OnlyToggleButton(imageIcon = if (alarmSettingUiState.status) Icons.Default.AlarmOn else Icons.Default.AlarmOff,
                     title = stringResource(id = R.string.status),
@@ -294,11 +296,11 @@ fun AlarmCreateBtmSheetLayout(
         TIME -> {
             TimePickerBottomSheet(
                 time = AMPMHoursMin(
-                    hours = if (alarmSettingUiState.timeHours.toInt() > 12) {
-                        alarmSettingUiState.timeHours.toInt() - 12
-                    } else alarmSettingUiState.timeHours.toInt(),
-                    minutes = alarmSettingUiState.timeMinutes.toInt(),
-                    dayTime = if (alarmSettingUiState.timeMidDay) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
+                    hours = if (alarmSettingUiState.timeHours > 12) {
+                        alarmSettingUiState.timeHours - 12
+                    } else alarmSettingUiState.timeHours,
+                    minutes = alarmSettingUiState.timeMinutes,
+                    dayTime = if (alarmSettingUiState.timeHours >= 12) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
                 ),
                 onSave = {
                     closeSheet()
@@ -306,9 +308,8 @@ fun AlarmCreateBtmSheetLayout(
                     aSEvent(
                         AlarmSettingEvent.SetAlarmTime(
                             Time(
-                                hours = time.hour.toString(),
-                                midDay = it.dayTime != AMPMHoursMin.DayTime.AM,
-                                minutes = it.minutes.toString()
+                                hours = time.hour,
+                                minutes = it.minutes
                             )
                         )
                     )

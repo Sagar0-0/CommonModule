@@ -26,13 +26,14 @@ class AndroidHiltConventionPlugin : Plugin<Project> {
                 apply("dagger.hilt.android.plugin")
                 // ksp must go last to avoid build warnings.
                 // See: https://stackoverflow.com/questions/70550883/warning-the-following-options-were-not-recognized-by-any-processor-dagger-f
-                apply("com.google.devtools.ksp")
+//                apply("com.google.devtools.ksp")
+                apply("org.jetbrains.kotlin.kapt")
             }
 
             dependencies {
                 "implementation"(libs.findLibrary("hilt.android").get())
-                "ksp"(libs.findLibrary("hilt.compiler").get())
-                "kspAndroidTest"(libs.findLibrary("hilt.compiler").get())
+                "kapt"(libs.findLibrary("hilt.compiler").get())
+                "kaptAndroidTest"(libs.findLibrary("hilt.compiler").get())
             }
 
         }

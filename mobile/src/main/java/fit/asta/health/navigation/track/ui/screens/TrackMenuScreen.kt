@@ -40,6 +40,9 @@ import com.dev.anirban.chartlibrary.circular.charts.CircularDonutChartRow
 import com.dev.anirban.chartlibrary.circular.data.CircularDonutListData
 import com.dev.anirban.chartlibrary.circular.data.CircularTargetDataBuilder
 import com.dev.anirban.chartlibrary.circular.decoration.CircularDecoration
+import com.dev.anirban.chartlibrary.other.bmi.BmiChart
+import com.dev.anirban.chartlibrary.other.bmi.data.BmiData
+import com.dev.anirban.chartlibrary.util.ChartPoint
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.theme.spacing
@@ -51,6 +54,8 @@ import fit.asta.health.navigation.track.ui.util.TrackOption
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
 import fit.asta.health.navigation.track.ui.util.TrackingNetworkCall
+import java.text.DecimalFormat
+import kotlin.math.abs
 
 /**
  * This Screen shows all the Statistics Options that are there in the App for the user to choose
@@ -192,8 +197,50 @@ private fun TrackMenuSuccessScreen(
             }
         }
 
+        // BMI Chart Data
+        homeMenuData.bmi?.let {
 
-        // TODO :- BMI Chart Details Card
+            val idealWeight = DecimalFormat("#.##").format(it.idealWgt)
+            val weight = DecimalFormat("#.##").format(it.weight)
+            val difference = DecimalFormat("#.##").format(abs(it.weight - it.idealWgt))
+
+            item {
+                TrackingChartCard {
+                    Column {
+                        BmiChart.BMIChart(
+                            bmiData = BmiData(
+                                readingValue = ChartPoint(it.bmi),
+                                idealWeight = "$idealWeight ${it.weightUnit}",
+                                weight = "$weight ${it.weightUnit}",
+                                bmiUnit = it.unit
+                            )
+                        )
+
+                        // Text to be shown Under the Chart
+                        val text = if (it.weight > it.idealWgt)
+                            "You need to lose $difference ${it.weightUnit} to reach healthy BMI around " +
+                                    "${DecimalFormat("#.##").format(it.idealBmi)} ${it.unit}"
+                        else if (it.weight == it.idealWgt)
+                            "You are at a healthy BMI"
+                        else
+                            "You need to gain $difference ${it.weightUnit} to reach healthy BMI around " +
+                                    "${DecimalFormat("#.##").format(it.idealBmi)} ${it.unit}"
+
+                        // Text Composable under BMI Chart
+                        Text(
+                            text = text,
+
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp),
+
+                            maxLines = 2,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.W400
+                        )
+                    }
+                }
+            }
+        }
 
 
         // All The Tools Data is drawn here

@@ -5,8 +5,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -14,19 +12,19 @@ import fit.asta.health.R
 import fit.asta.health.common.ui.components.*
 import fit.asta.health.common.ui.components.generic.AppScaffold
 import fit.asta.health.common.ui.components.generic.AppTopBar
-import fit.asta.health.scheduler.ui.components.AddVariantIntervalBottomSheet
 import fit.asta.health.scheduler.ui.components.SettingsLayout
 import fit.asta.health.scheduler.ui.components.SnoozeBottomSheet
-import fit.asta.health.scheduler.ui.components.TimePickerDemo
+import fit.asta.health.scheduler.ui.components.TimePickerBottomSheet
+import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.AMPMHoursMin
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.IvlUiState
-import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.StatUiState
+import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.TimeUi
 import fit.asta.health.scheduler.ui.screen.timesettingscreen.TimeSettingCreateBottomSheetTypes.*
+import fit.asta.health.tools.breathing.model.domain.mapper.convert12hrTo24hr
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TimeSettingScreen(
-    list: SnapshotStateList<StatUiState>,
     timeSettingUiState: IvlUiState,
     tSEvent: (TimeSettingEvent) -> Unit,
     navBack: () -> Unit
@@ -48,7 +46,6 @@ fun TimeSettingScreen(
         content = { paddingValues ->
             SettingsLayout(
                 timeSettingUiState = timeSettingUiState,
-                variantIntervals = list,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
@@ -61,27 +58,13 @@ fun TimeSettingScreen(
                     currentBottomSheet = Advanced
                     openSheet()
                 },
-                onNavigateDuration = {
-                    currentBottomSheet = Duration
+                onAdvancedStatus = { tSEvent(TimeSettingEvent.SetAdvancedStatus(it)) },
+                onEndAlarm = {
+                    currentBottomSheet = EndAlarm
                     openSheet()
                 },
-                onNavigateRepetitiveInterval = {
-                    currentBottomSheet = RepetitiveInterval
-                    openSheet()
-                },
-                onChoice = { tSEvent(TimeSettingEvent.SetAdvancedStatus(it)) },
-                onRemainderAtEnd = {
-                    tSEvent(TimeSettingEvent.RemindAtEndOfDuration(it))
-                },
-                onVariantStateChange = {
-                    tSEvent(TimeSettingEvent.SetVariantStatus(it))
-                },
-                onAddVariantInterval = {
-                    currentBottomSheet = VariantInterval
-                    openSheet()
-                },
-                onDelete = { tSEvent(TimeSettingEvent.DeleteVariantInterval(it)) },
-                onStateChange = { tSEvent(TimeSettingEvent.SetStatus(it)) }
+                onDelete = { tSEvent(TimeSettingEvent.DeleteEndAlarm) },
+                onEndStatus = { tSEvent(TimeSettingEvent.SetStatusEndAlarm(it)) },
             )
         },
         topBar = {
@@ -108,10 +91,9 @@ fun TimeSettingScreen(
 }
 
 enum class TimeSettingCreateBottomSheetTypes {
-    SnoozeSelection, RepetitiveInterval, Advanced, Duration, VariantInterval
+    SnoozeSelection, Advanced, EndAlarm
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TimeSettingCreateBtmSheetLayout(
     tSEvent: (TimeSettingEvent) -> Unit,
@@ -126,34 +108,29 @@ fun TimeSettingCreateBtmSheetLayout(
             })
         }
 
-        Duration -> {
-            SnoozeBottomSheet(onNavigateBack = { closeSheet() }, onValueChange = {
-                tSEvent(TimeSettingEvent.SetDuration(it))
-            })
-        }
-
         SnoozeSelection -> {
             SnoozeBottomSheet(onNavigateBack = { closeSheet() }, onValueChange = {
                 tSEvent(TimeSettingEvent.SetSnooze(it))
             })
         }
 
-        RepetitiveInterval -> {
-            TimePickerDemo(onNavigateBack = { closeSheet() }, onValueChange = {},
-                onSave = {
-                    tSEvent(TimeSettingEvent.SetRepetitiveIntervals(it, context))
-                    closeSheet()
-                })
-        }
 
-        VariantInterval -> {
+        EndAlarm -> {
             Column(modifier = Modifier.fillMaxWidth()) {
-                AddVariantIntervalBottomSheet(
-                    onNavigateBack = { closeSheet() },
+                TimePickerBottomSheet(
+                    time = AMPMHoursMin(),
                     onSave = {
                         closeSheet()
-                        tSEvent(TimeSettingEvent.AddVariantInterval(it, context))
-                    }
+                        val time = it.convert12hrTo24hr()
+                        tSEvent(
+                            TimeSettingEvent.SetEndAlarm(
+                                TimeUi(
+                                    hours = time.hour,
+                                    minutes = it.minutes
+                                )
+                            )
+                        )
+                    }, onCancel = closeSheet
                 )
             }
         }

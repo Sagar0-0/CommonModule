@@ -2,7 +2,6 @@ package fit.asta.health.scheduler.data.repo
 
 import fit.asta.health.scheduler.data.db.AlarmDao
 import fit.asta.health.scheduler.data.db.entity.AlarmEntity
-import fit.asta.health.scheduler.data.db.entity.AlarmSync
 import fit.asta.health.scheduler.data.db.entity.TagEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -13,7 +12,7 @@ class AlarmLocalRepoImp(
         return alarmDao.getAll()
     }
 
-    override suspend fun getAlarm(alarmId: Int): AlarmEntity? {
+    override suspend fun getAlarm(alarmId: Long): AlarmEntity? {
         return alarmDao.getAlarm(alarmId)
     }
 
@@ -54,27 +53,7 @@ class AlarmLocalRepoImp(
         alarmDao.deleteAllTags()
     }
 
-    override suspend fun getAllSyncData(): List<AlarmSync> {
-        return alarmDao.getAllSyncData()
-    }
-
-    override suspend fun getAllAlarmList(): List<AlarmEntity> {
+    override suspend fun getAllAlarmList(): List<AlarmEntity>? {
         return alarmDao.getAllAlarm()
-    }
-
-    override suspend fun getSyncData(id: Int): AlarmSync? {
-       return alarmDao.getSyncData(id)
-    }
-
-    override suspend fun insertSyncData(alarmSync: AlarmSync) {
-       alarmDao.insertSyncData(alarmSync)
-    }
-
-    override suspend fun deleteAllSyncData() {
-        alarmDao.deleteAllSyncData()
-    }
-
-    override suspend fun deleteSyncData(alarmSync: AlarmSync) {
-        alarmDao.deleteSyncData(alarmSync)
     }
 }

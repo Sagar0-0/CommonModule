@@ -95,6 +95,7 @@ fun TodayContent(
     var deletedItem by remember { mutableStateOf<AlarmEntity?>(null) }
     var skipItem by remember { mutableStateOf<AlarmEntity?>(null) }
     var evenType by remember { mutableStateOf(Event.Morning) }
+    val context = LocalContext.current
 
     if (deleteDialog) {
         AlertDialogPopUp(
@@ -105,7 +106,7 @@ fun TodayContent(
                 deleteDialog = false
             },
             onDone = {
-                deletedItem?.let { hSEvent(HomeEvent.DeleteAlarm(it)) }
+                deletedItem?.let { hSEvent(HomeEvent.DeleteAlarm(it, context)) }
                 deleteDialog = false
             })
     }
@@ -118,7 +119,7 @@ fun TodayContent(
                 skipDialog = false
             },
             onDone = {
-                skipItem?.let { hSEvent(HomeEvent.SkipAlarm(it)) }
+                skipItem?.let { hSEvent(HomeEvent.SkipAlarm(it, context)) }
                 skipDialog = false
             })
     }

@@ -306,7 +306,7 @@
     <string name="this_will_make_sure_you_attempt_with_the_help_of_flashlight_sound_changes_vibration_etc">This will make sure you attempt with the help of flashlight, sound changes, vibration etc.</string>
     <string name="variant_intervals">Variant Intervals</string>
     <string name="snooze">Snooze</string>
-    <string name="advanced_reminder">Advanced Reminder</string>
+    <string name="advanced_reminder">Advanced \n Reminder</string>
     <string name="tags">Tags</string>
     <string name="add_tag">Add Tag</string>
     <string name="add_alarm_label">Add Alarm Label</string>
@@ -584,5 +584,20 @@
     <string name="wallet">Wallet</string>
     <string name="select_location">Select Location</string>
     <string name="logout_failed">Logout Failed</string>
+
+    // testing
+    <string name="action_dismiss">action dismiss</string>
+    <string name="label_notification">label notification</string>
+    <string name="action_snooze">action snooze</string>
+    <string name="default_label">default label</string>
+    <string name="alarm_alert_predismiss_title">alarm_alert_predismiss_title</string>
+    <string name="alarm_alert_dismiss_text">dismiss</string>
+    <string name="alarm_alert_snooze_text">Snooze</string>
+    <string name="alarm_missed_title">alarm missed</string>
+    <string name="day_concat">:</string>
+    <string name="end_alarm">Post Alarm</string>
+    <string name="sync_notification_channel_name">Sync</string>
+    <string name="sync_notification_channel_description">Background tasks for Asta</string>
+    // testing
 
 </resources>

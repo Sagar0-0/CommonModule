@@ -4,15 +4,15 @@ import com.google.gson.annotations.SerializedName
 
 data class BmiData(
     @SerializedName("bmi")
-    val bmi: Int,
+    val bmi: Float,
     @SerializedName("idealBmi")
-    val idealBmi: Double,
+    val idealBmi: Float,
     @SerializedName("idealWgt")
-    val idealWgt: Double,
+    val idealWgt: Float,
     @SerializedName("unit")
     val unit: String,
     @SerializedName("weight")
-    val weight: Int,
+    val weight: Float,
     @SerializedName("weight_unit")
     val weightUnit: String
 )

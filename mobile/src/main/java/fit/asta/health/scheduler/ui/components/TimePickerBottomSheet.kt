@@ -30,7 +30,7 @@ import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.AMPMHoursMin
 import fit.asta.health.scheduler.util.Constants.Companion.getTimeDifference
 import fit.asta.health.tools.breathing.model.domain.mapper.convert12hrTo24hr
-import java.lang.Math.abs
+import kotlin.math.abs
 
 @Composable
 fun TimePickerBottomSheet(
