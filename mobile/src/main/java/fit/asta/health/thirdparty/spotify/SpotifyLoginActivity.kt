@@ -25,9 +25,9 @@ import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
-import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
-import fit.asta.health.thirdparty.spotify.view.navigation.TopTabNavigation
-import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
+import fit.asta.health.thirdparty.spotify.ui.components.MusicStateControl
+import fit.asta.health.thirdparty.spotify.ui.navigation.TopTabNavigation
+import fit.asta.health.thirdparty.spotify.ui.viewmodel.SpotifyViewModelX
 
 @AndroidEntryPoint
 class SpotifyLoginActivity : ComponentActivity() {

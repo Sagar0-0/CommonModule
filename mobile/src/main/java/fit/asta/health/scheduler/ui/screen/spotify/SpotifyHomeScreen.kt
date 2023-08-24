@@ -26,10 +26,10 @@ import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.scheduler.ui.components.SpotifyHomeHeader
 import fit.asta.health.scheduler.ui.components.SpotifyMusicItem
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.ToneUiState
-import fit.asta.health.thirdparty.spotify.model.net.common.Album
-import fit.asta.health.thirdparty.spotify.model.net.common.Track
-import fit.asta.health.thirdparty.spotify.model.net.recently.SpotifyUserRecentlyPlayedModel
-import fit.asta.health.thirdparty.spotify.model.net.search.TrackList
+import fit.asta.health.thirdparty.spotify.data.model.common.Album
+import fit.asta.health.thirdparty.spotify.data.model.common.Track
+import fit.asta.health.thirdparty.spotify.data.model.recently.SpotifyUserRecentlyPlayedModel
+import fit.asta.health.thirdparty.spotify.data.model.search.TrackList
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 
 @Composable

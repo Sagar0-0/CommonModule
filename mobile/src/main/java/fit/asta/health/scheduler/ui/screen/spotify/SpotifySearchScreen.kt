@@ -34,7 +34,7 @@ import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.scheduler.ui.components.SearchBarUI
 import fit.asta.health.scheduler.ui.components.SpotifyMusicItem
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.ToneUiState
-import fit.asta.health.thirdparty.spotify.model.net.search.SpotifySearchModel
+import fit.asta.health.thirdparty.spotify.data.model.search.SpotifySearchModel
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 
 @Composable
