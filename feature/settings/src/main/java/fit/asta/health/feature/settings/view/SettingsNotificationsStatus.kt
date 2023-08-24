@@ -1,4 +1,4 @@
-package fit.asta.health.settings.data
+package fit.asta.health.feature.settings.view
 
 data class SettingsNotificationsStatus(
     val isAllNotificationOn: Boolean,
