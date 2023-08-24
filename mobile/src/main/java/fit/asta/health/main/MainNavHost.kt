@@ -162,7 +162,7 @@ fun MainNavHost(isConnected: Boolean) {
                         getImgUrl(context.getString(R.string.url_terms_of_use)),
                         StandardCharsets.UTF_8.toString()
                     )
-                    navController.navigate(Graph.WebView.route + "/$url")
+                    navController.navigateToWebView(url)
                 }
 
                 SettingsUiEvent.PRIVACY -> {
@@ -170,7 +170,7 @@ fun MainNavHost(isConnected: Boolean) {
                         getImgUrl(context.getString(R.string.url_privacy_policy)),
                         StandardCharsets.UTF_8.toString()
                     )
-                    navController.navigate(Graph.WebView.route + "/$url")
+                    navController.navigateToWebView(url)
                 }
 
                 SettingsUiEvent.VERSION -> {
