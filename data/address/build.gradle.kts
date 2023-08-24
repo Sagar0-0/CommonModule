@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.asta.android.library)
     alias(libs.plugins.asta.android.hilt)
+    alias(libs.plugins.asta.android.test.data)
 }
 
 android {
@@ -16,14 +17,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-        }
-    }
-    testOptions {
-        unitTests {
-            this.all {
-                it.useJUnitPlatform()
-            }
-            isIncludeAndroidResources = true
         }
     }
 }
@@ -42,10 +35,4 @@ dependencies {
 
     implementation(libs.play.services.maps)
     implementation(libs.play.services.location)
-
-    testImplementation(libs.mockk.android)
-    testImplementation(libs.turbine)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.mockwebserver)
-    testImplementation(libs.junit.jupiter)
 }

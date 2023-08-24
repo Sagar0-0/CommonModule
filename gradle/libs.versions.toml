@@ -352,6 +352,8 @@ asta-android-library = { id = "asta.android.library", version.ref = "astaPluginV
 asta-android-feature = { id = "asta.android.feature", version.ref = "astaPluginVer" }
 asta-android-library-jacoco = { id = "asta.android.library.jacoco", version.ref = "astaPluginVer" }
 asta-android-test = { id = "asta.android.test", version.ref = "astaPluginVer" }
+asta-android-test-data = { id = "asta.android.test.data", version.ref = "astaPluginVer" }
+asta-android-test-feature = { id = "asta.android.test.feature", version.ref = "astaPluginVer" }
 asta-android-hilt = { id = "asta.android.hilt", version.ref = "astaPluginVer" }
 asta-android-room = { id = "asta.android.room", version.ref = "astaPluginVer" }
 asta-android-application-firebase = { id = "asta.android.application.firebase", version.ref = "astaPluginVer" }

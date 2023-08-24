@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.asta.android.library)
     alias(libs.plugins.asta.android.hilt)
     alias(libs.plugins.asta.android.library.compose)
+    alias(libs.plugins.asta.android.test.feature)
 }
 
 android {
@@ -18,14 +19,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-        }
-    }
-    testOptions {
-        unitTests {
-            this.all {
-                it.useJUnitPlatform()
-            }
-            isIncludeAndroidResources = true
         }
     }
 }
@@ -57,13 +50,7 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.foundation.android)
     implementation(libs.androidx.material3)
-
-    testImplementation(libs.mockk.android)
-    testImplementation(libs.turbine)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.junit.jupiter)
 }

@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.asta.android.library)
     alias(libs.plugins.asta.android.hilt)
     alias(libs.plugins.asta.android.library.compose)
+    alias(libs.plugins.asta.android.test.feature)
 }
 
 android {
@@ -20,14 +21,6 @@ android {
             )
         }
     }
-    testOptions {
-        unitTests {
-            this.all {
-                it.useJUnitPlatform()
-            }
-            isIncludeAndroidResources = true
-        }
-    }
 }
 
 dependencies {
@@ -41,16 +34,6 @@ dependencies {
     implementation(project(":data:feedback"))
     implementation(project(":data:auth"))
 
-    //Jetpack Compose - Pager
-    implementation(libs.androidx.paging.runtime.ktx)
-    implementation(libs.androidx.paging.compose)
-
-    //Jetpack Compose - Paging
-    implementation(libs.accompanist.pager)
-    implementation(libs.accompanist.pager.indicators)
-    implementation(libs.accompanist.coil)
-
-
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
 
@@ -60,16 +43,19 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.foundation.android)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.documentfile)
 
-    testImplementation(libs.mockk.android)
-    testImplementation(libs.turbine)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.junit.jupiter)
+    //Jetpack Compose - Pager
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.androidx.paging.compose)
+
+    //Jetpack Compose - Paging
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicators)
+    implementation(libs.accompanist.coil)
 
     //Rating-Bar
     implementation("com.github.a914-gowtham:compose-ratingbar:1.2.4")
