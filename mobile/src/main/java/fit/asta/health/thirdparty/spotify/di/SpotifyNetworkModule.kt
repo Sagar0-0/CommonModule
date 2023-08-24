@@ -7,12 +7,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import fit.asta.health.network.utils.NetworkUtil
 import fit.asta.health.thirdparty.spotify.model.MusicRepository
 import fit.asta.health.thirdparty.spotify.model.MusicRepositoryImpl
 import fit.asta.health.thirdparty.spotify.model.SpotifyRepo
 import fit.asta.health.thirdparty.spotify.model.SpotifyRepoImpl
-import fit.asta.health.thirdparty.spotify.model.api.SpotifyApi
-import fit.asta.health.thirdparty.spotify.model.api.SpotifyRestImpl
+import fit.asta.health.thirdparty.spotify.model.api.SpotifyApiService
 import fit.asta.health.thirdparty.spotify.model.db.MusicDataSourceImpl
 import fit.asta.health.thirdparty.spotify.model.db.MusicDao
 import fit.asta.health.thirdparty.spotify.model.db.MusicDataSource
@@ -27,13 +27,15 @@ object SpotifyNetworkModule {
 
     @Singleton
     @Provides
-    fun provideSpotifyApi(client: OkHttpClient): SpotifyApi {
-        return SpotifyRestImpl(baseUrl = SPOTIFY_BASE_URL, client = client)
+    fun provideSpotifyApiService(client: OkHttpClient): SpotifyApiService {
+        return NetworkUtil
+            .getRetrofit(SPOTIFY_BASE_URL, client)
+            .create(SpotifyApiService::class.java)
     }
 
     @Singleton
     @Provides
-    fun provideSpotifyRepo(api: SpotifyApi): SpotifyRepo {
+    fun provideSpotifyRepo(api: SpotifyApiService): SpotifyRepo {
         return SpotifyRepoImpl(spotifyApi = api)
     }
 

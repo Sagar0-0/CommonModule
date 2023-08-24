@@ -1,5 +1,6 @@
 package fit.asta.health.thirdparty.spotify
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -42,6 +43,13 @@ class SpotifyLoginActivity : ComponentActivity() {
      * activity
      */
     private val spotifyViewModelX: SpotifyViewModelX by viewModels()
+
+    companion object {
+        fun launch(context: Context) {
+            val intent = Intent(context, SpotifyLoginActivity::class.java)
+            context.startActivity(intent)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
