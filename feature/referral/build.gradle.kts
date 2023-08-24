@@ -9,7 +9,6 @@ android {
     namespace = "fit.asta.health.feature.referral"
 
     defaultConfig {
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 

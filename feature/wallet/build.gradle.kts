@@ -9,7 +9,6 @@ android {
     namespace = "fit.asta.health.feature.wallet"
 
     defaultConfig {
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
