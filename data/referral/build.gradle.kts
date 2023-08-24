@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.asta.android.library)
     alias(libs.plugins.asta.android.hilt)
+    alias(libs.plugins.asta.android.test.data)
 }
 
 android {

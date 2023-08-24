@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "fit.asta.health.feature.feedback"
+    namespace = "fit.asta.health.feature.onboarding"
 
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -25,17 +25,18 @@ android {
 
 dependencies {
 
-    implementation(project(":resources:drawables"))
+    implementation(project(":resources:strings"))
 
     implementation(project(":core:common"))
     implementation(project(":core:designsystem"))
-    implementation(project(":core:test"))
+    implementation(project(":core:datastore"))
 
-    implementation(project(":data:feedback"))
     implementation(project(":data:auth"))
+
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.material.icons.extended.android)
 
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewModelCompose)
@@ -46,17 +47,7 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.foundation.android)
     implementation(libs.androidx.material3)
-    implementation(libs.androidx.documentfile)
 
-    //Jetpack Compose - Pager
-    implementation(libs.androidx.paging.runtime.ktx)
-    implementation(libs.androidx.paging.compose)
-
-    //Jetpack Compose - Paging
-    implementation(libs.accompanist.pager)
-    implementation(libs.accompanist.pager.indicators)
-    implementation(libs.accompanist.coil)
-
-    //Rating-Bar
-    implementation("com.github.a914-gowtham:compose-ratingbar:1.2.4")
+    //Firebase for notifications
+    implementation(libs.firebase.messaging.ktx)
 }

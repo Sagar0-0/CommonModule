@@ -10,7 +10,7 @@ import androidx.navigation.compose.composable
 
 private const val WEBVIEW_GRAPH_ROUTE = "graph_webview"
 fun NavController.navigateToWebView(url: String, navOptions: NavOptions? = null) {
-    this.navigate("$WEBVIEW_GRAPH_ROUTE/url", navOptions)
+    this.navigate("$WEBVIEW_GRAPH_ROUTE/$url", navOptions)
 }
 
 fun NavGraphBuilder.webView() {

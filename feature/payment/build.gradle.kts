@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.asta.android.library)
     alias(libs.plugins.asta.android.hilt)
     alias(libs.plugins.asta.android.library.compose)
+    alias(libs.plugins.asta.android.test.feature)
 }
 
 android {
@@ -30,9 +31,6 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":resources:drawables"))
 
-
-    implementation(libs.checkout)
-
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.material.icons.extended.android)
@@ -43,11 +41,9 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.foundation.android)
     implementation(libs.androidx.material3)
-    testImplementation(libs.junit4)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.test.espresso.core)
+
+    implementation(libs.checkout)
 }

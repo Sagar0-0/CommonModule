@@ -16,7 +16,7 @@ import fit.asta.health.scheduler.data.api.net.scheduler.Meta
 import fit.asta.health.scheduler.data.db.entity.AlarmEntity
 import fit.asta.health.scheduler.data.repo.AlarmBackendRepo
 import fit.asta.health.scheduler.data.repo.AlarmLocalRepo
-import fit.asta.health.scheduler.ref.newalarm.StateManager
+import fit.asta.health.scheduler.util.StateManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

@@ -8,9 +8,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.scheduler.data.db.entity.AlarmEntity
 import fit.asta.health.scheduler.data.repo.AlarmLocalRepo
-import fit.asta.health.scheduler.ref.newalarm.StateManager
 import fit.asta.health.scheduler.services.AlarmService
 import fit.asta.health.scheduler.ui.screen.alarmscreen.AlarmUiState
+import fit.asta.health.scheduler.util.StateManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

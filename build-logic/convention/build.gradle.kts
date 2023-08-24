@@ -72,10 +72,6 @@ gradlePlugin {
             id = "asta.android.library.jacoco"
             implementationClass = "AndroidLibraryJacocoConventionPlugin"
         }
-        register("androidTest") {
-            id = "asta.android.test"
-            implementationClass = "AndroidTestConventionPlugin"
-        }
         register("androidHilt") {
             id = "asta.android.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
@@ -103,6 +99,18 @@ gradlePlugin {
         register("androidLibraryGoogleMaps") {
             id = "asta.gms.library"
             implementationClass = "AndroidLibraryGoogleMapsConventionPlugin"
+        }
+        register("androidTest") {
+            id = "asta.android.test"
+            implementationClass = "AndroidTestConventionPlugin"
+        }
+        register("androidTestData") {
+            id = "asta.android.test.data"
+            implementationClass = "AndroidTestDataPlugin"
+        }
+        register("androidTestFeature") {
+            id = "asta.android.test.feature"
+            implementationClass = "AndroidTestFeaturePlugin"
         }
     }
 }

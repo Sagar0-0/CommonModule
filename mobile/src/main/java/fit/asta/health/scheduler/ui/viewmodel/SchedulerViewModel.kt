@@ -20,7 +20,6 @@ import fit.asta.health.scheduler.data.repo.AlarmLocalRepo
 import fit.asta.health.scheduler.doman.getAlarm
 import fit.asta.health.scheduler.doman.getAlarmScreenUi
 import fit.asta.health.scheduler.doman.getIntervalUi
-import fit.asta.health.scheduler.ref.newalarm.StateManager
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.ASUiState
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.AdvUiState
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.IvlUiState
@@ -29,6 +28,7 @@ import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.ToneUiState
 import fit.asta.health.scheduler.ui.screen.tagscreen.TagState
 import fit.asta.health.scheduler.ui.screen.tagscreen.TagsUiState
 import fit.asta.health.scheduler.util.Constants
+import fit.asta.health.scheduler.util.StateManager
 import fit.asta.health.scheduler.util.VibrationPattern
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
