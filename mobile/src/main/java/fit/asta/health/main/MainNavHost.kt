@@ -36,6 +36,8 @@ import fit.asta.health.feature.feedback.feedbackRoute
 import fit.asta.health.feature.feedback.navigateToFeedback
 import fit.asta.health.feature.onboarding.ONBOARDING_GRAPH_ROUTE
 import fit.asta.health.feature.onboarding.onboardingRoute
+import fit.asta.health.feature.settings.settingScreens
+import fit.asta.health.feature.settings.view.SettingsUiEvent
 import fit.asta.health.main.view.HOME_GRAPH_ROUTE
 import fit.asta.health.main.view.homeScreen
 import fit.asta.health.main.view.navigateToHome
@@ -45,9 +47,6 @@ import fit.asta.health.profile.ProfileContent
 import fit.asta.health.referral.navigateToReferral
 import fit.asta.health.referral.referralRoute
 import fit.asta.health.scheduler.ui.navigation.schedulerNavigation
-import fit.asta.health.settings.ui.SettingDestination
-import fit.asta.health.settings.ui.settingScreens
-import fit.asta.health.settings.ui.view.SettingsUiEvent
 import fit.asta.health.subscription.navigateToSubscription
 import fit.asta.health.subscription.subscriptionRoute
 import fit.asta.health.testimonials.ui.testimonialsRoute
@@ -139,10 +138,6 @@ fun MainNavHost(isConnected: Boolean) {
 
                 SettingsUiEvent.BACK -> {
                     navController.popBackStack()
-                }
-
-                SettingsUiEvent.NOTIFICATION -> {
-                    navController.navigate(SettingDestination.Notifications.route)
                 }
 
                 SettingsUiEvent.SHARE -> {

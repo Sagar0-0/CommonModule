@@ -4,7 +4,6 @@ sealed class Graph(val route: String) {
     object ROOT : Graph("graph_root")
     object WebView : Graph("graph_webView")
     object Scheduler : Graph("graph_today_scheduler")
-    object Settings : Graph("graph_settings")
     object BreathingTool : Graph("graph_breathing_tool")
     object SleepTool : Graph("graph_sleep_tool")
     object MeditationTool : Graph("graph_meditation_tool")

@@ -26,6 +26,7 @@ import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.common.utils.shareApp
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.feature.settings.navigateToSettings
 import fit.asta.health.main.Graph
 import fit.asta.health.main.MainViewModel
 import fit.asta.health.navigation.today.ui.view.utils.Utils
@@ -222,7 +223,7 @@ fun NavGraphBuilder.homeScreen(
                     }
 
                     MainTopBarActions.Settings -> {
-                        navController.navigate(Graph.Settings.route)
+                        navController.navigateToSettings()
                     }
 
                     MainTopBarActions.Profile -> {

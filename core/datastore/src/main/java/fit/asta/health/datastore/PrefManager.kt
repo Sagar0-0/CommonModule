@@ -20,7 +20,8 @@ class PrefManager
             onboardingShown = it.onboardingShown,
             notificationStatus = it.notificationStatus,
             locationPermissionRejectedCount = it.locationPermissionRejectedCount,
-            currentAddress = it.currentAddress
+            currentAddress = it.currentAddress,
+            theme = it.theme
         )
     }
 
@@ -30,6 +31,19 @@ class PrefManager
             userPreferences.updateData {
                 it.copy {
                     this.onboardingShown = true
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("Pref", "Failed to update user preferences", ioException)
+        }
+    }
+
+    suspend fun setTheme(newTheme: String) {
+
+        try {
+            userPreferences.updateData {
+                it.copy {
+                    this.theme = newTheme
                 }
             }
         } catch (ioException: IOException) {

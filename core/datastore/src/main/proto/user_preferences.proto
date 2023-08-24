@@ -8,4 +8,5 @@ message UserPreferences {
   bool notificationStatus = 2;
   int32 locationPermissionRejectedCount = 3;
   string currentAddress = 4;
+  string theme = 5;
 }
