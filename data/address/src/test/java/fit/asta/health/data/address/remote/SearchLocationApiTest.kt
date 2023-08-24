@@ -11,6 +11,7 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -78,7 +79,10 @@ class SearchLocationApiTest {
 
         val pref: PrefManager = mockk()
         coEvery { pref.userData } returns MutableStateFlow(UserPreferencesData())
-        val repo = AddressRepoImpl(mockk(), api, pref, mockk(), mockk())
+        val repo = AddressRepoImpl(
+            mockk(), api, pref, mockk(), mockk(),
+            UnconfinedTestDispatcher()
+        )
         val data = repo.search("", 0.0, 0.0)
         server.takeRequest()
 

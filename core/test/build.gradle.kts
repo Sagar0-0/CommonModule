@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.asta.android.library)
+    alias(libs.plugins.asta.android.test.feature)
 }
 
 android {
