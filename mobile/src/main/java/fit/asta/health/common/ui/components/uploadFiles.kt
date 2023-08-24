@@ -37,14 +37,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.documentfile.provider.DocumentFile
-import fit.asta.health.common.jetpack.dashedBorder
 import fit.asta.health.common.ui.components.generic.AppDefaultIcon
 import fit.asta.health.common.ui.theme.Shapes
 import fit.asta.health.common.ui.theme.customSize
 import fit.asta.health.common.ui.theme.iconButtonSize
 import fit.asta.health.common.ui.theme.imageSize
 import fit.asta.health.common.ui.theme.spacing
-
+import fit.asta.health.designsystem.jetpack.dashedBorder
 
 @Composable
 fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
