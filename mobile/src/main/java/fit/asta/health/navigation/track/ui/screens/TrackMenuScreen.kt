@@ -49,7 +49,7 @@ import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.navigation.track.data.remote.model.menu.HomeMenuResponse
 import fit.asta.health.navigation.track.ui.components.TrackingChartCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
-import fit.asta.health.navigation.track.ui.navigation.TrackNavRoute
+import fit.asta.health.navigation.track.TrackNavRoute
 import fit.asta.health.navigation.track.ui.util.TrackOption
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent

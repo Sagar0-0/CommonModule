@@ -1,10 +1,11 @@
-package fit.asta.health.navigation.track.ui.navigation
+package fit.asta.health.navigation.track
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import fit.asta.health.navigation.track.ui.screens.TrackBreathingScreenControl
 import fit.asta.health.navigation.track.ui.screens.TrackExerciseScreenControl
 import fit.asta.health.navigation.track.ui.screens.TrackMeditationScreenControl
@@ -15,17 +16,11 @@ import fit.asta.health.navigation.track.ui.screens.TrackSunlightScreenControl
 import fit.asta.health.navigation.track.ui.screens.TrackWaterScreenControl
 import fit.asta.health.navigation.track.ui.viewmodel.TrackViewModel
 
-/**
- * This is the navigation Host function for the Tracking Feature
- *
- * @param navController This is the navController for the Tracking Screens
- * @param trackViewModel This is the View Model for all the Tracking Screen
- */
 @Composable
-fun TrackNavGraph(
-    navController: NavHostController,
-    trackViewModel: TrackViewModel
-) {
+fun TrackNavGraph() {
+
+    val trackViewModel: TrackViewModel = hiltViewModel()
+    val navController = rememberNavController()
 
     NavHost(
         navController = navController,

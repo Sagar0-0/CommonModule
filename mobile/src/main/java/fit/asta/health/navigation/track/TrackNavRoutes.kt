@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.track.ui.navigation
+package fit.asta.health.navigation.track
 
 /**
  * This contains all the Navigation Routes for the Tracking Feature
