@@ -117,6 +117,10 @@ fun MainNavHost(isConnected: Boolean) {
 
         settingScreens { key ->
             when (key) {
+                SettingsUiEvent.NavigateToAuth -> {
+                    navController.navigateToAuth()
+                }
+
                 SettingsUiEvent.NavigateToSubscription -> {
                     navController.navigateToSubscription()
                 }

@@ -8,6 +8,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentBuildVersion
 import fit.asta.health.common.utils.toStringFromResId
@@ -32,43 +33,47 @@ fun NavGraphBuilder.settingScreens(
             val context = LocalContext.current
             val authViewModel: AuthViewModel = hiltViewModel()
             val deleteAccountState by authViewModel.deleteState.collectAsStateWithLifecycle()
-            LaunchedEffect(deleteAccountState) {
-                when (deleteAccountState) {
-                    is UiState.Success -> {
-                        authViewModel.resetDeleteState()
-                        onSettingsUiEvent(SettingsUiEvent.NavigateToAuth)
-                    }
-
-                    is UiState.Error -> {
-                        Toast.makeText(
-                            context,
-                            (deleteAccountState as UiState.Error).resId.toStringFromResId(context),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-
-                    else -> {}
+            when (deleteAccountState) {
+                is UiState.Loading -> {
+                    LoadingAnimation()
                 }
+
+                is UiState.Success -> {
+                    authViewModel.resetDeleteState()
+                    onSettingsUiEvent(SettingsUiEvent.NavigateToAuth)
+                }
+
+                is UiState.Error -> {
+                    Toast.makeText(
+                        context,
+                        (deleteAccountState as UiState.Error).resId.toStringFromResId(context),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                else -> {}
             }
 
             val logoutState by authViewModel.logoutState.collectAsStateWithLifecycle()
-            LaunchedEffect(logoutState) {
-                when (logoutState) {
-                    is UiState.Success -> {
-                        authViewModel.resetLogoutState()
-                        onSettingsUiEvent(SettingsUiEvent.NavigateToAuth)
-                    }
-
-                    is UiState.Error -> {
-                        Toast.makeText(
-                            context,
-                            (logoutState as UiState.Error).resId.toStringFromResId(context),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-
-                    else -> {}
+            when (logoutState) {
+                is UiState.Loading -> {
+                    LoadingAnimation()
                 }
+
+                is UiState.Success -> {
+                    authViewModel.resetLogoutState()
+                    onSettingsUiEvent(SettingsUiEvent.NavigateToAuth)
+                }
+
+                is UiState.Error -> {
+                    Toast.makeText(
+                        context,
+                        (logoutState as UiState.Error).resId.toStringFromResId(context),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                else -> {}
             }
 
             SettingsScreenLayout(
