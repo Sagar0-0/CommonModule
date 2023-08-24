@@ -1,6 +1,6 @@
 package fit.asta.health.network.utils
 
-import com.google.gson.FieldNamingPolicy
+import com.google.gson.FieldNamingPolicy.UPPER_CAMEL_CASE
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import fit.asta.health.BuildConfig
@@ -16,22 +16,35 @@ import java.text.DateFormat
 
 object NetworkUtil {
 
-    fun getRetrofit(baseUrl: String, client: OkHttpClient = getOkHttpClient()): Retrofit {
+    fun getRetrofit(client: OkHttpClient): Retrofit {
 
-        val gson: Gson = GsonBuilder()
-            .enableComplexMapKeySerialization()
-            .serializeNulls()
-            .setDateFormat(DateFormat.LONG)
-            .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-            .setPrettyPrinting()
-            .setVersion(1.0)
-            .create()
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
+            .client(client)
+            .addConverterFactory(jsonFactory())
+            .build()
+    }
+
+    fun getRetrofit(baseUrl: String, client: OkHttpClient = getOkHttpClient()): Retrofit {
 
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(jsonFactory())
             .build()
+    }
+
+    private fun jsonFactory(): GsonConverterFactory {
+        val gson: Gson = GsonBuilder()
+            .enableComplexMapKeySerialization()
+            .serializeNulls()
+            .setDateFormat(DateFormat.LONG)
+            .setFieldNamingPolicy(UPPER_CAMEL_CASE)
+            .setPrettyPrinting()
+            .setVersion(1.0)
+            .create()
+
+        return GsonConverterFactory.create(gson)
     }
 
     fun getOkHttpClient(

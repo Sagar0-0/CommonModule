@@ -4,7 +4,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.BuildConfig
 import fit.asta.health.data.onboarding.remote.OnboardingApi
 import fit.asta.health.data.onboarding.repo.OnboardingRepo
 import fit.asta.health.data.onboarding.repo.OnboardingRepoImpl
@@ -22,8 +21,7 @@ object OnboardingModule {
     @Singleton
     @Provides
     fun provideOnboardingApi(client: OkHttpClient): OnboardingApi =
-        NetworkUtil.getRetrofit(baseUrl = BuildConfig.BASE_URL, client = client)
-            .create(OnboardingApi::class.java)
+        NetworkUtil.getRetrofit(client).create(OnboardingApi::class.java)
 
     @Singleton
     @Provides

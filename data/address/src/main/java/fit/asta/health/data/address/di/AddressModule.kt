@@ -4,7 +4,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.BuildConfig
 import fit.asta.health.common.utils.ResourcesProvider
 import fit.asta.health.data.address.remote.AddressApi
 import fit.asta.health.data.address.remote.SearchLocationApi
@@ -47,7 +46,6 @@ object AddressModule {
     @Provides
     @Singleton
     fun provideRemoteApi(client: OkHttpClient): AddressApi =
-        NetworkUtil.getRetrofit(baseUrl = BuildConfig.BASE_URL, client = client)
-            .create(AddressApi::class.java)
+        NetworkUtil.getRetrofit(client).create(AddressApi::class.java)
 
 }

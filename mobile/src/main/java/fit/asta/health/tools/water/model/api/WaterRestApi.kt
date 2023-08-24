@@ -9,11 +9,11 @@ import okhttp3.OkHttpClient
 
 
 //Health Tool - Water Endpoints
-class WaterRestApi(baseUrl: String, client: OkHttpClient) :
+class WaterRestApi(client: OkHttpClient) :
     WaterApi {
 
     private val apiService: WaterApiService = NetworkUtil
-        .getRetrofit(baseUrl, client)
+        .getRetrofit(client)
         .create(WaterApiService::class.java)
 
     override suspend fun getWaterTool(

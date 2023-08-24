@@ -31,7 +31,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.review.ReviewManagerFactory
-import fit.asta.health.common.BuildConfig
+import fit.asta.health.BuildConfig
 import java.io.IOException
 import java.io.InputStream
 import java.net.HttpURLConnection

@@ -1,4 +1,4 @@
-package fit.asta.health.common
+package fit.asta.health
 
 class BuildConfig {
     companion object {
@@ -7,6 +7,7 @@ class BuildConfig {
         const val BASE_VIDEO_URL = "https://d28fbw0qer0joz.cloudfront.net"
         const val BASE_IMAGE_URL = "https://dj9n1wsbrvg44.cloudfront.net"
         const val APPLICATION_ID = "fit.asta.health.dev"
+        const val DEBUG = true
     }
 }
 /*

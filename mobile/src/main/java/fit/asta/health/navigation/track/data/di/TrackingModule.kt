@@ -4,7 +4,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.BuildConfig
 import fit.asta.health.navigation.track.data.remote.TrackingApiService
 import fit.asta.health.navigation.track.data.repo.TrackingRepo
 import fit.asta.health.navigation.track.data.repo.TrackingRepoImpl
@@ -22,8 +21,7 @@ object TrackingModule {
     @Singleton
     @Provides
     fun provideTrackingApi(client: OkHttpClient): TrackingApiService {
-        return NetworkUtil.getRetrofit(baseUrl = BuildConfig.BASE_URL, client = client)
-            .create(TrackingApiService::class.java)
+        return NetworkUtil.getRetrofit(client).create(TrackingApiService::class.java)
     }
 
 

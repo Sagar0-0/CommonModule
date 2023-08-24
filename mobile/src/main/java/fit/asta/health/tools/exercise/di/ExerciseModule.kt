@@ -7,7 +7,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.BuildConfig
 import fit.asta.health.tools.exercise.db.ExerciseToolDatabase
 import fit.asta.health.tools.exercise.model.ExerciseLocalRepo
 import fit.asta.health.tools.exercise.model.ExerciseLocalRepoImp
@@ -25,7 +24,7 @@ object ExerciseModule {
     @Singleton
     @Provides
     fun provideApi(client: OkHttpClient): ExerciseApi {
-        return ExerciseRestApi(baseUrl = BuildConfig.BASE_URL, client = client)
+        return ExerciseRestApi(client)
     }
     @Singleton
     @Provides

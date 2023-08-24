@@ -66,9 +66,7 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideApiService(client: OkHttpClient): ApiService {
-        return NetworkUtil
-            .getRetrofit(BuildConfig.BASE_URL, client)
-            .create(ApiService::class.java)
+        return NetworkUtil.getRetrofit(client).create(ApiService::class.java)
     }
 
     @Singleton

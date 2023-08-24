@@ -6,7 +6,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.BuildConfig
 import fit.asta.health.profile.model.ProfileDataMapper
 import fit.asta.health.profile.model.ProfileRepo
 import fit.asta.health.profile.model.ProfileRepoImpl
@@ -23,7 +22,7 @@ object ProfileModule {
     @Singleton
     @Provides
     fun provideProfileApi(client: OkHttpClient): ProfileApi {
-        return ProfileRestApi(baseUrl = BuildConfig.BASE_URL, client = client)
+        return ProfileRestApi(client)
     }
 
     @Singleton

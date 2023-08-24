@@ -11,10 +11,10 @@ import fit.asta.health.tools.sleep.model.network.put.SleepPutResponse
 import okhttp3.OkHttpClient
 import retrofit2.Response
 
-class SleepingRestApi(baseUrl: String, client: OkHttpClient) : SleepingApi {
+class SleepingRestApi(client: OkHttpClient) : SleepingApi {
 
     private val apiService: SleepingService = NetworkUtil
-        .getRetrofit(baseUrl, client)
+        .getRetrofit(client)
         .create(SleepingService::class.java)
 
     override suspend fun putUserData(

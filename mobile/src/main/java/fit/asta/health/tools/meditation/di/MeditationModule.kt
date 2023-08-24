@@ -7,7 +7,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.BuildConfig
 import fit.asta.health.tools.meditation.db.MeditationToolDatabase
 import fit.asta.health.tools.meditation.model.LocalRepo
 import fit.asta.health.tools.meditation.model.LocalRepoImp
@@ -25,7 +24,7 @@ object MeditationModule {
     @Singleton
     @Provides
     fun provideApi(client: OkHttpClient): MeditationApi {
-        return MeditationRestApi(baseUrl = BuildConfig.BASE_URL, client = client)
+        return MeditationRestApi(client)
     }
     @Singleton
     @Provides

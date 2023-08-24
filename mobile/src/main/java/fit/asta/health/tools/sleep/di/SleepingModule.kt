@@ -7,7 +7,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.BuildConfig
 import fit.asta.health.tools.sleep.model.SleepLocalRepo
 import fit.asta.health.tools.sleep.model.SleepLocalRepositoryImpl
 import fit.asta.health.tools.sleep.model.SleepRepository
@@ -25,10 +24,7 @@ object SleepingModule {
     @Singleton
     @Provides
     fun provideSleepApi(client: OkHttpClient): SleepingApi {
-        return SleepingRestApi(
-            baseUrl = BuildConfig.BASE_URL,
-            client = client
-        )
+        return SleepingRestApi(client)
     }
 
     @Singleton
