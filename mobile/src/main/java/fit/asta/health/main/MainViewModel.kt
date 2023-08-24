@@ -76,7 +76,11 @@ class MainViewModel
             initialValue = 0,
         )
 
-    fun setCurrentLocation() {
+    init {
+        setCurrentLocation()
+    }
+
+    private fun setCurrentLocation() {
         viewModelScope.launch {
             prefManager.userData.map { it.currentAddress }.collectLatest {
                 if (it.isNotEmpty()) {

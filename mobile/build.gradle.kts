@@ -129,6 +129,7 @@ dependencies {
     implementation(project(":feature:onboarding"))
     implementation(project(":feature:address"))
     implementation(project(":feature:feedback"))
+    implementation(project(":feature:settings"))
 
     // Spotify App remote Dependency
     implementation(fileTree(mapOf("include" to listOf("*.jar", "*.aar"), "dir" to "libs")))

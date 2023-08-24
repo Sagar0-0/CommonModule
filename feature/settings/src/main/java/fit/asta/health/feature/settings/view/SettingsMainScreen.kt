@@ -1,4 +1,4 @@
-package fit.asta.health.settings.ui.view
+package fit.asta.health.feature.settings.view
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -38,31 +38,27 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
-import fit.asta.health.R
-import fit.asta.health.common.ui.components.*
-import fit.asta.health.common.ui.components.generic.AppButtons
-import fit.asta.health.common.ui.components.generic.AppCard
-import fit.asta.health.common.ui.components.generic.AppDialog
-import fit.asta.health.common.ui.components.generic.AppScaffold
-import fit.asta.health.common.ui.components.generic.AppTexts
-import fit.asta.health.common.ui.components.generic.AppTopBar
-import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.common.utils.PrefManager
-import fit.asta.health.common.utils.setAppTheme
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.designsystem.components.*
+import fit.asta.health.designsystem.components.generic.AppButtons
+import fit.asta.health.designsystem.components.generic.AppCard
+import fit.asta.health.designsystem.components.generic.AppDialog
+import fit.asta.health.designsystem.components.generic.AppScaffold
+import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.components.generic.AppTopBar
+import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.resources.strings.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreenLayout(
     builtVersion: String,
+    theme: String,
     onClickEvent: (key: SettingsUiEvent) -> Unit
 ) {
-
-    val context = LocalContext.current
     val snackBarHostState = remember { SnackbarHostState() }
     var showDeleteConfirmationDialog by rememberSaveable {
         mutableStateOf(false)
@@ -160,10 +156,11 @@ fun SettingsScreenLayout(
                 ListPreference(
                     titleId = R.string.user_pref_theme_title,
                     imageVector = Icons.Default.ColorLens,
+                    theme = theme,
                     entries = stringArrayResource(id = R.array.user_pref_theme_entries),
                     values = stringArrayResource(id = R.array.user_pref_theme_values)
                 ) {
-                    setAppTheme(it, context)
+                    onClickEvent(SettingsUiEvent.SetTheme(it))
                 }
             }
 
@@ -256,14 +253,13 @@ fun PreferenceItem(
 fun ListPreference(
     titleId: Int,
     imageVector: ImageVector,
+    theme: String,
     entries: Array<String>,
     values: Array<String>,
     onValueChange: (String) -> Unit
 ) {
     val title = stringResource(id = titleId)
-    val context = LocalContext.current
-    val theme = PrefManager.getTheme(context)
-    val idx = values.indexOf(theme)
+    val idx = values.indexOf(theme.ifEmpty { "system" })
     var showDialog by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableIntStateOf(idx) }
 

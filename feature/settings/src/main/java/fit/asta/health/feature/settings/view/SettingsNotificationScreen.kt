@@ -1,4 +1,4 @@
-package fit.asta.health.settings.ui.view
+package fit.asta.health.feature.settings.view
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,11 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import fit.asta.health.R
-import fit.asta.health.common.ui.components.*
-import fit.asta.health.common.ui.components.generic.AppTopBar
-import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.settings.data.SettingsNotificationsStatus
+import fit.asta.health.designsystem.components.*
+import fit.asta.health.designsystem.components.generic.AppTopBar
+import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.resources.strings.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
