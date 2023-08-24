@@ -42,9 +42,11 @@ import com.dev.anirban.chartlibrary.other.bmi.BmiChart
 import com.dev.anirban.chartlibrary.other.bmi.data.BmiData
 import com.dev.anirban.chartlibrary.util.ChartPoint
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.navigation.track.data.remote.model.menu.HomeMenuResponse
 import fit.asta.health.navigation.track.ui.components.TrackingChartCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
@@ -81,7 +83,9 @@ fun TrackMenuScreenControl(
     when (homeMenuState) {
 
         // Initialized State
-        is UiState.Idle -> {}
+        is UiState.Idle -> {
+            loadHomeData()
+        }
 
         // Loading State
         is UiState.Loading -> {
@@ -99,7 +103,9 @@ fun TrackMenuScreenControl(
 
         // failure State
         is UiState.Error -> {
-            // TODO :-
+            AppErrorScreen(desc = homeMenuState.resId.toStringFromResId()) {
+                loadHomeData()
+            }
         }
     }
 }

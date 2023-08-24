@@ -42,9 +42,11 @@ import com.dev.anirban.chartlibrary.linear.data.LinearEmojiData
 import com.dev.anirban.chartlibrary.linear.data.LinearStringData
 import com.dev.anirban.chartlibrary.util.ChartPoint
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.navigation.track.data.remote.model.meditation.MeditationResponse
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
 import fit.asta.health.navigation.track.ui.components.TrackingChartCard
@@ -107,7 +109,9 @@ fun TrackMeditationScreenControl(
             }
 
             is UiState.Error -> {
-                // TODO :-
+                AppErrorScreen(desc = meditationTrackData.resId.toStringFromResId()) {
+                    setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+                }
             }
         }
     }

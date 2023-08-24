@@ -45,9 +45,11 @@ import com.dev.anirban.chartlibrary.other.bmi.BmiChart
 import com.dev.anirban.chartlibrary.other.bmi.data.BmiData
 import com.dev.anirban.chartlibrary.util.ChartPoint
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.navigation.track.data.remote.model.step.StepsResponse
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
 import fit.asta.health.navigation.track.ui.components.TrackingChartCard
@@ -112,7 +114,9 @@ fun TrackStepsScreenControl(
             }
 
             is UiState.Error -> {
-                // TODO:-
+                AppErrorScreen(desc = stepsTrackData.resId.toStringFromResId()) {
+                    setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+                }
             }
         }
     }
