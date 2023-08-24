@@ -1,7 +1,6 @@
 package fit.asta.health.navigation.track.ui.screens
 
 import android.graphics.drawable.BitmapDrawable
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -43,27 +42,27 @@ import com.dev.anirban.chartlibrary.linear.data.LinearEmojiData
 import com.dev.anirban.chartlibrary.linear.data.LinearStringData
 import com.dev.anirban.chartlibrary.util.ChartPoint
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.navigation.track.data.remote.model.meditation.MeditationResponse
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
 import fit.asta.health.navigation.track.ui.components.TrackingChartCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
-import fit.asta.health.navigation.track.ui.util.TrackingNetworkCall
 import java.text.DecimalFormat
 
 @Composable
 fun TrackMeditationScreenControl(
-    meditationTrackData: TrackingNetworkCall<MeditationResponse>,
+    meditationTrackData: UiState<MeditationResponse>,
     setUiEvent: (TrackUiEvent) -> Unit
 ) {
 
     // This is the Item which is selected in the Top Tab Bar Layout
     val selectedItem = remember { mutableIntStateOf(0) }
-
-    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
@@ -96,26 +95,23 @@ fun TrackMeditationScreenControl(
 
         when (meditationTrackData) {
 
-            is TrackingNetworkCall.Initialized -> {
+            is UiState.Idle -> {
                 setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
             }
 
-            is TrackingNetworkCall.Loading -> {
+            is UiState.Loading -> {
                 LoadingAnimation(modifier = Modifier.fillMaxSize())
             }
 
-            is TrackingNetworkCall.Success -> {
-                if (meditationTrackData.data == null)
-                    Toast.makeText(context, TrackStringConstants.NO_DATA, Toast.LENGTH_SHORT).show()
-                else {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    TrackSuccessScreen(meditationData = meditationTrackData.data.meditationData)
-                }
+            is UiState.Success -> {
+                Spacer(modifier = Modifier.height(8.dp))
+                TrackSuccessScreen(meditationData = meditationTrackData.data.meditationData)
             }
 
-            is TrackingNetworkCall.Failure -> {
-                Toast.makeText(context, meditationTrackData.message.toString(), Toast.LENGTH_SHORT)
-                    .show()
+            is UiState.Error -> {
+                AppErrorScreen(desc = meditationTrackData.resId.toStringFromResId()) {
+                    setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+                }
             }
         }
     }

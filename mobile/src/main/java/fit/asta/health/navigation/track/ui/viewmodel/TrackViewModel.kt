@@ -3,6 +3,8 @@ package fit.asta.health.navigation.track.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toUiState
 import fit.asta.health.navigation.track.data.repo.TrackingRepo
 import fit.asta.health.navigation.track.data.remote.model.breathing.BreathingResponse
 import fit.asta.health.navigation.track.data.remote.model.exercise.ExerciseResponse
@@ -14,7 +16,6 @@ import fit.asta.health.navigation.track.data.remote.model.sunlight.SunlightRespo
 import fit.asta.health.navigation.track.data.remote.model.water.WaterResponse
 import fit.asta.health.navigation.track.ui.util.TrackOption
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
-import fit.asta.health.navigation.track.ui.util.TrackingNetworkCall
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -31,9 +32,7 @@ class TrackViewModel @Inject constructor(
     private val uid = "6309a9379af54f142c65fbfe"
 
     // This variable contains the Home Screen Menu Details
-    private val _homeScreenDetails = MutableStateFlow<TrackingNetworkCall<HomeMenuResponse>>(
-        TrackingNetworkCall.Initialized()
-    )
+    private val _homeScreenDetails = MutableStateFlow<UiState<HomeMenuResponse>>(UiState.Idle)
     val homeScreenDetails = _homeScreenDetails.asStateFlow()
 
     /**
@@ -41,26 +40,24 @@ class TrackViewModel @Inject constructor(
      */
     fun getHomeDetails() {
 
-        if (_homeScreenDetails.value is TrackingNetworkCall.Loading)
+        if (_homeScreenDetails.value is UiState.Loading)
             return
+
+        _homeScreenDetails.value = UiState.Loading
 
         val date = "2023-June-05"
 
         viewModelScope.launch {
-            trackingRepo.getHomeDetails(
+            _homeScreenDetails.value = trackingRepo.getHomeDetails(
                 uid = uid,
                 date = date,
                 location = "bangalore"
-            ).collect {
-                _homeScreenDetails.value = it
-            }
+            ).toUiState()
         }
     }
 
     // This variable contains the water tracking details
-    private val _waterDetails = MutableStateFlow<TrackingNetworkCall<WaterResponse>>(
-        TrackingNetworkCall.Initialized()
-    )
+    private val _waterDetails = MutableStateFlow<UiState<WaterResponse>>(UiState.Idle)
     val waterDetails = _waterDetails.asStateFlow()
 
     /**
@@ -68,26 +65,24 @@ class TrackViewModel @Inject constructor(
      */
     private fun getWaterDetails(status: String, date: String) {
 
-        if (_waterDetails.value is TrackingNetworkCall.Loading)
+        if (_waterDetails.value is UiState.Loading)
             return
 
+        _waterDetails.value = UiState.Loading
+
         viewModelScope.launch {
-            trackingRepo.getWaterDetails(
+            _waterDetails.value = trackingRepo.getWaterDetails(
                 uid = uid,
                 date = date,
                 location = "bangalore",
                 status = status
-            ).collect {
-                _waterDetails.value = it
-            }
+            ).toUiState()
         }
     }
 
 
     // This variable contains the steps Tracking Details
-    private val _stepsDetails = MutableStateFlow<TrackingNetworkCall<StepsResponse>>(
-        TrackingNetworkCall.Initialized()
-    )
+    private val _stepsDetails = MutableStateFlow<UiState<StepsResponse>>(UiState.Idle)
     val stepsDetails = _stepsDetails.asStateFlow()
 
     /**
@@ -95,50 +90,46 @@ class TrackViewModel @Inject constructor(
      */
     private fun getStepsDetails(status: String, date: String) {
 
-        if (_stepsDetails.value is TrackingNetworkCall.Loading)
+        if (_stepsDetails.value is UiState.Loading)
             return
 
+        _stepsDetails.value = UiState.Loading
+
         viewModelScope.launch {
-            trackingRepo.getStepsDetails(
+            _stepsDetails.value = trackingRepo.getStepsDetails(
                 uid = uid,
                 date = date,
                 location = "bangalore",
                 status = status
-            ).collect {
-                _stepsDetails.value = it
-            }
+            ).toUiState()
         }
     }
 
 
     // This variable contains Meditation Tracking Details
-    private val _meditationDetails = MutableStateFlow<TrackingNetworkCall<MeditationResponse>>(
-        TrackingNetworkCall.Initialized()
-    )
+    private val _meditationDetails = MutableStateFlow<UiState<MeditationResponse>>(UiState.Idle)
     val meditationDetails = _meditationDetails.asStateFlow()
 
     private fun getMeditationDetails(status: String, date: String) {
 
-        if (_meditationDetails.value is TrackingNetworkCall.Loading)
+        if (_meditationDetails.value is UiState.Loading)
             return
 
+        _meditationDetails.value = UiState.Loading
+
         viewModelScope.launch {
-            trackingRepo.getMeditationDetails(
+            _meditationDetails.value = trackingRepo.getMeditationDetails(
                 uid = uid,
                 date = date,
                 location = "bangalore",
                 status = status
-            ).collect {
-                _meditationDetails.value = it
-            }
+            ).toUiState()
         }
     }
 
 
     // This variable contains the Breathing Tracking Details
-    private val _breathingDetails = MutableStateFlow<TrackingNetworkCall<BreathingResponse>>(
-        TrackingNetworkCall.Initialized()
-    )
+    private val _breathingDetails = MutableStateFlow<UiState<BreathingResponse>>(UiState.Idle)
     val breathingDetails = _breathingDetails.asStateFlow()
 
     /**
@@ -146,25 +137,23 @@ class TrackViewModel @Inject constructor(
      */
     private fun getBreathingDetails(status: String, date: String) {
 
-        if (_breathingDetails.value is TrackingNetworkCall.Loading)
+        if (_breathingDetails.value is UiState.Loading)
             return
 
+        _breathingDetails.value = UiState.Loading
+
         viewModelScope.launch {
-            trackingRepo.getBreathingDetails(
+            _breathingDetails.value = trackingRepo.getBreathingDetails(
                 uid = uid,
                 date = date,
                 location = "bangalore",
                 status = status
-            ).collect {
-                _breathingDetails.value = it
-            }
+            ).toUiState()
         }
     }
 
     // This variable contains the sleep tracking Details
-    private val _sleepDetails = MutableStateFlow<TrackingNetworkCall<SleepResponse>>(
-        TrackingNetworkCall.Initialized()
-    )
+    private val _sleepDetails = MutableStateFlow<UiState<SleepResponse>>(UiState.Idle)
     val sleepDetails = _sleepDetails.asStateFlow()
 
     /**
@@ -172,25 +161,23 @@ class TrackViewModel @Inject constructor(
      */
     private fun getSleepDetails(status: String, date: String) {
 
-        if (_sleepDetails.value is TrackingNetworkCall.Loading)
+        if (_sleepDetails.value is UiState.Loading)
             return
 
+        _sleepDetails.value = UiState.Loading
+
         viewModelScope.launch {
-            trackingRepo.getSleepDetails(
+            _sleepDetails.value = trackingRepo.getSleepDetails(
                 uid = uid,
                 date = date,
                 location = "bangalore",
                 status = status
-            ).collect {
-                _sleepDetails.value = it
-            }
+            ).toUiState()
         }
     }
 
     // This variable contains the Sunlight Tracking Details
-    private val _sunlightDetails = MutableStateFlow<TrackingNetworkCall<SunlightResponse>>(
-        TrackingNetworkCall.Initialized()
-    )
+    private val _sunlightDetails = MutableStateFlow<UiState<SunlightResponse>>(UiState.Idle)
     val sunlightDetails = _sunlightDetails.asStateFlow()
 
     /**
@@ -198,26 +185,24 @@ class TrackViewModel @Inject constructor(
      */
     private fun getSunlightDetails(status: String, date: String) {
 
-        if (_sunlightDetails.value is TrackingNetworkCall.Loading)
+        if (_sunlightDetails.value is UiState.Loading)
             return
 
+        _sunlightDetails.value = UiState.Loading
+
         viewModelScope.launch {
-            trackingRepo.getSunlightDetails(
+            _sunlightDetails.value = trackingRepo.getSunlightDetails(
                 uid = uid,
                 date = date,
                 location = "bangalore",
                 status = status
-            ).collect {
-                _sunlightDetails.value = it
-            }
+            ).toUiState()
         }
     }
 
 
     // This variable contains the Sunlight Tracking Details
-    private val _exerciseDetails = MutableStateFlow<TrackingNetworkCall<ExerciseResponse>>(
-        TrackingNetworkCall.Initialized()
-    )
+    private val _exerciseDetails = MutableStateFlow<UiState<ExerciseResponse>>(UiState.Idle)
     val exerciseDetails = _exerciseDetails.asStateFlow()
 
     /**
@@ -225,19 +210,19 @@ class TrackViewModel @Inject constructor(
      */
     private fun getExerciseDetails(status: String, date: String, exercise: String) {
 
-        if (_exerciseDetails.value is TrackingNetworkCall.Loading)
+        if (_exerciseDetails.value is UiState.Loading)
             return
 
+        _exerciseDetails.value = UiState.Loading
+
         viewModelScope.launch {
-            trackingRepo.getExerciseDetails(
+            _exerciseDetails.value = trackingRepo.getExerciseDetails(
                 uid = uid,
                 date = date,
                 location = "bangalore",
                 exercise = exercise,
                 status = status
-            ).collect {
-                _exerciseDetails.value = it
-            }
+            ).toUiState()
         }
     }
 

@@ -1,5 +1,8 @@
 package fit.asta.health.navigation.track.data.repo
 
+import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.getResponseState
+import fit.asta.health.datastore.IODispatcher
 import fit.asta.health.navigation.track.data.remote.TrackingApiService
 import fit.asta.health.navigation.track.data.remote.model.breathing.BreathingResponse
 import fit.asta.health.navigation.track.data.remote.model.exercise.ExerciseResponse
@@ -9,37 +12,30 @@ import fit.asta.health.navigation.track.data.remote.model.sleep.SleepResponse
 import fit.asta.health.navigation.track.data.remote.model.step.StepsResponse
 import fit.asta.health.navigation.track.data.remote.model.sunlight.SunlightResponse
 import fit.asta.health.navigation.track.data.remote.model.water.WaterResponse
-import fit.asta.health.navigation.track.ui.util.TrackingNetworkCall
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import retrofit2.Response
+import kotlinx.coroutines.withContext
 
 class TrackingRepoImpl(
-    private val trackingApiService: TrackingApiService
+    private val trackingApiService: TrackingApiService,
+    @IODispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : TrackingRepo {
 
     override suspend fun getHomeDetails(
         uid: String,
         date: String,
         location: String
-    ): Flow<TrackingNetworkCall<HomeMenuResponse>> {
+    ): ResponseState<HomeMenuResponse> {
 
-        return flow {
-            emit(TrackingNetworkCall.Loading())
-
-            // Fetching Data
-            val response = trackingApiService.getHomeDetails(
-                uid = uid,
-                date = date,
-                location = location
-            )
-            emit(handleResponse(response))
-        }.catch {
-            emit(TrackingNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
+        return withContext(dispatcher) {
+            getResponseState {
+                trackingApiService.getHomeDetails(
+                    uid = uid,
+                    date = date,
+                    location = location
+                )
+            }
+        }
     }
 
     override suspend fun getWaterDetails(
@@ -47,22 +43,18 @@ class TrackingRepoImpl(
         date: String,
         location: String,
         status: String
-    ): Flow<TrackingNetworkCall<WaterResponse>> {
+    ): ResponseState<WaterResponse> {
 
-        return flow {
-            emit(TrackingNetworkCall.Loading())
-
-            // Fetching Data
-            val response = trackingApiService.getWaterDetails(
-                uid = uid,
-                date = date,
-                location = location,
-                status = status
-            )
-            emit(handleResponse(response))
-        }.catch {
-            emit(TrackingNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
+        return withContext(dispatcher) {
+            getResponseState {
+                trackingApiService.getWaterDetails(
+                    uid = uid,
+                    date = date,
+                    location = location,
+                    status = status
+                )
+            }
+        }
     }
 
     override suspend fun getStepsDetails(
@@ -70,22 +62,18 @@ class TrackingRepoImpl(
         date: String,
         location: String,
         status: String
-    ): Flow<TrackingNetworkCall<StepsResponse>> {
+    ): ResponseState<StepsResponse> {
 
-        return flow {
-            emit(TrackingNetworkCall.Loading())
-
-            // Fetching Data
-            val response = trackingApiService.getStepsDetails(
-                uid = uid,
-                date = date,
-                location = location,
-                status = status
-            )
-            emit(handleResponse(response))
-        }.catch {
-            emit(TrackingNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
+        return withContext(dispatcher) {
+            getResponseState {
+                trackingApiService.getStepsDetails(
+                    uid = uid,
+                    date = date,
+                    location = location,
+                    status = status
+                )
+            }
+        }
     }
 
     override suspend fun getMeditationDetails(
@@ -93,22 +81,18 @@ class TrackingRepoImpl(
         date: String,
         location: String,
         status: String
-    ): Flow<TrackingNetworkCall<MeditationResponse>> {
+    ): ResponseState<MeditationResponse> {
 
-        return flow {
-            emit(TrackingNetworkCall.Loading())
-
-            // Fetching Data
-            val response = trackingApiService.getMeditationDetails(
-                uid = uid,
-                date = date,
-                location = location,
-                status = status
-            )
-            emit(handleResponse(response))
-        }.catch {
-            emit(TrackingNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
+        return withContext(dispatcher) {
+            getResponseState {
+                trackingApiService.getMeditationDetails(
+                    uid = uid,
+                    date = date,
+                    location = location,
+                    status = status
+                )
+            }
+        }
     }
 
     override suspend fun getBreathingDetails(
@@ -116,21 +100,18 @@ class TrackingRepoImpl(
         date: String,
         location: String,
         status: String
-    ): Flow<TrackingNetworkCall<BreathingResponse>> {
-        return flow {
-            emit(TrackingNetworkCall.Loading())
+    ): ResponseState<BreathingResponse> {
 
-            // Fetching Data
-            val response = trackingApiService.getBreathingDetails(
-                uid = uid,
-                date = date,
-                location = location,
-                status = status
-            )
-            emit(handleResponse(response))
-        }.catch {
-            emit(TrackingNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
+        return withContext(dispatcher) {
+            getResponseState {
+                trackingApiService.getBreathingDetails(
+                    uid = uid,
+                    date = date,
+                    location = location,
+                    status = status
+                )
+            }
+        }
     }
 
     override suspend fun getSleepDetails(
@@ -138,22 +119,18 @@ class TrackingRepoImpl(
         date: String,
         location: String,
         status: String
-    ): Flow<TrackingNetworkCall<SleepResponse>> {
+    ): ResponseState<SleepResponse> {
 
-        return flow {
-            emit(TrackingNetworkCall.Loading())
-
-            // Fetching Data
-            val response = trackingApiService.getSleepDetails(
-                uid = uid,
-                date = date,
-                location = location,
-                status = status
-            )
-            emit(handleResponse(response))
-        }.catch {
-            emit(TrackingNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
+        return withContext(dispatcher) {
+            getResponseState {
+                trackingApiService.getSleepDetails(
+                    uid = uid,
+                    date = date,
+                    location = location,
+                    status = status
+                )
+            }
+        }
     }
 
     override suspend fun getSunlightDetails(
@@ -161,22 +138,18 @@ class TrackingRepoImpl(
         date: String,
         location: String,
         status: String
-    ): Flow<TrackingNetworkCall<SunlightResponse>> {
+    ): ResponseState<SunlightResponse> {
 
-        return flow {
-            emit(TrackingNetworkCall.Loading())
-
-            // Fetching Data
-            val response = trackingApiService.getSunlightDetails(
-                uid = uid,
-                date = date,
-                location = location,
-                status = status
-            )
-            emit(handleResponse(response))
-        }.catch {
-            emit(TrackingNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
+        return withContext(dispatcher) {
+            getResponseState {
+                trackingApiService.getSunlightDetails(
+                    uid = uid,
+                    date = date,
+                    location = location,
+                    status = status
+                )
+            }
+        }
     }
 
     override suspend fun getExerciseDetails(
@@ -185,80 +158,18 @@ class TrackingRepoImpl(
         location: String,
         exercise: String,
         status: String
-    ): Flow<TrackingNetworkCall<ExerciseResponse>> {
+    ): ResponseState<ExerciseResponse> {
 
-        return flow {
-            emit(TrackingNetworkCall.Loading())
-
-            // Fetching Data
-            val response = trackingApiService.getExerciseDetails(
-                uid = uid,
-                date = date,
-                location = location,
-                exercise = exercise,
-                status = status
-            )
-            emit(handleResponse(response))
-        }.catch {
-            emit(TrackingNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
-    }
-
-    /**
-     *  Handle Response Got From Spotify Web API
-     */
-    private fun <T : Any> handleResponse(response: Response<T>): TrackingNetworkCall<T> {
-        when {
-            response.message().toString().contains("timeout") -> {
-                return TrackingNetworkCall.Failure(
-                    data = response.body(),
-                    message = "Timeout!!\n $response"
+        return withContext(dispatcher) {
+            getResponseState {
+                trackingApiService.getExerciseDetails(
+                    uid = uid,
+                    date = date,
+                    location = location,
+                    exercise = exercise,
+                    status = status
                 )
             }
-
-            response.code() == 401 -> {
-                return TrackingNetworkCall.Failure(
-                    data = response.body(),
-                    message = "Bad or expired token. This can happen if the user revoked a token or the access token has expired. You should re-authenticate the user.\n $response"
-                )
-            }
-
-            response.code() == 403 -> {
-                return TrackingNetworkCall.Failure(
-                    data = response.body(),
-                    message = "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating the user won't help here.\n $response"
-                )
-            }
-
-            response.code() == 429 -> {
-                return TrackingNetworkCall.Failure(
-                    data = response.body(),
-                    message = "The app has exceeded its rate limits. $response"
-                )
-            }
-
-            response.body() == null -> {
-                return TrackingNetworkCall.Failure(
-                    data = response.body(),
-                    message = "Empty Body. $response"
-                )
-            }
-
-            response.isSuccessful -> {
-                val result = response.body()!!
-                return TrackingNetworkCall.Success(result)
-            }
-
-            response.code() == 200 -> {
-                val result = response.body()!!
-                return TrackingNetworkCall.Success(result)
-            }
-
-            else -> return TrackingNetworkCall.Failure(
-                message = response.body().toString(),
-                data = response.body()
-            )
         }
     }
-
 }

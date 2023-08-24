@@ -1,7 +1,6 @@
 package fit.asta.health.navigation.track.ui.screens
 
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -44,16 +42,18 @@ import com.dev.anirban.chartlibrary.other.bmi.BmiChart
 import com.dev.anirban.chartlibrary.other.bmi.data.BmiData
 import com.dev.anirban.chartlibrary.util.ChartPoint
 import fit.asta.health.R
+import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.navigation.track.data.remote.model.menu.HomeMenuResponse
 import fit.asta.health.navigation.track.ui.components.TrackingChartCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
-import fit.asta.health.navigation.track.ui.navigation.TrackNavRoute
+import fit.asta.health.navigation.track.TrackDestination
 import fit.asta.health.navigation.track.ui.util.TrackOption
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
-import fit.asta.health.navigation.track.ui.util.TrackingNetworkCall
 import java.text.DecimalFormat
 import kotlin.math.abs
 
@@ -68,14 +68,11 @@ import kotlin.math.abs
  */
 @Composable
 fun TrackMenuScreenControl(
-    homeMenuState: TrackingNetworkCall<HomeMenuResponse>,
+    homeMenuState: UiState<HomeMenuResponse>,
     loadHomeData: () -> Unit,
     setUiEvent: (TrackUiEvent) -> Unit,
     navigator: (String) -> Unit
 ) {
-
-    // Context Variable
-    val context = LocalContext.current
 
     // This function loads the data for the Home Menu Screen
     LaunchedEffect(Unit) {
@@ -86,28 +83,29 @@ fun TrackMenuScreenControl(
     when (homeMenuState) {
 
         // Initialized State
-        is TrackingNetworkCall.Initialized -> {}
+        is UiState.Idle -> {
+            loadHomeData()
+        }
 
         // Loading State
-        is TrackingNetworkCall.Loading -> {
+        is UiState.Loading -> {
             LoadingAnimation(modifier = Modifier.fillMaxSize())
         }
 
         // Success State
-        is TrackingNetworkCall.Success -> {
-            if (homeMenuState.data != null)
-                TrackMenuSuccessScreen(
-                    homeMenuData = homeMenuState.data.homeMenuData,
-                    setUiEvent = setUiEvent,
-                    navigator = navigator
-                )
-            else
-                Toast.makeText(context, TrackStringConstants.NO_DATA, Toast.LENGTH_SHORT).show()
+        is UiState.Success -> {
+            TrackMenuSuccessScreen(
+                homeMenuData = homeMenuState.data.homeMenuData,
+                setUiEvent = setUiEvent,
+                navigator = navigator
+            )
         }
 
         // failure State
-        is TrackingNetworkCall.Failure -> {
-            Toast.makeText(context, homeMenuState.message.toString(), Toast.LENGTH_SHORT).show()
+        is UiState.Error -> {
+            AppErrorScreen(desc = homeMenuState.resId.toStringFromResId()) {
+                loadHomeData()
+            }
         }
     }
 }
@@ -259,47 +257,47 @@ private fun TrackMenuSuccessScreen(
 
                         "water" -> {
                             setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.WaterOption))
-                            navigator(TrackNavRoute.WaterTrackDetail.route)
+                            navigator(TrackDestination.WaterTrackDetail.route)
                         }
 
                         "meditation" -> {
                             setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.MeditationOption))
-                            navigator(TrackNavRoute.MeditationTrackDetail.route)
+                            navigator(TrackDestination.MeditationTrackDetail.route)
                         }
 
                         "breathing" -> {
                             setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.BreathingOption))
-                            navigator(TrackNavRoute.BreathingTrackDetail.route)
+                            navigator(TrackDestination.BreathingTrackDetail.route)
                         }
 
                         "sunlight" -> {
                             setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.SunlightOption))
-                            navigator(TrackNavRoute.SunlightTrackDetail.route)
+                            navigator(TrackDestination.SunlightTrackDetail.route)
                         }
 
                         "sleep" -> {
                             setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.SleepOption))
-                            navigator(TrackNavRoute.SleepTrackDetail.route)
+                            navigator(TrackDestination.SleepTrackDetail.route)
                         }
 
                         "yoga" -> {
                             setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.YogaOption))
-                            navigator(TrackNavRoute.ExerciseTrackDetail.route)
+                            navigator(TrackDestination.ExerciseTrackDetail.route)
                         }
 
                         "dance" -> {
                             setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.DanceOption))
-                            navigator(TrackNavRoute.ExerciseTrackDetail.route)
+                            navigator(TrackDestination.ExerciseTrackDetail.route)
                         }
 
                         "workout" -> {
                             setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.WorkoutOption))
-                            navigator(TrackNavRoute.ExerciseTrackDetail.route)
+                            navigator(TrackDestination.ExerciseTrackDetail.route)
                         }
 
                         "hiit" -> {
                             setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.HiitOption))
-                            navigator(TrackNavRoute.ExerciseTrackDetail.route)
+                            navigator(TrackDestination.ExerciseTrackDetail.route)
                         }
                     }
                 }
@@ -320,7 +318,7 @@ private fun TrackMenuSuccessScreen(
                     unit = TrackStringConstants.STEPS_STEP_UNIT
                 ) {
                     setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.StepsOption))
-                    navigator(TrackNavRoute.StepsTrackDetail.route)
+                    navigator(TrackDestination.StepsTrackDetail.route)
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))

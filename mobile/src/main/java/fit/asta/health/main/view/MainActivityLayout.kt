@@ -67,7 +67,7 @@ import fit.asta.health.navigation.today.ui.view.HomeEvent
 import fit.asta.health.navigation.today.ui.view.TodayContent
 import fit.asta.health.navigation.today.ui.view.utils.HourMinAmPm
 import fit.asta.health.navigation.today.ui.vm.TodayPlanViewModel
-import fit.asta.health.navigation.track.ui.TrackContent
+import fit.asta.health.navigation.track.TrackNavGraph
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -370,7 +370,7 @@ private fun MainNavHost(
         }
 
         composable(BottomBarDestination.Track.route) {
-            TrackContent()
+            TrackNavGraph()
         }
     }
 }
