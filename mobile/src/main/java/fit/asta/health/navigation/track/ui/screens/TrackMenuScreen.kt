@@ -49,7 +49,7 @@ import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.navigation.track.data.remote.model.menu.HomeMenuResponse
 import fit.asta.health.navigation.track.ui.components.TrackingChartCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
-import fit.asta.health.navigation.track.TrackNavRoute
+import fit.asta.health.navigation.track.TrackDestination
 import fit.asta.health.navigation.track.ui.util.TrackOption
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
@@ -259,47 +259,47 @@ private fun TrackMenuSuccessScreen(
 
                         "water" -> {
                             setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.WaterOption))
-                            navigator(TrackNavRoute.WaterTrackDetail.route)
+                            navigator(TrackDestination.WaterTrackDetail.route)
                         }
 
                         "meditation" -> {
                             setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.MeditationOption))
-                            navigator(TrackNavRoute.MeditationTrackDetail.route)
+                            navigator(TrackDestination.MeditationTrackDetail.route)
                         }
 
                         "breathing" -> {
                             setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.BreathingOption))
-                            navigator(TrackNavRoute.BreathingTrackDetail.route)
+                            navigator(TrackDestination.BreathingTrackDetail.route)
                         }
 
                         "sunlight" -> {
                             setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.SunlightOption))
-                            navigator(TrackNavRoute.SunlightTrackDetail.route)
+                            navigator(TrackDestination.SunlightTrackDetail.route)
                         }
 
                         "sleep" -> {
                             setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.SleepOption))
-                            navigator(TrackNavRoute.SleepTrackDetail.route)
+                            navigator(TrackDestination.SleepTrackDetail.route)
                         }
 
                         "yoga" -> {
                             setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.YogaOption))
-                            navigator(TrackNavRoute.ExerciseTrackDetail.route)
+                            navigator(TrackDestination.ExerciseTrackDetail.route)
                         }
 
                         "dance" -> {
                             setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.DanceOption))
-                            navigator(TrackNavRoute.ExerciseTrackDetail.route)
+                            navigator(TrackDestination.ExerciseTrackDetail.route)
                         }
 
                         "workout" -> {
                             setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.WorkoutOption))
-                            navigator(TrackNavRoute.ExerciseTrackDetail.route)
+                            navigator(TrackDestination.ExerciseTrackDetail.route)
                         }
 
                         "hiit" -> {
                             setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.HiitOption))
-                            navigator(TrackNavRoute.ExerciseTrackDetail.route)
+                            navigator(TrackDestination.ExerciseTrackDetail.route)
                         }
                     }
                 }
@@ -320,7 +320,7 @@ private fun TrackMenuSuccessScreen(
                     unit = TrackStringConstants.STEPS_STEP_UNIT
                 ) {
                     setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.StepsOption))
-                    navigator(TrackNavRoute.StepsTrackDetail.route)
+                    navigator(TrackDestination.StepsTrackDetail.route)
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))

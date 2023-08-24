@@ -24,12 +24,12 @@ fun TrackNavGraph() {
 
     NavHost(
         navController = navController,
-        startDestination = TrackNavRoute.TrackMenu.route,
+        startDestination = TrackDestination.TrackMenu.route,
         builder = {
 
             // Menu Screen for Tracking Stats
             composable(
-                TrackNavRoute.TrackMenu.route,
+                TrackDestination.TrackMenu.route,
                 content = {
 
                     val homeMenuState = trackViewModel.homeScreenDetails
@@ -46,7 +46,7 @@ fun TrackNavGraph() {
 
             // Detail Screen for Water Tracking Details
             composable(
-                TrackNavRoute.WaterTrackDetail.route,
+                TrackDestination.WaterTrackDetail.route,
                 content = {
 
                     val waterTrackData = trackViewModel.waterDetails
@@ -61,7 +61,7 @@ fun TrackNavGraph() {
 
             // Detail Screen for Steps Tracking Details
             composable(
-                TrackNavRoute.StepsTrackDetail.route,
+                TrackDestination.StepsTrackDetail.route,
                 content = {
 
                     val stepsTrackData = trackViewModel.stepsDetails
@@ -76,7 +76,7 @@ fun TrackNavGraph() {
 
             // Detail Screen for Sleep Tracking Details
             composable(
-                TrackNavRoute.SleepTrackDetail.route,
+                TrackDestination.SleepTrackDetail.route,
                 content = {
 
                     val sleepTrackData = trackViewModel.sleepDetails
@@ -91,7 +91,7 @@ fun TrackNavGraph() {
 
             // Detail Screen for Sunlight Tracking Details
             composable(
-                TrackNavRoute.SunlightTrackDetail.route,
+                TrackDestination.SunlightTrackDetail.route,
                 content = {
 
                     val sunlightTrackData = trackViewModel.sunlightDetails
@@ -106,7 +106,7 @@ fun TrackNavGraph() {
 
             // Detail Screen for Breathing Tracking Details
             composable(
-                TrackNavRoute.BreathingTrackDetail.route,
+                TrackDestination.BreathingTrackDetail.route,
                 content = {
 
                     val breathingTrackData = trackViewModel.breathingDetails
@@ -121,7 +121,7 @@ fun TrackNavGraph() {
 
             // Detail Screen for Meditation Tracking Details
             composable(
-                TrackNavRoute.MeditationTrackDetail.route,
+                TrackDestination.MeditationTrackDetail.route,
                 content = {
 
                     val meditationTrackData = trackViewModel.meditationDetails
@@ -136,7 +136,7 @@ fun TrackNavGraph() {
 
             // Detail Screen for Exercise(Yoga , Dance , Hiit , workout) Tracking Details
             composable(
-                TrackNavRoute.ExerciseTrackDetail.route,
+                TrackDestination.ExerciseTrackDetail.route,
                 content = {
 
                     val exerciseTrackData = trackViewModel.exerciseDetails
