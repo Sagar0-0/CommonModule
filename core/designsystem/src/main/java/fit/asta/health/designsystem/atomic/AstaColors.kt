@@ -58,7 +58,7 @@ import fit.asta.health.designsystem.theme.md_theme_light_surfaceVariant
 import fit.asta.health.designsystem.theme.md_theme_light_tertiary
 import fit.asta.health.designsystem.theme.md_theme_light_tertiaryContainer
 
-internal val LightColors = lightColorScheme(
+internal val LightDefaultColorScheme = lightColorScheme(
     primary = md_theme_light_primary,
     onPrimary = md_theme_light_onPrimary,
     primaryContainer = md_theme_light_primaryContainer,
@@ -88,7 +88,7 @@ internal val LightColors = lightColorScheme(
     surfaceTint = md_theme_light_surfaceTint,
 )
 
-internal val DarkColors = darkColorScheme(
+internal val DarkDefaultColorScheme = darkColorScheme(
     primary = md_theme_dark_primary,
     onPrimary = md_theme_dark_onPrimary,
     primaryContainer = md_theme_dark_primaryContainer,
@@ -118,4 +118,4 @@ internal val DarkColors = darkColorScheme(
     surfaceTint = md_theme_dark_surfaceTint,
 )
 
-internal val LocalColors = compositionLocalOf { LightColors }
+internal val LocalColors = compositionLocalOf { LightDefaultColorScheme }
