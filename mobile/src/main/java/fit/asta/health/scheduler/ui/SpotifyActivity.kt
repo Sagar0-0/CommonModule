@@ -23,14 +23,13 @@ import com.spotify.sdk.android.auth.AuthorizationRequest
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.common.ui.components.generic.AppErrorScreen
-import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.designsystem.components.generic.AppErrorScreen
+import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.scheduler.ui.navigation.SpotifyNavGraph
 import fit.asta.health.scheduler.ui.viewmodel.SpotifyViewModel
 import fit.asta.health.scheduler.util.Constants
-import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 
 @AndroidEntryPoint
 class SpotifyActivity : ComponentActivity() {

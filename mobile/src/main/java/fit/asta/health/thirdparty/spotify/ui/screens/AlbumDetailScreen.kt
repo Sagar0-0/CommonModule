@@ -23,7 +23,6 @@ import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.thirdparty.spotify.data.model.common.Album
 import fit.asta.health.thirdparty.spotify.ui.components.MusicLargeImageColumn
 import fit.asta.health.thirdparty.spotify.ui.events.SpotifyUiEvent
-import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 
 /**
  * This screen shows the details of the Albums choose by the user and gives the options to either

@@ -16,10 +16,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
-import fit.asta.health.common.ui.components.generic.AppErrorScreen
-import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.designsystem.components.generic.AppErrorScreen
+import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.thirdparty.spotify.data.model.library.albums.SpotifyLibraryAlbumModel
 import fit.asta.health.thirdparty.spotify.data.model.library.episodes.SpotifyLibraryEpisodesModel
 import fit.asta.health.thirdparty.spotify.data.model.library.following.SpotifyUserFollowingArtist
