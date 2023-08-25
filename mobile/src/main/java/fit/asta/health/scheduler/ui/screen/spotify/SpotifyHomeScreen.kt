@@ -21,11 +21,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.theme.spacing
-import fit.asta.health.common.utils.UiState
-import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.scheduler.ui.components.SpotifyHomeHeader
 import fit.asta.health.scheduler.ui.components.SpotifyMusicItem
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.ToneUiState
@@ -39,8 +39,8 @@ import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 fun SpotifyHomeScreen(
     recentlyData: SpotifyNetworkCall<SpotifyUserRecentlyPlayedModel>,
     topMixData: SpotifyNetworkCall<TrackList>,
-    favouriteTracks: SpotifyNetworkCall<List<Track>>,
-    favouriteAlbums: SpotifyNetworkCall<List<Album>>,
+    favouriteTracks: UiState<List<Track>>,
+    favouriteAlbums: UiState<List<Album>>,
     setEvent: (SpotifyUiEvent) -> Unit,
     navSearch: () -> Unit,
 ) {
