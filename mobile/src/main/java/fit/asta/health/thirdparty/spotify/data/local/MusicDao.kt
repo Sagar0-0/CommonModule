@@ -8,7 +8,7 @@ import fit.asta.health.thirdparty.spotify.data.model.common.Album
 interface MusicDao {
 
     @Query("SELECT * FROM fav_tracks_table")
-    fun getAll(): List<Track>
+    fun getAllTracks(): List<Track>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTrack(track: Track)

@@ -1,7 +1,7 @@
 package fit.asta.health.thirdparty.spotify.data.repo
 
 import dagger.hilt.android.scopes.ActivityRetainedScoped
-import fit.asta.health.thirdparty.spotify.data.local.MusicDataSource
+import fit.asta.health.thirdparty.spotify.data.local.MusicDao
 import fit.asta.health.thirdparty.spotify.data.model.common.Album
 import fit.asta.health.thirdparty.spotify.data.model.common.Track
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
@@ -10,11 +10,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
 @ActivityRetainedScoped
-class MusicRepositoryImpl @Inject constructor(
-    private val localDataSource: MusicDataSource
+class MusicRepositoryImpl(
+    private val localDataSource: MusicDao
 ) : MusicRepository {
 
     override fun getAllTracks(): Flow<SpotifyNetworkCall<List<Track>>> {

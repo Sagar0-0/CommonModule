@@ -13,9 +13,6 @@ import fit.asta.health.thirdparty.spotify.data.repo.MusicRepositoryImpl
 import fit.asta.health.thirdparty.spotify.data.repo.SpotifyRepo
 import fit.asta.health.thirdparty.spotify.data.repo.SpotifyRepoImpl
 import fit.asta.health.thirdparty.spotify.data.remote.SpotifyApiService
-import fit.asta.health.thirdparty.spotify.data.local.MusicDataSourceImpl
-import fit.asta.health.thirdparty.spotify.data.local.MusicDao
-import fit.asta.health.thirdparty.spotify.data.local.MusicDataSource
 import fit.asta.health.thirdparty.spotify.data.local.MusicDatabase
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants.Companion.SPOTIFY_BASE_URL
 import okhttp3.OkHttpClient
@@ -51,19 +48,7 @@ object SpotifyNetworkModule {
 
     @Singleton
     @Provides
-    fun provideMusicDao(db: MusicDatabase): MusicDao {
-        return db.musicDao()
-    }
-
-    @Singleton
-    @Provides
-    fun provideMusicDataSource(dao: MusicDao): MusicDataSource {
-        return MusicDataSourceImpl(dao)
-    }
-
-    @Singleton
-    @Provides
-    fun provideMusicRepository(localDataSource: MusicDataSource): MusicRepository {
-        return MusicRepositoryImpl(localDataSource)
+    fun provideMusicRepository(db: MusicDatabase): MusicRepository {
+        return MusicRepositoryImpl(db.musicDao())
     }
 }
