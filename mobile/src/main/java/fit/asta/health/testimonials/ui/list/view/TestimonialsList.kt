@@ -17,13 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.media3.common.Player
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import fit.asta.health.common.ui.components.generic.AppCard
-import fit.asta.health.common.ui.components.generic.AppErrorMsgCard
-import fit.asta.health.common.ui.components.generic.AppErrorScreen
-import fit.asta.health.common.ui.components.generic.AppProgressArc
-import fit.asta.health.common.ui.components.generic.LoadingAnimation
-import fit.asta.health.common.ui.theme.boxSize
-import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.designsystem.components.generic.AppCard
+import fit.asta.health.designsystem.components.generic.AppErrorMsgCard
+import fit.asta.health.designsystem.components.generic.AppErrorScreen
+import fit.asta.health.designsystem.components.generic.AppProgressArc
+import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.theme.boxSize
+import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.testimonials.data.model.TestimonialType
 import fit.asta.health.testimonials.ui.list.vm.TestimonialListViewModel
 

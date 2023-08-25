@@ -38,8 +38,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.generic.AppScaffold
-import fit.asta.health.common.ui.components.generic.AppTopBarWithHelp
+import fit.asta.health.designsystem.components.generic.AppScaffold
+import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
 import fit.asta.health.player.jetpack_audio.domain.utils.AppIcons
 import fit.asta.health.player.jetpack_audio.presentation.ui.theme.LocalSpacing
 import fit.asta.health.tools.exercise.model.domain.model.VideoItem

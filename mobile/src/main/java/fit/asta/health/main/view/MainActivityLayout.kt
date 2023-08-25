@@ -51,15 +51,15 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.generic.AppErrorScreen
-import fit.asta.health.common.ui.components.generic.AppScaffold
-import fit.asta.health.common.ui.components.generic.AppTopBar
-import fit.asta.health.common.ui.components.generic.LoadingAnimation
-import fit.asta.health.common.ui.theme.elevation
-import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.MainTopBarActions
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.designsystem.components.generic.AppErrorScreen
+import fit.asta.health.designsystem.components.generic.AppScaffold
+import fit.asta.health.designsystem.components.generic.AppTopBar
+import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.theme.elevation
+import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.main.sharedViewModel
 import fit.asta.health.navigation.home.view.HomeContent
 import fit.asta.health.navigation.today.domain.model.TodayData
@@ -69,7 +69,6 @@ import fit.asta.health.navigation.today.ui.view.utils.HourMinAmPm
 import fit.asta.health.navigation.today.ui.vm.TodayPlanViewModel
 import fit.asta.health.navigation.track.TrackNavGraph
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

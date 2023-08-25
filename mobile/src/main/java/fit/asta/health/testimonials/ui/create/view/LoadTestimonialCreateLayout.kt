@@ -8,8 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.generic.AppErrorScreen
-import fit.asta.health.common.ui.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.components.generic.AppErrorScreen
+import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.testimonials.ui.create.vm.TestimonialGetState
 import fit.asta.health.testimonials.ui.create.vm.TestimonialViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi

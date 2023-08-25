@@ -2,8 +2,8 @@ package fit.asta.health.profile.createprofile.view.components
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import fit.asta.health.common.ui.components.functional.TwoButtonLayout
-import fit.asta.health.common.ui.components.generic.AppTexts
+import fit.asta.health.designsystem.components.functional.TwoButtonLayout
+import fit.asta.health.designsystem.components.generic.AppTexts
 
 @Composable
 fun CreateProfileTwoButtonLayout(

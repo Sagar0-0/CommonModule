@@ -16,12 +16,12 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,19 +30,19 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.common.ui.theme.spacing
-import fit.asta.health.thirdparty.spotify.ui.navigation.SpotifyNavRoutes
+import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.thirdparty.spotify.data.model.common.Track
 import fit.asta.health.thirdparty.spotify.data.model.recently.SpotifyUserRecentlyPlayedModel
 import fit.asta.health.thirdparty.spotify.data.model.recommendations.SpotifyRecommendationModel
 import fit.asta.health.thirdparty.spotify.data.model.search.ArtistList
 import fit.asta.health.thirdparty.spotify.data.model.search.TrackList
-import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import fit.asta.health.thirdparty.spotify.ui.components.MusicArtistsUI
-import fit.asta.health.thirdparty.spotify.ui.components.MusicPlayableSmallCards
 import fit.asta.health.thirdparty.spotify.ui.components.MusicLargeImageColumn
+import fit.asta.health.thirdparty.spotify.ui.components.MusicPlayableSmallCards
 import fit.asta.health.thirdparty.spotify.ui.components.MusicStateControl
 import fit.asta.health.thirdparty.spotify.ui.events.SpotifyUiEvent
+import fit.asta.health.thirdparty.spotify.ui.navigation.SpotifyNavRoutes
+import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 
 
 /**

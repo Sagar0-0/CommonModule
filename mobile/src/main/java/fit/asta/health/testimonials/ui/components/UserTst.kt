@@ -9,8 +9,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import fit.asta.health.common.ui.theme.Spacing
-import fit.asta.health.common.ui.theme.ts
+import fit.asta.health.designsystem.theme.Spacing
+import fit.asta.health.designsystem.theme.ts
 import fit.asta.health.testimonials.data.model.Testimonial
 
 @Composable

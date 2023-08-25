@@ -10,9 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import fit.asta.health.common.ui.components.generic.AppDefServerImg
-import fit.asta.health.common.ui.components.generic.AppTexts
 import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.designsystem.components.generic.AppDefServerImg
+import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
 
 @Composable

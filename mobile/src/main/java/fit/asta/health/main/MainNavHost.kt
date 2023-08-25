@@ -20,7 +20,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import fit.asta.health.BuildConfig
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.navigateToWebView
 import fit.asta.health.common.ui.webView
 import fit.asta.health.common.utils.getCurrentBuildVersion
@@ -28,6 +27,7 @@ import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.rateUs
 import fit.asta.health.common.utils.sendBugReportMessage
 import fit.asta.health.common.utils.shareApp
+import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.feature.address.addressRoute
 import fit.asta.health.feature.address.navigateToAddress
 import fit.asta.health.feature.auth.AUTH_GRAPH_ROUTE

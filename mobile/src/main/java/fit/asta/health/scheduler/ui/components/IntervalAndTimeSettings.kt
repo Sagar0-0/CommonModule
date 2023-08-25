@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.shawnlin.numberpicker.NumberPicker
 import fit.asta.health.R
-import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.IvlUiState
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.TimeUi
 

@@ -1,6 +1,6 @@
 package fit.asta.health.designsystem.validation.event
 
-import fit.asta.health.designsystem.components.functional.UiString
+import fit.asta.health.common.utils.UiString
 
 sealed class ValidationResultEvent {
 

@@ -20,9 +20,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.*
-import fit.asta.health.common.ui.components.generic.AppScaffold
-import fit.asta.health.common.ui.components.generic.AppTopBarWithHelp
+import fit.asta.health.designsystem.components.*
+import fit.asta.health.designsystem.components.generic.AppScaffold
+import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
 import fit.asta.health.tools.sunlight.viewmodel.SunlightViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 

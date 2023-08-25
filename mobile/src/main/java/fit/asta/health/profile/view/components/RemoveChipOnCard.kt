@@ -4,9 +4,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.RemoveCircle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import fit.asta.health.common.ui.components.generic.AppChips
-import fit.asta.health.common.ui.components.generic.AppDefaultIcon
-import fit.asta.health.common.ui.components.generic.AppTexts
+import fit.asta.health.designsystem.components.generic.AppChips
+import fit.asta.health.designsystem.components.generic.AppDefaultIcon
+import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.profile.createprofile.view.components.rememberAssistChipColors
 
 @Composable

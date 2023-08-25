@@ -14,28 +14,27 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import fit.asta.health.common.ui.components.*
-import fit.asta.health.common.ui.components.functional.AppTextFieldValidate
-import fit.asta.health.common.ui.components.functional.DialogData
-import fit.asta.health.common.ui.components.functional.OnSuccessfulSubmit
-import fit.asta.health.common.ui.components.functional.ShowCustomConfirmationDialog
-import fit.asta.health.common.ui.components.functional.ValidateTxtLength
-import fit.asta.health.common.ui.components.generic.AppButtons
-import fit.asta.health.common.ui.components.generic.AppErrorScreen
-import fit.asta.health.common.ui.components.generic.AppScaffold
-import fit.asta.health.common.ui.components.generic.AppTexts
-import fit.asta.health.common.ui.components.generic.AppTopBar
-import fit.asta.health.common.ui.components.generic.LoadingAnimation
-import fit.asta.health.common.ui.theme.boxSize
-import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiString
+import fit.asta.health.designsystem.components.*
+import fit.asta.health.designsystem.components.functional.AppTextFieldValidate
+import fit.asta.health.designsystem.components.functional.DialogData
+import fit.asta.health.designsystem.components.functional.OnSuccessfulSubmit
+import fit.asta.health.designsystem.components.functional.ShowCustomConfirmationDialog
+import fit.asta.health.designsystem.components.functional.ValidateTxtLength
+import fit.asta.health.designsystem.components.generic.AppButtons
+import fit.asta.health.designsystem.components.generic.AppErrorScreen
+import fit.asta.health.designsystem.components.generic.AppScaffold
+import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.components.generic.AppTopBar
+import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.jetpack.HandleBackPress
+import fit.asta.health.designsystem.theme.boxSize
+import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.testimonials.data.model.TestimonialType
 import fit.asta.health.testimonials.ui.create.vm.TestimonialEvent
 import fit.asta.health.testimonials.ui.create.vm.TestimonialSubmitState
 import fit.asta.health.testimonials.ui.create.vm.TestimonialViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable

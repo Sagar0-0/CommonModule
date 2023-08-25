@@ -18,8 +18,8 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.common.utils.*
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.main.MainNavHost
 import fit.asta.health.network.TokenProvider
 import fit.asta.health.network.utils.NetworkConnectivity

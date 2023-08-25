@@ -20,12 +20,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.*
-import fit.asta.health.common.ui.components.functional.CircularSliderInt
-import fit.asta.health.common.ui.components.generic.AppBottomSheetScaffold
-import fit.asta.health.common.ui.components.generic.AppTopBarWithHelp
-import fit.asta.health.common.ui.components.generic.ProgressBarInt
-import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.designsystem.components.*
+import fit.asta.health.designsystem.components.functional.CircularSliderInt
+import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
+import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
+import fit.asta.health.designsystem.components.generic.ProgressBarInt
+import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.tools.walking.view.home.SunlightCard
 
 @OptIn(ExperimentalMaterial3Api::class)

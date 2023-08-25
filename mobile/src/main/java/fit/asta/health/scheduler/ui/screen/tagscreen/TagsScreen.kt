@@ -31,9 +31,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.*
-import fit.asta.health.common.ui.components.generic.AppScaffold
-import fit.asta.health.common.ui.components.generic.AppTopBar
+import fit.asta.health.designsystem.components.*
+import fit.asta.health.designsystem.components.generic.AppScaffold
+import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.scheduler.ui.components.CustomTagBottomSheetLayout
 import fit.asta.health.scheduler.ui.components.SwipeDemo
 import fit.asta.health.scheduler.ui.screen.tagscreen.TagCreateBottomSheetTypes.CUSTOMTAGCREATION

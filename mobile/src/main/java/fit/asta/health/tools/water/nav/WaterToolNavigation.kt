@@ -10,7 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navDeepLink
-import fit.asta.health.common.ui.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.main.Graph
 import fit.asta.health.main.deepLinkUrl
 import fit.asta.health.main.sharedViewModel

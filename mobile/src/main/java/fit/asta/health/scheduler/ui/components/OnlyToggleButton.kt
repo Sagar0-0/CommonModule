@@ -36,9 +36,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.common.ui.components.generic.AppCard
-import fit.asta.health.common.ui.theme.TSelected
-import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.designsystem.components.generic.AppCard
+import fit.asta.health.designsystem.theme.TSelected
+import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.scheduler.data.db.entity.Weekdays
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.AMPMHoursMin
 import java.util.Calendar

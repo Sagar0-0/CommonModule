@@ -17,12 +17,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.generic.AppButtons
-import fit.asta.health.common.ui.components.generic.AppDrawImg
-import fit.asta.health.common.ui.components.generic.AppTexts
-import fit.asta.health.common.ui.theme.aspectRatio
-import fit.asta.health.common.ui.theme.buttonSize
-import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.designsystem.components.generic.AppButtons
+import fit.asta.health.designsystem.components.generic.AppDrawImg
+import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.theme.aspectRatio
+import fit.asta.health.designsystem.theme.buttonSize
+import fit.asta.health.designsystem.theme.spacing
 
 @Composable
 fun ReferAndEarn() {

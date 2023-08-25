@@ -32,7 +32,7 @@ import com.spotify.sdk.android.auth.AuthorizationClient
 import com.spotify.sdk.android.auth.AuthorizationRequest
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.common.ui.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.scheduler.ui.navigation.SpotifyNavGraph
 import fit.asta.health.scheduler.ui.viewmodel.SpotifyViewModel
 import fit.asta.health.scheduler.util.Constants

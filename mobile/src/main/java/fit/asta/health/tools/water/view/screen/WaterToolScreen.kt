@@ -49,12 +49,12 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.*
-import fit.asta.health.common.ui.components.functional.CircularSliderFloat
-import fit.asta.health.common.ui.components.generic.AppBottomSheetScaffold
-import fit.asta.health.common.ui.components.generic.AppTopBarWithHelp
-import fit.asta.health.common.ui.components.generic.ProgressBarFloat
-import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.designsystem.components.*
+import fit.asta.health.designsystem.components.functional.CircularSliderFloat
+import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
+import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
+import fit.asta.health.designsystem.components.generic.ProgressBarFloat
+import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.tools.water.model.domain.BeverageDetails
 import fit.asta.health.tools.water.model.network.TodayActivityData
 

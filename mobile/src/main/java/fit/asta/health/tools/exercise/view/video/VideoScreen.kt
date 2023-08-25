@@ -37,9 +37,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.Player
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import fit.asta.health.common.ui.components.*
-import fit.asta.health.common.ui.components.generic.AppScaffold
-import fit.asta.health.common.ui.components.generic.AppTopBar
+import fit.asta.health.designsystem.components.*
+import fit.asta.health.designsystem.components.generic.AppScaffold
+import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.player.jetpack_video.media.Media
 import fit.asta.health.player.jetpack_video.media.MediaState
 import fit.asta.health.player.jetpack_video.media.ResizeMode

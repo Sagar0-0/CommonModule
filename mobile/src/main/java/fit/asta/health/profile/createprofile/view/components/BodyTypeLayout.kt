@@ -24,8 +24,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
-import fit.asta.health.common.ui.theme.customSize
-import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.designsystem.theme.customSize
+import fit.asta.health.designsystem.theme.spacing
 
 
 data class BodyTypes(

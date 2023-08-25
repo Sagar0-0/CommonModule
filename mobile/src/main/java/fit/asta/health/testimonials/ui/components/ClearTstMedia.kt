@@ -9,7 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import fit.asta.health.common.ui.components.generic.AppDefaultIcon
+import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 
 @Composable
 fun ClearTstMedia(onTstMediaClear: () -> Unit) {

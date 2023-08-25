@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.R
-import fit.asta.health.common.ui.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.scheduler.data.db.entity.AlarmEntity
 import fit.asta.health.scheduler.ui.screen.alarmscreen.AlarmEvent
 import fit.asta.health.scheduler.ui.screen.alarmscreen.AlarmScreen
