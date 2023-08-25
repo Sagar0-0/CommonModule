@@ -6,7 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.BuildConfig
+import fit.asta.health.core.network.BuildConfig
 import fit.asta.health.network.AstaNetwork
 import fit.asta.health.network.NetworkHelper
 import fit.asta.health.network.NetworkHelperImpl

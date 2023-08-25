@@ -1,10 +1,19 @@
 plugins {
     alias(libs.plugins.asta.android.library)
     alias(libs.plugins.asta.android.hilt)
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+}
+
+secrets {
+    defaultPropertiesFileName = "secrets.properties"
 }
 
 android {
     namespace = "fit.asta.health.core.network"
+
+    buildFeatures {
+        buildConfig = true
+    }
 
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

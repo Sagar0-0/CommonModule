@@ -2,7 +2,6 @@ package fit.asta.health
 
 class BuildConfig {
     companion object {
-        const val BASE_URL: String = "https://asta-m1-dev.ap-southeast-1.elasticbeanstalk.com/"
         const val FLAVOR = "dev"
         const val BASE_VIDEO_URL = "https://d28fbw0qer0joz.cloudfront.net"
         const val BASE_IMAGE_URL = "https://dj9n1wsbrvg44.cloudfront.net"

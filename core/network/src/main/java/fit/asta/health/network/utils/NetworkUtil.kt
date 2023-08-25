@@ -3,7 +3,7 @@ package fit.asta.health.network.utils
 import com.google.gson.FieldNamingPolicy.UPPER_CAMEL_CASE
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import fit.asta.health.BuildConfig
+import fit.asta.health.core.network.BuildConfig
 import fit.asta.health.network.Certificate
 import okhttp3.Cache
 import okhttp3.CertificatePinner
