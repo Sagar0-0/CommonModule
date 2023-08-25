@@ -1,21 +1,20 @@
 package fit.asta.health.thirdparty.spotify.data.repo
 
+import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.thirdparty.spotify.data.model.common.Album
 import fit.asta.health.thirdparty.spotify.data.model.common.Track
-import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
-import kotlinx.coroutines.flow.Flow
 
 interface MusicRepository {
 
-    fun getAllTracks(): Flow<SpotifyNetworkCall<List<Track>>>
+    suspend fun getAllTracks(): ResponseState<List<Track>>
 
-    suspend fun insertTrack(track: Track)
+    suspend fun insertTrack(track: Track): ResponseState<Unit>
 
-    suspend fun deleteTrack(track: Track)
+    suspend fun deleteTrack(track: Track): ResponseState<Unit>
 
-    fun getAllAlbums(): Flow<SpotifyNetworkCall<List<Album>>>
+    suspend fun getAllAlbums(): ResponseState<List<Album>>
 
-    suspend fun insertAlbum(album: Album)
+    suspend fun insertAlbum(album: Album): ResponseState<Unit>
 
-    suspend fun deleteAlbum(album: Album)
+    suspend fun deleteAlbum(album: Album): ResponseState<Unit>
 }

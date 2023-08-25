@@ -16,6 +16,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import fit.asta.health.common.ui.components.generic.AppErrorScreen
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.thirdparty.spotify.data.model.common.Track
 import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import fit.asta.health.thirdparty.spotify.ui.components.MusicLargeImageColumn
@@ -34,7 +38,7 @@ import fit.asta.health.thirdparty.spotify.ui.events.SpotifyUiEvent
 @Composable
 fun TrackDetailsScreen(
     trackNetworkState: SpotifyNetworkCall<Track>,
-    trackLocalState: SpotifyNetworkCall<List<Track>>,
+    trackLocalState: UiState<List<Track>>,
     setEvent: (SpotifyUiEvent) -> Unit
 ) {
 
@@ -63,68 +67,92 @@ fun TrackDetailsScreen(
         ) { networkResponse ->
 
             // This function checks for the Local Response from Local Database
-            MusicStateControl(
-                networkState = trackLocalState,
-                onCurrentStateInitialized = { setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks) }
-            ) { localResponse ->
+            when (trackLocalState) {
 
-                // Parsing the Network Track Data
-                networkResponse.data.let { networkTrack ->
+                // Idle State
+                is UiState.Idle -> {
+                    setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
+                }
 
-                    // This variable stores if the Local Database contains this Track or not
-                    val isPresent = localResponse.data.let {
-                        if (it != null && networkTrack != null)
-                            it.contains(networkTrack)
-                        else
-                            false
+                // Loading State
+                is UiState.Loading -> {
+                    LoadingAnimation(modifier = Modifier.fillMaxSize())
+                }
+
+                // Success State
+                is UiState.Success -> {
+
+                    // Parsing the Network Track Data
+                    networkResponse.data.let { networkTrack ->
+
+                        // This variable stores if the Local Database contains this Track or not
+                        val isPresent = trackLocalState.data.let {
+                            if (networkTrack != null)
+                                it.contains(networkTrack)
+                            else
+                                false
+                        }
+
+                        if (networkTrack != null) {
+                            MusicLargeImageColumn(
+                                imageUri = networkTrack.album.images.firstOrNull()?.url,
+                                headerText = networkTrack.name,
+                                secondaryTexts = networkTrack.artists
+                            ) {}
+
+                            // Add and Remove Favourites Button
+                            Button(
+                                onClick = {
+
+                                    if (!isPresent) {
+                                        setEvent(SpotifyUiEvent.LocalIO.InsertTrack(networkTrack))
+                                        Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show()
+                                    } else {
+                                        setEvent(SpotifyUiEvent.LocalIO.DeleteTrack(networkTrack))
+                                        Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT)
+                                            .show()
+                                    }
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(
+                                        top = 32.dp,
+                                        bottom = 12.dp,
+                                        start = 12.dp,
+                                        end = 12.dp
+                                    )
+                            ) {
+                                Text(
+                                    text = if (!isPresent)
+                                        "Add To Favourites" else "Remove From Favourites",
+                                    modifier = Modifier
+                                        .padding(4.dp)
+                                )
+                            }
+
+                            // Play on Spotify Button
+                            Button(
+                                onClick = {
+                                    setEvent(SpotifyUiEvent.HelperEvent.PlaySong(networkTrack.uri))
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 12.dp, start = 12.dp, end = 12.dp)
+                            ) {
+                                Text(
+                                    text = "Play using Spotify",
+                                    modifier = Modifier
+                                        .padding(4.dp)
+                                )
+                            }
+                        }
                     }
+                }
 
-                    if (networkTrack != null) {
-                        MusicLargeImageColumn(
-                            imageUri = networkTrack.album.images.firstOrNull()?.url,
-                            headerText = networkTrack.name,
-                            secondaryTexts = networkTrack.artists
-                        ) {}
-
-                        // Add and Remove Favourites Button
-                        Button(
-                            onClick = {
-
-                                if (!isPresent) {
-                                    setEvent(SpotifyUiEvent.LocalIO.InsertTrack(networkTrack))
-                                    Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show()
-                                } else {
-                                    setEvent(SpotifyUiEvent.LocalIO.DeleteTrack(networkTrack))
-                                    Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show()
-                                }
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 32.dp, bottom = 12.dp, start = 12.dp, end = 12.dp)
-                        ) {
-                            Text(
-                                text = if (!isPresent)
-                                    "Add To Favourites" else "Remove From Favourites",
-                                modifier = Modifier
-                                    .padding(4.dp)
-                            )
-                        }
-
-                        // Play on Spotify Button
-                        Button(
-                            onClick = {
-                                setEvent(SpotifyUiEvent.HelperEvent.PlaySong(networkTrack.uri))
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 12.dp, start = 12.dp, end = 12.dp)
-                        ) {
-                            Text(
-                                text = "Play using Spotify",
-                                modifier = Modifier
-                                    .padding(4.dp)
-                            )
-                        }
+                // Error State
+                is UiState.Error -> {
+                    AppErrorScreen(desc = trackLocalState.resId.toStringFromResId()) {
+                        setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
                     }
                 }
             }

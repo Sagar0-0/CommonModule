@@ -1,56 +1,55 @@
 package fit.asta.health.thirdparty.spotify.data.repo
 
 import dagger.hilt.android.scopes.ActivityRetainedScoped
-import fit.asta.health.thirdparty.spotify.data.local.MusicDataSource
+import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.getResponseState
+import fit.asta.health.datastore.IODispatcher
+import fit.asta.health.thirdparty.spotify.data.local.MusicDao
 import fit.asta.health.thirdparty.spotify.data.model.common.Album
 import fit.asta.health.thirdparty.spotify.data.model.common.Track
-import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
+import kotlinx.coroutines.withContext
 
 @ActivityRetainedScoped
-class MusicRepositoryImpl @Inject constructor(
-    private val localDataSource: MusicDataSource
+class MusicRepositoryImpl(
+    private val musicDao: MusicDao,
+    @IODispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : MusicRepository {
 
-    override fun getAllTracks(): Flow<SpotifyNetworkCall<List<Track>>> {
-        return flow {
-            emit(SpotifyNetworkCall.Loading())
-            val response = localDataSource.getAllTracks()
-            emit(SpotifyNetworkCall.Success(response))
-        }.catch {
-            emit(SpotifyNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
+    override suspend fun getAllTracks(): ResponseState<List<Track>> {
+        return withContext(dispatcher) {
+            getResponseState { musicDao.getAllTracks() }
+        }
     }
 
-    override suspend fun insertTrack(track: Track) {
-        localDataSource.insertTrack(track)
+    override suspend fun insertTrack(track: Track): ResponseState<Unit> {
+        return withContext(dispatcher) {
+            getResponseState { musicDao.insertTrack(track) }
+        }
     }
 
-    override suspend fun deleteTrack(track: Track) {
-        localDataSource.deleteTrack(track)
+    override suspend fun deleteTrack(track: Track): ResponseState<Unit> {
+        return withContext(dispatcher) {
+            getResponseState { musicDao.deleteTrack(track) }
+        }
     }
 
-    override fun getAllAlbums(): Flow<SpotifyNetworkCall<List<Album>>> {
-
-        return flow {
-            emit(SpotifyNetworkCall.Loading())
-            val response = localDataSource.getAllAlbums()
-            emit(SpotifyNetworkCall.Success(response))
-        }.catch {
-            emit(SpotifyNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
+    override suspend fun getAllAlbums(): ResponseState<List<Album>> {
+        return withContext(dispatcher) {
+            getResponseState { musicDao.getAllAlbums() }
+        }
     }
 
-    override suspend fun insertAlbum(album: Album) {
-        localDataSource.insertAlbum(album)
+    override suspend fun insertAlbum(album: Album): ResponseState<Unit> {
+        return withContext(dispatcher) {
+            getResponseState { musicDao.insertAlbum(album) }
+        }
     }
 
-    override suspend fun deleteAlbum(album: Album) {
-        localDataSource.deleteAlbum(album)
+    override suspend fun deleteAlbum(album: Album): ResponseState<Unit> {
+        return withContext(dispatcher) {
+            getResponseState { musicDao.deleteAlbum(album) }
+        }
     }
 }
