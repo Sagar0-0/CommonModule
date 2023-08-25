@@ -18,6 +18,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import fit.asta.health.BuildConfig
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.navigateToWebView
@@ -141,11 +142,11 @@ fun MainNavHost(isConnected: Boolean) {
                 }
 
                 SettingsUiEvent.SHARE -> {
-                    context.shareApp()
+                    context.shareApp(BuildConfig.APPLICATION_ID)
                 }
 
                 SettingsUiEvent.RATE -> {
-                    context.rateUs()
+                    context.rateUs(BuildConfig.APPLICATION_ID)
                 }
 
 

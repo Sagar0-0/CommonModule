@@ -9,7 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.common.utils.NetworkResult
+import fit.asta.health.network.utils.NetworkResult
 import fit.asta.health.tools.walking.db.StepsData
 import fit.asta.health.tools.walking.model.LocalRepo
 import fit.asta.health.tools.walking.model.WalkingToolRepo
@@ -103,10 +103,10 @@ class WalkingViewModel
                             if (date != null) {
                                 localRepo.updateTargetAndRecommend(
                                     date = date.date,
-                                    distanceRecommend = it.data.distanceRecommend,
-                                    durationRecommend = it.data.durationRecommend,
-                                    distanceTarget = it.data.distanceTarget,
-                                    durationTarget = it.data.durationTarget
+                                    distanceRecommend = _apiState.value.distanceRecommend,
+                                    durationRecommend = _apiState.value.durationRecommend,
+                                    distanceTarget = _apiState.value.distanceTarget,
+                                    durationTarget = _apiState.value.durationTarget
                                 )
                             }
                         }

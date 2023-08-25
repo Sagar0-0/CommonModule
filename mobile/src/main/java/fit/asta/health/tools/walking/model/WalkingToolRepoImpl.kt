@@ -1,6 +1,6 @@
 package fit.asta.health.tools.walking.model
 
-import fit.asta.health.common.utils.NetworkResult
+import fit.asta.health.network.utils.NetworkResult
 import fit.asta.health.tools.walking.model.api.WalkingApi
 import fit.asta.health.tools.walking.model.domain.WalkingTool
 import fit.asta.health.tools.walking.model.network.request.PutData

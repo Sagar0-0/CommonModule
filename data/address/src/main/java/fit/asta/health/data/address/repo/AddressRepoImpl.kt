@@ -25,6 +25,7 @@ import fit.asta.health.datastore.IODispatcher
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.datastore.UserPreferencesData
 import fit.asta.health.resources.strings.R
+import fit.asta.health.resources.strings.R.string
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
@@ -70,7 +71,7 @@ class AddressRepoImpl @Inject constructor(
                         // Get the current location
                         val location = locationResult.locations.firstOrNull()
                         if (location == null) {
-                            trySend(LocationResponse.Error(R.string.unable_to_fetch_location))
+                            trySend(LocationResponse.Error(string.unable_to_fetch_location))
                         } else {
                             trySend(
                                 LocationResponse.Success(
@@ -111,11 +112,11 @@ class AddressRepoImpl @Inject constructor(
                         if (!addresses.isNullOrEmpty()) {
                             trySend(ResponseState.Success(addresses[0]))
                         } else {
-                            trySend(ResponseState.Error(MyException(R.string.unable_to_fetch_location)))
+                            trySend(ResponseState.Error(MyException(string.unable_to_fetch_location)))
                         }
                     }
                 } catch (e: Exception) {
-                    trySend(ResponseState.Error(MyException(R.string.unable_to_fetch_location)))
+                    trySend(ResponseState.Error(MyException(string.unable_to_fetch_location)))
                 }
 
                 awaitClose { close() }
@@ -142,14 +143,14 @@ class AddressRepoImpl @Inject constructor(
                 if (latitude == 0.0 && longitude == 0.0) {
                     searchLocationApi.search(
                         text,
-                        resourcesProvider.getString(R.string.MAPS_API_KEY)
+                        resourcesProvider.getString(string.MAPS_API_KEY)
                     )
                 } else {
                     searchLocationApi.searchBiased(
                         "${latitude},${longitude}",
                         "distance",
                         text,
-                        resourcesProvider.getString(R.string.MAPS_API_KEY)
+                        resourcesProvider.getString(string.MAPS_API_KEY)
                     )
                 }
             }

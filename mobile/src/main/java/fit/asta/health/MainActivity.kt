@@ -22,6 +22,7 @@ import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.common.utils.*
 import fit.asta.health.main.MainNavHost
 import fit.asta.health.network.TokenProvider
+import fit.asta.health.network.utils.NetworkConnectivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
