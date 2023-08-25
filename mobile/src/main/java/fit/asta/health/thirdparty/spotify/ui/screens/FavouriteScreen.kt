@@ -18,11 +18,13 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fit.asta.health.common.ui.components.generic.AppErrorScreen
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.thirdparty.spotify.data.model.common.Album
 import fit.asta.health.thirdparty.spotify.data.model.common.Track
-import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import fit.asta.health.thirdparty.spotify.ui.components.MusicLargeImageColumn
-import fit.asta.health.thirdparty.spotify.ui.components.MusicStateControl
 import fit.asta.health.thirdparty.spotify.ui.events.SpotifyUiEvent
 import fit.asta.health.thirdparty.spotify.ui.navigation.SpotifyNavRoutes
 
@@ -36,8 +38,8 @@ import fit.asta.health.thirdparty.spotify.ui.navigation.SpotifyNavRoutes
  */
 @Composable
 fun FavouriteScreen(
-    tracksData: SpotifyNetworkCall<List<Track>>,
-    albumData: SpotifyNetworkCall<List<Album>>,
+    tracksData: UiState<List<Track>>,
+    albumData: UiState<List<Album>>,
     setEvent: (SpotifyUiEvent) -> Unit,
     navigator: (String) -> Unit
 ) {
@@ -69,39 +71,60 @@ fun FavouriteScreen(
         )
 
         // This Draws all the Track Cards
-        MusicStateControl(
-            modifier = Modifier
-                .height(210.dp)
-                .fillMaxWidth(),
-            networkState = tracksData,
-            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks) },
-            onCurrentStateSuccess = { networkState ->
-                networkState.data?.let { trackList ->
-                    LazyRow(
-                        modifier = Modifier
-                            .height(210.dp)
-                            .width(LocalConfiguration.current.screenWidthDp.dp)
-                    ) {
-                        items(trackList.size) {
+        when (tracksData) {
 
-                            // current Item
-                            val currentItem = trackList[it]
+            // Idle State
+            is UiState.Idle -> {
+                setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
+            }
 
-                            MusicLargeImageColumn(
-                                imageUri = currentItem.album.images.firstOrNull()?.url,
-                                headerText = currentItem.name,
-                                secondaryTexts = currentItem.artists
-                            ) {
+            // Loading State
+            is UiState.Loading -> {
+                LoadingAnimation(
+                    modifier = Modifier
+                        .height(210.dp)
+                        .fillMaxWidth()
+                )
+            }
 
-                                // Navigating to the Track Details Screen
-                                setEvent(SpotifyUiEvent.HelperEvent.SetTrackId(currentItem.id))
-                                navigator(SpotifyNavRoutes.TrackDetailScreen.routes)
-                            }
+            // success State
+            is UiState.Success -> {
+                LazyRow(
+                    modifier = Modifier
+                        .height(210.dp)
+                        .width(LocalConfiguration.current.screenWidthDp.dp)
+                ) {
+                    items(tracksData.data.size) {
+
+                        // current Item
+                        val currentItem = tracksData.data[it]
+
+                        MusicLargeImageColumn(
+                            imageUri = currentItem.album.images.firstOrNull()?.url,
+                            headerText = currentItem.name,
+                            secondaryTexts = currentItem.artists
+                        ) {
+
+                            // Navigating to the Track Details Screen
+                            setEvent(SpotifyUiEvent.HelperEvent.SetTrackId(currentItem.id))
+                            navigator(SpotifyNavRoutes.TrackDetailScreen.routes)
                         }
                     }
                 }
             }
-        )
+
+            // Error State
+            is UiState.Error -> {
+                AppErrorScreen(
+                    modifier = Modifier
+                        .height(210.dp)
+                        .fillMaxWidth(),
+                    desc = tracksData.resId.toStringFromResId()
+                ) {
+                    setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
+                }
+            }
+        }
 
         // Albums Text
         Text(
@@ -118,37 +141,58 @@ fun FavouriteScreen(
         )
 
         // This Draws all the Albums Cards
-        MusicStateControl(
-            modifier = Modifier
-                .height(210.dp)
-                .fillMaxWidth(),
-            networkState = albumData,
-            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums) },
-            onCurrentStateSuccess = { networkState ->
-                networkState.data?.let { albumList ->
-                    LazyRow(
-                        modifier = Modifier
-                            .height(210.dp)
-                            .width(LocalConfiguration.current.screenWidthDp.dp)
-                    ) {
-                        items(albumList.size) {
+        when (albumData) {
 
-                            // Current Item
-                            val currentItem = albumList[it]
-                            MusicLargeImageColumn(
-                                imageUri = currentItem.images.firstOrNull()?.url,
-                                headerText = currentItem.name,
-                                secondaryTexts = currentItem.artists
-                            ) {
+            // Idle State
+            is UiState.Idle -> {
+                setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums)
+            }
 
-                                // Navigating the Album Details Screen to get the Album Details
-                                setEvent(SpotifyUiEvent.HelperEvent.SetAlbumId(currentItem.id))
-                                navigator(SpotifyNavRoutes.AlbumDetailScreen.routes)
-                            }
+            // Loading State
+            is UiState.Loading -> {
+                LoadingAnimation(
+                    modifier = Modifier
+                        .height(210.dp)
+                        .fillMaxWidth()
+                )
+            }
+
+            // Success State
+            is UiState.Success -> {
+                LazyRow(
+                    modifier = Modifier
+                        .height(210.dp)
+                        .width(LocalConfiguration.current.screenWidthDp.dp)
+                ) {
+                    items(albumData.data.size) {
+
+                        // Current Item
+                        val currentItem = albumData.data[it]
+                        MusicLargeImageColumn(
+                            imageUri = currentItem.images.firstOrNull()?.url,
+                            headerText = currentItem.name,
+                            secondaryTexts = currentItem.artists
+                        ) {
+
+                            // Navigating the Album Details Screen to get the Album Details
+                            setEvent(SpotifyUiEvent.HelperEvent.SetAlbumId(currentItem.id))
+                            navigator(SpotifyNavRoutes.AlbumDetailScreen.routes)
                         }
                     }
                 }
             }
-        )
+
+            // Error State
+            is UiState.Error -> {
+                AppErrorScreen(
+                    modifier = Modifier
+                        .height(210.dp)
+                        .fillMaxWidth(),
+                    desc = albumData.resId.toStringFromResId()
+                ) {
+                    setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums)
+                }
+            }
+        }
     }
 }

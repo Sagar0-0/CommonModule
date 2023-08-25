@@ -8,6 +8,8 @@ import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.PrefManager
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toUiState
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.ToneUiState
 import fit.asta.health.scheduler.ui.screen.spotify.SpotifyUiEvent
 import fit.asta.health.scheduler.util.Constants
@@ -230,9 +232,7 @@ class SpotifyViewModel @Inject constructor(
     /**
      * This variable contains details of all the Tracks calls and states
      */
-    private val _allTracks = MutableStateFlow<SpotifyNetworkCall<List<Track>>>(
-        SpotifyNetworkCall.Initialized()
-    )
+    private val _allTracks = MutableStateFlow<UiState<List<Track>>>(UiState.Idle)
     val allTracks = _allTracks.asStateFlow()
 
     /**
@@ -240,9 +240,7 @@ class SpotifyViewModel @Inject constructor(
      */
     private fun getAllTracks() {
         viewModelScope.launch {
-            localRepository.getAllTracks().collect {
-                _allTracks.value = it
-            }
+            _allTracks.value = localRepository.getAllTracks().toUiState()
         }
     }
 
@@ -250,9 +248,7 @@ class SpotifyViewModel @Inject constructor(
     /**
      * This variable contains details of all the albums calls and states
      */
-    private val _allAlbums = MutableStateFlow<SpotifyNetworkCall<List<Album>>>(
-        SpotifyNetworkCall.Initialized()
-    )
+    private val _allAlbums = MutableStateFlow<UiState<List<Album>>>(UiState.Idle)
     val allAlbums = _allAlbums.asStateFlow()
 
     /**
@@ -260,9 +256,7 @@ class SpotifyViewModel @Inject constructor(
      */
     private fun getAllAlbums() {
         viewModelScope.launch {
-            localRepository.getAllAlbums().collect {
-                _allAlbums.value = it
-            }
+            _allAlbums.value = localRepository.getAllAlbums().toUiState()
         }
     }
 
