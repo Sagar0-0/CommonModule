@@ -16,26 +16,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
+import fit.asta.health.common.ui.components.generic.AppErrorScreen
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.thirdparty.spotify.data.model.library.albums.SpotifyLibraryAlbumModel
 import fit.asta.health.thirdparty.spotify.data.model.library.episodes.SpotifyLibraryEpisodesModel
 import fit.asta.health.thirdparty.spotify.data.model.library.following.SpotifyUserFollowingArtist
 import fit.asta.health.thirdparty.spotify.data.model.library.playlist.SpotifyUserPlaylistsModel
 import fit.asta.health.thirdparty.spotify.data.model.library.shows.SpotifyLibraryShowsModel
 import fit.asta.health.thirdparty.spotify.data.model.library.tracks.SpotifyLibraryTracksModel
-import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import fit.asta.health.thirdparty.spotify.ui.components.MusicProfileOptionList
 import fit.asta.health.thirdparty.spotify.ui.components.MusicSmallImageRow
-import fit.asta.health.thirdparty.spotify.ui.components.MusicStateControl
 import fit.asta.health.thirdparty.spotify.ui.events.SpotifyUiEvent
 
 @Composable
 fun ProfileScreen(
-    currentUserTracks: SpotifyNetworkCall<SpotifyLibraryTracksModel>,
-    currentUserPlaylist: SpotifyNetworkCall<SpotifyUserPlaylistsModel>,
-    currentUserArtists: SpotifyNetworkCall<SpotifyUserFollowingArtist>,
-    currentUserAlbums: SpotifyNetworkCall<SpotifyLibraryAlbumModel>,
-    currentUserShows: SpotifyNetworkCall<SpotifyLibraryShowsModel>,
-    currentUserEpisodes: SpotifyNetworkCall<SpotifyLibraryEpisodesModel>,
+    currentUserTracks: UiState<SpotifyLibraryTracksModel>,
+    currentUserPlaylist: UiState<SpotifyUserPlaylistsModel>,
+    currentUserArtists: UiState<SpotifyUserFollowingArtist>,
+    currentUserAlbums: UiState<SpotifyLibraryAlbumModel>,
+    currentUserShows: UiState<SpotifyLibraryShowsModel>,
+    currentUserEpisodes: UiState<SpotifyLibraryEpisodesModel>,
     setEvent: (SpotifyUiEvent) -> Unit
 ) {
 
@@ -64,7 +66,7 @@ fun ProfileScreen(
 
 @Composable
 fun TracksUI(
-    currentUserTracks: SpotifyNetworkCall<SpotifyLibraryTracksModel>,
+    currentUserTracks: UiState<SpotifyLibraryTracksModel>,
     setEvent: (SpotifyUiEvent) -> Unit
 ) {
 
@@ -72,22 +74,27 @@ fun TracksUI(
         setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserTracks)
     }
 
-    MusicStateControl(
-        modifier = Modifier
-            .fillMaxSize(),
-        networkState = currentUserTracks,
-        onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserTracks) }
-    ) { networkResponse ->
-        networkResponse.data?.trackList.let { trackList ->
+    when (currentUserTracks) {
 
-            LazyColumn(
-                modifier = Modifier
-                    .height(LocalConfiguration.current.screenHeightDp.dp)
-                    .padding(start = 12.dp)
-                    .width(LocalConfiguration.current.screenWidthDp.dp),
-                horizontalAlignment = Alignment.Start
-            ) {
-                if (trackList != null) {
+        is UiState.Idle -> {
+//            setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserTracks)
+        }
+
+        is UiState.Loading -> {
+            LoadingAnimation(modifier = Modifier.fillMaxSize())
+        }
+
+        is UiState.Success -> {
+
+            currentUserTracks.data.trackList.let { trackList ->
+
+                LazyColumn(
+                    modifier = Modifier
+                        .height(LocalConfiguration.current.screenHeightDp.dp)
+                        .padding(start = 12.dp)
+                        .width(LocalConfiguration.current.screenWidthDp.dp),
+                    horizontalAlignment = Alignment.Start
+                ) {
                     items(trackList.size) {
 
                         // current Item
@@ -111,12 +118,18 @@ fun TracksUI(
                 }
             }
         }
+
+        is UiState.Error -> {
+            AppErrorScreen(desc = currentUserTracks.resId.toStringFromResId()) {
+                setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserTracks)
+            }
+        }
     }
 }
 
 @Composable
 fun PlaylistUI(
-    currentUserPlaylist: SpotifyNetworkCall<SpotifyUserPlaylistsModel>,
+    currentUserPlaylist: UiState<SpotifyUserPlaylistsModel>,
     setEvent: (SpotifyUiEvent) -> Unit
 ) {
 
@@ -124,22 +137,27 @@ fun PlaylistUI(
         setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserPlaylist)
     }
 
-    MusicStateControl(
-        modifier = Modifier
-            .fillMaxSize(),
-        networkState = currentUserPlaylist,
-        onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserPlaylist) }
-    ) { networkResponse ->
-        networkResponse.data?.playlistList.let { playList ->
+    when (currentUserPlaylist) {
 
-            LazyColumn(
-                modifier = Modifier
-                    .height(LocalConfiguration.current.screenHeightDp.dp)
-                    .padding(start = 12.dp)
-                    .width(LocalConfiguration.current.screenWidthDp.dp),
-                horizontalAlignment = Alignment.Start
-            ) {
-                if (playList != null) {
+        is UiState.Idle -> {
+//            setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserPlaylist)
+        }
+
+        is UiState.Loading -> {
+            LoadingAnimation(modifier = Modifier.fillMaxSize())
+        }
+
+        is UiState.Success -> {
+
+            currentUserPlaylist.data.playlistList.let { playList ->
+
+                LazyColumn(
+                    modifier = Modifier
+                        .height(LocalConfiguration.current.screenHeightDp.dp)
+                        .padding(start = 12.dp)
+                        .width(LocalConfiguration.current.screenWidthDp.dp),
+                    horizontalAlignment = Alignment.Start
+                ) {
                     items(playList.size) {
 
                         // current Item
@@ -157,34 +175,45 @@ fun PlaylistUI(
                 }
             }
         }
+
+        is UiState.Error -> {
+            AppErrorScreen(desc = currentUserPlaylist.resId.toStringFromResId()) {
+                setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserPlaylist)
+            }
+        }
     }
 }
 
 @Composable
 fun ArtistsUI(
-    currentUserArtists: SpotifyNetworkCall<SpotifyUserFollowingArtist>,
+    currentUserArtists: UiState<SpotifyUserFollowingArtist>,
     setEvent: (SpotifyUiEvent) -> Unit
 ) {
 
     LaunchedEffect(Unit) {
         setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserArtists)
     }
-    MusicStateControl(
-        modifier = Modifier
-            .fillMaxSize(),
-        networkState = currentUserArtists,
-        onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserArtists) }
-    ) { networkResponse ->
-        networkResponse.data?.artistList?.artistList.let { artistsList ->
 
-            LazyColumn(
-                modifier = Modifier
-                    .height(LocalConfiguration.current.screenHeightDp.dp)
-                    .padding(start = 12.dp)
-                    .width(LocalConfiguration.current.screenWidthDp.dp),
-                horizontalAlignment = Alignment.Start
-            ) {
-                if (artistsList != null) {
+    when (currentUserArtists) {
+
+        is UiState.Idle -> {
+//            setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserArtists)
+        }
+
+        is UiState.Loading -> {
+            LoadingAnimation(modifier = Modifier.fillMaxSize())
+        }
+
+        is UiState.Success -> {
+            currentUserArtists.data.artistList.artistList.let { artistsList ->
+
+                LazyColumn(
+                    modifier = Modifier
+                        .height(LocalConfiguration.current.screenHeightDp.dp)
+                        .padding(start = 12.dp)
+                        .width(LocalConfiguration.current.screenWidthDp.dp),
+                    horizontalAlignment = Alignment.Start
+                ) {
                     items(artistsList.size) {
 
                         // current Item
@@ -201,12 +230,18 @@ fun ArtistsUI(
                 }
             }
         }
+
+        is UiState.Error -> {
+            AppErrorScreen(desc = currentUserArtists.resId.toStringFromResId()) {
+                setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserArtists)
+            }
+        }
     }
 }
 
 @Composable
 fun AlbumsUI(
-    currentUserAlbums: SpotifyNetworkCall<SpotifyLibraryAlbumModel>,
+    currentUserAlbums: UiState<SpotifyLibraryAlbumModel>,
     setEvent: (SpotifyUiEvent) -> Unit
 ) {
 
@@ -214,22 +249,27 @@ fun AlbumsUI(
         setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserAlbum)
     }
 
-    MusicStateControl(
-        modifier = Modifier
-            .fillMaxSize(),
-        networkState = currentUserAlbums,
-        onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserAlbum) }
-    ) { networkResponse ->
-        networkResponse.data?.albumList.let { albumList ->
+    when (currentUserAlbums) {
 
-            LazyColumn(
-                modifier = Modifier
-                    .height(LocalConfiguration.current.screenHeightDp.dp)
-                    .padding(start = 12.dp)
-                    .width(LocalConfiguration.current.screenWidthDp.dp),
-                horizontalAlignment = Alignment.Start
-            ) {
-                if (albumList != null) {
+        is UiState.Idle -> {
+//            setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserAlbum)
+        }
+
+        is UiState.Loading -> {
+            LoadingAnimation(modifier = Modifier.fillMaxSize())
+        }
+
+        is UiState.Success -> {
+
+            currentUserAlbums.data.albumList.let { albumList ->
+
+                LazyColumn(
+                    modifier = Modifier
+                        .height(LocalConfiguration.current.screenHeightDp.dp)
+                        .padding(start = 12.dp)
+                        .width(LocalConfiguration.current.screenWidthDp.dp),
+                    horizontalAlignment = Alignment.Start
+                ) {
                     items(albumList.size) {
 
                         // current Item
@@ -246,12 +286,18 @@ fun AlbumsUI(
                 }
             }
         }
+
+        is UiState.Error -> {
+            AppErrorScreen(desc = currentUserAlbums.resId.toStringFromResId()) {
+                setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserAlbum)
+            }
+        }
     }
 }
 
 @Composable
 fun ShowUI(
-    currentUserShows: SpotifyNetworkCall<SpotifyLibraryShowsModel>,
+    currentUserShows: UiState<SpotifyLibraryShowsModel>,
     setEvent: (SpotifyUiEvent) -> Unit
 ) {
 
@@ -259,22 +305,26 @@ fun ShowUI(
         setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserShows)
     }
 
-    MusicStateControl(
-        modifier = Modifier
-            .fillMaxSize(),
-        networkState = currentUserShows,
-        onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserShows) }
-    ) { networkResponse ->
-        networkResponse.data?.showList.let { showList ->
+    when (currentUserShows) {
 
-            LazyColumn(
-                modifier = Modifier
-                    .height(LocalConfiguration.current.screenHeightDp.dp)
-                    .padding(start = 12.dp)
-                    .width(LocalConfiguration.current.screenWidthDp.dp),
-                horizontalAlignment = Alignment.Start
-            ) {
-                if (showList != null) {
+        is UiState.Idle -> {
+//            setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserShows)
+        }
+
+        is UiState.Loading -> {
+            LoadingAnimation(modifier = Modifier.fillMaxSize())
+        }
+
+        is UiState.Success -> {
+            currentUserShows.data.showList.let { showList ->
+
+                LazyColumn(
+                    modifier = Modifier
+                        .height(LocalConfiguration.current.screenHeightDp.dp)
+                        .padding(start = 12.dp)
+                        .width(LocalConfiguration.current.screenWidthDp.dp),
+                    horizontalAlignment = Alignment.Start
+                ) {
                     items(showList.size) {
 
                         // current Item
@@ -292,12 +342,18 @@ fun ShowUI(
                 }
             }
         }
+
+        is UiState.Error -> {
+            AppErrorScreen(desc = currentUserShows.resId.toStringFromResId()) {
+                setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserShows)
+            }
+        }
     }
 }
 
 @Composable
 fun EpisodeUI(
-    currentUserEpisodes: SpotifyNetworkCall<SpotifyLibraryEpisodesModel>,
+    currentUserEpisodes: UiState<SpotifyLibraryEpisodesModel>,
     setEvent: (SpotifyUiEvent) -> Unit
 ) {
 
@@ -305,22 +361,26 @@ fun EpisodeUI(
         setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserEpisode)
     }
 
-    MusicStateControl(
-        modifier = Modifier
-            .fillMaxSize(),
-        networkState = currentUserEpisodes,
-        onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserEpisode) }
-    ) { networkResponse ->
-        networkResponse.data?.episodeList.let { episodeList ->
+    when (currentUserEpisodes) {
 
-            LazyColumn(
-                modifier = Modifier
-                    .height(LocalConfiguration.current.screenHeightDp.dp)
-                    .padding(start = 12.dp)
-                    .width(LocalConfiguration.current.screenWidthDp.dp),
-                horizontalAlignment = Alignment.Start
-            ) {
-                if (episodeList != null) {
+        is UiState.Idle -> {
+//            setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserEpisode)
+        }
+
+        is UiState.Loading -> {
+            LoadingAnimation(modifier = Modifier.fillMaxSize())
+        }
+
+        is UiState.Success -> {
+            currentUserEpisodes.data.episodeList.let { episodeList ->
+
+                LazyColumn(
+                    modifier = Modifier
+                        .height(LocalConfiguration.current.screenHeightDp.dp)
+                        .padding(start = 12.dp)
+                        .width(LocalConfiguration.current.screenWidthDp.dp),
+                    horizontalAlignment = Alignment.Start
+                ) {
                     items(episodeList.size) {
 
                         // current Item
@@ -335,6 +395,12 @@ fun EpisodeUI(
                         }
                     }
                 }
+            }
+        }
+
+        is UiState.Error -> {
+            AppErrorScreen(desc = currentUserEpisodes.resId.toStringFromResId()) {
+                setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserEpisode)
             }
         }
     }

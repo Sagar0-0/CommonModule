@@ -12,6 +12,5 @@ class SpotifyConstants {
 
         // Spotify Web API
         const val SPOTIFY_BASE_URL = "https://api.spotify.com/v1/"
-        const val TAG = "debug_spotify"
     }
 }

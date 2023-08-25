@@ -1,5 +1,6 @@
 package fit.asta.health.thirdparty.spotify.data.repo
 
+import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.thirdparty.spotify.data.model.common.Album
 import fit.asta.health.thirdparty.spotify.data.model.library.albums.SpotifyLibraryAlbumModel
 import fit.asta.health.thirdparty.spotify.data.model.library.episodes.SpotifyLibraryEpisodesModel
@@ -14,45 +15,43 @@ import fit.asta.health.thirdparty.spotify.data.model.common.Track
 import fit.asta.health.thirdparty.spotify.data.model.me.SpotifyMeModel
 import fit.asta.health.thirdparty.spotify.data.model.recently.SpotifyUserRecentlyPlayedModel
 import fit.asta.health.thirdparty.spotify.data.model.recommendations.SpotifyRecommendationModel
-import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
-import kotlinx.coroutines.flow.Flow
 
 interface SpotifyRepo {
 
-    suspend fun getCurrentUserDetails(accessToken: String): Flow<SpotifyNetworkCall<SpotifyMeModel>>
+    suspend fun getCurrentUserDetails(accessToken: String): ResponseState<SpotifyMeModel>
 
-    suspend fun getCurrentUserFollowedArtists(accessToken: String): Flow<SpotifyNetworkCall<SpotifyUserFollowingArtist>>
+    suspend fun getCurrentUserFollowedArtists(accessToken: String): ResponseState<SpotifyUserFollowingArtist>
 
-    suspend fun getCurrentUserTopTracks(accessToken: String): Flow<SpotifyNetworkCall<TrackList>>
+    suspend fun getCurrentUserTopTracks(accessToken: String): ResponseState<TrackList>
 
-    suspend fun getCurrentUserTopArtists(accessToken: String): Flow<SpotifyNetworkCall<ArtistList>>
+    suspend fun getCurrentUserTopArtists(accessToken: String): ResponseState<ArtistList>
 
-    suspend fun getCurrentUserAlbums(accessToken: String): Flow<SpotifyNetworkCall<SpotifyLibraryAlbumModel>>
+    suspend fun getCurrentUserAlbums(accessToken: String): ResponseState<SpotifyLibraryAlbumModel>
 
-    suspend fun getCurrentUserShows(accessToken: String): Flow<SpotifyNetworkCall<SpotifyLibraryShowsModel>>
+    suspend fun getCurrentUserShows(accessToken: String): ResponseState<SpotifyLibraryShowsModel>
 
-    suspend fun getCurrentUserEpisodes(accessToken: String): Flow<SpotifyNetworkCall<SpotifyLibraryEpisodesModel>>
+    suspend fun getCurrentUserEpisodes(accessToken: String): ResponseState<SpotifyLibraryEpisodesModel>
 
-    suspend fun getCurrentUserTracks(accessToken: String): Flow<SpotifyNetworkCall<SpotifyLibraryTracksModel>>
+    suspend fun getCurrentUserTracks(accessToken: String): ResponseState<SpotifyLibraryTracksModel>
 
-    suspend fun getCurrentUserPlaylists(accessToken: String): Flow<SpotifyNetworkCall<SpotifyUserPlaylistsModel>>
+    suspend fun getCurrentUserPlaylists(accessToken: String): ResponseState<SpotifyUserPlaylistsModel>
 
-    suspend fun getCurrentUserRecentlyPlayedTracks(accessToken: String): Flow<SpotifyNetworkCall<SpotifyUserRecentlyPlayedModel>>
+    suspend fun getCurrentUserRecentlyPlayedTracks(accessToken: String): ResponseState<SpotifyUserRecentlyPlayedModel>
 
     suspend fun getUserPlaylists(
         accessToken: String,
         userID: String
-    ): Flow<SpotifyNetworkCall<SpotifyUserPlaylistsModel>>
+    ): ResponseState<SpotifyUserPlaylistsModel>
 
     suspend fun getTrackDetails(
         accessToken: String,
         trackID: String
-    ): Flow<SpotifyNetworkCall<Track>>
+    ): ResponseState<Track>
 
     suspend fun getAlbumDetails(
         accessToken: String,
         albumID: String
-    ): Flow<SpotifyNetworkCall<Album>>
+    ): ResponseState<Album>
 
     suspend fun searchQuery(
         accessToken: String,
@@ -60,7 +59,7 @@ interface SpotifyRepo {
         type: String,
         includeExternal: String,
         market: String
-    ): Flow<SpotifyNetworkCall<SpotifySearchModel>>
+    ): ResponseState<SpotifySearchModel>
 
     suspend fun getRecommendations(
         accessToken: String,
@@ -68,5 +67,5 @@ interface SpotifyRepo {
         seedGenres: String,
         seedTracks: String,
         limit: String
-    ): Flow<SpotifyNetworkCall<SpotifyRecommendationModel>>
+    ): ResponseState<SpotifyRecommendationModel>
 }

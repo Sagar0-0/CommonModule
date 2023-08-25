@@ -1,15 +1,10 @@
 package fit.asta.health.scheduler.ui.screen.spotify
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
@@ -33,12 +27,11 @@ import fit.asta.health.thirdparty.spotify.data.model.common.Album
 import fit.asta.health.thirdparty.spotify.data.model.common.Track
 import fit.asta.health.thirdparty.spotify.data.model.recently.SpotifyUserRecentlyPlayedModel
 import fit.asta.health.thirdparty.spotify.data.model.search.TrackList
-import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 
 @Composable
 fun SpotifyHomeScreen(
-    recentlyData: SpotifyNetworkCall<SpotifyUserRecentlyPlayedModel>,
-    topMixData: SpotifyNetworkCall<TrackList>,
+    recentlyData: UiState<SpotifyUserRecentlyPlayedModel>,
+    topMixData: UiState<TrackList>,
     favouriteTracks: UiState<List<Track>>,
     favouriteAlbums: UiState<List<Album>>,
     setEvent: (SpotifyUiEvent) -> Unit,
@@ -79,19 +72,21 @@ fun SpotifyHomeScreen(
         // Showing the user's recently played Data
         when (recentlyData) {
 
-            // Initialized State
-            is SpotifyNetworkCall.Initialized -> {}
+            // Idle State
+            is UiState.Idle -> {
+//                setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserRecentlyPlayedTracks)
+            }
 
             // Loading State
-            is SpotifyNetworkCall.Loading -> {
+            is UiState.Loading -> {
                 item {
                     LoadingAnimation()
                 }
             }
 
             // Success State
-            is SpotifyNetworkCall.Success -> {
-                recentlyData.data?.trackList?.let { trackList ->
+            is UiState.Success -> {
+                recentlyData.data.trackList.let { trackList ->
                     items(trackList.size) {
                         val currentItem = trackList[it]
 
@@ -129,15 +124,12 @@ fun SpotifyHomeScreen(
                 }
             }
 
-            // Failure State
-            is SpotifyNetworkCall.Failure -> {
+            // Error State
+            is UiState.Error -> {
                 item {
-                    FailureScreen(
-                        onClick = {
-                            setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserRecentlyPlayedTracks)
-                        },
-                        textToShow = recentlyData.message.toString()
-                    )
+                    AppErrorScreen(desc = recentlyData.resId.toStringFromResId()) {
+                        setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserRecentlyPlayedTracks)
+                    }
                 }
             }
         }
@@ -154,19 +146,21 @@ fun SpotifyHomeScreen(
         // Showing the user's top mix Data
         when (topMixData) {
 
-            // Initialized State
-            is SpotifyNetworkCall.Initialized -> {}
+            // Idle State
+            is UiState.Idle -> {
+//                setEvent(SpotifyUiEvent.NetworkIO.LoadUserTopTracks)
+            }
 
             // Loading State
-            is SpotifyNetworkCall.Loading -> {
+            is UiState.Loading -> {
                 item {
                     LoadingAnimation()
                 }
             }
 
             // Success State
-            is SpotifyNetworkCall.Success -> {
-                topMixData.data?.trackList?.let { trackList ->
+            is UiState.Success -> {
+                topMixData.data.trackList.let { trackList ->
                     items(trackList.size) {
 
                         val currentItem = trackList[it]
@@ -204,13 +198,12 @@ fun SpotifyHomeScreen(
                 }
             }
 
-            // Failure State
-            is SpotifyNetworkCall.Failure -> {
+            // Error State
+            is UiState.Error -> {
                 item {
-                    FailureScreen(
-                        onClick = { setEvent(SpotifyUiEvent.NetworkIO.LoadUserTopTracks) },
-                        textToShow = topMixData.message.toString()
-                    )
+                    AppErrorScreen(desc = topMixData.resId.toStringFromResId()) {
+                        setEvent(SpotifyUiEvent.NetworkIO.LoadUserTopTracks)
+                    }
                 }
             }
         }
@@ -227,9 +220,9 @@ fun SpotifyHomeScreen(
         // Showing the users favourite tracks
         when (favouriteTracks) {
 
-            // Initialized state
+            // Idle state
             is UiState.Idle -> {
-                setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
+//                setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
             }
 
             // Loading State
@@ -278,7 +271,7 @@ fun SpotifyHomeScreen(
                 }
             }
 
-            // Failure State
+            // Error State
             is UiState.Error -> {
                 item {
                     AppErrorScreen(desc = favouriteTracks.resId.toStringFromResId()) {
@@ -300,9 +293,9 @@ fun SpotifyHomeScreen(
         // Showing the Favourite Album List of the user
         when (favouriteAlbums) {
 
-            // Initialized State
+            // Idle State
             is UiState.Idle -> {
-                setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums)
+//                setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums)
             }
 
             // Loading State
@@ -350,7 +343,7 @@ fun SpotifyHomeScreen(
                 }
             }
 
-            // Failure State
+            // Error State
             is UiState.Error -> {
                 item {
                     AppErrorScreen(desc = favouriteAlbums.resId.toStringFromResId()) {
@@ -358,37 +351,6 @@ fun SpotifyHomeScreen(
                     }
                 }
             }
-        }
-    }
-}
-
-/**
- * This function shows the Failure Screen
- */
-@Composable
-private fun FailureScreen(
-    onClick: () -> Unit,
-    textToShow: String
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Button(
-            onClick = onClick,
-            modifier = Modifier
-                .padding(vertical = 16.dp, horizontal = 32.dp),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            Text(
-                text = textToShow,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp),
-
-                textAlign = TextAlign.Center
-            )
         }
     }
 }

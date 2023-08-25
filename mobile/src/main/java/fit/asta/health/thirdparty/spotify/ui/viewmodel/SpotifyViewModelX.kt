@@ -24,13 +24,12 @@ import fit.asta.health.thirdparty.spotify.data.model.common.Track
 import fit.asta.health.thirdparty.spotify.data.model.me.SpotifyMeModel
 import fit.asta.health.thirdparty.spotify.data.model.recently.SpotifyUserRecentlyPlayedModel
 import fit.asta.health.thirdparty.spotify.data.model.recommendations.SpotifyRecommendationModel
-import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import fit.asta.health.thirdparty.spotify.ui.events.SpotifyUiEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import fit.asta.health.R
 
 @HiltViewModel
 class SpotifyViewModelX @Inject constructor(
@@ -46,9 +45,7 @@ class SpotifyViewModelX @Inject constructor(
     private var accessToken: String = ""
 
     // Keeps the current User Data so that it can be used
-    private val _currentUserData = MutableStateFlow<SpotifyNetworkCall<SpotifyMeModel>>(
-        SpotifyNetworkCall.Initialized()
-    )
+    private val _currentUserData = MutableStateFlow<UiState<SpotifyMeModel>>(UiState.Idle)
     val currentUserData = _currentUserData.asStateFlow()
 
 
@@ -68,8 +65,7 @@ class SpotifyViewModelX @Inject constructor(
 
             // If the Response is an Error or anything else
             else -> {
-                _currentUserData.value =
-                    SpotifyNetworkCall.Failure(message = response.error.toString())
+                _currentUserData.value = UiState.Error(resId = R.string.no_internet)
             }
         }
     }
@@ -80,9 +76,7 @@ class SpotifyViewModelX @Inject constructor(
      */
     private fun getCurrentUserDetails(accessToken: String) {
         viewModelScope.launch {
-            remoteRepository.getCurrentUserDetails(accessToken).collectLatest {
-                _currentUserData.value = it
-            }
+            _currentUserData.value = remoteRepository.getCurrentUserDetails(accessToken).toUiState()
         }
     }
 
@@ -105,7 +99,7 @@ class SpotifyViewModelX @Inject constructor(
      * This function is used to set the state as failed when the Spotify App Remote is not connected
      */
     fun unableToGetSpotifyRemote(e: Throwable) {
-        _currentUserData.value = SpotifyNetworkCall.Failure(message = e.message.toString())
+        _currentUserData.value = UiState.Error(R.string.spotify_remote_not_found)
     }
 
 
@@ -214,9 +208,7 @@ class SpotifyViewModelX @Inject constructor(
 
     // Keeps the user Recently Played Tracks
     private val _userRecentlyPlayedTracks =
-        MutableStateFlow<SpotifyNetworkCall<SpotifyUserRecentlyPlayedModel>>(
-            SpotifyNetworkCall.Initialized()
-        )
+        MutableStateFlow<UiState<SpotifyUserRecentlyPlayedModel>>(UiState.Idle)
     val userRecentlyPlayedTracks = _userRecentlyPlayedTracks.asStateFlow()
 
     /**
@@ -224,28 +216,30 @@ class SpotifyViewModelX @Inject constructor(
      */
     private fun getCurrentUserRecentlyPlayedTracks() {
         viewModelScope.launch {
-            remoteRepository.getCurrentUserRecentlyPlayedTracks(accessToken).collectLatest {
-
-                // Fetching the Recommendations Tracks List for the Users
-                if (it.data?.trackList?.isNotEmpty() == true) {
-
-                    // Setting for Future Purposes
-                    seedArtists = it.data.trackList[0].track.artists[0].id
-                    seedTracks = it.data.trackList[0].track.id
-
-                    // Fetching
-                    getRecommendationTracks()
-                }
-                _userRecentlyPlayedTracks.value = it
-            }
+            _userRecentlyPlayedTracks.value = remoteRepository
+                .getCurrentUserRecentlyPlayedTracks(accessToken)
+                .toUiState()
+//                .collectLatest {
+//
+//                // Fetching the Recommendations Tracks List for the Users
+//                if (it.data?.trackList?.isNotEmpty() == true) {
+//
+//                    // Setting for Future Purposes
+//                    seedArtists = it.data.trackList[0].track.artists[0].id
+//                    seedTracks = it.data.trackList[0].track.id
+//
+//                    // Fetching
+//                    getRecommendationTracks()
+//                }
+//                _userRecentlyPlayedTracks.value = it
+//            }
         }
+
     }
 
     // Keeps the recommended Tracks
     private val _recommendationTracks =
-        MutableStateFlow<SpotifyNetworkCall<SpotifyRecommendationModel>>(
-            SpotifyNetworkCall.Initialized()
-        )
+        MutableStateFlow<UiState<SpotifyRecommendationModel>>(UiState.Idle)
     val recommendationTracks = _recommendationTracks.asStateFlow()
 
     // These Two are kept for Calling if needed (Ex - Failed to get data in the first time)
@@ -259,19 +253,35 @@ class SpotifyViewModelX @Inject constructor(
         seedGenres: String = "classical,country",
         limit: String = "15"
     ) {
+
+        if (_userRecentlyPlayedTracks.value !is UiState.Success)
+            return
+
+        if(_recommendationTracks.value is UiState.Loading)
+            return
+
+        _recommendationTracks.value = UiState.Loading
+
         viewModelScope.launch {
-            remoteRepository.getRecommendations(
-                accessToken, seedArtists, seedGenres, seedTracks, limit
-            ).collectLatest {
-                _recommendationTracks.value = it
+            val recentTracks = (_userRecentlyPlayedTracks.value as UiState.Success).data.trackList
+
+            // Fetching the Recommendations Tracks List for the Users
+            if (recentTracks.isNotEmpty()) {
+
+                // Setting for Future Purposes
+                seedArtists = recentTracks[0].track.artists[0].id
+                seedTracks = recentTracks[0].track.id
+
+                // Fetching
+                _recommendationTracks.value = remoteRepository.getRecommendations(
+                    accessToken, seedArtists, seedGenres, seedTracks, limit
+                ).toUiState()
             }
         }
     }
 
     // Keeps the recommended Tracks
-    private val _trackDetailsResponse = MutableStateFlow<SpotifyNetworkCall<Track>>(
-        SpotifyNetworkCall.Initialized()
-    )
+    private val _trackDetailsResponse = MutableStateFlow<UiState<Track>>(UiState.Idle)
     val trackDetailsResponse = _trackDetailsResponse.asStateFlow()
 
     // Keeps the Track Id whose details would be shown
@@ -289,16 +299,14 @@ class SpotifyViewModelX @Inject constructor(
      */
     private fun getTrackDetails() {
         viewModelScope.launch {
-            remoteRepository.getTrackDetails(accessToken, trackDetailId).collectLatest {
-                _trackDetailsResponse.value = it
-            }
+            _trackDetailsResponse.value = remoteRepository
+                .getTrackDetails(accessToken, trackDetailId)
+                .toUiState()
         }
     }
 
     // Keeps the User Top Tracks
-    private val _userTopTracks = MutableStateFlow<SpotifyNetworkCall<TrackList>>(
-        SpotifyNetworkCall.Initialized()
-    )
+    private val _userTopTracks = MutableStateFlow<UiState<TrackList>>(UiState.Idle)
     val userTopTracks = _userTopTracks.asStateFlow()
 
     /**
@@ -306,16 +314,12 @@ class SpotifyViewModelX @Inject constructor(
      */
     private fun getUserTopTracks() {
         viewModelScope.launch {
-            remoteRepository.getCurrentUserTopTracks(accessToken).collectLatest {
-                _userTopTracks.value = it
-            }
+            _userTopTracks.value = remoteRepository.getCurrentUserTopTracks(accessToken).toUiState()
         }
     }
 
     // Keeps the User Top Tracks
-    private val _userTopArtists = MutableStateFlow<SpotifyNetworkCall<ArtistList>>(
-        SpotifyNetworkCall.Initialized()
-    )
+    private val _userTopArtists = MutableStateFlow<UiState<ArtistList>>(UiState.Idle)
     val userTopArtists = _userTopArtists.asStateFlow()
 
     /**
@@ -323,18 +327,16 @@ class SpotifyViewModelX @Inject constructor(
      */
     private fun getUserTopArtists() {
         viewModelScope.launch {
-            remoteRepository.getCurrentUserTopArtists(accessToken).collectLatest {
-                _userTopArtists.value = it
-            }
+            _userTopArtists.value = remoteRepository
+                .getCurrentUserTopArtists(accessToken)
+                .toUiState()
         }
     }
 
     /**
      * Keeps the Spotify Search Result
      */
-    private val _spotifySearch = MutableStateFlow<SpotifyNetworkCall<SpotifySearchModel>>(
-        SpotifyNetworkCall.Initialized()
-    )
+    private val _spotifySearch = MutableStateFlow<UiState<SpotifySearchModel>>(UiState.Idle)
     val spotifySearch = _spotifySearch.asStateFlow()
 
     // All Related Data to the Searching Parameters needed are stored here
@@ -350,7 +352,7 @@ class SpotifyViewModelX @Inject constructor(
         query: String,
         type: String,
         includeExternal: String = "audio",
-        market: String = _currentUserData.value.data!!.country
+        market: String = (_currentUserData.value as UiState.Success<SpotifyMeModel>).data.country
     ) {
         this.query = query
         this.type = type
@@ -365,26 +367,23 @@ class SpotifyViewModelX @Inject constructor(
     private fun getSpotifySearchResult() {
 
         // Returning to prevent showing error during the first composition during Initialized State
-        if (query.isEmpty() || type.isEmpty() || _spotifySearch.value is SpotifyNetworkCall.Loading)
+        if (query.isEmpty() || type.isEmpty() || _spotifySearch.value is UiState.Loading)
             return
 
         // Starting the Loading State
-        _spotifySearch.value = SpotifyNetworkCall.Loading()
+        _spotifySearch.value = UiState.Loading
 
         viewModelScope.launch {
-            remoteRepository.searchQuery(accessToken, query, type, includeExternal, market)
-                .collectLatest {
-                    _spotifySearch.value = it
-                }
+            _spotifySearch.value = remoteRepository
+                .searchQuery(accessToken, query, type, includeExternal, market)
+                .toUiState()
         }
     }
 
     /**
      * Keeps the Spotify Album Details
      */
-    private val _albumDetailsResponse = MutableStateFlow<SpotifyNetworkCall<Album>>(
-        SpotifyNetworkCall.Initialized()
-    )
+    private val _albumDetailsResponse = MutableStateFlow<UiState<Album>>(UiState.Idle)
     val albumDetailsResponse = _albumDetailsResponse.asStateFlow()
 
     // keeps the Id of the Album Whose details needs to be shown
@@ -396,19 +395,18 @@ class SpotifyViewModelX @Inject constructor(
 
     private fun getAlbumDetails() {
         viewModelScope.launch {
-            remoteRepository.getAlbumDetails(accessToken, albumDetailId).collectLatest {
-                _albumDetailsResponse.value = it
-            }
+            _albumDetailsResponse.value = remoteRepository
+                .getAlbumDetails(accessToken, albumDetailId)
+                .toUiState()
         }
     }
 
     /**
      * This variable keeps the current Spotify User All Tracks fetched from the spotify Api
      */
-    private val _currentUserTracks =
-        MutableStateFlow<SpotifyNetworkCall<SpotifyLibraryTracksModel>>(
-            SpotifyNetworkCall.Initialized()
-        )
+    private val _currentUserTracks = MutableStateFlow<UiState<SpotifyLibraryTracksModel>>(
+        UiState.Idle
+    )
     val currentUserTracks = _currentUserTracks.asStateFlow()
 
     /**
@@ -416,19 +414,18 @@ class SpotifyViewModelX @Inject constructor(
      */
     private fun getCurrentUserTracks() {
         viewModelScope.launch {
-            remoteRepository.getCurrentUserTracks(accessToken).collectLatest {
-                _currentUserTracks.value = it
-            }
+            _currentUserTracks.value = remoteRepository
+                .getCurrentUserTracks(accessToken)
+                .toUiState()
         }
     }
 
     /**
      * This variable keeps the current User All playlist from the spotify Api
      */
-    private val _currentUserPlaylist =
-        MutableStateFlow<SpotifyNetworkCall<SpotifyUserPlaylistsModel>>(
-            SpotifyNetworkCall.Initialized()
-        )
+    private val _currentUserPlaylist = MutableStateFlow<UiState<SpotifyUserPlaylistsModel>>(
+        UiState.Idle
+    )
     val currentUserPlaylist = _currentUserPlaylist.asStateFlow()
 
     /**
@@ -436,9 +433,9 @@ class SpotifyViewModelX @Inject constructor(
      */
     private fun getCurrentUserPlaylist() {
         viewModelScope.launch {
-            remoteRepository.getCurrentUserPlaylists(accessToken).collectLatest {
-                _currentUserPlaylist.value = it
-            }
+            _currentUserPlaylist.value = remoteRepository
+                .getCurrentUserPlaylists(accessToken)
+                .toUiState()
         }
     }
 
@@ -446,9 +443,7 @@ class SpotifyViewModelX @Inject constructor(
      * This variable contains the data of all the current User Artists from the spotify Api
      */
     private var _currentUserFollowingArtist =
-        MutableStateFlow<SpotifyNetworkCall<SpotifyUserFollowingArtist>>(
-            SpotifyNetworkCall.Initialized()
-        )
+        MutableStateFlow<UiState<SpotifyUserFollowingArtist>>(UiState.Idle)
     val currentUserFollowingArtist = _currentUserFollowingArtist.asStateFlow()
 
     /**
@@ -456,18 +451,17 @@ class SpotifyViewModelX @Inject constructor(
      */
     private fun getCurrentUserArtists() {
         viewModelScope.launch {
-            remoteRepository.getCurrentUserFollowedArtists(accessToken).collectLatest {
-                _currentUserFollowingArtist.value = it
-            }
+            _currentUserFollowingArtist.value = remoteRepository
+                .getCurrentUserFollowedArtists(accessToken)
+                .toUiState()
         }
     }
 
     /**
      * This variable contains the current User all albums from the spotify Api
      */
-    private val _currentUserAlbum = MutableStateFlow<SpotifyNetworkCall<SpotifyLibraryAlbumModel>>(
-        SpotifyNetworkCall.Initialized()
-    )
+    private val _currentUserAlbum =
+        MutableStateFlow<UiState<SpotifyLibraryAlbumModel>>(UiState.Idle)
     val currentUserAlbum = _currentUserAlbum.asStateFlow()
 
     /**
@@ -475,18 +469,14 @@ class SpotifyViewModelX @Inject constructor(
      */
     private fun getCurrentUserAlbum() {
         viewModelScope.launch {
-            remoteRepository.getCurrentUserAlbums(accessToken).collectLatest {
-                _currentUserAlbum.value = it
-            }
+            _currentUserAlbum.value = remoteRepository.getCurrentUserAlbums(accessToken).toUiState()
         }
     }
 
     /**
      * This variable contains the currentUserShows from the spotify Api
      */
-    private val _currentUserShow = MutableStateFlow<SpotifyNetworkCall<SpotifyLibraryShowsModel>>(
-        SpotifyNetworkCall.Initialized()
-    )
+    private val _currentUserShow = MutableStateFlow<UiState<SpotifyLibraryShowsModel>>(UiState.Idle)
     val currentUserShow = _currentUserShow.asStateFlow()
 
     /**
@@ -494,9 +484,7 @@ class SpotifyViewModelX @Inject constructor(
      */
     private fun getCurrentUserShows() {
         viewModelScope.launch {
-            remoteRepository.getCurrentUserShows(accessToken).collectLatest {
-                _currentUserShow.value = it
-            }
+            _currentUserShow.value = remoteRepository.getCurrentUserShows(accessToken).toUiState()
         }
     }
 
@@ -504,9 +492,7 @@ class SpotifyViewModelX @Inject constructor(
      * This variable contains the current User All the Episodes from the spotify APi
      */
     private val _currentUserEpisode =
-        MutableStateFlow<SpotifyNetworkCall<SpotifyLibraryEpisodesModel>>(
-            SpotifyNetworkCall.Initialized()
-        )
+        MutableStateFlow<UiState<SpotifyLibraryEpisodesModel>>(UiState.Idle)
     val currentUserEpisode = _currentUserEpisode.asStateFlow()
 
     /**
@@ -514,9 +500,9 @@ class SpotifyViewModelX @Inject constructor(
      */
     private fun getCurrentUserEpisode() {
         viewModelScope.launch {
-            remoteRepository.getCurrentUserEpisodes(accessToken).collectLatest {
-                _currentUserEpisode.value = it
-            }
+            _currentUserEpisode.value = remoteRepository
+                .getCurrentUserEpisodes(accessToken)
+                .toUiState()
         }
     }
 

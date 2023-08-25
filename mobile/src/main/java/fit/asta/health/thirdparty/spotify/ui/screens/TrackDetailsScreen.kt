@@ -21,9 +21,7 @@ import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.thirdparty.spotify.data.model.common.Track
-import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import fit.asta.health.thirdparty.spotify.ui.components.MusicLargeImageColumn
-import fit.asta.health.thirdparty.spotify.ui.components.MusicStateControl
 import fit.asta.health.thirdparty.spotify.ui.events.SpotifyUiEvent
 
 
@@ -37,16 +35,14 @@ import fit.asta.health.thirdparty.spotify.ui.events.SpotifyUiEvent
  */
 @Composable
 fun TrackDetailsScreen(
-    trackNetworkState: SpotifyNetworkCall<Track>,
+    trackNetworkState: UiState<Track>,
     trackLocalState: UiState<List<Track>>,
     setEvent: (SpotifyUiEvent) -> Unit
 ) {
 
-    // context is stored to Show the Toast
-    val context = LocalContext.current
-
     LaunchedEffect(Unit) {
         setEvent(SpotifyUiEvent.NetworkIO.LoadTrackDetails)
+        setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
     }
 
     // Root Composable function
@@ -60,101 +56,125 @@ fun TrackDetailsScreen(
 
 
         // This function checks for the Network Response from the API
-        MusicStateControl(
-            modifier = Modifier.fillMaxSize(),
-            networkState = trackNetworkState,
-            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadTrackDetails) }
-        ) { networkResponse ->
+        when (trackNetworkState) {
 
-            // This function checks for the Local Response from Local Database
-            when (trackLocalState) {
+            is UiState.Idle -> {
+//                setEvent(SpotifyUiEvent.NetworkIO.LoadTrackDetails)
+            }
 
-                // Idle State
-                is UiState.Idle -> {
-                    setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
+            is UiState.Loading -> {
+                LoadingAnimation(modifier = Modifier.fillMaxSize())
+            }
+
+            is UiState.Success -> {
+
+                // This function checks for the Local Response from Local Database
+                LocalTrackHandler(
+                    trackNetworkState = trackNetworkState,
+                    trackLocalState = trackLocalState,
+                    setEvent = setEvent
+                )
+            }
+
+            is UiState.Error -> {
+                AppErrorScreen(desc = trackNetworkState.resId.toStringFromResId()) {
+                    setEvent(SpotifyUiEvent.NetworkIO.LoadTrackDetails)
                 }
+            }
+        }
+    }
+}
 
-                // Loading State
-                is UiState.Loading -> {
-                    LoadingAnimation(modifier = Modifier.fillMaxSize())
-                }
+@Composable
+private fun LocalTrackHandler(
+    trackNetworkState: UiState.Success<Track>,
+    trackLocalState: UiState<List<Track>>,
+    setEvent: (SpotifyUiEvent) -> Unit
+) {
 
-                // Success State
-                is UiState.Success -> {
+    // context is stored to Show the Toast
+    val context = LocalContext.current
 
-                    // Parsing the Network Track Data
-                    networkResponse.data.let { networkTrack ->
+    // This function checks for the Local Response from Local Database
+    when (trackLocalState) {
 
-                        // This variable stores if the Local Database contains this Track or not
-                        val isPresent = trackLocalState.data.let {
-                            if (networkTrack != null)
-                                it.contains(networkTrack)
-                            else
-                                false
+        // Idle State
+        is UiState.Idle -> {
+//            setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
+        }
+
+        // Loading State
+        is UiState.Loading -> {
+            LoadingAnimation(modifier = Modifier.fillMaxSize())
+        }
+
+        // Success State
+        is UiState.Success -> {
+
+            // Parsing the Network Track Data
+            trackNetworkState.data.let { networkTrack ->
+
+                // This variable stores if the Local Database contains this Track or not
+                val isPresent = trackLocalState.data.contains(networkTrack)
+
+                MusicLargeImageColumn(
+                    imageUri = networkTrack.album.images.firstOrNull()?.url,
+                    headerText = networkTrack.name,
+                    secondaryTexts = networkTrack.artists
+                ) {}
+
+                // Add and Remove Favourites Button
+                Button(
+                    onClick = {
+
+                        if (!isPresent) {
+                            setEvent(SpotifyUiEvent.LocalIO.InsertTrack(networkTrack))
+                            Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show()
+                        } else {
+                            setEvent(SpotifyUiEvent.LocalIO.DeleteTrack(networkTrack))
+                            Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT)
+                                .show()
                         }
-
-                        if (networkTrack != null) {
-                            MusicLargeImageColumn(
-                                imageUri = networkTrack.album.images.firstOrNull()?.url,
-                                headerText = networkTrack.name,
-                                secondaryTexts = networkTrack.artists
-                            ) {}
-
-                            // Add and Remove Favourites Button
-                            Button(
-                                onClick = {
-
-                                    if (!isPresent) {
-                                        setEvent(SpotifyUiEvent.LocalIO.InsertTrack(networkTrack))
-                                        Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show()
-                                    } else {
-                                        setEvent(SpotifyUiEvent.LocalIO.DeleteTrack(networkTrack))
-                                        Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT)
-                                            .show()
-                                    }
-                                },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(
-                                        top = 32.dp,
-                                        bottom = 12.dp,
-                                        start = 12.dp,
-                                        end = 12.dp
-                                    )
-                            ) {
-                                Text(
-                                    text = if (!isPresent)
-                                        "Add To Favourites" else "Remove From Favourites",
-                                    modifier = Modifier
-                                        .padding(4.dp)
-                                )
-                            }
-
-                            // Play on Spotify Button
-                            Button(
-                                onClick = {
-                                    setEvent(SpotifyUiEvent.HelperEvent.PlaySong(networkTrack.uri))
-                                },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(bottom = 12.dp, start = 12.dp, end = 12.dp)
-                            ) {
-                                Text(
-                                    text = "Play using Spotify",
-                                    modifier = Modifier
-                                        .padding(4.dp)
-                                )
-                            }
-                        }
-                    }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            top = 32.dp,
+                            bottom = 12.dp,
+                            start = 12.dp,
+                            end = 12.dp
+                        )
+                ) {
+                    Text(
+                        text = if (!isPresent)
+                            "Add To Favourites" else "Remove From Favourites",
+                        modifier = Modifier
+                            .padding(4.dp)
+                    )
                 }
 
-                // Error State
-                is UiState.Error -> {
-                    AppErrorScreen(desc = trackLocalState.resId.toStringFromResId()) {
-                        setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
-                    }
+                // Play on Spotify Button
+                Button(
+                    onClick = {
+                        setEvent(SpotifyUiEvent.HelperEvent.PlaySong(networkTrack.uri))
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 12.dp, start = 12.dp, end = 12.dp)
+                ) {
+                    Text(
+                        text = "Play using Spotify",
+                        modifier = Modifier
+                            .padding(4.dp)
+                    )
                 }
+            }
+        }
+
+        // Error State
+        is UiState.Error -> {
+            AppErrorScreen(desc = trackLocalState.resId.toStringFromResId()) {
+                setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
             }
         }
     }

@@ -584,6 +584,7 @@
     <string name="wallet">Wallet</string>
     <string name="select_location">Select Location</string>
     <string name="logout_failed">Logout Failed</string>
+    <string name="spotify_remote_not_found">Unable to Connect to Spotify Remote</string>
 
     // testing
     <string name="action_dismiss">action dismiss</string>

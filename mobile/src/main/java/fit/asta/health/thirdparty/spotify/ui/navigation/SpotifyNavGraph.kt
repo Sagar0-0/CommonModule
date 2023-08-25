@@ -5,6 +5,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.thirdparty.spotify.data.model.me.SpotifyMeModel
 import fit.asta.health.thirdparty.spotify.ui.screens.AlbumDetailScreen
 import fit.asta.health.thirdparty.spotify.ui.screens.AstaMusicScreen
 import fit.asta.health.thirdparty.spotify.ui.screens.FavouriteScreen
@@ -59,8 +61,9 @@ fun SpotifyNavGraph(
                 SpotifyNavRoutes.ThirdPartyScreen.routes,
                 content = {
 
-                    val displayName = spotifyViewModelX.currentUserData
-                        .collectAsStateWithLifecycle().value.data?.displayName
+                    val displayName = (spotifyViewModelX.currentUserData
+                        .collectAsStateWithLifecycle().value as UiState.Success<SpotifyMeModel>)
+                        .data.displayName
 
                     val recentlyPlayedData = spotifyViewModelX.userRecentlyPlayedTracks
                         .collectAsStateWithLifecycle().value

@@ -24,13 +24,15 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fit.asta.health.common.ui.components.generic.AppErrorScreen
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.thirdparty.spotify.data.model.search.SpotifySearchModel
-import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import fit.asta.health.thirdparty.spotify.ui.components.MusicArtistsUI
 import fit.asta.health.thirdparty.spotify.ui.components.MusicFilterOptions
 import fit.asta.health.thirdparty.spotify.ui.components.MusicLargeImageColumn
 import fit.asta.health.thirdparty.spotify.ui.components.MusicSmallImageRow
-import fit.asta.health.thirdparty.spotify.ui.components.MusicStateControl
 import fit.asta.health.thirdparty.spotify.ui.components.SearchBar
 import fit.asta.health.thirdparty.spotify.ui.events.SpotifyUiEvent
 import fit.asta.health.thirdparty.spotify.ui.navigation.SpotifyNavRoutes
@@ -45,7 +47,7 @@ import fit.asta.health.thirdparty.spotify.ui.navigation.SpotifyNavRoutes
  */
 @Composable
 fun SearchScreen(
-    spotifySearchState: SpotifyNetworkCall<SpotifySearchModel>,
+    spotifySearchState: UiState<SpotifySearchModel>,
     setEvent: (SpotifyUiEvent) -> Unit,
     navigator: (String) -> Unit
 ) {
@@ -129,46 +131,47 @@ fun SearchScreen(
         }
 
         // This function controls all the UI state of this screen
-        MusicStateControl(
-            modifier = Modifier
-                .fillMaxSize(),
-            networkState = spotifySearchState,
-            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadSpotifySearchResult) }
-        ) { networkResponse ->
+        when (spotifySearchState) {
 
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface)
-            ) {
+            is UiState.Idle -> {}
 
-                // Handling the Tracks UI here
-                networkResponse.data?.tracks?.trackList.let { trackList ->
+            is UiState.Loading -> {
+                LoadingAnimation(modifier = Modifier.fillMaxSize())
+            }
 
-                    // Tracks
-                    item {
-                        Text(
-                            text = "Tracks",
+            is UiState.Success -> {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.surface)
+                ) {
 
-                            modifier = Modifier
-                                .padding(12.dp),
+                    // Handling the Tracks UI here
+                    spotifySearchState.data.tracks.trackList.let { trackList ->
 
-                            // Text and Font Properties
-                            fontFamily = FontFamily.SansSerif,
-                            fontWeight = FontWeight.W800,
-                            fontSize = 22.sp,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
+                        // Tracks
+                        item {
+                            Text(
+                                text = "Tracks",
 
-                    // Showing the Tracks List UI inside a Lazy Row
-                    item {
-                        LazyRow(
-                            modifier = Modifier
-                                .height(210.dp)
-                                .width(LocalConfiguration.current.screenWidthDp.dp)
-                        ) {
-                            if (trackList != null) {
+                                modifier = Modifier
+                                    .padding(12.dp),
+
+                                // Text and Font Properties
+                                fontFamily = FontFamily.SansSerif,
+                                fontWeight = FontWeight.W800,
+                                fontSize = 22.sp,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+
+                        // Showing the Tracks List UI inside a Lazy Row
+                        item {
+                            LazyRow(
+                                modifier = Modifier
+                                    .height(210.dp)
+                                    .width(LocalConfiguration.current.screenWidthDp.dp)
+                            ) {
                                 items(trackList.size) {
                                     val currentItem = trackList[it]
 
@@ -187,35 +190,33 @@ fun SearchScreen(
                             }
                         }
                     }
-                }
 
-                // Handling the Artists UI here
-                networkResponse.data?.artists?.artistList.let { artistsList ->
+                    // Handling the Artists UI here
+                    spotifySearchState.data.artists.artistList.let { artistsList ->
 
-                    // Artists
-                    item {
-                        Text(
-                            text = "Artists",
+                        // Artists
+                        item {
+                            Text(
+                                text = "Artists",
 
-                            modifier = Modifier
-                                .padding(12.dp),
+                                modifier = Modifier
+                                    .padding(12.dp),
 
-                            // Text and Font Properties
-                            fontFamily = FontFamily.SansSerif,
-                            fontWeight = FontWeight.W800,
-                            fontSize = 22.sp,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
+                                // Text and Font Properties
+                                fontFamily = FontFamily.SansSerif,
+                                fontWeight = FontWeight.W800,
+                                fontSize = 22.sp,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
 
-                    item {
-                        LazyRow(
-                            modifier = Modifier
-                                .height(210.dp)
-                                .width(LocalConfiguration.current.screenWidthDp.dp)
-                        ) {
+                        item {
+                            LazyRow(
+                                modifier = Modifier
+                                    .height(210.dp)
+                                    .width(LocalConfiguration.current.screenWidthDp.dp)
+                            ) {
 
-                            if (artistsList != null) {
                                 items(artistsList.size) {
 
                                     // current Item
@@ -232,34 +233,32 @@ fun SearchScreen(
                             }
                         }
                     }
-                }
 
-                // Handling the Album UI here
-                networkResponse.data?.albums?.albumItems.let { albumList ->
+                    // Handling the Album UI here
+                    spotifySearchState.data.albums.albumItems.let { albumList ->
 
-                    // Albums Text
-                    item {
-                        Text(
-                            text = "Albums",
+                        // Albums Text
+                        item {
+                            Text(
+                                text = "Albums",
 
-                            modifier = Modifier
-                                .padding(top = 24.dp, bottom = 8.dp, start = 8.dp, end = 8.dp),
+                                modifier = Modifier
+                                    .padding(top = 24.dp, bottom = 8.dp, start = 8.dp, end = 8.dp),
 
-                            // Text and Font Properties
-                            fontFamily = FontFamily.SansSerif,
-                            fontWeight = FontWeight.W800,
-                            fontSize = 22.sp,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
+                                // Text and Font Properties
+                                fontFamily = FontFamily.SansSerif,
+                                fontWeight = FontWeight.W800,
+                                fontSize = 22.sp,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
 
-                    item {
-                        LazyRow(
-                            modifier = Modifier
-                                .height(210.dp)
-                                .width(LocalConfiguration.current.screenWidthDp.dp)
-                        ) {
-                            if (albumList != null) {
+                        item {
+                            LazyRow(
+                                modifier = Modifier
+                                    .height(210.dp)
+                                    .width(LocalConfiguration.current.screenWidthDp.dp)
+                            ) {
                                 items(albumList.size) {
 
                                     // Current Item
@@ -271,36 +270,37 @@ fun SearchScreen(
                                     ) {
 
                                         // Navigating the Album Details Screen to get the Album Details
-                                        setEvent(SpotifyUiEvent.HelperEvent.SetAlbumId(currentItem.id))
+                                        setEvent(
+                                            SpotifyUiEvent.HelperEvent.SetAlbumId(
+                                                currentItem.id
+                                            )
+                                        )
                                         navigator(SpotifyNavRoutes.AlbumDetailScreen.routes)
                                     }
                                 }
                             }
                         }
                     }
-                }
 
-                // Handling the Playlist UI here
-                networkResponse.data?.playlists?.items.let { playlists ->
+                    // Handling the Playlist UI here
+                    spotifySearchState.data.playlists.items.let { playlists ->
 
-                    // Playlist Text
-                    item {
-                        Text(
-                            text = "Playlists",
+                        // Playlist Text
+                        item {
+                            Text(
+                                text = "Playlists",
 
-                            modifier = Modifier
-                                .padding(top = 24.dp, bottom = 8.dp, start = 8.dp, end = 8.dp),
+                                modifier = Modifier
+                                    .padding(top = 24.dp, bottom = 8.dp, start = 8.dp, end = 8.dp),
 
-                            // Text and Font Properties
-                            fontFamily = FontFamily.SansSerif,
-                            fontWeight = FontWeight.W800,
-                            fontSize = 22.sp,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
+                                // Text and Font Properties
+                                fontFamily = FontFamily.SansSerif,
+                                fontWeight = FontWeight.W800,
+                                fontSize = 22.sp,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
 
-
-                    if (playlists != null) {
                         items(playlists.size) {
 
                             // current Item
@@ -317,9 +317,18 @@ fun SearchScreen(
                             }
                         }
                     }
+
+                    item {
+                        Spacer(modifier = Modifier.height(24.dp))
+                    }
+                }
+            }
+
+            is UiState.Error -> {
+                AppErrorScreen(desc = spotifySearchState.resId.toStringFromResId()) {
+                    setEvent(SpotifyUiEvent.NetworkIO.LoadSpotifySearchResult)
                 }
             }
         }
-        Spacer(modifier = Modifier.height(24.dp))
     }
 }

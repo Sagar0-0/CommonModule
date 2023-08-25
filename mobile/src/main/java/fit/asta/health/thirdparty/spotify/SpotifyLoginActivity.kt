@@ -24,8 +24,11 @@ import com.spotify.sdk.android.auth.AuthorizationRequest
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.ui.AppTheme
+import fit.asta.health.common.ui.components.generic.AppErrorScreen
+import fit.asta.health.common.ui.components.generic.LoadingAnimation
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
-import fit.asta.health.thirdparty.spotify.ui.components.MusicStateControl
 import fit.asta.health.thirdparty.spotify.ui.navigation.TopTabNavigation
 import fit.asta.health.thirdparty.spotify.ui.viewmodel.SpotifyViewModelX
 
@@ -62,11 +65,10 @@ class SpotifyLoginActivity : ComponentActivity() {
                 ) {
 
                     // Handling the States of all the Authorization flow of spotify
-                    MusicStateControl(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        networkState = spotifyViewModelX.currentUserData.collectAsState().value,
-                        onCurrentStateInitialized = {
+                    when (val loginState =
+                        spotifyViewModelX.currentUserData.collectAsState().value) {
+
+                        is UiState.Idle -> {
 
                             // checking if spotify is installed or not
                             if (isSpotifyInstalled()) {
@@ -81,16 +83,44 @@ class SpotifyLoginActivity : ComponentActivity() {
                                 openSpotifyInPlayStore()
                             }
                         }
-                    ) {
 
-                        // Getting the Spotify App Remote
-                        getSpotifyRemote()
+                        is UiState.Loading -> {
+                            LoadingAnimation(modifier = Modifier.fillMaxSize())
+                        }
 
-                        val musicNavController = rememberNavController()
-                        TopTabNavigation(
-                            spotifyViewModelX = spotifyViewModelX,
-                            navController = musicNavController
-                        )
+                        is UiState.Success -> {
+
+                            // Getting the Spotify App Remote
+                            getSpotifyRemote()
+
+                            val musicNavController = rememberNavController()
+                            TopTabNavigation(
+                                spotifyViewModelX = spotifyViewModelX,
+                                navController = musicNavController
+                            )
+                        }
+
+                        is UiState.Error -> {
+                            AppErrorScreen(desc = loginState.resId.toStringFromResId()) {
+
+                                // checking if spotify is installed or not
+                                if (isSpotifyInstalled()) {
+                                    // Starting the Auth Flow from here
+                                    sendAuthRequest()
+                                } else {
+
+                                    // downloading Spotify App in the user's App so it can be used
+                                    Toast.makeText(
+                                        this,
+                                        "Need to Download Spotify",
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
+                                    isResume = true
+                                    openSpotifyInPlayStore()
+                                }
+                            }
+                        }
                     }
                 }
             }

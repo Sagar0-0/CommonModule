@@ -21,9 +21,7 @@ import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.thirdparty.spotify.data.model.common.Album
-import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 import fit.asta.health.thirdparty.spotify.ui.components.MusicLargeImageColumn
-import fit.asta.health.thirdparty.spotify.ui.components.MusicStateControl
 import fit.asta.health.thirdparty.spotify.ui.events.SpotifyUiEvent
 
 /**
@@ -36,13 +34,10 @@ import fit.asta.health.thirdparty.spotify.ui.events.SpotifyUiEvent
  */
 @Composable
 fun AlbumDetailScreen(
-    albumNetworkResponse: SpotifyNetworkCall<Album>,
+    albumNetworkResponse: UiState<Album>,
     albumLocalResponse: UiState<List<Album>>,
     setEvent: (SpotifyUiEvent) -> Unit
 ) {
-
-    // context is stored to Show the Toast
-    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         setEvent(SpotifyUiEvent.NetworkIO.LoadAlbumDetails)
@@ -59,102 +54,125 @@ fun AlbumDetailScreen(
     ) {
 
         // This function checks for the Network Response from the API
-        MusicStateControl(
-            networkState = albumNetworkResponse,
-            onCurrentStateInitialized = { setEvent(SpotifyUiEvent.NetworkIO.LoadAlbumDetails) }
-        ) { networkResponse ->
+        when (albumNetworkResponse) {
 
-            // This function checks for the Local Response from Local Database
-            when (albumLocalResponse) {
+            is UiState.Idle -> {
+//                setEvent(SpotifyUiEvent.NetworkIO.LoadAlbumDetails)
+            }
 
-                // Idle State
-                is UiState.Idle -> {
-                    setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums)
+            is UiState.Loading -> {
+                LoadingAnimation(modifier = Modifier.fillMaxSize())
+            }
+
+            is UiState.Success -> {
+                // This function checks for the Local Response from Local Database
+                LocalAlbumHandler(
+                    albumNetworkResponse = albumNetworkResponse,
+                    albumLocalResponse = albumLocalResponse,
+                    setEvent = setEvent
+                )
+            }
+
+            is UiState.Error -> {
+                AppErrorScreen(desc = albumNetworkResponse.resId.toStringFromResId()) {
+                    setEvent(SpotifyUiEvent.NetworkIO.LoadAlbumDetails)
                 }
+            }
+        }
+    }
+}
 
-                // Loading State
-                is UiState.Loading -> {
-                    LoadingAnimation(modifier = Modifier.fillMaxSize())
-                }
+@Composable
+private fun LocalAlbumHandler(
+    albumNetworkResponse: UiState.Success<Album>,
+    albumLocalResponse: UiState<List<Album>>,
+    setEvent: (SpotifyUiEvent) -> Unit
+) {
 
-                // Success State
-                is UiState.Success -> {
+    // context is stored to Show the Toast
+    val context = LocalContext.current
 
-                    // Parsing the Network Album Data
-                    networkResponse.data.let { networkAlbumData ->
+    when (albumLocalResponse) {
 
-                        // This variable stores if the Local Database contains this Album or not
-                        val isPresent = albumLocalResponse.data.let { albumList ->
-                            if (networkAlbumData != null)
-                                albumList.contains(networkAlbumData)
-                            else
-                                false
+        // Idle State
+        is UiState.Idle -> {
+            setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums)
+        }
+
+        // Loading State
+        is UiState.Loading -> {
+            LoadingAnimation(modifier = Modifier.fillMaxSize())
+        }
+
+        // Success State
+        is UiState.Success -> {
+
+            // Parsing the Network Album Data
+            albumNetworkResponse.data.let { networkAlbumData ->
+
+                // This variable stores if the Local Database contains this Album or not
+                val isPresent = albumLocalResponse.data.contains(networkAlbumData)
+
+                // Showing the Album Data at the Screen
+                MusicLargeImageColumn(
+                    imageUri = networkAlbumData.images.firstOrNull()?.url,
+                    headerText = networkAlbumData.name,
+                    secondaryTexts = networkAlbumData.artists
+                ) {}
+
+                // Add to Favourites Button
+                Button(
+                    onClick = {
+
+                        // Checking if the Album is already present or not
+                        if (!isPresent) {
+                            setEvent(SpotifyUiEvent.LocalIO.InsertAlbum(networkAlbumData))
+                            Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show()
+                        } else {
+                            setEvent(SpotifyUiEvent.LocalIO.DeleteAlbum(networkAlbumData))
+                            Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT)
+                                .show()
                         }
-
-                        // Showing the Album Data at the Screen
-                        if (networkAlbumData != null) {
-                            MusicLargeImageColumn(
-                                imageUri = networkAlbumData.images.firstOrNull()?.url,
-                                headerText = networkAlbumData.name,
-                                secondaryTexts = networkAlbumData.artists
-                            ) {}
-
-                            // Add to Favourites Button
-                            Button(
-                                onClick = {
-
-                                    // Checking if the Album is already present or not
-                                    if (!isPresent) {
-                                        setEvent(SpotifyUiEvent.LocalIO.InsertAlbum(networkAlbumData))
-                                        Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show()
-                                    } else {
-                                        setEvent(SpotifyUiEvent.LocalIO.DeleteAlbum(networkAlbumData))
-                                        Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT)
-                                            .show()
-                                    }
-                                },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(
-                                        top = 32.dp,
-                                        bottom = 12.dp,
-                                        start = 12.dp,
-                                        end = 12.dp
-                                    )
-                            ) {
-                                Text(
-                                    text = if (!isPresent)
-                                        "Add To Favourites" else "Delete From Favourites",
-                                    modifier = Modifier
-                                        .padding(4.dp)
-                                )
-                            }
-
-                            // Play on Spotify Button
-                            Button(
-                                onClick = {
-                                    setEvent(SpotifyUiEvent.HelperEvent.PlaySong(networkAlbumData.uri))
-                                },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(bottom = 12.dp, start = 12.dp, end = 12.dp)
-                            ) {
-                                Text(
-                                    text = "Play using Spotify",
-                                    modifier = Modifier
-                                        .padding(4.dp)
-                                )
-                            }
-                        }
-                    }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            top = 32.dp,
+                            bottom = 12.dp,
+                            start = 12.dp,
+                            end = 12.dp
+                        )
+                ) {
+                    Text(
+                        text = if (!isPresent)
+                            "Add To Favourites" else "Delete From Favourites",
+                        modifier = Modifier
+                            .padding(4.dp)
+                    )
                 }
 
-                // Error State
-                is UiState.Error -> {
-                    AppErrorScreen(desc = albumLocalResponse.resId.toStringFromResId()) {
-                        setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums)
-                    }
+                // Play on Spotify Button
+                Button(
+                    onClick = {
+                        setEvent(SpotifyUiEvent.HelperEvent.PlaySong(networkAlbumData.uri))
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 12.dp, start = 12.dp, end = 12.dp)
+                ) {
+                    Text(
+                        text = "Play using Spotify",
+                        modifier = Modifier
+                            .padding(4.dp)
+                    )
                 }
+            }
+        }
+
+        // Error State
+        is UiState.Error -> {
+            AppErrorScreen(desc = albumLocalResponse.resId.toStringFromResId()) {
+                setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums)
             }
         }
     }

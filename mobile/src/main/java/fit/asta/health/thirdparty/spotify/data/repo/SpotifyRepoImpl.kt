@@ -1,5 +1,8 @@
 package fit.asta.health.thirdparty.spotify.data.repo
 
+import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.getResponseState
+import fit.asta.health.datastore.IODispatcher
 import fit.asta.health.thirdparty.spotify.data.remote.SpotifyApiService
 import fit.asta.health.thirdparty.spotify.data.model.common.Album
 import fit.asta.health.thirdparty.spotify.data.model.library.albums.SpotifyLibraryAlbumModel
@@ -15,223 +18,209 @@ import fit.asta.health.thirdparty.spotify.data.model.common.Track
 import fit.asta.health.thirdparty.spotify.data.model.me.SpotifyMeModel
 import fit.asta.health.thirdparty.spotify.data.model.recently.SpotifyUserRecentlyPlayedModel
 import fit.asta.health.thirdparty.spotify.data.model.recommendations.SpotifyRecommendationModel
-import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import retrofit2.Response
+import kotlinx.coroutines.withContext
 
-class SpotifyRepoImpl(private val spotifyApi: SpotifyApiService) : SpotifyRepo {
+class SpotifyRepoImpl(
+    private val spotifyApi: SpotifyApiService,
+    @IODispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+) : SpotifyRepo {
 
     override suspend fun getCurrentUserDetails(accessToken: String):
-            Flow<SpotifyNetworkCall<SpotifyMeModel>> {
+            ResponseState<SpotifyMeModel> {
 
-        val headerMap: HashMap<String, String> = HashMap()
-        headerMap["Authorization"] = "Bearer $accessToken"
-        headerMap["Content-Type"] = "application/json"
+        return withContext(dispatcher) {
+            getResponseState {
 
-        return flow {
-            emit(SpotifyNetworkCall.Loading())
-            val response = spotifyApi.getCurrentUserDetails(headerMap)
-            emit(handleResponse(response))
-        }.catch {
-            emit(SpotifyNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
+                val headerMap: HashMap<String, String> = HashMap()
+                headerMap["Authorization"] = "Bearer $accessToken"
+                headerMap["Content-Type"] = "application/json"
+
+                spotifyApi.getCurrentUserDetails(headerMap)
+            }
+        }
     }
 
     override suspend fun getCurrentUserFollowedArtists(accessToken: String):
-            Flow<SpotifyNetworkCall<SpotifyUserFollowingArtist>> {
+            ResponseState<SpotifyUserFollowingArtist> {
 
-        val headerMap: HashMap<String, String> = HashMap()
-        headerMap["Authorization"] = "Bearer $accessToken"
-        headerMap["Content-Type"] = "application/json"
+        return withContext(dispatcher) {
+            getResponseState {
 
-        return flow {
-            emit(SpotifyNetworkCall.Loading())
-            val response = spotifyApi.getCurrentUserFollowedArtists(headerMap)
-            emit(handleResponse(response))
-        }.catch {
-            emit(SpotifyNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
+                val headerMap: HashMap<String, String> = HashMap()
+                headerMap["Authorization"] = "Bearer $accessToken"
+                headerMap["Content-Type"] = "application/json"
+
+                spotifyApi.getCurrentUserFollowedArtists(headerMap)
+            }
+        }
     }
 
     override suspend fun getCurrentUserTopTracks(accessToken: String):
-            Flow<SpotifyNetworkCall<TrackList>> {
+            ResponseState<TrackList> {
 
-        val headerMap: HashMap<String, String> = HashMap()
-        headerMap["Authorization"] = "Bearer $accessToken"
-        headerMap["Content-Type"] = "application/json"
+        return withContext(dispatcher) {
+            getResponseState {
 
-        return flow {
-            emit(SpotifyNetworkCall.Loading())
-            val response = spotifyApi.getCurrentUserTopTracks(headerMap)
-            emit(handleResponse(response))
-        }.catch {
-            emit(SpotifyNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
+                val headerMap: HashMap<String, String> = HashMap()
+                headerMap["Authorization"] = "Bearer $accessToken"
+                headerMap["Content-Type"] = "application/json"
+
+                spotifyApi.getCurrentUserTopTracks(headerMap)
+            }
+        }
     }
 
     override suspend fun getCurrentUserTopArtists(accessToken: String):
-            Flow<SpotifyNetworkCall<ArtistList>> {
+            ResponseState<ArtistList> {
 
-        val headerMap: HashMap<String, String> = HashMap()
-        headerMap["Authorization"] = "Bearer $accessToken"
-        headerMap["Content-Type"] = "application/json"
+        return withContext(dispatcher) {
+            getResponseState {
 
-        return flow {
-            emit(SpotifyNetworkCall.Loading())
-            val response = spotifyApi.getCurrentUserTopArtists(headerMap)
-            emit(handleResponse(response))
-        }.catch {
-            emit(SpotifyNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
+                val headerMap: HashMap<String, String> = HashMap()
+                headerMap["Authorization"] = "Bearer $accessToken"
+                headerMap["Content-Type"] = "application/json"
+
+                spotifyApi.getCurrentUserTopArtists(headerMap)
+            }
+        }
     }
 
     override suspend fun getCurrentUserAlbums(accessToken: String):
-            Flow<SpotifyNetworkCall<SpotifyLibraryAlbumModel>> {
+            ResponseState<SpotifyLibraryAlbumModel> {
 
-        val headerMap: HashMap<String, String> = HashMap()
-        headerMap["Authorization"] = "Bearer $accessToken"
-        headerMap["Content-Type"] = "application/json"
+        return withContext(dispatcher) {
+            getResponseState {
 
-        return flow {
-            emit(SpotifyNetworkCall.Loading())
-            val response = spotifyApi.getCurrentUserAlbums(headerMap)
-            emit(handleResponse(response))
-        }.catch {
-            emit(SpotifyNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
+                val headerMap: HashMap<String, String> = HashMap()
+                headerMap["Authorization"] = "Bearer $accessToken"
+                headerMap["Content-Type"] = "application/json"
+
+                spotifyApi.getCurrentUserAlbums(headerMap)
+            }
+        }
     }
 
     override suspend fun getCurrentUserShows(accessToken: String):
-            Flow<SpotifyNetworkCall<SpotifyLibraryShowsModel>> {
+            ResponseState<SpotifyLibraryShowsModel> {
 
-        val headerMap: HashMap<String, String> = HashMap()
-        headerMap["Authorization"] = "Bearer $accessToken"
-        headerMap["Content-Type"] = "application/json"
+        return withContext(dispatcher) {
+            getResponseState {
 
-        return flow {
-            emit(SpotifyNetworkCall.Loading())
-            val response = spotifyApi.getCurrentUserShows(headerMap)
-            emit(handleResponse(response))
-        }.catch {
-            emit(SpotifyNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
+                val headerMap: HashMap<String, String> = HashMap()
+                headerMap["Authorization"] = "Bearer $accessToken"
+                headerMap["Content-Type"] = "application/json"
+
+                spotifyApi.getCurrentUserShows(headerMap)
+            }
+        }
     }
 
     override suspend fun getCurrentUserEpisodes(accessToken: String):
-            Flow<SpotifyNetworkCall<SpotifyLibraryEpisodesModel>> {
+            ResponseState<SpotifyLibraryEpisodesModel> {
 
-        val headerMap: HashMap<String, String> = HashMap()
-        headerMap["Authorization"] = "Bearer $accessToken"
-        headerMap["Content-Type"] = "application/json"
+        return withContext(dispatcher) {
+            getResponseState {
 
-        return flow {
-            emit(SpotifyNetworkCall.Loading())
-            val response = spotifyApi.getCurrentUserEpisodes(headerMap)
-            emit(handleResponse(response))
-        }.catch {
-            emit(SpotifyNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
+                val headerMap: HashMap<String, String> = HashMap()
+                headerMap["Authorization"] = "Bearer $accessToken"
+                headerMap["Content-Type"] = "application/json"
+
+                spotifyApi.getCurrentUserEpisodes(headerMap)
+            }
+        }
     }
 
     override suspend fun getCurrentUserTracks(accessToken: String):
-            Flow<SpotifyNetworkCall<SpotifyLibraryTracksModel>> {
+            ResponseState<SpotifyLibraryTracksModel> {
 
-        val headerMap: HashMap<String, String> = HashMap()
-        headerMap["Authorization"] = "Bearer $accessToken"
-        headerMap["Content-Type"] = "application/json"
+        return withContext(dispatcher) {
+            getResponseState {
 
-        return flow {
-            emit(SpotifyNetworkCall.Loading())
-            val response = spotifyApi.getCurrentUserTracks(headerMap)
-            emit(handleResponse(response))
-        }.catch {
-            emit(SpotifyNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
+                val headerMap: HashMap<String, String> = HashMap()
+                headerMap["Authorization"] = "Bearer $accessToken"
+                headerMap["Content-Type"] = "application/json"
+
+                spotifyApi.getCurrentUserTracks(headerMap)
+            }
+        }
     }
 
     override suspend fun getCurrentUserPlaylists(accessToken: String):
-            Flow<SpotifyNetworkCall<SpotifyUserPlaylistsModel>> {
+            ResponseState<SpotifyUserPlaylistsModel> {
 
-        val headerMap: HashMap<String, String> = HashMap()
-        headerMap["Authorization"] = "Bearer $accessToken"
-        headerMap["Content-Type"] = "application/json"
+        return withContext(dispatcher) {
+            getResponseState {
 
-        return flow {
-            emit(SpotifyNetworkCall.Loading())
-            val response = spotifyApi.getCurrentUserPlaylists(headerMap)
-            emit(handleResponse(response))
-        }.catch {
-            emit(SpotifyNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
+                val headerMap: HashMap<String, String> = HashMap()
+                headerMap["Authorization"] = "Bearer $accessToken"
+                headerMap["Content-Type"] = "application/json"
+
+                spotifyApi.getCurrentUserPlaylists(headerMap)
+            }
+        }
     }
 
     override suspend fun getCurrentUserRecentlyPlayedTracks(accessToken: String):
-            Flow<SpotifyNetworkCall<SpotifyUserRecentlyPlayedModel>> {
+            ResponseState<SpotifyUserRecentlyPlayedModel> {
 
-        val headerMap: HashMap<String, String> = HashMap()
-        headerMap["Authorization"] = "Bearer $accessToken"
-        headerMap["Content-Type"] = "application/json"
-        val queryMap: HashMap<String, String> = HashMap()
+        return withContext(dispatcher) {
+            getResponseState {
 
-        return flow {
-            emit(SpotifyNetworkCall.Loading())
-            val response = spotifyApi.getCurrentUserRecentlyPlayedTracks(headerMap, queryMap)
-            emit(handleResponse(response))
-        }.catch {
-            emit(SpotifyNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
+                val headerMap: HashMap<String, String> = HashMap()
+                headerMap["Authorization"] = "Bearer $accessToken"
+                headerMap["Content-Type"] = "application/json"
+                val queryMap: HashMap<String, String> = HashMap()
+
+                spotifyApi.getCurrentUserRecentlyPlayedTracks(headerMap, queryMap)
+            }
+        }
     }
 
     override suspend fun getUserPlaylists(accessToken: String, userID: String):
-            Flow<SpotifyNetworkCall<SpotifyUserPlaylistsModel>> {
+            ResponseState<SpotifyUserPlaylistsModel> {
 
-        val headerMap: HashMap<String, String> = HashMap()
-        headerMap["Authorization"] = "Bearer $accessToken"
-        headerMap["Content-Type"] = "application/json"
+        return withContext(dispatcher) {
+            getResponseState {
 
-        return flow {
-            emit(SpotifyNetworkCall.Loading())
-            val response = spotifyApi.getUserPlaylists(headerMap, userID)
-            emit(handleResponse(response))
-        }.catch {
-            emit(SpotifyNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
+                val headerMap: HashMap<String, String> = HashMap()
+                headerMap["Authorization"] = "Bearer $accessToken"
+                headerMap["Content-Type"] = "application/json"
+
+                spotifyApi.getUserPlaylists(headerMap, userID)
+            }
+        }
     }
 
     override suspend fun getTrackDetails(accessToken: String, trackID: String):
-            Flow<SpotifyNetworkCall<Track>> {
+            ResponseState<Track> {
 
-        val headerMap: HashMap<String, String> = HashMap()
-        headerMap["Authorization"] = "Bearer $accessToken"
-        headerMap["Content-Type"] = "application/json"
+        return withContext(dispatcher) {
+            getResponseState {
 
-        return flow {
-            emit(SpotifyNetworkCall.Loading())
-            val response = spotifyApi.getTrackDetails(headerMap, trackID)
-            emit(handleResponse(response))
-        }.catch {
-            emit(SpotifyNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
+                val headerMap: HashMap<String, String> = HashMap()
+                headerMap["Authorization"] = "Bearer $accessToken"
+                headerMap["Content-Type"] = "application/json"
+
+                spotifyApi.getTrackDetails(headerMap, trackID)
+            }
+        }
     }
 
     override suspend fun getAlbumDetails(accessToken: String, albumID: String):
-            Flow<SpotifyNetworkCall<Album>> {
+            ResponseState<Album> {
 
-        val headerMap: HashMap<String, String> = HashMap()
-        headerMap["Authorization"] = "Bearer $accessToken"
-        headerMap["Content-Type"] = "application/json"
+        return withContext(dispatcher) {
+            getResponseState {
 
-        return flow {
-            emit(SpotifyNetworkCall.Loading())
-            val response = spotifyApi.getAlbumDetails(headerMap, albumID)
-            emit(handleResponse(response))
-        }.catch {
-            emit(SpotifyNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
+                val headerMap: HashMap<String, String> = HashMap()
+                headerMap["Authorization"] = "Bearer $accessToken"
+                headerMap["Content-Type"] = "application/json"
+
+                spotifyApi.getAlbumDetails(headerMap, albumID)
+            }
+        }
     }
 
     override suspend fun searchQuery(
@@ -240,24 +229,23 @@ class SpotifyRepoImpl(private val spotifyApi: SpotifyApiService) : SpotifyRepo {
         type: String,
         includeExternal: String,
         market: String
-    ): Flow<SpotifyNetworkCall<SpotifySearchModel>> {
+    ): ResponseState<SpotifySearchModel> {
 
-        val headerMap: HashMap<String, String> = HashMap()
-        headerMap["Authorization"] = "Bearer $accessToken"
-        headerMap["Content-Type"] = "application/json"
-        val queryMap: HashMap<String, String> = HashMap()
-        queryMap["q"] = query
-        queryMap["type"] = type
-        queryMap["include_external"] = includeExternal
-        queryMap["market"] = market
+        return withContext(dispatcher) {
+            getResponseState {
 
-        return flow {
-            emit(SpotifyNetworkCall.Loading())
-            val response = spotifyApi.searchQuery(headerMap, queryMap)
-            emit(handleResponse(response))
-        }.catch {
-            emit(SpotifyNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
+                val headerMap: HashMap<String, String> = HashMap()
+                headerMap["Authorization"] = "Bearer $accessToken"
+                headerMap["Content-Type"] = "application/json"
+                val queryMap: HashMap<String, String> = HashMap()
+                queryMap["q"] = query
+                queryMap["type"] = type
+                queryMap["include_external"] = includeExternal
+                queryMap["market"] = market
+
+                spotifyApi.searchQuery(headerMap, queryMap)
+            }
+        }
     }
 
     override suspend fun getRecommendations(
@@ -266,80 +254,22 @@ class SpotifyRepoImpl(private val spotifyApi: SpotifyApiService) : SpotifyRepo {
         seedGenres: String,
         seedTracks: String,
         limit: String
-    ): Flow<SpotifyNetworkCall<SpotifyRecommendationModel>> {
+    ): ResponseState<SpotifyRecommendationModel> {
 
-        val headerMap: HashMap<String, String> = HashMap()
-        headerMap["Authorization"] = "Bearer $accessToken"
-        headerMap["Content-Type"] = "application/json"
-        val queryMap: HashMap<String, String> = HashMap()
-        queryMap["seed_artists"] = seedArtists
-        queryMap["seed_genres"] = seedGenres
-        queryMap["seed_tracks"] = seedTracks
-        queryMap["limit"] = limit
+        return withContext(dispatcher) {
+            getResponseState {
 
-        return flow {
-            emit(SpotifyNetworkCall.Loading())
-            val response = spotifyApi.getRecommendations(headerMap, queryMap)
-            emit(handleResponse(response))
-        }.catch {
-            emit(SpotifyNetworkCall.Failure(message = it.message.toString()))
-        }.flowOn(Dispatchers.IO)
-    }
+                val headerMap: HashMap<String, String> = HashMap()
+                headerMap["Authorization"] = "Bearer $accessToken"
+                headerMap["Content-Type"] = "application/json"
+                val queryMap: HashMap<String, String> = HashMap()
+                queryMap["seed_artists"] = seedArtists
+                queryMap["seed_genres"] = seedGenres
+                queryMap["seed_tracks"] = seedTracks
+                queryMap["limit"] = limit
 
-    /**
-     *  Handle Response Got From Spotify Web API
-     */
-    private fun <T : Any> handleResponse(response: Response<T>): SpotifyNetworkCall<T> {
-        when {
-            response.message().toString().contains("timeout") -> {
-                return SpotifyNetworkCall.Failure(
-                    data = response.body(),
-                    message = "Timeout!!\n $response"
-                )
+                spotifyApi.getRecommendations(headerMap, queryMap)
             }
-
-            response.code() == 401 -> {
-                return SpotifyNetworkCall.Failure(
-                    data = response.body(),
-                    message = "Bad or expired token. This can happen if the user revoked a token or the access token has expired. You should re-authenticate the user.\n $response"
-                )
-            }
-
-            response.code() == 403 -> {
-                return SpotifyNetworkCall.Failure(
-                    data = response.body(),
-                    message = "Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating the user won't help here.\n $response"
-                )
-            }
-
-            response.code() == 429 -> {
-                return SpotifyNetworkCall.Failure(
-                    data = response.body(),
-                    message = "The app has exceeded its rate limits. $response"
-                )
-            }
-
-            response.body() == null -> {
-                return SpotifyNetworkCall.Failure(
-                    data = response.body(),
-                    message = "Empty Body. $response"
-                )
-            }
-
-            response.isSuccessful -> {
-                val result = response.body()!!
-                return SpotifyNetworkCall.Success(result)
-            }
-
-            response.code() == 200 -> {
-                val result = response.body()!!
-                return SpotifyNetworkCall.Success(result)
-            }
-
-            else -> return SpotifyNetworkCall.Failure(
-                message = response.body().toString(),
-                data = response.body()
-            )
         }
     }
 }
