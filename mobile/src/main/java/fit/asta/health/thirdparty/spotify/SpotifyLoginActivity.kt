@@ -1,5 +1,6 @@
 package fit.asta.health.thirdparty.spotify
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -24,9 +25,9 @@ import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.ui.AppTheme
 import fit.asta.health.thirdparty.spotify.utils.SpotifyConstants
-import fit.asta.health.thirdparty.spotify.view.components.MusicStateControl
-import fit.asta.health.thirdparty.spotify.view.navigation.TopTabNavigation
-import fit.asta.health.thirdparty.spotify.viewmodel.SpotifyViewModelX
+import fit.asta.health.thirdparty.spotify.ui.components.MusicStateControl
+import fit.asta.health.thirdparty.spotify.ui.navigation.TopTabNavigation
+import fit.asta.health.thirdparty.spotify.ui.viewmodel.SpotifyViewModelX
 
 @AndroidEntryPoint
 class SpotifyLoginActivity : ComponentActivity() {
@@ -42,6 +43,13 @@ class SpotifyLoginActivity : ComponentActivity() {
      * activity
      */
     private val spotifyViewModelX: SpotifyViewModelX by viewModels()
+
+    companion object {
+        fun launch(context: Context) {
+            val intent = Intent(context, SpotifyLoginActivity::class.java)
+            context.startActivity(intent)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
