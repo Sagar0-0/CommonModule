@@ -1,12 +1,11 @@
 package fit.asta.health.tools.breathing.model
 
-import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.network.data.ServerRes
+import fit.asta.health.network.utils.NetworkResult
 import fit.asta.health.tools.breathing.model.network.AllExerciseData
 import fit.asta.health.tools.breathing.model.network.CustomRatioData
 import fit.asta.health.tools.breathing.model.network.NetGetRes
 import fit.asta.health.tools.breathing.model.network.NetGetStart
-import fit.asta.health.tools.breathing.model.network.request.CustomRatioPost
 import fit.asta.health.tools.breathing.model.network.request.NetPost
 import fit.asta.health.tools.breathing.model.network.request.NetPut
 import kotlinx.coroutines.flow.Flow

@@ -20,6 +20,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import fit.asta.health.BuildConfig
 import fit.asta.health.R
 import fit.asta.health.common.utils.MainTopBarActions
 import fit.asta.health.common.utils.PrefManager
@@ -231,7 +232,7 @@ fun NavGraphBuilder.homeScreen(
                     }
 
                     MainTopBarActions.Share -> {
-                        context.shareApp()
+                        context.shareApp(BuildConfig.APPLICATION_ID)
                     }
                 }
             }

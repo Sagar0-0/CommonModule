@@ -13,7 +13,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.Timeline
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.common.utils.NetworkResult
+import fit.asta.health.network.utils.NetworkResult
 import fit.asta.health.player.jetpack_audio.domain.data.Song
 import fit.asta.health.player.jetpack_video.data.model.VideoItem
 import fit.asta.health.player.jetpack_video.video.UiEvent

@@ -1,9 +1,9 @@
 package fit.asta.health.profile.model
 
 import android.content.Context
-import fit.asta.health.common.utils.InputStreamRequestBody
 import fit.asta.health.network.data.ApiResponse
 import fit.asta.health.network.data.Status
+import fit.asta.health.network.utils.InputStreamRequestBody
 import fit.asta.health.profile.model.api.ProfileApi
 import fit.asta.health.profile.model.domain.UserProfile
 import fit.asta.health.profile.model.network.NetHealthPropertiesRes

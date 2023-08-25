@@ -1,8 +1,8 @@
 package fit.asta.health.tools.meditation.model
 
 import android.util.Log
-import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.network.data.ServerRes
+import fit.asta.health.network.utils.NetworkResult
 import fit.asta.health.tools.meditation.model.api.MeditationApi
 import fit.asta.health.tools.meditation.model.network.NetMeditationToolRes
 import fit.asta.health.tools.meditation.model.network.NetMusicRes

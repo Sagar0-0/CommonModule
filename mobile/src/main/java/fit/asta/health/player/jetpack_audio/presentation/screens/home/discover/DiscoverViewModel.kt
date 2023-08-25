@@ -5,7 +5,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.common.utils.NetworkResult
+import fit.asta.health.network.utils.NetworkResult
 import fit.asta.health.player.jetpack_audio.domain.data.Song
 import fit.asta.health.player.jetpack_audio.domain.utils.MediaConstants
 import fit.asta.health.player.jetpack_audio.exo_player.MusicServiceConnection

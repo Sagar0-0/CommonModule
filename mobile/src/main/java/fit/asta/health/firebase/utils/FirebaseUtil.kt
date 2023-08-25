@@ -1,4 +1,4 @@
-package fit.asta.health.common.utils
+package fit.asta.health.firebase.utils
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
