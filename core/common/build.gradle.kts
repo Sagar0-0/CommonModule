@@ -2,10 +2,20 @@ plugins {
     alias(libs.plugins.asta.android.library)
     alias(libs.plugins.asta.android.hilt)
     alias(libs.plugins.asta.android.library.compose)
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     id("kotlin-parcelize")
 }
 
+secrets {
+    defaultPropertiesFileName = "secrets.properties"
+}
+
 android {
+
+    buildFeatures {
+        buildConfig = true
+    }
+
     namespace = "fit.asta.health.core.common"
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

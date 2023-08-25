@@ -11,17 +11,17 @@ import fit.asta.health.tools.breathing.model.network.request.NetPost
 import fit.asta.health.tools.breathing.model.network.request.NetPut
 import okhttp3.OkHttpClient
 
-class BreathingRestApi(baseUrl: String, client: OkHttpClient) : BreathingApi {
+class BreathingRestApi(client: OkHttpClient) : BreathingApi {
     private val apiService: BreathingService = NetworkUtil
-        .getRetrofit(baseUrl, client)
+        .getRetrofit(client)
         .create(BreathingService::class.java)
 
     override suspend fun getBreathingTool(userId: String, date: String): NetGetRes {
-     return apiService.getBreathingTool(userId, date)
+        return apiService.getBreathingTool(userId, date)
     }
 
     override suspend fun getAllBreathingData(userId: String): AllExerciseData {
-       return apiService.getAllBreathingData(userId)
+        return apiService.getAllBreathingData(userId)
     }
 
     override suspend fun getStart(userId: String): NetGetStart {

@@ -8,7 +8,6 @@ plugins {
 android {
     namespace = "fit.asta.health.data.feedback"
     defaultConfig {
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 

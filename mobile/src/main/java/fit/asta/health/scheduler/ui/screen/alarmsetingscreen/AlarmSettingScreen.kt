@@ -30,10 +30,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.*
-import fit.asta.health.common.ui.components.generic.AppScaffold
-import fit.asta.health.common.ui.components.generic.AppTopBar
-import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.designsystem.components.*
+import fit.asta.health.designsystem.components.generic.AppScaffold
+import fit.asta.health.designsystem.components.generic.AppTopBar
+import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.scheduler.data.api.net.scheduler.Time
 import fit.asta.health.scheduler.ui.SpotifyActivity
 import fit.asta.health.scheduler.ui.components.CustomLabelBottomSheetLayout

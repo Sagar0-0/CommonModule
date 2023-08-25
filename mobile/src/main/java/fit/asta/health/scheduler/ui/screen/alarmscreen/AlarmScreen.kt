@@ -20,12 +20,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.request.ImageRequest
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.generic.AppButtons
-import fit.asta.health.common.ui.components.generic.AppDefServerImg
-import fit.asta.health.common.ui.components.generic.AppScaffold
-import fit.asta.health.common.ui.components.generic.AppTexts
-import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.designsystem.components.generic.AppButtons
+import fit.asta.health.designsystem.components.generic.AppDefServerImg
+import fit.asta.health.designsystem.components.generic.AppScaffold
+import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.theme.spacing
 
 @Composable
 fun AlarmScreen(uiState: AlarmUiState, event: (AlarmEvent) -> Unit) {

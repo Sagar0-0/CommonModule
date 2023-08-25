@@ -25,8 +25,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.chargemap.compose.numberpicker.NumberPicker
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.ButtonWithColor
-import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.designsystem.components.ButtonWithColor
+import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.AMPMHoursMin
 import fit.asta.health.scheduler.util.Constants.Companion.getTimeDifference
 import fit.asta.health.tools.breathing.model.domain.mapper.convert12hrTo24hr

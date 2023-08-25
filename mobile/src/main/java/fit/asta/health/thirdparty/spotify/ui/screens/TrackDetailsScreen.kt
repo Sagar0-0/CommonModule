@@ -8,22 +8,22 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import fit.asta.health.common.ui.components.generic.AppErrorScreen
-import fit.asta.health.common.ui.components.generic.LoadingAnimation
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.designsystem.components.generic.AppErrorScreen
+import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.thirdparty.spotify.data.model.common.Track
 import fit.asta.health.thirdparty.spotify.ui.components.MusicLargeImageColumn
 import fit.asta.health.thirdparty.spotify.ui.events.SpotifyUiEvent
-
+import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 
 /**
  * This screen shows the details of the Tracks choose by the user and gives the options to either

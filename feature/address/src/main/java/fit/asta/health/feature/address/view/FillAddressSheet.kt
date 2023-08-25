@@ -49,11 +49,11 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.UiString
 import fit.asta.health.common.utils.getLocationName
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.address.modal.MyAddress
 import fit.asta.health.designsystem.components.ValidatedTextField
-import fit.asta.health.designsystem.components.functional.UiString
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.theme.customSize
 import fit.asta.health.designsystem.theme.spacing

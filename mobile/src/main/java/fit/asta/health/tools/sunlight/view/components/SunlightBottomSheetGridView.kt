@@ -24,8 +24,8 @@ import androidx.navigation.NavController
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
-import fit.asta.health.common.ui.components.ButtonWithColor
-import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.designsystem.components.ButtonWithColor
+import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.tools.sunlight.nav.SunlightScreen
 import fit.asta.health.tools.sunlight.view.home.SunlightHomeScreenEvents
 import fit.asta.health.tools.sunlight.viewmodel.SunlightViewModel

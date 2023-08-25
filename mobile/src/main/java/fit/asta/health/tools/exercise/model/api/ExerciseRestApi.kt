@@ -8,16 +8,16 @@ import fit.asta.health.tools.exercise.model.network.NetPost
 import fit.asta.health.tools.exercise.model.network.NetPutRes
 import okhttp3.OkHttpClient
 
-class ExerciseRestApi(baseUrl: String, client: OkHttpClient) :ExerciseApi{
+class ExerciseRestApi(client: OkHttpClient) : ExerciseApi {
     private val apiService: ExerciseService = NetworkUtil
-        .getRetrofit(baseUrl, client)
+        .getRetrofit(client)
         .create(ExerciseService::class.java)
 
     override suspend fun getExerciseTool(uid: String, date: String, name: String): NetGetRes {
-        return apiService.getExerciseTool(userId = uid,date, name)
+        return apiService.getExerciseTool(userId = uid, date, name)
     }
 
-    override suspend fun getStart(uid: String,name: String): NetGetStart {
+    override suspend fun getStart(uid: String, name: String): NetGetStart {
         return apiService.getStart(userId = uid, name = name)
     }
 

@@ -17,9 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import coil.compose.AsyncImage
-import fit.asta.health.common.ui.theme.imageHeight
-import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.designsystem.theme.imageHeight
+import fit.asta.health.designsystem.theme.spacing
 
 @Composable
 fun UserCard(user: String, userOrg: String, userRole: String, url: String) {

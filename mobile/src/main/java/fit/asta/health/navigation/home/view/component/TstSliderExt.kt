@@ -6,9 +6,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import fit.asta.health.common.ui.components.generic.AppDivider
-import fit.asta.health.common.ui.components.generic.AppDividerLineWidth
-import fit.asta.health.common.ui.components.generic.AppTexts
+import fit.asta.health.designsystem.components.generic.AppDivider
+import fit.asta.health.designsystem.components.generic.AppDividerLineWidth
+import fit.asta.health.designsystem.components.generic.AppTexts
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi

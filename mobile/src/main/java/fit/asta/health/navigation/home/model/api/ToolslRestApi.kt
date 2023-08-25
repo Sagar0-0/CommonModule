@@ -6,11 +6,10 @@ import okhttp3.OkHttpClient
 
 
 //Tools Endpoints
-class ToolsRestApi(baseUrl: String, client: OkHttpClient) : ToolsApi {
+class ToolsRestApi(client: OkHttpClient) : ToolsApi {
 
     private val apiService: ToolsApiService =
-        NetworkUtil.getRetrofit(baseUrl = baseUrl, client = client)
-            .create(ToolsApiService::class.java)
+        NetworkUtil.getRetrofit(client).create(ToolsApiService::class.java)
 
     override suspend fun getHomeData(
         userId: String,

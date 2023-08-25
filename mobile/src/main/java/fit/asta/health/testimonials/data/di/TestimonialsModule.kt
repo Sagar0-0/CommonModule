@@ -6,7 +6,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.BuildConfig
 import fit.asta.health.network.utils.NetworkUtil
 import fit.asta.health.testimonials.data.remote.TestimonialApiService
 import fit.asta.health.testimonials.data.repo.TestimonialRepo
@@ -33,6 +32,5 @@ object TestimonialsModule {
     @Singleton
     @Provides
     fun provideTestimonialService(client: OkHttpClient): TestimonialApiService =
-        NetworkUtil.getRetrofit(baseUrl = BuildConfig.BASE_URL, client = client)
-            .create(TestimonialApiService::class.java)
+        NetworkUtil.getRetrofit(client).create(TestimonialApiService::class.java)
 }

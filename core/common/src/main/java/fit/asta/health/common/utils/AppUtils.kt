@@ -31,7 +31,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.review.ReviewManagerFactory
-import fit.asta.health.common.BuildConfig
+import fit.asta.health.core.common.BuildConfig
 import java.io.IOException
 import java.io.InputStream
 import java.net.HttpURLConnection
@@ -127,7 +127,7 @@ else {
     )
 }
 
-fun Context.shareApp() {
+fun Context.shareApp(appId: String) {
 
     //TODO: change to suit for iOS app too
     try {
@@ -138,7 +138,7 @@ fun Context.shareApp() {
             Intent.EXTRA_TEXT,
             resources.getString(StringR.string.share_app_extra_text) + "\n" + resources.getString(
                 StringR.string.google_play_store_url
-            ) + BuildConfig.APPLICATION_ID
+            ) + appId
         )
         sharingIntent.type = "text/html"
         startActivity(
@@ -153,20 +153,20 @@ fun Context.shareApp() {
     }
 }
 
-fun Context.rateUs() {
+fun Context.rateUs(appId: String) {
 
     try {
         startActivity(
             Intent(
                 Intent.ACTION_VIEW,
-                Uri.parse(resources.getString(StringR.string.google_market_url) + BuildConfig.APPLICATION_ID)
+                Uri.parse(resources.getString(StringR.string.google_market_url) + appId)
             )
         )
     } catch (e: ActivityNotFoundException) {
         startActivity(
             Intent(
                 Intent.ACTION_VIEW,
-                Uri.parse(resources.getString(StringR.string.google_play_store_url) + BuildConfig.APPLICATION_ID)
+                Uri.parse(resources.getString(StringR.string.google_play_store_url) + appId)
             )
         )
     }

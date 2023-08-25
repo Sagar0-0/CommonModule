@@ -19,15 +19,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import fit.asta.health.common.ui.components.generic.AppButtons
-import fit.asta.health.common.ui.components.generic.AppCard
-import fit.asta.health.common.ui.components.generic.AppDefServerImg
-import fit.asta.health.common.ui.components.generic.AppDefaultIcon
-import fit.asta.health.common.ui.components.generic.AppTexts
-import fit.asta.health.common.ui.theme.aspectRatio
-import fit.asta.health.common.ui.theme.iconSize
-import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.designsystem.components.generic.AppButtons
+import fit.asta.health.designsystem.components.generic.AppCard
+import fit.asta.health.designsystem.components.generic.AppDefServerImg
+import fit.asta.health.designsystem.components.generic.AppDefaultIcon
+import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.theme.aspectRatio
+import fit.asta.health.designsystem.theme.iconSize
+import fit.asta.health.designsystem.theme.spacing
 
 @Composable
 fun ToolsCardLayout(

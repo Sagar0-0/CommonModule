@@ -10,10 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.media3.common.Player
-import fit.asta.health.common.ui.components.generic.AppButtons
-import fit.asta.health.common.ui.components.generic.AppDefaultIcon
-import fit.asta.health.common.ui.components.generic.AppScaffold
-import fit.asta.health.common.ui.components.generic.AppTopBar
+import fit.asta.health.designsystem.components.generic.AppButtons
+import fit.asta.health.designsystem.components.generic.AppDefaultIcon
+import fit.asta.health.designsystem.components.generic.AppScaffold
+import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.testimonials.ui.list.vm.TestimonialListViewModel
 
 

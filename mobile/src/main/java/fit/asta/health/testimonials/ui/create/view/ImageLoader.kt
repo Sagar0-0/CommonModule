@@ -11,9 +11,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.jetpack.getOneUrl
-import fit.asta.health.common.ui.components.generic.AppTexts
-import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.jetpack.dashedBorder
+import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.testimonials.data.model.Media
 import fit.asta.health.testimonials.ui.components.SelectedImageView
 import fit.asta.health.testimonials.ui.components.UploadTstMediaView

@@ -28,9 +28,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
-import fit.asta.health.common.ui.components.generic.AppButtons
-import fit.asta.health.common.ui.components.generic.AppTexts
-import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.designsystem.components.generic.AppButtons
+import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.scheduler.util.VibrationPattern
 
 @OptIn(ExperimentalLayoutApi::class)

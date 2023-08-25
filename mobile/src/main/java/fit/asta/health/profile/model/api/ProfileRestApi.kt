@@ -11,11 +11,10 @@ import okhttp3.OkHttpClient
 
 
 //User Profile Endpoints
-class ProfileRestApi(baseUrl: String, client: OkHttpClient) : ProfileApi {
+class ProfileRestApi(client: OkHttpClient) : ProfileApi {
 
     private val apiService: ProfileApiService =
-        NetworkUtil.getRetrofit(baseUrl = baseUrl, client = client)
-            .create(ProfileApiService::class.java)
+        NetworkUtil.getRetrofit(client).create(ProfileApiService::class.java)
 
     override suspend fun isUserProfileAvailable(userId: String): NetUserProfileAvailableRes {
         return apiService.isUserProfileAvailable(userId)

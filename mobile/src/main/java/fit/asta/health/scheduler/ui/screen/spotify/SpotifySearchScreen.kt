@@ -3,6 +3,7 @@ package fit.asta.health.scheduler.ui.screen.spotify
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,6 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,18 +25,21 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
+import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
-import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.scheduler.ui.components.SearchBarUI
 import fit.asta.health.scheduler.ui.components.SpotifyMusicItem
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.ToneUiState
 import fit.asta.health.thirdparty.spotify.data.model.search.SpotifySearchModel
+import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 
 @Composable
 fun SpotifySearchScreen(

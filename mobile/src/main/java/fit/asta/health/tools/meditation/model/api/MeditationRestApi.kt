@@ -9,15 +9,15 @@ import fit.asta.health.tools.meditation.model.network.PutData
 import okhttp3.OkHttpClient
 
 
-class MeditationRestApi(baseUrl: String, client: OkHttpClient) :
+class MeditationRestApi(client: OkHttpClient) :
     MeditationApi {
 
     private val apiService: MeditationService = NetworkUtil
-        .getRetrofit(baseUrl, client)
+        .getRetrofit(client)
         .create(MeditationService::class.java)
 
     override suspend fun getMeditationTool(uid: String, date: String): NetMeditationToolRes {
-       return apiService.getMeditationTool(userId = uid,date=date)
+        return apiService.getMeditationTool(userId = uid, date = date)
     }
 
     override suspend fun getMusicTool(uid: String): NetMusicRes {

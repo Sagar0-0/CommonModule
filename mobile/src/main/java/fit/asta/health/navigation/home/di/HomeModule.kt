@@ -8,7 +8,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.BuildConfig
 import fit.asta.health.navigation.home.model.ToolsHomeRepo
 import fit.asta.health.navigation.home.model.ToolsHomeRepoImpl
 import fit.asta.health.navigation.home.model.api.ToolsApi
@@ -23,7 +22,7 @@ object HomeModule {
     @Singleton
     @Provides
     fun provideToolsApi(client: OkHttpClient): ToolsApi {
-        return ToolsRestApi(baseUrl = BuildConfig.BASE_URL, client = client)
+        return ToolsRestApi(client)
     }
 
     @Singleton

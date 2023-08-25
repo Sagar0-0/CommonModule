@@ -7,7 +7,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.BuildConfig
 import fit.asta.health.tools.water.db.WaterToolDatabase
 import fit.asta.health.tools.water.model.WaterLocalRepo
 import fit.asta.health.tools.water.model.WaterLocalRepoImpl
@@ -19,7 +18,6 @@ import fit.asta.health.tools.water.model.api.WaterRestApi
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 object WaterModule {
@@ -27,7 +25,7 @@ object WaterModule {
     @Singleton
     @Provides
     fun provideWaterApi(client: OkHttpClient): WaterApi {
-        return WaterRestApi(baseUrl = BuildConfig.BASE_URL, client = client)
+        return WaterRestApi(client)
     }
 
     @Singleton

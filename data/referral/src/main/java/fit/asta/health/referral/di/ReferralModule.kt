@@ -1,14 +1,14 @@
 package fit.asta.health.referral.di
 
-import fit.asta.health.referral.api.ReferralApi
-import fit.asta.health.referral.repo.ReferralRepo
-import fit.asta.health.referral.repo.ReferralRepoImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.BuildConfig
 import fit.asta.health.network.utils.NetworkUtil
+import fit.asta.health.referral.api.ReferralApi
+import fit.asta.health.referral.repo.ReferralRepo
+import fit.asta.health.referral.repo.ReferralRepoImpl
+import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
 @Module
@@ -17,9 +17,8 @@ object ReferralModule {
 
     @Singleton
     @Provides
-    fun provideReferralApi(): ReferralApi =
-        NetworkUtil.getRetrofit(baseUrl = BuildConfig.BASE_URL)
-            .create(ReferralApi::class.java)
+    fun provideReferralApi(client: OkHttpClient): ReferralApi =
+        NetworkUtil.getRetrofit(client).create(ReferralApi::class.java)
 
     @Singleton
     @Provides

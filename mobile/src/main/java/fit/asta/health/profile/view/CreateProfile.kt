@@ -18,11 +18,11 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowRow
-import fit.asta.health.common.ui.components.generic.AppButtons
-import fit.asta.health.common.ui.components.generic.AppCard
-import fit.asta.health.common.ui.components.generic.AppDefaultIcon
-import fit.asta.health.common.ui.components.generic.AppTexts
-import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.designsystem.components.generic.AppButtons
+import fit.asta.health.designsystem.components.generic.AppCard
+import fit.asta.health.designsystem.components.generic.AppDefaultIcon
+import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.profile.model.domain.ComposeIndex
 import fit.asta.health.profile.model.domain.HealthProperties
 import fit.asta.health.profile.model.domain.ThreeRadioBtnSelections

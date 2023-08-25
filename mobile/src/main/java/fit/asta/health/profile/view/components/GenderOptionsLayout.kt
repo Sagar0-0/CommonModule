@@ -12,11 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import fit.asta.health.common.ui.components.generic.AppCard
-import fit.asta.health.common.ui.components.generic.AppDrawImg
-import fit.asta.health.common.ui.components.generic.AppTexts
-import fit.asta.health.common.ui.theme.imageSize
-import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.designsystem.components.generic.AppCard
+import fit.asta.health.designsystem.components.generic.AppDrawImg
+import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.theme.imageSize
+import fit.asta.health.designsystem.theme.spacing
 
 @Composable
 fun GenderOptionsLayout(

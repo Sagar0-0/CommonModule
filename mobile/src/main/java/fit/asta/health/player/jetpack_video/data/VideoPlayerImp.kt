@@ -1,7 +1,7 @@
 package fit.asta.health.player.jetpack_video.data
 
-import fit.asta.health.common.utils.NetworkResult
 import fit.asta.health.network.data.Status
+import fit.asta.health.network.utils.NetworkResult
 import fit.asta.health.player.jetpack_video.data.api.VideoPlayerApi
 import fit.asta.health.player.jetpack_video.data.networkmodel.MediaData
 import fit.asta.health.player.jetpack_video.data.networkmodel.MediaStream

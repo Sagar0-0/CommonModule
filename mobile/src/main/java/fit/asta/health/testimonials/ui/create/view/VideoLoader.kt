@@ -13,9 +13,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.exoplayer.ExoPlayer
 import fit.asta.health.common.jetpack.getOneUrl
-import fit.asta.health.common.ui.components.generic.AppTexts
-import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.jetpack.dashedBorder
+import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.player.jetpack_video.media.rememberMediaState
 import fit.asta.health.testimonials.ui.components.UploadTstMediaView
 import fit.asta.health.testimonials.ui.create.vm.MediaType

@@ -8,7 +8,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.BuildConfig
 import fit.asta.health.tools.walking.db.StepsDatabase
 import fit.asta.health.tools.walking.model.LocalRepo
 import fit.asta.health.tools.walking.model.LocalRepoImpl
@@ -20,7 +19,6 @@ import fit.asta.health.tools.walking.sensor.MeasurableSensor
 import fit.asta.health.tools.walking.sensor.StepsSensor
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
-
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -35,7 +33,7 @@ object WalkingModule {
     @Singleton
     @Provides
     fun provideWalkingApi(client: OkHttpClient): WalkingApi {
-        return WalkingRestApi(baseUrl = BuildConfig.BASE_URL, client = client)
+        return WalkingRestApi(client)
     }
 
     @Singleton

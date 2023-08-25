@@ -1,14 +1,14 @@
 package fit.asta.health.wallet.di
 
-import fit.asta.health.wallet.api.WalletApi
-import fit.asta.health.wallet.repo.WalletRepo
-import fit.asta.health.wallet.repo.WalletRepoImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.BuildConfig
 import fit.asta.health.network.utils.NetworkUtil
+import fit.asta.health.wallet.api.WalletApi
+import fit.asta.health.wallet.repo.WalletRepo
+import fit.asta.health.wallet.repo.WalletRepoImpl
+import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
 @Module
@@ -17,9 +17,8 @@ object WalletModule {
 
     @Singleton
     @Provides
-    fun provideWalletApi(): WalletApi =
-        NetworkUtil.getRetrofit(baseUrl = BuildConfig.BASE_URL)
-            .create(WalletApi::class.java)
+    fun provideWalletApi(client: OkHttpClient): WalletApi =
+        NetworkUtil.getRetrofit(client).create(WalletApi::class.java)
 
 
     @Singleton

@@ -20,11 +20,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import fit.asta.health.common.ui.components.generic.AppCard
-import fit.asta.health.common.ui.components.generic.AppDrawImg
-import fit.asta.health.common.ui.components.generic.AppTexts
-import fit.asta.health.common.ui.theme.imageSize
-import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.designsystem.components.generic.AppCard
+import fit.asta.health.designsystem.components.generic.AppDrawImg
+import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.theme.imageSize
+import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.profile.model.domain.HealthProperties
 import fit.asta.health.profile.viewmodel.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -72,6 +72,7 @@ private fun ProfileHeader(icon: Int, title: String) {
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ChipList(list: List<HealthProperties>) {
     FlowRow(

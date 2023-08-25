@@ -7,7 +7,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.BuildConfig
 import fit.asta.health.network.utils.NetworkUtil
 import fit.asta.health.scheduler.data.api.SchedulerApiService
 import fit.asta.health.scheduler.data.db.AlarmDatabase
@@ -27,8 +26,7 @@ object SchedulerModule {
     @Singleton
     @Provides
     fun provideSchedulerApiService(client: OkHttpClient): SchedulerApiService =
-        NetworkUtil.getRetrofit(baseUrl = BuildConfig.BASE_URL, client = client)
-            .create(SchedulerApiService::class.java)
+        NetworkUtil.getRetrofit(client).create(SchedulerApiService::class.java)
 
     @Singleton
     @Provides

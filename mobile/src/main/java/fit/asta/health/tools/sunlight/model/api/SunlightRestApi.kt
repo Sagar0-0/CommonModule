@@ -6,11 +6,11 @@ import okhttp3.OkHttpClient
 
 
 //Health Tool - Water Endpoints
-class SunlightRestApi(baseUrl: String, client: OkHttpClient) :
+class SunlightRestApi(client: OkHttpClient) :
     SunlightApi {
 
     private val apiService: SunlightService = NetworkUtil
-        .getRetrofit(baseUrl, client)
+        .getRetrofit(client)
         .create(SunlightService::class.java)
 
     override suspend fun getSunlightTool(

@@ -32,8 +32,8 @@ import fit.asta.health.designsystem.validation.state.ValidationState
 import fit.asta.health.designsystem.validation.util.TextFieldType
 import fit.asta.health.resources.drawables.R
 
-//import fit.asta.health.common.ui.theme.ColorPlatinum
-//import fit.asta.health.common.ui.theme.IbarraNovaNormalError13
+//import fit.asta.health.designsystem.theme.ColorPlatinum
+//import fit.asta.health.designsystem.theme.IbarraNovaNormalError13
 
 @Composable
 fun CustomTextField(

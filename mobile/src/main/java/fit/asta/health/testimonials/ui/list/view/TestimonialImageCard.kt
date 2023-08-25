@@ -14,11 +14,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import fit.asta.health.common.ui.components.generic.AppDefServerImg
-import fit.asta.health.common.ui.components.generic.AppTexts
-import fit.asta.health.common.ui.theme.aspectRatio
-import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.designsystem.components.generic.AppDefServerImg
+import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.theme.aspectRatio
+import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.navigation.home.view.component.TstTxtLayout
 import fit.asta.health.testimonials.data.model.Media
 import fit.asta.health.testimonials.data.model.Testimonial

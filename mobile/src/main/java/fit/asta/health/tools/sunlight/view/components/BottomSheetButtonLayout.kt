@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fit.asta.health.common.ui.components.functional.BottomSheetButton
+import fit.asta.health.designsystem.components.functional.BottomSheetButton
 
 @Composable
 @Preview

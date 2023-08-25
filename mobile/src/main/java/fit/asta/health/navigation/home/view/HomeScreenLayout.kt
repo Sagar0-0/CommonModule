@@ -9,10 +9,10 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import fit.asta.health.common.ui.components.generic.AppBanner
-import fit.asta.health.common.ui.components.generic.AppVerticalGrid
-import fit.asta.health.common.ui.theme.aspectRatio
-import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.designsystem.components.generic.AppBanner
+import fit.asta.health.designsystem.components.generic.AppVerticalGrid
+import fit.asta.health.designsystem.theme.aspectRatio
+import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.main.Graph
 import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
 import fit.asta.health.navigation.home.view.component.RateAppCard

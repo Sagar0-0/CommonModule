@@ -30,9 +30,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.common.ui.components.generic.AppErrorScreen
 import fit.asta.health.common.ui.components.generic.LoadingAnimation
-import fit.asta.health.common.ui.theme.spacing
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.thirdparty.spotify.ui.navigation.SpotifyNavRoutes
@@ -42,9 +42,12 @@ import fit.asta.health.thirdparty.spotify.data.model.recommendations.SpotifyReco
 import fit.asta.health.thirdparty.spotify.data.model.search.ArtistList
 import fit.asta.health.thirdparty.spotify.data.model.search.TrackList
 import fit.asta.health.thirdparty.spotify.ui.components.MusicArtistsUI
-import fit.asta.health.thirdparty.spotify.ui.components.MusicPlayableSmallCards
 import fit.asta.health.thirdparty.spotify.ui.components.MusicLargeImageColumn
+import fit.asta.health.thirdparty.spotify.ui.components.MusicPlayableSmallCards
+import fit.asta.health.thirdparty.spotify.ui.components.MusicStateControl
 import fit.asta.health.thirdparty.spotify.ui.events.SpotifyUiEvent
+import fit.asta.health.thirdparty.spotify.ui.navigation.SpotifyNavRoutes
+import fit.asta.health.thirdparty.spotify.utils.SpotifyNetworkCall
 
 
 /**

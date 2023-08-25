@@ -13,7 +13,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.Timeline
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.common.utils.NetworkResult
+import fit.asta.health.network.utils.NetworkResult
 import fit.asta.health.player.jetpack_audio.domain.data.Song
 import fit.asta.health.player.jetpack_audio.domain.utils.convertToProgress
 import fit.asta.health.tools.breathing.db.BreathingData
@@ -23,8 +23,6 @@ import fit.asta.health.tools.breathing.model.domain.mapper.getBreathingTool
 import fit.asta.health.tools.breathing.model.domain.mapper.getMusicTool
 import fit.asta.health.tools.breathing.model.domain.mapper.toPutData
 import fit.asta.health.tools.breathing.model.domain.model.BreathingTool
-import fit.asta.health.tools.breathing.model.network.CustomRatioData
-import fit.asta.health.tools.breathing.model.network.request.CustomRatioPost
 import fit.asta.health.tools.breathing.model.network.request.NetPost
 import fit.asta.health.tools.breathing.view.home.UiEvent
 import fit.asta.health.tools.breathing.view.home.UiState

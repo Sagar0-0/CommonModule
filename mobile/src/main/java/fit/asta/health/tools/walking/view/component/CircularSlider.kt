@@ -31,7 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.sp
-import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.designsystem.theme.spacing
 import kotlin.math.*
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -187,17 +187,20 @@ fun CircularSlider(
                                 down = false
                             }
                         }
+
                         MotionEvent.ACTION_MOVE -> {
-                            if (isStarted)onScroll(true) else onScroll(false)
+                            if (isStarted) onScroll(true) else onScroll(false)
                             val a = angle(center, offset)
                             if (down && a !in -135f..-40f) {
                                 if (isDuration) angleDuration = a
                                 else angleDistance = a
                             }
                         }
+
                         MotionEvent.ACTION_UP -> {
                             down = false
                         }
+
                         else -> return@pointerInteropFilter false
                     }
                     return@pointerInteropFilter true

@@ -15,7 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import fit.asta.health.common.ui.theme.spacing
+import fit.asta.health.designsystem.theme.spacing
 
 @Composable
 fun TextSelection(

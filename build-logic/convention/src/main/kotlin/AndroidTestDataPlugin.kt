@@ -9,6 +9,11 @@ class AndroidTestDataPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             extensions.configure<LibraryExtension> {
+
+                defaultConfig {
+                    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+                }
+
                 testOptions {
                     unitTests {
                         this.all {

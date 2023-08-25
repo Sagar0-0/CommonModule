@@ -7,7 +7,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.BuildConfig
 import fit.asta.health.tools.breathing.db.BreathingDatabase
 import fit.asta.health.tools.breathing.model.BreathingRepo
 import fit.asta.health.tools.breathing.model.BreathingRepoImp
@@ -24,7 +23,7 @@ object BreathingModule {
     @Singleton
     @Provides
     fun provideApi(client: OkHttpClient): BreathingApi {
-        return BreathingRestApi(baseUrl = BuildConfig.BASE_URL, client = client)
+        return BreathingRestApi(client)
     }
     @Singleton
     @Provides
