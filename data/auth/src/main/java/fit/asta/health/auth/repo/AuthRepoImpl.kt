@@ -2,13 +2,13 @@ package fit.asta.health.auth.repo
 
 import android.app.Activity
 import android.util.Log
-import fit.asta.health.auth.model.AuthDataMapper
-import fit.asta.health.auth.model.domain.User
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.PhoneAuthProvider
+import fit.asta.health.auth.model.AuthDataMapper
+import fit.asta.health.auth.model.domain.User
 import fit.asta.health.common.utils.ResponseState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -35,13 +35,13 @@ class AuthRepoImpl @Inject constructor(
         }
     }
 
-    override fun signInWithCredential(googleAuthCredential: AuthCredential): Flow<ResponseState<Boolean>> =
+    override fun signInWithCredential(googleAuthCredential: AuthCredential): Flow<ResponseState<User>> =
         callbackFlow {
             firebaseAuth
                 .signInWithCredential(googleAuthCredential)
                 .addOnCompleteListener {
                     if (it.isSuccessful) {
-                        trySend(ResponseState.Success(true))
+                        trySend(ResponseState.Success(dataMapper.mapToUser(it.result.user!!)))
                     } else {
                         trySend(ResponseState.Error(it.exception ?: Exception()))
                     }

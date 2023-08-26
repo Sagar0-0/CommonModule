@@ -12,7 +12,7 @@ class AuthDataMapper {
             name = firebaseUser.displayName,
             email = firebaseUser.email,
             phoneNumber = firebaseUser.phoneNumber,
-            photoUrl = firebaseUser.photoUrl,
+            photoUrl = firebaseUser.photoUrl.toString(),
         )
     }
 }

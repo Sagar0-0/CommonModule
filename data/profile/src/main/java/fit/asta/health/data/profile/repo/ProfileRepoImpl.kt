@@ -5,6 +5,7 @@ import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getResponseState
 import fit.asta.health.data.profile.remote.BasicProfileApi
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
+import fit.asta.health.data.profile.remote.model.CheckReferralDTO
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -27,6 +28,14 @@ class ProfileRepoImpl
         return withContext(coroutineDispatcher) {
             getResponseState {
                 profileApi.createBasicProfile(basicProfileDTO).data.flag
+            }
+        }
+    }
+
+    override suspend fun checkReferralCode(code: String): ResponseState<CheckReferralDTO> {
+        return withContext(coroutineDispatcher) {
+            getResponseState {
+                profileApi.checkReferralCode(code)
             }
         }
     }
