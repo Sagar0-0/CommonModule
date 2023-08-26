@@ -142,3 +142,8 @@
 -keepclassmembers class * extends androidx.datastore.preferences.protobuf.GeneratedMessageLite {
     <fields>;
 }
+
+# Unit Testing Rules for missing classes
+-dontwarn edu.umd.cs.findbugs.annotations.*
+-dontwarn java.lang.instrument.*
+-dontwarn org.apiguardian.api.*
