@@ -1,4 +1,4 @@
-package fit.asta.health.payment.model
+package fit.asta.health.payment.remote.model
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,4 +1,4 @@
-package fit.asta.health.wallet.model
+package fit.asta.health.wallet.remote.model
 
 
 import com.google.gson.annotations.SerializedName

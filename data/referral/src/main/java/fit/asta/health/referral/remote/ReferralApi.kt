@@ -1,7 +1,7 @@
-package fit.asta.health.referral.api
+package fit.asta.health.referral.remote
 
-import fit.asta.health.referral.model.ApplyCodeResponse
-import fit.asta.health.referral.model.ReferralDataResponse
+import fit.asta.health.referral.remote.model.ApplyCodeResponse
+import fit.asta.health.referral.remote.model.ReferralDataResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

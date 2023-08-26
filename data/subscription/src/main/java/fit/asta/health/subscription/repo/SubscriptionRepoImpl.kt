@@ -2,8 +2,8 @@ package fit.asta.health.subscription.repo
 
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getResponseState
-import fit.asta.health.subscription.model.SubscriptionResponse
 import fit.asta.health.subscription.remote.SubscriptionApi
+import fit.asta.health.subscription.remote.model.SubscriptionResponse
 import javax.inject.Inject
 
 class SubscriptionRepoImpl
@@ -13,9 +13,8 @@ class SubscriptionRepoImpl
 
     override suspend fun getData(
         uid: String,
-        country: String,
-        date: String
+        country: String
     ): ResponseState<SubscriptionResponse> {
-        return getResponseState { remoteApi.getData(uid, country, date) }
+        return getResponseState { remoteApi.getData(uid, country) }
     }
 }

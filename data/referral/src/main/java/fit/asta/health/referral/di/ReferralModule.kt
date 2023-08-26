@@ -5,7 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.network.utils.NetworkUtil
-import fit.asta.health.referral.api.ReferralApi
+import fit.asta.health.referral.remote.ReferralApi
 import fit.asta.health.referral.repo.ReferralRepo
 import fit.asta.health.referral.repo.ReferralRepoImpl
 import okhttp3.OkHttpClient

@@ -10,13 +10,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import fit.asta.health.payment.model.OrderRequest
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.subscription.model.SubscriptionResponse
+import fit.asta.health.payment.remote.model.OrderRequest
+import fit.asta.health.subscription.remote.model.SubscriptionResponse
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,9 +55,7 @@ fun SubscriptionPlansUi(
 
             is UiState.Success -> {
                 Column(modifier = Modifier.padding(paddingValues)) {
-                    if (state.data.data.pendingPlan != null) {
-                        PendingPlanUI(state.data.data)
-                    } else if (state.data.data.userSubscribedPlan != null) {
+                    if (state.data.data.userSubscribedPlan != null) {
                         if (state.data.data.userSubscribedPlan!!.sts) {
                             ShowUserActivePlan(state.data.data)
                         } else {

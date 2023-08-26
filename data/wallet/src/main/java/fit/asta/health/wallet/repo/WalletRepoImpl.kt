@@ -1,7 +1,7 @@
 package fit.asta.health.wallet.repo
 
-import fit.asta.health.wallet.api.WalletApi
 import fit.asta.health.common.utils.getResponseState
+import fit.asta.health.wallet.remote.WalletApi
 import javax.inject.Inject
 
 class WalletRepoImpl

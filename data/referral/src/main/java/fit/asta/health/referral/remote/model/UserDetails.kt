@@ -1,4 +1,4 @@
-package fit.asta.health.referral.model
+package fit.asta.health.referral.remote.model
 
 import com.google.gson.annotations.SerializedName
 
