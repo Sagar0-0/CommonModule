@@ -21,10 +21,8 @@ import fit.asta.health.data.address.modal.SearchResponse
 import fit.asta.health.data.address.remote.AddressApi
 import fit.asta.health.data.address.remote.SearchLocationApi
 import fit.asta.health.data.address.utils.LocationResourceProvider
-import fit.asta.health.datastore.IODispatcher
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.datastore.UserPreferencesData
-import fit.asta.health.resources.strings.R
 import fit.asta.health.resources.strings.R.string
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -40,7 +38,7 @@ class AddressRepoImpl @Inject constructor(
     private val prefManager: PrefManager,
     private val resourcesProvider: ResourcesProvider,
     private val locationResourcesProvider: LocationResourceProvider,
-    @IODispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : AddressRepo {
 
     override val userPreferences: Flow<UserPreferencesData> = prefManager.userData

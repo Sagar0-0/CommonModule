@@ -10,21 +10,18 @@ android {
     defaultConfig {
         consumerProguardFiles("consumer-rules.pro")
     }
-
-    buildTypes {
-        release {
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
 }
 
 dependencies {
 
     implementation(project(":core:common"))
     implementation(project(":resources:strings"))
+
+
+    implementation(libs.converter.gson)
+
+    //Json parser
+    implementation(libs.gson)
 
     //Firebase
     implementation(platform(libs.firebase.bom))

@@ -21,7 +21,7 @@ class AuthViewModel
     private val authRepo: AuthRepo
 ) : ViewModel() {
 
-    private val _loginState = MutableStateFlow<UiState<Boolean>>(UiState.Idle)
+    private val _loginState = MutableStateFlow<UiState<User>>(UiState.Idle)
     val loginState = _loginState.asStateFlow()
 
     private val _logoutState = MutableStateFlow<UiState<Boolean>>(UiState.Idle)

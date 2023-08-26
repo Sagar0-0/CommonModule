@@ -2,12 +2,12 @@ package fit.asta.health.wallet.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import fit.asta.health.auth.di.UID
-import fit.asta.health.wallet.model.WalletResponse
-import fit.asta.health.wallet.repo.WalletRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
+import fit.asta.health.wallet.remote.model.WalletResponse
+import fit.asta.health.wallet.repo.WalletRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

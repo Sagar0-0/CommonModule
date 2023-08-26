@@ -17,6 +17,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import fit.asta.health.auth.model.domain.User
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.common.utils.toStringFromResId
@@ -39,7 +40,10 @@ fun NavController.navigateToAuth(navOptions: NavOptions? = null) {
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun NavGraphBuilder.authRoute(navigateToHome: () -> Unit, navigateToWebView: (String) -> Unit) {
+fun NavGraphBuilder.authRoute(
+    navigateToBasicProfile: (User) -> Unit,
+    navigateToWebView: (String) -> Unit
+) {
     composable(AUTH_GRAPH_ROUTE) {
         val context = LocalContext.current
         val authViewModel: AuthViewModel = hiltViewModel()
@@ -78,7 +82,7 @@ fun NavGraphBuilder.authRoute(navigateToHome: () -> Unit, navigateToWebView: (St
                         Toast.makeText(
                             context, "Sign in Successful", Toast.LENGTH_SHORT
                         ).show()
-                        navigateToHome()
+                        navigateToBasicProfile((loginState as UiState.Success<User>).data)
                     }
                 }
 

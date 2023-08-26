@@ -9,17 +9,7 @@ android {
     namespace = "fit.asta.health.feature.address"
 
     defaultConfig {
-
-    consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
+        consumerProguardFiles("consumer-rules.pro")
     }
 }
 

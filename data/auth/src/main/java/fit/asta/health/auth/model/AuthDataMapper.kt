@@ -1,7 +1,7 @@
 package fit.asta.health.auth.model
 
-import fit.asta.health.auth.model.domain.User
 import com.google.firebase.auth.FirebaseUser
+import fit.asta.health.auth.model.domain.User
 
 
 class AuthDataMapper {
@@ -12,10 +12,7 @@ class AuthDataMapper {
             name = firebaseUser.displayName,
             email = firebaseUser.email,
             phoneNumber = firebaseUser.phoneNumber,
-            photoUrl = firebaseUser.photoUrl,
-            isAuthenticated = true,
-            isNew = false,
-            isCreated = true
+            photoUrl = firebaseUser.photoUrl.toString(),
         )
     }
 }

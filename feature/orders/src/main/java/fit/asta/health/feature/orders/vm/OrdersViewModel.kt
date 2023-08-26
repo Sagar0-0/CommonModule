@@ -1,0 +1,32 @@
+package fit.asta.health.feature.orders.vm
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.auth.di.UID
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toUiState
+import fit.asta.health.data.orders.remote.model.OrdersDTO
+import fit.asta.health.data.orders.repo.OrdersRepo
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class OrdersViewModel
+@Inject constructor(
+    private val ordersRepo: OrdersRepo,
+    @UID private val uid: String
+) : ViewModel() {
+
+    private val _ordersState = MutableStateFlow<UiState<OrdersDTO>>(UiState.Idle)
+    val ordersState = _ordersState.asStateFlow()
+
+    fun getOrders() {
+        _ordersState.value = UiState.Loading
+        viewModelScope.launch {
+            _ordersState.value = ordersRepo.getOrders(uid).toUiState()
+        }
+    }
+}

@@ -1,3 +1,5 @@
+import fit.asta.health.apps.AstaBuildType
+
 plugins {
     id("asta.android.application")
     id("asta.android.application.compose")
@@ -70,6 +72,7 @@ android {
             isDebuggable = true
             aaptOptions.cruncherEnabled = false
             //signingConfig = signingConfigs.getByName("debug")
+            //applicationIdSuffix = AstaBuildType.DEBUG.applicationIdSuffix
         }
         release {
             isDebuggable = false
@@ -79,6 +82,7 @@ android {
             isRenderscriptDebuggable = false
 
             //signingConfig = signingConfigs.getByName("release")
+            applicationIdSuffix = AstaBuildType.RELEASE.applicationIdSuffix
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -111,26 +115,29 @@ android {
 
 dependencies {
 
-    implementation(project(":core:common"))
-    implementation(project(":core:network"))
     implementation(project(":core:datastore"))
     implementation(project(":core:designsystem"))
+    implementation(project(":core:common"))
+    implementation(project(":core:network"))
 
     implementation(project(":chartLibrary"))
 
     implementation(project(":data:auth"))
     implementation(project(":data:payment"))
     implementation(project(":data:address"))
+    implementation(project(":data:payment"))
 
-    implementation(project(":feature:subscription"))
-    implementation(project(":feature:referral"))
-    implementation(project(":feature:wallet"))
-    implementation(project(":feature:payment"))
-    implementation(project(":feature:auth"))
-    implementation(project(":feature:onboarding"))
     implementation(project(":feature:address"))
+    implementation(project(":feature:auth"))
     implementation(project(":feature:feedback"))
+    implementation(project(":feature:onboarding"))
+    implementation(project(":feature:orders"))
+    implementation(project(":feature:payment"))
+    implementation(project(":feature:profile"))
+    implementation(project(":feature:referral"))
     implementation(project(":feature:settings"))
+    implementation(project(":feature:subscription"))
+    implementation(project(":feature:wallet"))
 
     // Spotify App remote Dependency
     implementation(fileTree(mapOf("include" to listOf("*.jar", "*.aar"), "dir" to "libs")))
