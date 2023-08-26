@@ -1,6 +1,6 @@
-package fit.asta.health.wallet.api
+package fit.asta.health.wallet.remote
 
-import fit.asta.health.wallet.model.WalletResponse
+import fit.asta.health.wallet.remote.model.WalletResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

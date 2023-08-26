@@ -19,10 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import fit.asta.health.payment.model.OrderRequest
-import fit.asta.health.payment.model.OrderResponse
-import fit.asta.health.payment.model.PaymentResponse
-import fit.asta.health.payment.vm.PaymentsViewModel
 import com.razorpay.Checkout
 import com.razorpay.PayloadHelper
 import com.razorpay.PaymentData
@@ -32,6 +28,10 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.payment.remote.model.OrderRequest
+import fit.asta.health.payment.remote.model.OrderResponse
+import fit.asta.health.payment.remote.model.PaymentResponse
+import fit.asta.health.payment.vm.PaymentsViewModel
 import fit.asta.health.resources.drawables.R
 
 @AndroidEntryPoint

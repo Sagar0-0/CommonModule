@@ -42,9 +42,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import fit.asta.health.referral.model.ApplyCodeResponse
-import fit.asta.health.referral.model.ReferralDataResponse
-import fit.asta.health.referral.model.UserDetails
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.copyTextToClipboard
 import fit.asta.health.common.utils.getImgUrl
@@ -55,6 +52,9 @@ import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.jetpack.dashedBorder
 import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.referral.remote.model.ApplyCodeResponse
+import fit.asta.health.referral.remote.model.ReferralDataResponse
+import fit.asta.health.referral.remote.model.UserDetails
 import fit.asta.health.resources.drawables.R as DrawR
 import fit.asta.health.resources.strings.R as StringR
 

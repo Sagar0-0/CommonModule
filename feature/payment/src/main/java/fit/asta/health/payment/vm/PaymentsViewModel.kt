@@ -2,14 +2,14 @@ package fit.asta.health.payment.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import fit.asta.health.auth.repo.AuthRepo
-import fit.asta.health.payment.model.OrderRequest
-import fit.asta.health.payment.model.OrderResponse
-import fit.asta.health.payment.model.PaymentResponse
-import fit.asta.health.payment.repo.PaymentsRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
+import fit.asta.health.payment.remote.model.OrderRequest
+import fit.asta.health.payment.remote.model.OrderResponse
+import fit.asta.health.payment.remote.model.PaymentResponse
+import fit.asta.health.payment.repo.PaymentsRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

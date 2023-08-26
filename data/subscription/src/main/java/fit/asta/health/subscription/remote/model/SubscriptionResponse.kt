@@ -1,4 +1,4 @@
-package fit.asta.health.subscription.model
+package fit.asta.health.subscription.remote.model
 
 
 import com.google.gson.annotations.SerializedName
@@ -13,8 +13,7 @@ data class SubscriptionResponse(
         @SerializedName("subscriptionPlans")
         val subscriptionPlans: SubscriptionPlans = SubscriptionPlans(),
         @SerializedName("userSubscribedPlan")
-        val userSubscribedPlan: UserSubscribedPlan? = null,
-        val pendingPlan: UserSubscribedPlan? = null
+        val userSubscribedPlan: UserSubscribedPlan? = null
     ) {
         data class SubscriptionPlans(
             @SerializedName("dsc")

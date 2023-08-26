@@ -5,7 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.network.utils.NetworkUtil
-import fit.asta.health.wallet.api.WalletApi
+import fit.asta.health.wallet.remote.WalletApi
 import fit.asta.health.wallet.repo.WalletRepo
 import fit.asta.health.wallet.repo.WalletRepoImpl
 import okhttp3.OkHttpClient

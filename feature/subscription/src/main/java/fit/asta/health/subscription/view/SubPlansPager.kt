@@ -39,13 +39,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import fit.asta.health.payment.model.OrderRequest
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.carouselTransition
 import fit.asta.health.designsystem.theme.iconButtonSize
 import fit.asta.health.designsystem.theme.iconSize
 import fit.asta.health.designsystem.theme.spacing
-import fit.asta.health.subscription.model.SubscriptionResponse
+import fit.asta.health.payment.remote.model.OrderRequest
+import fit.asta.health.subscription.remote.model.SubscriptionResponse
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

@@ -7,7 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import fit.asta.health.payment.model.OrderRequest
+import fit.asta.health.payment.remote.model.OrderRequest
 import fit.asta.health.subscription.view.SubscriptionPlansUi
 import fit.asta.health.subscription.view.SubscriptionScreen
 import fit.asta.health.subscription.vm.SubscriptionViewModel

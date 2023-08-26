@@ -1,8 +1,8 @@
-package fit.asta.health.payment.api
+package fit.asta.health.payment.remote
 
-import fit.asta.health.payment.model.OrderRequest
-import fit.asta.health.payment.model.OrderResponse
-import fit.asta.health.payment.model.PaymentResponse
+import fit.asta.health.payment.remote.model.OrderRequest
+import fit.asta.health.payment.remote.model.OrderResponse
+import fit.asta.health.payment.remote.model.PaymentResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
