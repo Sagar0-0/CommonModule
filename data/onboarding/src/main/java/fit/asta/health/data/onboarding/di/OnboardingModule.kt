@@ -4,10 +4,10 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.data.onboarding.remote.OnboardingApi
 import fit.asta.health.data.onboarding.repo.OnboardingRepo
 import fit.asta.health.data.onboarding.repo.OnboardingRepoImpl
-import fit.asta.health.datastore.IODispatcher
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.network.utils.NetworkUtil
 import kotlinx.coroutines.CoroutineDispatcher

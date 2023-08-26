@@ -52,7 +52,7 @@ object DatastoreModule {
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class IODispatcher
+private annotation class IODispatcher
 
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier

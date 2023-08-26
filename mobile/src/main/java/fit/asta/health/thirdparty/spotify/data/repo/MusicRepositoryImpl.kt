@@ -1,9 +1,9 @@
 package fit.asta.health.thirdparty.spotify.data.repo
 
 import dagger.hilt.android.scopes.ActivityRetainedScoped
+import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getResponseState
-import fit.asta.health.datastore.IODispatcher
 import fit.asta.health.thirdparty.spotify.data.local.MusicDao
 import fit.asta.health.thirdparty.spotify.data.model.common.Album
 import fit.asta.health.thirdparty.spotify.data.model.common.Track
