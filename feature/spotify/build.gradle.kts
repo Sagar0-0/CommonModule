@@ -17,7 +17,7 @@ dependencies {
 
     // Do not include local .aar or .jar dependencies here
     //implementation(fileTree(mapOf("include" to listOf("*.jar", "*.aar"), "dir" to "../../mobile/libs")))
-    api(project(":spotify-app-remote"))
+    api(project(":libs:spotify-app-remote"))
 
     implementation(project(":resources:strings"))
     implementation(project(":resources:drawables"))

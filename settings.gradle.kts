@@ -19,7 +19,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "asta"
 
-include(":spotify-app-remote")
+include(":libs:spotify-app-remote")
 include(":chartLibrary")
 include(":mobile")
 
