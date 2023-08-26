@@ -200,11 +200,7 @@ fun MainNavHost(isConnected: Boolean) {
 
         subscriptionRoute(
             onBackPress = navController::popBackStack,
-            onLaunchPayments = { orderRequest, onSuccess ->
-                PaymentActivity.launch(context, orderRequest) {
-                    onSuccess()
-                }
-            }
+            onLaunchPayments = PaymentActivity::launch
         )
         referralRoute(navController::popBackStack)
         walletRoute(navController::popBackStack)

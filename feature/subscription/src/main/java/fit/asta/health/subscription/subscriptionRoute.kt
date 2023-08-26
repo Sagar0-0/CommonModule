@@ -1,5 +1,7 @@
 package fit.asta.health.subscription
 
+import android.content.Context
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -19,13 +21,14 @@ fun NavController.navigateToSubscription(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.subscriptionRoute(
     onBackPress: () -> Unit,
-    onLaunchPayments: (OrderRequest, onSuccess: () -> Unit) -> Unit
+    onLaunchPayments: (Context, OrderRequest, onSuccess: () -> Unit) -> Unit
 ) {
     navigation(
         route = SUBSCRIPTION_GRAPH_ROUTE,
         startDestination = SubscriptionScreen.Plans.route
     ) {
         composable(SubscriptionScreen.Plans.route) {
+            val context = LocalContext.current
             val subscriptionViewModel: SubscriptionViewModel = hiltViewModel()
             val state = subscriptionViewModel.state.collectAsStateWithLifecycle()
             SubscriptionPlansUi(
@@ -33,7 +36,7 @@ fun NavGraphBuilder.subscriptionRoute(
                 onBackPress = onBackPress,
                 onTryAgain = subscriptionViewModel::getData,
                 onClick = { orderRequest ->
-                    onLaunchPayments(orderRequest) {
+                    onLaunchPayments(context, orderRequest) {
                         subscriptionViewModel.getData()
                     }
                 }

@@ -4,10 +4,12 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.data.profile.remote.BasicProfileApi
 import fit.asta.health.data.profile.repo.ProfileRepo
 import fit.asta.health.data.profile.repo.ProfileRepoImpl
 import fit.asta.health.network.utils.NetworkUtil
+import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
@@ -26,7 +28,11 @@ object ProfileModule {
     @Provides
     fun provideProfileRepo(
         profileApi: BasicProfileApi,
+        @IODispatcher coroutineDispatcher: CoroutineDispatcher
     ): ProfileRepo {
-        return ProfileRepoImpl(profileApi = profileApi)
+        return ProfileRepoImpl(
+            profileApi = profileApi,
+            coroutineDispatcher = coroutineDispatcher
+        )
     }
 }

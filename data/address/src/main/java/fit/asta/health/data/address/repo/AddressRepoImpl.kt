@@ -11,7 +11,6 @@ import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.Task
-import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.MyException
 import fit.asta.health.common.utils.ResourcesProvider
 import fit.asta.health.common.utils.ResponseState
@@ -39,7 +38,7 @@ class AddressRepoImpl @Inject constructor(
     private val prefManager: PrefManager,
     private val resourcesProvider: ResourcesProvider,
     private val locationResourcesProvider: LocationResourceProvider,
-    @IODispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : AddressRepo {
 
     override val userPreferences: Flow<UserPreferencesData> = prefManager.userData

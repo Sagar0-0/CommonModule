@@ -123,6 +123,7 @@ dependencies {
     implementation(project(":chartLibrary"))
 
     implementation(project(":data:auth"))
+    implementation(project(":data:payment"))
     implementation(project(":data:address"))
     implementation(project(":data:payment"))
 
