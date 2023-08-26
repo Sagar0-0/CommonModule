@@ -38,7 +38,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import fit.asta.health.BuildConfig
 import fit.asta.health.R
 import fit.asta.health.common.jetpack.getOneUrl
 import fit.asta.health.common.utils.UiString
@@ -185,8 +184,7 @@ fun UserCircleImage(
     onProfilePicClear: () -> Unit,
 ) {
 
-    val imageBaseUrl = BuildConfig.BASE_IMAGE_URL
-    val isImgNotAvail = url.isEmpty() || url == imageBaseUrl
+    val isImgNotAvail = url.isEmpty()
 
     Box(
         contentAlignment = Alignment.Center,
