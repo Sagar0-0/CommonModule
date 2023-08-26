@@ -37,6 +37,10 @@ import fit.asta.health.feature.feedback.feedbackRoute
 import fit.asta.health.feature.feedback.navigateToFeedback
 import fit.asta.health.feature.onboarding.ONBOARDING_GRAPH_ROUTE
 import fit.asta.health.feature.onboarding.onboardingRoute
+import fit.asta.health.feature.orders.navigateToOrders
+import fit.asta.health.feature.orders.ordersRoute
+import fit.asta.health.feature.profile.basicProfileRoute
+import fit.asta.health.feature.profile.navigateToBasicProfile
 import fit.asta.health.feature.settings.settingScreens
 import fit.asta.health.feature.settings.view.SettingsUiEvent
 import fit.asta.health.main.view.HOME_GRAPH_ROUTE
@@ -95,7 +99,8 @@ fun MainNavHost(isConnected: Boolean) {
         startDestination = startDestination
     ) {
         onboardingRoute(navController::navigateToAuth)
-        authRoute(navController::navigateToHome, navController::navigateToWebView)
+        authRoute(navController::navigateToBasicProfile, navController::navigateToWebView)
+        basicProfileRoute(navController::navigateToHome)
         homeScreen(navController)
 
         composable(route = Graph.Profile.route) {
@@ -117,6 +122,10 @@ fun MainNavHost(isConnected: Boolean) {
 
         settingScreens { key ->
             when (key) {
+                SettingsUiEvent.Orders -> {
+                    navController.navigateToOrders()
+                }
+
                 SettingsUiEvent.NavigateToAuth -> {
                     navController.navigateToAuth()
                 }
@@ -185,8 +194,9 @@ fun MainNavHost(isConnected: Boolean) {
                 else -> {}
             }
         }
-        feedbackRoute(navController)
+        feedbackRoute(navController::popBackStack)
         addressRoute(navController::popBackStack)
+        ordersRoute(navController::popBackStack)
 
         subscriptionRoute(
             onBackPress = navController::popBackStack,

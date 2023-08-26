@@ -2,7 +2,6 @@
 
 package fit.asta.health.main.view
 
-import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -74,7 +73,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun MainActivityLayout(
     currentAddressState: UiState<String>,
-    profileImageUri: Uri?,
+    profileImageUri: String?,
     isNotificationEnabled: Boolean,
     onClick: (key: MainTopBarActions) -> Unit,
     onNav: (String) -> Unit,
@@ -149,7 +148,7 @@ private fun BottomAppBarLayout(
 private fun NewMainTopBarActions(
     onClick: (key: MainTopBarActions) -> Unit,
     isNotificationEnabled: Boolean,
-    profileImageUri: Uri?,
+    profileImageUri: String?,
     currentAddressState: UiState<String>,
 ) {
     Row(Modifier.clickable { onClick(MainTopBarActions.Location) }) {

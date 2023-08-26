@@ -25,12 +25,12 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 private const val FEEDBACK_GRAPH_ROUTE = "graph_feedback"
 
 fun NavController.navigateToFeedback(fid: String, navOptions: NavOptions? = null) {
-    this.navigate("${fit.asta.health.feature.feedback.FEEDBACK_GRAPH_ROUTE}/$fid", navOptions)
+    this.navigate("$FEEDBACK_GRAPH_ROUTE/$fid", navOptions)
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun NavGraphBuilder.feedbackRoute(navController: NavController) {
-    composable("${fit.asta.health.feature.feedback.FEEDBACK_GRAPH_ROUTE}/{fid}") {
+fun NavGraphBuilder.feedbackRoute(onBack: () -> Unit) {
+    composable("$FEEDBACK_GRAPH_ROUTE/{fid}") {
         val fid = it.arguments?.getString("fid") ?: ""
 
         val context = LocalContext.current
@@ -45,7 +45,7 @@ fun NavGraphBuilder.feedbackRoute(navController: NavController) {
             UiState.Idle -> {
                 SessionFeedback(
                     feedbackQuesState = quesState,
-                    onBack = navController::navigateUp,
+                    onBack = onBack,
                     onSubmit = feedbackViewModel::postUserFeedback
                 )
             }
@@ -64,7 +64,7 @@ fun NavGraphBuilder.feedbackRoute(navController: NavController) {
                 EndScreenPopup(
                     title = "Thank you!",
                     desc = "Your feedback has been submitted",
-                    onContinueClick = navController::navigateUp
+                    onContinueClick = onBack
                 )
             }
 

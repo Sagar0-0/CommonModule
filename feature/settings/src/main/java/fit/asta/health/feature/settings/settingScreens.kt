@@ -93,7 +93,6 @@ fun NavGraphBuilder.settingScreens(
                     theme = theme,
                     onClickEvent = {
                         when (it) {
-
                             is SettingsUiEvent.SetTheme -> {
                                 settingsViewModel.setTheme(it.theme)
                             }

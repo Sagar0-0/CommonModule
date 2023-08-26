@@ -7,7 +7,7 @@ data class BasicProfileDTO(
     @SerializedName("url") val url: String = "",
     @SerializedName("name") val name: String = "",
     @SerializedName("gen") val gen: String = "",
-    @SerializedName("mail") val mail: String = "",
-    @SerializedName("ph") val ph: String = "",
+    @SerializedName("mail") val mail: String? = null,
+    @SerializedName("ph") val ph: String? = null,
     @SerializedName("refCode") val refCode: String = "",
 )
