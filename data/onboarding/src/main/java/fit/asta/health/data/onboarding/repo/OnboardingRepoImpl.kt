@@ -1,8 +1,8 @@
 package fit.asta.health.data.onboarding.repo
 
+import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.getResponseState
 import fit.asta.health.data.onboarding.remote.OnboardingApi
-import fit.asta.health.datastore.IODispatcher
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.datastore.UserPreferencesData
 import kotlinx.coroutines.CoroutineDispatcher

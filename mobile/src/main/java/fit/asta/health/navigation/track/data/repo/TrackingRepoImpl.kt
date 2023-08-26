@@ -1,8 +1,8 @@
 package fit.asta.health.navigation.track.data.repo
 
+import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getResponseState
-import fit.asta.health.datastore.IODispatcher
 import fit.asta.health.navigation.track.data.remote.TrackingApiService
 import fit.asta.health.navigation.track.data.remote.model.breathing.BreathingResponse
 import fit.asta.health.navigation.track.data.remote.model.exercise.ExerciseResponse

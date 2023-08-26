@@ -26,6 +26,12 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":resources:strings"))
 
+
+    implementation(libs.converter.gson)
+
+    //Json parser
+    implementation(libs.gson)
+
     //Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth.ktx)

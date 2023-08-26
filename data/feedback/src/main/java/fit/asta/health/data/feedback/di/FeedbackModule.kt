@@ -7,10 +7,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.data.feedback.remote.FeedbackApi
 import fit.asta.health.data.feedback.repo.FeedbackRepo
 import fit.asta.health.data.feedback.repo.FeedbackRepoImpl
-import fit.asta.health.datastore.IODispatcher
 import fit.asta.health.network.utils.NetworkUtil
 import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient

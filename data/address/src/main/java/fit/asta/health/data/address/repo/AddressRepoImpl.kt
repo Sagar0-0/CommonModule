@@ -11,6 +11,7 @@ import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.Task
+import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.MyException
 import fit.asta.health.common.utils.ResourcesProvider
 import fit.asta.health.common.utils.ResponseState
@@ -21,10 +22,8 @@ import fit.asta.health.data.address.modal.SearchResponse
 import fit.asta.health.data.address.remote.AddressApi
 import fit.asta.health.data.address.remote.SearchLocationApi
 import fit.asta.health.data.address.utils.LocationResourceProvider
-import fit.asta.health.datastore.IODispatcher
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.datastore.UserPreferencesData
-import fit.asta.health.resources.strings.R
 import fit.asta.health.resources.strings.R.string
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
