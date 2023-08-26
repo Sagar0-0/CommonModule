@@ -72,7 +72,7 @@ android {
             isDebuggable = true
             aaptOptions.cruncherEnabled = false
             //signingConfig = signingConfigs.getByName("debug")
-            applicationIdSuffix = AstaBuildType.DEBUG.applicationIdSuffix
+            //applicationIdSuffix = AstaBuildType.DEBUG.applicationIdSuffix
         }
         release {
             isDebuggable = false
