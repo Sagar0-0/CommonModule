@@ -117,7 +117,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".thirdparty.spotify.SpotifyLoginActivity"
+            android:name=".feature.spotify.SpotifyLoginActivity"
             android:exported="true"
             android:launchMode="singleInstance">
             <intent-filter>

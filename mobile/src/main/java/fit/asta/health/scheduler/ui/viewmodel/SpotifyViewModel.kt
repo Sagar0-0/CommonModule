@@ -14,14 +14,14 @@ import fit.asta.health.common.utils.toUiState
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.ToneUiState
 import fit.asta.health.scheduler.ui.screen.spotify.SpotifyUiEvent
 import fit.asta.health.scheduler.util.Constants
-import fit.asta.health.thirdparty.spotify.data.repo.MusicRepository
-import fit.asta.health.thirdparty.spotify.data.repo.SpotifyRepo
-import fit.asta.health.thirdparty.spotify.data.model.common.Album
-import fit.asta.health.thirdparty.spotify.data.model.common.Track
-import fit.asta.health.thirdparty.spotify.data.model.me.SpotifyMeModel
-import fit.asta.health.thirdparty.spotify.data.model.recently.SpotifyUserRecentlyPlayedModel
-import fit.asta.health.thirdparty.spotify.data.model.search.SpotifySearchModel
-import fit.asta.health.thirdparty.spotify.data.model.search.TrackList
+import fit.asta.health.data.spotify.repo.MusicRepository
+import fit.asta.health.data.spotify.repo.SpotifyRepo
+import fit.asta.health.data.spotify.model.common.Album
+import fit.asta.health.data.spotify.model.common.Track
+import fit.asta.health.data.spotify.model.me.SpotifyMeModel
+import fit.asta.health.data.spotify.model.recently.SpotifyUserRecentlyPlayedModel
+import fit.asta.health.data.spotify.model.search.SpotifySearchModel
+import fit.asta.health.data.spotify.model.search.TrackList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -220,13 +220,13 @@ class SpotifyViewModel @Inject constructor(
         _spotifySearch.value = UiState.Loading
 
         viewModelScope.launch {
-            _spotifySearch.value = remoteRepository.searchQuery(
+            remoteRepository.searchQuery(
                 accessToken = accessToken,
                 query = query,
                 type = "track",
                 includeExternal = "audio",
                 market = (_currentUserData.value as UiState.Success<SpotifyMeModel>).data.country
-            ).toUiState()
+            ).toUiState().also { _spotifySearch.value = it }
         }
     }
 
