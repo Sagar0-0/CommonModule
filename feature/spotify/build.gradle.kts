@@ -15,6 +15,10 @@ android {
 
 dependencies {
 
+    // Do not include local .aar or .jar dependencies here
+    //implementation(fileTree(mapOf("include" to listOf("*.jar", "*.aar"), "dir" to "../../mobile/libs")))
+    api(project(":spotify-app-remote"))
+
     implementation(project(":resources:strings"))
     implementation(project(":resources:drawables"))
 
@@ -38,9 +42,6 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.foundation.android)
     implementation(libs.androidx.material3)
-
-    // Spotify App remote Dependency
-    implementation(fileTree(mapOf("include" to listOf("*.jar", "*.aar"), "dir" to "libs")))
 
     //Spotify Auth
     implementation(libs.auth)
