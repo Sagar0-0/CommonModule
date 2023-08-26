@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.ResourcesProvider
 import fit.asta.health.data.address.remote.AddressApi
 import fit.asta.health.data.address.remote.SearchLocationApi
@@ -12,6 +13,7 @@ import fit.asta.health.data.address.repo.AddressRepoImpl
 import fit.asta.health.data.address.utils.LocationResourceProvider
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.network.utils.NetworkUtil
+import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
@@ -34,13 +36,15 @@ object AddressModule {
         searchLocationApi: SearchLocationApi,
         resourcesProvider: ResourcesProvider,
         prefManager: PrefManager,
-        locationResourceProvider: LocationResourceProvider
+        locationResourceProvider: LocationResourceProvider,
+        @IODispatcher coroutineDispatcher: CoroutineDispatcher
     ): AddressRepo = AddressRepoImpl(
         addressApi,
         searchLocationApi,
         prefManager,
         resourcesProvider,
-        locationResourceProvider
+        locationResourceProvider,
+        coroutineDispatcher
     )
 
     @Provides
