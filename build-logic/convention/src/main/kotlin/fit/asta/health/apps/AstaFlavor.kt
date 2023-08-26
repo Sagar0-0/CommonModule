@@ -35,14 +35,9 @@ enum class AstaFlavor(
     val dimension: FlavorDimension,
     val applicationIdSuffix: String
 ) {
-    dev(
-        contentType,
-        applicationIdSuffix = ".dev"
-    ),
-    prod(
-        contentType,
-        applicationIdSuffix = ""
-    )
+    dev(contentType, applicationIdSuffix = ".dev"),
+    tst(contentType, applicationIdSuffix = ".tst"),
+    prod(contentType, applicationIdSuffix = "")
 }
 
 fun configureFlavors(
