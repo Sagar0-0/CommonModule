@@ -149,7 +149,7 @@ class SpotifyLoginActivity : ComponentActivity() {
 
             // when connection is not established and we don't get the remote
             override fun onFailure(throwable: Throwable) {
-                spotifyViewModelX.unableToGetSpotifyRemote(throwable)
+                spotifyViewModelX.unableToGetSpotifyRemote()
             }
         })
     }

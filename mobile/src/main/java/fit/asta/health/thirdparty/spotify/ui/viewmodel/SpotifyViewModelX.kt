@@ -75,6 +75,13 @@ class SpotifyViewModelX @Inject constructor(
      * This function fetches the Current User Data from the spotify api
      */
     private fun getCurrentUserDetails(accessToken: String) {
+
+
+        if (_currentUserData.value is UiState.Loading)
+            return
+
+        _currentUserData.value = UiState.Loading
+
         viewModelScope.launch {
             _currentUserData.value = remoteRepository.getCurrentUserDetails(accessToken).toUiState()
         }
@@ -98,7 +105,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This function is used to set the state as failed when the Spotify App Remote is not connected
      */
-    fun unableToGetSpotifyRemote(e: Throwable) {
+    fun unableToGetSpotifyRemote() {
         _currentUserData.value = UiState.Error(R.string.spotify_remote_not_found)
     }
 
@@ -144,6 +151,12 @@ class SpotifyViewModelX @Inject constructor(
      * This function fetches all the track from the local repository
      */
     private fun getAllTracks() {
+
+        if (_allTracks.value is UiState.Loading)
+            return
+
+        _allTracks.value = UiState.Loading
+
         viewModelScope.launch {
             _allTracks.value = localRepository.getAllTracks().toUiState()
         }
@@ -160,6 +173,12 @@ class SpotifyViewModelX @Inject constructor(
      * This function fetches all the albums from the local repository
      */
     private fun getAllAlbums() {
+
+        if (_allAlbums.value is UiState.Loading)
+            return
+
+        _allAlbums.value = UiState.Loading
+
         viewModelScope.launch {
             _allAlbums.value = localRepository.getAllAlbums().toUiState()
         }
@@ -215,26 +234,17 @@ class SpotifyViewModelX @Inject constructor(
      * This function fetches the user Recently Played Tracks from the spotify api
      */
     private fun getCurrentUserRecentlyPlayedTracks() {
+
+        if (_userRecentlyPlayedTracks.value is UiState.Loading)
+            return
+
+        _userRecentlyPlayedTracks.value = UiState.Loading
+
         viewModelScope.launch {
             _userRecentlyPlayedTracks.value = remoteRepository
                 .getCurrentUserRecentlyPlayedTracks(accessToken)
                 .toUiState()
-//                .collectLatest {
-//
-//                // Fetching the Recommendations Tracks List for the Users
-//                if (it.data?.trackList?.isNotEmpty() == true) {
-//
-//                    // Setting for Future Purposes
-//                    seedArtists = it.data.trackList[0].track.artists[0].id
-//                    seedTracks = it.data.trackList[0].track.id
-//
-//                    // Fetching
-//                    getRecommendationTracks()
-//                }
-//                _userRecentlyPlayedTracks.value = it
-//            }
         }
-
     }
 
     // Keeps the recommended Tracks
@@ -257,7 +267,7 @@ class SpotifyViewModelX @Inject constructor(
         if (_userRecentlyPlayedTracks.value !is UiState.Success)
             return
 
-        if(_recommendationTracks.value is UiState.Loading)
+        if (_recommendationTracks.value is UiState.Loading)
             return
 
         _recommendationTracks.value = UiState.Loading
@@ -298,6 +308,12 @@ class SpotifyViewModelX @Inject constructor(
      * This function fetches The Track Details
      */
     private fun getTrackDetails() {
+
+        if (_trackDetailsResponse.value is UiState.Loading)
+            return
+
+        _trackDetailsResponse.value = UiState.Loading
+
         viewModelScope.launch {
             _trackDetailsResponse.value = remoteRepository
                 .getTrackDetails(accessToken, trackDetailId)
@@ -313,6 +329,12 @@ class SpotifyViewModelX @Inject constructor(
      * This function fetches the user top tracks from the spotify Api
      */
     private fun getUserTopTracks() {
+
+        if (_userTopTracks.value is UiState.Loading)
+            return
+
+        _userTopTracks.value = UiState.Loading
+
         viewModelScope.launch {
             _userTopTracks.value = remoteRepository.getCurrentUserTopTracks(accessToken).toUiState()
         }
@@ -326,6 +348,12 @@ class SpotifyViewModelX @Inject constructor(
      * This function fetches the top Artists from the Spotify Api
      */
     private fun getUserTopArtists() {
+
+        if (_userTopArtists.value is UiState.Loading)
+            return
+
+        _userTopArtists.value = UiState.Loading
+
         viewModelScope.launch {
             _userTopArtists.value = remoteRepository
                 .getCurrentUserTopArtists(accessToken)
@@ -394,6 +422,12 @@ class SpotifyViewModelX @Inject constructor(
     }
 
     private fun getAlbumDetails() {
+
+        if (_albumDetailsResponse.value is UiState.Loading)
+            return
+
+        _albumDetailsResponse.value = UiState.Loading
+
         viewModelScope.launch {
             _albumDetailsResponse.value = remoteRepository
                 .getAlbumDetails(accessToken, albumDetailId)
@@ -404,15 +438,20 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This variable keeps the current Spotify User All Tracks fetched from the spotify Api
      */
-    private val _currentUserTracks = MutableStateFlow<UiState<SpotifyLibraryTracksModel>>(
-        UiState.Idle
-    )
+    private val _currentUserTracks =
+        MutableStateFlow<UiState<SpotifyLibraryTracksModel>>(UiState.Idle)
     val currentUserTracks = _currentUserTracks.asStateFlow()
 
     /**
      * This function fetches all the current User Tracks from the spotify api
      */
     private fun getCurrentUserTracks() {
+
+        if (_currentUserTracks.value is UiState.Loading)
+            return
+
+        _currentUserTracks.value = UiState.Loading
+
         viewModelScope.launch {
             _currentUserTracks.value = remoteRepository
                 .getCurrentUserTracks(accessToken)
@@ -423,15 +462,20 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This variable keeps the current User All playlist from the spotify Api
      */
-    private val _currentUserPlaylist = MutableStateFlow<UiState<SpotifyUserPlaylistsModel>>(
-        UiState.Idle
-    )
+    private val _currentUserPlaylist =
+        MutableStateFlow<UiState<SpotifyUserPlaylistsModel>>(UiState.Idle)
     val currentUserPlaylist = _currentUserPlaylist.asStateFlow()
 
     /**
      * This function fetches all the current User Playlist from the spotify Api
      */
     private fun getCurrentUserPlaylist() {
+
+        if (_currentUserPlaylist.value is UiState.Loading)
+            return
+
+        _currentUserPlaylist.value = UiState.Loading
+
         viewModelScope.launch {
             _currentUserPlaylist.value = remoteRepository
                 .getCurrentUserPlaylists(accessToken)
@@ -450,6 +494,12 @@ class SpotifyViewModelX @Inject constructor(
      * This function fetches all the current User Following Artists from the spotify Api
      */
     private fun getCurrentUserArtists() {
+
+        if (_currentUserFollowingArtist.value is UiState.Loading)
+            return
+
+        _currentUserFollowingArtist.value = UiState.Loading
+
         viewModelScope.launch {
             _currentUserFollowingArtist.value = remoteRepository
                 .getCurrentUserFollowedArtists(accessToken)
@@ -468,6 +518,12 @@ class SpotifyViewModelX @Inject constructor(
      * This function fetches all the current User Albums from the spotify Api
      */
     private fun getCurrentUserAlbum() {
+
+        if (_currentUserAlbum.value is UiState.Loading)
+            return
+
+        _currentUserAlbum.value = UiState.Loading
+
         viewModelScope.launch {
             _currentUserAlbum.value = remoteRepository.getCurrentUserAlbums(accessToken).toUiState()
         }
@@ -483,6 +539,12 @@ class SpotifyViewModelX @Inject constructor(
      * This function fetches all the shows data from the spotify Api
      */
     private fun getCurrentUserShows() {
+
+        if (_currentUserShow.value is UiState.Loading)
+            return
+
+        _currentUserShow.value = UiState.Loading
+
         viewModelScope.launch {
             _currentUserShow.value = remoteRepository.getCurrentUserShows(accessToken).toUiState()
         }
@@ -499,6 +561,12 @@ class SpotifyViewModelX @Inject constructor(
      *  This function fetches the current User all the Episodes from the spotify APi
      */
     private fun getCurrentUserEpisode() {
+
+        if (_currentUserEpisode.value is UiState.Loading)
+            return
+
+        _currentUserEpisode.value = UiState.Loading
+
         viewModelScope.launch {
             _currentUserEpisode.value = remoteRepository
                 .getCurrentUserEpisodes(accessToken)
