@@ -3,6 +3,7 @@ package fit.asta.health.feature.settings.view
 sealed interface SettingsUiEvent {
     data class SetTheme(val theme: String) : SettingsUiEvent
     data object BACK : SettingsUiEvent
+    data object Orders : SettingsUiEvent
     data object ADDRESS : SettingsUiEvent
     data object REFERRAL : SettingsUiEvent
     data object WALLET : SettingsUiEvent

@@ -119,7 +119,6 @@ dependencies {
     implementation(project(":chartLibrary"))
 
     implementation(project(":data:auth"))
-    implementation(project(":data:payment"))
     implementation(project(":data:address"))
 
     implementation(project(":feature:subscription"))
@@ -132,6 +131,7 @@ dependencies {
     implementation(project(":feature:feedback"))
     implementation(project(":feature:settings"))
     implementation(project(":feature:profile"))
+    implementation(project(":feature:orders"))
 
     // Spotify App remote Dependency
     implementation(fileTree(mapOf("include" to listOf("*.jar", "*.aar"), "dir" to "libs")))
