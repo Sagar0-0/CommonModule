@@ -123,7 +123,7 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:network"))
 
-    implementation(project(":chartLibrary"))
+    implementation(project(":libs:chart"))
 
     implementation(project(":data:auth"))
     implementation(project(":data:payment"))
