@@ -115,12 +115,15 @@ android {
 
 dependencies {
 
+    // Spotify App remote Dependency
+    implementation(fileTree(mapOf("include" to listOf("*.jar", "*.aar"), "dir" to "libs")))
+
     implementation(project(":core:datastore"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:common"))
     implementation(project(":core:network"))
 
-    implementation(project(":chartLibrary"))
+    implementation(project(":libs:chart"))
 
     implementation(project(":data:auth"))
     implementation(project(":data:payment"))
@@ -138,9 +141,8 @@ dependencies {
     implementation(project(":feature:settings"))
     implementation(project(":feature:subscription"))
     implementation(project(":feature:wallet"))
-
-    // Spotify App remote Dependency
-    implementation(fileTree(mapOf("include" to listOf("*.jar", "*.aar"), "dir" to "libs")))
+    implementation(project(":data:spotify"))
+    implementation(project(":feature:spotify"))
 
     //De-sugaring
     coreLibraryDesugaring(libs.android.desugarJdkLibs)

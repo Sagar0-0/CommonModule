@@ -30,20 +30,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
-import com.dev.anirban.chartlibrary.circular.CircularChart
-import com.dev.anirban.chartlibrary.circular.center.CircularImageCenter
-import com.dev.anirban.chartlibrary.circular.center.CircularRingTextCenter
-import com.dev.anirban.chartlibrary.circular.charts.CircularDonutChartRow
-import com.dev.anirban.chartlibrary.circular.charts.CircularRingChart
-import com.dev.anirban.chartlibrary.circular.data.CircularTargetDataBuilder
-import com.dev.anirban.chartlibrary.circular.foreground.CircularDonutTargetForeground
-import com.dev.anirban.chartlibrary.linear.LinearChart
-import com.dev.anirban.chartlibrary.linear.colorconvention.LinearGridColorConvention
-import com.dev.anirban.chartlibrary.linear.data.LinearEmojiData
-import com.dev.anirban.chartlibrary.linear.data.LinearStringData
-import com.dev.anirban.chartlibrary.other.bmi.BmiChart
-import com.dev.anirban.chartlibrary.other.bmi.data.BmiData
-import com.dev.anirban.chartlibrary.util.ChartPoint
+import fit.asta.chart.circular.CircularChart
+import fit.asta.chart.circular.center.CircularImageCenter
+import fit.asta.chart.circular.center.CircularRingTextCenter
+import fit.asta.chart.circular.charts.CircularDonutChartRow
+import fit.asta.chart.circular.charts.CircularRingChart
+import fit.asta.chart.circular.data.CircularTargetDataBuilder
+import fit.asta.chart.circular.foreground.CircularDonutTargetForeground
+import fit.asta.chart.linear.LinearChart
+import fit.asta.chart.linear.colorconvention.LinearGridColorConvention
+import fit.asta.chart.linear.data.LinearEmojiData
+import fit.asta.chart.linear.data.LinearStringData
+import fit.asta.chart.other.bmi.BmiChart
+import fit.asta.chart.other.bmi.data.BmiData
+import fit.asta.chart.util.ChartPoint
 import fit.asta.health.R
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
@@ -172,7 +172,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
 
-                                CircularChart.DonutChartImage(
+                                fit.asta.chart.circular.CircularChart.DonutChartImage(
                                     modifier = Modifier
                                         .size(55.dp),
                                     circularData = CircularTargetDataBuilder(

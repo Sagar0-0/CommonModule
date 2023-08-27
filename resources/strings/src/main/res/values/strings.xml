@@ -594,4 +594,6 @@
     <string name="MAPS_API_KEY">AIzaSyD3jSWT4JJGJD0by4aYxJqJmJxYMFNBaJQ</string>//TODO: SHOULD BE
     GENERATED
 
+    <string name="spotify_remote_not_found">Spotify App Remote not found</string>
+
 </resources>

@@ -14,14 +14,14 @@ import fit.asta.health.common.utils.toUiState
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.ToneUiState
 import fit.asta.health.scheduler.ui.screen.spotify.SpotifyUiEvent
 import fit.asta.health.scheduler.util.Constants
-import fit.asta.health.thirdparty.spotify.data.repo.MusicRepository
-import fit.asta.health.thirdparty.spotify.data.repo.SpotifyRepo
-import fit.asta.health.thirdparty.spotify.data.model.common.Album
-import fit.asta.health.thirdparty.spotify.data.model.common.Track
-import fit.asta.health.thirdparty.spotify.data.model.me.SpotifyMeModel
-import fit.asta.health.thirdparty.spotify.data.model.recently.SpotifyUserRecentlyPlayedModel
-import fit.asta.health.thirdparty.spotify.data.model.search.SpotifySearchModel
-import fit.asta.health.thirdparty.spotify.data.model.search.TrackList
+import fit.asta.health.data.spotify.repo.MusicRepository
+import fit.asta.health.data.spotify.repo.SpotifyRepo
+import fit.asta.health.data.spotify.model.common.Album
+import fit.asta.health.data.spotify.model.common.Track
+import fit.asta.health.data.spotify.model.me.SpotifyMeModel
+import fit.asta.health.data.spotify.model.recently.SpotifyUserRecentlyPlayedModel
+import fit.asta.health.data.spotify.model.search.SpotifySearchModel
+import fit.asta.health.data.spotify.model.search.TrackList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -71,6 +71,12 @@ class SpotifyViewModel @Inject constructor(
      * This function fetches the Current User Data from the spotify api
      */
     private fun getCurrentUserDetails(accessToken: String) {
+
+        if (_currentUserData.value is UiState.Loading)
+            return
+
+        _currentUserData.value = UiState.Loading
+
         viewModelScope.launch {
             _currentUserData.value = remoteRepository.getCurrentUserDetails(accessToken).toUiState()
         }
@@ -94,7 +100,7 @@ class SpotifyViewModel @Inject constructor(
     /**
      * This function is used to set the state as failed when the Spotify App Remote is not connected
      */
-    fun unableToGetSpotifyRemote(e: Throwable) {
+    fun unableToGetSpotifyRemote() {
         _currentUserData.value = UiState.Error(R.string.spotify_remote_not_found)
     }
 
@@ -139,6 +145,12 @@ class SpotifyViewModel @Inject constructor(
      * This function fetches the user Recently Played Tracks from the spotify api
      */
     private fun getCurrentUserRecentlyPlayedTracks() {
+
+        if (_userRecentlyPlayedTracks.value is UiState.Loading)
+            return
+
+        _userRecentlyPlayedTracks.value = UiState.Loading
+
         viewModelScope.launch {
             _userRecentlyPlayedTracks.value = remoteRepository
                 .getCurrentUserRecentlyPlayedTracks(accessToken)
@@ -167,6 +179,12 @@ class SpotifyViewModel @Inject constructor(
      * This function fetches the user top tracks from the spotify Api
      */
     private fun getUserTopTracks() {
+
+        if (_userTopTracks.value is UiState.Loading)
+            return
+
+        _userTopTracks.value = UiState.Loading
+
         viewModelScope.launch {
             _userTopTracks.value = remoteRepository.getCurrentUserTopTracks(accessToken).toUiState()
         }
@@ -202,13 +220,13 @@ class SpotifyViewModel @Inject constructor(
         _spotifySearch.value = UiState.Loading
 
         viewModelScope.launch {
-            _spotifySearch.value = remoteRepository.searchQuery(
+            remoteRepository.searchQuery(
                 accessToken = accessToken,
                 query = query,
                 type = "track",
                 includeExternal = "audio",
                 market = (_currentUserData.value as UiState.Success<SpotifyMeModel>).data.country
-            ).toUiState()
+            ).toUiState().also { _spotifySearch.value = it }
         }
     }
 
@@ -223,6 +241,12 @@ class SpotifyViewModel @Inject constructor(
      * This function fetches all the track from the local repository
      */
     private fun getAllTracks() {
+
+        if (_allTracks.value is UiState.Loading)
+            return
+
+        _allTracks.value = UiState.Loading
+
         viewModelScope.launch {
             _allTracks.value = localRepository.getAllTracks().toUiState()
         }
@@ -239,6 +263,12 @@ class SpotifyViewModel @Inject constructor(
      * This function fetches all the albums from the local repository
      */
     private fun getAllAlbums() {
+
+        if (_allAlbums.value is UiState.Loading)
+            return
+
+        _allAlbums.value = UiState.Loading
+
         viewModelScope.launch {
             _allAlbums.value = localRepository.getAllAlbums().toUiState()
         }
