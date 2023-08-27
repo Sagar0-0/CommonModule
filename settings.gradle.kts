@@ -19,7 +19,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "asta"
 
-include(":chartLibrary")
+include(":libs:spotify-app-remote")
+include(":libs:chart")
 include(":mobile")
 
 include(":resources:strings")
@@ -53,3 +54,5 @@ include(":feature:referral")
 include(":feature:settings")
 include(":feature:subscription")
 include(":feature:wallet")
+include(":data:spotify")
+include(":feature:spotify")

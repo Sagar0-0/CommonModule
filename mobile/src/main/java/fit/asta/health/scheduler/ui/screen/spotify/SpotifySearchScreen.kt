@@ -33,7 +33,7 @@ import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.scheduler.ui.components.SearchBarUI
 import fit.asta.health.scheduler.ui.components.SpotifyMusicItem
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.ToneUiState
-import fit.asta.health.thirdparty.spotify.data.model.search.SpotifySearchModel
+import fit.asta.health.data.spotify.model.search.SpotifySearchModel
 
 @Composable
 fun SpotifySearchScreen(

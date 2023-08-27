@@ -17,16 +17,16 @@ import androidx.compose.ui.unit.dp
 import fit.asta.health.R
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.data.spotify.model.common.Album
+import fit.asta.health.data.spotify.model.common.Track
+import fit.asta.health.data.spotify.model.recently.SpotifyUserRecentlyPlayedModel
+import fit.asta.health.data.spotify.model.search.TrackList
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.scheduler.ui.components.SpotifyHomeHeader
 import fit.asta.health.scheduler.ui.components.SpotifyMusicItem
 import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.ToneUiState
-import fit.asta.health.thirdparty.spotify.data.model.common.Album
-import fit.asta.health.thirdparty.spotify.data.model.common.Track
-import fit.asta.health.thirdparty.spotify.data.model.recently.SpotifyUserRecentlyPlayedModel
-import fit.asta.health.thirdparty.spotify.data.model.search.TrackList
 
 @Composable
 fun SpotifyHomeScreen(
