@@ -83,7 +83,7 @@ class SearchLocationApiTest {
             mockk(), api, pref, mockk(), mockk(),
             UnconfinedTestDispatcher()
         )
-        val data = repo.search("", 0.0, 0.0)
+        val data = repo.search("", 0.00, 0.00)
         server.takeRequest()
 
         assert(data is ResponseState.Error)
@@ -97,8 +97,8 @@ class SearchLocationApiTest {
 
         val pref: PrefManager = mockk()
         every { pref.userData } returns MutableStateFlow(UserPreferencesData())
-        val repo = AddressRepoImpl(mockk(), api, pref, mockk(), mockk())
-        val data = repo.search("", 10.0, 10.0)
+        val repo = AddressRepoImpl(mockk(), api, pref, mockk(), mockk(), UnconfinedTestDispatcher())
+        val data = repo.search("", 1.00, 1.00)
         server.takeRequest()
 
         assert(data is ResponseState.Error)

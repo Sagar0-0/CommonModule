@@ -138,7 +138,7 @@ class AddressRepoImpl @Inject constructor(
     ): ResponseState<SearchResponse> {
         return withContext(dispatcher) {
             getResponseState {
-                if (latitude == 0.0 && longitude == 0.0) {
+                if (latitude == 0.00 && longitude == 0.00) {
                     searchLocationApi.search(
                         text,
                         resourcesProvider.getString(string.MAPS_API_KEY)
