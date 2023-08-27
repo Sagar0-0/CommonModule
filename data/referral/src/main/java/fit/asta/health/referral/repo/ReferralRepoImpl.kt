@@ -15,12 +15,4 @@ class ReferralRepoImpl
     override suspend fun getData(uid: String) = withContext(coroutineDispatcher) {
         getResponseState { remoteApi.getData(uid) }
     }
-
-
-    override suspend fun applyCode(
-        refCode: String,
-        uid: String
-    ) = withContext(coroutineDispatcher) {
-        getResponseState { remoteApi.applyCode(refCode, uid) }
-    }
 }
