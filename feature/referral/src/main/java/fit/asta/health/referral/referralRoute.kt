@@ -25,13 +25,10 @@ fun NavGraphBuilder.referralRoute(onBackPress: () -> Unit) {
         composable(ReferralDestination.Share.route) {
             val referralViewModel: ReferralViewModel = hiltViewModel()
 
-            val checkCodeState = referralViewModel.applyCodeState.collectAsStateWithLifecycle()
             val state = referralViewModel.state.collectAsStateWithLifecycle()
 
             ShareReferralUi(
                 referralDataState = state.value,
-                applyCodeState = checkCodeState.value,
-                onCheckRefereeData = referralViewModel::applyCode,
                 onBackPress = onBackPress,
                 onTryAgain = referralViewModel::getData
             )

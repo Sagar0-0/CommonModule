@@ -1,6 +1,5 @@
 package fit.asta.health.referral.view
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,21 +16,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,13 +37,11 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.copyTextToClipboard
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.shareReferralCode
-import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.jetpack.dashedBorder
 import fit.asta.health.designsystem.theme.spacing
-import fit.asta.health.referral.remote.model.ApplyCodeResponse
 import fit.asta.health.referral.remote.model.ReferralDataResponse
 import fit.asta.health.referral.remote.model.UserDetails
 import fit.asta.health.resources.drawables.R as DrawR
@@ -62,12 +51,9 @@ import fit.asta.health.resources.strings.R as StringR
 @Composable
 fun ShareReferralUi(
     referralDataState: UiState<ReferralDataResponse>,
-    applyCodeState: UiState<ApplyCodeResponse>,
-    onCheckRefereeData: (code: String) -> Unit,
     onBackPress: () -> Unit,
     onTryAgain: () -> Unit
 ) {
-    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -105,77 +91,7 @@ fun ShareReferralUi(
                     item { ReferralCard(referralDataState.data.data.referralCode.refCode) }
 
                     item {
-                        if (referralDataState.data.data.referredByUsersDetails == null) {
-                            val showLoading = remember {
-                                mutableStateOf(false)
-                            }
-                            val enabled = remember {
-                                mutableStateOf(true)
-                            }
-                            when (applyCodeState) {
-                                is UiState.Success -> {
-                                    showLoading.value = false
-                                    LaunchedEffect(applyCodeState.data) {
-                                        Toast.makeText(
-                                            context,
-                                            "Referral code applied!",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
-                                    ReferralCustomCard(title = "Referred by:") {
-                                        ReferredUserItem(
-                                            modifier = Modifier
-                                                .padding(spacing.medium),
-                                            user = applyCodeState.data.data!!
-                                        )
-                                    }
-                                }
-
-                                else -> {
-                                    LaunchedEffect(applyCodeState) {
-                                        if (applyCodeState is UiState.Error) {
-                                            Toast.makeText(
-                                                context,
-                                                applyCodeState.resId.toStringFromResId(context),
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                            showLoading.value = false
-                                            enabled.value = true
-                                        }
-                                    }
-                                    if (showLoading.value) {
-                                        LoadingAnimation()
-                                    }
-
-                                    Row(
-                                        Modifier
-                                            .padding(spacing.medium)
-                                            .fillMaxWidth()
-                                    ) {
-                                        var code by rememberSaveable {
-                                            mutableStateOf("")
-                                        }
-                                        TextField(
-                                            modifier = Modifier.weight(1f),
-                                            value = code,
-                                            onValueChange = {
-                                                if (it.length <= 8) code = it
-                                            }
-                                        )
-                                        Button(
-                                            enabled = code.length == 8 && enabled.value,
-                                            onClick = {
-                                                onCheckRefereeData(code)
-                                                showLoading.value = true
-                                                enabled.value = false
-                                            }
-                                        ) {
-                                            Text(text = "Check")
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
+                        if (referralDataState.data.data.referredByUsersDetails != null) {
                             ReferralCustomCard(title = "Referred by:") {
                                 ReferredUserItem(
                                     modifier = Modifier
