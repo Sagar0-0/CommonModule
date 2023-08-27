@@ -6,12 +6,12 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.R
 import fit.asta.health.auth.repo.AuthRepo
-import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getLocationName
 import fit.asta.health.data.address.modal.LocationResponse
 import fit.asta.health.data.address.repo.AddressRepo
+import fit.asta.health.datastore.PrefManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -56,14 +56,14 @@ class MainViewModel
     private val _currentAddressName = MutableStateFlow<UiState<String>>(UiState.Idle)
     val currentAddressName = _currentAddressName.asStateFlow()
 
-    val onboardingStatus = prefManager.userData
+    val screenCode = prefManager.userData
         .map {
-            it.onboardingShown
+            it.screenCode
         }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,
-            initialValue = true,
+            initialValue = 0,
         )
 
     val locationPermissionRejectedCount = prefManager.userData

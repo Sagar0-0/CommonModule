@@ -13,9 +13,10 @@ android {
 }
 
 dependencies {
+    implementation(project(":resources:strings"))
 
     implementation(project(":core:common"))
-    implementation(project(":resources:strings"))
+    implementation(project(":core:datastore"))
 
 
     implementation(libs.converter.gson)

@@ -66,7 +66,13 @@ class SettingsViewModel
 
     fun logout() {
         _logoutState.value = UiState.Loading
-        _logoutState.value = authRepo.signOut().toUiState()
+        viewModelScope.launch {
+            _logoutState.value = authRepo.signOut().toUiState()
+            if (_logoutState.value is UiState.Success) {
+                authRepo.setLogoutStatus()
+            }
+        }
+
     }
 
     fun resetLogoutState() {
@@ -78,6 +84,9 @@ class SettingsViewModel
         viewModelScope.launch {
             authRepo.deleteAccount().collect {
                 _deleteState.value = it.toUiState()
+                if (_deleteState.value is UiState.Success) {
+                    authRepo.setLogoutStatus()
+                }
             }
         }
     }

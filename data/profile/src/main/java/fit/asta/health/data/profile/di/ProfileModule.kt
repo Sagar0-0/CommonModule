@@ -8,6 +8,7 @@ import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.data.profile.remote.BasicProfileApi
 import fit.asta.health.data.profile.repo.ProfileRepo
 import fit.asta.health.data.profile.repo.ProfileRepoImpl
+import fit.asta.health.datastore.PrefManager
 import fit.asta.health.network.utils.NetworkUtil
 import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
@@ -20,7 +21,7 @@ object ProfileModule {
 
     @Singleton
     @Provides
-    fun provideProfileApi(client: OkHttpClient) =
+    fun provideProfileApi(client: OkHttpClient): BasicProfileApi =
         NetworkUtil.getRetrofit(client).create(BasicProfileApi::class.java)
 
 
@@ -28,10 +29,12 @@ object ProfileModule {
     @Provides
     fun provideProfileRepo(
         profileApi: BasicProfileApi,
+        prefManager: PrefManager,
         @IODispatcher coroutineDispatcher: CoroutineDispatcher
     ): ProfileRepo {
         return ProfileRepoImpl(
             profileApi = profileApi,
+            prefManager = prefManager,
             coroutineDispatcher = coroutineDispatcher
         )
     }

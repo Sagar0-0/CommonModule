@@ -30,10 +30,11 @@ import fit.asta.health.auth.model.domain.toUser
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
+import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.feature.profile.vm.BasicProfileViewModel
 import fit.asta.health.resources.drawables.R
 
-internal const val BASIC_PROFILE_GRAPH_ROUTE = "graph_basic_profile"
+const val BASIC_PROFILE_GRAPH_ROUTE = "graph_basic_profile"
 
 fun NavController.navigateToBasicProfile(user: User, navOptions: NavOptions? = null) {
     val json = user.toString()
@@ -53,6 +54,24 @@ fun NavGraphBuilder.basicProfileRoute(navigateToHome: () -> Unit) {
 
         val context = LocalContext.current
         val basicProfileViewModel: BasicProfileViewModel = hiltViewModel()
+
+        LaunchedEffect(Unit) { basicProfileViewModel.isProfileAvailable() }
+
+        val isProfileAvailable by basicProfileViewModel.isProfileAvailable.collectAsStateWithLifecycle()
+        when (isProfileAvailable) {
+            is UiState.Loading -> {
+                LoadingAnimation()
+            }
+
+            is UiState.Success -> {
+                LaunchedEffect(Unit) {
+                    basicProfileViewModel.setProfilePresent()
+                }
+            }
+
+            else -> {}
+        }
+
         val checkReferralCodeState by basicProfileViewModel.checkReferralCodeState.collectAsStateWithLifecycle()
         val createBasicProfileState by basicProfileViewModel.createBasicProfileState.collectAsStateWithLifecycle()
 
@@ -149,7 +168,7 @@ fun NavGraphBuilder.basicProfileRoute(navigateToHome: () -> Unit) {
                                 "Can not create profile, try again!",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            basicProfileViewModel.resetCreateprofileState()
+                            basicProfileViewModel.resetCreateProfileState()
                         }
                     }
 

@@ -3,6 +3,7 @@ package fit.asta.health.data.orders.remote.model
 
 import com.google.gson.annotations.SerializedName
 
+
 data class OrdersDTO(
     @SerializedName("data")
     val `data`: List<Data> = listOf(),

@@ -17,7 +17,7 @@ class PrefManager
 ) {
     val userData: Flow<UserPreferencesData> = userPreferences.data.map {
         UserPreferencesData(
-            onboardingShown = it.onboardingShown,
+            screenCode = it.screenCode,
             notificationStatus = it.notificationStatus,
             locationPermissionRejectedCount = it.locationPermissionRejectedCount,
             currentAddress = it.currentAddress,
@@ -25,12 +25,12 @@ class PrefManager
         )
     }
 
-    suspend fun setOnboardingShown() {
+    suspend fun setScreenCode(code: Int) {
 
         try {
             userPreferences.updateData {
                 it.copy {
-                    this.onboardingShown = true
+                    this.screenCode = code
                 }
             }
         } catch (ioException: IOException) {

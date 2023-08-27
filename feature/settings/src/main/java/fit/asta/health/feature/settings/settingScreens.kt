@@ -60,6 +60,7 @@ fun NavGraphBuilder.settingScreens(
                             (deleteAccountState as UiState.Error).resId.toStringFromResId(context),
                             Toast.LENGTH_SHORT
                         ).show()
+                        settingsViewModel.resetDeleteState()
                     }
 
                     else -> {}
@@ -82,6 +83,7 @@ fun NavGraphBuilder.settingScreens(
                             (logoutState as UiState.Error).resId.toStringFromResId(context),
                             Toast.LENGTH_SHORT
                         ).show()
+                        settingsViewModel.resetLogoutState()
                     }
 
                     else -> {}

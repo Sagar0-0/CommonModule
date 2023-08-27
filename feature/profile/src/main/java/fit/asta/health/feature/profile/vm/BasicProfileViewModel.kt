@@ -63,7 +63,11 @@ class BasicProfileViewModel
         _checkReferralCodeState.value = UiState.Idle
     }
 
-    fun resetCreateprofileState() {
+    fun resetCreateProfileState() {
         _createBasicProfileState.value = UiState.Idle
+    }
+
+    fun setProfilePresent() = viewModelScope.launch {
+        profileRepo.setProfilePresent()
     }
 }
