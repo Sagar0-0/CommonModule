@@ -20,7 +20,7 @@ package fit.asta.health.apps
  * This is shared between :app and :benchmarks module to provide configurations type safety.
  */
 enum class AstaBuildType(val applicationIdSuffix: String? = null) {
-    DEBUG(".debug"),
+    DEBUG(".dbg"),
     RELEASE,
-    BENCHMARK(".benchmark")
+    BENCHMARK(".bmk")
 }
