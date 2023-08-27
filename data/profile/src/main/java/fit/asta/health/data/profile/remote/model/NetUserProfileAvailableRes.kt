@@ -5,6 +5,6 @@ import fit.asta.health.network.data.Status
 
 
 data class ProfileAvailableStatus(
-    @SerializedName("status") val status: Status,
-    @SerializedName("flag") val flag: Boolean,
+    @SerializedName("status") val status: Status = Status(),
+    @SerializedName("flag") val flag: Boolean = false
 )
