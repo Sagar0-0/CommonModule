@@ -17,7 +17,6 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import fit.asta.health.auth.model.domain.User
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.common.utils.toStringFromResId
@@ -41,7 +40,7 @@ fun NavController.navigateToAuth(navOptions: NavOptions? = null) {
 
 @OptIn(ExperimentalCoroutinesApi::class)
 fun NavGraphBuilder.authRoute(
-    navigateToBasicProfile: (User) -> Unit,
+    navigateToBasicProfile: () -> Unit,
     navigateToWebView: (String) -> Unit
 ) {
     composable(AUTH_GRAPH_ROUTE) {
@@ -82,7 +81,7 @@ fun NavGraphBuilder.authRoute(
                         Toast.makeText(
                             context, "Sign in Successful", Toast.LENGTH_SHORT
                         ).show()
-                        navigateToBasicProfile((loginState as UiState.Success<User>).data)
+                        navigateToBasicProfile()
                     }
                 }
 

@@ -25,8 +25,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import coil.compose.rememberAsyncImagePainter
-import fit.asta.health.auth.model.domain.User
-import fit.asta.health.auth.model.domain.toUser
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
@@ -36,26 +34,27 @@ import fit.asta.health.resources.drawables.R
 
 const val BASIC_PROFILE_GRAPH_ROUTE = "graph_basic_profile"
 
-fun NavController.navigateToBasicProfile(user: User, navOptions: NavOptions? = null) {
-    val json = user.toString()
-    if (navOptions != null) {
-        this.navigate("$BASIC_PROFILE_GRAPH_ROUTE/$json", navOptions)
-    } else {
-        this.navigate("$BASIC_PROFILE_GRAPH_ROUTE/$json") {
+fun NavController.navigateToBasicProfile(navOptions: NavOptions? = null) {
+    if (navOptions == null) {
+        this.navigate(BASIC_PROFILE_GRAPH_ROUTE) {
             popUpToTop(this@navigateToBasicProfile)
         }
+    } else {
+        this.navigate(BASIC_PROFILE_GRAPH_ROUTE, navOptions)
     }
 }
 
 fun NavGraphBuilder.basicProfileRoute(navigateToHome: () -> Unit) {
 
-    composable("$BASIC_PROFILE_GRAPH_ROUTE/{user}") {
-        val user = it.arguments?.getString("user")!!.toUser()
+    composable(BASIC_PROFILE_GRAPH_ROUTE) {
 
         val context = LocalContext.current
         val basicProfileViewModel: BasicProfileViewModel = hiltViewModel()
+        val user = basicProfileViewModel.getUser()
 
-        LaunchedEffect(Unit) { basicProfileViewModel.isProfileAvailable() }
+        LaunchedEffect(Unit) {
+            basicProfileViewModel.isProfileAvailable()
+        }
 
         val isProfileAvailable by basicProfileViewModel.isProfileAvailable.collectAsStateWithLifecycle()
         when (isProfileAvailable) {
@@ -65,7 +64,7 @@ fun NavGraphBuilder.basicProfileRoute(navigateToHome: () -> Unit) {
 
             is UiState.Success -> {
                 LaunchedEffect(Unit) {
-                    basicProfileViewModel.setProfilePresent()
+                    if ((isProfileAvailable as UiState.Success<Boolean>).data) basicProfileViewModel.setProfilePresent()
                 }
             }
 
@@ -142,7 +141,7 @@ fun NavGraphBuilder.basicProfileRoute(navigateToHome: () -> Unit) {
                                 uid = user.uid,
                                 url = user.photoUrl.toString(),
                                 name = user.name!!,
-                                gen = "",
+                                gen = "M",
                                 mail = user.email,
                                 ph = user.phoneNumber,
                                 refCode = ref
