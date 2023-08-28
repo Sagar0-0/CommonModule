@@ -22,7 +22,7 @@ class ProfileRepoImpl
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ProfileRepo {
     override suspend fun setProfilePresent() {
-        prefManager.setScreenCode(3)
+        prefManager.setScreenCode(2)
     }
 
     override suspend fun isProfileAvailable(userId: String): ResponseState<Boolean> {

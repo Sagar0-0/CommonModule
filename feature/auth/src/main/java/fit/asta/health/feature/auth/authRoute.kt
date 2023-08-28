@@ -1,29 +1,22 @@
-@file:JvmName("AuthScreenKt")
-
 package fit.asta.health.feature.auth
 
+import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.layout.Box
-import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import fit.asta.health.auth.model.domain.User
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.feature.auth.screens.AuthDestination
-import fit.asta.health.feature.auth.screens.PhoneLoginScreen
-import fit.asta.health.feature.auth.screens.SignInScreen
+import fit.asta.health.feature.auth.screens.AuthScreen
 import fit.asta.health.feature.auth.vm.AuthViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -41,53 +34,63 @@ fun NavController.navigateToAuth(navOptions: NavOptions? = null) {
 @OptIn(ExperimentalCoroutinesApi::class)
 fun NavGraphBuilder.authRoute(
     navigateToBasicProfile: () -> Unit,
+    navigateToHome: () -> Unit,
     navigateToWebView: (String) -> Unit
 ) {
     composable(AUTH_GRAPH_ROUTE) {
         val context = LocalContext.current
         val authViewModel: AuthViewModel = hiltViewModel()
-        val loginState by authViewModel.loginState.collectAsStateWithLifecycle()
-        val nestedNavController = rememberNavController()
-
-        Box(contentAlignment = Alignment.Center) {
-            NavHost(
-                navController = nestedNavController,
-                route = AUTH_GRAPH_ROUTE,
-                startDestination = AuthDestination.SignIn.route
-            ) {
-                composable(AuthDestination.SignIn.route) {
-                    SignInScreen(navigateToWebView, nestedNavController) {
-                        authViewModel.signInWithGoogleCredentials(it)
-                    }
-                }
-                composable(AuthDestination.Phone.route) {
-                    PhoneLoginScreen {
-                        authViewModel.signInWithGoogleCredentials(it)
-                    }
-                }
+        LaunchedEffect(Unit) {
+            if (authViewModel.isAuthenticated()) {
+                Toast.makeText(context, "Complete Basic Profile to continue!", Toast.LENGTH_SHORT)
+                    .show()
+                navigateToBasicProfile()
             }
+        }
 
-            when (loginState) {
-                UiState.Loading -> {
-                    LoadingAnimation()
-                }
+        val loginState by authViewModel.loginState.collectAsStateWithLifecycle()
+        val isProfileAvailable by authViewModel.isProfileAvailable.collectAsStateWithLifecycle()
 
-                is UiState.Error -> {
-                    Text(text = (loginState as UiState.Error).resId.toStringFromResId())
-                }
-
-                is UiState.Success -> {
-                    LaunchedEffect(loginState) {
+        when (isProfileAvailable) {
+            is UiState.Success -> {
+                LaunchedEffect(Unit) {
+                    if ((isProfileAvailable as UiState.Success<Boolean>).data) {
+                        Toast.makeText(context, "Welcome back!", Toast.LENGTH_SHORT).show()
+                        navigateToHome()
+                    } else {
                         Toast.makeText(
-                            context, "Sign in Successful", Toast.LENGTH_SHORT
+                            context,
+                            "Complete Basic Profile to continue!",
+                            Toast.LENGTH_SHORT
                         ).show()
                         navigateToBasicProfile()
                     }
                 }
-
-                else -> {}
             }
+
+            is UiState.Loading -> {
+                LoadingAnimation()
+            }
+
+            is UiState.Error -> {
+                Log.e(
+                    "TAG",
+                    "authRoute: ${(isProfileAvailable as UiState.Error).resId.toStringFromResId()}"
+                )
+            }
+
+            else -> {}
         }
+
+        val checkProfileAndNavigate: (User) -> Unit = { authViewModel.isProfileAvailable(it.uid) }
+
+
+        AuthScreen(
+            loginState = loginState,
+            navigateToWebView = navigateToWebView,
+            checkProfileAndNavigate = checkProfileAndNavigate,
+            signInWithCredentials = authViewModel::signInWithGoogleCredentials
+        )
     }
 }
 

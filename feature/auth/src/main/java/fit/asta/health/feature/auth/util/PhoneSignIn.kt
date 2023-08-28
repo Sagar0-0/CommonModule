@@ -1,8 +1,9 @@
-package fit.asta.health.feature.auth.screens
+package fit.asta.health.feature.auth.util
 
 import android.app.Activity
 import android.app.PendingIntent
-import android.content.ContentValues.TAG
+import android.content.ContentValues
+import android.content.Context
 import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
@@ -14,11 +15,9 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -36,6 +35,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import com.google.android.gms.auth.api.identity.GetPhoneNumberHintIntentRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.phone.SmsRetriever
+import com.google.android.gms.auth.api.phone.SmsRetrieverClient
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
@@ -54,11 +55,13 @@ import com.google.firebase.ktx.Firebase
 import fit.asta.health.designsystem.components.ValidatedNumberField
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.feature.auth.screens.OTPReceiver
 import java.util.concurrent.TimeUnit
 
 @Composable
-fun PhoneLoginScreen(signInWithCredentials: (AuthCredential) -> Unit) {
-
+fun PhoneSignIn(
+    signInWithCredentials: (AuthCredential) -> Unit
+) {
     var phoneNumber by rememberSaveable {
         mutableStateOf("")
     }
@@ -91,9 +94,10 @@ fun PhoneLoginScreen(signInWithCredentials: (AuthCredential) -> Unit) {
     var shouldStartSMSRetrieval by rememberSaveable {
         mutableStateOf(false)
     }
+
     LaunchedEffect(shouldStartSMSRetrieval) {
         if (shouldStartSMSRetrieval) {
-            Log.d(TAG, "SMS Retrieval is Starting...")
+            Log.d(ContentValues.TAG, "SMS Retrieval is Starting...")
             startSMSRetrieverClient(context)
         }
     }
@@ -109,10 +113,7 @@ fun PhoneLoginScreen(signInWithCredentials: (AuthCredential) -> Unit) {
         } else {
             loading = true
             shouldStartSMSRetrieval = false
-            val credential: AuthCredential =
-                PhoneAuthProvider.getCredential(
-                    verificationID, otp
-                )
+            val credential: AuthCredential = PhoneAuthProvider.getCredential(verificationID, otp)
             signInWithCredentials(credential)
         }
     }
@@ -139,11 +140,11 @@ fun PhoneLoginScreen(signInWithCredentials: (AuthCredential) -> Unit) {
         Log.d("OTP", "PhoneLoginScreen: Registered Receiver")
         val myOTPReceiver = OTPReceiver(
             onSuccess = { intent ->
-                Log.d(TAG, "OTP Received $intent")
+                Log.d(ContentValues.TAG, "OTP Received $intent")
                 smsReceiverLauncher.launch(intent)
             },
             onFailure = {
-                Log.e(TAG, "Timeout")
+                Log.e(ContentValues.TAG, "Timeout")
                 Toast.makeText(context, "Otp retrieval failed", Toast.LENGTH_SHORT).show()
                 loading = false
                 codeSent = false
@@ -185,7 +186,7 @@ fun PhoneLoginScreen(signInWithCredentials: (AuthCredential) -> Unit) {
                 phoneNumber = phoneNumberHint.takeLast(10)
                 onSendOtp()
             } catch (e: Exception) {
-                Log.e(TAG, "Phone Number Hint failed")
+                Log.e("Phone", "Phone Number Hint failed $e")
             }
         }
 
@@ -208,21 +209,15 @@ fun PhoneLoginScreen(signInWithCredentials: (AuthCredential) -> Unit) {
                     Log.e("Phone", "Phone Number Hint failed")
                 }
         } catch (e: Exception) {
-            Log.e(TAG, "PhoneLoginScreen: Phone hint exception")
+            Log.e(ContentValues.TAG, "PhoneLoginScreen: Phone hint exception")
         }
-    }
-    LaunchedEffect(key1 = Unit) {
-        getPhoneNumberHint()
     }
 
 
     Column(
-        modifier = Modifier
-            .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -239,7 +234,12 @@ fun PhoneLoginScreen(signInWithCredentials: (AuthCredential) -> Unit) {
                         start = spacing.medium,
                         end = spacing.small
                     )
-                    .weight(0.3f),
+                    .weight(0.3f)
+                    .onFocusChanged {
+                        if (it.isFocused) {
+                            getPhoneNumberHint()
+                        }
+                    },
                 singleLine = true
             )
 
@@ -251,7 +251,12 @@ fun PhoneLoginScreen(signInWithCredentials: (AuthCredential) -> Unit) {
                 placeholder = "Enter your phone number",
                 modifier = Modifier
                     .padding(top = spacing.medium, bottom = spacing.medium, end = spacing.medium)
-                    .weight(0.7f),
+                    .weight(0.7f)
+                    .onFocusChanged {
+                        if (it.isFocused) {
+                            getPhoneNumberHint()
+                        }
+                    },
                 singleLine = true,
                 supportingText = "${phoneNumber.length} / 10",
                 supportingTextModifier = Modifier.fillMaxWidth(),
@@ -342,13 +347,7 @@ fun PhoneLoginScreen(signInWithCredentials: (AuthCredential) -> Unit) {
     }
 
     if (loading) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            LoadingAnimation()
-        }
+        LoadingAnimation()
     }
 
     callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -391,4 +390,15 @@ private fun startPhoneVerification(
         .setCallbacks(callbacks)
         .build()
     PhoneAuthProvider.verifyPhoneNumber(options)
+}
+
+private fun startSMSRetrieverClient(context: Context) {
+    val client: SmsRetrieverClient = SmsRetriever.getClient(context)
+    val task = client.startSmsUserConsent(null)
+    task.addOnSuccessListener { aVoid ->
+        Log.d("Phone", "startSMSRetrieverClient addOnSuccessListener")
+    }
+    task.addOnFailureListener { e ->
+        Log.e("Phone", "startSMSRetrieverClient addOnFailureListener" + e.stackTrace)
+    }
 }

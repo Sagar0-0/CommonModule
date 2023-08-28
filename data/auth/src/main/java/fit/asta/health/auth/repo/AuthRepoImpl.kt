@@ -17,17 +17,16 @@ import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
 
-class
-AuthRepoImpl @Inject constructor(
+class AuthRepoImpl @Inject constructor(
     private val dataMapper: AuthDataMapper,
     private val firebaseAuth: FirebaseAuth,
     private val prefManager: PrefManager
 ) : AuthRepo {
-    override suspend fun setLogoutStatus() {
+    override suspend fun setLogoutDone() {
         prefManager.setScreenCode(1)
     }
 
-    override suspend fun setLoginStatus() {
+    override suspend fun setBasicProfileDone() {
         prefManager.setScreenCode(2)
     }
 

@@ -3,7 +3,6 @@ package fit.asta.health.feature.profile.vm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.di.UID
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.ResponseState
@@ -22,25 +21,14 @@ import javax.inject.Inject
 class BasicProfileViewModel
 @Inject constructor(
     private val profileRepo: ProfileRepo,
-    private val authRepo: AuthRepo,
-    @UID private val uid: String
+    private val authRepo: AuthRepo
 ) : ViewModel() {
-
-    private val _isProfileAvailable = MutableStateFlow<UiState<Boolean>>(UiState.Idle)
-    val isProfileAvailable = _isProfileAvailable.asStateFlow()
 
     private val _createBasicProfileState = MutableStateFlow<UiState<Boolean>>(UiState.Idle)
     val createBasicProfileState = _createBasicProfileState.asStateFlow()
 
     private val _checkReferralCodeState = MutableStateFlow<UiState<CheckReferralDTO>>(UiState.Idle)
     val checkReferralCodeState = _checkReferralCodeState.asStateFlow()
-
-    fun isProfileAvailable() {
-        _isProfileAvailable.value = UiState.Loading
-        viewModelScope.launch {
-            _isProfileAvailable.value = profileRepo.isProfileAvailable(uid).toUiState()
-        }
-    }
 
     fun createBasicProfile(basicProfileDTO: BasicProfileDTO) {
         _createBasicProfileState.value = UiState.Loading

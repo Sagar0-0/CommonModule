@@ -39,7 +39,6 @@ import fit.asta.health.feature.onboarding.ONBOARDING_GRAPH_ROUTE
 import fit.asta.health.feature.onboarding.onboardingRoute
 import fit.asta.health.feature.orders.navigateToOrders
 import fit.asta.health.feature.orders.ordersRoute
-import fit.asta.health.feature.profile.BASIC_PROFILE_GRAPH_ROUTE
 import fit.asta.health.feature.profile.basicProfileRoute
 import fit.asta.health.feature.profile.navigateToBasicProfile
 import fit.asta.health.feature.settings.settingScreens
@@ -71,7 +70,7 @@ const val deepLinkUrl: String = "https://www.asta.com"
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
 @Composable
-fun MainNavHost(isConnected: Boolean) {
+fun MainNavHost(isConnected: Boolean, mainViewModel: MainViewModel) {
     val navController = rememberNavController()
     if (!isConnected) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -79,7 +78,6 @@ fun MainNavHost(isConnected: Boolean) {
         }
     }
 
-    val mainViewModel: MainViewModel = hiltViewModel()
     val context = LocalContext.current
     val screenCode by mainViewModel.screenCode.collectAsStateWithLifecycle()
     val startDestination = when (screenCode) {
@@ -89,10 +87,6 @@ fun MainNavHost(isConnected: Boolean) {
 
         1 -> {
             AUTH_GRAPH_ROUTE
-        }
-
-        2 -> {
-            BASIC_PROFILE_GRAPH_ROUTE
         }
 
         else -> {
@@ -107,7 +101,11 @@ fun MainNavHost(isConnected: Boolean) {
         startDestination = startDestination
     ) {
         onboardingRoute(navController::navigateToAuth)
-        authRoute(navController::navigateToBasicProfile, navController::navigateToWebView)
+        authRoute(
+            navController::navigateToBasicProfile,
+            navController::navigateToHome,
+            navController::navigateToWebView
+        )
         basicProfileRoute(navController::navigateToHome)
         homeScreen(navController)
 

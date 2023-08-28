@@ -595,5 +595,6 @@
     GENERATED
 
     <string name="spotify_remote_not_found">Spotify App Remote not found</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
 
 </resources>
