@@ -14,8 +14,6 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.preference.PreferenceManager
 import fit.asta.health.R
-import fit.asta.health.UserPreferences
-import fit.asta.health.copy
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -28,56 +26,8 @@ import javax.inject.Singleton
 @Singleton
 class PrefManager
 @Inject constructor(
-    private val userPreferences: DataStore<UserPreferences>,
     private val dataStore: DataStore<Preferences>
-
 ) {
-    val userData: Flow<UserPreferencesData> = userPreferences.data.map {
-        UserPreferencesData(
-            onboardingShown = it.onboardingShown,
-            notificationStatus = it.notificationStatus,
-            locationPermissionRejectedCount = it.locationPermissionRejectedCount,
-            currentAddress = it.currentAddress
-        )
-    }
-
-    suspend fun setCurrentLocation(location: String) {
-        try {
-            userPreferences.updateData {
-                it.copy {
-                    this.currentAddress = location
-                }
-            }
-        } catch (ioException: IOException) {
-            Log.e("Pref", "Failed to update user preferences", ioException)
-        }
-    }
-
-    suspend fun setNotificationStatus(value: Boolean) {
-        try {
-            userPreferences.updateData {
-                it.copy {
-                    this.notificationStatus = value
-                }
-            }
-        } catch (ioException: IOException) {
-            Log.e("Pref", "Failed to update user preferences", ioException)
-        }
-    }
-
-    suspend fun setLocationPermissionRejectedCount(value: Int) {
-        try {
-            userPreferences.updateData {
-                it.copy {
-                    this.locationPermissionRejectedCount = value
-                }
-            }
-        } catch (ioException: IOException) {
-            Log.e("Pref", "Failed to update user preferences", ioException)
-        }
-    }
-
-
     fun <T> getPreferences(key: String, defaultValue: T): Flow<T> {
         return dataStore.data
             .catch { exception ->

@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.di.UID
+import fit.asta.health.auth.model.domain.User
+import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
@@ -20,6 +22,7 @@ import javax.inject.Inject
 class BasicProfileViewModel
 @Inject constructor(
     private val profileRepo: ProfileRepo,
+    private val authRepo: AuthRepo,
     @UID private val uid: String
 ) : ViewModel() {
 
@@ -63,7 +66,15 @@ class BasicProfileViewModel
         _checkReferralCodeState.value = UiState.Idle
     }
 
-    fun resetCreateprofileState() {
+    fun resetCreateProfileState() {
         _createBasicProfileState.value = UiState.Idle
+    }
+
+    fun setProfilePresent() = viewModelScope.launch {
+        profileRepo.setProfilePresent()
+    }
+
+    fun getUser(): User {
+        return authRepo.getUser()!!
     }
 }

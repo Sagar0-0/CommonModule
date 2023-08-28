@@ -39,6 +39,7 @@ import fit.asta.health.feature.onboarding.ONBOARDING_GRAPH_ROUTE
 import fit.asta.health.feature.onboarding.onboardingRoute
 import fit.asta.health.feature.orders.navigateToOrders
 import fit.asta.health.feature.orders.ordersRoute
+import fit.asta.health.feature.profile.BASIC_PROFILE_GRAPH_ROUTE
 import fit.asta.health.feature.profile.basicProfileRoute
 import fit.asta.health.feature.profile.navigateToBasicProfile
 import fit.asta.health.feature.settings.settingScreens
@@ -80,15 +81,22 @@ fun MainNavHost(isConnected: Boolean) {
 
     val mainViewModel: MainViewModel = hiltViewModel()
     val context = LocalContext.current
-
-    val startDestination = if (mainViewModel.isAuth()) {
-        HOME_GRAPH_ROUTE
-    } else {
-        val onboardingShown by mainViewModel.onboardingStatus.collectAsStateWithLifecycle()
-        if (onboardingShown) {
-            AUTH_GRAPH_ROUTE
-        } else {
+    val screenCode by mainViewModel.screenCode.collectAsStateWithLifecycle()
+    val startDestination = when (screenCode) {
+        0 -> {
             ONBOARDING_GRAPH_ROUTE
+        }
+
+        1 -> {
+            AUTH_GRAPH_ROUTE
+        }
+
+        2 -> {
+            BASIC_PROFILE_GRAPH_ROUTE
+        }
+
+        else -> {
+            HOME_GRAPH_ROUTE
         }
     }
     Log.d("TAG", "MainNavHost: $startDestination")

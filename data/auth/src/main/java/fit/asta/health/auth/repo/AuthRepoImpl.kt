@@ -10,16 +10,26 @@ import com.google.firebase.auth.PhoneAuthProvider
 import fit.asta.health.auth.model.AuthDataMapper
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.datastore.PrefManager
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
 
-class AuthRepoImpl @Inject constructor(
+class
+AuthRepoImpl @Inject constructor(
     private val dataMapper: AuthDataMapper,
-    private val firebaseAuth: FirebaseAuth
+    private val firebaseAuth: FirebaseAuth,
+    private val prefManager: PrefManager
 ) : AuthRepo {
+    override suspend fun setLogoutStatus() {
+        prefManager.setScreenCode(1)
+    }
+
+    override suspend fun setLoginStatus() {
+        prefManager.setScreenCode(2)
+    }
 
     override fun isAuthenticated(): Boolean {
         return firebaseAuth.currentUser != null

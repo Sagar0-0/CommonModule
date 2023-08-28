@@ -7,9 +7,11 @@ import fit.asta.health.common.utils.ResponseState
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepo {
+    suspend fun setLogoutStatus()
     fun isAuthenticated(): Boolean
     fun getUserId(): String?
     fun getUser(): User?
+    suspend fun setLoginStatus()
     fun signInWithCredential(googleAuthCredential: AuthCredential): Flow<ResponseState<User>>
     fun signInWithPhone(phone: String, activity: Activity): ResponseState<String>
     fun verifyPhoneOtp(otp: String): Flow<ResponseState<String>>

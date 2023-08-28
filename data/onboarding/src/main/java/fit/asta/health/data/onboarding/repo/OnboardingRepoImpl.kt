@@ -22,7 +22,7 @@ class OnboardingRepoImpl(
     }
 
     override suspend fun dismissOnboarding() {
-        prefManager.setOnboardingShown()
+        prefManager.setScreenCode(1)
     }
 }
 

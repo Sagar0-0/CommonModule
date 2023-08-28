@@ -15,6 +15,7 @@ dependencies {
 
     implementation(project(":core:network"))
     implementation(project(":core:common"))
+    implementation(project(":core:datastore"))
 
     implementation(libs.gson)
     implementation(libs.retrofit.core)

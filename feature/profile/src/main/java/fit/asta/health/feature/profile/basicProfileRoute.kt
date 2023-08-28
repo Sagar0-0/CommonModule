@@ -25,34 +25,52 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import coil.compose.rememberAsyncImagePainter
-import fit.asta.health.auth.model.domain.User
-import fit.asta.health.auth.model.domain.toUser
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
+import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.feature.profile.vm.BasicProfileViewModel
 import fit.asta.health.resources.drawables.R
 
-internal const val BASIC_PROFILE_GRAPH_ROUTE = "graph_basic_profile"
+const val BASIC_PROFILE_GRAPH_ROUTE = "graph_basic_profile"
 
-fun NavController.navigateToBasicProfile(user: User, navOptions: NavOptions? = null) {
-    val json = user.toString()
-    if (navOptions != null) {
-        this.navigate("$BASIC_PROFILE_GRAPH_ROUTE/$json", navOptions)
-    } else {
-        this.navigate("$BASIC_PROFILE_GRAPH_ROUTE/$json") {
+fun NavController.navigateToBasicProfile(navOptions: NavOptions? = null) {
+    if (navOptions == null) {
+        this.navigate(BASIC_PROFILE_GRAPH_ROUTE) {
             popUpToTop(this@navigateToBasicProfile)
         }
+    } else {
+        this.navigate(BASIC_PROFILE_GRAPH_ROUTE, navOptions)
     }
 }
 
 fun NavGraphBuilder.basicProfileRoute(navigateToHome: () -> Unit) {
 
-    composable("$BASIC_PROFILE_GRAPH_ROUTE/{user}") {
-        val user = it.arguments?.getString("user")!!.toUser()
+    composable(BASIC_PROFILE_GRAPH_ROUTE) {
 
         val context = LocalContext.current
         val basicProfileViewModel: BasicProfileViewModel = hiltViewModel()
+        val user = basicProfileViewModel.getUser()
+
+        LaunchedEffect(Unit) {
+            basicProfileViewModel.isProfileAvailable()
+        }
+
+        val isProfileAvailable by basicProfileViewModel.isProfileAvailable.collectAsStateWithLifecycle()
+        when (isProfileAvailable) {
+            is UiState.Loading -> {
+                LoadingAnimation()
+            }
+
+            is UiState.Success -> {
+                LaunchedEffect(Unit) {
+                    if ((isProfileAvailable as UiState.Success<Boolean>).data) basicProfileViewModel.setProfilePresent()
+                }
+            }
+
+            else -> {}
+        }
+
         val checkReferralCodeState by basicProfileViewModel.checkReferralCodeState.collectAsStateWithLifecycle()
         val createBasicProfileState by basicProfileViewModel.createBasicProfileState.collectAsStateWithLifecycle()
 
@@ -123,7 +141,7 @@ fun NavGraphBuilder.basicProfileRoute(navigateToHome: () -> Unit) {
                                 uid = user.uid,
                                 url = user.photoUrl.toString(),
                                 name = user.name!!,
-                                gen = "",
+                                gen = "M",
                                 mail = user.email,
                                 ph = user.phoneNumber,
                                 refCode = ref
@@ -149,7 +167,7 @@ fun NavGraphBuilder.basicProfileRoute(navigateToHome: () -> Unit) {
                                 "Can not create profile, try again!",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            basicProfileViewModel.resetCreateprofileState()
+                            basicProfileViewModel.resetCreateProfileState()
                         }
                     }
 

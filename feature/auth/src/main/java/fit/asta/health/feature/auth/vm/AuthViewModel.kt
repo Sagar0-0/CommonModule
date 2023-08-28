@@ -6,6 +6,7 @@ import com.google.firebase.auth.AuthCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.auth.repo.AuthRepo
+import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -38,6 +39,9 @@ class AuthViewModel
         viewModelScope.launch {
             authRepo.signInWithCredential(authCredential).collect {
                 _loginState.value = it.toUiState()
+                if (it is ResponseState.Success) {
+                    authRepo.setLoginStatus()
+                }
             }
         }
     }

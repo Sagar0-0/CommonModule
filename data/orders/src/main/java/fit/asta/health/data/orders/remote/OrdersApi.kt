@@ -7,5 +7,5 @@ import retrofit2.http.Query
 interface OrdersApi {
 
     @GET("payment/order/list/?")
-    fun getOrders(@Query("uid") uid: String): OrdersDTO
+    suspend fun getOrders(@Query("uid") uid: String): OrdersDTO
 }

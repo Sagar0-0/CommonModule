@@ -4,7 +4,7 @@ option java_package = "fit.asta.health";
 option java_multiple_files = true;
 
 message UserPreferences {
-  bool onboardingShown = 1;
+  int32 screenCode = 1;//0->Nothing shown, 1-> onboarding shown, 2-> auth done, 3-> basic profile done
   bool notificationStatus = 2;
   int32 locationPermissionRejectedCount = 3;
   string currentAddress = 4;
