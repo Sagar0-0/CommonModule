@@ -19,6 +19,7 @@ dependencies {
 
     implementation(project(":core:common"))
     implementation(project(":core:designsystem"))
+    implementation(project(":core:test"))
 
     implementation(project(":data:profile"))
     implementation(project(":data:auth"))

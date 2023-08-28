@@ -33,8 +33,7 @@ class FeedbackRepoImpl(
         val parts: ArrayList<MultipartBody.Part> = ArrayList()
 
         feedback.ans.forEach { an ->
-            if (an.media != null) {
-                an.media.forEach { media ->
+                an.media?.forEach { media ->
                     parts.add(
                         MultipartBody.Part.createFormData(
                             name = "file",
@@ -43,7 +42,6 @@ class FeedbackRepoImpl(
                         )
                     )
                 }
-            }
         }
         return withContext(coroutineDispatcher) {
             getResponseState { remoteApi.postUserFeedback(feedback, parts) }

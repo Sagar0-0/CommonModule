@@ -14,13 +14,15 @@ android {
 }
 
 dependencies {
+    implementation(project(":resources:strings"))
+    implementation(project(":resources:drawables"))
+
+    implementation(project(":core:common"))
+    implementation(project(":core:designsystem"))
+    implementation(project(":core:test"))
 
     implementation(project(":data:wallet"))
     implementation(project(":data:auth"))
-    implementation(project(":core:common"))
-    implementation(project(":core:designsystem"))
-    implementation(project(":resources:strings"))
-    implementation(project(":resources:drawables"))
 
 
     implementation(libs.androidx.navigation.compose)

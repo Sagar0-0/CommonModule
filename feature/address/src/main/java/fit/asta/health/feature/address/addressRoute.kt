@@ -15,7 +15,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -25,7 +24,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import fit.asta.health.common.utils.onLifecycleEvent
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.address.modal.MyAddress
 import fit.asta.health.data.address.utils.LocationProviderChangedReceiver
@@ -178,18 +176,6 @@ private fun Setup(addressViewModel: AddressViewModel, onBackPress: () -> Unit) {
 
     val isPermissionGranted by addressViewModel.isPermissionGranted.collectAsStateWithLifecycle()
     val locationPermissionRejectedCount by addressViewModel.locationPermissionRejectedCount.collectAsStateWithLifecycle()
-
-    val lifecycleEvent = onLifecycleEvent()
-    LaunchedEffect(lifecycleEvent) {
-        Log.e("TAG", lifecycleEvent.name)
-        when (lifecycleEvent) {
-            Lifecycle.Event.ON_START -> {
-                addressViewModel.setIsPermissionGranted()
-            }
-
-            else -> {}
-        }
-    }
 
     val permissionResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
