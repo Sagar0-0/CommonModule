@@ -6,11 +6,13 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import fit.asta.health.auth.model.domain.User
-import fit.asta.health.auth.repo.AuthRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.R
+import fit.asta.health.auth.model.domain.User
+import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.UiString
+import fit.asta.health.data.testimonials.model.InputIntWrapper
+import fit.asta.health.data.testimonials.model.InputWrapper
 import fit.asta.health.network.NetworkHelper
 import fit.asta.health.network.data.ApiResponse
 import fit.asta.health.profile.MultiRadioBtnKeys
@@ -47,8 +49,6 @@ import fit.asta.health.profile.viewmodel.ProfileConstants.PROFILE_DATA
 import fit.asta.health.profile.viewmodel.ProfileConstants.USER_IMG
 import fit.asta.health.profile.viewmodel.ProfileConstants.WAKEUPTIME
 import fit.asta.health.profile.viewmodel.ProfileConstants.WEIGHT
-import fit.asta.health.testimonials.data.model.InputIntWrapper
-import fit.asta.health.testimonials.data.model.InputWrapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -81,8 +81,11 @@ class ProfileViewModel
     val state = _mutableState.asStateFlow()
 
     //Details
-    val name = savedState.getStateFlow(NAME, InputWrapper())
-    val email = savedState.getStateFlow(EMAIL, InputWrapper())
+    val name = savedState.getStateFlow(NAME, fit.asta.health.data.testimonials.model.InputWrapper())
+    val email = savedState.getStateFlow(
+        EMAIL,
+        fit.asta.health.data.testimonials.model.InputWrapper()
+    )
 
     val userImg = savedState.getStateFlow(
         USER_IMG, ProfileMedia(name = "user_img", title = "User Profile Image")
@@ -91,22 +94,48 @@ class ProfileViewModel
     private val userID = savedState.getStateFlow(ID, "")
 
     //Physique
-    val dob = savedState.getStateFlow(DOB, InputWrapper())
-    val age = savedState.getStateFlow(AGE, InputWrapper())
-    val weight = savedState.getStateFlow(WEIGHT, InputWrapper())
-    val height = savedState.getStateFlow(HEIGHT, InputWrapper())
-    val pregnancyWeek = savedState.getStateFlow(PREGNANCY_WEEK, InputWrapper())
-    private val bodyType = savedState.getStateFlow(BODY_TYPE, InputIntWrapper())
+    val dob = savedState.getStateFlow(DOB, fit.asta.health.data.testimonials.model.InputWrapper())
+    val age = savedState.getStateFlow(AGE, fit.asta.health.data.testimonials.model.InputWrapper())
+    val weight = savedState.getStateFlow(
+        WEIGHT,
+        fit.asta.health.data.testimonials.model.InputWrapper()
+    )
+    val height = savedState.getStateFlow(
+        HEIGHT,
+        fit.asta.health.data.testimonials.model.InputWrapper()
+    )
+    val pregnancyWeek = savedState.getStateFlow(
+        PREGNANCY_WEEK,
+        fit.asta.health.data.testimonials.model.InputWrapper()
+    )
+    private val bodyType = savedState.getStateFlow(
+        BODY_TYPE,
+        fit.asta.health.data.testimonials.model.InputIntWrapper()
+    )
 
     //Health
-    val injuriesSince = savedState.getStateFlow(INJURIES_SINCE, InputWrapper())
+    val injuriesSince = savedState.getStateFlow(
+        INJURIES_SINCE,
+        fit.asta.health.data.testimonials.model.InputWrapper()
+    )
 
     //LifeStyle
-    val wakeUpTime = savedState.getStateFlow(WAKEUPTIME, InputWrapper())
-    val bedTime = savedState.getStateFlow(BEDTIME, InputWrapper())
-    val jStartTime = savedState.getStateFlow(JSTARTTIME, InputWrapper())
-    val jEndTime = savedState.getStateFlow(JENDTIME, InputWrapper())
-
+    val wakeUpTime = savedState.getStateFlow(
+        WAKEUPTIME,
+        fit.asta.health.data.testimonials.model.InputWrapper()
+    )
+    val bedTime = savedState.getStateFlow(
+        BEDTIME,
+        fit.asta.health.data.testimonials.model.InputWrapper()
+    )
+    val jStartTime = savedState.getStateFlow(
+        JSTARTTIME,
+        fit.asta.health.data.testimonials.model.InputWrapper()
+    )
+    val jEndTime = savedState.getStateFlow(
+        JENDTIME,
+        fit.asta.health.data.testimonials.model.InputWrapper()
+    )
 
     // multiple radio buttons selection handling
     private val _radioButtonSelections = MutableStateFlow<Map<String, Any?>>(emptyMap())
@@ -269,7 +298,11 @@ class ProfileViewModel
 
         //Access Data
         handleContactData(data.contact, data.id)
-        handlePhysiqueData(data.physique, dob = InputWrapper(value = data.contact.dob))
+        handlePhysiqueData(
+            data.physique, dob = fit.asta.health.data.testimonials.model.InputWrapper(
+                value = data.contact.dob
+            )
+        )
         handleHealthData(data.health)
         handleLifeStyleData(data.lifeStyle)
         handleDietData(data.diet)
@@ -279,21 +312,30 @@ class ProfileViewModel
     }
 
     private fun handleContactData(contact: Contact, id: String) {
-        savedState[NAME] = InputWrapper(value = contact.name)
-        savedState[EMAIL] = InputWrapper(value = contact.email)
-        savedState[PHONE] = InputWrapper(value = contact.phone)
+        savedState[NAME] =
+            fit.asta.health.data.testimonials.model.InputWrapper(value = contact.name)
+        savedState[EMAIL] =
+            fit.asta.health.data.testimonials.model.InputWrapper(value = contact.email)
+        savedState[PHONE] =
+            fit.asta.health.data.testimonials.model.InputWrapper(value = contact.phone)
         savedState[USER_IMG] = contact.url
         savedState[ADDRESS] = contact.address
         savedState[ID] = id
-        savedState[DOB] = InputWrapper(value = contact.dob)
+        savedState[DOB] = fit.asta.health.data.testimonials.model.InputWrapper(value = contact.dob)
     }
 
-    private fun handlePhysiqueData(physique: Physique, dob: InputWrapper) {
+    private fun handlePhysiqueData(
+        physique: Physique,
+        dob: fit.asta.health.data.testimonials.model.InputWrapper
+    ) {
         // Handle physique data
-        savedState[AGE] = InputWrapper(value = physique.age.toString())
+        savedState[AGE] =
+            fit.asta.health.data.testimonials.model.InputWrapper(value = physique.age.toString())
         savedState[DOB] = dob
-        savedState[WEIGHT] = InputWrapper(value = physique.weight.toString())
-        savedState[HEIGHT] = InputWrapper(value = physique.height.toString())
+        savedState[WEIGHT] =
+            fit.asta.health.data.testimonials.model.InputWrapper(value = physique.weight.toString())
+        savedState[HEIGHT] =
+            fit.asta.health.data.testimonials.model.InputWrapper(value = physique.height.toString())
         loadThreeRadioBtnSelection(physique.gender, GENDER.key)
         loadTwoRadioBtnSelection(
             result = physique.isPregnant, radioBtnName = ISPREG.key
@@ -301,7 +343,8 @@ class ProfileViewModel
         loadTwoRadioBtnSelection(
             result = physique.onPeriod, radioBtnName = ISONPERIOD.key
         )
-        savedState[PREGNANCY_WEEK] = InputWrapper(value = physique.pregnancyWeek.toString())
+        savedState[PREGNANCY_WEEK] =
+            fit.asta.health.data.testimonials.model.InputWrapper(value = physique.pregnancyWeek.toString())
     }
 
     private fun handleHealthData(health: Health) {
@@ -336,7 +379,8 @@ class ProfileViewModel
             checkTwoRadioBtnSelections(health.addiction.isNullOrEmpty())
         )
 
-        savedState[INJURIES_SINCE] = InputWrapper(value = health.injurySince.toString())
+        savedState[INJURIES_SINCE] =
+            fit.asta.health.data.testimonials.model.InputWrapper(value = health.injurySince.toString())
 
         _propertiesData.value = _propertiesData.value.toMutableMap().apply {
 
@@ -353,8 +397,10 @@ class ProfileViewModel
 
     private fun handleLifeStyleData(lifeStyle: LifeStyle) {
         // Handle lifestyle data
-        savedState[WAKEUPTIME] = InputWrapper(value = lifeStyle.sleep.from.toString())
-        savedState[BEDTIME] = InputWrapper(value = lifeStyle.sleep.to.toString())
+        savedState[WAKEUPTIME] =
+            fit.asta.health.data.testimonials.model.InputWrapper(value = lifeStyle.sleep.from.toString())
+        savedState[BEDTIME] =
+            fit.asta.health.data.testimonials.model.InputWrapper(value = lifeStyle.sleep.to.toString())
 
         loadThreeRadioBtnSelection(
             lifeStyle.physicalActivity, MultiRadioBtnKeys.PHYACTIVE.key
@@ -694,11 +740,17 @@ class ProfileViewModel
     }
 
     private fun handleEmailChange(email: String) {
-        savedState[EMAIL] = InputWrapper(value = email, error = onValidateDetailsEmail(email))
+        savedState[EMAIL] = fit.asta.health.data.testimonials.model.InputWrapper(
+            value = email,
+            error = onValidateDetailsEmail(email)
+        )
     }
 
     private fun handleNameChange(name: String) {
-        savedState[NAME] = InputWrapper(value = name, error = onValidateDetailsText(name, 1, 20))
+        savedState[NAME] = fit.asta.health.data.testimonials.model.InputWrapper(
+            value = name,
+            error = onValidateDetailsText(name, 1, 20)
+        )
     }
 
     private fun handleUserImgChange(url: Uri?) {

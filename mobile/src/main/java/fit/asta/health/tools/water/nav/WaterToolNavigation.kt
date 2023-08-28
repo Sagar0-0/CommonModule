@@ -14,9 +14,9 @@ import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.main.Graph
 import fit.asta.health.main.deepLinkUrl
 import fit.asta.health.main.sharedViewModel
-import fit.asta.health.testimonials.ui.create.view.ServerErrorLayout
 import fit.asta.health.tools.water.view.screen.WaterToolScreen
 import fit.asta.health.tools.water.viewmodel.WaterState
+import fit.asta.health.tools.water.viewmodel.WaterState.Error
 import fit.asta.health.tools.water.viewmodel.WaterViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -48,7 +48,10 @@ fun NavGraphBuilder.waterToolNavigation(
             )
             when (state.value) {
                 is WaterState.Loading -> LoadingAnimation()
-                is WaterState.Error -> ServerErrorLayout((state.value as WaterState.Error).error)
+                is Error -> fit.asta.health.feature.testimonials.create.view.ServerErrorLayout(
+                    (state.value as Error).error
+                )
+
                 else -> WaterToolScreen(
                     Event = viewModel::event,
                     beverageList = beverageList,

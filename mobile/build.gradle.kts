@@ -140,6 +140,7 @@ dependencies {
     implementation(project(":feature:wallet"))
     implementation(project(":data:spotify"))
     implementation(project(":feature:spotify"))
+    implementation(project(":feature:testimonials"))
 
     //De-sugaring
     coreLibraryDesugaring(libs.android.desugarJdkLibs)

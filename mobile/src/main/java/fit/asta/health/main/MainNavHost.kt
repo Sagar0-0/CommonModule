@@ -44,6 +44,7 @@ import fit.asta.health.feature.profile.basicProfileRoute
 import fit.asta.health.feature.profile.navigateToBasicProfile
 import fit.asta.health.feature.settings.settingScreens
 import fit.asta.health.feature.settings.view.SettingsUiEvent
+import fit.asta.health.feature.testimonials.testimonialsRoute
 import fit.asta.health.main.view.HOME_GRAPH_ROUTE
 import fit.asta.health.main.view.homeScreen
 import fit.asta.health.main.view.navigateToHome
@@ -55,7 +56,6 @@ import fit.asta.health.referral.referralRoute
 import fit.asta.health.scheduler.ui.navigation.schedulerNavigation
 import fit.asta.health.subscription.navigateToSubscription
 import fit.asta.health.subscription.subscriptionRoute
-import fit.asta.health.testimonials.ui.testimonialsRoute
 import fit.asta.health.tools.breathing.nav.breathingNavigation
 import fit.asta.health.tools.exercise.nav.exerciseNavigation
 import fit.asta.health.tools.meditation.nav.meditationNavigation
