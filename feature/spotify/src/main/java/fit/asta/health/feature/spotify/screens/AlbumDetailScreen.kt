@@ -15,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
@@ -23,6 +24,7 @@ import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.data.spotify.model.common.Album
 import fit.asta.health.feature.spotify.components.MusicLargeImageColumn
 import fit.asta.health.feature.spotify.events.SpotifyUiEvent
+import fit.asta.health.resources.strings.R
 
 /**
  * This screen shows the details of the Albums choose by the user and gives the options to either
@@ -120,34 +122,37 @@ private fun LocalAlbumHandler(
                     secondaryTexts = networkAlbumData.artists
                 ) {}
 
+                // Notification
+                val notification: String
+                val buttonText: String
+                if (!isPresent) {
+                    notification = stringResource(id = R.string.added)
+                    buttonText = stringResource(id = R.string.add_to_favourites)
+                } else {
+                    notification = stringResource(id = R.string.deleted)
+                    buttonText = stringResource(id = R.string.delete_from_favourites)
+                }
+
                 // Add to Favourites Button
                 Button(
                     onClick = {
 
                         // Checking if the Album is already present or not
-                        if (!isPresent) {
+                        if (!isPresent)
                             setEvent(SpotifyUiEvent.LocalIO.InsertAlbum(networkAlbumData))
-                            Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show()
-                        } else {
+                        else
                             setEvent(SpotifyUiEvent.LocalIO.DeleteAlbum(networkAlbumData))
-                            Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT)
-                                .show()
-                        }
+
+                        Toast.makeText(context, notification, Toast.LENGTH_SHORT).show()
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(
-                            top = 32.dp,
-                            bottom = 12.dp,
-                            start = 12.dp,
-                            end = 12.dp
-                        )
+                        .padding(top = 32.dp, bottom = 12.dp, start = 12.dp, end = 12.dp)
                 ) {
+
                     Text(
-                        text = if (!isPresent)
-                            "Add To Favourites" else "Delete From Favourites",
-                        modifier = Modifier
-                            .padding(4.dp)
+                        text = buttonText,
+                        modifier = Modifier.padding(4.dp)
                     )
                 }
 
@@ -161,7 +166,7 @@ private fun LocalAlbumHandler(
                         .padding(bottom = 12.dp, start = 12.dp, end = 12.dp)
                 ) {
                     Text(
-                        text = "Play using Spotify",
+                        text = stringResource(id = R.string.play_using_spotify),
                         modifier = Modifier
                             .padding(4.dp)
                     )

@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.rememberNavController
 import com.spotify.android.appremote.api.ConnectionParams
 import com.spotify.android.appremote.api.Connector
@@ -31,6 +32,7 @@ import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.feature.spotify.navigation.TopTabNavigation
 import fit.asta.health.feature.spotify.viewmodel.SpotifyViewModelX
 import fit.asta.health.feature.spotify.utils.SpotifyConstants
+import fit.asta.health.resources.strings.R
 
 @AndroidEntryPoint
 class SpotifyLoginActivity : ComponentActivity() {
@@ -64,6 +66,9 @@ class SpotifyLoginActivity : ComponentActivity() {
                         .background(MaterialTheme.colorScheme.background)
                 ) {
 
+                    val needToDownloadSpotify =
+                        stringResource(id = R.string.need_to_download_spotify)
+
                     // Handling the States of all the Authorization flow of spotify
                     when (val loginState =
                         spotifyViewModelX.currentUserData.collectAsState().value) {
@@ -77,7 +82,7 @@ class SpotifyLoginActivity : ComponentActivity() {
                             } else {
 
                                 // downloading Spotify App in the user's App so it can be used
-                                Toast.makeText(this, "Need to Download Spotify", Toast.LENGTH_SHORT)
+                                Toast.makeText(this, needToDownloadSpotify, Toast.LENGTH_SHORT)
                                     .show()
                                 isResume = true
                                 openSpotifyInPlayStore()
@@ -110,11 +115,7 @@ class SpotifyLoginActivity : ComponentActivity() {
                                 } else {
 
                                     // downloading Spotify App in the user's App so it can be used
-                                    Toast.makeText(
-                                        this,
-                                        "Need to Download Spotify",
-                                        Toast.LENGTH_SHORT
-                                    )
+                                    Toast.makeText(this, needToDownloadSpotify, Toast.LENGTH_SHORT)
                                         .show()
                                     isResume = true
                                     openSpotifyInPlayStore()

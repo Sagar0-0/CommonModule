@@ -15,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
@@ -22,7 +23,8 @@ import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.feature.spotify.components.MusicLargeImageColumn
 import fit.asta.health.feature.spotify.events.SpotifyUiEvent
-import fit.asta.health.data.spotify.model.common.Track as Track1
+import fit.asta.health.data.spotify.model.common.Track
+import fit.asta.health.resources.strings.R
 
 
 /**
@@ -35,8 +37,8 @@ import fit.asta.health.data.spotify.model.common.Track as Track1
  */
 @Composable
 fun TrackDetailsScreen(
-    trackNetworkState: UiState<Track1>,
-    trackLocalState: UiState<List<Track1>>,
+    trackNetworkState: UiState<Track>,
+    trackLocalState: UiState<List<Track>>,
     setEvent: (SpotifyUiEvent) -> Unit
 ) {
 
@@ -86,7 +88,11 @@ fun TrackDetailsScreen(
 }
 
 @Composable
-private fun LocalTrackHandler(trackNetworkState: UiState.Success<Track1>, trackLocalState: UiState<List<Track1>>, setEvent: (SpotifyUiEvent) -> Unit) {
+private fun LocalTrackHandler(
+    trackNetworkState: UiState.Success<Track>,
+    trackLocalState: UiState<List<Track>>,
+    setEvent: (SpotifyUiEvent) -> Unit
+) {
 
     // context is stored to Show the Toast
     val context = LocalContext.current
@@ -119,18 +125,28 @@ private fun LocalTrackHandler(trackNetworkState: UiState.Success<Track1>, trackL
                     secondaryTexts = networkTrack.artists
                 ) {}
 
+                // Notification
+                val notification: String
+                val buttonText: String
+                if (!isPresent) {
+                    notification = stringResource(id = R.string.added)
+                    buttonText = stringResource(id = R.string.add_to_favourites)
+                } else {
+                    notification = stringResource(id = R.string.deleted)
+                    buttonText = stringResource(id = R.string.delete_from_favourites)
+                }
+
+
                 // Add and Remove Favourites Button
                 Button(
                     onClick = {
 
-                        if (!isPresent) {
+                        if (!isPresent)
                             setEvent(SpotifyUiEvent.LocalIO.InsertTrack(networkTrack))
-                            Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show()
-                        } else {
+                        else
                             setEvent(SpotifyUiEvent.LocalIO.DeleteTrack(networkTrack))
-                            Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT)
-                                .show()
-                        }
+
+                        Toast.makeText(context, notification, Toast.LENGTH_SHORT).show()
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -142,8 +158,7 @@ private fun LocalTrackHandler(trackNetworkState: UiState.Success<Track1>, trackL
                         )
                 ) {
                     Text(
-                        text = if (!isPresent)
-                            "Add To Favourites" else "Remove From Favourites",
+                        text = buttonText,
                         modifier = Modifier
                             .padding(4.dp)
                     )
@@ -159,7 +174,7 @@ private fun LocalTrackHandler(trackNetworkState: UiState.Success<Track1>, trackL
                         .padding(bottom = 12.dp, start = 12.dp, end = 12.dp)
                 ) {
                     Text(
-                        text = "Play using Spotify",
+                        text = stringResource(id = R.string.play_using_spotify),
                         modifier = Modifier
                             .padding(4.dp)
                     )
