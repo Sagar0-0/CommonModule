@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 data class BasicProfileDTO(
     @SerializedName("uid") val uid: String = "",
     @SerializedName("url") val url: String = "",
-    val imageRemoteUrl: String? = null,
+    @SerializedName("mailUrl") val mailUrl: String? = null,
     val imageLocalUri: Uri? = null,
     @SerializedName("name") val name: String = "",
     @SerializedName("gen") val gen: Int = 0,

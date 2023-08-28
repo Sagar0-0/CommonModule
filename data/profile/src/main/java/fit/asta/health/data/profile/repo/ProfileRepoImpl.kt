@@ -11,10 +11,7 @@ import fit.asta.health.network.utils.InputStreamRequestBody
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.File
 import javax.inject.Inject
 
 class ProfileRepoImpl
@@ -45,13 +42,6 @@ class ProfileRepoImpl
                     filename = null,
                     body = InputStreamRequestBody(contentResolver, basicProfileDTO.imageLocalUri)
                 )
-            )
-        } else if (basicProfileDTO.imageRemoteUrl != null) {
-            val imageFile = File(basicProfileDTO.imageRemoteUrl)
-            val requestBody = imageFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
-            val part = MultipartBody.Part.createFormData("image", imageFile.name, requestBody)
-            parts.add(
-                part
             )
         }
         return withContext(coroutineDispatcher) {

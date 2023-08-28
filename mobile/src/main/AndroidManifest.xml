@@ -57,6 +57,16 @@
         android:theme="@style/AppTheme">
 
         <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notifications" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+
+        <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/MAPS_API_KEY" />
         <meta-data
@@ -81,7 +91,6 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-        <activity android:name=".payments.pay.PaymentActivity" />
         <activity android:name=".BillingActivity" />
         <activity
             android:name=".scheduler.ui.AlarmScreenActivity"
@@ -220,6 +229,7 @@
         <service
             android:name=".tools.walking.work.CountStepsService"
             android:foregroundServiceType="location" />
+
     </application>
 
 </manifest>

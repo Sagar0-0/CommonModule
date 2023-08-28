@@ -118,10 +118,14 @@ fun NavGraphBuilder.basicProfileRoute(navigateToHome: () -> Unit) {
                     onValueChange = {})
             }
 
-            TextField(
-                label = { Text(text = "Phone") },
-                value = phone,
-                onValueChange = { phone = it })
+            if (user.phoneNumber.isNullOrEmpty()) {
+                TextField(label = { Text(text = "Phone") }, value = phone, onValueChange = { str ->
+                    if (str.length <= 8) phone = str
+                })
+                Button(onClick = { }) {
+                    Text(text = "Verify")
+                }
+            }
 
             TextField(label = { Text(text = "Refer code") }, value = ref, onValueChange = { str ->
                 if (str.length <= 8) ref = str
@@ -174,7 +178,7 @@ fun NavGraphBuilder.basicProfileRoute(navigateToHome: () -> Unit) {
                         .createBasicProfile(
                             BasicProfileDTO(
                                 uid = user.uid,
-                                imageRemoteUrl = user.photoUrl,
+                                mailUrl = user.photoUrl,
                                 name = name,
                                 gen = gender.toInt(),
                                 mail = user.email ?: "",
