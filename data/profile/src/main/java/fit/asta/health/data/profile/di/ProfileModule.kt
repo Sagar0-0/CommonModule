@@ -1,5 +1,6 @@
 package fit.asta.health.data.profile.di
 
+import android.content.ContentResolver
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,11 +31,13 @@ object ProfileModule {
     fun provideProfileRepo(
         profileApi: BasicProfileApi,
         prefManager: PrefManager,
+        contentResolver: ContentResolver,
         @IODispatcher coroutineDispatcher: CoroutineDispatcher
     ): ProfileRepo {
         return ProfileRepoImpl(
             profileApi = profileApi,
             prefManager = prefManager,
+            contentResolver = contentResolver,
             coroutineDispatcher = coroutineDispatcher
         )
     }

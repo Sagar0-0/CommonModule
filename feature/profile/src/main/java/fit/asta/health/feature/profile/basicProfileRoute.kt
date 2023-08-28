@@ -5,6 +5,7 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
@@ -18,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -64,7 +66,10 @@ fun NavGraphBuilder.basicProfileRoute(navigateToHome: () -> Unit) {
 
             is UiState.Success -> {
                 LaunchedEffect(Unit) {
-                    if ((isProfileAvailable as UiState.Success<Boolean>).data) basicProfileViewModel.setProfilePresent()
+                    if ((isProfileAvailable as UiState.Success<Boolean>).data) {
+                        basicProfileViewModel.setProfilePresent()
+                        navigateToHome()
+                    }
                 }
             }
 
@@ -75,6 +80,15 @@ fun NavGraphBuilder.basicProfileRoute(navigateToHome: () -> Unit) {
         val createBasicProfileState by basicProfileViewModel.createBasicProfileState.collectAsStateWithLifecycle()
 
         Column {
+            var name by rememberSaveable {
+                mutableStateOf(user.name ?: "")
+            }
+            var phone by rememberSaveable {
+                mutableStateOf(user.phoneNumber ?: "")
+            }
+            var gender by rememberSaveable {
+                mutableStateOf("1")
+            }
             var ref by rememberSaveable {
                 mutableStateOf("")
             }
@@ -85,13 +99,34 @@ fun NavGraphBuilder.basicProfileRoute(navigateToHome: () -> Unit) {
                     placeholder = painterResource(id = R.drawable.ic_person)
                 ), contentDescription = "Profile"
             )
-            TextField(value = user.uid, onValueChange = {})
-            TextField(value = user.email ?: "", onValueChange = {})
-            TextField(value = user.name ?: "", onValueChange = {})
-            TextField(value = user.phoneNumber ?: "", onValueChange = {})
-            TextField(value = ref, onValueChange = { str ->
+            TextField(label = { Text(text = "UID") }, value = user.uid, onValueChange = {})
+            TextField(label = { Text(text = "Name") }, value = name, onValueChange = { name = it })
+            TextField(label = { Text(text = "Gender") },
+                value = gender,
+                onValueChange = { gender = it },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Phone
+                )
+            )
+
+            if (user.email == null) {
+                //Show Google sign in
+            } else {
+                TextField(
+                    label = { Text(text = "E-mail") },
+                    value = user.email ?: "",
+                    onValueChange = {})
+            }
+
+            TextField(
+                label = { Text(text = "Phone") },
+                value = phone,
+                onValueChange = { phone = it })
+
+            TextField(label = { Text(text = "Refer code") }, value = ref, onValueChange = { str ->
                 if (str.length <= 8) ref = str
             })
+
             Crossfade(targetState = checkReferralCodeState, label = "") { state ->
                 if (state is UiState.Success) {
                     Image(
@@ -139,11 +174,11 @@ fun NavGraphBuilder.basicProfileRoute(navigateToHome: () -> Unit) {
                         .createBasicProfile(
                             BasicProfileDTO(
                                 uid = user.uid,
-                                url = user.photoUrl.toString(),
-                                name = user.name!!,
-                                gen = "M",
-                                mail = user.email,
-                                ph = user.phoneNumber,
+                                imageRemoteUrl = user.photoUrl,
+                                name = name,
+                                gen = gender.toInt(),
+                                mail = user.email ?: "",
+                                ph = phone,
                                 refCode = ref
                             )
                         )
