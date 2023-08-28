@@ -8,5 +8,5 @@ import kotlinx.coroutines.flow.Flow
 interface OnboardingRepo {
     val userPreferences: Flow<UserPreferencesData>
     suspend fun getData(): ResponseState<List<OnboardingData>>
-    suspend fun dismissOnboarding()
+    suspend fun setOnboardingDone()
 }

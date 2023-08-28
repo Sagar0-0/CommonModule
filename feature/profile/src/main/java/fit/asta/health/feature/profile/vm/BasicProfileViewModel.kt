@@ -65,4 +65,8 @@ class BasicProfileViewModel
     fun getUser(): User {
         return authRepo.getUser()!!
     }
+
+    fun navigateToHome() = viewModelScope.launch {
+        authRepo.setBasicProfileDone()
+    }
 }

@@ -39,13 +39,12 @@ import fit.asta.health.feature.onboarding.ONBOARDING_GRAPH_ROUTE
 import fit.asta.health.feature.onboarding.onboardingRoute
 import fit.asta.health.feature.orders.navigateToOrders
 import fit.asta.health.feature.orders.ordersRoute
+import fit.asta.health.feature.profile.BASIC_PROFILE_GRAPH_ROUTE
 import fit.asta.health.feature.profile.basicProfileRoute
-import fit.asta.health.feature.profile.navigateToBasicProfile
 import fit.asta.health.feature.settings.settingScreens
 import fit.asta.health.feature.settings.view.SettingsUiEvent
 import fit.asta.health.main.view.HOME_GRAPH_ROUTE
 import fit.asta.health.main.view.homeScreen
-import fit.asta.health.main.view.navigateToHome
 import fit.asta.health.payment.PaymentActivity
 import fit.asta.health.profile.CreateProfileLayout
 import fit.asta.health.profile.ProfileContent
@@ -89,6 +88,10 @@ fun MainNavHost(isConnected: Boolean, mainViewModel: MainViewModel) {
             AUTH_GRAPH_ROUTE
         }
 
+        2 -> {
+            BASIC_PROFILE_GRAPH_ROUTE
+        }
+
         else -> {
             HOME_GRAPH_ROUTE
         }
@@ -100,13 +103,9 @@ fun MainNavHost(isConnected: Boolean, mainViewModel: MainViewModel) {
         route = Graph.ROOT.route,
         startDestination = startDestination
     ) {
-        onboardingRoute(navController::navigateToAuth)
-        authRoute(
-            navController::navigateToBasicProfile,
-            navController::navigateToHome,
-            navController::navigateToWebView
-        )
-        basicProfileRoute(navController::navigateToHome)
+        onboardingRoute()
+        authRoute(navController::navigateToWebView)
+        basicProfileRoute()
         homeScreen(navController)
 
         composable(route = Graph.Profile.route) {

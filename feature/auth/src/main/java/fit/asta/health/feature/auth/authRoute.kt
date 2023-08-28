@@ -33,8 +33,6 @@ fun NavController.navigateToAuth(navOptions: NavOptions? = null) {
 
 @OptIn(ExperimentalCoroutinesApi::class)
 fun NavGraphBuilder.authRoute(
-    navigateToBasicProfile: () -> Unit,
-    navigateToHome: () -> Unit,
     navigateToWebView: (String) -> Unit
 ) {
     composable(AUTH_GRAPH_ROUTE) {
@@ -44,7 +42,7 @@ fun NavGraphBuilder.authRoute(
             if (authViewModel.isAuthenticated()) {
                 Toast.makeText(context, "Complete Basic Profile to continue!", Toast.LENGTH_SHORT)
                     .show()
-                navigateToBasicProfile()
+                authViewModel.navigateToBasicProfile()
             }
         }
 
@@ -56,14 +54,14 @@ fun NavGraphBuilder.authRoute(
                 LaunchedEffect(Unit) {
                     if ((isProfileAvailable as UiState.Success<Boolean>).data) {
                         Toast.makeText(context, "Welcome back!", Toast.LENGTH_SHORT).show()
-                        navigateToHome()
+                        authViewModel.navigateToHome()
                     } else {
                         Toast.makeText(
                             context,
                             "Complete Basic Profile to continue!",
                             Toast.LENGTH_SHORT
                         ).show()
-                        navigateToBasicProfile()
+                        authViewModel.navigateToBasicProfile()
                     }
                 }
             }

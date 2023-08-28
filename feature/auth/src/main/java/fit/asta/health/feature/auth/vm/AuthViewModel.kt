@@ -6,7 +6,6 @@ import com.google.firebase.auth.AuthCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.auth.repo.AuthRepo
-import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.data.profile.repo.ProfileRepo
@@ -23,7 +22,6 @@ internal class AuthViewModel
     private val authRepo: AuthRepo,
     private val profileRepo: ProfileRepo
 ) : ViewModel() {
-
 
     private val _isProfileAvailable = MutableStateFlow<UiState<Boolean>>(UiState.Idle)
     val isProfileAvailable = _isProfileAvailable.asStateFlow()
@@ -46,9 +44,6 @@ internal class AuthViewModel
         _isProfileAvailable.value = UiState.Loading
         viewModelScope.launch {
             val res = profileRepo.isProfileAvailable(userId)
-            if (res is ResponseState.Success && res.data) {
-                authRepo.setBasicProfileDone()
-            }
             _isProfileAvailable.value = res.toUiState()
         }
     }
@@ -82,5 +77,13 @@ internal class AuthViewModel
 
     fun resetDeleteState() {
         _deleteState.value = UiState.Idle
+    }
+
+    fun navigateToBasicProfile() = viewModelScope.launch {
+        authRepo.setLoginDone()
+    }
+
+    fun navigateToHome() = viewModelScope.launch {
+        authRepo.setBasicProfileDone()
     }
 }

@@ -7,6 +7,7 @@ import fit.asta.health.common.utils.ResponseState
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepo {
+    suspend fun setLoginDone()
     suspend fun setBasicProfileDone()
     suspend fun setLogoutDone()
     fun isAuthenticated(): Boolean

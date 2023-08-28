@@ -45,7 +45,7 @@ fun NavController.navigateToBasicProfile(navOptions: NavOptions? = null) {
     }
 }
 
-fun NavGraphBuilder.basicProfileRoute(navigateToHome: () -> Unit) {
+fun NavGraphBuilder.basicProfileRoute() {
 
     composable(BASIC_PROFILE_GRAPH_ROUTE) {
 
@@ -172,7 +172,7 @@ fun NavGraphBuilder.basicProfileRoute(navigateToHome: () -> Unit) {
 
                     is UiState.Success -> {
                         LaunchedEffect(Unit) {
-                            navigateToHome()
+                            basicProfileViewModel.navigateToHome()
                         }
                     }
 

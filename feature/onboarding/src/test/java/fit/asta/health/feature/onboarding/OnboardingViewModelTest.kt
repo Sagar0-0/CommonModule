@@ -88,9 +88,9 @@ class OnboardingViewModelTest : BaseTest() {
     @Test
     fun `dismissOnboarding, calls Repo`() = runTest {
         coEvery {
-            onboardingRepoImpl.dismissOnboarding()
+            onboardingRepoImpl.setOnboardingDone()
         } just Runs
-        viewModel.dismissOnboarding()
-        coVerify { onboardingRepoImpl.dismissOnboarding() }
+        viewModel.navigateToAuth()
+        coVerify { onboardingRepoImpl.setOnboardingDone() }
     }
 }

@@ -23,11 +23,15 @@ class AuthRepoImpl @Inject constructor(
     private val prefManager: PrefManager
 ) : AuthRepo {
     override suspend fun setLogoutDone() {
-        prefManager.setScreenCode(1)
+        prefManager.setScreenCode(1)//show auth screen
+    }
+
+    override suspend fun setLoginDone() {
+        prefManager.setScreenCode(2)//Show basic profile
     }
 
     override suspend fun setBasicProfileDone() {
-        prefManager.setScreenCode(2)
+        prefManager.setScreenCode(3)//Show home
     }
 
     override fun isAuthenticated(): Boolean {
