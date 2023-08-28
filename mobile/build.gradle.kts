@@ -1,5 +1,3 @@
-import fit.asta.health.apps.AstaBuildType
-
 plugins {
     id("asta.android.application")
     id("asta.android.application.compose")
@@ -82,7 +80,6 @@ android {
             isRenderscriptDebuggable = false
 
             //signingConfig = signingConfigs.getByName("release")
-            applicationIdSuffix = AstaBuildType.RELEASE.applicationIdSuffix
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
