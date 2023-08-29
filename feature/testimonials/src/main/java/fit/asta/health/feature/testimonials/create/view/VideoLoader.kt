@@ -71,16 +71,16 @@ fun VideoLayout(
     onVideoClear: () -> Unit,
 ) {
     val video by viewModel.video.collectAsStateWithLifecycle()
-    val state = rememberMediaState(player = viewModel.player())
+    //val state = rememberMediaState(player = viewModel.player())
     Box {
         if (video.url.isEmpty() && video.localUrl == null) {
             UploadTstMediaView(onUploadClick = onVideoClick)
         } else {
-            VideoView(
+            /*VideoView(
                 videoUri = getOneUrl(localUrl = video.localUrl, remoteUrl = video.url),
                 player = viewModel.player(),
                 state = state
-            )
+            )*/
         }
     }
 

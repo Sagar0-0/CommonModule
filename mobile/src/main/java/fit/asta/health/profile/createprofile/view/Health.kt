@@ -146,6 +146,7 @@ fun HealthCreateScreen(
 }
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @ExperimentalCoroutinesApi
 @Composable
 fun HealthContent(
@@ -280,7 +281,7 @@ private fun HealthContentLayout(
     selections: List<Pair<ComposeIndex, TwoRadioBtnSelections?>>,
     onItemSelectFunctions: List<() -> Unit>,
     cardTypes: List<MultiRadioBtnKeys>,
-    inputWrappers: List<fit.asta.health.data.testimonials.model.InputWrapper>,
+    inputWrappers: List<InputWrapper>,
     eventPrevious: () -> Unit,
     eventNext: () -> Unit,
 ) {

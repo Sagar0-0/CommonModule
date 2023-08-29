@@ -15,6 +15,7 @@ import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import fit.asta.health.data.testimonials.model.TestimonialType
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppTexts
@@ -24,9 +25,9 @@ import fit.asta.health.designsystem.theme.spacing
 @Composable
 fun TestimonialsRadioButton(
     selectionTypeText: String,
-    radioButtonList: List<fit.asta.health.data.testimonials.model.TestimonialType>,
-    selectedOption: fit.asta.health.data.testimonials.model.TestimonialType?,
-    onOptionSelected: (fit.asta.health.data.testimonials.model.TestimonialType) -> Unit,
+    radioButtonList: List<TestimonialType>,
+    selectedOption: TestimonialType?,
+    onOptionSelected: (TestimonialType) -> Unit,
 ) {
     AppCard(modifier = Modifier.fillMaxWidth(), content = {
         Column(

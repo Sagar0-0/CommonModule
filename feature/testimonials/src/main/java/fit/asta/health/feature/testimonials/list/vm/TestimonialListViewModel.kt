@@ -8,6 +8,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.filter
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.feature.testimonials.list.vm.TestimonialListEvent.Remove
 import fit.asta.health.network.NetworkHelper
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -44,9 +45,9 @@ class TestimonialListViewModel
     }
 
     private fun applyEvents(
-        paging: PagingData<fit.asta.health.data.testimonials.model.Testimonial>,
+        paging: PagingData<Testimonial>,
         event: TestimonialListEvent
-    ): PagingData<fit.asta.health.data.testimonials.model.Testimonial> {
+    ): PagingData<Testimonial> {
         return when (event) {
             is Remove -> {
                 paging.filter { event.id != it.id }

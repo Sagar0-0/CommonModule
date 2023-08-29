@@ -127,6 +127,7 @@ dependencies {
     implementation(project(":data:address"))
     implementation(project(":data:payment"))
     implementation(project(":data:scheduler"))
+    implementation(project(":data:testimonials"))
 
     implementation(project(":feature:address"))
     implementation(project(":feature:auth"))

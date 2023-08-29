@@ -36,16 +36,16 @@ fun PlayVideoLayout(
     tstVideoMedia: List<Media>,
     player: Player
 ) {
-    val state = rememberMediaState(player = player)
+    //val state = rememberMediaState(player = player)
     Row(
         Modifier.fillMaxWidth()
     ) {
         if (tstVideoMedia.isNotEmpty()) {
             tstVideoMedia.forEach {
                 Surface(modifier = Modifier.fillMaxWidth()) {
-                    VideoView(
+                    /*VideoView(
                         videoUri = getImgUrl(url = it.url), state = state, player = player
-                    )
+                    )*/
                 }
             }
         } else {
@@ -54,6 +54,7 @@ fun PlayVideoLayout(
     }
 }
 
+/*
 @Composable
 fun VideoView(
     videoUri: String,
@@ -126,4 +127,4 @@ fun VideoView(
                 }
             })
     }
-}
+}*/

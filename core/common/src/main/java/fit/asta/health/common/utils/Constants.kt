@@ -28,7 +28,6 @@ object Constants {
     const val WATER_GRAPH_ROUTE = "graph_water_tool"
     const val SUNLIGHT_GRAPH_ROUTE = "graph_sunlight_tool"
     const val PROFILE_GRAPH_ROUTE = "graph_profile_tool"
-    const val TESTIMONIALS_GRAPH_ROUTE = "graph_testimonials_tool"
     const val CREATE_PROFILE_GRAPH_ROUTE = "graph_create_profile_tool"
     fun getDayAndTime(inputDateString: String = "2023-07-03T12:00"): DayAndTime {
         val inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")

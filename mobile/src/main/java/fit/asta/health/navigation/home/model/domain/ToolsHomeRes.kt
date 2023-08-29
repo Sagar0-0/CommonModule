@@ -3,7 +3,6 @@ package fit.asta.health.navigation.home.model.domain
 import com.google.gson.annotations.SerializedName
 import fit.asta.health.data.testimonials.model.Testimonial
 
-
 data class ToolsHomeRes(
     @SerializedName("data") val `data`: ToolsHome,
     @SerializedName("status") val status: Status,
@@ -11,7 +10,7 @@ data class ToolsHomeRes(
     data class ToolsHome(
         @SerializedName("bnr") val banners: List<Banner>,
         @SerializedName("tml")
-        val testimonials: List<fit.asta.health.data.testimonials.model.Testimonial>,
+        val testimonials: List<Testimonial>,
         @SerializedName("tool") val tools: List<HealthTool>,
         @SerializedName("ust") val userTools: UserSelectedTool,
     ) {

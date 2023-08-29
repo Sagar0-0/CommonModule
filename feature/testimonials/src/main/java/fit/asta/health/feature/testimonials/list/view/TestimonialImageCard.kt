@@ -15,6 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.data.testimonials.model.Media
+import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.designsystem.components.generic.AppDefServerImg
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.theme.aspectRatio
@@ -22,7 +24,7 @@ import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.feature.testimonials.components.TstTxtLayout
 
 @Composable
-fun TstViewImgLayout(tstImageMedia: fit.asta.health.data.testimonials.model.Testimonial) {
+fun TstViewImgLayout(tstImageMedia: Testimonial) {
     Column(
         Modifier
             .fillMaxWidth()
@@ -35,7 +37,7 @@ fun TstViewImgLayout(tstImageMedia: fit.asta.health.data.testimonials.model.Test
 }
 
 @Composable
-fun BeforeAndCardLayout(tstImageMedia: List<fit.asta.health.data.testimonials.model.Media>) {
+fun BeforeAndCardLayout(tstImageMedia: List<Media>) {
 
     if (tstImageMedia.isNotEmpty()) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(spacing.small)) {

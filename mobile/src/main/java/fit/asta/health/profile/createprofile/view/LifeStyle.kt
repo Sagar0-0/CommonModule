@@ -474,8 +474,8 @@ data class OnlySelectionCardData(
 
 data class TimePickerData(
     val title: String,
-    val firstColTime: State<fit.asta.health.data.testimonials.model.InputWrapper>,
-    val secColTime: State<fit.asta.health.data.testimonials.model.InputWrapper>,
+    val firstColTime: State<InputWrapper>,
+    val secColTime: State<InputWrapper>,
     val showFirstContent: MutableState<Boolean>,
     val showSecondContent: MutableState<Boolean>,
     val clockState: UseCaseState,

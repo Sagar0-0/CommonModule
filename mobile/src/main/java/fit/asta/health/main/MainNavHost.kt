@@ -39,7 +39,7 @@ import fit.asta.health.feature.profile.basicProfileRoute
 import fit.asta.health.feature.scheduler.ui.navigation.schedulerNavigation
 import fit.asta.health.feature.settings.settingScreens
 import fit.asta.health.feature.settings.view.SettingsUiEvent
-import fit.asta.health.feature.testimonials.testimonialsRoute
+import fit.asta.health.feature.testimonials.navigation.testimonialNavRoute
 import fit.asta.health.main.view.HOME_GRAPH_ROUTE
 import fit.asta.health.main.view.homeScreen
 import fit.asta.health.payment.PaymentActivity
@@ -116,7 +116,7 @@ fun MainNavHost(isConnected: Boolean, mainViewModel: MainViewModel) {
         sunlightNavigation(navController, onBack = { navController.navigateUp() })
         //sleepNavGraph(navController,  onBack = { navController.navigateUp() })
         exerciseNavigation(navController, onBack = { navController.navigateUp() })
-        testimonialsRoute(navController)
+        testimonialNavRoute(navController, onBack = { navController.navigateUp() })
         schedulerNavigation(navController, onBack = { navController.navigateUp() })
 
         settingScreens { key ->
