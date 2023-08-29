@@ -52,11 +52,11 @@ import fit.asta.health.navigation.track.data.remote.model.menu.HomeMenuResponse
 import fit.asta.health.navigation.track.ui.components.TrackDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackingChartCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
-import fit.asta.health.navigation.track.ui.util.DatePickerData
 import fit.asta.health.navigation.track.ui.util.TrackOption
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
 import java.text.DecimalFormat
+import java.time.LocalDate
 import kotlin.math.abs
 
 /**
@@ -71,7 +71,7 @@ import kotlin.math.abs
 @Composable
 fun TrackMenuScreenControl(
     homeMenuState: UiState<HomeMenuResponse>,
-    calendarData: DatePickerData,
+    calendarData: LocalDate,
     loadHomeData: () -> Unit,
     setUiEvent: (TrackUiEvent) -> Unit,
     navigator: (String) -> Unit
@@ -127,7 +127,7 @@ fun TrackMenuScreenControl(
 @Composable
 private fun TrackMenuSuccessScreen(
     homeMenuData: HomeMenuResponse.HomeMenuData,
-    calendarData: DatePickerData,
+    calendarData: LocalDate,
     setUiEvent: (TrackUiEvent) -> Unit,
     navigator: (String) -> Unit
 ) {
@@ -150,8 +150,8 @@ private fun TrackMenuSuccessScreen(
         // Date Picker
         item {
             TrackDatePicker(
-                date = calendarData.date,
-                month = calendarData.month,
+                date = calendarData.dayOfMonth,
+                month = calendarData.monthValue,
                 year = calendarData.year,
                 onPreviousButtonClick = { setUiEvent(TrackUiEvent.ClickedPreviousDateButton) },
                 onNextButtonClick = { setUiEvent(TrackUiEvent.ClickedNextDateButton) },
