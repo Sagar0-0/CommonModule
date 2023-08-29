@@ -122,6 +122,7 @@ dependencies {
 
     implementation(project(":libs:chart"))
     implementation(project(":libs:audio"))
+    implementation(project(":libs:video"))
 
     implementation(project(":data:auth"))
     implementation(project(":data:payment"))

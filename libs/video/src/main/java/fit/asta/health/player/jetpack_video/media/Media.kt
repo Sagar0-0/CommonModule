@@ -318,6 +318,6 @@ fun  Media(
     }
 }
 
-internal const val TestTag_VideoSurface = "VideoSurface"
+const val TestTag_VideoSurface = "VideoSurface"
 internal const val TestTag_Shutter = "Shutter"
 internal const val TestTag_Artwork = "Artwork"
