@@ -8,7 +8,6 @@ import androidx.media3.session.CommandButton
 import androidx.media3.session.MediaSession
 import androidx.media3.session.SessionCommand
 import dagger.hilt.android.qualifiers.ApplicationContext
-import fit.asta.health.R
 import fit.asta.health.player.jetpack_audio.di.AppDispatchers
 import fit.asta.health.player.jetpack_audio.di.Dispatcher
 import fit.asta.health.player.jetpack_audio.domain.utils.AppIcons
@@ -23,6 +22,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import javax.inject.Inject
+import fit.asta.health.resources.strings.R as StrR
 
 class MusicActionHandler @Inject constructor(
     @Dispatcher(AppDispatchers.MAIN) mainDispatcher: CoroutineDispatcher,
@@ -79,17 +79,17 @@ class MusicActionHandler @Inject constructor(
     private fun getAvailableCustomCommands() = mapOf(
         REPEAT to buildCustomCommand(
             action = REPEAT,
-            displayName = context.getString(R.string.repeat),
+            displayName = context.getString(StrR.string.repeat),
             iconResource = AppIcons.Repeat.resourceId
         ),
         REPEAT_ONE to buildCustomCommand(
             action = REPEAT_ONE,
-            displayName = context.getString(R.string.repeat_one),
+            displayName = context.getString(StrR.string.repeat_one),
             iconResource = AppIcons.RepeatOne.resourceId
         ),
         SHUFFLE to buildCustomCommand(
             action = SHUFFLE,
-            displayName = context.getString(R.string.shuffle),
+            displayName = context.getString(StrR.string.shuffle),
             iconResource = AppIcons.Shuffle.resourceId
         )
     )

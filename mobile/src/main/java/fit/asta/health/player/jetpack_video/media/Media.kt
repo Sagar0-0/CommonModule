@@ -21,6 +21,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.text.CueGroup
+import androidx.media3.common.util.UnstableApi
 
 /**
  * The type of surface view used for video playbacks.
@@ -94,7 +95,7 @@ enum class ShowBuffering {
  * default is null. The [Media] only provides logic for controller visibility controlling.
  */
 @Composable
-@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+@androidx.annotation.OptIn(UnstableApi::class)
 fun  Media(
     state: MediaState,
     modifier: Modifier = Modifier,

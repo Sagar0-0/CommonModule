@@ -2,31 +2,31 @@ package fit.asta.health.player.jetpack_audio.domain.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import fit.asta.health.R
 import java.util.Locale
 import kotlin.time.Duration.Companion.milliseconds
+import fit.asta.health.resources.strings.R as StrR
 
 @Composable
-internal fun Long.asFormattedString() = milliseconds.toComponents { minutes, seconds, _ ->
+fun Long.asFormattedString() = milliseconds.toComponents { minutes, seconds, _ ->
     stringResource(
-        id = R.string.player_timestamp_format,
+        id = StrR.string.player_timestamp_format,
         String.format(locale = Locale.US, format = "%02d", minutes),
         String.format(locale = Locale.US, format = "%02d", seconds)
     )
 }
 
 @Composable
-internal fun Int.asFormattedString() = stringResource(
-    id = R.string.player_timestamp_format,
+fun Int.asFormattedString() = stringResource(
+    id = StrR.string.player_timestamp_format,
     String.format(locale = Locale.US, format = "%02d", this / 60),
     String.format(locale = Locale.US, format = "%02d", this % 60)
 )
 
 
-internal fun convertToProgress(count: Long, total: Long) =
+fun convertToProgress(count: Long, total: Long) =
     ((count * ProgressDivider) / total / ProgressDivider).takeIf(Float::isFinite) ?: ZeroProgress
 
-internal fun convertToPosition(value: Float, total: Long) = (value * total).toLong()
+fun convertToPosition(value: Float, total: Long) = (value * total).toLong()
 
 private const val ProgressDivider = 100f
 private const val ZeroProgress = 0f

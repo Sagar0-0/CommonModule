@@ -4,6 +4,7 @@ import androidx.compose.runtime.*
 import androidx.media3.common.C
 import androidx.media3.common.Player
 import androidx.media3.common.Timeline
+import androidx.media3.common.util.UnstableApi
 
 /**
  * Create and [remember] a [ControllerState] instance.
@@ -23,7 +24,7 @@ fun ControllerState(mediaState: MediaState): ControllerState {
 }
 
 @Stable
-@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+@androidx.annotation.OptIn(UnstableApi::class)
 class ControllerState internal constructor(
     stateOfPlayerState: State<PlayerState?>
 ) {

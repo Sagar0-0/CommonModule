@@ -18,11 +18,11 @@ import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaStyleNotificationHelper.MediaStyle
 import com.google.common.collect.ImmutableList
 import dagger.hilt.android.qualifiers.ApplicationContext
-import fit.asta.health.R
 import fit.asta.health.player.jetpack_audio.di.AppDispatchers.IO
 import fit.asta.health.player.jetpack_audio.di.AppDispatchers.MAIN
 import fit.asta.health.player.jetpack_audio.di.Dispatcher
 import fit.asta.health.player.jetpack_audio.domain.utils.AppIcons
+import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob

@@ -7,9 +7,9 @@ import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
-import fit.asta.health.R
 import fit.asta.health.player.jetpack_audio.domain.utils.Icon.DrawableResourceIcon
 import fit.asta.health.player.jetpack_audio.domain.utils.Icon.ImageVectorIcon
+import fit.asta.health.resources.drawables.R
 
 object AppIcons {
     val Settings = ImageVectorIcon(Icons.Rounded.Settings)
