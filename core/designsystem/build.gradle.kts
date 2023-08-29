@@ -17,15 +17,14 @@ dependencies {
 
     implementation(project(":resources:strings"))
     implementation(project(":resources:drawables"))
+    implementation(project(":core:common"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.ui.unit.android)
     implementation(libs.androidx.documentfile)
-    implementation(project(mapOf("path" to ":core:common")))
-    testImplementation(libs.junit4)
-    androidTestImplementation(libs.androidx.junit)
+    testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.androidx.test.espresso.core)
 
     //Jetpack Compose
