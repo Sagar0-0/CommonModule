@@ -21,6 +21,10 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.utils.*
 import fit.asta.health.designsystem.AppTheme
@@ -29,6 +33,7 @@ import fit.asta.health.main.MainViewModel
 import fit.asta.health.network.TokenProvider
 import fit.asta.health.network.utils.NetworkConnectivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 
@@ -54,7 +59,6 @@ class MainActivity : ComponentActivity(),
             // FCM SDK (and your app) can post notifications.
         } else {
 
-
             // TODO: Inform user that that your app will not show notifications.
         }
     }
@@ -66,6 +70,7 @@ class MainActivity : ComponentActivity(),
         installSplashScreen()
 
         super.onCreate(savedInstanceState)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val alarmManager = ContextCompat.getSystemService(this, AlarmManager::class.java)
             if (alarmManager?.canScheduleExactAlarms() == false) {
@@ -75,9 +80,27 @@ class MainActivity : ComponentActivity(),
                 }
             }
         }
+
         registerConnectivityReceiver()
         startMainNavHost()
         FirebaseAuth.getInstance().addIdTokenListener(this)
+    }
+
+    private suspend fun getAndStoreRegToken(): String {
+        val token = Firebase.messaging.token.await()
+        // Add token and timestamp to Firestore for this user
+        val deviceToken = hashMapOf(
+            "token" to token,
+            "timestamp" to FieldValue.serverTimestamp(),
+        )
+
+        val uid = FirebaseAuth.getInstance().uid
+        // Get user ID from Firebase Auth or your own server
+        uid?.let {
+            Firebase.firestore.collection("fcmTokens").document(it)
+                .set(deviceToken).await()
+        }
+        return token
     }
 
     private fun askNotificationPermission() {

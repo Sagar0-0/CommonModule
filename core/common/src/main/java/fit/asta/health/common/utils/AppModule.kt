@@ -19,6 +19,10 @@ import javax.inject.Singleton
 object AppModule {
 
     @Provides
+    @DefaultDispatcher
+    fun providesCoroutineDispatcher(): CoroutineDispatcher = Dispatchers.Default
+
+    @Provides
     @Singleton
     fun provideContentResolver(@ApplicationContext context: Context): ContentResolver =
         context.contentResolver
@@ -43,3 +47,7 @@ annotation class IODispatcher
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
 annotation class ApplicationScope
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class DefaultDispatcher

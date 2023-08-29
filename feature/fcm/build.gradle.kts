@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "fit.asta.health.feature.auth"
+    namespace = "fit.asta.health.feature.fcm"
 
     defaultConfig {
         consumerProguardFiles("consumer-rules.pro")
@@ -14,26 +14,15 @@ android {
 }
 
 dependencies {
-
-    implementation(project(":resources:drawables"))
     implementation(project(":resources:strings"))
+    implementation(project(":resources:drawables"))
 
     implementation(project(":core:common"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:test"))
 
+    implementation(project(":data:orders"))
     implementation(project(":data:auth"))
-    implementation(project(":data:profile"))
-
-    //Firebase authentication
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.auth.ktx)
-    implementation(libs.play.services.auth)
-    implementation(libs.play.services.auth.api.phone)
-    implementation(libs.firebase.ui.auth)
-
-    //Firebase for notifications
-    implementation(libs.firebase.messaging.ktx)
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
@@ -47,4 +36,8 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.foundation.android)
     implementation(libs.androidx.material3)
+    implementation(libs.accompanist.coil)
+
+    //Firebase for notifications
+    implementation(libs.firebase.messaging.ktx)
 }

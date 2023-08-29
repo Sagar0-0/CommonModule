@@ -17,6 +17,7 @@ import fit.asta.health.BuildConfig
 import fit.asta.health.R
 import fit.asta.health.common.ui.navigateToWebView
 import fit.asta.health.common.ui.webView
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentBuildVersion
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.rateUs
@@ -56,41 +57,51 @@ import fit.asta.health.tools.sunlight.nav.sunlightNavigation
 import fit.asta.health.tools.water.nav.waterToolNavigation
 import fit.asta.health.wallet.navigateToWallet
 import fit.asta.health.wallet.walletRoute
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun MainNavHost(isConnected: Boolean, mainViewModel: MainViewModel) {
-    val navController = rememberNavController()
+
     if (!isConnected) {
         Box(modifier = Modifier.fillMaxSize()) {
             AppErrorScreen {}
         }
     }
-
-    val context = LocalContext.current
     val screenCode by mainViewModel.screenCode.collectAsStateWithLifecycle()
-    val startDestination = when (screenCode) {
-        0 -> {
-            ONBOARDING_GRAPH_ROUTE
+    when (screenCode) {
+        is UiState.Success -> {
+            val startDestination = when ((screenCode as UiState.Success<Int>).data) {
+                0 -> {
+                    ONBOARDING_GRAPH_ROUTE
+                }
+
+                1 -> {
+                    AUTH_GRAPH_ROUTE
+                }
+
+                2 -> {
+                    BASIC_PROFILE_GRAPH_ROUTE
+                }
+
+                else -> {
+                    HOME_GRAPH_ROUTE
+                }
+            }
+            Log.d("TAG", "MainNavHost: $startDestination")
+            MainNavHost(startDestination)
         }
 
-        1 -> {
-            AUTH_GRAPH_ROUTE
-        }
-
-        2 -> {
-            BASIC_PROFILE_GRAPH_ROUTE
-        }
-
-        else -> {
-            HOME_GRAPH_ROUTE
-        }
+        else -> {}
     }
-    Log.d("TAG", "MainNavHost: $startDestination")
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun MainNavHost(startDestination: String) {
+    val navController = rememberNavController()
+    val context = LocalContext.current
 
     NavHost(
         navController = navController,
