@@ -4,16 +4,18 @@ import android.content.Intent
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
-import fit.asta.health.main.Graph
-import fit.asta.health.main.deepLinkUrl
-import fit.asta.health.main.sharedViewModel
+import fit.asta.health.common.utils.Constants.EXERCISE_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.deepLinkUrl
+import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.tools.exercise.view.body_parts.ExerciseBodyParts
 import fit.asta.health.tools.exercise.view.body_stretch.ExerciseBodyStretch
 import fit.asta.health.tools.exercise.view.challenges.ExerciseChallengesScreen
@@ -29,14 +31,18 @@ import fit.asta.health.tools.exercise.view.video.VideoScreen
 import fit.asta.health.tools.exercise.view.video_player.VideoPlayerScreen
 import fit.asta.health.tools.exercise.viewmodel.ExerciseViewModel
 
+fun NavController.navigateToExercise(navOptions: NavOptions? = null) {
+    this.navigate(EXERCISE_GRAPH_ROUTE, navOptions)
+}
+
 fun NavGraphBuilder.exerciseNavigation(
     navController: NavHostController, onBack: () -> Unit
 ) {
     navigation(
-        route = Graph.ExerciseTool.route + "?activity={activity}",
+        route = "$EXERCISE_GRAPH_ROUTE?activity={activity}",
         startDestination = ExerciseScreen.HomeScreen.route,
         deepLinks = listOf(navDeepLink {
-            uriPattern = "${deepLinkUrl}/${ExerciseScreen.HomeScreen.route}/{activity}"
+            uriPattern = "${deepLinkUrl}/${EXERCISE_GRAPH_ROUTE}/{activity}"
             action = Intent.ACTION_VIEW
         }),
         arguments = listOf(navArgument("activity") {

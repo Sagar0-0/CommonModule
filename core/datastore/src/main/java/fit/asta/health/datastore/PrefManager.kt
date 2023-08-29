@@ -21,8 +21,36 @@ class PrefManager
             notificationStatus = it.notificationStatus,
             locationPermissionRejectedCount = it.locationPermissionRejectedCount,
             currentAddress = it.currentAddress,
-            theme = it.theme
+            theme = it.theme,
+            alarmId = it.alarmId,
+            tone = it.tone
         )
+    }
+
+    suspend fun setSoundTone(tone: String) {
+
+        try {
+            userPreferences.updateData {
+                it.copy {
+                    this.tone = tone
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("Pref", "Failed to update user preferences", ioException)
+        }
+    }
+
+    suspend fun setAlarmId(alarmId: Long) {
+
+        try {
+            userPreferences.updateData {
+                it.copy {
+                    this.alarmId = alarmId
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("Pref", "Failed to update user preferences", ioException)
+        }
     }
 
     suspend fun setScreenCode(code: Int) {

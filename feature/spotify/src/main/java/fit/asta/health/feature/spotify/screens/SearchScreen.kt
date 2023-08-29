@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -36,6 +37,7 @@ import fit.asta.health.feature.spotify.components.MusicSmallImageRow
 import fit.asta.health.feature.spotify.components.SearchBar
 import fit.asta.health.feature.spotify.events.SpotifyUiEvent
 import fit.asta.health.feature.spotify.navigation.SpotifyNavRoutes
+import fit.asta.health.resources.strings.R
 
 /**
  * This is the Spotify Searching Screen which searches according to the User Queries and gives the
@@ -73,6 +75,9 @@ fun SearchScreen(
             .background(MaterialTheme.colorScheme.surface)
     ) {
 
+        val searchBarEmpty = stringResource(id = R.string.search_bar_empty)
+        val selectAtLeastOneOption = stringResource(id = R.string.select_at_least_one_type)
+
         // This function Draws the Search Bar to the Screen
         SearchBar(
             modifier = Modifier
@@ -105,19 +110,11 @@ fun SearchScreen(
             } else if (userSearchInput.value.isEmpty()) {
 
                 // No Search Query
-                Toast.makeText(
-                    context,
-                    "Search Bar Empty!",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(context, searchBarEmpty, Toast.LENGTH_SHORT).show()
             } else {
 
                 // No Search Filter
-                Toast.makeText(
-                    context,
-                    "Select at least one type for searching!",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(context, selectAtLeastOneOption, Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -152,7 +149,7 @@ fun SearchScreen(
                         // Tracks
                         item {
                             Text(
-                                text = "Tracks",
+                                text = stringResource(id = R.string.tracks),
 
                                 modifier = Modifier
                                     .padding(12.dp),
@@ -197,7 +194,7 @@ fun SearchScreen(
                         // Artists
                         item {
                             Text(
-                                text = "Artists",
+                                text = stringResource(id = R.string.artists),
 
                                 modifier = Modifier
                                     .padding(12.dp),
@@ -240,7 +237,7 @@ fun SearchScreen(
                         // Albums Text
                         item {
                             Text(
-                                text = "Albums",
+                                text = stringResource(id = R.string.albums),
 
                                 modifier = Modifier
                                     .padding(top = 24.dp, bottom = 8.dp, start = 8.dp, end = 8.dp),
@@ -288,7 +285,7 @@ fun SearchScreen(
                         // Playlist Text
                         item {
                             Text(
-                                text = "Playlists",
+                                text = stringResource(id = R.string.playlists),
 
                                 modifier = Modifier
                                     .padding(top = 24.dp, bottom = 8.dp, start = 8.dp, end = 8.dp),

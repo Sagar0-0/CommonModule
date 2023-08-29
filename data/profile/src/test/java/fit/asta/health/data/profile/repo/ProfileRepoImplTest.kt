@@ -13,6 +13,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.just
+import io.mockk.mockk
 import io.mockk.spyk
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -37,6 +38,7 @@ class ProfileRepoImplTest {
             ProfileRepoImpl(
                 profileApi = api,
                 prefManager = prefManager,
+                contentResolver = mockk(),
                 coroutineDispatcher = UnconfinedTestDispatcher()
             )
         )
@@ -46,7 +48,7 @@ class ProfileRepoImplTest {
     fun `setProfilePresent, returns Success`() = runTest {
         coEvery { prefManager.setScreenCode(any()) } just Runs
         repo.setProfilePresent()
-        coVerify { prefManager.setScreenCode(3) }
+        coVerify { prefManager.setScreenCode(2) }
     }
 
     @Test
@@ -67,17 +69,17 @@ class ProfileRepoImplTest {
 
     @Test
     fun `createBasicProfile, returns Success`() = runTest {
-        coEvery { api.createBasicProfile(any()) } returns BasicProfileResponse()
+        coEvery { api.createBasicProfile(any(), any()) } returns BasicProfileResponse()
         val response = repo.createBasicProfile(BasicProfileDTO())
-        coVerify { api.createBasicProfile(BasicProfileDTO()) }
+        coVerify { api.createBasicProfile(BasicProfileDTO(), any()) }
         assert(response is ResponseState.Success)
     }
 
     @Test
     fun `createBasicProfile with random exception, return Error Response`() = runTest {
-        coEvery { api.createBasicProfile(any()) } throws Exception()
+        coEvery { api.createBasicProfile(any(), any()) } throws Exception()
         val response = repo.createBasicProfile(BasicProfileDTO())
-        coVerify { api.createBasicProfile(BasicProfileDTO()) }
+        coVerify { api.createBasicProfile(BasicProfileDTO(), any()) }
         assert(response is ResponseState.Error)
     }
 

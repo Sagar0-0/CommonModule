@@ -14,11 +14,14 @@ import fit.asta.health.navigation.track.data.remote.model.sleep.SleepResponse
 import fit.asta.health.navigation.track.data.remote.model.step.StepsResponse
 import fit.asta.health.navigation.track.data.remote.model.sunlight.SunlightResponse
 import fit.asta.health.navigation.track.data.remote.model.water.WaterResponse
+import fit.asta.health.navigation.track.ui.util.DatePickerData
 import fit.asta.health.navigation.track.ui.util.TrackOption
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import javax.inject.Inject
 
 
@@ -27,6 +30,96 @@ class TrackViewModel @Inject constructor(
     private val trackingRepo: TrackingRepo
 ) : ViewModel() {
 
+    /**
+     * These variables contains the current date and calendar data
+     */
+    private val _calendarData: MutableStateFlow<DatePickerData>
+    val calendarData: StateFlow<DatePickerData>
+
+    init {
+
+        // Initializing a Calendar
+        val mCalendar = Calendar.getInstance()
+
+        // Assigning Today's Date to the variable
+        _calendarData = MutableStateFlow(
+            DatePickerData(
+                date = mCalendar.get(Calendar.DAY_OF_MONTH),
+                month = mCalendar.get(Calendar.MONTH) + 1,
+                year = mCalendar.get(Calendar.YEAR)
+            )
+        )
+
+        // Initializing the variable which is visible to all the other screens
+        calendarData = _calendarData.asStateFlow()
+    }
+
+    /**
+     * This function changes the current calendar date
+     */
+    private fun onDateChanged(date: Int, month: Int, year: Int) {
+        _calendarData.value = DatePickerData(date = date, month = month, year = year)
+    }
+
+    /**
+     * This function executes when the previous button is hit
+     */
+    private fun onPreviousCalendarButtonClick() {
+
+        var date: Int = _calendarData.value.date
+        var month: Int = _calendarData.value.month
+        var year: Int = _calendarData.value.year
+
+        when (currentTrackOption.trackStatus) {
+            is TrackOption.TrackStatus.StatusDaily -> {
+                date -= 1
+            }
+
+            is TrackOption.TrackStatus.StatusWeekly -> {
+                date -= 7
+            }
+
+            is TrackOption.TrackStatus.StatusMonthly -> {
+                month -= 1
+            }
+
+            is TrackOption.TrackStatus.StatusYearly -> {
+                year -= 1
+            }
+        }
+
+        _calendarData.value = DatePickerData(date = date, month = month, year = year)
+    }
+
+    /**
+     * This function is executed when the next calendar button is hit
+     */
+    private fun onNextCalendarButtonClick() {
+
+        var date: Int = _calendarData.value.date
+        var month: Int = _calendarData.value.month
+        var year: Int = _calendarData.value.year
+
+        when (currentTrackOption.trackStatus) {
+            is TrackOption.TrackStatus.StatusDaily -> {
+                date += 1
+            }
+
+            is TrackOption.TrackStatus.StatusWeekly -> {
+                date += 7
+            }
+
+            is TrackOption.TrackStatus.StatusMonthly -> {
+                month += 1
+            }
+
+            is TrackOption.TrackStatus.StatusYearly -> {
+                year += 1
+            }
+        }
+
+        _calendarData.value = DatePickerData(date = date, month = month, year = year)
+    }
 
     // User Id For testing
     private val uid = "6309a9379af54f142c65fbfe"
@@ -242,6 +335,18 @@ class TrackViewModel @Inject constructor(
                     3 -> currentTrackOption.trackStatus = TrackOption.TrackStatus.StatusYearly
                 }
                 handleTrackerOption()
+            }
+
+            is TrackUiEvent.SetNewDate -> {
+                onDateChanged(date = event.date, month = event.month, year = event.year)
+            }
+
+            is TrackUiEvent.ClickedPreviousDateButton -> {
+                onPreviousCalendarButtonClick()
+            }
+
+            is TrackUiEvent.ClickedNextDateButton -> {
+                onNextCalendarButtonClick()
             }
         }
     }

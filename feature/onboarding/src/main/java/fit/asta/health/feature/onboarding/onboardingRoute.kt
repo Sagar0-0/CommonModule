@@ -22,7 +22,7 @@ fun NavController.navigateToOnboarding(navOptions: NavOptions? = null) {
     }
 }
 
-fun NavGraphBuilder.onboardingRoute(navigateToAuth: () -> Unit) {
+fun NavGraphBuilder.onboardingRoute() {
     composable(ONBOARDING_GRAPH_ROUTE) {
         val onboardingViewModel: OnboardingViewModel = hiltViewModel()
         val state by onboardingViewModel.state.collectAsStateWithLifecycle()
@@ -31,8 +31,7 @@ fun NavGraphBuilder.onboardingRoute(navigateToAuth: () -> Unit) {
             state = state,
             onReload = onboardingViewModel::getData,
             onFinish = {
-                onboardingViewModel.dismissOnboarding()
-                navigateToAuth()
+                onboardingViewModel.navigateToAuth()
             }
         )
 

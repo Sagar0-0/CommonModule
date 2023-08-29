@@ -126,6 +126,7 @@ dependencies {
     implementation(project(":data:payment"))
     implementation(project(":data:address"))
     implementation(project(":data:payment"))
+    implementation(project(":data:scheduler"))
 
     implementation(project(":feature:address"))
     implementation(project(":feature:auth"))
@@ -140,6 +141,7 @@ dependencies {
     implementation(project(":feature:wallet"))
     implementation(project(":data:spotify"))
     implementation(project(":feature:spotify"))
+    implementation(project(":feature:scheduler"))
     implementation(project(":feature:testimonials"))
 
     //De-sugaring
@@ -281,12 +283,12 @@ dependencies {
     implementation(libs.gson)
 
     //Exo player
-    implementation(libs.exoplayer)
-    implementation(libs.extension.cast)
-    implementation(libs.exoplayer.core)
-    implementation(libs.exoplayer.dash)
-    implementation(libs.exoplayer.ui)
-    api(libs.extension.mediasession)
+//    implementation(libs.exoplayer)
+//    implementation(libs.extension.cast)
+//    implementation(libs.exoplayer.core)
+//    implementation(libs.exoplayer.dash)
+//    implementation(libs.exoplayer.ui)
+//    api(libs.extension.mediasession)
 
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.exoplayer.dash)

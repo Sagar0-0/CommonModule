@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -27,6 +28,7 @@ import fit.asta.health.data.spotify.model.common.Track
 import fit.asta.health.feature.spotify.components.MusicLargeImageColumn
 import fit.asta.health.feature.spotify.events.SpotifyUiEvent
 import fit.asta.health.feature.spotify.navigation.SpotifyNavRoutes
+import fit.asta.health.resources.strings.R
 
 /**
  * This function contains the UI of the Favourite Screen
@@ -58,7 +60,7 @@ fun FavouriteScreen(
 
         // Track Text
         Text(
-            text = "Tracks",
+            text = stringResource(id = R.string.tracks),
 
             modifier = Modifier
                 .padding(8.dp),
@@ -128,7 +130,7 @@ fun FavouriteScreen(
 
         // Albums Text
         Text(
-            text = "Albums",
+            text = stringResource(id = R.string.albums),
 
             modifier = Modifier
                 .padding(top = 24.dp, bottom = 8.dp, start = 8.dp, end = 8.dp),

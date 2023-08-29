@@ -1,4 +1,4 @@
-package fit.asta.health.feature.testimonials
+package fit.asta.health.testimonials.ui
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -9,9 +9,13 @@ import fit.asta.health.feature.testimonials.TestimonialsDestination.Home
 import fit.asta.health.feature.testimonials.create.view.LoadTestimonialCreateLayout
 import fit.asta.health.feature.testimonials.create.vm.TestimonialViewModel
 import fit.asta.health.feature.testimonials.list.view.TestimonialsListLayout
+import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.main.Graph
-import fit.asta.health.main.sharedViewModel
+import fit.asta.health.testimonials.ui.create.view.LoadTestimonialCreateLayout
+import fit.asta.health.testimonials.ui.create.vm.TestimonialViewModel
+import fit.asta.health.testimonials.ui.list.view.TestimonialsListLayout
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+
 
 @OptIn(ExperimentalCoroutinesApi::class)
 fun NavGraphBuilder.testimonialsRoute(
