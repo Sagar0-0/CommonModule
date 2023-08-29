@@ -11,6 +11,7 @@ import fit.asta.health.auth.model.AuthDataMapper
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.datastore.PrefManager
+import fit.asta.health.datastore.UserPreferencesData
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -22,8 +23,28 @@ class AuthRepoImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val prefManager: PrefManager
 ) : AuthRepo {
+    companion object {
+        const val TAG = "AuthRepoImpl"
+    }
+
+    override val userData: Flow<UserPreferencesData> = prefManager.userData
     override suspend fun setLogoutDone() {
         prefManager.setScreenCode(1)//show auth screen
+    }
+
+    override suspend fun uploadFcmToken(token: String, timestamp: String, uid: String) {
+        try {
+            //TODO: CALL API
+            setIsFcmTokenUploaded(true)
+            Log.d(TAG, "uploadFcmToken: Success")
+        } catch (e: Exception) {
+            setIsFcmTokenUploaded(false)
+            Log.e(TAG, "uploadFcmToken: Error $e")
+        }
+    }
+
+    override suspend fun setIsFcmTokenUploaded(value: Boolean) {
+        prefManager.setIsFcmTokenUploaded(value)
     }
 
     override suspend fun setLoginDone() {

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.media3.common.util.UnstableApi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.network.utils.NetworkResult
 import fit.asta.health.player.jetpack_audio.domain.data.Song
@@ -19,7 +20,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+@androidx.annotation.OptIn(UnstableApi::class)
 class DiscoverViewModel @Inject constructor(
     private val musicServiceConnection: MusicServiceConnection,
     private val meditationRepo: MeditationRepo

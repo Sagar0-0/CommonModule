@@ -18,6 +18,7 @@ dependencies {
     implementation(project(":resources:drawables"))
     implementation(project(":resources:strings"))
 
+    implementation(project(":core:datastore"))
     implementation(project(":core:common"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:test"))
@@ -31,6 +32,9 @@ dependencies {
     implementation(libs.play.services.auth)
     implementation(libs.play.services.auth.api.phone)
     implementation(libs.firebase.ui.auth)
+
+    //Firebase for notifications
+    implementation(libs.firebase.messaging.ktx)
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)

@@ -11,8 +11,8 @@ sealed class HomeEvent {
     data class SkipAlarm(val alarm: AlarmEntity, val context: Context) : HomeEvent()
     data class NavSchedule(val hourMinAmPm: HourMinAmPm?) : HomeEvent()
     data class EditAlarm(val alarm: AlarmEntity) : HomeEvent()
+    data class SetDefaultSchedule(val context: Context) : HomeEvent()
     data object SetAlarm : HomeEvent()
-    data object SetDefaultSchedule : HomeEvent()
 }
 enum class Event{
     Morning, Afternoon, Evening, NextDay

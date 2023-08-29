@@ -190,7 +190,13 @@ fun TodayContent(
             }
             item {
                 AnimatedVisibility(visible = listMorning.isEmpty() && listAfternoon.isEmpty() && listEvening.isEmpty()) {
-                    AppButtons.AppOutlinedButton(onClick = { hSEvent(HomeEvent.SetDefaultSchedule) }) {
+                    AppButtons.AppOutlinedButton(onClick = {
+                        hSEvent(
+                            HomeEvent.SetDefaultSchedule(
+                                context
+                            )
+                        )
+                    }) {
                         AppTexts.TitleLarge(text = stringResource(R.string.default_schedule))
                     }
                 }

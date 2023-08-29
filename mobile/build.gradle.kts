@@ -121,6 +121,8 @@ dependencies {
     implementation(project(":core:network"))
 
     implementation(project(":libs:chart"))
+    implementation(project(":libs:audio"))
+    implementation(project(":libs:video"))
 
     implementation(project(":data:auth"))
     implementation(project(":data:payment"))
@@ -228,6 +230,7 @@ dependencies {
 
     //Firebase for notifications
     implementation(libs.firebase.messaging.ktx)
+    implementation(libs.firebase.firestore.ktx)
 
     //Firebase analytics
     implementation(libs.kotlinx.coroutines.play.services)
@@ -239,8 +242,6 @@ dependencies {
     //Firebase storage for media files
     implementation(libs.firebase.storage.ktx)
 
-    //Firebase fire-store for nosql
-    implementation(libs.firebase.firestore.ktx)
 
     //for animations
     implementation(libs.androidx.constraintlayout.compose)

@@ -352,7 +352,7 @@ private fun MainNavHost(
                                 }
 
                                 is HomeEvent.SetDefaultSchedule -> {
-                                    todayPlanViewModel.getDefaultSchedule()
+                                    todayPlanViewModel.getDefaultSchedule(uiEvent.context)
                                 }
 
                                 is HomeEvent.NavSchedule -> {
