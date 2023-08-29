@@ -93,7 +93,7 @@
         </activity>
         <activity android:name=".BillingActivity" />
         <activity
-            android:name=".scheduler.ui.AlarmScreenActivity"
+            android:name=".feature.scheduler.ui.AlarmScreenActivity"
             android:directBootAware="true"
             android:excludeFromRecents="true"
             android:resizeableActivity="true"
@@ -141,7 +141,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".scheduler.ui.SpotifyActivity"
+            android:name=".feature.scheduler.ui.SpotifyActivity"
             android:exported="true"
             android:launchMode="singleInstance">
             <intent-filter>
@@ -200,7 +200,7 @@
         <receiver android:name=".notify.receiver.AlarmReceiver" />
         <receiver android:name=".notify.receiver.SnoozeReceiver" />
         <receiver
-            android:name=".scheduler.services.AlarmBroadcastReceiver"
+            android:name=".feature.scheduler.services.AlarmBroadcastReceiver"
             android:directBootAware="true"
             android:enabled="true"
             android:exported="true"
@@ -222,14 +222,13 @@
             </intent-filter>
         </service>
         <service
-            android:name=".scheduler.services.AlarmService"
+            android:name=".feature.scheduler.services.AlarmService"
             android:directBootAware="true"
             tools:targetApi="n" />
-        <service android:name=".scheduler.services.RescheduleAlarmService" />
+        <service android:name=".feature.scheduler.services.RescheduleAlarmService" />
         <service
             android:name=".tools.walking.work.CountStepsService"
             android:foregroundServiceType="location" />
-
     </application>
 
 </manifest>

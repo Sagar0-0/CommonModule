@@ -1,10 +1,11 @@
 package fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen
 
 import android.content.Context
+import fit.asta.health.data.scheduler.remote.net.scheduler.Time
 import fit.asta.health.feature.scheduler.util.VibrationPattern
 
 sealed class AlarmSettingEvent {
-    data class SetAlarmTime(val time: fit.asta.health.remote.net.scheduler.Time) :
+    data class SetAlarmTime(val time: Time) :
         AlarmSettingEvent()
 
     data class SetWeek(val week: Int) : AlarmSettingEvent()

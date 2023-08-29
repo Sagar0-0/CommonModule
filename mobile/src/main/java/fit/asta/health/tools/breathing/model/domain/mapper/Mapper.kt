@@ -1,8 +1,6 @@
 package fit.asta.health.tools.breathing.model.domain.mapper
 
 
-import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.AMPMHoursMin
-import fit.asta.health.scheduler.ui.screen.alarmsetingscreen.Time24hr
 import fit.asta.health.tools.breathing.model.domain.model.BreathingTool
 import fit.asta.health.tools.breathing.model.network.NetGetRes
 import fit.asta.health.tools.breathing.model.network.NetGetStart
@@ -150,24 +148,4 @@ fun BreathingTool.toPutData(): NetPut {
     )
 }
 
-
-fun Time24hr.convert24hrTo12hr(): AMPMHoursMin {
-    var hour = this.hour
-    val dayTime = if (hour < 12) AMPMHoursMin.DayTime.AM else AMPMHoursMin.DayTime.PM
-    hour %= 12
-    if (hour == 0) {
-        hour = 12
-    }
-    return AMPMHoursMin(hour, this.min, dayTime)
-}
-
-fun AMPMHoursMin.convert12hrTo24hr(): Time24hr {
-    var hour = this.hours
-    if (this.dayTime == AMPMHoursMin.DayTime.PM && hour != 12) {
-        hour += 12
-    } else if (this.dayTime == AMPMHoursMin.DayTime.AM && hour == 12) {
-        hour = 0
-    }
-    return Time24hr(hour, this.minutes)
-}
 

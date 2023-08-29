@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.convert12hrTo24hr
+import fit.asta.health.data.scheduler.remote.net.scheduler.Time
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
@@ -307,7 +308,7 @@ fun AlarmCreateBtmSheetLayout(
                     val time = it.convert12hrTo24hr()
                     aSEvent(
                         AlarmSettingEvent.SetAlarmTime(
-                            fit.asta.health.remote.net.scheduler.Time(
+                            Time(
                                 hours = time.hour,
                                 minutes = it.minutes
                             )

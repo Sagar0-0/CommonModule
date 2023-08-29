@@ -6,8 +6,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
-import fit.asta.health.main.Graph
-import fit.asta.health.main.deepLinkUrl
+import fit.asta.health.common.utils.Constants.WALKING_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.deepLinkUrl
 import fit.asta.health.tools.walking.view.goals.GoalsScreen
 import fit.asta.health.tools.walking.view.home.StepsHomeScreen
 import fit.asta.health.tools.walking.view.steps_counter.StepsCounterScreen
@@ -23,7 +23,7 @@ fun  StepsCounterNavigation(navController: NavHostController,homeViewModel: Walk
 
         composable(StepsCounterScreen.StepsCounterHomeScreen.route,
             deepLinks = listOf(navDeepLink {
-                uriPattern = "$deepLinkUrl/${Graph.WalkingTool.route}"
+                uriPattern = "$deepLinkUrl/${WALKING_GRAPH_ROUTE}"
                 action = Intent.ACTION_VIEW
             })
         ) {
