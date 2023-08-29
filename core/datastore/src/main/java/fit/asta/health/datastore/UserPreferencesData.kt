@@ -5,5 +5,7 @@ data class UserPreferencesData(
     val notificationStatus: Boolean = false,
     val locationPermissionRejectedCount: Int = 0,
     val currentAddress: String = "",
-    val theme: String = ""
+    val theme: String = "",
+    val alarmId: Long = 999L,
+    val tone: String = "hi"
 )

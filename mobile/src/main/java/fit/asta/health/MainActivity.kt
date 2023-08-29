@@ -11,6 +11,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -24,6 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.utils.*
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.main.MainNavHost
+import fit.asta.health.main.MainViewModel
 import fit.asta.health.network.TokenProvider
 import fit.asta.health.network.utils.NetworkConnectivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -42,6 +44,7 @@ class MainActivity : ComponentActivity(),
 
     private lateinit var networkConnectivity: NetworkConnectivity
     private val isConnected = mutableStateOf(true)
+    private val mainViewModel: MainViewModel by viewModels()
 
     // Declare the launcher at the top of your Activity/Fragment:
     private val requestPermissionLauncher = registerForActivityResult(
@@ -108,7 +111,7 @@ class MainActivity : ComponentActivity(),
     private fun startMainNavHost() {
         setContent {
             AppTheme {
-                MainNavHost(isConnected.value)
+                MainNavHost(isConnected.value, mainViewModel)
             }
         }
     }

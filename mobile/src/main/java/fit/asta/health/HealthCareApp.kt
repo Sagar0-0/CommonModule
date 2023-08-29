@@ -8,7 +8,8 @@ import android.os.Build
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkManager
 import dagger.hilt.android.HiltAndroidApp
-import fit.asta.health.scheduler.services.SchedulerWorker
+import fit.asta.health.common.utils.Constants.CHANNEL_ID
+import fit.asta.health.feature.scheduler.services.SchedulerWorker
 
 @HiltAndroidApp
 class HealthCareApp : /*MultiDexApplication*/ Application() {
@@ -16,7 +17,6 @@ class HealthCareApp : /*MultiDexApplication*/ Application() {
 //    lateinit var workerFactory: HiltWorkerFactory
 
     companion object {
-        const val CHANNEL_ID = "ALARM_SERVICE_CHANNEL"
         var mContext: Context? = null
         lateinit var instance: HealthCareApp
             private set

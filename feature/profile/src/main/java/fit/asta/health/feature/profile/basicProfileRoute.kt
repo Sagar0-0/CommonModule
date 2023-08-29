@@ -30,7 +30,6 @@ import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.feature.profile.vm.BasicProfileViewModel
 import fit.asta.health.resources.drawables.R
 
@@ -46,35 +45,13 @@ fun NavController.navigateToBasicProfile(navOptions: NavOptions? = null) {
     }
 }
 
-fun NavGraphBuilder.basicProfileRoute(navigateToHome: () -> Unit) {
+fun NavGraphBuilder.basicProfileRoute() {
 
     composable(BASIC_PROFILE_GRAPH_ROUTE) {
 
         val context = LocalContext.current
         val basicProfileViewModel: BasicProfileViewModel = hiltViewModel()
         val user = basicProfileViewModel.getUser()
-
-        LaunchedEffect(Unit) {
-            basicProfileViewModel.isProfileAvailable()
-        }
-
-        val isProfileAvailable by basicProfileViewModel.isProfileAvailable.collectAsStateWithLifecycle()
-        when (isProfileAvailable) {
-            is UiState.Loading -> {
-                LoadingAnimation()
-            }
-
-            is UiState.Success -> {
-                LaunchedEffect(Unit) {
-                    if ((isProfileAvailable as UiState.Success<Boolean>).data) {
-                        basicProfileViewModel.setProfilePresent()
-                        navigateToHome()
-                    }
-                }
-            }
-
-            else -> {}
-        }
 
         val checkReferralCodeState by basicProfileViewModel.checkReferralCodeState.collectAsStateWithLifecycle()
         val createBasicProfileState by basicProfileViewModel.createBasicProfileState.collectAsStateWithLifecycle()
@@ -195,7 +172,7 @@ fun NavGraphBuilder.basicProfileRoute(navigateToHome: () -> Unit) {
 
                     is UiState.Success -> {
                         LaunchedEffect(Unit) {
-                            navigateToHome()
+                            basicProfileViewModel.navigateToHome()
                         }
                     }
 

@@ -20,17 +20,28 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import fit.asta.health.BuildConfig
 import fit.asta.health.R
+import fit.asta.health.common.utils.Constants.BREATHING_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.EXERCISE_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.HourMinAmPmKey
+import fit.asta.health.common.utils.Constants.MEDITATION_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.SCHEDULER_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.SUNLIGHT_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.WATER_GRAPH_ROUTE
 import fit.asta.health.common.utils.MainTopBarActions
 import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.common.utils.shareApp
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.feature.scheduler.ui.navigation.navigateToScheduler
 import fit.asta.health.feature.settings.navigateToSettings
 import fit.asta.health.main.Graph
 import fit.asta.health.main.MainViewModel
-import fit.asta.health.navigation.today.ui.view.utils.Utils
+import fit.asta.health.tools.breathing.nav.navigateToBreathing
+import fit.asta.health.tools.exercise.nav.navigateToExercise
+import fit.asta.health.tools.meditation.nav.navigateToMeditation
+import fit.asta.health.tools.sunlight.nav.navigateToSunlight
+import fit.asta.health.tools.water.nav.navigateToWater
 
 const val HOME_GRAPH_ROUTE = "graph_home"
 fun NavController.navigateToHome(navOptions: NavOptions? = null) {
@@ -165,7 +176,7 @@ fun NavGraphBuilder.homeScreen(
                 == PackageManager.PERMISSION_GRANTED
             ) {
                 PrefManager.setNotificationPermissionRejectedCount(context, 1)
-                navController.navigate(Graph.Scheduler.route)
+                navController.navigateToScheduler()
             } else {
                 if (PrefManager.getNotificationPermissionRejectedCount(context) >= 2) {
                     Toast.makeText(
@@ -186,7 +197,7 @@ fun NavGraphBuilder.homeScreen(
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         notificationPermissionResultLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                     } else {
-                        navController.navigate(Graph.Scheduler.route)
+                        navController.navigateToScheduler()
                     }
                 }
             }
@@ -198,8 +209,28 @@ fun NavGraphBuilder.homeScreen(
             isNotificationEnabled = notificationEnabled,
             onNav = {
                 when (it) {
-                    Graph.Scheduler.route -> {
+                    SCHEDULER_GRAPH_ROUTE -> {
                         checkPermissionAndLaunchScheduler()
+                    }
+
+                    SUNLIGHT_GRAPH_ROUTE -> {
+                        navController.navigateToSunlight()
+                    }
+
+                    WATER_GRAPH_ROUTE -> {
+                        navController.navigateToWater()
+                    }
+//                    SLEEP_GRAPH_ROUTE->{navController}
+                    MEDITATION_GRAPH_ROUTE -> {
+                        navController.navigateToMeditation()
+                    }
+
+                    BREATHING_GRAPH_ROUTE -> {
+                        navController.navigateToBreathing()
+                    }
+
+                    EXERCISE_GRAPH_ROUTE -> {
+                        navController.navigateToExercise()
                     }
 
                     else -> {
@@ -209,7 +240,7 @@ fun NavGraphBuilder.homeScreen(
             },
             onSchedule = { hourMinAmPm ->
                 navController.currentBackStackEntry?.savedStateHandle?.set(
-                    key = Utils.HourMinAmPmKey,
+                    key = HourMinAmPmKey,
                     value = hourMinAmPm
                 )
             },
@@ -232,7 +263,7 @@ fun NavGraphBuilder.homeScreen(
                     }
 
                     MainTopBarActions.Share -> {
-                        context.shareApp(BuildConfig.APPLICATION_ID)
+                        context.shareApp(context.packageName)
                     }
                 }
             }

@@ -9,12 +9,10 @@ import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.util.Log
 import com.google.android.gms.auth.api.phone.SmsRetriever
-import com.google.android.gms.auth.api.phone.SmsRetrieverClient
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.common.api.Status
-import fit.asta.health.feature.auth.screens.OTPReceiver.Companion.TAG
 
-class OTPReceiver(
+internal class OTPReceiver(
     val onSuccess: (Intent?) -> Unit,
     val onFailure: () -> Unit
 ) : BroadcastReceiver() {
@@ -66,16 +64,5 @@ class OTPReceiver(
             context.unregisterReceiver(this)
             registered = false
         }
-    }
-}
-
-fun startSMSRetrieverClient(context: Context) {
-    val client: SmsRetrieverClient = SmsRetriever.getClient(context)
-    val task = client.startSmsUserConsent(null)
-    task.addOnSuccessListener { aVoid ->
-        Log.d(TAG, "startSMSRetrieverClient addOnSuccessListener")
-    }
-    task.addOnFailureListener { e ->
-        Log.e(TAG, "startSMSRetrieverClient addOnFailureListener" + e.stackTrace)
     }
 }

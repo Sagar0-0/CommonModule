@@ -7,6 +7,7 @@ import com.google.android.gms.maps.model.LatLng
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.core.test.BaseTest
+import fit.asta.health.data.address.modal.LocationResponse
 import fit.asta.health.data.address.modal.MyAddress
 import fit.asta.health.data.address.modal.SearchResponse
 import fit.asta.health.data.address.repo.AddressRepoImpl
@@ -261,7 +262,7 @@ class AddressViewModelTest : BaseTest() {
     fun `checkPermissionAndGetLatLng Success, getAddressDetails Success, return Address Success`() =
         runTest {
             coEvery { repo.checkPermissionAndGetLatLng() } returns flow {
-                emit(fit.asta.health.data.address.modal.LocationResponse.Success(LatLng(0.0, 0.0)))
+                emit(LocationResponse.Success(LatLng(0.0, 0.0)))
             }
             coEvery { repo.getAddressDetails(any()) } returns flow {
                 emit(ResponseState.Success(Address(Locale(""))))
@@ -279,7 +280,7 @@ class AddressViewModelTest : BaseTest() {
     fun `checkPermissionAndGetLatLng Success, getAddressDetails Error, return Address Error`() =
         runTest {
             coEvery { repo.checkPermissionAndGetLatLng() } returns flow {
-                emit(fit.asta.health.data.address.modal.LocationResponse.Success(LatLng(0.0, 0.0)))
+                emit(LocationResponse.Success(LatLng(0.0, 0.0)))
             }
             coEvery { repo.getAddressDetails(any()) } returns flow {
                 emit(ResponseState.Error(Exception()))
@@ -296,7 +297,7 @@ class AddressViewModelTest : BaseTest() {
     @Test
     fun `checkPermissionAndGetLatLng Error, return Address Error`() = runTest {
         coEvery { repo.checkPermissionAndGetLatLng() } returns flow {
-            emit(fit.asta.health.data.address.modal.LocationResponse.Error(0))
+            emit(LocationResponse.Error(0))
         }
         viewmodel.checkPermissionAndUpdateCurrentAddress()
         coVerify { repo.checkPermissionAndGetLatLng() }
@@ -309,7 +310,7 @@ class AddressViewModelTest : BaseTest() {
     @Test
     fun `checkPermissionAndGetLatLng PermissionDenied, updates isPermissionGranted`() = runTest {
         coEvery { repo.checkPermissionAndGetLatLng() } returns flow {
-            emit(fit.asta.health.data.address.modal.LocationResponse.PermissionDenied)
+            emit(LocationResponse.PermissionDenied)
         }
         viewmodel.checkPermissionAndUpdateCurrentAddress()
         coVerify { repo.checkPermissionAndGetLatLng() }
@@ -322,7 +323,7 @@ class AddressViewModelTest : BaseTest() {
     @Test
     fun `checkPermissionAndGetLatLng ServiceDisabled, updates isLocationEnabled`() = runTest {
         coEvery { repo.checkPermissionAndGetLatLng() } returns flow {
-            emit(fit.asta.health.data.address.modal.LocationResponse.ServiceDisabled)
+            emit(LocationResponse.ServiceDisabled)
         }
         viewmodel.checkPermissionAndUpdateCurrentAddress()
         coVerify { repo.checkPermissionAndGetLatLng() }

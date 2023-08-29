@@ -32,7 +32,7 @@ class OnboardingViewModel
         }
     }
 
-    fun dismissOnboarding() = viewModelScope.launch {
-        repo.dismissOnboarding()
+    fun navigateToAuth() = viewModelScope.launch {
+        repo.setOnboardingDone()
     }
 }

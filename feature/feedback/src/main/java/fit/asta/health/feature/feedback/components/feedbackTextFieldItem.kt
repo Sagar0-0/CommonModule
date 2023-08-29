@@ -23,15 +23,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import fit.asta.health.data.feedback.remote.modal.An
+import fit.asta.health.data.feedback.remote.modal.Qn
 import fit.asta.health.designsystem.theme.boxSize
 import fit.asta.health.designsystem.theme.spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun feedbackTextFieldItem(qn: fit.asta.health.data.feedback.remote.modal.Qn): MutableState<fit.asta.health.data.feedback.remote.modal.An> {
+fun feedbackTextFieldItem(qn: Qn): MutableState<An> {
     val ans = remember {
         mutableStateOf(
-            fit.asta.health.data.feedback.remote.modal.An(
+            An(
                 null,
                 false,
                 null,
@@ -110,7 +112,7 @@ fun feedbackTextFieldItem(qn: fit.asta.health.data.feedback.remote.modal.Qn): Mu
         }
     }
 
-    ans.value = fit.asta.health.data.feedback.remote.modal.An(
+    ans.value = An(
         dtlAns = text.value,
         isDet = qn.isDet,
         media = null,

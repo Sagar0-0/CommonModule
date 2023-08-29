@@ -23,6 +23,7 @@ dependencies {
     implementation(project(":core:test"))
 
     implementation(project(":data:auth"))
+    implementation(project(":data:profile"))
 
     //Firebase authentication
     implementation(platform(libs.firebase.bom))

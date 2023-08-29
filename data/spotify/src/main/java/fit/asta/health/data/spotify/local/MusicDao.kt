@@ -1,8 +1,8 @@
 package fit.asta.health.data.spotify.local
 
 import androidx.room.*
-import fit.asta.health.data.spotify.model.common.Track
 import fit.asta.health.data.spotify.model.common.Album
+import fit.asta.health.data.spotify.model.common.Track
 
 @Dao
 interface MusicDao {

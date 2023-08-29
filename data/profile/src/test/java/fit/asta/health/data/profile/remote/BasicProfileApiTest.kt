@@ -60,7 +60,7 @@ class BasicProfileApiTest {
         res.setResponseCode(404)
         server.enqueue(res)
 
-        val repo = ProfileRepoImpl(api, mockk(), UnconfinedTestDispatcher())
+        val repo = ProfileRepoImpl(api, mockk(), mockk(), UnconfinedTestDispatcher())
         val data = repo.checkReferralCode("")
         server.takeRequest()
 
@@ -82,19 +82,6 @@ class BasicProfileApiTest {
     }
 
     @Test
-    fun `isUserProfileAvailable, returns Error`() = runTest {
-        val res = MockResponse()
-        res.setResponseCode(404)
-        server.enqueue(res)
-
-        val repo = ProfileRepoImpl(api, mockk(), UnconfinedTestDispatcher())
-        val data = repo.isProfileAvailable("")
-        server.takeRequest()
-
-        assert(data is ResponseState.Error)
-    }
-
-    @Test
     fun `createBasicProfile, returns Success`() = runTest {
         val dto = BasicProfileResponse()
         val json = gson.toJson(dto)!!
@@ -102,7 +89,7 @@ class BasicProfileApiTest {
         res.setBody(json)
         server.enqueue(res)
 
-        val data = api.createBasicProfile(BasicProfileDTO())
+        val data = api.createBasicProfile(BasicProfileDTO(), mockk())
         server.takeRequest()
 
         assertEquals(data, dto)
@@ -114,7 +101,7 @@ class BasicProfileApiTest {
         res.setResponseCode(404)
         server.enqueue(res)
 
-        val repo = ProfileRepoImpl(api, mockk(), UnconfinedTestDispatcher())
+        val repo = ProfileRepoImpl(api, mockk(), mockk(), UnconfinedTestDispatcher())
         val data = repo.createBasicProfile(BasicProfileDTO())
         server.takeRequest()
 

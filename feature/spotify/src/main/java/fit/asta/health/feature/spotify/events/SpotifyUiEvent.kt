@@ -18,38 +18,38 @@ sealed class SpotifyUiEvent {
 
     sealed class NetworkIO : SpotifyUiEvent() {
 
-        object LoadCurrentUserRecentlyPlayedTracks : NetworkIO()
+        data object LoadCurrentUserRecentlyPlayedTracks : NetworkIO()
 
-        object LoadRecommendationTracks : NetworkIO()
+        data object LoadRecommendationTracks : NetworkIO()
 
-        object LoadUserTopTracks : NetworkIO()
+        data object LoadUserTopTracks : NetworkIO()
 
-        object LoadUserTopArtists : NetworkIO()
+        data object LoadUserTopArtists : NetworkIO()
 
-        object LoadAlbumDetails : NetworkIO()
+        data object LoadAlbumDetails : NetworkIO()
 
-        object LoadCurrentUserTracks : NetworkIO()
+        data object LoadCurrentUserTracks : NetworkIO()
 
-        object LoadCurrentUserPlaylist : NetworkIO()
+        data object LoadCurrentUserPlaylist : NetworkIO()
 
-        object LoadCurrentUserArtists : NetworkIO()
+        data object LoadCurrentUserArtists : NetworkIO()
 
-        object LoadCurrentUserAlbum : NetworkIO()
+        data object LoadCurrentUserAlbum : NetworkIO()
 
-        object LoadCurrentUserShows : NetworkIO()
+        data object LoadCurrentUserShows : NetworkIO()
 
-        object LoadCurrentUserEpisode : NetworkIO()
+        data object LoadCurrentUserEpisode : NetworkIO()
 
-        object LoadSpotifySearchResult : NetworkIO()
+        data object LoadSpotifySearchResult : NetworkIO()
 
-        object LoadTrackDetails : NetworkIO()
+        data object LoadTrackDetails : NetworkIO()
     }
 
     sealed class LocalIO : SpotifyUiEvent() {
 
-        object LoadAllTracks : LocalIO()
+        data object LoadAllTracks : LocalIO()
 
-        object LoadAllAlbums : LocalIO()
+        data object LoadAllAlbums : LocalIO()
 
         class InsertTrack(val track: Track) : LocalIO()
 

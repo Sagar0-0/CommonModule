@@ -54,6 +54,7 @@ import com.maxkeppeler.sheets.calendar.models.CalendarConfig
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import fit.asta.health.R
 import fit.asta.health.common.utils.UiString
+import fit.asta.health.data.testimonials.model.InputWrapper
 import fit.asta.health.designsystem.components.functional.AppTextFieldValidate
 import fit.asta.health.designsystem.components.functional.RowToggleButtonGroup
 import fit.asta.health.designsystem.components.generic.AppButtons
@@ -70,7 +71,6 @@ import fit.asta.health.profile.view.ThreeTogglesGroups
 import fit.asta.health.profile.view.TwoTogglesGroup
 import fit.asta.health.profile.viewmodel.ProfileEvent
 import fit.asta.health.profile.viewmodel.ProfileViewModel
-import fit.asta.health.testimonials.data.model.InputWrapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
@@ -164,7 +164,7 @@ private fun GenderSection(
     viewModel: ProfileViewModel,
     selectedIsOnPeriodOptionDemo: TwoRadioBtnSelections?,
     selectedIsPregOptionDemo: TwoRadioBtnSelections?,
-    pregnancyWeek: InputWrapper,
+    pregnancyWeek: fit.asta.health.data.testimonials.model.InputWrapper,
     focusManager: FocusManager,
 ) {
     Row(Modifier.fillMaxWidth()) {
@@ -238,10 +238,10 @@ private fun GenderSection(
 
 @Composable
 private fun MeasurementSection(
-    userWeight: InputWrapper,
+    userWeight: fit.asta.health.data.testimonials.model.InputWrapper,
     focusManager: FocusManager,
     viewModel: ProfileViewModel,
-    userHeight: InputWrapper,
+    userHeight: fit.asta.health.data.testimonials.model.InputWrapper,
 ) {
     Column(Modifier.fillMaxWidth()) {
         Row(
@@ -335,8 +335,8 @@ private fun MeasurementSection(
 
 @Composable
 private fun AgeSection(
-    userAge: InputWrapper,
-    userDOB: InputWrapper,
+    userAge: fit.asta.health.data.testimonials.model.InputWrapper,
+    userDOB: fit.asta.health.data.testimonials.model.InputWrapper,
     calendarState: UseCaseState,
 ) {
 

@@ -4,6 +4,8 @@ import app.cash.turbine.test
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.core.test.BaseTest
+import fit.asta.health.data.feedback.remote.modal.An
+import fit.asta.health.data.feedback.remote.modal.PostFeedbackDTO
 import fit.asta.health.data.feedback.repo.FeedbackRepoImpl
 import fit.asta.health.feature.feedback.vm.FeedbackViewModel
 import io.mockk.clearAllMocks
@@ -68,7 +70,7 @@ class FeedbackViewModelTest : BaseTest() {
 
     @Test
     fun `postUserFeedback empty data, return error`() = runTest {
-        val mockList = listOf<fit.asta.health.data.feedback.remote.modal.An>()
+        val mockList = listOf<An>()
         coEvery { repo.postUserFeedback(any()) } returns ResponseState.Error(Exception())
         viewModel.postUserFeedback(mockList)
         coVerify { repo.postUserFeedback(any()) }
@@ -80,10 +82,10 @@ class FeedbackViewModelTest : BaseTest() {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `postUserFeedback valid data, return success`() = runTest {
-        coEvery { repo.postUserFeedback(any()) } returns ResponseState.Success(fit.asta.health.data.feedback.remote.modal.PostFeedbackDTO())
+        coEvery { repo.postUserFeedback(any()) } returns ResponseState.Success(PostFeedbackDTO())
         val mockList = listOf(
-            fit.asta.health.data.feedback.remote.modal.An(),
-            fit.asta.health.data.feedback.remote.modal.An()
+            An(),
+            An()
         )
         viewModel.postUserFeedback(mockList)
         coVerify { repo.postUserFeedback(any()) }

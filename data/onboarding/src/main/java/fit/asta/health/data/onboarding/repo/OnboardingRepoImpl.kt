@@ -21,7 +21,7 @@ class OnboardingRepoImpl(
         getResponseState { remoteApi.getData().data }
     }
 
-    override suspend fun dismissOnboarding() {
+    override suspend fun setOnboardingDone() {
         prefManager.setScreenCode(1)
     }
 }

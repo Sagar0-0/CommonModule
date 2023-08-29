@@ -1,19 +1,19 @@
 package fit.asta.health.data.spotify.remote
 
 import fit.asta.health.data.spotify.model.common.Album
+import fit.asta.health.data.spotify.model.common.Track
 import fit.asta.health.data.spotify.model.library.albums.SpotifyLibraryAlbumModel
 import fit.asta.health.data.spotify.model.library.episodes.SpotifyLibraryEpisodesModel
 import fit.asta.health.data.spotify.model.library.following.SpotifyUserFollowingArtist
+import fit.asta.health.data.spotify.model.library.playlist.SpotifyUserPlaylistsModel
 import fit.asta.health.data.spotify.model.library.shows.SpotifyLibraryShowsModel
 import fit.asta.health.data.spotify.model.library.tracks.SpotifyLibraryTracksModel
-import fit.asta.health.data.spotify.model.library.playlist.SpotifyUserPlaylistsModel
-import fit.asta.health.data.spotify.model.search.SpotifySearchModel
-import fit.asta.health.data.spotify.model.search.ArtistList
-import fit.asta.health.data.spotify.model.search.TrackList
-import fit.asta.health.data.spotify.model.common.Track
 import fit.asta.health.data.spotify.model.me.SpotifyMeModel
 import fit.asta.health.data.spotify.model.recently.SpotifyUserRecentlyPlayedModel
 import fit.asta.health.data.spotify.model.recommendations.SpotifyRecommendationModel
+import fit.asta.health.data.spotify.model.search.ArtistList
+import fit.asta.health.data.spotify.model.search.SpotifySearchModel
+import fit.asta.health.data.spotify.model.search.TrackList
 import retrofit2.http.*
 
 interface SpotifyApiService {

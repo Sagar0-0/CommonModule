@@ -8,13 +8,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.data.spotify.SpotifyConstants.Companion.SPOTIFY_BASE_URL
-import fit.asta.health.network.utils.NetworkUtil
+import fit.asta.health.data.spotify.local.MusicDatabase
+import fit.asta.health.data.spotify.remote.SpotifyApiService
 import fit.asta.health.data.spotify.repo.MusicRepository
 import fit.asta.health.data.spotify.repo.MusicRepositoryImpl
 import fit.asta.health.data.spotify.repo.SpotifyRepo
 import fit.asta.health.data.spotify.repo.SpotifyRepoImpl
-import fit.asta.health.data.spotify.remote.SpotifyApiService
-import fit.asta.health.data.spotify.local.MusicDatabase
+import fit.asta.health.network.utils.NetworkUtil
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 

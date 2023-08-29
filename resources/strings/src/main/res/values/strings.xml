@@ -595,6 +595,10 @@
     GENERATED
 
     <string name="spotify_remote_not_found">Spotify App Remote not found</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="day_concat">:</string>
+    <string name="end_alarm">End Alarm</string>
+
 
     <!-- Spotify strings -->
     <string name="added">Added</string>

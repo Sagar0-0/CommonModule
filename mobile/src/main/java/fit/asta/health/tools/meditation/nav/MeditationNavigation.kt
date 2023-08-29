@@ -4,14 +4,16 @@ import android.content.Intent
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navDeepLink
-import fit.asta.health.main.Graph
-import fit.asta.health.main.deepLinkUrl
-import fit.asta.health.main.sharedViewModel
+import fit.asta.health.common.utils.Constants.MEDITATION_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.deepLinkUrl
+import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.tools.meditation.view.audio_meditation.AudioMeditationScreen
 import fit.asta.health.tools.meditation.view.home.MEvent
 import fit.asta.health.tools.meditation.view.home.MeditationHomeScreen
@@ -21,14 +23,18 @@ import fit.asta.health.tools.meditation.view.level.LevelScreen
 import fit.asta.health.tools.meditation.view.music.MusicScreen
 import fit.asta.health.tools.meditation.viewmodel.MeditationViewModel
 
+fun NavController.navigateToMeditation(navOptions: NavOptions? = null) {
+    this.navigate(MEDITATION_GRAPH_ROUTE, navOptions)
+}
+
 fun NavGraphBuilder.meditationNavigation(
     navController: NavHostController, onBack: () -> Unit
 ) {
     navigation(
-        route = Graph.MeditationTool.route,
+        route = MEDITATION_GRAPH_ROUTE,
         startDestination = MeditationScreen.MeditationHomeScreen.route,
         deepLinks = listOf(navDeepLink {
-            uriPattern = "$deepLinkUrl/${Graph.MeditationTool.route}"
+            uriPattern = "$deepLinkUrl/${MEDITATION_GRAPH_ROUTE}"
             action = Intent.ACTION_VIEW
         })
     ) {
