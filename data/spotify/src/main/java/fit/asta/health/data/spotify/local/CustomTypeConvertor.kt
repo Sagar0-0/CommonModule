@@ -4,9 +4,9 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import fit.asta.health.data.spotify.model.common.Album
 import fit.asta.health.data.spotify.model.common.Artist
+import fit.asta.health.data.spotify.model.common.ExternalIds
 import fit.asta.health.data.spotify.model.common.ExternalUrls
 import fit.asta.health.data.spotify.model.common.Image
-import fit.asta.health.data.spotify.model.common.ExternalIds
 
 class CustomTypeConvertor {
     @TypeConverter
