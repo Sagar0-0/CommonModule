@@ -18,14 +18,13 @@ android {
 
 dependencies {
 
-    implementation(project(mapOf("path" to ":core:common")))
+    implementation(project(":core:common"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
 
-    testImplementation(libs.junit4)
-    androidTestImplementation(libs.androidx.junit)
+    testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.androidx.test.espresso.core)
 
     // Retrofit and OkHttp
