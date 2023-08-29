@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
@@ -19,7 +20,7 @@ import javax.inject.Singleton
 object VideoPlayerModule {
 
     @Provides
-    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+    @androidx.annotation.OptIn(UnstableApi::class)
     @Singleton
     fun  provideVideoPlayer(@ApplicationContext context: Context): Player {
         val audioAttributes = AudioAttributes.Builder()

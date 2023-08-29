@@ -13,6 +13,7 @@ import androidx.media3.common.C.AUDIO_CONTENT_TYPE_MUSIC
 import androidx.media3.common.C.USAGE_MEDIA
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.network.utils.NetworkResult
@@ -45,7 +46,7 @@ import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
-@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+@androidx.annotation.OptIn(UnstableApi::class)
 class MeditationViewModel @Inject constructor(
     private val meditationRepo: MeditationRepo,
     private val musicServiceConnection: MusicServiceConnection,

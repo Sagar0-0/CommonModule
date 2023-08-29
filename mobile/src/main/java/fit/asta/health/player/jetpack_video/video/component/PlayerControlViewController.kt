@@ -3,6 +3,7 @@ package fit.asta.health.player.jetpack_video.video.component
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.ui.PlayerControlView
 import fit.asta.health.player.jetpack_video.media.ControllerVisibility
 import fit.asta.health.player.jetpack_video.media.MediaState
@@ -11,7 +12,7 @@ import fit.asta.health.player.jetpack_video.media.MediaState
  * Composable component which leverages [PlayerControlView] to provider a controller.
  */
 @Composable
-@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+@androidx.annotation.OptIn(UnstableApi::class)
 fun PlayerControlViewController(
     mediaState: MediaState,
     modifier: Modifier = Modifier,
