@@ -6,17 +6,17 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentDate
 import fit.asta.health.common.utils.toUiState
-import fit.asta.health.navigation.today.domain.model.TodayData
+import fit.asta.health.data.scheduler.db.entity.AlarmEntity
+import fit.asta.health.data.scheduler.remote.model.TodayData
+import fit.asta.health.data.scheduler.remote.net.scheduler.Meta
+import fit.asta.health.data.scheduler.repo.AlarmBackendRepo
+import fit.asta.health.data.scheduler.repo.AlarmLocalRepo
+import fit.asta.health.datastore.PrefManager
+import fit.asta.health.feature.scheduler.util.StateManager
 import fit.asta.health.navigation.today.ui.view.Event
-import fit.asta.health.scheduler.data.api.net.scheduler.Meta
-import fit.asta.health.scheduler.data.db.entity.AlarmEntity
-import fit.asta.health.scheduler.data.repo.AlarmBackendRepo
-import fit.asta.health.scheduler.data.repo.AlarmLocalRepo
-import fit.asta.health.scheduler.util.StateManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -44,7 +44,8 @@ class TodayPlanViewModel @Inject constructor(
     private val calendar: Calendar = Calendar.getInstance()
     val today: Int = calendar.get(Calendar.DAY_OF_WEEK)
 
-    private val _todayState = MutableStateFlow<UiState<TodayData>>(UiState.Idle)
+    private val _todayState =
+        MutableStateFlow<UiState<TodayData>>(UiState.Idle)
     val todayState = _todayState.asStateFlow()
 
     init {
@@ -60,10 +61,7 @@ class TodayPlanViewModel @Inject constructor(
 
     fun setAlarmPreferences(value: Long) {
         viewModelScope.launch {
-            prefManager.setPreferences(
-                key = "alarm",
-                value = value
-            )
+            prefManager.setAlarmId(value)
         }
     }
 

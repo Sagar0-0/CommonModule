@@ -5,30 +5,36 @@ import android.util.Log
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navDeepLink
+import fit.asta.health.common.utils.Constants.WATER_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.deepLinkUrl
+import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.main.Graph
-import fit.asta.health.main.deepLinkUrl
-import fit.asta.health.main.sharedViewModel
 import fit.asta.health.testimonials.ui.create.view.ServerErrorLayout
 import fit.asta.health.tools.water.view.screen.WaterToolScreen
 import fit.asta.health.tools.water.viewmodel.WaterState
 import fit.asta.health.tools.water.viewmodel.WaterViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+fun NavController.navigateToWater(navOptions: NavOptions? = null) {
+    this.navigate(WATER_GRAPH_ROUTE, navOptions)
+}
+
 @OptIn(ExperimentalCoroutinesApi::class)
 fun NavGraphBuilder.waterToolNavigation(
     navController: NavHostController, onBack: () -> Unit
 ) {
     navigation(
-        route = Graph.WaterTool.route,
+        route = WATER_GRAPH_ROUTE,
         startDestination = WaterScreen.WaterToolHomeScreen.route,
         deepLinks = listOf(navDeepLink {
-            uriPattern = "$deepLinkUrl/${Graph.WaterTool.route}"
+            uriPattern = "$deepLinkUrl/${WATER_GRAPH_ROUTE}"
             action = Intent.ACTION_VIEW
         })
     ) {

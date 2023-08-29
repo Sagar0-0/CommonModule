@@ -9,8 +9,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
-import fit.asta.health.main.Graph
-import fit.asta.health.main.deepLinkUrl
+import fit.asta.health.common.utils.Constants.SLEEP_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.deepLinkUrl
 import fit.asta.health.tools.sleep.view.screens.SleepDisturbanceScreen
 import fit.asta.health.tools.sleep.view.screens.SleepFactorsScreen
 import fit.asta.health.tools.sleep.view.screens.SleepGoalsScreen
@@ -33,7 +33,7 @@ fun SleepNavGraph(
             composable(
                 SleepToolNavRoutes.SleepHomeRoute.routes,
                 deepLinks = listOf(navDeepLink {
-                    uriPattern = "$deepLinkUrl/${Graph.SleepTool.route}"
+                    uriPattern = "$deepLinkUrl/${SLEEP_GRAPH_ROUTE}"
                     action = Intent.ACTION_VIEW
                 }),
                 content = {

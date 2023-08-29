@@ -9,4 +9,6 @@ message UserPreferences {
   int32 locationPermissionRejectedCount = 3;
   string currentAddress = 4;
   string theme = 5;
+  int64 alarmId = 6;
+  string tone = 7;
 }

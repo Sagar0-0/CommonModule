@@ -7,14 +7,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -41,6 +37,7 @@ import fit.asta.health.feature.orders.navigateToOrders
 import fit.asta.health.feature.orders.ordersRoute
 import fit.asta.health.feature.profile.BASIC_PROFILE_GRAPH_ROUTE
 import fit.asta.health.feature.profile.basicProfileRoute
+import fit.asta.health.feature.scheduler.ui.navigation.schedulerNavigation
 import fit.asta.health.feature.settings.settingScreens
 import fit.asta.health.feature.settings.view.SettingsUiEvent
 import fit.asta.health.main.view.HOME_GRAPH_ROUTE
@@ -50,7 +47,6 @@ import fit.asta.health.profile.CreateProfileLayout
 import fit.asta.health.profile.ProfileContent
 import fit.asta.health.referral.navigateToReferral
 import fit.asta.health.referral.referralRoute
-import fit.asta.health.scheduler.ui.navigation.schedulerNavigation
 import fit.asta.health.subscription.navigateToSubscription
 import fit.asta.health.subscription.subscriptionRoute
 import fit.asta.health.testimonials.ui.testimonialsRoute
@@ -65,7 +61,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
-const val deepLinkUrl: String = "https://www.asta.com"
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
 @Composable
@@ -213,11 +208,3 @@ fun MainNavHost(isConnected: Boolean, mainViewModel: MainViewModel) {
     }
 }
 
-@Composable
-inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(navController: NavController): T {
-    val navGraphRoute = destination.parent?.route ?: return hiltViewModel()
-    val parentEntry = remember(this) {
-        navController.getBackStackEntry(navGraphRoute)
-    }
-    return hiltViewModel(parentEntry)
-}

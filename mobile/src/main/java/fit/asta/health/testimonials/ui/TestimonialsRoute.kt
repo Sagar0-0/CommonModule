@@ -4,8 +4,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.main.Graph
-import fit.asta.health.main.sharedViewModel
 import fit.asta.health.testimonials.ui.create.view.LoadTestimonialCreateLayout
 import fit.asta.health.testimonials.ui.create.vm.TestimonialViewModel
 import fit.asta.health.testimonials.ui.list.view.TestimonialsListLayout

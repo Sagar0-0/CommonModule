@@ -59,7 +59,12 @@ import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.R
+import fit.asta.health.common.utils.Constants.getHourMinAmPm
+import fit.asta.health.common.utils.Constants.goToTool
+import fit.asta.health.common.utils.HourMinAmPm
 import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.data.scheduler.db.entity.AlarmEntity
+import fit.asta.health.data.scheduler.remote.model.TodayData
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.functional.WeatherCardImage
 import fit.asta.health.designsystem.components.generic.AppButtons
@@ -68,13 +73,8 @@ import fit.asta.health.designsystem.components.generic.AppDialog
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.feature.scheduler.ui.naman.WeatherCard
 import fit.asta.health.main.Graph
-import fit.asta.health.main.view.HOME_GRAPH_ROUTE
-import fit.asta.health.navigation.today.domain.model.TodayData
-import fit.asta.health.navigation.today.ui.view.utils.HourMinAmPm
-import fit.asta.health.navigation.today.ui.view.utils.Utils
-import fit.asta.health.scheduler.data.db.entity.AlarmEntity
-import fit.asta.health.scheduler.ui.naman.WeatherCard
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import java.time.LocalTime
@@ -176,7 +176,7 @@ fun TodayContent(
                             onSchedule = {
                                 hSEvent(
                                     HomeEvent.NavSchedule(
-                                        Utils.getHourMinAmPm(
+                                        getHourMinAmPm(
                                             slot.time,
                                             slot.title
                                         )
@@ -550,49 +550,4 @@ fun AlertDialogPopUp(
     }
 }
 
-fun goToTool(tag: String): String {
-    return when (tag) {
-        "Breathing" -> {
-            Graph.BreathingTool.route
-        }
-//        "Diet" -> {}
-//        "Face Wash" -> {}
-//        "Intermittent" -> {}
-//        "Medicine" -> {}
-        "Meditation" -> {
-            Graph.MeditationTool.route
-        }
-//        "Power Nap" -> {}Graph.ExerciseTool.route + "?activity=dance"
-        "Sleep" -> {
-            Graph.SleepTool.route
-        }
-//        "Sleep Therapy" -> {}
-        "Stretches" -> {
-            (Graph.ExerciseTool.route + "?activity=yoga")
-        }
 
-        "SunLight" -> {
-            Graph.SunlightTool.route
-        }
-
-        "Walking" -> {
-            Graph.WalkingTool.route
-        }
-
-        "Water" -> {
-            Graph.WaterTool.route
-        }
-
-        "Workout" -> {
-            (Graph.ExerciseTool.route + "?activity=workout")
-        }
-
-        "Yoga" -> {
-            (Graph.ExerciseTool.route + "?activity=yoga")
-        }
-
-        else -> {
-            HOME_GRAPH_ROUTE
-        }
-    }
-}

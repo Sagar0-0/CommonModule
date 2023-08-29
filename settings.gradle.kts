@@ -42,6 +42,7 @@ include(":data:profile")
 include(":data:referral")
 include(":data:subscription")
 include(":data:wallet")
+include(":data:scheduler")
 
 include(":feature:address")
 include(":feature:auth")
@@ -56,3 +57,5 @@ include(":feature:subscription")
 include(":feature:wallet")
 include(":data:spotify")
 include(":feature:spotify")
+include(":feature:scheduler")
+

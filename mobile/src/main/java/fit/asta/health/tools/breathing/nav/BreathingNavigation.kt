@@ -3,14 +3,16 @@ package fit.asta.health.tools.breathing.nav
 import android.content.Intent
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navDeepLink
-import fit.asta.health.main.Graph
-import fit.asta.health.main.deepLinkUrl
-import fit.asta.health.main.sharedViewModel
+import fit.asta.health.common.utils.Constants.BREATHING_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.deepLinkUrl
+import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.tools.breathing.view.break_time.BreakTimeScreen
 import fit.asta.health.tools.breathing.view.course_level.CourseLevelScreen
 import fit.asta.health.tools.breathing.view.exercise.ExerciseScreen
@@ -23,15 +25,18 @@ import fit.asta.health.tools.breathing.view.music.MusicScreen
 import fit.asta.health.tools.breathing.view.pace.PaceScreen
 import fit.asta.health.tools.breathing.viewmodel.BreathingViewModel
 
+fun NavController.navigateToBreathing(navOptions: NavOptions? = null) {
+    this.navigate(BREATHING_GRAPH_ROUTE, navOptions)
+}
 
 fun NavGraphBuilder.breathingNavigation(
     navController: NavHostController, onBack: () -> Unit
 ) {
     navigation(
-        route = Graph.BreathingTool.route,
+        route = BREATHING_GRAPH_ROUTE,
         startDestination = BreathingScreen.HomeScreen.route,
         deepLinks = listOf(navDeepLink {
-            uriPattern = "$deepLinkUrl/${Graph.BreathingTool.route}"
+            uriPattern = "$deepLinkUrl/${BREATHING_GRAPH_ROUTE}"
             action = Intent.ACTION_VIEW
         })
     ) {
