@@ -5,11 +5,16 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getResponseState
+import fit.asta.health.data.spotify.model.common.Track
 import fit.asta.health.data.spotify.model.library.albums.SpotifyLibraryAlbumModel
+import fit.asta.health.data.spotify.model.library.episodes.SpotifyLibraryEpisodesModel
 import fit.asta.health.data.spotify.model.library.following.SpotifyUserFollowingArtist
 import fit.asta.health.data.spotify.model.library.playlist.SpotifyUserPlaylistsModel
+import fit.asta.health.data.spotify.model.library.shows.SpotifyLibraryShowsModel
+import fit.asta.health.data.spotify.model.library.tracks.SpotifyLibraryTracksModel
 import fit.asta.health.data.spotify.util.JsonReader
 import fit.asta.health.data.spotify.model.me.SpotifyMeModel
+import fit.asta.health.data.spotify.model.recently.SpotifyUserRecentlyPlayedModel
 import fit.asta.health.data.spotify.model.search.ArtistList
 import fit.asta.health.data.spotify.model.search.TrackList
 import io.mockk.every
@@ -340,4 +345,293 @@ class SpotifyApiServiceTest {
             assert(response is ResponseState.Error)
         }
     }
+
+
+    @Nested
+    @DisplayName("Get Current User Shows")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class GetCurrentUserShows {
+
+        @Test
+        fun `getCurrentUserShows, returns Success`() = runTest {
+
+            // Mock Response
+            val mockResponse = MockResponse()
+
+            // Reading JSON File from the resources folder
+            val json = JsonReader.readJsonFile("/json/getCurrentUserShows.json")
+            val localJsonData = gson.fromJson(json, SpotifyLibraryShowsModel::class.java)
+            mockResponse.setBody(json)
+            server.enqueue(mockResponse)
+
+            // Response from the Server
+            val response = api.getCurrentUserShows(mapOf())
+            server.takeRequest()
+
+            // Assertion to check if the response is correct or not
+            assertEquals(response, localJsonData)
+        }
+
+        @Test
+        fun `getCurrentUserShows, returns Failed`() = runTest {
+
+            // Defining all the static functions return
+            mockkStatic(Log::class)
+            every { Log.e(any(), any()) } returns 0
+
+            // Mock Response
+            val mockResponse = MockResponse()
+            mockResponse.setResponseCode(404)
+            server.enqueue(mockResponse)
+
+            // Response from the Server
+            val response: ResponseState<SpotifyLibraryShowsModel> =
+                getResponseState { api.getCurrentUserShows(mapOf()) }
+            server.takeRequest()
+
+            // Assertion to check if the response is correct or not
+            assert(response is ResponseState.Error)
+        }
+    }
+
+
+    @Nested
+    @DisplayName("Get Current User Episodes")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class GetCurrentUserEpisodes {
+
+        @Test
+        fun `getCurrentUserEpisodes, returns Success`() = runTest {
+
+            // Mock Response
+            val mockResponse = MockResponse()
+
+            // Reading JSON File from the resources folder
+            val json = JsonReader.readJsonFile("/json/getCurrentUserEpisodes.json")
+            val localJsonData = gson.fromJson(json, SpotifyLibraryEpisodesModel::class.java)
+            mockResponse.setBody(json)
+            server.enqueue(mockResponse)
+
+            // Response from the Server
+            val response = api.getCurrentUserEpisodes(mapOf())
+            server.takeRequest()
+
+            // Assertion to check if the response is correct or not
+            assertEquals(response, localJsonData)
+        }
+
+        @Test
+        fun `getCurrentUserEpisodes, returns Failed`() = runTest {
+
+            // Defining all the static functions return
+            mockkStatic(Log::class)
+            every { Log.e(any(), any()) } returns 0
+
+            // Mock Response
+            val mockResponse = MockResponse()
+            mockResponse.setResponseCode(404)
+            server.enqueue(mockResponse)
+
+            // Response from the Server
+            val response: ResponseState<SpotifyLibraryEpisodesModel> =
+                getResponseState { api.getCurrentUserEpisodes(mapOf()) }
+            server.takeRequest()
+
+            // Assertion to check if the response is correct or not
+            assert(response is ResponseState.Error)
+        }
+    }
+
+
+    @Nested
+    @DisplayName("Get Current User Tracks")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class GetCurrentUserTracks {
+
+        @Test
+        fun `getCurrentUserTracks, returns Success`() = runTest {
+
+            // Mock Response
+            val mockResponse = MockResponse()
+
+            // Reading JSON File from the resources folder
+            val json = JsonReader.readJsonFile("/json/getCurrentUserTracks.json")
+            val localJsonData = gson.fromJson(json, SpotifyLibraryTracksModel::class.java)
+            mockResponse.setBody(json)
+            server.enqueue(mockResponse)
+
+            // Response from the Server
+            val response = api.getCurrentUserTracks(mapOf())
+            server.takeRequest()
+
+            // Assertion to check if the response is correct or not
+            assertEquals(response, localJsonData)
+        }
+
+        @Test
+        fun `getCurrentUserTracks, returns Failed`() = runTest {
+
+            // Defining all the static functions return
+            mockkStatic(Log::class)
+            every { Log.e(any(), any()) } returns 0
+
+            // Mock Response
+            val mockResponse = MockResponse()
+            mockResponse.setResponseCode(404)
+            server.enqueue(mockResponse)
+
+            // Response from the Server
+            val response: ResponseState<SpotifyLibraryTracksModel> =
+                getResponseState { api.getCurrentUserTracks(mapOf()) }
+            server.takeRequest()
+
+            // Assertion to check if the response is correct or not
+            assert(response is ResponseState.Error)
+        }
+    }
+
+
+    @Nested
+    @DisplayName("Get Current User Recently Played Tracks")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class GetCurrentUserRecentlyPlayedTracks {
+
+        @Test
+        fun `getCurrentUserRecentlyPlayedTracks, returns Success`() = runTest {
+
+            // Mock Response
+            val mockResponse = MockResponse()
+
+            // Reading JSON File from the resources folder
+            val json = JsonReader.readJsonFile("/json/getCurrentUserRecentlyPlayerTracks.json")
+            val localJsonData = gson.fromJson(json, SpotifyUserRecentlyPlayedModel::class.java)
+            mockResponse.setBody(json)
+            server.enqueue(mockResponse)
+
+            // Response from the Server
+            val response = api.getCurrentUserRecentlyPlayedTracks(mapOf(), mapOf())
+            server.takeRequest()
+
+            // Assertion to check if the response is correct or not
+            assertEquals(response, localJsonData)
+        }
+
+        @Test
+        fun `getCurrentUserRecentlyPlayedTracks, returns Failed`() = runTest {
+
+            // Defining all the static functions return
+            mockkStatic(Log::class)
+            every { Log.e(any(), any()) } returns 0
+
+            // Mock Response
+            val mockResponse = MockResponse()
+            mockResponse.setResponseCode(404)
+            server.enqueue(mockResponse)
+
+            // Response from the Server
+            val response: ResponseState<SpotifyUserRecentlyPlayedModel> =
+                getResponseState { api.getCurrentUserRecentlyPlayedTracks(mapOf(), mapOf()) }
+            server.takeRequest()
+
+            // Assertion to check if the response is correct or not
+            assert(response is ResponseState.Error)
+        }
+    }
+
+
+    @Nested
+    @DisplayName("Get User Playlists")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class GetUserPlaylists {
+
+        @Test
+        fun `getUserPlaylists, returns Success`() = runTest {
+
+            // Mock Response
+            val mockResponse = MockResponse()
+
+            // Reading JSON File from the resources folder
+            val json = JsonReader.readJsonFile("/json/getUserPlaylists.json")
+            val localJsonData = gson.fromJson(json, SpotifyUserPlaylistsModel::class.java)
+            mockResponse.setBody(json)
+            server.enqueue(mockResponse)
+
+            // Response from the Server
+            val response = api.getUserPlaylists(mapOf(), "")
+            server.takeRequest()
+
+            // Assertion to check if the response is correct or not
+            assertEquals(response, localJsonData)
+        }
+
+        @Test
+        fun `getUserPlaylists, returns Failed`() = runTest {
+
+            // Defining all the static functions return
+            mockkStatic(Log::class)
+            every { Log.e(any(), any()) } returns 0
+
+            // Mock Response
+            val mockResponse = MockResponse()
+            mockResponse.setResponseCode(404)
+            server.enqueue(mockResponse)
+
+            // Response from the Server
+            val response: ResponseState<SpotifyUserPlaylistsModel> =
+                getResponseState { api.getUserPlaylists(mapOf(), "") }
+            server.takeRequest()
+
+            // Assertion to check if the response is correct or not
+            assert(response is ResponseState.Error)
+        }
+    }
+
+
+    @Nested
+    @DisplayName("Get Track Details")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class GetTrackDetails {
+
+        @Test
+        fun `getTrackDetails, returns Success`() = runTest {
+
+            // Mock Response
+            val mockResponse = MockResponse()
+
+            // Reading JSON File from the resources folder
+            val json = JsonReader.readJsonFile("/json/getTrackDetails.json")
+            val localJsonData = gson.fromJson(json, Track::class.java)
+            mockResponse.setBody(json)
+            server.enqueue(mockResponse)
+
+            // Response from the Server
+            val response = api.getTrackDetails(mapOf(), "")
+            server.takeRequest()
+
+            // Assertion to check if the response is correct or not
+            assertEquals(response, localJsonData)
+        }
+
+        @Test
+        fun `getTrackDetails, returns Failed`() = runTest {
+
+            // Defining all the static functions return
+            mockkStatic(Log::class)
+            every { Log.e(any(), any()) } returns 0
+
+            // Mock Response
+            val mockResponse = MockResponse()
+            mockResponse.setResponseCode(404)
+            server.enqueue(mockResponse)
+
+            // Response from the Server
+            val response: ResponseState<Track> =
+                getResponseState { api.getTrackDetails(mapOf(), "") }
+            server.takeRequest()
+
+            // Assertion to check if the response is correct or not
+            assert(response is ResponseState.Error)
+        }
+    }
+
 }
