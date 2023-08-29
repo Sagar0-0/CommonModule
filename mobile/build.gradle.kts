@@ -239,8 +239,6 @@ dependencies {
     //Firebase storage for media files
     implementation(libs.firebase.storage.ktx)
 
-    //Firebase fire-store for nosql
-    implementation(libs.firebase.firestore.ktx)
 
     //for animations
     implementation(libs.androidx.constraintlayout.compose)

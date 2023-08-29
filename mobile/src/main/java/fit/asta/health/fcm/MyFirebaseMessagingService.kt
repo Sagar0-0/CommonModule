@@ -25,10 +25,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d(TAG, "From: ${remoteMessage.from}")
 
-        // Check if message contains a data payload.
+        // TODO: Handle types of notifications
         if (remoteMessage.data.isNotEmpty()) {
             Log.d(TAG, "Message data payload: ${remoteMessage.data}")
-
             remoteMessage.data["title"]?.let { sendNotification(it) }
         }
         remoteMessage.notification?.let {
@@ -38,7 +37,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         Log.d(TAG, "Refreshed token: $token")
-        repo.sendToken(token)
+        repo.setNewTokenAvailable(token)
     }
 
     private fun sendNotification(messageBody: String) {

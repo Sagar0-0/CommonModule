@@ -11,4 +11,5 @@ message UserPreferences {
   string theme = 5;
   int64 alarmId = 6;
   string tone = 7;
+  bool isFcmTokenUploaded = 8;
 }

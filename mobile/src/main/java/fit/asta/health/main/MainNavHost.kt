@@ -63,6 +63,7 @@ import java.nio.charset.StandardCharsets
 
 @Composable
 fun MainNavHost(isConnected: Boolean, mainViewModel: MainViewModel) {
+
     if (!isConnected) {
         Box(modifier = Modifier.fillMaxSize()) {
             AppErrorScreen {}

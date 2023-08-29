@@ -12,24 +12,12 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.HealthCareApp
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    @Provides
-    @IODispatcher
-    fun provideIODispatcher(): CoroutineDispatcher = Dispatchers.IO
-
-    @Provides
-    @DefaultDispatcher
-    fun providesCoroutineDispatcher(): CoroutineDispatcher = Dispatchers.Default
 
     @Singleton
     @Provides
@@ -51,24 +39,4 @@ object AppModule {
         )
     }
 
-    @Provides
-    @Singleton
-    @ApplicationScope
-    fun providesCoroutineScope(
-        @IODispatcher dispatcher: CoroutineDispatcher,
-    ): CoroutineScope = CoroutineScope(SupervisorJob() + dispatcher)
-
 }
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class IODispatcher
-
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class DefaultDispatcher
-
-@Retention(AnnotationRetention.RUNTIME)
-@Qualifier
-private annotation class ApplicationScope

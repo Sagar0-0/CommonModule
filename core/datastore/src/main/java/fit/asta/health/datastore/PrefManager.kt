@@ -23,8 +23,21 @@ class PrefManager
             currentAddress = it.currentAddress,
             theme = it.theme,
             alarmId = it.alarmId,
-            tone = it.tone
+            tone = it.tone,
+            isFcmTokenUploaded = it.isFcmTokenUploaded
         )
+    }
+
+    suspend fun setIsFcmTokenUploaded(value: Boolean) {
+        try {
+            userPreferences.updateData {
+                it.copy {
+                    this.isFcmTokenUploaded = value
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("Pref", "Failed to update user preferences", ioException)
+        }
     }
 
     suspend fun setSoundTone(tone: String) {

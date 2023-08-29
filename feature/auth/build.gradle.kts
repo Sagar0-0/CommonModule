@@ -32,6 +32,9 @@ dependencies {
     implementation(libs.play.services.auth.api.phone)
     implementation(libs.firebase.ui.auth)
 
+    //Firebase for notifications
+    implementation(libs.firebase.messaging.ktx)
+
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
 
