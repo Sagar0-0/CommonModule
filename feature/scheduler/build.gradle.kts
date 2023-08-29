@@ -10,7 +10,6 @@ android {
     namespace = "fit.asta.health.feature.scheduler"
     defaultConfig {
         consumerProguardFiles("consumer-rules.pro")
-        manifestPlaceholders["redirectSchemeName"] = "spotify-sdk"
     }
 }
 
