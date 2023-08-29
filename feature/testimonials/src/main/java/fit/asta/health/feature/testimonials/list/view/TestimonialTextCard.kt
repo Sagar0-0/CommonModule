@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.theme.spacing
-import fit.asta.health.navigation.home.view.component.TstTxtLayout
+import fit.asta.health.feature.testimonials.components.TstTxtLayout
 
 @Composable
 fun TstViewTxtLayout(tstTxtMedia: fit.asta.health.data.testimonials.model.Testimonial) {

@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.Player
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.R
 import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.UiString
 import fit.asta.health.feature.testimonials.create.vm.MediaType.AfterImage
@@ -26,6 +25,7 @@ import fit.asta.health.feature.testimonials.create.vm.TestimonialGetState.Loadin
 import fit.asta.health.feature.testimonials.create.vm.TestimonialGetState.NetworkError
 import fit.asta.health.feature.testimonials.create.vm.TestimonialGetState.Success
 import fit.asta.health.network.data.ApiResponse
+import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

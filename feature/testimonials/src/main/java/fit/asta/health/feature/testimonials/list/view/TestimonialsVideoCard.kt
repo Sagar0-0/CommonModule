@@ -1,41 +1,19 @@
 package fit.asta.health.feature.testimonials.list.view
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
-import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
-import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.data.testimonials.model.Media
-import fit.asta.health.designsystem.theme.aspectRatio
 import fit.asta.health.designsystem.theme.spacing
-import fit.asta.health.navigation.home.view.component.ArtistCard
-import fit.asta.health.player.jetpack_video.media.MediaState
-import fit.asta.health.player.jetpack_video.media.ResizeMode
-import fit.asta.health.player.jetpack_video.media.rememberMediaState
-import fit.asta.health.player.jetpack_video.video.ControllerType
-import fit.asta.health.player.jetpack_video.video.component.PlayerControlViewController
-import fit.asta.health.player.jetpack_video.video.component.RememberPlayer
-import fit.asta.health.player.jetpack_video.video.component.SimpleController
-import fit.asta.health.tools.exercise.view.video.VideoState
+import fit.asta.health.feature.testimonials.components.ArtistCard
 
 @Composable
 fun TstViewVideoLayout(

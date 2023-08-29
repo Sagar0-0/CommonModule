@@ -12,18 +12,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.exoplayer.ExoPlayer
-import fit.asta.health.common.jetpack.getOneUrl
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.jetpack.dashedBorder
 import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.feature.testimonials.components.UploadTstMediaView
-import fit.asta.health.feature.testimonials.create.vm.MediaType
 import fit.asta.health.feature.testimonials.create.vm.MediaType.Video
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnMediaClear
 import fit.asta.health.feature.testimonials.create.vm.TestimonialViewModel
-import fit.asta.health.feature.testimonials.list.view.VideoView
-import fit.asta.health.player.jetpack_video.media.rememberMediaState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)

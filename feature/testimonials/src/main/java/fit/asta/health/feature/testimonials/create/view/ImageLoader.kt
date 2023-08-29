@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import fit.asta.health.common.jetpack.getOneUrl
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.jetpack.dashedBorder
 import fit.asta.health.designsystem.theme.spacing
@@ -22,6 +21,7 @@ import fit.asta.health.feature.testimonials.create.vm.MediaType.BeforeImage
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnMediaClear
 import fit.asta.health.feature.testimonials.create.vm.TestimonialViewModel
+import fit.asta.health.feature.testimonials.utils.getOneUrl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
