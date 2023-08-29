@@ -49,8 +49,10 @@ import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.navigation.track.TrackDestination
 import fit.asta.health.navigation.track.data.remote.model.menu.HomeMenuResponse
+import fit.asta.health.navigation.track.ui.components.TrackDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackingChartCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
+import fit.asta.health.navigation.track.ui.util.DatePickerData
 import fit.asta.health.navigation.track.ui.util.TrackOption
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
@@ -69,6 +71,7 @@ import kotlin.math.abs
 @Composable
 fun TrackMenuScreenControl(
     homeMenuState: UiState<HomeMenuResponse>,
+    calendarData: DatePickerData,
     loadHomeData: () -> Unit,
     setUiEvent: (TrackUiEvent) -> Unit,
     navigator: (String) -> Unit
@@ -96,6 +99,7 @@ fun TrackMenuScreenControl(
         is UiState.Success -> {
             TrackMenuSuccessScreen(
                 homeMenuData = homeMenuState.data.homeMenuData,
+                calendarData = calendarData,
                 setUiEvent = setUiEvent,
                 navigator = navigator
             )
@@ -123,6 +127,7 @@ fun TrackMenuScreenControl(
 @Composable
 private fun TrackMenuSuccessScreen(
     homeMenuData: HomeMenuResponse.HomeMenuData,
+    calendarData: DatePickerData,
     setUiEvent: (TrackUiEvent) -> Unit,
     navigator: (String) -> Unit
 ) {
@@ -141,6 +146,20 @@ private fun TrackMenuSuccessScreen(
                 )
             )
     ) {
+
+        // Date Picker
+        item {
+            TrackDatePicker(
+                date = calendarData.date,
+                month = calendarData.month,
+                year = calendarData.year,
+                onPreviousButtonClick = { setUiEvent(TrackUiEvent.ClickedPreviousDateButton) },
+                onNextButtonClick = { setUiEvent(TrackUiEvent.ClickedNextDateButton) },
+                onDateChanged = { date, month, year ->
+                    setUiEvent(TrackUiEvent.SetNewDate(date = date, month = month, year = year))
+                }
+            )
+        }
 
         // Time Spent Chart Card
         homeMenuData.timeSpent?.let {

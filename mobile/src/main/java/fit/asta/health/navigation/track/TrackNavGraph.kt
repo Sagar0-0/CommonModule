@@ -35,8 +35,12 @@ fun TrackNavGraph() {
                     val homeMenuState = trackViewModel.homeScreenDetails
                         .collectAsStateWithLifecycle().value
 
+                    val calendarData = trackViewModel.calendarData
+                        .collectAsStateWithLifecycle().value
+
                     TrackMenuScreenControl(
                         homeMenuState = homeMenuState,
+                        calendarData = calendarData,
                         loadHomeData = trackViewModel::getHomeDetails,
                         setUiEvent = trackViewModel::uiEventListener,
                         navigator = { navController.navigate(it) }

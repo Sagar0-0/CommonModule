@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -45,6 +46,7 @@ import fit.asta.health.feature.spotify.components.MusicLargeImageColumn
 import fit.asta.health.feature.spotify.components.MusicPlayableSmallCards
 import fit.asta.health.feature.spotify.events.SpotifyUiEvent
 import fit.asta.health.feature.spotify.navigation.SpotifyNavRoutes
+import fit.asta.health.resources.strings.R
 
 /**
  * This function shows the spotify features and spotify integration in our app
@@ -104,7 +106,7 @@ fun ThirdPartyScreen(
                 // Search Icon
                 Icon(
                     imageVector = Icons.Outlined.Search,
-                    contentDescription = "Search",
+                    contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurface,
 
                     // Modifications
@@ -120,7 +122,7 @@ fun ThirdPartyScreen(
                 // Profile Icon
                 Icon(
                     imageVector = Icons.Outlined.Person,
-                    contentDescription = "Library",
+                    contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurface,
 
                     // Modifications
@@ -152,7 +154,6 @@ fun ThirdPartyScreen(
 
             is UiState.Success -> {
 
-                // TODO :-
 //                setEvent(SpotifyUiEvent.NetworkIO.LoadRecommendationTracks)
                 recentlyPlayed.data.trackList.let { networkTrackList ->
 
@@ -205,7 +206,7 @@ fun ThirdPartyScreen(
 
         // Recommended Text
         Text(
-            text = "Recommended",
+            text = stringResource(id = R.string.recommended),
 
             modifier = Modifier
                 .padding(12.dp),
@@ -271,7 +272,7 @@ fun ThirdPartyScreen(
 
         // Top Tracks
         Text(
-            text = "Top Tracks",
+            text = stringResource(id = R.string.top_tracks),
 
             modifier = Modifier
                 .padding(12.dp),
@@ -337,7 +338,7 @@ fun ThirdPartyScreen(
 
         // Top Artists
         Text(
-            text = "Top Artists",
+            text = stringResource(id = R.string.top_artists),
 
             modifier = Modifier
                 .padding(12.dp),
