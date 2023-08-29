@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.Calendar
+import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 
 @HiltViewModel
@@ -65,13 +66,23 @@ class TodayPlanViewModel @Inject constructor(
         }
     }
 
-    fun getDefaultSchedule() {
+    fun getDefaultSchedule(context: Context) {
         when (_todayState.value) {
             is UiState.Success -> {
                 (_todayState.value as UiState.Success<TodayData>).data.schedule.forEach { alarmEntity ->
-//                alarmUtils.scheduleAlarm(alarmEntity)
+                    val alarm = alarmEntity.copy(
+                        meta = Meta(
+                            cBy = alarmEntity.meta.cBy,
+                            cDate = Calendar.getInstance().toString(),
+                            sync = 1,
+                            uDate = Calendar.getInstance().toString()
+                        ), status = true,
+                        idFromServer = "",
+                        alarmId = (System.currentTimeMillis() + AtomicLong().incrementAndGet())
+                    )
+                    stateManager.registerAlarm(context, alarm)
                     viewModelScope.launch {
-                        alarmLocalRepo.insertAlarm(alarmEntity)
+                        alarmLocalRepo.insertAlarm(alarm)
                     }
                 }
             }
@@ -131,7 +142,7 @@ class TodayPlanViewModel @Inject constructor(
                             cBy = alarmItem.meta.cBy,
                             cDate = alarmItem.meta.cDate,
                             sync = 2,
-                            uDate = LocalTime.now().toString()
+                            uDate = Calendar.getInstance().toString()
                         )
                     )
                 )

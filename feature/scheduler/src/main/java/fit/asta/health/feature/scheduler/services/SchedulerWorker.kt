@@ -20,7 +20,7 @@ import fit.asta.health.data.scheduler.repo.AlarmBackendRepo
 import fit.asta.health.data.scheduler.repo.AlarmLocalRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.time.LocalTime
+import java.util.Calendar
 
 @HiltWorker
 class SchedulerWorker @AssistedInject constructor(
@@ -58,7 +58,7 @@ class SchedulerWorker @AssistedInject constructor(
                                             cBy = entity.meta.cBy,
                                             cDate = entity.meta.cDate,
                                             sync = 0,
-                                            uDate = LocalTime.now().toString()
+                                            uDate = Calendar.getInstance().toString()
                                         )
                                     )
                                     alarmLocalRepo.insertAlarm(alarm)
