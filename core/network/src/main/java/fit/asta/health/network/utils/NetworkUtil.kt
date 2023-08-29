@@ -13,7 +13,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.DateFormat
 
-
 object NetworkUtil {
 
     fun getRetrofit(client: OkHttpClient): Retrofit {
@@ -72,7 +71,9 @@ object NetworkUtil {
         }
 
         //TODO Make sure its deleted in production release
-        if (BuildConfig.FLAVOR.contentEquals("dev")) {
+        if (BuildConfig.FLAVOR.contentEquals("dev")
+            || BuildConfig.FLAVOR.contentEquals("tst")
+        ) {
             //For self signed SSL Certificate - Only for dev and test environments
             builder.hostnameVerifier { _, _ -> true }
         }

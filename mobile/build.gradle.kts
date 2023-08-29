@@ -230,6 +230,7 @@ dependencies {
 
     //Firebase for notifications
     implementation(libs.firebase.messaging.ktx)
+    implementation(libs.firebase.firestore.ktx)
 
     //Firebase analytics
     implementation(libs.kotlinx.coroutines.play.services)

@@ -1,65 +1,49 @@
 {
   "project_info": {
-    "project_number": "741337330426",
-    "project_id": "asta-health-dev-963f0",
-    "storage_bucket": "asta-health-dev-963f0.appspot.com"
+    "project_number": "99302710433",
+    "project_id": "asta-health-test",
+    "storage_bucket": "asta-health-test.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:741337330426:android:5221fbb361ac61acfd0f43",
+        "mobilesdk_app_id": "1:99302710433:android:a92f8197491b4d2d0c64e0",
         "android_client_info": {
           "package_name": "fit.asta.health.tst"
         }
       },
       "oauth_client": [
         {
-          "client_id": "741337330426-52nt0a0jpqlkqa16c7ag2l92a3vee816.apps.googleusercontent.com",
+          "client_id": "99302710433-hpnq0mk6kmremn2gnaf9c2sbb17858gh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "fit.asta.health.tst",
-            "certificate_hash": "e8e1c9ef82f8ffecb10ec7e238655061bcc3e37f"
+            "certificate_hash": "88a53a3888a7ce507dbf2e0d391466c308d8f674"
           }
         },
         {
-          "client_id": "741337330426-g17bl1lbj6uqgnh41i2cun4legisilak.apps.googleusercontent.com",
+          "client_id": "99302710433-tsdn7gtr06736v6sk1tg8hfkifgs2sd3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "fit.asta.health.tst",
-            "certificate_hash": "c18b1f9990d1fac19e67782dcf237898d08af9aa"
+            "certificate_hash": "c90e9e4ed1c389c20440ccb5b7c450f8b2568110"
           }
         },
         {
-          "client_id": "741337330426-idomgrq7qt2sun2rbt7934vo1r5etal3.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "fit.asta.health.tst",
-            "certificate_hash": "2c7e51d86b62a782f81cae81b5e034741214677e"
-          }
-        },
-        {
-          "client_id": "741337330426-n066hdgu46f22as02rdmiic6ojh8ge6m.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "fit.asta.health.tst",
-            "certificate_hash": "165d5ad485e6e91cf367ae2acb75f84fed86c268"
-          }
-        },
-        {
-          "client_id": "741337330426-vtf909jkfi8bk49qs8paf97vcjnvvtcs.apps.googleusercontent.com",
+          "client_id": "99302710433-gs2clc5esm1fq7k0vr5l8nqosvuliffk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCyOmX5Siqx76ME4rKIYeHYCeQJ2-M-hus"
+          "current_key": "AIzaSyDSOhbzxspLlmaGsms83B-EAMWbVZGb28Q"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "741337330426-vtf909jkfi8bk49qs8paf97vcjnvvtcs.apps.googleusercontent.com",
+              "client_id": "99302710433-1spnpf2051bn7vch6t3hkki9rlctfjcm.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

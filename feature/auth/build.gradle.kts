@@ -18,6 +18,7 @@ dependencies {
     implementation(project(":resources:drawables"))
     implementation(project(":resources:strings"))
 
+    implementation(project(":core:datastore"))
     implementation(project(":core:common"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:test"))
