@@ -49,7 +49,7 @@ class MainViewModel
         }
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
+            started = SharingStarted.Eagerly,
             initialValue = false,
         )
 
@@ -58,12 +58,12 @@ class MainViewModel
 
     val screenCode = prefManager.userData
         .map {
-            it.screenCode
+            UiState.Success(it.screenCode)
         }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,
-            initialValue = 0,
+            initialValue = UiState.Loading,
         )
 
     val locationPermissionRejectedCount = prefManager.userData
@@ -134,5 +134,4 @@ class MainViewModel
     }
 
     fun getUser() = authRepo.getUser()
-    fun isAuth() = authRepo.isAuthenticated()
 }
