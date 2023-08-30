@@ -23,6 +23,7 @@ import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.rateUs
 import fit.asta.health.common.utils.sendBugReportMessage
 import fit.asta.health.common.utils.shareApp
+import fit.asta.health.common.utils.shareReferralCode
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.feature.address.addressRoute
 import fit.asta.health.feature.address.navigateToAddress
@@ -212,7 +213,9 @@ private fun MainNavHost(startDestination: String) {
             onBackPress = navController::popBackStack,
             onLaunchPayments = PaymentActivity::launch
         )
-        referralRoute(navController::popBackStack)
+        referralRoute(navController::popBackStack) {
+            context.shareReferralCode(it, BuildConfig.APPLICATION_ID)
+        }
         walletRoute(navController::popBackStack)
         webView()
     }

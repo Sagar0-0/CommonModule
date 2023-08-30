@@ -284,7 +284,7 @@ fun Context.copyTextToClipboard(text: String) {
     clipboard?.setPrimaryClip(clip)
 }
 
-fun Context.shareReferralCode(code: String, appId: String = "fit.asta.health.dev") {
+fun Context.shareReferralCode(code: String, appId: String) {
     try {
         val sharingIntent = Intent()
         sharingIntent.action = Intent.ACTION_SEND
