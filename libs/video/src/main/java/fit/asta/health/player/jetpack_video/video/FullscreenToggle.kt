@@ -24,7 +24,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.Player
-import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.generic.AppScaffold
@@ -49,11 +48,11 @@ import fit.asta.health.player.jetpack_video.video.utils.findActivity
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FullscreenToggle(
-    navController: NavHostController,
     player: Player,
     videos: SnapshotStateList<VideoItem>,
     uiState: UiState,
-    event: (UiEvent) -> Unit
+    event: (UiEvent) -> Unit,
+    onBack: () -> Unit
 ) {
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
@@ -109,7 +108,7 @@ fun FullscreenToggle(
         topBar = {
             AppTopBar(
                 title = "Fullscreen Toggle",
-                onBack = { navController.popBackStack() }
+                onBack = { onBack() }
             )
         }
     ) { padding ->

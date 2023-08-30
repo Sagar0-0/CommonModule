@@ -5,9 +5,19 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.systemGestureExclusion
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import fit.asta.health.player.jetpack_video.media.MediaState
 import fit.asta.health.player.jetpack_video.media.TimeBar
 import fit.asta.health.player.jetpack_video.media.rememberControllerState
-import fit.asta.health.R
+import fit.asta.health.resources.drawables.R
 import kotlinx.coroutines.delay
 
 /**
@@ -28,7 +38,7 @@ fun SimpleController(
     mediaState: MediaState,
     modifier: Modifier = Modifier,
 ) {
-    Crossfade(targetState = mediaState.isControllerShowing, modifier) { isShowing ->
+    Crossfade(targetState = mediaState.isControllerShowing, modifier, label = "") { isShowing ->
         if (isShowing) {
             val controllerState = rememberControllerState(mediaState)
             var scrubbing by remember { mutableStateOf(false) }
