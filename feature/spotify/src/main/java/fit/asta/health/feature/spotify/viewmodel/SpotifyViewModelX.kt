@@ -1,7 +1,6 @@
 package fit.asta.health.feature.spotify.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.spotify.sdk.android.auth.AuthorizationResponse
@@ -34,9 +33,8 @@ import fit.asta.health.resources.strings.R
 @HiltViewModel
 class SpotifyViewModelX @Inject constructor(
     private val remoteRepository: SpotifyRepo,
-    private val localRepository: MusicRepository,
-    application: Application
-) : AndroidViewModel(application) {
+    private val localRepository: MusicRepository
+) : ViewModel() {
 
 
     private var isMusicPlaying = false
@@ -74,7 +72,7 @@ class SpotifyViewModelX @Inject constructor(
     /**
      * This function fetches the Current User Data from the spotify api
      */
-    private fun getCurrentUserDetails(accessToken: String) {
+    fun getCurrentUserDetails(accessToken: String) {
 
 
         if (_currentUserData.value is UiState.Loading)
