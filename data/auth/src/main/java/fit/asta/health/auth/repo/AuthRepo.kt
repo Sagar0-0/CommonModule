@@ -22,4 +22,5 @@ interface AuthRepo {
     fun deleteAccount(): Flow<ResponseState<Boolean>>
     suspend fun uploadFcmToken(token: String, timestamp: String, uid: String)
     suspend fun setIsFcmTokenUploaded(value: Boolean)
+    suspend fun resetReferralCode()
 }

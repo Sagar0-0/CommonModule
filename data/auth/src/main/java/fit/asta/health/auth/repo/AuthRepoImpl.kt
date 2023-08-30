@@ -27,6 +27,10 @@ class AuthRepoImpl @Inject constructor(
         const val TAG = "AuthRepoImpl"
     }
 
+    override suspend fun resetReferralCode() {
+        prefManager.setReferralCode("")
+    }
+
     override val userData: Flow<UserPreferencesData> = prefManager.userData
     override suspend fun setLogoutDone() {
         prefManager.setScreenCode(1)//show auth screen

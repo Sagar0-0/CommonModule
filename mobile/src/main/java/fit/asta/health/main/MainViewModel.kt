@@ -35,6 +35,10 @@ class MainViewModel
     private val _isPermissionGranted = MutableStateFlow(false)
     val isPermissionGranted = _isPermissionGranted.asStateFlow()
 
+    fun setReferralChecked() = viewModelScope.launch {
+        prefManager.setReferralChecked()
+    }
+
     fun setIsLocationEnabled() {
         _isLocationEnabled.value = addressRepo.isLocationEnabled()
     }
@@ -51,6 +55,16 @@ class MainViewModel
             scope = viewModelScope,
             started = SharingStarted.Eagerly,
             initialValue = false,
+        )
+
+    val isReferralChecked = prefManager.userData
+        .map {
+            UiState.Success(it.isReferralChecked)
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = UiState.Loading,
         )
 
     private val _currentAddressName = MutableStateFlow<UiState<String>>(UiState.Idle)
@@ -134,4 +148,7 @@ class MainViewModel
     }
 
     fun getUser() = authRepo.getUser()
+    fun setReferCode(code: String) = viewModelScope.launch {
+        prefManager.setReferralCode(code)
+    }
 }

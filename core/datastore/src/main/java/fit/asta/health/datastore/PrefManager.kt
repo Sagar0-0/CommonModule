@@ -24,8 +24,34 @@ class PrefManager
             theme = it.theme,
             alarmId = it.alarmId,
             tone = it.tone,
-            isFcmTokenUploaded = it.isFcmTokenUploaded
+            isFcmTokenUploaded = it.isFcmTokenUploaded,
+            isReferralChecked = it.isReferralChecked,
+            referralCode = it.referralCode
         )
+    }
+
+    suspend fun setReferralChecked() {
+        try {
+            userPreferences.updateData {
+                it.copy {
+                    this.isReferralChecked = true
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("Pref", "Failed to update user preferences", ioException)
+        }
+    }
+
+    suspend fun setReferralCode(value: String) {
+        try {
+            userPreferences.updateData {
+                it.copy {
+                    this.referralCode = value
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("Pref", "Failed to update user preferences", ioException)
+        }
     }
 
     suspend fun setIsFcmTokenUploaded(value: Boolean) {

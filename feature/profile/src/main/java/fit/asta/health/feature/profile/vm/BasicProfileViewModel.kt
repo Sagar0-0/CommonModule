@@ -13,7 +13,10 @@ import fit.asta.health.data.profile.remote.model.CheckReferralDTO
 import fit.asta.health.data.profile.repo.ProfileRepo
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,11 +33,28 @@ class BasicProfileViewModel
     private val _checkReferralCodeState = MutableStateFlow<UiState<CheckReferralDTO>>(UiState.Idle)
     val checkReferralCodeState = _checkReferralCodeState.asStateFlow()
 
+    val referralCode = authRepo.userData
+        .map {
+            it.referralCode
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = "",
+        )
+
+    private fun resetReferralCode() = viewModelScope.launch {
+        authRepo.resetReferralCode()
+    }
+
     fun createBasicProfile(basicProfileDTO: BasicProfileDTO) {
         _createBasicProfileState.value = UiState.Loading
         viewModelScope.launch {
-            _createBasicProfileState.value =
-                profileRepo.createBasicProfile(basicProfileDTO).toUiState()
+            val res = profileRepo.createBasicProfile(basicProfileDTO)
+            _createBasicProfileState.value = res.toUiState()
+            if (res is ResponseState.Success) {
+                resetReferralCode()
+            }
         }
     }
 

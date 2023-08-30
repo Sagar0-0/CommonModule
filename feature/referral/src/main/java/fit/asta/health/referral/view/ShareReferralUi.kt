@@ -55,6 +55,8 @@ fun ShareReferralUi(
     onTryAgain: () -> Unit
 ) {
 
+    val context = LocalContext.current
+
     Scaffold(
         topBar = {
             AppTopBar(title = "Referral", onBack = onBackPress)
@@ -126,7 +128,6 @@ fun ShareReferralUi(
 
     }
 }
-
 @Composable
 fun ReferralCustomCard(title: String, content: @Composable () -> Unit) {
     Card(

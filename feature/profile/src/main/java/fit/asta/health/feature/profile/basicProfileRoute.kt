@@ -55,6 +55,7 @@ fun NavGraphBuilder.basicProfileRoute() {
 
         val checkReferralCodeState by basicProfileViewModel.checkReferralCodeState.collectAsStateWithLifecycle()
         val createBasicProfileState by basicProfileViewModel.createBasicProfileState.collectAsStateWithLifecycle()
+        val referralCode by basicProfileViewModel.referralCode.collectAsStateWithLifecycle()
 
         Column {
             var name by rememberSaveable {
@@ -67,8 +68,9 @@ fun NavGraphBuilder.basicProfileRoute() {
                 mutableStateOf("1")
             }
             var ref by rememberSaveable {
-                mutableStateOf("")
+                mutableStateOf(referralCode)
             }
+
             Image(
                 modifier = Modifier.clip(CircleShape),
                 painter = rememberAsyncImagePainter(
