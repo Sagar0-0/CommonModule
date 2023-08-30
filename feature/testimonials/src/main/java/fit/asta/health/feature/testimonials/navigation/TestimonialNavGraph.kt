@@ -37,7 +37,6 @@ fun NavGraphBuilder.testimonialNavRoute(
 
             val getViewModel: TestimonialViewModel = it.sharedViewModel(navController)
             TestimonialsListLayout(
-                player = getViewModel.player(),
                 onNavigateUp = {
                     navController.navigate(route = Create.route)
                 }, onNavigateBack = {

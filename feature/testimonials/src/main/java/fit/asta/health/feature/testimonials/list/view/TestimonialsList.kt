@@ -14,7 +14,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.media3.common.Player
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import fit.asta.health.data.testimonials.model.TestimonialType
@@ -30,8 +29,7 @@ import fit.asta.health.feature.testimonials.list.vm.TestimonialListViewModel
 @Composable
 fun TestimonialsList(
     paddingValues: PaddingValues,
-    viewModel: TestimonialListViewModel,
-    player: Player,
+    viewModel: TestimonialListViewModel
 ) {
     val testimonials = viewModel.testimonialPager.collectAsLazyPagingItems()
 
@@ -48,7 +46,7 @@ fun TestimonialsList(
                         when (TestimonialType.from(item.type)) {
                             is TestimonialType.TEXT -> TstViewTxtLayout(item)
                             is TestimonialType.IMAGE -> TstViewImgLayout(item)
-                            is TestimonialType.VIDEO -> TstViewVideoLayout(item, player)
+                            is TestimonialType.VIDEO -> TstViewVideoLayout(item)
                         }
                     })
             }

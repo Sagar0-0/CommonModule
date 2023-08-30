@@ -23,6 +23,7 @@ dependencies {
 
     implementation(project(":data:auth"))
     implementation(project(":data:testimonials"))
+    implementation(project(":libs:video"))
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
