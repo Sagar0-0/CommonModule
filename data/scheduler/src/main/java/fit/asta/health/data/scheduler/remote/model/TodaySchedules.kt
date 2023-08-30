@@ -1,6 +1,7 @@
 package fit.asta.health.data.scheduler.remote.model
 
 import com.google.gson.annotations.SerializedName
+import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.network.data.Status
 
 
@@ -13,8 +14,8 @@ data class TodaySchedules(
     data class Data(
         @SerializedName("wtr")
         val weather: Weather,
-//        @SerializedName("schedule")
-//        val schedule: List<AlarmEntity>,
+        @SerializedName("schedule")
+        val schedule: List<AlarmEntity>,
         @SerializedName("slot")
         val slot: Slots? = null
     ) {

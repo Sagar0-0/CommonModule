@@ -51,16 +51,12 @@ class Constants {
         // Spotify Web API
         const val SPOTIFY_BASE_URL = "https://api.spotify.com/v1/"
 
-        const val USER_ID = "6309a9379af54f142c65fbff"
+        const val USER_ID = "6309a9379af54f142c65fbfe"
 
         fun changeStatusBarColor(color: Int, window: Window, context: Context) {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                window.statusBarColor = context.resources.getColor(color, context.theme)
-            } else {
-                window.statusBarColor = context.resources.getColor(color)
-            }
+            window.statusBarColor = context.resources.getColor(color, context.theme)
         }
 
         fun setShowWhenLocked(window: Window, context: Context) {

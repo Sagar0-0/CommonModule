@@ -45,7 +45,7 @@ interface SchedulerApiService {
     ): AstaSchedulerDeleteResponse
 
     // Tags Endpoints
-    @GET("tag/list/get/?")//https://asta.fit/tag/list/get/?uid=6309a9379af54f142c65fbff
+    @GET("tag/list/get/?")//https://asta.fit/tag/list/get/?uid=6309a9379af54f142c65fbfe
     suspend fun getTagListFromBackend(
         @Query("uid") userID: String
     ): AstaGetTagsListResponse
