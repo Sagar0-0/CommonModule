@@ -49,6 +49,7 @@ import fit.asta.health.player.jetpack_video.video.component.Option
 import fit.asta.health.player.jetpack_video.video.component.PlayerControlViewController
 import fit.asta.health.player.jetpack_video.video.component.RememberPlayer
 import fit.asta.health.player.jetpack_video.video.component.SimpleController
+import fit.asta.health.player.jetpack_video.video.component.VideoState
 import fit.asta.health.player.jetpack_video.video.utils.ControllerTypes
 import fit.asta.health.player.jetpack_video.video.utils.ResizeModes
 import fit.asta.health.player.jetpack_video.video.utils.findActivity

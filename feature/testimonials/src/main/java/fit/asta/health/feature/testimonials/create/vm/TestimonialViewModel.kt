@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.media3.common.Player
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.UiString
@@ -54,8 +53,7 @@ class TestimonialViewModel
 @Inject constructor(
     private val testimonialRepo: fit.asta.health.data.testimonials.repo.TestimonialRepo,
     private val authRepo: AuthRepo,
-    private val savedState: SavedStateHandle,
-    private val player: Player
+    private val savedState: SavedStateHandle
 ) : ViewModel() {
 
     private val _mutableState = MutableStateFlow<TestimonialGetState>(Loading)
@@ -352,6 +350,5 @@ class TestimonialViewModel
         return testimonialData.value.title != title.value.value || testimonialData.value.testimonial != testimonial.value.value || testimonialData.value.user.org != org.value.value || testimonialData.value.user.role != role.value.value
     }
 
-    fun player()=player
 
 }

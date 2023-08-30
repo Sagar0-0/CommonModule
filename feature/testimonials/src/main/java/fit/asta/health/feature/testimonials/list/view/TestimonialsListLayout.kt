@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.media3.common.Player
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppScaffold
@@ -23,11 +22,10 @@ fun TestimonialsListLayout(
     onNavigateUp: () -> Unit,
     onNavigateBack: () -> Unit,
     viewModel: TestimonialListViewModel = hiltViewModel(),
-    player: Player,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     AppScaffold(content = {
-        TestimonialsList(paddingValues = it, viewModel = viewModel, player = player)
+        TestimonialsList(paddingValues = it, viewModel = viewModel)
     }, floatingActionButton = {
         AppButtons.AppFAB(onClick = onNavigateUp, content = {
             AppDefaultIcon(

@@ -1,10 +1,9 @@
-package fit.asta.health.tools.exercise.view.video
+package fit.asta.health.player.jetpack_video.video.component
 
 import fit.asta.health.player.jetpack_video.media.ResizeMode
 import fit.asta.health.player.jetpack_video.media.ShowBuffering
 import fit.asta.health.player.jetpack_video.media.SurfaceType
 import fit.asta.health.player.jetpack_video.video.ControllerType
-
 
 data class VideoState(
     val url:String = "https://stream1.asta.fit/Dual_Audio_Video.mkv",

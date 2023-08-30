@@ -49,11 +49,11 @@ class VideoActivity : ComponentActivity() {
                         val uiState by viewModel.uiState
                         val videoList by viewModel.videoList.collectAsState()
                         FullscreenToggle(
-                            navController = navController,
                             uiState = uiState,
-                            videos=videoList,
+                            videos = videoList,
                             player = viewModel.player(),
-                            event = viewModel::event
+                            event = viewModel::event,
+                            onBack = { navController.popBackStack() }
                         )
                     }
 

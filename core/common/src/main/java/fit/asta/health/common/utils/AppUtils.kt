@@ -307,6 +307,7 @@ fun Context.shareReferralCode(code: String) {
 fun getImgUrl(url: String) = BuildConfig.BASE_IMAGE_URL + url
 
 fun getVideoUrl(url: String) = BuildConfig.BASE_VIDEO_URL + url
+fun getVideoUrlTools(url: String) = BuildConfig.BASE_IMAGE_URL + url
 
 
 fun getFileName(context: Context, uri: Uri) = DocumentFile.fromSingleUri(context, uri)?.name ?: ""
