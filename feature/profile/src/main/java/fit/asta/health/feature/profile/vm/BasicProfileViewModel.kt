@@ -2,6 +2,7 @@ package fit.asta.health.feature.profile.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.AuthCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.auth.repo.AuthRepo
@@ -32,6 +33,9 @@ class BasicProfileViewModel
 
     private val _checkReferralCodeState = MutableStateFlow<UiState<CheckReferralDTO>>(UiState.Idle)
     val checkReferralCodeState = _checkReferralCodeState.asStateFlow()
+
+    private val _linkAccountState = MutableStateFlow<UiState<User>>(UiState.Idle)
+    val linkAccountState = _linkAccountState.asStateFlow()
 
     val referralCode = authRepo.userData
         .map {
@@ -88,5 +92,11 @@ class BasicProfileViewModel
 
     fun navigateToHome() = viewModelScope.launch {
         authRepo.setBasicProfileDone()
+    }
+
+    fun linkWithCredentials(authCredential: AuthCredential) = viewModelScope.launch {
+        authRepo.linkWithCredential(authCredential).collect {
+            _linkAccountState.value = it.toUiState()
+        }
     }
 }
