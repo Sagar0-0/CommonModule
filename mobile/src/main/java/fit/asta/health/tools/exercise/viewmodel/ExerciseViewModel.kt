@@ -16,6 +16,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.network.utils.NetworkResult
 import fit.asta.health.player.jetpack_audio.domain.data.Song
 import fit.asta.health.player.jetpack_audio.domain.utils.convertToProgress
+import fit.asta.health.player.jetpack_video.video.component.VideoState
 import fit.asta.health.tools.exercise.db.ExerciseData
 import fit.asta.health.tools.exercise.model.ExerciseLocalRepo
 import fit.asta.health.tools.exercise.model.ExerciseRepo
@@ -29,7 +30,6 @@ import fit.asta.health.tools.exercise.model.network.Value
 import fit.asta.health.tools.exercise.view.home.ExerciseUiState
 import fit.asta.health.tools.exercise.view.home.HomeEvent
 import fit.asta.health.tools.exercise.view.video.VideoEvent
-import fit.asta.health.tools.exercise.view.video.VideoState
 import fit.asta.health.tools.exercise.view.video_player.VideoPlayerEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
