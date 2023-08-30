@@ -390,4 +390,6 @@ dependencies {
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.junit)
 
+    implementation("com.android.installreferrer:installreferrer:2.2")
+
 }

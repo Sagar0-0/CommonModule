@@ -8,5 +8,7 @@ data class UserPreferencesData(
     val theme: String = "",
     val alarmId: Long = 999L,
     val tone: String = "hi",
-    val isFcmTokenUploaded: Boolean = false
+    val isFcmTokenUploaded: Boolean = false,
+    val isReferralChecked: Boolean = false,
+    val referralCode: String = ""
 )

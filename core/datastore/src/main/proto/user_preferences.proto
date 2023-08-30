@@ -12,4 +12,6 @@ message UserPreferences {
   int64 alarmId = 6;
   string tone = 7;
   bool isFcmTokenUploaded = 8;
+  bool isReferralChecked = 9;
+  string referralCode = 10;
 }

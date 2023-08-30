@@ -36,7 +36,6 @@ import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.copyTextToClipboard
 import fit.asta.health.common.utils.getImgUrl
-import fit.asta.health.common.utils.shareReferralCode
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
@@ -51,9 +50,12 @@ import fit.asta.health.resources.strings.R as StringR
 @Composable
 fun ShareReferralUi(
     referralDataState: UiState<ReferralDataResponse>,
+    shareReferralCode: (String) -> Unit,
     onBackPress: () -> Unit,
     onTryAgain: () -> Unit
 ) {
+
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -88,7 +90,12 @@ fun ShareReferralUi(
                         .padding(paddingValues)
                 ) {
 
-                    item { ReferralCard(referralDataState.data.data.referralCode.refCode) }
+                    item {
+                        ReferralCard(
+                            referralDataState.data.data.referralCode.refCode,
+                            shareReferralCode
+                        )
+                    }
 
                     item {
                         if (referralDataState.data.data.referredByUsersDetails != null) {
@@ -126,7 +133,6 @@ fun ShareReferralUi(
 
     }
 }
-
 @Composable
 fun ReferralCustomCard(title: String, content: @Composable () -> Unit) {
     Card(
@@ -148,7 +154,7 @@ fun ReferralCustomCard(title: String, content: @Composable () -> Unit) {
 }
 
 @Composable
-private fun ReferralCard(code: String) {
+private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
     val context = LocalContext.current
     Column {
         Card(
@@ -156,7 +162,7 @@ private fun ReferralCard(code: String) {
                 .fillMaxWidth()
                 .padding(spacing.medium)
                 .clickable {
-                    context.shareReferralCode(code)
+                    shareReferralCode(code)
                 },
             shape = MaterialTheme.shapes.extraLarge,
         ) {

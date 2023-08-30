@@ -284,13 +284,16 @@ fun Context.copyTextToClipboard(text: String) {
     clipboard?.setPrimaryClip(clip)
 }
 
-fun Context.shareReferralCode(code: String) {
+fun Context.shareReferralCode(code: String, appId: String) {
     try {
         val sharingIntent = Intent()
         sharingIntent.action = Intent.ACTION_SEND
         sharingIntent.putExtra(Intent.EXTRA_SUBJECT, resources.getString(StringR.string.app_name))
         sharingIntent.putExtra(
-            Intent.EXTRA_TEXT, code
+            Intent.EXTRA_TEXT,
+            "Click on the link below to download ASTA from my referral" + "\n" + resources.getString(
+                StringR.string.google_play_store_url
+            ) + appId + "&referrer=utm_source%3Drefer%26utm_content%3D${code}"
         )
         sharingIntent.type = "text/html"
         startActivity(

@@ -17,7 +17,7 @@ fun NavController.navigateToReferral(navOptions: NavOptions? = null) {
     this.navigate(REFERRAL_GRAPH_ROUTE, navOptions)
 }
 
-fun NavGraphBuilder.referralRoute(onBackPress: () -> Unit) {
+fun NavGraphBuilder.referralRoute(onBackPress: () -> Unit, shareReferralCode: (String) -> Unit) {
     navigation(
         route = REFERRAL_GRAPH_ROUTE,
         startDestination = ReferralDestination.Share.route
@@ -29,6 +29,7 @@ fun NavGraphBuilder.referralRoute(onBackPress: () -> Unit) {
 
             ShareReferralUi(
                 referralDataState = state.value,
+                shareReferralCode = shareReferralCode,
                 onBackPress = onBackPress,
                 onTryAgain = referralViewModel::getData
             )

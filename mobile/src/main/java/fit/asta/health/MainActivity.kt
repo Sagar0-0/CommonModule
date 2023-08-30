@@ -15,16 +15,16 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.lifecycleScope
+import com.android.installreferrer.api.InstallReferrerClient
+import com.android.installreferrer.api.InstallReferrerStateListener
+import com.android.installreferrer.api.ReferrerDetails
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.ktx.messaging
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.utils.*
 import fit.asta.health.designsystem.AppTheme
@@ -33,7 +33,7 @@ import fit.asta.health.main.MainViewModel
 import fit.asta.health.network.TokenProvider
 import fit.asta.health.network.utils.NetworkConnectivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -45,6 +45,7 @@ class MainActivity : ComponentActivity(),
     companion object {
         private const val REQUEST_FLEXIBLE_UPDATE: Int = 1369
         private const val REQUEST_IMMEDIATE_UPDATE: Int = 1789
+        private const val TAG = "MainActivity"
     }
 
     private lateinit var networkConnectivity: NetworkConnectivity
@@ -65,11 +66,20 @@ class MainActivity : ComponentActivity(),
 
     @Inject
     lateinit var tokenProvider: TokenProvider
+    private lateinit var referrerClient: InstallReferrerClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
 
         super.onCreate(savedInstanceState)
+
+        lifecycleScope.launch {
+            mainViewModel.isReferralChecked.collect {
+                if (it is UiState.Success) {
+                    initReferralTracking()
+                }
+            }
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val alarmManager = ContextCompat.getSystemService(this, AlarmManager::class.java)
@@ -86,24 +96,74 @@ class MainActivity : ComponentActivity(),
         FirebaseAuth.getInstance().addIdTokenListener(this)
     }
 
-    private suspend fun getAndStoreRegToken(): String {
-        val token = Firebase.messaging.token.await()
-        // Add token and timestamp to Firestore for this user
-        val deviceToken = hashMapOf(
-            "token" to token,
-            "timestamp" to FieldValue.serverTimestamp(),
-        )
+    private fun initReferralTracking() {
+        referrerClient = InstallReferrerClient.newBuilder(this).build()
+        referrerClient.startConnection(object : InstallReferrerStateListener {
 
-        val uid = FirebaseAuth.getInstance().uid
-        // Get user ID from Firebase Auth or your own server
-        uid?.let {
-            Firebase.firestore.collection("fcmTokens").document(it)
-                .set(deviceToken).await()
-        }
-        return token
+            override fun onInstallReferrerSetupFinished(responseCode: Int) {
+                Log.d(TAG, "onInstallReferrerSetupFinished - $responseCode")
+                when (responseCode) {
+                    InstallReferrerClient.InstallReferrerResponse.OK -> {
+                        // Connection established.
+                        obtainReferrerDetails()
+                    }
+
+                    InstallReferrerClient.InstallReferrerResponse.SERVICE_UNAVAILABLE -> {
+                        // Connection couldn't be established.
+                    }
+
+                    InstallReferrerClient.InstallReferrerResponse.FEATURE_NOT_SUPPORTED -> {
+                        // API not available on the current Play Store app.
+                    }
+                }
+            }
+
+            override fun onInstallReferrerServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+            }
+        })
     }
 
-    private fun askNotificationPermission() {
+    private fun obtainReferrerDetails() {
+        val response: ReferrerDetails = referrerClient.installReferrer
+        Log.d(TAG, "response - $response")
+        val referrerUrl: String = response.installReferrer
+        Log.d(TAG, "referrerUrl - $referrerUrl")
+
+        if (referrerUrl.isNotEmpty()) {
+            val referrerParts = referrerUrl.split("&")
+            Log.d(TAG, "referrerParts - $referrerParts")
+
+            val utmSource = referrerParts.find {
+                it.contains("utm_source")
+            }?.split("=")?.get(0)
+            Log.d(TAG, "utmSource - $utmSource")
+
+            if (utmSource != null && utmSource == "refer") {
+                val utmContent = referrerParts.find {
+                    it.contains("utm_content")
+                }?.split("=")?.get(0)
+                Log.d(TAG, "utmContent - $utmContent")
+
+                if (utmContent != null) {
+                    mainViewModel.setReferCode(utmContent)
+                }
+            }
+        }
+
+        val referrerClickTime: Long = response.referrerClickTimestampSeconds
+        Log.d(TAG, "referrerClickTime - $referrerClickTime")
+        val appInstallTime: Long = response.installBeginTimestampSeconds
+        Log.d(TAG, "appInstallTime - $appInstallTime")
+        val instantExperienceLaunched: Boolean = response.googlePlayInstantParam
+        Log.d(TAG, "instantExperienceLaunch$instantExperienceLaunched")
+
+        mainViewModel.setReferralChecked()
+        referrerClient.endConnection()
+    }
+
+    private fun askNotificationPermission() {//TODO: ASK NOTIFICATION PERMISSION ON app startup
         // This is only necessary for API level >= 33 (TIRAMISU)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
