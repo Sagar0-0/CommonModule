@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,9 +19,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
+import fit.asta.health.designsystem.components.generic.AppButtons
 
 @Composable
-fun NameAndMoodHomeScreenHeader() {
+fun NameAndMoodHomeScreenHeader(onAlarm: () -> Unit) {
 
     val poppinsFontFamily = FontFamily(Font(R.font.poppins_medium, FontWeight.Medium))
 
@@ -32,9 +31,7 @@ fun NameAndMoodHomeScreenHeader() {
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .height(59.dp),
+            .fillMaxWidth(),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Row(
@@ -51,6 +48,11 @@ fun NameAndMoodHomeScreenHeader() {
             }
             Box {
                 Text(text = "\uD83D\uDC4B", fontSize = 24.sp, fontFamily = poppinsFontFamily)
+            }
+            Box {
+                AppButtons.AppTextButton(onClick = onAlarm) {
+                    Text(text = "Show Alarms", fontFamily = poppinsFontFamily, maxLines = 1)
+                }
             }
         }
         Box(modifier = Modifier.size(147.dp, 15.dp)) {

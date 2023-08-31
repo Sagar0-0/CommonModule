@@ -10,6 +10,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentDate
 import fit.asta.health.common.utils.getCurrentTime
 import fit.asta.health.common.utils.toUiState
+import fit.asta.health.data.scheduler.db.AlarmInstanceDao
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.db.entity.Weekdays
 import fit.asta.health.data.scheduler.remote.model.TodayData
@@ -31,6 +32,7 @@ import javax.inject.Inject
 class TodayPlanViewModel @Inject constructor(
     private val alarmLocalRepo: AlarmLocalRepo,
     private val alarmBackendRepo: AlarmBackendRepo,
+    private val alarmInstanceDao: AlarmInstanceDao,
     private val prefManager: PrefManager,
     private val stateManager: StateManager
 ) : ViewModel() {
@@ -159,6 +161,9 @@ class TodayPlanViewModel @Inject constructor(
                 )
             } else {
                 alarmLocalRepo.deleteAlarm(alarmItem)
+                alarmInstanceDao.getInstancesByAlarmId(alarmItem.alarmId)?.let {
+                    alarmInstanceDao.delete(it)
+                }
             }
             Log.d("today", "deleteAlarm: done")
         }

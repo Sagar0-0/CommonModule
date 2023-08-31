@@ -74,10 +74,13 @@ import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.feature.scheduler.ui.naman.WeatherCard
+import fit.asta.health.feature.scheduler.util.AlarmUtils
 import fit.asta.health.main.Graph
+import fit.asta.health.main.view.ALL_ALARMS_ROUTE
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import java.time.LocalTime
+import java.util.Calendar
 
 @Composable
 fun TodayContent(
@@ -158,7 +161,7 @@ fun TodayContent(
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(spacing.medium),
         ) {
-            item { NameAndMoodHomeScreenHeader() }
+            item { NameAndMoodHomeScreenHeader(onAlarm = { onNav(ALL_ALARMS_ROUTE) }) }
             item {
                 WeatherCardImage(
                     temperature = uiState.temperature,
@@ -188,127 +191,135 @@ fun TodayContent(
                     }
                 }
             }
-            item {
-                AnimatedVisibility(visible = listMorning.isEmpty() && listAfternoon.isEmpty() && listEvening.isEmpty()) {
-                    AppButtons.AppOutlinedButton(onClick = {
-                        hSEvent(
-                            HomeEvent.SetDefaultSchedule(
-                                context
+            if (listMorning.isEmpty() && listAfternoon.isEmpty() && listEvening.isEmpty()) {
+                item {
+                    AnimatedVisibility(visible = listMorning.isEmpty() && listAfternoon.isEmpty() && listEvening.isEmpty()) {
+                        AppButtons.AppOutlinedButton(onClick = {
+                            hSEvent(
+                                HomeEvent.SetDefaultSchedule(
+                                    context
+                                )
                             )
-                        )
-                    }) {
-                        AppTexts.TitleLarge(text = stringResource(R.string.default_schedule))
+                        }) {
+                            AppTexts.TitleLarge(text = stringResource(R.string.default_schedule))
+                        }
                     }
                 }
             }
-            item {
-                AnimatedVisibility(visible = listMorning.isNotEmpty()) {
-                    Text(
-                        text = stringResource(R.string.morning_events),
-                        style = MaterialTheme.typography.titleMedium
-                    )
+            if (listMorning.isNotEmpty()) {
+                item {
+                    AnimatedVisibility(visible = listMorning.isNotEmpty()) {
+                        Text(
+                            text = stringResource(R.string.morning_events),
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
+                }
+                items(listMorning) { data ->
+                    SwipeDemoToday(data = data, onSwipeRight = {
+                        evenType = Event.Morning
+                        hSEvent(HomeEvent.RemoveAlarm(data, evenType))
+                        deleteDialog = true
+                        deletedItem = data
+                    }, onSwipeLeft = {
+                        evenType = Event.Morning
+                        hSEvent(HomeEvent.RemoveAlarm(data, evenType))
+                        skipDialog = true
+                        skipItem = data
+                    }, onDone = {
+                        onNav(goToTool(data.info.tag))
+                    }, onReschedule = {
+                        onNav(Graph.Scheduler.route)
+                        hSEvent(HomeEvent.EditAlarm(data))
+                    })
                 }
             }
-            items(listMorning) { data ->
-                SwipeDemoToday(data = data, onSwipeRight = {
-                    evenType = Event.Morning
-                    hSEvent(HomeEvent.RemoveAlarm(data, evenType))
-                    deleteDialog = true
-                    deletedItem = data
-                }, onSwipeLeft = {
-                    evenType = Event.Morning
-                    hSEvent(HomeEvent.RemoveAlarm(data, evenType))
-                    skipDialog = true
-                    skipItem = data
-                }, onDone = {
-                    onNav(goToTool(data.info.tag))
-                }, onReschedule = {
-                    onNav(Graph.Scheduler.route)
-                    hSEvent(HomeEvent.EditAlarm(data))
-                })
-            }
-            item {
-                AnimatedVisibility(visible = listAfternoon.isNotEmpty()) {
-                    Text(
-                        text = stringResource(R.string.afternoon_events),
-                        style = MaterialTheme.typography.titleMedium
-                    )
+            if (listAfternoon.isNotEmpty()) {
+                item {
+                    AnimatedVisibility(visible = listAfternoon.isNotEmpty()) {
+                        Text(
+                            text = stringResource(R.string.afternoon_events),
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
+                }
+                items(listAfternoon) { data ->
+                    SwipeDemoToday(data = data, onSwipeRight = {
+                        evenType = Event.Afternoon
+                        hSEvent(HomeEvent.RemoveAlarm(data, evenType))
+                        deleteDialog = true
+                        deletedItem = data
+                    }, onSwipeLeft = {
+                        evenType = Event.Afternoon
+                        hSEvent(HomeEvent.RemoveAlarm(data, evenType))
+                        skipDialog = true
+                        skipItem = data
+                    }, onDone = {
+                        onNav(goToTool(data.info.tag))
+                    }, onReschedule = {
+                        onNav(Graph.Scheduler.route)
+                        hSEvent(HomeEvent.EditAlarm(data))
+                    })
                 }
             }
-            items(listAfternoon) { data ->
-                SwipeDemoToday(data = data, onSwipeRight = {
-                    evenType = Event.Afternoon
-                    hSEvent(HomeEvent.RemoveAlarm(data, evenType))
-                    deleteDialog = true
-                    deletedItem = data
-                }, onSwipeLeft = {
-                    evenType = Event.Afternoon
-                    hSEvent(HomeEvent.RemoveAlarm(data, evenType))
-                    skipDialog = true
-                    skipItem = data
-                }, onDone = {
-                    onNav(goToTool(data.info.tag))
-                }, onReschedule = {
-                    onNav(Graph.Scheduler.route)
-                    hSEvent(HomeEvent.EditAlarm(data))
-                })
-            }
-            item {
-                AnimatedVisibility(visible = listEvening.isNotEmpty()) {
-                    Text(
-                        text = stringResource(R.string.evening_events),
-                        style = MaterialTheme.typography.titleMedium
-                    )
+            if (listEvening.isNotEmpty()) {
+                item {
+                    AnimatedVisibility(visible = listEvening.isNotEmpty()) {
+                        Text(
+                            text = stringResource(R.string.evening_events),
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
+                }
+                items(listEvening) { data ->
+                    SwipeDemoToday(data = data, onSwipeRight = {
+                        evenType = Event.Evening
+                        hSEvent(HomeEvent.RemoveAlarm(data, evenType))
+                        deleteDialog = true
+                        deletedItem = data
+                    }, onSwipeLeft = {
+                        evenType = Event.Evening
+                        hSEvent(HomeEvent.RemoveAlarm(data, evenType))
+                        skipDialog = true
+                        skipItem = data
+                    }, onDone = {
+                        onNav(goToTool(data.info.tag))
+                    }, onReschedule = {
+                        onNav(Graph.Scheduler.route)
+                        hSEvent(HomeEvent.EditAlarm(data))
+                    })
                 }
             }
-            items(listEvening) { data ->
-                SwipeDemoToday(data = data, onSwipeRight = {
-                    evenType = Event.Evening
-                    hSEvent(HomeEvent.RemoveAlarm(data, evenType))
-                    deleteDialog = true
-                    deletedItem = data
-                }, onSwipeLeft = {
-                    evenType = Event.Evening
-                    hSEvent(HomeEvent.RemoveAlarm(data, evenType))
-                    skipDialog = true
-                    skipItem = data
-                }, onDone = {
-                    onNav(goToTool(data.info.tag))
-                }, onReschedule = {
-                    onNav(Graph.Scheduler.route)
-                    hSEvent(HomeEvent.EditAlarm(data))
-                })
-            }
-            item {
-                AnimatedVisibility(visible = listNextDay.isNotEmpty()) {
-                    Text(
-                        text = stringResource(R.string.tomorrow_events),
-                        style = MaterialTheme.typography.titleMedium
-                    )
+            if (listNextDay.isNotEmpty()) {
+                item {
+                    AnimatedVisibility(visible = listNextDay.isNotEmpty()) {
+                        Text(
+                            text = stringResource(R.string.tomorrow_events),
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
                 }
-            }
-            items(listNextDay) { data ->
-                SwipeDemoToday(data = data, onSwipeRight = {
-                    evenType = Event.NextDay
-                    hSEvent(HomeEvent.RemoveAlarm(data, evenType))
-                    deleteDialog = true
-                    deletedItem = data
-                }, onSwipeLeft = {
-                    evenType = Event.NextDay
-                    hSEvent(HomeEvent.RemoveAlarm(data, evenType))
-                    skipDialog = true
-                    skipItem = data
-                }, onDone = {
-                    onNav(goToTool(data.info.tag))
-                }, onReschedule = {
-                    onNav(Graph.Scheduler.route)
-                    hSEvent(HomeEvent.EditAlarm(data))
-                })
+                items(listNextDay) { data ->
+                    SwipeDemoToday(data = data, onSwipeRight = {
+                        evenType = Event.NextDay
+                        hSEvent(HomeEvent.RemoveAlarm(data, evenType))
+                        deleteDialog = true
+                        deletedItem = data
+                    }, onSwipeLeft = {
+                        evenType = Event.NextDay
+                        hSEvent(HomeEvent.RemoveAlarm(data, evenType))
+                        skipDialog = true
+                        skipItem = data
+                    }, onDone = {
+                        onNav(goToTool(data.info.tag))
+                    }, onReschedule = {
+                        onNav(Graph.Scheduler.route)
+                        hSEvent(HomeEvent.EditAlarm(data))
+                    })
+                }
             }
         }
     }
-
-
 }
 
 
@@ -343,7 +354,7 @@ fun TodayItem(
     ) {
         Column(
             modifier = modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(spacing.small),
+            verticalArrangement = Arrangement.spacedBy(spacing.minSmall),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
@@ -368,7 +379,6 @@ fun TodayItem(
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(space = spacing.small),
                         modifier = modifier.fillMaxWidth()
                     ) {
                         Text(
@@ -421,7 +431,6 @@ fun TodayItem(
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(space = spacing.small),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
@@ -448,6 +457,7 @@ fun SwipeDemoToday(
     onSwipeLeft: () -> Unit = {},
     progress: String = "44%",
     data: AlarmEntity,
+    currentTime: Calendar = Calendar.getInstance(),
     onDone: () -> Unit = {},
     onReschedule: () -> Unit = {}
 ) {
@@ -462,16 +472,18 @@ fun SwipeDemoToday(
         background = Color.Yellow,
         onSwipe = onSwipeLeft,
     )
-
+    val context = LocalContext.current
     SwipeableActionsBox(
         startActions = listOf(archive),
         endActions = listOf(skip),
         swipeThreshold = 20.dp,
-        backgroundUntilSwipeThreshold = MaterialTheme.colorScheme.background
+        backgroundUntilSwipeThreshold = MaterialTheme.colorScheme.background,
     ) {
+        currentTime.set(Calendar.HOUR_OF_DAY, data.time.hours)
+        currentTime.set(Calendar.MINUTE, data.time.minutes)
         TodayCard(
             image = data.info.url,
-            time = "${data.time.hours}:${data.time.minutes}",
+            time = AlarmUtils.getFormattedTime(context, currentTime),
             title = data.info.tag,
             description = data.info.description,
             progress = progress,
