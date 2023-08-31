@@ -4,12 +4,17 @@ import fit.asta.health.data.scheduler.db.AlarmDao
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.db.entity.TagEntity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class AlarmLocalRepoImp(
     private val alarmDao: AlarmDao,
 ) : AlarmLocalRepo {
     override fun getAllAlarm(): Flow<List<AlarmEntity>> {
-        return alarmDao.getAll()
+        return alarmDao.getAll().map { alarms ->
+            alarms.sortedBy { alarmEntity ->
+                alarmEntity.time.hours * 60 + alarmEntity.time.minutes
+            }
+        }
     }
 
     override suspend fun getAlarm(alarmId: Long): AlarmEntity? {

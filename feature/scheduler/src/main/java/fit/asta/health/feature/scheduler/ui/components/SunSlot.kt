@@ -1,4 +1,4 @@
-package fit.asta.health.feature.scheduler.ui.naman
+package fit.asta.health.feature.scheduler.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,7 +37,7 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier, onSched
     AppCard(
         modifier = modifier
             .fillMaxWidth()
-            .padding(spacing.medium)
+            .padding(spacing.small)
     ) {
         Column(
             modifier = Modifier.padding(horizontal = spacing.medium, vertical = spacing.small),

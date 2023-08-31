@@ -1,4 +1,4 @@
-package fit.asta.health.feature.scheduler.ui.naman
+package fit.asta.health.feature.scheduler.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image

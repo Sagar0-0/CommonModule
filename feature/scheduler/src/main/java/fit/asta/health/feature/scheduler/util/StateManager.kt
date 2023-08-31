@@ -486,6 +486,7 @@ class StateManager @Inject constructor(
         scope.launch {
             alarmInstanceDao.getInstancesByAlarmId(alarmItem.alarmId)?.let {
                 cancelScheduledInstanceStateChange(context, it)
+                alarmInstanceDao.delete(it)
             }
         }
     }

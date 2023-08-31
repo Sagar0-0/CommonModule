@@ -36,7 +36,6 @@ fun WeatherCardImage(
         modifier = modifier
             .fillMaxWidth()
             .height(151.dp)
-            .padding(horizontal = 16.dp)
             .clip(RoundedCornerShape(10.dp))
     ) {
         Image(
