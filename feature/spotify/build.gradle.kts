@@ -9,7 +9,6 @@ android {
     namespace = "fit.asta.health.feature.spotify"
     defaultConfig {
         consumerProguardFiles("consumer-rules.pro")
-        manifestPlaceholders["redirectSchemeName"] = "spotify-sdk"
     }
 }
 
@@ -24,6 +23,7 @@ dependencies {
 
     implementation(project(":core:common"))
     implementation(project(":core:designsystem"))
+    implementation(project(":core:test"))
 
     implementation(project(":data:spotify"))
 
