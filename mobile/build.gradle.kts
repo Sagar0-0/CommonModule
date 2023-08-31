@@ -59,8 +59,6 @@ android {
 
         base.archivesName.set("$applicationId-$versionName")
         signingConfig = signingConfigs.getByName("release")
-        manifestPlaceholders["redirectSchemeName"] = "spotify-sdk"
-        manifestPlaceholders["redirectHostName"] = "auth"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
