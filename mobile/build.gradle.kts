@@ -146,6 +146,7 @@ dependencies {
     implementation(project(":feature:spotify"))
     implementation(project(":feature:scheduler"))
     implementation(project(":feature:testimonials"))
+    implementation(project(":core:test"))
 
     //De-sugaring
     coreLibraryDesugaring(libs.android.desugarJdkLibs)
