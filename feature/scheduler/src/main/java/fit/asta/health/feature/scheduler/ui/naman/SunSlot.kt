@@ -37,7 +37,7 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier, onSched
     AppCard(
         modifier = modifier
             .fillMaxWidth()
-            .padding(spacing.medium)
+            .padding(spacing.small)
     ) {
         Column(
             modifier = Modifier.padding(horizontal = spacing.medium, vertical = spacing.small),
