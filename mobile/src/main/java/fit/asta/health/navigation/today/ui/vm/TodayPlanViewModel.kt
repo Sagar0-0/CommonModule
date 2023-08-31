@@ -189,16 +189,9 @@ class TodayPlanViewModel @Inject constructor(
                 Log.d("alarm", "getAlarms: $list,day ${today}")
                 val alarmList = mutableStateListOf<AlarmEntity>()
                 alarmList.clear()
-                alarmList.addAll(list)
-                alarmList.sortWith(compareBy { it.time.hours * 60 + it.time.minutes })
-                alarmList.filter {
-                    currentTime.isBefore(
-                        LocalTime.of(
-                            it.time.hours,
-                            it.time.minutes
-                        )
-                    )
-                }
+                alarmList.addAll(list.filter {
+                    currentTime.isBefore(LocalTime.of(it.time.hours, it.time.minutes))
+                })
                 alarmList.forEach {
                     if (it.status && it.skipDate != LocalDate.now().dayOfMonth) {
                         val today = if (it.daysOfWeek.isRepeating) {

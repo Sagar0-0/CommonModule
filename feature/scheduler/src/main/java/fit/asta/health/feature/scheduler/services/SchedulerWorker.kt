@@ -19,6 +19,7 @@ import fit.asta.health.data.scheduler.remote.net.scheduler.Meta
 import fit.asta.health.data.scheduler.remote.net.tag.Data
 import fit.asta.health.data.scheduler.repo.AlarmBackendRepo
 import fit.asta.health.data.scheduler.repo.AlarmLocalRepo
+import fit.asta.health.feature.scheduler.util.StateManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -27,7 +28,8 @@ class SchedulerWorker @AssistedInject constructor(
     @Assisted private val appContext: Context,
     @Assisted workerParams: WorkerParameters,
     private val alarmLocalRepo: AlarmLocalRepo,
-    private val backendRepo: AlarmBackendRepo
+    private val backendRepo: AlarmBackendRepo,
+    private val stateManager: StateManager
 ) : CoroutineWorker(appContext, workerParams) {
     override suspend fun getForegroundInfo(): ForegroundInfo =
         appContext.syncForegroundInfo()
@@ -40,10 +42,23 @@ class SchedulerWorker @AssistedInject constructor(
         Result.success()
     }
 
+
     private suspend fun syncAlarmLocal() {
-        alarmLocalRepo.getAllAlarmList()?.let {
-            Log.d("TAGTAG", "doWork:sync alarm  ")
-            it.forEach { entity ->
+        Log.d("TAGTAG", "doWork:sync alarm  ")
+        val list = alarmLocalRepo.getAllAlarmList()
+        if (list.isNullOrEmpty()) {
+            when (val result = backendRepo.getScheduleListDataFromBackend("")) {
+                is ResponseState.Success -> {
+                    result.data.list.forEach { alarm ->
+                        alarmLocalRepo.insertAlarm(alarm)
+                        if (alarm.status) stateManager.registerAlarm(appContext, alarm)
+                    }
+                }
+
+                else -> {}
+            }
+        } else {
+            list.forEach { entity ->
                 when (entity.meta.sync) {
                     1 -> {//update
                         val result = withContext(Dispatchers.Default) {

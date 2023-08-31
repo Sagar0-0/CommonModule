@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.IBinder
 import androidx.lifecycle.LifecycleService
 import dagger.hilt.android.AndroidEntryPoint
+import fit.asta.health.data.scheduler.db.AlarmInstanceDao
 import fit.asta.health.data.scheduler.repo.AlarmLocalRepo
 import fit.asta.health.feature.scheduler.util.StateManager
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -21,6 +22,9 @@ class RescheduleAlarmService : LifecycleService() {
     lateinit var alarmLocalRepo: AlarmLocalRepo
 
     @Inject
+    lateinit var alarmInstanceDao: AlarmInstanceDao
+
+    @Inject
     lateinit var stateManager: StateManager
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -30,14 +34,19 @@ class RescheduleAlarmService : LifecycleService() {
         GlobalScope.launch(Dispatchers.IO) {
             alarmLocalRepo.getAllAlarmList()?.forEach { alarm ->
                 if (alarm.status) {
+                    val instance = alarmInstanceDao.getInstancesByAlarmId(alarm.alarmId)
                     if (alarm.skipDate == LocalDate.now().dayOfMonth) {
                         stateManager.registerAlarm(
                             this@RescheduleAlarmService,
                             alarm,
-                            oldId = null,
+                            oldId = instance?.mId,
                             true
                         )
-                    } else stateManager.registerAlarm(this@RescheduleAlarmService, alarm)
+                    } else stateManager.registerAlarm(
+                        this@RescheduleAlarmService,
+                        alarm,
+                        oldId = instance?.mId
+                    )
                 }
             }
         }

@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.R
+import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.designsystem.components.generic.AppButtons
@@ -38,14 +39,11 @@ import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.theme.spacing
-import fit.asta.health.feature.scheduler.util.AlarmUtils
-import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllAlarms(
     list: SnapshotStateList<AlarmEntity>,
-    currentTime: Calendar = Calendar.getInstance(),
     onEvent: (AlarmEvent) -> Unit
 ) {
     val context = LocalContext.current
@@ -64,13 +62,17 @@ fun AllAlarms(
             verticalArrangement = Arrangement.spacedBy(spacing.medium),
         ) {
             items(list) { alarm ->
-                currentTime.set(Calendar.HOUR_OF_DAY, alarm.time.hours)
-                currentTime.set(Calendar.MINUTE, alarm.time.minutes)
-
+                val time = AMPMHoursMin(
+                    hours = if (alarm.time.hours > 12) {
+                        alarm.time.hours - 12
+                    } else alarm.time.hours,
+                    minutes = alarm.time.minutes,
+                    dayTime = if (alarm.time.hours >= 12) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
+                )
                 AlarmItem(
                     image = alarm.info.url,
                     description = alarm.info.description,
-                    time = AlarmUtils.getFormattedTime(context, currentTime),
+                    time = "${if (time.hours < 10) "0" else ""}${time.hours}:${if (time.minutes < 10) "0" else ""}${time.minutes} ${time.dayTime.name}",
                     state = alarm.status,
                     onStateChange = { onEvent(AlarmEvent.SetAlarmState(it, alarm, context)) }
                 )
@@ -132,12 +134,7 @@ fun AlarmItem(
                     style = MaterialTheme.typography.titleMedium
                 )
             }
-            Column(
-                verticalArrangement = Arrangement.spacedBy(spacing.small),
-                horizontalAlignment = Alignment.End
-            ) {
-                AppButtons.AppToggleButton(checked = state, onCheckedChange = onStateChange)
-            }
+            AppButtons.AppToggleButton(checked = state, onCheckedChange = onStateChange)
         }
     }
 }

@@ -59,6 +59,7 @@ import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.R
+import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.Constants.getHourMinAmPm
 import fit.asta.health.common.utils.Constants.goToTool
 import fit.asta.health.common.utils.HourMinAmPm
@@ -73,14 +74,12 @@ import fit.asta.health.designsystem.components.generic.AppDialog
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.theme.spacing
-import fit.asta.health.feature.scheduler.ui.naman.WeatherCard
-import fit.asta.health.feature.scheduler.util.AlarmUtils
+import fit.asta.health.feature.scheduler.ui.components.WeatherCard
 import fit.asta.health.main.Graph
 import fit.asta.health.main.view.ALL_ALARMS_ROUTE
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import java.time.LocalTime
-import java.util.Calendar
 
 @Composable
 fun TodayContent(
@@ -457,7 +456,6 @@ fun SwipeDemoToday(
     onSwipeLeft: () -> Unit = {},
     progress: String = "44%",
     data: AlarmEntity,
-    currentTime: Calendar = Calendar.getInstance(),
     onDone: () -> Unit = {},
     onReschedule: () -> Unit = {}
 ) {
@@ -472,18 +470,22 @@ fun SwipeDemoToday(
         background = Color.Yellow,
         onSwipe = onSwipeLeft,
     )
-    val context = LocalContext.current
     SwipeableActionsBox(
         startActions = listOf(archive),
         endActions = listOf(skip),
         swipeThreshold = 20.dp,
         backgroundUntilSwipeThreshold = MaterialTheme.colorScheme.background,
     ) {
-        currentTime.set(Calendar.HOUR_OF_DAY, data.time.hours)
-        currentTime.set(Calendar.MINUTE, data.time.minutes)
+        val time = AMPMHoursMin(
+            hours = if (data.time.hours > 12) {
+                data.time.hours - 12
+            } else data.time.hours,
+            minutes = data.time.minutes,
+            dayTime = if (data.time.hours >= 12) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
+        )
         TodayCard(
             image = data.info.url,
-            time = AlarmUtils.getFormattedTime(context, currentTime),
+            time = "${if (time.hours < 10) "0" else ""}${time.hours}:${if (time.minutes < 10) "0" else ""}${time.minutes} ${time.dayTime.name}",
             title = data.info.tag,
             description = data.info.description,
             progress = progress,

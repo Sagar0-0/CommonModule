@@ -1,4 +1,4 @@
-package fit.asta.health.feature.scheduler.ui.naman
+package fit.asta.health.feature.scheduler.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

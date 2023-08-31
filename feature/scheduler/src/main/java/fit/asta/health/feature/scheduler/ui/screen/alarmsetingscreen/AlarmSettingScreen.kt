@@ -53,7 +53,6 @@ import fit.asta.health.resources.strings.R as StringR
 @Composable
 fun AlarmSettingScreen(
     alarmSettingUiState: ASUiState = ASUiState(),
-    uiError: String,
     areInputsValid: Boolean,
     aSEvent: (AlarmSettingEvent) -> Unit = {},
     navTagSelection: () -> Unit = {},

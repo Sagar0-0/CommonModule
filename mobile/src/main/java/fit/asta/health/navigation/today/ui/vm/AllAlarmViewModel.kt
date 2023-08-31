@@ -26,7 +26,6 @@ class AllAlarmViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             alarmLocalRepo.getAllAlarm().collect {
-                Log.d("state", "changeAlarmState: ")
                 _alarmList.clear()
                 _alarmList.addAll(it)
             }
