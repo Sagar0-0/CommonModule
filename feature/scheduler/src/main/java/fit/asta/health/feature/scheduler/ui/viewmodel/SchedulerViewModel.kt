@@ -67,7 +67,7 @@ class SchedulerViewModel
     private val _tagsUiState = MutableStateFlow(TagsUiState())
     val tagsUiState = _tagsUiState.asStateFlow()
 
-    private val userId = "6309a9379af54f142c65fbff"
+    private val userId = "6309a9379af54f142c65fbfe"
 
     private val _uiError = MutableStateFlow("")
     val uiError = _uiError.asStateFlow()

@@ -25,11 +25,20 @@ dependencies {
     implementation(project(":data:profile"))
     implementation(project(":data:auth"))
 
+    implementation(project(":feature:auth"))
+
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.material.icons.extended.android)
 
     implementation(libs.coil.kt.compose)
+
+    //Firebase authentication
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.play.services.auth)
+    implementation(libs.play.services.auth.api.phone)
+    implementation(libs.firebase.ui.auth)
 
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewModelCompose)

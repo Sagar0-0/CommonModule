@@ -13,6 +13,7 @@ import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.getCurrentTime
 import fit.asta.health.data.scheduler.db.entity.TagEntity
 import fit.asta.health.data.scheduler.remote.net.scheduler.Meta
 import fit.asta.health.data.scheduler.remote.net.tag.Data
@@ -20,7 +21,6 @@ import fit.asta.health.data.scheduler.repo.AlarmBackendRepo
 import fit.asta.health.data.scheduler.repo.AlarmLocalRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.util.Calendar
 
 @HiltWorker
 class SchedulerWorker @AssistedInject constructor(
@@ -58,7 +58,7 @@ class SchedulerWorker @AssistedInject constructor(
                                             cBy = entity.meta.cBy,
                                             cDate = entity.meta.cDate,
                                             sync = 0,
-                                            uDate = Calendar.getInstance().toString()
+                                            uDate = getCurrentTime()
                                         )
                                     )
                                     alarmLocalRepo.insertAlarm(alarm)
@@ -93,7 +93,7 @@ class SchedulerWorker @AssistedInject constructor(
     private suspend fun syncTagsData() {
         alarmLocalRepo.getAllTags().collect {
             if (it.isEmpty()) {
-                when (val result = backendRepo.getTagListFromBackend("6309a9379af54f142c65fbff")) {
+                when (val result = backendRepo.getTagListFromBackend("6309a9379af54f142c65fbfe")) {
                     is ResponseState.Success -> {
                         result.data.let { schedulerGetTagsList ->
                             schedulerGetTagsList.list.forEach { tag ->

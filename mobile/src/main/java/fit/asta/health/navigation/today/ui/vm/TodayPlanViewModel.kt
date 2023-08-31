@@ -8,8 +8,10 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentDate
+import fit.asta.health.common.utils.getCurrentTime
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
+import fit.asta.health.data.scheduler.db.entity.Weekdays
 import fit.asta.health.data.scheduler.remote.model.TodayData
 import fit.asta.health.data.scheduler.remote.net.scheduler.Meta
 import fit.asta.health.data.scheduler.repo.AlarmBackendRepo
@@ -23,7 +25,6 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.Calendar
-import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 
 @HiltViewModel
@@ -48,11 +49,10 @@ class TodayPlanViewModel @Inject constructor(
     private val _todayState =
         MutableStateFlow<UiState<TodayData>>(UiState.Idle)
     val todayState = _todayState.asStateFlow()
-
+    private val currentTime: LocalTime = LocalTime.now()
     init {
         getWeatherSunSlots()
         getAlarms()
-        val currentTime = LocalTime.now()
         val alarmTime = LocalTime.of(21, 0)
         if (currentTime.isAfter(alarmTime) || currentTime == alarmTime) {
             getNextDayAlarm()
@@ -69,16 +69,22 @@ class TodayPlanViewModel @Inject constructor(
     fun getDefaultSchedule(context: Context) {
         when (_todayState.value) {
             is UiState.Success -> {
+                Log.d(
+                    "alarm",
+                    "getDefaultSchedule: ${(_todayState.value as UiState.Success<TodayData>).data.schedule}"
+                )
                 (_todayState.value as UiState.Success<TodayData>).data.schedule.forEach { alarmEntity ->
                     val alarm = alarmEntity.copy(
                         meta = Meta(
                             cBy = alarmEntity.meta.cBy,
-                            cDate = Calendar.getInstance().toString(),
+                            cDate = getCurrentTime(),
                             sync = 1,
-                            uDate = Calendar.getInstance().toString()
-                        ), status = true,
+                            uDate = getCurrentTime()
+                        ),
                         idFromServer = "",
-                        alarmId = (System.currentTimeMillis() + AtomicLong().incrementAndGet())
+                        userId = "6309a9379af54f142c65fbfe",
+                        daysOfWeek = Weekdays.ALL,
+//                        alarmId = (System.currentTimeMillis() + AtomicLong().incrementAndGet())
                     )
                     stateManager.registerAlarm(context, alarm)
                     viewModelScope.launch {
@@ -87,7 +93,12 @@ class TodayPlanViewModel @Inject constructor(
                 }
             }
 
-            else -> {}
+            else -> {
+                Log.d(
+                    "alarm",
+                    "getDefaultSchedule: ${(_todayState.value as UiState.Success<TodayData>).data.schedule}"
+                )
+            }
         }
     }
 
@@ -142,7 +153,7 @@ class TodayPlanViewModel @Inject constructor(
                             cBy = alarmItem.meta.cBy,
                             cDate = alarmItem.meta.cDate,
                             sync = 2,
-                            uDate = Calendar.getInstance().toString()
+                            uDate = getCurrentTime()
                         )
                     )
                 )
@@ -171,7 +182,19 @@ class TodayPlanViewModel @Inject constructor(
                 _alarmListAfternoon.clear()
                 _alarmListEvening.clear()
                 Log.d("alarm", "getAlarms: $list,day ${today}")
-                list.forEach {
+                val alarmList = mutableStateListOf<AlarmEntity>()
+                alarmList.clear()
+                alarmList.addAll(list)
+                alarmList.sortWith(compareBy { it.time.hours * 60 + it.time.minutes })
+                alarmList.filter {
+                    currentTime.isBefore(
+                        LocalTime.of(
+                            it.time.hours,
+                            it.time.minutes
+                        )
+                    )
+                }
+                alarmList.forEach {
                     if (it.status && it.skipDate != LocalDate.now().dayOfMonth) {
                         val today = if (it.daysOfWeek.isRepeating) {
                             it.daysOfWeek.isBitOn(today)

@@ -137,13 +137,13 @@ class MainActivity : ComponentActivity(),
 
             val utmSource = referrerParts.find {
                 it.contains("utm_source")
-            }?.split("=")?.get(0)
+            }?.split("=")?.get(1)
             Log.d(TAG, "utmSource - $utmSource")
 
             if (utmSource != null && utmSource == "refer") {
                 val utmContent = referrerParts.find {
                     it.contains("utm_content")
-                }?.split("=")?.get(0)
+                }?.split("=")?.get(1)
                 Log.d(TAG, "utmContent - $utmContent")
 
                 if (utmContent != null) {
@@ -151,13 +151,6 @@ class MainActivity : ComponentActivity(),
                 }
             }
         }
-
-        val referrerClickTime: Long = response.referrerClickTimestampSeconds
-        Log.d(TAG, "referrerClickTime - $referrerClickTime")
-        val appInstallTime: Long = response.installBeginTimestampSeconds
-        Log.d(TAG, "appInstallTime - $appInstallTime")
-        val instantExperienceLaunched: Boolean = response.googlePlayInstantParam
-        Log.d(TAG, "instantExperienceLaunch$instantExperienceLaunched")
 
         mainViewModel.setReferralChecked()
         referrerClient.endConnection()
