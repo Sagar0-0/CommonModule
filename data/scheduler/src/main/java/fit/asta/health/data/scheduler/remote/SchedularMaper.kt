@@ -39,6 +39,6 @@ fun TodaySchedules.getTodayData(): TodayData {
                 title = dayAndTime.day
             )
         } ?: emptyList(),
-//        schedule = this.data.schedule
+        schedule = this.data.schedule
     )
 }

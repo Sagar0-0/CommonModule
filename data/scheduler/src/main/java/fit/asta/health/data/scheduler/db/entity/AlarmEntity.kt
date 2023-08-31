@@ -4,6 +4,7 @@ package fit.asta.health.data.scheduler.db.entity
 import android.content.Context
 import android.content.Intent
 import android.os.Parcelable
+import android.util.Log
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -164,16 +165,16 @@ data class AlarmEntity(
                 nextInstanceTime[Calendar.MINUTE] = interval.endAlarmTime.minutes
             }
         }
-//        LogUtils.v("time init ${nextInstanceTime.time}")
+        Log.d("AlarmClock", "time init ${nextInstanceTime.time}")
         if (nextInstanceTime.timeInMillis <= currentTime.timeInMillis || skipToday) {
             nextInstanceTime.add(Calendar.DAY_OF_YEAR, 1)
         }
-//        LogUtils.v("time mid ${nextInstanceTime.time}")
+        Log.d("AlarmClock", "time mid ${nextInstanceTime.time}")
         val addDays = daysOfWeek.getDistanceToNextDay(nextInstanceTime)
         if (addDays > 0) {
             nextInstanceTime.add(Calendar.DAY_OF_WEEK, addDays)
         }
-//        LogUtils.v("time end ${nextInstanceTime.time}")
+        Log.d("AlarmClock", "time end ${nextInstanceTime.time}")
 
         return nextInstanceTime
     }

@@ -12,7 +12,7 @@ data class CustomTagData(
     @SerializedName("name")
     val name: String, // updated
     @SerializedName("uid")
-    val uid: String, // 6309a9379af54f142c65fbff
+    val uid: String, // 6309a9379af54f142c65fbfe
     @SerializedName("url")
     val url: String // url
 ) : Parcelable
