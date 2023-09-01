@@ -1,11 +1,13 @@
 package fit.asta.health.feature.auth.vm
 
+import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.auth.fcm.remote.TokenDTO
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.ResponseState
@@ -55,8 +57,10 @@ internal class AuthViewModel
             initialValue = false,
         )
 
-    private fun uploadFcmToken(token: String, timeStamp: String) = viewModelScope.launch {
-        authRepo.uploadFcmToken(token, timeStamp, authRepo.getUserId() ?: "")
+    private suspend fun uploadFcmToken(tokenDTO: TokenDTO) {
+        viewModelScope.launch {
+            authRepo.uploadFcmToken(tokenDTO)
+        }.join()
     }
 
     fun isAuthenticated() = authRepo.isAuthenticated()
@@ -75,8 +79,14 @@ internal class AuthViewModel
             authRepo.signInWithCredential(authCredential).collect {
                 if (it is ResponseState.Success && !isFcmTokenUploaded.value) {
                     val token = Firebase.messaging.token.await()
-                    val timestamp = "2023"//TODO: SEND CURRENT TIME
-                    uploadFcmToken(token, timestamp)
+                    uploadFcmToken(
+                        TokenDTO(
+                            deviceId = Build.MANUFACTURER + Build.DEVICE,
+                            timeStamp = System.currentTimeMillis().toString(),
+                            token = token,
+                            uid = authRepo.getUserId() ?: ""
+                        )
+                    )
                 }
                 _loginState.value = it.toUiState()
             }

@@ -385,14 +385,13 @@ class ProfileViewModel
 
         _propertiesData.value = _propertiesData.value.toMutableMap().apply {
 
-            modifyPropertiesData(0, health.healthHistory!!, ComposeIndex.First, add = true)
-            modifyPropertiesData(1, health.injuries!!, ComposeIndex.First, add = true)
-            modifyPropertiesData(2, health.bodyPart!!, ComposeIndex.First, add = true)
-            modifyPropertiesData(3, health.ailments!!, ComposeIndex.First, add = true)
-            modifyPropertiesData(4, health.medications!!, ComposeIndex.First, add = true)
-            modifyPropertiesData(5, health.healthTargets!!, ComposeIndex.First, add = true)
-            modifyPropertiesData(6, health.addiction!!, ComposeIndex.First, add = true)
-
+            modifyPropertiesData(0, health.healthHistory?: emptyList(), ComposeIndex.First, add = true)
+            modifyPropertiesData(1, health.injuries?: emptyList(), ComposeIndex.First, add = true)
+            modifyPropertiesData(2, health.bodyPart?: emptyList(), ComposeIndex.First, add = true)
+            modifyPropertiesData(3, health.ailments?: emptyList(), ComposeIndex.First, add = true)
+            modifyPropertiesData(4, health.medications?: emptyList(), ComposeIndex.First, add = true)
+            modifyPropertiesData(5, health.healthTargets?: emptyList(), ComposeIndex.First, add = true)
+            modifyPropertiesData(6, health.addiction?: emptyList(), ComposeIndex.First, add = true)
         }
     }
 

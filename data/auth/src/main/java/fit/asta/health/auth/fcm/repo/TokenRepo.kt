@@ -1,4 +1,4 @@
-package fit.asta.health.fcm.repo
+package fit.asta.health.auth.fcm.repo
 
 interface TokenRepo {
     fun setNewTokenAvailable(token: String)

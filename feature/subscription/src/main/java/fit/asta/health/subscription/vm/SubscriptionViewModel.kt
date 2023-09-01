@@ -9,7 +9,10 @@ import fit.asta.health.common.utils.toUiState
 import fit.asta.health.subscription.remote.model.SubscriptionResponse
 import fit.asta.health.subscription.repo.SubscriptionRepo
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,9 +27,15 @@ class SubscriptionViewModel
         MutableStateFlow<UiState<SubscriptionResponse>>(UiState.Loading)
     val state = _state.asStateFlow()
 
-    init {
-        getData()
-    }
+    val isFCMTokenUploaded = subscriptionRepo.userData
+        .map {
+            it.isFcmTokenUploaded
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = false,
+        )
 
     fun getData() {
         _state.value = UiState.Loading
