@@ -1,6 +1,8 @@
 package fit.asta.health.subscription
 
 import android.content.Context
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -30,9 +32,11 @@ fun NavGraphBuilder.subscriptionRoute(
         composable(SubscriptionScreen.Plans.route) {
             val context = LocalContext.current
             val subscriptionViewModel: SubscriptionViewModel = hiltViewModel()
-            val state = subscriptionViewModel.state.collectAsStateWithLifecycle()
+            LaunchedEffect(key1 = Unit, block = { subscriptionViewModel.getData() })
+
+            val state by subscriptionViewModel.state.collectAsStateWithLifecycle()
             SubscriptionPlansUi(
-                state = state.value,
+                state = state,
                 onBackPress = onBackPress,
                 onTryAgain = subscriptionViewModel::getData,
                 onClick = { orderRequest ->

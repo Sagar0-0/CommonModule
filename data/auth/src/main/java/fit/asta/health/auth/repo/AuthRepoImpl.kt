@@ -6,6 +6,8 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import fit.asta.health.auth.fcm.remote.TokenApi
+import fit.asta.health.auth.fcm.remote.TokenDTO
 import fit.asta.health.auth.model.AuthDataMapper
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.common.utils.ResponseState
@@ -18,6 +20,7 @@ import javax.inject.Inject
 
 
 class AuthRepoImpl @Inject constructor(
+    private val tokenApi: TokenApi,
     private val dataMapper: AuthDataMapper,
     private val firebaseAuth: FirebaseAuth,
     private val prefManager: PrefManager
@@ -35,14 +38,15 @@ class AuthRepoImpl @Inject constructor(
         prefManager.setScreenCode(1)//show auth screen
     }
 
-    override suspend fun uploadFcmToken(token: String, timestamp: String, uid: String) {
-        try {
-            //TODO: CALL API
+    override suspend fun uploadFcmToken(tokenDTO: TokenDTO): ResponseState<Boolean> {
+        return try {
             setIsFcmTokenUploaded(true)
             Log.d(TAG, "uploadFcmToken: Success")
+            ResponseState.Success(tokenApi.sendToken(tokenDTO).data.flag)
         } catch (e: Exception) {
             setIsFcmTokenUploaded(false)
             Log.e(TAG, "uploadFcmToken: Error $e")
+            ResponseState.Error(e)
         }
     }
 

@@ -58,6 +58,8 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         base.archivesName.set("$applicationId-$versionName")
+        manifestPlaceholders["redirectSchemeName"] = "spotify-sdk"
+        manifestPlaceholders["redirectHostName"] = "auth"
         signingConfig = signingConfigs.getByName("release")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -320,9 +322,6 @@ dependencies {
     //Number Picker
     implementation(libs.number.picker)
 
-    //Spotify Auth
-    implementation(libs.auth)
-
     //Swipe
     implementation(libs.swipe)
 
@@ -340,6 +339,9 @@ dependencies {
 
     // Photo Picker
     implementation(libs.modernstorage.photopicker)
+
+    //Referral
+    implementation(libs.installreferrer)
 
     //TODO-------------------Low standard libraries - consider removing later---------------------//
     //Stepper
@@ -388,7 +390,4 @@ dependencies {
     androidTestImplementation(libs.androidx.room.testing)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.junit)
-
-    implementation("com.android.installreferrer:installreferrer:2.2")
-
 }

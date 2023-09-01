@@ -45,8 +45,8 @@ import fit.asta.health.feature.testimonials.navigation.testimonialNavRoute
 import fit.asta.health.main.view.HOME_GRAPH_ROUTE
 import fit.asta.health.main.view.homeScreen
 import fit.asta.health.payment.PaymentActivity
-import fit.asta.health.profile.CreateProfileLayout
-import fit.asta.health.profile.ProfileContent
+import fit.asta.health.profile.feature.ProfileContent
+import fit.asta.health.profile.feature.create.CreateProfileLayout
 import fit.asta.health.referral.navigateToReferral
 import fit.asta.health.referral.referralRoute
 import fit.asta.health.subscription.navigateToSubscription
@@ -60,7 +60,6 @@ import fit.asta.health.wallet.navigateToWallet
 import fit.asta.health.wallet.walletRoute
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
-
 
 @Composable
 fun MainNavHost(isConnected: Boolean, mainViewModel: MainViewModel) {

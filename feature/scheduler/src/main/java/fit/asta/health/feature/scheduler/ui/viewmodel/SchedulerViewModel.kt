@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.HourMinAmPm
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.getCurrentTime
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.db.entity.TagEntity
 import fit.asta.health.data.scheduler.remote.net.scheduler.Time
@@ -39,7 +40,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.time.LocalTime
 import java.util.Date
 import java.util.Locale
 import java.util.concurrent.atomic.AtomicLong
@@ -69,8 +69,6 @@ class SchedulerViewModel
 
     private val userId = "6309a9379af54f142c65fbfe"
 
-    private val _uiError = MutableStateFlow("")
-    val uiError = _uiError.asStateFlow()
     val areInputsValid =
         combine(alarmSettingUiState, tagsUiState) { alarm, _ ->
             alarm.alarmName.isNotEmpty() && alarm.alarmDescription.isNotEmpty() && alarm.tagName.isNotEmpty()
@@ -126,6 +124,7 @@ class SchedulerViewModel
                     VibrationPattern.Short -> "Short"
                     VibrationPattern.Long -> "Long"
                     VibrationPattern.Intermittent -> "Intermittent"
+                    else -> "Short"
                 }
             )
     }
@@ -257,14 +256,15 @@ class SchedulerViewModel
     ) {
         if (alarmItem == null) {
             _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
-                uDate = LocalTime.now().toString(),
-                cDate = LocalTime.now().toString(),
+                uDate = getCurrentTime(),
+                cDate = getCurrentTime(),
                 sync = 1,
                 cBy = 1
             )
         } else {
+            stateManager.deleteAlarm(context, alarmItem)
             _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
-                uDate = LocalTime.now().toString(),
+                uDate = getCurrentTime(),
                 cDate = alarmItem.meta.cDate,
                 sync = 1,
                 cBy = alarmItem.meta.cBy

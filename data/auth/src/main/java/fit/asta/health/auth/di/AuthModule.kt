@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import fit.asta.health.auth.fcm.remote.TokenApi
 import fit.asta.health.auth.model.AuthDataMapper
 import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.auth.repo.AuthRepoImpl
@@ -29,11 +30,12 @@ object AuthModule {
     @Singleton
     @Provides
     fun provideAuthRepo(
+        tokenApi: TokenApi,
         dataMapper: AuthDataMapper,
         firebaseAuth: FirebaseAuth,
         prefManager: PrefManager
     ): AuthRepo {
-        return AuthRepoImpl(dataMapper, firebaseAuth, prefManager)
+        return AuthRepoImpl(tokenApi,dataMapper, firebaseAuth, prefManager)
     }
 }
 

@@ -40,11 +40,9 @@ fun NavGraphBuilder.schedulerNavigation(
                 )
             }
             val alarmSettingUiState by schedulerViewModel.alarmSettingUiState.collectAsStateWithLifecycle()
-            val uiError by schedulerViewModel.uiError.collectAsStateWithLifecycle()
             val areInputsValid by schedulerViewModel.areInputsValid.collectAsStateWithLifecycle()
             AlarmSettingScreen(
                 alarmSettingUiState = alarmSettingUiState,
-                uiError = uiError,
                 areInputsValid = areInputsValid,
                 aSEvent = { uiEvent ->
                     when (uiEvent) {

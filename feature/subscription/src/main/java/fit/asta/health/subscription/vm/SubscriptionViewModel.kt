@@ -9,7 +9,10 @@ import fit.asta.health.common.utils.toUiState
 import fit.asta.health.subscription.remote.model.SubscriptionResponse
 import fit.asta.health.subscription.repo.SubscriptionRepo
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,10 +26,6 @@ class SubscriptionViewModel
     private val _state =
         MutableStateFlow<UiState<SubscriptionResponse>>(UiState.Loading)
     val state = _state.asStateFlow()
-
-    init {
-        getData()
-    }
 
     fun getData() {
         _state.value = UiState.Loading
