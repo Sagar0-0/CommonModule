@@ -15,12 +15,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object SubscriptionModule {
-
     @Singleton
     @Provides
     fun provideSubscriptionApi(client: OkHttpClient): SubscriptionApi =
         NetworkUtil.getRetrofit(client).create(SubscriptionApi::class.java)
-
 
 }
 

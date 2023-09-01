@@ -1,6 +1,7 @@
 package fit.asta.health.subscription
 
 import android.content.Context
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,19 +32,16 @@ fun NavGraphBuilder.subscriptionRoute(
         composable(SubscriptionScreen.Plans.route) {
             val context = LocalContext.current
             val subscriptionViewModel: SubscriptionViewModel = hiltViewModel()
+            LaunchedEffect(key1 = Unit, block = { subscriptionViewModel.getData() })
+
             val state by subscriptionViewModel.state.collectAsStateWithLifecycle()
-            val isFCMUploaded by subscriptionViewModel.isFCMTokenUploaded.collectAsStateWithLifecycle()
             SubscriptionPlansUi(
                 state = state,
                 onBackPress = onBackPress,
                 onTryAgain = subscriptionViewModel::getData,
                 onClick = { orderRequest ->
-                    if(isFCMUploaded){
-                        onLaunchPayments(context, orderRequest) {
-                            subscriptionViewModel.getData()
-                        }
-                    }else{
-                        //TODO: IF NOT UPLOADED THEN WHAT?
+                    onLaunchPayments(context, orderRequest) {
+                        subscriptionViewModel.getData()
                     }
                 }
             )

@@ -27,16 +27,6 @@ class SubscriptionViewModel
         MutableStateFlow<UiState<SubscriptionResponse>>(UiState.Loading)
     val state = _state.asStateFlow()
 
-    val isFCMTokenUploaded = subscriptionRepo.userData
-        .map {
-            it.isFcmTokenUploaded
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Eagerly,
-            initialValue = false,
-        )
-
     fun getData() {
         _state.value = UiState.Loading
         viewModelScope.launch {
