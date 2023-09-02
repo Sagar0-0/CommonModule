@@ -2,6 +2,7 @@ package fit.asta.health.navigation.track.ui.screens
 
 import android.graphics.drawable.BitmapDrawable
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,11 +18,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -68,6 +71,12 @@ fun TrackMeditationScreenControl(
         setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
     }
 
+    // Drag Flags to keep a check of how the user has dragged
+    val isLeftDrag = remember { mutableStateOf(false) }
+    val isRightDrag = remember { mutableStateOf(false) }
+
+    val tabList = listOf("DAY", "WEEK", "MONTH", "YEAR")
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -79,11 +88,75 @@ fun TrackMeditationScreenControl(
                         0.08f
                     )
                 )
-            ),
+            )
+            .pointerInput(Unit) {
+
+                // Detects all the drag gestures and processes the data accordingly
+                detectDragGestures(
+
+                    // This is called when the drag is started
+                    onDrag = { change, dragAmount ->
+                        change.consume()
+
+                        when {
+
+                            // Right Drag
+                            dragAmount.x > 0 -> {
+                                isRightDrag.value = true
+                                isLeftDrag.value = false
+                            }
+
+                            // Left Drag
+                            dragAmount.x < 0 -> {
+                                isLeftDrag.value = true
+                                isRightDrag.value = false
+                            }
+                        }
+                    },
+
+                    // This is called when the drag is completed
+                    onDragEnd = {
+
+                        // If the drag is a right drag
+                        if (isRightDrag.value && selectedItem.intValue > 0) {
+
+                            // Checking which tab option is selected by the User and showing the UI Accordingly
+                            selectedItem.intValue = selectedItem.intValue - 1
+                            setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+
+                            // Resetting the drag flags
+                            isRightDrag.value = false
+                        }
+
+                        // If the drag is a left drag
+                        if (isLeftDrag.value && selectedItem.intValue < tabList.size - 1) {
+
+                            // Checking which tab option is selected by the User and showing the UI Accordingly
+                            selectedItem.intValue = selectedItem.intValue + 1
+                            setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+
+                            // Resetting the drag flags
+                            isLeftDrag.value = false
+                        }
+                    },
+
+                    // This function is called when the drag is cancelled
+                    onDragCancel = {
+
+                        // Resetting all the drag flags
+                        isLeftDrag.value = false
+                        isRightDrag.value = false
+                    }
+                )
+            },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         // This Function makes the Tab Layout UI
-        TrackTopTabBar(selectedItem = selectedItem.intValue) {
+        TrackTopTabBar(
+            tabList = tabList,
+            selectedItem = selectedItem.intValue
+        ) {
 
             if (selectedItem.intValue != it) {
 
@@ -166,7 +239,7 @@ private fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
 
-                                fit.asta.chart.circular.CircularChart.DonutChartImage(
+                                CircularChart.DonutChartImage(
                                     modifier = Modifier
                                         .size(55.dp),
                                     circularData = CircularTargetDataBuilder(
