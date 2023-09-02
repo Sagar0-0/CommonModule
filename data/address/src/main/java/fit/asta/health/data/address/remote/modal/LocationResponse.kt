@@ -1,4 +1,4 @@
-package fit.asta.health.data.address.modal
+package fit.asta.health.data.address.remote.modal
 
 import com.google.android.gms.maps.model.LatLng
 

@@ -13,8 +13,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
-import fit.asta.health.data.address.modal.MyAddress
-import fit.asta.health.data.address.modal.SearchResponse
+import fit.asta.health.data.address.remote.modal.MyAddress
+import fit.asta.health.data.address.remote.modal.SearchResponse
+import fit.asta.health.data.address.remote.modal.LocationResponse
 import fit.asta.health.data.address.repo.AddressRepo
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -106,21 +107,21 @@ class AddressViewModel
         viewModelScope.launch {
             addressRepo.checkPermissionAndGetLatLng().collect { latLng ->
                 when (latLng) {
-                    is fit.asta.health.data.address.modal.LocationResponse.Success -> {
+                    is LocationResponse.Success -> {
                         addressRepo.getAddressDetails(latLng.latLng).collect { addressRes ->
                             _currentAddressState.value = addressRes.toUiState()
                         }
                     }
 
-                    is fit.asta.health.data.address.modal.LocationResponse.Error -> {
+                    is LocationResponse.Error -> {
                         _currentAddressState.value = UiState.Error(latLng.resId)
                     }
 
-                    fit.asta.health.data.address.modal.LocationResponse.PermissionDenied -> {
+                    LocationResponse.PermissionDenied -> {
                         _isPermissionGranted.value = false
                     }
 
-                    fit.asta.health.data.address.modal.LocationResponse.ServiceDisabled -> {
+                    LocationResponse.ServiceDisabled -> {
                         _isLocationEnabled.value = false
                     }
                 }

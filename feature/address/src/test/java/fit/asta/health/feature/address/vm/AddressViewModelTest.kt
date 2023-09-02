@@ -7,9 +7,9 @@ import com.google.android.gms.maps.model.LatLng
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.core.test.BaseTest
-import fit.asta.health.data.address.modal.LocationResponse
-import fit.asta.health.data.address.modal.MyAddress
-import fit.asta.health.data.address.modal.SearchResponse
+import fit.asta.health.data.address.remote.modal.LocationResponse
+import fit.asta.health.data.address.remote.modal.MyAddress
+import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.data.address.repo.AddressRepoImpl
 import fit.asta.health.datastore.UserPreferencesData
 import io.mockk.Runs

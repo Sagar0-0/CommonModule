@@ -3,13 +3,14 @@ package fit.asta.health.data.address.repo
 import app.cash.turbine.test
 import fit.asta.health.common.utils.ResourcesProvider
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.data.address.modal.AddressesDTO
-import fit.asta.health.data.address.modal.DeleteAddressResponse
-import fit.asta.health.data.address.modal.MyAddress
-import fit.asta.health.data.address.modal.PutAddressResponse
-import fit.asta.health.data.address.modal.SearchResponse
+import fit.asta.health.data.address.remote.modal.AddressesDTO
+import fit.asta.health.data.address.remote.modal.DeleteAddressResponse
+import fit.asta.health.data.address.remote.modal.MyAddress
+import fit.asta.health.data.address.remote.modal.PutAddressResponse
+import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.data.address.remote.AddressApi
 import fit.asta.health.data.address.remote.SearchLocationApi
+import fit.asta.health.data.address.remote.modal.LocationResponse
 import fit.asta.health.data.address.utils.LocationResourceProvider
 import fit.asta.health.datastore.PrefManager
 import io.mockk.MockKAnnotations
@@ -92,7 +93,7 @@ class AddressRepoImplTest {
         every { locationResourcesProvider.isPermissionGranted() } returns false
         repo.checkPermissionAndGetLatLng().test {
             val item = awaitItem()
-            assert(item is fit.asta.health.data.address.modal.LocationResponse.PermissionDenied)
+            assert(item is LocationResponse.PermissionDenied)
         }
     }
 
@@ -102,7 +103,7 @@ class AddressRepoImplTest {
         every { locationResourcesProvider.isLocationEnabled() } returns false
         repo.checkPermissionAndGetLatLng().test {
             val item = awaitItem()
-            assert(item is fit.asta.health.data.address.modal.LocationResponse.ServiceDisabled)
+            assert(item is LocationResponse.ServiceDisabled)
         }
     }
 

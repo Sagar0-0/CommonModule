@@ -52,7 +52,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.UiString
 import fit.asta.health.common.utils.getLocationName
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.data.address.modal.MyAddress
+import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.designsystem.components.ValidatedTextField
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.theme.customSize

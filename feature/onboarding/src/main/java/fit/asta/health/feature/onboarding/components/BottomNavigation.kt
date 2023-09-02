@@ -14,7 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.resources.strings.R
 
 @Composable
 fun BottomNavigationSection(lastPage: Boolean, onNextClick: () -> Unit, onSkipClick: () -> Unit) {
@@ -27,7 +29,7 @@ fun BottomNavigationSection(lastPage: Boolean, onNextClick: () -> Unit, onSkipCl
     ) {
         if (lastPage) {
             OnBoardingButton(
-                text = "Finish",
+                text = R.string.proceed.toStringFromResId(),
                 modifier = Modifier
                     .padding(end = spacing.medium),
                 colors = ButtonDefaults.buttonColors(

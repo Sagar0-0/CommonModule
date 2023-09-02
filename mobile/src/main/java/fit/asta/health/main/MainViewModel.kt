@@ -9,7 +9,7 @@ import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getLocationName
-import fit.asta.health.data.address.modal.LocationResponse
+import fit.asta.health.data.address.remote.modal.LocationResponse
 import fit.asta.health.data.address.repo.AddressRepo
 import fit.asta.health.datastore.PrefManager
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,9 +32,6 @@ class MainViewModel
     private val _isLocationEnabled = MutableStateFlow(false)
     val isLocationEnabled = _isLocationEnabled.asStateFlow()
 
-    private val _isPermissionGranted = MutableStateFlow(false)
-    val isPermissionGranted = _isPermissionGranted.asStateFlow()
-
     fun setReferralChecked() = viewModelScope.launch {
         prefManager.setReferralChecked()
     }
@@ -43,9 +40,7 @@ class MainViewModel
         _isLocationEnabled.value = addressRepo.isLocationEnabled()
     }
 
-    fun setIsPermissionGranted() {
-        _isPermissionGranted.value = addressRepo.isPermissionGranted()
-    }
+    fun isPermissionGranted() = addressRepo.isPermissionGranted()
 
     val notificationsEnabled = prefManager.userData
         .map {
@@ -123,13 +118,11 @@ class MainViewModel
                         _currentAddressName.value = UiState.Error(R.string.error_fetching_location)
                     }
 
-                    LocationResponse.PermissionDenied -> {
-                        _isPermissionGranted.value = false
-                    }
-
                     LocationResponse.ServiceDisabled -> {
                         _isLocationEnabled.value = false
                     }
+
+                    else -> {}
                 }
             }
         }
