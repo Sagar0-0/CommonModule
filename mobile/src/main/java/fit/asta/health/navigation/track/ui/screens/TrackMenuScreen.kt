@@ -389,7 +389,7 @@ private fun ToolsItemsCard(
 
                 // Title of the Card
                 Text(
-                    text = title,
+                    text = title[0].uppercase() + title.substring(1),
 
                     modifier = Modifier
                         .fillMaxWidth()
