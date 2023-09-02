@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
+import fit.asta.chart.circular.CircularChart
 import fit.asta.chart.circular.center.CircularImageCenter
 import fit.asta.chart.circular.center.CircularRingTextCenter
 import fit.asta.chart.circular.charts.CircularDonutChartRow
@@ -238,7 +239,7 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
 
-                                fit.asta.chart.circular.CircularChart.DonutChartImage(
+                                CircularChart.DonutChartImage(
                                     modifier = Modifier
                                         .size(55.dp),
                                     circularData = CircularTargetDataBuilder(
