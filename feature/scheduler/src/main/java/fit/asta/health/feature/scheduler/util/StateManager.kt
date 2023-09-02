@@ -45,7 +45,6 @@ class StateManager @Inject constructor(
     fun registerAlarm(
         context: Context,
         alarm: AlarmEntity,
-        oldId: Long? = null,
         skipToday: Boolean = false
     ) {
         val currentTime: Calendar = Calendar.getInstance()
@@ -70,85 +69,19 @@ class StateManager @Inject constructor(
             mHour = time[Calendar.HOUR_OF_DAY],
             mMinute = time[Calendar.MINUTE]
         )
-        oldId?.let {
-            instance.mId = it
-            cancelScheduledInstanceStateChange(context, instance)
+        scope.launch {
+            alarmInstanceDao.getInstancesByAlarmId(alarm.alarmId)?.let {
+                instance.mId = it.mId
+                cancelScheduledInstanceStateChange(context, instance)
+            }
+            alarmInstanceDao.insertAndUpdate(instance)
         }
-        scope.launch { alarmInstanceDao.insertAndUpdate(instance) }
 
         scheduleInstanceStateChange(
             context, instance.alarmTime, instance, state
         )
     }
 
-    fun updateAlarm(context: Context, alarm: AlarmEntity, instanceOld: AlarmInstance) {
-        val currentTime: Calendar = Calendar.getInstance()
-        LogUtils.v("updateAlarm  ${AlarmUtils.getFormattedTime(context, currentTime)}")
-        val oldTime: Calendar = instanceOld.alarmTime
-        val state: Int
-        if (alarm.interval.statusEnd) {
-            when (instanceOld.mAlarmState) {
-                PRE_ALARM_STATE -> {
-                    if (alarm.interval.advancedReminder.status) {
-                        if (oldTime.timeInMillis < alarm.getCurrentAlarmTime(
-                                currentTime,
-                                AlarmEntity.State.PRE
-                            ).timeInMillis
-                        ) {
-                            state = PRE_ALARM_STATE
-                        }
-                    } else registerAlarm(context, alarm, instanceOld.mId)
-                }
-
-                CURRENT_ALARM_STATE -> {
-                    if (oldTime.timeInMillis < alarm.getCurrentAlarmTime(
-                            currentTime,
-                            AlarmEntity.State.CURRENT
-                        ).timeInMillis
-                    ) {
-                        state = CURRENT_ALARM_STATE
-                    } else registerAlarm(context, alarm, instanceOld.mId)
-                }
-
-                SNOOZE_CURRENT_ALARM_STATE -> {
-
-                }
-
-                PRE_END_ALARM_STATE -> {
-                    if (alarm.interval.advancedReminder.status && alarm.interval.statusEnd) {
-                        if (oldTime.timeInMillis < alarm.getCurrentAlarmTime(
-                                currentTime,
-                                AlarmEntity.State.PRE
-                            ).timeInMillis
-                        ) registerAlarm(context, alarm, instanceOld.mId)
-                        else if (oldTime.timeInMillis < alarm.getCurrentAlarmTime(
-                                currentTime,
-                                AlarmEntity.State.PREEND
-                            ).timeInMillis
-                        ) {
-                            state = PRE_END_ALARM_STATE
-                        }
-                    } else registerAlarm(context, alarm, instanceOld.mId)
-                }
-
-                END_ALARM_STATE -> {
-                    if (oldTime.timeInMillis < alarm.getCurrentAlarmTime(
-                            currentTime,
-                            AlarmEntity.State.CURRENT
-                        ).timeInMillis
-                    ) {
-                        state = CURRENT_ALARM_STATE
-                    } else registerAlarm(context, alarm, instanceOld.mId)
-                }
-
-                SNOOZE_END_ALARM_STATE -> {
-
-                }
-            }
-        } else {
-            cancelScheduledInstanceStateChange(context, instanceOld)
-        }
-    }
 
     fun handleIntent(context: Context, intent: Intent) {
         LogUtils.v("handle intent $intent")
@@ -208,7 +141,7 @@ class StateManager @Inject constructor(
     private fun missedAlarm(context: Context, instance: AlarmInstance) {
         scope.launch {
             alarmDao.getAlarm(instance.mAlarmId)?.let { alarm ->
-                registerAlarm(context, alarm, instance.mId)
+                registerAlarm(context, alarm)
             }
         }
     }
@@ -241,7 +174,7 @@ class StateManager @Inject constructor(
                             alarmDao.deleteAlarm(alarm)
                             return@launch
                         } else {
-                            registerAlarm(context, alarm, instance.mId)
+                            registerAlarm(context, alarm)
                         }
                     }
 
@@ -298,7 +231,7 @@ class StateManager @Inject constructor(
                     alarmInstanceDao.insertAndUpdate(instance)
                     scheduleInstanceStateChange(context, newAlarmTime, instance, END_ALARM_STATE)
                 } else {
-                    registerAlarm(context, alarm, instance.mId)
+                    registerAlarm(context, alarm)
                 }
             }
         }
@@ -330,7 +263,7 @@ class StateManager @Inject constructor(
                         alarmDao.deleteAlarm(alarm)
                         return@launch
                     } else {
-                        registerAlarm(context, alarm, instance.mId)
+                        registerAlarm(context, alarm)
                     }
                 }
             }
@@ -364,7 +297,7 @@ class StateManager @Inject constructor(
                 alarmDao.getAlarm(id)?.let { alarm ->
                     cancelScheduledInstanceStateChange(context, instance)
                     if (instance.mAlarmState == END_ALARM_STATE) {
-                        registerAlarm(context, alarm, instance.mId)
+                        registerAlarm(context, alarm)
                     } else if (instance.mAlarmState == CURRENT_ALARM_STATE) {
                         if (alarm.interval.statusEnd && alarm.interval.advancedReminder.status) {
                             val newAlarmTime =
@@ -379,7 +312,7 @@ class StateManager @Inject constructor(
                                 PRE_END_ALARM_STATE
                             )
                         } else {
-                            registerAlarm(context, alarm, instance.mId)
+                            registerAlarm(context, alarm)
                         }
                     }
                 }
@@ -396,7 +329,7 @@ class StateManager @Inject constructor(
         val timeInMillis = time.timeInMillis
         LogUtils.i(
             "Scheduling state change %d to instance %d at %s (%d)", newState,
-            instance.mId, AlarmUtils.getFormattedTime(context, time), timeInMillis
+            instance.mAlarmId, AlarmUtils.getFormattedTime(context, time), timeInMillis
         )
         val stateChangeIntent: Intent = createStateChangeIntent(context, instance, newState)
         // Treat alarm state change as high priority, use foreground broadcasts
@@ -412,7 +345,7 @@ class StateManager @Inject constructor(
     }
 
     fun cancelScheduledInstanceStateChange(context: Context, instance: AlarmInstance) {
-        LogUtils.v("Canceling instance " + instance.mId + " timers")
+        LogUtils.v("Canceling instance " + instance.mAlarmId + " timers")
 
         val pendingIntent: PendingIntent? =
             PendingIntent.getBroadcast(
@@ -483,6 +416,7 @@ class StateManager @Inject constructor(
     }
 
     fun deleteAlarm(context: Context, alarmItem: AlarmEntity) {
+        LogUtils.v("deleteAlarm ${alarmItem.alarmId}")
         scope.launch {
             alarmInstanceDao.getInstancesByAlarmId(alarmItem.alarmId)?.let {
                 cancelScheduledInstanceStateChange(context, it)
@@ -494,7 +428,7 @@ class StateManager @Inject constructor(
     fun skipAlarmTodayOnly(context: Context, alarmItem: AlarmEntity) {
         scope.launch {
             alarmInstanceDao.getInstancesByAlarmId(alarmItem.alarmId)?.let { instance ->
-                registerAlarm(context, alarmItem, instance.mId, true)
+                registerAlarm(context, alarmItem, true)
             }
         }
     }

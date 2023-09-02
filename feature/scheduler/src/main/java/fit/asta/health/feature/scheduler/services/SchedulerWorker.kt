@@ -47,11 +47,17 @@ class SchedulerWorker @AssistedInject constructor(
         Log.d("TAGTAG", "doWork:sync alarm  ")
         val list = alarmLocalRepo.getAllAlarmList()
         if (list.isNullOrEmpty()) {
-            when (val result = backendRepo.getScheduleListDataFromBackend("")) {
+            val result = withContext(Dispatchers.Default) {
+                backendRepo.getScheduleListDataFromBackend("6309a9379af54f142c65fbfe")
+            }
+            when (result) {
                 is ResponseState.Success -> {
                     result.data.list.forEach { alarm ->
+//                        backendRepo.deleteScheduleDataFromBackend(alarm.idFromServer)
                         alarmLocalRepo.insertAlarm(alarm)
-                        if (alarm.status) stateManager.registerAlarm(appContext, alarm)
+                        if (alarm.status) {
+                            stateManager.registerAlarm(appContext, alarm)
+                        }
                     }
                 }
 

@@ -34,18 +34,15 @@ class RescheduleAlarmService : LifecycleService() {
         GlobalScope.launch(Dispatchers.IO) {
             alarmLocalRepo.getAllAlarmList()?.forEach { alarm ->
                 if (alarm.status) {
-                    val instance = alarmInstanceDao.getInstancesByAlarmId(alarm.alarmId)
                     if (alarm.skipDate == LocalDate.now().dayOfMonth) {
                         stateManager.registerAlarm(
                             this@RescheduleAlarmService,
                             alarm,
-                            oldId = instance?.mId,
                             true
                         )
                     } else stateManager.registerAlarm(
                         this@RescheduleAlarmService,
                         alarm,
-                        oldId = instance?.mId
                     )
                 }
             }

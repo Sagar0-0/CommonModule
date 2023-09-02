@@ -20,19 +20,29 @@ import androidx.compose.material.icons.rounded.RemoveCircle
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.chargemap.compose.numberpicker.NumberPicker
+import fit.asta.health.designsystem.components.ButtonWithColor
 import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.IvlUiState
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.TimeUi
+import kotlin.math.abs
 import fit.asta.health.resources.drawables.R as DrawR
 import fit.asta.health.resources.strings.R as StringR
 
@@ -93,34 +103,69 @@ fun SettingsLayout(
 
 
 @Composable
-fun SnoozeBottomSheet(onNavigateBack: () -> Unit, onValueChange: (Int) -> Unit = {}) {
-//
-//    AndroidView(modifier = Modifier.fillMaxWidth(), factory = {
-//        val view = View.inflate(it, R.layout.scheduler_layout_dialog_number_picker, null)
-//
-//        view
-//    }, update = {
-//        val durationUnitPicker = it.findViewById<NumberPicker>(R.id.durationUnitPicker)
-//        val durationPicker = it.findViewById<NumberPicker>(R.id.durationPicker)
-//        val cancelButton = it.findViewById<Button>(R.id.cancelButton)
-//        val okButton = it.findViewById<Button>(R.id.okButton)
-//
-//        val data = arrayOf("Minute")
-//        durationPicker.setOnValueChangedListener { picker, _, _ ->
-//            Log.d("manish", "SnoozeBottomSheet: ${picker.value}")
-//        }
-//        durationUnitPicker.minValue = 1
-//        durationUnitPicker.maxValue = data.size
-//        durationUnitPicker.displayedValues = data
-//        cancelButton.setOnClickListener {
-//            onNavigateBack.invoke()
-//        }
-//        okButton.setOnClickListener {
-//            onValueChange.invoke(durationPicker.value)
-//            onNavigateBack.invoke()
-//        }
-//    })
+fun SnoozeBottomSheet(
+    minutesRange: Iterable<Int> = (1..59),
+    onNavigateBack: () -> Unit,
+    onValueChange: (Int) -> Unit = {}
+) {
+    MinutesPicker(onCancel = onNavigateBack, onSave = onValueChange, minutesRange = minutesRange)
 
+}
+
+@Composable
+fun MinutesPicker(
+    onCancel: () -> Unit, onSave: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+    leadingZero: Boolean = true,
+    minutesRange: Iterable<Int> = (5..30),
+    dividersColor: Color = Color.Green,
+    textStyle: TextStyle = LocalTextStyle.current,
+) {
+    var min by remember { mutableIntStateOf(minutesRange.first()) }
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(spacing.small),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Select Time", style = MaterialTheme.typography.titleLarge
+        )
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            NumberPicker(modifier = Modifier.weight(1f), label = {
+                "${if (leadingZero && (abs(it) < 10)) "0" else ""}$it"
+            }, value = min, onValueChange = {
+                min = it
+            }, dividersColor = dividersColor, textStyle = textStyle, range = minutesRange
+            )
+
+            Text(
+                textAlign = TextAlign.Center,
+                text = "Minutes",
+                style = MaterialTheme.typography.titleSmall
+            )
+
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(spacing.medium)) {
+            ButtonWithColor(
+                modifier = Modifier.weight(0.5f),
+                color = Color.Red,
+                text = stringResource(id = StringR.string.cancel)
+            ) { onCancel() }
+            ButtonWithColor(
+                modifier = Modifier.weight(0.5f),
+                color = Color.Blue,
+                text = stringResource(StringR.string.save)
+            ) { onSave(min) }
+        }
+    }
 }
 
 @Composable

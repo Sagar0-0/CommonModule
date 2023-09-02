@@ -103,15 +103,19 @@ fun TimeSettingCreateBtmSheetLayout(
     val context = LocalContext.current
     when (sheetLayout) {
         Advanced -> {
-            SnoozeBottomSheet(onNavigateBack = { closeSheet() }, onValueChange = {
-                tSEvent(TimeSettingEvent.SetAdvancedDuration(it, context))
-            })
+            SnoozeBottomSheet(onNavigateBack = { closeSheet() }, minutesRange = (5..35),
+                onValueChange = {
+                    closeSheet()
+                    tSEvent(TimeSettingEvent.SetAdvancedDuration(it, context))
+                })
         }
 
         SnoozeSelection -> {
-            SnoozeBottomSheet(onNavigateBack = { closeSheet() }, onValueChange = {
-                tSEvent(TimeSettingEvent.SetSnooze(it))
-            })
+            SnoozeBottomSheet(onNavigateBack = { closeSheet() }, minutesRange = (5..15),
+                onValueChange = {
+                    closeSheet()
+                    tSEvent(TimeSettingEvent.SetSnooze(it))
+                })
         }
 
 

@@ -84,6 +84,7 @@ import java.time.LocalTime
 @Composable
 fun TodayContent(
     uiState: TodayData,
+    defaultScheduleVisibility: Boolean,
     listMorning: SnapshotStateList<AlarmEntity>,
     listAfternoon: SnapshotStateList<AlarmEntity>,
     listEvening: SnapshotStateList<AlarmEntity>,
@@ -190,9 +191,9 @@ fun TodayContent(
                     }
                 }
             }
-            if (listMorning.isEmpty() && listAfternoon.isEmpty() && listEvening.isEmpty()) {
+            if (defaultScheduleVisibility) {
                 item {
-                    AnimatedVisibility(visible = listMorning.isEmpty() && listAfternoon.isEmpty() && listEvening.isEmpty()) {
+                    AnimatedVisibility(visible = true) {
                         AppButtons.AppOutlinedButton(onClick = {
                             hSEvent(
                                 HomeEvent.SetDefaultSchedule(

@@ -306,6 +306,7 @@ private fun MainNavHost(
             val listEvening by todayPlanViewModel.alarmListEvening.collectAsStateWithLifecycle()
             val listNextDay by todayPlanViewModel.alarmListNextDay.collectAsStateWithLifecycle()
             val state by todayPlanViewModel.todayState.collectAsStateWithLifecycle()
+            val defaultScheduleVisibility by todayPlanViewModel.defaultScheduleVisibility.collectAsStateWithLifecycle()
             when (state) {
                 is UiState.Loading -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -320,6 +321,7 @@ private fun MainNavHost(
                 is UiState.Success -> {
                     TodayContent(
                         uiState = (state as UiState.Success<TodayData>).data,
+                        defaultScheduleVisibility = defaultScheduleVisibility,
                         listMorning = listMorning,
                         listAfternoon = listAfternoon,
                         listEvening = listEvening,

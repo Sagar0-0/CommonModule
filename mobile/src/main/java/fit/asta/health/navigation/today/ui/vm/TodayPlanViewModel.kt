@@ -44,14 +44,15 @@ class TodayPlanViewModel @Inject constructor(
     val alarmListEvening = MutableStateFlow(_alarmListEvening)
     private val _alarmListNextDay = mutableStateListOf<AlarmEntity>()
     val alarmListNextDay = MutableStateFlow(_alarmListNextDay)
-
+    private val _defaultScheduleVisibility = MutableStateFlow(false)
+    val defaultScheduleVisibility = _defaultScheduleVisibility.asStateFlow()
     private val calendar: Calendar = Calendar.getInstance()
     val today: Int = calendar.get(Calendar.DAY_OF_WEEK)
 
-    private val _todayState =
-        MutableStateFlow<UiState<TodayData>>(UiState.Idle)
+    private val _todayState = MutableStateFlow<UiState<TodayData>>(UiState.Idle)
     val todayState = _todayState.asStateFlow()
     private val currentTime: LocalTime = LocalTime.now()
+
     init {
         getWeatherSunSlots()
         getAlarms()
@@ -183,6 +184,7 @@ class TodayPlanViewModel @Inject constructor(
     private fun getAlarms() {
         viewModelScope.launch {
             alarmLocalRepo.getAllAlarm().collect { list ->
+                _defaultScheduleVisibility.value = list.isEmpty()
                 _alarmListMorning.clear()
                 _alarmListAfternoon.clear()
                 _alarmListEvening.clear()
