@@ -22,9 +22,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import fit.asta.health.MainActivity
-import fit.asta.health.R
 import fit.asta.health.common.utils.getUriFromResourceId
 import fit.asta.health.notify.receiver.SnoozeReceiver
+import fit.asta.health.resources.drawables.R as DrawR
+import fit.asta.health.resources.strings.R as StringR
 
 
 private const val NOTIFICATION_ID = 0
@@ -104,8 +105,8 @@ private fun Context.createNotificationBuilder(
     return NotificationCompat.Builder(this, channelId).apply {
 
         legacyNotificationSettings(this)
-        setSmallIcon(R.drawable.ic_notifications)
-        setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_toolbar_logo))
+        setSmallIcon(DrawR.drawable.ic_notifications)
+        setLargeIcon(BitmapFactory.decodeResource(resources, DrawR.drawable.ic_toolbar_logo))
         setAutoCancel(true)
         setLocalOnly(false) //To show on projector/tv/other devices
         setWhen(System.currentTimeMillis() + 2000)
@@ -120,7 +121,7 @@ private fun Context.legacyNotificationSettings(builder: NotificationCompat.Build
 
     builder.setDefaults(NotificationCompat.DEFAULT_ALL)
     builder.priority = NotificationCompat.PRIORITY_MAX
-    builder.setSound(getUriFromResourceId(R.raw.alarm))
+    builder.setSound(getUriFromResourceId(StringR.raw.alarm))
     builder.setVibrate(vibrationPattern())
     builder.setLights(Color.GREEN, 2000, 2000)
     builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -321,12 +322,12 @@ fun Context.sendNotification(
         PendingIntent.FLAG_UPDATE_CURRENT
     )
 
-    val strSnooze = this.getString(R.string.title_snooze)
+    val strSnooze = this.getString(StringR.string.title_snooze)
     builder.apply {
 
         setContentIntent(intentPending)
         setAutoCancel(true)
-        addAction(R.drawable.ic_notifications, strSnooze, intSnoozePending)
+        addAction(DrawR.drawable.ic_notifications, strSnooze, intSnoozePending)
     }
 
     if (uriImage != null) {
@@ -346,7 +347,7 @@ private fun Context.getNotificationMgr() =
 
 private fun Context.wakeUpScreen(lock: (PowerManager.WakeLock) -> Unit = {}) {
 
-    val tag = "${this.packageName}-${this.getString(R.string.app_name)}:wakeUp"
+    val tag = "${this.packageName}-${this.getString(StringR.string.app_name)}:wakeUp"
     val pm = this.getSystemService(Context.POWER_SERVICE) as PowerManager
 
     val partialWakeLock: PowerManager.WakeLock

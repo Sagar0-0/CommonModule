@@ -4,14 +4,17 @@ import android.net.Uri
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import dagger.hilt.android.AndroidEntryPoint
+import fit.asta.health.auth.fcm.repo.TokenRepo
 import fit.asta.health.notify.util.sendNotification
+import fit.asta.health.resources.strings.R
+import javax.inject.Inject
 
-class MessagingService : FirebaseMessagingService() {
+@AndroidEntryPoint
+class MyFirebaseMessagingService : FirebaseMessagingService() {
 
-    companion object {
-
-        private const val TAG = "MsgService"
-    }
+    @Inject
+    lateinit var repo: TokenRepo
 
     /**
      * Called when message is received.
@@ -31,35 +34,14 @@ class MessagingService : FirebaseMessagingService() {
 
         // Check if message contains a notification payload.
         remoteMessage.notification?.let {
-
             Log.d(TAG, "Message Notification Body: ${it.body}")
             sendNotification(it.title!!, it.body!!, it.icon, it.imageUrl)
         }
     }
 
-    /**
-     * Called if InstanceID token is updated. This may occur if the security of
-     * the previous token had been compromised. Note that this is called when the InstanceID token
-     * is initially generated so this is where you would retrieve the token.
-     */
     override fun onNewToken(token: String) {
-
         Log.d(TAG, "Refreshed token: $token")
-        sendRegistrationToServer(token)
-    }
-
-    /**
-     * Persist token to third-party servers.
-     *
-     * @param token The new token.
-     */
-    @Suppress("UNUSED_PARAMETER")
-    private fun sendRegistrationToServer(token: String) {
-
-        // If you want to send messages to this application instance or
-        // manage this apps subscriptions on the server side, send the
-        // Instance ID token to your app server.
-        Log.d(TAG, "Refreshed token: $token")
+        repo.setNewTokenAvailable(token)
     }
 
     /**
@@ -79,5 +61,9 @@ class MessagingService : FirebaseMessagingService() {
             desc,
             imageUrl
         )
+    }
+
+    companion object {
+        private const val TAG = "MyFirebaseMsgService"
     }
 }

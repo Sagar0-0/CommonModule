@@ -76,14 +76,6 @@
             android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
             android:value="com.google.android.exoplayer2.ext.cast.DefaultCastOptionsProvider" />
 
-        <service
-            android:name=".auth.fcm.MyFirebaseMessagingService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
         <activity android:name=".payment.PaymentActivity" />
         <activity
             android:name=".tools.sleep.SleepToolActivity"
@@ -224,7 +216,7 @@
         </receiver>
 
         <service
-            android:name=".MessagingService"
+            android:name=".MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
