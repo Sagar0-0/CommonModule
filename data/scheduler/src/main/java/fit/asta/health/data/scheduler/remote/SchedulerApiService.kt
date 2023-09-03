@@ -9,6 +9,7 @@ import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerPutRespo
 import fit.asta.health.data.scheduler.remote.net.tag.AstaGetTagsListResponse
 import fit.asta.health.data.scheduler.remote.net.tag.ScheduleTagNetData
 import fit.asta.health.network.data.Status
+import okhttp3.MultipartBody
 import retrofit2.http.*
 
 
@@ -51,7 +52,11 @@ interface SchedulerApiService {
     ): AstaGetTagsListResponse
 
     @PUT("tag/put")
-    suspend fun updateScheduleTag(@Body schedule: ScheduleTagNetData): Status
+    @Multipart
+    suspend fun updateScheduleTag(
+        @Part("json") schedule: ScheduleTagNetData,
+        @Part file: MultipartBody.Part,
+    ): Status
 
     // Media Endpoints
     @GET("sound/healthHisList/get/?")

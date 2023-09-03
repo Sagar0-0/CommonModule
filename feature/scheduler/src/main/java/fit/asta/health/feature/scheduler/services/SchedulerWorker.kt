@@ -12,6 +12,7 @@ import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getCurrentTime
 import fit.asta.health.data.scheduler.db.entity.TagEntity
@@ -29,7 +30,8 @@ class SchedulerWorker @AssistedInject constructor(
     @Assisted workerParams: WorkerParameters,
     private val alarmLocalRepo: AlarmLocalRepo,
     private val backendRepo: AlarmBackendRepo,
-    private val stateManager: StateManager
+    private val stateManager: StateManager,
+    @UID private val uId: String
 ) : CoroutineWorker(appContext, workerParams) {
     override suspend fun getForegroundInfo(): ForegroundInfo =
         appContext.syncForegroundInfo()
@@ -37,18 +39,23 @@ class SchedulerWorker @AssistedInject constructor(
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
 
         Log.d("TAGTAG", "doWork:start ")
-        syncAlarmLocal()
-        syncTagsData()
+
+        if (uId.isEmpty()) {
+            Result.retry()
+        } else {
+            syncAlarmLocal(uId)
+            syncTagsData(uId)
+        }
         Result.success()
     }
 
 
-    private suspend fun syncAlarmLocal() {
+    private suspend fun syncAlarmLocal(userId: String) {
         Log.d("TAGTAG", "doWork:sync alarm  ")
         val list = alarmLocalRepo.getAllAlarmList()
         if (list.isNullOrEmpty()) {
             val result = withContext(Dispatchers.Default) {
-                backendRepo.getScheduleListDataFromBackend("6309a9379af54f142c65fbfe")
+                backendRepo.getScheduleListDataFromBackend(userId)
             }
             when (result) {
                 is ResponseState.Success -> {
@@ -111,10 +118,10 @@ class SchedulerWorker @AssistedInject constructor(
     }
 
 
-    private suspend fun syncTagsData() {
+    private suspend fun syncTagsData(userId: String) {//"6309a9379af54f142c65fbfe"
         alarmLocalRepo.getAllTags().collect {
             if (it.isEmpty()) {
-                when (val result = backendRepo.getTagListFromBackend("6309a9379af54f142c65fbfe")) {
+                when (val result = backendRepo.getTagListFromBackend(userId)) {
                     is ResponseState.Success -> {
                         result.data.let { schedulerGetTagsList ->
                             schedulerGetTagsList.list.forEach { tag ->

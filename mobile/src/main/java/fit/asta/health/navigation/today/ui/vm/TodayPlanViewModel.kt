@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentDate
 import fit.asta.health.common.utils.getCurrentTime
@@ -33,7 +34,9 @@ class TodayPlanViewModel @Inject constructor(
     private val alarmBackendRepo: AlarmBackendRepo,
     private val alarmInstanceDao: AlarmInstanceDao,
     private val prefManager: PrefManager,
-    private val stateManager: StateManager
+    private val stateManager: StateManager,
+    @UID private val uId: String
+
 ) : ViewModel() {
     private val _alarmListMorning = mutableStateListOf<AlarmEntity>()
     val alarmListMorning = MutableStateFlow(_alarmListMorning)
@@ -203,7 +206,7 @@ class TodayPlanViewModel @Inject constructor(
         _todayState.value = UiState.Loading
         viewModelScope.launch {
             _todayState.value = alarmBackendRepo.getTodayDataFromBackend(
-                userID = "6309a9379af54f142c65fbfe",
+                userID = uId,
                 date = getCurrentDate(),
                 location = "jaipur",
                 latitude = 26.835598f,

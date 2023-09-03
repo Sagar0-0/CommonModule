@@ -1,5 +1,6 @@
 package fit.asta.health.data.scheduler.repo
 
+import android.content.Context
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getResponseState
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
@@ -16,8 +17,11 @@ import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerDeleteRe
 import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerPutResponse
 import fit.asta.health.data.scheduler.remote.net.tag.ScheduleTagNetData
 import fit.asta.health.network.data.Status
+import fit.asta.health.network.utils.InputStreamRequestBody
+import okhttp3.MultipartBody
 
 class AlarmBackendRepoImp(
+    private val context: Context,
     private val remoteApi: SchedulerApiService
 ) : AlarmBackendRepo {
     override suspend fun getTodayDataFromBackend(
@@ -60,7 +64,14 @@ class AlarmBackendRepoImp(
     }
 
     override suspend fun updateScheduleTag(schedule: ScheduleTagNetData): ResponseState<Status> {
-        return getResponseState { remoteApi.updateScheduleTag(schedule) }
+        val file = MultipartBody.Part.createFormData(
+            name = "file",
+            filename = schedule.tag,
+            body = InputStreamRequestBody(context.contentResolver, schedule.localUrl!!)
+        )
+        return getResponseState {
+            remoteApi.updateScheduleTag(schedule, file)
+        }
     }
 
     override suspend fun getAllUserMedia(userId: String): ResponseState<Status> {

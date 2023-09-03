@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.HourMinAmPm
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getCurrentTime
@@ -52,7 +53,8 @@ class SchedulerViewModel
     private val alarmLocalRepo: AlarmLocalRepo,
     private val backendRepo: AlarmBackendRepo,
     private val prefManager: PrefManager,
-    private val stateManager: StateManager
+    private val stateManager: StateManager,
+    @UID private val uId: String
 ) : ViewModel() {
     private var alarmEntity: AlarmEntity? = null
 
@@ -67,7 +69,7 @@ class SchedulerViewModel
     private val _tagsUiState = MutableStateFlow(TagsUiState())
     val tagsUiState = _tagsUiState.asStateFlow()
 
-    private val userId = "6309a9379af54f142c65fbfe"
+//    private val userId = "6309a9379af54f142c65fbfe"
 
     val areInputsValid =
         combine(alarmSettingUiState, tagsUiState) { alarm, _ ->
@@ -76,6 +78,7 @@ class SchedulerViewModel
 
     init {
         getEditUiData()
+        getTagData()
     }
 
 
@@ -178,22 +181,24 @@ class SchedulerViewModel
     }
 
 
-    fun updateServerTag(label: String, url: String) {
+    fun updateServerTag(label: String, url: String) {//change
         viewModelScope.launch {
             val result = backendRepo.updateScheduleTag(
                 schedule = ScheduleTagNetData(
-                    uid = userId, type = 1, tag = label, url = url
+                    uid = uId, type = 1, tag = label, url = url
                 )
             )
             when (result) {
                 is ResponseState.Success -> {
-                    getTagData()
+
                 }
 
+                is ResponseState.Error -> {}
                 else -> {}
             }
         }
     }
+
 
     fun selectedTag(tag: TagEntity) {
         tag.selected = !tag.selected
@@ -210,14 +215,12 @@ class SchedulerViewModel
     fun undoTag(tag: TagEntity) {
         viewModelScope.launch {
             alarmLocalRepo.insertTag(tag)
-            getTagData()
         }
     }
 
     fun deleteTag(tag: TagEntity) {
         viewModelScope.launch {
             alarmLocalRepo.deleteTag(tag)
-            getTagData()
         }
     }
 
@@ -277,21 +280,23 @@ class SchedulerViewModel
             _alarmSettingUiState.value =
                 _alarmSettingUiState.value.copy(toneUri = alarmTone.toString())
         }
+
         val entity = alarmSettingUiState.value.getAlarm(
-            userId = alarmItem?.userId ?: userId,
+            userId = uId,
             idFromServer = alarmItem?.idFromServer ?: "",
             alarmId = alarmItem?.alarmId
                 ?: (System.currentTimeMillis() + AtomicLong().incrementAndGet()),
             interval = timeSettingUiState.value
         )
         viewModelScope.launch {
-            Log.d("alarm", "setDataAndSaveAlarm: $entity")
             if (entity.status) {
                 stateManager.registerAlarm(context, entity)
             }
             alarmLocalRepo.insertAlarm(entity)
             resetUi()
         }
+        Log.d("alarm", "setDataAndSaveAlarm: $entity")
+
     }
 
     fun resetUi() {
@@ -299,7 +304,7 @@ class SchedulerViewModel
         interval.value = IvlUiState()
     }
 
-    //timeSettingActivity
+//timeSettingActivity
 
     private fun updateUi(it: AlarmEntity) {
         interval.value = it.getIntervalUi()
@@ -334,7 +339,7 @@ class SchedulerViewModel
         hourMinAmPm?.let {
             _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
                 timeHours = it.hour,
-                timeMinutes = hourMinAmPm.min
+                timeMinutes = it.min
             )
         }
     }
@@ -349,9 +354,5 @@ class SchedulerViewModel
 
     fun deleteEndAlarm() {
         interval.value = interval.value.copy(endAlarmTime = TimeUi())
-    }
-
-    companion object {
-        const val TAG = "debug_spotify"
     }
 }

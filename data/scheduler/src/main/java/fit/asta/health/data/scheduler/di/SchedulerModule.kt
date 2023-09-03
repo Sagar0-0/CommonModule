@@ -32,9 +32,11 @@ object SchedulerModule {
     @Singleton
     @Provides
     fun provideBackendRepo(
-        remoteApi: SchedulerApiService
+        remoteApi: SchedulerApiService,
+        @ApplicationContext context: Context
     ): AlarmBackendRepo {
         return AlarmBackendRepoImp(
+            context = context,
             remoteApi = remoteApi
         )
     }
