@@ -341,14 +341,6 @@ private fun MainNavHost(
                                     todayPlanViewModel.deleteAlarm(uiEvent.alarm, uiEvent.context)
                                 }
 
-                                is HomeEvent.RemoveAlarm -> {
-                                    todayPlanViewModel.removeAlarm(uiEvent.alarm, uiEvent.event)
-                                }
-
-                                is HomeEvent.UndoAlarm -> {
-                                    todayPlanViewModel.undo(uiEvent.alarm, uiEvent.event)
-                                }
-
                                 is HomeEvent.SkipAlarm -> {
                                     todayPlanViewModel.skipAlarm(uiEvent.alarm, uiEvent.context)
                                 }

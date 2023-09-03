@@ -19,7 +19,6 @@ import fit.asta.health.data.scheduler.repo.AlarmBackendRepo
 import fit.asta.health.data.scheduler.repo.AlarmLocalRepo
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.feature.scheduler.util.StateManager
-import fit.asta.health.navigation.today.ui.view.Event
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -56,10 +55,6 @@ class TodayPlanViewModel @Inject constructor(
     init {
         getWeatherSunSlots()
         getAlarms()
-        val alarmTime = LocalTime.of(21, 0)
-        if (currentTime.isAfter(alarmTime) || currentTime == alarmTime) {
-            getNextDayAlarm()
-        }
     }
 
 
@@ -105,45 +100,6 @@ class TodayPlanViewModel @Inject constructor(
         }
     }
 
-    fun undo(alarm: AlarmEntity, event: Event) {
-        when (event) {
-            Event.Morning -> {
-                _alarmListMorning.add(alarm)
-            }
-
-            Event.Afternoon -> {
-                _alarmListAfternoon.add(alarm)
-            }
-
-            Event.Evening -> {
-                _alarmListEvening.add(alarm)
-            }
-
-            Event.NextDay -> {
-                _alarmListNextDay.add(alarm)
-            }
-        }
-    }
-
-    fun removeAlarm(alarmItem: AlarmEntity, event: Event) {
-        when (event) {
-            Event.Morning -> {
-                _alarmListMorning.remove(alarmItem)
-            }
-
-            Event.Afternoon -> {
-                _alarmListAfternoon.remove(alarmItem)
-            }
-
-            Event.Evening -> {
-                _alarmListEvening.remove(alarmItem)
-            }
-
-            Event.NextDay -> {
-                _alarmListNextDay.remove(alarmItem)
-            }
-        }
-    }
 
     fun deleteAlarm(alarmItem: AlarmEntity, context: Context) {
         viewModelScope.launch {
@@ -173,9 +129,8 @@ class TodayPlanViewModel @Inject constructor(
     fun skipAlarm(alarmItem: AlarmEntity, context: Context) {
         val skipDate = LocalDate.now().dayOfMonth
         viewModelScope.launch {
-            if (alarmItem.status) stateManager.skipAlarmTodayOnly(context, alarmItem)
-            val alarm = alarmItem.copy(status = false, skipDate = skipDate)
-            alarmLocalRepo.updateAlarm(alarm)
+            stateManager.skipAlarmTodayOnly(context, alarmItem)
+            alarmLocalRepo.updateAlarm(alarmItem.copy(skipDate = skipDate))
             Log.d("today", "skipAlarm: done")
         }
     }
@@ -223,28 +178,26 @@ class TodayPlanViewModel @Inject constructor(
                         }
                     }
                 }
-            }
-        }
-    }
 
-    private fun getNextDayAlarm() {
-        viewModelScope.launch {
-            alarmLocalRepo.getAllAlarm().collect { list ->
-                _alarmListNextDay.clear()
-                list.forEach {
-                    if (it.status) {
-                        val nextDay = if (it.daysOfWeek.isRepeating) {
-                            it.daysOfWeek.isBitOn(today + 1)
-                        } else false
-                        if (nextDay) {
+                val alarmTime = LocalTime.of(21, 0)
+                if (currentTime.isAfter(alarmTime) || currentTime == alarmTime) {
+                    _alarmListNextDay.clear()
+                    var nextDay = today + 1
+                    if (nextDay > Calendar.SATURDAY) {
+                        nextDay = Calendar.SUNDAY
+                    }
+                    list.forEach {
+                        if (it.status && it.daysOfWeek.isRepeating &&
+                            it.daysOfWeek.isBitOn(nextDay)
+                        ) {
                             _alarmListNextDay.add(it)
                         }
-
                     }
                 }
             }
         }
     }
+
 
     private fun getWeatherSunSlots() {
         _todayState.value = UiState.Loading

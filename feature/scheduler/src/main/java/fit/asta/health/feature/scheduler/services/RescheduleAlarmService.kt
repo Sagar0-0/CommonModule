@@ -34,15 +34,10 @@ class RescheduleAlarmService : LifecycleService() {
         GlobalScope.launch(Dispatchers.IO) {
             alarmLocalRepo.getAllAlarmList()?.forEach { alarm ->
                 if (alarm.status) {
-                    if (alarm.skipDate == LocalDate.now().dayOfMonth) {
-                        stateManager.registerAlarm(
-                            this@RescheduleAlarmService,
-                            alarm,
-                            true
-                        )
-                    } else stateManager.registerAlarm(
+                    stateManager.registerAlarm(
                         this@RescheduleAlarmService,
                         alarm,
+                        (alarm.skipDate == LocalDate.now().dayOfMonth)
                     )
                 }
             }

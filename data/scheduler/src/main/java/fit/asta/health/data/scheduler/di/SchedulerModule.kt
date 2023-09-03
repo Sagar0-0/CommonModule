@@ -1,6 +1,7 @@
 package fit.asta.health.data.scheduler.di
 
 import android.app.AlarmManager
+import android.app.NotificationManager
 import android.content.Context
 import dagger.Module
 import dagger.Provides
@@ -50,6 +51,12 @@ object SchedulerModule {
     @Provides
     fun provideAlarmManager(@ApplicationContext context: Context): AlarmManager {
         return context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    }
+
+    @Singleton
+    @Provides
+    fun provideNotificationManager(@ApplicationContext context: Context): NotificationManager {
+        return context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
 
 //    @Singleton

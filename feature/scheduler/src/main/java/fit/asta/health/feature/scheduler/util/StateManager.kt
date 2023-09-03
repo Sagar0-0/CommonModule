@@ -27,6 +27,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Calendar
 import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
@@ -37,7 +38,8 @@ import fit.asta.health.resources.drawables.R as DrawR
 class StateManager @Inject constructor(
     private val alarmDao: AlarmDao,
     private val alarmInstanceDao: AlarmInstanceDao,
-    private val alarmManager: AlarmManager
+    private val alarmManager: AlarmManager,
+    private val notificationManager: NotificationManager
 ) {
     val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
@@ -70,16 +72,17 @@ class StateManager @Inject constructor(
             mMinute = time[Calendar.MINUTE]
         )
         scope.launch {
-            alarmInstanceDao.getInstancesByAlarmId(alarm.alarmId)?.let {
-                instance.mId = it.mId
-                cancelScheduledInstanceStateChange(context, instance)
+            withContext(scope.coroutineContext) {
+                alarmInstanceDao.getInstancesByAlarmId(alarm.alarmId)?.let {
+                    instance.mId = it.mId
+                    cancelScheduledInstanceStateChange(context, instance)
+                }
+                alarmInstanceDao.insertAndUpdate(instance)
             }
-            alarmInstanceDao.insertAndUpdate(instance)
+            scheduleInstanceStateChange(
+                context, instance.alarmTime, instance, state
+            )
         }
-
-        scheduleInstanceStateChange(
-            context, instance.alarmTime, instance, state
-        )
     }
 
 
@@ -294,6 +297,7 @@ class StateManager @Inject constructor(
         LogUtils.v("skipAlarm ${AlarmUtils.getFormattedTime(context, currentTime)}")
         scope.launch {
             alarmInstanceDao.getInstancesByAlarmId(id)?.let { instance ->
+                clearNotification(context, instance)
                 alarmDao.getAlarm(id)?.let { alarm ->
                     cancelScheduledInstanceStateChange(context, instance)
                     if (instance.mAlarmState == END_ALARM_STATE) {
@@ -380,8 +384,6 @@ class StateManager @Inject constructor(
     fun showNotification(context: Context, instance: AlarmInstance) {
         val currentTime: Calendar = Calendar.getInstance()
         LogUtils.v("show notification ${AlarmUtils.getFormattedTime(context, currentTime)}")
-        val notificationManager =
-            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val skipIntent = Intent(context, AlarmBroadcastReceiver::class.java).apply {
             action = SKIP_ALARM_ACTION
             putExtra("id", instance.mAlarmId)
@@ -407,11 +409,9 @@ class StateManager @Inject constructor(
         notificationManager.notify(instance.hashCode(), notification.build())
     }
 
-    fun clearNotification(context: Context, instance: AlarmInstance) {
+    private fun clearNotification(context: Context, instance: AlarmInstance) {
         val currentTime: Calendar = Calendar.getInstance()
         LogUtils.v("clearNotification ${AlarmUtils.getFormattedTime(context, currentTime)}")
-        val notificationManager =
-            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancel(instance.hashCode())
     }
 
@@ -426,11 +426,7 @@ class StateManager @Inject constructor(
     }
 
     fun skipAlarmTodayOnly(context: Context, alarmItem: AlarmEntity) {
-        scope.launch {
-            alarmInstanceDao.getInstancesByAlarmId(alarmItem.alarmId)?.let { instance ->
-                registerAlarm(context, alarmItem, true)
-            }
-        }
+        registerAlarm(context, alarmItem, true)
     }
 }
 
