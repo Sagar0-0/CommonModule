@@ -34,13 +34,15 @@ fun NavGraphBuilder.schedulerNavigation(
     ) {
         composable(route = AlarmSchedulerScreen.AlarmSettingHome.route) {
             val schedulerViewModel: SchedulerViewModel = it.sharedViewModel(navController)
-            LaunchedEffect(key1 = it) {
-                schedulerViewModel.setHourMin(
-                    navController.previousBackStackEntry?.savedStateHandle?.get<HourMinAmPm>(key = HourMinAmPmKey)
-                )
-            }
             val alarmSettingUiState by schedulerViewModel.alarmSettingUiState.collectAsStateWithLifecycle()
             val areInputsValid by schedulerViewModel.areInputsValid.collectAsStateWithLifecycle()
+            LaunchedEffect(key1 = it) {
+                if (((alarmSettingUiState.timeHours * 60) + alarmSettingUiState.timeMinutes) <= 0) {
+                    schedulerViewModel.setHourMin(
+                        navController.previousBackStackEntry?.savedStateHandle?.get<HourMinAmPm>(key = HourMinAmPmKey)
+                    )
+                }
+            }
             AlarmSettingScreen(
                 alarmSettingUiState = alarmSettingUiState,
                 areInputsValid = areInputsValid,
