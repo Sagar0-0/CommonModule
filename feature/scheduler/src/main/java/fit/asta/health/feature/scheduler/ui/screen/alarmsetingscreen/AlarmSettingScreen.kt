@@ -53,7 +53,6 @@ import fit.asta.health.resources.strings.R as StringR
 @Composable
 fun AlarmSettingScreen(
     alarmSettingUiState: ASUiState = ASUiState(),
-    areInputsValid: Boolean,
     aSEvent: (AlarmSettingEvent) -> Unit = {},
     navTagSelection: () -> Unit = {},
     navTimeSetting: () -> Unit = {},
@@ -63,6 +62,13 @@ fun AlarmSettingScreen(
     val bottomSheetState = rememberModalBottomSheetState()
     var currentBottomSheet: AlarmCreateBottomSheetTypes? by remember {
         mutableStateOf(null)
+    }
+    val areInputsValid by remember {
+        mutableStateOf(
+            alarmSettingUiState.alarmName.isNotEmpty() &&
+                    alarmSettingUiState.alarmDescription.isNotEmpty() &&
+                    alarmSettingUiState.tagName.isNotEmpty()
+        )
     }
 
     val scope = rememberCoroutineScope()
@@ -138,7 +144,6 @@ fun AlarmSettingScreen(
                     arrowTitle = alarmSettingUiState.tagName,
                     btnEnabled = true,
                     onNavigateAction = {
-                        aSEvent(AlarmSettingEvent.GotoTagScreen)
                         navTagSelection()
                     })
                 TextSelection(imageIcon = Icons.Default.Label,
@@ -162,7 +167,6 @@ fun AlarmSettingScreen(
                     arrowTitle = stringResource(StringR.string.optional),
                     btnEnabled = areInputsValid,
                     onNavigateAction = {
-                        aSEvent(AlarmSettingEvent.GotoTimeSettingScreen)
                         navTimeSetting()
                     })
                 TextSelection(imageIcon = if (alarmSettingUiState.mode == "Notification") Icons.Default.NotificationsActive else Icons.Default.Wysiwyg,

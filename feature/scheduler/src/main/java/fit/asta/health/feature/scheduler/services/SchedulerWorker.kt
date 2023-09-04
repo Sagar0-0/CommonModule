@@ -15,9 +15,9 @@ import dagger.assisted.AssistedInject
 import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getCurrentTime
-import fit.asta.health.data.scheduler.db.entity.TagEntity
 import fit.asta.health.data.scheduler.remote.net.scheduler.Meta
 import fit.asta.health.data.scheduler.remote.net.tag.Data
+import fit.asta.health.data.scheduler.remote.toTagEntity
 import fit.asta.health.data.scheduler.repo.AlarmBackendRepo
 import fit.asta.health.data.scheduler.repo.AlarmLocalRepo
 import fit.asta.health.feature.scheduler.util.StateManager
@@ -127,6 +127,9 @@ class SchedulerWorker @AssistedInject constructor(
                             schedulerGetTagsList.list.forEach { tag ->
                                 insertTag(tag)
                             }
+                            schedulerGetTagsList.customTagList?.forEach { tag ->
+                                insertTag(tag)
+                            }
                         }
                     }
 
@@ -137,12 +140,7 @@ class SchedulerWorker @AssistedInject constructor(
     }
 
     private suspend fun insertTag(tag: Data) {
-        alarmLocalRepo.insertTag(
-            TagEntity(
-                meta = tag,
-                selected = false
-            )
-        )
+        alarmLocalRepo.insertTag(tag.toTagEntity())
     }
 
     companion object {

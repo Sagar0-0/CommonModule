@@ -18,8 +18,6 @@ sealed class AlarmSettingEvent {
     data class SetSound(val tone: ToneUiState) : AlarmSettingEvent()
     data class SetImportant(val important: Boolean) : AlarmSettingEvent()
     data class Save(val context: Context) : AlarmSettingEvent()
-    data object GotoTagScreen : AlarmSettingEvent()
-    data object GotoTimeSettingScreen : AlarmSettingEvent()
     data object ResetUi : AlarmSettingEvent()
 
 

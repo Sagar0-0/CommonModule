@@ -35,7 +35,6 @@ fun NavGraphBuilder.schedulerNavigation(
         composable(route = AlarmSchedulerScreen.AlarmSettingHome.route) {
             val schedulerViewModel: SchedulerViewModel = it.sharedViewModel(navController)
             val alarmSettingUiState by schedulerViewModel.alarmSettingUiState.collectAsStateWithLifecycle()
-            val areInputsValid by schedulerViewModel.areInputsValid.collectAsStateWithLifecycle()
             LaunchedEffect(key1 = it) {
                 if (((alarmSettingUiState.timeHours * 60) + alarmSettingUiState.timeMinutes) <= 0) {
                     schedulerViewModel.setHourMin(
@@ -45,7 +44,6 @@ fun NavGraphBuilder.schedulerNavigation(
             }
             AlarmSettingScreen(
                 alarmSettingUiState = alarmSettingUiState,
-                areInputsValid = areInputsValid,
                 aSEvent = { uiEvent ->
                     when (uiEvent) {
                         is AlarmSettingEvent.SetAlarmTime -> {
@@ -88,14 +86,6 @@ fun NavGraphBuilder.schedulerNavigation(
                             schedulerViewModel.setImportant(uiEvent.important)
                         }
 
-                        is AlarmSettingEvent.GotoTagScreen -> {
-                            schedulerViewModel.getTagData()
-                        }
-
-                        is AlarmSettingEvent.GotoTimeSettingScreen -> {
-
-                        }
-
                         is AlarmSettingEvent.Save -> {
                             schedulerViewModel.setDataAndSaveAlarm(uiEvent.context)
                         }
@@ -115,17 +105,14 @@ fun NavGraphBuilder.schedulerNavigation(
 
         composable(route = AlarmSchedulerScreen.TagSelection.route) {
             val schedulerViewModel: SchedulerViewModel = it.sharedViewModel(navController)
-            val tagsUiState by schedulerViewModel.tagsUiState.collectAsStateWithLifecycle()
+            val tagsList by schedulerViewModel.tagsList.collectAsStateWithLifecycle()
+            val customTagList by schedulerViewModel.customTagList.collectAsStateWithLifecycle()
             TagsScreen(
                 onNavBack = { navController.popBackStack() },
                 tagsEvent = { uiEvent ->
                     when (uiEvent) {
                         is TagsEvent.DeleteTag -> {
                             schedulerViewModel.deleteTag(uiEvent.tag)
-                        }
-
-                        is TagsEvent.UndoTag -> {
-                            schedulerViewModel.undoTag(uiEvent.tag)
                         }
 
                         is TagsEvent.SelectedTag -> {
@@ -135,9 +122,14 @@ fun NavGraphBuilder.schedulerNavigation(
                         is TagsEvent.UpdateTag -> {
                             schedulerViewModel.updateServerTag(uiEvent.label, uiEvent.url)
                         }
+
+                        is TagsEvent.GetTag -> {
+                            schedulerViewModel.getTagDataFromServer()
+                        }
                     }
                 },
-                tagsUiState = tagsUiState
+                tagsList = tagsList,
+                customTagList = customTagList
             )
         }
         composable(route = AlarmSchedulerScreen.IntervalSettingsSelection.route) {
@@ -169,9 +161,6 @@ fun NavGraphBuilder.schedulerNavigation(
 
                         is TimeSettingEvent.DeleteEndAlarm -> {
                             schedulerViewModel.deleteEndAlarm()
-                        }
-
-                        is TimeSettingEvent.Save -> {
                         }
                     }
                 },

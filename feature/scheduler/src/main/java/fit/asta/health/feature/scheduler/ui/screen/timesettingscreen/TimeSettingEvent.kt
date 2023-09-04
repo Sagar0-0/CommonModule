@@ -11,5 +11,4 @@ sealed class TimeSettingEvent {
     data class SetEndAlarm(val time: TimeUi) : TimeSettingEvent()
 
     data object DeleteEndAlarm : TimeSettingEvent()
-    data object Save : TimeSettingEvent()
 }
