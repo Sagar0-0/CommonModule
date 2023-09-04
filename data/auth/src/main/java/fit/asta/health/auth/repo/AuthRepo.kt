@@ -18,7 +18,7 @@ interface AuthRepo {
     fun signInWithCredential(authCredential: AuthCredential): Flow<ResponseState<User>>
     fun linkWithCredential(authCredential: AuthCredential): Flow<ResponseState<User>>
     fun signOut(): ResponseState<Boolean>
-    fun deleteAccount(): Flow<ResponseState<Boolean>>
+    suspend fun deleteAccount(): Flow<ResponseState<Boolean>>
     suspend fun setIsFcmTokenUploaded(value: Boolean)
     suspend fun resetReferralCode()
     suspend fun uploadFcmToken(tokenDTO: TokenDTO): ResponseState<Boolean>
