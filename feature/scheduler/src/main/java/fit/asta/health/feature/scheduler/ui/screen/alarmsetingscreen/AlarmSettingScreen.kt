@@ -21,9 +21,11 @@ import androidx.compose.material.icons.filled.Vibration
 import androidx.compose.material.icons.filled.Wysiwyg
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -63,15 +65,29 @@ fun AlarmSettingScreen(
     var currentBottomSheet: AlarmCreateBottomSheetTypes? by remember {
         mutableStateOf(null)
     }
-    val areInputsValid by remember {
+    val areInputsValid by remember(alarmSettingUiState) {
         mutableStateOf(
             alarmSettingUiState.alarmName.isNotEmpty() &&
                     alarmSettingUiState.alarmDescription.isNotEmpty() &&
                     alarmSettingUiState.tagName.isNotEmpty()
         )
     }
+    var onClick by rememberSaveable {
+        mutableStateOf(false)
+    }
+    val nameBg: Color? by remember(onClick, alarmSettingUiState) {
+        mutableStateOf(if (alarmSettingUiState.alarmName.isEmpty() && onClick) Color.Red else null)
+    }
+    val descriptionBg: Color? by remember(onClick, alarmSettingUiState) {
+        mutableStateOf(if (alarmSettingUiState.alarmDescription.isEmpty() && onClick) Color.Red else null)
+    }
+    val tagBg: Color? by remember(onClick, alarmSettingUiState) {
+        mutableStateOf(if (alarmSettingUiState.tagName.isEmpty() && onClick) Color.Red else null)
+    }
+
 
     val scope = rememberCoroutineScope()
+
 
     val closeSheet = {
         scope.launch { bottomSheetState.hide() }
@@ -97,10 +113,14 @@ fun AlarmSettingScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
-                        IconButton(enabled = areInputsValid,
+                        IconButton(
                             onClick = {
-                                aSEvent(AlarmSettingEvent.Save(context = context))
-                                navBack()
+                                if (areInputsValid) {
+                                    aSEvent(AlarmSettingEvent.Save(context = context))
+                                    navBack()
+                                } else {
+                                    onClick = true
+                                }
                             }
                         ) {
                             Icon(
@@ -142,14 +162,14 @@ fun AlarmSettingScreen(
                 TextSelection(imageIcon = Icons.Default.Tag,
                     title = stringResource(id = StringR.string.tag),
                     arrowTitle = alarmSettingUiState.tagName,
-                    btnEnabled = true,
+                    btnEnabled = true, color = tagBg,
                     onNavigateAction = {
                         navTagSelection()
                     })
                 TextSelection(imageIcon = Icons.Default.Label,
                     title = stringResource(id = StringR.string.label),
                     arrowTitle = alarmSettingUiState.alarmName,
-                    btnEnabled = true,
+                    btnEnabled = true, color = nameBg,
                     onNavigateAction = {
                         currentBottomSheet = LABEL
                         openSheet()
@@ -157,7 +177,7 @@ fun AlarmSettingScreen(
                 TextSelection(imageIcon = Icons.Default.Description,
                     title = stringResource(id = StringR.string.description),
                     arrowTitle = alarmSettingUiState.alarmDescription,
-                    btnEnabled = true,
+                    btnEnabled = true, color = descriptionBg,
                     onNavigateAction = {
                         currentBottomSheet = DESCRIPTION
                         openSheet()
@@ -165,9 +185,13 @@ fun AlarmSettingScreen(
                 TextSelection(imageIcon = Icons.Default.AddAlarm,
                     title = stringResource(StringR.string.intervals_settings),
                     arrowTitle = stringResource(StringR.string.optional),
-                    btnEnabled = areInputsValid,
+                    btnEnabled = true,
                     onNavigateAction = {
-                        navTimeSetting()
+                        if (areInputsValid) {
+                            navTimeSetting()
+                        } else {
+                            onClick = true
+                        }
                     })
                 TextSelection(imageIcon = if (alarmSettingUiState.mode == "Notification") Icons.Default.NotificationsActive else Icons.Default.Wysiwyg,
                     title = stringResource(id = StringR.string.reminder_mode),
