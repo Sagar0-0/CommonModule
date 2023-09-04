@@ -49,11 +49,11 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.common.utils.UiString
 import fit.asta.health.common.utils.getLocationName
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.address.remote.modal.MyAddress
-import fit.asta.health.designsystem.components.ValidatedTextField
+import fit.asta.health.designsystem.component.AstaValidatedTextField
+import fit.asta.health.designsystem.component.AstaValidatedTextFieldType
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.theme.customSize
 import fit.asta.health.designsystem.theme.spacing
@@ -136,6 +136,26 @@ internal fun FillAddressSheet(
             }
 
             is UiState.Success -> {
+                val onSaveAddressClick = {
+                    val newMyAddress = MyAddress(
+                        area = address.data.adminArea,
+                        selected = if (myAddressItem.id.isEmpty()) true else myAddressItem.selected,
+                        block = block.value,
+                        hn = houseNo.value,
+                        id = myAddressItem.id,
+                        lat = address.data.latitude,
+                        lon = address.data.longitude,
+                        loc = address.data.locality,
+                        nearby = nearby.value,
+                        name = name.value,
+                        pin = address.data.postalCode,
+                        ph = phone.value,
+                        sub = address.data.subLocality,
+                        uid = ""
+                    )
+                    onUiEvent(FillAddressUiEvent.SaveAddress(newMyAddress))
+                }
+
                 Column(
                     modifier = Modifier
                         .clip(
@@ -198,8 +218,8 @@ internal fun FillAddressSheet(
                     Spacer(modifier = Modifier.height(spacing.medium))
 
                     AnimatedVisibility(name.value != R.string.home.toStringFromResId() && name.value != R.string.work.toStringFromResId()) {
-                        ValidatedTextField(
-                            modifier = Modifier.focusRequester(nameField),
+                        AstaValidatedTextField(
+                            modifier = Modifier.fillMaxWidth().focusRequester(nameField),
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Text, imeAction = ImeAction.Next
                             ),
@@ -208,91 +228,81 @@ internal fun FillAddressSheet(
                                     focusManager.moveFocus(FocusDirection.Down)
                                 }
                             ),
-                            singleLine = true,
                             value = name.value,
                             onValueChange = {
                                 name.value = it
                             },
-                            label = R.string.location_name.toStringFromResId(),
-                            showError = name.value.isEmpty(),
-                            errorMessage = UiString.Dynamic(R.string.this_field_cant_be_empty.toStringFromResId())
+                            label = R.string.location_name
                         )
                         Spacer(modifier = Modifier.height(spacing.medium))
                     }
 
-                    ValidatedTextField(
-                        modifier = Modifier.focusRequester(defaultField),
+                    AstaValidatedTextField(
+                        modifier = Modifier.fillMaxWidth().focusRequester(defaultField),
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Text, imeAction = ImeAction.Next
                         ),
                         keyboardActions = KeyboardActions(onNext = {
                             focusManager.moveFocus(FocusDirection.Down)
                         }),
-                        singleLine = true,
                         value = houseNo.value,
                         onValueChange = {
                             houseNo.value = it
                         },
-                        label = R.string.house_number.toStringFromResId(),
-                        showError = houseNo.value.isEmpty(),
-                        errorMessage = UiString.Dynamic(R.string.this_field_cant_be_empty.toStringFromResId())
+                        label = R.string.house_number,
                     )
 
                     Spacer(modifier = Modifier.height(spacing.medium))
 
-                    ValidatedTextField(
+                    AstaValidatedTextField(
+                        modifier = Modifier.fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Text, imeAction = ImeAction.Next
                         ),
                         keyboardActions = KeyboardActions(onNext = {
                             focusManager.moveFocus(FocusDirection.Down)
                         }),
-                        singleLine = true,
                         value = block.value,
                         onValueChange = {
                             block.value = it
                         },
-                        label = R.string.block_street_road.toStringFromResId(),
-                        showError = block.value.isEmpty(),
-                        errorMessage = UiString.Dynamic(R.string.this_field_cant_be_empty.toStringFromResId())
+                        label = R.string.block_street_road,
                     )
 
                     Spacer(modifier = Modifier.height(spacing.medium))
 
-                    ValidatedTextField(
+                    AstaValidatedTextField(
+                        type = AstaValidatedTextFieldType.Default(0),
+                        modifier = Modifier.fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Text, imeAction = ImeAction.Next
                         ),
                         keyboardActions = KeyboardActions(onNext = {
                             focusManager.moveFocus(FocusDirection.Down)
                         }),
-                        singleLine = true,
                         value = nearby.value,
                         onValueChange = {
                             nearby.value = it
                         },
-                        label = R.string.nearby_landmark.toStringFromResId(),
-                        errorMessage = UiString.Empty
+                        label = R.string.nearby_landmark
                     )
 
                     Spacer(modifier = Modifier.height(spacing.medium))
 
-                    ValidatedTextField(
+                    AstaValidatedTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        type = AstaValidatedTextFieldType.Phone,
                         keyboardOptions = KeyboardOptions.Default.copy(
                             keyboardType = KeyboardType.Number,
                             imeAction = ImeAction.Done
                         ),
-                        keyboardActions = KeyboardActions(onNext = {
-                            focusManager.moveFocus(FocusDirection.Down)
-                        }),
-                        singleLine = true,
+                        keyboardActions = KeyboardActions(onDone = {
+                            onSaveAddressClick()
+                        }
+                        ),
                         value = phone.value,
-                        onValueChange = {
-                            if (it.length <= 10) phone.value = it
-                        },
-                        label = R.string.phone_number.toStringFromResId(),
-                        showError = phone.value.isEmpty() || phone.value.length < 10,
-                        errorMessage = UiString.Dynamic(R.string.this_field_cant_be_empty.toStringFromResId())
+                        onValueChange = { phone.value = it },
+                        label = R.string.phone_number
                     )
 
                     Crossfade(targetState = putAddressState, label = "") {
@@ -308,25 +318,7 @@ internal fun FillAddressSheet(
 
                             else -> {
                                 OutlinedButton(
-                                    onClick = {
-                                        val newMyAddress = MyAddress(
-                                            area = address.data.adminArea,
-                                            selected = if (myAddressItem.id.isEmpty()) true else myAddressItem.selected,
-                                            block = block.value,
-                                            hn = houseNo.value,
-                                            id = myAddressItem.id,
-                                            lat = address.data.latitude,
-                                            lon = address.data.longitude,
-                                            loc = address.data.locality,
-                                            nearby = nearby.value,
-                                            name = name.value,
-                                            pin = address.data.postalCode,
-                                            ph = phone.value,
-                                            sub = address.data.subLocality,
-                                            uid = ""
-                                        )
-                                        onUiEvent(FillAddressUiEvent.SaveAddress(newMyAddress))
-                                    },
+                                    onClick = onSaveAddressClick,
                                     modifier = Modifier
                                         .padding(spacing.medium)
                                         .fillMaxWidth()

@@ -616,4 +616,6 @@
     <string name="link_with_google_account">Link with Google Account</string>
     <string name="proceed">Proceed</string>
     <string name="unable_to_delete">Unable to delete account.</string>
+    <string name="name">Name</string>
+    <string name="refer_code">Refer Code</string>
 </resources>

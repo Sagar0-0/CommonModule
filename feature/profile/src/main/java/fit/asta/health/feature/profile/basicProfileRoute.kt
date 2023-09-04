@@ -7,12 +7,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -34,6 +31,8 @@ import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
+import fit.asta.health.designsystem.component.AstaValidatedTextField
+import fit.asta.health.designsystem.component.AstaValidatedTextFieldType
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.feature.auth.util.GoogleSignIn
 import fit.asta.health.feature.auth.util.PhoneSignIn
@@ -88,7 +87,7 @@ fun NavGraphBuilder.basicProfileRoute() {
             val email by rememberSaveable {
                 mutableStateOf(user.email ?: "")
             }
-            var phone by rememberSaveable {
+            val phone by rememberSaveable {
                 mutableStateOf(user.phoneNumber ?: "")
             }
             var gender by rememberSaveable {
@@ -106,15 +105,10 @@ fun NavGraphBuilder.basicProfileRoute() {
                 ), contentDescription = "Profile"
             )
 
-            TextField(label = { Text(text = "Name") }, value = name, onValueChange = { name = it })
-            TextField(
-                label = { Text(text = "Gender") },
-                value = gender,
-                onValueChange = { gender = it },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number
-                )
-            )
+            AstaValidatedTextField(
+                label = StringR.string.name,
+                value = name,
+                onValueChange = { name = it })
             Crossfade(targetState = user.email, label = "") { mail ->
                 if (mail.isNullOrEmpty()) {
                     GoogleSignIn(
@@ -122,11 +116,7 @@ fun NavGraphBuilder.basicProfileRoute() {
                         basicProfileViewModel::linkWithCredentials
                     )
                 } else {
-                    TextField(
-                        label = { Text(text = "E-mail") },
-                        value = email,
-                        onValueChange = { }
-                    )
+                    Text(email)
                 }
             }
 
@@ -134,11 +124,7 @@ fun NavGraphBuilder.basicProfileRoute() {
                 if (ph.isNullOrEmpty()) {
                     PhoneSignIn(basicProfileViewModel::linkWithCredentials)
                 } else {
-                    TextField(
-                        label = { Text(text = "Phone") },
-                        value = phone,
-                        onValueChange = { phone = it }
-                    )
+                    Text(phone)
                 }
             }
 
@@ -173,12 +159,14 @@ fun NavGraphBuilder.basicProfileRoute() {
                     }
 
                     else -> {
-                        TextField(
-                            label = { Text(text = "Refer code") },
+                        AstaValidatedTextField(
+                            type = AstaValidatedTextFieldType.Default(10, 10),
+                            label = StringR.string.refer_code,
                             value = ref,
                             onValueChange = { str ->
-                                if (str.length <= 8) ref = str
-                            })
+                                ref = str
+                            }
+                        )
                         Button(
                             enabled = ref.length == 8,
                             onClick = { basicProfileViewModel.checkReferralCode(ref) }
