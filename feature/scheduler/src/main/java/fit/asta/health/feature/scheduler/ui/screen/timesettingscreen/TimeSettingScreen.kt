@@ -101,6 +101,9 @@ fun TimeSettingCreateBtmSheetLayout(
     closeSheet: () -> Unit,
 ) {
     val context = LocalContext.current
+    val title by remember {
+        mutableStateOf("Select Time")
+    }
     when (sheetLayout) {
         Advanced -> {
             SnoozeBottomSheet(onNavigateBack = { closeSheet() }, minutesRange = (5..35),
@@ -122,6 +125,7 @@ fun TimeSettingCreateBtmSheetLayout(
         EndAlarm -> {
             Column(modifier = Modifier.fillMaxWidth()) {
                 TimePickerBottomSheet(
+                    title = title,
                     time = AMPMHoursMin(),
                     onSave = {
                         closeSheet()

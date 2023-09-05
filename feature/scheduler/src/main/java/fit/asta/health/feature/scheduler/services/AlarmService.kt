@@ -2,6 +2,7 @@ package fit.asta.health.feature.scheduler.services
 
 
 import android.app.Notification
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.app.TaskStackBuilder
@@ -36,11 +37,14 @@ import fit.asta.health.data.scheduler.db.AlarmDao
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.feature.scheduler.ui.AlarmScreenActivity
 import fit.asta.health.feature.scheduler.util.Constants
+import fit.asta.health.feature.scheduler.util.StateManager
 import fit.asta.health.feature.scheduler.util.Utils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import java.util.Timer
+import java.util.TimerTask
 import javax.inject.Inject
 import fit.asta.health.resources.drawables.R as DrawR
 
@@ -52,20 +56,45 @@ class AlarmService : Service() {
     @Inject
     lateinit var alarmDao: AlarmDao
 
-    var alarmEntity: AlarmEntity? = null
+    @Inject
+    lateinit var stateManager: StateManager
+
+    @Inject
+    lateinit var notificationManager: NotificationManager
+
+    private var alarmEntity: AlarmEntity? = null
     private lateinit var ringtone: Uri
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var vibrator: Vibrator
     private lateinit var partialWakeLock: PowerManager.WakeLock
+    private var mTimer: Timer? = null
+    private val missedNotificationId = 999
+    private val skipNotificationId = 777
 
     @Inject
     lateinit var player: Player
 
     override fun onCreate() {
         super.onCreate()
+        mTimer = Timer()
+        mTimer?.schedule(object : TimerTask() {
+            override fun run() {
+                if (alarmEntity != null) {
+                    notification(
+                        message = "Alarm is skipped ",
+                        alarmName = alarmEntity!!.info.name,
+                        tag = alarmEntity!!.info.tag,
+                        nId = skipNotificationId
+                    )
+                    stopService(Intent(applicationContext, AlarmScreenActivity::class.java))
+                    stateManager.missedAlarm(applicationContext, alarmEntity!!)
+                }
+                stopSelf()
+            }
+        }, 3 * 60 * 1000)
         partialWakeLock = (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
             newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "AlarmService::WakeLock").apply {
-                acquire(60 * 1000L /*1 minutes*/)
+                acquire(3 * 60 * 1000L /*3 minutes*/)
             }
         }
         mediaPlayer = MediaPlayer()
@@ -92,8 +121,19 @@ class AlarmService : Service() {
             val id: Long = intent.getLongExtra("id", -1)
             scope.launch {
                 alarmDao.getAlarm(id)?.let { alarm ->
-                    if (alarm.mode == "Notification") notificationAlarm(alarm)
-                    else splashAlarm(alarm)
+                    if (alarmEntity != null) {
+                        notification(
+                            message = "Alarm is missed ",
+                            alarmName = alarmEntity!!.info.name,
+                            tag = alarmEntity!!.info.tag,
+                            nId = missedNotificationId
+                        )
+                        stateManager.dismissAlarm(applicationContext, alarm.alarmId)
+                    } else {
+                        alarmEntity = alarm
+                        if (alarm.mode == "Notification") notificationAlarm(alarm)
+                        else splashAlarm(alarm)
+                    }
                 }
             }
         }
@@ -184,6 +224,7 @@ class AlarmService : Service() {
     ) {
         val splashIntent = Intent(this, AlarmScreenActivity::class.java).apply {
             putExtra("id", alarm.alarmId)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
         val pendingIntent = PendingIntent.getActivity(
             this, 0, splashIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
@@ -202,7 +243,6 @@ class AlarmService : Service() {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setPriority(NotificationCompat.PRIORITY_MAX) // set base on important in alarm entity
                 .setFullScreenIntent(pendingIntent, true).setStyle(bigTextStyle).setWhen(0)
-                .setAutoCancel(true)
         player.play()
         startForGroundService(
             notification = builder.build(),
@@ -236,6 +276,8 @@ class AlarmService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        alarmEntity = null
+        mTimer?.cancel()
         if (mediaPlayer.isPlaying) {
             mediaPlayer.stop()
         }
@@ -246,5 +288,19 @@ class AlarmService : Service() {
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
+    }
+
+    private fun notification(message: String, alarmName: String, tag: String, nId: Int) {
+        val bigTextStyle = NotificationCompat.BigTextStyle().bigText(message)
+        val builder =
+            NotificationCompat.Builder(this, CHANNEL_ID).setContentTitle(alarmName)
+                .setContentText(tag)
+                .setSmallIcon(DrawR.drawable.ic_round_access_alarm_24)
+                .setCategory(NotificationCompat.CATEGORY_ALARM)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setPriority(NotificationCompat.PRIORITY_MAX) // set base on important in alarm entity
+                .setStyle(bigTextStyle)
+                .setAutoCancel(true)
+        notificationManager.notify(nId, builder.build())
     }
 }

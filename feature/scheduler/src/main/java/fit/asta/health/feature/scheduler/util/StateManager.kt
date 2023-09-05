@@ -8,10 +8,12 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import fit.asta.health.common.utils.Constants.CHANNEL_ID
+import fit.asta.health.common.utils.getCurrentTime
 import fit.asta.health.data.scheduler.db.AlarmDao
 import fit.asta.health.data.scheduler.db.AlarmInstanceDao
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.db.entity.AlarmInstance
+import fit.asta.health.data.scheduler.remote.net.scheduler.Meta
 import fit.asta.health.feature.scheduler.services.AlarmBroadcastReceiver
 import fit.asta.health.feature.scheduler.services.AlarmService
 import fit.asta.health.feature.scheduler.util.Utils.ALARM_STATE_EXTRA
@@ -28,6 +30,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 import java.util.Calendar
 import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
@@ -141,13 +144,6 @@ class StateManager @Inject constructor(
         }
     }
 
-    private fun missedAlarm(context: Context, instance: AlarmInstance) {
-        scope.launch {
-            alarmDao.getAlarm(instance.mAlarmId)?.let { alarm ->
-                registerAlarm(context, alarm)
-            }
-        }
-    }
 
     fun dismissAlarm(context: Context, id: Long) {
         val currentTime: Calendar = Calendar.getInstance()
@@ -174,7 +170,17 @@ class StateManager @Inject constructor(
                         if (!alarm.daysOfWeek.isRepeating) {
                             cancelScheduledInstanceStateChange(context, instance)
                             alarmInstanceDao.delete(instance)
-                            alarmDao.deleteAlarm(alarm)
+                            alarmDao.insertAlarm(
+                                alarm.copy(
+                                    status = false,
+                                    meta = Meta(
+                                        cBy = alarm.meta.cBy,
+                                        cDate = alarm.meta.cDate,
+                                        sync = 1,
+                                        uDate = getCurrentTime()
+                                    )
+                                )
+                            )
                             return@launch
                         } else {
                             registerAlarm(context, alarm)
@@ -427,6 +433,13 @@ class StateManager @Inject constructor(
 
     fun skipAlarmTodayOnly(context: Context, alarmItem: AlarmEntity) {
         registerAlarm(context, alarmItem, true)
+    }
+
+    fun missedAlarm(context: Context, alarmItem: AlarmEntity) {
+        scope.launch {
+            skipAlarmTodayOnly(context, alarmItem)
+            alarmDao.updateAlarm(alarmItem.copy(skipDate = LocalDate.now().dayOfMonth))
+        }
     }
 }
 

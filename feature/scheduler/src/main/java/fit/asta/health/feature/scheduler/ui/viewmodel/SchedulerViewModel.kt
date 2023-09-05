@@ -75,6 +75,17 @@ class SchedulerViewModel
     init {
         getEditUiData()
         getTagData()
+        getAlarmList()
+    }
+
+    private fun getAlarmList() {
+        viewModelScope.launch {
+            alarmLocalRepo.getAllAlarmInstanceList()?.let {
+                _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+                    alarmList = it
+                )
+            }
+        }
     }
 
 

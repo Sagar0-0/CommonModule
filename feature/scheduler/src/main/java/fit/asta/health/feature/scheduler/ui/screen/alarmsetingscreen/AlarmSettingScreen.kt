@@ -49,6 +49,7 @@ import fit.asta.health.feature.scheduler.ui.components.TimePickerBottomSheet
 import fit.asta.health.feature.scheduler.ui.components.VibrationBottomSheetLayout
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.AlarmCreateBottomSheetTypes.*
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import fit.asta.health.resources.strings.R as StringR
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -264,6 +265,9 @@ fun AlarmCreateBtmSheetLayout(
     aSEvent: (AlarmSettingEvent) -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
+    var title by remember {
+        mutableStateOf("Select Time")
+    }
     when (sheetLayout) {
         LABEL -> {
             Column(modifier = Modifier.fillMaxWidth()) {
@@ -323,6 +327,7 @@ fun AlarmCreateBtmSheetLayout(
 
         TIME -> {
             TimePickerBottomSheet(
+                title = title,
                 time = AMPMHoursMin(
                     hours = if (alarmSettingUiState.timeHours > 12) {
                         alarmSettingUiState.timeHours - 12
@@ -331,16 +336,31 @@ fun AlarmCreateBtmSheetLayout(
                     dayTime = if (alarmSettingUiState.timeHours >= 12) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
                 ),
                 onSave = {
-                    closeSheet()
                     val time = it.convert12hrTo24hr()
-                    aSEvent(
-                        AlarmSettingEvent.SetAlarmTime(
-                            Time(
-                                hours = time.hour,
-                                minutes = it.minutes
+                    val calendar = Calendar.getInstance()
+                    val count = alarmSettingUiState.week.getDistanceToNextDay(calendar)
+                    calendar[Calendar.DAY_OF_MONTH] = calendar.get(Calendar.DAY_OF_MONTH) + count
+                    calendar[Calendar.HOUR_OF_DAY] = time.hour
+                    calendar[Calendar.MINUTE] = time.min
+                    calendar[Calendar.SECOND] = 0
+                    calendar[Calendar.MILLISECOND] = 0
+                    val old = alarmSettingUiState.alarmList.find { alarmIns ->
+                        alarmIns.alarmTime == calendar
+                    }
+                    if (old != null) {
+                        title = "This alarm time is already set for other "
+                        return@TimePickerBottomSheet
+                    } else {
+                        closeSheet()
+                        aSEvent(
+                            AlarmSettingEvent.SetAlarmTime(
+                                Time(
+                                    hours = time.hour,
+                                    minutes = it.minutes
+                                )
                             )
                         )
-                    )
+                    }
                 }, onCancel = closeSheet
             )
         }
