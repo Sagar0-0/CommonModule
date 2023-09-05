@@ -33,11 +33,12 @@ fun NavGraphBuilder.basicProfileRoute() {
         val autoFetchedReferralCode by basicProfileViewModel.referralCode.collectAsStateWithLifecycle()
 
         val user = basicProfileViewModel.getUser()
+
         BasicProfileScreen(
-            user,
-            checkReferralCodeState,
-            createBasicProfileState,
-            autoFetchedReferralCode,
+            user = user,
+            checkReferralCodeState= checkReferralCodeState,
+            createBasicProfileState=createBasicProfileState,
+            autoFetchedReferralCode=autoFetchedReferralCode,
             onEvent = {
                 when (it) {
                     is BasicProfileEvent.Link -> {

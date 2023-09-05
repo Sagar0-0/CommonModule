@@ -9,6 +9,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -42,6 +43,7 @@ import fit.asta.health.designsystem.theme.LocalBoxSize
 import fit.asta.health.designsystem.theme.LocalSpacing
 import fit.asta.health.feature.auth.util.GoogleSignIn
 import fit.asta.health.feature.auth.util.PhoneSignIn
+import fit.asta.health.feature.profile.utils.REFERRAL_LENGTH
 import fit.asta.health.resources.drawables.R as DrawR
 import fit.asta.health.resources.strings.R as StringR
 
@@ -80,6 +82,12 @@ fun BasicProfileScreen(
             mutableStateOf(autoFetchedReferralCode)
         }
 
+        LaunchedEffect(ref){
+            if(ref.length == REFERRAL_LENGTH){
+                onEvent(BasicProfileEvent.CheckReferralCode(ref))
+            }
+        }
+
         Box(
             modifier = Modifier
                 .padding(LocalSpacing.current.medium)
@@ -88,7 +96,8 @@ fun BasicProfileScreen(
                 .clip(CircleShape)
                 .clickable {
                     imagePickerLauncher.launch("image/*")
-                }
+                },
+            contentAlignment = Alignment.Center
         ) {
             if (profileImageUri == null && user.photoUrl.isNullOrEmpty()) {
                 Image(
@@ -152,13 +161,16 @@ fun BasicProfileScreen(
                             Toast.LENGTH_SHORT
                         ).show()
                     }
-                    Image(
-                        modifier = Modifier.clip(CircleShape),
-                        painter = rememberAsyncImagePainter(
-                            model = state.data.data!!.pic,
-                            placeholder = painterResource(id = DrawR.drawable.ic_person)
-                        ), contentDescription = "Profile"
-                    )
+                    Row{
+                        Image(
+                            modifier = Modifier.clip(CircleShape),
+                            painter = rememberAsyncImagePainter(
+                                model = state.data.data!!.pic,
+                                placeholder = painterResource(id = DrawR.drawable.ic_person)
+                            ), contentDescription = "Profile"
+                        )
+                        Text(text = state.data.data!!.name)
+                    }
                 }
 
                 is UiState.Error -> {
@@ -174,15 +186,16 @@ fun BasicProfileScreen(
 
                 else -> {
                     AstaValidatedTextField(
-                        type = AstaValidatedTextFieldType.Default(10, 10),
+                        type = AstaValidatedTextFieldType.Default(REFERRAL_LENGTH, REFERRAL_LENGTH),
                         label = StringR.string.refer_code,
                         value = ref,
                         onValueChange = { str ->
                             ref = str
                         }
                     )
+
                     Button(
-                        enabled = ref.length == 8,
+                        enabled = ref.length == REFERRAL_LENGTH,
                         onClick = { onEvent(BasicProfileEvent.CheckReferralCode(ref)) }
                     ) {
                         Text(text = "Check")
