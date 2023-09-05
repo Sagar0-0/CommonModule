@@ -28,7 +28,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         // Check if message contains a data payload.
         remoteMessage.data.let {
-
             Log.d(TAG, "Message data payload: " + remoteMessage.data)
         }
 
