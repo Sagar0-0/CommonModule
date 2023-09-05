@@ -9,6 +9,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -22,8 +25,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import coil.compose.rememberAsyncImagePainter
@@ -33,6 +38,8 @@ import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
 import fit.asta.health.designsystem.component.AstaValidatedTextField
 import fit.asta.health.designsystem.component.AstaValidatedTextFieldType
+import fit.asta.health.designsystem.theme.LocalBoxSize
+import fit.asta.health.designsystem.theme.LocalSpacing
 import fit.asta.health.feature.auth.util.GoogleSignIn
 import fit.asta.health.feature.auth.util.PhoneSignIn
 import fit.asta.health.resources.drawables.R as DrawR
@@ -75,27 +82,35 @@ fun BasicProfileScreen(
 
         Box(
             modifier = Modifier
+                .padding(LocalSpacing.current.medium)
+                .align(Alignment.CenterHorizontally)
+                .size(LocalBoxSize.current.medium)
                 .clip(CircleShape)
                 .clickable {
                     imagePickerLauncher.launch("image/*")
                 }
         ) {
-            if (profileImageUri == null && user.photoUrl == null) {
+            if (profileImageUri == null && user.photoUrl.isNullOrEmpty()) {
                 Image(
-                    painter = painterResource(id = DrawR.drawable.placeholder_tag),
-                    contentDescription = "Profile"
+                    modifier = Modifier
+                        .clip(CircleShape),
+                    painter = painterResource(id = DrawR.drawable.ic_person),
+                    contentDescription = "Profile",
+                    contentScale = ContentScale.Crop
                 )
             } else {
                 Image(
+                    modifier = Modifier
+                        .clip(CircleShape),
                     painter = rememberAsyncImagePainter(
                         model = if (profileImageUri != null) {
                             profileImageUri
                         } else {
                             user.photoUrl
-                        },
-                        placeholder = painterResource(id = DrawR.drawable.ic_person)
+                        }
                     ),
-                    contentDescription = "Profile"
+                    contentDescription = "Profile",
+                    contentScale = ContentScale.Crop
                 )
             }
         }
