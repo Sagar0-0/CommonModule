@@ -23,6 +23,7 @@ import fit.asta.health.data.spotify.model.common.Track
 import fit.asta.health.data.spotify.model.me.SpotifyMeModel
 import fit.asta.health.data.spotify.model.recently.SpotifyUserRecentlyPlayedModel
 import fit.asta.health.data.spotify.model.recommendations.SpotifyRecommendationModel
+import fit.asta.health.data.spotify.model.saved.SpotifyLikedSongsResponse
 import fit.asta.health.feature.spotify.events.SpotifyUiEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -571,6 +572,35 @@ class SpotifyViewModelX @Inject constructor(
                 .toUiState()
         }
     }
+
+    /**
+     * This variable contains the current User All the saved songs from the spotify APi
+     */
+    private val _currentUserSavedSongs =
+        MutableStateFlow<UiState<SpotifyLikedSongsResponse>>(UiState.Idle)
+    val currentUserSavedSongs = _currentUserSavedSongs.asStateFlow()
+
+    /**
+     *  This function fetches the current User all the Episodes from the spotify APi
+     */
+    private fun getCurrentUserLikedSongs() {
+
+        if (_currentUserSavedSongs.value is UiState.Loading)
+            return
+
+        _currentUserSavedSongs.value = UiState.Loading
+
+        viewModelScope.launch {
+            _currentUserSavedSongs.value = remoteRepository
+                .getCurrentUserSavedSongs(
+                    accessToken = accessToken,
+                    market = "ES",
+                    limit = "10",
+                    offset = "5"
+                ).toUiState()
+        }
+    }
+
 
     fun uiEventListener(event: SpotifyUiEvent) {
         when (event) {
