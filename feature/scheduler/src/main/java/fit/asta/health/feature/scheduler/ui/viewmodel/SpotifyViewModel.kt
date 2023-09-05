@@ -296,7 +296,7 @@ class SpotifyViewModel @Inject constructor(
                 .getCurrentUserSavedSongs(
                     accessToken = accessToken,
                     market = (_currentUserData.value as UiState.Success<SpotifyMeModel>).data.country,
-                    limit = "10",
+                    limit = "50",
                     offset = "5"
                 ).toUiState()
         }

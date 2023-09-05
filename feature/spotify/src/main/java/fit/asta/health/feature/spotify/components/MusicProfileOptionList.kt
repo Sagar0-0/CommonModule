@@ -25,7 +25,15 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun MusicProfileOptionList(
     selectedItem: Int,
-    categoryList: List<String> = listOf("Track", "Playlist", "Artist", "Album", "Show", "Episode"),
+    categoryList: List<String> = listOf(
+        "Liked",
+        "Track",
+        "Playlist",
+        "Artist",
+        "Album",
+        "Show",
+        "Episode"
+    ),
     onSelectionChange: (Int) -> Unit
 ) {
 

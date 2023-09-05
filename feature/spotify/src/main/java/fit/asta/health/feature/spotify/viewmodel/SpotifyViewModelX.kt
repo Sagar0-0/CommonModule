@@ -594,8 +594,8 @@ class SpotifyViewModelX @Inject constructor(
             _currentUserSavedSongs.value = remoteRepository
                 .getCurrentUserSavedSongs(
                     accessToken = accessToken,
-                    market = "ES",
-                    limit = "10",
+                    market = (_currentUserData.value as UiState.Success<SpotifyMeModel>).data.country,
+                    limit = "50",
                     offset = "5"
                 ).toUiState()
         }
@@ -671,6 +671,10 @@ class SpotifyViewModelX @Inject constructor(
 
             is SpotifyUiEvent.NetworkIO.LoadTrackDetails -> {
                 getTrackDetails()
+            }
+
+            is SpotifyUiEvent.NetworkIO.LoadLikedSongs -> {
+                getCurrentUserLikedSongs()
             }
 
             is SpotifyUiEvent.LocalIO.LoadAllTracks -> {

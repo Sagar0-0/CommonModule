@@ -10,7 +10,7 @@ import fit.asta.health.data.spotify.model.me.SpotifyMeModel
 import fit.asta.health.feature.spotify.screens.AlbumDetailScreen
 import fit.asta.health.feature.spotify.screens.AstaMusicScreen
 import fit.asta.health.feature.spotify.screens.FavouriteScreen
-import fit.asta.health.feature.spotify.screens.ProfileScreen
+import fit.asta.health.feature.spotify.screens.LibraryScreen
 import fit.asta.health.feature.spotify.screens.SearchScreen
 import fit.asta.health.feature.spotify.screens.ThirdPartyScreen
 import fit.asta.health.feature.spotify.screens.TrackDetailsScreen
@@ -129,6 +129,9 @@ fun SpotifyNavGraph(
                 SpotifyNavRoutes.ProfileScreen.routes,
                 content = {
 
+                    val currentUserLikedSongs = spotifyViewModelX.currentUserSavedSongs
+                        .collectAsStateWithLifecycle().value
+
                     val currentUserTracks = spotifyViewModelX.currentUserTracks
                         .collectAsStateWithLifecycle().value
 
@@ -147,7 +150,8 @@ fun SpotifyNavGraph(
                     val currentUserEpisodes = spotifyViewModelX.currentUserEpisode
                         .collectAsStateWithLifecycle().value
 
-                    ProfileScreen(
+                    LibraryScreen(
+                        currentUserLikedSongs = currentUserLikedSongs,
                         currentUserTracks = currentUserTracks,
                         currentUserPlaylist = currentUserPlaylist,
                         currentUserArtists = currentUserArtists,
