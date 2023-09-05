@@ -1,5 +1,4 @@
-package fit.asta.health.navigation.track.ui.screens
-
+package fit.asta.health.navigation.track
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,12 +26,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.ColorUtils
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.chart.circular.charts.CircularDonutChartColumn
 import fit.asta.chart.circular.charts.CircularDonutChartRow
 import fit.asta.chart.circular.data.CircularDonutListData
@@ -47,39 +49,33 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.theme.spacing
-import fit.asta.health.navigation.track.TrackDestination
 import fit.asta.health.navigation.track.data.remote.model.menu.HomeMenuResponse
 import fit.asta.health.navigation.track.ui.components.TrackDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackingChartCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
-import fit.asta.health.navigation.track.ui.util.TrackOption
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
+import fit.asta.health.navigation.track.ui.viewmodel.TrackViewModel
 import java.text.DecimalFormat
 import java.time.LocalDate
 import kotlin.math.abs
 
-/**
- * This Screen shows all the Statistics Options that are there in the App for the user to choose
- * the specific Option they want to see
- *
- * @param homeMenuState This variable contains the state of the Home Menu Api call
- * @param loadHomeData This is the function which fetches the data from the server
- * @param navigator Controller which lets us navigate to a different Screen
- * @param setUiEvent This option sets the Ui Event which is selected by the user
- */
 @Composable
-fun TrackMenuScreenControl(
-    homeMenuState: UiState<HomeMenuResponse>,
-    calendarData: LocalDate,
-    loadHomeData: () -> Unit,
-    setUiEvent: (TrackUiEvent) -> Unit,
-    navigator: (String) -> Unit
-) {
+fun TrackMenuScreenControl() {
+
+    val trackViewModel: TrackViewModel = hiltViewModel()
+
+    // Home Menu State
+    val homeMenuState = trackViewModel.homeScreenDetails
+        .collectAsStateWithLifecycle().value
+
+    // Calendar Data
+    val calendarData = trackViewModel.calendarData
+        .collectAsStateWithLifecycle().value
 
     // This function loads the data for the Home Menu Screen
     LaunchedEffect(Unit) {
-        loadHomeData()
+        trackViewModel.getHomeDetails()
     }
 
     // This conditional handles the State of the Api call and shows the UI according to the state
@@ -87,7 +83,7 @@ fun TrackMenuScreenControl(
 
         // Initialized State
         is UiState.Idle -> {
-            loadHomeData()
+            trackViewModel.getHomeDetails()
         }
 
         // Loading State
@@ -100,19 +96,19 @@ fun TrackMenuScreenControl(
             TrackMenuSuccessScreen(
                 homeMenuData = homeMenuState.data.homeMenuData,
                 calendarData = calendarData,
-                setUiEvent = setUiEvent,
-                navigator = navigator
+                setUiEvent = { trackViewModel.uiEventListener(it) }
             )
         }
 
         // failure State
         is UiState.Error -> {
             AppErrorScreen(desc = homeMenuState.resId.toStringFromResId()) {
-                loadHomeData()
+                trackViewModel.getHomeDetails()
             }
         }
     }
 }
+
 
 /**
  * This function Provides the UI for the Home Menu Screen when the api state is Success i.e the data
@@ -122,15 +118,15 @@ fun TrackMenuScreenControl(
  * menu state
  * @param setUiEvent This function is used to set the track Option i.e Water , breathing , steps,
  * meditation etc
- * @param navigator This function is used to navigate from one screen to another
  */
 @Composable
 private fun TrackMenuSuccessScreen(
     homeMenuData: HomeMenuResponse.HomeMenuData,
     calendarData: LocalDate,
-    setUiEvent: (TrackUiEvent) -> Unit,
-    navigator: (String) -> Unit
+    setUiEvent: (TrackUiEvent) -> Unit
 ) {
+
+    val context = LocalContext.current
 
     // Parent UI for all the composable
     LazyColumn(
@@ -271,54 +267,11 @@ private fun TrackMenuSuccessScreen(
                     unit = it.detail.toolProgress.unit
                 ) {
 
-                    // checking the title before redirecting the user to the screen and setting it
-                    when (it.title) {
-
-                        "water" -> {
-                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.WaterOption))
-                            navigator(TrackDestination.WaterTrackDetail.route)
-                        }
-
-                        "meditation" -> {
-                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.MeditationOption))
-                            navigator(TrackDestination.MeditationTrackDetail.route)
-                        }
-
-                        "breathing" -> {
-                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.BreathingOption))
-                            navigator(TrackDestination.BreathingTrackDetail.route)
-                        }
-
-                        "sunlight" -> {
-                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.SunlightOption))
-                            navigator(TrackDestination.SunlightTrackDetail.route)
-                        }
-
-                        "sleep" -> {
-                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.SleepOption))
-                            navigator(TrackDestination.SleepTrackDetail.route)
-                        }
-
-                        "yoga" -> {
-                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.YogaOption))
-                            navigator(TrackDestination.ExerciseTrackDetail.route)
-                        }
-
-                        "dance" -> {
-                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.DanceOption))
-                            navigator(TrackDestination.ExerciseTrackDetail.route)
-                        }
-
-                        "workout" -> {
-                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.WorkoutOption))
-                            navigator(TrackDestination.ExerciseTrackDetail.route)
-                        }
-
-                        "hiit" -> {
-                            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.HiitOption))
-                            navigator(TrackDestination.ExerciseTrackDetail.route)
-                        }
-                    }
+                    // Going to the Track Statistics Activity
+                    TrackStatisticsActivity.launch(
+                        context = context,
+                        title = it.title
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -336,8 +289,11 @@ private fun TrackMenuSuccessScreen(
                     bodyDescription = it.description.stepsDescription,
                     unit = TrackStringConstants.STEPS_STEP_UNIT
                 ) {
-                    setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.StepsOption))
-                    navigator(TrackDestination.StepsTrackDetail.route)
+                    // Going to the Track Statistics Activity
+                    TrackStatisticsActivity.launch(
+                        context = context,
+                        title = it.title
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
