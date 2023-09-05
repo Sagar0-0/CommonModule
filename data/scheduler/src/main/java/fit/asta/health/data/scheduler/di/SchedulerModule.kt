@@ -45,7 +45,7 @@ object SchedulerModule {
     @Singleton
     @Provides
     fun provideRepo(db: AlarmDatabase): AlarmLocalRepo {
-        return AlarmLocalRepoImp(db.alarmDao())
+        return AlarmLocalRepoImp(db.alarmDao(), db.alarmInstanceDao())
     }
 
 
@@ -60,17 +60,4 @@ object SchedulerModule {
     fun provideNotificationManager(@ApplicationContext context: Context): NotificationManager {
         return context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
-
-//    @Singleton
-//    @Provides
-//    fun provideAlarmUtils(
-//        @ApplicationContext context: Context,
-//        alarmManager: AlarmManager
-//    ): AlarmUtils {
-//        return AlarmUtilsImp(
-//            alarmManager = alarmManager,
-//            context = context,
-//            calendar = Calendar.getInstance()
-//        )
-//    }
 }
