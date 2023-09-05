@@ -118,7 +118,7 @@ fun TrackMeditationScreenControl(
                     onDragEnd = {
 
                         // If the drag is a right drag
-                        if (isRightDrag.value && selectedItem.intValue > 0) {
+                        if (isRightDrag.value && selectedItem.intValue > 0 && meditationTrackData !is UiState.Loading) {
 
                             // Checking which tab option is selected by the User and showing the UI Accordingly
                             selectedItem.intValue = selectedItem.intValue - 1
@@ -129,7 +129,7 @@ fun TrackMeditationScreenControl(
                         }
 
                         // If the drag is a left drag
-                        if (isLeftDrag.value && selectedItem.intValue < tabList.size - 1) {
+                        if (isLeftDrag.value && selectedItem.intValue < tabList.size - 1 && meditationTrackData !is UiState.Loading) {
 
                             // Checking which tab option is selected by the User and showing the UI Accordingly
                             selectedItem.intValue = selectedItem.intValue + 1
@@ -158,7 +158,7 @@ fun TrackMeditationScreenControl(
             selectedItem = selectedItem.intValue
         ) {
 
-            if (selectedItem.intValue != it) {
+            if (selectedItem.intValue != it && meditationTrackData !is UiState.Loading) {
 
                 // Checking which tab option is selected by the User and showing the UI Accordingly
                 selectedItem.intValue = it

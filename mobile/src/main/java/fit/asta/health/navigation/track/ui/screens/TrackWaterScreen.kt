@@ -113,7 +113,7 @@ fun TrackWaterScreenControl(
                     onDragEnd = {
 
                         // If the drag is a right drag
-                        if (isRightDrag.value && selectedItem.intValue > 0) {
+                        if (isRightDrag.value && selectedItem.intValue > 0 && waterTrackData !is UiState.Loading) {
 
                             // Checking which tab option is selected by the User and showing the UI Accordingly
                             selectedItem.intValue = selectedItem.intValue - 1
@@ -124,7 +124,7 @@ fun TrackWaterScreenControl(
                         }
 
                         // If the drag is a left drag
-                        if (isLeftDrag.value && selectedItem.intValue < tabList.size - 1) {
+                        if (isLeftDrag.value && selectedItem.intValue < tabList.size - 1 && waterTrackData !is UiState.Loading) {
 
                             // Checking which tab option is selected by the User and showing the UI Accordingly
                             selectedItem.intValue = selectedItem.intValue + 1
@@ -153,7 +153,7 @@ fun TrackWaterScreenControl(
             selectedItem = selectedItem.intValue
         ) {
 
-            if (selectedItem.intValue != it) {
+            if (selectedItem.intValue != it && waterTrackData !is UiState.Loading) {
 
                 // Checking which tab option is selected by the User and showing the UI Accordingly
                 selectedItem.intValue = it
