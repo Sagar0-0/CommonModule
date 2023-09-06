@@ -12,9 +12,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
@@ -27,7 +30,7 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.utils.*
-import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.AstaTheme
 import fit.asta.health.main.MainNavHost
 import fit.asta.health.main.MainViewModel
 import fit.asta.health.network.TokenProvider
@@ -186,8 +189,24 @@ class MainActivity : ComponentActivity(),
 
     private fun startMainNavHost() {
         setContent {
-            AppTheme {
-                MainNavHost(isConnected.value, mainViewModel)
+            val theme by mainViewModel.theme.collectAsStateWithLifecycle()
+            if (theme is UiState.Success) {
+                val isDarkMode = when ((theme as UiState.Success<String>).data) {
+                    "dark" -> {
+                        true
+                    }
+
+                    "light" -> {
+                        false
+                    }
+
+                    else -> {
+                        isSystemInDarkTheme()
+                    }
+                }
+                AstaTheme(darkTheme = isDarkMode) {
+                    MainNavHost(isConnected.value, mainViewModel)
+                }
             }
         }
     }

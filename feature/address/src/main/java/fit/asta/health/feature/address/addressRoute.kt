@@ -25,7 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.data.address.modal.MyAddress
+import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.utils.LocationProviderChangedReceiver
 import fit.asta.health.feature.address.view.AddressDestination
 import fit.asta.health.feature.address.view.MapScreen

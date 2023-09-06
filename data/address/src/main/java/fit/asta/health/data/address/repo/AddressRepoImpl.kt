@@ -11,13 +11,14 @@ import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.Task
+import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.MyException
 import fit.asta.health.common.utils.ResourcesProvider
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getResponseState
-import fit.asta.health.data.address.modal.LocationResponse
-import fit.asta.health.data.address.modal.MyAddress
-import fit.asta.health.data.address.modal.SearchResponse
+import fit.asta.health.data.address.remote.modal.LocationResponse
+import fit.asta.health.data.address.remote.modal.MyAddress
+import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.data.address.remote.AddressApi
 import fit.asta.health.data.address.remote.SearchLocationApi
 import fit.asta.health.data.address.utils.LocationResourceProvider
@@ -38,7 +39,7 @@ class AddressRepoImpl @Inject constructor(
     private val prefManager: PrefManager,
     private val resourcesProvider: ResourcesProvider,
     private val locationResourcesProvider: LocationResourceProvider,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    @IODispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : AddressRepo {
 
     override val userPreferences: Flow<UserPreferencesData> = prefManager.userData

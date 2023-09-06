@@ -601,6 +601,7 @@
     <string name="sync_notification_channel_description">Background tasks for Asta</string>
     <string name="default_notification_channel_id">Default</string>
     <string name="title_activity_track_statistics">TrackStatisticsActivity</string>
+    <string name="grant_locations_permission_to_continue">Please grant Locations Permission to continue</string>
     // testing
 
 </resources>

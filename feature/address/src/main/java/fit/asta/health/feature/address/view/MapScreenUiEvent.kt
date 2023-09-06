@@ -1,7 +1,7 @@
 package fit.asta.health.feature.address.view
 
 import com.google.android.gms.maps.model.LatLng
-import fit.asta.health.data.address.modal.MyAddress
+import fit.asta.health.data.address.remote.modal.MyAddress
 
 internal sealed interface MapScreenUiEvent {
     data class GetMarkerAddress(val latLng: LatLng) : MapScreenUiEvent

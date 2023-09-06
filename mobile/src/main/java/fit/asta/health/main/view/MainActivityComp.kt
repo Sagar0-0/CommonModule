@@ -77,7 +77,6 @@ fun NavGraphBuilder.homeScreen(
             val currentAddressName by mainViewModel.currentAddressName.collectAsStateWithLifecycle()
             val locationPermissionRejectedCount by mainViewModel.locationPermissionRejectedCount.collectAsStateWithLifecycle()
             val isLocationEnabled by mainViewModel.isLocationEnabled.collectAsStateWithLifecycle()
-            val isPermissionGranted by mainViewModel.isPermissionGranted.collectAsStateWithLifecycle()
 
             val permissionResultLauncher =
                 rememberLauncherForActivityResult(
@@ -118,16 +117,15 @@ fun NavGraphBuilder.homeScreen(
                 }
 
             fun enableLocationAndUpdateAddress() {
-                mainViewModel.setIsPermissionGranted()
                 mainViewModel.setIsLocationEnabled()
-                if (isPermissionGranted && isLocationEnabled) {
+                if (mainViewModel.isPermissionGranted() && isLocationEnabled) {
                     mainViewModel.checkPermissionAndUpdateCurrentAddress()
                 } else {
-                    if (!isPermissionGranted) {
+                    if (!mainViewModel.isPermissionGranted()) {
                         if (locationPermissionRejectedCount >= 2) {
                             Toast.makeText(
                                 context,
-                                R.string.location_access_required.toStringFromResId(context),
+                                R.string.grant_locations_permission_to_continue.toStringFromResId(context),
                                 Toast.LENGTH_SHORT
                             )
                                 .show()

@@ -3,7 +3,7 @@ package fit.asta.health.notify.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import fit.asta.health.R
+import fit.asta.health.resources.strings.R
 import fit.asta.health.notify.util.sendNotification
 
 class AlarmReceiver : BroadcastReceiver() {

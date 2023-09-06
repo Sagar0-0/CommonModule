@@ -1,29 +1,34 @@
 package fit.asta.health.feature.onboarding.components
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
-import coil.compose.AsyncImage
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.onboarding.model.OnboardingData
+import fit.asta.health.designsystem.atomic.LocalShape
 import fit.asta.health.designsystem.components.GifImage
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.components.generic.carouselTransition
+import fit.asta.health.designsystem.theme.LocalSpacing
 import fit.asta.health.designsystem.theme.spacing
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingScreen(
     state: UiState<List<OnboardingData>>,
@@ -50,54 +55,50 @@ fun OnboardingScreen(
         is UiState.Success -> {
             val items = state.data
             val coroutine = rememberCoroutineScope()
-
-            val pagerState = rememberPagerState(
-                pageCount = items.size,
-                initialPage = 0,
-                initialOffscreenLimit = items.size - 1,
-                infiniteLoop = false
-            )
+            val pagerState = rememberPagerState(pageCount = { items.size })
 
             Column(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 HorizontalPager(
+                    modifier = Modifier.weight(1f),
                     state = pagerState,
-                    modifier = Modifier.weight(1f)
+                    contentPadding = PaddingValues(LocalSpacing.current.small),
+                    pageSpacing = LocalSpacing.current.medium,
                 ) { page ->
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
+                    Card(
+                        modifier = Modifier
+                            .carouselTransition(page, pagerState)
+                            .fillMaxHeight()
+                            .padding(LocalSpacing.current.small)
+                            .clip(LocalShape.current.large)
                     ) {
-                        if (items[page].type == 1) {
-                            GifImage(
-                                url = getImgUrl(url = items[page].url),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(bottom = spacing.medium),
-                                contentScale = ContentScale.FillWidth
+                        GifImage(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = spacing.medium),
+                            url = getImgUrl(url = items[page].url),
+                            contentScale = ContentScale.FillWidth
+                        )
+
+                        Column(
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = items[page].title,
+                                style = MaterialTheme.typography.headlineMedium,
+                                color = MaterialTheme.colorScheme.primary
                             )
-                        } else {
-                            AsyncImage(
-                                model = getImgUrl(url = items[page].url),
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier.fillMaxWidth()
+                            Text(
+                                modifier = Modifier.padding(horizontal = spacing.extraMedium),
+                                textAlign = TextAlign.Center,
+                                text = items[page].desc,
+                                style = MaterialTheme.typography.titleSmall,
+                                color = MaterialTheme.colorScheme.primary
                             )
                         }
-
-                        Text(
-                            text = items[page].title,
-                            style = MaterialTheme.typography.headlineMedium,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                        Text(
-                            modifier = Modifier.padding(horizontal = spacing.extraMedium),
-                            textAlign = TextAlign.Center,
-                            text = items[page].desc,
-                            style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.primary
-                        )
                     }
                 }
 
