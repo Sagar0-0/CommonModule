@@ -62,6 +62,16 @@ class MainViewModel
             initialValue = UiState.Loading,
         )
 
+    val theme = prefManager.userData
+        .map {
+            UiState.Success(it.theme)
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = UiState.Loading,
+        )
+
     private val _currentAddressName = MutableStateFlow<UiState<String>>(UiState.Idle)
     val currentAddressName = _currentAddressName.asStateFlow()
 
