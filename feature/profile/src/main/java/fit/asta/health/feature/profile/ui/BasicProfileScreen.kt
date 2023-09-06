@@ -10,7 +10,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -197,20 +196,25 @@ fun BasicProfileScreen(
                     }
 
                     else -> {
-                        AstaValidatedTextField(
-                            type = AstaValidatedTextFieldType.Default(REFERRAL_LENGTH, REFERRAL_LENGTH),
-                            label = StringR.string.refer_code,
-                            value = ref,
-                            onValueChange = { str ->
-                                ref = str
-                            }
-                        )
+                        Row {
+                            AstaValidatedTextField(
+                                type = AstaValidatedTextFieldType.Default(
+                                    REFERRAL_LENGTH,
+                                    REFERRAL_LENGTH
+                                ),
+                                label = StringR.string.refer_code,
+                                value = ref,
+                                onValueChange = { str ->
+                                    ref = str
+                                }
+                            )
 
-                        Button(
-                            enabled = ref.length == REFERRAL_LENGTH,
-                            onClick = { onEvent(BasicProfileEvent.CheckReferralCode(ref)) }
-                        ) {
-                            Text(text = "Check")
+                            Button(
+                                enabled = ref.length == REFERRAL_LENGTH,
+                                onClick = { onEvent(BasicProfileEvent.CheckReferralCode(ref)) }
+                            ) {
+                                Text(text = "Check")
+                            }
                         }
                     }
                 }
