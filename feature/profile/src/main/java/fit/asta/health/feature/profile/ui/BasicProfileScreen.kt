@@ -70,7 +70,9 @@ fun BasicProfileScreen(
         }
 
     AppScaffold(topBar = {
-        AppTopBar(title = "Create a Profile")
+        AppTopBar(
+            backIcon = null,
+            title = "Create a Profile")
     }) {
         Column(
             Modifier
