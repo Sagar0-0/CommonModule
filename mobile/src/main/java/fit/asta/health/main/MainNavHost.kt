@@ -14,7 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import fit.asta.health.BuildConfig
-import fit.asta.health.R
+import fit.asta.health.resources.strings.R
 import fit.asta.health.common.ui.navigateToWebView
 import fit.asta.health.common.ui.webView
 import fit.asta.health.common.utils.UiState
