@@ -1,6 +1,7 @@
 package fit.asta.health.data.scheduler.repo
 
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
+import fit.asta.health.data.scheduler.db.entity.AlarmInstance
 import fit.asta.health.data.scheduler.db.entity.TagEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -29,4 +30,6 @@ interface AlarmLocalRepo {
     suspend fun deleteAllTag()
 
     suspend fun getAllAlarmList(): List<AlarmEntity>?
+
+    suspend fun getAllAlarmInstanceList(): List<AlarmInstance>?
 }

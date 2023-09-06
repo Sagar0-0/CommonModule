@@ -14,15 +14,17 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import fit.asta.health.designsystem.theme.spacing
 
 @Composable
 fun TextSelection(
     title: String,
-    arrowTitle: String="",
-    btnEnabled: Boolean=false,
+    arrowTitle: String = "",
+    btnEnabled: Boolean = false,
     imageIcon: ImageVector,
+    color: Color? = null,
     onNavigateAction: () -> Unit,
 ) {
 
@@ -41,13 +43,13 @@ fun TextSelection(
                     Icon(
                         imageVector = imageIcon,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = color ?: MaterialTheme.colorScheme.primary
                     )
                 }
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                    color = color ?: MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
         }

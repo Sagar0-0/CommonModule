@@ -84,6 +84,7 @@ import java.time.LocalTime
 @Composable
 fun TodayContent(
     uiState: TodayData,
+    defaultScheduleVisibility: Boolean,
     listMorning: SnapshotStateList<AlarmEntity>,
     listAfternoon: SnapshotStateList<AlarmEntity>,
     listEvening: SnapshotStateList<AlarmEntity>,
@@ -103,10 +104,7 @@ fun TodayContent(
         AlertDialogPopUp(
             content = "Are you sure you want to delete this alarm?",
             actionButton = stringResource(id = R.string.delete),
-            onDismiss = {
-                deletedItem?.let { hSEvent(HomeEvent.UndoAlarm(it, evenType)) }
-                deleteDialog = false
-            },
+            onDismiss = { deleteDialog = false },
             onDone = {
                 deletedItem?.let { hSEvent(HomeEvent.DeleteAlarm(it, context)) }
                 deleteDialog = false
@@ -116,10 +114,7 @@ fun TodayContent(
         AlertDialogPopUp(
             content = "Are you sure you want to skip this alarm?",
             actionButton = stringResource(id = R.string.skip),
-            onDismiss = {
-                skipItem?.let { hSEvent(HomeEvent.UndoAlarm(it, evenType)) }
-                skipDialog = false
-            },
+            onDismiss = { skipDialog = false },
             onDone = {
                 skipItem?.let { hSEvent(HomeEvent.SkipAlarm(it, context)) }
                 skipDialog = false
@@ -190,9 +185,9 @@ fun TodayContent(
                     }
                 }
             }
-            if (listMorning.isEmpty() && listAfternoon.isEmpty() && listEvening.isEmpty()) {
+            if (defaultScheduleVisibility) {
                 item {
-                    AnimatedVisibility(visible = listMorning.isEmpty() && listAfternoon.isEmpty() && listEvening.isEmpty()) {
+                    AnimatedVisibility(visible = true) {
                         AppButtons.AppOutlinedButton(onClick = {
                             hSEvent(
                                 HomeEvent.SetDefaultSchedule(
@@ -217,12 +212,10 @@ fun TodayContent(
                 items(listMorning) { data ->
                     SwipeDemoToday(data = data, onSwipeRight = {
                         evenType = Event.Morning
-                        hSEvent(HomeEvent.RemoveAlarm(data, evenType))
                         deleteDialog = true
                         deletedItem = data
                     }, onSwipeLeft = {
                         evenType = Event.Morning
-                        hSEvent(HomeEvent.RemoveAlarm(data, evenType))
                         skipDialog = true
                         skipItem = data
                     }, onDone = {
@@ -245,12 +238,10 @@ fun TodayContent(
                 items(listAfternoon) { data ->
                     SwipeDemoToday(data = data, onSwipeRight = {
                         evenType = Event.Afternoon
-                        hSEvent(HomeEvent.RemoveAlarm(data, evenType))
                         deleteDialog = true
                         deletedItem = data
                     }, onSwipeLeft = {
                         evenType = Event.Afternoon
-                        hSEvent(HomeEvent.RemoveAlarm(data, evenType))
                         skipDialog = true
                         skipItem = data
                     }, onDone = {
@@ -273,12 +264,10 @@ fun TodayContent(
                 items(listEvening) { data ->
                     SwipeDemoToday(data = data, onSwipeRight = {
                         evenType = Event.Evening
-                        hSEvent(HomeEvent.RemoveAlarm(data, evenType))
                         deleteDialog = true
                         deletedItem = data
                     }, onSwipeLeft = {
                         evenType = Event.Evening
-                        hSEvent(HomeEvent.RemoveAlarm(data, evenType))
                         skipDialog = true
                         skipItem = data
                     }, onDone = {
@@ -299,22 +288,18 @@ fun TodayContent(
                     }
                 }
                 items(listNextDay) { data ->
-                    SwipeDemoToday(data = data, onSwipeRight = {
-                        evenType = Event.NextDay
-                        hSEvent(HomeEvent.RemoveAlarm(data, evenType))
-                        deleteDialog = true
-                        deletedItem = data
-                    }, onSwipeLeft = {
-                        evenType = Event.NextDay
-                        hSEvent(HomeEvent.RemoveAlarm(data, evenType))
-                        skipDialog = true
-                        skipItem = data
-                    }, onDone = {
-                        onNav(goToTool(data.info.tag))
-                    }, onReschedule = {
-                        onNav(Graph.Scheduler.route)
-                        hSEvent(HomeEvent.EditAlarm(data))
-                    })
+                    SwipeDemoToday(data = data, skipEnable = false,
+                        onSwipeRight = {
+                            evenType = Event.NextDay
+                            deleteDialog = true
+                            deletedItem = data
+                        }, onSwipeLeft = {},
+                        onDone = {
+                            onNav(goToTool(data.info.tag))
+                        }, onReschedule = {
+                            onNav(Graph.Scheduler.route)
+                            hSEvent(HomeEvent.EditAlarm(data))
+                        })
                 }
             }
         }
@@ -452,8 +437,9 @@ fun TodayItem(
 
 @Composable
 fun SwipeDemoToday(
-    onSwipeRight: () -> Unit = {},
-    onSwipeLeft: () -> Unit = {},
+    onSwipeRight: () -> Unit,
+    onSwipeLeft: () -> Unit,
+    skipEnable: Boolean = true,
     progress: String = "44%",
     data: AlarmEntity,
     onDone: () -> Unit = {},
@@ -472,7 +458,7 @@ fun SwipeDemoToday(
     )
     SwipeableActionsBox(
         startActions = listOf(archive),
-        endActions = listOf(skip),
+        endActions = if (skipEnable) listOf(skip) else emptyList(),
         swipeThreshold = 20.dp,
         backgroundUntilSwipeThreshold = MaterialTheme.colorScheme.background,
     ) {

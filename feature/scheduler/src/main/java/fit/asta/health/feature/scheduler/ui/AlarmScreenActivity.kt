@@ -1,6 +1,5 @@
 package fit.asta.health.feature.scheduler.ui
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,7 +8,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.scheduler.ui.screen.alarmscreen.AlarmEvent
 import fit.asta.health.feature.scheduler.ui.screen.alarmscreen.AlarmScreen
@@ -20,16 +18,15 @@ import fit.asta.health.feature.scheduler.util.Constants
 @AndroidEntryPoint
 class AlarmScreenActivity : AppCompatActivity() {
     private lateinit var alarmScreenViewModel: AlarmScreenViewModel
-    var alarmEntity: AlarmEntity? = null
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        Constants.changeStatusBarColor(Color.BLACK, window, this)
+//        Constants.changeStatusBarColor(Color.BLACK, window, this)
         Constants.setShowWhenLocked(window, this)
     }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Constants.changeStatusBarColor(Color.BLACK, window, this)
+//        Constants.changeStatusBarColor(Color.BLACK, window, this)
         Constants.setShowWhenLocked(window, this)
         super.onCreate(savedInstanceState)
         setContent {

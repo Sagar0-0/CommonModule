@@ -1,5 +1,6 @@
 package fit.asta.health.data.scheduler.repo
 
+import android.content.Context
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getResponseState
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
@@ -14,10 +15,13 @@ import fit.asta.health.data.scheduler.remote.model.SchedulerGetTagsList
 import fit.asta.health.data.scheduler.remote.model.TodayData
 import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerDeleteResponse
 import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerPutResponse
-import fit.asta.health.data.scheduler.remote.net.tag.ScheduleTagNetData
+import fit.asta.health.data.scheduler.remote.net.tag.NetCustomTag
 import fit.asta.health.network.data.Status
+import fit.asta.health.network.utils.InputStreamRequestBody
+import okhttp3.MultipartBody
 
 class AlarmBackendRepoImp(
+    private val context: Context,
     private val remoteApi: SchedulerApiService
 ) : AlarmBackendRepo {
     override suspend fun getTodayDataFromBackend(
@@ -59,16 +63,19 @@ class AlarmBackendRepoImp(
         }
     }
 
-    override suspend fun updateScheduleTag(schedule: ScheduleTagNetData): ResponseState<Status> {
-        return getResponseState { remoteApi.updateScheduleTag(schedule) }
+    override suspend fun updateScheduleTag(schedule: NetCustomTag): ResponseState<Status> {
+        val file = MultipartBody.Part.createFormData(
+            name = "file",
+            filename = schedule.name,
+            body = InputStreamRequestBody(context.contentResolver, schedule.localUrl!!)
+        )
+        return getResponseState {
+            remoteApi.updateScheduleTag(schedule, file)
+        }
     }
 
-    override suspend fun getAllUserMedia(userId: String): ResponseState<Status> {
-        return getResponseState { remoteApi.getAllUserMedia(userId) }
-    }
-
-    override suspend fun updateUserMedia(schedule: ScheduleTagNetData): ResponseState<Status> {
-        return getResponseState { remoteApi.updateUserMedia(schedule) }
+    override suspend fun deleteTagFromBackend(userId: String, id: String): ResponseState<Status> {
+        return getResponseState { remoteApi.deleteTagFromBackend(userID = userId, id = id) }
     }
 
 }
