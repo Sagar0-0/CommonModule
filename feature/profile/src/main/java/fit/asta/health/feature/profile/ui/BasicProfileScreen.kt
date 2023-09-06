@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -39,6 +40,8 @@ import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
 import fit.asta.health.designsystem.component.AstaValidatedTextField
 import fit.asta.health.designsystem.component.AstaValidatedTextFieldType
+import fit.asta.health.designsystem.components.generic.AppScaffold
+import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.theme.LocalBoxSize
 import fit.asta.health.designsystem.theme.LocalSpacing
 import fit.asta.health.feature.auth.util.GoogleSignIn
@@ -47,6 +50,7 @@ import fit.asta.health.feature.profile.utils.REFERRAL_LENGTH
 import fit.asta.health.resources.drawables.R as DrawR
 import fit.asta.health.resources.strings.R as StringR
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BasicProfileScreen(
     user: User,
@@ -65,190 +69,197 @@ fun BasicProfileScreen(
             profileImageUri = uri
         }
 
-    Column(Modifier.verticalScroll(rememberScrollState())) {
-        var name by rememberSaveable {
-            mutableStateOf(user.name ?: "")
-        }
-        val email by rememberSaveable {
-            mutableStateOf(user.email ?: "")
-        }
-        val phone by rememberSaveable {
-            mutableStateOf(user.phoneNumber ?: "")
-        }
-        val gender by rememberSaveable {
-            mutableStateOf("1")
-        }
-        var ref by rememberSaveable {
-            mutableStateOf(autoFetchedReferralCode)
-        }
-
-        LaunchedEffect(ref){
-            if(ref.length == REFERRAL_LENGTH){
-                onEvent(BasicProfileEvent.CheckReferralCode(ref))
+    AppScaffold(topBar = {
+        AppTopBar(title = "Create a Profile")
+    }) {
+        Column(
+            Modifier
+                .padding(it)
+                .verticalScroll(rememberScrollState())) {
+            var name by rememberSaveable {
+                mutableStateOf(user.name ?: "")
             }
-        }
-
-        Box(
-            modifier = Modifier
-                .padding(LocalSpacing.current.medium)
-                .align(Alignment.CenterHorizontally)
-                .size(LocalBoxSize.current.medium)
-                .clip(CircleShape)
-                .clickable {
-                    imagePickerLauncher.launch("image/*")
-                },
-            contentAlignment = Alignment.Center
-        ) {
-            if (profileImageUri == null && user.photoUrl.isNullOrEmpty()) {
-                Image(
-                    modifier = Modifier
-                        .clip(CircleShape),
-                    painter = painterResource(id = DrawR.drawable.ic_person),
-                    contentDescription = "Profile",
-                    contentScale = ContentScale.Crop
-                )
-            } else {
-                Image(
-                    modifier = Modifier
-                        .clip(CircleShape),
-                    painter = rememberAsyncImagePainter(
-                        model = if (profileImageUri != null) {
-                            profileImageUri
-                        } else {
-                            user.photoUrl
-                        }
-                    ),
-                    contentDescription = "Profile",
-                    contentScale = ContentScale.Crop
-                )
+            val email by rememberSaveable {
+                mutableStateOf(user.email ?: "")
             }
-        }
-
-
-        AstaValidatedTextField(
-            label = StringR.string.name,
-            value = name,
-            onValueChange = { name = it })
-        Crossfade(targetState = user.email, label = "") { mail ->
-            if (mail.isNullOrEmpty()) {
-                GoogleSignIn(
-                    StringR.string.link_with_google_account
-                ) {
-                    onEvent(BasicProfileEvent.Link(it))
-                }
-            } else {
-                Text(email)
+            val phone by rememberSaveable {
+                mutableStateOf(user.phoneNumber ?: "")
             }
-        }
-
-        Crossfade(targetState = user.phoneNumber, label = "") { ph ->
-            if (ph.isNullOrEmpty()) {
-                PhoneSignIn {
-                    onEvent(BasicProfileEvent.Link(it))
-                }
-            } else {
-                Text(phone)
+            val gender by rememberSaveable {
+                mutableStateOf("1")
             }
-        }
+            var ref by rememberSaveable {
+                mutableStateOf(autoFetchedReferralCode)
+            }
 
-        Crossfade(targetState = checkReferralCodeState, label = "") { state ->
-            when (state) {
-                is UiState.Success -> {
-                    LaunchedEffect(Unit) {
-                        Toast.makeText(
-                            context,
-                            "YAY! You just got referred!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                    Row{
-                        Image(
-                            modifier = Modifier.clip(CircleShape),
-                            painter = rememberAsyncImagePainter(
-                                model = state.data.data!!.pic,
-                                placeholder = painterResource(id = DrawR.drawable.ic_person)
-                            ), contentDescription = "Profile"
-                        )
-                        Text(text = state.data.data!!.name)
-                    }
+            LaunchedEffect(ref){
+                if(ref.length == REFERRAL_LENGTH){
+                    onEvent(BasicProfileEvent.CheckReferralCode(ref))
                 }
+            }
 
-                is UiState.Error -> {
-                    LaunchedEffect(Unit) {
-                        Toast.makeText(
-                            context,
-                            "Invalid Refer code",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        onEvent(BasicProfileEvent.ResetCodeState)
-                    }
-                }
-
-                else -> {
-                    AstaValidatedTextField(
-                        type = AstaValidatedTextFieldType.Default(REFERRAL_LENGTH, REFERRAL_LENGTH),
-                        label = StringR.string.refer_code,
-                        value = ref,
-                        onValueChange = { str ->
-                            ref = str
-                        }
+            Box(
+                modifier = Modifier
+                    .padding(LocalSpacing.current.medium)
+                    .align(Alignment.CenterHorizontally)
+                    .size(LocalBoxSize.current.medium)
+                    .clip(CircleShape)
+                    .clickable {
+                        imagePickerLauncher.launch("image/*")
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                if (profileImageUri == null && user.photoUrl.isNullOrEmpty()) {
+                    Image(
+                        modifier = Modifier
+                            .clip(CircleShape),
+                        painter = painterResource(id = DrawR.drawable.ic_person),
+                        contentDescription = "Profile",
+                        contentScale = ContentScale.Crop
                     )
+                } else {
+                    Image(
+                        modifier = Modifier
+                            .clip(CircleShape),
+                        painter = rememberAsyncImagePainter(
+                            model = if (profileImageUri != null) {
+                                profileImageUri
+                            } else {
+                                user.photoUrl
+                            }
+                        ),
+                        contentDescription = "Profile",
+                        contentScale = ContentScale.Crop
+                    )
+                }
+            }
 
-                    Button(
-                        enabled = ref.length == REFERRAL_LENGTH,
-                        onClick = { onEvent(BasicProfileEvent.CheckReferralCode(ref)) }
+
+            AstaValidatedTextField(
+                label = StringR.string.name,
+                value = name,
+                onValueChange = { name = it })
+            Crossfade(targetState = user.email, label = "") { mail ->
+                if (mail.isNullOrEmpty()) {
+                    GoogleSignIn(
+                        StringR.string.link_with_google_account
                     ) {
-                        Text(text = "Check")
+                        onEvent(BasicProfileEvent.Link(it))
+                    }
+                } else {
+                    Text(email)
+                }
+            }
+
+            Crossfade(targetState = user.phoneNumber, label = "") { ph ->
+                if (ph.isNullOrEmpty()) {
+                    PhoneSignIn {
+                        onEvent(BasicProfileEvent.Link(it))
+                    }
+                } else {
+                    Text(phone)
+                }
+            }
+
+            Crossfade(targetState = checkReferralCodeState, label = "") { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        LaunchedEffect(Unit) {
+                            Toast.makeText(
+                                context,
+                                "YAY! You just got referred!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        Row{
+                            Image(
+                                modifier = Modifier.clip(CircleShape),
+                                painter = rememberAsyncImagePainter(
+                                    model = state.data.data!!.pic,
+                                    placeholder = painterResource(id = DrawR.drawable.ic_person)
+                                ), contentDescription = "Profile"
+                            )
+                            Text(text = state.data.data!!.name)
+                        }
+                    }
+
+                    is UiState.Error -> {
+                        LaunchedEffect(Unit) {
+                            Toast.makeText(
+                                context,
+                                "Invalid Refer code",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            onEvent(BasicProfileEvent.ResetCodeState)
+                        }
+                    }
+
+                    else -> {
+                        AstaValidatedTextField(
+                            type = AstaValidatedTextFieldType.Default(REFERRAL_LENGTH, REFERRAL_LENGTH),
+                            label = StringR.string.refer_code,
+                            value = ref,
+                            onValueChange = { str ->
+                                ref = str
+                            }
+                        )
+
+                        Button(
+                            enabled = ref.length == REFERRAL_LENGTH,
+                            onClick = { onEvent(BasicProfileEvent.CheckReferralCode(ref)) }
+                        ) {
+                            Text(text = "Check")
+                        }
                     }
                 }
             }
-        }
 
-        Button(
-            enabled = checkReferralCodeState is UiState.Success || checkReferralCodeState is UiState.Idle,
-            onClick = {
-                onEvent(
-                    BasicProfileEvent.CreateBasicProfile(
-                        BasicProfileDTO(
-                            uid = user.uid,
-                            mailUrl = user.photoUrl,
-                            name = name,
-                            gen = gender.toInt(),
-                            mail = email,
-                            ph = phone,
-                            refCode = ref
+            Button(
+                enabled = checkReferralCodeState is UiState.Success || checkReferralCodeState is UiState.Idle,
+                onClick = {
+                    onEvent(
+                        BasicProfileEvent.CreateBasicProfile(
+                            BasicProfileDTO(
+                                uid = user.uid,
+                                mailUrl = user.photoUrl,
+                                name = name,
+                                gen = gender.toInt(),
+                                mail = email,
+                                ph = phone,
+                                refCode = ref
+                            )
                         )
                     )
-                )
-            }
-        ) {
-            when (createBasicProfileState) {
-                is UiState.Loading -> {
-                    CircularProgressIndicator()
                 }
+            ) {
+                when (createBasicProfileState) {
+                    is UiState.Loading -> {
+                        CircularProgressIndicator()
+                    }
 
-                is UiState.Success -> {
-                    LaunchedEffect(Unit) {
-                        onEvent(BasicProfileEvent.NavigateToHome)
+                    is UiState.Success -> {
+                        LaunchedEffect(Unit) {
+                            onEvent(BasicProfileEvent.NavigateToHome)
+                        }
+                    }
+
+                    is UiState.Error -> {
+                        LaunchedEffect(Unit) {
+                            Toast.makeText(
+                                context,
+                                "Can not create profile, try again!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            onEvent(BasicProfileEvent.ResetCreateProfileState)
+                        }
+                    }
+
+                    is UiState.Idle -> {
+                        Text(text = "Create")
                     }
                 }
-
-                is UiState.Error -> {
-                    LaunchedEffect(Unit) {
-                        Toast.makeText(
-                            context,
-                            "Can not create profile, try again!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        onEvent(BasicProfileEvent.ResetCreateProfileState)
-                    }
-                }
-
-                is UiState.Idle -> {
-                    Text(text = "Create")
-                }
             }
+
         }
-
     }
 }
