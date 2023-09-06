@@ -11,6 +11,7 @@ import fit.asta.health.data.spotify.model.library.tracks.SpotifyLibraryTracksMod
 import fit.asta.health.data.spotify.model.me.SpotifyMeModel
 import fit.asta.health.data.spotify.model.recently.SpotifyUserRecentlyPlayedModel
 import fit.asta.health.data.spotify.model.recommendations.SpotifyRecommendationModel
+import fit.asta.health.data.spotify.model.saved.SpotifyLikedSongsResponse
 import fit.asta.health.data.spotify.model.search.ArtistList
 import fit.asta.health.data.spotify.model.search.SpotifySearchModel
 import fit.asta.health.data.spotify.model.search.TrackList
@@ -99,4 +100,10 @@ interface SpotifyApiService {
         @HeaderMap headers: Map<String, String>,
         @QueryMap queries: Map<String, String>
     ): SpotifyRecommendationModel
+
+    @GET("me/tracks")
+    suspend fun getCurrentUserSavedSongs(
+        @HeaderMap headers: Map<String, String>,
+        @QueryMap queries: Map<String, String>
+    ): SpotifyLikedSongsResponse
 }

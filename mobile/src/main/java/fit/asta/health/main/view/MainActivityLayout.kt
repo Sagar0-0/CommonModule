@@ -66,7 +66,7 @@ import fit.asta.health.navigation.home.view.HomeContent
 import fit.asta.health.navigation.today.ui.view.HomeEvent
 import fit.asta.health.navigation.today.ui.view.TodayContent
 import fit.asta.health.navigation.today.ui.vm.TodayPlanViewModel
-import fit.asta.health.navigation.track.TrackNavGraph
+import fit.asta.health.navigation.track.TrackMenuScreenControl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -362,7 +362,7 @@ private fun MainNavHost(
         }
 
         composable(BottomBarDestination.Track.route) {
-            TrackNavGraph()
+            TrackMenuScreenControl()
         }
     }
 }

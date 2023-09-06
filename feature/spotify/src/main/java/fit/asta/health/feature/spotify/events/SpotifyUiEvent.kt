@@ -43,6 +43,8 @@ sealed class SpotifyUiEvent {
         data object LoadSpotifySearchResult : NetworkIO()
 
         data object LoadTrackDetails : NetworkIO()
+
+        data object LoadLikedSongs : NetworkIO()
     }
 
     sealed class LocalIO : SpotifyUiEvent() {

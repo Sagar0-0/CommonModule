@@ -19,6 +19,7 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.spotify.model.common.Album
 import fit.asta.health.data.spotify.model.common.Track
 import fit.asta.health.data.spotify.model.recently.SpotifyUserRecentlyPlayedModel
+import fit.asta.health.data.spotify.model.saved.SpotifyLikedSongsResponse
 import fit.asta.health.data.spotify.model.search.TrackList
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
@@ -32,6 +33,7 @@ import fit.asta.health.resources.strings.R as StringR
 fun SpotifyHomeScreen(
     recentlyData: UiState<SpotifyUserRecentlyPlayedModel>,
     topMixData: UiState<TrackList>,
+    likedSongs: UiState<SpotifyLikedSongsResponse>,
     favouriteTracks: UiState<List<Track>>,
     favouriteAlbums: UiState<List<Album>>,
     setEvent: (SpotifyUiEvent) -> Unit,
@@ -42,6 +44,7 @@ fun SpotifyHomeScreen(
     LaunchedEffect(Unit) {
         setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserRecentlyPlayedTracks)
         setEvent(SpotifyUiEvent.NetworkIO.LoadUserTopTracks)
+        setEvent(SpotifyUiEvent.NetworkIO.LoadLikedSongs)
         setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
         setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums)
     }
@@ -206,6 +209,80 @@ fun SpotifyHomeScreen(
                     }
                 }
             }
+        }
+
+
+        // Liked Songs Text
+        item {
+            Text(
+                text = stringResource(StringR.string.liked_songs),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSecondaryContainer
+            )
+        }
+
+        // Showing the user's Spotify Liked Songs
+        when (likedSongs) {
+
+            // Idle state
+            is UiState.Idle -> {
+//                setEvent(SpotifyUiEvent.NetworkIO.LoadLikedSongs)
+            }
+
+            // Loading State
+            is UiState.Loading -> {
+                item {
+                    LoadingAnimation()
+                }
+            }
+
+            is UiState.Success -> {
+                items(likedSongs.data.trackList.size) {
+
+                    // Current Item
+                    val currentItem = likedSongs.data.trackList[it]
+
+                    val textToShow = currentItem.track.artists
+                        .map { artist -> artist.name }
+                        .toString()
+                        .filterNot { char ->
+                            char == '[' || char == ']'
+                        }.trim()
+
+                    SpotifyMusicItem(
+                        imageUri = currentItem.track.album.images.firstOrNull()?.url,
+                        name = currentItem.track.name,
+                        secondaryText = textToShow,
+                        onCardClick = {
+                            setEvent(
+                                SpotifyUiEvent.HelperEvent.PlaySpotifySong(
+                                    currentItem.track.uri
+                                )
+                            )
+                        }
+                    ) {
+                        setEvent(
+                            SpotifyUiEvent.HelperEvent.OnApplyClick(
+                                ToneUiState(
+                                    name = currentItem.track.name,
+                                    type = 1,
+                                    uri = currentItem.track.previewUrl ?: ""
+                                )
+                            )
+                        )
+                    }
+                }
+            }
+
+            // Error State
+            is UiState.Error -> {
+                item {
+                    AppErrorScreen(desc = likedSongs.resId.toStringFromResId()) {
+                        setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
+                    }
+                }
+            }
+
         }
 
         // Favourite Tracks Text

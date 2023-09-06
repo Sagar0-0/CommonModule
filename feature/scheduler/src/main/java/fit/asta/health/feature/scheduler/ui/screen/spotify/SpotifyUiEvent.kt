@@ -13,6 +13,8 @@ sealed class SpotifyUiEvent {
         class SetSearchQueriesAndVariables(val query: String) : NetworkIO()
 
         data object LoadSpotifySearchResult : NetworkIO()
+
+        data object LoadLikedSongs : NetworkIO()
     }
 
     sealed class HelperEvent : SpotifyUiEvent() {
