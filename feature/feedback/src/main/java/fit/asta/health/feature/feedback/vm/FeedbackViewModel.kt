@@ -55,9 +55,9 @@ class FeedbackViewModel
         _feedbackPostState.value = UiState.Loading
         val feedback = UserFeedbackDTO(
             ans = data,
-            fid = _fid,
+            fid = "64cc930371f204b50abd99f0",//TODO: FOR TESTING ONLY SHOULD USE _fid
             id = "",
-            qnrId = _qnrId,
+            qnrId = "64cc937171f204b50abd99f1",//TODO: FOR TESTING ONLY SHOULD USE _qnrId
             uid = uId
         )
         viewModelScope.launch {
