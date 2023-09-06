@@ -12,6 +12,7 @@ import fit.asta.health.data.spotify.model.library.tracks.SpotifyLibraryTracksMod
 import fit.asta.health.data.spotify.model.me.SpotifyMeModel
 import fit.asta.health.data.spotify.model.recently.SpotifyUserRecentlyPlayedModel
 import fit.asta.health.data.spotify.model.recommendations.SpotifyRecommendationModel
+import fit.asta.health.data.spotify.model.saved.SpotifyLikedSongsResponse
 import fit.asta.health.data.spotify.model.search.ArtistList
 import fit.asta.health.data.spotify.model.search.SpotifySearchModel
 import fit.asta.health.data.spotify.model.search.TrackList
@@ -68,4 +69,11 @@ interface SpotifyRepo {
         seedTracks: String,
         limit: String
     ): ResponseState<SpotifyRecommendationModel>
+
+    suspend fun getCurrentUserSavedSongs(
+        accessToken: String,
+        market: String,
+        limit: String,
+        offset: String
+    ): ResponseState<SpotifyLikedSongsResponse>
 }

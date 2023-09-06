@@ -21,9 +21,11 @@ import androidx.compose.material.icons.filled.Vibration
 import androidx.compose.material.icons.filled.Wysiwyg
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -47,13 +49,13 @@ import fit.asta.health.feature.scheduler.ui.components.TimePickerBottomSheet
 import fit.asta.health.feature.scheduler.ui.components.VibrationBottomSheetLayout
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.AlarmCreateBottomSheetTypes.*
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import fit.asta.health.resources.strings.R as StringR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlarmSettingScreen(
     alarmSettingUiState: ASUiState = ASUiState(),
-    areInputsValid: Boolean,
     aSEvent: (AlarmSettingEvent) -> Unit = {},
     navTagSelection: () -> Unit = {},
     navTimeSetting: () -> Unit = {},
@@ -64,8 +66,29 @@ fun AlarmSettingScreen(
     var currentBottomSheet: AlarmCreateBottomSheetTypes? by remember {
         mutableStateOf(null)
     }
+    val areInputsValid by remember(alarmSettingUiState) {
+        mutableStateOf(
+            alarmSettingUiState.alarmName.isNotEmpty() &&
+                    alarmSettingUiState.alarmDescription.isNotEmpty() &&
+                    alarmSettingUiState.tagName.isNotEmpty()
+        )
+    }
+    var onClick by rememberSaveable {
+        mutableStateOf(false)
+    }
+    val nameBg: Color? by remember(onClick, alarmSettingUiState) {
+        mutableStateOf(if (alarmSettingUiState.alarmName.isEmpty() && onClick) Color.Red else null)
+    }
+    val descriptionBg: Color? by remember(onClick, alarmSettingUiState) {
+        mutableStateOf(if (alarmSettingUiState.alarmDescription.isEmpty() && onClick) Color.Red else null)
+    }
+    val tagBg: Color? by remember(onClick, alarmSettingUiState) {
+        mutableStateOf(if (alarmSettingUiState.tagName.isEmpty() && onClick) Color.Red else null)
+    }
+
 
     val scope = rememberCoroutineScope()
+
 
     val closeSheet = {
         scope.launch { bottomSheetState.hide() }
@@ -91,10 +114,14 @@ fun AlarmSettingScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
-                        IconButton(enabled = areInputsValid,
+                        IconButton(
                             onClick = {
-                                aSEvent(AlarmSettingEvent.Save(context = context))
-                                navBack()
+                                if (areInputsValid) {
+                                    aSEvent(AlarmSettingEvent.Save(context = context))
+                                    navBack()
+                                } else {
+                                    onClick = true
+                                }
                             }
                         ) {
                             Icon(
@@ -136,15 +163,14 @@ fun AlarmSettingScreen(
                 TextSelection(imageIcon = Icons.Default.Tag,
                     title = stringResource(id = StringR.string.tag),
                     arrowTitle = alarmSettingUiState.tagName,
-                    btnEnabled = true,
+                    btnEnabled = true, color = tagBg,
                     onNavigateAction = {
-                        aSEvent(AlarmSettingEvent.GotoTagScreen)
                         navTagSelection()
                     })
                 TextSelection(imageIcon = Icons.Default.Label,
                     title = stringResource(id = StringR.string.label),
                     arrowTitle = alarmSettingUiState.alarmName,
-                    btnEnabled = true,
+                    btnEnabled = true, color = nameBg,
                     onNavigateAction = {
                         currentBottomSheet = LABEL
                         openSheet()
@@ -152,7 +178,7 @@ fun AlarmSettingScreen(
                 TextSelection(imageIcon = Icons.Default.Description,
                     title = stringResource(id = StringR.string.description),
                     arrowTitle = alarmSettingUiState.alarmDescription,
-                    btnEnabled = true,
+                    btnEnabled = true, color = descriptionBg,
                     onNavigateAction = {
                         currentBottomSheet = DESCRIPTION
                         openSheet()
@@ -160,10 +186,13 @@ fun AlarmSettingScreen(
                 TextSelection(imageIcon = Icons.Default.AddAlarm,
                     title = stringResource(StringR.string.intervals_settings),
                     arrowTitle = stringResource(StringR.string.optional),
-                    btnEnabled = areInputsValid,
+                    btnEnabled = true,
                     onNavigateAction = {
-                        aSEvent(AlarmSettingEvent.GotoTimeSettingScreen)
-                        navTimeSetting()
+                        if (areInputsValid) {
+                            navTimeSetting()
+                        } else {
+                            onClick = true
+                        }
                     })
                 TextSelection(imageIcon = if (alarmSettingUiState.mode == "Notification") Icons.Default.NotificationsActive else Icons.Default.Wysiwyg,
                     title = stringResource(id = StringR.string.reminder_mode),
@@ -236,6 +265,9 @@ fun AlarmCreateBtmSheetLayout(
     aSEvent: (AlarmSettingEvent) -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
+    var title by remember {
+        mutableStateOf("Select Time")
+    }
     when (sheetLayout) {
         LABEL -> {
             Column(modifier = Modifier.fillMaxWidth()) {
@@ -295,6 +327,7 @@ fun AlarmCreateBtmSheetLayout(
 
         TIME -> {
             TimePickerBottomSheet(
+                title = title,
                 time = AMPMHoursMin(
                     hours = if (alarmSettingUiState.timeHours > 12) {
                         alarmSettingUiState.timeHours - 12
@@ -303,16 +336,31 @@ fun AlarmCreateBtmSheetLayout(
                     dayTime = if (alarmSettingUiState.timeHours >= 12) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
                 ),
                 onSave = {
-                    closeSheet()
                     val time = it.convert12hrTo24hr()
-                    aSEvent(
-                        AlarmSettingEvent.SetAlarmTime(
-                            Time(
-                                hours = time.hour,
-                                minutes = it.minutes
+                    val calendar = Calendar.getInstance()
+                    val count = alarmSettingUiState.week.getDistanceToNextDay(calendar)
+                    calendar[Calendar.DAY_OF_MONTH] = calendar.get(Calendar.DAY_OF_MONTH) + count
+                    calendar[Calendar.HOUR_OF_DAY] = time.hour
+                    calendar[Calendar.MINUTE] = time.min
+                    calendar[Calendar.SECOND] = 0
+                    calendar[Calendar.MILLISECOND] = 0
+                    val old = alarmSettingUiState.alarmList.find { alarmIns ->
+                        alarmIns.alarmTime == calendar
+                    }
+                    if (old != null) {
+                        title = "This alarm time is already set for other "
+                        return@TimePickerBottomSheet
+                    } else {
+                        closeSheet()
+                        aSEvent(
+                            AlarmSettingEvent.SetAlarmTime(
+                                Time(
+                                    hours = time.hour,
+                                    minutes = it.minutes
+                                )
                             )
                         )
-                    )
+                    }
                 }, onCancel = closeSheet
             )
         }

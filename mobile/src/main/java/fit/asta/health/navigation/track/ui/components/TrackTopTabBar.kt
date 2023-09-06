@@ -34,7 +34,7 @@ private fun DefaultPreview() {
                 "DAY",
                 "WEEK",
                 "MONTH",
-                "ALL"
+                "YEAR"
             ),
             selectedItem = 0,
             selectedColor = Color.Blue,
@@ -57,7 +57,7 @@ private fun DefaultPreview() {
 @Composable
 fun TrackTopTabBar(
     modifier: Modifier = Modifier,
-    tabList: List<String> = listOf("DAY", "WEEK", "MONTH", "ALL"),
+    tabList: List<String> = listOf("DAY", "WEEK", "MONTH", "YEAR"),
     selectedItem: Int,
     strokeWidth: Float = 10f,
     selectedColor: Color = Color.Blue,

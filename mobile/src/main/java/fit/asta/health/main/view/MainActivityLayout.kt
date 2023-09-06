@@ -66,7 +66,7 @@ import fit.asta.health.navigation.home.view.HomeContent
 import fit.asta.health.navigation.today.ui.view.HomeEvent
 import fit.asta.health.navigation.today.ui.view.TodayContent
 import fit.asta.health.navigation.today.ui.vm.TodayPlanViewModel
-import fit.asta.health.navigation.track.TrackNavGraph
+import fit.asta.health.navigation.track.TrackMenuScreenControl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -306,6 +306,7 @@ private fun MainNavHost(
             val listEvening by todayPlanViewModel.alarmListEvening.collectAsStateWithLifecycle()
             val listNextDay by todayPlanViewModel.alarmListNextDay.collectAsStateWithLifecycle()
             val state by todayPlanViewModel.todayState.collectAsStateWithLifecycle()
+            val defaultScheduleVisibility by todayPlanViewModel.defaultScheduleVisibility.collectAsStateWithLifecycle()
             when (state) {
                 is UiState.Loading -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -320,6 +321,7 @@ private fun MainNavHost(
                 is UiState.Success -> {
                     TodayContent(
                         uiState = (state as UiState.Success<TodayData>).data,
+                        defaultScheduleVisibility = defaultScheduleVisibility,
                         listMorning = listMorning,
                         listAfternoon = listAfternoon,
                         listEvening = listEvening,
@@ -337,14 +339,6 @@ private fun MainNavHost(
 
                                 is HomeEvent.DeleteAlarm -> {
                                     todayPlanViewModel.deleteAlarm(uiEvent.alarm, uiEvent.context)
-                                }
-
-                                is HomeEvent.RemoveAlarm -> {
-                                    todayPlanViewModel.removeAlarm(uiEvent.alarm, uiEvent.event)
-                                }
-
-                                is HomeEvent.UndoAlarm -> {
-                                    todayPlanViewModel.undo(uiEvent.alarm, uiEvent.event)
                                 }
 
                                 is HomeEvent.SkipAlarm -> {
@@ -368,7 +362,7 @@ private fun MainNavHost(
         }
 
         composable(BottomBarDestination.Track.route) {
-            TrackNavGraph()
+            TrackMenuScreenControl()
         }
     }
 }

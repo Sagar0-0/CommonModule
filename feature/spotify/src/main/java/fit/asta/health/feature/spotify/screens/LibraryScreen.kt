@@ -26,12 +26,14 @@ import fit.asta.health.data.spotify.model.library.following.SpotifyUserFollowing
 import fit.asta.health.data.spotify.model.library.playlist.SpotifyUserPlaylistsModel
 import fit.asta.health.data.spotify.model.library.shows.SpotifyLibraryShowsModel
 import fit.asta.health.data.spotify.model.library.tracks.SpotifyLibraryTracksModel
+import fit.asta.health.data.spotify.model.saved.SpotifyLikedSongsResponse
 import fit.asta.health.feature.spotify.components.MusicProfileOptionList
 import fit.asta.health.feature.spotify.components.MusicSmallImageRow
 import fit.asta.health.feature.spotify.events.SpotifyUiEvent
 
 @Composable
-fun ProfileScreen(
+fun LibraryScreen(
+    currentUserLikedSongs: UiState<SpotifyLikedSongsResponse>,
     currentUserTracks: UiState<SpotifyLibraryTracksModel>,
     currentUserPlaylist: UiState<SpotifyUserPlaylistsModel>,
     currentUserArtists: UiState<SpotifyUserFollowingArtist>,
@@ -54,18 +56,82 @@ fun ProfileScreen(
         MusicProfileOptionList(selectedItem = selectedItem.intValue) { selectedItem.intValue = it }
 
         when (selectedItem.intValue) {
-            0 -> TracksUI(setEvent = setEvent, currentUserTracks = currentUserTracks)
-            1 -> PlaylistUI(currentUserPlaylist = currentUserPlaylist, setEvent = setEvent)
-            2 -> ArtistsUI(currentUserArtists = currentUserArtists, setEvent = setEvent)
-            3 -> AlbumsUI(currentUserAlbums = currentUserAlbums, setEvent = setEvent)
-            4 -> ShowUI(currentUserShows = currentUserShows, setEvent = setEvent)
-            5 -> EpisodeUI(currentUserEpisodes = currentUserEpisodes, setEvent = setEvent)
+            0 -> LikedSongsUI(likedSongs = currentUserLikedSongs, setEvent = setEvent)
+            1 -> TracksUI(setEvent = setEvent, currentUserTracks = currentUserTracks)
+            2 -> PlaylistUI(currentUserPlaylist = currentUserPlaylist, setEvent = setEvent)
+            3 -> ArtistsUI(currentUserArtists = currentUserArtists, setEvent = setEvent)
+            4 -> AlbumsUI(currentUserAlbums = currentUserAlbums, setEvent = setEvent)
+            5 -> ShowUI(currentUserShows = currentUserShows, setEvent = setEvent)
+            6 -> EpisodeUI(currentUserEpisodes = currentUserEpisodes, setEvent = setEvent)
         }
     }
 }
 
 @Composable
-fun TracksUI(
+private fun LikedSongsUI(
+    likedSongs: UiState<SpotifyLikedSongsResponse>,
+    setEvent: (SpotifyUiEvent) -> Unit
+) {
+
+    LaunchedEffect(Unit) {
+        setEvent(SpotifyUiEvent.NetworkIO.LoadLikedSongs)
+    }
+
+    when (likedSongs) {
+
+        is UiState.Idle -> {
+//            setEvent(SpotifyUiEvent.NetworkIO.LoadLikedSongs)
+        }
+
+        is UiState.Loading -> {
+            LoadingAnimation(modifier = Modifier.fillMaxSize())
+        }
+
+        is UiState.Success -> {
+
+            likedSongs.data.trackList.let { trackList ->
+
+                LazyColumn(
+                    modifier = Modifier
+                        .height(LocalConfiguration.current.screenHeightDp.dp)
+                        .padding(start = 12.dp)
+                        .width(LocalConfiguration.current.screenWidthDp.dp),
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    items(trackList.size) {
+
+                        // current Item
+                        val currentItem = trackList[it]
+
+                        val textToShow = currentItem.track.artists
+                            .map { artist -> artist.name }
+                            .toString()
+                            .filterNot { char ->
+                                char == '[' || char == ']'
+                            }.trim()
+
+                        MusicSmallImageRow(
+                            imageUri = currentItem.track.album.images.firstOrNull()?.url,
+                            name = currentItem.track.name,
+                            secondaryText = textToShow
+                        ) {
+                            setEvent(SpotifyUiEvent.HelperEvent.PlaySong(currentItem.track.uri))
+                        }
+                    }
+                }
+            }
+        }
+
+        is UiState.Error -> {
+            AppErrorScreen(desc = likedSongs.resId.toStringFromResId()) {
+                setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserTracks)
+            }
+        }
+    }
+}
+
+@Composable
+private fun TracksUI(
     currentUserTracks: UiState<SpotifyLibraryTracksModel>,
     setEvent: (SpotifyUiEvent) -> Unit
 ) {
@@ -128,7 +194,7 @@ fun TracksUI(
 }
 
 @Composable
-fun PlaylistUI(
+private fun PlaylistUI(
     currentUserPlaylist: UiState<SpotifyUserPlaylistsModel>,
     setEvent: (SpotifyUiEvent) -> Unit
 ) {
@@ -185,7 +251,7 @@ fun PlaylistUI(
 }
 
 @Composable
-fun ArtistsUI(
+private fun ArtistsUI(
     currentUserArtists: UiState<SpotifyUserFollowingArtist>,
     setEvent: (SpotifyUiEvent) -> Unit
 ) {
@@ -240,7 +306,7 @@ fun ArtistsUI(
 }
 
 @Composable
-fun AlbumsUI(
+private fun AlbumsUI(
     currentUserAlbums: UiState<SpotifyLibraryAlbumModel>,
     setEvent: (SpotifyUiEvent) -> Unit
 ) {
@@ -296,7 +362,7 @@ fun AlbumsUI(
 }
 
 @Composable
-fun ShowUI(
+private fun ShowUI(
     currentUserShows: UiState<SpotifyLibraryShowsModel>,
     setEvent: (SpotifyUiEvent) -> Unit
 ) {
@@ -352,7 +418,7 @@ fun ShowUI(
 }
 
 @Composable
-fun EpisodeUI(
+private fun EpisodeUI(
     currentUserEpisodes: UiState<SpotifyLibraryEpisodesModel>,
     setEvent: (SpotifyUiEvent) -> Unit
 ) {

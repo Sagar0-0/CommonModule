@@ -14,6 +14,7 @@ import fit.asta.health.data.spotify.model.library.tracks.SpotifyLibraryTracksMod
 import fit.asta.health.data.spotify.model.me.SpotifyMeModel
 import fit.asta.health.data.spotify.model.recently.SpotifyUserRecentlyPlayedModel
 import fit.asta.health.data.spotify.model.recommendations.SpotifyRecommendationModel
+import fit.asta.health.data.spotify.model.saved.SpotifyLikedSongsResponse
 import fit.asta.health.data.spotify.model.search.ArtistList
 import fit.asta.health.data.spotify.model.search.SpotifySearchModel
 import fit.asta.health.data.spotify.model.search.TrackList
@@ -269,6 +270,29 @@ class SpotifyRepoImpl(
                 queryMap["limit"] = limit
 
                 spotifyApi.getRecommendations(headerMap, queryMap)
+            }
+        }
+    }
+
+    override suspend fun getCurrentUserSavedSongs(
+        accessToken: String,
+        market: String,
+        limit: String,
+        offset: String
+    ): ResponseState<SpotifyLikedSongsResponse> {
+
+        return withContext(dispatcher) {
+            getResponseState {
+
+                val headerMap: HashMap<String, String> = HashMap()
+                headerMap["Authorization"] = "Bearer $accessToken"
+                headerMap["Content-Type"] = "application/json"
+                val queryMap: HashMap<String, String> = HashMap()
+                queryMap["market"] = market
+                queryMap["limit"] = limit
+                queryMap["offset"] = offset
+
+                spotifyApi.getCurrentUserSavedSongs(headerMap , queryMap)
             }
         }
     }

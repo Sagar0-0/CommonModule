@@ -20,7 +20,7 @@ data class AlarmInstance(
     @ColumnInfo(name = "alarm_state") var mAlarmState: Int = 0
 ) {
     override fun hashCode(): Int {
-        return java.lang.Long.valueOf(mId).hashCode()
+        return java.lang.Long.valueOf(mAlarmId).hashCode()
     }
 
     override fun equals(other: Any?): Boolean {

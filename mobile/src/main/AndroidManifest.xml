@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-sdk />
+
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="false" />
@@ -54,6 +55,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".navigation.track.TrackStatisticsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_track_statistics"
+            android:theme="@style/AppTheme" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
@@ -64,7 +70,6 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/MAPS_API_KEY" />
@@ -114,7 +119,6 @@
             android:name=".tools.walking.view.WalkingActivity"
             android:exported="true">
             <intent-filter android:autoVerify="true">
-
                 <data android:scheme="https" />
                 <data android:scheme="http" />
                 <data android:host="www.asta.care" />
@@ -169,7 +173,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter android:autoVerify="true">
-
                 <data android:scheme="https" />
                 <data android:scheme="http" />
                 <data android:host="www.asta.care" />
@@ -184,7 +187,6 @@
             android:name=".player.jetpack_video.VideoActivity"
             android:configChanges="colorMode|density|fontScale|keyboard|keyboardHidden|layoutDirection|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode"
             android:exported="true" />
-
 
         <service
             android:name=".player.jetpack_audio.exo_player.MusicService"

@@ -101,23 +101,31 @@ fun TimeSettingCreateBtmSheetLayout(
     closeSheet: () -> Unit,
 ) {
     val context = LocalContext.current
+    val title by remember {
+        mutableStateOf("Select Time")
+    }
     when (sheetLayout) {
         Advanced -> {
-            SnoozeBottomSheet(onNavigateBack = { closeSheet() }, onValueChange = {
-                tSEvent(TimeSettingEvent.SetAdvancedDuration(it, context))
-            })
+            SnoozeBottomSheet(onNavigateBack = { closeSheet() }, minutesRange = (5..35),
+                onValueChange = {
+                    closeSheet()
+                    tSEvent(TimeSettingEvent.SetAdvancedDuration(it, context))
+                })
         }
 
         SnoozeSelection -> {
-            SnoozeBottomSheet(onNavigateBack = { closeSheet() }, onValueChange = {
-                tSEvent(TimeSettingEvent.SetSnooze(it))
-            })
+            SnoozeBottomSheet(onNavigateBack = { closeSheet() }, minutesRange = (5..15),
+                onValueChange = {
+                    closeSheet()
+                    tSEvent(TimeSettingEvent.SetSnooze(it))
+                })
         }
 
 
         EndAlarm -> {
             Column(modifier = Modifier.fillMaxWidth()) {
                 TimePickerBottomSheet(
+                    title = title,
                     time = AMPMHoursMin(),
                     onSave = {
                         closeSheet()

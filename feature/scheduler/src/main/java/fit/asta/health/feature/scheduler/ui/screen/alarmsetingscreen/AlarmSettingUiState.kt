@@ -1,5 +1,6 @@
 package fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen
 
+import fit.asta.health.data.scheduler.db.entity.AlarmInstance
 import fit.asta.health.data.scheduler.db.entity.Weekdays
 import fit.asta.health.feature.scheduler.util.VibrationPattern
 
@@ -46,7 +47,7 @@ data class ASUiState(
     var uDate: String = "1",
 
     //save
-    val uiError: String = ""
+    val alarmList: List<AlarmInstance> = emptyList()
 )
 
 

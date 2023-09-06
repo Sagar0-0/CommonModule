@@ -13,6 +13,7 @@ import fit.asta.health.data.scheduler.repo.AlarmLocalRepo
 import fit.asta.health.feature.scheduler.util.StateManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,7 +38,11 @@ class AllAlarmViewModel @Inject constructor(
             Log.d("state", "changeAlarmState: $state")
             updateDatabase(state, alarm)
             if (state) {
-                stateManager.registerAlarm(context, alarm)
+                stateManager.registerAlarm(
+                    context,
+                    alarm,
+                    (alarm.skipDate == LocalDate.now().dayOfMonth)
+                )
             } else {
                 stateManager.deleteAlarm(context, alarm)
             }

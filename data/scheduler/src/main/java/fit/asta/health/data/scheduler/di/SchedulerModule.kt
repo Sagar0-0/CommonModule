@@ -1,6 +1,7 @@
 package fit.asta.health.data.scheduler.di
 
 import android.app.AlarmManager
+import android.app.NotificationManager
 import android.content.Context
 import dagger.Module
 import dagger.Provides
@@ -31,9 +32,11 @@ object SchedulerModule {
     @Singleton
     @Provides
     fun provideBackendRepo(
-        remoteApi: SchedulerApiService
+        remoteApi: SchedulerApiService,
+        @ApplicationContext context: Context
     ): AlarmBackendRepo {
         return AlarmBackendRepoImp(
+            context = context,
             remoteApi = remoteApi
         )
     }
@@ -42,7 +45,7 @@ object SchedulerModule {
     @Singleton
     @Provides
     fun provideRepo(db: AlarmDatabase): AlarmLocalRepo {
-        return AlarmLocalRepoImp(db.alarmDao())
+        return AlarmLocalRepoImp(db.alarmDao(), db.alarmInstanceDao())
     }
 
 
@@ -52,16 +55,9 @@ object SchedulerModule {
         return context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     }
 
-//    @Singleton
-//    @Provides
-//    fun provideAlarmUtils(
-//        @ApplicationContext context: Context,
-//        alarmManager: AlarmManager
-//    ): AlarmUtils {
-//        return AlarmUtilsImp(
-//            alarmManager = alarmManager,
-//            context = context,
-//            calendar = Calendar.getInstance()
-//        )
-//    }
+    @Singleton
+    @Provides
+    fun provideNotificationManager(@ApplicationContext context: Context): NotificationManager {
+        return context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    }
 }

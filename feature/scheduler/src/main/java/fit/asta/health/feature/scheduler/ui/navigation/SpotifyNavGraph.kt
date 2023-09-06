@@ -30,6 +30,9 @@ fun SpotifyNavGraph(
                     val topMixData = spotifyViewModel.userTopTracks
                         .collectAsStateWithLifecycle().value
 
+                    val likedSongs = spotifyViewModel.currentUserSavedSongs
+                        .collectAsStateWithLifecycle().value
+
                     val favouriteTracks = spotifyViewModel.allTracks
                         .collectAsStateWithLifecycle().value
 
@@ -39,6 +42,7 @@ fun SpotifyNavGraph(
                     SpotifyHomeScreen(
                         recentlyData = recentlyData,
                         topMixData = topMixData,
+                        likedSongs = likedSongs,
                         favouriteTracks = favouriteTracks,
                         favouriteAlbums = favouriteAlbums,
                         setEvent = spotifyViewModel::eventHelper,

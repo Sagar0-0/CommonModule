@@ -13,6 +13,7 @@ import fit.asta.health.data.spotify.model.common.Album
 import fit.asta.health.data.spotify.model.common.Track
 import fit.asta.health.data.spotify.model.me.SpotifyMeModel
 import fit.asta.health.data.spotify.model.recently.SpotifyUserRecentlyPlayedModel
+import fit.asta.health.data.spotify.model.saved.SpotifyLikedSongsResponse
 import fit.asta.health.data.spotify.model.search.SpotifySearchModel
 import fit.asta.health.data.spotify.model.search.TrackList
 import fit.asta.health.data.spotify.repo.MusicRepository
@@ -273,6 +274,34 @@ class SpotifyViewModel @Inject constructor(
         }
     }
 
+    /**
+     * This variable contains the current User All the saved songs from the spotify APi
+     */
+    private val _currentUserSavedSongs =
+        MutableStateFlow<UiState<SpotifyLikedSongsResponse>>(UiState.Idle)
+    val currentUserSavedSongs = _currentUserSavedSongs.asStateFlow()
+
+    /**
+     *  This function fetches the current User all the Episodes from the spotify APi
+     */
+    private fun getCurrentUserLikedSongs() {
+
+        if (_currentUserSavedSongs.value is UiState.Loading)
+            return
+
+        _currentUserSavedSongs.value = UiState.Loading
+
+        viewModelScope.launch {
+            _currentUserSavedSongs.value = remoteRepository
+                .getCurrentUserSavedSongs(
+                    accessToken = accessToken,
+                    market = (_currentUserData.value as UiState.Success<SpotifyMeModel>).data.country,
+                    limit = "50",
+                    offset = "5"
+                ).toUiState()
+        }
+    }
+
     fun eventHelper(event: SpotifyUiEvent) {
         when (event) {
 
@@ -290,6 +319,10 @@ class SpotifyViewModel @Inject constructor(
 
             is SpotifyUiEvent.NetworkIO.LoadSpotifySearchResult -> {
                 getSpotifySearchResult()
+            }
+
+            is SpotifyUiEvent.NetworkIO.LoadLikedSongs -> {
+                getCurrentUserLikedSongs()
             }
 
             is SpotifyUiEvent.HelperEvent.PlaySpotifySong -> {

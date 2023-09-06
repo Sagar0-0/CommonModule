@@ -16,26 +16,28 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import fit.asta.health.data.scheduler.db.entity.TagEntity
 import fit.asta.health.designsystem.components.*
+import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppScaffold
+import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.AppTopBar
+import fit.asta.health.feature.scheduler.ui.components.AlertDialogPopUp
 import fit.asta.health.feature.scheduler.ui.components.CustomTagBottomSheetLayout
 import fit.asta.health.feature.scheduler.ui.components.SwipeDemo
-import fit.asta.health.feature.scheduler.ui.screen.tagscreen.TagCreateBottomSheetTypes.CUSTOMTAGCREATION
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import fit.asta.health.resources.strings.R as StringR
 
@@ -44,13 +46,9 @@ import fit.asta.health.resources.strings.R as StringR
 fun TagsScreen(
     onNavBack: () -> Unit = {},
     tagsEvent: (TagsEvent) -> Unit = {},
-    tagsUiState: TagsUiState = TagsUiState()
+    tagsList: SnapshotStateList<TagEntity>,
+    customTagList: SnapshotStateList<TagEntity>
 ) {
-
-    var currentBottomSheet: TagCreateBottomSheetTypes? by remember {
-        mutableStateOf(null)
-    }
-
     val bottomSheetState = androidx.compose.material3.rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
 
@@ -61,48 +59,65 @@ fun TagsScreen(
     val openSheet = {
         scope.launch { bottomSheetState.show() }
     }
+    var deleteDialog by rememberSaveable { mutableStateOf(false) }
+    var deletedItem by remember { mutableStateOf<TagEntity?>(null) }
+    if (deleteDialog) {
+        AlertDialogPopUp(
+            content = "Are you sure you want to delete this Tag?",
+            actionButton = stringResource(id = StringR.string.delete),
+            onDismiss = { deleteDialog = false },
+            onDone = {
+                deletedItem?.let { tagsEvent(TagsEvent.DeleteTag(it)) }
+                deleteDialog = false
+            })
+    }
     val snackBarHostState = remember { SnackbarHostState() }
-    val coroutineScope: CoroutineScope = rememberCoroutineScope()
-    val undo = stringResource(id = StringR.string.undo)
-    val delete = stringResource(id = StringR.string.deleted)
-    AppScaffold(snackBarHostState = snackBarHostState,
+    AppScaffold(
+        snackBarHostState = snackBarHostState,
         content = {
-            LazyColumn(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(it)
-                    .background(color = MaterialTheme.colorScheme.secondaryContainer)
-            ) {
-                items(tagsUiState.tagsList) { data ->
-                    SwipeDemo(data = data, onSwipe = {
-                        tagsEvent(TagsEvent.DeleteTag(data))
-                        coroutineScope.launch {
-                            val snackBarResult = snackBarHostState.showSnackbar(
-                                message = "$delete ${data.meta.name}",
-                                actionLabel = undo,
-                                duration = SnackbarDuration.Long
-                            )
-                            when (snackBarResult) {
-                                SnackbarResult.ActionPerformed -> {
-                                    tagsEvent(TagsEvent.UndoTag(data))
-                                }
-
-                                else -> {}
-                            }
+            if (tagsList.isEmpty()) {
+                AppErrorScreen(onTryAgain = {
+                    tagsEvent(TagsEvent.GetTag)
+                }, isInternetError = false)
+            } else {
+                LazyColumn(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(it)
+                        .background(color = MaterialTheme.colorScheme.secondaryContainer)
+                ) {
+                    if (tagsList.isNotEmpty()) {
+                        item {
+                            AppTexts.TitleMedium(text = "Default Tag")
                         }
-                    }, onClick = {
-                        tagsEvent(TagsEvent.SelectedTag(data))
-                        onNavBack()
-                    })
+                        items(tagsList) { data ->
+                            SwipeDemo(data = data, onSwipe = {}, delete = false,
+                                onClick = {
+                                    tagsEvent(TagsEvent.SelectedTag(data))
+                                    onNavBack()
+                                })
+                        }
+                    }
+                    if (customTagList.isNotEmpty()) {
+                        item {
+                            AppTexts.TitleMedium(text = "User Tag")
+                        }
+                        items(customTagList) { data ->
+                            SwipeDemo(data = data, onSwipe = {
+                                deletedItem = data
+                                deleteDialog = true
+                            }, onClick = {
+                                tagsEvent(TagsEvent.SelectedTag(data))
+                                onNavBack()
+                            })
+                        }
+                    }
                 }
             }
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {
-                    currentBottomSheet = CUSTOMTAGCREATION
-                    openSheet()
-                },
+                onClick = { openSheet() },
                 containerColor = MaterialTheme.colorScheme.primary,
                 shape = CircleShape,
                 modifier = Modifier.size(50.dp),
@@ -122,32 +137,23 @@ fun TagsScreen(
         targetState = bottomSheetState.isVisible,
         sheetState = bottomSheetState,
         content = {
-            currentBottomSheet?.let {
-                TagCreateBtmSheetLayout(
-                    sheetLayout = it,
-                    closeSheet = { closeSheet() },
-                    tagsEvent = tagsEvent
-                )
-            }
+            TagCreateBtmSheetLayout(
+                closeSheet = { closeSheet() },
+                tagsEvent = tagsEvent
+            )
         },
         dragHandle = {},
         onClose = { closeSheet() }
     )
 }
 
-enum class TagCreateBottomSheetTypes {
-    CUSTOMTAGCREATION
-}
 
 @Composable
 fun TagCreateBtmSheetLayout(
     tagsEvent: (TagsEvent) -> Unit,
-    sheetLayout: TagCreateBottomSheetTypes,
     closeSheet: () -> Unit,
-
-    ) {
+) {
     val selectedImage = remember {
-
         mutableStateOf("")
     }
     val label = remember {
@@ -157,28 +163,24 @@ fun TagCreateBtmSheetLayout(
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             selectedImage.value = uri.toString()
         }
-    when (sheetLayout) {
-        CUSTOMTAGCREATION -> {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                CustomTagBottomSheetLayout(
-                    onNavigateBack = closeSheet,
-                    onImageSelect = { galleryLauncher.launch("image/*") },
-                    onValueChange = { label.value = it },
-                    onSave = {
-                        if (label.value.length < 2 && selectedImage.value.length < 2) {
-                            return@CustomTagBottomSheetLayout
-                        }
-                        tagsEvent(
-                            TagsEvent.UpdateTag(
-                                label = label.value, url = selectedImage.value
-                            )
-                        )
-                        closeSheet()
-                    },
-                    image = selectedImage.value
+    Column(modifier = Modifier.fillMaxWidth()) {
+        CustomTagBottomSheetLayout(
+            onNavigateBack = closeSheet,
+            onImageSelect = { galleryLauncher.launch("image/*") },
+            onValueChange = { label.value = it },
+            onSave = {
+                if (label.value.length < 2 && selectedImage.value.length < 2) {
+                    return@CustomTagBottomSheetLayout
+                }
+                tagsEvent(
+                    TagsEvent.UpdateTag(
+                        label = label.value, url = selectedImage.value
+                    )
                 )
-            }
-        }
+                closeSheet()
+            },
+            image = selectedImage.value
+        )
     }
 
 }

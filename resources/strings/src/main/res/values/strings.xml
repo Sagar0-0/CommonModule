@@ -614,6 +614,7 @@
     <string name="play_using_spotify">Play using Spotify</string>
     <string name="need_to_download_spotify">Need to Download Spotify</string>
     <string name="link_with_google_account">Link with Google Account</string>
+    <string name="liked_songs">Liked Songs</string>
     <string name="proceed">Proceed</string>
     <string name="unable_to_delete">Unable to delete account.</string>
     <string name="name">Name</string>
