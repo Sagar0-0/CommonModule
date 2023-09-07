@@ -8,9 +8,9 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class DataXX(
     @SerializedName("flag")
-    val flag: Boolean, // true
+    val flag: Boolean = true, // true
     @SerializedName("id")
-    val id: String, // 63467d75491a98141d896f7b
+    val id: String = "63467d75491a98141d896f7b", // 63467d75491a98141d896f7b
     @SerializedName("msg")
-    val msg: String // Created
+    val msg: String = "Created" // Created
 ) : Parcelable

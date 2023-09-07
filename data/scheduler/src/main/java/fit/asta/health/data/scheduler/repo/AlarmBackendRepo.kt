@@ -6,6 +6,7 @@ import fit.asta.health.data.scheduler.remote.model.SchedulerGetData
 import fit.asta.health.data.scheduler.remote.model.SchedulerGetListData
 import fit.asta.health.data.scheduler.remote.model.SchedulerGetTagsList
 import fit.asta.health.data.scheduler.remote.model.TodayData
+import fit.asta.health.data.scheduler.remote.model.TodayDefaultSchedule
 import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerDeleteResponse
 import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerPutResponse
 import fit.asta.health.data.scheduler.remote.net.tag.NetCustomTag
@@ -22,6 +23,7 @@ interface AlarmBackendRepo {
         longitude: Float
     ): ResponseState<TodayData>
 
+    suspend fun getDefaultSchedule(userID: String): ResponseState<TodayDefaultSchedule>
     suspend fun updateScheduleDataOnBackend(schedule: AlarmEntity): ResponseState<AstaSchedulerPutResponse>
     suspend fun getScheduleDataFromBackend(scheduleId: String): ResponseState<SchedulerGetData>
     suspend fun getScheduleListDataFromBackend(userId: String): ResponseState<SchedulerGetListData>
