@@ -24,11 +24,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import fit.asta.health.common.utils.UiState
@@ -55,10 +53,10 @@ fun NavController.navigateToAddress(navOptions: NavOptions? = null) {
 }
 
 internal const val ROUTE_ADDRESS_MAPS = "graph_address_maps"
-internal fun NavController.navigateToMaps(myAddress: MyAddress? = null) {
+internal fun NavController.navigateToMaps(myAddress: MyAddress) {
     val gson: Gson = GsonBuilder().create()
     val json = gson.toJson(myAddress).replace("/", "|")
-    this.navigate("$ROUTE_ADDRESS_MAPS?myAddress=$json")
+    this.navigate("$ROUTE_ADDRESS_MAPS/$json")
 }
 
 fun NavGraphBuilder.addressRoute(onBackPress: () -> Unit) {
@@ -239,20 +237,12 @@ private fun AddressScreens(addressViewModel: AddressViewModel, onBackPress: () -
         }
 
         composable(
-            route = "$ROUTE_ADDRESS_MAPS?myAddress={myAddress}",
-            arguments = listOf(
-                navArgument("myAddress") {
-                    nullable = true
-                    defaultValue = null
-                    type = NavType.StringType
-                }
-            )
+            route = "$ROUTE_ADDRESS_MAPS/{myAddress}"
         ) {
             val gson: Gson = GsonBuilder().create()
-            val addJson = it.arguments?.getString("address")?.replace("|", "/")
-            val mySentAddressItem = addJson?.let {
-                gson.fromJson(addJson, MyAddress::class.java)
-            }
+            val addJson = it.arguments?.getString("myAddress")!!.replace("|", "/")
+            Log.d("TAG", "AddressScreens: $addJson")
+            val mySentAddressItem = gson.fromJson(addJson, MyAddress::class.java)
             MapScreen(
                 myAddressItem = mySentAddressItem,
                 searchSheetVisible = searchSheetVisible,

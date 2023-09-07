@@ -35,7 +35,7 @@ import java.util.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MapScreen(
-    myAddressItem: MyAddress?,
+    myAddressItem: MyAddress,
     searchSheetVisible: Boolean,
     markerAddressState: UiState<Address>,
     currentAddressState: UiState<Address>,
@@ -48,10 +48,24 @@ internal fun MapScreen(
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(
             LatLng(
-                myAddressItem?.lat ?: 0.0,
-                myAddressItem?.lon ?: 0.0
+                myAddressItem.lat,
+                myAddressItem.lon
             ), 18f
         )
+    }
+    LaunchedEffect(Unit) {
+        if (
+            myAddressItem.lat == 0.0 &&
+            myAddressItem.lon == 0.0 &&
+            currentAddressState is UiState.Success
+        ) {
+            val latLng = LatLng(
+                currentAddressState.data.latitude,
+                currentAddressState.data.longitude
+            )
+            cameraPositionState.position =
+                CameraPosition.fromLatLngZoom(latLng, 18f)
+        }
     }
     LaunchedEffect(cameraPositionState.position.target) {
         onUiEvent(
@@ -195,16 +209,6 @@ internal fun MapScreen(
                         }
 
                         is UiState.Success -> {
-                            LaunchedEffect(markerAddressState.data.latitude) {
-                                if (myAddressItem != null) {
-                                    val latLng = LatLng(
-                                        markerAddressState.data.latitude,
-                                        markerAddressState.data.longitude
-                                    )
-                                    cameraPositionState.position =
-                                        CameraPosition.fromLatLngZoom(latLng, 18f)
-                                }
-                            }
                             CurrentLocationUi(
                                 name = markerAddressState.data.getAddressLine(
                                     0
@@ -216,17 +220,17 @@ internal fun MapScreen(
                                 onClick = {
                                     val data = markerAddressState.data
                                     val fillAddressSheetAddressItem = MyAddress(
-                                        selected = myAddressItem?.selected ?: false,
+                                        selected = myAddressItem.selected,
                                         area = data.adminArea,
-                                        block = myAddressItem?.block ?: "",
-                                        hn = myAddressItem?.hn ?: "",
-                                        id = myAddressItem?.id ?: "",
+                                        block = myAddressItem.block,
+                                        hn = myAddressItem.hn,
+                                        id = myAddressItem.id,
                                         lat = data.latitude,
                                         loc = data.locality,
                                         lon = data.longitude,
-                                        name = myAddressItem?.name ?: "",
-                                        nearby = myAddressItem?.nearby ?: "",
-                                        ph = myAddressItem?.ph ?: "",
+                                        name = myAddressItem.name,
+                                        nearby = myAddressItem.nearby,
+                                        ph = myAddressItem.ph,
                                         pin = data.postalCode,
                                         sub = data.subLocality ?: data.locality,
                                         addressLine = data.getAddressLine(0),

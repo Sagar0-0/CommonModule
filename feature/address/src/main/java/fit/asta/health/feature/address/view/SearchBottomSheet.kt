@@ -162,20 +162,8 @@ internal fun SearchBottomSheet(
                                     onClick = {
                                         searchQuery = ""
                                         val myAddressItem = MyAddress(
-                                            selected = false,
-                                            area = "",
-                                            block = "",
-                                            hn = "",
-                                            id = "",
                                             lat = it.geometry.location.lat,
-                                            loc = "",
                                             lon = it.geometry.location.lng,
-                                            name = "",
-                                            nearby = "",
-                                            ph = "",
-                                            pin = "",
-                                            sub = "",
-                                            uid = ""
                                         )
                                         closeSheet()
                                         onUiEvent(SearchSheetUiEvent.OnResultClick(myAddressItem))

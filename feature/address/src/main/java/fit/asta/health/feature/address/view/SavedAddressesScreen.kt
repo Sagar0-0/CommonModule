@@ -235,7 +235,16 @@ internal fun SavedAddressesScreen(
                     .fillMaxWidth()
                     .padding(horizontal = LocalSpacing.current.small),
                 onClick = {
-                    onUiEvent(SavedAddressUiEvent.NavigateToMaps())
+                    onUiEvent(
+                        SavedAddressUiEvent.NavigateToMaps(
+                            MyAddress(
+                                lat = (currentAddressState as? UiState.Success)?.data?.latitude
+                                    ?: 0.0,
+                                lon = (currentAddressState as? UiState.Success)?.data?.longitude
+                                    ?: 0.0
+                            )
+                        )
+                    )
                 }) {
                 Icon(
                     modifier = Modifier
