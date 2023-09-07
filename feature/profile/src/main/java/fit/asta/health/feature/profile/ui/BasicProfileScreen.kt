@@ -71,12 +71,14 @@ fun BasicProfileScreen(
     AppScaffold(topBar = {
         AppTopBar(
             backIcon = null,
-            title = "Create a Profile")
-    }) {
+            title = "Create a Profile"
+        )
+    }) { pad ->
         Column(
             Modifier
-                .padding(it)
-                .verticalScroll(rememberScrollState())) {
+                .padding(pad)
+                .verticalScroll(rememberScrollState())
+        ) {
             var name by rememberSaveable {
                 mutableStateOf(user.name ?: "")
             }
@@ -92,9 +94,13 @@ fun BasicProfileScreen(
             var ref by rememberSaveable {
                 mutableStateOf(autoFetchedReferralCode)
             }
+            var refChanged by rememberSaveable {
+                mutableStateOf(false)
+            }
 
-            LaunchedEffect(ref){
-                if(ref.length == REFERRAL_LENGTH){
+            LaunchedEffect(ref) {
+                if (ref.length == REFERRAL_LENGTH && refChanged) {
+                    refChanged = false
                     onEvent(BasicProfileEvent.CheckReferralCode(ref))
                 }
             }
@@ -139,13 +145,13 @@ fun BasicProfileScreen(
             AstaValidatedTextField(
                 label = StringR.string.name,
                 value = name,
-                onValueChange = { name = it })
+                onValueChange = { s -> name = s })
             Crossfade(targetState = user.email, label = "") { mail ->
                 if (mail.isNullOrEmpty()) {
                     GoogleSignIn(
                         StringR.string.link_with_google_account
-                    ) {
-                        onEvent(BasicProfileEvent.Link(it))
+                    ) { cred ->
+                        onEvent(BasicProfileEvent.Link(cred))
                     }
                 } else {
                     Text(email)
@@ -154,8 +160,8 @@ fun BasicProfileScreen(
 
             Crossfade(targetState = user.phoneNumber, label = "") { ph ->
                 if (ph.isNullOrEmpty()) {
-                    PhoneSignIn {
-                        onEvent(BasicProfileEvent.Link(it))
+                    PhoneSignIn { cred ->
+                        onEvent(BasicProfileEvent.Link(cred))
                     }
                 } else {
                     Text(phone)
@@ -172,7 +178,7 @@ fun BasicProfileScreen(
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
-                        Row{
+                        Row {
                             Image(
                                 modifier = Modifier.clip(CircleShape),
                                 painter = rememberAsyncImagePainter(
@@ -206,12 +212,16 @@ fun BasicProfileScreen(
                                 value = ref,
                                 onValueChange = { str ->
                                     ref = str
+                                    refChanged = true
                                 }
                             )
 
                             Button(
                                 enabled = ref.length == REFERRAL_LENGTH,
-                                onClick = { onEvent(BasicProfileEvent.CheckReferralCode(ref)) }
+                                onClick = {
+                                    refChanged = false
+                                    onEvent(BasicProfileEvent.CheckReferralCode(ref))
+                                }
                             ) {
                                 Text(text = "Check")
                             }
