@@ -16,7 +16,7 @@ class PrefManager
     private val userPreferences: DataStore<UserPreferences>
 ) {
     val userData: Flow<UserPreferencesData> = userPreferences.data.map {
-        Log.e("PrefManager", it.toString())
+        Log.d("PrefManager", it.toString())
         UserPreferencesData(
             screenCode = it.screenCode,
             notificationStatus = it.notificationStatus,

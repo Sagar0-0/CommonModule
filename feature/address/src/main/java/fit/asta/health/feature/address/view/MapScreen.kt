@@ -11,7 +11,6 @@ import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,10 +20,9 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.common.utils.getLocationName
+import fit.asta.health.common.utils.getShortAddressName
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.address.remote.modal.MyAddress
-import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppTopBar
@@ -37,21 +35,23 @@ import java.util.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MapScreen(
-    myAddressItem: MyAddress,
-    searchResultState: UiState<SearchResponse>,
+    myAddressItem: MyAddress?,
+    searchSheetVisible: Boolean,
     markerAddressState: UiState<Address>,
     currentAddressState: UiState<Address>,
-    putAddressState: UiState<Boolean>,
     onUiEvent: (MapScreenUiEvent) -> Unit
 ) {
-    var searchSheetVisible by rememberSaveable { mutableStateOf(false) }
-    var fillAddressSheetVisible by rememberSaveable { mutableStateOf(false) }
     val scaffoldState = rememberBottomSheetScaffoldState()
 
-    val bottomCardHeight = 140.dp
+    val bottomCardHeight = remember { 140.dp }
 
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(LatLng(myAddressItem.lat, myAddressItem.lon), 18f)
+        position = CameraPosition.fromLatLngZoom(
+            LatLng(
+                myAddressItem?.lat ?: 0.0,
+                myAddressItem?.lon ?: 0.0
+            ), 18f
+        )
     }
     LaunchedEffect(cameraPositionState.position.target) {
         onUiEvent(
@@ -76,46 +76,6 @@ internal fun MapScreen(
         sheetDragHandle = null,
         sheetContent = {}
     ) { padding ->
-
-        if (searchSheetVisible) SearchBottomSheet(
-            modifier = Modifier.padding(padding),
-            onSearch = {
-                onUiEvent(MapScreenUiEvent.Search(it))
-            },
-            searchResponseState = searchResultState,
-            onResultClick = { addressItem ->
-                cameraPositionState.position =
-                    CameraPosition.fromLatLngZoom(LatLng(addressItem.lat, addressItem.lon), 18f)
-            },
-            onClose = {
-                onUiEvent(MapScreenUiEvent.ClearSearch)
-                searchSheetVisible = false
-            }
-        )
-        if (fillAddressSheetVisible) FillAddressSheet(
-            address = markerAddressState,
-            myAddressItem = myAddressItem,
-            putAddressState = putAddressState,
-            onUiEvent = {
-                when (it) {
-                    FillAddressUiEvent.ResetPutState -> {
-                        onUiEvent(MapScreenUiEvent.ResetPutState)
-                    }
-
-                    is FillAddressUiEvent.CloseSheet -> {
-                        fillAddressSheetVisible = false
-                    }
-
-                    is FillAddressUiEvent.Back -> {
-                        onUiEvent(MapScreenUiEvent.Back)
-                    }
-
-                    is FillAddressUiEvent.SaveAddress -> {
-                        onUiEvent(MapScreenUiEvent.PutAddress(it.myAddress))
-                    }
-                }
-            }
-        )
 
         Box(
             modifier = Modifier
@@ -145,7 +105,7 @@ internal fun MapScreen(
                         .fillMaxWidth()
                         .padding(spacing.small)
                         .clickable {
-                            searchSheetVisible = true
+                            onUiEvent(MapScreenUiEvent.ShowSearchSheet)
                         },
                     value = "",
                     onValueChange = {},
@@ -235,15 +195,49 @@ internal fun MapScreen(
                         }
 
                         is UiState.Success -> {
+                            LaunchedEffect(markerAddressState.data.latitude) {
+                                if (myAddressItem != null) {
+                                    val latLng = LatLng(
+                                        markerAddressState.data.latitude,
+                                        markerAddressState.data.longitude
+                                    )
+                                    cameraPositionState.position =
+                                        CameraPosition.fromLatLngZoom(latLng, 18f)
+                                }
+                            }
                             CurrentLocationUi(
                                 name = markerAddressState.data.getAddressLine(
                                     0
                                 ),
-                                area = markerAddressState.data.getLocationName()
+                                area = markerAddressState.data.getShortAddressName()
                             )
 
                             OutlinedButton(
-                                onClick = { fillAddressSheetVisible = true },
+                                onClick = {
+                                    val data = markerAddressState.data
+                                    val fillAddressSheetAddressItem = MyAddress(
+                                        selected = myAddressItem?.selected ?: false,
+                                        area = data.adminArea,
+                                        block = myAddressItem?.block ?: "",
+                                        hn = myAddressItem?.hn ?: "",
+                                        id = myAddressItem?.id ?: "",
+                                        lat = data.latitude,
+                                        loc = data.locality,
+                                        lon = data.longitude,
+                                        name = myAddressItem?.name ?: "",
+                                        nearby = myAddressItem?.nearby ?: "",
+                                        ph = myAddressItem?.ph ?: "",
+                                        pin = data.postalCode,
+                                        sub = data.subLocality ?: data.locality,
+                                        addressLine = data.getAddressLine(0),
+                                        shortAddress = data.getShortAddressName()
+                                    )
+                                    onUiEvent(
+                                        MapScreenUiEvent.ShowFillAddressSheet(
+                                            fillAddressSheetAddressItem
+                                        )
+                                    )
+                                },
                                 modifier = Modifier
                                     .padding(bottom = spacing.medium)
                                     .fillMaxWidth()

@@ -634,7 +634,7 @@ class ExerciseViewModel @Inject constructor(
     )
     val levelList = listOf("Beginner 1", "Beginner 2", "Intermediate ", "Advanced", "Expert")
 
-    val bodyParts = listOf("Core", "Full Body", "Arms", "Legs", "Back", "Buttocks")
+    val bodyParts = listOf("Core", "Full Body", "Arms", "Legs", "OnPutSuccess", "Buttocks")
     val bodyStretch = listOf(
         "Neck roll",
         "Shoulder roll",
