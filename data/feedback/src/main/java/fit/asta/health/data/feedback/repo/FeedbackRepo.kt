@@ -6,6 +6,10 @@ import fit.asta.health.data.feedback.remote.modal.PostFeedbackDTO
 import fit.asta.health.data.feedback.remote.modal.UserFeedbackDTO
 
 interface FeedbackRepo {
-    suspend fun getFeedbackQuestions(userId: String, featureId: String): ResponseState<FeedbackQuesDTO>
+    suspend fun getFeedbackQuestions(
+        userId: String,
+        feature: String
+    ): ResponseState<FeedbackQuesDTO>
+
     suspend fun postUserFeedback(feedback: UserFeedbackDTO): ResponseState<PostFeedbackDTO>
 }

@@ -12,7 +12,7 @@ interface FeedbackApi {
     @GET("feedback/user/get/?")
     suspend fun getFeedbackQuestions(
         @Query("uid") userId: String,
-        @Query("fid") featureId: String
+        @Query("feature") feature: String
     ): FeedbackQuesDTO
 
     @Multipart
