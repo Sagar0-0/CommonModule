@@ -30,6 +30,27 @@ class PrefManager
             referralCode = it.referralCode
         )
     }
+    val address: Flow<UserPreferencesDataAddress> = userPreferences.data.map {
+        UserPreferencesDataAddress(
+            currentAddress = it.currentAddress,
+            lat = it.lat,
+            long = it.long
+        )
+    }
+
+    suspend fun setAddressValue(address: String, lat: Double, long: Double) {
+        try {
+            userPreferences.updateData {
+                it.copy {
+                    this.currentAddress = address
+                    this.lat = lat
+                    this.long = long
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("Pref", "Failed to update user preferences", ioException)
+        }
+    }
 
     suspend fun setReferralChecked() {
         try {

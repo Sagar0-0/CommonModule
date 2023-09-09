@@ -144,6 +144,8 @@ fun AlarmSettingScreen(
                     time = AMPMHoursMin(
                         hours = if (alarmSettingUiState.timeHours > 12) {
                             alarmSettingUiState.timeHours - 12
+                        } else if (alarmSettingUiState.timeHours == 0) {
+                            12
                         } else alarmSettingUiState.timeHours,
                         minutes = alarmSettingUiState.timeMinutes,
                         dayTime = if (alarmSettingUiState.timeHours >= 12) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
@@ -331,6 +333,8 @@ fun AlarmCreateBtmSheetLayout(
                 time = AMPMHoursMin(
                     hours = if (alarmSettingUiState.timeHours > 12) {
                         alarmSettingUiState.timeHours - 12
+                    } else if (alarmSettingUiState.timeHours == 0) {
+                        12
                     } else alarmSettingUiState.timeHours,
                     minutes = alarmSettingUiState.timeMinutes,
                     dayTime = if (alarmSettingUiState.timeHours >= 12) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM

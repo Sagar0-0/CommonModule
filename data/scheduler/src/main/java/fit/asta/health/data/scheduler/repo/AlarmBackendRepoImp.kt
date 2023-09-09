@@ -13,6 +13,7 @@ import fit.asta.health.data.scheduler.remote.model.SchedulerGetData
 import fit.asta.health.data.scheduler.remote.model.SchedulerGetListData
 import fit.asta.health.data.scheduler.remote.model.SchedulerGetTagsList
 import fit.asta.health.data.scheduler.remote.model.TodayData
+import fit.asta.health.data.scheduler.remote.model.TodayDefaultSchedule
 import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerDeleteResponse
 import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerPutResponse
 import fit.asta.health.data.scheduler.remote.net.tag.NetCustomTag
@@ -34,6 +35,12 @@ class AlarmBackendRepoImp(
         return getResponseState {
             remoteApi.getTodayDataFromBackend(userID, date, location, latitude, longitude)
                 .getTodayData()
+        }
+    }
+
+    override suspend fun getDefaultSchedule(userID: String): ResponseState<TodayDefaultSchedule> {
+        return getResponseState {
+            remoteApi.getDefaultSchedule(userID)
         }
     }
 
@@ -69,6 +76,7 @@ class AlarmBackendRepoImp(
             filename = schedule.name,
             body = InputStreamRequestBody(context.contentResolver, schedule.localUrl!!)
         )
+
         return getResponseState {
             remoteApi.updateScheduleTag(schedule, file)
         }

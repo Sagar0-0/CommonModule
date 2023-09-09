@@ -375,7 +375,7 @@
     <string name="refer_invite_text">Invite your friends to Asta and get Cashback to your wallet when they subscribe to our Health Plan</string>
     <string name="code_side_text">"Click to copy code: "</string>
     <!--    TodayScreen-->
-    <string name="hello_Aastha">Hello Aastha</string>
+    <string name="hello_Aastha">Hello </string>
     <string name="greeting">What’s your mood today ?</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="morning_events">Morning Events</string>
