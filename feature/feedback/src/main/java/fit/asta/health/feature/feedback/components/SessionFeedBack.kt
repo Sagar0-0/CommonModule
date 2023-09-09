@@ -29,6 +29,7 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.feedback.remote.modal.An
 import fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO
 import fit.asta.health.data.feedback.remote.modal.Media
+import fit.asta.health.data.feedback.remote.modal.Qn
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
@@ -120,7 +121,7 @@ fun SessionFeedback(
 }
 
 @Composable
-fun feedbackQuesItem(qn: fit.asta.health.data.feedback.remote.modal.Qn): MutableState<An> {
+fun feedbackQuesItem(qn: Qn): MutableState<An> {
     val context = LocalContext.current
     val ans = remember {
         mutableStateOf(

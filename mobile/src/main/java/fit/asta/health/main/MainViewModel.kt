@@ -8,7 +8,7 @@ import fit.asta.health.R
 import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.common.utils.getLocationName
+import fit.asta.health.common.utils.getShortAddressName
 import fit.asta.health.data.address.remote.modal.LocationResponse
 import fit.asta.health.data.address.repo.AddressRepo
 import fit.asta.health.datastore.PrefManager
@@ -117,9 +117,9 @@ class MainViewModel
                     is LocationResponse.Success -> {
                         addressRepo.getAddressDetails(latLng.latLng).collectLatest { addressRes ->
                             if (addressRes is ResponseState.Success) {
-                                prefManager.setCurrentLocation(addressRes.data.getLocationName())
+                                prefManager.setCurrentLocation(addressRes.data.getShortAddressName())
                                 _currentAddressName.value =
-                                    UiState.Success(addressRes.data.getLocationName())
+                                    UiState.Success(addressRes.data.getShortAddressName())
                             }
                         }
                     }

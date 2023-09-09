@@ -330,7 +330,7 @@ fun Context.showDialog(title: String, desc: String, okTitle: String, notifyOK: (
 fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
 
 
-fun Address?.getLocationName(): String {
+fun Address?.getShortAddressName(): String {
     if (this == null) return ""
     return if (!this.subLocality.isNullOrEmpty()) {
         "${this.subLocality}, ${this.locality}"

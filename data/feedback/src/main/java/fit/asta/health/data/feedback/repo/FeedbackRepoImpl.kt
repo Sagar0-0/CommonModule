@@ -25,10 +25,10 @@ class FeedbackRepoImpl
 
     override suspend fun getFeedbackQuestions(
         userId: String,
-        featureId: String
+        feature: String
     ): ResponseState<FeedbackQuesDTO> = withContext(coroutineDispatcher) {
         getResponseState {
-            remoteApi.getFeedbackQuestions(userId = userId, featureId = featureId)
+            remoteApi.getFeedbackQuestions(userId = userId, feature = feature)
         }
     }
 

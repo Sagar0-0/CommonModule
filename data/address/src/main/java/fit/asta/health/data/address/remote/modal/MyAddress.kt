@@ -30,5 +30,7 @@ data class MyAddress(
     @SerializedName("sub")
     val sub: String = "",
     @SerializedName("uid")
-    val uid: String = ""
+    val uid: String = "",
+    val addressLine: String = "",
+    val shortAddress: String = ""
 )
