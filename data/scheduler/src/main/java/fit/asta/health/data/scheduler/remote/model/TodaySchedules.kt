@@ -1,82 +1,79 @@
 package fit.asta.health.data.scheduler.remote.model
 
 import com.google.gson.annotations.SerializedName
-import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.network.data.Status
 
 
 data class TodaySchedules(
     @SerializedName("data")
-    val `data`: Data,
+    val `data`: Data = Data(),
     @SerializedName("status")
-    val status: Status
+    val status: Status = Status()
 ) {
     data class Data(
         @SerializedName("wtr")
-        val weather: Weather,
-        @SerializedName("schedule")
-        val schedule: List<AlarmEntity>,
+        val weather: Weather = Weather(),
         @SerializedName("slot")
         val slot: Slots? = null
     ) {
         data class Weather(
             @SerializedName("current_weather")
-            val currentWeather: CurrentWeather,
+            val currentWeather: CurrentWeather = CurrentWeather(),
             @SerializedName("daily")
-            val daily: Daily,
+            val daily: Daily = Daily(),
             @SerializedName("daily_units")
-            val dailyUnits: DailyUnits,
+            val dailyUnits: DailyUnits = DailyUnits(),
             @SerializedName("date")
-            val date: String,
+            val date: String = "",
             @SerializedName("elevation")
-            val elevation: Int,
+            val elevation: Int = 0,
             @SerializedName("generationtime_ms")
-            val generationTimeMs: Double,
+            val generationTimeMs: Double = 0.0,
             @SerializedName("latitude")
-            val latitude: Double,
+            val latitude: Double = 0.0,
             @SerializedName("loc")
-            val loc: String,
+            val loc: String = "",
             @SerializedName("longitude")
-            val longitude: Double,
+            val longitude: Double = 0.0,
             @SerializedName("time")
-            val time: String,
+            val time: String = "",
             @SerializedName("timezone")
-            val timezone: String,
+            val timezone: String = "",
             @SerializedName("timezone_abbreviation")
-            val timezoneAbbreviation: String,
+            val timezoneAbbreviation: String = "",
             @SerializedName("utc_offset_seconds")
-            val utcOffsetSeconds: Int
+            val utcOffsetSeconds: Int = 0
         )
 
         data class DailyUnits(
             @SerializedName("sunrise")
-            val sunrise: String,
+            val sunrise: String = "",
             @SerializedName("sunset")
-            val sunset: String,
+            val sunset: String = "",
             @SerializedName("time")
-            val time: String
+            val time: String = ""
         )
 
         data class Daily(
             @SerializedName("sunrise")
-            val sunrise: List<String>,
+            val sunrise: List<String> = listOf(),
             @SerializedName("sunset")
-            val sunset: List<String>,
+            val sunset: List<String> = listOf(),
             @SerializedName("time")
-            val time: List<String>
+            val time: List<String> = listOf()
         )
 
         data class CurrentWeather(
             @SerializedName("temperature")
-            val temperature: Double,
+            val temperature: Double = 0.0,
             @SerializedName("time")
-            val time: String,
+            val time: String = "",
             @SerializedName("weathercode")
-            val weatherCode: Int,
+            val weatherCode: Int = 0,
             @SerializedName("winddirection")
-            val windDirection: Int,
+            val windDirection: Int = 0,
             @SerializedName("windspeed")
-            val windSpeed: Double
+            val windSpeed: Double = 0.0
         )
 
         data class Slots(

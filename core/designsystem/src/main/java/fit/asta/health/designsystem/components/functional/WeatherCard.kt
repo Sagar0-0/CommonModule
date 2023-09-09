@@ -106,21 +106,16 @@ fun LocationAndDate(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(modifier = Modifier.size(154.dp, 24.dp)) {
-            Icon(
-                imageVector = Icons.Sharp.LocationOn,
-                contentDescription = null,
-                modifier = Modifier.size(24.dp),
-                tint = MaterialTheme.colors.onPrimary
-            )
-            AppTexts.TitleMedium(
-                text = location,
-                modifier = Modifier
-                    .align(alignment = Alignment.Center)
-                    .padding(start = 4.dp),
-                color = MaterialTheme.colors.onPrimary
-            )
-        }
+        Icon(
+            imageVector = Icons.Sharp.LocationOn,
+            contentDescription = null,
+            modifier = Modifier.size(24.dp),
+            tint = MaterialTheme.colors.onPrimary
+        )
+        AppTexts.TitleMedium(
+            text = location,
+            color = MaterialTheme.colors.onPrimary
+        )
         AppTexts.TitleMedium(text = date, color = MaterialTheme.colors.onPrimary)
     }
 }

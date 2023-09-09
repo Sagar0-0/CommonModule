@@ -10,6 +10,7 @@ import fit.asta.health.common.utils.getCurrentTime
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.remote.net.scheduler.Meta
 import fit.asta.health.data.scheduler.repo.AlarmLocalRepo
+import fit.asta.health.datastore.PrefManager
 import fit.asta.health.feature.scheduler.util.StateManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -19,8 +20,10 @@ import javax.inject.Inject
 @HiltViewModel
 class AllAlarmViewModel @Inject constructor(
     private val alarmLocalRepo: AlarmLocalRepo,
-    private val stateManager: StateManager
-) : ViewModel() {
+    private val stateManager: StateManager,
+    private val prefManager: PrefManager,
+
+    ) : ViewModel() {
     private val _alarmList = mutableStateListOf<AlarmEntity>()
     val alarmList = MutableStateFlow(_alarmList)
 
@@ -30,6 +33,12 @@ class AllAlarmViewModel @Inject constructor(
                 _alarmList.clear()
                 _alarmList.addAll(it)
             }
+        }
+    }
+
+    fun setAlarmPreferences(value: Long) {
+        viewModelScope.launch {
+            prefManager.setAlarmId(value)
         }
     }
 

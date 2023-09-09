@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.di.UID
+import fit.asta.health.auth.repo.AuthRepo
+import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentDate
 import fit.asta.health.common.utils.getCurrentTime
@@ -22,6 +24,7 @@ import fit.asta.health.datastore.PrefManager
 import fit.asta.health.feature.scheduler.util.StateManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
@@ -35,8 +38,8 @@ class TodayPlanViewModel @Inject constructor(
     private val alarmInstanceDao: AlarmInstanceDao,
     private val prefManager: PrefManager,
     private val stateManager: StateManager,
-    @UID private val uId: String
-
+    @UID private val uId: String,
+    private val authRepo: AuthRepo
 ) : ViewModel() {
     private val _alarmListMorning = mutableStateListOf<AlarmEntity>()
     val alarmListMorning = MutableStateFlow(_alarmListMorning)
@@ -53,6 +56,7 @@ class TodayPlanViewModel @Inject constructor(
 
     private val _todayState = MutableStateFlow<UiState<TodayData>>(UiState.Idle)
     val todayState = _todayState.asStateFlow()
+
     private val currentTime: LocalTime = LocalTime.now()
 
     init {
@@ -60,6 +64,9 @@ class TodayPlanViewModel @Inject constructor(
         getAlarms()
     }
 
+    fun getUserName(): String {
+        return authRepo.getUser()?.name ?: "Aastha"
+    }
 
     fun setAlarmPreferences(value: Long) {
         viewModelScope.launch {
@@ -68,37 +75,30 @@ class TodayPlanViewModel @Inject constructor(
     }
 
     fun getDefaultSchedule(context: Context) {
-        when (_todayState.value) {
-            is UiState.Success -> {
-                Log.d(
-                    "alarm",
-                    "getDefaultSchedule: ${(_todayState.value as UiState.Success<TodayData>).data.schedule}"
-                )
-                (_todayState.value as UiState.Success<TodayData>).data.schedule.forEach { alarmEntity ->
-                    val alarm = alarmEntity.copy(
-                        meta = Meta(
-                            cBy = alarmEntity.meta.cBy,
-                            cDate = getCurrentTime(),
-                            sync = 1,
-                            uDate = getCurrentTime()
-                        ),
-                        idFromServer = "",
-                        userId = "6309a9379af54f142c65fbfe",
-                        daysOfWeek = Weekdays.ALL,
+        viewModelScope.launch {
+            when (val result = alarmBackendRepo.getDefaultSchedule(uId)) {
+                is ResponseState.Success -> {
+                    result.data.data.schedule.forEach { alarmEntity ->
+                        val alarm = alarmEntity.copy(
+                            meta = Meta(
+                                cBy = alarmEntity.meta.cBy,
+                                cDate = getCurrentTime(),
+                                sync = 1,
+                                uDate = getCurrentTime()
+                            ),
+                            idFromServer = "",
+                            userId = uId,
+                            daysOfWeek = Weekdays.ALL,
 //                        alarmId = (System.currentTimeMillis() + AtomicLong().incrementAndGet())
-                    )
-                    stateManager.registerAlarm(context, alarm)
-                    viewModelScope.launch {
-                        alarmLocalRepo.insertAlarm(alarm)
+                        )
+                        stateManager.registerAlarm(context, alarm)
+                        viewModelScope.launch {
+                            alarmLocalRepo.insertAlarm(alarm)
+                        }
                     }
                 }
-            }
 
-            else -> {
-                Log.d(
-                    "alarm",
-                    "getDefaultSchedule: ${(_todayState.value as UiState.Success<TodayData>).data.schedule}"
-                )
+                else -> {}
             }
         }
     }
@@ -205,17 +205,17 @@ class TodayPlanViewModel @Inject constructor(
     private fun getWeatherSunSlots() {
         _todayState.value = UiState.Loading
         viewModelScope.launch {
-            _todayState.value = alarmBackendRepo.getTodayDataFromBackend(
-                userID = uId,
-                date = getCurrentDate(),
-                location = "jaipur",
-                latitude = 26.835598f,
-                longitude = 75.541794f
-            ).toUiState()
+            prefManager.address.collectLatest {
+                viewModelScope.launch {
+                    _todayState.value = alarmBackendRepo.getTodayDataFromBackend(
+                        userID = uId,
+                        date = getCurrentDate(),
+                        location = it.currentAddress,
+                        latitude = it.lat.toFloat(),
+                        longitude = it.long.toFloat()
+                    ).toUiState()
+                }
+            }
         }
-    }
-
-    fun retry() {
-        getWeatherSunSlots()
     }
 }

@@ -117,7 +117,11 @@ class MainViewModel
                     is LocationResponse.Success -> {
                         addressRepo.getAddressDetails(latLng.latLng).collectLatest { addressRes ->
                             if (addressRes is ResponseState.Success) {
-                                prefManager.setCurrentLocation(addressRes.data.getShortAddressName())
+                                prefManager.setAddressValue(
+                                    address = addressRes.data.getShortAddressName(),
+                                    lat = latLng.latLng.latitude,
+                                    long = latLng.latLng.longitude
+                                )
                                 _currentAddressName.value =
                                     UiState.Success(addressRes.data.getShortAddressName())
                             }

@@ -5,10 +5,8 @@ package fit.asta.health.main.view
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
@@ -34,7 +32,6 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -55,11 +52,8 @@ import fit.asta.health.common.utils.MainTopBarActions
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.data.scheduler.remote.model.TodayData
-import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.theme.elevation
 import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.navigation.home.view.HomeContent
@@ -77,7 +71,8 @@ fun MainActivityLayout(
     isNotificationEnabled: Boolean,
     onClick: (key: MainTopBarActions) -> Unit,
     onNav: (String) -> Unit,
-    onSchedule: (HourMinAmPm?) -> Unit
+    onSchedule: (HourMinAmPm?) -> Unit,
+    onLocation: () -> Unit
 ) {
 
     val navController = rememberNavController()
@@ -95,6 +90,7 @@ fun MainActivityLayout(
             navController = navController,
             onNav = onNav,
             onSchedule = onSchedule,
+            onLocation = onLocation,
             innerPadding = it
         )
     }, topBar = {
@@ -286,6 +282,7 @@ private fun MainNavHost(
     modifier: Modifier = Modifier,
     onNav: (String) -> Unit,
     onSchedule: (HourMinAmPm?) -> Unit,
+    onLocation: () -> Unit,
     innerPadding: PaddingValues,
 ) {
     NavHost(
@@ -307,58 +304,47 @@ private fun MainNavHost(
             val listNextDay by todayPlanViewModel.alarmListNextDay.collectAsStateWithLifecycle()
             val state by todayPlanViewModel.todayState.collectAsStateWithLifecycle()
             val defaultScheduleVisibility by todayPlanViewModel.defaultScheduleVisibility.collectAsStateWithLifecycle()
-            when (state) {
-                is UiState.Loading -> {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        LoadingAnimation()
+            TodayContent(
+                state = state,
+                userName = todayPlanViewModel.getUserName(),
+                defaultScheduleVisibility = defaultScheduleVisibility,
+                listMorning = listMorning,
+                listAfternoon = listAfternoon,
+                listEvening = listEvening,
+                listNextDay = listNextDay,
+                onNav = onNav,
+                hSEvent = { uiEvent ->
+                    when (uiEvent) {
+                        is HomeEvent.EditAlarm -> {
+                            todayPlanViewModel.setAlarmPreferences(uiEvent.alarm.alarmId)
+                        }
+
+                        is HomeEvent.SetAlarm -> {
+                            todayPlanViewModel.setAlarmPreferences(999)
+                        }
+
+                        is HomeEvent.DeleteAlarm -> {
+                            todayPlanViewModel.deleteAlarm(uiEvent.alarm, uiEvent.context)
+                        }
+
+                        is HomeEvent.SkipAlarm -> {
+                            todayPlanViewModel.skipAlarm(uiEvent.alarm, uiEvent.context)
+                        }
+
+                        is HomeEvent.SetDefaultSchedule -> {
+                            todayPlanViewModel.getDefaultSchedule(uiEvent.context)
+                        }
+
+                        is HomeEvent.NavSchedule -> {
+                            onSchedule(uiEvent.hourMinAmPm)
+                        }
+
+                        is HomeEvent.Retry -> {
+                            onLocation()
+                        }
                     }
-                }
-
-                is UiState.Error -> AppErrorScreen(onTryAgain = {
-                    todayPlanViewModel.retry()
-                }, isInternetError = false)
-
-                is UiState.Success -> {
-                    TodayContent(
-                        uiState = (state as UiState.Success<TodayData>).data,
-                        defaultScheduleVisibility = defaultScheduleVisibility,
-                        listMorning = listMorning,
-                        listAfternoon = listAfternoon,
-                        listEvening = listEvening,
-                        listNextDay = listNextDay,
-                        onNav = onNav,
-                        hSEvent = { uiEvent ->
-                            when (uiEvent) {
-                                is HomeEvent.EditAlarm -> {
-                                    todayPlanViewModel.setAlarmPreferences(uiEvent.alarm.alarmId)
-                                }
-
-                                is HomeEvent.SetAlarm -> {
-                                    todayPlanViewModel.setAlarmPreferences(999)
-                                }
-
-                                is HomeEvent.DeleteAlarm -> {
-                                    todayPlanViewModel.deleteAlarm(uiEvent.alarm, uiEvent.context)
-                                }
-
-                                is HomeEvent.SkipAlarm -> {
-                                    todayPlanViewModel.skipAlarm(uiEvent.alarm, uiEvent.context)
-                                }
-
-                                is HomeEvent.SetDefaultSchedule -> {
-                                    todayPlanViewModel.getDefaultSchedule(uiEvent.context)
-                                }
-
-                                is HomeEvent.NavSchedule -> {
-                                    onSchedule(uiEvent.hourMinAmPm)
-                                }
-                            }
-                        },
-                    )
-                }
-
-                else -> {}
-            }
+                },
+            )
         }
 
         composable(BottomBarDestination.Track.route) {

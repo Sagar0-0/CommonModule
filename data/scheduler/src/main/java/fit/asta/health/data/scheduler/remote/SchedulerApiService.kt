@@ -1,6 +1,7 @@
 package fit.asta.health.data.scheduler.remote
 
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
+import fit.asta.health.data.scheduler.remote.model.TodayDefaultSchedule
 import fit.asta.health.data.scheduler.remote.model.TodaySchedules
 import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerDeleteResponse
 import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerGetListResponse
@@ -24,6 +25,11 @@ interface SchedulerApiService {
         @Query("lat") latitude: Float,
         @Query("lon") longitude: Float
     ): TodaySchedules
+
+    @GET("schedule/home/today/events/get/?")
+    suspend fun getDefaultSchedule(
+        @Query("uid") userID: String
+    ): TodayDefaultSchedule
 
     @PUT("schedule/put/")
     suspend fun updateScheduleDataOnBackend(
