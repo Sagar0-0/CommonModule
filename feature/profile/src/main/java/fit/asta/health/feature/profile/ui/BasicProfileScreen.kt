@@ -68,12 +68,13 @@ fun BasicProfileScreen(
             profileImageUri = uri
         }
 
-    AppScaffold(topBar = {
-        AppTopBar(
-            backIcon = null,
-            title = "Create a Profile"
-        )
-    }) { pad ->
+    AppScaffold(
+        topBar = {
+            AppTopBar(
+                backIcon = null,
+                title = "Create a Profile"
+            )
+        }) { pad ->
         Column(
             Modifier
                 .padding(pad)

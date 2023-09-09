@@ -1,5 +1,6 @@
 package fit.asta.health.feature.profile
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -32,13 +33,19 @@ fun NavGraphBuilder.basicProfileRoute() {
         val createBasicProfileState by basicProfileViewModel.createBasicProfileState.collectAsStateWithLifecycle()
         val autoFetchedReferralCode by basicProfileViewModel.referralCode.collectAsStateWithLifecycle()
 
+        LaunchedEffect(Unit) {
+            if (autoFetchedReferralCode.isNotEmpty()) {
+                basicProfileViewModel.checkReferralCode(autoFetchedReferralCode)
+            }
+        }
+
         val user = basicProfileViewModel.getUser()
 
         BasicProfileScreen(
             user = user,
-            checkReferralCodeState= checkReferralCodeState,
-            createBasicProfileState=createBasicProfileState,
-            autoFetchedReferralCode=autoFetchedReferralCode,
+            checkReferralCodeState = checkReferralCodeState,
+            createBasicProfileState = createBasicProfileState,
+            autoFetchedReferralCode = autoFetchedReferralCode,
             onEvent = {
                 when (it) {
                     is BasicProfileEvent.Link -> {
