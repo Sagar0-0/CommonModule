@@ -53,8 +53,8 @@ android {
 
     defaultConfig {
         applicationId = "fit.asta.health"
-        versionCode = 17
-        versionName = "0.1.7" // X.Y.Z; X = Major, Y = minor, Z = Patch level
+        versionCode = 18
+        versionName = "0.1.8" // X.Y.Z; X = Major, Y = minor, Z = Patch level
         vectorDrawables.useSupportLibrary = true
 
         base.archivesName.set("$applicationId-$versionName")
