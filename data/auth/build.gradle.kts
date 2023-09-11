@@ -19,11 +19,9 @@ dependencies {
     implementation(project(":core:datastore"))
     implementation(project(":core:network"))
 
-
-    implementation(libs.converter.gson)
-
-    //Json parser
     implementation(libs.gson)
+    implementation(libs.retrofit.core)
+    implementation(libs.converter.gson)
 
     //Firebase
     implementation(platform(libs.firebase.bom))

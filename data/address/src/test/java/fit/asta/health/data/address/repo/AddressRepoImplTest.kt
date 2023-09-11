@@ -1,16 +1,19 @@
 package fit.asta.health.data.address.repo
 
+import android.location.Address
+import android.location.Geocoder
 import app.cash.turbine.test
+import com.google.android.gms.maps.model.LatLng
 import fit.asta.health.common.utils.ResourcesProvider
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.data.address.remote.AddressApi
+import fit.asta.health.data.address.remote.SearchLocationApi
 import fit.asta.health.data.address.remote.modal.AddressesDTO
 import fit.asta.health.data.address.remote.modal.DeleteAddressResponse
+import fit.asta.health.data.address.remote.modal.LocationResponse
 import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.PutAddressResponse
 import fit.asta.health.data.address.remote.modal.SearchResponse
-import fit.asta.health.data.address.remote.AddressApi
-import fit.asta.health.data.address.remote.SearchLocationApi
-import fit.asta.health.data.address.remote.modal.LocationResponse
 import fit.asta.health.data.address.utils.LocationResourceProvider
 import fit.asta.health.datastore.PrefManager
 import io.mockk.MockKAnnotations
@@ -28,6 +31,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.util.Locale
 
 class AddressRepoImplTest {
     private lateinit var repo: AddressRepoImpl
@@ -94,6 +98,30 @@ class AddressRepoImplTest {
         repo.checkPermissionAndGetLatLng().test {
             val item = awaitItem()
             assert(item is LocationResponse.PermissionDenied)
+        }
+    }
+
+    @Test
+    fun `getAddressDetails, returns Success`() = runTest {
+        val geocoder: Geocoder = mockk()
+        every { geocoder.getFromLocation(any(), any(), any()) } returns listOf(Address(Locale("")))
+        every { locationResourcesProvider.getGeocoder() } returns geocoder
+        val res = repo.getAddressDetails(LatLng(0.0, 0.0))
+        res.test {
+            val item = awaitItem()
+            assert(item is ResponseState.Success)
+        }
+    }
+
+    @Test
+    fun `getAddressDetails, returns Error`() = runTest {
+        val geocoder: Geocoder = mockk()
+        every { geocoder.getFromLocation(any(), any(), any()) } returns emptyList()
+        every { locationResourcesProvider.getGeocoder() } returns geocoder
+        val res = repo.getAddressDetails(LatLng(0.0, 0.0))
+        res.test {
+            val item = awaitItem()
+            assert(item is ResponseState.Error)
         }
     }
 
