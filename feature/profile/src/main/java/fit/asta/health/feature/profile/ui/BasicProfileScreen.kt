@@ -15,9 +15,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -146,8 +149,12 @@ fun BasicProfileScreen(
             AstaValidatedTextField(
                 label = StringR.string.name,
                 value = name,
-                onValueChange = { s -> name = s })
-            Crossfade(targetState = user.email, label = "") { mail ->
+                onValueChange = { s -> name = s }
+            )
+            Crossfade(
+                targetState = user.email,
+                label = ""
+            ) { mail ->
                 if (mail.isNullOrEmpty()) {
                     GoogleSignIn(
                         StringR.string.link_with_google_account
@@ -155,7 +162,10 @@ fun BasicProfileScreen(
                         onEvent(BasicProfileEvent.Link(cred))
                     }
                 } else {
-                    Text(email)
+                    Row {
+                        Text(email)
+                        Icon(imageVector = Icons.Default.Verified, contentDescription = "")
+                    }
                 }
             }
 
@@ -165,7 +175,10 @@ fun BasicProfileScreen(
                         onEvent(BasicProfileEvent.Link(cred))
                     }
                 } else {
-                    Text(phone)
+                    Row {
+                        Text(phone)
+                        Icon(imageVector = Icons.Default.Verified, contentDescription = "")
+                    }
                 }
             }
 

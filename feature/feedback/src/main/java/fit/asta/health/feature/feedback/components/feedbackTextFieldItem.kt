@@ -11,7 +11,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -22,7 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import fit.asta.health.data.feedback.remote.modal.An
 import fit.asta.health.data.feedback.remote.modal.Qn
-import fit.asta.health.designsystem.component.AstaTextField
+import fit.asta.health.designsystem.component.AstaValidatedTextField
 import fit.asta.health.designsystem.theme.boxSize
 import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.resources.strings.R
@@ -77,7 +76,7 @@ fun feedbackTextFieldItem(qn: Qn): MutableState<An> {
                 }
             }
 
-            AstaTextField(
+            AstaValidatedTextField(
                 value = text.value,
                 onValueChange = {
                     if (it.length <= maxChar) text.value = it
@@ -86,10 +85,6 @@ fun feedbackTextFieldItem(qn: Qn): MutableState<An> {
                     .fillMaxWidth()
                     .height(boxSize.medium),
                 placeholder = R.string.write_your_answer_here,
-                colors = TextFieldDefaults.colors(
-                    unfocusedContainerColor = MaterialTheme.colorScheme.surface
-                ),
-                shape = MaterialTheme.shapes.medium
             )
             Text(
                 text = "${text.value.length} / $maxChar",

@@ -37,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -147,71 +148,79 @@ private fun NewMainTopBarActions(
     profileImageUri: String?,
     currentAddressState: UiState<String>,
 ) {
-    Row(Modifier.clickable { onClick(MainTopBarActions.Location) }) {
-        Icon(
-            modifier = Modifier.padding(start = spacing.small),
-            imageVector = Icons.Default.LocationOn,
-            contentDescription = "Location",
-            tint = MaterialTheme.colorScheme.onBackground
-        )
-
-        Text(
-            text =
-            when (currentAddressState) {
-                UiState.Idle -> {
-                    R.string.select_location.toStringFromResId()
-                }
-
-                UiState.Loading -> {
-                    R.string.fetching_location.toStringFromResId()
-                }
-
-                is UiState.Success -> {
-                    currentAddressState.data
-                }
-
-                is UiState.Error -> {
-                    currentAddressState.resId.toStringFromResId()
-                }
-            },
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(spacing.minSmall),
-            color = MaterialTheme.colorScheme.onBackground
-        )
-    }
     Row(
-        Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
+        modifier = Modifier.fillMaxWidth()
     ) {
-        IconButton(onClick = { onClick(MainTopBarActions.Notification) }) {
+        Row(
+            modifier = Modifier
+                .clickable { onClick(MainTopBarActions.Location) }
+                .weight(1f),
+            horizontalArrangement = Arrangement.Start
+        ) {
             Icon(
-                imageVector = if (isNotificationEnabled) Icons.Default.NotificationsActive else Icons.Default.NotificationsOff,
-                contentDescription = "Notifications",
+                modifier = Modifier.padding(start = spacing.small),
+                imageVector = Icons.Default.LocationOn,
+                contentDescription = "Location",
                 tint = MaterialTheme.colorScheme.onBackground
             )
-        }
-        IconButton(onClick = { onClick(MainTopBarActions.Share) }) {
-            Icon(
-                imageVector = Icons.Default.Share,
-                contentDescription = "Share",
-                tint = MaterialTheme.colorScheme.onBackground
+            Text(
+                text = when (currentAddressState) {
+                    UiState.Idle -> {
+                        R.string.select_location.toStringFromResId()
+                    }
+
+                    UiState.Loading -> {
+                        R.string.fetching_location.toStringFromResId()
+                    }
+
+                    is UiState.Success -> {
+                        currentAddressState.data
+                    }
+
+                    is UiState.Error -> {
+                        currentAddressState.resId.toStringFromResId()
+                    }
+                },
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(spacing.minSmall),
+                overflow = TextOverflow.Ellipsis,
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
-        if (profileImageUri != null) {
-            IconButton(onClick = { onClick(MainTopBarActions.Profile) }) {
-                Image(
-                    modifier = Modifier.clip(CircleShape), painter = rememberAsyncImagePainter(
-                        model = profileImageUri,
-                        placeholder = painterResource(id = R.drawable.ic_person)
-                    ), contentDescription = "Profile"
+        Row(
+            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
+        ) {
+            IconButton(onClick = { onClick(MainTopBarActions.Notification) }) {
+                Icon(
+                    imageVector = if (isNotificationEnabled) Icons.Default.NotificationsActive else Icons.Default.NotificationsOff,
+                    contentDescription = "Notifications",
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             }
-        }
-        IconButton(onClick = { onClick(MainTopBarActions.Settings) }) {
-            Icon(
-                imageVector = Icons.Default.Settings,
-                contentDescription = "Settings",
-                tint = MaterialTheme.colorScheme.onBackground
-            )
+            IconButton(onClick = { onClick(MainTopBarActions.Share) }) {
+                Icon(
+                    imageVector = Icons.Default.Share,
+                    contentDescription = "Share",
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
+            }
+            if (profileImageUri != null) {
+                IconButton(onClick = { onClick(MainTopBarActions.Profile) }) {
+                    Image(
+                        modifier = Modifier.clip(CircleShape), painter = rememberAsyncImagePainter(
+                            model = profileImageUri,
+                            placeholder = painterResource(id = R.drawable.ic_person)
+                        ), contentDescription = "Profile"
+                    )
+                }
+            }
+            IconButton(onClick = { onClick(MainTopBarActions.Settings) }) {
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = "Settings",
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
+            }
         }
     }
 }
