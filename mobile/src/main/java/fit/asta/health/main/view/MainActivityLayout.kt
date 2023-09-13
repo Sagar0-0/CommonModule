@@ -68,7 +68,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 fun MainActivityLayout(
     currentAddressState: UiState<String>,
     profileImageUri: String?,
-    isNotificationEnabled: Boolean,
+    notificationState: Boolean,
     onClick: (key: MainTopBarActions) -> Unit,
     onNav: (String) -> Unit,
     onSchedule: (HourMinAmPm?) -> Unit,
@@ -97,7 +97,7 @@ fun MainActivityLayout(
         AppTopBar(backIcon = null, actions = {
             NewMainTopBarActions(
                 onClick = onClick,
-                isNotificationEnabled = isNotificationEnabled,
+                notificationState = notificationState,
                 profileImageUri = profileImageUri,
                 currentAddressState = currentAddressState
             )
@@ -143,7 +143,7 @@ private fun BottomAppBarLayout(
 @Composable
 private fun NewMainTopBarActions(
     onClick: (key: MainTopBarActions) -> Unit,
-    isNotificationEnabled: Boolean,
+    notificationState: Boolean,
     profileImageUri: String?,
     currentAddressState: UiState<String>,
 ) {
@@ -184,7 +184,7 @@ private fun NewMainTopBarActions(
     ) {
         IconButton(onClick = { onClick(MainTopBarActions.Notification) }) {
             Icon(
-                imageVector = if (isNotificationEnabled) Icons.Default.NotificationsActive else Icons.Default.NotificationsOff,
+                imageVector = if (notificationState) Icons.Default.NotificationsActive else Icons.Default.NotificationsOff,
                 contentDescription = "Notifications",
                 tint = MaterialTheme.colorScheme.onBackground
             )

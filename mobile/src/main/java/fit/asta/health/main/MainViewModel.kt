@@ -42,7 +42,7 @@ class MainViewModel
 
     fun isPermissionGranted() = addressRepo.isPermissionGranted()
 
-    val notificationsEnabled = prefManager.userData
+    val notificationState = prefManager.userData
         .map {
             it.notificationStatus
         }
