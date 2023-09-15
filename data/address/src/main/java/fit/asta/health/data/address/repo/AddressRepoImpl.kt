@@ -16,11 +16,11 @@ import fit.asta.health.common.utils.MyException
 import fit.asta.health.common.utils.ResourcesProvider
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getResponseState
+import fit.asta.health.data.address.remote.AddressApi
+import fit.asta.health.data.address.remote.SearchLocationApi
 import fit.asta.health.data.address.remote.modal.LocationResponse
 import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.SearchResponse
-import fit.asta.health.data.address.remote.AddressApi
-import fit.asta.health.data.address.remote.SearchLocationApi
 import fit.asta.health.data.address.utils.LocationResourceProvider
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.datastore.UserPreferencesData
@@ -60,31 +60,44 @@ class AddressRepoImpl @Inject constructor(
         } else if (!locationResourcesProvider.isLocationEnabled()) {
             trySend(LocationResponse.ServiceDisabled)
         } else {
-            fusedLocationProviderClient.requestLocationUpdates(
-                LocationRequest.Builder(
-                    Priority.PRIORITY_HIGH_ACCURACY,
-                    10000
-                ).build(),
-                object : LocationCallback() {
-                    override fun onLocationResult(locationResult: LocationResult) {
-                        // Get the current location
-                        val location = locationResult.locations.firstOrNull()
-                        if (location == null) {
-                            trySend(LocationResponse.Error(string.unable_to_fetch_location))
-                        } else {
-                            trySend(
-                                LocationResponse.Success(
-                                    LatLng(
-                                        location.latitude,
-                                        location.longitude
-                                    )
-                                )
+            fusedLocationProviderClient.lastLocation.addOnSuccessListener {
+                if (it != null) {
+                    trySend(
+                        LocationResponse.Success(
+                            LatLng(
+                                it.latitude,
+                                it.longitude
                             )
-                        }
-                    }
-                },
-                Looper.getMainLooper()
-            )
+                        )
+                    )
+                } else {
+                    fusedLocationProviderClient.requestLocationUpdates(
+                        LocationRequest.Builder(
+                            Priority.PRIORITY_HIGH_ACCURACY,
+                            10000
+                        ).build(),
+                        object : LocationCallback() {
+                            override fun onLocationResult(locationResult: LocationResult) {
+                                // Get the current location
+                                val location = locationResult.locations.firstOrNull()
+                                if (location == null) {
+                                    trySend(LocationResponse.Error(string.unable_to_fetch_location))
+                                } else {
+                                    trySend(
+                                        LocationResponse.Success(
+                                            LatLng(
+                                                location.latitude,
+                                                location.longitude
+                                            )
+                                        )
+                                    )
+                                }
+                            }
+                        },
+                        Looper.getMainLooper()
+                    )
+                }
+            }
         }
         awaitClose { close() }
     }

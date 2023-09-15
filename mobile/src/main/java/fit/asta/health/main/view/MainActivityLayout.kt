@@ -32,6 +32,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -95,14 +96,17 @@ fun MainActivityLayout(
             innerPadding = it
         )
     }, topBar = {
-        AppTopBar(backIcon = null, actions = {
-            NewMainTopBarActions(
-                onClick = onClick,
-                isNotificationEnabled = isNotificationEnabled,
-                profileImageUri = profileImageUri,
-                currentAddressState = currentAddressState
-            )
-        })
+        AppTopBar(
+            backIcon = null,
+            actions = {
+                NewMainTopBarActions(
+                    onClick = onClick,
+                    notificationState = isNotificationEnabled,
+                    profileImageUri = profileImageUri,
+                    currentAddressState = currentAddressState
+                )
+            }
+        )
     })
 }
 
@@ -144,18 +148,20 @@ private fun BottomAppBarLayout(
 @Composable
 private fun NewMainTopBarActions(
     onClick: (key: MainTopBarActions) -> Unit,
-    isNotificationEnabled: Boolean,
+    notificationState: Boolean,
     profileImageUri: String?,
     currentAddressState: UiState<String>,
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
             modifier = Modifier
-                .clickable { onClick(MainTopBarActions.Location) }
-                .weight(1f),
-            horizontalArrangement = Arrangement.Start
+                .weight(1f)
+                .clickable { onClick(MainTopBarActions.Location) },
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 modifier = Modifier.padding(start = spacing.small),
@@ -163,8 +169,10 @@ private fun NewMainTopBarActions(
                 contentDescription = "Location",
                 tint = MaterialTheme.colorScheme.onBackground
             )
+
             Text(
-                text = when (currentAddressState) {
+                text =
+                when (currentAddressState) {
                     UiState.Idle -> {
                         R.string.select_location.toStringFromResId()
                     }
@@ -182,17 +190,18 @@ private fun NewMainTopBarActions(
                     }
                 },
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(spacing.minSmall),
-                overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onBackground
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(spacing.minSmall),
+                color = MaterialTheme.colorScheme.onBackground,
+                overflow = TextOverflow.Ellipsis
             )
         }
-        Row(
-            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
-        ) {
+
+        Row(horizontalArrangement = Arrangement.End) {
             IconButton(onClick = { onClick(MainTopBarActions.Notification) }) {
                 Icon(
-                    imageVector = if (isNotificationEnabled) Icons.Default.NotificationsActive else Icons.Default.NotificationsOff,
+                    imageVector = if (notificationState) Icons.Default.NotificationsActive else Icons.Default.NotificationsOff,
                     contentDescription = "Notifications",
                     tint = MaterialTheme.colorScheme.onBackground
                 )
