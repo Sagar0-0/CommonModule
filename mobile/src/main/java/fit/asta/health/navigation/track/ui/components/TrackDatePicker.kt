@@ -26,6 +26,7 @@ import android.widget.DatePicker
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Preview(
     "Light",
@@ -65,6 +66,10 @@ fun TrackDatePicker(
     onDateChanged: (LocalDate) -> Unit,
 ) {
 
+    // Formatting the text to be showed
+    val dateTimeFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy")
+    val textToShow = localDate.format(dateTimeFormatter)
+
     val context = LocalContext.current
 
     Row(
@@ -89,7 +94,7 @@ fun TrackDatePicker(
             )
 
             Text(
-                text = "${localDate.dayOfMonth}/${localDate.monthValue}/${localDate.year}",
+                text = textToShow,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.W600
             )

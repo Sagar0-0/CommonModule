@@ -154,6 +154,8 @@ class TrackStatisticsActivity : ComponentActivity() {
                 TrackBreathingScreenControl(
                     breathingTrackData = trackViewModel.breathingDetails
                         .collectAsStateWithLifecycle().value,
+                    calendarData = trackViewModel.calendarData
+                        .collectAsStateWithLifecycle().value,
                     setUiEvent = trackViewModel::uiEventListener
                 )
             }

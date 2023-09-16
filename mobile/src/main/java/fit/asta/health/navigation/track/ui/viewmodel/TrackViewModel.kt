@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 
@@ -69,6 +70,7 @@ class TrackViewModel @Inject constructor(
     }
 
     // User Id For testing
+    // TODO : To be changed according to the user
     private val uid = "6309a9379af54f142c65fbfe"
 
     // This variable contains the Home Screen Menu Details
@@ -377,11 +379,39 @@ class TrackViewModel @Inject constructor(
     }
 
     private fun handleTrackerDate(): String {
+
+        // TODO :- Clean up the code
+//        return when (currentTrackOption.trackStatus) {
+//            is TrackOption.TrackStatus.StatusDaily -> "2023-June-05"
+//            is TrackOption.TrackStatus.StatusWeekly -> "2023-June-05"
+//            is TrackOption.TrackStatus.StatusMonthly -> "June-2023"
+//            is TrackOption.TrackStatus.StatusYearly -> "2023"
+//        }
+
         return when (currentTrackOption.trackStatus) {
-            is TrackOption.TrackStatus.StatusDaily -> "2023-June-05"
-            is TrackOption.TrackStatus.StatusWeekly -> "2023-June-05"
-            is TrackOption.TrackStatus.StatusMonthly -> "June-2023"
-            is TrackOption.TrackStatus.StatusYearly -> "2023"
+            is TrackOption.TrackStatus.StatusDaily -> {
+//                "2023-June-05"
+                val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MMMM-dd")
+                _calendarData.value.format(dateTimeFormatter)
+            }
+
+            is TrackOption.TrackStatus.StatusWeekly -> {
+//                "2023-June-05"
+                val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MMMM-dd")
+                _calendarData.value.format(dateTimeFormatter)
+            }
+
+            is TrackOption.TrackStatus.StatusMonthly -> {
+//                "June-2023"
+                val dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM-yyyy")
+                _calendarData.value.format(dateTimeFormatter)
+            }
+
+            is TrackOption.TrackStatus.StatusYearly -> {
+//                "2023"
+                val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy")
+                _calendarData.value.format(dateTimeFormatter)
+            }
         }
     }
 }
