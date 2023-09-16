@@ -54,17 +54,20 @@ import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.navigation.track.data.remote.model.step.StepsResponse
+import fit.asta.health.navigation.track.ui.components.TrackDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
 import fit.asta.health.navigation.track.ui.components.TrackingChartCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
 import java.text.DecimalFormat
+import java.time.LocalDate
 import kotlin.math.abs
 
 @Composable
 fun TrackStepsScreenControl(
     stepsTrackData: UiState<StepsResponse>,
+    calendarData: LocalDate,
     setUiEvent: (TrackUiEvent) -> Unit
 ) {
 
@@ -170,6 +173,23 @@ fun TrackStepsScreenControl(
             }
         }
 
+        // Date Picker
+        TrackDatePicker(
+            localDate = calendarData,
+            onPreviousButtonClick = {
+                setUiEvent(TrackUiEvent.ClickedPreviousDateButton)
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+            },
+            onNextButtonClick = {
+                setUiEvent(TrackUiEvent.ClickedNextDateButton)
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+            },
+            onDateChanged = {
+                setUiEvent(TrackUiEvent.SetNewDate(it))
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+            }
+        )
+
         when (stepsTrackData) {
 
             is UiState.Idle -> {
@@ -186,7 +206,10 @@ fun TrackStepsScreenControl(
             }
 
             is UiState.Error -> {
-                AppErrorScreen(desc = stepsTrackData.resId.toStringFromResId()) {
+                AppErrorScreen(
+                    isInternetError = false,
+                    desc = stepsTrackData.resId.toStringFromResId()
+                ) {
                     setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
                 }
             }

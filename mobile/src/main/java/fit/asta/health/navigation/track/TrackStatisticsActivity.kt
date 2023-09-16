@@ -128,6 +128,8 @@ class TrackStatisticsActivity : ComponentActivity() {
                 TrackWaterScreenControl(
                     waterTrackData = trackViewModel.waterDetails
                         .collectAsStateWithLifecycle().value,
+                    calendarData = trackViewModel.calendarData
+                        .collectAsStateWithLifecycle().value,
                     setUiEvent = trackViewModel::uiEventListener
                 )
             }
@@ -140,6 +142,8 @@ class TrackStatisticsActivity : ComponentActivity() {
 
                 TrackMeditationScreenControl(
                     meditationTrackData = trackViewModel.meditationDetails
+                        .collectAsStateWithLifecycle().value,
+                    calendarData = trackViewModel.calendarData
                         .collectAsStateWithLifecycle().value,
                     setUiEvent = trackViewModel::uiEventListener
                 )
@@ -169,6 +173,8 @@ class TrackStatisticsActivity : ComponentActivity() {
                 TrackSunlightScreenControl(
                     sunlightTrackData = trackViewModel.sunlightDetails
                         .collectAsStateWithLifecycle().value,
+                    calendarData = trackViewModel.calendarData
+                        .collectAsStateWithLifecycle().value,
                     setUiEvent = trackViewModel::uiEventListener
                 )
             }
@@ -181,6 +187,8 @@ class TrackStatisticsActivity : ComponentActivity() {
 
                 TrackSleepScreenControl(
                     sleepTrackData = trackViewModel.sleepDetails
+                        .collectAsStateWithLifecycle().value,
+                    calendarData = trackViewModel.calendarData
                         .collectAsStateWithLifecycle().value,
                     setUiEvent = trackViewModel::uiEventListener
                 )
@@ -195,6 +203,8 @@ class TrackStatisticsActivity : ComponentActivity() {
                 TrackExerciseScreenControl(
                     exerciseTrackData = trackViewModel.exerciseDetails
                         .collectAsStateWithLifecycle().value,
+                    calendarData = trackViewModel.calendarData
+                        .collectAsStateWithLifecycle().value,
                     setUiEvent = trackViewModel::uiEventListener
                 )
             }
@@ -207,6 +217,8 @@ class TrackStatisticsActivity : ComponentActivity() {
 
                 TrackExerciseScreenControl(
                     exerciseTrackData = trackViewModel.exerciseDetails
+                        .collectAsStateWithLifecycle().value,
+                    calendarData = trackViewModel.calendarData
                         .collectAsStateWithLifecycle().value,
                     setUiEvent = trackViewModel::uiEventListener
                 )
@@ -221,6 +233,8 @@ class TrackStatisticsActivity : ComponentActivity() {
                 TrackExerciseScreenControl(
                     exerciseTrackData = trackViewModel.exerciseDetails
                         .collectAsStateWithLifecycle().value,
+                    calendarData = trackViewModel.calendarData
+                        .collectAsStateWithLifecycle().value,
                     setUiEvent = trackViewModel::uiEventListener
                 )
             }
@@ -234,6 +248,8 @@ class TrackStatisticsActivity : ComponentActivity() {
                 TrackExerciseScreenControl(
                     exerciseTrackData = trackViewModel.exerciseDetails
                         .collectAsStateWithLifecycle().value,
+                    calendarData = trackViewModel.calendarData
+                        .collectAsStateWithLifecycle().value,
                     setUiEvent = trackViewModel::uiEventListener
                 )
             }
@@ -246,6 +262,8 @@ class TrackStatisticsActivity : ComponentActivity() {
 
                 TrackStepsScreenControl(
                     stepsTrackData = trackViewModel.stepsDetails
+                        .collectAsStateWithLifecycle().value,
+                    calendarData = trackViewModel.calendarData
                         .collectAsStateWithLifecycle().value,
                     setUiEvent = trackViewModel::uiEventListener
                 )

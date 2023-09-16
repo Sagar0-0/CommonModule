@@ -46,16 +46,19 @@ import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.navigation.track.data.remote.model.water.WaterResponse
+import fit.asta.health.navigation.track.ui.components.TrackDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
 import fit.asta.health.navigation.track.ui.components.TrackingChartCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
 import java.text.DecimalFormat
+import java.time.LocalDate
 
 @Composable
 fun TrackWaterScreenControl(
     waterTrackData: UiState<WaterResponse>,
+    calendarData: LocalDate,
     setUiEvent: (TrackUiEvent) -> Unit
 ) {
 
@@ -161,6 +164,23 @@ fun TrackWaterScreenControl(
             }
         }
 
+        // Date Picker
+        TrackDatePicker(
+            localDate = calendarData,
+            onPreviousButtonClick = {
+                setUiEvent(TrackUiEvent.ClickedPreviousDateButton)
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+            },
+            onNextButtonClick = {
+                setUiEvent(TrackUiEvent.ClickedNextDateButton)
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+            },
+            onDateChanged = {
+                setUiEvent(TrackUiEvent.SetNewDate(it))
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+            }
+        )
+
         when (waterTrackData) {
 
             is UiState.Idle -> {
@@ -177,7 +197,10 @@ fun TrackWaterScreenControl(
             }
 
             is UiState.Error -> {
-                AppErrorScreen(desc = waterTrackData.resId.toStringFromResId()) {
+                AppErrorScreen(
+                    isInternetError = false,
+                    desc = waterTrackData.resId.toStringFromResId()
+                ) {
                     setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
                 }
             }
