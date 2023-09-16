@@ -41,13 +41,14 @@ class FeedbackViewModel
     val feedbackPostState = _feedbackPostState.asStateFlow()
 
     //call this before starting feedback form
-    fun loadFeedbackQuestions(featureId: String) {
+    fun loadFeedbackQuestions(feature: String) {
         _feedbackQuestions.value = UiState.Loading
         viewModelScope.launch {
-            _feedbackQuestions.value = feedbackRepo.getFeedbackQuestions(uId, featureId).toUiState()
-            _fid = featureId
-            if (_feedbackQuestions.value is UiState.Success) _qnrId =
-                (_feedbackQuestions.value as UiState.Success<FeedbackQuesDTO>).data.data.id
+            _feedbackQuestions.value = feedbackRepo.getFeedbackQuestions(uId, feature).toUiState()
+            if (_feedbackQuestions.value is UiState.Success) {
+                _qnrId = (_feedbackQuestions.value as UiState.Success<FeedbackQuesDTO>).data.data.id
+                _fid = (_feedbackQuestions.value as UiState.Success<FeedbackQuesDTO>).data.data.fid
+            }
         }
     }
 
@@ -56,7 +57,6 @@ class FeedbackViewModel
         val feedback = UserFeedbackDTO(
             ans = data,
             fid = _fid,
-            id = "",
             qnrId = _qnrId,
             uid = uId
         )

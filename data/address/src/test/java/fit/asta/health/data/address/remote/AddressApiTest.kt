@@ -3,9 +3,9 @@ package fit.asta.health.data.address.remote
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.data.address.modal.AddressesDTO
-import fit.asta.health.data.address.modal.DeleteAddressResponse
-import fit.asta.health.data.address.modal.PutAddressResponse
+import fit.asta.health.data.address.remote.modal.AddressesDTO
+import fit.asta.health.data.address.remote.modal.DeleteAddressResponse
+import fit.asta.health.data.address.remote.modal.PutAddressResponse
 import fit.asta.health.data.address.repo.AddressRepoImpl
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.datastore.UserPreferencesData

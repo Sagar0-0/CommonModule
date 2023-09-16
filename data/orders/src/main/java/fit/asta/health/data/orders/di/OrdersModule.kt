@@ -1,5 +1,6 @@
 package fit.asta.health.data.orders.di
 
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,16 +22,10 @@ object OrdersModule {
     @Provides
     fun provideOrdersApi(client: OkHttpClient): OrdersApi =
         NetworkUtil.getRetrofit(client).create(OrdersApi::class.java)
-
-    @Singleton
-    @Provides
-    fun provideOrdersRepo(
-        ordersApi: OrdersApi,
-        @IODispatcher coroutineDispatcher: CoroutineDispatcher
-    ): OrdersRepo {
-        return OrdersRepoImpl(
-            ordersApi = ordersApi,
-            coroutineDispatcher = coroutineDispatcher
-        )
-    }
+}
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class OrdersBindRepo{
+    @Binds
+    abstract fun provideOrdersRepo(ordersRepoImpl: OrdersRepoImpl): OrdersRepo
 }

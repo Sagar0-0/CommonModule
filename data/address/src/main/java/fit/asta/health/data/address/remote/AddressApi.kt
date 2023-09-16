@@ -1,10 +1,10 @@
 package fit.asta.health.data.address.remote
 
-import fit.asta.health.data.address.modal.AddressesDTO
-import fit.asta.health.data.address.modal.AddressesDTO.*
-import fit.asta.health.data.address.modal.DeleteAddressResponse
-import fit.asta.health.data.address.modal.MyAddress
-import fit.asta.health.data.address.modal.PutAddressResponse
+import fit.asta.health.data.address.remote.modal.AddressesDTO
+import fit.asta.health.data.address.remote.modal.AddressesDTO.*
+import fit.asta.health.data.address.remote.modal.DeleteAddressResponse
+import fit.asta.health.data.address.remote.modal.MyAddress
+import fit.asta.health.data.address.remote.modal.PutAddressResponse
 import retrofit2.http.*
 
 interface AddressApi {

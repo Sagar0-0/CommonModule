@@ -1,14 +1,16 @@
 package fit.asta.health.data.scheduler.remote
 
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
+import fit.asta.health.data.scheduler.remote.model.TodayDefaultSchedule
 import fit.asta.health.data.scheduler.remote.model.TodaySchedules
 import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerDeleteResponse
 import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerGetListResponse
 import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerGetResponse
 import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerPutResponse
 import fit.asta.health.data.scheduler.remote.net.tag.AstaGetTagsListResponse
-import fit.asta.health.data.scheduler.remote.net.tag.ScheduleTagNetData
+import fit.asta.health.data.scheduler.remote.net.tag.NetCustomTag
 import fit.asta.health.network.data.Status
+import okhttp3.MultipartBody
 import retrofit2.http.*
 
 
@@ -23,6 +25,11 @@ interface SchedulerApiService {
         @Query("lat") latitude: Float,
         @Query("lon") longitude: Float
     ): TodaySchedules
+
+    @GET("schedule/home/today/events/get/?")
+    suspend fun getDefaultSchedule(
+        @Query("uid") userID: String
+    ): TodayDefaultSchedule
 
     @PUT("schedule/put/")
     suspend fun updateScheduleDataOnBackend(
@@ -51,12 +58,15 @@ interface SchedulerApiService {
     ): AstaGetTagsListResponse
 
     @PUT("tag/put")
-    suspend fun updateScheduleTag(@Body schedule: ScheduleTagNetData): Status
+    @Multipart
+    suspend fun updateScheduleTag(
+        @Part("json") schedule: NetCustomTag,
+        @Part file: MultipartBody.Part,
+    ): Status
 
-    // Media Endpoints
-    @GET("sound/healthHisList/get/?")
-    suspend fun getAllUserMedia(@Query("uid") userID: String): Status
-
-    @PUT("sound/put")
-    suspend fun updateUserMedia(@Body schedule: ScheduleTagNetData): Status
+    @DELETE("tag/delete/")
+    suspend fun deleteTagFromBackend(
+        @Query("uid") userID: String,
+        @Query("tid") id: String
+    ): Status
 }

@@ -24,19 +24,19 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 private const val FEEDBACK_GRAPH_ROUTE = "graph_feedback"
 
-fun NavController.navigateToFeedback(fid: String, navOptions: NavOptions? = null) {
-    this.navigate("$FEEDBACK_GRAPH_ROUTE/$fid", navOptions)
+fun NavController.navigateToFeedback(feature: String, navOptions: NavOptions? = null) {
+    this.navigate("$FEEDBACK_GRAPH_ROUTE/$feature", navOptions)
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
 fun NavGraphBuilder.feedbackRoute(onBack: () -> Unit) {
-    composable("$FEEDBACK_GRAPH_ROUTE/{fid}") {
-        val fid = it.arguments?.getString("fid") ?: ""
+    composable("$FEEDBACK_GRAPH_ROUTE/{feature}") {
+        val feature = it.arguments?.getString("feature") ?: ""
 
         val context = LocalContext.current
         val feedbackViewModel: FeedbackViewModel = hiltViewModel()
 
-        LaunchedEffect(Unit) { feedbackViewModel.loadFeedbackQuestions(fid) }
+        LaunchedEffect(Unit) { feedbackViewModel.loadFeedbackQuestions(feature) }
 
         val quesState by feedbackViewModel.feedbackQuestions.collectAsStateWithLifecycle()
         val postResultState by feedbackViewModel.feedbackPostState.collectAsStateWithLifecycle()

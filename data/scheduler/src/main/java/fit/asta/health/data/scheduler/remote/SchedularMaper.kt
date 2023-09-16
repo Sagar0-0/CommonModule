@@ -1,6 +1,7 @@
 package fit.asta.health.data.scheduler.remote
 
 import fit.asta.health.common.utils.Constants
+import fit.asta.health.data.scheduler.db.entity.TagEntity
 import fit.asta.health.data.scheduler.remote.model.SchedulerGetData
 import fit.asta.health.data.scheduler.remote.model.SchedulerGetListData
 import fit.asta.health.data.scheduler.remote.model.SchedulerGetTagsList
@@ -10,6 +11,7 @@ import fit.asta.health.data.scheduler.remote.model.WeatherData
 import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerGetListResponse
 import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerGetResponse
 import fit.asta.health.data.scheduler.remote.net.tag.AstaGetTagsListResponse
+import fit.asta.health.data.scheduler.remote.net.tag.Data
 
 fun AstaSchedulerGetResponse.mapToSchedulerGetData(): SchedulerGetData {
     return SchedulerGetData(data = this.data)
@@ -38,7 +40,12 @@ fun TodaySchedules.getTodayData(): TodayData {
                 timeSlot = dayAndTime.timeOfDay,
                 title = dayAndTime.day
             )
-        } ?: emptyList(),
-        schedule = this.data.schedule
+        } ?: emptyList()
+    )
+}
+
+fun Data.toTagEntity(): TagEntity {
+    return TagEntity(
+        id = this.id, uid = this.uid, name = this.name, url = this.url
     )
 }

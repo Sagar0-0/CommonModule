@@ -6,6 +6,9 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.auth.di.UID
+import fit.asta.health.auth.repo.AuthRepo
+import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentDate
 import fit.asta.health.common.utils.getCurrentTime
@@ -19,9 +22,9 @@ import fit.asta.health.data.scheduler.repo.AlarmBackendRepo
 import fit.asta.health.data.scheduler.repo.AlarmLocalRepo
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.feature.scheduler.util.StateManager
-import fit.asta.health.navigation.today.ui.view.Event
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
@@ -34,7 +37,9 @@ class TodayPlanViewModel @Inject constructor(
     private val alarmBackendRepo: AlarmBackendRepo,
     private val alarmInstanceDao: AlarmInstanceDao,
     private val prefManager: PrefManager,
-    private val stateManager: StateManager
+    private val stateManager: StateManager,
+    @UID private val uId: String,
+    private val authRepo: AuthRepo
 ) : ViewModel() {
     private val _alarmListMorning = mutableStateListOf<AlarmEntity>()
     val alarmListMorning = MutableStateFlow(_alarmListMorning)
@@ -44,23 +49,24 @@ class TodayPlanViewModel @Inject constructor(
     val alarmListEvening = MutableStateFlow(_alarmListEvening)
     private val _alarmListNextDay = mutableStateListOf<AlarmEntity>()
     val alarmListNextDay = MutableStateFlow(_alarmListNextDay)
-
+    private val _defaultScheduleVisibility = MutableStateFlow(false)
+    val defaultScheduleVisibility = _defaultScheduleVisibility.asStateFlow()
     private val calendar: Calendar = Calendar.getInstance()
     val today: Int = calendar.get(Calendar.DAY_OF_WEEK)
 
-    private val _todayState =
-        MutableStateFlow<UiState<TodayData>>(UiState.Idle)
+    private val _todayState = MutableStateFlow<UiState<TodayData>>(UiState.Idle)
     val todayState = _todayState.asStateFlow()
+
     private val currentTime: LocalTime = LocalTime.now()
+
     init {
         getWeatherSunSlots()
         getAlarms()
-        val alarmTime = LocalTime.of(21, 0)
-        if (currentTime.isAfter(alarmTime) || currentTime == alarmTime) {
-            getNextDayAlarm()
-        }
     }
 
+    fun getUserName(): String {
+        return authRepo.getUser()?.name ?: "Aastha"
+    }
 
     fun setAlarmPreferences(value: Long) {
         viewModelScope.launch {
@@ -69,80 +75,34 @@ class TodayPlanViewModel @Inject constructor(
     }
 
     fun getDefaultSchedule(context: Context) {
-        when (_todayState.value) {
-            is UiState.Success -> {
-                Log.d(
-                    "alarm",
-                    "getDefaultSchedule: ${(_todayState.value as UiState.Success<TodayData>).data.schedule}"
-                )
-                (_todayState.value as UiState.Success<TodayData>).data.schedule.forEach { alarmEntity ->
-                    val alarm = alarmEntity.copy(
-                        meta = Meta(
-                            cBy = alarmEntity.meta.cBy,
-                            cDate = getCurrentTime(),
-                            sync = 1,
-                            uDate = getCurrentTime()
-                        ),
-                        idFromServer = "",
-                        userId = "6309a9379af54f142c65fbfe",
-                        daysOfWeek = Weekdays.ALL,
+        viewModelScope.launch {
+            when (val result = alarmBackendRepo.getDefaultSchedule(uId)) {
+                is ResponseState.Success -> {
+                    result.data.data.schedule.forEach { alarmEntity ->
+                        val alarm = alarmEntity.copy(
+                            meta = Meta(
+                                cBy = alarmEntity.meta.cBy,
+                                cDate = getCurrentTime(),
+                                sync = 1,
+                                uDate = getCurrentTime()
+                            ),
+                            idFromServer = "",
+                            userId = uId,
+                            daysOfWeek = Weekdays.ALL,
 //                        alarmId = (System.currentTimeMillis() + AtomicLong().incrementAndGet())
-                    )
-                    stateManager.registerAlarm(context, alarm)
-                    viewModelScope.launch {
-                        alarmLocalRepo.insertAlarm(alarm)
+                        )
+                        stateManager.registerAlarm(context, alarm)
+                        viewModelScope.launch {
+                            alarmLocalRepo.insertAlarm(alarm)
+                        }
                     }
                 }
-            }
 
-            else -> {
-                Log.d(
-                    "alarm",
-                    "getDefaultSchedule: ${(_todayState.value as UiState.Success<TodayData>).data.schedule}"
-                )
+                else -> {}
             }
         }
     }
 
-    fun undo(alarm: AlarmEntity, event: Event) {
-        when (event) {
-            Event.Morning -> {
-                _alarmListMorning.add(alarm)
-            }
-
-            Event.Afternoon -> {
-                _alarmListAfternoon.add(alarm)
-            }
-
-            Event.Evening -> {
-                _alarmListEvening.add(alarm)
-            }
-
-            Event.NextDay -> {
-                _alarmListNextDay.add(alarm)
-            }
-        }
-    }
-
-    fun removeAlarm(alarmItem: AlarmEntity, event: Event) {
-        when (event) {
-            Event.Morning -> {
-                _alarmListMorning.remove(alarmItem)
-            }
-
-            Event.Afternoon -> {
-                _alarmListAfternoon.remove(alarmItem)
-            }
-
-            Event.Evening -> {
-                _alarmListEvening.remove(alarmItem)
-            }
-
-            Event.NextDay -> {
-                _alarmListNextDay.remove(alarmItem)
-            }
-        }
-    }
 
     fun deleteAlarm(alarmItem: AlarmEntity, context: Context) {
         viewModelScope.launch {
@@ -172,9 +132,8 @@ class TodayPlanViewModel @Inject constructor(
     fun skipAlarm(alarmItem: AlarmEntity, context: Context) {
         val skipDate = LocalDate.now().dayOfMonth
         viewModelScope.launch {
-            if (alarmItem.status) stateManager.skipAlarmTodayOnly(context, alarmItem)
-            val alarm = alarmItem.copy(status = false, skipDate = skipDate)
-            alarmLocalRepo.updateAlarm(alarm)
+            stateManager.skipAlarmTodayOnly(context, alarmItem)
+            alarmLocalRepo.updateAlarm(alarmItem.copy(skipDate = skipDate))
             Log.d("today", "skipAlarm: done")
         }
     }
@@ -183,6 +142,7 @@ class TodayPlanViewModel @Inject constructor(
     private fun getAlarms() {
         viewModelScope.launch {
             alarmLocalRepo.getAllAlarm().collect { list ->
+                _defaultScheduleVisibility.value = list.isEmpty()
                 _alarmListMorning.clear()
                 _alarmListAfternoon.clear()
                 _alarmListEvening.clear()
@@ -221,43 +181,41 @@ class TodayPlanViewModel @Inject constructor(
                         }
                     }
                 }
-            }
-        }
-    }
 
-    private fun getNextDayAlarm() {
-        viewModelScope.launch {
-            alarmLocalRepo.getAllAlarm().collect { list ->
-                _alarmListNextDay.clear()
-                list.forEach {
-                    if (it.status) {
-                        val nextDay = if (it.daysOfWeek.isRepeating) {
-                            it.daysOfWeek.isBitOn(today + 1)
-                        } else false
-                        if (nextDay) {
+                val alarmTime = LocalTime.of(21, 0)
+                if (currentTime.isAfter(alarmTime) || currentTime == alarmTime) {
+                    _alarmListNextDay.clear()
+                    var nextDay = today + 1
+                    if (nextDay > Calendar.SATURDAY) {
+                        nextDay = Calendar.SUNDAY
+                    }
+                    list.forEach {
+                        if (it.status && it.daysOfWeek.isRepeating &&
+                            it.daysOfWeek.isBitOn(nextDay)
+                        ) {
                             _alarmListNextDay.add(it)
                         }
-
                     }
                 }
             }
         }
     }
 
+
     private fun getWeatherSunSlots() {
         _todayState.value = UiState.Loading
         viewModelScope.launch {
-            _todayState.value = alarmBackendRepo.getTodayDataFromBackend(
-                userID = "6309a9379af54f142c65fbfe",
-                date = getCurrentDate(),
-                location = "jaipur",
-                latitude = 26.835598f,
-                longitude = 75.541794f
-            ).toUiState()
+            prefManager.address.collectLatest {
+                viewModelScope.launch {
+                    _todayState.value = alarmBackendRepo.getTodayDataFromBackend(
+                        userID = uId,
+                        date = getCurrentDate(),
+                        location = it.currentAddress,
+                        latitude = it.lat.toFloat(),
+                        longitude = it.long.toFloat()
+                    ).toUiState()
+                }
+            }
         }
-    }
-
-    fun retry() {
-        getWeatherSunSlots()
     }
 }

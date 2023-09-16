@@ -8,8 +8,8 @@ import fit.asta.health.R
 import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.common.utils.getLocationName
-import fit.asta.health.data.address.modal.LocationResponse
+import fit.asta.health.common.utils.getShortAddressName
+import fit.asta.health.data.address.remote.modal.LocationResponse
 import fit.asta.health.data.address.repo.AddressRepo
 import fit.asta.health.datastore.PrefManager
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,9 +32,6 @@ class MainViewModel
     private val _isLocationEnabled = MutableStateFlow(false)
     val isLocationEnabled = _isLocationEnabled.asStateFlow()
 
-    private val _isPermissionGranted = MutableStateFlow(false)
-    val isPermissionGranted = _isPermissionGranted.asStateFlow()
-
     fun setReferralChecked() = viewModelScope.launch {
         prefManager.setReferralChecked()
     }
@@ -43,9 +40,7 @@ class MainViewModel
         _isLocationEnabled.value = addressRepo.isLocationEnabled()
     }
 
-    fun setIsPermissionGranted() {
-        _isPermissionGranted.value = addressRepo.isPermissionGranted()
-    }
+    fun isPermissionGranted() = addressRepo.isPermissionGranted()
 
     val notificationsEnabled = prefManager.userData
         .map {
@@ -60,6 +55,16 @@ class MainViewModel
     val isReferralChecked = prefManager.userData
         .map {
             UiState.Success(it.isReferralChecked)
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = UiState.Loading,
+        )
+
+    val theme = prefManager.userData
+        .map {
+            UiState.Success(it.theme)
         }
         .stateIn(
             scope = viewModelScope,
@@ -112,9 +117,13 @@ class MainViewModel
                     is LocationResponse.Success -> {
                         addressRepo.getAddressDetails(latLng.latLng).collectLatest { addressRes ->
                             if (addressRes is ResponseState.Success) {
-                                prefManager.setCurrentLocation(addressRes.data.getLocationName())
+                                prefManager.setAddressValue(
+                                    address = addressRes.data.getShortAddressName(),
+                                    lat = latLng.latLng.latitude,
+                                    long = latLng.latLng.longitude
+                                )
                                 _currentAddressName.value =
-                                    UiState.Success(addressRes.data.getLocationName())
+                                    UiState.Success(addressRes.data.getShortAddressName())
                             }
                         }
                     }
@@ -123,13 +132,11 @@ class MainViewModel
                         _currentAddressName.value = UiState.Error(R.string.error_fetching_location)
                     }
 
-                    LocationResponse.PermissionDenied -> {
-                        _isPermissionGranted.value = false
-                    }
-
                     LocationResponse.ServiceDisabled -> {
                         _isLocationEnabled.value = false
                     }
+
+                    else -> {}
                 }
             }
         }

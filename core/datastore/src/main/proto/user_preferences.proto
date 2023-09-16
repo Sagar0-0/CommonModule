@@ -14,4 +14,6 @@ message UserPreferences {
   bool isFcmTokenUploaded = 8;
   bool isReferralChecked = 9;
   string referralCode = 10;
+  double lat = 11;
+  double long = 12;
 }

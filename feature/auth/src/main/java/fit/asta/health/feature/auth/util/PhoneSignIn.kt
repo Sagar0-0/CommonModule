@@ -30,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -56,7 +57,9 @@ import fit.asta.health.designsystem.components.ValidatedNumberField
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.feature.auth.screens.OTPReceiver
+import kotlinx.coroutines.delay
 import java.util.concurrent.TimeUnit
+import kotlin.time.Duration.Companion.seconds
 
 @Composable
 fun PhoneSignIn(
@@ -84,6 +87,18 @@ fun PhoneSignIn(
 
     var loading by rememberSaveable {
         mutableStateOf(false)
+    }
+
+    var ticks by rememberSaveable { mutableIntStateOf(10) }
+    LaunchedEffect(codeSent) {
+        if(codeSent) {
+            while(ticks>0){
+                delay(1.seconds)
+                ticks--
+            }
+        } else {
+            ticks = 10
+        }
     }
 
     val context = LocalContext.current
@@ -331,16 +346,20 @@ fun PhoneSignIn(
                     Text(text = "Verify OTP", modifier = Modifier.padding(spacing.small))
                 }
                 TextButton(
-                    enabled = !loading,
+                    enabled = !loading && ticks==0,
                     onClick = { codeSent = false },
                     modifier = Modifier
                         .align(Alignment.End)
                         .padding(spacing.medium)
                 ) {
-                    Text(
-                        text = "OTP not received?",
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
+                    if(ticks>0){
+                        Text(text = "Resend code in $ticks seconds")
+                    }else {
+                        Text(
+                            text = "Still not received?",
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
                 }
             }
         }

@@ -4,9 +4,9 @@ import android.location.Address
 import androidx.activity.result.IntentSenderRequest
 import com.google.android.gms.maps.model.LatLng
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.data.address.modal.LocationResponse
-import fit.asta.health.data.address.modal.MyAddress
-import fit.asta.health.data.address.modal.SearchResponse
+import fit.asta.health.data.address.remote.modal.LocationResponse
+import fit.asta.health.data.address.remote.modal.MyAddress
+import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.datastore.UserPreferencesData
 import kotlinx.coroutines.flow.Flow
 

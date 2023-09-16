@@ -6,21 +6,19 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.twotone.Delete
 import androidx.compose.material.icons.twotone.SkipNext
@@ -28,11 +26,11 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -62,7 +60,7 @@ import fit.asta.health.R
 import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.Constants.getHourMinAmPm
 import fit.asta.health.common.utils.Constants.goToTool
-import fit.asta.health.common.utils.HourMinAmPm
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.remote.model.TodayData
@@ -73,17 +71,22 @@ import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDialog
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.components.generic.GradientButton
+import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.theme.Gradient1NoInternet
+import fit.asta.health.designsystem.theme.Gradient2NoInternet
 import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.feature.scheduler.ui.components.WeatherCard
 import fit.asta.health.main.Graph
 import fit.asta.health.main.view.ALL_ALARMS_ROUTE
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
-import java.time.LocalTime
 
 @Composable
 fun TodayContent(
-    uiState: TodayData,
+    state: UiState<TodayData>,
+    userName: String,
+    defaultScheduleVisibility: Boolean,
     listMorning: SnapshotStateList<AlarmEntity>,
     listAfternoon: SnapshotStateList<AlarmEntity>,
     listEvening: SnapshotStateList<AlarmEntity>,
@@ -103,10 +106,7 @@ fun TodayContent(
         AlertDialogPopUp(
             content = "Are you sure you want to delete this alarm?",
             actionButton = stringResource(id = R.string.delete),
-            onDismiss = {
-                deletedItem?.let { hSEvent(HomeEvent.UndoAlarm(it, evenType)) }
-                deleteDialog = false
-            },
+            onDismiss = { deleteDialog = false },
             onDone = {
                 deletedItem?.let { hSEvent(HomeEvent.DeleteAlarm(it, context)) }
                 deleteDialog = false
@@ -116,10 +116,7 @@ fun TodayContent(
         AlertDialogPopUp(
             content = "Are you sure you want to skip this alarm?",
             actionButton = stringResource(id = R.string.skip),
-            onDismiss = {
-                skipItem?.let { hSEvent(HomeEvent.UndoAlarm(it, evenType)) }
-                skipDialog = false
-            },
+            onDismiss = { skipDialog = false },
             onDone = {
                 skipItem?.let { hSEvent(HomeEvent.SkipAlarm(it, context)) }
                 skipDialog = false
@@ -127,72 +124,88 @@ fun TodayContent(
     }
     AppScaffold(
         snackBarHostState = snackBarHostState,
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    hSEvent(HomeEvent.SetAlarm)
-                    hSEvent(
-                        HomeEvent.NavSchedule(
-                            HourMinAmPm(
-                                LocalTime.now().hour,
-                                LocalTime.now().minute,
-                                !LocalTime.now().isBefore(LocalTime.NOON),
-                                0
-                            )
-                        )
-                    )
-                    onNav(Graph.Scheduler.route)
-                },
-                containerColor = MaterialTheme.colorScheme.primary,
-                shape = CircleShape,
-                modifier = Modifier.size(50.dp),
-                contentColor = Color.White
-            ) {
-                Icon(Icons.Filled.Add, contentDescription = null)
-            }
-        },
     ) { paddingValues ->
         LazyColumn(
             Modifier
                 .fillMaxWidth()
                 .padding(paddingValues)
                 .background(color = MaterialTheme.colorScheme.background),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(spacing.medium),
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
+            verticalArrangement = Arrangement.spacedBy(spacing.small),
         ) {
-            item { NameAndMoodHomeScreenHeader(onAlarm = { onNav(ALL_ALARMS_ROUTE) }) }
             item {
-                WeatherCardImage(
-                    temperature = uiState.temperature,
-                    location = uiState.location,
-                    date = uiState.date
-                )
+                NameAndMoodHomeScreenHeader(userName = userName,
+                    onAlarm = { onNav(ALL_ALARMS_ROUTE) })
             }
-            item {
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    items(items = uiState.slots) { slot ->
-                        WeatherCard(
-                            weatherData = slot,
-                            onSchedule = {
-                                hSEvent(
-                                    HomeEvent.NavSchedule(
-                                        getHourMinAmPm(
-                                            slot.time,
-                                            slot.title
-                                        )
-                                    )
-                                )
-                                onNav(Graph.Scheduler.route)
-                            }
-                        )
+            when (state) {
+                is UiState.Loading -> {
+                    item {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            LoadingAnimation()
+                        }
                     }
                 }
+
+                is UiState.Error -> {
+                    item {
+                        Surface(modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)) {
+                            val cornerRadius = 16.dp
+                            val gradientColor = listOf(Gradient1NoInternet, Gradient2NoInternet)
+                            GradientButton(
+                                gradientColors = gradientColor,
+                                cornerRadius = cornerRadius,
+                                nameButton = "Retry",
+                                roundedCornerShape = RoundedCornerShape(16.dp),
+                                onClick = { hSEvent(HomeEvent.Retry) }
+                            )
+                        }
+                    }
+                }
+
+                is UiState.Success -> {
+                    item {
+                        WeatherCardImage(
+                            temperature = state.data.temperature,
+                            location = state.data.location,
+                            date = state.data.date
+                        )
+                    }
+                    item {
+                        LazyRow(
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            items(items = state.data.slots) { slot ->
+                                WeatherCard(
+                                    weatherData = slot,
+                                    onSchedule = {
+                                        hSEvent(
+                                            HomeEvent.NavSchedule(
+                                                getHourMinAmPm(
+                                                    slot.time,
+                                                    slot.title
+                                                )
+                                            )
+                                        )
+                                        onNav(Graph.Scheduler.route)
+                                    }
+                                )
+                            }
+                        }
+                    }
+
+                }
+
+                else -> {}
             }
-            if (listMorning.isEmpty() && listAfternoon.isEmpty() && listEvening.isEmpty()) {
+
+            if (defaultScheduleVisibility) {
                 item {
-                    AnimatedVisibility(visible = listMorning.isEmpty() && listAfternoon.isEmpty() && listEvening.isEmpty()) {
+                    AnimatedVisibility(visible = true) {
                         AppButtons.AppOutlinedButton(onClick = {
                             hSEvent(
                                 HomeEvent.SetDefaultSchedule(
@@ -217,12 +230,10 @@ fun TodayContent(
                 items(listMorning) { data ->
                     SwipeDemoToday(data = data, onSwipeRight = {
                         evenType = Event.Morning
-                        hSEvent(HomeEvent.RemoveAlarm(data, evenType))
                         deleteDialog = true
                         deletedItem = data
                     }, onSwipeLeft = {
                         evenType = Event.Morning
-                        hSEvent(HomeEvent.RemoveAlarm(data, evenType))
                         skipDialog = true
                         skipItem = data
                     }, onDone = {
@@ -245,12 +256,10 @@ fun TodayContent(
                 items(listAfternoon) { data ->
                     SwipeDemoToday(data = data, onSwipeRight = {
                         evenType = Event.Afternoon
-                        hSEvent(HomeEvent.RemoveAlarm(data, evenType))
                         deleteDialog = true
                         deletedItem = data
                     }, onSwipeLeft = {
                         evenType = Event.Afternoon
-                        hSEvent(HomeEvent.RemoveAlarm(data, evenType))
                         skipDialog = true
                         skipItem = data
                     }, onDone = {
@@ -273,12 +282,10 @@ fun TodayContent(
                 items(listEvening) { data ->
                     SwipeDemoToday(data = data, onSwipeRight = {
                         evenType = Event.Evening
-                        hSEvent(HomeEvent.RemoveAlarm(data, evenType))
                         deleteDialog = true
                         deletedItem = data
                     }, onSwipeLeft = {
                         evenType = Event.Evening
-                        hSEvent(HomeEvent.RemoveAlarm(data, evenType))
                         skipDialog = true
                         skipItem = data
                     }, onDone = {
@@ -299,22 +306,18 @@ fun TodayContent(
                     }
                 }
                 items(listNextDay) { data ->
-                    SwipeDemoToday(data = data, onSwipeRight = {
-                        evenType = Event.NextDay
-                        hSEvent(HomeEvent.RemoveAlarm(data, evenType))
-                        deleteDialog = true
-                        deletedItem = data
-                    }, onSwipeLeft = {
-                        evenType = Event.NextDay
-                        hSEvent(HomeEvent.RemoveAlarm(data, evenType))
-                        skipDialog = true
-                        skipItem = data
-                    }, onDone = {
-                        onNav(goToTool(data.info.tag))
-                    }, onReschedule = {
-                        onNav(Graph.Scheduler.route)
-                        hSEvent(HomeEvent.EditAlarm(data))
-                    })
+                    SwipeDemoToday(data = data, skipEnable = false,
+                        onSwipeRight = {
+                            evenType = Event.NextDay
+                            deleteDialog = true
+                            deletedItem = data
+                        }, onSwipeLeft = {},
+                        onDone = {
+                            onNav(goToTool(data.info.tag))
+                        }, onReschedule = {
+                            onNav(Graph.Scheduler.route)
+                            hSEvent(HomeEvent.EditAlarm(data))
+                        })
                 }
             }
         }
@@ -452,8 +455,9 @@ fun TodayItem(
 
 @Composable
 fun SwipeDemoToday(
-    onSwipeRight: () -> Unit = {},
-    onSwipeLeft: () -> Unit = {},
+    onSwipeRight: () -> Unit,
+    onSwipeLeft: () -> Unit,
+    skipEnable: Boolean = true,
     progress: String = "44%",
     data: AlarmEntity,
     onDone: () -> Unit = {},
@@ -472,14 +476,15 @@ fun SwipeDemoToday(
     )
     SwipeableActionsBox(
         startActions = listOf(archive),
-        endActions = listOf(skip),
+        endActions = if (skipEnable) listOf(skip) else emptyList(),
         swipeThreshold = 20.dp,
         backgroundUntilSwipeThreshold = MaterialTheme.colorScheme.background,
     ) {
         val time = AMPMHoursMin(
             hours = if (data.time.hours > 12) {
                 data.time.hours - 12
-            } else data.time.hours,
+            } else if (data.time.hours == 0) 12
+            else data.time.hours,
             minutes = data.time.minutes,
             dayTime = if (data.time.hours >= 12) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
         )

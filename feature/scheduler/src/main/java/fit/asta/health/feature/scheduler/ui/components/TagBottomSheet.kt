@@ -95,7 +95,12 @@ private fun SwipeAbleArea(text: String, image: String) {
 
 
 @Composable
-fun SwipeDemo(onSwipe: () -> Unit = {}, onClick: () -> Unit = {}, data: TagEntity) {
+fun SwipeDemo(
+    onSwipe: () -> Unit = {},
+    onClick: () -> Unit = {},
+    data: TagEntity,
+    delete: Boolean = true
+) {
 
     val archive = SwipeAction(
         icon = painterResource(id = DrawR.drawable.ic_baseline_delete_24),
@@ -104,9 +109,9 @@ fun SwipeDemo(onSwipe: () -> Unit = {}, onClick: () -> Unit = {}, data: TagEntit
     )
 
     SwipeableActionsBox(
-        startActions = listOf(archive),
+        startActions = if (delete) listOf(archive) else listOf(),
     ) {
-        TagCard(text = data.meta.name, image = data.meta.url) { onClick() }
+        TagCard(text = data.name, image = data.url) { onClick() }
     }
 
 }

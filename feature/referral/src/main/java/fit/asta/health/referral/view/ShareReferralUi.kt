@@ -55,8 +55,6 @@ fun ShareReferralUi(
     onTryAgain: () -> Unit
 ) {
 
-    val context = LocalContext.current
-
     Scaffold(
         topBar = {
             AppTopBar(title = "Referral", onBack = onBackPress)
@@ -98,31 +96,30 @@ fun ShareReferralUi(
                     }
 
                     item {
-                        if (referralDataState.data.data.referredByUsersDetails != null) {
+                        referralDataState.data.data.referredByUsersDetails?.let {
                             ReferralCustomCard(title = "Referred by:") {
                                 ReferredUserItem(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(spacing.medium),
-                                    user = referralDataState.data.data.referredByUsersDetails!!
+                                    user = it
                                 )
                             }
                         }
                     }
 
-                    val referredUsers = referralDataState.data.data.referredUsers
-                    referredUsers?.let {
-                        items(it) { user ->
-                            Spacer(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(spacing.medium)
-                                    .height(1.dp)
-                                    .background(MaterialTheme.colorScheme.surfaceVariant)
-                            )
-                            ReferredUserItem(
-                                user = user
-                            )
+                    item{
+                        referralDataState.data.data.referredUsers?.let {
+                            ReferralCustomCard(title = "Referrals by you:") {
+                                it.forEach {user->
+                                    ReferredUserItem(
+                                        modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(spacing.medium),
+                                        user = user
+                                    )
+                                }
+                            }
                         }
                     }
                 }

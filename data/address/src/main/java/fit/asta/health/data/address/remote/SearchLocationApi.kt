@@ -1,6 +1,6 @@
 package fit.asta.health.data.address.remote
 
-import fit.asta.health.data.address.modal.SearchResponse
+import fit.asta.health.data.address.remote.modal.SearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

@@ -10,16 +10,20 @@ import fit.asta.health.common.utils.getCurrentTime
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.remote.net.scheduler.Meta
 import fit.asta.health.data.scheduler.repo.AlarmLocalRepo
+import fit.asta.health.datastore.PrefManager
 import fit.asta.health.feature.scheduler.util.StateManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
 class AllAlarmViewModel @Inject constructor(
     private val alarmLocalRepo: AlarmLocalRepo,
-    private val stateManager: StateManager
-) : ViewModel() {
+    private val stateManager: StateManager,
+    private val prefManager: PrefManager,
+
+    ) : ViewModel() {
     private val _alarmList = mutableStateListOf<AlarmEntity>()
     val alarmList = MutableStateFlow(_alarmList)
 
@@ -32,12 +36,22 @@ class AllAlarmViewModel @Inject constructor(
         }
     }
 
+    fun setAlarmPreferences(value: Long) {
+        viewModelScope.launch {
+            prefManager.setAlarmId(value)
+        }
+    }
+
     fun changeAlarmState(state: Boolean, alarm: AlarmEntity, context: Context) {
         viewModelScope.launch {
             Log.d("state", "changeAlarmState: $state")
             updateDatabase(state, alarm)
             if (state) {
-                stateManager.registerAlarm(context, alarm)
+                stateManager.registerAlarm(
+                    context,
+                    alarm,
+                    (alarm.skipDate == LocalDate.now().dayOfMonth)
+                )
             } else {
                 stateManager.deleteAlarm(context, alarm)
             }

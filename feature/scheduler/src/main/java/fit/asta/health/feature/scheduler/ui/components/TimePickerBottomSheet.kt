@@ -34,6 +34,7 @@ import fit.asta.health.resources.strings.R as StringR
 
 @Composable
 fun TimePickerBottomSheet(
+    title: String,
     time: AMPMHoursMin,
     onCancel: () -> Unit,
     onSave: (AMPMHoursMin) -> Unit
@@ -42,6 +43,7 @@ fun TimePickerBottomSheet(
     TimePickerClock(
         dividersColor = MaterialTheme.colorScheme.primary,
         value = time,
+        title = title,
         onCancel = onCancel,
         onSave = onSave
     )
@@ -51,6 +53,7 @@ fun TimePickerBottomSheet(
 fun TimePickerClock(
     onCancel: () -> Unit, onSave: (AMPMHoursMin) -> Unit,
     modifier: Modifier = Modifier,
+    title: String,
     value: AMPMHoursMin,
     leadingZero: Boolean = true,
     hoursRange: Iterable<Int> = (1..12),
@@ -93,7 +96,7 @@ fun TimePickerClock(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Select Time", style = MaterialTheme.typography.titleLarge
+            text = title, style = MaterialTheme.typography.titleLarge
         )
         AnimatedVisibility(visible = visibility) {
             Text(

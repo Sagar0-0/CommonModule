@@ -8,9 +8,9 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class AstaGetTagsListResponse(
     @SerializedName("CustomTagData")
-    val customTagData: List<Data>,
+    val customTagData: List<Data> = emptyList(),
     @SerializedName("data")
-    val `data`: List<Data>,
+    val `data`: List<Data> = emptyList(),
     @SerializedName("status")
-    val status: Status
+    val status: Status = Status()
 ) : Parcelable

@@ -12,3 +12,9 @@ data class UserPreferencesData(
     val isReferralChecked: Boolean = false,
     val referralCode: String = ""
 )
+
+data class UserPreferencesDataAddress(
+    val currentAddress: String = "",
+    val lat: Double = 0.0,
+    val long: Double = 0.0
+)

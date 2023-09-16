@@ -43,7 +43,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,29 +54,28 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.data.address.modal.MyAddress
-import fit.asta.health.data.address.modal.SearchResponse
+import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.theme.LocalSpacing
 import fit.asta.health.designsystem.theme.iconSize
-import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.resources.strings.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SavedAddressesScreen(
     savedAddressListState: UiState<List<MyAddress>>,
+    searchSheetVisible: Boolean,
+    fillAddressSheetVisible: Boolean,
     deleteAddressState: UiState<Boolean>,
     selectAddressState: UiState<Unit>,
     currentAddressState: UiState<Address>,
-    searchResultState: UiState<SearchResponse>,
     onUiEvent: (SavedAddressUiEvent) -> Unit
 ) {
     val context = LocalContext.current
 
-    var sheetVisible by rememberSaveable { mutableStateOf(false) }
     val scaffoldState = rememberBottomSheetScaffoldState()
 
     LaunchedEffect(deleteAddressState) {
@@ -102,33 +100,25 @@ internal fun SavedAddressesScreen(
         sheetPeekHeight = 0.dp,
         sheetSwipeEnabled = false,
         scaffoldState = scaffoldState,
-        sheetContent = {},
-        sheetDragHandle = null
+        sheetDragHandle = null,
+        sheetContent = {}
     ) { padding ->
-        if (sheetVisible) SearchBottomSheet(modifier = Modifier.padding(padding), onSearch = {
-            onUiEvent(SavedAddressUiEvent.Search(it))
-        }, searchResponseState = searchResultState, onResultClick = {
-            onUiEvent(SavedAddressUiEvent.NavigateToMaps(it))
-        }, onClose = {
-            onUiEvent(SavedAddressUiEvent.ClearSearch)
-            sheetVisible = false
-        })
 
         Column(
             Modifier
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            AnimatedVisibility(!sheetVisible) {
+            AnimatedVisibility(!searchSheetVisible) {
                 OutlinedTextField(
                     maxLines = 1,
                     enabled = false,
                     shape = MaterialTheme.shapes.large,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(spacing.small)
+                        .padding(LocalSpacing.current.small)
                         .clickable {
-                            sheetVisible = true
+                            onUiEvent(SavedAddressUiEvent.ShowSearchSheet)
                         },
                     value = "",
                     onValueChange = {},
@@ -157,81 +147,85 @@ internal fun SavedAddressesScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(LocalSpacing.current.medium))
 
-            OutlinedButton(colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                contentColor = MaterialTheme.colorScheme.primary
-            ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = spacing.small),
-                onClick = {
-                    if (currentAddressState is UiState.Success) {
-                        onUiEvent(SavedAddressUiEvent.Back)
-                    } else if (currentAddressState is UiState.Error) {
-                        onUiEvent(SavedAddressUiEvent.UpdateCurrentLocation)
-                    }
-                }
-            ) {
-                Icon(
+            AnimatedVisibility(!fillAddressSheetVisible) {
+                OutlinedButton(
+                    colors = ButtonDefaults
+                        .buttonColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                            contentColor = MaterialTheme.colorScheme.primary
+                        ),
                     modifier = Modifier
-                        .padding(end = spacing.extraSmall)
-                        .size(iconSize.mediumSmall),
-                    imageVector = Icons.Default.LocationOn,
-                    contentDescription = ""
-                )
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        text = R.string.use_my_current_location.toStringFromResId(),
-                        style = MaterialTheme.typography.bodyMedium,
-                        textAlign = TextAlign.Start
-                    )
-                    when (currentAddressState) {
-                        UiState.Loading -> {
-                            Text(
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                text = R.string.fetching_location.toStringFromResId(),
-                                style = MaterialTheme.typography.bodyMedium,
-                                textAlign = TextAlign.Start
-                            )
+                        .fillMaxWidth()
+                        .padding(horizontal = LocalSpacing.current.small),
+                    onClick = {
+                        if (currentAddressState is UiState.Success) {
+                            onUiEvent(SavedAddressUiEvent.ShowFillAddressSheet)
+                        } else if (currentAddressState is UiState.Error) {
+                            onUiEvent(SavedAddressUiEvent.UpdateCurrentLocation)
                         }
-
-                        is UiState.Success -> {
-                            Text(
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                text = currentAddressState.data.getAddressLine(
-                                    0
-                                ),
-                                style = MaterialTheme.typography.bodyMedium,
-                                textAlign = TextAlign.Start
-                            )
-                        }
-
-                        is UiState.Error -> {
-                            Text(
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                text = currentAddressState.resId.toStringFromResId(),
-                                style = MaterialTheme.typography.bodyMedium,
-                                textAlign = TextAlign.Start
-                            )
-                        }
-
-                        else -> {}
                     }
-                }
+                ) {
+                    Icon(
+                        modifier = Modifier
+                            .padding(end = LocalSpacing.current.extraSmall)
+                            .size(iconSize.mediumSmall),
+                        imageVector = Icons.Default.LocationOn,
+                        contentDescription = ""
+                    )
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            text = R.string.use_my_current_location.toStringFromResId(),
+                            style = MaterialTheme.typography.bodyMedium,
+                            textAlign = TextAlign.Start
+                        )
+                        when (currentAddressState) {
+                            UiState.Loading -> {
+                                Text(
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    text = R.string.fetching_location.toStringFromResId(),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    textAlign = TextAlign.Start
+                                )
+                            }
 
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowRight, contentDescription = ""
-                )
+                            is UiState.Success -> {
+                                Text(
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    text = currentAddressState.data.getAddressLine(
+                                        0
+                                    ),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    textAlign = TextAlign.Start
+                                )
+                            }
+
+                            is UiState.Error -> {
+                                Text(
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    text = currentAddressState.resId.toStringFromResId(),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    textAlign = TextAlign.Start
+                                )
+                            }
+
+                            else -> {}
+                        }
+                    }
+
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowRight, contentDescription = ""
+                    )
+                }
             }
 
-            Spacer(modifier = Modifier.height(spacing.small))
+            Spacer(modifier = Modifier.height(LocalSpacing.current.small))
 
             OutlinedButton(colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -239,29 +233,22 @@ internal fun SavedAddressesScreen(
             ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = spacing.small),
+                    .padding(horizontal = LocalSpacing.current.small),
                 onClick = {
-                    val myAddressItem = MyAddress(
-                        selected = false,
-                        area = "",
-                        block = "",
-                        hn = "",
-                        id = "",
-                        lat = (currentAddressState as? UiState.Success)?.data?.latitude ?: 0.0,
-                        loc = "",
-                        lon = (currentAddressState as? UiState.Success)?.data?.longitude ?: 0.0,
-                        name = "",
-                        nearby = "",
-                        ph = "",
-                        pin = "",
-                        sub = "",
-                        uid = ""
+                    onUiEvent(
+                        SavedAddressUiEvent.NavigateToMaps(
+                            MyAddress(
+                                lat = (currentAddressState as? UiState.Success)?.data?.latitude
+                                    ?: 0.0,
+                                lon = (currentAddressState as? UiState.Success)?.data?.longitude
+                                    ?: 0.0
+                            )
+                        )
                     )
-                    onUiEvent(SavedAddressUiEvent.NavigateToMaps(myAddressItem))
                 }) {
                 Icon(
                     modifier = Modifier
-                        .padding(end = spacing.extraSmall)
+                        .padding(end = LocalSpacing.current.extraSmall)
                         .size(iconSize.mediumSmall),
                     imageVector = Icons.Default.Add,
                     contentDescription = ""
@@ -279,7 +266,7 @@ internal fun SavedAddressesScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(LocalSpacing.current.medium))
 
             Spacer(
                 modifier = Modifier
@@ -289,7 +276,7 @@ internal fun SavedAddressesScreen(
             )
 
             Text(
-                modifier = Modifier.padding(spacing.small),
+                modifier = Modifier.padding(LocalSpacing.current.small),
                 text = R.string.saved_address.toStringFromResId(),
                 style = MaterialTheme.typography.titleLarge
             )
@@ -298,7 +285,7 @@ internal fun SavedAddressesScreen(
                     val addresses = savedAddressListState.data
                     if (addresses.isEmpty()) {
                         Text(
-                            modifier = Modifier.padding(spacing.small),
+                            modifier = Modifier.padding(LocalSpacing.current.small),
                             text = R.string.no_saved_address.toStringFromResId(),
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.titleMedium
@@ -410,10 +397,10 @@ private fun AddressItem(
                 )
             }
             .fillMaxWidth()
-            .padding(spacing.small)
+            .padding(LocalSpacing.current.small)
     ) {
         Icon(
-            modifier = Modifier.padding(end = spacing.extraSmall),
+            modifier = Modifier.padding(end = LocalSpacing.current.extraSmall),
             imageVector = Icons.Default.Home,
             contentDescription = ""
         )
@@ -436,7 +423,7 @@ private fun AddressItem(
                     )
                 }
 
-                Spacer(modifier = Modifier.width(spacing.extraSmall))
+                Spacer(modifier = Modifier.width(LocalSpacing.current.extraSmall))
 
                 Crossfade(
                     targetState = loading, label = ""
@@ -457,7 +444,7 @@ private fun AddressItem(
                     }
                 }
 
-                Spacer(modifier = Modifier.width(spacing.extraSmall))
+                Spacer(modifier = Modifier.width(LocalSpacing.current.extraSmall))
 
                 OutlinedIconButton(onClick = { onClick(AddressEvent.Share) }) {
                     Icon(

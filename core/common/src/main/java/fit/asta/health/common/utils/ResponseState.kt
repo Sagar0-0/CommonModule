@@ -1,6 +1,5 @@
 package fit.asta.health.common.utils
 
-import android.util.Log
 import fit.asta.health.resources.strings.R
 
 sealed interface ResponseState<out T> {
@@ -12,7 +11,6 @@ suspend fun <T> getResponseState(request: suspend () -> T): ResponseState<T> {
     return try {
         ResponseState.Success(request())
     } catch (e: Exception) {
-        Log.e("TAG", "getResponseState: $e")
         ResponseState.Error(e)
     }
 }

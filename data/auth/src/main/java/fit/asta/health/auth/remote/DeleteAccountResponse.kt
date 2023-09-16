@@ -1,9 +1,8 @@
-package fit.asta.health.data.address.modal
-
+package fit.asta.health.auth.remote
 
 import com.google.gson.annotations.SerializedName
 
-data class DeleteAddressResponse(
+data class DeleteAccountResponse(
     @SerializedName("flag")
     val flag: Boolean = false,
     @SerializedName("status")

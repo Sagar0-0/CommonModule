@@ -9,9 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -22,13 +20,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.sp
 import fit.asta.health.data.feedback.remote.modal.An
 import fit.asta.health.data.feedback.remote.modal.Qn
+import fit.asta.health.designsystem.component.AstaTextField
 import fit.asta.health.designsystem.theme.boxSize
 import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.resources.strings.R
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun feedbackTextFieldItem(qn: Qn): MutableState<An> {
     val ans = remember {
@@ -79,7 +77,7 @@ fun feedbackTextFieldItem(qn: Qn): MutableState<An> {
                 }
             }
 
-            OutlinedTextField(
+            AstaTextField(
                 value = text.value,
                 onValueChange = {
                     if (it.length <= maxChar) text.value = it
@@ -87,18 +85,9 @@ fun feedbackTextFieldItem(qn: Qn): MutableState<An> {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(boxSize.medium),
-                placeholder = {
-                    Text(
-                        text = "Write your answer here...",
-                        lineHeight = 19.6.sp,
-                        color = MaterialTheme.colorScheme.surfaceVariant,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                },
+                placeholder = R.string.write_your_answer_here,
                 colors = TextFieldDefaults.colors(
-                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-                    /*focusedBorderColor = MaterialTheme.colorScheme.primary,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.background*/
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface
                 ),
                 shape = MaterialTheme.shapes.medium
             )

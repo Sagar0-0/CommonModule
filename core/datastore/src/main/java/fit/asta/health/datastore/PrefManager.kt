@@ -16,6 +16,7 @@ class PrefManager
     private val userPreferences: DataStore<UserPreferences>
 ) {
     val userData: Flow<UserPreferencesData> = userPreferences.data.map {
+        Log.d("PrefManager", it.toString())
         UserPreferencesData(
             screenCode = it.screenCode,
             notificationStatus = it.notificationStatus,
@@ -28,6 +29,27 @@ class PrefManager
             isReferralChecked = it.isReferralChecked,
             referralCode = it.referralCode
         )
+    }
+    val address: Flow<UserPreferencesDataAddress> = userPreferences.data.map {
+        UserPreferencesDataAddress(
+            currentAddress = it.currentAddress,
+            lat = it.lat,
+            long = it.long
+        )
+    }
+
+    suspend fun setAddressValue(address: String, lat: Double, long: Double) {
+        try {
+            userPreferences.updateData {
+                it.copy {
+                    this.currentAddress = address
+                    this.lat = lat
+                    this.long = long
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("Pref", "Failed to update user preferences", ioException)
+        }
     }
 
     suspend fun setReferralChecked() {

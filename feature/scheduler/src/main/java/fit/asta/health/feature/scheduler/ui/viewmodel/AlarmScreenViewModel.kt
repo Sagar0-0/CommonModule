@@ -25,7 +25,7 @@ class AlarmScreenViewModel
     private val stateManager: StateManager
 ) : ViewModel() {
 
-    var alarmEntity: AlarmEntity? = null
+    private var alarmEntity: AlarmEntity? = null
 
     private val _alarmUiState = MutableStateFlow(AlarmUiState())
     val alarmUiState = _alarmUiState.asStateFlow()

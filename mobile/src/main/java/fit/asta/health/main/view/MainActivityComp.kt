@@ -1,6 +1,7 @@
 package fit.asta.health.main.view
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -11,6 +12,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
@@ -77,7 +79,6 @@ fun NavGraphBuilder.homeScreen(
             val currentAddressName by mainViewModel.currentAddressName.collectAsStateWithLifecycle()
             val locationPermissionRejectedCount by mainViewModel.locationPermissionRejectedCount.collectAsStateWithLifecycle()
             val isLocationEnabled by mainViewModel.isLocationEnabled.collectAsStateWithLifecycle()
-            val isPermissionGranted by mainViewModel.isPermissionGranted.collectAsStateWithLifecycle()
 
             val permissionResultLauncher =
                 rememberLauncherForActivityResult(
@@ -118,16 +119,15 @@ fun NavGraphBuilder.homeScreen(
                 }
 
             fun enableLocationAndUpdateAddress() {
-                mainViewModel.setIsPermissionGranted()
                 mainViewModel.setIsLocationEnabled()
-                if (isPermissionGranted && isLocationEnabled) {
+                if (mainViewModel.isPermissionGranted() && isLocationEnabled) {
                     mainViewModel.checkPermissionAndUpdateCurrentAddress()
                 } else {
-                    if (!isPermissionGranted) {
+                    if (!mainViewModel.isPermissionGranted()) {
                         if (locationPermissionRejectedCount >= 2) {
                             Toast.makeText(
                                 context,
-                                R.string.location_access_required.toStringFromResId(context),
+                                R.string.grant_locations_permission_to_continue.toStringFromResId(context),
                                 Toast.LENGTH_SHORT
                             )
                                 .show()
@@ -156,70 +156,14 @@ fun NavGraphBuilder.homeScreen(
                 }
             }
 
-            val notificationPermissionResultLauncher: ActivityResultLauncher<String> =
-                rememberLauncherForActivityResult(
-                    contract = ActivityResultContracts.RequestPermission()
-                ) { perms ->
-                    if (perms) {
-                        Toast.makeText(
-                            context,
-                            "Notification is recommended for better functionality.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        PrefManager.setNotificationPermissionRejectedCount(context, 1)
-                        navController.navigate(Graph.Scheduler.route)
-                    } else {
-                        Toast.makeText(
-                            context,
-                            "Notification is recommended for better functionality.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        PrefManager.setNotificationPermissionRejectedCount(
-                            context,
-                            PrefManager.getNotificationPermissionRejectedCount(context) + 1
-                        )
-                    }
-                }
-
-            val checkPermissionAndLaunchScheduler = {
-                if (ContextCompat.checkSelfPermission(
-                        context,
-                        Manifest.permission.POST_NOTIFICATIONS
-                    )
-                    == PackageManager.PERMISSION_GRANTED
-                ) {
-                    PrefManager.setNotificationPermissionRejectedCount(context, 1)
-                    navController.navigateToScheduler()
-                } else {
-                    if (PrefManager.getNotificationPermissionRejectedCount(context) >= 2) {
-                        Toast.makeText(
-                            context,
-                            "Please allow Notification permission access.",
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
-                        with(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)) {
-                            data = Uri.fromParts("package", context.packageName, null)
-                            addCategory(Intent.CATEGORY_DEFAULT)
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                            addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
-                            context.startActivity(this)
-                        }
-                    } else {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            notificationPermissionResultLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                        } else {
-                            navController.navigateToScheduler()
-                        }
-                    }
-                }
-            }
+            val checkPermissionAndLaunchScheduler =
+                checkPermissionAndLaunchScheduler(context, navController)
 
             MainActivityLayout(
                 currentAddressState = currentAddressName,
                 profileImageUri = mainViewModel.getUser()?.photoUrl,
                 isNotificationEnabled = notificationEnabled,
+                onLocation = { enableLocationAndUpdateAddress() },
                 onNav = {
                     when (it) {
                         SCHEDULER_GRAPH_ROUTE -> {
@@ -285,21 +229,109 @@ fun NavGraphBuilder.homeScreen(
         composable(ALL_ALARMS_ROUTE) {
             val vm: AllAlarmViewModel = hiltViewModel()
             val list by vm.alarmList.collectAsStateWithLifecycle()
-            AllAlarms(list = list, onEvent = {
-                when (it) {
-                    is AlarmEvent.SetAlarmState -> {
-                        vm.changeAlarmState(
-                            state = it.state,
-                            alarm = it.alarm,
-                            context = it.context
-                        )
-                    }
+            val context = LocalContext.current
+            val checkPermissionAndLaunchScheduler =
+                checkPermissionAndLaunchScheduler(context, navController)
+            AllAlarms(list = list,
+                onEvent = {
+                    when (it) {
+                        is AlarmEvent.SetAlarmState -> {
+                            vm.changeAlarmState(
+                                state = it.state,
+                                alarm = it.alarm,
+                                context = it.context
+                            )
+                        }
 
-                    is AlarmEvent.OnBack -> {
-                        navController.popBackStack()
+                        is AlarmEvent.SetAlarm -> {
+                            vm.setAlarmPreferences(999)
+                        }
+
+                        is AlarmEvent.EditAlarm -> {
+                            vm.setAlarmPreferences(it.alarmId)
+                            checkPermissionAndLaunchScheduler()
+                        }
+
+                        is AlarmEvent.NavSchedule -> {
+                            navController.currentBackStackEntry?.savedStateHandle?.set(
+                                key = HourMinAmPmKey,
+                                value = it.hourMinAmPm
+                            )
+                            checkPermissionAndLaunchScheduler()
+                        }
+
+                        is AlarmEvent.OnBack -> {
+                            navController.popBackStack()
+                        }
                     }
-                }
-            })
+                })
         }
     }
+}
+
+@Composable
+fun checkPermissionAndLaunchScheduler(
+    context: Context,
+    navController: NavController
+): () -> Unit {
+    val notificationPermissionResultLauncher: ActivityResultLauncher<String> =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestPermission()
+        ) { perms ->
+            if (perms) {
+                Toast.makeText(
+                    context,
+                    "Notification is recommended for better functionality.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                PrefManager.setNotificationPermissionRejectedCount(context, 1)
+                navController.navigate(Graph.Scheduler.route)
+            } else {
+                Toast.makeText(
+                    context,
+                    "Notification is recommended for better functionality.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                PrefManager.setNotificationPermissionRejectedCount(
+                    context,
+                    PrefManager.getNotificationPermissionRejectedCount(context) + 1
+                )
+            }
+        }
+
+    val checkPermissionAndLaunchScheduler = {
+        if (ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS
+            )
+            == PackageManager.PERMISSION_GRANTED
+        ) {
+            PrefManager.setNotificationPermissionRejectedCount(context, 1)
+            navController.navigateToScheduler()
+        } else {
+            if (PrefManager.getNotificationPermissionRejectedCount(context) >= 2) {
+                Toast.makeText(
+                    context,
+                    "Please allow Notification permission access.",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+                with(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)) {
+                    data = Uri.fromParts("package", context.packageName, null)
+                    addCategory(Intent.CATEGORY_DEFAULT)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                    addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+                    context.startActivity(this)
+                }
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    notificationPermissionResultLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                } else {
+                    navController.navigateToScheduler()
+                }
+            }
+        }
+    }
+    return checkPermissionAndLaunchScheduler
 }

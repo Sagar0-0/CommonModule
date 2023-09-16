@@ -39,8 +39,8 @@ import androidx.compose.ui.text.style.TextAlign
 import com.google.android.libraries.places.api.Places
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.data.address.modal.MyAddress
-import fit.asta.health.data.address.modal.SearchResponse
+import fit.asta.health.data.address.remote.modal.MyAddress
+import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppDefServerImg
 import fit.asta.health.designsystem.components.generic.AppTexts
@@ -55,9 +55,7 @@ import kotlinx.coroutines.launch
 internal fun SearchBottomSheet(
     modifier: Modifier = Modifier,
     searchResponseState: UiState<SearchResponse>,
-    onResultClick: (MyAddress) -> Unit,
-    onSearch: (String) -> Unit,
-    onClose: () -> Unit
+    onUiEvent: (SearchSheetUiEvent) -> Unit
 ) {
     var searchQuery by rememberSaveable {
         mutableStateOf("")
@@ -72,7 +70,8 @@ internal fun SearchBottomSheet(
     val closeSheet = {
         scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
             if (!bottomSheetState.isVisible) {
-                onClose()
+                onUiEvent(SearchSheetUiEvent.Close)
+                onUiEvent(SearchSheetUiEvent.ClearSearchResponse)
             }
         }
     }
@@ -102,7 +101,7 @@ internal fun SearchBottomSheet(
                 value = searchQuery,
                 onValueChange = {
                     searchQuery = it
-                    if (it.length > 2) onSearch(searchQuery)
+                    if (it.length > 2) onUiEvent(SearchSheetUiEvent.Search(it))
                 },
                 placeholder = {
                     Text(
@@ -163,23 +162,11 @@ internal fun SearchBottomSheet(
                                     onClick = {
                                         searchQuery = ""
                                         val myAddressItem = MyAddress(
-                                            selected = false,
-                                            area = "",
-                                            block = "",
-                                            hn = "",
-                                            id = "",
                                             lat = it.geometry.location.lat,
-                                            loc = "",
                                             lon = it.geometry.location.lng,
-                                            name = "",
-                                            nearby = "",
-                                            ph = "",
-                                            pin = "",
-                                            sub = "",
-                                            uid = ""
                                         )
                                         closeSheet()
-                                        onResultClick(myAddressItem)
+                                        onUiEvent(SearchSheetUiEvent.OnResultClick(myAddressItem))
                                         results = listOf()
                                     },
                                     modifier = Modifier
