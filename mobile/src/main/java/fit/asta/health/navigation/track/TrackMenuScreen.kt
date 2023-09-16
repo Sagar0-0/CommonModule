@@ -146,14 +146,10 @@ private fun TrackMenuSuccessScreen(
         // Date Picker
         item {
             TrackDatePicker(
-                date = calendarData.dayOfMonth,
-                month = calendarData.monthValue,
-                year = calendarData.year,
+                localDate = calendarData,
                 onPreviousButtonClick = { setUiEvent(TrackUiEvent.ClickedPreviousDateButton) },
                 onNextButtonClick = { setUiEvent(TrackUiEvent.ClickedNextDateButton) },
-                onDateChanged = { date, month, year ->
-                    setUiEvent(TrackUiEvent.SetNewDate(date = date, month = month, year = year))
-                }
+                onDateChanged = { setUiEvent(TrackUiEvent.SetNewDate(it)) }
             )
         }
 

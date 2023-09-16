@@ -38,8 +38,8 @@ class TrackViewModel @Inject constructor(
     /**
      * This function changes the current calendar date
      */
-    private fun onDateChanged(date: Int, month: Int, year: Int) {
-        _calendarData.value = LocalDate.of(year, month, date)
+    private fun onDateChanged(localDate: LocalDate) {
+        _calendarData.value = localDate
     }
 
     /**
@@ -285,7 +285,7 @@ class TrackViewModel @Inject constructor(
             }
 
             is TrackUiEvent.SetNewDate -> {
-                onDateChanged(date = event.date, month = event.month, year = event.year)
+                onDateChanged(event.newDate)
             }
 
             is TrackUiEvent.ClickedPreviousDateButton -> {
