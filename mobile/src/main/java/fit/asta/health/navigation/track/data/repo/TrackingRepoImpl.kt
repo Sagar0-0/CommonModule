@@ -24,7 +24,8 @@ class TrackingRepoImpl(
     override suspend fun getHomeDetails(
         uid: String,
         date: String,
-        location: String
+        location: String,
+        status: String
     ): ResponseState<HomeMenuResponse> {
 
         return withContext(dispatcher) {
@@ -32,7 +33,8 @@ class TrackingRepoImpl(
                 trackingApiService.getHomeDetails(
                     uid = uid,
                     date = date,
-                    location = location
+                    location = location,
+                    status = status
                 )
             }
         }

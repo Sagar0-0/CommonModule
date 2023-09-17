@@ -80,20 +80,19 @@ class TrackViewModel @Inject constructor(
     /**
      * This function fetches the Home Screen Details from the Server
      */
-    fun getHomeDetails() {
+    private fun getHomeDetails(status: String, date: String) {
 
         if (_homeScreenDetails.value is UiState.Loading)
             return
 
         _homeScreenDetails.value = UiState.Loading
 
-        val date = "2023-June-05"
-
         viewModelScope.launch {
             _homeScreenDetails.value = trackingRepo.getHomeDetails(
                 uid = uid,
                 date = date,
-                location = "bangalore"
+                location = "bangalore",
+                status = status
             ).toUiState()
         }
     }
@@ -268,7 +267,7 @@ class TrackViewModel @Inject constructor(
         }
     }
 
-    private var currentTrackOption: TrackOption = TrackOption.WaterOption
+    private var currentTrackOption: TrackOption = TrackOption.HomeMenuOption
 
     fun uiEventListener(event: TrackUiEvent) {
         when (event) {
@@ -302,6 +301,13 @@ class TrackViewModel @Inject constructor(
 
     private fun handleTrackerOption() {
         when (currentTrackOption) {
+            is TrackOption.HomeMenuOption -> {
+                getHomeDetails(
+                    status = currentTrackOption.trackStatus.status,
+                    date = handleTrackerDate(),
+                )
+            }
+
             is TrackOption.WaterOption -> {
                 getWaterDetails(
                     status = currentTrackOption.trackStatus.status,

@@ -2,6 +2,7 @@ package fit.asta.health.navigation.track.ui.util
 
 sealed class TrackOption(var trackStatus: TrackStatus) {
 
+    data object HomeMenuOption : TrackOption(TrackStatus.StatusDaily)
     data object WaterOption : TrackOption(TrackStatus.StatusDaily)
     data object StepsOption : TrackOption(TrackStatus.StatusDaily)
     data object MeditationOption : TrackOption(TrackStatus.StatusDaily)

@@ -21,6 +21,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -53,6 +55,7 @@ import fit.asta.health.navigation.track.data.remote.model.menu.HomeMenuResponse
 import fit.asta.health.navigation.track.ui.components.TrackDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackingChartCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
+import fit.asta.health.navigation.track.ui.util.TrackOption
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
 import fit.asta.health.navigation.track.ui.viewmodel.TrackViewModel
@@ -73,9 +76,15 @@ fun TrackMenuScreenControl() {
     val calendarData = trackViewModel.calendarData
         .collectAsStateWithLifecycle().value
 
+    val setUiEvent = trackViewModel::uiEventListener
+
+    // This is the Item which is selected in the Top Tab Bar Layout
+    val selectedItem = remember { mutableIntStateOf(0) }
+
     // This function loads the data for the Home Menu Screen
     LaunchedEffect(Unit) {
-        trackViewModel.getHomeDetails()
+        setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.HomeMenuOption))
+        setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
     }
 
     // This conditional handles the State of the Api call and shows the UI according to the state
@@ -83,7 +92,8 @@ fun TrackMenuScreenControl() {
 
         // Initialized State
         is UiState.Idle -> {
-            trackViewModel.getHomeDetails()
+            setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.HomeMenuOption))
+            setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
         }
 
         // Loading State
@@ -102,8 +112,12 @@ fun TrackMenuScreenControl() {
 
         // failure State
         is UiState.Error -> {
-            AppErrorScreen(desc = homeMenuState.resId.toStringFromResId()) {
-                trackViewModel.getHomeDetails()
+            AppErrorScreen(
+                isInternetError = false,
+                desc = homeMenuState.resId.toStringFromResId()
+            ) {
+                setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.HomeMenuOption))
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
             }
         }
     }
