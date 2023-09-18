@@ -64,6 +64,7 @@ import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
 import fit.asta.health.navigation.track.ui.viewmodel.TrackViewModel
 import java.text.DecimalFormat
+import java.time.LocalDate
 import kotlin.math.abs
 
 @Composable
@@ -75,8 +76,8 @@ fun TrackMenuScreenControl() {
     val homeMenuState = trackViewModel.homeScreenDetails
         .collectAsStateWithLifecycle().value
 
-    // Calendar Data
-    val calendarData = trackViewModel.calendarData
+    // Calendar Chosen Date Data from the View Model
+    val localDate = trackViewModel.calendarData
         .collectAsStateWithLifecycle().value
 
     val setUiEvent = trackViewModel::uiEventListener
@@ -187,7 +188,7 @@ fun TrackMenuScreenControl() {
 
         // Date Picker
         TrackDatePicker(
-            localDate = calendarData,
+            localDate = localDate,
             onPreviousButtonClick = {
                 setUiEvent(TrackUiEvent.ClickedPreviousDateButton)
                 setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
@@ -218,7 +219,10 @@ fun TrackMenuScreenControl() {
 
             // Success State
             is UiState.Success -> {
-                TrackMenuSuccessScreen(homeMenuData = homeMenuState.data.homeMenuData)
+                TrackMenuSuccessScreen(
+                    homeMenuData = homeMenuState.data.homeMenuData,
+                    localDate = localDate
+                )
             }
 
             // failure State
@@ -244,7 +248,10 @@ fun TrackMenuScreenControl() {
  * menu state
  */
 @Composable
-private fun TrackMenuSuccessScreen(homeMenuData: HomeMenuResponse.HomeMenuData) {
+private fun TrackMenuSuccessScreen(
+    homeMenuData: HomeMenuResponse.HomeMenuData,
+    localDate: LocalDate
+) {
 
     val context = LocalContext.current
 
@@ -376,7 +383,8 @@ private fun TrackMenuSuccessScreen(homeMenuData: HomeMenuResponse.HomeMenuData) 
                     // Going to the Track Statistics Activity
                     TrackStatisticsActivity.launch(
                         context = context,
-                        title = it.title
+                        title = it.title,
+                        localDate = localDate
                     )
                 }
 
@@ -398,7 +406,8 @@ private fun TrackMenuSuccessScreen(homeMenuData: HomeMenuResponse.HomeMenuData) 
                     // Going to the Track Statistics Activity
                     TrackStatisticsActivity.launch(
                         context = context,
-                        title = it.title
+                        title = it.title,
+                        localDate = localDate
                     )
                 }
 

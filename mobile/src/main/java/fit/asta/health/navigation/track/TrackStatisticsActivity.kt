@@ -41,6 +41,7 @@ import fit.asta.health.navigation.track.ui.screens.TrackWaterScreenControl
 import fit.asta.health.navigation.track.ui.util.TrackOption
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
 import fit.asta.health.navigation.track.ui.viewmodel.TrackViewModel
+import java.time.LocalDate
 
 @AndroidEntryPoint
 class TrackStatisticsActivity : ComponentActivity() {
@@ -50,10 +51,13 @@ class TrackStatisticsActivity : ComponentActivity() {
 
     companion object {
 
-        fun launch(context: Context, title: String) {
+        fun launch(context: Context, title: String, localDate: LocalDate) {
             val intent = Intent(context, TrackStatisticsActivity::class.java)
             intent.apply {
                 putExtra("title", title)
+                putExtra("date", localDate.dayOfMonth)
+                putExtra("month", localDate.monthValue)
+                putExtra("year", localDate.year)
                 context.startActivity(this)
             }
         }
@@ -71,6 +75,17 @@ class TrackStatisticsActivity : ComponentActivity() {
                     // Track View Model
                     trackViewModel = hiltViewModel()
                     val title = intent.extras?.getString("title") ?: ""
+
+                    // Selected Date Data is received from the previous Intent
+                    val date = intent.extras?.getInt("date")
+                    val month = intent.extras?.getInt("month")
+                    val year = intent.extras?.getInt("year")
+
+                    // Setting the Date which was chosen in the Home Menu Screen
+                    if (date != null && month != null && year != null) {
+                        val localDate = LocalDate.of(year, month, date)
+                        trackViewModel.uiEventListener(TrackUiEvent.SetNewDate(localDate))
+                    }
 
                     Scaffold(
                         modifier = Modifier
