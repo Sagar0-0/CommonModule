@@ -1,5 +1,6 @@
 package fit.asta.health.common.utils
 
+import android.util.Log
 import androidx.annotation.StringRes
 import com.google.gson.annotations.SerializedName
 import fit.asta.health.resources.strings.R
@@ -23,7 +24,7 @@ sealed interface ResponseState<out T> {
     data class ErrorMessage(@StringRes val resId: Int) : ResponseState<Nothing>//TODO: WILL BE ERROR
 }
 
-suspend fun <T> getResponseState(request: suspend () -> Response<T>): ResponseState<T> {
+suspend fun <T> getNewResponseState(request: suspend () -> Response<T>): ResponseState<T> {
     return try {
         val response = request()
         when (response.status.code) {
@@ -36,6 +37,7 @@ suspend fun <T> getResponseState(request: suspend () -> Response<T>): ResponseSt
             }
         }
     } catch (e: Exception) {
+        Log.e("TAG", "getResponseState: $e")
         ResponseState.ErrorMessage(fetchErrorFromException(e))
     }
 }
@@ -45,6 +47,7 @@ suspend fun <T> getResponseState(request: suspend () -> T): ResponseState<T> {
     return try {
         ResponseState.Success(request())
     } catch (e: Exception) {
+        Log.e("TAG", "getResponseState: $e")
         ResponseState.ErrorMessage(e.toResIdFromException())
     }
 }
@@ -89,6 +92,10 @@ private fun fetchErrorFromException(e: Throwable): Int {
 
                 404 -> {
                     R.string.no_records_found
+                }
+
+                413 -> {
+                    R.string.file_not_found
                 }
 
                 else -> {
