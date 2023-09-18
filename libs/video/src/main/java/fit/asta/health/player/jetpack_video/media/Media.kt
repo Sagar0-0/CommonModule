@@ -135,12 +135,13 @@ fun  Media(
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() }
             ) {
-                if (controller != null && state.player != null) {
+                if (controller != null && state.player != null && controllerAutoShow) {
                     state.controllerVisibility = when (state.controllerVisibility) {
                         ControllerVisibility.Visible -> {
                             if (controllerHideOnTouch) ControllerVisibility.Invisible
                             else ControllerVisibility.Visible
                         }
+
                         ControllerVisibility.PartiallyVisible -> ControllerVisibility.Visible
                         ControllerVisibility.Invisible -> ControllerVisibility.Visible
                     }

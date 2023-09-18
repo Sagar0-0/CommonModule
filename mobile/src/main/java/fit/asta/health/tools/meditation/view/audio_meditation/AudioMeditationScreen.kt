@@ -73,7 +73,7 @@ fun AudioMeditationScreen(
                     .fillMaxWidth()
                     .windowInsetsTopHeight(WindowInsets.statusBars)
             )
-            PlayerHeader(onBackPress = onBackPressed)
+            PlayerHeader(true, onBackPress = onBackPressed)
             Spacer(modifier = Modifier.height(spacing.spaceMediumLarge))
             PlayerImage(
                 modifier = Modifier

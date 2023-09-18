@@ -11,7 +11,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C.AUDIO_CONTENT_TYPE_MUSIC
 import androidx.media3.common.C.USAGE_MEDIA
-import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
@@ -21,6 +20,9 @@ import fit.asta.health.player.jetpack_audio.domain.data.Song
 import fit.asta.health.player.jetpack_audio.domain.utils.MediaConstants
 import fit.asta.health.player.jetpack_audio.domain.utils.convertToPosition
 import fit.asta.health.player.jetpack_audio.exo_player.MusicServiceConnection
+import fit.asta.health.player.jetpack_audio.presentation.screens.player.PlayerEvent
+import fit.asta.health.player.jetpack_video.media.ControllerState
+import fit.asta.health.player.jetpack_video.media.MediaState
 import fit.asta.health.tools.meditation.db.MeditationData
 import fit.asta.health.tools.meditation.model.LocalRepo
 import fit.asta.health.tools.meditation.model.MeditationRepo
@@ -29,7 +31,6 @@ import fit.asta.health.tools.meditation.model.network.PostRes
 import fit.asta.health.tools.meditation.model.network.Prc
 import fit.asta.health.tools.meditation.model.network.PutData
 import fit.asta.health.tools.meditation.model.network.Value
-import fit.asta.health.tools.meditation.view.audio_meditation.AudioMeditationEvents
 import fit.asta.health.tools.meditation.view.home.HomeUiState
 import fit.asta.health.tools.meditation.view.home.MEvent
 import fit.asta.health.tools.meditation.view.music.MusicEvents
@@ -50,9 +51,12 @@ import javax.inject.Inject
 class MeditationViewModel @Inject constructor(
     private val meditationRepo: MeditationRepo,
     private val musicServiceConnection: MusicServiceConnection,
-    private val localRepo: LocalRepo
+    private val localRepo: LocalRepo,
+    private val player: Player
 ) : ViewModel() {
-
+    fun getPlayer() = player
+    val mediaState = MediaState(player)
+    val controllerState = ControllerState(mediaState)
     private var backgroundPlayer: Player? = null
     private val date = LocalDate.now().dayOfMonth
     private val _selectedLevel = MutableStateFlow("Beginner 1")
@@ -268,10 +272,10 @@ class MeditationViewModel @Inject constructor(
                         date = LocalDate.now().dayOfMonth,
                         appliedAngleDistance = _uiState.value.targetAngle
                     )
-                    localRepo.updateState(date = LocalDate.now().dayOfMonth, start = true)
+//                    localRepo.updateState(date = LocalDate.now().dayOfMonth, start = true)
                     localRepo.updateTime(date = LocalDate.now().dayOfMonth, time = 0)
                     loadData()
-                    _uiState.value = _uiState.value.copy(start = true)
+//                    _uiState.value = _uiState.value.copy(start = true)
                 }
 
                 is NetworkResult.Error -> {
@@ -380,7 +384,31 @@ class MeditationViewModel @Inject constructor(
                     isRunning = event.isRunning,
                     playWhenReady = event.playWhenReady,
                     startIndex = event.idx,
-                    list = state.value.selectedAlbum
+                    list = listOf(
+                        Song(
+                            id = 1,
+                            artist = "it.artist_name",
+                            artistId = 1.toLong(),
+                            artworkUri = "/tags/Breathing+Tag.png".toUri(),
+                            album = "it.music_name",
+                            albumId = 1.toLong(),
+                            duration = duration(),
+                            mediaUri = "https://storage.googleapis.com/downloads.webmproject.org/av1/exoplayer/bbb-av1-480p.mp4".toUri(),
+                            title = "Day 1",
+                        ),
+                        Song(
+                            id = 2,
+                            artist = "it.artist_name",
+                            artistId = 2.toLong(),
+                            artworkUri = "/tags/Breathing+Tag.png".toUri(),
+                            album = "it.music_name",
+                            albumId = 2.toLong(),
+                            duration = duration(),
+                            mediaUri = "https://storage.googleapis.com/exoplayer-test-media-0/play.mp3".toUri(),
+                            title = "Day 2",
+                        )
+                    )
+                    //state.value.selectedAlbum
                 )
             }
         }
@@ -405,13 +433,13 @@ class MeditationViewModel @Inject constructor(
                 songs = list,
                 startIndex = startIndex
             )
-            backgroundPlayer?.run {
-                setMediaItem(MediaItem.fromUri("https://stream1.asta.fit/audio/relaxing%201.mp3"))
-                prepare()
-                volume = 0.3f
-                repeatMode=Player.REPEAT_MODE_ONE
-                play()
-            }
+//            backgroundPlayer?.run {
+//                setMediaItem(MediaItem.fromUri("https://stream1.asta.fit/audio/relaxing%201.mp3"))
+//                prepare()
+//                volume = 0.3f
+//                repeatMode=Player.REPEAT_MODE_ONE
+//                play()
+//            }
         }
     }
 
@@ -422,17 +450,22 @@ class MeditationViewModel @Inject constructor(
         started = SharingStarted.Lazily,
         initialValue = MediaConstants.DEFAULT_POSITION_MS
     )
+    private val _visibility = MutableStateFlow(false)
+    val visibility: StateFlow<Boolean> = _visibility
 
+    fun setVisibility() {
+        _visibility.value = !_visibility.value
+    }
 
-    fun onAudioEvent(event: AudioMeditationEvents) {
+    fun onAudioEvent(event: PlayerEvent) {
         when (event) {
-            is AudioMeditationEvents.Play -> play()
-            is AudioMeditationEvents.Pause -> pause()
-            is AudioMeditationEvents.SkipNext -> skipNext()
-            is AudioMeditationEvents.SkipPrevious -> skipPrevious()
-            is AudioMeditationEvents.SkipTo -> skipTo(event.value)
-            is AudioMeditationEvents.SkipForward -> forward()
-            is AudioMeditationEvents.SkipBack -> backward()
+            is PlayerEvent.Play -> play()
+            is PlayerEvent.Pause -> pause()
+            is PlayerEvent.SkipNext -> skipNext()
+            is PlayerEvent.SkipPrevious -> skipPrevious()
+            is PlayerEvent.SkipTo -> skipTo(event.value)
+            is PlayerEvent.SkipForward -> forward()
+            is PlayerEvent.SkipBack -> backward()
         }
     }
 

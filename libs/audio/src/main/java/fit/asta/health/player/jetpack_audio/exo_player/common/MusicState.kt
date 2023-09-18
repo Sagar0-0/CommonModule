@@ -20,6 +20,6 @@ data class MusicState(
         duration = 0
     ),
     val playbackState: PlaybackState = PlaybackState.IDLE,
-    val playWhenReady: Boolean = false,
+    val playWhenReady: Boolean = true,
     val duration: Long = DEFAULT_DURATION_MS
 )
