@@ -56,6 +56,8 @@ dependencies {
     implementation(libs.androidx.material.icons.extended.android)
     implementation(libs.compose.theme.adapter)
 
+    implementation(libs.gson)
+
     //Image - Glide library
     implementation(libs.glide)
     implementation(libs.fluid.slider)

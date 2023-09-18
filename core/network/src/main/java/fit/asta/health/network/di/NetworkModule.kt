@@ -13,6 +13,7 @@ import fit.asta.health.network.NetworkHelperImpl
 import fit.asta.health.network.TokenProvider
 import fit.asta.health.network.api.Api
 import fit.asta.health.network.api.ApiService
+import fit.asta.health.network.interceptor.OfflineInterceptor
 import fit.asta.health.network.interceptor.OnlineInterceptor
 import fit.asta.health.network.repo.FileUploadRepo
 import fit.asta.health.network.utils.NetworkUtil
@@ -52,6 +53,7 @@ object NetworkModule {
             .setCache(cache = cache)
             .setBaseUrl(BuildConfig.BASE_URL)
             .addInterceptor(OnlineInterceptor(networkHelper))
+            .addInterceptor(OfflineInterceptor(networkHelper))
 
         if (BuildConfig.DEBUG) {
             builder.addNetworkInterceptor(

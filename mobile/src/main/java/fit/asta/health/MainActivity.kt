@@ -78,7 +78,7 @@ class MainActivity : ComponentActivity(),
 
         lifecycleScope.launch {
             mainViewModel.isReferralChecked.collect {
-                if (it is UiState.Success) {
+                if (it is UiState.Success && !it.data) {
                     initReferralTracking()
                 }
             }

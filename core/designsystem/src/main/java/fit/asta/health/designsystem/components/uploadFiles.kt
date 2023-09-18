@@ -141,7 +141,7 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
                     AppDefaultIcon(
                         imageVector = Icons.Rounded.CloudUpload,
                         contentDescription = "Upload File",
-                        tint = MaterialTheme.colorScheme.primary,
+                        tint = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.size(imageSize.standard)
                     )
                 }

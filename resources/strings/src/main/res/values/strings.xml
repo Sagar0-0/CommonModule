@@ -620,4 +620,9 @@
     <string name="name">Name</string>
     <string name="refer_code">Refer Code</string>
     <string name="write_your_answer_here">Write your answer here</string>
+    <string name="bad_request">Bad request</string>
+    <string name="server_error">Server error</string>
+    <string name="failed_to_update">Failed to update</string>
+    <string name="no_records_found">No records found</string>
+    <string name="refund_extended_error">Refund time extended 7 days</string>
 </resources>
