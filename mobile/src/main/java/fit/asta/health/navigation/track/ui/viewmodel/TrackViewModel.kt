@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 
@@ -38,8 +39,8 @@ class TrackViewModel @Inject constructor(
     /**
      * This function changes the current calendar date
      */
-    private fun onDateChanged(date: Int, month: Int, year: Int) {
-        _calendarData.value = LocalDate.of(year, month, date)
+    private fun onDateChanged(localDate: LocalDate) {
+        _calendarData.value = localDate
     }
 
     /**
@@ -69,6 +70,7 @@ class TrackViewModel @Inject constructor(
     }
 
     // User Id For testing
+    // TODO : To be changed according to the user
     private val uid = "6309a9379af54f142c65fbfe"
 
     // This variable contains the Home Screen Menu Details
@@ -78,20 +80,19 @@ class TrackViewModel @Inject constructor(
     /**
      * This function fetches the Home Screen Details from the Server
      */
-    fun getHomeDetails() {
+    private fun getHomeDetails(status: String, date: String) {
 
         if (_homeScreenDetails.value is UiState.Loading)
             return
 
         _homeScreenDetails.value = UiState.Loading
 
-        val date = "2023-June-05"
-
         viewModelScope.launch {
             _homeScreenDetails.value = trackingRepo.getHomeDetails(
                 uid = uid,
                 date = date,
-                location = "bangalore"
+                location = "bangalore",
+                status = status
             ).toUiState()
         }
     }
@@ -266,7 +267,7 @@ class TrackViewModel @Inject constructor(
         }
     }
 
-    private var currentTrackOption: TrackOption = TrackOption.WaterOption
+    private var currentTrackOption: TrackOption = TrackOption.HomeMenuOption
 
     fun uiEventListener(event: TrackUiEvent) {
         when (event) {
@@ -285,7 +286,7 @@ class TrackViewModel @Inject constructor(
             }
 
             is TrackUiEvent.SetNewDate -> {
-                onDateChanged(date = event.date, month = event.month, year = event.year)
+                onDateChanged(event.newDate)
             }
 
             is TrackUiEvent.ClickedPreviousDateButton -> {
@@ -300,6 +301,13 @@ class TrackViewModel @Inject constructor(
 
     private fun handleTrackerOption() {
         when (currentTrackOption) {
+            is TrackOption.HomeMenuOption -> {
+                getHomeDetails(
+                    status = currentTrackOption.trackStatus.status,
+                    date = handleTrackerDate(),
+                )
+            }
+
             is TrackOption.WaterOption -> {
                 getWaterDetails(
                     status = currentTrackOption.trackStatus.status,
@@ -377,11 +385,39 @@ class TrackViewModel @Inject constructor(
     }
 
     private fun handleTrackerDate(): String {
+
+        // TODO :- Clean up the code
+//        return when (currentTrackOption.trackStatus) {
+//            is TrackOption.TrackStatus.StatusDaily -> "2023-June-05"
+//            is TrackOption.TrackStatus.StatusWeekly -> "2023-June-05"
+//            is TrackOption.TrackStatus.StatusMonthly -> "June-2023"
+//            is TrackOption.TrackStatus.StatusYearly -> "2023"
+//        }
+
         return when (currentTrackOption.trackStatus) {
-            is TrackOption.TrackStatus.StatusDaily -> "2023-June-05"
-            is TrackOption.TrackStatus.StatusWeekly -> "2023-June-05"
-            is TrackOption.TrackStatus.StatusMonthly -> "June-2023"
-            is TrackOption.TrackStatus.StatusYearly -> "2023"
+            is TrackOption.TrackStatus.StatusDaily -> {
+//                "2023-June-05"
+                val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MMMM-dd")
+                _calendarData.value.format(dateTimeFormatter)
+            }
+
+            is TrackOption.TrackStatus.StatusWeekly -> {
+//                "2023-June-05"
+                val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MMMM-dd")
+                _calendarData.value.format(dateTimeFormatter)
+            }
+
+            is TrackOption.TrackStatus.StatusMonthly -> {
+//                "June-2023"
+                val dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM-yyyy")
+                _calendarData.value.format(dateTimeFormatter)
+            }
+
+            is TrackOption.TrackStatus.StatusYearly -> {
+//                "2023"
+                val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy")
+                _calendarData.value.format(dateTimeFormatter)
+            }
         }
     }
 }

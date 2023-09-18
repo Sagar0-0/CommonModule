@@ -15,7 +15,8 @@ interface TrackingRepo {
     suspend fun getHomeDetails(
         uid: String,
         date: String,
-        location: String
+        location: String,
+        status: String
     ): ResponseState<HomeMenuResponse>
 
     suspend fun getWaterDetails(

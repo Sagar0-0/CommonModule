@@ -17,7 +17,8 @@ interface TrackingApiService {
     suspend fun getHomeDetails(
         @Query("uid") uid: String,
         @Query("date") date: String,
-        @Query("loc") location: String
+        @Query("loc") location: String,
+        @Query("sts") status: String
     ): HomeMenuResponse
 
     @GET("tracking/water/get/")

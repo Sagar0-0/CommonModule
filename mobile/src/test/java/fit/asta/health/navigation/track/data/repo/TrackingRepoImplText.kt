@@ -57,12 +57,12 @@ class TrackingRepoImplText {
             val expected = mockk<HomeMenuResponse>()
 
             coEvery {
-                trackingApiService.getHomeDetails("", "", "")
+                trackingApiService.getHomeDetails("", "", "", "")
             } returns expected
 
-            val response = repository.getHomeDetails("", "", "")
+            val response = repository.getHomeDetails("", "", "", "")
 
-            coVerify { trackingApiService.getHomeDetails("", "", "") }
+            coVerify { trackingApiService.getHomeDetails("", "", "", "") }
             assert(response is ResponseState.Success)
             assertEquals((response as ResponseState.Success).data, expected)
         }
@@ -71,12 +71,12 @@ class TrackingRepoImplText {
         fun `getHomeDetails, returns Error`() = runTest {
 
             coEvery {
-                trackingApiService.getHomeDetails("", "", "")
+                trackingApiService.getHomeDetails("", "", "", "")
             } throws Exception()
 
-            val response = repository.getHomeDetails("", "", "")
+            val response = repository.getHomeDetails("", "", "", "")
 
-            coVerify { trackingApiService.getHomeDetails("", "", "") }
+            coVerify { trackingApiService.getHomeDetails("", "", "", "") }
             assert(response is ResponseState.Error)
         }
     }
