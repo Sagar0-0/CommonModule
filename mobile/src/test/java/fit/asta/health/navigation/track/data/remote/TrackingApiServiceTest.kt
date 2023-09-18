@@ -33,8 +33,10 @@ class TrackingApiServiceTest {
 
     // Mock Server
     private lateinit var server: MockWebServer
+
     // Service Api
     private lateinit var api: TrackingApiService
+
     // GSON object
     private val gson: Gson = GsonBuilder().create()
 
@@ -76,7 +78,7 @@ class TrackingApiServiceTest {
             server.enqueue(mockResponse)
 
             // Response from the Server
-            val response = api.getHomeDetails("", "", "")
+            val response = api.getHomeDetails("", "", "", "")
             server.takeRequest()
 
             // Assertion to check if the response is correct or not
@@ -93,7 +95,7 @@ class TrackingApiServiceTest {
 
             // Response from the Server
             val response: ResponseState<HomeMenuResponse> = getResponseState {
-                api.getHomeDetails("", "", "")
+                api.getHomeDetails("", "", "", "")
             }
             server.takeRequest()
 

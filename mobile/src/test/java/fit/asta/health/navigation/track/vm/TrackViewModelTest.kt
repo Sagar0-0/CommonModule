@@ -56,12 +56,13 @@ class TrackViewModelTest : BaseTest() {
         fun `getHomeDetails, return Success`() = runTest {
             val expectedResponse = mockk<HomeMenuResponse>()
             coEvery {
-                trackingRepo.getHomeDetails(any(), any(), any())
+                trackingRepo.getHomeDetails(any(), any(), any(), any())
             } returns ResponseState.Success(expectedResponse)
 
-            viewModel.getHomeDetails()
+            viewModel.uiEventListener(TrackUiEvent.SetTrackOption(TrackOption.HomeMenuOption))
+            viewModel.uiEventListener(TrackUiEvent.SetTrackStatus(0))
 
-            coVerify { trackingRepo.getHomeDetails(any(), any(), any()) }
+            coVerify { trackingRepo.getHomeDetails(any(), any(), any(), any()) }
 
             viewModel.homeScreenDetails.test {
                 assert(awaitItem() is UiState.Success)
@@ -72,12 +73,13 @@ class TrackViewModelTest : BaseTest() {
         @Test
         fun `getHomeDetails, return error`() = runTest {
             coEvery {
-                trackingRepo.getHomeDetails(any(), any(), any())
+                trackingRepo.getHomeDetails(any(), any(), any(), any())
             } returns ResponseState.Error(Exception())
 
-            viewModel.getHomeDetails()
+            viewModel.uiEventListener(TrackUiEvent.SetTrackOption(TrackOption.HomeMenuOption))
+            viewModel.uiEventListener(TrackUiEvent.SetTrackStatus(0))
 
-            coVerify { trackingRepo.getHomeDetails(any(), any(), any()) }
+            coVerify { trackingRepo.getHomeDetails(any(), any(), any(), any()) }
 
             viewModel.homeScreenDetails.test {
                 assert(awaitItem() is UiState.Error)
