@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
@@ -102,7 +103,7 @@ fun TimeBar(
             contentPadding.calculateRightPadding(layoutDirection).toPx()
         }
         val barWidth = constraints.maxWidth - contentLeftPadding - contentRightPadding
-        var scrubberWidth by remember { mutableStateOf(0) }
+        var scrubberWidth by remember { mutableIntStateOf(0) }
         val boundWidth by remember(barWidth, scrubberCenterAsAnchor) {
             derivedStateOf {
                 if (scrubberCenterAsAnchor) barWidth
