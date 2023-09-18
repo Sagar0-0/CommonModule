@@ -14,7 +14,8 @@ import androidx.navigation.navDeepLink
 import fit.asta.health.common.utils.Constants.MEDITATION_GRAPH_ROUTE
 import fit.asta.health.common.utils.Constants.deepLinkUrl
 import fit.asta.health.common.utils.sharedViewModel
-import fit.asta.health.tools.meditation.view.audio_meditation.AudioMeditationScreen
+import fit.asta.health.player.jetpack_audio.presentation.screens.player.FullscreenView
+import fit.asta.health.player.jetpack_video.video.UiState
 import fit.asta.health.tools.meditation.view.home.MEvent
 import fit.asta.health.tools.meditation.view.home.MeditationHomeScreen
 import fit.asta.health.tools.meditation.view.instructor.InstructorScreen
@@ -32,7 +33,7 @@ fun NavGraphBuilder.meditationNavigation(
 ) {
     navigation(
         route = MEDITATION_GRAPH_ROUTE,
-        startDestination = MeditationScreen.MeditationHomeScreen.route,
+        startDestination = MeditationScreen.Music.route,
         deepLinks = listOf(navDeepLink {
             uriPattern = "$deepLinkUrl/${MEDITATION_GRAPH_ROUTE}"
             action = Intent.ACTION_VIEW
@@ -75,8 +76,8 @@ fun NavGraphBuilder.meditationNavigation(
                 onBack = { navController.popBackStack() }
             )
         }
-        composable(MeditationScreen.Level.route) {
-            val viewModel: MeditationViewModel = it.sharedViewModel(navController)
+        composable(MeditationScreen.Level.route) { navBackStackEntry ->
+            val viewModel: MeditationViewModel = navBackStackEntry.sharedViewModel(navController)
             LevelScreen(
                 onClick = { viewModel.event(MEvent.SetLevel(it)) },
                 onBack = { navController.popBackStack() })
@@ -90,12 +91,15 @@ fun NavGraphBuilder.meditationNavigation(
         composable(MeditationScreen.AudioMeditation.route) {
             val viewModel: MeditationViewModel = it.sharedViewModel(navController)
             val musicState by viewModel.musicState.collectAsStateWithLifecycle()
-            val currentPosition by viewModel.currentPosition.collectAsStateWithLifecycle()
-            AudioMeditationScreen(
+            val visibility by viewModel.visibility.collectAsStateWithLifecycle()
+            FullscreenView(
+                state = viewModel.mediaState,
+                controllerState = viewModel.controllerState,
+                uiState = UiState(),
                 musicState = musicState,
-                currentPosition = currentPosition,
+                visibility = visibility,
                 onAudioEvent = viewModel::onAudioEvent,
-                onBackPressed = { navController.popBackStack() }
+                onVisibility = viewModel::setVisibility,
             )
         }
         composable(MeditationScreen.Language.route) {

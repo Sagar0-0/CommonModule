@@ -22,7 +22,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.player.jetpack_audio.presentation.screens.Screens
 import fit.asta.health.player.jetpack_audio.presentation.screens.home.HomeScreen
-import fit.asta.health.player.jetpack_audio.presentation.screens.player.PlayerScreen
 import fit.asta.health.player.jetpack_audio.presentation.ui.theme.LOULATheme
 import fit.asta.health.player.jetpack_audio.presentation.utils.DevicePosture
 
@@ -75,14 +74,14 @@ class AudioPlayerActivity : ComponentActivity() {
                                 )
                             })
                         }
-
-                        composable(
-                            route = Screens.Player.route
-                        ) {
-                            PlayerScreen(onBackPressed = { navController.popBackStack() },
-                                addToPlayList = { /*TODO*/ },
-                                more = { /*TODO*/ })
-                        }
+//
+//                        composable(
+//                            route = Screens.Player.route
+//                        ) {
+//                            PlayerScreen(onBackPressed = { navController.popBackStack() },
+//                                addToPlayList = { /*TODO*/ },
+//                                more = { /*TODO*/ })
+//                        }
                     }
                 }
             }
