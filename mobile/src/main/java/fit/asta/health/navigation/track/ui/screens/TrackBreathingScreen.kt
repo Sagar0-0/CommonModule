@@ -51,16 +51,19 @@ import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.navigation.track.data.remote.model.breathing.BreathingResponse
+import fit.asta.health.navigation.track.ui.components.TrackDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
 import fit.asta.health.navigation.track.ui.components.TrackingChartCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
 import java.text.DecimalFormat
+import java.time.LocalDate
 
 @Composable
 fun TrackBreathingScreenControl(
     breathingTrackData: UiState<BreathingResponse>,
+    calendarData: LocalDate,
     setUiEvent: (TrackUiEvent) -> Unit
 ) {
 
@@ -166,6 +169,23 @@ fun TrackBreathingScreenControl(
             }
         }
 
+        // Date Picker
+        TrackDatePicker(
+            localDate = calendarData,
+            onPreviousButtonClick = {
+                setUiEvent(TrackUiEvent.ClickedPreviousDateButton)
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+            },
+            onNextButtonClick = {
+                setUiEvent(TrackUiEvent.ClickedNextDateButton)
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+            },
+            onDateChanged = {
+                setUiEvent(TrackUiEvent.SetNewDate(it))
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+            }
+        )
+
         when (breathingTrackData) {
 
             is UiState.Idle -> {
@@ -182,7 +202,10 @@ fun TrackBreathingScreenControl(
             }
 
             is UiState.ErrorMessage -> {
-                AppErrorScreen(desc = breathingTrackData.resId.toStringFromResId()) {
+                AppErrorScreen(
+                    isInternetError = false,
+                    desc = breathingTrackData.resId.toStringFromResId()
+                ) {
                     setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
                 }
             }

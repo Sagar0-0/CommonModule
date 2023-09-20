@@ -72,11 +72,11 @@ class SchedulerViewModel
 
 //    private val userId = "6309a9379af54f142c65fbfe"
 
-    init {
-        getEditUiData()
-        getTagData()
-        getAlarmList()
-    }
+//    init {
+//        getEditUiData()
+//        getTagData()
+//        getAlarmList()
+//    }
 
     private fun getAlarmList() {
         viewModelScope.launch {

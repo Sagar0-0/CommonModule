@@ -48,16 +48,19 @@ import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.navigation.track.data.remote.model.sunlight.SunlightResponse
+import fit.asta.health.navigation.track.ui.components.TrackDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
 import fit.asta.health.navigation.track.ui.components.TrackingChartCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
 import java.text.DecimalFormat
+import java.time.LocalDate
 
 @Composable
 fun TrackSunlightScreenControl(
     sunlightTrackData: UiState<SunlightResponse>,
+    calendarData: LocalDate,
     setUiEvent: (TrackUiEvent) -> Unit
 ) {
     // This is the Item which is selected in the Top Tab Bar Layout
@@ -162,6 +165,23 @@ fun TrackSunlightScreenControl(
             }
         }
 
+        // Date Picker
+        TrackDatePicker(
+            localDate = calendarData,
+            onPreviousButtonClick = {
+                setUiEvent(TrackUiEvent.ClickedPreviousDateButton)
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+            },
+            onNextButtonClick = {
+                setUiEvent(TrackUiEvent.ClickedNextDateButton)
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+            },
+            onDateChanged = {
+                setUiEvent(TrackUiEvent.SetNewDate(it))
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+            }
+        )
+
         when (sunlightTrackData) {
 
             is UiState.Idle -> {
@@ -177,13 +197,14 @@ fun TrackSunlightScreenControl(
                 TrackSuccessScreen(sunlightTrackData.data.sunlightData)
             }
 
-            is UiState.ErrorMessage -> {
-                AppErrorScreen(desc = sunlightTrackData.resId.toStringFromResId()) {
+            is UiState.Error -> {
+                AppErrorScreen(
+                    isInternetError = false,
+                    desc = sunlightTrackData.resId.toStringFromResId()
+                ) {
                     setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
                 }
             }
-
-            else -> {}
         }
     }
 }

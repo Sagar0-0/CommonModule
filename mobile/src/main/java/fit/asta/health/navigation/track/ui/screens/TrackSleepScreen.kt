@@ -51,14 +51,17 @@ import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.navigation.track.data.remote.model.sleep.SleepResponse
+import fit.asta.health.navigation.track.ui.components.TrackDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
 import fit.asta.health.navigation.track.ui.components.TrackingChartCard
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
+import java.time.LocalDate
 
 @Composable
 fun TrackSleepScreenControl(
     sleepTrackData: UiState<SleepResponse>,
+    calendarData: LocalDate,
     setUiEvent: (TrackUiEvent) -> Unit
 ) {
 
@@ -164,6 +167,23 @@ fun TrackSleepScreenControl(
             }
         }
 
+        // Date Picker
+        TrackDatePicker(
+            localDate = calendarData,
+            onPreviousButtonClick = {
+                setUiEvent(TrackUiEvent.ClickedPreviousDateButton)
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+            },
+            onNextButtonClick = {
+                setUiEvent(TrackUiEvent.ClickedNextDateButton)
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+            },
+            onDateChanged = {
+                setUiEvent(TrackUiEvent.SetNewDate(it))
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+            }
+        )
+
         when (sleepTrackData) {
 
             is UiState.Idle -> {
@@ -179,13 +199,14 @@ fun TrackSleepScreenControl(
                 TrackSuccessScreen(sleepData = sleepTrackData.data.sleepData)
             }
 
-            is UiState.ErrorMessage -> {
-                AppErrorScreen(desc = sleepTrackData.resId.toStringFromResId()) {
+            is UiState.Error -> {
+                AppErrorScreen(
+                    isInternetError = false,
+                    desc = sleepTrackData.resId.toStringFromResId(),
+                ) {
                     setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
                 }
             }
-
-            else -> {}
         }
     }
 }

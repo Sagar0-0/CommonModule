@@ -25,6 +25,8 @@ import android.app.DatePickerDialog
 import android.widget.DatePicker
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Preview(
     "Light",
@@ -39,12 +41,10 @@ import androidx.compose.ui.unit.sp
 private fun DefaultPreview() {
     AppTheme {
         TrackDatePicker(
-            date = 23,
-            month = 8,
-            year = 2023,
+            localDate = LocalDate.now(),
             onPreviousButtonClick = {},
             onNextButtonClick = {},
-            onDateChanged = { _, _, _ ->
+            onDateChanged = { _ ->
             }
         )
     }
@@ -53,22 +53,22 @@ private fun DefaultPreview() {
 /**
  * This function shows a date picker row of the track screens
  *
- * @param date This variable contains the current date selected
- * @param month This variable contains the current month selected
- * @param year This variable contains the current year selected
+ * @param localDate This variable contains the LocalDate which needs to be shown in the UI
  * @param onPreviousButtonClick This function is executed when the user hits the left Arrow button
  * @param onNextButtonClick This function is executed when the user hits the right Arrow button
  * @param onDateChanged This function is executed when the user changes the date selected
  */
 @Composable
 fun TrackDatePicker(
-    date: Int,
-    month: Int,
-    year: Int,
+    localDate: LocalDate,
     onPreviousButtonClick: () -> Unit,
     onNextButtonClick: () -> Unit,
-    onDateChanged: (Int, Int, Int) -> Unit,
+    onDateChanged: (LocalDate) -> Unit,
 ) {
+
+    // Formatting the text to be showed
+    val dateTimeFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy")
+    val textToShow = localDate.format(dateTimeFormatter)
 
     val context = LocalContext.current
 
@@ -94,7 +94,7 @@ fun TrackDatePicker(
             )
 
             Text(
-                text = "$date/$month/$year",
+                text = textToShow,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.W600
             )
@@ -119,8 +119,8 @@ fun TrackDatePicker(
                     DatePickerDialog(
                         context,
                         { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-                            onDateChanged(mDayOfMonth, mMonth + 1, mYear)
-                        }, year, month - 1, date
+                            onDateChanged(LocalDate.of(mYear, mMonth + 1, mDayOfMonth))
+                        }, localDate.year, localDate.monthValue - 1, localDate.dayOfMonth
                     ).show()
                 }
         )

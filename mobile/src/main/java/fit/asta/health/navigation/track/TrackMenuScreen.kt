@@ -3,6 +3,7 @@ package fit.asta.health.navigation.track
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,10 +22,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -51,8 +56,10 @@ import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.navigation.track.data.remote.model.menu.HomeMenuResponse
 import fit.asta.health.navigation.track.ui.components.TrackDatePicker
+import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
 import fit.asta.health.navigation.track.ui.components.TrackingChartCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
+import fit.asta.health.navigation.track.ui.util.TrackOption
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
 import fit.asta.health.navigation.track.ui.viewmodel.TrackViewModel
@@ -69,45 +76,166 @@ fun TrackMenuScreenControl() {
     val homeMenuState = trackViewModel.homeScreenDetails
         .collectAsStateWithLifecycle().value
 
-    // Calendar Data
-    val calendarData = trackViewModel.calendarData
+    // Calendar Chosen Date Data from the View Model
+    val localDate = trackViewModel.calendarData
         .collectAsStateWithLifecycle().value
+
+    val setUiEvent = trackViewModel::uiEventListener
+
+    // This is the Item which is selected in the Top Tab Bar Layout
+    val selectedItem = remember { mutableIntStateOf(0) }
 
     // This function loads the data for the Home Menu Screen
     LaunchedEffect(Unit) {
-        trackViewModel.getHomeDetails()
+        setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.HomeMenuOption))
+        setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
     }
 
-    // This conditional handles the State of the Api call and shows the UI according to the state
-    when (homeMenuState) {
+    // Drag Flags to keep a check of how the user has dragged
+    val isLeftDrag = remember { mutableStateOf(false) }
+    val isRightDrag = remember { mutableStateOf(false) }
 
-        // Initialized State
-        is UiState.Idle -> {
-            trackViewModel.getHomeDetails()
-        }
+    val tabList = listOf("DAY", "WEEK", "MONTH", "YEAR")
 
-        // Loading State
-        is UiState.Loading -> {
-            LoadingAnimation(modifier = Modifier.fillMaxSize())
-        }
-
-        // Success State
-        is UiState.Success -> {
-            TrackMenuSuccessScreen(
-                homeMenuData = homeMenuState.data.homeMenuData,
-                calendarData = calendarData,
-                setUiEvent = { trackViewModel.uiEventListener(it) }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                Color(
+                    ColorUtils.blendARGB(
+                        MaterialTheme.colorScheme.surface.toArgb(),
+                        MaterialTheme.colorScheme.onSurface.toArgb(),
+                        0.08f
+                    )
+                )
             )
-        }
+            .pointerInput(Unit) {
 
-        // failure State
-        is UiState.ErrorMessage -> {
-            AppErrorScreen(desc = homeMenuState.resId.toStringFromResId()) {
-                trackViewModel.getHomeDetails()
+                // Detects all the drag gestures and processes the data accordingly
+                detectDragGestures(
+
+                    // This is called when the drag is started
+                    onDrag = { change, dragAmount ->
+                        change.consume()
+
+                        when {
+
+                            // Right Drag
+                            dragAmount.x > 0 -> {
+                                isRightDrag.value = true
+                                isLeftDrag.value = false
+                            }
+
+                            // Left Drag
+                            dragAmount.x < 0 -> {
+                                isLeftDrag.value = true
+                                isRightDrag.value = false
+                            }
+                        }
+                    },
+
+                    // This is called when the drag is completed
+                    onDragEnd = {
+
+                        // If the drag is a right drag
+                        if (isRightDrag.value && selectedItem.intValue > 0 && homeMenuState !is UiState.Loading) {
+
+                            // Checking which tab option is selected by the User and showing the UI Accordingly
+                            selectedItem.intValue = selectedItem.intValue - 1
+                            setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+
+                            // Resetting the drag flags
+                            isRightDrag.value = false
+                        }
+
+                        // If the drag is a left drag
+                        if (isLeftDrag.value && selectedItem.intValue < tabList.size - 1 && homeMenuState !is UiState.Loading) {
+
+                            // Checking which tab option is selected by the User and showing the UI Accordingly
+                            selectedItem.intValue = selectedItem.intValue + 1
+                            setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+
+                            // Resetting the drag flags
+                            isLeftDrag.value = false
+                        }
+                    },
+
+                    // This function is called when the drag is cancelled
+                    onDragCancel = {
+
+                        // Resetting all the drag flags
+                        isLeftDrag.value = false
+                        isRightDrag.value = false
+                    }
+                )
+            },
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        // This Function makes the Tab Layout UI
+        TrackTopTabBar(
+            tabList = tabList,
+            selectedItem = selectedItem.intValue
+        ) {
+
+            if (selectedItem.intValue != it && homeMenuState !is UiState.Loading) {
+
+                // Checking which tab option is selected by the User and showing the UI Accordingly
+                selectedItem.intValue = it
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
             }
         }
 
-        else -> {}
+        // Date Picker
+        TrackDatePicker(
+            localDate = localDate,
+            onPreviousButtonClick = {
+                setUiEvent(TrackUiEvent.ClickedPreviousDateButton)
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+            },
+            onNextButtonClick = {
+                setUiEvent(TrackUiEvent.ClickedNextDateButton)
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+            },
+            onDateChanged = {
+                setUiEvent(TrackUiEvent.SetNewDate(it))
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+            }
+        )
+
+        // This conditional handles the State of the Api call and shows the UI according to the state
+        when (homeMenuState) {
+
+            // Initialized State
+            is UiState.Idle -> {
+                setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.HomeMenuOption))
+                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+            }
+
+            // Loading State
+            is UiState.Loading -> {
+                LoadingAnimation(modifier = Modifier.fillMaxSize())
+            }
+
+            // Success State
+            is UiState.Success -> {
+                TrackMenuSuccessScreen(
+                    homeMenuData = homeMenuState.data.homeMenuData,
+                    localDate = localDate
+                )
+            }
+
+            // failure State
+            is UiState.Error -> {
+                AppErrorScreen(
+                    isInternetError = false,
+                    desc = homeMenuState.resId.toStringFromResId()
+                ) {
+                    setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.HomeMenuOption))
+                    setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+                }
+            }
+        }
     }
 }
 
@@ -118,14 +246,11 @@ fun TrackMenuScreenControl() {
  *
  * @param homeMenuData This function contains the data of the response of the Api call for the home
  * menu state
- * @param setUiEvent This function is used to set the track Option i.e Water , breathing , steps,
- * meditation etc
  */
 @Composable
 private fun TrackMenuSuccessScreen(
     homeMenuData: HomeMenuResponse.HomeMenuData,
-    calendarData: LocalDate,
-    setUiEvent: (TrackUiEvent) -> Unit
+    localDate: LocalDate
 ) {
 
     val context = LocalContext.current
@@ -144,20 +269,6 @@ private fun TrackMenuSuccessScreen(
                 )
             )
     ) {
-
-        // Date Picker
-        item {
-            TrackDatePicker(
-                date = calendarData.dayOfMonth,
-                month = calendarData.monthValue,
-                year = calendarData.year,
-                onPreviousButtonClick = { setUiEvent(TrackUiEvent.ClickedPreviousDateButton) },
-                onNextButtonClick = { setUiEvent(TrackUiEvent.ClickedNextDateButton) },
-                onDateChanged = { date, month, year ->
-                    setUiEvent(TrackUiEvent.SetNewDate(date = date, month = month, year = year))
-                }
-            )
-        }
 
         // Time Spent Chart Card
         homeMenuData.timeSpent?.let {
@@ -272,7 +383,8 @@ private fun TrackMenuSuccessScreen(
                     // Going to the Track Statistics Activity
                     TrackStatisticsActivity.launch(
                         context = context,
-                        title = it.title
+                        title = it.title,
+                        localDate = localDate
                     )
                 }
 
@@ -294,7 +406,8 @@ private fun TrackMenuSuccessScreen(
                     // Going to the Track Statistics Activity
                     TrackStatisticsActivity.launch(
                         context = context,
-                        title = it.title
+                        title = it.title,
+                        localDate = localDate
                     )
                 }
 

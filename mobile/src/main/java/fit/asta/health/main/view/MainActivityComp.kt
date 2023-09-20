@@ -75,7 +75,7 @@ fun NavGraphBuilder.homeScreen(
 
             val mainViewModel: MainViewModel = hiltViewModel()
 
-            val notificationEnabled by mainViewModel.notificationsEnabled.collectAsStateWithLifecycle()
+            val notificationState by mainViewModel.notificationState.collectAsStateWithLifecycle()
             val currentAddressName by mainViewModel.currentAddressName.collectAsStateWithLifecycle()
             val locationPermissionRejectedCount by mainViewModel.locationPermissionRejectedCount.collectAsStateWithLifecycle()
             val isLocationEnabled by mainViewModel.isLocationEnabled.collectAsStateWithLifecycle()
@@ -162,7 +162,7 @@ fun NavGraphBuilder.homeScreen(
             MainActivityLayout(
                 currentAddressState = currentAddressName,
                 profileImageUri = mainViewModel.getUser()?.photoUrl,
-                isNotificationEnabled = notificationEnabled,
+                notificationState = notificationState,
                 onLocation = { enableLocationAndUpdateAddress() },
                 onNav = {
                     when (it) {
@@ -208,7 +208,7 @@ fun NavGraphBuilder.homeScreen(
                         }
 
                         MainTopBarActions.Notification -> {
-                            mainViewModel.setNotificationStatus(!notificationEnabled)
+                            mainViewModel.setNotificationStatus(!notificationState)
                         }
 
                         MainTopBarActions.Settings -> {

@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Fullscreen
+import androidx.compose.material.icons.filled.FullscreenExit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -212,7 +213,10 @@ private fun MediaContent(
                     .background(Color.Black.copy(alpha = 0.6f), RoundedCornerShape(30.dp)),
                 onClick = if (isLandscape) exitFullscreen else enterFullscreen
             ) {
-                Icon(Icons.Filled.Fullscreen, contentDescription = null, tint = Color.White)
+                Icon(
+                    imageVector = if (isLandscape) Icons.Filled.FullscreenExit else Icons.Filled.Fullscreen,
+                    contentDescription = null, tint = Color.White
+                )
             }
         }
 

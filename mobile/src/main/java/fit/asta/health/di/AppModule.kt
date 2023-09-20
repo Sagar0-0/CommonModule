@@ -13,6 +13,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
+import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -79,6 +80,12 @@ object AppModule {
             )
             .setAudioAttributes(audioAttributes, true)
             .setHandleAudioBecomingNoisy(true)
+            .setTrackSelector(DefaultTrackSelector(context).apply {
+                this.setParameters(
+                    this.buildUponParameters()
+                        .setPreferredAudioLanguage("hindi")
+                )
+            })
             .setWakeMode(C.WAKE_MODE_LOCAL)
             .build().apply {
                 playWhenReady = true

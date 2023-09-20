@@ -56,12 +56,13 @@ class TrackViewModelTest : BaseTest() {
         fun `getHomeDetails, return Success`() = runTest {
             val expectedResponse = mockk<HomeMenuResponse>()
             coEvery {
-                trackingRepo.getHomeDetails(any(), any(), any())
+                trackingRepo.getHomeDetails(any(), any(), any(), any())
             } returns ResponseState.Success(expectedResponse)
 
-            viewModel.getHomeDetails()
+            viewModel.uiEventListener(TrackUiEvent.SetTrackOption(TrackOption.HomeMenuOption))
+            viewModel.uiEventListener(TrackUiEvent.SetTrackStatus(0))
 
-            coVerify { trackingRepo.getHomeDetails(any(), any(), any()) }
+            coVerify { trackingRepo.getHomeDetails(any(), any(), any(), any()) }
 
             viewModel.homeScreenDetails.test {
                 assert(awaitItem() is UiState.Success)
@@ -72,15 +73,16 @@ class TrackViewModelTest : BaseTest() {
         @Test
         fun `getHomeDetails, return error`() = runTest {
             coEvery {
-                trackingRepo.getHomeDetails(any(), any(), any())
-            } returns ResponseState.ErrorMessage(mockk())
+                trackingRepo.getHomeDetails(any(), any(), any(), any())
+            } returns ResponseState.Error(Exception())
 
-            viewModel.getHomeDetails()
+            viewModel.uiEventListener(TrackUiEvent.SetTrackOption(TrackOption.HomeMenuOption))
+            viewModel.uiEventListener(TrackUiEvent.SetTrackStatus(0))
 
-            coVerify { trackingRepo.getHomeDetails(any(), any(), any()) }
+            coVerify { trackingRepo.getHomeDetails(any(), any(), any(), any()) }
 
             viewModel.homeScreenDetails.test {
-                assert(awaitItem() is UiState.ErrorMessage)
+                assert(awaitItem() is UiState.Error)
             }
         }
     }
@@ -113,7 +115,7 @@ class TrackViewModelTest : BaseTest() {
         fun `getWaterDetails, return Error`() = runTest {
             coEvery {
                 trackingRepo.getWaterDetails(any(), any(), any(), any())
-            } returns ResponseState.ErrorMessage(mockk())
+            } returns ResponseState.Error(Exception())
 
             viewModel.uiEventListener(TrackUiEvent.SetTrackOption(TrackOption.WaterOption))
             viewModel.uiEventListener(TrackUiEvent.SetTrackStatus(0))
@@ -121,7 +123,7 @@ class TrackViewModelTest : BaseTest() {
             coVerify { trackingRepo.getWaterDetails(any(), any(), any(), any()) }
 
             viewModel.waterDetails.test {
-                assert(awaitItem() is UiState.ErrorMessage)
+                assert(awaitItem() is UiState.Error)
             }
         }
     }
@@ -154,7 +156,7 @@ class TrackViewModelTest : BaseTest() {
         fun `getStepsDetails, return Error`() = runTest {
             coEvery {
                 trackingRepo.getStepsDetails(any(), any(), any(), any())
-            } returns ResponseState.ErrorMessage(mockk())
+            } returns ResponseState.Error(Exception())
 
             viewModel.uiEventListener(TrackUiEvent.SetTrackOption(TrackOption.StepsOption))
             viewModel.uiEventListener(TrackUiEvent.SetTrackStatus(0))
@@ -162,7 +164,7 @@ class TrackViewModelTest : BaseTest() {
             coVerify { trackingRepo.getStepsDetails(any(), any(), any(), any()) }
 
             viewModel.stepsDetails.test {
-                assert(awaitItem() is UiState.ErrorMessage)
+                assert(awaitItem() is UiState.Error)
             }
         }
     }
@@ -195,7 +197,7 @@ class TrackViewModelTest : BaseTest() {
         fun `getMeditationDetails, return Error`() = runTest {
             coEvery {
                 trackingRepo.getMeditationDetails(any(), any(), any(), any())
-            } returns ResponseState.ErrorMessage(mockk())
+            } returns ResponseState.Error(Exception())
 
             viewModel.uiEventListener(TrackUiEvent.SetTrackOption(TrackOption.MeditationOption))
             viewModel.uiEventListener(TrackUiEvent.SetTrackStatus(0))
@@ -203,7 +205,7 @@ class TrackViewModelTest : BaseTest() {
             coVerify { trackingRepo.getMeditationDetails(any(), any(), any(), any()) }
 
             viewModel.meditationDetails.test {
-                assert(awaitItem() is UiState.ErrorMessage)
+                assert(awaitItem() is UiState.Error)
             }
         }
     }
@@ -236,7 +238,7 @@ class TrackViewModelTest : BaseTest() {
         fun `getBreathingDetails, return Error`() = runTest {
             coEvery {
                 trackingRepo.getBreathingDetails(any(), any(), any(), any())
-            } returns ResponseState.ErrorMessage(mockk())
+            } returns ResponseState.Error(Exception())
 
             viewModel.uiEventListener(TrackUiEvent.SetTrackOption(TrackOption.BreathingOption))
             viewModel.uiEventListener(TrackUiEvent.SetTrackStatus(0))
@@ -244,7 +246,7 @@ class TrackViewModelTest : BaseTest() {
             coVerify { trackingRepo.getBreathingDetails(any(), any(), any(), any()) }
 
             viewModel.breathingDetails.test {
-                assert(awaitItem() is UiState.ErrorMessage)
+                assert(awaitItem() is UiState.Error)
             }
         }
     }
@@ -277,7 +279,7 @@ class TrackViewModelTest : BaseTest() {
         fun `getSleepDetails, return Error`() = runTest {
             coEvery {
                 trackingRepo.getSleepDetails(any(), any(), any(), any())
-            } returns ResponseState.ErrorMessage(mockk())
+            } returns ResponseState.Error(Exception())
 
             viewModel.uiEventListener(TrackUiEvent.SetTrackOption(TrackOption.SleepOption))
             viewModel.uiEventListener(TrackUiEvent.SetTrackStatus(0))
@@ -285,7 +287,7 @@ class TrackViewModelTest : BaseTest() {
             coVerify { trackingRepo.getSleepDetails(any(), any(), any(), any()) }
 
             viewModel.sleepDetails.test {
-                assert(awaitItem() is UiState.ErrorMessage)
+                assert(awaitItem() is UiState.Error)
             }
         }
     }
@@ -318,7 +320,7 @@ class TrackViewModelTest : BaseTest() {
         fun `getSunlightDetails, return Error`() = runTest {
             coEvery {
                 trackingRepo.getSunlightDetails(any(), any(), any(), any())
-            } returns ResponseState.ErrorMessage(mockk())
+            } returns ResponseState.Error(Exception())
 
             viewModel.uiEventListener(TrackUiEvent.SetTrackOption(TrackOption.SunlightOption))
             viewModel.uiEventListener(TrackUiEvent.SetTrackStatus(0))
@@ -326,7 +328,7 @@ class TrackViewModelTest : BaseTest() {
             coVerify { trackingRepo.getSunlightDetails(any(), any(), any(), any()) }
 
             viewModel.sunlightDetails.test {
-                assert(awaitItem() is UiState.ErrorMessage)
+                assert(awaitItem() is UiState.Error)
             }
         }
     }
@@ -359,7 +361,7 @@ class TrackViewModelTest : BaseTest() {
         fun `getExerciseDetails, return Error`() = runTest {
             coEvery {
                 trackingRepo.getExerciseDetails(any(), any(), any(), any(), any())
-            } returns ResponseState.ErrorMessage(mockk())
+            } returns ResponseState.Error(Exception())
 
             viewModel.uiEventListener(TrackUiEvent.SetTrackOption(TrackOption.YogaOption))
             viewModel.uiEventListener(TrackUiEvent.SetTrackStatus(0))
@@ -367,7 +369,7 @@ class TrackViewModelTest : BaseTest() {
             coVerify { trackingRepo.getExerciseDetails(any(), any(), any(), any(), any()) }
 
             viewModel.exerciseDetails.test {
-                assert(awaitItem() is UiState.ErrorMessage)
+                assert(awaitItem() is UiState.Error)
             }
         }
     }

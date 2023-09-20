@@ -10,8 +10,9 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.media.MediaPlayer
 import android.media.RingtoneManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.os.IBinder
@@ -22,8 +23,14 @@ import android.os.VibratorManager
 import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
+import androidx.media3.common.AudioAttributes
+import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.datasource.DefaultDataSource
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomTarget
@@ -35,6 +42,7 @@ import fit.asta.health.common.utils.Constants.goToTool
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.data.scheduler.db.AlarmDao
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
+import fit.asta.health.datastore.PrefManager
 import fit.asta.health.feature.scheduler.ui.AlarmScreenActivity
 import fit.asta.health.feature.scheduler.util.Constants
 import fit.asta.health.feature.scheduler.util.StateManager
@@ -42,6 +50,8 @@ import fit.asta.health.feature.scheduler.util.Utils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.util.Timer
 import java.util.TimerTask
@@ -62,20 +72,38 @@ class AlarmService : Service() {
     @Inject
     lateinit var notificationManager: NotificationManager
 
+    @Inject
+    lateinit var prefManager: PrefManager
+
     private var alarmEntity: AlarmEntity? = null
     private lateinit var ringtone: Uri
-    private lateinit var mediaPlayer: MediaPlayer
     private lateinit var vibrator: Vibrator
     private lateinit var partialWakeLock: PowerManager.WakeLock
     private var mTimer: Timer? = null
     private val missedNotificationId = 999
     private val skipNotificationId = 777
 
-    @Inject
-    lateinit var player: Player
+    private var isConnected: Boolean = false
+    private lateinit var player: Player
 
+    @androidx.annotation.OptIn(UnstableApi::class)
     override fun onCreate() {
         super.onCreate()
+        // Get an instance of the ConnectivityManager class
+        val connectivityManager =
+            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        // Get the network capabilities of the active network
+        val networkCapabilities =
+            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+
+        // Check the network capabilities to see if the device is connected to a network
+        isConnected =
+            if (networkCapabilities != null && networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                true
+            } else networkCapabilities != null && networkCapabilities.hasTransport(
+                NetworkCapabilities.TRANSPORT_CELLULAR
+            )
         mTimer = Timer()
         mTimer?.schedule(object : TimerTask() {
             override fun run() {
@@ -97,12 +125,20 @@ class AlarmService : Service() {
                 acquire(3 * 60 * 1000L /*3 minutes*/)
             }
         }
-        mediaPlayer = MediaPlayer()
-        mediaPlayer.isLooping = true
-        player.apply {
-            playWhenReady = true
-            repeatMode = Player.REPEAT_MODE_ONE
-        }
+        val audioAttributes = AudioAttributes.Builder()
+            .setContentType(C.AUDIO_CONTENT_TYPE_MOVIE)
+            .setUsage(C.USAGE_ALARM)
+            .build()
+        player = ExoPlayer.Builder(this.applicationContext)
+            .setMediaSourceFactory(
+                ProgressiveMediaSource.Factory(DefaultDataSource.Factory(this.applicationContext))
+            )
+            .setAudioAttributes(audioAttributes, false)
+            .setWakeMode(C.WAKE_MODE_LOCAL)
+            .build().apply {
+                playWhenReady = false
+                repeatMode = Player.REPEAT_MODE_ONE
+            }
         vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val vibratorManager = getSystemService(VIBRATOR_MANAGER_SERVICE) as VibratorManager
             vibratorManager.defaultVibrator
@@ -113,7 +149,6 @@ class AlarmService : Service() {
             this.baseContext, RingtoneManager.TYPE_ALARM
         )
     }
-
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         //         getting bundle from intent
@@ -131,13 +166,42 @@ class AlarmService : Service() {
                         stateManager.dismissAlarm(applicationContext, alarm.alarmId)
                     } else {
                         alarmEntity = alarm
-                        if (alarm.mode == "Notification") notificationAlarm(alarm)
-                        else splashAlarm(alarm)
+                        player.apply {
+                            if (isConnected) setMediaItem(MediaItem.fromUri(alarm.tone.uri))
+                            else setMediaItem(MediaItem.fromUri(ringtone))
+                            prepare()
+                        }
+                        scope.launch {
+                            prefManager.userData
+                                .map {
+                                    it.notificationStatus
+                                }.collectLatest {
+                                    if (it || alarm.important) startAlarmWithMode(alarm)
+                                    else { //notification
+                                        notification(
+                                            message = "Alarm Notification ",
+                                            alarmName = alarmEntity!!.info.name,
+                                            tag = alarmEntity!!.info.tag,
+                                            nId = missedNotificationId
+                                        )
+                                        stateManager.dismissAlarm(
+                                            applicationContext,
+                                            alarm.alarmId
+                                        )
+                                    }
+                                }
+                        }
                     }
                 }
             }
         }
         return START_STICKY
+    }
+
+    private fun startAlarmWithMode(alarm: AlarmEntity) {
+        player.play()
+        if (alarm.mode == "Notification") notificationAlarm(alarm)
+        else splashAlarm(alarm)
     }
 
     private fun notificationAlarm(
@@ -162,11 +226,6 @@ class AlarmService : Service() {
         )
 
         val alarmName: String = alarm.info.name
-
-        player.apply {
-            setMediaItem(MediaItem.fromUri(alarm.tone.uri))
-            prepare()
-        }
         val intent = Intent(
             Intent.ACTION_VIEW, Uri.parse("$deepLinkUrl/${goToTool(alarm.info.tag)}")
         )
@@ -193,7 +252,10 @@ class AlarmService : Service() {
             setTextViewText(DrawR.id.tag, alarm.info.tag)
         }
 
-        Glide.with(this).asBitmap().load(getImgUrl(url = alarm.info.url))
+        Glide.with(this).asBitmap().load(
+            if (isConnected) getImgUrl(url = alarm.info.url)
+            else DrawR.drawable.weatherimage
+        )
             .diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(DrawR.drawable.weatherimage)
             .into(object : CustomTarget<Bitmap?>() {
                 override fun onResourceReady(
@@ -205,10 +267,8 @@ class AlarmService : Service() {
                     builder.setCustomContentView(notificationLayout)
                         .setCustomBigContentView(notificationLayoutExpanded)
 
-                    player.play()
                     startForGroundService(
                         notification = builder.build(),
-                        status = alarm.vibration.status,
                         id = alarm.hashCode(),
                         vibrationPattern = Constants.getVibrationPattern(alarm.vibration.pattern)
                     )
@@ -229,10 +289,6 @@ class AlarmService : Service() {
         val pendingIntent = PendingIntent.getActivity(
             this, 0, splashIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-        player.apply {
-            setMediaItem(MediaItem.fromUri(alarm.tone.uri))
-            prepare()
-        }
         val alarmName: String = alarm.info.name
         val bigTextStyle = NotificationCompat.BigTextStyle().bigText(alarm.info.description)
         val builder =
@@ -243,10 +299,8 @@ class AlarmService : Service() {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setPriority(NotificationCompat.PRIORITY_MAX) // set base on important in alarm entity
                 .setFullScreenIntent(pendingIntent, true).setStyle(bigTextStyle).setWhen(0)
-        player.play()
         startForGroundService(
             notification = builder.build(),
-            status = alarm.vibration.status,
             id = alarm.hashCode(),
             vibrationPattern = Constants.getVibrationPattern(alarm.vibration.pattern)
         )
@@ -255,19 +309,16 @@ class AlarmService : Service() {
 
 
     private fun startForGroundService(
-        notification: Notification?, status: Boolean, id: Int, vibrationPattern: LongArray
+        notification: Notification?, id: Int, vibrationPattern: LongArray
     ) {
-        if (status) {
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                vibrator.vibrate(
-                    VibrationEffect.createWaveform(
-                        vibrationPattern, 0
-                    )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(
+                VibrationEffect.createWaveform(
+                    vibrationPattern, 0
                 )
-            } else {
-                vibrator.vibrate(vibrationPattern, 0)
-            }
+            )
+        } else {
+            vibrator.vibrate(vibrationPattern, 0)
         }
         Log.d("alarmtest", "startForGroundService")
         startForeground(id, notification)
@@ -278,9 +329,6 @@ class AlarmService : Service() {
         super.onDestroy()
         alarmEntity = null
         mTimer?.cancel()
-        if (mediaPlayer.isPlaying) {
-            mediaPlayer.stop()
-        }
         vibrator.cancel()
         partialWakeLock.release()
         player.release()
@@ -301,6 +349,7 @@ class AlarmService : Service() {
                 .setPriority(NotificationCompat.PRIORITY_MAX) // set base on important in alarm entity
                 .setStyle(bigTextStyle)
                 .setAutoCancel(true)
+                .setSound(null)
         notificationManager.notify(nId, builder.build())
     }
 }

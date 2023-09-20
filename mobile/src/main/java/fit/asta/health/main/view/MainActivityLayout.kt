@@ -70,7 +70,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 fun MainActivityLayout(
     currentAddressState: UiState<String>,
     profileImageUri: String?,
-    isNotificationEnabled: Boolean,
+    notificationState: Boolean,
     onClick: (key: MainTopBarActions) -> Unit,
     onNav: (String) -> Unit,
     onSchedule: (HourMinAmPm?) -> Unit,
@@ -101,7 +101,7 @@ fun MainActivityLayout(
             actions = {
                 NewMainTopBarActions(
                     onClick = onClick,
-                    notificationState = isNotificationEnabled,
+                    notificationState = notificationState,
                     profileImageUri = profileImageUri,
                     currentAddressState = currentAddressState
                 )
