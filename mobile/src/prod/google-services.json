@@ -15,35 +15,27 @@
       },
       "oauth_client": [
         {
-          "client_id": "385157150874-41ds951ba7kgjccru5u0nb30mdlm3s6e.apps.googleusercontent.com",
+          "client_id": "385157150874-437gi9qd6lsq52vl2vmm7rv2636hf30d.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "fit.asta.health",
-            "certificate_hash": "e8e1c9ef82f8ffecb10ec7e238655061bcc3e37f"
+            "certificate_hash": "7c1f9646124ab8dc6ea428c721028f5c08cc33cb"
           }
         },
         {
-          "client_id": "385157150874-6o4occkgnfrdv5a3b50pcnq1nvk3867h.apps.googleusercontent.com",
+          "client_id": "385157150874-tg61f4qh135849ajnr1ajusaovohu5ui.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "fit.asta.health",
-            "certificate_hash": "c18b1f9990d1fac19e67782dcf237898d08af9aa"
+            "certificate_hash": "88a53a3888a7ce507dbf2e0d391466c308d8f674"
           }
         },
         {
-          "client_id": "385157150874-dhihddkgigq09fv56ech49rn4fgjcmdp.apps.googleusercontent.com",
+          "client_id": "385157150874-van577mromfcnciof6paudtm3j80hahp.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "fit.asta.health",
-            "certificate_hash": "2c7e51d86b62a782f81cae81b5e034741214677e"
-          }
-        },
-        {
-          "client_id": "385157150874-lq7an6nsiui3qah1cneto38od3ur5021.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "fit.asta.health",
-            "certificate_hash": "165d5ad485e6e91cf367ae2acb75f84fed86c268"
+            "certificate_hash": "c90e9e4ed1c389c20440ccb5b7c450f8b2568110"
           }
         },
         {
