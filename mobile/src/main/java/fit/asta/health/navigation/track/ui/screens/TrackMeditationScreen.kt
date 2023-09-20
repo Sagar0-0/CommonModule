@@ -201,7 +201,7 @@ fun TrackMeditationScreenControl(
                 TrackSuccessScreen(meditationData = meditationTrackData.data.meditationData)
             }
 
-            is UiState.Error -> {
+            is UiState.ErrorMessage -> {
                 AppErrorScreen(
                     isInternetError = false,
                     desc = meditationTrackData.resId.toStringFromResId()
@@ -209,6 +209,8 @@ fun TrackMeditationScreenControl(
                     setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
                 }
             }
+
+            else -> {}
         }
     }
 }
