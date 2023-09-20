@@ -13,13 +13,13 @@ import fit.asta.health.data.spotify.model.library.following.SpotifyUserFollowing
 import fit.asta.health.data.spotify.model.library.playlist.SpotifyUserPlaylistsModel
 import fit.asta.health.data.spotify.model.library.shows.SpotifyLibraryShowsModel
 import fit.asta.health.data.spotify.model.library.tracks.SpotifyLibraryTracksModel
-import fit.asta.health.data.spotify.util.JsonReader
 import fit.asta.health.data.spotify.model.me.SpotifyMeModel
 import fit.asta.health.data.spotify.model.recently.SpotifyUserRecentlyPlayedModel
 import fit.asta.health.data.spotify.model.recommendations.SpotifyRecommendationModel
 import fit.asta.health.data.spotify.model.search.ArtistList
 import fit.asta.health.data.spotify.model.search.SpotifySearchModel
 import fit.asta.health.data.spotify.model.search.TrackList
+import fit.asta.health.data.spotify.util.JsonReader
 import io.mockk.every
 import io.mockk.mockkStatic
 import kotlinx.coroutines.test.runTest
@@ -105,7 +105,7 @@ class SpotifyApiServiceTest {
             server.takeRequest()
 
             // Assertion to check if the response is correct or not
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -153,7 +153,7 @@ class SpotifyApiServiceTest {
             server.takeRequest()
 
             // Assertion to check if the response is correct or not
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -201,7 +201,7 @@ class SpotifyApiServiceTest {
             server.takeRequest()
 
             // Assertion to check if the response is correct or not
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -249,7 +249,7 @@ class SpotifyApiServiceTest {
             server.takeRequest()
 
             // Assertion to check if the response is correct or not
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -297,7 +297,7 @@ class SpotifyApiServiceTest {
             server.takeRequest()
 
             // Assertion to check if the response is correct or not
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -345,7 +345,7 @@ class SpotifyApiServiceTest {
             server.takeRequest()
 
             // Assertion to check if the response is correct or not
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -393,7 +393,7 @@ class SpotifyApiServiceTest {
             server.takeRequest()
 
             // Assertion to check if the response is correct or not
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -441,7 +441,7 @@ class SpotifyApiServiceTest {
             server.takeRequest()
 
             // Assertion to check if the response is correct or not
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -489,7 +489,7 @@ class SpotifyApiServiceTest {
             server.takeRequest()
 
             // Assertion to check if the response is correct or not
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -537,7 +537,7 @@ class SpotifyApiServiceTest {
             server.takeRequest()
 
             // Assertion to check if the response is correct or not
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -585,7 +585,7 @@ class SpotifyApiServiceTest {
             server.takeRequest()
 
             // Assertion to check if the response is correct or not
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -633,7 +633,7 @@ class SpotifyApiServiceTest {
             server.takeRequest()
 
             // Assertion to check if the response is correct or not
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -681,7 +681,7 @@ class SpotifyApiServiceTest {
             server.takeRequest()
 
             // Assertion to check if the response is correct or not
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -729,7 +729,7 @@ class SpotifyApiServiceTest {
             server.takeRequest()
 
             // Assertion to check if the response is correct or not
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -777,7 +777,7 @@ class SpotifyApiServiceTest {
             server.takeRequest()
 
             // Assertion to check if the response is correct or not
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 }

@@ -626,4 +626,9 @@
     <string name="no_records_found">No records found</string>
     <string name="refund_extended_error">Refund time extended 7 days</string>
     <string name="file_not_found">File not found!</string>
+    <string name="null_data_error">Null Data Error</string>
+    <string name="sign_in_failed">Sign in Failed</string>
+    <string name="linking_the_credentials_failed">Linking the credentials Failed</string>
+    <string name="sign_out_failed">Sign out failed</string>
+    <string name="delete_account_failed">Delete account Failed</string>
 </resources>

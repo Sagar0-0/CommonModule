@@ -16,12 +16,12 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,16 +31,16 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.designsystem.components.generic.AppErrorScreen
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.data.spotify.model.common.Track
 import fit.asta.health.data.spotify.model.recently.SpotifyUserRecentlyPlayedModel
 import fit.asta.health.data.spotify.model.recommendations.SpotifyRecommendationModel
 import fit.asta.health.data.spotify.model.search.ArtistList
 import fit.asta.health.data.spotify.model.search.TrackList
+import fit.asta.health.designsystem.components.generic.AppErrorScreen
+import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.feature.spotify.components.MusicArtistsUI
 import fit.asta.health.feature.spotify.components.MusicLargeImageColumn
 import fit.asta.health.feature.spotify.components.MusicPlayableSmallCards
@@ -192,7 +192,7 @@ fun ThirdPartyScreen(
                 }
             }
 
-            is UiState.Error -> {
+            is UiState.ErrorMessage -> {
                 AppErrorScreen(
                     modifier = Modifier
                         .height(190.dp)
@@ -202,6 +202,8 @@ fun ThirdPartyScreen(
                     setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserRecentlyPlayedTracks)
                 }
             }
+
+            else -> {}
         }
 
         // Recommended Text
@@ -262,12 +264,14 @@ fun ThirdPartyScreen(
                 }
             }
 
-            // Error State
-            is UiState.Error -> {
+            // ErrorMessage State
+            is UiState.ErrorMessage -> {
                 AppErrorScreen(desc = recommendedData.resId.toStringFromResId()) {
                     setEvent(SpotifyUiEvent.NetworkIO.LoadRecommendationTracks)
                 }
             }
+
+            else -> {}
         }
 
         // Top Tracks
@@ -328,12 +332,14 @@ fun ThirdPartyScreen(
                 }
             }
 
-            // Error State
-            is UiState.Error -> {
+            // ErrorMessage State
+            is UiState.ErrorMessage -> {
                 AppErrorScreen(desc = topTracksData.resId.toStringFromResId()) {
                     setEvent(SpotifyUiEvent.NetworkIO.LoadUserTopTracks)
                 }
             }
+
+            else -> {}
         }
 
         // Top Artists
@@ -394,12 +400,14 @@ fun ThirdPartyScreen(
                 }
             }
 
-            // Error State
-            is UiState.Error -> {
+            // ErrorMessage State
+            is UiState.ErrorMessage -> {
                 AppErrorScreen(desc = topArtistsData.resId.toStringFromResId()) {
                     setEvent(SpotifyUiEvent.NetworkIO.LoadUserTopArtists)
                 }
             }
+
+            else -> {}
         }
     }
 }

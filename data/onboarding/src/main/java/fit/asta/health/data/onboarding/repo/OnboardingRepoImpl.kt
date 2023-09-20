@@ -1,6 +1,6 @@
 package fit.asta.health.data.onboarding.repo
 
-import fit.asta.health.common.utils.getResponseState
+import fit.asta.health.common.utils.getApiResponseState
 import fit.asta.health.data.onboarding.remote.OnboardingApi
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.datastore.UserPreferencesData
@@ -18,7 +18,7 @@ class OnboardingRepoImpl(
     override val userPreferences: Flow<UserPreferencesData> = prefManager.userData
 
     override suspend fun getData() = withContext(coroutineDispatcher) {
-        getResponseState { remoteApi.getData().data }
+        getApiResponseState { remoteApi.getData() }
     }
 
     override suspend fun setOnboardingDone() {

@@ -181,11 +181,13 @@ fun TrackMeditationScreenControl(
                 TrackSuccessScreen(meditationData = meditationTrackData.data.meditationData)
             }
 
-            is UiState.Error -> {
+            is UiState.ErrorMessage -> {
                 AppErrorScreen(desc = meditationTrackData.resId.toStringFromResId()) {
                     setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
                 }
             }
+
+            else -> {}
         }
     }
 }

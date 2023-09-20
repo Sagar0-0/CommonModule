@@ -195,13 +195,15 @@ internal fun SearchBottomSheet(
                     }
                 }
 
-                is UiState.Error -> {
+                is UiState.ErrorMessage -> {
                     Text(text = searchResponseState.resId.toStringFromResId())
                 }
 
                 UiState.Idle -> {
                     Text(text = R.string.your_search_results_will_appear_here.toStringFromResId())
                 }
+
+                else -> {}
             }
         }
     }

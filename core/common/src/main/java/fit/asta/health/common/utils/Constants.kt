@@ -58,7 +58,7 @@ object Constants {
                 timeOfDay = timeOfDay
             )
         } catch (e: Exception) {
-            println("Error occurred: ${e.message}")
+            println("ErrorMessage occurred: ${e.message}")
         }
         return DayAndTime("", "", "")
     }
@@ -78,7 +78,7 @@ object Constants {
             val amPm = !parsedTime.isBefore(LocalTime.NOON)
             return HourMinAmPm(parsedTime.hour, parsedTime.minute, amPm, day)
         } catch (e: Exception) {
-            println("Error occurred: ${e.message}")
+            println("ErrorMessage occurred: ${e.message}")
         }
         return HourMinAmPm(0, 0, false, day)
     }

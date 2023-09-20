@@ -19,9 +19,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.data.spotify.model.common.Album
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.data.spotify.model.common.Album
 import fit.asta.health.feature.spotify.components.MusicLargeImageColumn
 import fit.asta.health.feature.spotify.events.SpotifyUiEvent
 import fit.asta.health.resources.strings.R
@@ -75,11 +75,13 @@ fun AlbumDetailScreen(
                 )
             }
 
-            is UiState.Error -> {
+            is UiState.ErrorMessage -> {
                 AppErrorScreen(desc = albumNetworkResponse.resId.toStringFromResId()) {
                     setEvent(SpotifyUiEvent.NetworkIO.LoadAlbumDetails)
                 }
             }
+
+            else -> {}
         }
     }
 }
@@ -174,11 +176,13 @@ private fun LocalAlbumHandler(
             }
         }
 
-        // Error State
-        is UiState.Error -> {
+        // ErrorMessage State
+        is UiState.ErrorMessage -> {
             AppErrorScreen(desc = albumLocalResponse.resId.toStringFromResId()) {
                 setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums)
             }
         }
+
+        else -> {}
     }
 }

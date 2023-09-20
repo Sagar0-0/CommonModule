@@ -60,22 +60,27 @@ class FeedbackViewModelTest : BaseTest() {
     @Test
     fun `loadFeedbackQuestions with invalid fid, return error`() = runTest {
         val fid = "invalid"
-        coEvery { repo.getFeedbackQuestions(any(), any()) } returns ResponseState.Error(Exception())
+        coEvery {
+            repo.getFeedbackQuestions(
+                any(),
+                any()
+            )
+        } returns ResponseState.ErrorMessage(mockk())
         viewModel.loadFeedbackQuestions(fid)
         coVerify { repo.getFeedbackQuestions(any(), fid) }
         viewModel.feedbackQuestions.test {
-            assert(awaitItem() is UiState.Error)
+            assert(awaitItem() is UiState.ErrorMessage)
         }
     }
 
     @Test
     fun `postUserFeedback empty data, return error`() = runTest {
         val mockList = listOf<An>()
-        coEvery { repo.postUserFeedback(any()) } returns ResponseState.Error(Exception())
+        coEvery { repo.postUserFeedback(any()) } returns ResponseState.ErrorMessage(mockk())
         viewModel.postUserFeedback(mockList)
         coVerify { repo.postUserFeedback(any()) }
         viewModel.feedbackPostState.test {
-            assert(awaitItem() is UiState.Error)
+            assert(awaitItem() is UiState.ErrorMessage)
         }
     }
 

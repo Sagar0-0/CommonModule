@@ -3,7 +3,7 @@ package fit.asta.health.data.feedback.repo
 import android.content.ContentResolver
 import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.common.utils.getResponseState
+import fit.asta.health.common.utils.getApiResponseState
 import fit.asta.health.data.feedback.remote.FeedbackApi
 import fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO
 import fit.asta.health.data.feedback.remote.modal.PostFeedbackDTO
@@ -27,7 +27,7 @@ class FeedbackRepoImpl
         userId: String,
         feature: String
     ): ResponseState<FeedbackQuesDTO> = withContext(coroutineDispatcher) {
-        getResponseState {
+        getApiResponseState {
             remoteApi.getFeedbackQuestions(userId = userId, feature = feature)
         }
     }
@@ -47,7 +47,7 @@ class FeedbackRepoImpl
             }
         }
         return withContext(coroutineDispatcher) {
-            getResponseState { remoteApi.postUserFeedback(feedback, parts) }
+            getApiResponseState { remoteApi.postUserFeedback(feedback, parts) }
         }
     }
 }

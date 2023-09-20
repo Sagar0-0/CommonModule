@@ -70,10 +70,10 @@ fun NavGraphBuilder.authRoute(
                 LoadingAnimation()
             }
 
-            is UiState.Error -> {
+            is UiState.ErrorMessage -> {
                 Log.e(
                     "TAG",
-                    "authRoute: ${(isProfileAvailable as UiState.Error).resId.toStringFromResId()}"
+                    "authRoute: ${(isProfileAvailable as UiState.ErrorMessage).resId.toStringFromResId()}"
                 )
             }
 

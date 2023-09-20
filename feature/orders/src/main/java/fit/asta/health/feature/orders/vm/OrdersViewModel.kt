@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
-import fit.asta.health.data.orders.remote.model.OrdersDTO
+import fit.asta.health.data.orders.remote.model.OrderData
 import fit.asta.health.data.orders.repo.OrdersRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,7 +20,7 @@ class OrdersViewModel
     @UID private val uid: String
 ) : ViewModel() {
 
-    private val _ordersState = MutableStateFlow<UiState<OrdersDTO>>(UiState.Idle)
+    private val _ordersState = MutableStateFlow<UiState<List<OrderData>>>(UiState.Idle)
     val ordersState = _ordersState.asStateFlow()
 
     fun getOrders() {

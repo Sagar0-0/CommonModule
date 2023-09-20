@@ -15,6 +15,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.just
+import io.mockk.mockk
 import io.mockk.spyk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.AfterEach
@@ -38,8 +39,7 @@ class BasicProfileViewModelTest : BaseTest() {
         viewModel = spyk(
             BasicProfileViewModel(
                 repo,
-                auth,
-                ""
+                auth
             )
         )
     }
@@ -51,14 +51,14 @@ class BasicProfileViewModelTest : BaseTest() {
 
     @Test
     fun `createBasicProfile with error, return error`() = runTest {
-        coEvery { repo.createBasicProfile(any()) } returns ResponseState.Error(Exception())
+        coEvery { repo.createBasicProfile(any()) } returns ResponseState.ErrorMessage(mockk())
 
         viewModel.createBasicProfile(BasicProfileDTO())
 
         coVerify { repo.createBasicProfile(BasicProfileDTO()) }
 
         viewModel.createBasicProfileState.test {
-            assert(awaitItem() is UiState.Error)
+            assert(awaitItem() is UiState.ErrorMessage)
         }
     }
 
@@ -77,14 +77,14 @@ class BasicProfileViewModelTest : BaseTest() {
 
     @Test
     fun `checkReferralCode with error, return error`() = runTest {
-        coEvery { repo.checkReferralCode(any()) } returns ResponseState.Error(Exception())
+        coEvery { repo.checkReferralCode(any()) } returns ResponseState.ErrorMessage(mockk())
 
         viewModel.checkReferralCode("")
 
         coVerify { repo.checkReferralCode("") }
 
         viewModel.checkReferralCodeState.test {
-            assert(awaitItem() is UiState.Error)
+            assert(awaitItem() is UiState.ErrorMessage)
         }
     }
 

@@ -1,7 +1,6 @@
 package fit.asta.health.data.address.remote
 
-import fit.asta.health.data.address.remote.modal.AddressesDTO
-import fit.asta.health.data.address.remote.modal.AddressesDTO.*
+import fit.asta.health.common.utils.Response
 import fit.asta.health.data.address.remote.modal.DeleteAddressResponse
 import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.PutAddressResponse
@@ -12,10 +11,10 @@ interface AddressApi {
     @GET("location/get/all/")
     suspend fun getAddresses(
         @Query("uid") uid: String
-    ): AddressesDTO
+    ): Response<List<MyAddress>>
 
     @PUT("location/put")
-    suspend fun putAddress(@Body myAddress: MyAddress): PutAddressResponse
+    suspend fun putAddress(@Body myAddress: MyAddress): Response<PutAddressResponse>
 
     @DELETE("location/delete")
     suspend fun deleteAddress(

@@ -2,11 +2,11 @@ package fit.asta.health.data.orders.repo
 
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.data.orders.remote.OrdersApi
-import fit.asta.health.data.orders.remote.model.OrdersDTO
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.mockk
 import io.mockk.spyk
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -34,7 +34,7 @@ class OrdersRepoImplTest {
 
     @Test
     fun `getData with success, return Success Response`() = runTest {
-        coEvery { ordersApi.getOrders(any()) } returns OrdersDTO()
+        coEvery { ordersApi.getOrders(any()) } returns mockk()
         val response = onboardingRepoImpl.getOrders("")
         coVerify { ordersApi.getOrders("") }
         assert(response is ResponseState.Success)
@@ -45,6 +45,6 @@ class OrdersRepoImplTest {
         coEvery { ordersApi.getOrders(any()) } throws Exception()
         val response = onboardingRepoImpl.getOrders("")
         coVerify { ordersApi.getOrders("") }
-        assert(response is ResponseState.Error)
+        assert(response is ResponseState.ErrorMessage)
     }
 }

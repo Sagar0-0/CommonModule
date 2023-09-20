@@ -98,7 +98,7 @@ class SpotifyActivity : ComponentActivity() {
                         }
 
                         // Data Fetched UnSuccessfully
-                        is UiState.Error -> {
+                        is UiState.ErrorMessage -> {
 
                             AppErrorScreen(desc = loginState.resId.toStringFromResId()) {
 
@@ -120,6 +120,8 @@ class SpotifyActivity : ComponentActivity() {
                                 }
                             }
                         }
+
+                        else -> {}
                     }
                 }
             }

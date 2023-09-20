@@ -127,14 +127,16 @@ fun SpotifyHomeScreen(
                 }
             }
 
-            // Error State
-            is UiState.Error -> {
+            // ErrorMessage State
+            is UiState.ErrorMessage -> {
                 item {
                     AppErrorScreen(desc = recentlyData.resId.toStringFromResId()) {
                         setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserRecentlyPlayedTracks)
                     }
                 }
             }
+
+            else -> {}
         }
 
         // Top Mixes Text
@@ -201,14 +203,16 @@ fun SpotifyHomeScreen(
                 }
             }
 
-            // Error State
-            is UiState.Error -> {
+            // ErrorMessage State
+            is UiState.ErrorMessage -> {
                 item {
                     AppErrorScreen(desc = topMixData.resId.toStringFromResId()) {
                         setEvent(SpotifyUiEvent.NetworkIO.LoadUserTopTracks)
                     }
                 }
             }
+
+            else -> {}
         }
 
 
@@ -274,8 +278,8 @@ fun SpotifyHomeScreen(
                 }
             }
 
-            // Error State
-            is UiState.Error -> {
+            // ErrorMessage State
+            is UiState.ErrorMessage -> {
                 item {
                     AppErrorScreen(desc = likedSongs.resId.toStringFromResId()) {
                         setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
@@ -283,6 +287,7 @@ fun SpotifyHomeScreen(
                 }
             }
 
+            else -> {}
         }
 
         // Favourite Tracks Text
@@ -348,14 +353,16 @@ fun SpotifyHomeScreen(
                 }
             }
 
-            // Error State
-            is UiState.Error -> {
+            // ErrorMessage State
+            is UiState.ErrorMessage -> {
                 item {
                     AppErrorScreen(desc = favouriteTracks.resId.toStringFromResId()) {
                         setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
                     }
                 }
             }
+
+            else -> {}
         }
 
         // Favourite Albums Text
@@ -420,14 +427,16 @@ fun SpotifyHomeScreen(
                 }
             }
 
-            // Error State
-            is UiState.Error -> {
+            // ErrorMessage State
+            is UiState.ErrorMessage -> {
                 item {
                     AppErrorScreen(desc = favouriteAlbums.resId.toStringFromResId()) {
                         setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums)
                     }
                 }
             }
+
+            else -> {}
         }
     }
 }

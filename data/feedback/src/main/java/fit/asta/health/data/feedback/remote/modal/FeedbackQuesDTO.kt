@@ -6,14 +6,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class FeedbackQuesDTO(
-    @SerializedName("status")
-    val status: Status = Status(),
-    @SerializedName("data")
-    val data: NetFeedback = NetFeedback()
-) : Parcelable
-
-@Parcelize
-data class NetFeedback(
     @SerializedName("date")
     val date: String = "",
     @SerializedName("fid")
@@ -24,15 +16,6 @@ data class NetFeedback(
     val name: String = "",
     @SerializedName("qns")
     val qns: List<Qn> = listOf()
-) : Parcelable
-
-
-@Parcelize
-data class Status(
-    @SerializedName("code")
-    val code: Int = 0,
-    @SerializedName("msg")
-    val msg: String = ""
 ) : Parcelable
 
 @Parcelize

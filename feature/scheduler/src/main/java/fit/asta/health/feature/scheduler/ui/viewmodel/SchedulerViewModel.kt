@@ -207,7 +207,7 @@ class SchedulerViewModel
 
                 }
 
-                is ResponseState.Error -> {}
+                is ResponseState.ErrorMessage -> {}
                 else -> {}
             }
         }

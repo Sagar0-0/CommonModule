@@ -76,14 +76,14 @@ class SpotifyViewModelTest : BaseTest() {
         @Test
         fun `getCurrentUserDetails, returns Error`() = runTest {
 
-            val expected = ResponseState.Error(mockk())
+            val expected = ResponseState.ErrorMessage(mockk())
             coEvery { remoteRepo.getCurrentUserDetails("") } returns expected
 
             viewModel.getCurrentUserDetails("")
 
             coVerify { remoteRepo.getCurrentUserDetails("") }
             viewModel.currentUserData.test {
-                assert(awaitItem() is UiState.Error)
+                assert(awaitItem() is UiState.ErrorMessage)
             }
         }
     }
@@ -111,14 +111,14 @@ class SpotifyViewModelTest : BaseTest() {
         @Test
         fun `getAllTracks, returns Error`() = runTest {
 
-            val expected = ResponseState.Error(mockk())
+            val expected = ResponseState.ErrorMessage(mockk())
             coEvery { localRepo.getAllTracks() } returns expected
 
             viewModel.uiEventListener(SpotifyUiEvent.LocalIO.LoadAllTracks)
 
             coVerify { localRepo.getAllTracks() }
             viewModel.allTracks.test {
-                assert(awaitItem() is UiState.Error)
+                assert(awaitItem() is UiState.ErrorMessage)
             }
         }
     }
@@ -146,14 +146,14 @@ class SpotifyViewModelTest : BaseTest() {
         @Test
         fun `getAllAlbums, returns Error`() = runTest {
 
-            val expected = ResponseState.Error(mockk())
+            val expected = ResponseState.ErrorMessage(mockk())
             coEvery { localRepo.getAllAlbums() } returns expected
 
             viewModel.uiEventListener(SpotifyUiEvent.LocalIO.LoadAllAlbums)
 
             coVerify { localRepo.getAllAlbums() }
             viewModel.allAlbums.test {
-                assert(awaitItem() is UiState.Error)
+                assert(awaitItem() is UiState.ErrorMessage)
             }
         }
     }
@@ -178,7 +178,7 @@ class SpotifyViewModelTest : BaseTest() {
         @Test
         fun `insertTrack, returns Error`() = runTest {
 
-            val expected = ResponseState.Error(mockk())
+            val expected = ResponseState.ErrorMessage(mockk())
             coEvery { localRepo.insertTrack(any()) } returns expected
 
             viewModel.uiEventListener(SpotifyUiEvent.LocalIO.InsertTrack(mockk()))
@@ -207,7 +207,7 @@ class SpotifyViewModelTest : BaseTest() {
         @Test
         fun `deleteTrack, returns Error`() = runTest {
 
-            val expected = ResponseState.Error(mockk())
+            val expected = ResponseState.ErrorMessage(mockk())
             coEvery { localRepo.deleteTrack(any()) } returns expected
 
             viewModel.uiEventListener(SpotifyUiEvent.LocalIO.DeleteTrack(mockk()))
@@ -236,7 +236,7 @@ class SpotifyViewModelTest : BaseTest() {
         @Test
         fun `insertAlbum, returns Error`() = runTest {
 
-            val expected = ResponseState.Error(mockk())
+            val expected = ResponseState.ErrorMessage(mockk())
             coEvery { localRepo.insertAlbum(any()) } returns expected
 
             viewModel.uiEventListener(SpotifyUiEvent.LocalIO.InsertAlbum(mockk()))
@@ -265,7 +265,7 @@ class SpotifyViewModelTest : BaseTest() {
         @Test
         fun `deleteAlbum, returns Error`() = runTest {
 
-            val expected = ResponseState.Error(mockk())
+            val expected = ResponseState.ErrorMessage(mockk())
             coEvery { localRepo.deleteAlbum(any()) } returns expected
 
             viewModel.uiEventListener(SpotifyUiEvent.LocalIO.DeleteAlbum(mockk()))
@@ -297,14 +297,14 @@ class SpotifyViewModelTest : BaseTest() {
         @Test
         fun `getCurrentUserRecentlyPlayedTracks, returns Error`() = runTest {
 
-            val expected = ResponseState.Error(mockk())
+            val expected = ResponseState.ErrorMessage(mockk())
             coEvery { remoteRepo.getCurrentUserRecentlyPlayedTracks("") } returns expected
 
             viewModel.uiEventListener(SpotifyUiEvent.NetworkIO.LoadCurrentUserRecentlyPlayedTracks)
 
             coVerify { remoteRepo.getCurrentUserRecentlyPlayedTracks("") }
             viewModel.userRecentlyPlayedTracks.test {
-                assert(awaitItem() is UiState.Error)
+                assert(awaitItem() is UiState.ErrorMessage)
             }
         }
     }
@@ -332,14 +332,14 @@ class SpotifyViewModelTest : BaseTest() {
         @Test
         fun `getTrackDetails, returns Error`() = runTest {
 
-            val expected = ResponseState.Error(mockk())
+            val expected = ResponseState.ErrorMessage(mockk())
             coEvery { remoteRepo.getTrackDetails(any(), any()) } returns expected
 
             viewModel.uiEventListener(SpotifyUiEvent.NetworkIO.LoadTrackDetails)
 
             coVerify { remoteRepo.getTrackDetails(any(), any()) }
             viewModel.trackDetailsResponse.test {
-                assert(awaitItem() is UiState.Error)
+                assert(awaitItem() is UiState.ErrorMessage)
             }
         }
     }
@@ -367,14 +367,14 @@ class SpotifyViewModelTest : BaseTest() {
         @Test
         fun `getUserTopTracks, returns Error`() = runTest {
 
-            val expected = ResponseState.Error(mockk())
+            val expected = ResponseState.ErrorMessage(mockk())
             coEvery { remoteRepo.getCurrentUserTopTracks(any()) } returns expected
 
             viewModel.uiEventListener(SpotifyUiEvent.NetworkIO.LoadUserTopTracks)
 
             coVerify { remoteRepo.getCurrentUserTopTracks(any()) }
             viewModel.userTopTracks.test {
-                assert(awaitItem() is UiState.Error)
+                assert(awaitItem() is UiState.ErrorMessage)
             }
         }
     }
@@ -402,14 +402,14 @@ class SpotifyViewModelTest : BaseTest() {
         @Test
         fun `getUserTopArtists, returns Error`() = runTest {
 
-            val expected = ResponseState.Error(mockk())
+            val expected = ResponseState.ErrorMessage(mockk())
             coEvery { remoteRepo.getCurrentUserTopArtists(any()) } returns expected
 
             viewModel.uiEventListener(SpotifyUiEvent.NetworkIO.LoadUserTopArtists)
 
             coVerify { remoteRepo.getCurrentUserTopArtists(any()) }
             viewModel.userTopArtists.test {
-                assert(awaitItem() is UiState.Error)
+                assert(awaitItem() is UiState.ErrorMessage)
             }
         }
     }
@@ -437,14 +437,14 @@ class SpotifyViewModelTest : BaseTest() {
         @Test
         fun `getCurrentUserTracks, returns Error`() = runTest {
 
-            val expected = ResponseState.Error(mockk())
+            val expected = ResponseState.ErrorMessage(mockk())
             coEvery { remoteRepo.getCurrentUserTracks("") } returns expected
 
             viewModel.uiEventListener(SpotifyUiEvent.NetworkIO.LoadCurrentUserTracks)
 
             coVerify { remoteRepo.getCurrentUserTracks("") }
             viewModel.currentUserTracks.test {
-                assert(awaitItem() is UiState.Error)
+                assert(awaitItem() is UiState.ErrorMessage)
             }
         }
     }
@@ -472,14 +472,14 @@ class SpotifyViewModelTest : BaseTest() {
         @Test
         fun `getCurrentUserTracks, returns Error`() = runTest {
 
-            val expected = ResponseState.Error(mockk())
+            val expected = ResponseState.ErrorMessage(mockk())
             coEvery { remoteRepo.getCurrentUserPlaylists("") } returns expected
 
             viewModel.uiEventListener(SpotifyUiEvent.NetworkIO.LoadCurrentUserPlaylist)
 
             coVerify { remoteRepo.getCurrentUserPlaylists("") }
             viewModel.currentUserPlaylist.test {
-                assert(awaitItem() is UiState.Error)
+                assert(awaitItem() is UiState.ErrorMessage)
             }
         }
     }
@@ -507,14 +507,14 @@ class SpotifyViewModelTest : BaseTest() {
         @Test
         fun `getCurrentUserArtists, returns Error`() = runTest {
 
-            val expected = ResponseState.Error(mockk())
+            val expected = ResponseState.ErrorMessage(mockk())
             coEvery { remoteRepo.getCurrentUserFollowedArtists("") } returns expected
 
             viewModel.uiEventListener(SpotifyUiEvent.NetworkIO.LoadCurrentUserArtists)
 
             coVerify { remoteRepo.getCurrentUserFollowedArtists("") }
             viewModel.currentUserFollowingArtist.test {
-                assert(awaitItem() is UiState.Error)
+                assert(awaitItem() is UiState.ErrorMessage)
             }
         }
     }
@@ -542,14 +542,14 @@ class SpotifyViewModelTest : BaseTest() {
         @Test
         fun `getCurrentUserAlbum, returns Error`() = runTest {
 
-            val expected = ResponseState.Error(mockk())
+            val expected = ResponseState.ErrorMessage(mockk())
             coEvery { remoteRepo.getCurrentUserAlbums("") } returns expected
 
             viewModel.uiEventListener(SpotifyUiEvent.NetworkIO.LoadCurrentUserAlbum)
 
             coVerify { remoteRepo.getCurrentUserAlbums("") }
             viewModel.currentUserAlbum.test {
-                assert(awaitItem() is UiState.Error)
+                assert(awaitItem() is UiState.ErrorMessage)
             }
         }
     }
@@ -577,14 +577,14 @@ class SpotifyViewModelTest : BaseTest() {
         @Test
         fun `getCurrentUserShows, returns Error`() = runTest {
 
-            val expected = ResponseState.Error(mockk())
+            val expected = ResponseState.ErrorMessage(mockk())
             coEvery { remoteRepo.getCurrentUserShows("") } returns expected
 
             viewModel.uiEventListener(SpotifyUiEvent.NetworkIO.LoadCurrentUserShows)
 
             coVerify { remoteRepo.getCurrentUserShows("") }
             viewModel.currentUserShow.test {
-                assert(awaitItem() is UiState.Error)
+                assert(awaitItem() is UiState.ErrorMessage)
             }
         }
     }
@@ -612,14 +612,14 @@ class SpotifyViewModelTest : BaseTest() {
         @Test
         fun `getCurrentUserEpisode, returns Error`() = runTest {
 
-            val expected = ResponseState.Error(mockk())
+            val expected = ResponseState.ErrorMessage(mockk())
             coEvery { remoteRepo.getCurrentUserEpisodes("") } returns expected
 
             viewModel.uiEventListener(SpotifyUiEvent.NetworkIO.LoadCurrentUserEpisode)
 
             coVerify { remoteRepo.getCurrentUserEpisodes("") }
             viewModel.currentUserEpisode.test {
-                assert(awaitItem() is UiState.Error)
+                assert(awaitItem() is UiState.ErrorMessage)
             }
         }
     }

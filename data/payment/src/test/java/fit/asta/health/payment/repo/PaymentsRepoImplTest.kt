@@ -3,12 +3,11 @@ package fit.asta.health.payment.repo
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.payment.remote.PaymentsApi
 import fit.asta.health.payment.remote.model.OrderRequest
-import fit.asta.health.payment.remote.model.OrderResponse
-import fit.asta.health.payment.remote.model.PaymentResponse
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.mockk
 import io.mockk.spyk
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -36,7 +35,7 @@ class PaymentsRepoImplTest {
 
     @Test
     fun `createOrder, returns Success`() = runTest {
-        coEvery { api.createOrder(any()) } returns OrderResponse()
+        coEvery { api.createOrder(any()) } returns mockk()
         val response = repo.createOrder(OrderRequest())
         coVerify { api.createOrder(OrderRequest()) }
         assert(response is ResponseState.Success)
@@ -47,12 +46,12 @@ class PaymentsRepoImplTest {
         coEvery { api.createOrder(any()) } throws Exception()
         val response = repo.createOrder(OrderRequest())
         coVerify { api.createOrder(OrderRequest()) }
-        assert(response is ResponseState.Error)
+        assert(response is ResponseState.ErrorMessage)
     }
 
     @Test
     fun `verifyAndUpdateProfile, returns Success`() = runTest {
-        coEvery { api.verifyAndUpdateProfile(any(), any()) } returns PaymentResponse()
+        coEvery { api.verifyAndUpdateProfile(any(), any()) } returns mockk()
         val response = repo.verifyAndUpdateProfile("", "")
         coVerify { api.verifyAndUpdateProfile("", "") }
         assert(response is ResponseState.Success)
@@ -63,6 +62,6 @@ class PaymentsRepoImplTest {
         coEvery { api.verifyAndUpdateProfile(any(), any()) } throws Exception()
         val response = repo.verifyAndUpdateProfile("", "")
         coVerify { api.verifyAndUpdateProfile("", "") }
-        assert(response is ResponseState.Error)
+        assert(response is ResponseState.ErrorMessage)
     }
 }

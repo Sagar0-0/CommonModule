@@ -77,7 +77,7 @@ class TrackingRepoImplText {
             val response = repository.getHomeDetails("", "", "")
 
             coVerify { trackingApiService.getHomeDetails("", "", "") }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -113,7 +113,7 @@ class TrackingRepoImplText {
             val response = repository.getWaterDetails("", "", "", "")
 
             coVerify { trackingApiService.getWaterDetails("", "", "", "") }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -149,7 +149,7 @@ class TrackingRepoImplText {
             val response = repository.getStepsDetails("", "", "", "")
 
             coVerify { trackingApiService.getStepsDetails("", "", "", "") }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -185,7 +185,7 @@ class TrackingRepoImplText {
             val response = repository.getMeditationDetails("", "", "", "")
 
             coVerify { trackingApiService.getMeditationDetails("", "", "", "") }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -221,7 +221,7 @@ class TrackingRepoImplText {
             val response = repository.getBreathingDetails("", "", "", "")
 
             coVerify { trackingApiService.getBreathingDetails("", "", "", "") }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -257,7 +257,7 @@ class TrackingRepoImplText {
             val response = repository.getSleepDetails("", "", "", "")
 
             coVerify { trackingApiService.getSleepDetails("", "", "", "") }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -293,7 +293,7 @@ class TrackingRepoImplText {
             val response = repository.getSunlightDetails("", "", "", "")
 
             coVerify { trackingApiService.getSunlightDetails("", "", "", "") }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -329,7 +329,7 @@ class TrackingRepoImplText {
             val response = repository.getExerciseDetails("", "", "", "", "")
 
             coVerify { trackingApiService.getExerciseDetails("", "", "", "", "") }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 }

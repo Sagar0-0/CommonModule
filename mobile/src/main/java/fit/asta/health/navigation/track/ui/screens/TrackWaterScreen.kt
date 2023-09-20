@@ -176,11 +176,13 @@ fun TrackWaterScreenControl(
                 TrackSuccessScreen(waterTrackData.data.waterData)
             }
 
-            is UiState.Error -> {
+            is UiState.ErrorMessage -> {
                 AppErrorScreen(desc = waterTrackData.resId.toStringFromResId()) {
                     setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
                 }
             }
+
+            else -> {}
         }
     }
 }

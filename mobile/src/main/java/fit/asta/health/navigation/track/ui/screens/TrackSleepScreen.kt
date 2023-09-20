@@ -179,11 +179,13 @@ fun TrackSleepScreenControl(
                 TrackSuccessScreen(sleepData = sleepTrackData.data.sleepData)
             }
 
-            is UiState.Error -> {
+            is UiState.ErrorMessage -> {
                 AppErrorScreen(desc = sleepTrackData.resId.toStringFromResId()) {
                     setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
                 }
             }
+
+            else -> {}
         }
     }
 }

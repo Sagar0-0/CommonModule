@@ -55,7 +55,7 @@ internal fun AuthScreen(
                 LoadingAnimation()
             }
 
-            is UiState.Error -> {
+            is UiState.ErrorMessage -> {
                 Text(text = loginState.resId.toStringFromResId())
             }
 

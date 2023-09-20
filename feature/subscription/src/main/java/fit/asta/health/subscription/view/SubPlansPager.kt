@@ -50,7 +50,7 @@ import fit.asta.health.subscription.remote.model.SubscriptionResponse
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun SubPlansPager(
-    subscriptionPlans: SubscriptionResponse.Data.SubscriptionPlans,
+    subscriptionPlans: SubscriptionResponse.SubscriptionPlans,
     onClick: (OrderRequest) -> Unit
 ) {
     val fullScreen = rememberSaveable { mutableStateOf(false) }
@@ -97,7 +97,7 @@ internal fun SubPlansPager(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SubPlanItem(
-    item: SubscriptionResponse.Data.SubscriptionPlans.Category,
+    item: SubscriptionResponse.SubscriptionPlans.Category,
     modifier: Modifier,
     color: CardColors,
     fullScreen: Boolean,

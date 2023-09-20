@@ -19,11 +19,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.data.spotify.model.common.Track
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.feature.spotify.components.MusicLargeImageColumn
 import fit.asta.health.feature.spotify.events.SpotifyUiEvent
-import fit.asta.health.data.spotify.model.common.Track
 import fit.asta.health.resources.strings.R
 
 
@@ -78,11 +78,13 @@ fun TrackDetailsScreen(
                 )
             }
 
-            is UiState.Error -> {
+            is UiState.ErrorMessage -> {
                 AppErrorScreen(desc = trackNetworkState.resId.toStringFromResId()) {
                     setEvent(SpotifyUiEvent.NetworkIO.LoadTrackDetails)
                 }
             }
+
+            else -> {}
         }
     }
 }
@@ -182,11 +184,13 @@ private fun LocalTrackHandler(
             }
         }
 
-        // Error State
-        is UiState.Error -> {
+        // ErrorMessage State
+        is UiState.ErrorMessage -> {
             AppErrorScreen(desc = trackLocalState.resId.toStringFromResId()) {
                 setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
             }
         }
+
+        else -> {}
     }
 }

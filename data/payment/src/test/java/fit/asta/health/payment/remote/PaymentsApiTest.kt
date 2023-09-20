@@ -2,6 +2,7 @@ package fit.asta.health.payment.remote
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.payment.remote.model.OrderRequest
 import fit.asta.health.payment.remote.model.OrderResponse
@@ -40,7 +41,7 @@ class PaymentsApiTest {
 
     @Test
     fun `createOrder, returns Success`() = runTest {
-        val dto = OrderResponse()
+        val dto = Response(data = OrderResponse())
         val json = gson.toJson(dto)!!
         val res = MockResponse()
         res.setBody(json)
@@ -62,12 +63,12 @@ class PaymentsApiTest {
         val data = onboardingRepoImpl.createOrder(OrderRequest())
         server.takeRequest()
 
-        assert(data is ResponseState.Error)
+        assert(data is ResponseState.ErrorMessage)
     }
 
     @Test
     fun `verifyAndUpdateProfile, returns Success`() = runTest {
-        val dto = PaymentResponse()
+        val dto = Response(data = PaymentResponse())
         val json = gson.toJson(dto)!!
         val res = MockResponse()
         res.setBody(json)
@@ -89,6 +90,6 @@ class PaymentsApiTest {
         val data = onboardingRepoImpl.verifyAndUpdateProfile("", "")
         server.takeRequest()
 
-        assert(data is ResponseState.Error)
+        assert(data is ResponseState.ErrorMessage)
     }
 }

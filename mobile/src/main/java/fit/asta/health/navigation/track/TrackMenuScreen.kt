@@ -101,11 +101,13 @@ fun TrackMenuScreenControl() {
         }
 
         // failure State
-        is UiState.Error -> {
+        is UiState.ErrorMessage -> {
             AppErrorScreen(desc = homeMenuState.resId.toStringFromResId()) {
                 trackViewModel.getHomeDetails()
             }
         }
+
+        else -> {}
     }
 }
 

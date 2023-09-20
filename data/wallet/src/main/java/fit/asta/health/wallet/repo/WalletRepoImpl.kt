@@ -1,6 +1,6 @@
 package fit.asta.health.wallet.repo
 
-import fit.asta.health.common.utils.getResponseState
+import fit.asta.health.common.utils.getApiResponseState
 import fit.asta.health.wallet.remote.WalletApi
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +14,7 @@ class WalletRepoImpl
 ) : WalletRepo {
 
     override suspend fun getData(uid: String) = withContext(coroutineDispatcher) {
-        getResponseState { remoteApi.getData(uid) }
+        getApiResponseState { remoteApi.getData(uid) }
     }
 
 

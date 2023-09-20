@@ -104,6 +104,8 @@ private fun AddressScreens(addressViewModel: AddressViewModel, onBackPress: () -
                 is SearchSheetUiEvent.Search -> {
                     addressViewModel.search(it.query)
                 }
+
+                else -> {}
             }
         }
     )
@@ -128,6 +130,8 @@ private fun AddressScreens(addressViewModel: AddressViewModel, onBackPress: () -
                 is FillAddressUiEvent.SaveAddress -> {
                     addressViewModel.putAddress(it.myAddress)
                 }
+
+                else -> {}
             }
         }
     )
@@ -231,6 +235,8 @@ private fun AddressScreens(addressViewModel: AddressViewModel, onBackPress: () -
                         SavedAddressUiEvent.Back -> {
                             onBackPress()
                         }
+
+                        else -> {}
                     }
                 }
             )
@@ -270,6 +276,8 @@ private fun AddressScreens(addressViewModel: AddressViewModel, onBackPress: () -
                         is MapScreenUiEvent.UseCurrentLocation -> {
                             addressViewModel.checkPermissionAndUpdateCurrentAddress()
                         }
+
+                        else -> {}
                     }
                 }
             )

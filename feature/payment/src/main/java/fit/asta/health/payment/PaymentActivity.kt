@@ -30,7 +30,6 @@ import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.payment.remote.model.OrderRequest
 import fit.asta.health.payment.remote.model.OrderResponse
-import fit.asta.health.payment.remote.model.PaymentResponse
 import fit.asta.health.payment.vm.PaymentsViewModel
 import fit.asta.health.resources.drawables.R
 
@@ -69,7 +68,7 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
     @Composable
     fun ShowPaymentScreen(
         orderResponse: UiState<OrderResponse>,
-        paymentResponse: UiState<PaymentResponse>
+        paymentResponse: UiState<Unit>
     ) {
 
 
@@ -87,12 +86,12 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
                         try {
                             Checkout.preload(applicationContext)
                             val co = Checkout()
-                            co.setKeyID(orderResponse.data.data.apiKey)
+                            co.setKeyID(orderResponse.data.apiKey)
                             co.setImage(R.drawable.ic_launcher)
                             val payloadHelper = PayloadHelper(
                                 "INR",
                                 0,
-                                orderResponse.data.data.orderId
+                                orderResponse.data.orderId
                             ).apply {
                                 name = "Asta.fit"
                                 description = "Silver Plan 3 month subscription"
@@ -106,7 +105,7 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
                         } catch (e: Exception) {
                             Toast.makeText(
                                 this@PaymentActivity,
-                                "Error in payment: " + e.message,
+                                "ErrorMessage in payment: " + e.message,
                                 Toast.LENGTH_LONG
                             ).show()
                             e.printStackTrace()
@@ -124,13 +123,11 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
                     }
 
                     is UiState.Success -> {
-                        if (paymentResponse.data.status.code == 200) {
-                            finish()
-                            onSuccess()
-                        }
+                        finish()
+                        onSuccess()
                     }
 
-                    is UiState.Error -> {
+                    is UiState.ErrorMessage -> {
                         Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show()
                         finish()
                     }

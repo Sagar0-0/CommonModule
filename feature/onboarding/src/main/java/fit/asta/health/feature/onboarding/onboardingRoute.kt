@@ -1,5 +1,6 @@
 package fit.asta.health.feature.onboarding
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -25,6 +26,10 @@ fun NavController.navigateToOnboarding(navOptions: NavOptions? = null) {
 fun NavGraphBuilder.onboardingRoute() {
     composable(ONBOARDING_GRAPH_ROUTE) {
         val onboardingViewModel: OnboardingViewModel = hiltViewModel()
+        LaunchedEffect(Unit) {
+            onboardingViewModel.getData()
+        }
+
         val state by onboardingViewModel.state.collectAsStateWithLifecycle()
 
         OnboardingScreen(

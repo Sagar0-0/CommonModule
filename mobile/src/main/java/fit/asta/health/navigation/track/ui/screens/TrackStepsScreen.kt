@@ -185,11 +185,13 @@ fun TrackStepsScreenControl(
                 TrackSuccessScreen(stepsTrackData = stepsTrackData.data.stepsData)
             }
 
-            is UiState.Error -> {
+            is UiState.ErrorMessage -> {
                 AppErrorScreen(desc = stepsTrackData.resId.toStringFromResId()) {
                     setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
                 }
             }
+
+            else -> {}
         }
     }
 }

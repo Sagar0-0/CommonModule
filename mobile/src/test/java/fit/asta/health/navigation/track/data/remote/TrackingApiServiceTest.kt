@@ -98,7 +98,7 @@ class TrackingApiServiceTest {
             server.takeRequest()
 
             // Assertion to check if the response is correct or not
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -143,7 +143,7 @@ class TrackingApiServiceTest {
             server.takeRequest()
 
             // Assertion to check if the response is correct or not
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -188,7 +188,7 @@ class TrackingApiServiceTest {
             server.takeRequest()
 
             // Assertion to check if the response is correct or not
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -233,7 +233,7 @@ class TrackingApiServiceTest {
             server.takeRequest()
 
             // Assertion to check if the response is correct or not
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -278,7 +278,7 @@ class TrackingApiServiceTest {
             server.takeRequest()
 
             // Assertion to check if the response is correct or not
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -323,7 +323,7 @@ class TrackingApiServiceTest {
             server.takeRequest()
 
             // Assertion to check if the response is correct or not
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -368,7 +368,7 @@ class TrackingApiServiceTest {
             server.takeRequest()
 
             // Assertion to check if the response is correct or not
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -413,7 +413,7 @@ class TrackingApiServiceTest {
             server.takeRequest()
 
             // Assertion to check if the response is correct or not
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 

@@ -177,11 +177,13 @@ fun TrackSunlightScreenControl(
                 TrackSuccessScreen(sunlightTrackData.data.sunlightData)
             }
 
-            is UiState.Error -> {
+            is UiState.ErrorMessage -> {
                 AppErrorScreen(desc = sunlightTrackData.resId.toStringFromResId()) {
                     setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
                 }
             }
+
+            else -> {}
         }
     }
 }

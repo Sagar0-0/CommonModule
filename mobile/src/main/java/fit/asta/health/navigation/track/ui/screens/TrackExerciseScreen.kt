@@ -174,11 +174,13 @@ fun TrackExerciseScreenControl(
                 TrackSuccessScreen(exerciseTrackData = exerciseTrackData.data.exerciseData)
             }
 
-            is UiState.Error -> {
+            is UiState.ErrorMessage -> {
                 AppErrorScreen(desc = exerciseTrackData.resId.toStringFromResId()) {
                     setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
                 }
             }
+
+            else -> {}
         }
     }
 }
