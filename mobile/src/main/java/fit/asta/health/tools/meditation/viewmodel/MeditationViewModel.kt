@@ -279,7 +279,7 @@ class MeditationViewModel @Inject constructor(
                 }
 
                 is NetworkResult.Error -> {
-                    Log.d("subhash", "putMeditationData:Error ${result.message}")
+                    Log.d("subhash", "putMeditationData:ErrorMessage ${result.message}")
                 }
 
                 is NetworkResult.Loading -> {}
@@ -364,7 +364,7 @@ class MeditationViewModel @Inject constructor(
                     }
 
                     is NetworkResult.Error -> {
-                        Log.d("subhash", "music:Error ${result.message}")
+                        Log.d("subhash", "music:ErrorMessage ${result.message}")
                         _state.value = _state.value.copy(
                             selectedAlbum = list,
                             isLoading = false,

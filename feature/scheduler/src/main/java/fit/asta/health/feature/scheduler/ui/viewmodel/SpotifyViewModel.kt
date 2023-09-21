@@ -59,9 +59,9 @@ class SpotifyViewModel @Inject constructor(
                 getCurrentUserDetails(accessToken = accessToken)
             }
 
-            // If the Response is an Error or anything else
+            // If the Response is an ErrorMessage or anything else
             else -> {
-                _currentUserData.value = UiState.Error(resId = StringR.string.no_internet)
+                _currentUserData.value = UiState.ErrorMessage(resId = StringR.string.no_internet)
             }
         }
     }
@@ -101,7 +101,7 @@ class SpotifyViewModel @Inject constructor(
      * This function is used to set the state as failed when the Spotify App Remote is not connected
      */
     fun unableToGetSpotifyRemote() {
-        _currentUserData.value = UiState.Error(StringR.string.spotify_remote_not_found)
+        _currentUserData.value = UiState.ErrorMessage(StringR.string.spotify_remote_not_found)
     }
 
 

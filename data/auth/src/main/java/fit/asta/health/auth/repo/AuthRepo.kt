@@ -2,6 +2,7 @@ package fit.asta.health.auth.repo
 
 import com.google.firebase.auth.AuthCredential
 import fit.asta.health.auth.fcm.remote.TokenDTO
+import fit.asta.health.auth.fcm.remote.TokenResponse
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.datastore.UserPreferencesData
@@ -21,5 +22,5 @@ interface AuthRepo {
     suspend fun deleteAccount(): Flow<ResponseState<Boolean>>
     suspend fun setIsFcmTokenUploaded(value: Boolean)
     suspend fun resetReferralCode()
-    suspend fun uploadFcmToken(tokenDTO: TokenDTO): ResponseState<Boolean>
+    suspend fun uploadFcmToken(tokenDTO: TokenDTO): ResponseState<TokenResponse>
 }

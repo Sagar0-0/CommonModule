@@ -193,7 +193,7 @@ fun TestimonialForm(
                 if (showCustomDialogWithResult) {
                     when (events) {
                         is TestimonialSubmitState.Error -> {
-                            Log.d("validate", "Error -> ${events.error}")
+                            Log.d("validate", "ErrorMessage -> ${events.error}")
                         }
 
                         is TestimonialSubmitState.Loading -> LoadingAnimation()

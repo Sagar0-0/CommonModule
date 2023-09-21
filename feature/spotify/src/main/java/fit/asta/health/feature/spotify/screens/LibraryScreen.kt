@@ -18,8 +18,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.designsystem.components.generic.AppErrorScreen
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.data.spotify.model.library.albums.SpotifyLibraryAlbumModel
 import fit.asta.health.data.spotify.model.library.episodes.SpotifyLibraryEpisodesModel
 import fit.asta.health.data.spotify.model.library.following.SpotifyUserFollowingArtist
@@ -27,6 +25,8 @@ import fit.asta.health.data.spotify.model.library.playlist.SpotifyUserPlaylistsM
 import fit.asta.health.data.spotify.model.library.shows.SpotifyLibraryShowsModel
 import fit.asta.health.data.spotify.model.library.tracks.SpotifyLibraryTracksModel
 import fit.asta.health.data.spotify.model.saved.SpotifyLikedSongsResponse
+import fit.asta.health.designsystem.components.generic.AppErrorScreen
+import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.feature.spotify.components.MusicProfileOptionList
 import fit.asta.health.feature.spotify.components.MusicSmallImageRow
 import fit.asta.health.feature.spotify.events.SpotifyUiEvent
@@ -122,11 +122,13 @@ private fun LikedSongsUI(
             }
         }
 
-        is UiState.Error -> {
+        is UiState.ErrorMessage -> {
             AppErrorScreen(desc = likedSongs.resId.toStringFromResId()) {
                 setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserTracks)
             }
         }
+
+        else -> {}
     }
 }
 
@@ -185,11 +187,13 @@ private fun TracksUI(
             }
         }
 
-        is UiState.Error -> {
+        is UiState.ErrorMessage -> {
             AppErrorScreen(desc = currentUserTracks.resId.toStringFromResId()) {
                 setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserTracks)
             }
         }
+
+        else -> {}
     }
 }
 
@@ -242,11 +246,13 @@ private fun PlaylistUI(
             }
         }
 
-        is UiState.Error -> {
+        is UiState.ErrorMessage -> {
             AppErrorScreen(desc = currentUserPlaylist.resId.toStringFromResId()) {
                 setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserPlaylist)
             }
         }
+
+        else -> {}
     }
 }
 
@@ -297,11 +303,13 @@ private fun ArtistsUI(
             }
         }
 
-        is UiState.Error -> {
+        is UiState.ErrorMessage -> {
             AppErrorScreen(desc = currentUserArtists.resId.toStringFromResId()) {
                 setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserArtists)
             }
         }
+
+        else -> {}
     }
 }
 
@@ -353,11 +361,13 @@ private fun AlbumsUI(
             }
         }
 
-        is UiState.Error -> {
+        is UiState.ErrorMessage -> {
             AppErrorScreen(desc = currentUserAlbums.resId.toStringFromResId()) {
                 setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserAlbum)
             }
         }
+
+        else -> {}
     }
 }
 
@@ -409,11 +419,13 @@ private fun ShowUI(
             }
         }
 
-        is UiState.Error -> {
+        is UiState.ErrorMessage -> {
             AppErrorScreen(desc = currentUserShows.resId.toStringFromResId()) {
                 setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserShows)
             }
         }
+
+        else -> {}
     }
 }
 
@@ -464,10 +476,12 @@ private fun EpisodeUI(
             }
         }
 
-        is UiState.Error -> {
+        is UiState.ErrorMessage -> {
             AppErrorScreen(desc = currentUserEpisodes.resId.toStringFromResId()) {
                 setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserEpisode)
             }
         }
+
+        else -> {}
     }
 }

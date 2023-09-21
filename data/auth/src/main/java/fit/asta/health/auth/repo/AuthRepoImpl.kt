@@ -7,16 +7,17 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import fit.asta.health.auth.fcm.remote.TokenApi
-import fit.asta.health.resources.strings.R
 import fit.asta.health.auth.fcm.remote.TokenDTO
+import fit.asta.health.auth.fcm.remote.TokenResponse
 import fit.asta.health.auth.model.AuthDataMapper
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.auth.remote.AuthApi
 import fit.asta.health.common.utils.IODispatcher
-import fit.asta.health.common.utils.MyException
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.getApiResponseState
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.datastore.UserPreferencesData
+import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
@@ -24,7 +25,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-
 
 
 class AuthRepoImpl @Inject constructor(
@@ -48,15 +48,16 @@ class AuthRepoImpl @Inject constructor(
         prefManager.setScreenCode(1)//show auth screen
     }
 
-    override suspend fun uploadFcmToken(tokenDTO: TokenDTO): ResponseState<Boolean> {
-        return try {
-            setIsFcmTokenUploaded(true)
-            Log.d(TAG, "uploadFcmToken: Success")
-            ResponseState.Success(tokenApi.sendToken(tokenDTO).data.flag)
-        } catch (e: Exception) {
-            setIsFcmTokenUploaded(false)
-            Log.e(TAG, "uploadFcmToken: Error $e")
-            ResponseState.Error(e)
+    override suspend fun uploadFcmToken(tokenDTO: TokenDTO): ResponseState<TokenResponse> {
+        return getApiResponseState(
+            onSuccess = {
+                setIsFcmTokenUploaded(true)
+            },
+            onFailure = {
+                setIsFcmTokenUploaded(false)
+            }
+        ) {
+            tokenApi.sendToken(tokenDTO)
         }
     }
 
@@ -94,7 +95,7 @@ class AuthRepoImpl @Inject constructor(
                     if (it.isSuccessful) {
                         trySend(ResponseState.Success(dataMapper.mapToUser(it.result.user!!)))
                     } else {
-                        trySend(ResponseState.Error(it.exception ?: Exception()))
+                        trySend(ResponseState.ErrorMessage(R.string.sign_in_failed))
                     }
                 }
 
@@ -112,7 +113,7 @@ class AuthRepoImpl @Inject constructor(
                         Log.e(TAG, "linkWithCredential: FirebaseUser: $user")
                         trySend(ResponseState.Success(dataMapper.mapToUser(user!!)))
                     } else {
-                        trySend(ResponseState.Error(it.exception ?: Exception()))
+                        trySend(ResponseState.ErrorMessage(R.string.linking_the_credentials_failed))
                     }
                 }
             awaitClose {
@@ -125,7 +126,7 @@ class AuthRepoImpl @Inject constructor(
             firebaseAuth.signOut()
             ResponseState.Success(true)
         } catch (e: Exception) {
-            ResponseState.Error(e)
+            ResponseState.ErrorMessage(R.string.sign_out_failed)
         }
     }
 
@@ -137,8 +138,8 @@ class AuthRepoImpl @Inject constructor(
                 currentUser?.let {
                     try {
                         val res = authApi.deleteAccount(it.uid)
-                        val success = res.flag && res.status.code==200
-                        if(success){
+                        val success = res.flag && res.status.code == 200
+                        if (success) {
                             if (currentUser.providerData[1].providerId == "phone") {
                                 currentUser.delete()
                                     .addOnCompleteListener { deleteTask ->
@@ -146,16 +147,15 @@ class AuthRepoImpl @Inject constructor(
                                             trySend(ResponseState.Success(true))
                                         } else {
                                             trySend(
-                                                ResponseState.Error(
-                                                    deleteTask.exception ?: Exception()
-                                                )
+                                                ResponseState.ErrorMessage(R.string.delete_account_failed)
                                             )
                                             Log.d("DeleteAccount", deleteTask.exception?.message!!)
                                         }
                                     }
                             } else {
                                 val fireBaseContext = firebaseAuth.app.applicationContext
-                                val googleAccount = GoogleSignIn.getLastSignedInAccount(fireBaseContext)
+                                val googleAccount =
+                                    GoogleSignIn.getLastSignedInAccount(fireBaseContext)
                                 val credential: AuthCredential =
                                     GoogleAuthProvider.getCredential(googleAccount?.idToken, null)
                                 reAuthenticateUser(credential)
@@ -167,8 +167,8 @@ class AuthRepoImpl @Inject constructor(
                                                         trySend(ResponseState.Success(true))
                                                     } else {
                                                         trySend(
-                                                            ResponseState.Error(
-                                                                deleteTask.exception ?: Exception()
+                                                            ResponseState.ErrorMessage(
+                                                                R.string.delete_account_failed
                                                             )
                                                         )
                                                         Log.d(
@@ -179,18 +179,18 @@ class AuthRepoImpl @Inject constructor(
                                                 }
                                         } else { //Handle the exception
                                             trySend(
-                                                ResponseState.Error(
-                                                    reAuthTask.exception ?: Exception()
+                                                ResponseState.ErrorMessage(
+                                                    R.string.delete_account_failed
                                                 )
                                             )
                                         }
                                     }
                             }
-                        }else{
-                            trySend(ResponseState.Error(MyException(R.string.unable_to_delete)))
+                        } else {
+                            trySend(ResponseState.ErrorMessage(R.string.delete_account_failed))
                         }
                     } catch (e: Exception) {
-                        trySend(ResponseState.Error(e))
+                        trySend(ResponseState.ErrorMessage(R.string.delete_account_failed))
                     }
                 }
                 awaitClose { close() }

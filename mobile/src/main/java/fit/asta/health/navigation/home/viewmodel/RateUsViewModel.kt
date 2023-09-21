@@ -88,7 +88,7 @@ class RateUsViewModel
                     navigator.navigateTo(NavigatorPath.Feed)
                 }.toObservable<RatingEvent>()
                 .onErrorReturn {
-                    RatingEvent.Error(it)
+                    RatingEvent.ErrorMessage(it)
                 }
 
             val saveSessionNumber = it.ofType(RatingEvent.Session::class.java)
@@ -99,7 +99,7 @@ class RateUsViewModel
                     }
                 }.toObservable<RatingEvent>()
                 .onErrorReturn {
-                    RatingEvent.Error(it)
+                    RatingEvent.ErrorMessage(it)
                 }
 
             Observable.merge(inAppReviewCompleted, saveSessionNumber)
@@ -114,7 +114,7 @@ class RateUsViewModel
                 is RatingEvent.InAppReviewRequested -> {
                     previous.copy(reviewInfo = intent.reviewInfo)
                 }
-                is RatingEvent.Error -> {
+                is RatingEvent.ErrorMessage -> {
                     previous.copy(error = intent.throwable, reviewInfo = null)
                 }
                 else -> previous.copy(reviewInfo = null)

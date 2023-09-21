@@ -21,10 +21,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.designsystem.components.generic.AppErrorScreen
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.data.spotify.model.common.Album
 import fit.asta.health.data.spotify.model.common.Track
+import fit.asta.health.designsystem.components.generic.AppErrorScreen
+import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.feature.spotify.components.MusicLargeImageColumn
 import fit.asta.health.feature.spotify.events.SpotifyUiEvent
 import fit.asta.health.feature.spotify.navigation.SpotifyNavRoutes
@@ -115,8 +115,8 @@ fun FavouriteScreen(
                 }
             }
 
-            // Error State
-            is UiState.Error -> {
+            // ErrorMessage State
+            is UiState.ErrorMessage -> {
                 AppErrorScreen(
                     modifier = Modifier
                         .height(210.dp)
@@ -126,6 +126,8 @@ fun FavouriteScreen(
                     setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
                 }
             }
+
+            else -> {}
         }
 
         // Albums Text
@@ -184,8 +186,8 @@ fun FavouriteScreen(
                 }
             }
 
-            // Error State
-            is UiState.Error -> {
+            // ErrorMessage State
+            is UiState.ErrorMessage -> {
                 AppErrorScreen(
                     modifier = Modifier
                         .height(210.dp)
@@ -195,6 +197,8 @@ fun FavouriteScreen(
                     setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums)
                 }
             }
+
+            else -> {}
         }
     }
 }

@@ -13,9 +13,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
-import fit.asta.health.data.address.remote.modal.MyAddress
-import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.data.address.remote.modal.LocationResponse
+import fit.asta.health.data.address.remote.modal.MyAddress
+import fit.asta.health.data.address.remote.modal.PutAddressResponse
+import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.data.address.repo.AddressRepo
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -28,14 +29,14 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val TAG = "MAP"
+
 @HiltViewModel
 class AddressViewModel
 @Inject constructor(
     private val addressRepo: AddressRepo,
     @UID private val uId: String
 ) : ViewModel() {
-
-    private val addressTAG = "MAP"
 
     private val _isLocationEnabled = MutableStateFlow(false)
     val isLocationEnabled = _isLocationEnabled.asStateFlow()
@@ -46,7 +47,7 @@ class AddressViewModel
     private val _savedAddressListState = MutableStateFlow<UiState<List<MyAddress>>>(UiState.Idle)
     val savedAddressListState = _savedAddressListState.asStateFlow()
 
-    private val _putAddressState = MutableStateFlow<UiState<Boolean>>(UiState.Idle)
+    private val _putAddressState = MutableStateFlow<UiState<PutAddressResponse>>(UiState.Idle)
     val putAddressState = _putAddressState.asStateFlow()
 
     private val _deleteAddressState = MutableStateFlow<UiState<Boolean>>(UiState.Idle)
@@ -102,7 +103,7 @@ class AddressViewModel
     }
 
     fun checkPermissionAndUpdateCurrentAddress() {
-        Log.d(addressTAG, "updateCurrentLocationData Called")
+        Log.d(TAG, "updateCurrentLocationData Called")
         _currentAddressState.value = UiState.Loading
         viewModelScope.launch {
             addressRepo.checkPermissionAndGetLatLng().collect { latLng ->
@@ -114,7 +115,7 @@ class AddressViewModel
                     }
 
                     is LocationResponse.Error -> {
-                        _currentAddressState.value = UiState.Error(latLng.resId)
+                        _currentAddressState.value = UiState.ErrorMessage(latLng.resId)
                     }
 
                     LocationResponse.PermissionDenied -> {
@@ -124,6 +125,8 @@ class AddressViewModel
                     LocationResponse.ServiceDisabled -> {
                         _isLocationEnabled.value = false
                     }
+
+                    else -> {}
                 }
             }
         }

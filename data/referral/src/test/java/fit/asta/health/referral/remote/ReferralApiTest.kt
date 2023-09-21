@@ -2,6 +2,7 @@ package fit.asta.health.referral.remote
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.referral.remote.model.ReferralDataResponse
 import fit.asta.health.referral.repo.ReferralRepoImpl
@@ -38,7 +39,7 @@ class ReferralApiTest {
 
     @Test
     fun `getData, returns Success`() = runTest {
-        val dto = ReferralDataResponse()
+        val dto = Response(data = ReferralDataResponse())
         val json = gson.toJson(dto)!!
         val res = MockResponse()
         res.setBody(json)
@@ -60,6 +61,6 @@ class ReferralApiTest {
         val data = repo.getData("")
         server.takeRequest()
 
-        assert(data is ResponseState.Error)
+        assert(data is ResponseState.ErrorMessage)
     }
 }

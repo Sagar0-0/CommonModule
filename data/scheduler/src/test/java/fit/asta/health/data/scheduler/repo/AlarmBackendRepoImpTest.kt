@@ -77,7 +77,7 @@ class AlarmBackendRepoImpTest {
         } throws Exception()
         val res = repo.getTodayDataFromBackend("", "", "", 0f, 0f)
         coVerify { remoteApi.getTodayDataFromBackend("", "", "", 0f, 0f) }
-        assert(res is ResponseState.Error)
+        assert(res is ResponseState.ErrorMessage)
     }
 
     @Test
@@ -95,7 +95,7 @@ class AlarmBackendRepoImpTest {
         coEvery { remoteApi.getScheduleDataFromBackend(any()) } throws Exception()
         val res = repo.getScheduleDataFromBackend("")
         coVerify { remoteApi.getScheduleDataFromBackend("") }
-        assert(res is ResponseState.Error)
+        assert(res is ResponseState.ErrorMessage)
     }
 
     @Test
@@ -113,7 +113,7 @@ class AlarmBackendRepoImpTest {
         coEvery { remoteApi.getScheduleListDataFromBackend(any()) } throws Exception()
         val res = repo.getScheduleListDataFromBackend("")
         coVerify { remoteApi.getScheduleListDataFromBackend("") }
-        assert(res is ResponseState.Error)
+        assert(res is ResponseState.ErrorMessage)
     }
 
     @Test
@@ -131,7 +131,7 @@ class AlarmBackendRepoImpTest {
         coEvery { remoteApi.getTagListFromBackend(any()) } throws Exception()
         val res = repo.getTagListFromBackend("")
         coVerify { remoteApi.getTagListFromBackend("") }
-        assert(res is ResponseState.Error)
+        assert(res is ResponseState.ErrorMessage)
     }
 
     @Test
@@ -149,7 +149,7 @@ class AlarmBackendRepoImpTest {
         val alarmEntity = mockk<AlarmEntity>()
         val res = repo.updateScheduleDataOnBackend(alarmEntity)
         coVerify { remoteApi.updateScheduleDataOnBackend(alarmEntity) }
-        assert(res is ResponseState.Error)
+        assert(res is ResponseState.ErrorMessage)
     }
 
     @Test
@@ -167,7 +167,7 @@ class AlarmBackendRepoImpTest {
         coEvery { remoteApi.deleteScheduleDataFromBackend(any()) } throws Exception()
         val res = repo.deleteScheduleDataFromBackend("123")
         coVerify { remoteApi.deleteScheduleDataFromBackend("123") }
-        assert(res is ResponseState.Error)
+        assert(res is ResponseState.ErrorMessage)
     }
 
     @Test
@@ -183,7 +183,7 @@ class AlarmBackendRepoImpTest {
         coEvery { remoteApi.deleteTagFromBackend(any(), any()) } throws Exception()
         val res = repo.deleteTagFromBackend("", "")
         coVerify { remoteApi.deleteTagFromBackend("", "") }
-        assert(res is ResponseState.Error)
+        assert(res is ResponseState.ErrorMessage)
     }
 
     @Test
@@ -207,7 +207,7 @@ class AlarmBackendRepoImpTest {
         tag.name = "name"
         val res = repo.updateScheduleTag(tag)
         coVerify { remoteApi.updateScheduleTag(tag, any()) }
-        assert(res is ResponseState.Error)
+        assert(res is ResponseState.ErrorMessage)
     }
 
 

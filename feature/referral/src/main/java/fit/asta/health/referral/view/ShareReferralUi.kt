@@ -6,13 +6,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
@@ -72,7 +69,7 @@ fun ShareReferralUi(
                 }
             }
 
-            is UiState.Error -> {
+            is UiState.ErrorMessage -> {
                 AppErrorScreen(
                     modifier = Modifier.padding(paddingValues),
                     desc = "Something went wrong!",
@@ -90,13 +87,13 @@ fun ShareReferralUi(
 
                     item {
                         ReferralCard(
-                            referralDataState.data.data.referralCode.refCode,
+                            referralDataState.data.referralCode.refCode,
                             shareReferralCode
                         )
                     }
 
                     item {
-                        referralDataState.data.data.referredByUsersDetails?.let {
+                        referralDataState.data.referredByUsersDetails?.let {
                             ReferralCustomCard(title = "Referred by:") {
                                 ReferredUserItem(
                                     modifier = Modifier
@@ -108,14 +105,14 @@ fun ShareReferralUi(
                         }
                     }
 
-                    item{
-                        referralDataState.data.data.referredUsers?.let {
+                    item {
+                        referralDataState.data.referredUsers?.let {
                             ReferralCustomCard(title = "Referrals by you:") {
-                                it.forEach {user->
+                                it.forEach { user ->
                                     ReferredUserItem(
                                         modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(spacing.medium),
+                                            .fillMaxWidth()
+                                            .padding(spacing.medium),
                                         user = user
                                     )
                                 }
@@ -130,6 +127,7 @@ fun ShareReferralUi(
 
     }
 }
+
 @Composable
 fun ReferralCustomCard(title: String, content: @Composable () -> Unit) {
     Card(

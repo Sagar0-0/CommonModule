@@ -149,11 +149,13 @@ fun TodayContent(
                     }
                 }
 
-                is UiState.Error -> {
+                is UiState.ErrorMessage -> {
                     item {
-                        Surface(modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)) {
+                        Surface(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                        ) {
                             val cornerRadius = 16.dp
                             val gradientColor = listOf(Gradient1NoInternet, Gradient2NoInternet)
                             GradientButton(

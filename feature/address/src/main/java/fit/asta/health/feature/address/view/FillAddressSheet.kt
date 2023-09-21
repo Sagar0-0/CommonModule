@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.address.remote.modal.MyAddress
+import fit.asta.health.data.address.remote.modal.PutAddressResponse
 import fit.asta.health.designsystem.component.AstaValidatedTextField
 import fit.asta.health.designsystem.component.AstaValidatedTextFieldType
 import fit.asta.health.designsystem.theme.customSize
@@ -62,7 +63,7 @@ import kotlinx.coroutines.launch
 internal fun FillAddressSheet(
     modifier: Modifier = Modifier,
     myAddressItem: MyAddress,
-    putAddressState: UiState<Boolean>,
+    putAddressState: UiState<PutAddressResponse>,
     onUiEvent: (FillAddressUiEvent) -> Unit
 ) {
     val focusManager = LocalFocusManager.current

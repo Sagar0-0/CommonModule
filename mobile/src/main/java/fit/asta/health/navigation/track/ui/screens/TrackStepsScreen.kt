@@ -205,7 +205,7 @@ fun TrackStepsScreenControl(
                 TrackSuccessScreen(stepsTrackData = stepsTrackData.data.stepsData)
             }
 
-            is UiState.Error -> {
+            is UiState.ErrorMessage -> {
                 AppErrorScreen(
                     isInternetError = false,
                     desc = stepsTrackData.resId.toStringFromResId()
@@ -213,6 +213,8 @@ fun TrackStepsScreenControl(
                     setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
                 }
             }
+
+            else -> {}
         }
     }
 }

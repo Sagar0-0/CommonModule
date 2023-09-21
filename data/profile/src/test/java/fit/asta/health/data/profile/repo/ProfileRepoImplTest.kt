@@ -64,7 +64,7 @@ class ProfileRepoImplTest {
         coEvery { api.isUserProfileAvailable(any()) } throws Exception()
         val response = repo.isProfileAvailable("")
         coVerify { api.isUserProfileAvailable("") }
-        assert(response is ResponseState.Error)
+        assert(response is ResponseState.ErrorMessage)
     }
 
     @Test
@@ -80,7 +80,7 @@ class ProfileRepoImplTest {
         coEvery { api.createBasicProfile(any(), any()) } throws Exception()
         val response = repo.createBasicProfile(BasicProfileDTO())
         coVerify { api.createBasicProfile(BasicProfileDTO(), any()) }
-        assert(response is ResponseState.Error)
+        assert(response is ResponseState.ErrorMessage)
     }
 
     @Test
@@ -96,6 +96,6 @@ class ProfileRepoImplTest {
         coEvery { api.checkReferralCode(any()) } throws Exception()
         val response = repo.checkReferralCode("")
         coVerify { api.checkReferralCode("") }
-        assert(response is ResponseState.Error)
+        assert(response is ResponseState.ErrorMessage)
     }
 }

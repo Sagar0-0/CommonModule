@@ -204,7 +204,7 @@ fun BasicProfileScreen(
                         }
                     }
 
-                    is UiState.Error -> {
+                    is UiState.ErrorMessage -> {
                         LaunchedEffect(Unit) {
                             Toast.makeText(
                                 context,
@@ -273,7 +273,7 @@ fun BasicProfileScreen(
                         }
                     }
 
-                    is UiState.Error -> {
+                    is UiState.ErrorMessage -> {
                         LaunchedEffect(Unit) {
                             Toast.makeText(
                                 context,
@@ -287,6 +287,8 @@ fun BasicProfileScreen(
                     is UiState.Idle -> {
                         Text(text = "Create")
                     }
+
+                    else -> {}
                 }
             }
 

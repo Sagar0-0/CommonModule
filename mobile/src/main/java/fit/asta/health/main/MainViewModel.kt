@@ -129,7 +129,8 @@ class MainViewModel
                     }
 
                     is LocationResponse.Error -> {
-                        _currentAddressName.value = UiState.Error(R.string.error_fetching_location)
+                        _currentAddressName.value =
+                            UiState.ErrorMessage(R.string.error_fetching_location)
                     }
 
                     LocationResponse.ServiceDisabled -> {

@@ -11,7 +11,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.data.orders.remote.model.OrdersDTO
+import fit.asta.health.data.orders.remote.model.OrderData
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.feature.orders.vm.OrdersViewModel
@@ -32,7 +32,7 @@ fun NavGraphBuilder.ordersRoute(onBack: () -> Unit) {
 }
 
 @Composable
-fun OrdersScreen(ordersState: UiState<OrdersDTO>) {
+fun OrdersScreen(ordersState: UiState<List<OrderData>>) {
     when (ordersState) {
         is UiState.Loading -> {
             LoadingAnimation()
@@ -44,7 +44,7 @@ fun OrdersScreen(ordersState: UiState<OrdersDTO>) {
             }
         }
 
-        is UiState.Error -> {
+        is UiState.ErrorMessage -> {
             AppErrorScreen()
         }
 

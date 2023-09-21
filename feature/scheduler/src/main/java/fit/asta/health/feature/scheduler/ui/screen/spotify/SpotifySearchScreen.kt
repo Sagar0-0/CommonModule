@@ -159,12 +159,14 @@ fun SpotifySearchScreen(
                 }
             }
 
-            // Error State
-            is UiState.Error -> {
+            // ErrorMessage State
+            is UiState.ErrorMessage -> {
                 AppErrorScreen(desc = searchResult.resId.toStringFromResId()) {
                     setEvent(SpotifyUiEvent.NetworkIO.SetSearchQueriesAndVariables(userSearchInput.value))
                 }
             }
+
+            else -> {}
         }
     }
 }

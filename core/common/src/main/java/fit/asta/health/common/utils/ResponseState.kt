@@ -1,54 +1,89 @@
 package fit.asta.health.common.utils
 
+import android.os.Parcelable
 import android.util.Log
 import androidx.annotation.StringRes
 import com.google.gson.annotations.SerializedName
 import fit.asta.health.resources.strings.R
+import kotlinx.parcelize.Parcelize
+
+const val TAG = "RES"
+const val SUCCESS_STATUS_CODE = 200
 
 data class Response<T>(
-    val status: Status,
+    @SerializedName("status")
+    val status: Status = Status(),
+    @SerializedName("data")
     val data: T
 ) {
+    @Parcelize
     data class Status(
         @SerializedName("code")
         val code: Int = 0,
         @SerializedName("msg")
         val msg: String = ""
-    )
+    ) : Parcelable
 }
 
 sealed interface ResponseState<out T> {
-    data class Error(val exception: Throwable) : ResponseState<Nothing>
     data class Success<R>(val data: R) : ResponseState<R>
+    data class ErrorMessage(@StringRes val resId: Int) : ResponseState<Nothing>
+    data class ErrorRetry(@StringRes val resId: Int) : ResponseState<Nothing>
 
-    data class ErrorMessage(@StringRes val resId: Int) : ResponseState<Nothing>//TODO: WILL BE ERROR
 }
 
-suspend fun <T> getNewResponseState(request: suspend () -> Response<T>): ResponseState<T> {
+suspend fun <T> getApiResponseState(
+    onSuccess: suspend () -> Unit = {},
+    onFailure: suspend (Exception) -> Unit = {},
+    errorHandler: ApiErrorHandler = ApiErrorHandler(),
+    request: suspend () -> Response<T>
+): ResponseState<T> {
     return try {
         val response = request()
+        onSuccess()
+        Log.e(TAG, "getResponseState: ${response.status.code}: ${response.status.msg}")
         when (response.status.code) {
-            1 -> {
-                ResponseState.Success(response.data)
+            SUCCESS_STATUS_CODE -> {
+                if (response.data != null) {
+                    ResponseState.Success(response.data)
+                } else {//Rare case: Null Data and Success Status code
+                    ResponseState.ErrorMessage(R.string.null_data_error)
+                }
             }
 
-            else -> {
-                ResponseState.ErrorMessage(fetchErrorFromCode(response.status.code))
+            else -> {//TODO: Define all cases for ErrorMessage and ErrorRetry
+                ResponseState.ErrorMessage(errorHandler.fetchStatusMessage(response.status.code))
             }
         }
     } catch (e: Exception) {
-        Log.e("TAG", "getResponseState: $e")
-        ResponseState.ErrorMessage(fetchErrorFromException(e))
+        onFailure(e)
+        Log.e(TAG, "getResponseState Exception:  $e")
+        when (e) {
+            is MyException -> {
+                ResponseState.ErrorMessage(e.resId)
+            }
+
+            else -> {
+                ResponseState.ErrorMessage(errorHandler.fetchExceptionMessage(e.message ?: ""))
+            }
+        }
     }
 }
 
-//TODO: TO BE REMOVED
-suspend fun <T> getResponseState(request: suspend () -> T): ResponseState<T> {
+suspend fun <T> getResponseState(
+    onSuccess: suspend () -> Unit = {},
+    onFailure: suspend (Exception) -> Unit = {},
+    errorHandler: ApiErrorHandler = ApiErrorHandler(),
+    request: suspend () -> T
+): ResponseState<T> {
     return try {
-        ResponseState.Success(request())
+        val res = request()
+        onSuccess()
+        ResponseState.Success(res)
     } catch (e: Exception) {
-        Log.e("TAG", "getResponseState: $e")
-        ResponseState.ErrorMessage(e.toResIdFromException())
+        onFailure(e)
+        Log.e(TAG, "getResponseState: $e")
+        ResponseState.ErrorMessage(errorHandler.fetchExceptionMessage(e.message ?: ""))
     }
 }
 
@@ -59,100 +94,12 @@ fun <T> ResponseState<T>.toUiState(): UiState<T> {
             UiState.Success(this.data)
         }
 
-        is ResponseState.Error -> {
-            UiState.Error(this.exception.toResIdFromException())
-        }
-
         is ResponseState.ErrorMessage -> {
-            UiState.Error(this.resId)
-        }
-    }
-}
-
-private fun fetchErrorFromException(e: Throwable): Int {
-    return when (e) {
-        is MyException -> {
-            e.resId
+            UiState.ErrorMessage(this.resId)
         }
 
-        else -> {
-            val errors = listOf(400, 500, 304, 404, 413)
-            when (errors.find { it.toString() in e.message!! }) {
-                400 -> {
-                    R.string.bad_request
-                }
-
-                500 -> {
-                    R.string.server_error
-                }
-
-                304 -> {
-                    R.string.failed_to_update
-                }
-
-                404 -> {
-                    R.string.no_records_found
-                }
-
-                413 -> {
-                    R.string.file_not_found
-                }
-
-                else -> {
-                    R.string.unknown_error
-                }
-            }
-        }
-    }
-}
-
-private fun fetchErrorFromCode(code: Int): Int {
-    return when (code) {
-        101 -> {
-            R.string.refer_code_not_exist
-        }
-
-        102 -> {
-            R.string.own_refer_code_error
-        }
-
-        103 -> {
-            R.string.already_referred_error
-        }
-
-        104 -> {
-            R.string.referring_my_referred
-        }
-
-        105 -> {
-            R.string.refund_extended_error
-        }
-
-        else -> {
-            R.string.unknown_error
-        }
-    }
-}
-
-//TODO: TO BE REMOVED
-fun Throwable.toResIdFromException(): Int {
-    return when (this) {
-        is MyException -> {
-            this.resId
-        }
-
-        else -> {
-            if (this.message!!.contains("400")) {
-                R.string.bad_request
-            } else if (this.message!!.contains("500")) {
-                R.string.server_error
-            } else if (this.message!!.contains("304")) {
-                R.string.failed_to_update
-            } else if (this.message!!.contains("404")) {
-                R.string.no_records_found
-            } else {
-                R.string.unknown_error
-            }
+        is ResponseState.ErrorRetry -> {
+            UiState.ErrorRetry(this.resId)
         }
     }
 }

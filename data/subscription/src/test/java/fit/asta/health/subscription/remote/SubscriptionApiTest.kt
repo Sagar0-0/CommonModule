@@ -2,6 +2,7 @@ package fit.asta.health.subscription.remote
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.subscription.remote.model.SubscriptionResponse
 import fit.asta.health.subscription.repo.SubscriptionRepoImpl
@@ -38,7 +39,7 @@ class SubscriptionApiTest {
 
     @Test
     fun `getData, returns Success`() = runTest {
-        val dto = SubscriptionResponse()
+        val dto = Response(data = SubscriptionResponse())
         val json = gson.toJson(dto)!!
         val res = MockResponse()
         res.setBody(json)
@@ -60,6 +61,6 @@ class SubscriptionApiTest {
         val data = repo.getData("", "")
         server.takeRequest()
 
-        assert(data is ResponseState.Error)
+        assert(data is ResponseState.ErrorMessage)
     }
 }

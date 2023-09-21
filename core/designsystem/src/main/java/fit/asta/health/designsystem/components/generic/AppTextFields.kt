@@ -68,7 +68,7 @@ fun AppTextField(
         isError = isError,
         trailingIcon = {
             if (isError) Icon(
-                imageVector = Icons.Filled.Error, contentDescription = "Show Error Icon"
+                imageVector = Icons.Filled.Error, contentDescription = "Show ErrorMessage Icon"
             )
         },
         keyboardOptions = KeyboardOptions(

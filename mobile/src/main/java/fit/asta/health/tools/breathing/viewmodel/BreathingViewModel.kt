@@ -293,7 +293,7 @@ class BreathingViewModel @Inject constructor(
 //
 //                }
 //
-//                is NetworkResult.Error -> {}
+//                is NetworkResult.ErrorMessage -> {}
 //            }
 //        }
 //    }

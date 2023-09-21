@@ -2,8 +2,9 @@ package fit.asta.health.data.onboarding.remote
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.data.onboarding.remote.modal.OnboardingDTO
+import fit.asta.health.data.onboarding.model.OnboardingData
 import fit.asta.health.data.onboarding.repo.OnboardingRepoImpl
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.datastore.UserPreferencesData
@@ -42,7 +43,7 @@ class OnboardingApiTest {
 
     @Test
     fun `getData, returns Success`() = runTest {
-        val dto = OnboardingDTO(status = OnboardingDTO.Status(200, ""))
+        val dto: Response<List<OnboardingData>> = mockk()
         val json = gson.toJson(dto)!!
         val res = MockResponse()
         res.setBody(json)
@@ -66,6 +67,6 @@ class OnboardingApiTest {
         val data = onboardingRepoImpl.getData()
         server.takeRequest()
 
-        assert(data is ResponseState.Error)
+        assert(data is ResponseState.ErrorMessage)
     }
 }

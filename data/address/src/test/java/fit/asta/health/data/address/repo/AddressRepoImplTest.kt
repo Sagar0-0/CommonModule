@@ -8,11 +8,9 @@ import fit.asta.health.common.utils.ResourcesProvider
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.data.address.remote.AddressApi
 import fit.asta.health.data.address.remote.SearchLocationApi
-import fit.asta.health.data.address.remote.modal.AddressesDTO
 import fit.asta.health.data.address.remote.modal.DeleteAddressResponse
 import fit.asta.health.data.address.remote.modal.LocationResponse
 import fit.asta.health.data.address.remote.modal.MyAddress
-import fit.asta.health.data.address.remote.modal.PutAddressResponse
 import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.data.address.utils.LocationResourceProvider
 import fit.asta.health.datastore.PrefManager
@@ -121,7 +119,7 @@ class AddressRepoImplTest {
         val res = repo.getAddressDetails(LatLng(0.0, 0.0))
         res.test {
             val item = awaitItem()
-            assert(item is ResponseState.Error)
+            assert(item is ResponseState.ErrorMessage)
         }
     }
 
@@ -183,13 +181,13 @@ class AddressRepoImplTest {
         coEvery { addressApi.selectCurrent(any(), any()) } throws Exception()
         val res = repo.selectAddress("", "")
         coVerify { addressApi.selectCurrent("", "") }
-        assert(res is ResponseState.Error)
+        assert(res is ResponseState.ErrorMessage)
     }
 
     @Test
     fun `putAddress, returns Success`() = runTest {
         val myAddress = MyAddress()
-        coEvery { addressApi.putAddress(any()) } returns PutAddressResponse()
+        coEvery { addressApi.putAddress(any()) } returns mockk()
         val res = repo.putAddress(myAddress)
         coVerify { addressApi.putAddress(myAddress) }
         assert(res is ResponseState.Success)
@@ -201,7 +199,7 @@ class AddressRepoImplTest {
         coEvery { addressApi.putAddress(any()) } throws Exception()
         val res = repo.putAddress(myAddress)
         coVerify { addressApi.putAddress(myAddress) }
-        assert(res is ResponseState.Error)
+        assert(res is ResponseState.ErrorMessage)
     }
 
     @Test
@@ -217,12 +215,12 @@ class AddressRepoImplTest {
         coEvery { addressApi.deleteAddress(any(), any()) } throws Exception()
         val res = repo.deleteAddress("", "")
         coVerify { addressApi.deleteAddress("", "") }
-        assert(res is ResponseState.Error)
+        assert(res is ResponseState.ErrorMessage)
     }
 
     @Test
     fun `getSavedAddress, returns Success`() = runTest {
-        coEvery { addressApi.getAddresses(any()) } returns AddressesDTO()
+        coEvery { addressApi.getAddresses(any()) } returns mockk()
         val res = repo.getSavedAddresses("")
         coVerify { addressApi.getAddresses("") }
         assert(res is ResponseState.Success)
@@ -233,6 +231,6 @@ class AddressRepoImplTest {
         coEvery { addressApi.getAddresses(any()) } throws Exception()
         val res = repo.getSavedAddresses("")
         coVerify { addressApi.getAddresses("") }
-        assert(res is ResponseState.Error)
+        assert(res is ResponseState.ErrorMessage)
     }
 }

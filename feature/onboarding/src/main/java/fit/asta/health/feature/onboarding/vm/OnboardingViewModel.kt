@@ -21,10 +21,6 @@ class OnboardingViewModel
     private val _mutableState = MutableStateFlow<UiState<List<OnboardingData>>>(UiState.Idle)
     val state = _mutableState.asStateFlow()
 
-    init {
-        getData()
-    }
-
     fun getData() {
         _mutableState.value = UiState.Loading
         viewModelScope.launch {
