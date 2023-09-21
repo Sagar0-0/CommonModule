@@ -196,7 +196,7 @@ fun TrackWaterScreenControl(
                 TrackSuccessScreen(waterTrackData.data.waterData)
             }
 
-            is UiState.Error -> {
+            is UiState.ErrorMessage -> {
                 AppErrorScreen(
                     isInternetError = false,
                     desc = waterTrackData.resId.toStringFromResId()
@@ -204,6 +204,8 @@ fun TrackWaterScreenControl(
                     setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
                 }
             }
+
+            else -> {}
         }
     }
 }

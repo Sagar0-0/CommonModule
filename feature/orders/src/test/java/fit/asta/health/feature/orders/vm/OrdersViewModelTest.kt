@@ -4,7 +4,6 @@ import app.cash.turbine.test
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.core.test.BaseTest
-import fit.asta.health.data.orders.remote.model.OrdersDTO
 import fit.asta.health.data.orders.repo.OrdersRepoImpl
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
@@ -41,20 +40,20 @@ class OrdersViewModelTest : BaseTest() {
 
     @Test
     fun `getOrders with error, return error`() = runTest {
-        coEvery { repo.getOrders(any()) } returns ResponseState.Error(Exception())
+        coEvery { repo.getOrders(any()) } returns ResponseState.ErrorMessage(mockk())
 
         viewModel.getOrders()
 
         coVerify { repo.getOrders("") }
 
         viewModel.ordersState.test {
-            assert(awaitItem() is UiState.Error)
+            assert(awaitItem() is UiState.ErrorMessage)
         }
     }
 
     @Test
     fun `getOrders no error, return success`() = runTest {
-        coEvery { repo.getOrders(any()) } returns ResponseState.Success(OrdersDTO())
+        coEvery { repo.getOrders(any()) } returns ResponseState.Success(mockk())
 
         viewModel.getOrders()
 

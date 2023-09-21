@@ -70,7 +70,7 @@ class AuthApiTest {
         val data = repo.deleteAccount()
         server.takeRequest()
         data.test {
-            assert(awaitItem() is ResponseState.Error)
+            assert(awaitItem() is ResponseState.ErrorMessage)
         }
     }
 }

@@ -41,7 +41,7 @@ fun ValidatedTextField(
             isError = showError,
             trailingIcon = {
                 if (showError) Icon(
-                    imageVector = Icons.Filled.Error, contentDescription = "Error"
+                    imageVector = Icons.Filled.Error, contentDescription = "ErrorMessage"
                 )
             },
             keyboardOptions = keyboardOptions,

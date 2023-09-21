@@ -2,7 +2,10 @@ package fit.asta.health.data.feedback.remote
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO
+import fit.asta.health.data.feedback.remote.modal.PostFeedbackDTO
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
@@ -36,7 +39,7 @@ class FeedbackApiTest {
 
     @Test
     fun `getFeedbackQuestions, returns Success`() = runTest {
-        val dto = fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO()
+        val dto = Response(data = FeedbackQuesDTO())
         val json = gson.toJson(dto)!!
         val res = MockResponse()
         res.setBody(json)
@@ -58,12 +61,12 @@ class FeedbackApiTest {
         val data = repo.getFeedbackQuestions("", "")
         server.takeRequest()
 
-        assert(data is ResponseState.Error)
+        assert(data is ResponseState.ErrorMessage)
     }
 
     @Test
     fun `postUserFeedback, returns Success`() = runTest {
-        val resDto = fit.asta.health.data.feedback.remote.modal.PostFeedbackDTO()
+        val resDto = Response(data = PostFeedbackDTO())
         val json = gson.toJson(resDto)!!
         val res = MockResponse()
         res.setBody(json)
@@ -88,6 +91,6 @@ class FeedbackApiTest {
         val data = repo.postUserFeedback(dto)
         server.takeRequest()
 
-        assert(data is ResponseState.Error)
+        assert(data is ResponseState.ErrorMessage)
     }
 }

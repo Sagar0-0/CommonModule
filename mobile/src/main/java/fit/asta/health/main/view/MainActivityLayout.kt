@@ -185,8 +185,12 @@ private fun NewMainTopBarActions(
                         currentAddressState.data
                     }
 
-                    is UiState.Error -> {
+                    is UiState.ErrorMessage -> {
                         currentAddressState.resId.toStringFromResId()
+                    }
+
+                    else -> {
+                        ""
                     }
                 },
                 textAlign = TextAlign.Center,

@@ -45,7 +45,7 @@ fun OnboardingScreen(
             }
         }
 
-        is UiState.Error -> {
+        is UiState.ErrorMessage -> {
             AppErrorScreen(
                 onTryAgain = onReload,
                 desc = state.resId.toStringFromResId()

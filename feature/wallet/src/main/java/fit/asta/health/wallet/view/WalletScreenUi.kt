@@ -68,7 +68,7 @@ fun WalletScreenUi(
                 }
             }
 
-            is UiState.Error -> {
+            is UiState.ErrorMessage -> {
                 AppErrorScreen(
                     modifier = Modifier.padding(paddingValues),
                     desc = walletDataState.resId.toStringFromResId(),
@@ -85,11 +85,11 @@ fun WalletScreenUi(
                         .padding(paddingValues),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    WalletBalance(walletDataState.data.data.walletData.credits) {
+                    WalletBalance(walletDataState.data.walletData.credits) {
 
                     }
 
-                    val transactionHistory = walletDataState.data.data.transactionData
+                    val transactionHistory = walletDataState.data.transactionData
                     if (!transactionHistory.isNullOrEmpty()) {
                         Spacer(
                             modifier = Modifier
@@ -153,7 +153,7 @@ fun WalletScreenUi(
 }
 
 @Composable
-fun TransactionHistoryItem(item: WalletResponse.Data.TransactionData) {
+fun TransactionHistoryItem(item: WalletResponse.TransactionData) {
     val received = (item.creditType == 1 || item.creditType == 4)
     Row(
         modifier = Modifier

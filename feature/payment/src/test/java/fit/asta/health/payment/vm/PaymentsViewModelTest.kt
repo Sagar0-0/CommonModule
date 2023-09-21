@@ -8,12 +8,12 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.core.test.BaseTest
 import fit.asta.health.payment.remote.model.OrderRequest
 import fit.asta.health.payment.remote.model.OrderResponse
-import fit.asta.health.payment.remote.model.PaymentResponse
 import fit.asta.health.payment.repo.PaymentsRepo
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.mockk
 import io.mockk.spyk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.AfterEach
@@ -51,7 +51,7 @@ class PaymentsViewModelTest : BaseTest() {
 
     @Test
     fun `createOrder with error, return error`() = runTest {
-        coEvery { repo.createOrder(any()) } returns ResponseState.Error(Exception())
+        coEvery { repo.createOrder(any()) } returns ResponseState.ErrorMessage(mockk())
 
         val request = OrderRequest(country = "india", type = 1)
         viewModel.createOrder(request)
@@ -59,7 +59,7 @@ class PaymentsViewModelTest : BaseTest() {
         coVerify { repo.createOrder(request) }
 
         viewModel.orderResponseState.test {
-            assert(awaitItem() is UiState.Error)
+            assert(awaitItem() is UiState.ErrorMessage)
         }
     }
 
@@ -83,21 +83,21 @@ class PaymentsViewModelTest : BaseTest() {
                 any(),
                 any()
             )
-        } returns ResponseState.Error(Exception())
+        } returns ResponseState.ErrorMessage(mockk())
 
         viewModel.verifyAndUpdateProfile("")
 
         coVerify { repo.verifyAndUpdateProfile("", "") }
 
         viewModel.paymentResponseState.test {
-            assert(awaitItem() is UiState.Error)
+            assert(awaitItem() is UiState.ErrorMessage)
         }
     }
 
     @Test
     fun `verifyAndUpdateProfile no error, return success`() = runTest {
         coEvery { repo.verifyAndUpdateProfile(any(), any()) } returns ResponseState.Success(
-            PaymentResponse()
+            mockk()
         )
 
         viewModel.verifyAndUpdateProfile("")

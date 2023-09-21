@@ -7,29 +7,29 @@ import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
-import fit.asta.health.data.spotify.repo.MusicRepository
-import fit.asta.health.data.spotify.repo.SpotifyRepo
 import fit.asta.health.data.spotify.model.common.Album
+import fit.asta.health.data.spotify.model.common.Track
 import fit.asta.health.data.spotify.model.library.albums.SpotifyLibraryAlbumModel
 import fit.asta.health.data.spotify.model.library.episodes.SpotifyLibraryEpisodesModel
 import fit.asta.health.data.spotify.model.library.following.SpotifyUserFollowingArtist
+import fit.asta.health.data.spotify.model.library.playlist.SpotifyUserPlaylistsModel
 import fit.asta.health.data.spotify.model.library.shows.SpotifyLibraryShowsModel
 import fit.asta.health.data.spotify.model.library.tracks.SpotifyLibraryTracksModel
-import fit.asta.health.data.spotify.model.library.playlist.SpotifyUserPlaylistsModel
-import fit.asta.health.data.spotify.model.search.SpotifySearchModel
-import fit.asta.health.data.spotify.model.search.ArtistList
-import fit.asta.health.data.spotify.model.search.TrackList
-import fit.asta.health.data.spotify.model.common.Track
 import fit.asta.health.data.spotify.model.me.SpotifyMeModel
 import fit.asta.health.data.spotify.model.recently.SpotifyUserRecentlyPlayedModel
 import fit.asta.health.data.spotify.model.recommendations.SpotifyRecommendationModel
 import fit.asta.health.data.spotify.model.saved.SpotifyLikedSongsResponse
+import fit.asta.health.data.spotify.model.search.ArtistList
+import fit.asta.health.data.spotify.model.search.SpotifySearchModel
+import fit.asta.health.data.spotify.model.search.TrackList
+import fit.asta.health.data.spotify.repo.MusicRepository
+import fit.asta.health.data.spotify.repo.SpotifyRepo
 import fit.asta.health.feature.spotify.events.SpotifyUiEvent
+import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import fit.asta.health.resources.strings.R
 
 @HiltViewModel
 class SpotifyViewModelX @Inject constructor(
@@ -62,9 +62,9 @@ class SpotifyViewModelX @Inject constructor(
                 getCurrentUserDetails(accessToken = accessToken)
             }
 
-            // If the Response is an Error or anything else
+            // If the Response is an ErrorMessage or anything else
             else -> {
-                _currentUserData.value = UiState.Error(resId = R.string.no_internet)
+                _currentUserData.value = UiState.ErrorMessage(resId = R.string.no_internet)
             }
         }
     }
@@ -105,7 +105,7 @@ class SpotifyViewModelX @Inject constructor(
      * This function is used to set the state as failed when the Spotify App Remote is not connected
      */
     fun unableToGetSpotifyRemote() {
-        _currentUserData.value = UiState.Error(R.string.spotify_remote_not_found)
+        _currentUserData.value = UiState.ErrorMessage(R.string.spotify_remote_not_found)
     }
 
 

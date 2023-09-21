@@ -9,7 +9,6 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.payment.remote.model.OrderRequest
 import fit.asta.health.payment.remote.model.OrderResponse
-import fit.asta.health.payment.remote.model.PaymentResponse
 import fit.asta.health.payment.repo.PaymentsRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,7 +30,7 @@ class PaymentsViewModel
     val orderResponseState = _orderResponseState.asStateFlow()
 
     private val _paymentResponseState =
-        MutableStateFlow<UiState<PaymentResponse>>(UiState.Idle)
+        MutableStateFlow<UiState<Unit>>(UiState.Idle)
     val paymentResponseState = _paymentResponseState.asStateFlow()
 
 

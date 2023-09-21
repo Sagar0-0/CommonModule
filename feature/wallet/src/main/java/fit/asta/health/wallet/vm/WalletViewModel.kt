@@ -23,10 +23,6 @@ class WalletViewModel
     private val _state = MutableStateFlow<UiState<WalletResponse>>(UiState.Loading)
     val state = _state.asStateFlow()
 
-    init {
-        getData()
-    }
-
     fun getData() {
         _state.value = UiState.Loading
         viewModelScope.launch {

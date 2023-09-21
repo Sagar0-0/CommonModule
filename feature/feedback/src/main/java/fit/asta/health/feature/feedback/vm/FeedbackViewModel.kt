@@ -46,8 +46,8 @@ class FeedbackViewModel
         viewModelScope.launch {
             _feedbackQuestions.value = feedbackRepo.getFeedbackQuestions(uId, feature).toUiState()
             if (_feedbackQuestions.value is UiState.Success) {
-                _qnrId = (_feedbackQuestions.value as UiState.Success<FeedbackQuesDTO>).data.data.id
-                _fid = (_feedbackQuestions.value as UiState.Success<FeedbackQuesDTO>).data.data.fid
+                _qnrId = (_feedbackQuestions.value as UiState.Success<FeedbackQuesDTO>).data.id
+                _fid = (_feedbackQuestions.value as UiState.Success<FeedbackQuesDTO>).data.fid
             }
         }
     }

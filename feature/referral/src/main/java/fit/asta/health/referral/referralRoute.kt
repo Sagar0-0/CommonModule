@@ -1,5 +1,7 @@
 package fit.asta.health.referral
 
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -24,11 +26,13 @@ fun NavGraphBuilder.referralRoute(onBackPress: () -> Unit, shareReferralCode: (S
     ) {
         composable(ReferralDestination.Share.route) {
             val referralViewModel: ReferralViewModel = hiltViewModel()
-
-            val state = referralViewModel.state.collectAsStateWithLifecycle()
+            LaunchedEffect(Unit) {
+                referralViewModel.getData()
+            }
+            val state by referralViewModel.state.collectAsStateWithLifecycle()
 
             ShareReferralUi(
-                referralDataState = state.value,
+                referralDataState = state,
                 shareReferralCode = shareReferralCode,
                 onBackPress = onBackPress,
                 onTryAgain = referralViewModel::getData

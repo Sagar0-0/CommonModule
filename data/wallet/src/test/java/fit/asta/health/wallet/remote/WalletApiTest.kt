@@ -2,6 +2,7 @@ package fit.asta.health.wallet.remote
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.wallet.remote.model.WalletResponse
 import fit.asta.health.wallet.repo.WalletRepoImpl
@@ -38,7 +39,7 @@ class WalletApiTest {
 
     @Test
     fun `getData, returns Success`() = runTest {
-        val dto = WalletResponse()
+        val dto = Response(data = WalletResponse())
         val json = gson.toJson(dto)!!
         val res = MockResponse()
         res.setBody(json)
@@ -60,6 +61,6 @@ class WalletApiTest {
         val data = repo.getData("")
         server.takeRequest()
 
-        assert(data is ResponseState.Error)
+        assert(data is ResponseState.ErrorMessage)
     }
 }

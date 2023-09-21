@@ -9,6 +9,8 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.core.test.BaseTest
 import fit.asta.health.feature.auth.vm.AuthViewModel
 import io.mockk.clearAllMocks
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
@@ -33,7 +35,8 @@ class AuthViewModelTest : BaseTest() {
         super.beforeEach()
         viewModel = spyk(
             AuthViewModel(
-                repo
+                repo,
+                mockk()
             )
         )
     }
@@ -50,7 +53,7 @@ class AuthViewModelTest : BaseTest() {
         val user = User()
         every { repo.getUser() } returns user
 
-        viewModel = AuthViewModel(repo)
+        viewModel = AuthViewModel(repo, mockk())
         assertEquals(viewModel.currentUser, user)
         verify { repo.getUser() }
     }
@@ -58,7 +61,7 @@ class AuthViewModelTest : BaseTest() {
     @Test
     fun `signInWithGoogleCredentials, returns Success`() = runTest {
         val cred: AuthCredential = mockk()
-        val res = MutableStateFlow(ResponseState.Success(true))
+        val res = MutableStateFlow(ResponseState.Success(User()))
         every { repo.signInWithCredential(any()) } returns res
         viewModel.signInWithGoogleCredentials(cred)
         verify { repo.signInWithCredential(cred) }
@@ -71,13 +74,13 @@ class AuthViewModelTest : BaseTest() {
     @Test
     fun `signInWithGoogleCredentials, returns Error`() = runTest {
         val cred: AuthCredential = mockk()
-        val res = MutableStateFlow(ResponseState.Error(Exception()))
+        val res = MutableStateFlow(ResponseState.ErrorMessage(mockk()))
         every { repo.signInWithCredential(any()) } returns res
         viewModel.signInWithGoogleCredentials(cred)
         verify { repo.signInWithCredential(cred) }
         viewModel.loginState.test {
             val item = awaitItem()
-            assert(item is UiState.Error)
+            assert(item is UiState.ErrorMessage)
         }
     }
 
@@ -94,21 +97,21 @@ class AuthViewModelTest : BaseTest() {
 
     @Test
     fun `logout, returns Error`() = runTest {
-        every { repo.signOut() } returns ResponseState.Error(Exception())
+        every { repo.signOut() } returns ResponseState.ErrorMessage(mockk())
         viewModel.logout()
         verify { repo.signOut() }
         viewModel.logoutState.test {
             val item = awaitItem()
-            assert(item is UiState.Error)
+            assert(item is UiState.ErrorMessage)
         }
     }
 
     @Test
     fun `delete, returns Success`() = runTest {
         val res = MutableStateFlow(ResponseState.Success(true))
-        every { repo.deleteAccount() } returns res
+        coEvery { repo.deleteAccount() } returns res
         viewModel.deleteAccount()
-        verify { repo.deleteAccount() }
+        coVerify { repo.deleteAccount() }
         viewModel.deleteState.test {
             val item = awaitItem()
             assert(item is UiState.Success)
@@ -117,13 +120,13 @@ class AuthViewModelTest : BaseTest() {
 
     @Test
     fun `delete, returns Error`() = runTest {
-        val res = MutableStateFlow(ResponseState.Error(Exception()))
-        every { repo.deleteAccount() } returns res
+        val res = MutableStateFlow(ResponseState.ErrorMessage(mockk()))
+        coEvery { repo.deleteAccount() } returns res
         viewModel.deleteAccount()
-        verify { repo.deleteAccount() }
+        coVerify { repo.deleteAccount() }
         viewModel.deleteState.test {
             val item = awaitItem()
-            assert(item is UiState.Error)
+            assert(item is UiState.ErrorMessage)
         }
     }
 

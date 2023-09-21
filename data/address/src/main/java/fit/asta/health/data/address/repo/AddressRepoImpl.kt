@@ -12,14 +12,15 @@ import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.Task
 import fit.asta.health.common.utils.IODispatcher
-import fit.asta.health.common.utils.MyException
 import fit.asta.health.common.utils.ResourcesProvider
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.getApiResponseState
 import fit.asta.health.common.utils.getResponseState
 import fit.asta.health.data.address.remote.AddressApi
 import fit.asta.health.data.address.remote.SearchLocationApi
 import fit.asta.health.data.address.remote.modal.LocationResponse
 import fit.asta.health.data.address.remote.modal.MyAddress
+import fit.asta.health.data.address.remote.modal.PutAddressResponse
 import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.data.address.utils.LocationResourceProvider
 import fit.asta.health.datastore.PrefManager
@@ -124,11 +125,11 @@ class AddressRepoImpl @Inject constructor(
                         if (!addresses.isNullOrEmpty()) {
                             trySend(ResponseState.Success(addresses[0]))
                         } else {
-                            trySend(ResponseState.Error(MyException(string.unable_to_fetch_location)))
+                            trySend(ResponseState.ErrorMessage(string.unable_to_fetch_location))
                         }
                     }
                 } catch (e: Exception) {
-                    trySend(ResponseState.Error(MyException(string.unable_to_fetch_location)))
+                    trySend(ResponseState.ErrorMessage(string.unable_to_fetch_location))
                 }
 
                 awaitClose { close() }
@@ -170,13 +171,13 @@ class AddressRepoImpl @Inject constructor(
     }
 
     override suspend fun getSavedAddresses(uid: String): ResponseState<List<MyAddress>> {
-        return getResponseState {
-            addressApi.getAddresses(uid).data
+        return getApiResponseState {
+            addressApi.getAddresses(uid)
         }
     }
 
-    override suspend fun putAddress(myAddress: MyAddress): ResponseState<Boolean> {
-        return getResponseState { addressApi.putAddress(myAddress).data.flag }
+    override suspend fun putAddress(myAddress: MyAddress): ResponseState<PutAddressResponse> {
+        return getApiResponseState { addressApi.putAddress(myAddress) }
     }
 
     override suspend fun deleteAddress(

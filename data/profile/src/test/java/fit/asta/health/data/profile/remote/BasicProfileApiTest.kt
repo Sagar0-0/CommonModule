@@ -64,7 +64,7 @@ class BasicProfileApiTest {
         val data = repo.checkReferralCode("")
         server.takeRequest()
 
-        assert(data is ResponseState.Error)
+        assert(data is ResponseState.ErrorMessage)
     }
 
     @Test
@@ -105,6 +105,6 @@ class BasicProfileApiTest {
         val data = repo.createBasicProfile(BasicProfileDTO())
         server.takeRequest()
 
-        assert(data is ResponseState.Error)
+        assert(data is ResponseState.ErrorMessage)
     }
 }

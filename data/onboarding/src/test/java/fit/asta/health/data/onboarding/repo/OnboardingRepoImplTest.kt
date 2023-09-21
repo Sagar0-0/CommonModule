@@ -2,12 +2,12 @@ package fit.asta.health.data.onboarding.repo
 
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.data.onboarding.remote.OnboardingApi
-import fit.asta.health.data.onboarding.remote.modal.OnboardingDTO
 import fit.asta.health.datastore.PrefManager
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.mockk
 import io.mockk.spyk
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -38,7 +38,7 @@ class OnboardingRepoImplTest {
 
     @Test
     fun `getData with success, return Success Response`() = runTest {
-        coEvery { onboardingApi.getData() } returns OnboardingDTO()
+        coEvery { onboardingApi.getData() } returns mockk()
         val response = onboardingRepoImpl.getData()
         coVerify { onboardingApi.getData() }
         assert(response is ResponseState.Success)
@@ -49,6 +49,6 @@ class OnboardingRepoImplTest {
         coEvery { onboardingApi.getData() } throws Exception()
         val response = onboardingRepoImpl.getData()
         coVerify { onboardingApi.getData() }
-        assert(response is ResponseState.Error)
+        assert(response is ResponseState.ErrorMessage)
     }
 }

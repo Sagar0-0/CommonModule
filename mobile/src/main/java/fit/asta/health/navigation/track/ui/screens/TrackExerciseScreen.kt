@@ -194,7 +194,7 @@ fun TrackExerciseScreenControl(
                 TrackSuccessScreen(exerciseTrackData = exerciseTrackData.data.exerciseData)
             }
 
-            is UiState.Error -> {
+            is UiState.ErrorMessage -> {
                 AppErrorScreen(
                     isInternetError = false,
                     desc = exerciseTrackData.resId.toStringFromResId()
@@ -202,6 +202,8 @@ fun TrackExerciseScreenControl(
                     setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
                 }
             }
+
+            else -> {}
         }
     }
 }

@@ -84,7 +84,7 @@ class SpotifyRepoImplTest {
             val response = spotifyRepoImpl.getCurrentUserDetails("")
 
             coVerify { spotifyApiService.getCurrentUserDetails(any()) }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -125,7 +125,7 @@ class SpotifyRepoImplTest {
             val response = spotifyRepoImpl.getCurrentUserFollowedArtists("")
 
             coVerify { spotifyApiService.getCurrentUserFollowedArtists(any()) }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -166,7 +166,7 @@ class SpotifyRepoImplTest {
             val response = spotifyRepoImpl.getCurrentUserTopTracks("")
 
             coVerify { spotifyApiService.getCurrentUserTopTracks(any()) }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -207,7 +207,7 @@ class SpotifyRepoImplTest {
             val response = spotifyRepoImpl.getCurrentUserTopArtists("")
 
             coVerify { spotifyApiService.getCurrentUserTopArtists(any()) }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -248,7 +248,7 @@ class SpotifyRepoImplTest {
             val response = spotifyRepoImpl.getCurrentUserAlbums("")
 
             coVerify { spotifyApiService.getCurrentUserAlbums(any()) }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -289,7 +289,7 @@ class SpotifyRepoImplTest {
             val response = spotifyRepoImpl.getCurrentUserShows("")
 
             coVerify { spotifyApiService.getCurrentUserShows(any()) }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -330,7 +330,7 @@ class SpotifyRepoImplTest {
             val response = spotifyRepoImpl.getCurrentUserEpisodes("")
 
             coVerify { spotifyApiService.getCurrentUserEpisodes(any()) }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -371,7 +371,7 @@ class SpotifyRepoImplTest {
             val response = spotifyRepoImpl.getCurrentUserTracks("")
 
             coVerify { spotifyApiService.getCurrentUserTracks(any()) }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -412,7 +412,7 @@ class SpotifyRepoImplTest {
             val response = spotifyRepoImpl.getCurrentUserPlaylists("")
 
             coVerify { spotifyApiService.getCurrentUserPlaylists(any()) }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -460,7 +460,7 @@ class SpotifyRepoImplTest {
             val response = spotifyRepoImpl.getCurrentUserRecentlyPlayedTracks("")
 
             coVerify { spotifyApiService.getCurrentUserRecentlyPlayedTracks(any(), any()) }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -503,7 +503,7 @@ class SpotifyRepoImplTest {
             val response = spotifyRepoImpl.getUserPlaylists("", "")
 
             coVerify { spotifyApiService.getUserPlaylists(any(), any()) }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -546,7 +546,7 @@ class SpotifyRepoImplTest {
             val response = spotifyRepoImpl.getTrackDetails("", "")
 
             coVerify { spotifyApiService.getTrackDetails(any(), any()) }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -589,7 +589,7 @@ class SpotifyRepoImplTest {
             val response = spotifyRepoImpl.getAlbumDetails("", "")
 
             coVerify { spotifyApiService.getAlbumDetails(any(), any()) }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -632,7 +632,7 @@ class SpotifyRepoImplTest {
             val response = spotifyRepoImpl.searchQuery("", "", "", "", "")
 
             coVerify { spotifyApiService.searchQuery(any(), any()) }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -675,7 +675,7 @@ class SpotifyRepoImplTest {
             val response = spotifyRepoImpl.getRecommendations("", "", "", "", "")
 
             coVerify { spotifyApiService.getRecommendations(any(), any()) }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 }

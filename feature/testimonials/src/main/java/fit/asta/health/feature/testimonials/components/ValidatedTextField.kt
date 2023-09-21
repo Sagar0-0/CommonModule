@@ -64,7 +64,7 @@ fun ValidateNumberField(
             keyboardActions = keyboardActions,
             trailingIcon = {
                 if (showError) Icon(
-                    imageVector = Icons.Filled.Error, contentDescription = "Show Error Icon"
+                    imageVector = Icons.Filled.Error, contentDescription = "Show ErrorMessage Icon"
                 )
             },
             keyboardOptions = keyboardOptions,

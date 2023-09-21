@@ -6,6 +6,7 @@ import com.google.android.gms.maps.model.LatLng
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.data.address.remote.modal.LocationResponse
 import fit.asta.health.data.address.remote.modal.MyAddress
+import fit.asta.health.data.address.remote.modal.PutAddressResponse
 import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.datastore.UserPreferencesData
 import kotlinx.coroutines.flow.Flow
@@ -28,7 +29,7 @@ interface AddressRepo {
 
     suspend fun getSavedAddresses(uid: String): ResponseState<List<MyAddress>>
 
-    suspend fun putAddress(myAddress: MyAddress): ResponseState<Boolean>
+    suspend fun putAddress(myAddress: MyAddress): ResponseState<PutAddressResponse>
 
     suspend fun deleteAddress(uid: String, id: String): ResponseState<Boolean>
 

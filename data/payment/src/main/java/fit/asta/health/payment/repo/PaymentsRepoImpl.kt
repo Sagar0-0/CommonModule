@@ -1,6 +1,6 @@
 package fit.asta.health.payment.repo
 
-import fit.asta.health.common.utils.getResponseState
+import fit.asta.health.common.utils.getApiResponseState
 import fit.asta.health.payment.remote.PaymentsApi
 import fit.asta.health.payment.remote.model.OrderRequest
 import kotlinx.coroutines.CoroutineDispatcher
@@ -14,7 +14,7 @@ class PaymentsRepoImpl
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : PaymentsRepo {
     override suspend fun createOrder(data: OrderRequest) = withContext(coroutineDispatcher) {
-        getResponseState {
+        getApiResponseState {
             remoteApi.createOrder(data)
         }
     }
@@ -23,7 +23,7 @@ class PaymentsRepoImpl
         paymentId: String,
         uid: String
     ) = withContext(coroutineDispatcher) {
-        getResponseState { remoteApi.verifyAndUpdateProfile(paymentId, uid) }
+        getApiResponseState { remoteApi.verifyAndUpdateProfile(paymentId, uid) }
     }
 
 }

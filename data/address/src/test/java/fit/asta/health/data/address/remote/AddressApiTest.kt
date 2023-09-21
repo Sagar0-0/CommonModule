@@ -2,9 +2,10 @@ package fit.asta.health.data.address.remote
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.data.address.remote.modal.AddressesDTO
 import fit.asta.health.data.address.remote.modal.DeleteAddressResponse
+import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.PutAddressResponse
 import fit.asta.health.data.address.repo.AddressRepoImpl
 import fit.asta.health.datastore.PrefManager
@@ -44,7 +45,7 @@ class AddressApiTest {
 
     @Test
     fun `getAddresses, return Success`() = runTest {
-        val dto = AddressesDTO()
+        val dto: Response<List<MyAddress>> = mockk()
         val json = gson.toJson(dto)!!
         val res = MockResponse()
         res.setBody(json)
@@ -68,12 +69,12 @@ class AddressApiTest {
         val data = repo.getSavedAddresses("")
         server.takeRequest()
 
-        assert(data is ResponseState.Error)
+        assert(data is ResponseState.ErrorMessage)
     }
 
     @Test
     fun `putAddress, return Success`() = runTest {
-        val dto = PutAddressResponse()
+        val dto = Response(data = PutAddressResponse())
         val json = gson.toJson(dto)!!
         val res = MockResponse()
         res.setBody(json)
@@ -97,7 +98,7 @@ class AddressApiTest {
         val data = repo.putAddress(mockk())
         server.takeRequest()
 
-        assert(data is ResponseState.Error)
+        assert(data is ResponseState.ErrorMessage)
     }
 
     @Test
@@ -126,7 +127,7 @@ class AddressApiTest {
         val data = repo.deleteAddress("", "")
         server.takeRequest()
 
-        assert(data is ResponseState.Error)
+        assert(data is ResponseState.ErrorMessage)
     }
 
     @Test
@@ -156,6 +157,6 @@ class AddressApiTest {
         val data = repo.selectAddress("", "")
         server.takeRequest()
 
-        assert(data is ResponseState.Error)
+        assert(data is ResponseState.ErrorMessage)
     }
 }

@@ -61,7 +61,7 @@ class MusicRepositoryImplTest {
             coEvery { musicDao.getAllTracks() } throws Exception()
             val response = musicRepositoryImpl.getAllTracks()
             coVerify { musicDao.getAllTracks() }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -95,7 +95,7 @@ class MusicRepositoryImplTest {
             coEvery { musicDao.insertTrack(any()) } throws Exception()
             val response = musicRepositoryImpl.insertTrack(mockk())
             coVerify { musicDao.insertTrack(any()) }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -129,7 +129,7 @@ class MusicRepositoryImplTest {
             coEvery { musicDao.deleteTrack(any()) } throws Exception()
             val response = musicRepositoryImpl.deleteTrack(mockk())
             coVerify { musicDao.deleteTrack(any()) }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -163,7 +163,7 @@ class MusicRepositoryImplTest {
             coEvery { musicDao.getAllAlbums() } throws Exception()
             val response = musicRepositoryImpl.getAllAlbums()
             coVerify { musicDao.getAllAlbums() }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -197,7 +197,7 @@ class MusicRepositoryImplTest {
             coEvery { musicDao.insertAlbum(any()) } throws Exception()
             val response = musicRepositoryImpl.insertAlbum(mockk())
             coVerify { musicDao.insertAlbum(any()) }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 
@@ -231,7 +231,7 @@ class MusicRepositoryImplTest {
             coEvery { musicDao.deleteAlbum(any()) } throws Exception()
             val response = musicRepositoryImpl.deleteAlbum(mockk())
             coVerify { musicDao.deleteAlbum(any()) }
-            assert(response is ResponseState.Error)
+            assert(response is ResponseState.ErrorMessage)
         }
     }
 }

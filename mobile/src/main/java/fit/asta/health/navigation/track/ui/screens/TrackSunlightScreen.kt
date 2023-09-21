@@ -197,7 +197,7 @@ fun TrackSunlightScreenControl(
                 TrackSuccessScreen(sunlightTrackData.data.sunlightData)
             }
 
-            is UiState.Error -> {
+            is UiState.ErrorMessage -> {
                 AppErrorScreen(
                     isInternetError = false,
                     desc = sunlightTrackData.resId.toStringFromResId()
@@ -205,6 +205,8 @@ fun TrackSunlightScreenControl(
                     setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
                 }
             }
+
+            else -> {}
         }
     }
 }

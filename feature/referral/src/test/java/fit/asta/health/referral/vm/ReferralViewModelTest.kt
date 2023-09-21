@@ -10,6 +10,7 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.mockk
 import io.mockk.spyk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.AfterEach
@@ -42,14 +43,14 @@ class ReferralViewModelTest : BaseTest() {
 
     @Test
     fun `getData with error, return error`() = runTest {
-        coEvery { repo.getData(any()) } returns ResponseState.Error(Exception())
+        coEvery { repo.getData(any()) } returns ResponseState.ErrorMessage(mockk())
 
         viewModel.getData()
 
         coVerify { repo.getData("") }
 
         viewModel.state.test {
-            assert(awaitItem() is UiState.Error)
+            assert(awaitItem() is UiState.ErrorMessage)
         }
     }
 

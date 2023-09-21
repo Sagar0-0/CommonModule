@@ -61,7 +61,7 @@ fun SessionFeedback(
                 }
             }
 
-            is UiState.Error -> {
+            is UiState.ErrorMessage -> {
                 Text(text = feedbackQuesState.resId.toStringFromResId())
                 LaunchedEffect(feedbackQuesState) {
                     Toast.makeText(
@@ -74,7 +74,7 @@ fun SessionFeedback(
             }
 
             is UiState.Success -> {
-                val qns = feedbackQuesState.data.data.qns
+                val qns = feedbackQuesState.data.qns
                 val ansList = remember {
                     mutableStateOf(
                         qns.map {

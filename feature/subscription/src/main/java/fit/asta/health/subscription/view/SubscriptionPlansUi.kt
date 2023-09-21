@@ -43,7 +43,7 @@ fun SubscriptionPlansUi(
                 }
             }
 
-            is UiState.Error -> {
+            is UiState.ErrorMessage -> {
                 AppErrorScreen(
                     modifier = Modifier.padding(paddingValues),
                     desc = state.resId.toStringFromResId(),
@@ -55,15 +55,15 @@ fun SubscriptionPlansUi(
 
             is UiState.Success -> {
                 Column(modifier = Modifier.padding(paddingValues)) {
-                    if (state.data.data.userSubscribedPlan != null) {
-                        if (state.data.data.userSubscribedPlan!!.sts) {
-                            ShowUserActivePlan(state.data.data)
+                    if (state.data.userSubscribedPlan != null) {
+                        if (state.data.userSubscribedPlan!!.sts) {
+                            ShowUserActivePlan(state.data)
                         } else {
-                            ShowUserExpiredPlan(state.data.data)
+                            ShowUserExpiredPlan(state.data)
                         }
                     }
                     SubPlansPager(
-                        subscriptionPlans = state.data.data.subscriptionPlans,
+                        subscriptionPlans = state.data.subscriptionPlans,
                         onClick = onClick
                     )
                 }
@@ -75,17 +75,17 @@ fun SubscriptionPlansUi(
 }
 
 @Composable
-fun ShowUserExpiredPlan(data: SubscriptionResponse.Data) {
+fun ShowUserExpiredPlan(data: SubscriptionResponse) {
 
 }
 
 @Composable
-fun PendingPlanUI(data: SubscriptionResponse.Data) {
+fun PendingPlanUI(data: SubscriptionResponse) {
 
 }
 
 @Composable
-private fun ShowUserActivePlan(data: SubscriptionResponse.Data) {
+private fun ShowUserActivePlan(data: SubscriptionResponse) {
     Text(text = data.subscriptionPlans.categories[data.userSubscribedPlan!!.type.toInt() - 1].ttl)
 }
 

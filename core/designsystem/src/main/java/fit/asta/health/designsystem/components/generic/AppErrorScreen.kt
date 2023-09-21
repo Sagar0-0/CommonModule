@@ -262,7 +262,7 @@ fun AppErrorMsgCard(message: String, imageVector: ImageVector) {
             ) {
                 AppDefaultIcon(
                     imageVector = imageVector,
-                    contentDescription = "Error Occurred while fetching Tst List",
+                    contentDescription = "ErrorMessage Occurred while fetching Tst List",
                     tint = MaterialTheme.colorScheme.surface,
                     modifier = Modifier.size(imageHeight.small)
                 )

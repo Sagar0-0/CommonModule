@@ -217,7 +217,7 @@ fun DietContent(
                     is ProfileSubmitState.Error -> {
                         Log.d(
                             "validate",
-                            "Error -> ${events.error} and message -> ${events.error.message} and ${events.error.localizedMessage}"
+                            "ErrorMessage -> ${events.error} and message -> ${events.error.message} and ${events.error.localizedMessage}"
                         )
                     }
 

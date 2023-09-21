@@ -86,7 +86,7 @@ class SearchLocationApiTest {
         val data = repo.search("", 0.00, 0.00)
         server.takeRequest()
 
-        assert(data is ResponseState.Error)
+        assert(data is ResponseState.ErrorMessage)
     }
 
     @Test
@@ -101,6 +101,6 @@ class SearchLocationApiTest {
         val data = repo.search("", 1.00, 1.00)
         server.takeRequest()
 
-        assert(data is ResponseState.Error)
+        assert(data is ResponseState.ErrorMessage)
     }
 }

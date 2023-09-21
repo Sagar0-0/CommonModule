@@ -201,7 +201,7 @@ fun TrackBreathingScreenControl(
                 TrackSuccessScreen(breathingData = breathingTrackData.data.breathingData)
             }
 
-            is UiState.Error -> {
+            is UiState.ErrorMessage -> {
                 AppErrorScreen(
                     isInternetError = false,
                     desc = breathingTrackData.resId.toStringFromResId()
@@ -209,6 +209,8 @@ fun TrackBreathingScreenControl(
                     setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
                 }
             }
+
+            else -> {}
         }
     }
 }

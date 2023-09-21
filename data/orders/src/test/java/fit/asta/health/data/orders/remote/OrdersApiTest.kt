@@ -2,9 +2,11 @@ package fit.asta.health.data.orders.remote
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.data.orders.remote.model.OrdersDTO
+import fit.asta.health.data.orders.remote.model.OrderData
 import fit.asta.health.data.orders.repo.OrdersRepoImpl
+import io.mockk.mockk
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
@@ -38,7 +40,7 @@ class OrdersApiTest {
 
     @Test
     fun `getData, returns Success`() = runTest {
-        val dto = OrdersDTO(listOf(OrdersDTO.Data(), OrdersDTO.Data()))
+        val dto: Response<List<OrderData>> = mockk()
         val json = gson.toJson(dto)!!
         val res = MockResponse()
         res.setBody(json)
@@ -60,6 +62,6 @@ class OrdersApiTest {
         val data = onboardingRepoImpl.getOrders("")
         server.takeRequest()
 
-        assert(data is ResponseState.Error)
+        assert(data is ResponseState.ErrorMessage)
     }
 }

@@ -67,7 +67,7 @@ class BasicProfileViewModel
         viewModelScope.launch {
             val res = profileRepo.checkReferralCode(code)
             if ((res as? ResponseState.Success)?.data?.data == null) {
-                _checkReferralCodeState.value = UiState.Error(R.string.unknown_error)
+                _checkReferralCodeState.value = UiState.ErrorMessage(R.string.unknown_error)
             } else {
                 _checkReferralCodeState.value = res.toUiState()
             }

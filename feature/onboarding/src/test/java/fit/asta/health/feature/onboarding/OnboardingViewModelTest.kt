@@ -44,14 +44,14 @@ class OnboardingViewModelTest : BaseTest() {
 
     @Test
     fun `getData with error, return error`() = runTest {
-        coEvery { onboardingRepoImpl.getData() } returns ResponseState.Error(Exception())
+        coEvery { onboardingRepoImpl.getData() } returns ResponseState.ErrorMessage(mockk())
 
         viewModel.getData()
 
         coVerify { onboardingRepoImpl.getData() }
 
         viewModel.state.test {
-            assert(awaitItem() is UiState.Error)
+            assert(awaitItem() is UiState.ErrorMessage)
         }
     }
 

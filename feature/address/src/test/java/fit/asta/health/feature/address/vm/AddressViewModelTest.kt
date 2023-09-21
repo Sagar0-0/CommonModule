@@ -65,11 +65,11 @@ class AddressViewModelTest : BaseTest() {
 
     @Test
     fun `getSavedAddress Error,returns UiState Error`() = runTest {
-        coEvery { repo.getSavedAddresses(any()) } returns ResponseState.Error(Exception())
+        coEvery { repo.getSavedAddresses(any()) } returns ResponseState.ErrorMessage(mockk())
         viewmodel.getSavedAddresses()
         coVerify { repo.getSavedAddresses("") }
         viewmodel.savedAddressListState.test {
-            assert(awaitItem() is UiState.Error)
+            assert(awaitItem() is UiState.ErrorMessage)
         }
     }
 
@@ -88,7 +88,7 @@ class AddressViewModelTest : BaseTest() {
 
     @Test
     fun `putAddress Success,returns Success`() = runTest {
-        coEvery { repo.putAddress(any()) } returns ResponseState.Success(true)
+        coEvery { repo.putAddress(any()) } returns ResponseState.Success(mockk())
         viewmodel.putAddress(MyAddress())
         coVerify { repo.putAddress(any()) }
         viewmodel.putAddressState.test {
@@ -99,12 +99,12 @@ class AddressViewModelTest : BaseTest() {
 
     @Test
     fun `putAddress Error,returns Error`() = runTest {
-        coEvery { repo.putAddress(any()) } returns ResponseState.Error(Exception())
+        coEvery { repo.putAddress(any()) } returns ResponseState.ErrorMessage(mockk())
         viewmodel.putAddress(MyAddress())
         coVerify { repo.putAddress(any()) }
         viewmodel.putAddressState.test {
             val item = awaitItem()
-            assert(item is UiState.Error)
+            assert(item is UiState.ErrorMessage)
         }
     }
 
@@ -122,12 +122,12 @@ class AddressViewModelTest : BaseTest() {
 
     @Test
     fun `deleteAddress Error,returns Error`() = runTest {
-        coEvery { repo.deleteAddress(any(), any()) } returns ResponseState.Error(Exception())
+        coEvery { repo.deleteAddress(any(), any()) } returns ResponseState.ErrorMessage(mockk())
         viewmodel.deleteAddress("")
         coVerify { repo.deleteAddress(any(), any()) }
         viewmodel.deleteAddressState.test {
             val item = awaitItem()
-            assert(item is UiState.Error)
+            assert(item is UiState.ErrorMessage)
         }
     }
 
@@ -144,12 +144,12 @@ class AddressViewModelTest : BaseTest() {
 
     @Test
     fun `selectAddress Error,returns Error`() = runTest {
-        coEvery { repo.selectAddress(any(), any()) } returns ResponseState.Error(Exception())
+        coEvery { repo.selectAddress(any(), any()) } returns ResponseState.ErrorMessage(mockk())
         viewmodel.selectAddress(MyAddress())
         coVerify { repo.selectAddress(any(), any()) }
         viewmodel.selectAddressState.test {
             val item = awaitItem()
-            assert(item is UiState.Error)
+            assert(item is UiState.ErrorMessage)
         }
     }
 
@@ -190,12 +190,12 @@ class AddressViewModelTest : BaseTest() {
 
     @Test
     fun `search Error,returns Error`() = runTest {
-        coEvery { repo.search(any(), any(), any()) } returns ResponseState.Error(Exception())
+        coEvery { repo.search(any(), any(), any()) } returns ResponseState.ErrorMessage(mockk())
         viewmodel.search("")
         coVerify { repo.search(any(), any(), any()) }
         viewmodel.searchResultState.test {
             val item = awaitItem()
-            assert(item is UiState.Error)
+            assert(item is UiState.ErrorMessage)
         }
     }
 
@@ -224,14 +224,14 @@ class AddressViewModelTest : BaseTest() {
     @Test
     fun `getMarkerAddressDetails Error,returns Error`() = runTest {
         coEvery { repo.getAddressDetails(any()) } returns flow {
-            emit(ResponseState.Error(Exception()))
+            emit(ResponseState.ErrorMessage(mockk()))
         }
         viewmodel.getMarkerAddressDetails(LatLng(0.0, 0.0))
         advanceUntilIdle()
         coVerify { repo.getAddressDetails(any()) }
         viewmodel.markerAddressState.test {
             val item = awaitItem()
-            assert(item is UiState.Error)
+            assert(item is UiState.ErrorMessage)
         }
     }
 
@@ -283,14 +283,14 @@ class AddressViewModelTest : BaseTest() {
                 emit(LocationResponse.Success(LatLng(0.0, 0.0)))
             }
             coEvery { repo.getAddressDetails(any()) } returns flow {
-                emit(ResponseState.Error(Exception()))
+                emit(ResponseState.ErrorMessage(mockk()))
             }
             viewmodel.checkPermissionAndUpdateCurrentAddress()
             coVerify { repo.checkPermissionAndGetLatLng() }
             coVerify { repo.getAddressDetails(any()) }
             viewmodel.currentAddressState.test {
                 val item = awaitItem()
-                assert(item is UiState.Error)
+                assert(item is UiState.ErrorMessage)
             }
         }
 
@@ -303,7 +303,7 @@ class AddressViewModelTest : BaseTest() {
         coVerify { repo.checkPermissionAndGetLatLng() }
         viewmodel.currentAddressState.test {
             val item = awaitItem()
-            assert(item is UiState.Error)
+            assert(item is UiState.ErrorMessage)
         }
     }
 

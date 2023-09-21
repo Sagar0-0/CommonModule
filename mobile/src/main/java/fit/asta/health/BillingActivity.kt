@@ -6,7 +6,14 @@ import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.android.billingclient.api.*
+import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingClientStateListener
+import com.android.billingclient.api.BillingFlowParams
+import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.Purchase
+import com.android.billingclient.api.PurchasesUpdatedListener
+import com.android.billingclient.api.SkuDetails
+import com.android.billingclient.api.SkuDetailsParams
 
 
 class BillingActivity : AppCompatActivity() {
@@ -40,7 +47,7 @@ class BillingActivity : AppCompatActivity() {
                 }
             })
         } catch (e: Exception) {
-            Log.e("BillingActivity", " Error: ${e.message}")
+            Log.e("BillingActivity", " ErrorMessage: ${e.message}")
         }
 
         findViewById<Button>(R.id.payBtn).setOnClickListener {

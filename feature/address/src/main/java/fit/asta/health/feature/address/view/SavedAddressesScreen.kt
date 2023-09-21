@@ -162,7 +162,7 @@ internal fun SavedAddressesScreen(
                     onClick = {
                         if (currentAddressState is UiState.Success) {
                             onUiEvent(SavedAddressUiEvent.ShowFillAddressSheet)
-                        } else if (currentAddressState is UiState.Error) {
+                        } else if (currentAddressState is UiState.ErrorMessage) {
                             onUiEvent(SavedAddressUiEvent.UpdateCurrentLocation)
                         }
                     }
@@ -205,7 +205,7 @@ internal fun SavedAddressesScreen(
                                 )
                             }
 
-                            is UiState.Error -> {
+                            is UiState.ErrorMessage -> {
                                 Text(
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
@@ -357,7 +357,7 @@ internal fun SavedAddressesScreen(
                     }
                 }
 
-                is UiState.Error -> {
+                is UiState.ErrorMessage -> {
                     AppErrorScreen(desc = savedAddressListState.resId.toStringFromResId()) {
                         onUiEvent(SavedAddressUiEvent.GetSavedAddress)
                     }
@@ -381,7 +381,7 @@ private fun AddressItem(
         mutableStateOf(false)
     }
     LaunchedEffect(deleteAddressState) {
-        if (deleteAddressState is UiState.Error) loading = false
+        if (deleteAddressState is UiState.ErrorMessage) loading = false
     }
     Row(
         Modifier

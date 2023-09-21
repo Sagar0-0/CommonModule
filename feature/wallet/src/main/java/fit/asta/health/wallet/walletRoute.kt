@@ -1,5 +1,7 @@
 package fit.asta.health.wallet
 
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -18,9 +20,13 @@ fun NavController.navigateToWallet(navOptions: NavOptions? = null) {
 fun NavGraphBuilder.walletRoute(onBackPress: () -> Unit) {
     composable(WALLET_GRAPH_ROUTE) {
         val walletViewModel: WalletViewModel = hiltViewModel()
-        val state = walletViewModel.state.collectAsStateWithLifecycle()
+        LaunchedEffect(Unit) {
+            walletViewModel.getData()
+        }
+
+        val state by walletViewModel.state.collectAsStateWithLifecycle()
         WalletScreenUi(
-            walletDataState = state.value,
+            walletDataState = state,
             onBackPress = onBackPress,
             onTryAgain = walletViewModel::getData
         )

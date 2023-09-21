@@ -54,10 +54,12 @@ fun NavGraphBuilder.settingScreens(
                         onSettingsUiEvent(SettingsUiEvent.NavigateToAuth)
                     }
 
-                    is UiState.Error -> {
+                    is UiState.ErrorMessage -> {
                         Toast.makeText(
                             context,
-                            (deleteAccountState as UiState.Error).resId.toStringFromResId(context),
+                            (deleteAccountState as UiState.ErrorMessage).resId.toStringFromResId(
+                                context
+                            ),
                             Toast.LENGTH_SHORT
                         ).show()
                         settingsViewModel.resetDeleteState()
@@ -77,10 +79,10 @@ fun NavGraphBuilder.settingScreens(
                         onSettingsUiEvent(SettingsUiEvent.NavigateToAuth)
                     }
 
-                    is UiState.Error -> {
+                    is UiState.ErrorMessage -> {
                         Toast.makeText(
                             context,
-                            (logoutState as UiState.Error).resId.toStringFromResId(context),
+                            (logoutState as UiState.ErrorMessage).resId.toStringFromResId(context),
                             Toast.LENGTH_SHORT
                         ).show()
                         settingsViewModel.resetLogoutState()

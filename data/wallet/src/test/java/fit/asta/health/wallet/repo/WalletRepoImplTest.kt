@@ -2,11 +2,11 @@ package fit.asta.health.wallet.repo
 
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.wallet.remote.WalletApi
-import fit.asta.health.wallet.remote.model.WalletResponse
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.mockk
 import io.mockk.spyk
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -34,7 +34,7 @@ class WalletRepoImplTest {
 
     @Test
     fun `getData, returns Success`() = runTest {
-        coEvery { api.getData(any()) } returns WalletResponse()
+        coEvery { api.getData(any()) } returns mockk()
         val response = repo.getData("")
         coVerify { api.getData("") }
         assert(response is ResponseState.Success)
@@ -45,6 +45,6 @@ class WalletRepoImplTest {
         coEvery { api.getData(any()) } throws Exception()
         val response = repo.getData("")
         coVerify { api.getData("") }
-        assert(response is ResponseState.Error)
+        assert(response is ResponseState.ErrorMessage)
     }
 }
