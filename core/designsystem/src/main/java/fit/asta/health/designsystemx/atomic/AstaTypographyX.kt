@@ -9,6 +9,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import fit.asta.health.core.designsystem.R
 
+/**
+ * This object is the default Typography of the App
+ */
 internal val AstaTypographyX = Typography(
 
     displayLarge = TextStyle(
@@ -81,4 +84,4 @@ internal val AstaTypographyX = Typography(
         fontSize = 12.sp
     )
 )
-val LocalTypographyX = compositionLocalOf { AstaTypographyX }
+internal val LocalTypographyX = compositionLocalOf { AstaTypographyX }

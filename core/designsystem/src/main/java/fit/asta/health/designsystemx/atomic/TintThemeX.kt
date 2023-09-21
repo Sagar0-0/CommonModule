@@ -15,4 +15,4 @@ data class TintThemeX(
 /**
  * A composition local for [TintThemeX].
  */
-val LocalTintThemeX = staticCompositionLocalOf { TintThemeX() }
+internal val LocalTintThemeX = staticCompositionLocalOf { TintThemeX() }

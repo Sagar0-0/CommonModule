@@ -5,6 +5,9 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+/**
+ * This function contains all the default Icon Sizes of the App
+ */
 @Immutable
 data class IconSizeX(
     val small: Dp = 8.dp,
@@ -14,4 +17,4 @@ data class IconSizeX(
     val large: Dp = 150.dp,
 )
 
-val LocalIconSizeX = compositionLocalOf { IconSizeX() }
+internal val LocalIconSizeX = compositionLocalOf { IconSizeX() }

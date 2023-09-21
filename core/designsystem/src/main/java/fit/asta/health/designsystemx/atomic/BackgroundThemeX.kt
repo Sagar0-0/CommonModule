@@ -17,4 +17,4 @@ data class BackgroundThemeX(
 /**
  * A composition local for [BackgroundThemeX].
  */
-val LocalBackgroundThemeX = staticCompositionLocalOf { BackgroundThemeX() }
+internal val LocalBackgroundThemeX = staticCompositionLocalOf { BackgroundThemeX() }

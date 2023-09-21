@@ -6,6 +6,9 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.unit.dp
 
+/**
+ * This Model Class contains all the different values for the default Spaces in the app
+ */
 @Immutable
 data class ShapeX(
     val extraSmall: CornerBasedShape = RoundedCornerShape(2.dp),
@@ -15,4 +18,4 @@ data class ShapeX(
     val extraLarge: CornerBasedShape = RoundedCornerShape(24.dp)
 )
 
-val LocalShapeX = compositionLocalOf { ShapeX() }
+internal val LocalShapeX = compositionLocalOf { ShapeX() }

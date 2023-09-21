@@ -3,6 +3,9 @@ package fit.asta.health.designsystemx.atomic
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.compositionLocalOf
 
+/**
+ * This Model class is the representation of the Local Aspect Ratio
+ */
 @Immutable
 data class AspectRatioX(
     val square: Float = 01f / 01f,
@@ -11,4 +14,4 @@ data class AspectRatioX(
     val common: Float = 19.5f / 09f,
 )
 
-val LocalAspectRatioX = compositionLocalOf { AspectRatioX() }
+internal val LocalAspectRatioX = compositionLocalOf { AspectRatioX() }

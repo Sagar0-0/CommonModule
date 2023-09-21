@@ -2,6 +2,9 @@ package fit.asta.health.designsystemx.atomic.token
 
 import androidx.compose.ui.graphics.Color
 
+/**
+ * This object contains all the color values of the Default Theme of the App
+ */
 object DefaultColorTokens {
 
     /**

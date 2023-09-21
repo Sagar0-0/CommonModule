@@ -5,6 +5,9 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+/**
+ * This model Class contains all the data values for the default values of the elevations
+ */
 @Immutable
 data class ElevationX(
     val extraSmall: Dp = 2.dp,
@@ -15,4 +18,4 @@ data class ElevationX(
     val large: Dp = 32.dp,
 )
 
-val LocalElevationX = compositionLocalOf { ElevationX() }
+internal val LocalElevationX = compositionLocalOf { ElevationX() }
