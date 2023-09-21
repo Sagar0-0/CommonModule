@@ -12,16 +12,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystemx.atomic.AspectRatioX
 import fit.asta.health.designsystemx.atomic.AstaTypographyX
-import fit.asta.health.designsystemx.atomic.BackgroundThemeX
 import fit.asta.health.designsystemx.atomic.DarkDefaultColorSchemeX
 import fit.asta.health.designsystemx.atomic.ElevationX
 import fit.asta.health.designsystemx.atomic.IconSizeX
 import fit.asta.health.designsystemx.atomic.LightDefaultColorSchemeX
 import fit.asta.health.designsystemx.atomic.LocalAspectRatioX
-import fit.asta.health.designsystemx.atomic.LocalBackgroundThemeX
 import fit.asta.health.designsystemx.atomic.LocalColorsX
 import fit.asta.health.designsystemx.atomic.LocalElevationX
 import fit.asta.health.designsystemx.atomic.LocalIconSizeX
@@ -60,11 +57,6 @@ fun AstaThemeX(
             LightDefaultColorSchemeX
     }
 
-    // Background theme
-    val backgroundThemeX = BackgroundThemeX(
-        color = colorScheme.surface,
-        tonalElevation = 2.dp,
-    )
     val tintThemeX = when {
         !disableDynamicTheming && supportsDynamicTheming() -> TintThemeX(colorScheme.primary)
         else -> TintThemeX()
@@ -77,8 +69,7 @@ fun AstaThemeX(
         LocalIconSizeX provides IconSizeX(),
         LocalShapeX provides ShapeX(),
         LocalSpacingX provides SpacingX(),
-        LocalBackgroundThemeX provides backgroundThemeX,
-        LocalTintThemeX provides tintThemeX,
+        LocalTintThemeX provides tintThemeX
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
@@ -148,14 +139,6 @@ object AstaThemeX {
         @Composable
         @ReadOnlyComposable
         get() = LocalSpacingX.current
-
-    /**
-     * Default Background Theme for the App
-     */
-    val backgroundThemeX: BackgroundThemeX
-        @Composable
-        @ReadOnlyComposable
-        get() = LocalBackgroundThemeX.current
 
     /**
      * Default Tint Theme for the app
