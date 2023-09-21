@@ -1,6 +1,7 @@
 package fit.asta.health.designsystemx.molecular.button
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.Button
@@ -14,9 +15,9 @@ import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystemx.AstaThemeX
 
 // Preview Function
-@Preview("Enabled Light Button")
+@Preview("Light Button")
 @Preview(
-    name = "Enabled Dark Button",
+    name = "Dark Button",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
@@ -24,30 +25,19 @@ import fit.asta.health.designsystemx.AstaThemeX
 private fun DefaultPreview1() {
     AstaThemeX {
         Surface {
-            AstaFilledButton(
-                onClick = {}
-            ) {
-                Text(text = "Enabled Button")
-            }
-        }
-    }
-}
+            Column {
+                AstaFilledButton(
+                    onClick = {}
+                ) {
+                    Text(text = "Enabled Button")
+                }
 
-@Preview("Disabled Light Button")
-@Preview(
-    name = "Disabled Dark Button",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true
-)
-@Composable
-private fun DefaultPreview2() {
-    AstaThemeX {
-        Surface {
-            AstaFilledButton(
-                enabled = false,
-                onClick = {}
-            ) {
-                Text(text = "Disabled Button")
+                AstaFilledButton(
+                    enabled = false,
+                    onClick = {}
+                ) {
+                    Text(text = "Disabled Button")
+                }
             }
         }
     }
