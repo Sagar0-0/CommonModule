@@ -44,13 +44,7 @@ fun SubscriptionPlansUi(
             }
 
             is UiState.ErrorMessage -> {
-                AppErrorScreen(
-                    modifier = Modifier.padding(paddingValues),
-                    desc = state.resId.toStringFromResId(),
-                    isInternetError = false
-                ) {
-                    onTryAgain()
-                }
+                Text(state.resId.toStringFromResId())
             }
 
             is UiState.Success -> {
@@ -66,6 +60,14 @@ fun SubscriptionPlansUi(
                         subscriptionPlans = state.data.subscriptionPlans,
                         onClick = onClick
                     )
+                }
+            }
+
+            is UiState.NoInternet -> {
+                AppErrorScreen(
+                    modifier = Modifier.padding(paddingValues)
+                ) {
+                    onTryAgain()
                 }
             }
 

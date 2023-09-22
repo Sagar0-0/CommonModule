@@ -13,6 +13,8 @@ android {
 
 dependencies {
 
+    implementation(project(":resources:strings"))
+
     implementation(project(":core:network"))
     implementation(project(":core:common"))
 

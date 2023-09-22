@@ -86,9 +86,9 @@ class AuthViewModelTest : BaseTest() {
 
     @Test
     fun `logout, returns Success`() = runTest {
-        every { repo.signOut() } returns ResponseState.Success(true)
+        coEvery { repo.signOut() } returns mockk()
         viewModel.logout()
-        verify { repo.signOut() }
+        coVerify { repo.signOut() }
         viewModel.logoutState.test {
             val item = awaitItem()
             assert(item is UiState.Success)
@@ -97,9 +97,9 @@ class AuthViewModelTest : BaseTest() {
 
     @Test
     fun `logout, returns Error`() = runTest {
-        every { repo.signOut() } returns ResponseState.ErrorMessage(mockk())
+        coEvery { repo.signOut() } returns mockk()
         viewModel.logout()
-        verify { repo.signOut() }
+        coVerify { repo.signOut() }
         viewModel.logoutState.test {
             val item = awaitItem()
             assert(item is UiState.ErrorMessage)

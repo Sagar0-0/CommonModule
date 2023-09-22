@@ -27,9 +27,9 @@ data class Response<T>(
 
 sealed interface ResponseState<out T> {
     data class Success<R>(val data: R) : ResponseState<R>
+    data object NoInternet : ResponseState<Nothing>
     data class ErrorMessage(@StringRes val resId: Int) : ResponseState<Nothing>
     data class ErrorRetry(@StringRes val resId: Int) : ResponseState<Nothing>
-
 }
 
 suspend fun <T> getApiResponseState(
@@ -41,7 +41,7 @@ suspend fun <T> getApiResponseState(
     return try {
         val response = request()
         onSuccess()
-        Log.e(TAG, "getResponseState: ${response.status.code}: ${response.status.msg}")
+        Log.d(TAG, "getApiResponseState: ${response.status.code}: ${response.status.msg}")
         when (response.status.code) {
             SUCCESS_STATUS_CODE -> {
                 if (response.data != null) {
@@ -55,18 +55,13 @@ suspend fun <T> getApiResponseState(
                 ResponseState.ErrorMessage(errorHandler.fetchStatusMessage(response.status.code))
             }
         }
+    } catch (e: NoInternetException) {
+        Log.e(TAG, "getApiResponseState Exception:  $e")
+        ResponseState.NoInternet
     } catch (e: Exception) {
         onFailure(e)
-        Log.e(TAG, "getResponseState Exception:  $e")
-        when (e) {
-            is MyException -> {
-                ResponseState.ErrorMessage(e.resId)
-            }
-
-            else -> {
-                ResponseState.ErrorMessage(errorHandler.fetchExceptionMessage(e.message ?: ""))
-            }
-        }
+        Log.e(TAG, "getApiResponseState Exception:  $e")
+        ResponseState.ErrorMessage(errorHandler.fetchExceptionMessage(e.message ?: ""))
     }
 }
 
@@ -80,6 +75,8 @@ suspend fun <T> getResponseState(
         val res = request()
         onSuccess()
         ResponseState.Success(res)
+    } catch (e: NoInternetException) {
+        ResponseState.NoInternet
     } catch (e: Exception) {
         onFailure(e)
         Log.e(TAG, "getResponseState: $e")
@@ -100,6 +97,10 @@ fun <T> ResponseState<T>.toUiState(): UiState<T> {
 
         is ResponseState.ErrorRetry -> {
             UiState.ErrorRetry(this.resId)
+        }
+
+        else -> {
+            UiState.NoInternet
         }
     }
 }

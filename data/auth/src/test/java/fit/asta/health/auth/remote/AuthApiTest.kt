@@ -66,7 +66,7 @@ class AuthApiTest {
         val firebaseAuth: FirebaseAuth = mockk()
         every { firebaseAuth.currentUser } returns mockk()
         every { pref.userData } returns MutableStateFlow(UserPreferencesData())
-        val repo = AuthRepoImpl(mockk(), api, mockk(), firebaseAuth, pref)
+        val repo = AuthRepoImpl(mockk(), api, mockk(), mockk(), firebaseAuth, pref)
         val data = repo.deleteAccount()
         server.takeRequest()
         data.test {
