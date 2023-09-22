@@ -220,7 +220,8 @@ private fun NewMainTopBarActions(
             if (profileImageUri != null) {
                 IconButton(onClick = { onClick(MainTopBarActions.Profile) }) {
                     Image(
-                        modifier = Modifier.clip(CircleShape), painter = rememberAsyncImagePainter(
+                        modifier = Modifier.clip(CircleShape),
+                        painter = rememberAsyncImagePainter(
                             model = profileImageUri,
                             placeholder = painterResource(id = R.drawable.ic_person)
                         ), contentDescription = "Profile"

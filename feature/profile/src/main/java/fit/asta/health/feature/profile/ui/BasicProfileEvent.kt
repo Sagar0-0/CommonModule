@@ -10,4 +10,5 @@ sealed interface BasicProfileEvent {
     data object ResetCodeState : BasicProfileEvent
     data object NavigateToHome : BasicProfileEvent
     data object ResetCreateProfileState : BasicProfileEvent
+    data object ResetLinkAccountState : BasicProfileEvent
 }

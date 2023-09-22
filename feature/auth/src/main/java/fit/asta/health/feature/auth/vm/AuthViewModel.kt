@@ -126,4 +126,8 @@ internal class AuthViewModel
     fun navigateToHome() = viewModelScope.launch {
         authRepo.setBasicProfileDone()
     }
+
+    fun resetLoginState() {
+        _loginState.value = UiState.Idle
+    }
 }
