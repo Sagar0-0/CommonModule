@@ -40,11 +40,11 @@ import fit.asta.health.R
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
-import fit.asta.health.player.jetpack_audio.domain.data.Song
-import fit.asta.health.player.jetpack_audio.domain.utils.AppIcons
-import fit.asta.health.player.jetpack_audio.domain.utils.asFormattedString
-import fit.asta.health.player.jetpack_audio.exo_player.common.MusicState
-import fit.asta.health.player.jetpack_audio.presentation.ui.theme.LocalSpacing
+import fit.asta.health.designsystem.theme.LocalSpacing
+import fit.asta.health.player.audio.common.MusicState
+import fit.asta.health.player.domain.model.Song
+import fit.asta.health.player.domain.utils.AppIcons
+import fit.asta.health.player.domain.utils.asFormattedString
 
 
 @Composable
@@ -77,7 +77,7 @@ fun MusicScreen(
                 .padding(it)
                 .fillMaxSize()
         ) {
-            Spacer(Modifier.height(spacing.spaceSmall))
+            Spacer(Modifier.height(spacing.small))
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -86,7 +86,7 @@ fun MusicScreen(
             ) {
 
                 item {
-                    Spacer(Modifier.height(spacing.spaceSmall))
+                    Spacer(Modifier.height(spacing.small))
                 }
 
                 itemsIndexed(state.selectedAlbum) { index: Int, item: Song ->
@@ -147,7 +147,7 @@ fun TrackItem(
             .fillMaxWidth()
             .clickable { onClick(isRunning) }
             .background(backgroundColor),
-        verticalArrangement = Arrangement.spacedBy(spacing.spaceSmall)
+        verticalArrangement = Arrangement.spacedBy(spacing.small)
     ) {
         Divider(
             modifier = Modifier
@@ -159,11 +159,11 @@ fun TrackItem(
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(spacing.spaceMedium)
+            horizontalArrangement = Arrangement.spacedBy(spacing.medium)
         ) {
             Column(
                 modifier = Modifier.weight(.5f),
-                verticalArrangement = Arrangement.spacedBy(spacing.spaceSmall),
+                verticalArrangement = Arrangement.spacedBy(spacing.small),
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
@@ -201,7 +201,7 @@ fun TrackItem(
                                 playPauseTrack(isRunning, musicState.playWhenReady)
                             }
                             .size(32.dp)
-                            .padding(spacing.spaceSmall)
+                            .padding(spacing.small)
                     )
                     Text(
                         text = if (isRunning)

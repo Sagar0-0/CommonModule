@@ -37,7 +37,7 @@ import fit.asta.health.main.MainNavHost
 import fit.asta.health.main.MainViewModel
 import fit.asta.health.network.TokenProvider
 import fit.asta.health.network.utils.NetworkConnectivity
-import fit.asta.health.player.jetpack_audio.exo_player.MusicService
+import fit.asta.health.player.audio.MusicService
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import javax.inject.Inject

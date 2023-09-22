@@ -121,8 +121,7 @@ dependencies {
     implementation(project(":core:network"))
 
     implementation(project(":libs:chart"))
-    implementation(project(":libs:audio"))
-    implementation(project(":libs:video"))
+    implementation(project(":libs:media"))
 
     implementation(project(":data:auth"))
     implementation(project(":data:payment"))

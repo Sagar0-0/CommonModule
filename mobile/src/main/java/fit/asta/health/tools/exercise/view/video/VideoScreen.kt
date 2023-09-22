@@ -40,19 +40,19 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
-import fit.asta.health.player.jetpack_video.media.Media
-import fit.asta.health.player.jetpack_video.media.MediaState
-import fit.asta.health.player.jetpack_video.media.ResizeMode
-import fit.asta.health.player.jetpack_video.media.rememberMediaState
-import fit.asta.health.player.jetpack_video.video.ControllerType
-import fit.asta.health.player.jetpack_video.video.component.Option
-import fit.asta.health.player.jetpack_video.video.component.PlayerControlViewController
-import fit.asta.health.player.jetpack_video.video.component.RememberPlayer
-import fit.asta.health.player.jetpack_video.video.component.SimpleController
-import fit.asta.health.player.jetpack_video.video.component.VideoState
-import fit.asta.health.player.jetpack_video.video.utils.ControllerTypes
-import fit.asta.health.player.jetpack_video.video.utils.ResizeModes
-import fit.asta.health.player.jetpack_video.video.utils.findActivity
+import fit.asta.health.player.domain.utils.ControllerTypes
+import fit.asta.health.player.domain.utils.ResizeModes
+import fit.asta.health.player.domain.utils.findActivity
+import fit.asta.health.player.media.Media
+import fit.asta.health.player.media.MediaState
+import fit.asta.health.player.media.ResizeMode
+import fit.asta.health.player.media.rememberMediaState
+import fit.asta.health.player.presentation.ControllerType
+import fit.asta.health.player.presentation.component.Option
+import fit.asta.health.player.presentation.component.PlayerControlViewController
+import fit.asta.health.player.presentation.component.RememberPlayer
+import fit.asta.health.player.presentation.component.SimpleController
+import fit.asta.health.player.presentation.component.VideoState
 import kotlinx.coroutines.delay
 
 

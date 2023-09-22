@@ -23,12 +23,12 @@ import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.getVideoUrl
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.network.utils.NetworkResult
-import fit.asta.health.player.jetpack_audio.domain.data.Song
-import fit.asta.health.player.jetpack_audio.domain.utils.MediaConstants
-import fit.asta.health.player.jetpack_audio.domain.utils.convertToPosition
-import fit.asta.health.player.jetpack_audio.exo_player.MusicServiceConnection
-import fit.asta.health.player.jetpack_audio.exo_player.mapper.asMediaItem
-import fit.asta.health.player.jetpack_audio.presentation.screens.player.PlayerEvent
+import fit.asta.health.player.audio.MusicServiceConnection
+import fit.asta.health.player.domain.mapper.asMediaItem
+import fit.asta.health.player.domain.model.Song
+import fit.asta.health.player.domain.utils.MediaConstants
+import fit.asta.health.player.domain.utils.convertToPosition
+import fit.asta.health.player.presentation.screens.player.PlayerEvent
 import fit.asta.health.tools.meditation.db.MeditationData
 import fit.asta.health.tools.meditation.model.LocalRepo
 import fit.asta.health.tools.meditation.model.MeditationRepo
@@ -86,14 +86,14 @@ class MeditationViewModel @Inject constructor(
     private val list = mutableListOf<Song>()
     private var rememberedState: Triple<String, Int, Long>? = null
     private val window: Timeline.Window = Timeline.Window()
-    private val _trackList = mutableStateListOf("English", "Hindi")
+    private val _trackList = mutableStateListOf("")
     val trackList = MutableStateFlow(_trackList)
     val track = prefManager.userData
         .map { it.trackLanguage }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,
-            initialValue = "English",
+            initialValue = "hi",
         )
     val state: StateFlow<MusicViewState>
         get() = _state
@@ -421,19 +421,22 @@ class MeditationViewModel @Inject constructor(
                             )
                             list.clear()
                             data.instructor.forEachIndexed { index, it ->
+                                val subUrl = it.music_url.split(".")
+                                val url = subUrl[0] + "_hi." + subUrl[1]
+                                Log.d("TAG", "loadMusicData: $url")
                                 list.add(
                                     Song(
                                         id = index,
                                         artist = it.artist_name,
                                         artworkUri = getImgUrl(it.imgUrl).toUri(),
                                         duration = duration(it.duration),
-                                        mediaUri = getVideoUrl(it.music_url).toUri(),
+                                        mediaUri = getVideoUrl(if (index > 17) url else it.music_url).toUri(),
                                         title = "Day $index",
                                         audioList = it.language
                                     )
                                 )
                             }
-
+                            list.reverse()
                             _state.value = _state.value.copy(
                                 selectedAlbum = list,
                                 isLoading = false,
@@ -550,18 +553,9 @@ class MeditationViewModel @Inject constructor(
     private fun skipPrevious() {
         musicServiceConnection.skipPrevious()
         _trackList.clear()
-        _trackList.addAll(list[prevIndex()].audioList)
+        _trackList.addAll(list[player.previousMediaItemIndex].audioList)
     }
 
-    private fun prevIndex(): Int {
-        return if ((musicState.value.currentSong.id - 1) < 0) 0
-        else (musicState.value.currentSong.id - 1)
-    }
-
-    private fun nextIndex(): Int {
-        return if ((musicState.value.currentSong.id + 1) >= list.size) list.size - 1
-        else (musicState.value.currentSong.id + 1)
-    }
 
     fun play() {
         musicServiceConnection.play()
@@ -576,7 +570,7 @@ class MeditationViewModel @Inject constructor(
     private fun skipNext() {
         musicServiceConnection.skipNext()
         _trackList.clear()
-        _trackList.addAll(list[nextIndex()].audioList)
+        _trackList.addAll(list[player.nextMediaItemIndex].audioList)
     }
 
     private fun skipTo(position: Float) =
@@ -593,7 +587,13 @@ class MeditationViewModel @Inject constructor(
     fun onTrackChange(language: String) {
         saveState()
         viewModelScope.launch { prefManager.setTrackLanguage(language) }
-        musicServiceConnection.changeTrack(list[player.currentMediaItemIndex].asMediaItem())
+        val subUrl = list[player.currentMediaItemIndex].mediaUri.toString().split("_")
+        val url = subUrl.first() + "_" + language + "." + subUrl.last().split(".").last()
+        Log.d("TAG", "onTrackChange: $url")
+        musicServiceConnection.changeTrack(
+            list[player.currentMediaItemIndex]
+                .copy(mediaUri = url.toUri()).asMediaItem()
+        )
     }
 
     override fun onCleared() {
