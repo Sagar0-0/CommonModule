@@ -5,11 +5,11 @@ data class MusicTool(
     val instructor:List<MusicData>
 )
 data class MusicData(
-    val artist_name:String,
-    val artist_url:String,
+    val artist_name: String,
+    val artist_url: String,
     val duration: String,
     val imgUrl: String,
-    val language: String,
+    val language: List<String>,
     val music_name: String,
     val music_url: String
 )

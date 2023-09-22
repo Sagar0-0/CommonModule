@@ -17,8 +17,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.media3.common.util.UnstableApi
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
@@ -35,6 +37,7 @@ import fit.asta.health.main.MainNavHost
 import fit.asta.health.main.MainViewModel
 import fit.asta.health.network.TokenProvider
 import fit.asta.health.network.utils.NetworkConnectivity
+import fit.asta.health.player.jetpack_audio.exo_player.MusicService
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -73,7 +76,8 @@ class MainActivity : ComponentActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
-
+        // This app draws behind the system bars, so we want to handle fitting system windows
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
@@ -216,9 +220,12 @@ class MainActivity : ComponentActivity(),
         checkUpdate()
     }
 
+    @UnstableApi
     override fun onDestroy() {
         super.onDestroy()
         FirebaseAuth.getInstance().removeIdTokenListener(this)
+        val stopIntent = Intent(this, MusicService::class.java)
+        this.stopService(stopIntent)
     }
 
     @Deprecated("Deprecated in Java")

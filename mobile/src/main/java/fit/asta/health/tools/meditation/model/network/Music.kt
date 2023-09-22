@@ -9,7 +9,7 @@ data class Music(
     @SerializedName("imgUrl")
     val imgUrl: String,
     @SerializedName("lang")
-    val lang: String,
+    val lang: List<String>,
     @SerializedName("name")
     val name: String,
     @SerializedName("url")

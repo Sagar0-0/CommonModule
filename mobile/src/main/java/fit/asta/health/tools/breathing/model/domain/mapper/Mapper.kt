@@ -18,7 +18,7 @@ fun NetGetStart.getMusicTool(): MusicTool {
             artist_url = this.data.musicData.artist.url,
             duration = this.data.musicData.music.duration,
             imgUrl = this.data.musicData.music.imgUrl,
-            language = this.data.musicData.music.language,
+            language = listOf(this.data.musicData.music.language),
             music_name = this.data.musicData.music.name,
             music_url = this.data.musicData.music.url
         ),
@@ -28,7 +28,7 @@ fun NetGetStart.getMusicTool(): MusicTool {
                 artist_url = "hoi",
                 duration = it.mda.instructorMda.duration,
                 imgUrl = "hidf",
-                language = it.mda.instructorMda.language,
+                language = listOf(it.mda.instructorMda.language),
                 music_name = it.mda.instructorMda.name,
                 music_url = it.mda.instructorMda.url
             )

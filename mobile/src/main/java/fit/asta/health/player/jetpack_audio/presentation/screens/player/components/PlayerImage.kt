@@ -12,7 +12,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.player.jetpack_audio.presentation.ui.theme.LocalSpacing
 
 
@@ -27,7 +26,7 @@ fun PlayerImage(
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(getImgUrl(url = trackImageUrl.toString()))
+                .data(trackImageUrl)
                 .crossfade(true)
                 .build(),
             contentDescription = null,

@@ -99,10 +99,7 @@ class PlayerViewModel @Inject constructor(
                                 Song(
                                     id = 55,
                                     artist = data.music.artist_name,
-                                    artistId = 333,
                                     artworkUri = "https://img2.asta.fit${data.music.artist_url}".toUri(),
-                                    album = "",
-                                    albumId = 5566,
                                     duration = 4,
                                     mediaUri = "https://stream1.asta.fit/${data.music.music_url}".toUri(),
                                     title = data.music.music_name,
@@ -113,10 +110,7 @@ class PlayerViewModel @Inject constructor(
                                     Song(
                                         id =index ,
                                         artist = it.artist_name,
-                                        artistId = index.toLong(),
                                         artworkUri = "https://img2.asta.fit/tags/Breathing+Tag.png".toUri(),
-                                        album = "hi",
-                                        albumId = index.toLong(),
                                         duration = 4,
                                         mediaUri = "https://stream1.asta.fit${it.music_url}".toUri(),
                                         title = it.music_name,

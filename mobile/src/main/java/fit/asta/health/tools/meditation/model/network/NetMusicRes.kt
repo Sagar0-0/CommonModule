@@ -12,7 +12,7 @@ data class NetMusicRes(
 )
 data class DataX(
     @SerializedName("InstructorData")
-    val instructorData: List<InstructorData>,
+    val instructorData: List<InstructorData>?,
     @SerializedName("MusicData")
     val musicData: MusicData
 )

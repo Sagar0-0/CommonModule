@@ -20,7 +20,7 @@ fun NetMusicRes.getMusicTool(): MusicTool {
             music_name = this.data.musicData.music.name,
             music_url = this.data.musicData.music.url
         ),
-        instructor = this.data.instructorData.map {
+        instructor = this.data.instructorData?.map {
             MusicData(
                 artist_name = it.artist.name,
                 artist_url = it.artist.url,
@@ -30,7 +30,7 @@ fun NetMusicRes.getMusicTool(): MusicTool {
                 music_name = it.music.name,
                 music_url = it.music.url
             )
-        },
+        } ?: listOf(),
     )
 }
 

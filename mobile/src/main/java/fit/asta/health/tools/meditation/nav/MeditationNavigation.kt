@@ -33,7 +33,7 @@ fun NavGraphBuilder.meditationNavigation(
 ) {
     navigation(
         route = MEDITATION_GRAPH_ROUTE,
-        startDestination = MeditationScreen.Music.route,
+        startDestination = MeditationScreen.MeditationHomeScreen.route,
         deepLinks = listOf(navDeepLink {
             uriPattern = "$deepLinkUrl/${MEDITATION_GRAPH_ROUTE}"
             action = Intent.ACTION_VIEW
@@ -92,14 +92,18 @@ fun NavGraphBuilder.meditationNavigation(
             val viewModel: MeditationViewModel = it.sharedViewModel(navController)
             val musicState by viewModel.musicState.collectAsStateWithLifecycle()
             val visibility by viewModel.visibility.collectAsStateWithLifecycle()
+            val trackList by viewModel.trackList.collectAsStateWithLifecycle()
+            val selectedTrack by viewModel.track.collectAsStateWithLifecycle()
             FullscreenView(
-                state = viewModel.mediaState,
-                controllerState = viewModel.controllerState,
+                player = viewModel.getPlayer(),
                 uiState = UiState(),
+                trackList = trackList,
+                selectedTrack = selectedTrack,
                 musicState = musicState,
                 visibility = visibility,
                 onAudioEvent = viewModel::onAudioEvent,
                 onVisibility = viewModel::setVisibility,
+                onTrackChange = viewModel::onTrackChange
             )
         }
         composable(MeditationScreen.Language.route) {
