@@ -4,12 +4,13 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystemx.AstaThemeX
@@ -27,16 +28,11 @@ private fun DefaultPreview1() {
     AstaThemeX {
         Surface {
             Column {
-                AstaFilledButton(
-                    onClick = {}
-                ) {
+                AstaOutlinedButton(onClick = {}) {
                     Text(text = "Enabled Button")
                 }
 
-                AstaFilledButton(
-                    enabled = false,
-                    onClick = {}
-                ) {
+                AstaOutlinedButton(enabled = false, onClick = {}) {
                     Text(text = "Disabled Button")
                 }
             }
@@ -46,7 +42,7 @@ private fun DefaultPreview1() {
 
 
 /**
- * Asta filled button with generic content slot. Wraps Material 3 [Button].
+ * Asta filled button with generic content slot. Wraps Material 3 [OutlinedButton].
  *
  * @param modifier Modifier to be applied to the button.
  * @param onClick Will be called when the user clicks the button.
@@ -57,9 +53,9 @@ private fun DefaultPreview1() {
  * @param content The button content.
  */
 @Composable
-fun AstaFilledButton(
-    modifier: Modifier = Modifier,
+fun AstaOutlinedButton(
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     contentPadding: PaddingValues = PaddingValues(
         start = 24.dp,
@@ -67,16 +63,17 @@ fun AstaFilledButton(
         end = 24.dp,
         bottom = 8.dp
     ),
-    content: @Composable RowScope.() -> Unit,
+    content: @Composable RowScope.() -> Unit
 ) {
-    Button(
+
+    OutlinedButton(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = AstaThemeX.colorsX.primary,
-            contentColor = AstaThemeX.colorsX.onPrimary,
-            disabledContainerColor = AstaThemeX.colorsX.onSurface.copy(alpha = .15f),
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = Color.Transparent,
+            contentColor = AstaThemeX.colorsX.onSurface,
+            disabledContainerColor = Color.Transparent,
             disabledContentColor = AstaThemeX.colorsX.onSurface.copy(alpha = .35f)
         ),
         contentPadding = contentPadding,
@@ -86,7 +83,7 @@ fun AstaFilledButton(
 
 
 /**
- * Asta filled button with generic content slot. Wraps Material 3 [Button].
+ * Asta filled button with generic content slot. Wraps Material 3 [OutlinedButton].
  *
  * @param modifier Modifier to be applied to the button.
  * @param onClick Will be called when the user clicks the button.
@@ -94,12 +91,12 @@ fun AstaFilledButton(
  * clickable and will appear disabled to accessibility services.
  * @param contentPadding The spacing values to apply internally between the container and the
  * content.
- * @param textToShow The button text content to be shown content.
+ * @param textToShow The button text is passed here.
  */
 @Composable
-fun AstaFilledButton(
-    modifier: Modifier = Modifier,
+fun AstaOutlinedButton(
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     contentPadding: PaddingValues = PaddingValues(
         start = 24.dp,
@@ -107,26 +104,21 @@ fun AstaFilledButton(
         end = 24.dp,
         bottom = 8.dp
     ),
-    textToShow: String,
+    textToShow: String
 ) {
-    Button(
+
+    OutlinedButton(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = AstaThemeX.colorsX.primary,
-            contentColor = AstaThemeX.colorsX.onPrimary,
-            disabledContainerColor = AstaThemeX.colorsX.onSurface.copy(alpha = .15f),
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = Color.Transparent,
+            contentColor = AstaThemeX.colorsX.onSurface,
+            disabledContainerColor = Color.Transparent,
             disabledContentColor = AstaThemeX.colorsX.onSurface.copy(alpha = .35f)
         ),
         contentPadding = contentPadding
     ) {
-        LabelTexts.Large(
-            text = textToShow,
-            color = if (enabled)
-                AstaThemeX.colorsX.onPrimary
-            else
-                AstaThemeX.colorsX.onSurface.copy(alpha = .35f)
-        )
+        LabelTexts.Large(text = textToShow)
     }
 }
