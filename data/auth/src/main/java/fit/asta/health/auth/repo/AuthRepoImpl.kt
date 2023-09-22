@@ -176,6 +176,7 @@ class AuthRepoImpl @Inject constructor(
                                 reAuthenticateUser(credential)
                                     .addOnCompleteListener { reAuthTask ->
                                         if (reAuthTask.isSuccessful) {
+                                            googleSignInClient.signOut()
                                             currentUser.delete()
                                                 .addOnCompleteListener { deleteTask ->
                                                     if (deleteTask.isSuccessful) {
