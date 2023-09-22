@@ -21,7 +21,6 @@ class MusicSessionCallback @Inject constructor(
     private val musicActionHandler: MusicActionHandler
 ) : MediaLibrarySession.Callback {
     private val coroutineScope = CoroutineScope(mainDispatcher + SupervisorJob())
-
     override fun onAddMediaItems(
         mediaSession: MediaSession,
         controller: MediaSession.ControllerInfo,
@@ -33,6 +32,7 @@ class MusicSessionCallback @Inject constructor(
                 .build()
         }
     )
+
 
     override fun onConnect(
         session: MediaSession,

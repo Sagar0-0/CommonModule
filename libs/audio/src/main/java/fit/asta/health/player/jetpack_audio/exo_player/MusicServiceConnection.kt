@@ -3,6 +3,7 @@ package fit.asta.health.player.jetpack_audio.exo_player
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.Player.EVENT_MEDIA_METADATA_CHANGED
 import androidx.media3.common.Player.EVENT_PLAYBACK_STATE_CHANGED
@@ -122,15 +123,14 @@ class MusicServiceConnection @Inject constructor(
 //        mediaBrowser?.release()
     }
 
-    fun shuffleSongs(
-        songs: List<Song>,
-        startIndex: Int = DEFAULT_INDEX,
-        startPositionMs: Long = DEFAULT_POSITION_MS
-    ) = playSongs(
-        songs = songs.shuffled(),
-        startIndex = startIndex,
-        startPositionMs = startPositionMs
-    )
+    fun changeTrack(mediaItem: MediaItem) {
+        mediaBrowser?.run {
+
+            replaceMediaItem(currentMediaItemIndex, mediaItem)
+//            prepare()
+//            play()
+        }
+    }
 
     private inner class PlayerListener : Player.Listener {
         override fun onEvents(player: Player, events: Player.Events) {
