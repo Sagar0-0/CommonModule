@@ -14,9 +14,9 @@ import androidx.media3.common.Player
 import androidx.media3.common.Timeline
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.network.utils.NetworkResult
-import fit.asta.health.player.jetpack_audio.domain.data.Song
-import fit.asta.health.player.jetpack_audio.domain.utils.convertToProgress
-import fit.asta.health.player.jetpack_video.video.component.VideoState
+import fit.asta.health.player.domain.model.Song
+import fit.asta.health.player.domain.utils.convertToProgress
+import fit.asta.health.player.presentation.component.VideoState
 import fit.asta.health.tools.breathing.db.BreathingData
 import fit.asta.health.tools.breathing.model.BreathingRepo
 import fit.asta.health.tools.breathing.model.LocalRepo

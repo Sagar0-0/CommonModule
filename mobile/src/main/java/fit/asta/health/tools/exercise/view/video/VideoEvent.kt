@@ -1,8 +1,8 @@
 package fit.asta.health.tools.exercise.view.video
 
 import android.content.Context
-import fit.asta.health.player.jetpack_video.media.ResizeMode
-import fit.asta.health.player.jetpack_video.video.ControllerType
+import fit.asta.health.player.media.ResizeMode
+import fit.asta.health.player.presentation.ControllerType
 
 
 sealed class VideoEvent{

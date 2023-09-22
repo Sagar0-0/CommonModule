@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "fit.asta.health.player.jetpack_video"
+    namespace = "fit.asta.health.player"
     defaultConfig {
         consumerProguardFiles("consumer-rules.pro")
     }

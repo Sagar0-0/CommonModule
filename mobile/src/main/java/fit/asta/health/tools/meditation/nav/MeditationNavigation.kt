@@ -14,8 +14,8 @@ import androidx.navigation.navDeepLink
 import fit.asta.health.common.utils.Constants.MEDITATION_GRAPH_ROUTE
 import fit.asta.health.common.utils.Constants.deepLinkUrl
 import fit.asta.health.common.utils.sharedViewModel
-import fit.asta.health.player.jetpack_audio.presentation.screens.player.FullscreenView
-import fit.asta.health.player.jetpack_video.video.UiState
+import fit.asta.health.player.presentation.UiState
+import fit.asta.health.player.presentation.screens.player.PlayerScreen
 import fit.asta.health.tools.meditation.view.home.MEvent
 import fit.asta.health.tools.meditation.view.home.MeditationHomeScreen
 import fit.asta.health.tools.meditation.view.instructor.InstructorScreen
@@ -94,7 +94,7 @@ fun NavGraphBuilder.meditationNavigation(
             val visibility by viewModel.visibility.collectAsStateWithLifecycle()
             val trackList by viewModel.trackList.collectAsStateWithLifecycle()
             val selectedTrack by viewModel.track.collectAsStateWithLifecycle()
-            FullscreenView(
+            PlayerScreen(
                 player = viewModel.getPlayer(),
                 uiState = UiState(),
                 trackList = trackList,
