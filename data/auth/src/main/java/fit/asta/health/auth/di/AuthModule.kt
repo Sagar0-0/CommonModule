@@ -1,21 +1,24 @@
 package fit.asta.health.auth.di
 
-import com.google.firebase.auth.FirebaseAuth
+import android.content.Context
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.auth.fcm.remote.TokenApi
 import fit.asta.health.auth.model.AuthDataMapper
 import fit.asta.health.auth.remote.AuthApi
 import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.auth.repo.AuthRepoImpl
-import fit.asta.health.datastore.PrefManager
 import fit.asta.health.network.utils.NetworkUtil
 import okhttp3.OkHttpClient
 import javax.inject.Qualifier
 import javax.inject.Singleton
+
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -33,6 +36,22 @@ object AuthModule {
         return AuthDataMapper()
     }
 
+    @Singleton
+    @Provides
+    fun provideGoogleSignInClient(
+        @ApplicationContext context: Context,
+        gso: GoogleSignInOptions
+    ): GoogleSignInClient {
+        return GoogleSignIn.getClient(context, gso)
+    }
+
+    @Singleton
+    @Provides
+    fun provideGoogleSignInOptions(@ApplicationContext context: Context): GoogleSignInOptions {
+        return GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
+    }
 
     @Provides
     @UID

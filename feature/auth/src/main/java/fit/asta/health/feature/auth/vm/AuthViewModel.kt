@@ -95,7 +95,11 @@ internal class AuthViewModel
 
     fun logout() {
         _logoutState.value = UiState.Loading
-        _logoutState.value = authRepo.signOut().toUiState()
+        viewModelScope.launch {
+            authRepo.signOut().collect {
+                _logoutState.value = it.toUiState()
+            }
+        }
     }
 
     fun resetLogoutState() {

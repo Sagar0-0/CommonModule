@@ -1,15 +1,14 @@
 package fit.asta.health.referral.di
 
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.network.utils.NetworkUtil
 import fit.asta.health.referral.remote.ReferralApi
 import fit.asta.health.referral.repo.ReferralRepo
 import fit.asta.health.referral.repo.ReferralRepoImpl
-import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
@@ -22,15 +21,11 @@ object ReferralModule {
     fun provideReferralApi(client: OkHttpClient): ReferralApi =
         NetworkUtil.getRetrofit(client).create(ReferralApi::class.java)
 
-    @Singleton
-    @Provides
-    fun provideReferralRepo(
-        remoteApi: ReferralApi,
-        @IODispatcher coroutineDispatcher: CoroutineDispatcher
-    ): ReferralRepo {
-        return ReferralRepoImpl(
-            remoteApi = remoteApi,
-            coroutineDispatcher = coroutineDispatcher
-        )
-    }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class ReferralBindModule {
+    @Binds
+    abstract fun providesReferralRepo(referralRepoImpl: ReferralRepoImpl): ReferralRepo
 }

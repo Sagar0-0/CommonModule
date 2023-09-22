@@ -27,6 +27,7 @@ class ReferralRepoImplTest {
         repo = spyk(
             ReferralRepoImpl(
                 remoteApi = api,
+                mockk(),
                 coroutineDispatcher = UnconfinedTestDispatcher()
             )
         )

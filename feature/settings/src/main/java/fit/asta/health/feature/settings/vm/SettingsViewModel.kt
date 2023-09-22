@@ -67,12 +67,13 @@ class SettingsViewModel
     fun logout() {
         _logoutState.value = UiState.Loading
         viewModelScope.launch {
-            _logoutState.value = authRepo.signOut().toUiState()
-            if (_logoutState.value is UiState.Success) {
-                authRepo.setLogoutDone()
+            authRepo.signOut().collect {
+                _logoutState.value = it.toUiState()
+                if (_logoutState.value is UiState.Success) {
+                    authRepo.setLogoutDone()
+                }
             }
         }
-
     }
 
     fun resetLogoutState() {

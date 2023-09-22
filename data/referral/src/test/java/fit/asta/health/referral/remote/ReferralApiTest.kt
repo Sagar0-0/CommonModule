@@ -6,6 +6,7 @@ import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.referral.remote.model.ReferralDataResponse
 import fit.asta.health.referral.repo.ReferralRepoImpl
+import io.mockk.mockk
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
@@ -57,7 +58,7 @@ class ReferralApiTest {
         res.setResponseCode(404)
         server.enqueue(res)
 
-        val repo = ReferralRepoImpl(api, UnconfinedTestDispatcher())
+        val repo = ReferralRepoImpl(api, mockk(), UnconfinedTestDispatcher())
         val data = repo.getData("")
         server.takeRequest()
 

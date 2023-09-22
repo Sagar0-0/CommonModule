@@ -2,25 +2,9 @@ package fit.asta.health.common.utils
 
 import fit.asta.health.resources.strings.R
 
-class ApiErrorHandler {
-    fun fetchStatusMessage(code: Int): Int {
+open class ApiErrorHandler {
+    open fun fetchStatusMessage(code: Int): Int {
         return when (code) {
-            101 -> {
-                R.string.refer_code_not_exist
-            }
-
-            102 -> {
-                R.string.own_refer_code_error
-            }
-
-            103 -> {
-                R.string.already_referred_error
-            }
-
-            104 -> {
-                R.string.referring_my_referred
-            }
-
             105 -> {
                 R.string.refund_extended_error
             }
@@ -31,7 +15,7 @@ class ApiErrorHandler {
         }
     }
 
-    fun fetchExceptionMessage(msg: String): Int {
+    open fun fetchExceptionMessage(msg: String): Int {
         val errors = listOf(400, 500, 304, 404, 413)
         return when (errors.find { it.toString() in msg }) {
             400 -> {
